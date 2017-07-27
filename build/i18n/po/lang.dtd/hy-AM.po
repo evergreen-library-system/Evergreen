@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-04-19 15:34-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-06-22 10:13+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-04-23 06:04+0000\n"
-"X-Generator: Launchpad (build 18361)\n"
+"X-Launchpad-Export-Date: 2017-06-23 06:11+0000\n"
+"X-Generator: Launchpad (build 18416)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -129,7 +129,7 @@ msgstr "Մուտքի գրանցում"
 
 #: common.logout
 msgid "Log Out"
-msgstr "Դուրս գալ"
+msgstr "Ելք"
 
 #: common.at
 msgid "at"
@@ -265,12 +265,12 @@ msgstr "Գնա &Հետ"
 #: common.browser.reload.label
 #: common.browser.reload.accesskey
 msgid "Re&load"
-msgstr "Վերա&բեռնիր"
+msgstr "Վերա&բեռնել"
 
 #: common.browser.print.label
 #: common.browser.print.accesskey
 msgid "&Print Page"
-msgstr "&Տպիր էջը"
+msgstr "&Տպել էջը"
 
 #: common.browser.help.label
 #: common.browser.help.accesskey
@@ -2395,7 +2395,7 @@ msgstr "Պատերազմ"
 
 #: staff.copy.attr.stat.genre.example13
 msgid "Western"
-msgstr "Վեստեռն"
+msgstr "Արեվմտյան"
 
 #: staff.copy.attr.stat.genre.example14
 msgid "Religious fiction"
@@ -4057,7 +4057,7 @@ msgstr "F"
 
 #: staff.main.menu.edit.find.label
 msgid "Find"
-msgstr "Որոնել"
+msgstr "Գտնել"
 
 #: staff.main.menu.edit.find_again.key
 msgid "g"
@@ -4080,7 +4080,7 @@ msgstr "P"
 #: staff.main.menu.edit.paste.label
 msgctxt "staff.main.menu.edit.paste.label"
 msgid "Paste"
-msgstr "Հետ տեղադրիր"
+msgstr "Դնել"
 
 #: staff.main.menu.edit.redo.key
 msgctxt "staff.main.menu.edit.redo.key"
@@ -4089,7 +4089,7 @@ msgstr "R"
 
 #: staff.main.menu.edit.redo.label
 msgid "Redo"
-msgstr "վերարկել"
+msgstr "Վերարկել"
 
 #: staff.main.menu.edit.select_all.key
 msgctxt "staff.main.menu.edit.select_all.key"
@@ -4108,7 +4108,7 @@ msgstr "U"
 
 #: staff.main.menu.edit.undo.label
 msgid "Undo"
-msgstr "Չեղարկիր"
+msgstr "Ետարկել"
 
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
@@ -5586,7 +5586,7 @@ msgstr "S"
 
 #: staff.marc.file.reload
 msgid "Reload"
-msgstr "Վերաբեռնավորիր"
+msgstr "Վերաբեռնել"
 
 #: staff.marc.file.reload.key
 msgctxt "staff.marc.file.reload.key"
@@ -9136,7 +9136,7 @@ msgstr "Անջատված"
 
 #: staff.server.admin.stat_cat.type
 msgid "Type: "
-msgstr "Տեսակ "
+msgstr "Տեսակ՝ "
 
 #: staff.server.admin.stat_cat.patron
 msgctxt "staff.server.admin.stat_cat.patron"
@@ -11373,7 +11373,7 @@ msgstr "2"
 
 #: staff.cat.copy_editor.identification.miscellaneous.label
 msgid "Miscellaneous"
-msgstr "Տարբեր"
+msgstr "Զանազանք"
 
 #: staff.cat.copy_editor.identification.miscellaneous.accesskey
 msgctxt "staff.cat.copy_editor.identification.miscellaneous.accesskey"
@@ -12365,7 +12365,7 @@ msgstr "American Express"
 
 #: staff.patron.bill_cc_info.discover.label
 msgid "Discover"
-msgstr "Discover"
+msgstr "Հայտնաբերել"
 
 #: staff.patron.bill_cc_info.other.label
 msgctxt "staff.patron.bill_cc_info.other.label"

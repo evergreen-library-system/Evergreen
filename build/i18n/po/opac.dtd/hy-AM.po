@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-04-19 15:34-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-06-22 10:11+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-04-23 06:07+0000\n"
-"X-Generator: Launchpad (build 18361)\n"
+"X-Launchpad-Export-Date: 2017-06-23 06:15+0000\n"
+"X-Generator: Launchpad (build 18416)\n"
 
 # =================================================================
 # Some generic stuff
@@ -89,7 +89,7 @@ msgstr "Մատենաշար"
 
 #: common.keyword
 msgid "Keyword"
-msgstr "Վճռորոշ բառ"
+msgstr "Հիմնաբառ"
 
 #: common.type
 msgid "Search Type"
@@ -118,7 +118,7 @@ msgstr "Գրանցում"
 
 #: common.logout
 msgid "Log Out"
-msgstr "Հեռանալ"
+msgstr "Ելք"
 
 #: common.physical
 msgid "Physical Description"
@@ -1082,7 +1082,7 @@ msgstr "Զիպ"
 
 #: myopac.summary.address.edit
 msgid "Edit Address"
-msgstr "Խմբագրիր հասցեն"
+msgstr "Խմբագրել հասցեն"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -1279,7 +1279,7 @@ msgstr "Ենթադաշտ։"
 
 #: search.marc.value
 msgid "Value:"
-msgstr "Արժեք։"
+msgstr "Արժեքը՝"
 
 #: search.marc.add.row
 msgid "Add Row"
@@ -1536,7 +1536,7 @@ msgstr "Գրքեր"
 
 #: opac.search.allFormats
 msgid "All Formats"
-msgstr "Բոլոր ձևաչափերը"
+msgstr "Բոլոր ձեւաչափերը"
 
 #: opac.search.largePrint
 msgid "Large Print Books"
@@ -2508,14 +2508,14 @@ msgstr ""
 
 #: button.go
 msgid "Go!"
-msgstr "Գնա"
+msgstr "Առա՛ջ"
 
 #. =================================================================
 #. Slimpac Simple Search
 #. =================================================================
 #: slimpac.language.select
 msgid "Select language"
-msgstr "Ընտրիր լեզու"
+msgstr "Ընտրե՛ք լեզուն"
 
 # =================================================================
 # Slimpac Simple Search
