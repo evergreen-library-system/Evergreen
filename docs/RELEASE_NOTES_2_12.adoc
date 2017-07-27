@@ -3,6 +3,88 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.4
+----------------
+Upgrade Notes
+~~~~~~~~~~~~~
+* This release of Evergreen contains a fix to the _Hold/Copy Ratio per Bib
+and Pickup Library (and Descendants)_ data source. Report templates using
+this data source will need to be re-created to improve accuracy of the
+data reported from this source.
+* This release also contains a fix to downloading large checkout histories from
+My Account. This feature no longer uses the action/trigger mechanism and the 
+OPAC now generates the CSV directly.  The old action/trigger code is still
+present in the database and should be removed at some point in the
+near future.
+
+Bug Fixes
+~~~~~~~~~
+This release contains several bug fixes improving on Evergreen 2.12.3
+
+
+* A fix to a web client bug where adding copies through the _Add Volumes 
+and Copies_ menu item could fail silently.
+* A fix to a bug that allowed users to access some web client admin interfaces 
+without a login.
+* A fix to the display of the loan duration and fine level fields in the web
+client Item Status Detail view.
+* A fix to the display of duplicate data on the bib record View Holds page when 
+toggling between the holds and OPAC view. 
+* A fix to a bug that prevented the web client patron registration page from
+loading.
+* Support for Org Unit Includes alert text, notice text, event text, header
+text, and footer text in the web client print templates.
+* A fix to make the web client MARC Editor's flat text editor selection sticky.
+* A fix to make the Patron Search library selector sticky.
+* A fix to a bug in the web client that prevented the user from saving a new
+copy after using the MARC Edit _Add Item_ option.
+* A fix to a patron registration bug that did not require the entry of a required
+user statistical category for stat cats that do not allow free-text entries.
+* The addition of the bad bacode image file in the web client.
+* An improvement to the MARC Batch Edit progress indicator to reduce the 
+likelihood of system backlogs.
+* Downloading checkout history as a CSV from My Account has been fixed
+for users with a large circulation history.  Previously, this would
+time out for patrons with more than 100 or so circulations.
+* A fix to syntax in the Spanish lang.dtd file that was creating an error
+when using the Closed Date Editor.
+* Improvements to CSS to silence some Mozilla extension warnings.
+* A fix to a failure to update targeted circulations when utilzing the recall
+functionality.
+* The addition of text wrapping in the copy details table on the bib
+record to prevent contents from falling off the page.
+* A fix to the adjust to zero option so that it can be applied correctly
+to multiple billings.
+* A fix to the "Hold/Copy Ratio per Bib and Pickup Library
+(and Descendants)" data source so that it will now include counts of eligible
+copies at locations that are not a pickup library for bib's holds.
+* A fix to the XUL client Item Status -> Alternate View -> Holds / Transit
+tab so that it properly refreshes all data when switching between copies.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.4 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etherige
+* Pasi Kallinen
+* Angela Kilsdonk
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Ben Shum
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+
 Evergreen 2.12.3
 ----------------
 
