@@ -1,3 +1,235 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 75829bd468738ad5441083bad7d63794d6417bf3
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 4e2582ba79133d72a5e47ebb9be4be0e22e6b467
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jul 26 17:21:00 2017 -0400
+
+    Docs: Release notes for 2.11.7
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+40	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit f79f727e77096d1bf760c733d88f6a3e4bc97e2f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 14 15:59:53 2017 -0500
+
+    LP#1664715: Hold ratio template ignores some copies
+    
+    The relatively new report template "Hold/Copy Ratio per Bib and Pickup Library
+    (and Descendants)" only includes copies that are at locations that are
+    actually pickup libraries of holds. For instance, if you have two branches (A
+    and B) in a system, each with 10 copies attached to a bib, but a hold only at
+    branch A, the ratio calculated at the system level sees 10 copies rather than
+    twenty. This has the effect of inflating the hold side of the hold/copy ratio.
+    
+    The SQL definition is adjusted here to count copies across the entire branch
+    of the org tree per bib, rather than through a join that restricts to those
+    branches that are pickup libraries for a relevant hold.
+    
+    Upgrade note: Report templates using the Hold/Copy Ratio at Pickup Library
+    and Descendants data source will need to be re-created to benefit from this
+    bug fix.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+20	20	Open-ILS/examples/fm_IDL.xml
+
+commit e2d669c6044c5e99ac5fc07f4aff09d2e3b134dd
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue May 9 14:17:29 2017 -0700
+
+    LP#1689656: Adjust to zero on negative balance
+    
+    Adjust to zero was not actually adjusting to zero on negative balances
+    in at least some cases.  This patch corrects that behavior.
+    
+    Test plan:
+    
+    [1] Generate multiple overdue billings on an overdue circ.
+    [2] Apply a payment (cash or forgive) to resolve the overdue billings.
+    [3] Checkin the item using backdated checkin or amnesty mode, such that
+        the overdue billings are automatically voided, resulting in a
+        negative balance.
+    [4] Adjust to zero.  A single new manual adjustment billing is created,
+        reinstating one overdue billing, and then the adjust-to-zero process
+        exits.  The negative balance has been reduced by the amount of one
+        overdue billing, rather than being fully adjusted to zero.
+    [5] Apply the patch and restart services.
+    [6] Repeat steps 1-3 with a new circulation.
+    [7] Adjust to zero.  This time, the balance should be correctly adjusted
+        to zero, instead of exiting prematurely with an outstanding
+        negative balance.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit cf50371f21d776bb9d5295e0567627b589adb121
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jul 20 18:10:15 2017 -0400
+
+    LP#1689656 Add test for manual adjustment of negative balance
+    
+    Without the fix in LP#1689656, this test fails.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	1	Open-ILS/src/perlmods/live_t/09-lp1198465_neg_balances.t
+
+commit f9e6c48d1b9db43b21216d31b3a565c8ec27bb8e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Jul 11 13:08:23 2017 -0400
+
+    LP#1486451: Remove rdetails_status nowrap style
+    
+    The copy details table was styled to not wrap, which sometimes pushed table
+    contents off the page, particularly when some of the copies are conjoined
+    items. This commit removes the style that was preventing wrapping.
+    
+    Test plan:
+    Load record 15 in the Concerto dataset. Before the patch is loaded, you'll
+    see that some of the content in the copy details table is pushed off the
+    screen and requires horizontal scrolling. Post-patch, all of the copy
+    details will display on screen without horizontal scrolling. In addition
+    to the change in the Conjoined Items, you also might see some text wrapping
+    in the Shelving Location and Status columns.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+
+0	1	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 24edd83b6c7ea4961aeeb5b1d2bf4a0becc1b142
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Tue Jan 17 16:39:58 2017 -0500
+
+    Fix Can't locate object method "workstation" error
+    
+    When trying to utilize the Recall functionality, Evergreen would fail to update
+    targeted circulations (truncate the due date, etc.)  In the logs, we would have
+    an error like this:
+    
+    [] open-ils.storage [ERR ::action.pm:1597:] Processing of hold failed:
+    Can't locate object method "workstation" via package "action::circulation" at
+    /usr/local/share/perl/5.14.2/OpenILS/Application/Storage/CDBI.pm line 181.
+    
+    We first tried adding the workstation column to Storage/CDBI/action.pm, but a
+    similar message would then appear instead: Can't locate object method
+    "checkin_workstation"
+    
+    This sidesteps the problem entirely.
+    
+    Thanks to Mike for the solution!
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI.pm
+
+commit 244e76a10c47cbd1a7d8a932be635eb31d0d54e7
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon May 15 14:01:52 2017 -0400
+
+    LP#1205190: more CSS tweaks
+    
+    * replace a few more "background" with "background-color"
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+5	5	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 1c7b75a849ba3b4860e623a1df4376b7f88b5601
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Fri Jul 26 00:05:49 2013 -0400
+
+    LP#1205190: TPAC: Improve style.css to reduce warnings
+    
+    * Improve specificity: use background-image (for gradients) or
+      background-color (for color) instead of just background, because we
+      are only specifying the image or color, and not the rest of the
+      background properties.
+    * Declare the background-color first, followed by the background-images;
+      these will only override if recognized by the browser.
+    * Declare the standard (unprefixed) CSS linear-gradient last to prevent
+      prefixed browser quirk versions from overriding the standardized form.
+    * Remove the -moz- prefix from -moz-border-radius as that has not been
+      supported by Gecko since Firefox 13.0; just plain border-radius now.
+    * Fix bad selector ##rdetail_extras_expand (only one #, please).
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+62	49	Open-ILS/src/templates/opac/css/style.css.tt2
+
+commit 6b374ae95dd95fea3688b9067bba06289040b0a3
+Author: Pasi Kallinen <pasi.kallinen@pttk.fi>
+Date:   Thu Aug 1 11:21:17 2013 +0300
+
+    LP#1205190: quiet some CSS Mozilla extensions warnings.
+    
+    * -moz-dialog-text is actually -moz-dialogtext
+    * -moz-outline is deprecated, use outline
+    * -moz-border-radius has been removed, use border-radius
+    * -moz-border-radius-topleft (etc) are now border-top-left-radius
+    * Fix some other CSS errors.
+    
+    Signed-off-by: Pasi Kallinen <pasi.kallinen@pttk.fi>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/css/style.css.tt2
+    	Open-ILS/web/css/skin/default/register.css
+    	Open-ILS/web/opac/skin/default/xml/home/homesearch.xml
+    	Open-ILS/web/reports/oils_rpt.css
+    	Open-ILS/xul/staff_client/server/admin/org_unit_settings.xhtml
+    	Open-ILS/xul/staff_client/server/serial/notes.xul
+    	Open-ILS/xul/staff_client/server/skin/circ.css
+
+0	3	Open-ILS/src/templates/opac/css/style.css.tt2
+0	1	Open-ILS/web/css/skin/default/selfcheck.css
+1	1	Open-ILS/web/opac/extras/slimpac/advanced.html
+1	1	Open-ILS/web/opac/extras/slimpac/start.html
+3	3	Open-ILS/web/opac/skin/default/css/layout.css
+1	1	Open-ILS/web/reports/oils_rpt.css
+19	19	Open-ILS/xul/staff_client/chrome/skin/browser.css
+1	5	Open-ILS/xul/staff_client/server/admin/org_unit_settings.xhtml
+8	8	Open-ILS/xul/staff_client/server/skin/circ.css
+
+commit 5d5296529109d922ac983f0e8c6b6cfa72128e9d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jun 21 17:52:36 2017 -0400
+
+    Forward-port 2.11.6 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.5-2.11.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.5-2.11.6-upgrade-db.sql
