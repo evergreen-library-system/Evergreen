@@ -7,7 +7,7 @@
  *
  */
 
-angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod', 'ngToast'])
+angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egCoreMod','egGridMod', 'egMarcMod', 'egUserMod', 'egHoldingsMod', 'ngToast','egPatronSearchMod'])
 
 .config(['ngToastProvider', function(ngToastProvider) {
   ngToastProvider.configure({
@@ -426,6 +426,36 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         return record_id;
     }
 
+    patron_search_dialog = function() {
+        return $uibModal.open({
+            templateUrl: './share/t_patron_selector',
+            size: 'lg',
+            animation: true,
+            controller:
+                   ['$scope','$uibModalInstance','$controller',
+            function($scope , $uibModalInstance , $controller) {
+                angular.extend(this, $controller('BasePatronSearchCtrl', {$scope : $scope}));
+                $scope.clearForm();
+                $scope.need_one_selected = function() {
+                    var items = $scope.gridControls.selectedItems();
+                    return (items.length == 1) ? false : true
+                }
+                $scope.ok = function() {
+                    var items = $scope.gridControls.selectedItems();
+                    if (items.length == 1) {
+                        $uibModalInstance.close(items[0].card().barcode());
+                    } else {
+                        $uibModalInstance.close()
+                    }
+                }
+                $scope.cancel = function($event) {
+                    $uibModalInstance.dismiss();
+                    $event.preventDefault();
+                }
+            }]
+        });
+    }
+
     // also set it when the iframe changes to a new record
     $scope.handle_page = function(url) {
 
@@ -464,6 +494,18 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         } else {
             $scope.in_opac_call = false;
         }
+
+        if ($scope.opac_iframe && $location.path().match(/cat\/catalog/)) {
+            var doc = $scope.opac_iframe.dom.contentWindow.document;
+            $(doc).find('#hold_usr_search').show();
+            $(doc).find('#hold_usr_search').on('click', function() {
+                patron_search_dialog().result.then(function(barc) {
+                    $(doc).find('#hold_usr_input').val(barc);
+                    $(doc).find('#hold_usr_input').change();
+                });
+            })
+        }
+
     }
 
     // xulG catalog handlers
