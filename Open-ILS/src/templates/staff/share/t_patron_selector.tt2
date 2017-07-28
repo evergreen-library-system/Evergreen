@@ -1,0 +1,27 @@
+<!--
+  Patron selector dialog
+-->
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title alert alert-info">[% l('Select Patron') %]</h4> 
+  </div>
+  <div class="modal-body">
+    [% INCLUDE 'staff/share/t_patron_search_form.tt2' %]
+    <br/>
+    <div class="row">
+      <div class="col-md-12">
+        [% INCLUDE 'staff/share/t_patron_search_results.tt2' %]
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    [% dialog_footer %]
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="{{ ok_button_label || '[% l("Select") %]'}}"
+      ng-disabled="need_one_selected()"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel()">{{ cancel_button_label || "[% l('Cancel') %]"}}</button>
+  </div>
+</div>
