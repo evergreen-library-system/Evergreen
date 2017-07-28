@@ -84,7 +84,11 @@ function toggleActivationDate() {
             <span id="patron_name"></span>
             <span id="patron_usr_barcode_not_found" style="display: none">
               [% l('Patron barcode was not found') %]
-            </span><br />
+            </span>
+            [% IF ctx.is_browser_staff %]
+            <button id="hold_usr_search" type="button" class="opac-button" style="display: none;">[% l('Patron Search') %]</button>
+            [% END %]
+            <br />
             <input type="hidden" id="staff_barcode" 
               value="[% ctx.staff_recipient.card.barcode | html %]"/>
             <span>
