@@ -5243,6 +5243,16 @@ INSERT into config.org_unit_setting_type
       'In the Patron Bills interface, a payment attempt will warn if the amount exceeds the value of this setting.',
       'coust', 'description'),
     'currency', null)
+,( 'circ.holds.max_duplicate_holds', 'holds',
+   oils_i18n_gettext(
+     'circ.holds.max_duplicate_holds',
+     'Maximum number of duplicate holds allowed.',
+     'coust', 'label'),
+   oils_i18n_gettext(
+     'circ.holds.max_duplicate_holds',
+     'Maximum number of duplicate title or metarecord holds allowed per patron.',
+     'coust', 'description'),
+   'integer', null)
 ;
 
 UPDATE config.org_unit_setting_type
