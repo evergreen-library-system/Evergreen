@@ -1,0 +1,6 @@
+New Popularity Parameter
+^^^^^^^^^^^^^^^^^^^^^^^^
+A new popularity parameter for in-house use over time is now available. 
+Evergreen sites can use the parameter to create a new statistical popularity
+badge based on in-house use of materials.
+
