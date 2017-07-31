@@ -2371,15 +2371,30 @@ sub apply_modified_due_date {
 sub create_due_date {
     my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
-    # for now, use the server timezone.  TODO: use workstation org timezone
-    my $due_date = DateTime->now(time_zone => 'local');
-    $due_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($start_time)) if $start_time;
+    # Look up circulating library's TZ, or else use client TZ, falling
+    # back to server TZ
+    my $tz = $U->ou_ancestor_setting_value(
+        $self->circ_lib,
+        'lib.timezone',
+        $self->editor
+    ) || 'local';
+
+    my $due_date = $start_time ?
+        DateTime->now(time_zone => $tz) :
+        $due_date = DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($start_time))
+            ->set_time_zone($tz);
 
     # add the circ duration
     $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
 
     if($date_ceiling) {
-        my $cdate = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($date_ceiling));
+        my $cdate = DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($date_ceiling))
+            ->set_time_zone($tz);
+
         if ($cdate > DateTime->now and ($cdate < $due_date or $U->is_true( $force_date ))) {
             $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
             $due_date = $cdate;
