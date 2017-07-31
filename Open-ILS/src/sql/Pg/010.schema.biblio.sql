@@ -52,6 +52,7 @@ CREATE TABLE biblio.record_entry (
 	tcn_value	TEXT		NOT NULL DEFAULT biblio.next_autogen_tcn_value(),
 	marc		TEXT		NOT NULL,
 	last_xact_id	TEXT		NOT NULL,
+    vis_attr_vector INT[],
     owner       INT,
     share_depth INT
 );

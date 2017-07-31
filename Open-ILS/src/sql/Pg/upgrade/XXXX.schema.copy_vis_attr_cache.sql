@@ -219,7 +219,7 @@ BEGIN
             SELECT * INTO ncn FROM asset.call_number cn WHERE id = NEW.call_number;
             INSERT INTO asset.copy_vis_attr_cache (record, target_copy, vis_attr_vector) VALUES (
                 ncn.record,
-                NEW.target_copy,
+                NEW.id,
                 asset.calculate_copy_visibility_attribute_set(NEW.id)
             );
         ELSIF TG_TABLE_NAME = 'record_entry' THEN

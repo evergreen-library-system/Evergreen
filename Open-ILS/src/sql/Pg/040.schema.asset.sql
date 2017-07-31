@@ -536,6 +536,15 @@ CREATE TABLE asset.copy_template (
 	mint_condition BOOL
 );
 
+CREATE TABLE asset.copy_vis_attr_cache (
+    id              BIGSERIAL   PRIMARY KEY,
+    record          BIGINT      NOT NULL, -- No FKEYs, managed by user triggers.
+    target_copy     BIGINT      NOT NULL,
+    vis_attr_vector INT[]
+);
+CREATE INDEX copy_vis_attr_cache_record_idx ON asset.copy_vis_attr_cache (record);
+CREATE INDEX copy_vis_attr_cache_copy_idx ON asset.copy_vis_attr_cache (target_copy);
+
 CREATE OR REPLACE FUNCTION asset.opac_ou_record_copy_count (org INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE
     ans RECORD;
