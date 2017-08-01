@@ -887,5 +887,22 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
+    service.print_spine_labels = function(copies){
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null, 'print-labels-these-copies', {
+                copies : service.gatherSelectedHoldingsIds(copies)
+            }
+        ).then(function(key) {
+            if (key) {
+                var url = egCore.env.basePath + 'cat/printlabels/' + key;
+                $timeout(function() { $window.open(url, '_blank') });
+            } else {
+                alert('Could not create anonymous cache key!');
+            }
+        });
+    }
+
     return service;
 }])

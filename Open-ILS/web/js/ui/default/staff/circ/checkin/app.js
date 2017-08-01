@@ -374,5 +374,9 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             itemSvc.mark_missing_pieces(i.acp);
         });
     }
+
+    $scope.printSpineLabels = function(items){
+        itemSvc.print_spine_labels(items);
+    }
 }])
 
