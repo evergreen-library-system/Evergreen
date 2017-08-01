@@ -3186,7 +3186,7 @@ sub query_parser_fts_wrapper {
     $top_org ||= actor::org_unit->search( { parent_ou => undef } )->next;
 
     my $base_query = $args{query} || '';
-    if (scalar(keys($args{searches}))) {
+    if (scalar(keys(%{$args{searches}}))) {
         $log->debug("Constructing QueryParser query from staged search hash ...", DEBUG);
         for my $sclass ( keys %{$args{searches}} ) {
             $log->debug(" --> staged search key: $sclass --> term: $args{searches}{$sclass}{term}", DEBUG);
