@@ -4,12 +4,14 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (jessie, wheezy), Ubuntu (12.04), 
-# Ubuntu (14.04), Ubuntu (16.04), and Fedora (16 and 17).
+# Currently supports Debian (stretch, jessie, wheezy),
+# Ubuntu (14.04), Ubuntu (16.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
 # usage:
+# 	make -f Makefile.install debian-stretch
+# 	- or -
 # 	make -f Makefile.install debian-jessie
 # 	- or -
 # 	make -f Makefile.install debian-wheezy
@@ -62,6 +64,8 @@ DIR = $(dir $(lastword $(MAKEFILE_LIST)))/install
 
 all:
 	@echo "please specify an OS" && exit 0
+debian-stretch:
+	@make -f $(DIR)/Makefile.debian-stretch
 debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie
 debian-wheezy:
@@ -73,6 +77,8 @@ ubuntu-trusty:
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
+postgres-server-debian-stretch:
+	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server
 postgres-server-debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
 postgres-server-debian-wheezy:
@@ -88,6 +94,8 @@ ubuntu-xenial-developer:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_developer
 ubuntu-trusty-developer:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_developer
+debian-stretch-developer:
+	@make -f $(DIR)/Makefile.debian-stretch install_developer
 debian-jessie-developer:
 	@make -f $(DIR)/Makefile.debian-jessie install_developer
 debian-wheezy-developer:
@@ -97,6 +105,8 @@ ubuntu-xenial-translator:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
 ubuntu-trusty-translator:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_translator
+debian-stretch-translator:
+	@make -f $(DIR)/Makefile.debian-stretch install_translator
 debian-jessie-translator:
 	@make -f $(DIR)/Makefile.debian-jessie install_translator
 debian-wheezy-translator:
@@ -106,6 +116,8 @@ ubuntu-xenial-packager:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
 ubuntu-trusty-packager:
 	@make -f $(DIR)/Makefile.ubuntu-trusty install_packager
+debian-stretch-packager:
+	@make -f $(DIR)/Makefile.debian-stretch install_packager
 debian-jessie-packager:
 	@make -f $(DIR)/Makefile.debian-jessie install_packager
 debian-wheezy-packager:

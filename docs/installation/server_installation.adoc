@@ -56,8 +56,8 @@ Installing prerequisites
 
   * **PostgreSQL**: Version 9.4 is recommended. 
     The minimum supported version is 9.3.
-  * **Linux**: Evergreen 2.8 has been tested on Debian Jessie (8.0), 
-    Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04), 
+  * **Linux**: Evergreen has been tested on Debian Stretch (9), 
+    Debian Jessie (8), Debian Wheezy (7), Ubuntu Xenial Xerus (16.04), 
     and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
@@ -77,12 +77,12 @@ before you can successfully configure, compile, and install Evergreen.
     PostgreSQL, so steps are taken to automatically utilize the 
     PostgreSQL community's apt sources. 
     (For complete details, see: https://wiki.postgresql.org/wiki/Apt)
-  * Debian (Jessie) and Ubuntu (Xenial) comes with PostgreSQL 9.4+,
+  * Debian (Jessie/Stretch) and Ubuntu (Xenial) comes with PostgreSQL 9.4+,
     so no additional steps are required.
 +
 3. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-jessie`, `debian-wheezy`,
+   substituting `debian-stretch`, `debian-jessie`, `debian-wheezy`,
    `ubuntu-xenial`, or `ubuntu-trusty` for <osname> below:
 +
 [source, bash]
@@ -94,8 +94,8 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
    issuing the following commands as the *root* Linux account:
 +
 [NOTE]
-You should skip this step if installing on Ubuntu Trusty, Ubuntu Xenial or Debian Jessie. The Ubuntu
-and Debian Jessie targets use libdbd-pgsql from packages.
+You should skip this step if installing on Ubuntu Trusty/Xenial or Debian Jessie/Stretch. The Ubuntu
+and Debian Jessie/Stretch targets use libdbd-pgsql from packages.
 +
 .Debian Wheezy
 [source, bash]
@@ -287,7 +287,7 @@ mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
 ------------------------------------------------------------------------------
 +
-.Ubuntu Trusty, Ubuntu Xenial, and Debian Jessie
+.Ubuntu Trusty/Xenial and Debian Jessie/Stretch
 [source,bash]
 ------------------------------------------------------------------------------------
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
@@ -345,7 +345,7 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-.Ubuntu Trusty, Ubuntu Xenial, Debian Jessie (`/etc/apache2/mods-available/mpm_prefork.conf`)
+.Ubuntu Trusty/Xenial, Debian Jessie/Stretch (`/etc/apache2/mods-available/mpm_prefork.conf`)
 [source,bash]
 ------------------------------------------------------------------------------
 <IfModule mpm_prefork_module>
@@ -357,7 +357,7 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-. (Ubuntu Trusty, Ubuntu Xenial, Debian Jessie) As the *root* user,
+. (Ubuntu Trusty/Xenial, Debian Jessie/Stretch) As the *root* user,
     enable the mpm_prefork module:
 +
 [source,bash]
@@ -374,7 +374,7 @@ a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-(Ubuntu Trusty, Ubuntu Xenial, Debian Jessie):
+(Ubuntu Trusty/Xenial, Debian Jessie/Stretch):
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -463,6 +463,7 @@ command below based on your operating system.
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
@@ -472,7 +473,7 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
 For a standalone PostgreSQL server, install the following Perl modules for your
 distribution as the *root* Linux account:
 
-.(Debian Wheezy, Ubuntu Trusty, and Ubuntu Xenial) 
+.(Debian and Ubuntu) 
 No extra modules required for these distributions.
 
 You need to create a PostgreSQL superuser to create and access the database.
