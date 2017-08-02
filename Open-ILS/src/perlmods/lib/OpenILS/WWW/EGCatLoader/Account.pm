@@ -12,6 +12,7 @@ use Digest::MD5 qw(md5_hex);
 use Data::Dumper;
 $Data::Dumper::Indent = 0;
 use DateTime;
+use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
 sub prepare_extended_user_info {
@@ -1040,7 +1041,13 @@ sub load_place_hold {
         # We should use a date input type on the forms once it is supported by Firefox.
         # I didn't do that now because it is not available in a general release.
         if ($cgi->param('thaw_date') =~ m:^(\d{2})/(\d{2})/(\d{4})$:){
-            $ctx->{thaw_date} = "$3-$1-$2";
+            eval {
+                my $dt = DateTime::Format::ISO8601->parse_datetime("$3-$1-$2");
+                $ctx->{thaw_date} = $dt->ymd;
+            };
+            if ($@) {
+                $logger->warn("ignoring invalid thaw_date when placing hold request");
+            }
         }
     }
 
