@@ -84,11 +84,10 @@ function($timeout , $parse) {
     };
 })
 
-// 'egOrgDate' filter
-// Uses moment.js and moment-timezone.js to put dates into the most appropriate
-// timezone for a given (optional) org unit based on its lib.timezone setting
-.filter('egOrgDate',['egCore',
-             function(egCore) {
+// 'date' filter
+// Overriding the core angular date filter with a moment-js based one for
+// better timezone and formatting support.
+.filter('date',function() {
 
     var formatMap = {
         short  : 'l LT',
@@ -119,15 +118,31 @@ function($timeout , $parse) {
         [ /Z/g,    'ZZ'   ]
     ];
 
-    var tzcache = {'*':null};
+    return function (date, format, tz) {
+        if (format) {
+            var fmt = formatMap[format] || format;
+            angular.forEach(formatReplace, function (r) {
+                fmt = fmt.replace(r[0],r[1]);
+            });
+        }
 
-    function eg_date_filter (date, format, ouID) {
-        var fmt = formatMap[format] || format;
-        angular.forEach(formatReplace, function (r) {
-            fmt = fmt.replace(r[0],r[1]);
-        });
+        var d = moment(date);
+        if (tz && tz !== '-') d.tz(tz);
 
-        var d;
+        return d.isValid() ? d.format(fmt) : '';
+    }
+
+})
+
+// 'egOrgDate' filter
+// Uses moment.js and moment-timezone.js to put dates into the most appropriate
+// timezone for a given (optional) org unit based on its lib.timezone setting
+.filter('egOrgDate',['$filter','egCore',
+             function($filter , egCore) {
+
+    var tzcache = {};
+
+    function eg_date_filter (date, fmt, ouID) {
         if (ouID) {
             if (angular.isObject(ouID)) {
                 if (angular.isFunction(ouID.id)) {
@@ -137,26 +152,16 @@ function($timeout , $parse) {
                 }
             }
     
-            if (tzcache[ouID] && tzcache[ouID] !== '-') {
-                d = moment(date).tz(tzcache[ouID]);
-            } else {
-    
-                if (!tzcache[ouID]) {
-                    tzcache[ouID] = '-';
-
-                    egCore.org.settings('lib.timezone', ouID)
-                    .then(function(s) {
-                        tzcache[ouID] = s['lib.timezone'] || OpenSRF.tz;
-                    });
-                }
-
-                d = moment(date);
+            if (!tzcache[ouID]) {
+                tzcache[ouID] = '-';
+                egCore.org.settings('lib.timezone', ouID)
+                .then(function(s) {
+                    tzcache[ouID] = s['lib.timezone'] || OpenSRF.tz;
+                });
             }
-        } else {
-            d = moment(date);
         }
 
-        return d.isValid() ? d.format(fmt) : '';
+        return $filter('date')(date, fmt, tzcache[ouID]);
     }
 
     eg_date_filter.$stateful = true;
