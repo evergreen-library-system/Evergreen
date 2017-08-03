@@ -47,31 +47,31 @@ $$ LANGUAGE PLPGSQL;
 COMMIT;
 
 \qecho The following query will adjust all historical, unaged circulations so
-\qecho that if their due date field pushed to the end of the day, it is done
-\qecho in the circulating library's time zone, and not the server time zone.
+\qecho that if their due date field is pushed to the end of the day, it is done
+\qecho in the circulating library'''s time zone, and not the server time zone.
 \qecho 
 \qecho It is safe to run this after any change to library time zones.
 \qecho 
 \qecho Running this is not required, as no code before this change has
-\qecho depended on the time string of '23:59:59'.  It is also not necessary
+\qecho depended on the time string of '''23:59:59'''.  It is also not necessary
 \qecho if all of your libraries are in the same time zone, and that time zone
-\qecho is the same as the databases configured time zone.
+\qecho is the same as the database'''s configured time zone.
 \qecho 
-\qecho DO $$
-\qecho declare
-\qecho     new_tz  text;
-\qecho     ou_id   int;
-\qecho begin
-\qecho     for ou_id in select id from actor.org_unit loop
-\qecho         for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('lib.timezone',ou_id) loop
-\qecho             if new_tz is not null then
-\qecho                 update  action.circulation
-\qecho                   set   due_date = (due_date::timestamp || ' ' || new_tz)::timestamptz
-\qecho                   where circ_lib = ou_id
-\qecho                         and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '23:59:59';
-\qecho             end if;
-\qecho         end loop;
-\qecho     end loop;
-\qecho end;
-\qecho $$;
+\qecho 'DO $$'
+\qecho 'declare'
+\qecho '    new_tz  text;'
+\qecho '    ou_id   int;'
+\qecho 'begin'
+\qecho '    for ou_id in select id from actor.org_unit loop'
+\qecho '        for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('''lib.timezone''',ou_id) loop'
+\qecho '            if new_tz is not null then'
+\qecho '                update  action.circulation'
+\qecho '                  set   due_date = (due_date::timestamp || ''' ''' || new_tz)::timestamptz'
+\qecho '                  where circ_lib = ou_id'
+\qecho '                        and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '''23:59:59''';'
+\qecho '            end if;'
+\qecho '        end loop;'
+\qecho '    end loop;'
+\qecho 'end;'
+\qecho '$$;'
 \qecho 

@@ -119,6 +119,11 @@ function($timeout , $parse) {
     ];
 
     return function (date, format, tz) {
+        if (!date) return '';
+
+        if (date == 'now') 
+            date = new Date().toISOString();
+
         if (format) {
             var fmt = formatMap[format] || format;
             angular.forEach(formatReplace, function (r) {

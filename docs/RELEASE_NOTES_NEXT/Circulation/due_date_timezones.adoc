@@ -1,5 +1,53 @@
 Honor timezone of the acting library
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
++++++++
+
+* Display day-granular due dates in the circulating library's timezone.
+* Only display the date portion of the due date for day-granular circulations.
+* Display the full timestamp, in the client's timezone rather than the circulation library's, for hourly circulations.
+* Provide infrastructure for more advanced formatting of timestamps.
+* Override the built-in AngularJS date filter with an implementation that uses moment.js, providing consistency and better standards compliance.
+
+Upgrade note
+++++++++++++
+
+The following query will adjust all historical, unaged circulations so
+that if their due date field is pushed to the end of the day, it is done
+in the circulating library's time zone, and not the server time zone.
+
+It is safe to run this after any change to library time zones.
+
+Running this is not required, as no code before this change has
+depended on the time string of '23:59:59'.  It is also not necessary
+if all of your libraries are in the same time zone, and that time zone
+is the same as the database's configured time zone.
+
+[source,sql]
+----
+DO $$
+declare
+    new_tz  text;
+    ou_id   int;
+begin
+    for ou_id in select id from actor.org_unit loop
+        for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('lib.timezone',ou_id) loop
+            if new_tz is not null then
+                update  action.circulation
+                  set   due_date = (due_date::timestamp || ' ' || new_tz)::timestamptz
+                  where circ_lib = ou_id
+                        and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '23:59:59';
+            end if;
+        end loop;
+    end loop;
+end;
+$$;
+----
+
+Details
++++++++
+
 This is a followup to the work done in bug 1485374, where we added the ability
 for the client to specify a timezone in which timestamps should be interpreted
 in business logic and the database.
