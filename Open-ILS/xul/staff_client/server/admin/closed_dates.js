@@ -203,7 +203,11 @@ function cdGetTZ(org, callback) {
                 var data = r.recv().content();
                 if(e = openils.Event.parse(data))
                     return alert(e);
-                orgTZ[org] = data['lib.timezone'].value || OpenSRF.tz;
+                if (data['lib.timezone'] && data['lib.timezone'].value) {
+                    orgTZ[org] = data['lib.timezone'].value;
+                } else {
+                    orgTZ[org] = OpenSRF.tz;
+                }
                 if (callback) callback();
             }
         }
