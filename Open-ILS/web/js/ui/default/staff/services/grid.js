@@ -1940,7 +1940,7 @@ angular.module('egGridMod',
         var list = path.split('.');
         for (var part in path) {
             if (obj[path]) obj = obj[path]
-            else return undef;
+            else return null;
         }
         return obj;
     }
