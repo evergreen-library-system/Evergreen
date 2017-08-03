@@ -32,7 +32,8 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
         function() {
             return egOrg.settings([
                 'webstaff.format.dates',
-                'webstaff.format.date_and_time'
+                'webstaff.format.date_and_time',
+                'lib.timezone'
             ]).then(
                 function(set) {
                     $rootScope.egDateFormat = 
