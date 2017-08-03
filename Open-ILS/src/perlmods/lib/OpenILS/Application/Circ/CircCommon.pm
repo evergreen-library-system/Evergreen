@@ -502,7 +502,7 @@ sub generate_fines {
             $fine_interval =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
             $fine_interval = interval_to_seconds( $fine_interval );
     
-            if ( $fine_interval == 0 || int($c->$recurring_fine_method * 100) == 0 || int($c->max_fine * 100) == 0 ) {
+            if ( $fine_interval == 0 || $c->$recurring_fine_method * 100 == 0 || $c->max_fine * 100 == 0 ) {
                 $conn->respond( "Fine Generator skipping circ due to 0 fine interval, 0 fine rate, or 0 max fine.\n" ) if $conn;
                 $logger->info( "Fine Generator skipping circ " . $c->id . " due to 0 fine interval, 0 fine rate, or 0 max fine." );
                 return;
@@ -536,8 +536,8 @@ sub generate_fines {
             my $f_idx = 0;
             my $fine = $fines[$f_idx] if (@fines);
             my $current_fine_total = 0;
-            $current_fine_total += int($_->amount * 100) for (grep { $_ and !$U->is_true($_->voided) } @fines);
-            $current_fine_total -= int($_->amount * 100) for (map { @{$_->adjustments} } @fines);
+            $current_fine_total += $_->amount * 100 for (grep { $_ and !$U->is_true($_->voided) } @fines);
+            $current_fine_total -= $_->amount * 100 for (map { @{$_->adjustments} } @fines);
     
             my $last_fine;
             if ($fine) {
@@ -566,8 +566,8 @@ sub generate_fines {
             $conn->respond( "\t$pending_fine_count pending fine(s)\n" ) if $conn;
             return unless ($pending_fine_count);
 
-            my $recurring_fine = int($c->$recurring_fine_method * 100);
-            my $max_fine = int($c->max_fine * 100);
+            my $recurring_fine = $c->$recurring_fine_method * 100;
+            my $max_fine = $c->max_fine * 100;
 
             my $skip_closed_check = $U->ou_ancestor_setting_value(
                 $c->$circ_lib_method, 'circ.fines.charge_when_closed');
