@@ -885,13 +885,6 @@ function($scope , $uibModalInstance , egCore , note_type , rows , notes ) {
         'alert' : false,
     };
 
-    $scope.require_initials = false;
-    egCore.org.settings([
-        'ui.staff.require_initials.copy_notes'
-    ]).then(function(set) {
-        $scope.require_initials = Boolean(set['ui.staff.require_initials.copy_notes']);
-    });
-
     $scope.note_list = notes;
 
     $scope.ok = function(note) {
