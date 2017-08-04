@@ -6,6 +6,7 @@ module.exports = function(config){
     logLevel: config.LOG_INFO,
 
     files : [
+      'build/js/lovefield.min.js',
       'build/js/angular.min.js',
       'build/js/angular-route.min.js',
       'node_modules/angular-mocks/angular-mocks.js', // testing only
