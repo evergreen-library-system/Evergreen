@@ -197,9 +197,13 @@ function AcqLiTable() {
 
     /* This is the "new" batch updater that sits atop all lineitems. It does
      * use this.afwCopyFieldArgs() to borrow a little common code  from the
-     * "old" batch updater atop the copy details view. */
-    this.initBatchUpdater = function(disabled_fields) {
-        openils.Util.show("acq-batch-update", "table");
+     * "old" batch updater atop the copy details view. 
+     * @param hidden allows the batch updater to be initialized, activating
+     * fund selectors, while stying invisible for UI's where the batch
+     * updater is not fully integrated.
+     * */
+    this.initBatchUpdater = function(disabled_fields, hidden) {
+        if (!hidden) openils.Util.show("acq-batch-update", "table");
 
         if (!dojo.isArray(disabled_fields)) disabled_fields = [];
 

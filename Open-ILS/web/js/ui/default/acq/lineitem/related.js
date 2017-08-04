@@ -147,6 +147,10 @@ function load() {
     liTable.reset();
     liTable._isRelatedViewer = true;
 
+    // render the batch updater to activate fund selection, but leave
+    // it hidden for now since it's not fully functional in this UI.
+    liTable.initBatchUpdater(null, true);
+
     prepareButtons();
     fetchRelated();
 
