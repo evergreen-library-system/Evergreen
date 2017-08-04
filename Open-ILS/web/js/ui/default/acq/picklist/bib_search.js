@@ -28,6 +28,10 @@ function drawForm() {
     liTable.enableActionsDropdownOptions("fs");
     liTable.skipInitialEligibilityCheck = true;
 
+    // render the batch updater to activate fund selection, but leave
+    // it hidden for now since it's not fully functional in this UI.
+    liTable.initBatchUpdater(null, true);
+
     fieldmapper.standardRequest(
         ['open-ils.search', 'open-ils.search.z3950.retrieve_services'], 
         {   async: true,
