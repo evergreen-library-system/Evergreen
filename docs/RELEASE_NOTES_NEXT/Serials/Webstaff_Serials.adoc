@@ -1,0 +1,26 @@
+Web Staff Client Serials Module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The serials module has been ported over to the web staff
+client, implementing a unified serials interface that combines
+ideas from both the serial control view and alternate serials
+control view from the old staff client.
+
+In addition to carrying over functionality that was available
+in the old staff client, several new features are included:
+
+* the ability to save prediction pattern codes as templates
+  that can be shared and reused within an Evergreen database
+* a more streamlined interface for managing subscriptions,
+  distributions, and streams
+* it is no longer necessary to create a starting issue in
+  order to predict a run of issues; the dialog box for
+  generating a set of predicted issues now lets you specify
+  the starting point directly.
+* the ability to more directly edit MFHDs
+    
+The new serials interfaces can be accessed from the record
+details page via a Serials drop-down button that links to
+a subscription management page, a quick-receive action, and
+a MFHD management page. There is also a new Serials Administration
+page where prediction pattern and serial copy templates can
+be managed.
