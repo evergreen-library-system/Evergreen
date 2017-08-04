@@ -1052,10 +1052,17 @@ sub MR_records_matching_format {
     if ($opac_visible) {
         $vis_q = <<'        SQL';
             EXISTS(
-                SELECT 1 FROM asset.opac_visible_copies
-                WHERE record = ? AND circ_lib IN (
-                    SELECT id FROM actor.org_unit_descendants(?)
-                )
+                SELECT  1
+                  FROM  asset.patron_default_visibility_mask() mask,
+                        asset.copy_vis_attr_cache v
+                        JOIN asset.copy c ON (
+                            c.id = v.target_copy
+                            AND v.record = ?
+                            AND c.circ_lib IN (
+                                SELECT id FROM actor.org_unit_descendants(?)
+                            )
+                        )
+                  WHERE v.vis_attr_vector @@ mask.c_attrs::query_int
             )
         SQL
     }

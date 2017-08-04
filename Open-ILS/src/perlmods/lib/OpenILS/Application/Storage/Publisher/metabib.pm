@@ -95,7 +95,8 @@ sub ordered_records_from_metarecord { # XXX Replace with QP-based search-within-
     my $org = shift;
     my $depth = shift;
 
-    my $copies_visible = 'LEFT JOIN asset.opac_visible_copies vc ON (br.id = vc.record)';
+    my $copies_visible = 'LEFT JOIN asset.copy_attr_vis_cache vc ON (br.id = vc.record '.
+                         'AND vc.vis_attr_vector @@ (SELECT c_attrs::query_int FROM asset.patron_default_visibility_mask() LIMIT 1))';
     $copies_visible = '' if ($self->api_name =~ /staff/o);
 
     my $copies_visible_count = ',COUNT(vc.id)';
