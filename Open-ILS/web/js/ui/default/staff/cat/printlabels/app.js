@@ -245,15 +245,22 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
     }
 
-    $scope.fetchTemplates = function () {
-        egCore.hatch.getItem('cat.printlabels.templates').then(function(t) {
+    $scope.fetchTemplates = function (set_default) {
+        return egCore.hatch.getItem('cat.printlabels.templates').then(function(t) {
             if (t) {
                 $scope.templates = t;
                 $scope.template_name_list = Object.keys(t);
+                if (set_default) {
+                    egCore.hatch.getItem('cat.printlabels.default_template').then(function(d) {
+                        if ($scope.template_name_list.indexOf(d,0) > -1) {
+                            $scope.template_name = d;
+                        }
+                    });
+                }
             }
         });
     }
-    $scope.fetchTemplates();
+    $scope.fetchTemplates(true);
 
     $scope.applyTemplate = function (n) {
         $scope.print.cn_template_content = $scope.templates[n].cn_content;
@@ -262,6 +269,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         for (var s in $scope.templates[n].settings) {
             $scope.preview_scope.settings[s] = $scope.templates[n].settings[s];
         }
+        egCore.hatch.setItem('cat.printlabels.default_template', n);
+        $scope.save_locally();
     }
 
     $scope.deleteTemplate = function (n) {
@@ -272,6 +281,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             egCore.hatch.setItem('cat.printlabels.templates', $scope.templates);
             $scope.fetchTemplates();
             ngToast.create(egCore.strings.PRINT_LABEL_TEMPLATE_SUCCESS_DELETE);
+            egCore.hatch.getItem('cat.printlabels.default_template').then(function(d) {
+                if (d && d == n) {
+                    egCore.hatch.removeItem('cat.printlabels.default_template');
+                }
+            });
         }
     }
 
@@ -304,7 +318,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     $scope.template_name_list = [];
 
     $scope.print_labels = function() {
-        $scope.save_locally();
         return egCore.print.print({
             context : $scope.print.template_context,
             template : $scope.print.template_name,
