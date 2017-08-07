@@ -55,7 +55,6 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/user.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/statusbar.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/date.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js',
