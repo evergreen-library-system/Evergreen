@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1049', :eg_version); -- mmorgan/stompro/gmcharlt
 
 \echo -----------------------------------------------------------
 \echo Setting invalid age_protect and circ_as_type entries to NULL,
