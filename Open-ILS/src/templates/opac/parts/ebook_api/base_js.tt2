@@ -1,6 +1,6 @@
 [%
 # HTML display chunks
-progress_icon = '<img id="ebook_avail_spinner" src="/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="' _ l("Checking availability for this item...") _ '"/>'
+progress_icon = '<img id="ebook_avail_spinner" src="/opac/images/progressbar_green.gif' _ ctx.cache_key _ '" alt="' _ l("Checking availability for this item...") _ '"/>'
 %]
 
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/session.js[% ctx.cache_key %]"></script>
