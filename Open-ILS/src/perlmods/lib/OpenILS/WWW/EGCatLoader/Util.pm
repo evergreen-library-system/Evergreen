@@ -3,6 +3,7 @@ use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use File::Spec;
 use Time::HiRes qw/time sleep/;
+use List::MoreUtils qw/uniq/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -414,7 +415,7 @@ sub get_records_and_facets {
     $self->timelog("get_records_and_facets(): about to call ".
         "$unapi_type via json_query (rec_ids has " . scalar(@$rec_ids));
 
-    my @loop_recs = @$rec_ids;
+    my @loop_recs = uniq @$rec_ids;
     my %rec_timeout;
 
     while (my $bid = shift @loop_recs) {
