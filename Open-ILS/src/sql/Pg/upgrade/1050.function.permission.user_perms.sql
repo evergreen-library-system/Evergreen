@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('0991', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1050', :eg_version); -- mmorgan/cesardv/gmcharlt
 
 CREATE OR REPLACE FUNCTION permission.usr_perms ( INT ) RETURNS SETOF permission.usr_perm_map AS $$
     SELECT	DISTINCT ON (usr,perm) *
