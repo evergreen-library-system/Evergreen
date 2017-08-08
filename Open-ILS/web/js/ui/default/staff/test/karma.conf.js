@@ -46,6 +46,7 @@ module.exports = function(config){
       'services/grid.js',
       'services/op_change.js',
       'services/patron_search.js',
+      'services/lovefield.js',
       'services/navbar.js', 'services/date.js',
       'services/user-bucket.js',
       // load app scripts
