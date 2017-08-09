@@ -16866,7 +16866,7 @@ INSERT INTO config.global_flag (name, label, value, enabled) VALUES (
 );
 
 INSERT INTO config.settings_group (name, label)
-    VALUES ('ebook_api', oils_i18n_gettext('ebook_api', 'Ebook API Integration', 'csg', 'label');
+    VALUES ('ebook_api', oils_i18n_gettext('ebook_api', 'Ebook API Integration', 'csg', 'label'));
 
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype) 
