@@ -23,7 +23,7 @@
       </a>
       <span ng-show="!prev_circ_usr">
         [% l('<Aged Circulation>') | html %]
-    </span>
+      </span>
     </div>
   </div>
 
@@ -109,13 +109,16 @@
     <div class="flex-cell">[% l('Patron') %]</div>
     <div class="flex-cell well">
       <a href="./circ/patron/{{circ.usr().id()}}/checkout" 
-        ng-if="circ" target="_self">
+        ng-if="circ.usr()" target="_self">
         [% l('[_1], [_2] [_3] : [_4]', 
           '{{circ.usr().family_name()}}'
           '{{circ.usr().first_given_name()}}'
           '{{circ.usr().second_given_name()}}'
           '{{circ.usr().card().barcode()}}') %]
       </a>
+      <span ng-show="!circ.usr()">
+        [% l('<Aged Circulation>') | html %]
+      </span>
     </div>
   </div>
 

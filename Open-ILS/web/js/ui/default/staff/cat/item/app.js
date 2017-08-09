@@ -1449,11 +1449,11 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         delete $scope.prev_circ_usr;
         if (!copyId) return;
         
-        egCore.pcrud.search('circ', 
+        egCore.pcrud.search('aacs', 
             {target_copy : copyId},
             {   flesh : 2,
                 flesh_fields : {
-                    circ : [
+                    aacs : [
                         'usr',
                         'workstation',                                         
                         'checkin_workstation',                                 
@@ -1463,7 +1463,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                     ],
                     au : ['card']
                 },
-                order_by : {circ : 'xact_start desc'}, 
+                order_by : {aacs : 'xact_start desc'}, 
                 limit :  1
             }
 
