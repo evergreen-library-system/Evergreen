@@ -1397,10 +1397,20 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             );
         }
 
+
         if (!tmpl.match(/hold_shelf/)) {
+            var courier_deferred = $q.defer();
+            promises.push(courier_deferred.promise);
             promises.push(
                 service.find_copy_transit(evt, params, options)
-                .then(function(trans) {data.transit = trans})
+                .then(function(trans) {
+                    data.transit = trans;
+                    egCore.org.settings('lib.courier_code', trans.dest().id())
+                    .then(function(s) {
+                        data.dest_courier_code = s['lib.courier_code'];
+                        courier_deferred.resolve();
+                    });
+                })
             );
         }
 
