@@ -101,7 +101,7 @@ sub process_stripe_or_bop_payment {
     if ($cc_args->{processor} eq 'Stripe') { # Stripe
         my $stripe = Business::Stripe->new(-api_key => $psettings->{secretkey});
         $stripe->charges_create(
-            amount => int($total_paid * 100.0), # Stripe takes amount in pennies
+            amount => ($total_paid * 100), # Stripe takes amount in pennies
             card => $cc_args->{stripe_token},
             description => $cc_args->{note}
         );
