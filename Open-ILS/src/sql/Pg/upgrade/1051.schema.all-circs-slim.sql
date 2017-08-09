@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('1XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1051', :eg_version);
 
 CREATE OR REPLACE VIEW action.all_circulation_slim AS
     SELECT * FROM action.circulation
