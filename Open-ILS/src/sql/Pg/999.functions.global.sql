@@ -1061,6 +1061,8 @@ BEGIN
 		SELECT	INTO target_cn *
 		  FROM	asset.call_number
 		  WHERE	label = source_cn.label
+            AND prefix = source_cn.prefix
+            AND suffix = source_cn.suffix
 			AND owning_lib = source_cn.owning_lib
 			AND record = target_record
 			AND NOT deleted;
@@ -1082,6 +1084,8 @@ BEGIN
 		
 				moved_objects := moved_objects + 1;
 			END LOOP;
+        
+            UPDATE asset.call_number SET deleted = TRUE WHERE id = source_cn.id;
 
 		-- ... if not ...
 		ELSE
