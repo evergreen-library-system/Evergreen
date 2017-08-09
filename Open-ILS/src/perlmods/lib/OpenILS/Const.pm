@@ -96,6 +96,7 @@ econst OILS_SETTING_RESTORE_OVERDUE_ON_LOST_RETURN      => 'circ.restore_overdue
 econst OILS_SETTING_LOST_IMMEDIATELY_AVAILABLE          => 'circ.lost_immediately_available';
 econst OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON       => 'circ.holds.expired_patron_block';
 econst OILS_SETTING_GENERATE_OVERDUE_ON_LOST_RETURN     => 'circ.lost.generate_overdue_on_checkin';
+econst OILS_SETTING_MAX_DUPLICATE_HOLDS => 'circ.holds.max_duplicate_holds';
 
 
 

@@ -294,7 +294,15 @@ sub create_hold {
     $sargs->{holdable_formats} = $hold->holdable_formats if $t eq 'M';
 
     my $existing = $e->search_action_hold_request($sargs);
-    push( @events, OpenILS::Event->new('HOLD_EXISTS')) if @$existing;
+    if (@$existing) {
+        # See if the requestor has the CREATE_DUPLICATE_HOLDS perm.
+        my $can_dup = $e->allowed('CREATE_DUPLICATE_HOLDS', $recipient->home_ou);
+        # How many are allowed.
+        my $num_dups = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_MAX_DUPLICATE_HOLDS, $e) || 0;
+        push( @events, OpenILS::Event->new('HOLD_EXISTS'))
+            unless (($t eq 'T' || $t eq 'M') && $can_dup && scalar(@$existing) < $num_dups);
+        # Note: We check for @$existing < $num_dups because we're adding a hold with this call.
+    }
 
     my $checked_out = hold_item_is_checked_out($e, $recipient->id, $hold->hold_type, $hold->target);
     push( @events, OpenILS::Event->new('HOLD_ITEM_CHECKED_OUT')) if $checked_out;
