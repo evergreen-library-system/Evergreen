@@ -85,6 +85,202 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL STABLE;
 
+CREATE OR REPLACE FUNCTION unapi.mmr_mra (
+    obj_id BIGINT,
+    format TEXT,
+    ename TEXT,
+    includes TEXT[],
+    org TEXT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    include_xmlns BOOL DEFAULT TRUE,
+    pref_lib INT DEFAULT NULL
+) RETURNS XML AS $F$
+    SELECT  XMLELEMENT(
+        name attributes,
+        XMLATTRIBUTES(
+            CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
+            'tag:open-ils.org:U2@mmr/' || $1 AS metarecord
+        ),
+        (SELECT XMLAGG(foo.y)
+          FROM (
+            WITH sourcelist AS (
+                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id FROM actor.org_unit WHERE shortname = $5 LIMIT 1),
+                     basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
+                     circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY_AGG(aoud.id)) AS mask
+                                  FROM aou, LATERAL actor.org_unit_descendants(aou.id, $6) aoud)
+                SELECT  source
+                  FROM  aou, circvm, basevm, metabib.metarecord_source_map mmsm
+                  WHERE mmsm.metarecord = $1 AND (
+                    EXISTS (
+                        SELECT  1
+                          FROM  circvm, basevm, asset.copy_vis_attr_cache acvac
+                          WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
+                                AND acvac.record = mmsm.source
+                    )
+                    OR EXISTS (SELECT 1 FROM evergreen.located_uris(source, aou.id, $10) LIMIT 1)
+                    OR EXISTS (SELECT 1 FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = mmsm.source)
+                )
+            )
+            SELECT  cmra.aid,
+                    XMLELEMENT(
+                        name field,
+                        XMLATTRIBUTES(
+                            cmra.attr AS name,
+                            cmra.value AS "coded-value",
+                            cmra.aid AS "cvmid",
+                            rad.composite,
+                            rad.multi,
+                            rad.filter,
+                            rad.sorter,
+                            cmra.source_list
+                        ),
+                        cmra.value
+                    )
+              FROM  (
+                SELECT DISTINCT aid, attr, value, STRING_AGG(x.id::TEXT, ',') AS source_list
+                  FROM (
+                    SELECT  v.source AS id,
+                            c.id AS aid,
+                            c.ctype AS attr,
+                            c.code AS value
+                      FROM  metabib.record_attr_vector_list v
+                            JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
+                    ) AS x
+                    JOIN sourcelist ON (x.id = sourcelist.source)
+                    GROUP BY 1, 2, 3
+                ) AS cmra
+                JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
+                UNION ALL
+            SELECT  umra.aid,
+                    XMLELEMENT(
+                        name field,
+                        XMLATTRIBUTES(
+                            umra.attr AS name,
+                            rad.composite,
+                            rad.multi,
+                            rad.filter,
+                            rad.sorter
+                        ),
+                        umra.value
+                    )
+              FROM  (
+                SELECT DISTINCT aid, attr, value
+                  FROM (
+                    SELECT  v.source AS id,
+                            m.id AS aid,
+                            m.attr AS attr,
+                            m.value AS value
+                      FROM  metabib.record_attr_vector_list v
+                            JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
+                    ) AS x
+                    JOIN sourcelist ON (x.id = sourcelist.source)
+                ) AS umra
+                JOIN config.record_attr_definition rad ON (umra.attr = rad.name)
+                ORDER BY 1
+
+            )foo(id,y)
+        )
+    )
+$F$ LANGUAGE SQL STABLE;
+
+CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
+    bibid BIGINT[],
+    ouid INT,
+    depth INT DEFAULT NULL,
+    slimit HSTORE DEFAULT NULL,
+    soffset HSTORE DEFAULT NULL,
+    pref_lib INT DEFAULT NULL,
+    includes TEXT[] DEFAULT NULL::TEXT[]
+) RETURNS TABLE(id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
+    WITH RECURSIVE ou_depth AS (
+        SELECT COALESCE(
+            $3,
+            (
+                SELECT depth
+                FROM actor.org_unit_type aout
+                    INNER JOIN actor.org_unit ou ON ou_type = aout.id
+                WHERE ou.id = $2
+            )
+        ) AS depth
+    ), descendant_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+        FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ad ON (ad.id = ou.id),
+                ou_depth
+        WHERE ad.depth = ou_depth.depth
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+        FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
+    ), anscestor_depth AS (
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+        FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+        WHERE ou.id = $2
+            UNION ALL
+        SELECT  ou.id,
+                ou.parent_ou,
+                out.depth
+        FROM  actor.org_unit ou
+                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
+                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
+    ), descendants as (
+        SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id)
+    )
+
+    SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
+        SELECT acn.id, owning_lib.name, acn.label_sortkey,
+            evergreen.rank_cp(acp),
+            RANK() OVER w
+        FROM asset.call_number acn
+            JOIN asset.copy acp ON (acn.id = acp.call_number)
+            JOIN descendants AS aou ON (acp.circ_lib = aou.id)
+            JOIN actor.org_unit AS owning_lib ON (acn.owning_lib = owning_lib.id)
+        WHERE acn.record = ANY ($1)
+            AND acn.deleted IS FALSE
+            AND acp.deleted IS FALSE
+            AND CASE WHEN ('exclude_invisible_acn' = ANY($7)) THEN
+                EXISTS (
+                    WITH basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
+                         circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY[acp.circ_lib]) AS mask)
+                    SELECT  1
+                      FROM  basevm, circvm, asset.copy_vis_attr_cache acvac
+                      WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
+                            AND acvac.target_copy = acp.id
+                            AND acvac.record = acn.record
+                ) ELSE TRUE END
+        GROUP BY acn.id, evergreen.rank_cp(acp), owning_lib.name, acn.label_sortkey, aou.id
+        WINDOW w AS (
+            ORDER BY
+                COALESCE(
+                    CASE WHEN aou.id = $2 THEN -20000 END,
+                    CASE WHEN aou.id = $6 THEN -10000 END,
+                    (SELECT distance - 5000
+                        FROM actor.org_unit_descendants_distance($6) as x
+                        WHERE x.id = aou.id AND $6 IN (
+                            SELECT q.id FROM actor.org_unit_descendants($2) as q)),
+                    (SELECT e.distance FROM actor.org_unit_descendants_distance($2) as e WHERE e.id = aou.id),
+                    1000
+                ),
+                evergreen.rank_cp(acp)
+        )
+    ) AS ua
+    GROUP BY ua.id, ua.name, ua.label_sortkey
+    ORDER BY rank, ua.name, ua.label_sortkey
+    LIMIT ($4 -> 'acn')::INT
+    OFFSET ($5 -> 'acn')::INT;
+$$ LANGUAGE SQL STABLE ROWS 10;
+
 CREATE TABLE asset.copy_vis_attr_cache (
     id              BIGSERIAL   PRIMARY KEY,
     record          BIGINT      NOT NULL, -- No FKEYs, managed by user triggers.

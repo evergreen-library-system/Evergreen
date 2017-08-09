@@ -152,9 +152,13 @@ CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
             AND acp.deleted IS FALSE
             AND CASE WHEN ('exclude_invisible_acn' = ANY($7)) THEN 
                 EXISTS (
-                    SELECT 1 
-                    FROM asset.opac_visible_copies 
-                    WHERE copy_id = acp.id AND record = acn.record
+                    WITH basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
+                         circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY[acp.circ_lib]) AS mask)
+                    SELECT  1 
+                      FROM  basevm, circvm, asset.copy_vis_attr_cache acvac
+                      WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
+                            AND acvac.target_copy = acp.id
+                            AND acvac.record = acn.record
                 ) ELSE TRUE END
         GROUP BY acn.id, evergreen.rank_cp(acp), owning_lib.name, acn.label_sortkey, aou.id
         WINDOW w AS (
@@ -1424,19 +1428,21 @@ CREATE OR REPLACE FUNCTION unapi.mmr_mra (
         (SELECT XMLAGG(foo.y)
           FROM (
             WITH sourcelist AS (
-                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id
-                    FROM actor.org_unit WHERE shortname = $5 LIMIT 1)
-                SELECT source
-                FROM metabib.metarecord_source_map mmsm, aou
-                WHERE metarecord = $1 AND (
+                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id FROM actor.org_unit WHERE shortname = $5 LIMIT 1),
+                     basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
+                     circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY_AGG(aoud.id)) AS mask
+                                  FROM aou, LATERAL actor.org_unit_descendants(aou.id, $6) aoud)
+                SELECT  source
+                  FROM  aou, circvm, basevm, metabib.metarecord_source_map mmsm
+                  WHERE mmsm.metarecord = $1 AND (
                     EXISTS (
-                        SELECT 1 FROM asset.opac_visible_copies
-                        WHERE record = source AND circ_lib IN (
-                            SELECT id FROM actor.org_unit_descendants(aou.id, $6))
-                        LIMIT 1
+                        SELECT  1
+                          FROM  circvm, basevm, asset.copy_vis_attr_cache acvac
+                          WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
+                                AND acvac.record = mmsm.source
                     )
-                    OR EXISTS (SELECT 1 FROM located_uris(source, aou.id, $10) LIMIT 1)
-                    OR EXISTS (SELECT 1 FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = mmsm.source LIMIT 1)
+                    OR EXISTS (SELECT 1 FROM evergreen.located_uris(source, aou.id, $10) LIMIT 1)
+                    OR EXISTS (SELECT 1 FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = mmsm.source)
                 )
             )
             SELECT  cmra.aid,
