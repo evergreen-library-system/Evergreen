@@ -55,8 +55,8 @@ class SQL(basel10n.BaseL10N):
 
         num = 0
         findi18n = re.compile(r'oils_i18n_gettext\((.*?)\'\s*\)', re.UNICODE+re.MULTILINE+re.DOTALL)
-        intkey = re.compile(r'\s*(?P<id>\d+)\s*,\s*E?\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
-        textkey = re.compile(r'\s*\'(?P<id>.*?)\'\s*,\s*E?\'(?P<string>.+?)\',\s*\'(?P<class>.+?)\',\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
+        intkey = re.compile(r'\s*(?P<id>\d+)\s*,\s*E?\'(?P<string>.+?)\'\s*,\s*\'(?P<class>.+?)\'\s*,\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
+        textkey = re.compile(r'\s*\'(?P<id>.*?)\'\s*,\s*E?\'(?P<string>.+?)\'\s*,\s*\'(?P<class>.+?)\'\s*,\s*\'(?P<property>.+?)$', re.UNICODE+re.MULTILINE+re.DOTALL)
         serts = dict()
 
         # Iterate through the source SQL grabbing table names and l10n strings
@@ -73,7 +73,7 @@ class SQL(basel10n.BaseL10N):
                     # Otherwise, it must be a text-based primary key parameter
                     fi18n = textkey.search(parms)
                 if fi18n is None:
-                    raise Exception("Cannot parse the source. Empty strings in there?")
+                    raise Exception("Cannot parse the source. Empty strings in there? String I cannot parse is %s" % parms)
 
                 fq_field = "%s.%s" % (fi18n.group('class'), fi18n.group('property'))
 
