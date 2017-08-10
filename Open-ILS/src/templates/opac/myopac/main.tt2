@@ -21,7 +21,7 @@
             <thead>
                 <tr>
                     <td colspan='10' style='padding: 6px'>
-                        <strong>[% l("Fines") %]</strong>
+                        <strong>[% l("Pay Selected Circulation Charges") %]</strong>
                     </td>
                 </tr>
                 <tr>
@@ -36,7 +36,7 @@
                         <input id="pay_fines_box1" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact', this.checked)"
                             title="[% l('Click to (un)select all fines') %]" />
-                        <label for="pay_fines_box1">[% l('Pay Fines') %]</label>
+                        <label for="pay_fines_box1">[% l('Pay Charges') %]</label>
                     </td>
                     [% END %]
                 </tr>
@@ -114,11 +114,11 @@
         <hr class='opac-auto-013'  color="#dcdbdb" />
         <br/>
         <table width='100%' class='data_grid data_grid_center'
-            id='myopac_trans_table' title="[% l('Other Fines and Fees') %]">
+            id='myopac_trans_table' title="[% l('Other Charges and Fees') %]">
             <thead>
                 <tr>
                     <td colspan='8' style='padding: 6px'>
-                        <span class="bold">[% l("Other Fees") %]</span>
+                        <span class="bold">[% l("Pay Selected Other Charges") %]</span>
                     </td>
                 </tr>
                 <tr>
@@ -133,8 +133,8 @@
                         style="white-space:nowrap;">
                         <input id="pay_fines_box2" checked="checked"
                             type="checkbox" onclick="select_all_checkboxes('xact_misc', this.checked)"
-                            title="[% l('Click to (un)select all fines') %]" />
-                        <label for="pay_fines_box2">[% l("Pay Fines") %]</label>
+                            title="[% l('Click to (un)select all charges') %]" />
+                        <label for="pay_fines_box2">[% l("Pay Charges") %]</label>
                     </td>
                     [% END %]
                 </tr>
@@ -181,8 +181,8 @@
     [% ELSIF myopac_cc_allowed %]
     <div class="text-right pad-top-ten">
         <input type="submit"
-            value="[% l('Pay selected fines') %]"
-            title="[% l('Pay selected fines') %]"
+            value="[% l('Pay selected charges') %]"
+            title="[% l('Pay selected charges') %]"
             class="opac-button" />
     </div>
     [% END %]
