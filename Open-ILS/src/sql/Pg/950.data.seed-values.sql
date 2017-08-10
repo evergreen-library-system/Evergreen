@@ -11347,64 +11347,56 @@ $$
         'xact.usr',
         'print-on-demand',
 $$
+
 [%- USE date -%][%- SET user = target.0.xact.usr -%]
-<div style="li { padding: 8px; margin 5px; }">
-    <div>[% date.format %]</div><br/>
+<div style="font-family: Arial, Helvetica, sans-serif;">
+   
+   <!-- Header aligned left -->
+   <div style="text-align:left;">
+       <img src="https://evergreen.noblenet.org/opac/images/noble_logo.jpg" style="width:30%; "/> <br />
+       <span style="padding-top:1em;">[% date.format %]</span>
+    </div><br/>
+    
+     [% SET grand_total = 0.00 %]
     <ol>
     [% SET xact_mp_hash = {} %]
-    [% FOR mp IN target %][%# Template is hooked around payments, but let us make the receipt focused on transactions %]
+    [% FOR mp IN target %][%# Create an array of transactions/amount paid for each payment made %]
         [% SET xact_id = mp.xact.id %]
-        [% IF ! xact_mp_hash.defined( xact_id ) %][% xact_mp_hash.$xact_id = { 'xact' => mp.xact, 'payments' => [] } %][% END %]
-        [% xact_mp_hash.$xact_id.payments.push(mp) %]
+        [% SET amount = mp.amount %]
+        [% IF ! xact_mp_hash.defined( xact_id ) %]
+           [% xact_mp_hash.$xact_id = { 'xact' => mp.xact, 'payment' => amount } %]
+        [% END %]
     [% END %]
+    
     [% FOR xact_id IN xact_mp_hash.keys.sort %]
         [% SET xact = xact_mp_hash.$xact_id.xact %]
-        <li>Transaction ID: [% xact_id %]
-            [% IF xact.circulation %][% helpers.get_copy_bib_basics(xact.circulation.target_copy).title %]
-            [% ELSE %]Miscellaneous
-            [% END %]
-            Line item billings:<ol>
-                [% SET mb_type_hash = {} %]
-                [% FOR mb IN xact.billings %][%# Group billings by their btype %]
-                    [% IF mb.voided == 'f' %]
-                        [% SET mb_type = mb.btype.id %]
-                        [% IF ! mb_type_hash.defined( mb_type ) %][% mb_type_hash.$mb_type = { 'sum' => 0.00, 'billings' => [] } %][% END %]
-                        [% IF ! mb_type_hash.$mb_type.defined( 'first_ts' ) %][% mb_type_hash.$mb_type.first_ts = mb.billing_ts %][% END %]
-                        [% mb_type_hash.$mb_type.last_ts = mb.billing_ts %]
-                        [% mb_type_hash.$mb_type.sum = mb_type_hash.$mb_type.sum + mb.amount %]
-                        [% mb_type_hash.$mb_type.billings.push( mb ) %]
-                    [% END %]
-                [% END %]
-                [% FOR mb_type IN mb_type_hash.keys.sort %]
-                    <li>[% IF mb_type == 1 %][%# Consolidated view of overdue billings %]
-                        $[% mb_type_hash.$mb_type.sum %] for [% mb_type_hash.$mb_type.billings.0.btype.name %] 
-                            on [% mb_type_hash.$mb_type.first_ts %] through [% mb_type_hash.$mb_type.last_ts %]
-                    [% ELSE %][%# all other billings show individually %]
-                        [% FOR mb IN mb_type_hash.$mb_type.billings %]
-                            $[% mb.amount %] for [% mb.btype.name %] on [% mb.billing_ts %] [% mb.note %]
-                        [% END %]
-                    [% END %]</li>
-                [% END %]
-            </ol>
-            Line item payments:<ol>
-                [% FOR mp IN xact_mp_hash.$xact_id.payments %]
-                    <li>Payment ID: [% mp.id %]
-                        Paid [% mp.amount %] via [% SWITCH mp.payment_type -%]
-                            [% CASE "cash_payment" %]cash
-                            [% CASE "check_payment" %]check
-                            [% CASE "credit_card_payment" %]credit card
-                            [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
-                            [% CASE "credit_payment" %]credit
-                            [% CASE "forgive_payment" %]forgiveness
-                            [% CASE "goods_payment" %]goods
-                            [% CASE "work_payment" %]work
-                        [%- END %] on [% mp.payment_ts %] [% mp.note %]
-                    </li>
-                [% END %]
-            </ol>
+        <li>
+          Transaction ID: [% xact_mp_hash.$xact_id.xact.id %]<br /> 
+          [% IF xact.circulation %]
+             Title: "[% helpers.get_copy_bib_basics(xact.circulation.target_copy).title %]" <br />                
+          [% END %]
+          
+           [%# Go get all the date needed from xact_summary %]
+           
+           [% SET mbts = xact.summary %]
+
+           Transaction Type: [% mbts.last_billing_type%]<br />
+           Date: [% mbts.last_billing_ts %] <br />
+
+           Note: [% mbts.last_billing_note %] <br />
+
+           Amount: $[% xact_mp_hash.$xact_id.payment | format("%.2f") %]
+           [% grand_total = grand_total + xact_mp_hash.$xact_id.payment %]
         </li>
+        <br />
     [% END %]
     </ol>
+    
+    <div> <!-- Summary of all the information -->
+       Payment Type: Credit Card <br />
+       Total:<strong> $[% grand_total | format("%.2f") %] </strong>  
+    </div>
+
 </div>
 $$
     )
