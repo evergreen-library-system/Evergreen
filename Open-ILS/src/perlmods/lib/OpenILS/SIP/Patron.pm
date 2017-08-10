@@ -216,7 +216,7 @@ sub flesh_user_penalties {
     if (ref($raw_penalties) eq 'ARRAY' && @$raw_penalties) {
         my $here_prox = ($here) ? $U->get_org_unit_proximity($e, $here, $user->home_ou())
             : undef;
-        # Filter out those that do not apply and deflesh the standing_penalty.
+        # Filter out those that do not apply
         $applied_penalties = [map
             { $_->standing_penalty }
                 grep {
