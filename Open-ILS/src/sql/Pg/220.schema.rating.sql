@@ -1013,6 +1013,7 @@ BEGIN
       ) x
       GROUP BY 1;
 END;
+$f$ LANGUAGE PLPGSQL STRICT;
 
 COMMIT;
 
