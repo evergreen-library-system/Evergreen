@@ -950,13 +950,13 @@ BEGIN
     );
     ANALYZE precalc_copy_filter_bib_list;
 
+    -- Use circ rather than owning lib here as that means "on the shelf at..."
     RETURN QUERY
      SELECT f.id::INT AS bib,
             COUNT(DISTINCT cp.circ_lib)::NUMERIC
      FROM asset.copy cp
           JOIN precalc_copy_filter_bib_list f ON (cp.id = f.copy)
-          JOIN asset.call_number cn ON (cn.id = cp.call_number)
-     WHERE cn.owning_lib = ANY (badge.orgs) GROUP BY 1;
+     WHERE cp.circ_lib = ANY (badge.orgs) GROUP BY 1;
 
 END;
 $f$ LANGUAGE PLPGSQL STRICT;

@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1052', :eg_version);
 
 CREATE OR REPLACE FUNCTION rating.inhouse_over_time(badge_id INT)
     RETURNS TABLE (record BIGINT, value NUMERIC) AS $f$
