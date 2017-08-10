@@ -14974,13 +14974,13 @@ INSERT INTO config.org_unit_setting_type (
     oils_i18n_gettext(
         'circ.staff.max_visible_event_age',
         'Maximum visible age of User Trigger Events in Staff Interfaces',
-        'cust',
+        'coust',
         'label'
     ),
     oils_i18n_gettext(
         'circ.staff.max_visible_event_age',
         'If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.',
-        'cust',
+        'coust',
         'description'
     ),
     'interval'
