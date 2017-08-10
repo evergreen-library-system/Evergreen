@@ -79,7 +79,7 @@ INSERT INTO rating.popularity_parameter (id,name,func,require_horizon,require_im
     (14,'Bib has attributes and copies or URIs','rating.generic_fixed_rating_by_copy_or_uri',FALSE,FALSE,FALSE),
     (15,'Bib has attributes','rating.generic_fixed_rating_global',FALSE,FALSE,FALSE),
     (16,'Copy Count','rating.copy_count',FALSE,FALSE,TRUE),
-    (17,'Circulation Library Count', 'rating.org_unit_count',FALSE,FALSE, TRUE); 
+    (17,'Circulation Library Count', 'rating.org_unit_count',FALSE,FALSE, TRUE),
     (18, 'In-House Use Over Time', 'rating.inhouse_over_time',TRUE,FALSE,TRUE);
 
 
