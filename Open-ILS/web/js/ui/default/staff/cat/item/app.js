@@ -1107,12 +1107,19 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                 barcodes.push(line);
             });
 
-            itemSvc.fetch(barcodes).then(
-                function() {
-                    copyGrid.refresh();
-                    copyGrid.selectItems([itemSvc.copies[0].index]);
-                }
-            );
+            if (barcodes.length > 0) {
+                var promises = [];
+                angular.forEach(barcodes, function (b) {
+                    promises.push(itemSvc.fetch(b));
+                });
+
+                $q.all(promises).then(
+                    function() {
+                        copyGrid.refresh();
+                        copyGrid.selectItems([itemSvc.copies[0].index]);
+                    }
+                );
+            }
         }
     });
 
