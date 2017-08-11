@@ -1,5 +1,5 @@
 angular.module('egCheckinApp', ['ngRoute', 'ui.bootstrap', 
-    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod'])
+    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod', 'egItemStatus'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -34,8 +34,8 @@ angular.module('egCheckinApp', ['ngRoute', 'ui.bootstrap',
  * Manages checkin
  */
 .controller('CheckinCtrl',
-       ['$scope','$q','$window','$location','egCore','checkinSvc','egGridDataProvider','egCirc',
-function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataProvider , egCirc)  {
+       ['$scope','$q','$window','$location', '$timeout','egCore','checkinSvc','egGridDataProvider','egCirc', 'itemSvc',
+function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , egGridDataProvider , egCirc, itemSvc)  {
 
     $scope.focusMe = true;
     $scope.checkins = checkinSvc.checkins;
@@ -326,5 +326,53 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
         });
     }
 
+    $scope.add_copies_to_bucket = function(items){
+        var itemsIds = [];
+        angular.forEach(items, function(cp){
+            itemsIds.push(cp.acp.id());
+        });
+
+        itemSvc.add_copies_to_bucket(itemsIds);
+    }
+
+    $scope.showBibHolds = function(items){
+        var recordIds = [];
+        angular.forEach(items, function(i){
+            recordIds.push(i.acn.record());
+        });
+        angular.forEach(recordIds, function (r) {
+            var url = egCore.env.basePath + 'cat/catalog/record/' + r + '/holds';
+            $timeout(function() { $window.open(url, '_blank') });
+        });
+    }
+
+    $scope.showLastCircs = function(items){
+        var itemIds = [];
+        angular.forEach(items, function(cp){
+            itemIds.push(cp.acp.id());
+        });
+        angular.forEach(itemIds, function (id) {
+            var url = egCore.env.basePath + 'cat/item/' + id + '/circs';
+            $timeout(function() { $window.open(url, '_blank') });
+        });
+    }
+
+    $scope.selectedHoldingsVolCopyEdit = function (items) {
+        var itemObjs = [];
+        angular.forEach(items, function(i){
+            var h = egCore.idl.toHash(i);
+            h['call_number.record.id'] = h.record.doc_id;
+            itemObjs.push(h);
+        });
+        itemSvc.spawnHoldingsEdit(itemObjs,false,false);
+    }
+
+    $scope.show_mark_missing_pieces = function(items){
+        angular.forEach(items, function(i){
+            i.acp.call_number(i.acn);
+            i.acp.call_number().record(i.record);
+            itemSvc.mark_missing_pieces(i.acp);
+        });
+    }
 }])
 

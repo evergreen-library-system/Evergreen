@@ -48,8 +48,8 @@ angular.module('egItemStatus',
 })
 
 .factory('itemSvc', 
-       ['egCore','egCirc','$uibModal','$q','$timeout','$window','egConfirmDialog',
-function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog ) {
+       ['egCore','egCirc','$uibModal','$q','$timeout','$window','egConfirmDialog','egAlertDialog',
+function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog, egAlertDialog ) {
 
     var service = {
         copies : [], // copy barcode search results
@@ -104,10 +104,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         return egCore.pcrud.retrieve( 'acp', id, service.flesh)
             .then(function(copy) {return copy});
     }
+
     service.getCirc = function(id) {
         return egCore.pcrud.search('aacs', { target_copy : id },
             service.circFlesh).then(function(circ) {return circ});
     }
+
     service.getSummary = function(id) {
         return circ_summary = egCore.net.request(
             'open-ils.circ',
@@ -874,6 +876,59 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                 null // onprogress
             );
         }
+    }
+
+    service.mark_missing_pieces = function(copy) {
+        var b = copy.barcode();
+        var t = egCore.idl.toHash(copy.call_number()).record.title;
+        egConfirmDialog.open(
+            egCore.strings.CONFIRM_MARK_MISSING_TITLE,
+            egCore.strings.CONFIRM_MARK_MISSING_BODY,
+            { barcode : b, title : t }
+        ).result.then(function() {
+
+            // kick off mark missing
+            return egCore.net.request(
+                'open-ils.circ',
+                'open-ils.circ.mark_item_missing_pieces',
+                egCore.auth.token(), copy.id()
+            )
+
+        }).then(function(resp) {
+            var evt = egCore.evt.parse(resp); // should always produce event
+
+            if (evt.textcode == 'ACTION_CIRCULATION_NOT_FOUND') {
+                return egAlertDialog.open(
+                    egCore.strings.CIRC_NOT_FOUND, {barcode : copy.barcode()});
+            }
+
+            var payload = evt.payload;
+
+            // TODO: open copy editor inline?  new tab?
+
+            // print the missing pieces slip
+            var promise = $q.when();
+            if (payload.slip) {
+                // wait for completion, since it may spawn a confirm dialog
+                promise = egCore.print.print({
+                    context : 'default',
+                    content_type : 'text/html',
+                    content : payload.slip.template_output().data()
+                });
+            }
+
+            if (payload.letter) {
+                $scope.letter = payload.letter.template_output().data();
+            }
+
+            // apply patron penalty
+            if (payload.circ) {
+                promise.then(function() {
+                    egCirc.create_penalty(payload.circ.usr())
+                });
+            }
+
+        });
     }
 
     return service;

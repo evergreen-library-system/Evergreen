@@ -8,7 +8,9 @@
   grid-controls="gridControls"
   persist-key="{{grid_persist_key}}"
   dateformat="{{$root.egDateAndTimeFormat}}">
-
+  
+  <eg-grid-action handler="add_copies_to_bucket" label="[% l('Add Items to Bucket') %]">
+  </eg-grid-action>
   <eg-grid-action 
     handler="fetchLastCircPatron"
     label="[% l('Retrieve Last Patron Who Circulated Item') %]">
@@ -17,15 +19,36 @@
     handler="showBackdateDialog"
     label="[% l('Backdate Post-Checkin') %]">
   </eg-grid-action>
-  <eg-grid-action 
+  <eg-grid-action
+    group="[% l('Show')"
     handler="showMarkDamaged"
     label="[% l('Mark Items Damaged') %]">
+  </eg-grid-action>
+  <eg-grid-action
+    group="[% l('Show')"
+    handler="show_mark_missing_pieces"
+    label="[% l('Mark Missing Pieces') %]">
   </eg-grid-action>
   <eg-grid-action 
     handler="abortTransit"
     label="[% l('Cancel Transits') %]">
   </eg-grid-action>
+  <!-- Show Group -->
+  <eg-grid-action handler="showBibHolds" group="[% l('Show') %]"
+    label="[% l('Record Holds') %]">
+  </eg-grid-action>
+  <eg-grid-action handler="showLastCircs" group="[% l('Show') %]"
+    label="[% l('Last Few Circs') %]">
+  </eg-grid-action>
 
+  <!-- Edit Group -->
+  <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
+    label="[% l('Volumes and Items') %]">
+  </eg-grid-action>
+
+  <eg-grid-action handler="printSpineLabels" group="[% l('Print') %]"
+    label="[% l('Spine Labels') %]">
+  </eg-grid-action>
   <eg-grid-field label="[% l('Alert Msg') %]"   
     path="acp.alert_message"></eg-grid-field>
 
