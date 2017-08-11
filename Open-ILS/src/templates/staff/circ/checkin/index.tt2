@@ -9,6 +9,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
 s.CONFIRM_MARK_MISSING_TITLE = "[% l('Mark item as missing pieces?') %]";
@@ -20,7 +21,6 @@ s.CIRC_NOT_FOUND =
 </script>
 
 [% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/app.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/checkin/app.js"></script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
 [% END %]

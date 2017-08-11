@@ -1,5 +1,5 @@
 angular.module('egCheckinApp', ['ngRoute', 'ui.bootstrap', 
-    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod', 'egItemStatus'])
+    'egCoreMod', 'egUiMod', 'egGridMod', 'egUserMod'])
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
@@ -34,7 +34,7 @@ angular.module('egCheckinApp', ['ngRoute', 'ui.bootstrap',
  * Manages checkin
  */
 .controller('CheckinCtrl',
-       ['$scope','$q','$window','$location', '$timeout','egCore','checkinSvc','egGridDataProvider','egCirc', 'itemSvc',
+       ['$scope','$q','$window','$location', '$timeout','egCore','checkinSvc','egGridDataProvider','egCirc', 'egItem',
 function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , egGridDataProvider , egCirc, itemSvc)  {
 
     $scope.focusMe = true;

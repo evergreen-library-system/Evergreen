@@ -8,6 +8,7 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/item/missing_pieces.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
 s.CONFIRM_MARK_MISSING_TITLE = "[% l('Mark item as missing pieces?') %]";

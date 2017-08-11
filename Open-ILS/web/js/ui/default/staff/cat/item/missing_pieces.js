@@ -2,8 +2,8 @@ angular.module('egItemMissingPieces',
     ['ngRoute', 'ui.bootstrap', 'egCoreMod','egUiMod'])
 
 .controller('MissingPiecesCtrl',
-       ['$scope','$q','$window','$location','egCore','egConfirmDialog','egAlertDialog','egCirc',
-function($scope , $q , $window , $location , egCore , egConfirmDialog , egAlertDialog , egCirc) {
+       ['$scope','$q','$window','$location','egCore','egConfirmDialog','egAlertDialog','egCirc','egItem',
+function($scope, $q, $window, $location, egCore, egConfirmDialog, egAlertDialog, egCirc, itemSvc) {
     
     $scope.selectMe = true; // focus text input
     $scope.args = {};
@@ -46,57 +46,7 @@ function($scope , $q , $window , $location , egCore , egConfirmDialog , egAlertD
     }
 
     function mark_missing_pieces(copy) {
-
-        egConfirmDialog.open(
-            egCore.strings.CONFIRM_MARK_MISSING_TITLE,
-            egCore.strings.CONFIRM_MARK_MISSING_BODY, {
-            barcode : copy.barcode(), 
-            title : copy.call_number().record().simple_record().title()
-
-        }).result.then(function() {
-
-            // kick off mark missing
-            return egCore.net.request(
-                'open-ils.circ',
-                'open-ils.circ.mark_item_missing_pieces',
-                egCore.auth.token(), copy.id()
-            )
-
-        }).then(function(resp) {
-            var evt = egCore.evt.parse(resp); // should always produce event
-
-            if (evt.textcode == 'ACTION_CIRCULATION_NOT_FOUND') {
-                return egAlertDialog.open(
-                    egCore.strings.CIRC_NOT_FOUND, {barcode : copy.barcode()});
-            }
-
-            var payload = evt.payload;
-
-            // TODO: open copy editor inline?  new tab?
-
-            // print the missing pieces slip
-            var promise = $q.when();
-            if (payload.slip) {
-                // wait for completion, since it may spawn a confirm dialog
-                promise = egCore.print.print({
-                    context : 'default', 
-                    content_type : 'text/html',
-                    content : payload.slip.template_output().data()
-                });
-            }
-
-            if (payload.letter) {
-                $scope.letter = payload.letter.template_output().data();
-            }
-
-            // apply patron penalty
-            if (payload.circ) {
-                promise.then(function() {
-                    egCirc.create_penalty(payload.circ.usr())
-                });
-            }  
-
-        });
+        itemSvc.mark_missing_pieces(copy);
     }
 
     $scope.print_letter = function() {
