@@ -469,7 +469,7 @@ sub too_many_charged {      # not implemented
 sub too_many_overdue { 
     my $self = shift;
     return scalar( # PATRON_EXCEEDS_OVERDUE_COUNT
-        grep { $_ == OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT } @{$self->{user}->standing_penalties}
+        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_OVERDUE_COUNT } @{$self->{user}->standing_penalties}
     );
 }
 
@@ -494,7 +494,7 @@ sub too_many_lost {
 sub excessive_fines { 
     my $self = shift;
     return scalar( # PATRON_EXCEEDS_FINES
-        grep { $_ == OILS_PENALTY_PATRON_EXCEEDS_FINES } @{$self->{user}->standing_penalties}
+        grep { $_->id == OILS_PENALTY_PATRON_EXCEEDS_FINES } @{$self->{user}->standing_penalties}
     );
 }
 
