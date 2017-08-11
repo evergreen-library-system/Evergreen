@@ -354,6 +354,7 @@ sub load_rresults {
     $ctx->{records} = [];
     $ctx->{search_facets} = {};
     $ctx->{hit_count} = 0;
+    $ctx->{is_meta} = $is_meta;
 
     # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
