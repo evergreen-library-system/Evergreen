@@ -50,14 +50,14 @@ COMMIT;
 
 \qecho The following query will adjust all historical, unaged circulations so
 \qecho that if their due date field is pushed to the end of the day, it is done
-\qecho in the circulating library'''s time zone, and not the server time zone.
+\qecho in the circulating library''''s time zone, and not the server time zone.
 \qecho 
 \qecho It is safe to run this after any change to library time zones.
 \qecho 
 \qecho Running this is not required, as no code before this change has
 \qecho depended on the time string of '''23:59:59'''.  It is also not necessary
 \qecho if all of your libraries are in the same time zone, and that time zone
-\qecho is the same as the database'''s configured time zone.
+\qecho is the same as the database''''s configured time zone.
 \qecho 
 \qecho 'DO $$'
 \qecho 'declare'
