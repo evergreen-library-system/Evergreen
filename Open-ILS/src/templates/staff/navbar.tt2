@@ -146,12 +146,19 @@
               [% l('Register Patron') %]
             </a>
           </li>
-          <li>
+          <li ng-if="showRecentPatron">
             <a href="./circ/patron/last" target="_self"
               eg-accesskey="[% l('f8') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Patron') %]">
               <span class="glyphicon glyphicon-share-alt"></span>
               [% l('Retrieve Last Patron') %]
+            </a>
+          </li>
+          <li ng-if="showRecentPatrons">
+            <a href="./circ/patron/search?show_recent=1" target="_self"
+              eg-accesskey-desc="[% l('Retrieve Recent Patrons') %]">
+              <span class="glyphicon glyphicon-share-alt"></span>
+              [% l('Retrieve Recent Patrons') %]
             </a>
           </li>
           <li>

@@ -1175,8 +1175,9 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
        ['$scope','$location','egCore',
 function($scope , $location , egCore) {
 
-    var id = egCore.hatch.getLoginSessionItem('eg.circ.last_patron');
-    if (id) return $location.path('/circ/patron/' + id + '/checkout');
+    var ids = egCore.hatch.getLoginSessionItem('eg.circ.recent_patrons') || [];
+    if (ids.length) 
+        return $location.path('/circ/patron/' + ids[0] + '/checkout');
 
     $scope.no_last = true;
 }])

@@ -109,6 +109,13 @@ angular.module('egCoreMod')
                             $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                             $scope.username = egCore.auth.user().usrname();
                             $scope.workstation = egCore.auth.workstation();
+
+                            egCore.org.settings('ui.staff.max_recent_patrons')
+                            .then(function(s) {
+                                var val = s['ui.staff.max_recent_patrons'];
+                                $scope.showRecentPatron = val > 0;
+                                $scope.showRecentPatrons = val > 1;
+                            });
                         }
                     }
                 );

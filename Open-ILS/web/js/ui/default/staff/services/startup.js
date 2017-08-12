@@ -25,14 +25,15 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
 
     var service = { promise : null }
 
-    // Load date/time format settings on all pages.  Add more .push(...)
-    // calls to add more universal data-loading functions. 
+    // Some org settings affect every page.  Load them during startup.  
+    // Other startup data loaders can be added by appending to egEnv.loaders.
     // egEnv.loaders functions must return a promise.
     egEnv.loaders.push(
         function() {
             return egOrg.settings([
                 'webstaff.format.dates',
                 'webstaff.format.date_and_time',
+                'ui.staff.max_recent_patrons', // affects navbar
                 'lib.timezone'
             ]).then(
                 function(set) {
@@ -40,6 +41,10 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
                         set['webstaff.format.dates'] || 'shortDate';
                     $rootScope.egDateAndTimeFormat = 
                         set['webstaff.format.date_and_time'] || 'short';
+
+                    // default to 1 for backwards compat.
+                    if (set['ui.staff.max_recent_patrons'] === null)
+                        set['ui.staff.max_recent_patrons'] = 1
                 }
             );
         }
