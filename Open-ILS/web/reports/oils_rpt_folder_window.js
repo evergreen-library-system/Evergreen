@@ -23,9 +23,16 @@ function oilsRptFolderWindow(type, folderId) {
 // maps folder IDs to their containing oilsRptFolderWindow objects
 oilsRptFolderWindow.folderIdMap = {};
 
-oilsRptFolderWindow.prototype.draw = function() {
+// Here lie the contents of a specific folder
+oilsRptFolderWindow.prototype.draw = function(viaPaging) {
 
 	_debug('drawing folder window for ' + this.folderNode.folder.name() );
+
+    // always start a new folder at the first page of results
+    if (!viaPaging) oilsRptOutputOffset = 0;
+
+    console.log('drawing folder ' + this.folderNode.folder.name() + 
+        ' ; offset=' + oilsRptOutputOffset + ' ; limit=' + oilsRptOutputLimit);
 
 	var obj = this;
 	setSelector(DOM.oils_rpt_output_limit_selector, oilsRptOutputLimit);
@@ -33,13 +40,39 @@ oilsRptFolderWindow.prototype.draw = function() {
 
 	DOM.oils_rpt_output_limit_selector.onchange = function() {
 		oilsRptOutputLimit = getSelectorVal(DOM.oils_rpt_output_limit_selector);
-		obj.draw();
+		obj.draw(); // resets offset
 	}
 
 	DOM.oils_rpt_output_limit_selector_2.onchange = function() {
 		oilsRptOutputLimit2 = getSelectorVal(DOM.oils_rpt_output_limit_selector_2);
-		obj.draw();
+		obj.draw(); // resets offset
 	}
+
+    DOM.oils_rpt_output_next_selector.onclick = function() {
+        oilsRptOutputOffset += Number(oilsRptOutputLimit);
+        obj.draw(true);
+    }
+
+    // Enable / disable the Previous and Start links depending on
+    // current page.
+    if (oilsRptOutputOffset <= 0) {
+        DOM.oils_rpt_output_prev_selector.onclick = function(){};
+        DOM.oils_rpt_output_first_selector.onclick = function(){};
+        DOM.oils_rpt_output_prev_selector.removeAttribute('href');
+        DOM.oils_rpt_output_first_selector.removeAttribute('href');
+    } else {
+        DOM.oils_rpt_output_prev_selector.setAttribute('href', 'javascript:');
+        DOM.oils_rpt_output_first_selector.setAttribute('href', 'javascript:');
+
+        DOM.oils_rpt_output_prev_selector.onclick = function() {
+            oilsRptOutputOffset -= Number(oilsRptOutputLimit);
+            obj.draw(true);
+        }
+
+        DOM.oils_rpt_output_first_selector.onclick = function() {
+            obj.draw(); // resets offset
+        }
+    }
 
 	var mine = ( this.folderNode.folder.owner().id() == USER.id() );
 
@@ -486,6 +519,22 @@ oilsRptFolderWindow.prototype.drawFolderDetails = function() {
 }
 
 
+oilsRptFolderWindow.prototype.createSearchRequest = function() {
+    var field = getSelectorVal(DOM.template_search_fields_selector);
+    var fields = field ? [field] : ['name', 'description'];
+
+    return new Request(
+        'open-ils.reporter:open-ils.reporter.search.templates.atomic', 
+        SESSION, {
+            limit  : oilsRptOutputLimit,
+            offset : oilsRptOutputOffset,
+            query  : DOM.template_search_query.value,
+            folder : getSelectorVal(DOM.template_search_folder_selector),
+            fields : fields,
+        }
+    );
+}
+
 oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 
 	hideMe(DOM.oils_rpt_content_count_row_2);
@@ -493,7 +542,8 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 
 	removeChildren(this.selector);
 	var req = new Request(OILS_RPT_FETCH_FOLDER_DATA, 
-		SESSION, this.type, this.folderNode.folder.id(), oilsRptOutputLimit);
+		SESSION, this.type, this.folderNode.folder.id(), 
+        oilsRptOutputLimit, oilsRptOutputOffset);
 
 	hideMe(DOM.oils_rpt_pending_output);
 
@@ -503,6 +553,26 @@ oilsRptFolderWindow.prototype.fetchFolderData = function(callback) {
 		req = new Request(OILS_RPT_FETCH_OUTPUT, 
 			SESSION, this.folderNode.folder.id(), oilsRptOutputLimit, 0);
 	}
+
+    // Displaying the special template "Search Results" folder means 
+    // starting a new search.
+    var hidableNodes = document.getElementsByClassName('hidden-for-search-results');
+    var showableNodes = document.getElementsByClassName('show-for-search-results');
+    if (this.type == 'template' && 
+        this.folderNode.folder.id() == oilsRptSearchResultFolderId) {
+        req = this.createSearchRequest();
+
+        // when displaying search results, hide anything that should be hidden
+        dojo.forEach(hidableNodes, function(n) { n.style.visibility = 'hidden' });
+        dojo.forEach(showableNodes, function(n) { n.style.visibility = 'visible' });
+        hideMe(DOM.real_folder_name);
+        unHideMe(DOM.search_results_folder_name);
+    } else {
+        dojo.forEach(hidableNodes, function(n) { n.style.visibility = 'visible' });
+        dojo.forEach(showableNodes, function(n) { n.style.visibility = 'hidden' });
+        unHideMe(DOM.real_folder_name);
+        hideMe(DOM.search_results_folder_name);
+    }
 
 	var obj = this;
 	removeChildren(obj.selector);

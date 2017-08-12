@@ -9,7 +9,7 @@
 	<table id='oils_rpt_folder_window_contents_table'>
 		<tbody>
 			<tr>
-				<td colspan='2'> 
+				<td colspan='2' _class='hidden-for-search-results'> 
 					<span>
 						<select id='oils_rpt_folder_contents_action_selector' style='width: auto;'>
 							<option type='template' value='create_report'>&reports.oils_rpt_folder_window.new_report_from_template;</option>
@@ -41,10 +41,13 @@
 							<option value='50'>50</option>
 							<option value=''>&reports.oils_rpt_folder_window.all;</option>
 						</select>
+                        <a id='oils_rpt_output_first_selector' href='javascript:void(0);'>&reports.oils_rpt_paging_start;</a>
+                        <a id='oils_rpt_output_prev_selector' href='javascript:void(0);'>&reports.oils_rpt_paging_prev;</a>
+                        <a id='oils_rpt_output_next_selector' href='javascript:void(0);'>&reports.oils_rpt_paging_next;</a>
 						<span><b id='oils_rpt_pending_output' class='hide_me'>&reports.oils_rpt_folder_window.pending_items;</b></span>
 					</div>
 				</td>
-				<td style='text-align:right;'>
+				<td style='text-align:right;' class='hidden-for-search-results'>
 					<a id='oils_rpt_folder_window_contents_new_template' 
 						href='javascript:void(0);'><b>&reports.oils_rpt_folder_window.new_template;</b></a>
 				</td>

@@ -303,6 +303,10 @@ button:disabled {
 .oils_rpt_generic_table { width: 100%; }
 .oils_rpt_generic_table td { border: 1px solid #808080; padding: 5px; }
 
+#oils_rpt_content_count_row a {
+    padding-left: 5px;
+}
+
 #oils_rpt_content_count_row_2 {
 	border-top: 2px solid #808080;
 	border-bottom: 1px solid #808080;
@@ -333,4 +337,12 @@ button:disabled {
 }
 #oils_rpt_editor_sched_confirm:first-child {
     font-size: 110%;
+}
+
+#template_search_form_wrapper label {
+    font-weight: bold;
+}
+
+#template_search_form_wrapper span {
+    padding-right: 10px;
 }

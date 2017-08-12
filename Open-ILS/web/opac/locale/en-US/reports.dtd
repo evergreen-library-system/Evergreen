@@ -188,6 +188,16 @@
 <!ENTITY reports.oils_rpt_param_editor.months "Months(s)">
 <!ENTITY reports.oils_rpt_param_editor.ago " ago">
 
+<!ENTITY reports.oils_rpt_template_search_results "Template Search Results">
+<!ENTITY reports.oils_rpt_template_search_query "Template query...">
+<!ENTITY reports.oils_rpt_template_search_label "Search Templates">
+<!ENTITY reports.oils_rpt_template_search_all_fields "All Fields">
+<!ENTITY reports.oils_rpt_template_search_name "Name">
+<!ENTITY reports.oils_rpt_template_search_desc "Description">
+<!ENTITY reports.oils_rpt_template_search_all_folders "All Folders">
+<!ENTITY reports.oils_rpt_paging_start "Start">
+<!ENTITY reports.oils_rpt_paging_prev "Prev">
+<!ENTITY reports.oils_rpt_paging_next "Next">
 
 <!ENTITY reports.xul.template_builder.db_source_browser.label "Database Source Browser">
 <!ENTITY reports.xul.template_builder.sources_menulist.label "Sources">

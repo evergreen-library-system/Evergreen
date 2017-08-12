@@ -24,6 +24,7 @@ var oilsRptSharedOutputFolderTree;
 
 var oilsRptOutputLimit = 10;
 var oilsRptOutputLimit2 = 10;
+var oilsRptOutputOffset = 0;
 
 var OILS_RPT_INVALID_DATA = 'oils_rpt_invalid_input';
 

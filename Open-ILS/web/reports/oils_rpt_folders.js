@@ -6,6 +6,9 @@ var oilsRptFolderNodeCache = {};
 oilsRptFolderNodeCache.template = {};
 oilsRptFolderNodeCache.report  = {};
 oilsRptFolderNodeCache.output  = {};
+// ephemeral template search results folder needs an ID.
+var oilsRptSearchResultFolderId = -1000; 
+var oilsRptSearchResultFolderWindowId = null;
 
 oilsRptSetSubClass('oilsRptFolderManager','oilsRptObject');
 
@@ -130,6 +133,10 @@ oilsRptFolderManager.prototype.draw = function(auth) {
 
 	oilsRptSharedOutputFolderTree.addNode(this.soId, -1, rpt_strings.FOLDERS_OUTPUT)
 
+    DOM.template_search_submit_button.onclick = function() {
+        oilsRptObject.find(oilsRptSearchResultFolderWindowId).draw();
+    }
+
 	this.fetchFolders(auth);
 }
 
@@ -190,6 +197,15 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 	var tree;
 	var owners = {};
 
+    // Special search results folders ; not added to folder tree.
+    if (type == 'template') {
+        var resFolder = new rtf();
+        resFolder.id(oilsRptSearchResultFolderId);
+        resFolder.name(''); // not shown
+        resFolder.owner(USER);
+        folders.unshift(resFolder);
+    }
+
 	for( var i = 0; i < folders.length; i++ ) {
 
 		var folder = folders[i];
@@ -198,6 +214,9 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 
 		oilsRptFolderNodeCache[type][folder.id()] = node;
 		node.folderWindow = new oilsRptFolderWindow(type, folder.id())
+
+        if (folder.id() == oilsRptSearchResultFolderId) 
+            oilsRptSearchResultFolderWindowId = node.folderWindow.id;
 
 		/*
 		_debug("creating folder node for "+folder.name()+" : id = "+
@@ -238,8 +257,8 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 		}
 	}
 
+    var search_folders = [];
 	for( var i = 0; i < folders.length; i++ ) {
-
 
 		var folder = folders[i];
 		var mine = (folder.owner().id() == USER.id());
@@ -283,8 +302,13 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 
 		node = this.findNode(type, folder.id());
 		id = node.treeId;
-		if( folder.parent() ) 
-			pid = this.findNode(type, folder.parent()).treeId;
+		if( folder.parent() ) {
+            var pnode = this.findNode(type, folder.parent());
+			pid = pnode.treeId;
+            node.depth = pnode.depth + 1;
+        } else {
+            node.depth = 0;
+        }
 
 		var fname = folder.name();
 
@@ -304,9 +328,38 @@ oilsRptFolderManager.prototype.drawFolders = function(type, folders) {
 			+pid + ' parent = ' + folder.parent() + ' folder-window = ' + node.folderWindow.id );
 			*/
 
-		tree.addNode(id, pid, fname, action);
-		tree.close(pid);
+        if (folder.id() != oilsRptSearchResultFolderId) {
+            search_folders.push({id : folder.id(), pid: folder.parent(), fname : fname, depth : node.depth});
+		    tree.addNode(id, pid, fname, action);
+		    tree.close(pid);
+        }
 	}
+
+    // search only applies to templates
+    if (type != 'template') return;
+
+    // Sort the list of search folders from top to bottom of the folder tree.
+    var depth_cache = {};
+    function add_folder(node) {
+        if (!node) return;
+
+        var label = node.fname;
+        // Left-pad the selector options by depth with U+2003 'EM SPACE'
+        // characters so the browser won't collapse the space.
+        for (var i = 0; i < node.depth; i++) label = ' ' + label;
+
+        insertSelectorVal(
+            DOM.template_search_folder_selector, -1, label, node.id);
+
+        var children = search_folders.filter(
+            function(f) { return (f.pid == node.id) });
+        dojo.forEach(children, add_folder);
+    }
+
+    // start with the parent-less folders
+    dojo.forEach(
+        search_folders.filter(
+            function(f) {return f.pid == null}), add_folder);
 }
 
 

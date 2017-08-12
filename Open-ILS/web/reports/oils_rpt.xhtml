@@ -45,6 +45,29 @@
 			&reports.common.loading;
 		</div>
 
+        <div id='template_search_form_wrapper' class='hide_me'>
+            <span><label>&reports.oils_rpt_template_search_label;</label></span>
+            <span><input type='text' id='template_search_query' 
+                placeholder="&reports.oils_rpt_template_search_query;"/></span>
+            <span>
+                <select id='template_search_fields_selector'>
+                    <option value='' selected='selected'>&reports.oils_rpt_template_search_all_fields;</option>
+                    <option value='name'>&reports.oils_rpt_template_search_name;</option>
+                    <option value='description'>&reports.oils_rpt_template_search_desc;</option>
+                </select>
+            </span>
+            <span>
+                <select id='template_search_folder_selector'>
+                    <option value=''>&reports.oils_rpt_template_search_all_folders;</option>
+                </select>
+            </span>
+            <span>
+                <button id='template_search_submit_button'>
+                    &reports.oils_rpt_folder_manager.fldr_mngr_actions_submit;
+                </button>
+            </span>
+        </div>
+
 		<table id='oils_rpt_folder_table' class='hide_me'>
 			<tbody>
 				<tr>
@@ -66,7 +89,8 @@
 					<td id='oils_rpt_folder_table_right_td' class='hide_me'>
 						<div class='oils_rpt_folder_window'>
 
-							<table class='oils_rpt_tab_table' id='oils_rpt_folder_manager_tab_table'><tbody>
+							<table class='oils_rpt_tab_table hidden-for-search-results' 
+                                    id='oils_rpt_folder_manager_tab_table'><tbody>
 								<tr>
 									<td width='50%'>
 										<a id='oils_rpt_folder_window_manage_tab' href='javascript:void(0);'>&reports.oils_rpt.manage_folder_contents;</a></td>
@@ -76,14 +100,15 @@
 							</tbody></table>
 
 							<table id='oils_rpt_folder_details_table'>
-								<tbody>
-									<tr>
-										<td>
-											<span><b id='oils_rpt_folder_name_label'/>: 
-											&reports.oils_rpt.created_by;</span> <b id='oils_rpt_folder_creator_label'/>
-										</td>
-									</tr>
-								</tbody>
+								<tbody><tr><td>
+                                    <div id='real_folder_name'>
+    									<span><b id='oils_rpt_folder_name_label'/>: 
+										&reports.oils_rpt.created_by;</span> <b id='oils_rpt_folder_creator_label'/>
+                                    </div>
+                                    <div id='search_results_folder_name'>
+                                        <b>&reports.oils_rpt_template_search_results;</b>
+                                    </div>
+    							</td></tr></tbody>
 							</table>
 
 							<div>

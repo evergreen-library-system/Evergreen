@@ -28,12 +28,21 @@ function oilsInitReports() {
 	dojo.cookie(COOKIE_SES, SESSION, { 'path' : '/', 'secure' : true});
 	dojo.cookie('ws_ou', USER.ws_ou(), { 'path' : '/', 'secure' : true});
 
+    // set the search form to submit-on-enter
+    DOM.template_search_query.onkeyup = function(evt) {
+        if (evt.keyCode == 13 && 
+            DOM.template_search_query.value) {
+            DOM.template_search_submit_button.onclick();
+        }
+    }
+
 	oilsRptFetchOrgTree(
 		function() {
 			oilsLoadRptTree(
 				function() {
 					hideMe(DOM.oils_rpt_tree_loading); 
 					unHideMe(DOM.oils_rpt_folder_table);
+					unHideMe(DOM.template_search_form_wrapper);
 				}
 			)
 		}
