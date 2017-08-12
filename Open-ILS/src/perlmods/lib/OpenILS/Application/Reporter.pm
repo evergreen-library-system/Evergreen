@@ -109,7 +109,7 @@ __PACKAGE__->register_method(
 );
 
 sub retrieve_folder_data {
-    my( $self, $conn, $auth, $type, $folderid, $limit ) = @_;
+    my( $self, $conn, $auth, $type, $folderid, $limit, $offset ) = @_;
     my $e = new_rstore_editor(authtoken=>$auth);
     return $e->event unless $e->checkauth;
     if($type eq 'output') {
@@ -126,6 +126,7 @@ sub retrieve_folder_data {
         order_by => { $class => 'create_time DESC'}
     };
     $flesh->{limit} = $limit if $limit;
+    $flesh->{offset} = $offset if $offset;
     return $e->$meth([{ folder => $folderid }, $flesh]);
 }
 
@@ -673,6 +674,111 @@ sub magic_fetch_all {
 
     return $e->$method($margs);
 }
+
+__PACKAGE__->register_method(
+    method => 'search_templates',
+    api_name => 'open-ils.reporter.search.templates',
+    stream => 1
+);
+
+sub search_templates {
+    my ($self, $client, $auth, $query_args) = @_;
+
+    my $limit  = $query_args->{limit} || 100;
+    my $offset = $query_args->{offset} || 0;
+    my $folder = $query_args->{folder};
+    my $fields = $query_args->{fields} || ['name','description'];
+    my $query_string  = $query_args->{query};
+
+    return undef unless $query_string;
+
+    my $e = new_rstore_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my ($visible_folders) = $self
+        ->method_lookup('open-ils.reporter.folder.visible.retrieve')
+        ->run($auth, 'template');
+
+    my @visible_folder_ids = map { $_->id } @$visible_folders; 
+
+    return undef unless @$visible_folders;
+
+    my $query = {
+        select => {rt => ['id']},
+        from => 'rt',
+        where => {
+            folder => \@visible_folder_ids,
+            '-and' => []
+        },
+        limit => $limit,
+        offset => $offset
+    };
+
+    if ($folder) { # search request for specific folder + sub-folders
+        my ($root_folder) = grep { $_->id == $folder} @$visible_folders;
+
+        return OpenILS::Event->new('BAD_PARAMS', 
+            desc => q/Cannot search requested folder/) unless $root_folder;
+
+        # find all folders that are descendants of the selected folder.
+        my @ffilter;
+        my $finder;
+        $finder = sub {
+            my $node = shift;
+            return unless $node;
+            push(@ffilter, $node->id);
+            my @children = grep { $_->parent == $node->id } @$visible_folders;
+            $finder->($_) for @children;
+        };
+
+        $finder->($root_folder);
+        $query->{where}->{folder} = \@ffilter;
+    }
+
+    $query_string =~ s/^\s+|\s+$//gm; # remove open/trailing spaces
+    my @query_parts = split(/ +/, $query_string);
+
+    # Compile the query parts and searched fields down to a JSON-query
+    # structure like this.  Note that single-field searches have no
+    # nested -or's.
+    # where => {
+    #   -and => [
+    #       {-or => [
+    #           {$field1 => {~* => $value1}},
+    #           {$field2 => {~* => $value1}}
+    #       },
+    #       {-or => [
+    #           {$field1 => {~* => $value2}},
+    #           {$field2 => {~* => $value2}}
+    #       }
+    #   ]
+    #}
+    for my $part (@query_parts) {
+        my $subq;
+
+        if (@$fields > 1) {
+            $subq = {'-or' => []};
+            for my $field (@$fields) {
+                push(@{$subq->{'-or'}}, {$field => {'~*' => "(^| )$part"}});
+            }
+        } else {
+            $subq = {$fields->[0] => {'~*' => "(^| )$part"}};
+        }
+
+        push(@{$query->{where}->{'-and'}}, $subq);
+    }
+
+    my $template_ids = $e->json_query($query);
+
+    # Flesh template owner for consistency with retrieve_folder_data
+    my $flesh = {flesh => 1, flesh_fields => {rt => ['owner']}};
+
+    $client->respond($e->retrieve_reporter_template([$_->{id}, $flesh])) 
+        for @$template_ids;
+
+    return;
+}
+
 
 
 1;
