@@ -11,15 +11,15 @@ The information in Evergreen's database can be classified in nine data types, fo
 [options="header,footer"]
 |========================
 |Webby Icon|Data Type      |Description	|Notes
-|image::media/datatypes_timestamp.png[]    |timestamp      |An exact date and time (year, month, day, hour, minutes, and seconds) |Select appropriate date/time transform. Raw Data includes second and timezone information, usually more than is required for a report.
-|image::media/datatypes_link.png[]    |link           |A link to another database table |Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items you could do a count on the Patron link data.
-|image::media/datatypes_text.png[]    |text           |A field of text |Usually uses the Raw Data transform.
-|image::media/datatypes_bool.png[]    |bool           |True or False |Commonly used to filter out deleted item or patron records.
-|image::media/datatypes_orgunit.png[]    |org_unit       |Organizational Unit - a number representing a library, library system, or federation |When you want to filter on a library, make sure that the field name is on an org_unit or id data type.
-|image::media/datatypes_id.png[]    |id             |A unique number assigned by the database to identify each record |A number that is a meaningful reference for the database but not of much use to a human user. Use in displayed fields when counting records or in filters.
-|image::media/datatypes_money.png[]    |money          |A monetary amount
-|image::media/datatypes_int.png[]    |int            |Integer (a number)
-|image::media/datatypes_interval.png[]    |interval       |A period of time
+a|image::media/datatypes_timestamp.png[]    |timestamp      |An exact date and time (year, month, day, hour, minutes, and seconds) |Select appropriate date/time transform. Raw Data includes second and timezone information, usually more than is required for a report.
+a|image::media/datatypes_link.png[]    |link           |A link to another database table |Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items you could do a count on the Patron link data.
+a|image::media/datatypes_text.png[]    |text           |A field of text |Usually uses the Raw Data transform.
+a|image::media/datatypes_bool.png[]    |bool           |True or False |Commonly used to filter out deleted item or patron records.
+a|image::media/datatypes_orgunit.png[]    |org_unit       |Organizational Unit - a number representing a library, library system, or federation |When you want to filter on a library, make sure that the field name is on an org_unit or id data type.
+a|image::media/datatypes_id.png[]    |id             |A unique number assigned by the database to identify each record |A number that is a meaningful reference for the database but not of much use to a human user. Use in displayed fields when counting records or in filters.
+a|image::media/datatypes_money.png[]    |money          |A monetary amount  |
+a|image::media/datatypes_int.png[]    |int            |Integer (a number) |
+a|image::media/datatypes_interval.png[]    |interval       |A period of time |
 |          |               |    |
 |=======================
 
