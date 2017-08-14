@@ -19,8 +19,10 @@ dojo.addOnLoad(function() {
                             var avail = holdings.available;
                             if (avail == 1) {
                                 node.innerHTML = 'This title is available online.';
+                                dojo.removeClass(ebook.rec_id + '_ebook_checkout', "hidden");
                             } else if (avail == 0) {
                                 node.innerHTML = 'This title is not currently available.';
+                                dojo.removeClass(ebook.rec_id + '_ebook_place_hold', "hidden");
                             } else {
                                 console.log(ebook.id + ' has bad availability: ' + avail);
                             }
