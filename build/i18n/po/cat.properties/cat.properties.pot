@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-25 00:15-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1241,7 +1241,7 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
+msgid "All holds not available for pickup have been transferred."
 msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
@@ -1672,6 +1672,12 @@ msgstr ""
 
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
+msgstr ""
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message

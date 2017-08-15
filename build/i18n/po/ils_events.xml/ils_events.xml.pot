@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-02-21 20:30:15-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41:01-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -516,6 +516,11 @@ msgstr ""
 msgid "A record already exists with the requested TCN value"
 msgstr ""
 
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
 msgstr ""
@@ -640,9 +645,8 @@ msgstr ""
 msgid "The requested config_non_cataloged_type was not found"
 msgstr ""
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
 msgstr ""
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
@@ -721,10 +725,6 @@ msgstr ""
 
 #: 1628.MONEY_BILLING_NOT_FOUND:534
 msgid "The requested money_billing was not found"
-msgstr ""
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
 msgstr ""
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215

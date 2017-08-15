@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-25 00:15-0400\n"
+"POT-Creation-Date: 2017-08-15 16:40-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8219,7 +8219,7 @@ msgstr ""
 
 #: staff.server.admin.transit.list.abort.label
 msgctxt "staff.server.admin.transit.list.abort.label"
-msgid "Abort Transits"
+msgid "Cancel Transits"
 msgstr ""
 
 #: staff.server.admin.transit.list.save.label
@@ -8497,6 +8497,14 @@ msgstr ""
 
 #: staff.server.admin.copy_locations.editor.suffix.label
 msgid "Label suffix: "
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.url
+msgid "URL"
+msgstr ""
+
+#: staff.server.admin.copy_locations.editor.url.label
+msgid "URL: "
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.welcome
@@ -9521,7 +9529,7 @@ msgstr ""
 
 #: staff.circ.checkin_overlay.sel_transit_abort.label
 msgctxt "staff.circ.checkin_overlay.sel_transit_abort.label"
-msgid "Abort Transit"
+msgid "Cancel Transit"
 msgstr ""
 
 #: staff.circ.checkin_overlay.sel_spine.label
@@ -9687,7 +9695,7 @@ msgstr ""
 
 #: staff.circ.renew_overlay.sel_transit_abort.label
 msgctxt "staff.circ.renew_overlay.sel_transit_abort.label"
-msgid "Abort Transit"
+msgid "Cancel Transit"
 msgstr ""
 
 #: staff.circ.renew_overlay.sel_spine.label
@@ -9963,7 +9971,7 @@ msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_transit_abort.label
 msgctxt "staff.circ.copy_status_overlay.sel_transit_abort.label"
-msgid "Abort Transits"
+msgid "Cancel Transits"
 msgstr ""
 
 #: staff.circ.copy_status_overlay.sel_checkin.label
