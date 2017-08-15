@@ -180,6 +180,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
     <log_protect>
       <match_string>open-ils.auth.authenticate.verify</match_string>
       <match_string>open-ils.auth.authenticate.complete</match_string>
+      <match_string>open-ils.auth.login</match_string>
       <match_string>open-ils.auth_proxy.login</match_string>
       <match_string>open-ils.actor.patron.password_reset.commit</match_string>
       <match_string>open-ils.actor.user.password</match_string>
