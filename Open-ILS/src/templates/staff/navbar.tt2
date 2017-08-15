@@ -510,7 +510,7 @@
       <li>
         <a ng-cloak ng-show="username" title="{{currentToken()}}"
           ng-init="workstation = '[% l('<no workstation>') %]'">
-            [% l('{{username}} @ {{workstation}}') %]
+            {{username}} @ {{workstation}}
         </a>
       </li>
 
