@@ -208,8 +208,8 @@ sub load_context {
     $ctx->{base_path} = $r->dir_config('OILSWebBasePath');
     $ctx->{web_dir} = $r->dir_config('OILSWebWebDir');
     $ctx->{debug_template} = ($r->dir_config('OILSWebDebugTemplate') =~ /true/io) ? 1 : 0;
-    $ctx->{media_prefix} = $r->dir_config('OILSWebMediaPrefix');
     $ctx->{hostname} = $r->hostname;
+    $ctx->{media_prefix} = $r->dir_config('OILSWebMediaPrefix') || $ctx->{hostname};
     $ctx->{base_url} = $cgi->url(-base => 1);
     $ctx->{skin} = $cgi->cookie(OILS_HTTP_COOKIE_SKIN) || 'default';
     $ctx->{theme} = $cgi->cookie(OILS_HTTP_COOKIE_THEME) || 'default';
