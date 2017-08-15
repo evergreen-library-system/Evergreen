@@ -30,7 +30,6 @@ module.exports = function(grunt) {
             'node_modules/angular-location-update/angular-location-update.min.js',
             'node_modules/angular-tree-control/angular-tree-control.js',
             'node_modules/ng-toast/dist/ngToast.min.js',
-            'node_modules/jquery/dist/jquery.min.js',
             'node_modules/angular-cookies/angular-cookies.min.js',
             'node_modules/angular-cookies/angular-cookies.min.js.map',
             'node_modules/iframe-resizer/js/iframeResizer.min.js',
@@ -42,6 +41,15 @@ module.exports = function(grunt) {
             'node_modules/lovefield/dist/lovefield.min.js.map',
             'node_modules/moment/min/moment-with-locales.min.js',
             'node_modules/moment-timezone/builds/moment-timezone-with-data.min.js'
+          ]
+        },
+        {
+          dest: '../common/build/js/', 
+          flatten: true,
+          filter: 'isFile',
+          expand : true,
+          src: [
+            'node_modules/jquery/dist/jquery.min.js'
           ]
         }]
       },
@@ -139,7 +147,7 @@ module.exports = function(grunt) {
         src: [
             // These are concatenated in order in the final build file.
             // The order is important.
-            'build/js/jquery.min.js',
+            '../common/build/js/jquery.min.js',
             'build/js/angular.min.js',
             'build/js/angular-animate.min.js',
             'build/js/angular-sanitize.min.js',

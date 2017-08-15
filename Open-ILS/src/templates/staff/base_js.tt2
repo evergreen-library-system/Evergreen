@@ -82,7 +82,7 @@ UpUp.start({
 [% IF EXPAND_WEB_IMPORTS %]
 
 <!-- angular -->
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/jquery.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js"></script>
