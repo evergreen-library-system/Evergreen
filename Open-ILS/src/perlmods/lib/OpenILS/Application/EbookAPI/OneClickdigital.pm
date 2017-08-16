@@ -128,7 +128,7 @@ sub do_patron_auth {
 }
 
 # get basic metadata for an item (title, author, cover image if any)
-# GET http://api.oneclickdigital.us/v1/libraries/{libraryId}/titles/{isbn}
+# GET http://api.oneclickdigital.us/v1/libraries/{libraryId}/media/{isbn}
 sub get_title_info {
     my ($self, $isbn) = @_;
     my $base_uri = $self->{base_uri};
@@ -136,13 +136,13 @@ sub get_title_info {
     my $session_id = $self->{session_id};
     my $req = {
         method => 'GET',
-        uri    => "$base_uri/libraries/$library_id/titles/$isbn"
+        uri    => "$base_uri/libraries/$library_id/media/$isbn"
     };
     my $res = $self->request($req, $session_id);
     if (defined ($res)) {
         return {
             title  => $res->{content}->{title},
-            author => $res->{content}->{authors}[0]{text}
+            author => $res->{content}->{authors}
         };
     } else {
         $logger->error("EbookAPI: could not retrieve OneClickdigital title details for ISBN $isbn");
@@ -189,7 +189,8 @@ sub checkout {
     my $session_id = $self->{session_id};
     my $req = {
         method => 'POST',
-        uri    => "$base_uri/libraries/$library_id/patrons/$patron_id/checkouts/$isbn"
+        uri    => "$base_uri/libraries/$library_id/patrons/$patron_id/checkouts/$isbn",
+        headers => { "Content-Length" => "0" }
     };
     my $res = $self->request($req, $session_id);
 
@@ -221,7 +222,8 @@ sub renew {
     my $session_id = $self->{session_id};
     my $req = {
         method => 'PUT',
-        uri    => "$base_uri/libraries/$library_id/patrons/$patron_id/checkouts/$isbn"
+        uri    => "$base_uri/libraries/$library_id/patrons/$patron_id/checkouts/$isbn",
+        headers => { "Content-Length" => "0" }
     };
     my $res = $self->request($req, $session_id);
 
@@ -273,10 +275,10 @@ sub get_patron_checkouts {
         $logger->info("EbookAPI: received response for OneClickdigital checkouts: " . Dumper $res);
         foreach my $checkout (@{$res->{content}}) {
             push @$checkouts, {
-                xact_id => $checkout->{transactionID},
+                xact_id => $checkout->{transactionId},
                 title_id => $checkout->{isbn},
                 due_date => $checkout->{expiration},
-                download_url => $checkout->{downloadURL},
+                download_url => $checkout->{downloadUrl},
                 title => $checkout->{title},
                 author => $checkout->{authors}
             };
@@ -307,7 +309,7 @@ sub get_patron_holds {
         $logger->info("EbookAPI: received response for OneClickdigital holds: " . Dumper $res);
         foreach my $hold (@{$res->{content}}) {
             push @$holds, {
-                xact_id => $hold->{transactionID},
+                xact_id => $hold->{transactionId},
                 title_id => $hold->{isbn},
                 expire_date => $hold->{expiration},
                 title => $hold->{title},
