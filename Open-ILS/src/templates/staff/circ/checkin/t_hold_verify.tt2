@@ -1,0 +1,16 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close"
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title alert alert-info">[% l('Hold Capture Delayed') %]</h4>
+  </div>
+  <div class="modal-body">[% l('This item could fulfill a hold request but capture has been delayed by policy.') %]</div>
+  <div class="modal-body">[% l('Item Barcode: [_1]','{{copy_barcode}}') %]</div>
+  <div class="modal-footer">
+    [% dialog_footer %]
+    <input type="submit" class="btn btn-primary"
+      ng-click="capture()" value="[% l('Capture') %]"/>
+    <button class="btn btn-warning"
+      ng-click="nocapture()">[% l('Do Not Capture') %]</button>
+  </div>
+</div>

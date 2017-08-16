@@ -109,6 +109,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // these events can be overridden by staff during checkin
     service.checkin_overridable_events = 
         service.checkin_suppress_overrides.concat([
+        'HOLD_CAPTURE_DELAYED', // not technically overridable, but special prompt and param
         'TRANSIT_CHECKIN_INTERVAL_BLOCK'
     ])
 
@@ -394,6 +395,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         switch(evt[0].textcode) {
             case 'COPY_ALERT_MESSAGE':
                 return service.copy_alert_dialog(evt[0], params, options, 'checkin');
+            case 'HOLD_CAPTURE_DELAYED':
+                return service.hold_capture_delay_dialog(evt[0], params, options, 'checkin');
             default: 
                 return service.override_dialog(evt, params, options, 'checkin');
         }
@@ -1481,6 +1484,37 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             options.override = true;
             return service[action](params, options);
         });
+    }
+
+    // action == what action to take if the user confirms the alert
+    service.hold_capture_delay_dialog = function(evt, params, options, action) {
+        if (angular.isArray(evt)) evt = evt[0];
+        return $uibModal.open({
+            templateUrl: './circ/checkin/t_hold_verify',
+            controller:
+                       ['$scope','$uibModalInstance','params',
+                function($scope , $uibModalInstance , params) {
+                $scope.copy_barcode = params.copy_barcode;
+                $scope.capture = function() {
+                    params.capture = 'capture';
+                    $uibModalInstance.close();
+                };
+                $scope.nocapture = function() {
+                    params.capture = 'nocapture';
+                    $uibModalInstance.close();
+                };
+                $scope.cancel = function() { $uibModalInstance.dismiss(); };
+            }],
+            resolve : {
+                params : function() {
+                    return params;
+                }
+            }
+        }).result.then(
+            function(r) {
+                return service[action](params, options);
+            }
+        );
     }
 
     // check the barcode.  If it's no good, show the warning dialog
