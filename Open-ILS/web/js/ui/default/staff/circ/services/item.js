@@ -99,7 +99,11 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     return copyData;
                 });
         }
+
         return fetchCopy(barcode, id).then(function(res) {
+
+            if(!res.copy) { return $q.when(); }
+
             return fetchCirc(copyData.copy).then(function(res) {
                 if (copyData.circ) {
                     return fetchSummary(copyData.circ).then(function() {
@@ -122,6 +126,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
         return service.retrieveCopyData(barcode, id)
         .then(function(copyData) {
+            if(!copyData) { return $q.when(); }
             //Make sure we're getting a completed copyData - no plain acp or circ objects
             if (copyData.circ) {
                 // flesh circ_lib locally
