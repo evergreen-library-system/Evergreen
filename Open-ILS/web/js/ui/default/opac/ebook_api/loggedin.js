@@ -67,6 +67,7 @@ function addTransactionsToPage() {
     if (active_ebook && typeof active_ebook.vendor !== 'undefined') {
         active_ebook.ses = active_ebook.ses || dojo.cookie(active_ebook.vendor);
     }
+    dojo.addClass('ebook_spinner', "hidden");
     if (myopac_page) {
         console.log('updating page with cached transaction details, if applicable');
         if (myopac_page === 'ebook_circs')

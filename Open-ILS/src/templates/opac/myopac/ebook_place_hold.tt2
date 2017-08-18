@@ -14,6 +14,7 @@
     <div class="clear-both"></div>
     <div id="ebook_place_hold_failed" class="warning_box hidden">[% l('Hold could not be placed.') %]</div>
     <div id="ebook_place_hold_succeeded" class="success hidden">[% l('E-item is now on hold.') %]</div>
+    <div id="ebook_spinner"><img src="/opac/images/progressbar_green.gif" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_holds_main' class="hidden">
         <table id="ebook_holds_main_table"
             title="[% l('Place Hold on E-Item') %]"
