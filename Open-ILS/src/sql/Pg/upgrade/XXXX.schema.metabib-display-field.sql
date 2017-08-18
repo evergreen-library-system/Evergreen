@@ -151,8 +151,8 @@ CREATE TRIGGER display_field_force_nfc_tgr
 ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE display_field BOOL;
 
 DROP FUNCTION metabib.reingest_metabib_field_entries(BIGINT, BOOL, BOOL, BOOL);
-DROP FUNCTION metabib.extract_metabib_field_entries(BIGINT);
-DROP FUNCTION metabib.extract_metabib_field_entries(BIGINT, TEXT);
+DROP FUNCTION biblio.extract_metabib_field_entry(BIGINT);
+DROP FUNCTION biblio.extract_metabib_field_entry(BIGINT, TEXT);
 
 CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
     rid BIGINT,
@@ -391,10 +391,10 @@ BEGIN
     SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
     SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
 
-    IF NOT b_skip_facet THEN field_types := field_types || 'facet'; END IF;
-    IF NOT b_skip_display THEN field_types := field_types || 'display'; END IF;
-    IF NOT b_skip_browse THEN field_types := field_types || 'browse'; END IF;
-    IF NOT b_skip_search THEN field_types := field_types || 'search'; END IF;
+    IF NOT b_skip_facet THEN field_types := field_types || '{facet}'; END IF;
+    IF NOT b_skip_display THEN field_types := field_types || '{display}'; END IF;
+    IF NOT b_skip_browse THEN field_types := field_types || '{browse}'; END IF;
+    IF NOT b_skip_search THEN field_types := field_types || '{search}'; END IF;
 
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
