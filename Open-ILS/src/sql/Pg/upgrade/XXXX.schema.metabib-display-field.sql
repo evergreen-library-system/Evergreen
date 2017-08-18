@@ -1,6 +1,26 @@
 
 BEGIN;
 
+CREATE OR REPLACE FUNCTION
+    config.metabib_representative_field_is_valid(INTEGER, TEXT) RETURNS BOOLEAN AS $$
+    SELECT EXISTS (SELECT 1 FROM config.metabib_field WHERE id = $1 AND field_class = $2);
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+COMMENT ON FUNCTION config.metabib_representative_field_is_valid(INTEGER, TEXT) IS $$
+Ensure the field_class value on the selected representative field matches
+the class name.
+$$;
+
+ALTER TABLE config.metabib_class
+    ADD COLUMN representative_field
+        INTEGER REFERENCES config.metabib_field(id),
+    ADD CONSTRAINT rep_field_unique UNIQUE(representative_field),
+    ADD CONSTRAINT rep_field_is_valid CHECK (
+            representative_field IS NULL OR
+            config.metabib_representative_field_is_valid(representative_field, name)
+    )
+;
+
 ALTER TABLE config.metabib_field 
     ADD COLUMN display_xpath TEXT, 
     ADD COLUMN display_field BOOL NOT NULL DEFAULT FALSE;
@@ -130,7 +150,16 @@ CREATE TRIGGER display_field_force_nfc_tgr
 
 ALTER TYPE metabib.field_entry_template ADD ATTRIBUTE display_field BOOL;
 
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+DROP FUNCTION metabib.reingest_metabib_field_entries(BIGINT, BOOL, BOOL, BOOL);
+DROP FUNCTION metabib.extract_metabib_field_entries(BIGINT);
+DROP FUNCTION metabib.extract_metabib_field_entries(BIGINT, TEXT);
+
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
+    rid BIGINT,
+    default_joiner TEXT,
+    field_types TEXT[],
+    only_fields INT[]
+) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
     bib     biblio.record_entry%ROWTYPE;
     idx     config.metabib_field%ROWTYPE;
@@ -149,6 +178,7 @@ DECLARE
     authority_text TEXT;
     authority_link BIGINT;
     output_row  metabib.field_entry_template%ROWTYPE;
+    process_idx BOOL;
 BEGIN
 
     -- Start out with no field-use bools set
@@ -161,7 +191,14 @@ BEGIN
     SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
     -- Loop over the indexing entries
-    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
+    FOR idx IN SELECT * FROM config.metabib_field WHERE id = ANY (only_fields) ORDER BY format LOOP
+
+        process_idx := FALSE;
+        IF idx.display_field AND 'display' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.browse_field AND 'browse' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.search_field AND 'search' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.facet_field AND 'facet' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        CONTINUE WHEN process_idx = FALSE;
 
         joiner := COALESCE(idx.joiner, default_joiner);
 
@@ -323,12 +360,14 @@ END;
 
 $func$ LANGUAGE PLPGSQL;
 
-DROP FUNCTION metabib.reingest_metabib_field_entries(BIGINT, BOOL, BOOL, BOOL);
-
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( 
-    bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, 
-    skip_display BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, 
-    skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
+    bib_id BIGINT,
+    skip_facet BOOL DEFAULT FALSE, 
+    skip_display BOOL DEFAULT FALSE,
+    skip_browse BOOL DEFAULT FALSE, 
+    skip_search BOOL DEFAULT FALSE,
+    only_fields INT[] DEFAULT '{}'::INT[]
+) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
@@ -339,12 +378,23 @@ DECLARE
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
     value_prepped   TEXT;
+    field_list      INT[] := only_fields;
+    field_types     TEXT[] := '{}'::TEXT[];
 BEGIN
+
+    IF field_list = '{}'::INT[] THEN
+        SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field;
+    END IF;
 
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
     SELECT COALESCE(NULLIF(skip_display, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_display_indexing' AND enabled)) INTO b_skip_display;
     SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
     SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
+
+    IF NOT b_skip_facet THEN field_types := field_types || 'facet'; END IF;
+    IF NOT b_skip_display THEN field_types := field_types || 'display'; END IF;
+    IF NOT b_skip_browse THEN field_types := field_types || 'browse'; END IF;
+    IF NOT b_skip_search THEN field_types := field_types || 'search'; END IF;
 
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
@@ -365,7 +415,7 @@ BEGIN
         END IF;
     END IF;
 
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id, ' ', field_types, field_list ) LOOP
 
 	-- don't store what has been normalized away
         CONTINUE WHEN ind_data.value IS NULL;
@@ -440,7 +490,83 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+-- AFTER UPDATE OR INSERT trigger for biblio.record_entry
+CREATE OR REPLACE FUNCTION biblio.indexing_ingest_or_delete () RETURNS TRIGGER AS $func$
+DECLARE
+    tmp_bool BOOL;
+BEGIN
+
+    IF NEW.deleted THEN -- If this bib is deleted
+
+        PERFORM * FROM config.internal_flag WHERE
+            name = 'ingest.metarecord_mapping.preserve_on_delete' AND enabled;
+
+        tmp_bool := FOUND; -- Just in case this is changed by some other statement
+
+        PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint, TRUE, tmp_bool );
+
+        IF NOT tmp_bool THEN
+            -- One needs to keep these around to support searches
+            -- with the #deleted modifier, so one should turn on the named
+            -- internal flag for that functionality.
+            DELETE FROM metabib.record_attr_vector_list WHERE source = NEW.id;
+        END IF;
+
+        DELETE FROM authority.bib_linking WHERE bib = NEW.id; -- Avoid updating fields in bibs that are no longer visible
+        DELETE FROM biblio.peer_bib_copy_map WHERE peer_record = NEW.id; -- Separate any multi-homed items
+        DELETE FROM metabib.browse_entry_def_map WHERE source = NEW.id; -- Don't auto-suggest deleted bibs
+        RETURN NEW; -- and we're done
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN -- re-ingest?
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
+
+        IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
+            RETURN NEW;
+        END IF;
+    END IF;
+
+    -- Record authority linking
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_authority_linking' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM biblio.map_authority_linking( NEW.id, NEW.marc );
+    END IF;
+
+    -- Flatten and insert the mfr data
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_full_rec' AND enabled;
+    IF NOT FOUND THEN
+        PERFORM metabib.reingest_metabib_full_rec(NEW.id);
+
+        -- Now we pull out attribute data, which is dependent on the mfr for all but XPath-based fields
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_metabib_rec_descriptor' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.reingest_record_attributes(NEW.id, NULL, NEW.marc, TG_OP = 'INSERT' OR OLD.deleted);
+        END IF;
+    END IF;
+
+    -- Gather and insert the field entry data
+    PERFORM metabib.reingest_metabib_field_entries(NEW.id);
+
+    -- Located URI magic
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
+    IF NOT FOUND THEN PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor ); END IF;
+
+    -- (re)map metarecord-bib linking
+    IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_insert' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
+    ELSE -- we're doing an update, and we're not deleted, remap
+        PERFORM * FROM config.internal_flag WHERE name = 'ingest.metarecord_mapping.skip_on_update' AND enabled;
+        IF NOT FOUND THEN
+            PERFORM metabib.remap_metarecord_for_bib( NEW.id, NEW.fingerprint );
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
 COMMIT;
-
-
 

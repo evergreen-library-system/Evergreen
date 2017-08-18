@@ -624,7 +624,12 @@ CREATE TYPE metabib.field_entry_template AS (
     sort_value          TEXT
 );
 
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
+    rid BIGINT,
+    default_joiner TEXT,
+    field_types TEXT[],
+    only_fields INT[]
+) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
     bib     biblio.record_entry%ROWTYPE;
     idx     config.metabib_field%ROWTYPE;
@@ -643,6 +648,7 @@ DECLARE
     authority_text TEXT;
     authority_link BIGINT;
     output_row  metabib.field_entry_template%ROWTYPE;
+    process_idx BOOL;
 BEGIN
 
     -- Start out with no field-use bools set
@@ -655,7 +661,14 @@ BEGIN
     SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
     -- Loop over the indexing entries
-    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
+    FOR idx IN SELECT * FROM config.metabib_field WHERE id = ANY (only_fields) ORDER BY format LOOP
+
+        process_idx := FALSE;
+        IF idx.display_field AND 'display' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.browse_field AND 'browse' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.search_field AND 'search' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.facet_field AND 'facet' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        CONTINUE WHEN process_idx = FALSE;
 
         joiner := COALESCE(idx.joiner, default_joiner);
 
@@ -871,9 +884,13 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( 
-    bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, 
-    skip_display BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, 
-    skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
+    bib_id BIGINT,
+    skip_facet BOOL DEFAULT FALSE, 
+    skip_display BOOL DEFAULT FALSE,
+    skip_browse BOOL DEFAULT FALSE, 
+    skip_search BOOL DEFAULT FALSE,
+    only_fields INT[] DEFAULT '{}'::INT[]
+) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
@@ -884,12 +901,23 @@ DECLARE
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
     value_prepped   TEXT;
+    field_list      INT[] := only_fields;
+    field_types     TEXT[] := '{}'::TEXT[];
 BEGIN
+
+    IF field_list = '{}'::INT[] THEN
+        SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field;
+    END IF;
 
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
     SELECT COALESCE(NULLIF(skip_display, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_display_indexing' AND enabled)) INTO b_skip_display;
     SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
     SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
+
+    IF NOT b_skip_facet THEN field_types := field_types || 'facet'; END IF;
+    IF NOT b_skip_display THEN field_types := field_types || 'display'; END IF;
+    IF NOT b_skip_browse THEN field_types := field_types || 'browse'; END IF;
+    IF NOT b_skip_search THEN field_types := field_types || 'search'; END IF;
 
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
@@ -910,7 +938,7 @@ BEGIN
         END IF;
     END IF;
 
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id, ' ', field_types, field_list ) LOOP
 
 	-- don't store what has been normalized away
         CONTINUE WHEN ind_data.value IS NULL;
@@ -984,11 +1012,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
-
--- default to a space joiner
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS SETOF metabib.field_entry_template AS $func$
-	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
-$func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
 DECLARE
@@ -1710,17 +1733,8 @@ BEGIN
     PERFORM metabib.reingest_metabib_field_entries(NEW.id);
 
     -- Located URI magic
-    IF TG_OP = 'INSERT' THEN
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    ELSE
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    END IF;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
+    IF NOT FOUND THEN PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor ); END IF;
 
     -- (re)map metarecord-bib linking
     IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag

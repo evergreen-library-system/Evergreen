@@ -6,46 +6,21 @@ INSERT INTO config.internal_flag (name, enabled)
 
 -- Adds seed data to replace (for now) values from the 'mvr' class
 
-INSERT INTO config.metabib_field (id, field_class, name, format,
-    display_field, search_field, browse_field, label, xpath) 
-VALUES
-    (37, 'title', 'display|title', 'mods32', TRUE, FALSE, FALSE,
-        oils_i18n_gettext(37, 'Title', 'cmf', 'label'),
-        '//mods32:mods/mods32:titleNonfiling[mods32:title and not (@type)]'),
-    (38, 'author', 'display|author', 'mods32', TRUE, FALSE, FALSE,
-        oils_i18n_gettext(38, 'Author', 'cmf', 'label'),
-        $$//mods32:mods/mods32:name[@type='personal' and mods32:role/mods32:roleTerm[text()='creator']]$$),
-    (39, 'subject', 'display|subject', 'mods32', TRUE, FALSE, FALSE,
-        oils_i18n_gettext(39, 'Subject', 'cmf', 'label'),
-        '//mods32:mods/mods32:subject'),
-    (40, 'subject', 'display|topic_subject', 'mods32', TRUE, FALSE, FALSE,
-        oils_i18n_gettext(40, 'Subject', 'cmf', 'label'),
-        '//mods32:mods/mods32:subject/mods32:topic'),
-    (41, 'identifier', 'display|isbn', 'marcxml', TRUE, FALSE, FALSE,
-        oils_i18n_gettext(41, 'ISBN', 'cmf', 'label'),
-        $$//marc:datafield[@tag='020']/marc:subfield[@code='a' or @code='z']$$)
-
-;
+UPDATE config.metabib_field SET display_field = TRUE WHERE id IN (6, 8, 14, 16, 18);
 
 INSERT INTO config.display_field_map (name, field, multi) VALUES
-    ('title', 37, FALSE),
-    ('author', 38, FALSE),
-    ('subject', 39, TRUE),
-    ('topic_subject', 40, TRUE),
-    ('isbn', 41, TRUE)
+    ('title', 6, FALSE),
+    ('author', 8, FALSE),
+    ('subject', 16, TRUE),
+    ('topic_subject', 14, TRUE),
+    ('isbn', 18, TRUE)
 ;
+
+UPDATE config.metabib_class SET representative_field = 6 WHERE name = 'title';
+UPDATE config.metabib_class SET representative_field = 8 WHERE name = 'author';
 
 COMMIT;
 
 -- REINGEST DISPLAY ENTRIES
-
-BEGIN;
-UPDATE config.internal_flag SET enabled = TRUE WHERE name IN (
-'ingest.assume_inserts_only','ingest.disable_authority_auto_update','ingest.disable_authority_linking','ingest.disable_located_uri','ingest.disable_metabib_field_entry','ingest.disable_metabib_full_rec','ingest.disable_metabib_rec_descriptor','ingest.metarecord_mapping.preserve_on_delete','ingest.metarecord_mapping.skip_on_insert','ingest.metarecord_mapping.skip_on_update','ingest.reingest.force_on_same_marc','ingest.skip_browse_indexing','ingest.skip_facet_indexing','ingest.skip_search_indexing');
-
-UPDATE biblio.record_entry SET marc = marc;
-
-UPDATE config.internal_flag SET enabled = FALSE WHERE name IN (
-'ingest.assume_inserts_only','ingest.disable_authority_auto_update','ingest.disable_authority_linking','ingest.disable_located_uri','ingest.disable_metabib_field_entry','ingest.disable_metabib_full_rec','ingest.disable_metabib_rec_descriptor','ingest.metarecord_mapping.preserve_on_delete','ingest.metarecord_mapping.skip_on_insert','ingest.metarecord_mapping.skip_on_update','ingest.reingest.force_on_same_marc','ingest.skip_browse_indexing','ingest.skip_facet_indexing','ingest.skip_search_indexing');
-COMMIT;
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE, '{6,8,14,16,18}'::INT[]) FROM biblio.record_entry WHERE NOT deleted AND id > 0;
 
