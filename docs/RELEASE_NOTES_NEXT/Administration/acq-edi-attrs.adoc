@@ -36,3 +36,15 @@ attributes.
 . After moving to edi_order_pusher.pl, the JEDI Action/Trigger event
   definition is no longer required.  It can be disabled.
 
+Migration
++++++++++
+
+EDI accounts have a new boolean field "Use EDI Attributes" (use_attrs) that 
+specifies whether PO's generated via the account should be built using 
+EDI attributes or fall back to traditional JEDI A/T template generation.
+
+This allows sites to activate EDI attributes on a per-account basis, making 
+it possible to migrate piecemeal to EDI attributes.  For the initial roll
+out of this new features, no accounts will be configured to use EDI 
+attributes by default.  
+

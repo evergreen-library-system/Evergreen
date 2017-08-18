@@ -9214,6 +9214,7 @@ SELECT  usr,
 			<field name="vendacct"      reporter:datatype="text"      reporter:label="Vendor Account Number"/>
 			<field name="vendcode"      reporter:datatype="text"      reporter:label="Vendor Assigned Code"/>
 			<field name="attr_set"      reporter:datatype="link"      reporter:label="EDI Attribute Set"/>
+			<field name="use_attrs"     reporter:datatype="bool"      reporter:label="Use EDI Attributes"/>
 		</fields>
 		<links>
 			<link field="provider" reltype="has_a" key="id" map="" class="acqpro"/>

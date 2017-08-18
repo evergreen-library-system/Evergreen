@@ -23,8 +23,9 @@ CREATE TABLE acq.edi_attr_set_map (
 
 -- An attr_set is not strictly required, since some edi_accounts/vendors 
 -- may not need to apply any attributes.
-ALTER TABLE acq.edi_account ADD COLUMN attr_set 
-    INTEGER REFERENCES acq.edi_attr_set(id);
+ALTER TABLE acq.edi_account 
+    ADD COLUMN attr_set INTEGER REFERENCES acq.edi_attr_set(id),
+    ADD COLUMN use_attrs BOOLEAN NOT NULL DEFAULT FALSE;
 
 COMMIT;
 

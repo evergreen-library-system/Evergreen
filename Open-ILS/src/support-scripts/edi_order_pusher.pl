@@ -49,7 +49,8 @@ sub help {
         1. PO must be activated.
         2. PO provider must be active.
         3. PO must use a provider that supports EDI delivery (via edi_default)
-        4. PO must have no EDI ORDERS messages attached or, if it does, 
+        4. EDI account linked to provider must have 'use_attrs' set to true.
+        5. PO must have no EDI ORDERS messages attached or, if it does, 
            the message has a status of "retry".
 
     Usage:
@@ -118,7 +119,12 @@ if ($po_id) {
                     type => 'left',
                     filter => {message_type => 'ORDERS'}
                 },
-                acqpro => {}
+                acqpro => {
+                    join => {
+                        acqedi => {
+                        }
+                    }
+                }
             }
         },
         where => {
@@ -128,6 +134,9 @@ if ($po_id) {
             '+acqpro' => {
                 active => 't', 
                 edi_default => {'!=' => undef}
+            },
+            '+acqedi' => {
+                use_attrs => 't'
             },
             '+acqedim' => {
                 '-or' => [

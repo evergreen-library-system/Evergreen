@@ -763,7 +763,8 @@ CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account 
     in_dir      TEXT,   -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
     vendcode    TEXT,
     vendacct    TEXT,
-    attr_set    INTEGER REFERENCES acq.edi_attr_set(id) -- NULL OK
+    attr_set    INTEGER REFERENCES acq.edi_attr_set(id), -- NULL OK
+    use_attrs   BOOLEAN NOT NULL DEFAULT FALSE
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
