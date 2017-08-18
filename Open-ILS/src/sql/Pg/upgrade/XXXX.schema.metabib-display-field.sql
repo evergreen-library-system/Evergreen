@@ -1,26 +1,6 @@
 
 BEGIN;
 
-CREATE OR REPLACE FUNCTION
-    config.metabib_representative_field_is_valid(INTEGER, TEXT) RETURNS BOOLEAN AS $$
-    SELECT EXISTS (SELECT 1 FROM config.metabib_field WHERE id = $1 AND field_class = $2);
-$$ LANGUAGE SQL STRICT IMMUTABLE;
-
-COMMENT ON FUNCTION config.metabib_representative_field_is_valid(INTEGER, TEXT) IS $$
-Ensure the field_class value on the selected representative field matches
-the class name.
-$$;
-
-ALTER TABLE config.metabib_class
-    ADD COLUMN representative_field
-        INTEGER REFERENCES config.metabib_field(id),
-    ADD CONSTRAINT rep_field_unique UNIQUE(representative_field),
-    ADD CONSTRAINT rep_field_is_valid CHECK (
-            representative_field IS NULL OR
-            config.metabib_representative_field_is_valid(representative_field, name)
-    )
-;
-
 ALTER TABLE config.metabib_field 
     ADD COLUMN display_xpath TEXT, 
     ADD COLUMN display_field BOOL NOT NULL DEFAULT FALSE;
