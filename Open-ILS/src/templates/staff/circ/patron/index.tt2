@@ -60,8 +60,6 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PATRON_PURGE_STAFF_PROMPT = "[% l('The account you are attempting to delete has STAFF_LOGIN privileges. Please enter the barcode for a destination account to receive miscellaneous staff artifacts (reports, etc.) from the account to be deleted.') %]";
   s.PATRON_PURGE_STAFF_BAD_BARCODE = "[% l('Could not retrieve a destination account with the barcode provided. Aborting the purge...') %]";
   s.PATRON_PURGE_OVERRIDE_PROMPT = "[% l('The account has open transactions (circulations and/or unpaid bills). Purge anyway?') %]";
-  s.OPT_IN_DIALOG_TITLE = "[% l('Verify Permission to Share Personal Information') %]";
-  s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
   s.PATRON_EDIT_COLLISION = "[% l('Patron record was modified by another user while you were editing it. Your changes were not saved; please reapply them.') %]";
 }]);
 </script>
