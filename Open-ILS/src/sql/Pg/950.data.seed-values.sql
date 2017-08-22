@@ -17190,7 +17190,7 @@ VALUES (
 INSERT INTO acq.edi_attr (key, label) VALUES
     ('INCLUDE_PO_NAME', 
         oils_i18n_gettext('INCLUDE_PO_NAME', 
-        'Oders Include PO Name', 'aea', 'label')),
+        'Orders Include PO Name', 'aea', 'label')),
     ('INCLUDE_COPIES', 
         oils_i18n_gettext('INCLUDE_COPIES', 
         'Orders Include Copy Data', 'aea', 'label')),
@@ -17262,7 +17262,7 @@ INSERT INTO acq.edi_attr (key, label) VALUES
         'Lineitem Identifier Fields (LIN/PIA) Use Vendor-Encoded ID Value When Available', 'aea', 'label')),
     ('LINEITEM_REF_ID_ONLY',
         oils_i18n_gettext('LINEITEM_REF_ID_ONLY',
-        'Lineitem Reference Feld (RFF) Uses Lineitem ID Only', 'aea', 'label'))
+        'Lineitem Reference Field (RFF) Uses Lineitem ID Only', 'aea', 'label'))
 
 ;
 
