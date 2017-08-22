@@ -226,7 +226,7 @@ END; # FOREACH bib
         [% END %]
 
 <tr><td>
-[%- IF copy_info.peer_bib_marc.size > 1;
+[%- IF copy_info.peer_bib_marc.size > 0;
 '<ul>';
     FOREACH bib IN copy_info.peer_bib_marc;
         attrs = {marc_xml => bib};
