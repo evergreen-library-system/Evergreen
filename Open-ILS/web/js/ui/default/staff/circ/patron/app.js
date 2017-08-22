@@ -227,8 +227,8 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap',
  * Patron service
  */
 .factory('patronSvc',
-       ['$q','$timeout','$location','egCore','egUser','$locale',
-function($q , $timeout , $location , egCore,  egUser , $locale) {
+       ['$q','$timeout','$location','egCore','egUser','egConfirmDialog','$locale',
+function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale) {
 
     var service = {
         // cached patron search results
@@ -344,9 +344,17 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
             }
 
             service.resetPatronLists();
-            service.current = user;
-            service.localFlesh(user);
-            return service.fetchUserStats();
+
+            return service.checkOptIn(user).then(
+                function() {
+                    service.current = user;
+                    service.localFlesh(user);
+                    return service.fetchUserStats();
+                },
+                function() {
+                    return $q.reject();
+                }
+            );
 
         } else if (id) {
             if (!force && service.current && service.current.id() == id) {
@@ -361,9 +369,16 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
 
             return egUser.get(id).then(
                 function(user) {
-                    service.current = user;
-                    service.localFlesh(user);
-                    return service.fetchUserStats();
+                    return service.checkOptIn(user).then(
+                        function() {
+                            service.current = user;
+                            service.localFlesh(user);
+                            return service.fetchUserStats();
+                        },
+                        function() {
+                            return $q.reject();
+                        }
+                    );
                 },
                 function(err) {
                     console.error(
@@ -570,6 +585,59 @@ function($q , $timeout , $location , egCore,  egUser , $locale) {
             var p2 = service.fetchGroupFines();
             return $q.all([p1, p2]);
         });
+    }
+
+    service.createOptIn = function(user_id) {
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.org_unit_opt_in.create',
+            egCore.auth.token(), user_id);
+    }
+
+    service.checkOptIn = function(user) {
+        var deferred = $q.defer();
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.org_unit_opt_in.check',
+            egCore.auth.token(), user.id())
+        .then(function(optInResp) {
+            if (eg_evt = egCore.evt.parse(optInResp)) {
+                deferred.reject();
+                console.log('error on opt-in check: ' + eg_evt);
+            } else if (optInResp == 2) {
+                // opt-in disallowed at this location by patron's home library
+                deferred.reject();
+                alert(egCore.strings.OPT_IN_RESTRICTED);
+            } else if (optInResp == 1) {
+                // opt-in handled or not needed, do nothing
+                deferred.resolve();
+            } else {
+                // opt-in needed, show the opt-in dialog
+                var org = egCore.org.get(user.home_ou());
+                egConfirmDialog.open(
+                    egCore.strings.OPT_IN_DIALOG_TITLE,
+                    egCore.strings.OPT_IN_DIALOG,
+                    {   family_name : user.family_name(),
+                        first_given_name : user.first_given_name(),
+                        org_name : org.name(),
+                        org_shortname : org.shortname(),
+                        ok : function() {
+                            service.createOptIn(user.id())
+                            .then(function(resp) {
+                                if (evt = egCore.evt.parse(resp)) {
+                                    deferred.reject();
+                                    alert(evt);
+                                } else {
+                                    deferred.resolve();
+                                }
+                            });
+                        },
+                        cancel : function() { deferred.reject(); }
+                    }
+                );
+            }
+        });
+        return deferred.promise;
     }
 
     // Avoid using parens [e.g. (1.23)] to indicate negative numbers, 
