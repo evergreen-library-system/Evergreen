@@ -324,7 +324,11 @@ sub compile_copy {
     my $fund = $copy->fund ? $copy->fund->code : '';
     my $item_type = $copy->circ_modifier || '';
     my $call_number = $copy->cn_label || '';
-    my $owning_lib = $copy->owning_lib ? $copy->owning_lib->shortname : '';
+    my $owning_lib = $copy->owning_lib ?
+                        $self->{compiled}->{edi_attrs}->{USE_ID_FOR_OWNING_LIB} ?
+                        $copy->owning_lib->id :
+                        $copy->owning_lib->shortname :
+                     '';
     my $location = $copy->location ? $copy->location->name : '';
     my $collection_code = $copy->collection_code || '';
     my $barcode = $copy->barcode || '';
