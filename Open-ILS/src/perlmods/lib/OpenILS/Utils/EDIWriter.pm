@@ -65,7 +65,16 @@ sub get_po {
     ]);
 }
 
-sub escape_edi {
+sub add_release_characters {
+    my ($self, $value) = @_;
+    return '' if (not defined $value || ref($value));
+
+    # escape ? ' + : with the release character ?
+    $value =~ s/([\?'\+:])/?$1/g;
+
+    return $value;
+}
+sub escape_edi_imd {
     my ($self, $value) = @_;
     return '' if (not defined $value || ref($value));
 
@@ -79,15 +88,27 @@ sub escape_edi {
     # LP #812593).
     $value =~ s/[\[\]]//g;
 
-    # Characters [? + ' \ : <newline>] are all potentially problematic for 
+    # Characters [\ <newline>] are all potentially problematic for 
     # EDI messages, regardless of their position in the string.
-    # Safest to simply remove them.
-    $value =~ s/[\\\?\+':]//g;
+    # Safest to simply remove them. Note that unlike escape_edi(),
+    # we're not stripping out +, ', :, and + because we'll escape
+    # them when buidling IMD segments
+    $value =~ s/[\\]//g;
 
     # Replace newlines with spaces.
     $value =~ s/\n/ /g;
 
     return $value;
+}
+sub escape_edi {
+    my ($self, $value) = @_;
+
+    my $str = $self->escape_edi_imd($value);
+
+    # further strip + ' : +
+    $str =~ s/[\?\+':]//g;
+
+    return $str;
 }
 
 # Returns an EDI-escaped version of the requested lineitem attribute
@@ -100,6 +121,20 @@ sub get_li_attr {
         next unless $attr->attr_name eq $attr_name;
         next if $attr_type && $attr->attr_type ne $attr_type;
         return $self->escape_edi($attr->attr_value);
+    }
+
+    return '';
+}
+
+# Like get_li_attr, but don't strip out ? + : ' as we'll
+# escape them later
+sub get_li_attr_imd {
+    my ($self, $li, $attr_name, $attr_type) = @_;
+
+    for my $attr (@{$li->attributes}) {
+        next unless $attr->attr_name eq $attr_name;
+        next if $attr_type && $attr->attr_type ne $attr_type;
+        return $self->escape_edi_imd($attr->attr_value);
     }
 
     return '';
@@ -264,7 +299,7 @@ sub compile_li {
     $self->set_li_order_ident($li, $li_hash);
 
     for my $name (qw/title author edition pubdate publisher pagination/) {
-        $li_hash->{$name} = $self->get_li_attr($li, $name);
+        $li_hash->{$name} = $self->get_li_attr_imd($li, $name);
     }
 
     $self->compile_copies($li, $li_hash);
@@ -345,8 +380,8 @@ sub compile_copy {
     });
 }
 
-# IMD fields are limited to 70 chars per value.  Any values longer
-# should be carried via repeating IMD fields.
+# IMD fields are limited to 70 chars per value over two DEs.
+# Any values longer # should be carried via repeating IMD fields.
 # IMD fields should only display the +::: when a value is present
 sub IMD {
     my ($self, $code, $value) = @_;
@@ -359,7 +394,16 @@ sub IMD {
     if ($value) {
         my $s = '';
         for my $part ($value =~ m/.{1,70}/g) {
-            $s .= "IMD+F+$code+:::$part'\n"; }
+            my $de;
+            if (length($part) > 35) {
+                $de = $self->add_release_characters(substr($part, 0, 35)) .
+                      ':' .
+                      $self->add_release_characters(substr($part, 35));
+            } else {
+                $de = $self->add_release_characters($part);
+            }
+            $s .= "IMD+F+$code+:::$de'\n";
+        }
         return $s;
 
     } else {
