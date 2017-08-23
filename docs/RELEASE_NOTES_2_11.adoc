@@ -3,6 +3,38 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.8
+----------------
+This release contains several bug fixes improving on Evergreen 2.11.7.
+
+* Hides the _Hold is Behind Circ Desk_ checkbox in the XUL client's patron
+registration screen for those libraries that have not enabled Behind Desk Pickup 
+support via the Library Settings Editor
+* Adds a missing error string that appears when marking an item damaged from
+an aged circulation.
+* Changes the hold request form so that it no longer defaults to the first SMS
+carrier for text notifications.
+* Adds a requirement for users to enter a phone/SMS number when they have
+enabled that notification method on the hold request form.
+* Changes the URL pointing to catalog images, CSS and javascript files to a full
+absolute URL instead of the relative URL previously used. This change fixes an
+issue with the Open Graph image property, which requires a full URL.
+* Fixes an issue where payment amounts sent to Stripe can be one cent less than
+the actual Evergreen payment.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.8 point release of
+Evergreen:
+
+* Michele Morgan
+* Dan Scott
+* Chris Sharp
+* Josh Stompro
+* Cesar Velez
+
+
 Evergreen 2.11.7
 ----------------
 Upgrade Note
