@@ -8,6 +8,7 @@ Template for printing hold transit slips. Fields include:
 * dest_address.city
 * dest_address.state
 * dest_address.post_code
+* dest_courier_code - from lib.courier_code library setting
 * hold.behind_desk
 * copy.barcode
 * title

@@ -8,6 +8,7 @@ Template for printing a transit slip. Fields include:
 * dest_address.city
 * dest_address.state
 * dest_address.post_code
+* dest_courier_code - from lib.courier_code library setting
 * copy.barcode
 * title
 * author
