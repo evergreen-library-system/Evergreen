@@ -17,6 +17,7 @@ Examples
   ** stat cat
   ** statistical category
   ** categories, statistical
+  ** patrons (stat cat)
  * Searching for 'stat cat' does not match:
   ** stat 
    *** both words must be present in the searched field(s)

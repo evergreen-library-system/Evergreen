@@ -759,10 +759,10 @@ sub search_templates {
         if (@$fields > 1) {
             $subq = {'-or' => []};
             for my $field (@$fields) {
-                push(@{$subq->{'-or'}}, {$field => {'~*' => "(^| )$part"}});
+                push(@{$subq->{'-or'}}, {$field => {'~*' => "(^|\\m)$part"}});
             }
         } else {
-            $subq = {$fields->[0] => {'~*' => "(^| )$part"}};
+            $subq = {$fields->[0] => {'~*' => "(^|\\m)$part"}};
         }
 
         push(@{$query->{where}->{'-and'}}, $subq);
