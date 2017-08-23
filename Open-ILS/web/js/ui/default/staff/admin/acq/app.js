@@ -144,6 +144,8 @@ function($scope , $q , egCore , ngToast , egConfirmDialog) {
         angular.forEach($scope.attr_sets, function(set) {
             console.debug('inspecting attr set ' + set.label());
 
+            if (!set.label()) return; // skip (new) unnamed sets
+
             // find maps that need deleting
             angular.forEach(set.attr_maps(), function(oldmap) {
                 if (!set._local_map[oldmap.attr()]) {
@@ -246,6 +248,23 @@ function($scope , $q , egCore , ngToast , egConfirmDialog) {
                 function() { $scope.save_in_progress = false; }
             );
         });
+    }
+
+    $scope.clone_set = function(source_set) {
+        var set = new egCore.idl.aeas();
+        set.isnew(true);
+        set.attr_maps([]);
+        set._local_map = {};
+
+        // Copy attr info from cloned attr set. No need to create the
+        // maps now, just indicate in the local mapping that attr maps
+        // are pending.
+        angular.forEach(source_set.attr_maps(), function(map) {
+            set._local_map[map.attr()] = true;
+        });
+
+        $scope.select_set(set);
+        $scope.attr_sets.push(set);
     }
 
     load_data();

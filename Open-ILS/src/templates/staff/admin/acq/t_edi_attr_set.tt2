@@ -17,6 +17,10 @@
             <a href='' ng-click="new_set()">
               [% l('New Attribute Set...') %]</a>
           </li>
+          <li ng-if="!cur_attr_set.isnew()">
+            <a href='' ng-click="clone_set(cur_attr_set)">
+              [% l('Clone "[_1]"', '{{cur_attr_set.label()}}') %]</a>
+          </li>
           <li class="divider"></li>
           <li ng-repeat="set in attr_sets">
             <a href='' ng-click="select_set(set)">{{set.label()}}</a>
