@@ -3,6 +3,72 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.5
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.4.
+
+* Hides the _Hold is Behind Circ Desk_ checkbox in the XUL client's patron
+registration screen for those libraries that have not enabled Behind Desk Pickup 
+support via the Library Settings Editor
+* Adds a missing error string that appears when marking an item damaged from
+an aged circulation.
+* Changes the hold request form so that it no longer defaults to the first SMS
+carrier for text notifications.
+* Adds a requirement for users to enter a phone/SMS number when they have
+enabled that notification method on the hold request form.
+* Changes the URL pointing to catalog images, CSS and javascript files to a full
+absolute URL instead of the relative URL previously used. This change fixes an
+issue with the Open Graph image property, which requires a full URL.
+* Fixes an issue where payment amounts sent to Stripe can be one cent less than
+the actual Evergreen payment.
+* Fixes an issue where the open-ils.storage OpenSRF module fails to start when
+using perl 5.24 or higher.
+* Fixes a problem in the web client where marking a transaction as claims
+returned or claims never checked out at the same time the patron's record is
+edited would not increase the count once the patron's record is saved.
+* Changes the cursor to a pointer for the record menus in the web client.
+* Fixes hardcoded patchs in srfsh support scripts.
+* Prevents a "Use of freed value in iteration" error that appeared in logs when
+adjusting a transaction to zero.
+* Prevents the temporary list page from crashing when a user adds the same title
+to the list more than once.
+* Removes duplicate rows from localized 950.data.seed-values.sql files.
+* Fixes the following two issues with conjoined items:
+   - Foreign items previously did not display there was no extra copy attached
+to the bib record.
+   - Conjoined items did not display unless there were two or more items in a
+set.
+* Fixes an issue in the web client where the Hold Verify prompt did not display
+for items in a Copy Location where the hold verify flag is enabled.
+* Fixes support for automatic item barcode completion in the web client check in,
+check out, renew, and item status interfaces.
+* Makes the courier code variable available for transit slips in the web client.
+* Fixes the ability to apply funds from the acquisitions selection list, 
+View/Place Order, and MARC Federated Search interfaces.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.5 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Josh Stompro
+* Cesar Velez
+* Liam Whalen
+* Dan Wells
+
+
+
 Evergreen 2.12.4
 ----------------
 Upgrade Notes
