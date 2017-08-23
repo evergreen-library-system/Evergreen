@@ -1445,6 +1445,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 // route_dialog includes the "route to holds shelf" 
                 // dialog, which has no transit
                 print_context.transit = egCore.idl.toHash(data.transit);
+                print_context.dest_courier_code = data.dest_courier_code;
                 if (data.address) {
                     print_context.dest_address = egCore.idl.toHash(data.address);
                 }

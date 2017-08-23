@@ -10,6 +10,9 @@
         <span>[% l('Destination') %]</span>
         <strong>{{dest_location.shortname}}</strong>
       </div>
+      <div ng-if="dest_courier_code">
+        <span>{{dest_courier_code}}</span>
+      </div>
       <br/>
       <div>
         <address>
