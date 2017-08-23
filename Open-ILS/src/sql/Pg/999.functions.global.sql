@@ -206,6 +206,7 @@ BEGIN
     UPDATE action.circulation SET usr = dest_usr WHERE usr = src_usr;
     UPDATE action.circulation SET circ_staff = dest_usr WHERE circ_staff = src_usr;
     UPDATE action.circulation SET checkin_staff = dest_usr WHERE checkin_staff = src_usr;
+    UPDATE action.usr_circ_history SET usr = dest_usr WHERE usr = src_usr;
 
     UPDATE action.hold_request SET usr = dest_usr WHERE usr = src_usr;
     UPDATE action.hold_request SET fulfillment_staff = dest_usr WHERE fulfillment_staff = src_usr;
