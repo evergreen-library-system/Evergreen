@@ -1,0 +1,9 @@
+<!--
+This file allows us to bring TT2 i18n'ized strings
+to js source files, via js blob.
+-->
+<script>
+    var eg_opac_i18n = {};
+
+    eg_opac_i18n.EG_MISSING_REQUIRED_INPUT = "[% l('Please fill out all required fields') %]";
+</script>

@@ -66,7 +66,7 @@ function validateHoldForm() {
     {
         return true;
     } else {
-        alert ("Please complete hold notification method info.");
+        alert(eg_opac_i18n.EG_MISSING_REQUIRED_INPUT);
         res.culpritNames.forEach(function(n){
             document.getElementsByName(n)[0].style.backgroundColor  = "yellow";
         });

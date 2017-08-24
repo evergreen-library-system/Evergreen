@@ -1,6 +1,6 @@
 <!-- JS imports, etc.  -->
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
-
+[% INCLUDE "opac/i18n_strings.tt2" %]
 <!-- DOB validation for Patron Registration in OPAC -->
 <script type="text/javascript">
     function dobValidate(input) {
