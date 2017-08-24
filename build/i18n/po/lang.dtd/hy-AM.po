@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-04-19 15:34-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-07-27 15:50-0500\n"
+"PO-Revision-Date: 2017-06-22 10:13+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-04-23 06:04+0000\n"
-"X-Generator: Launchpad (build 18361)\n"
+"X-Launchpad-Export-Date: 2017-07-30 06:21+0000\n"
+"X-Generator: Launchpad (build 18441)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -129,7 +129,7 @@ msgstr "Մուտքի գրանցում"
 
 #: common.logout
 msgid "Log Out"
-msgstr "Դուրս գալ"
+msgstr "Ելք"
 
 #: common.at
 msgid "at"
@@ -265,12 +265,12 @@ msgstr "Գնա &Հետ"
 #: common.browser.reload.label
 #: common.browser.reload.accesskey
 msgid "Re&load"
-msgstr "Վերա&բեռնիր"
+msgstr "Վերա&բեռնել"
 
 #: common.browser.print.label
 #: common.browser.print.accesskey
 msgid "&Print Page"
-msgstr "&Տպիր էջը"
+msgstr "&Տպել էջը"
 
 #: common.browser.help.label
 #: common.browser.help.accesskey
@@ -2395,7 +2395,7 @@ msgstr "Պատերազմ"
 
 #: staff.copy.attr.stat.genre.example13
 msgid "Western"
-msgstr "Վեստեռն"
+msgstr "Արեվմտյան"
 
 #: staff.copy.attr.stat.genre.example14
 msgid "Religious fiction"
@@ -3139,7 +3139,7 @@ msgstr "Լողացող խմբեր"
 #: staff.main.menu.admin.server_admin.acq.label
 #: staff.main.menu.admin.server_admin.acq.accesskey
 msgid "&Acquisitions Administration"
-msgstr ""
+msgstr "&Համալրման կառավարում"
 
 #: staff.main.menu.admin.server_admin.acq.lineitem_alert.label
 #: staff.main.menu.admin.server_admin.acq.lineitem_alert.accesskey
@@ -3674,7 +3674,7 @@ msgstr "Կա&պի ստուգող"
 #: staff.main.menu.acq.label
 #: staff.main.menu.acq.accesskey
 msgid "&Acquisitions"
-msgstr ""
+msgstr "&Համալրումներ"
 
 #: staff.main.menu.acq.unified_search.label
 #: staff.main.menu.acq.unified_search.accesskey
@@ -4057,7 +4057,7 @@ msgstr "F"
 
 #: staff.main.menu.edit.find.label
 msgid "Find"
-msgstr "Որոնել"
+msgstr "Գտնել"
 
 #: staff.main.menu.edit.find_again.key
 msgid "g"
@@ -4080,7 +4080,7 @@ msgstr "P"
 #: staff.main.menu.edit.paste.label
 msgctxt "staff.main.menu.edit.paste.label"
 msgid "Paste"
-msgstr "Հետ տեղադրիր"
+msgstr "Դնել"
 
 #: staff.main.menu.edit.redo.key
 msgctxt "staff.main.menu.edit.redo.key"
@@ -4089,7 +4089,7 @@ msgstr "R"
 
 #: staff.main.menu.edit.redo.label
 msgid "Redo"
-msgstr "վերարկել"
+msgstr "Վերարկել"
 
 #: staff.main.menu.edit.select_all.key
 msgctxt "staff.main.menu.edit.select_all.key"
@@ -4108,7 +4108,7 @@ msgstr "U"
 
 #: staff.main.menu.edit.undo.label
 msgid "Undo"
-msgstr "Չեղարկիր"
+msgstr "Ետարկել"
 
 #: staff.main.menu.entity.bib.label
 msgid "Bib Records"
@@ -5586,7 +5586,7 @@ msgstr "S"
 
 #: staff.marc.file.reload
 msgid "Reload"
-msgstr "Վերաբեռնավորիր"
+msgstr "Վերաբեռնել"
 
 #: staff.marc.file.reload.key
 msgctxt "staff.marc.file.reload.key"
@@ -5841,7 +5841,7 @@ msgstr "ID 2:"
 #: staff.patron_display.hold_alias.label
 msgctxt "staff.patron_display.hold_alias.label"
 msgid "Holds Alias:"
-msgstr ""
+msgstr "Պահումների կեղծանուն"
 
 #: staff.patron_display.items.print_receipt.label
 #: staff.patron_display.items.print_receipt.accesskey
@@ -6360,7 +6360,7 @@ msgstr "&Մաքրիր ձևը"
 #: staff.patron_search_form.alias.label
 msgctxt "staff.patron_search_form.alias.label"
 msgid "Holds Alias:"
-msgstr ""
+msgstr "Պահումների կեղծանուն"
 
 #: staff.patron_search_form.email.label
 msgctxt "staff.patron_search_form.email.label"
@@ -9136,7 +9136,7 @@ msgstr "Անջատված"
 
 #: staff.server.admin.stat_cat.type
 msgid "Type: "
-msgstr "Տեսակ "
+msgstr "Տեսակ՝ "
 
 #: staff.server.admin.stat_cat.patron
 msgctxt "staff.server.admin.stat_cat.patron"
@@ -11373,7 +11373,7 @@ msgstr "2"
 
 #: staff.cat.copy_editor.identification.miscellaneous.label
 msgid "Miscellaneous"
-msgstr "Տարբեր"
+msgstr "Զանազանք"
 
 #: staff.cat.copy_editor.identification.miscellaneous.accesskey
 msgctxt "staff.cat.copy_editor.identification.miscellaneous.accesskey"
@@ -11547,7 +11547,7 @@ msgstr "Թարմացման աղբյուր"
 #: staff.cat.marcedit.phys_char_wizard.label
 #: staff.cat.marcedit.phys_char_wizard.accesskey
 msgid "Physical Characteristics &Wizard"
-msgstr ""
+msgstr "ֆիզիկական նկարագրիչների &հրաշագործ"
 
 #: staff.cat.marc_new.load.label
 #: staff.cat.marc_new.load.accesskey
@@ -12365,7 +12365,7 @@ msgstr "American Express"
 
 #: staff.patron.bill_cc_info.discover.label
 msgid "Discover"
-msgstr "Discover"
+msgstr "Հայտնաբերել"
 
 #: staff.patron.bill_cc_info.other.label
 msgctxt "staff.patron.bill_cc_info.other.label"
@@ -12640,7 +12640,7 @@ msgstr "&Վերաֆինանսավորում"
 #: staff.patron.bill_interface.adjust_to_zero.label
 #: staff.patron.bill_interface.adjust_to_zero.accesskey
 msgid "Adjust to &Zero"
-msgstr ""
+msgstr "հավասարեցրու &զրոյի"
 
 #: staff.patron.bill_interface.full_details.label
 #: staff.patron.bill_interface.full_details.accesskey
@@ -13278,7 +13278,7 @@ msgstr "Եռակի կապով միացված Պ&ատահարներ"
 #: staff.patron.message_center.label
 #: staff.patron.message_center.accesskey
 msgid "Message Cente&r"
-msgstr ""
+msgstr "Հաղորդագրության կենտրոն"
 
 #: staff.patron.info.stat_cats.label
 #: staff.patron.info.stat_cats.accesskey
@@ -13449,15 +13449,15 @@ msgstr "Հիշիր"
 
 #: staff.patron.user_edit.display_perm.select_one
 msgid "-- Select One --"
-msgstr ""
+msgstr "-- Ընտրիր մեկը --"
 
 #: staff.patron.user_edit.save_user.depth_required
 msgid "Depth is required to set the permission."
-msgstr ""
+msgstr "Խորությունը պահանջվում է թւյլտվության կարգաբերման համար։"
 
 #: staff.patron.user_edit.save_user.user_modified_successfully
 msgid "User successfully modified."
-msgstr ""
+msgstr "Օգտվողը հաջողությամբ ձևափոխվել է։"
 
 #: staff.patron.ue.ev_user_editor.label
 msgctxt "staff.patron.ue.ev_user_editor.label"
@@ -14313,7 +14313,7 @@ msgstr "Պահվող"
 
 #: staff.circ.alternate_copy_summary.Age_Protect.label
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Տարիքի հետ կապված պահման պաշտպանություն"
 
 #: staff.circ.alternate_copy_summary.Hold_Shelf_Location.label
 msgid "Hold Shelf Location"
@@ -14368,7 +14368,7 @@ msgstr "Գին"
 
 #: staff.circ.alternate_copy_summary.Cost.label
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Համալրման գին"
 
 #: staff.circ.alternate_copy_summary.Previous_Circ_Group.label
 msgid "Previous Circ Group"
@@ -14576,6 +14576,14 @@ msgid ""
 "here for legacy purposes, and the Custom/External Print strategy is more "
 "flexible."
 msgstr ""
+"Տպելու այս ստրատեգիան կանտեսի տպիչի կարգաբերումները \"Նորմալ "
+"կարգաբերումներ\" բաժնում։ Ուինդոզում, քո տպիչը պետք է ուղղորդես դեպի LPT1, "
+"Start Menu -&gt; Printers and Faxes -&gt; your printer -&gt; ձախ կտտացնել, "
+"Properties -&gt; Ports։ Նաև HTML ձևավորման, ինչպիսիք են տարբեր ֆոնտերի "
+"քաշերը և չափերը կկորեն, և ցանկացած խորացված ձևանմուշներ, որ օգտագործում են "
+"Javascript չեն աշխատի։ Տվյալները կուղարկվեն տպիչին պարզ տեքստի տեսքով։ Այս "
+"ընտրանքը ներառված է որպես ժառագություն, և Այցելու/Տպելու արտաքին ստրատգիա "
+"ավելի ճկուն է։"
 
 #: staff.printing.advanced.custom_print.warning.header
 msgid "Note on Custom/External Print"
@@ -14587,6 +14595,10 @@ msgid ""
 "Settings\" section. Advanced templates using Javascript may not work, even "
 "if the external tool can take the receipt.html file."
 msgstr ""
+"Տպելու այս ստրատեգիան կանտեսի տպիչի կարգաբերումները \"Նորմալ "
+"կարգաբերումներ\" բաժնում։ Խորացված ձևանմուշները, որ օգտագործում են "
+"Javascript չեն աշխատի, նույնիսկ եթե արտաքին գործիքը կօգտագործի receipt.html "
+"ֆայլը։"
 
 #: staff.printing.advanced.html_templates.warning.header
 msgid "Also..."
@@ -14607,6 +14619,17 @@ msgid ""
 "&lt;p&gt;Hello World&lt;/p hex=\"0C\"&gt; will translate to Hello World + "
 "form feed control character."
 msgstr ""
+"Եթե օգտագործում ես Receipt Templates DOS LPT1 տպելու կարգաբերումներով, կամ "
+"Այցելու/Տպելու արտաքին ստրատգիա (ներառում է \"receipt.txt\"), հաճախորդը "
+"կաշխատի թարգմանել որևէ HTML նշում տեքստի, սակայն սա կարող է չլինել կատարյալ, "
+"և ճշտությունը լավագույնս ապահովելու համար դու պետք է մտածես վերափոխել քո "
+"ձևանմուշները ազատ տեքստի տեսքով, եթե օգտագործում ես ազատ տեքստային տպելու "
+"ստրատեգիան։ Ինչևէ, եթե օգտագործում ես ազատ տեքստային տպելու ստրատեգիան HTML "
+"նշելով, դու կարող ես որպես երկունիշանի տասնվեցական ներառել հատուկ նիշերով "
+"կոդեր \"hex\" հատկանիշում, տրված որևէ տարրի համար։ Նման կոդերը կձևափոխվեն "
+"իրական նիշերի և կներդրվեն ցուցիչի տեղում։ Օրինակ, &lt;p hex=\"0C\"&gt;Hello "
+"World&lt;/p&gt; կթարգմանվի + Hello World. &lt;p&gt;Hello World&lt;/p "
+"hex=\"0C\"&gt; կթարգմանվի Hello World + form feed control character."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"

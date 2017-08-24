@@ -1,0 +1,335 @@
+# Armenian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-06-22 05:33+0000\n"
+"PO-Revision-Date: 2017-07-27 07:06+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-07-28 05:37+0000\n"
+"X-Generator: Launchpad (build 18439)\n"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:13
+msgid "American Express"
+msgstr "American Express"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:33
+msgid "April"
+msgstr "Ապրիլ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:37
+msgid "Aug"
+msgstr "Օգս"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:102 ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:8 ../../Open-ILS/src/templates/circ/selfcheck/holds_page.tt2:7
+msgid "Author"
+msgstr "Հեղինակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:12
+msgid "Balance Owed"
+msgstr "Տնօրինած հաշվեկշիռ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:6
+msgid "Barcode"
+msgstr "Գծակոդ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:23
+msgid "CVV #"
+msgstr "CVV #"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:115
+msgid "Call Number Prefix"
+msgstr "Դարականիշ Նախածանց"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:116
+msgid "Call Number Suffix"
+msgstr "Դարականիշ Վերջածանց"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:23
+msgid "Checkout"
+msgstr "Դուրս տրում"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:43
+msgid "Choose a location"
+msgstr "Ընտրիր տեղաբաշխումը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:66
+msgid "City"
+msgstr "Քաղաք"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/logout_dialog.tt2:10
+msgid "Continue Session"
+msgstr "Շարունակիր կապը"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:106
+msgid "Copy Status"
+msgstr "Օրինակի վիճակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:19
+msgid "Credit Card #"
+msgstr "Կրեդիտ քարտի #"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:41
+msgid "Dec"
+msgstr "Դեկ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:9
+msgid "Details"
+msgstr "Մանրամասներ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:9
+msgid "Due Date"
+msgstr "Սպասվող Վերադարձի ամսաթիվ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:50
+msgid "Edit Billing Details"
+msgstr "Խմբագրիր հաշիվ ներկայացնելու մանրամասները"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:8
+msgid "Email"
+msgstr "էլ. փոստ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:48
+msgid "Enter a workstation name"
+msgstr "Մուտք արա աշխատանքային կայանի անվանումը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:27
+msgid "Expiration Month"
+msgstr "Ժամկետը լրանալու ամիս"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:46
+msgid "Expiration Year"
+msgstr "Ժամկետը լրանալու տարի"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:31
+msgid "Feb"
+msgstr "Փետ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:25
+msgid "Fines"
+msgstr "Տուգանքներ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:54
+msgid "First Name"
+msgstr "Անուն"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:107
+msgid "Hold Notes"
+msgstr "Պահման մանրամասներ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:2 ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:66
+msgid "Hold Pull List"
+msgstr "Պահման բացվող ցուցակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:19
+msgid "Holds"
+msgstr "Պահումներ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:3
+msgid "Home"
+msgstr "Տուն"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:13
+msgid "Items Checked Out"
+msgstr "Դուրս տրված նյութեր"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:30
+msgid "Jan"
+msgstr "Հնվ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:36
+msgid "July"
+msgstr "Հուլիս"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:35
+msgid "June"
+msgstr "Հունիս"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:58
+msgid "Last Name"
+msgstr "Ազգանուն"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/logout_dialog.tt2:6 ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:4
+msgid "Logout"
+msgstr "Ելք"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:32
+msgid "Mar"
+msgstr "Մարտ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:12
+msgid "MasterCard"
+msgstr "Մաստեր քարտ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:34
+msgid "May"
+msgstr "Մայիս"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:10
+msgid "None"
+msgstr "Ոչ մեկը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:40
+msgid "Nov"
+msgstr "Նոյ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:39
+msgid "Oct"
+msgstr "Հոկ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:105
+msgid "Parts"
+msgstr "Մասեր"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:108
+msgid "Patron Barcode"
+msgstr "Ընթերցողի շտրիխ կոդ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:2
+msgid "Pay Fines"
+msgstr "Վճարի տուգանքներ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:109
+msgid "Pickup Library"
+msgstr "Ստանալու գրադարան"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:110
+msgid "Pickup Library (Shortname)"
+msgstr "Ստանալու գրադարանի հակիրճ անուն"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/patron_login.tt2:1
+msgid "Please login using your library barcode"
+msgstr "Մուտք գործիր օգտագործելով քո գրադարանի գծակոդը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:9
+msgid "Print"
+msgstr "Տպել"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:15
+msgid "Print List"
+msgstr "Տպագրման ցուցակ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:69
+msgid "Print Pull List"
+msgstr "Տպիր բացվող ցուցակը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:7
+msgid "Receipt:"
+msgstr "Ստացական"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:24
+msgid "Renewal"
+msgstr "Թարմացում"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:10
+msgid "Renewals Left"
+msgstr "Թողնված թարմացումներ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:111
+msgid "Request Library"
+msgstr "Հարցրման գրադարան"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:112
+msgid "Request Library (Shortname)"
+msgstr "Հարցրման գրադարան (հակիրճ անուն)"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:114
+msgid "SMS Carrier"
+msgstr "SMS փոխադրող"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:113
+msgid "Selection Locus"
+msgstr "Ընտրելու տեղ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:1
+msgid "Self Checkout"
+msgstr "Ինքնատացք"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:38
+msgid "Sept"
+msgstr "Սեպտ"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:100
+msgid "Shelving Location"
+msgstr "Դարակի վրա տեղաբաշխում"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:73
+msgid "Show the pull list for:"
+msgstr "Ցույց տուր բացվող ցուցակը սրա համար։"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:70
+msgid "State or Province"
+msgstr "Նահանգ կամ երկրամաս"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/holds_page.tt2:8
+msgid "Status"
+msgstr "Կարգավիճակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:62
+msgid "Street Address"
+msgstr "Փողոցի հասցե"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:53
+msgid "Submit"
+msgstr "Հաստատել"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:79
+msgid "Submit Payment"
+msgstr "Հաստատել վճարումը"
+
+#: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:103 ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:7 ../../Open-ILS/src/templates/circ/selfcheck/holds_page.tt2:6
+msgid "Title"
+msgstr "Վերնագիր"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:10
+msgid "Total Billed"
+msgstr "Ընդամենը հաշվարկված"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:11
+msgid "Total Paid"
+msgstr "Ընդամենը վճարված"
+
+#. ("<span></span>")
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:2
+msgid "Total amount to pay: $%1"
+msgstr "Վճարման ենթական ընդհանուր գումար: $%1"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:11 ../../Open-ILS/src/templates/circ/selfcheck/fines.tt2:8
+msgid "Type"
+msgstr "Տեսակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:8
+msgid "Type of Card"
+msgstr "Քարտի տեսակ"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:11
+msgid "VISA"
+msgstr "Վիզա"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:28
+msgid "View Details"
+msgstr "Դիտիր մանրամասները"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:22
+msgid "View Holds"
+msgstr "Դիտիր պահումները"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:16
+msgid "View Items Out"
+msgstr "Դիտիր դուրս տրված նյութերը"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/logout_dialog.tt2:2
+msgid "Your login session will soon timeout due to inactivity."
+msgstr "Քո կապը շուտով կփակվի, քանի որ ակտիվ չես"
+
+#: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:74
+msgid "ZIP or Postal Code"
+msgstr "ZIP կամ փոստային կոդ"

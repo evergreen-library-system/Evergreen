@@ -1,0 +1,198 @@
+# Armenian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-06-22 05:33+0000\n"
+"PO-Revision-Date: 2017-07-27 06:41+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-07-28 05:37+0000\n"
+"X-Generator: Launchpad (build 18439)\n"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:63
+msgid "Active"
+msgstr "Գործուն"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:50
+msgid "Address Alert"
+msgstr "Հասցեի ահազանգ"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:78
+msgid "Apply Changes"
+msgstr "Կիրառել փոփոխությունները"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:101
+msgid ""
+"Assign additional permission groups to users here.<br/>This does not affect "
+"circulation policy."
+msgstr ""
+"Նշանակիր օգտվողներին լրացուցիչ թույլտվությունների խմբեր այստեղ։<br/>Սա չի "
+"ազդի տացքի քաղաքակնության վրա։"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:62
+msgid "Barcode"
+msgstr "Գծակոդ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:242
+msgid "Cancel Selected Events"
+msgstr "Չեղարկիր ընտրված իրադարձությունները։"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:112
+msgid "Circulation"
+msgstr "Տացք"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:77
+msgid "Close"
+msgstr "Փակ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:128
+msgid "Collected"
+msgstr "Հավաքված"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:132
+msgid "Complete"
+msgstr "Ավարտվեց"
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:97
+msgid "Context Org Unit"
+msgstr "Բովանդակային Օրգ միավոր"
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:93
+msgid "Delete Selected"
+msgstr "Ջնջիր ընտրվածները"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:133
+msgid "Error"
+msgstr "Սխալ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:280
+msgid "Event Name"
+msgstr "Իրադարձության անուն"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:127
+msgid "Found"
+msgstr "Գտնված"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:113
+msgid "Hold"
+msgstr "Պահում"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:129
+msgid "Invalid"
+msgstr "Անվավեր"
+
+#: ../../Open-ILS/src/templates/actor/user/message.tt2:2 ../../Open-ILS/src/templates/actor/user/message.tt2:91
+msgid "Patron Messages"
+msgstr "Ընթերցողի հաղորդագրություն"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:130
+msgid "Pending"
+msgstr "Սպասող"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:64
+msgid "Primary"
+msgstr "Սկզբնական"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:246
+msgid "Print All Events"
+msgstr "Տպիր բոլոր իրադարձությունները"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:244
+msgid "Print Selected Events"
+msgstr "Տպիր ընտրված իրադարձությունները"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:131
+msgid "Reacting"
+msgstr "Արձագանգել"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:240
+msgid "Reset Selected Events"
+msgstr "Վերագրիր ընտրված իրադարձությունները"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:114
+msgid "Save"
+msgstr "Հիշել"
+
+#: ../../Open-ILS/src/templates/actor/user/register_table.tt2:47
+msgid "Secondary Groups"
+msgstr "Երկրորդային խմբեր"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:94
+msgid "Secondary Permission Groups"
+msgstr "Երկրորդային թույլատրված խմբեր"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:23
+msgid "Show All Fields"
+msgstr "Ցույց տուր բոլոր դաշտերը"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:21
+msgid "Show Only Required Fields"
+msgstr "Ցույց տուր միայն պահանջված դաշտերը"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:22
+msgid "Show Suggested Fields"
+msgstr "Ցույց տուր առաջարկված դաշտերը"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:250
+msgid "Show events at and below"
+msgstr "Ցույց տուր վերևի և ներքևի իրադարձությունները"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:291
+msgid "Target Circulation - Author"
+msgstr "Թիրախային տացք - Հեղինակ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:289
+msgid "Target Circulation - Copy Barcode"
+msgstr "Թիրախային տացք - գծակոդի պատճեն"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:292
+msgid "Target Circulation - Patron Barcode"
+msgstr "Թիրախային տացք - Ընթերցողի գծակոդ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:290
+msgid "Target Circulation - Title"
+msgstr "Թիրախային տացք - Վերնագիր"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:294
+msgid "Target Hold - Author"
+msgstr "Թիրախային պահում - Հեղինակ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:295
+msgid "Target Hold - Patron Barcode"
+msgstr "Թիրախային պահում - Ընթերցողի գծակոդ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:293
+msgid "Target Hold - Title"
+msgstr "Թիրախային պահում - Վերնագիր"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:2
+msgid "Triggered Event Log"
+msgstr "Կապակցված իրադարձության լոգ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:163
+msgid "Up to how many rows?"
+msgstr "Դեպի վեր քանի՞ տող"
+
+#: ../../Open-ILS/src/templates/actor/user/register.tt2:1
+msgid "User Editor"
+msgstr "Օգտվողի խմբագրիչ"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:171
+msgid "You selected nothing."
+msgstr "Դու չես ընտրել"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:235
+msgid "copy specific"
+msgstr "պատճենիր հատուկը"
+
+#: ../../Open-ILS/src/templates/actor/user/event_log.tt2:236
+msgid "patron specific"
+msgstr "ընթերցողին հատուկ"

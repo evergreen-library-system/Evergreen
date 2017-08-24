@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-04-19 15:35-0500\n"
+"POT-Creation-Date: 2017-07-27 15:50-0500\n"
 "PO-Revision-Date: 2017-04-09 07:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-04-23 05:58+0000\n"
-"X-Generator: Launchpad (build 18361)\n"
+"X-Launchpad-Export-Date: 2017-07-30 06:15+0000\n"
+"X-Generator: Launchpad (build 18441)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -1272,8 +1272,8 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr "Nejprve je potřeba označit záznam jako cíl přesunu rezervace"
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Rezervace přesunuty."
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -2418,3 +2418,6 @@ msgstr "Exempláře:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s volných"
+
+#~ msgid "Holds transferred."
+#~ msgstr "Rezervace přesunuty."

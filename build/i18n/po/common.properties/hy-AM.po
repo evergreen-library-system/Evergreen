@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-04-19 15:35-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-07-27 15:50-0500\n"
+"PO-Revision-Date: 2017-06-22 10:28+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-04-23 05:59+0000\n"
-"X-Generator: Launchpad (build 18361)\n"
+"X-Launchpad-Export-Date: 2017-07-30 06:16+0000\n"
+"X-Generator: Launchpad (build 18441)\n"
 
 #: common.exception
 msgid ""
@@ -212,7 +212,7 @@ msgstr "Գին"
 
 #: staff.acp_label_cost
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Համալրման գին"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
@@ -221,7 +221,7 @@ msgstr "Վիճակ"
 
 #: staff.acp_label_age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Տարիքի հետ կապված պահման պաշտպանություն"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"
@@ -740,7 +740,7 @@ msgstr "Նյութի տեսակ"
 
 #: staff.z39_50.search_class.item_type.all
 msgid "All Formats"
-msgstr "Բոլոր ձևաչափեր"
+msgstr "Բոլոր ձեւաչափերը"
 
 #: staff.z39_50.search_class.item_type.art
 msgid "Papers/Articles"
@@ -752,7 +752,7 @@ msgstr "Գրքեր"
 
 #: staff.z39_50.search_class.item_type.com
 msgid "Computer files"
-msgstr "Համակարգչային ֆայլեր"
+msgstr "Համակարգչային նշոցներ"
 
 #: staff.z39_50.search_class.item_type.map
 msgid "Maps"
