@@ -1,3 +1,193 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b3c09159f94a31879abc3f75e20678cdb34ca1dd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit a4bbc469254478d52df2fbc19dc1cdd6b4b88f2b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 23 16:22:45 2017 -0400
+
+    Docs: Release notes for the 2.11.8 point release
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+32	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit e2165252aeaaaf1f6c7b6d787359c148f16b5473
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed Aug 9 11:36:20 2017 -0400
+
+    LP 1708728 - Fix Stripe penny errors introduced by perl int() function
+    
+    Fixes the issue where payment amounts sent to Stripe can be one cent less
+    than the actual Evergreen payment due to use of the perl int() function.
+    
+    To test
+    -------
+    A Stripe account is required to view transactions on the Stripe side.
+    To enable test payments, Stripe testing API keys need to be entered
+    in the Evergreen ou settings:
+    
+    credit.processor.stripe.pubkey
+    credit.processor.stripe.secretkey
+    
+    - Add a bill to a patron record with the following amounts: $8.20
+    - Login to the opac as the patron and pay the bill.
+    - View the transaction on the Stripe side and see that it is one cent
+      less than the paid bill in Evergreen.
+    - Apply the patch.
+    - Repeat the steps above.
+    
+    - On the Stripe side, see that the Stripe amount and Evergreen amount
+      now match.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit b10e144f182d6f2463bc7f435d7427a94c5cd16a
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Tue Aug 15 10:19:22 2017 -0400
+
+    LP#1710747: Absolute URL for media_prefix in templates
+    
+    If OILSWebMediaPrefix is set in the Apache configuration, then
+    the ctx.media_prefix TT2 template variable uses that value as the
+    hostname; otherwise it is null, resulting in many relative URLs for
+    images, CSS, and JavaScript files.
+    
+    Normally this is not a problem, but the Open Graph image property
+    requires a full absolute URL rather than the relative URL that would
+    previously result on the record summary page in the absence of the
+    OILSWebMediaPrefix variable having been set in the Apache config.
+    
+    This patch tweaks the EGWeb handler to fall back to the base hostname in
+    the absence of the OILSWebMediaPrefix variable, thus ensuring that all
+    uses of ctx.media_prefix result in an absolute URL.
+    
+    Test Plan:
+    Pre-patch - Visit a record summary page in the catalog. View the source of the
+    page. In the head section, find the og:image meta property. The content will
+    display a relative URL to the record's book jacket cover image.
+    
+    Post-patch - When viewing the source of the page, og:image will display the
+    full URL.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+
+commit 68e4457925d14b2eb263cef58d2600c73185ac49
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue May 23 16:36:44 2017 -0400
+
+    LP#1098685: Require OPAC patron holds w/ phone/SMS notification to enter that info
+    
+    This provides some plain vanilla JS form validation, and error feedback
+    using a yellow background color on the culprit input field.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/js.tt2
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+11	24	Open-ILS/src/templates/opac/parts/js.tt2
+4	4	Open-ILS/src/templates/opac/parts/place_hold.tt2
+76	0	Open-ILS/web/js/ui/default/opac/holds-validation.js
+ create mode 100644 Open-ILS/web/js/ui/default/opac/holds-validation.js
+
+commit 38393989ea24fe2265248c34e225cc871cb6b461
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue May 23 09:58:39 2017 -0400
+
+    LP#1669534 - OPAC hold request should not default to first SMS carrier
+    
+    Added empty <option> tag to address this and related form validation issues.
+    
+    To test
+    -------
+    [0] Ensure that SMS messaging is enabled.
+    [1] Apply the patch and go to the place hold form in the public
+        catalog. Verify that no mobile carrier is selected.
+    [2] Set the default SMS carrier and number for the user account
+        and go back to the place hold form. Verify that the user's
+        default carrier and number appear in the form.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	0	Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2
+
+commit 812946e5f8e1ff41a5640564b7c126272942fb75
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jul 7 13:04:35 2017 -0400
+
+    LP#1702968 - Add missing error string - mark item damaged.
+    
+    When marking an item damaged for a circulation that has been
+    archived/aged, the patron receives an error that the string
+    associated with staff.cat.util.mark_item_damaged.item_no_linked_patron
+    is not there.  This branch adds it.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/xul/staff_client/server/locale/en-US/cat.properties
+
+commit 8974ccb34567538cf908cbb5b9b31f6b7d76dc36
+Author: Josh Stompro <stomproj@larl.org>
+Date:   Mon Jul 24 13:51:55 2017 -0500
+
+    LP#1706148 - Hide "Hold is behind Circ Desk" checkbox in XUL patron registration.
+    
+    When the library setting for "Behind Desk Pickup Supported" is not enabled then
+    the checkbox for "Hold is behind Circ Desk" should be hidden.
+    
+    Test Plan - before fix:
+      1. Check to make sure that the "Behind Desk Pickup Supported" library setting is
+         unset or false.
+      2. Open the patron registration screen in the XUL staff client and see that the
+         user settings checkbox for "Hold is behind Circ Desk" exists.
+    
+    After Fix Applied:
+      1. Check to make sure that the "Behind Desk Pickup Supported" library setting is
+         unset or false.
+      2. Open the patron registration screen in the XUL staff client and see that the
+         user settings checkbox for "Hold is behind Circ Desk" no longer is shown.
+      3. Change the library setting in question to True.
+      4. Reload/reopen the patron registration screen and see that the checkbox now
+         is visible.
+    
+    Signed-off-by: Josh Stompro <stomproj@larl.org>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/web/js/ui/default/actor/user/register.js
+
+commit 84a7b3709663b6073cc44aa5330e6f6dc9f183c9
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jul 27 17:20:52 2017 -0400
+
+    Forward port 2.11.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.6-2.11.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.6-2.11.7-upgrade-db.sql
