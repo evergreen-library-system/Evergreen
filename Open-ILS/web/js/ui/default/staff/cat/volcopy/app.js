@@ -138,7 +138,7 @@ function(egCore , $q) {
 
     service.get_locations = function(orgs) {
         return egCore.pcrud.search('acpl',
-            {owning_lib : orgs},
+            {owning_lib : orgs, deleted : 'f'},
             {order_by : { acpl : 'name' }}, {atomic : true}
         );
     };
