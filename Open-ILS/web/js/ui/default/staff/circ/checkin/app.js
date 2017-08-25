@@ -361,8 +361,10 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         var itemObjs = [];
         angular.forEach(items, function(i){
             var h = egCore.idl.toHash(i);
-            h['call_number.record.id'] = h.record.doc_id;
-            itemObjs.push(h);
+            itemObjs.push({
+                'call_number.record.id': h.record.doc_id,
+                'id' : h.acp.id
+            });
         });
         itemSvc.spawnHoldingsEdit(itemObjs,false,false);
     }
