@@ -15,6 +15,10 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:22
+msgid ""
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
 "\n"
@@ -2758,7 +2762,7 @@ msgstr ""
 msgid "Note: You must have a valid email address associated with your library account. If not, please contact your local library for further assistance."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:28 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:29 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
 msgid "Note: carrier charges may apply"
 msgstr ""
 
