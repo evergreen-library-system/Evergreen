@@ -887,12 +887,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
-    service.print_spine_labels = function(copies){
+    service.print_spine_labels = function(copy_ids){
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.anon_cache.set_value',
             null, 'print-labels-these-copies', {
-                copies : service.gatherSelectedHoldingsIds(copies)
+                copies : copy_ids
             }
         ).then(function(key) {
             if (key) {

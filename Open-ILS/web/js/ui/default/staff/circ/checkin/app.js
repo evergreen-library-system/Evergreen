@@ -376,7 +376,11 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     }
 
     $scope.printSpineLabels = function(items){
-        itemSvc.print_spine_labels(items);
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        itemSvc.print_spine_labels(copy_ids);
     }
 }])
 
