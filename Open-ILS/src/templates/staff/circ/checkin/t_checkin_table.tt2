@@ -20,12 +20,10 @@
     label="[% l('Backdate Post-Checkin') %]">
   </eg-grid-action>
   <eg-grid-action
-    group="[% l('Show')"
     handler="showMarkDamaged"
     label="[% l('Mark Items Damaged') %]">
   </eg-grid-action>
   <eg-grid-action
-    group="[% l('Show')"
     handler="show_mark_missing_pieces"
     label="[% l('Mark Missing Pieces') %]">
   </eg-grid-action>
