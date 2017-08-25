@@ -14,7 +14,7 @@
         <div class="align">
             <a href='[% mkurl('circs',{},1) %]'>[% l("Current Items Checked Out") %]</a>
         </div>
-        [%- IF ebook_api.enabled %]
+        [%- IF ebook_api.enabled == 'true' %]
         <div class="align">
             <a href="[% mkurl('ebook_circs',{},1) %]">[% l("E-Items Currently Checked Out") %]</a>
         </div>
