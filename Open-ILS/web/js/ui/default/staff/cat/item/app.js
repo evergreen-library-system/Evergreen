@@ -48,8 +48,8 @@ angular.module('egItemStatus',
 })
 
 .factory('itemSvc', 
-       ['egCore',
-function(egCore) {
+       ['egCore','egCirc',
+function(egCore , egCirc) {
 
     var service = {
         copies : [], // copy barcode search results
@@ -70,15 +70,6 @@ function(egCore) {
         } 
     }
 
-    // resolved with the last received copy
-    service.fetch = function(barcode, id, noListDupes) {
-        var promise;
-
-        if (barcode) {
-            promise = egCore.pcrud.search('acp', 
-                {barcode : barcode, deleted : 'f'}, service.flesh);
-        } else {
-            promise = egCore.pcrud.retrieve('acp', id, service.flesh);
     //Retrieve separate copy, aacs, and accs information
     service.getCopy = function(barcode, id) {
         if (barcode) {
@@ -87,12 +78,16 @@ function(egCore) {
             .then(function(actual_barcode) {
                 return egCore.pcrud.search(
                     'acp', {barcode : actual_barcode, deleted : 'f'},
-                    service.flesh).then(function(copy) {return copy});
+                    service.flesh);
             });
         }
+        return egCore.pcrud.retrieve( 'acp', id, service.flesh);
+    }
 
+    // resolved with the last received copy
+    service.fetch = function(barcode, id, noListDupes) {
         var lastRes;
-        return promise.then(
+        return service.getCopy(barcode, id).then(
             function() {return lastRes},
             null, // error
 
