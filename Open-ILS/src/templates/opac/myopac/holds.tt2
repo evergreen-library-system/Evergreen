@@ -15,7 +15,7 @@
         <div class="align selected">
             <a href='#'>[% l("Items on Hold") %]</a>
         </div>
-        [% IF ebook_api.enabled %]
+        [% IF ebook_api.enabled == 'true' %]
         <div class="align">
             <a href='[% mkurl('ebook_holds', {}, ['limit','offset','available','sort','sort_type']) %]'>[% l("E-Items on Hold") %]</a>
         </div>
