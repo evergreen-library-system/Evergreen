@@ -195,6 +195,63 @@ CREATE INDEX metabib_display_entry_field_idx
 CREATE INDEX metabib_display_entry_source_idx 
     ON metabib.display_entry (source);
 
+CREATE VIEW metabib.flat_display_entry AS
+    /* One row per display entry fleshed with field info */
+    SELECT
+        mde.source,
+        cdfm.name,
+        cdfm.multi,
+        cmf.label,
+        cmf.id AS field,
+        mde.value
+    FROM metabib.display_entry mde
+    JOIN config.metabib_field cmf ON (cmf.id = mde.field)
+    JOIN config.display_field_map cdfm ON (cdfm.field = mde.field)
+;
+
+CREATE VIEW metabib.compressed_display_entry AS
+/* Like flat_display_entry except values are compressed into 
+   one row per display_field_map and JSON-ified.  */
+    SELECT 
+        source,
+        name,
+        multi,
+        label,
+        field,
+        CASE WHEN multi THEN
+            TO_JSON(ARRAY_AGG(value))
+        ELSE
+            TO_JSON(MIN(value))
+        END AS value
+    FROM metabib.flat_display_entry
+    GROUP BY 1, 2, 3, 4, 5
+;
+
+CREATE VIEW metabib.wide_display_entry AS
+/* Table-like view of well-known display fields.   
+   This VIEW expands as well-known display fields are added. */
+    SELECT 
+        bre.id AS source,
+        COALESCE(mcde_title.value, 'null') AS title,
+        COALESCE(mcde_author.value, 'null') AS author,
+        COALESCE(mcde_subject.value, 'null') AS subject,
+        COALESCE(mcde_creators.value, 'null') AS creators,
+        COALESCE(mcde_isbn.value, 'null') AS isbn
+    -- ensure one row per bre regardless of the presence of display entries
+    FROM biblio.record_entry bre 
+    LEFT JOIN metabib.compressed_display_entry mcde_title 
+        ON (bre.id = mcde_title.source AND mcde_title.name = 'title')
+    LEFT JOIN metabib.compressed_display_entry mcde_author 
+        ON (bre.id = mcde_author.source AND mcde_author.name = 'author')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject 
+        ON (bre.id = mcde_subject.source AND mcde_subject.name = 'subject')
+    LEFT JOIN metabib.compressed_display_entry mcde_creators 
+        ON (bre.id = mcde_creators.source AND mcde_creators.name = 'creators')
+    LEFT JOIN metabib.compressed_display_entry mcde_isbn 
+        ON (bre.id = mcde_isbn.source AND mcde_isbn.name = 'isbn')
+;
+
+
 CREATE TABLE metabib.browse_entry (
     id BIGSERIAL PRIMARY KEY,
     value TEXT,

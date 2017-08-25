@@ -3807,7 +3807,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="title" reporter:label="Title" reporter:datatype="text"/>
 			<field name="author" reporter:label="Author" reporter:datatype="text"/>
 			<field name="subject" reporter:label="Subject" reporter:datatype="text"/>
-			<field name="topic_subject" reporter:label="Topic Subject" reporter:datatype="text"/>
+			<field name="creators" reporter:label="Creators" reporter:datatype="text"/>
 			<field name="isbn" reporter:label="ISBN" reporter:datatype="text"/>
 			<!-- TODO add all well-known fields -->
 		</fields>

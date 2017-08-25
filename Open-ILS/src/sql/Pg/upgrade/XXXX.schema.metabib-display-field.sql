@@ -60,7 +60,7 @@ CREATE VIEW metabib.wide_display_entry AS
         COALESCE(mcde_title.value, 'null') AS title,
         COALESCE(mcde_author.value, 'null') AS author,
         COALESCE(mcde_subject.value, 'null') AS subject,
-        COALESCE(mcde_topic_subject.value, 'null') AS topic_subject,
+        COALESCE(mcde_creators.value, 'null') AS creators,
         COALESCE(mcde_isbn.value, 'null') AS isbn
     -- ensure one row per bre regardless of any display fields
     FROM biblio.record_entry bre 
@@ -70,8 +70,8 @@ CREATE VIEW metabib.wide_display_entry AS
         ON (bre.id = mcde_author.source AND mcde_author.name = 'author')
     LEFT JOIN metabib.compressed_display_entry mcde_subject 
         ON (bre.id = mcde_subject.source AND mcde_subject.name = 'subject')
-    LEFT JOIN metabib.compressed_display_entry mcde_topic_subject 
-        ON (bre.id = mcde_topic_subject.source AND mcde_topic_subject.name = 'topic_subject')
+    LEFT JOIN metabib.compressed_display_entry mcde_creators 
+        ON (bre.id = mcde_creators.source AND mcde_creators.name = 'creators')
     LEFT JOIN metabib.compressed_display_entry mcde_isbn 
         ON (bre.id = mcde_isbn.source AND mcde_isbn.name = 'isbn')
 ;

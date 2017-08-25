@@ -48,8 +48,10 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_facet_indexing');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_display_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('serial.rematerialize_on_same_holding_code');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.preserve_on_delete');
+
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
@@ -225,6 +227,12 @@ or identifier.
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
+
+CREATE TABLE config.display_field_map (
+    name    TEXT   PRIMARY KEY,
+    field   INTEGER REFERENCES config.metabib_field (id),
+    multi   BOOLEAN DEFAULT FALSE
+);
 
 CREATE TABLE config.ts_config_list (
 	id			TEXT PRIMARY KEY,
