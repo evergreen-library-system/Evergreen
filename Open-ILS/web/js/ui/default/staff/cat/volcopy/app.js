@@ -327,6 +327,34 @@ function(egCore , $q) {
     return service;
 }])
 
+.directive('stringToNumber', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            var precision = attrs.precision || 0;
+            ngModel.$parsers.push(function(value) {
+                return value;
+            });
+
+            function updateDisplay() {
+                var value = parseFloat(ngModel.$viewValue);
+                if ( isNaN(value) ) { return; }
+                    element.val(value.toFixed(precision));
+            }
+
+            ngModel.$formatters.push(function(value) {
+                return parseFloat(value);
+            });
+
+            ngModel.$viewChangeListeners.push(updateDisplay);
+
+            ngModel.$render = function() {
+                updateDisplay();
+            }
+        }
+    };
+})
+
 .directive("egVolCopyEdit", function () {
     return {
         restrict: 'E',
