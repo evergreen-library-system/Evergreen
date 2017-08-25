@@ -1,0 +1,626 @@
+# Armenian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-06-22 05:37+0000\n"
+"PO-Revision-Date: 2017-07-27 11:59+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-07-28 05:37+0000\n"
+"X-Generator: Launchpad (build 18439)\n"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
+msgid "&#171; Previous"
+msgstr "&#171; Նախորդ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:8
+msgid "(starting from 0)"
+msgstr "(սկսում է 0)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:6 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:12
+msgid "Acquisitions Records"
+msgstr "Համալրման գրառումներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:285
+msgid "Apply"
+msgstr "Կիրառել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:22
+msgid "Are you sure you want to delete the selected queues?"
+msgstr "Վստա՞հ ես, որ ցանկանում ես ջնջել ընտրված հերթերը։"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:20
+msgid "Are you sure you want to delete this queue?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս հերթը։"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:68
+msgid "Are you sure you want to delete this record?"
+msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս գրառումը։"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:16
+msgid "Author"
+msgstr "Հեղինակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:30 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:7 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:11
+msgid "Authority Records"
+msgstr "Հեղինակավոր գրառումներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:7
+msgid "Authority attributes"
+msgstr "Հեղինակավորի բաղկացուցիչներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:261
+msgid "Auto-overlay In-process Acquisition Copies"
+msgstr "Ավտո համադրում ընթացքում է Համալրման օրինակներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:110
+msgid "Auto-overlay In-process Acquisitions Copies"
+msgstr "Ավտո համադրում ընթացքում է Համալրումների օրինակներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:4 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:43
+msgid "Back To Import Queue"
+msgstr "Հետ դեպի ներմուծման հերթ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:236 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:85
+msgid "Best/Single Match Minimum Quality Ratio"
+msgstr "Լավագույն/Միակ համընկնում նվազագույն որակի հարաբերակցություն։"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:29 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:5 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:10
+msgid "Bibliographic Records"
+msgstr "Մատենագիտական գրառումներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:4
+msgid "Bibliographic attributes"
+msgstr "Մատենագիտական բաղկացուցիչներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:57 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:84
+msgid "CSV"
+msgstr "CSV"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:267 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:286
+msgid "Cancel"
+msgstr "Չեղարկել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:16 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:80
+msgid "Code"
+msgstr "Ծածկագիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:14 ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:10
+msgid "Context Org Unit"
+msgstr "Բովանդակային Օրգ միավոր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:258 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:107
+msgid "Copy Import Actions"
+msgstr "Պատճենի ներմուծման գործողություններ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:280
+msgid "Copy Records to Bucket"
+msgstr "Պատճենիր գրառումները Բուկետում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:23
+msgid "Copy To Bucket"
+msgstr "Պատճենիր Բուկետում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:53
+msgid "Create"
+msgstr "Ստեղծիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:10
+msgid "Create Attribute Definition"
+msgstr "Ստեղծիր Բնութագրիչի Սահմանում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:21
+msgid "Create Date"
+msgstr "Ստեղծման ամսաթիվ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:17
+msgid "Create a New Upload Queue"
+msgstr "Ստեղծիր բեռնավորման նոր հերթ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:20
+msgid "Creator"
+msgstr "Ստեղծող"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:22
+msgid "Delete Queue"
+msgstr "Ջնջիր հերթը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:10 ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:6 ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:21
+msgid "Delete Selected"
+msgstr "Ջնջիր ընտրվածները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:69
+msgid "Delete record"
+msgstr "Ջնջիր գրառումը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:20 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:81
+msgid "Description"
+msgstr "Նկարագրություն"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:7
+msgid "Edit"
+msgstr "Խմբագրել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:58 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:85
+msgid "Email"
+msgstr "Էլ. փոստ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:14
+msgid "Error Detail"
+msgstr "Սխալի մանրամասներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:1
+msgid "Evergreen MARC File Upload"
+msgstr "Evergreen ՄԱՐԿ ֆայլի բեռնավորում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:41
+msgid "Evergreen Record Entry"
+msgstr "Evergreen գրառման մուտք"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:28 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:37
+msgid "Example"
+msgstr "Օրինակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:55
+msgid "Export Items As..."
+msgstr "Արտահանիր նյութերը որպես"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:18
+msgid "Export Non-Imported Records"
+msgstr "Արտահանիր չներմուծված գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:82
+msgid "Export Queue As..."
+msgstr "Արտահանիր հերթը որպես"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:1 ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:3
+msgid "Export Records"
+msgstr "Արտահանիր գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+msgid "File to Upload:"
+msgstr "Բեռնավորման ենթակա ֆայլ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:12
+msgid "From CSV File"
+msgstr "CSV ֆայլից"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:29
+msgid "Heading"
+msgstr "Առաջնորդող"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:40
+msgid "Holdings Import Profile"
+msgstr "Պահումների ներմուծման անձնագիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:7 ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:15
+msgid "Holdings Import Profiles"
+msgstr "Պահումների ներմուծման անձնագրեր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:79 ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:12 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:12
+msgid "ID"
+msgstr "ID"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:17
+msgid "ISBN"
+msgstr "ISBN"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:18
+msgid "ISSN"
+msgstr "ISSN"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270
+msgid "Import"
+msgstr "Ներմուծել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:16
+msgid "Import All  Records"
+msgstr "Ներմուծել բոլոր գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:13
+msgid "Import Error"
+msgstr "Ներմուծման սխալ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:9
+msgid "Import Errors"
+msgstr "Ներմուծման սխալներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:148 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:190
+msgid "Import Failures"
+msgstr "Ներմուծման ձախողում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:49 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:202
+msgid "Import Items"
+msgstr "Ներմուծիր նյութերը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:39
+msgid "Import Matches"
+msgstr "Ներմուծումը համընկնում է"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:214 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:63
+msgid "Import Non-Matching Records"
+msgstr "Ներմուծիր չհամընկնող գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:5
+msgid "Import Records"
+msgstr "Ներմուծիր գրառումներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:15
+msgid "Import Selected Records"
+msgstr "Ներմուծիր ընտրված գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:152 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:194
+msgid "Import Time"
+msgstr "Ներմուծման ժամանակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:153 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:195
+msgid "Imported As"
+msgstr "Ներմուծվել է որպես"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:55
+msgid "Include holdings in Bibliographic Records"
+msgstr "Ներառ պահումները Մատենագիտական գրառումում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:7
+msgid "Inspect Queue"
+msgstr "Զննիր հերթը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:243 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:92
+msgid "Insufficient Quality Fall-Through Profile"
+msgstr "Անբավարար որակի անձնագիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:39
+msgid "Item Import Failures"
+msgstr "Նյութի ներմուծման ձախողում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:38
+msgid "Items Imported"
+msgstr "Ներմուծված նյութեր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:37
+msgid "Items in Queue"
+msgstr "Նյութերը հերթում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:22
+msgid "Last Edit Date"
+msgstr "Վերջին խմբագրման ամսաթիվ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:33
+msgid "Limit matches to bucket"
+msgstr "Սահմանափակիր համընկնումները փնջում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:51
+msgid "Limit to Import Failures"
+msgstr "Սահմանափակիր ներմուծման ձախողումներով"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:56
+msgid "Limit to Non-Imported Records"
+msgstr "Սահմանափակվիր չներմուծված գրառումներով"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:63
+msgid "Limit to Records with Import Errors"
+msgstr "Սահմանափակվիր ներմուծման սխալներով գրառումներով"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:49
+msgid "Limit to Records with Matches"
+msgstr "Սահմանափակվիր համընկնող գրառումներով"
+
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:8
+msgid "Loading..."
+msgstr "Բեռնում..."
+
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:2
+msgid "MARC Import/Export"
+msgstr "ՄԵԸՔ ներմուծում/արտահանում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:2
+msgid "MARC Record"
+msgstr "ՄԵԸՔ գրառում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:40
+msgid "MARC XML"
+msgstr "MARC XML"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:38
+msgid "MARC21"
+msgstr "MARC21"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:50
+msgid "MARC8"
+msgstr "MARC8"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:17
+msgid "Match Score"
+msgstr "Համընկնման գնահատական"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:19
+msgid "Matched Record Quality"
+msgstr "Համընկած գրառման որակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:142 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:184
+msgid "Matches"
+msgstr "Համընկնումներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:11
+msgid "Merge / Overlay Profiles"
+msgstr "Ձուլման/ծածկման անձնագրեր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:232 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:81
+msgid "Merge On Best Match"
+msgstr "Ձուլիր լավագույն համընկնողը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:220 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:69
+msgid "Merge On Exact Match (901c)"
+msgstr "Ձուլիր ճշգրիտ համընկնողը (901c)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:226 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:75
+msgid "Merge On Single Match"
+msgstr "Ձուլիր միակ համընկնողը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:207 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:57
+msgid "Merge Profile"
+msgstr "Ձուլիր անձնագիրը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:8
+msgid "Merge Target"
+msgstr "Ձուլիր թիրախը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/item_attrs.tt2:9
+msgid "New Definition"
+msgstr "Նոր սահմանում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:5
+msgid "New Merge Profile"
+msgstr "Ձուլման նոր անձնագիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:239 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:88
+msgid "New Record Quality / Quality of Best Match"
+msgstr "Նոր գրառման որակ / Լավագույն համընկնման որակը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:107
+msgid "Next &#187;"
+msgstr "Հաջորդը &#187;"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:15 ../../Open-ILS/src/templates/vandelay/inc/export.tt2:20
+msgid "Or"
+msgstr "Կամ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/profiles.tt2:3
+msgid "Overlay / Merge Profiles"
+msgstr "Ծածկիր / Ձուլիր անձնագիրը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:99
+msgid "Page"
+msgstr "Էջ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:282
+msgid "Please enter the name of the bucket to append/create."
+msgstr "Մուտք արա ավելացման/ստեղծման փնջի անունը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:56 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:83
+msgid "Print"
+msgstr "Տպել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:13
+msgid "Processing... "
+msgstr "Ընթացքում է... "
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:13
+msgid "Queue"
+msgstr "Հերթ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:6
+msgid "Queue "
+msgstr "Հերթ "
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:13
+msgid "Queue Actions"
+msgstr "Հերթի գործողություններ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:46
+msgid "Queue Filters"
+msgstr "Հերթի զտիչներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:30
+msgid "Queue Summary"
+msgstr "Հերթի ամփոփում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:3
+msgid "Queue Type"
+msgstr "Հերթի տեսակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:18
+msgid "Queued Record Quality"
+msgstr "Հերթի դրված գրառման որակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:22
+msgid "Record Bucket ID"
+msgstr "Գրառման փնջի ID"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:36
+msgid "Record Display Attributes"
+msgstr "Գրառման արտածման հատկացուցիչներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:46
+msgid "Record Encoding"
+msgstr "Գրառման կոդավորում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:35
+msgid "Record Format"
+msgstr "Գրառման ձևաչափ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:17
+msgid "Record ID"
+msgstr "Գրառման ID"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:54
+msgid "Record Import Actions"
+msgstr "Գրառման ներմուծման հատկացուցիչներ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:34
+msgid "Record Import Failures"
+msgstr "Գրառման ներմուծման ձախողում"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:28
+msgid "Record Match Set"
+msgstr "Գրառման համընկնման բազմություն"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:13
+msgid "Record Match Sets"
+msgstr "Գրառման համընկնման բազմություններ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:4
+msgid "Record Saved"
+msgstr "Գրառումը հիշվեց"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:26 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:6
+msgid "Record Type"
+msgstr "Գրառման տեսակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:33
+msgid "Records Imported:"
+msgstr "Գրառումը ներմուծված է"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:87
+msgid "Records Per Page"
+msgstr "Գրառումներ ըստ էջի"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:32
+msgid "Records in Queue:"
+msgstr "Գրառումները հերթում։"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:85
+msgid "Remove"
+msgstr "Հեռացնել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:46
+msgid "Remove (advanced)"
+msgstr "Ջնջել (ընդլայնված)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:249 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:98
+msgid "Remove MARC Field Groups"
+msgstr "Հեռացրու ՄԵԸՔ դաշտի խմբերը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:60
+msgid "Retrieve Records"
+msgstr "Վերականչիր գրառումները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:6
+msgid "Return"
+msgstr "Վերադարձ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/marchtml.tt2:3
+msgid "Save Changes"
+msgstr "Հիշել փոփոխությունները"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queueselect.tt2:2
+msgid "Select a Queue to Inspect"
+msgstr "Ընտրիր զննման ենթակա հերթը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:47
+msgid "Select a Record Source"
+msgstr "Ընտրիր գրառման աղբյուրը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:23
+msgid "Source"
+msgstr "Աղբյուր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:83
+msgid "Subfield"
+msgstr "Ենթադաշտ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:33
+msgid "Subfield(s)"
+msgstr "Ենթադաշտ(եր)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:33
+msgid "TCN Source"
+msgstr "TCN աղբյուր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:34
+msgid "TCN Value"
+msgstr "TCN արժեք"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:82
+msgid "Tag"
+msgstr "Ցուցիչ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:24
+msgid "Tag(s)"
+msgstr "Ցուցիչ(ներ)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:15
+msgid "Title"
+msgstr "Վերնագիր"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:39
+msgid "UNIMARC"
+msgstr "UNIMARC"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:19
+msgid "UPC"
+msgstr "UPC"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:49
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:61
+msgid "Update"
+msgstr "Թարմացնել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:120
+msgid "Upload"
+msgstr "Բեռնել"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:8
+msgid "Upload Status"
+msgstr "Բեռնավորման կարգավիճակ"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/progress.tt2:10
+msgid "Uploading..."
+msgstr "Բեռնավորում..."
+
+#: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:5
+msgid "Use Field Number"
+msgstr "Օգտագործիր դաշտի համարը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:17
+msgid "View Import Items"
+msgstr "Դիտիր ներմուծված նյութերը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:13 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:136 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:178
+msgid "View MARC"
+msgstr "Դիտիր MARC"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:84
+msgid "XPath"
+msgstr "XPath"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:41
+msgid "XPath (advanced)"
+msgstr "XPath (ընդլայնված)"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:36
+msgid "You can enter multiple subfields, separated by spaces and/or commas"
+msgstr ""
+"Դու կարող ես մուտք անել բազմակի դաշտեր, բաժանված բացատներով և/կամ "
+"ստորակետներով"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:27
+msgid "You can enter multiple tags, separated by spaces and/or commas"
+msgstr ""
+"Դու կարող ես մուտք անել բազմակի ցուցիչներ, բաժանված բացատներով և/կամ "
+"ստորակետներով"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:21
+msgid "or Add to an Existing Queue"
+msgstr "կամ Ավելացրու առկա Հերթին"
