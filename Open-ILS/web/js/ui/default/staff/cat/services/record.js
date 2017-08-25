@@ -232,6 +232,47 @@ angular.module('egCoreMod')
  * the prescribed fields from the IDL (and database view), while the
  * 'mfde' hash-based objects contain all configured display fields,
  * including local/custom fields.
+ *
+ * Example:
+ *
+ *  --
+ *  // Display well-known fields
+ *
+ *  $scope.record = copy.call_number().record();
+ *
+ *  // translate wide display entry values inline
+ *  egBibDisplay.mwdeJSONToJS($scope.record.wide_display_entry());
+ *
+ *  <div>Title:</div>
+ *  <div>{{record.wide_display_entry().title()}}</div>
+ *
+ *  ---
+ *  //  Display any field using known keys
+ *
+ *  $scope.all_display_fields = 
+ *      egBibDisplay.mfdeToHash(record.flat_display_entries());
+ *
+ *  <div>Title:</div>
+ *  <div>{{all_display_fields.title}}</div>
+ *
+ *  ---
+ *  // Display all fields dynamically, using confgured labels
+ *
+ *  $scope.all_display_fields_with_meta = 
+ *      egBibDisplay.mfdeToMetaHash(record.flat_display_entries());
+ *
+ *  <div ng-repeat="(key, content) in all_display_fields_with_meta">
+ *    <div>Field Label</div><div>{{content.label}}</div>
+ *    <div ng-if="content.multi == 't'">
+ *      <div ng-repeat="val in content.value">
+ *        <div>Field Value</div><div>{{val}}</div>
+ *      </div>
+ *    </div>
+ *    <div ng-if="content.multi == 'f'">
+ *      <div>Field Value</div><div>{{content.value}}</div>
+ *    </div>
+ *  </div>
+ *
  */
 .factory('egBibDisplay', ['$q', 'egCore', function($q, egCore) {
     var service = {};
