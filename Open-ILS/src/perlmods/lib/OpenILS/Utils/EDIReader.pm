@@ -23,6 +23,7 @@ my %edi_fields = (
     message_type    => qr/^UNH\+[A-z0-9]+\+(\S{6})/,
     buyer_san       => qr/^NAD\+BY\+([^:]+)::31B/,
     buyer_acct      => qr/^NAD\+BY\+([^:]+)::91/,
+    buyer_code      => qr/^RFF\+API:(\S+)/,
     vendor_san      => qr/^NAD\+SU\+([^:]+)::31B/,
     vendor_acct     => qr/^NAD\+SU\+([^:]+)::91/,
     purchase_order  => qr/^RFF\+ON:(\S+)/,

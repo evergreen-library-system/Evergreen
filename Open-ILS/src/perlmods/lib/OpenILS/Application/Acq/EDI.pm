@@ -521,6 +521,8 @@ sub nice_string {
 sub process_message_buyer {
     my ($class, $e, $msg_hash, $message,  $log_prefix, $eg_inv) = @_;
 
+    my $vendcode = $msg_hash->{buyer_code};
+
     # some vendors encode the account number as the SAN.
     # starting with the san value, then the account value, 
     # treat each as a san, then an acct number until the first success
@@ -528,8 +530,9 @@ sub process_message_buyer {
         next unless $buyer;
 
         # some vendors encode the SAN as "$SAN $vendcode"
-        my $vendcode;
-        ($buyer, $vendcode) = $buyer =~ /(\S+)\s*(\S+)?$/;
+        if (!$vendcode) {
+            ($buyer, $vendcode) = $buyer =~ /(\S+)\s*(\S+)?$/;
+        }
 
         my $addr = $e->search_actor_org_address(
             {valid => "t", san => $buyer})->[0];
