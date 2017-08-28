@@ -8,11 +8,11 @@ BEGIN;
 SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook,
-        validator, reactor, delay, delay_field, group_field, template)
+        validator, reactor, delay, max_delay, delay_field, group_field, template)
     VALUES (54, FALSE, 1,
         '3 Day Courtesy Notice by SMS',
         'checkout.due',
-        'CircIsOpen', 'SendSMS', '-3 days', 'due_date', 'usr',
+        'CircIsOpen', 'SendSMS', '-3 days', '-2 days', 'due_date', 'usr',
 $$
 [%- USE date -%]
 [%- user = target.0.usr -%]
