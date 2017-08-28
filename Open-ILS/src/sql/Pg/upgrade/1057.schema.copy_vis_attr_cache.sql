@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1057', :eg_version); -- miker/gmcharlt/kmlussier
+
 -- Thist change drops a needless join and saves 10-15% in time cost
 CREATE OR REPLACE FUNCTION search.facets_for_record_set(ignore_facet_classes text[], hits bigint[]) RETURNS TABLE(id integer, value text, count bigint)
 AS $f$
