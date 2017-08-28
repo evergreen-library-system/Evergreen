@@ -1,5 +1,7 @@
 BEGIN;
 
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1056', :eg_version); -- miker/gmcharlt
+
 INSERT INTO permission.perm_list (id,code,description) VALUES (592,'CONTAINER_BATCH_UPDATE','Allow batch update via buckets');
 
 INSERT INTO container.user_bucket_type (code,label) SELECT code,label FROM container.copy_bucket_type where code = 'staff_client';
