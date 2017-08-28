@@ -5,7 +5,7 @@
 BEGIN;
 
 -- check whether patch can be applied
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1058', :eg_version); -- mccanna/csharp/gmcharlt
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook,
         validator, reactor, delay, max_delay, delay_field, group_field, template)
