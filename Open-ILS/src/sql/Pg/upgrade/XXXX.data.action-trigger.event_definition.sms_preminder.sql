@@ -9,7 +9,7 @@ SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 INSERT INTO action_trigger.event_definition (id, active, owner, name, hook,
         validator, reactor, delay, delay_field, group_field, template)
-    VALUES (XXXX, FALSE, 1,
+    VALUES (54, FALSE, 1,
         '3 Day Courtesy Notice by SMS',
         'checkout.due',
         'CircIsOpen', 'SendSMS', '-3 days', 'due_date', 'usr',
@@ -34,9 +34,9 @@ You have items due soon:
 $$);
 
 INSERT INTO action_trigger.environment (event_def, path) VALUES
-    (XXXX, 'circ_lib.billing_address'),
-    (XXXX, 'target_copy.call_number'),
-    (XXXX, 'usr'),
-    (XXXX, 'usr.home_ou');
+    (54, 'circ_lib.billing_address'),
+    (54, 'target_copy.call_number'),
+    (54, 'usr'),
+    (54, 'usr.home_ou');
 
 COMMIT;
