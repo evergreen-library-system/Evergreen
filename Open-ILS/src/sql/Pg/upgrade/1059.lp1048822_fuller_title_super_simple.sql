@@ -1,5 +1,8 @@
 BEGIN;
 
+-- check whether patch can be applied
+SELECT evergreen.upgrade_deps_block_check('1059', :eg_version); --Stompro/DPearl/kmlussier
+
 CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
 SELECT  r.id,
     r.fingerprint,
