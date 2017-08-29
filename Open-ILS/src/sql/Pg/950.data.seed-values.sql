@@ -17175,7 +17175,7 @@ VALUES (
     oils_i18n_gettext(
         'ui.staff.max_recent_patrons',
         'Number of most recently accessed patrons that can be re-retrieved ' ||
-        'in the staff client.  A value of 0 or less disables the feature',
+        'in the staff client.  A value of 0 or less disables the feature. Defaults to 1.',
         'coust',
         'description'
     ),
