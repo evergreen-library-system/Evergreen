@@ -24,6 +24,9 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
     function reload() {
         egSerialsCoreSvc.fetch($scope.bibId, $scope.selected_owning_ou).then(function() {
             $scope.subscriptions = egCore.idl.toTypedHash(egSerialsCoreSvc.subTree);
+            if ($scope.subscriptions.length == 1 && !$scope.ssubId) {
+                $scope.ssubId = $scope.subscriptions[0].id;
+            }
         });
     }
 }]
