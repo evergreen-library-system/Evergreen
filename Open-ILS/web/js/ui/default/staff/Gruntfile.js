@@ -55,8 +55,8 @@ module.exports = function(grunt) {
           src : [
             'node_modules/angular-hotkeys/build/hotkeys.min.css',
             'node_modules/bootstrap/dist/css/bootstrap.min.css', 
-            'node_modules/ngtoast/dist/ngToast.min.css',
-            'node_modules/ngtoast/dist/ngToast-animations.min.css',
+            'node_modules/ng-toast/dist/ngToast.min.css',
+            'node_modules/ng-toast/dist/ngToast-animations.min.css',
             'node_modules/angular-tree-control/css/tree-control.css',
             'node_modules/angular-tree-control/css/tree-control-attribute.css',
             'node_modules/angular-tablesort/tablesort.css'
