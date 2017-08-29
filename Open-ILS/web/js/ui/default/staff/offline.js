@@ -252,12 +252,12 @@ function($routeProvider , $locationProvider , $compileProvider) {
 .controller('OfflineCtrl', 
            ['$q','$scope','$window','$location','$rootScope','egCore','egLovefield','$routeParams','$timeout','$http','ngToast','egConfirmDialog','egUnloadPrompt',
     function($q , $scope , $window , $location , $rootScope , egCore , egLovefield , $routeParams , $timeout , $http , ngToast , egConfirmDialog , egUnloadPrompt) {
-        $scope.active_tab = $routeParams.tab || 'checkout';
 
         // Immediately redirect if we're really offline
         if (!$window.navigator.onLine) {
             if ($location.path().match(/session$/)) {
                 var path = $location.path();
+                console.log('internal redirect');
                 return $location.path(path.replace('session','checkout'));
             }
         }
@@ -325,8 +325,15 @@ function($routeProvider , $locationProvider , $compileProvider) {
 
         $scope.logged_in = egCore.auth.token() ? true : false;
 
-        if (!$scope.logged_in && $routeParams.tab == 'session')
-            $scope.active_tab = 'checkout';
+
+        $scope.active_tab = $routeParams.tab;
+        $timeout(function(){
+            if (!$scope.logged_in) {
+                $scope.active_tab = 'checkout';
+            } else {
+                $scope.active_tab = 'session';
+            }
+        });
         
         egCore.hatch.getItem('eg.offline.print_receipt')
         .then(function(setting) {
@@ -457,7 +464,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
         }
 
         $rootScope.save_offline_xacts = function () { return $scope.save() };
-        $rootScope.active_tab = function (t) { $scope.active_tab = t };
+        //$rootScope.active_tab = function (t) { $scope.active_tab = t };
 
         $scope.logout = function () {
             egCore.auth.logout();
@@ -484,6 +491,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
 
         $scope.retrieve_pending();
         $scope.$watch('active_tab', function (n,o) {
+            console.log('watch caught change to active_tab: ' + o + ' -> ' + n);
             if (n != o && !$scope.do_check_changed && n != 'checkout') $scope.strict_barcode = false;
             if (n != o && !$scope.do_check_changed && n == 'checkout') $scope.strict_barcode = true;
             if (n != o && !$scope.do_print_changed && n != 'checkout') $scope.do_print = false;

@@ -67,6 +67,183 @@
     <uib-tabset active="active_tab">
       <!-- note that non-numeric index values must be enclosed in single-quotes,
            otherwise selecting the active table won't work cleanly -->
+      <uib-tab ng-show="logged_in" index="'session'" heading="[% l('Session Management') %]">
+        <div class="col-md-12" ng-controller="OfflineSessionCtrl">
+          <uib-tabset active="active_session_tab">
+            <uib-tab index="'pending'" heading="[% l('Pending Transactions') %]">
+              <div class="row">
+                <div class="col-md-12 container">
+                  <button
+                    class="btn btn-default"
+                    ng-disabled="pending_xacts.length == 0"
+                    eg-line-exporter
+                    default-file-name="pending.xacts"
+                    json-array="pending_xacts"
+                  >[% l('Export Transactions') %]</button>
+                  <div class="btn-group">
+                    <span class="btn btn-default btn-file">
+                      [% l('Import Transactions') %]
+                      <input type="file" eg-file-reader container="imported_pending_xacts.data">
+                    </span>
+                  </div>
+                <button class="btn btn-warning pull-right" ng-click="clear_pending()">[% l('Clear Transactions') %]</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 container">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>[% l('Type') %]</th>
+                        <th>[% l('Timestamp') %]</th>
+                        <th>[% l('Patron Barcode') %]</th>
+                        <th>[% l('Item Barcode') %]</th>
+                        <th>[% l('Non-cataloged Type') %]</th>
+                        <th>[% l('Checkout Date') %]</th>
+                        <th>[% l('Due Date') %]</th>
+                        <th>[% l('Checkin Date') %]</th>
+                        <th>[% l('First Name') %]</th>
+                        <th>[% l('Last Name') %]</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="xact in pending_xacts track by $index">
+                        <td>{{xact.type}}</td>
+                        <td>{{createDate(xact.timestamp, true) | date:'short'}}</td>
+                        <td>{{xact.patron_barcode || xact.user.card.barcode}}</td>
+                        <td>{{xact.barcode}}</td>
+                        <td>{{lookupNoncatTypeName(xact.noncat_type)}}</td>
+                        <td>{{createDate(xact.checkout_time) | date:'short'}}</td>
+                        <td>{{createDate(xact.due_date) | date:'shortDate'}}</td>
+                        <td>{{createDate(xact.backdate) | date:'shortDate'}}</td>
+                        <td>{{xact.user.first_given_name}}</td>
+                        <td>{{xact.user.family_name}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </uib-tab>
+            <uib-tab index="'offline_sessions'" heading="[% l('Offline Sessions') %]">
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    class="btn btn-primary"
+                    ng-disabled="!logged_in"
+                    ng-click="createSession()">[% l('Create Session') %]</button>
+                  <button
+                    class="btn btn-default pull-right"
+                    ng-disabled="!logged_in"
+                    ng-click="refreshSessions()">[% l('Refresh') %]</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12"><h2>[% l('Session List') %]</h2></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table" ts-wrapper>
+                    <thead>
+                      <tr>
+                        <th ts-criteria="org">[% l('Organization') %]</th>
+                        <th ts-criteria="creator">[% l('Created By') %]</th>
+                        <th ts-criteria="description">[% l('Description') %]</th>
+                        <th ts-criteria="create_time|parseInt" ts-default="descending">[% l('Date Created') %]</th>
+                        <th>[% l('Upload Count') %]</th>
+                        <th>[% l('Transactions Processed') %]</th>
+                        <th ts-criteria="end_time|parseInt">[% l('Date Completed') %]</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ts-repeat
+                        ng-repeat="ses in sessions track by $index"
+                        ng-click="setSession(ses, $index)"
+                        ng-class="{'bg-info':current_session_index==$index}"
+                      >
+                        <td>{{ses.org}}</td>
+                        <td>{{ses.creator}}</td>
+                        <td>{{ses.description}}</td>
+                        <td>{{createDate(ses.create_time, true) | date:'short'}}</td>
+                        <td>{{ses.total}}</td>
+                        <td>{{ses.num_complete}}</td>
+                        <td>{{createDate(ses.end_time, true) | date:'short'}}</td>
+                        <td>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || pending_xacts.length == 0 || ses.end_time"
+                            ng-click="uploadPending(ses, $index)"
+                          >[% l('Upload') %]</button>
+                          <button
+                            class="btn btn-warning btn-xs"
+                            ng-disabled="!logged_in || ses.total == 0 || ses.end_time"
+                            ng-click="processSession(ses, $index)"
+                          >[% l('Process') %]</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                    <div class="col-md-12"><hr/></div>
+              </div>
+              <div class="row">
+                    <div class="col-md-12"><h2>[% l('Exception List') %]</h2></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>[% l('Workstation') %]</th>
+                        <th>[% l('Type') %]</th>
+                        <th>[% l('Timestamp') %]</th>
+                        <th>[% l('Event Name') %]</th>
+                        <th>[% l('Patron Barcode') %]</th>
+                        <th>[% l('Item Barcode') %]</th>
+                        <th>[% l('Non-cataloged Type') %]</th>
+                        <th>[% l('Checkout Date') %]</th>
+                        <th>[% l('Due Date') %]</th>
+                        <th>[% l('Checkin Date') %]</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="xact in current_session.exceptions track by $index">
+                        <td>{{xact.command._workstation}}</td>
+                        <td>{{xact.command.type}}</td>
+                        <td>{{createDate(xact.command.timestamp, true) | date:'short'}}</td>
+                        <td>{{xact.event.textcode}}</td>
+                        <td>{{xact.command.patron_barcode || xact.command.user.card.barcode}}</td>
+                        <td>{{xact.command.barcode}}</td>
+                        <td>{{lookupNoncatTypeName(xact.command.noncat_type)}}</td>
+                        <td>{{createDate(xact.command.checkout_time) | date:'short'}}</td>
+                        <td>{{createDate(xact.command.due_date) | date:'shortDate'}}</td>
+                        <td>{{createDate(xact.command.backdate) | date:'shortDate'}}</td>
+                        <td>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || !xact.command.barcode"
+                            ng-click="retrieveItem(xact.command.barcode)">[% l('Item') %]</button>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || (!xact.command.patron_barcode && xact.command.user.card.barcode)"
+                            ng-click="retrievePatron(xact.command.patron_barcode)">[% l('Patron') %]</button>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in"
+                            ng-click="retrieveDetails(xact)">[% l('Debug') %]</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </uib-tab>
+          </uib-tabset>
+        </div>
+      </uib-tab>
       <uib-tab index="'checkout'" heading="[% l('Checkout') %]">
 
         <div class="row">
@@ -409,183 +586,6 @@
       <uib-tab index="'register'" heading="[% l('Register Patron') %]">
         <div ng-controller="PatronRegCtrl">
           <div>[% INCLUDE 'staff/circ/patron/t_edit.tt2' %]</div>
-        </div>
-      </uib-tab>
-      <uib-tab ng-if="logged_in" index="'session'" heading="[% l('Session Management') %]">
-        <div class="col-md-12" ng-controller="OfflineSessionCtrl">
-          <uib-tabset active="active_session_tab">
-            <uib-tab index="'pending'" heading="[% l('Pending Transactions') %]">
-              <div class="row">
-                <div class="col-md-12 container">
-                  <button
-                    class="btn btn-default"
-                    ng-disabled="pending_xacts.length == 0"
-                    eg-line-exporter
-                    default-file-name="pending.xacts"
-                    json-array="pending_xacts"
-                  >[% l('Export Transactions') %]</button>
-                  <div class="btn-group">
-                    <span class="btn btn-default btn-file">
-                      [% l('Import Transactions') %]
-                      <input type="file" eg-file-reader container="imported_pending_xacts.data">
-                    </span>
-                  </div>
-                <button class="btn btn-warning pull-right" ng-click="clear_pending()">[% l('Clear Transactions') %]</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 container">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>[% l('Type') %]</th>
-                        <th>[% l('Timestamp') %]</th>
-                        <th>[% l('Patron Barcode') %]</th>
-                        <th>[% l('Item Barcode') %]</th>
-                        <th>[% l('Non-cataloged Type') %]</th>
-                        <th>[% l('Checkout Date') %]</th>
-                        <th>[% l('Due Date') %]</th>
-                        <th>[% l('Checkin Date') %]</th>
-                        <th>[% l('First Name') %]</th>
-                        <th>[% l('Last Name') %]</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="xact in pending_xacts track by $index">
-                        <td>{{xact.type}}</td>
-                        <td>{{createDate(xact.timestamp, true) | date:'short'}}</td>
-                        <td>{{xact.patron_barcode || xact.user.card.barcode}}</td>
-                        <td>{{xact.barcode}}</td>
-                        <td>{{lookupNoncatTypeName(xact.noncat_type)}}</td>
-                        <td>{{createDate(xact.checkout_time) | date:'short'}}</td>
-                        <td>{{createDate(xact.due_date) | date:'shortDate'}}</td>
-                        <td>{{createDate(xact.backdate) | date:'shortDate'}}</td>
-                        <td>{{xact.user.first_given_name}}</td>
-                        <td>{{xact.user.family_name}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </uib-tab>
-            <uib-tab index="'offline_sessions'" heading="[% l('Offline Sessions') %]">
-              <div class="row">
-                <div class="col-md-12">
-                  <button
-                    class="btn btn-primary"
-                    ng-disabled="!logged_in"
-                    ng-click="createSession()">[% l('Create Session') %]</button>
-                  <button
-                    class="btn btn-default pull-right"
-                    ng-disabled="!logged_in"
-                    ng-click="refreshSessions()">[% l('Refresh') %]</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12"><h2>[% l('Session List') %]</h2></div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <table class="table" ts-wrapper>
-                    <thead>
-                      <tr>
-                        <th ts-criteria="org">[% l('Organization') %]</th>
-                        <th ts-criteria="creator">[% l('Created By') %]</th>
-                        <th ts-criteria="description">[% l('Description') %]</th>
-                        <th ts-criteria="create_time|parseInt" ts-default="descending">[% l('Date Created') %]</th>
-                        <th>[% l('Upload Count') %]</th>
-                        <th>[% l('Transactions Processed') %]</th>
-                        <th ts-criteria="end_time|parseInt">[% l('Date Completed') %]</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ts-repeat
-                        ng-repeat="ses in sessions track by $index"
-                        ng-click="setSession(ses, $index)"
-                        ng-class="{'bg-info':current_session_index==$index}"
-                      >
-                        <td>{{ses.org}}</td>
-                        <td>{{ses.creator}}</td>
-                        <td>{{ses.description}}</td>
-                        <td>{{createDate(ses.create_time, true) | date:'short'}}</td>
-                        <td>{{ses.total}}</td>
-                        <td>{{ses.num_complete}}</td>
-                        <td>{{createDate(ses.end_time, true) | date:'short'}}</td>
-                        <td>
-                          <button
-                            class="btn btn-info btn-xs"
-                            ng-disabled="!logged_in || pending_xacts.length == 0 || ses.end_time"
-                            ng-click="uploadPending(ses, $index)"
-                          >[% l('Upload') %]</button>
-                          <button
-                            class="btn btn-warning btn-xs"
-                            ng-disabled="!logged_in || ses.total == 0 || ses.end_time"
-                            ng-click="processSession(ses, $index)"
-                          >[% l('Process') %]</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="row">
-                    <div class="col-md-12"><hr/></div>
-              </div>
-              <div class="row">
-                    <div class="col-md-12"><h2>[% l('Exception List') %]</h2></div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <table class="table">
-                    <thead>
-                      <tr>
-                        <th>[% l('Workstation') %]</th>
-                        <th>[% l('Type') %]</th>
-                        <th>[% l('Timestamp') %]</th>
-                        <th>[% l('Event Name') %]</th>
-                        <th>[% l('Patron Barcode') %]</th>
-                        <th>[% l('Item Barcode') %]</th>
-                        <th>[% l('Non-cataloged Type') %]</th>
-                        <th>[% l('Checkout Date') %]</th>
-                        <th>[% l('Due Date') %]</th>
-                        <th>[% l('Checkin Date') %]</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="xact in current_session.exceptions track by $index">
-                        <td>{{xact.command._workstation}}</td>
-                        <td>{{xact.command.type}}</td>
-                        <td>{{createDate(xact.command.timestamp, true) | date:'short'}}</td>
-                        <td>{{xact.event.textcode}}</td>
-                        <td>{{xact.command.patron_barcode || xact.command.user.card.barcode}}</td>
-                        <td>{{xact.command.barcode}}</td>
-                        <td>{{lookupNoncatTypeName(xact.command.noncat_type)}}</td>
-                        <td>{{createDate(xact.command.checkout_time) | date:'short'}}</td>
-                        <td>{{createDate(xact.command.due_date) | date:'shortDate'}}</td>
-                        <td>{{createDate(xact.command.backdate) | date:'shortDate'}}</td>
-                        <td>
-                          <button
-                            class="btn btn-info btn-xs"
-                            ng-disabled="!logged_in || !xact.command.barcode"
-                            ng-click="retrieveItem(xact.command.barcode)">[% l('Item') %]</button>
-                          <button
-                            class="btn btn-info btn-xs"
-                            ng-disabled="!logged_in || (!xact.command.patron_barcode && xact.command.user.card.barcode)"
-                            ng-click="retrievePatron(xact.command.patron_barcode)">[% l('Patron') %]</button>
-                          <button
-                            class="btn btn-info btn-xs"
-                            ng-disabled="!logged_in"
-                            ng-click="retrieveDetails(xact)">[% l('Debug') %]</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </uib-tab>
-          </uib-tabset>
         </div>
       </uib-tab>
     </uib-tabset>
