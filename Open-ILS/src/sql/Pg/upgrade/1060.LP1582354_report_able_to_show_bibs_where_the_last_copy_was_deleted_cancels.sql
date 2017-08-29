@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1060', :eg_version);
 
 DROP VIEW IF EXISTS extend_reporter.copy_count_per_org;
 
@@ -8,6 +8,7 @@ DROP VIEW IF EXISTS extend_reporter.copy_count_per_org;
 CREATE OR REPLACE VIEW extend_reporter.copy_count_per_org AS
  SELECT acn.record AS bibid,
     ac.circ_lib,
+    acn.owning_lib,
     max(ac.edit_date) AS last_edit_time,
     min(ac.deleted::integer) AS has_only_deleted_copies,
     count(
@@ -24,7 +25,7 @@ CREATE OR REPLACE VIEW extend_reporter.copy_count_per_org AS
    FROM asset.call_number acn,
     asset.copy ac
   WHERE ac.call_number = acn.id
-  GROUP BY acn.record, ac.circ_lib;
+  GROUP BY acn.record, acn.owning_lib, ac.circ_lib;
 
 
 COMMIT;

@@ -9507,11 +9507,6 @@ SELECT  usr,
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
-		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
-			<actions>
-				<retrieve />
-			</actions>
-		</permacrud>
 	</class>
 	<class id="acqdf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula" oils_persist:tablename="acq.distribution_formula" reporter:label="Distribution Formula">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_id_seq">

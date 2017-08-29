@@ -58,7 +58,7 @@ CREATE OR REPLACE VIEW extend_reporter.global_bibs_by_holding_update AS
 CREATE OR REPLACE VIEW extend_reporter.copy_count_per_org AS
  SELECT acn.record AS bibid,
     ac.circ_lib,
-	acn.owning_lib,
+    acn.owning_lib,
     max(ac.edit_date) AS last_edit_time,
     min(ac.deleted::integer) AS has_only_deleted_copies,
     count(
