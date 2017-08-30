@@ -11353,7 +11353,6 @@ $$
    
    <!-- Header aligned left -->
    <div style="text-align:left;">
-       <img src="https://evergreen.noblenet.org/opac/images/noble_logo.jpg" style="width:30%; "/> <br />
        <span style="padding-top:1em;">[% date.format %]</span>
     </div><br/>
     
