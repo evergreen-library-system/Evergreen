@@ -396,7 +396,7 @@ include::circulation/triggered_events.adoc[]
 // Push titles down one level.
 :leveloffset: 1
 
-include::circulation/offline_mode.adoc[]
+include::circulation/offline_circ_webclient.adoc[]
 
 include::circulation/self_check.adoc[]
 
