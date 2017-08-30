@@ -462,7 +462,7 @@ use Unicode::Normalize 'normalize';
 return normalize($_[1],$_[0]); # reverse the params
 $func$ LANGUAGE PLPERLU;
 
-CREATE OR REPLACE FUNCTION maintain_control_numbers() RETURNS TRIGGER AS $func$
+CREATE OR REPLACE FUNCTION evergreen.maintain_control_numbers() RETURNS TRIGGER AS $func$
 use strict;
 use MARC::Record;
 use MARC::File::XML (BinaryEncoding => 'UTF-8');
