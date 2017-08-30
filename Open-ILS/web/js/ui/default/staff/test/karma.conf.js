@@ -6,6 +6,7 @@ module.exports = function(config){
     logLevel: config.LOG_INFO,
 
     files : [
+      '../common/build/js/jquery.min.js',
       'build/js/lovefield.min.js',
       'build/js/angular.min.js',
       'build/js/angular-route.min.js',
