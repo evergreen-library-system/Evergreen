@@ -404,7 +404,7 @@ END;
                                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                                 [% html_text_attr('title', l('Check Out [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
-                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Check Out E-Item') %]</span></a>
                                                         </div>
                                                         <div id="[%- rec.id -%]_ebook_place_hold" class="results_aux_utils result_util ebook_action hidden">
@@ -413,7 +413,7 @@ END;
                                                                 ['query','tag','subfield','term','_special','sort','page']) %]"
                                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
-                                                                src="[% ctx.media_prefix %]/images/green_check.png"
+                                                                src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
                                                                 alt=""/><span class="result_place_hold">[% l('Place Hold on E-Item') %]</span></a>
                                                         </div>
                                                         [%- END -%]

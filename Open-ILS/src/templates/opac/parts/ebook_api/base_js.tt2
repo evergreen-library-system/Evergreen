@@ -90,6 +90,6 @@ dojo.addOnLoad(function() {
 [%- END %]
 
 [%- IF (ctx.page == 'rresult' OR ctx.page == 'record') %]
-<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/avail.js"></script>
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/avail.js[% ctx.cache_key %]"></script>
 [%- END %]
 
