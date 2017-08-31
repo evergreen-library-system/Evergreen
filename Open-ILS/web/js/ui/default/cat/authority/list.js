@@ -23,24 +23,37 @@ var auth_strings = dojo.i18n.getLocalization("openils.authority", "authority");
 var cgi = new openils.CGI();
 var pcrud = new openils.PermaCrud();
 
+var _thes_short_code_map = {
+    "a" : "lcsh",
+    "b" : "lcshac",
+    "c" : "mesh",
+    "d" : "nal",
+    "k" : "cash",
+    "r" : 'aat',
+    "s" : "sears",
+    "v" : "rvm"
+}
 var _acs_cache_by_at = {};
 function fetch_control_set(thesaurus) {
-    if (!_acs_cache_by_at[thesaurus]) {
+    var thes_code = (thesaurus in _thes_short_code_map) ?
+                        _thes_short_code_map[thesaurus] :
+                        thesaurus;
+    if (!_acs_cache_by_at[thes_code]) {
         var at = pcrud.retrieve(
-            "at", thesaurus,
+            "at", thes_code,
             {"flesh": 1, "flesh_fields": {"at": ["control_set"]}}
         );
         var cs;
-        if (at.control_set()) {
+        if (at && at.control_set()) {
             cs = at.control_set();
         } else {
             cs = new fieldmapper.acs();
             cs.name("None");    // XXX i18n
 
         }
-        _acs_cache_by_at[thesaurus] = cs;
+        _acs_cache_by_at[thes_code] = cs;
     }
-    return _acs_cache_by_at[thesaurus];
+    return _acs_cache_by_at[thes_code];
 }
 
 /*
