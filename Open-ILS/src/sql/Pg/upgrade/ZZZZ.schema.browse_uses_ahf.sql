@@ -78,8 +78,10 @@ BEGIN
         SELECT INTO unauthorized_entry *
         FROM metabib.browse_entry_simple_heading_map mbeshm
         INNER JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
-        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag AND acsaf.tag like '4__')
-        WHERE mbeshm.entry = rec.id;
+        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag )
+        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+        WHERE mbeshm.entry = rec.id
+        AND   ahf.heading_purpose = 'variant';
 
         -- Gather aggregate data based on the MBE row we're looking at now, authority axis
         IF (unauthorized_entry.record IS NOT NULL) THEN
@@ -109,7 +111,12 @@ BEGIN
                         ash.atag = map.authority_field
                         AND map.metabib_field = ANY(fields)
                     )
-            WHERE mbeshm.entry = rec.id;
+                    JOIN authority.control_set_authority_field acsaf ON (
+                        map.authority_field = acsaf.id
+                    )
+                    JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+              WHERE mbeshm.entry = rec.id
+              AND   ahf.heading_purpose = 'variant';
 
         END IF;
 
@@ -205,6 +212,127 @@ BEGIN
             row_counter := row_counter + 1;
         END IF;
     END LOOP;
+END;
+$f$ LANGUAGE plpgsql ROWS 10;
+
+CREATE OR REPLACE FUNCTION metabib.browse(search_field integer[], browse_term text, context_org integer DEFAULT NULL::integer, context_loc_group integer DEFAULT NULL::integer, staff boolean DEFAULT false, pivot_id bigint DEFAULT NULL::bigint, result_limit integer DEFAULT 10)
+ RETURNS SETOF metabib.flat_browse_entry_appearance
+AS $f$
+DECLARE
+    core_query              TEXT;
+    back_query              TEXT;
+    forward_query           TEXT;
+    pivot_sort_value        TEXT;
+    pivot_sort_fallback     TEXT;
+    context_locations       INT[];
+    browse_superpage_size   INT;
+    results_skipped         INT := 0;
+    back_limit              INT;
+    back_to_pivot           INT;
+    forward_limit           INT;
+    forward_to_pivot        INT;
+BEGIN
+    -- First, find the pivot if we were given a browse term but not a pivot.
+    IF pivot_id IS NULL THEN
+        pivot_id := metabib.browse_pivot(search_field, browse_term);
+    END IF;
+
+    SELECT INTO pivot_sort_value, pivot_sort_fallback
+        sort_value, value FROM metabib.browse_entry WHERE id = pivot_id;
+
+    -- Bail if we couldn't find a pivot.
+    IF pivot_sort_value IS NULL THEN
+        RETURN;
+    END IF;
+
+    -- Transform the context_loc_group argument (if any) (logc at the
+    -- TPAC layer) into a form we'll be able to use.
+    IF context_loc_group IS NOT NULL THEN
+        SELECT INTO context_locations ARRAY_AGG(location)
+            FROM asset.copy_location_group_map
+            WHERE lgroup = context_loc_group;
+    END IF;
+
+    -- Get the configured size of browse superpages.
+    SELECT INTO browse_superpage_size COALESCE(value::INT,100)     -- NULL ok
+        FROM config.global_flag
+        WHERE enabled AND name = 'opac.browse.holdings_visibility_test_limit';
+
+    -- First we're going to search backward from the pivot, then we're going
+    -- to search forward.  In each direction, we need two limits.  At the
+    -- lesser of the two limits, we delineate the edge of the result set
+    -- we're going to return.  At the greater of the two limits, we find the
+    -- pivot value that would represent an offset from the current pivot
+    -- at a distance of one "page" in either direction, where a "page" is a
+    -- result set of the size specified in the "result_limit" argument.
+    --
+    -- The two limits in each direction make four derived values in total,
+    -- and we calculate them now.
+    back_limit := CEIL(result_limit::FLOAT / 2);
+    back_to_pivot := result_limit;
+    forward_limit := result_limit / 2;
+    forward_to_pivot := result_limit - 1;
+
+    -- This is the meat of the SQL query that finds browse entries.  We'll
+    -- pass this to a function which uses it with a cursor, so that individual
+    -- rows may be fetched in a loop until some condition is satisfied, without
+    -- waiting for a result set of fixed size to be collected all at once.
+    core_query := '
+SELECT  mbe.id,
+        mbe.value,
+        mbe.sort_value
+  FROM  metabib.browse_entry mbe
+  WHERE (
+            EXISTS ( -- are there any bibs using this mbe via the requested fields?
+                SELECT  1
+                  FROM  metabib.browse_entry_def_map mbedm
+                  WHERE mbedm.entry = mbe.id AND mbedm.def = ANY(' || quote_literal(search_field) || ')
+            ) OR EXISTS ( -- are there any authorities using this mbe via the requested fields?
+                SELECT  1
+                  FROM  metabib.browse_entry_simple_heading_map mbeshm
+                        JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+                        JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                            ash.atag = map.authority_field
+                            AND map.metabib_field = ANY(' || quote_literal(search_field) || ')
+                        )
+                        JOIN authority.control_set_authority_field acsaf ON (
+                            map.authority_field = acsaf.id
+                        )
+                        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+                  WHERE mbeshm.entry = mbe.id
+                    AND ahf.heading_purpose IN (' || $$'variant'$$ || ')
+                    -- and authority that variant is coming from is linked to a bib
+                    AND EXISTS (
+                        SELECT  1
+                        FROM  metabib.browse_entry_def_map mbedm2
+                        WHERE mbedm2.authority = ash.record AND mbedm2.def = ANY(' || quote_literal(search_field) || ')
+                    )
+            )
+        ) AND ';
+
+    -- This is the variant of the query for browsing backward.
+    back_query := core_query ||
+        ' mbe.sort_value <= ' || quote_literal(pivot_sort_value) ||
+    ' ORDER BY mbe.sort_value DESC, mbe.value DESC LIMIT 1000';
+
+    -- This variant browses forward.
+    forward_query := core_query ||
+        ' mbe.sort_value > ' || quote_literal(pivot_sort_value) ||
+    ' ORDER BY mbe.sort_value, mbe.value LIMIT 1000';
+
+    -- We now call the function which applies a cursor to the provided
+    -- queries, stopping at the appropriate limits and also giving us
+    -- the next page's pivot.
+    RETURN QUERY
+        SELECT * FROM metabib.staged_browse(
+            back_query, search_field, context_org, context_locations,
+            staff, browse_superpage_size, TRUE, back_limit, back_to_pivot
+        ) UNION
+        SELECT * FROM metabib.staged_browse(
+            forward_query, search_field, context_org, context_locations,
+            staff, browse_superpage_size, FALSE, forward_limit, forward_to_pivot
+        ) ORDER BY row_number DESC;
+
 END;
 $f$ LANGUAGE plpgsql ROWS 10;
 

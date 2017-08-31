@@ -1014,8 +1014,10 @@ BEGIN
         SELECT INTO unauthorized_entry *
         FROM metabib.browse_entry_simple_heading_map mbeshm
         INNER JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
-        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag AND acsaf.tag like '4__')
-        WHERE mbeshm.entry = rec.id;
+        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag )
+        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+        WHERE mbeshm.entry = rec.id
+        AND   ahf.heading_purpose = 'variant';
 
         -- Gather aggregate data based on the MBE row we're looking at now, authority axis
         IF (unauthorized_entry.record IS NOT NULL) THEN
@@ -1045,7 +1047,12 @@ BEGIN
                         ash.atag = map.authority_field
                         AND map.metabib_field = ANY(fields)
                     )
-            WHERE mbeshm.entry = rec.id;
+                    JOIN authority.control_set_authority_field acsaf ON (
+                        map.authority_field = acsaf.id
+                    )
+                    JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+              WHERE mbeshm.entry = rec.id
+              AND   ahf.heading_purpose = 'variant';
 
         END IF;
 
@@ -1224,7 +1231,19 @@ SELECT  mbe.id,
                             ash.atag = map.authority_field
                             AND map.metabib_field = ANY(' || quote_literal(search_field) || ')
                         )
+                        JOIN authority.control_set_authority_field acsaf ON (
+                            map.authority_field = acsaf.id
+                        )
+                        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
                   WHERE mbeshm.entry = mbe.id
+                    AND ahf.heading_purpose IN (' || $$'variant'$$ || ')
+                    -- and authority that variant is coming from is linked to a bib
+                    AND EXISTS (
+                        SELECT  1
+                        FROM  metabib.browse_entry_def_map mbedm2
+                        WHERE mbedm2.authority = ash.record AND mbedm2.def = ANY(' || quote_literal(search_field) ||)
+                    )
+
             )
         ) AND ';
 
