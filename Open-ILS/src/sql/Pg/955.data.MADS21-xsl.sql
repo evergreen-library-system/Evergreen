@@ -1,4 +1,4 @@
-INSERT INTO config.xml_transform (name,namespace_uri,prefix,xslt) VALUES ('mads21','http://www.loc.gov/mads/v2','mads21',$XSLT$<?xml version="1.0" encoding="UTF-8"?>
+UPDATE config.xml_transform SET xslt=$XSLT$<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:mads="http://www.loc.gov/mads/v2"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:marc="http://www.loc.gov/MARC21/slim"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
@@ -1621,4 +1621,5 @@ INSERT INTO config.xml_transform (name,namespace_uri,prefix,xslt) VALUES ('mads2
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="*"/>
-</xsl:stylesheet>$XSLT$);
+</xsl:stylesheet>$XSLT$
+WHERE name = 'mads21';;

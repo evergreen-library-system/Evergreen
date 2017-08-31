@@ -56,6 +56,7 @@ FTS_CONFIG_FILE
 953.data.MODS32-xsl.sql
 954.data.MODS33-xsl.sql
 954.data.marc21expand880.sql
+955.data.MADS21-xsl.sql
 
 960.data.marc21-tag-tables.sql
 

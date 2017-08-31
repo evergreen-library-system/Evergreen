@@ -22,6 +22,79 @@ DROP SCHEMA IF EXISTS authority CASCADE;
 BEGIN;
 CREATE SCHEMA authority;
 
+-- subset of types listed in https://www.loc.gov/marc/authority/ad1xx3xx.html
+-- for now, ignoring subdivisions
+CREATE TYPE authority.heading_type AS ENUM (
+    'personal_name',
+    'corporate_name',
+    'meeting_name',
+    'uniform_title',
+    'named_event',
+    'chronological_term',
+    'topical_term',
+    'geographic_name',
+    'genre_form_term',
+    'medium_of_performance_term'
+);
+
+CREATE TYPE authority.variant_heading_type AS ENUM (
+    'abbreviation',
+    'acronym',
+    'translation',
+    'expansion',
+    'other',
+    'hidden'
+);
+
+CREATE TYPE authority.related_heading_type AS ENUM (
+    'earlier',
+    'later',
+    'parent organization',
+    'broader',
+    'narrower',
+    'equivalent',
+    'other'
+);
+
+CREATE TYPE authority.heading_purpose AS ENUM (
+    'main',
+    'variant',
+    'related'
+);
+
+CREATE TABLE authority.heading_field (
+    id              SERIAL                      PRIMARY KEY,
+    heading_type    authority.heading_type      NOT NULL,
+    heading_purpose authority.heading_purpose   NOT NULL,
+    label           TEXT                        NOT NULL,
+    format          TEXT                        NOT NULL REFERENCES config.xml_transform (name) DEFAULT 'mads21',
+    heading_xpath   TEXT                        NOT NULL,
+    component_xpath TEXT                        NOT NULL,
+    type_xpath      TEXT                        NULL, -- to extract related or variant type
+    thesaurus_xpath TEXT                        NULL,
+    thesaurus_override_xpath TEXT               NULL,
+    joiner          TEXT                        NULL
+);
+
+CREATE TABLE authority.heading_field_norm_map (
+        id      SERIAL  PRIMARY KEY,
+        field   INT     NOT NULL REFERENCES authority.heading_field (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+        norm    INT     NOT NULL REFERENCES config.index_normalizer (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+        params  TEXT,
+        pos     INT     NOT NULL DEFAULT 0
+);
+
+CREATE TYPE authority.heading AS (
+    field               INT,
+    type                authority.heading_type,
+    purpose             authority.heading_purpose,
+    variant_type        authority.variant_heading_type,
+    related_type        authority.related_heading_type,
+    thesaurus           TEXT,
+    heading             TEXT,
+    normalized_heading  TEXT
+);
+
 CREATE TABLE authority.control_set (
     id          SERIAL  PRIMARY KEY,
     name        TEXT    NOT NULL UNIQUE, -- i18n
@@ -39,7 +112,8 @@ CREATE TABLE authority.control_set_authority_field (
     name        TEXT    NOT NULL, -- i18n
     description TEXT,             -- i18n
     joiner      TEXT,
-    linking_subfield CHAR(1)
+    linking_subfield CHAR(1),
+    heading_field INTEGER REFERENCES authority.heading_field(id)
 );
 
 CREATE TABLE authority.control_set_bib_field (
@@ -971,6 +1045,155 @@ CREATE OR REPLACE FUNCTION authority.atag_search_heading_refs( a TEXT, q TEXT, p
     SELECT * FROM authority.simple_heading_search_heading(authority.atag_authority_tags_refs($1), $2, $3, $4, $5)
 $$ LANGUAGE SQL ROWS 10;
 
+CREATE OR REPLACE FUNCTION authority.extract_headings(marc TEXT, restrict INT[] DEFAULT NULL) RETURNS SETOF authority.heading AS $func$
+DECLARE
+    idx         authority.heading_field%ROWTYPE;
+    xfrm        config.xml_transform%ROWTYPE;
+    prev_xfrm   TEXT;
+    transformed_xml TEXT;
+    heading_node    TEXT;
+    heading_node_list   TEXT[];
+    component_node    TEXT;
+    component_node_list   TEXT[];
+    raw_text    TEXT;
+    normalized_text    TEXT;
+    normalizer  RECORD;
+    curr_text   TEXT;
+    joiner      TEXT;
+    type_value  TEXT;
+    base_thesaurus TEXT := NULL;
+    output_row  authority.heading;
+BEGIN
+
+    -- Loop over the indexing entries
+    FOR idx IN SELECT * FROM authority.heading_field WHERE restrict IS NULL OR id = ANY (restrict) ORDER BY format LOOP
+
+        output_row.field   := idx.id;
+        output_row.type    := idx.heading_type;
+        output_row.purpose := idx.heading_purpose;
+
+        joiner := COALESCE(idx.joiner, ' ');
+
+        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
+
+        -- See if we can skip the XSLT ... it's expensive
+        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+            -- Can't skip the transform
+            IF xfrm.xslt <> '---' THEN
+                transformed_xml := oils_xslt_process(marc, xfrm.xslt);
+            ELSE
+                transformed_xml := marc;
+            END IF;
+
+            prev_xfrm := xfrm.name;
+        END IF;
+
+        IF idx.thesaurus_xpath IS NOT NULL THEN
+            base_thesaurus := ARRAY_TO_STRING(oils_xpath(idx.thesaurus_xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+        END IF;
+
+        heading_node_list := oils_xpath( idx.heading_xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+
+        FOR heading_node IN SELECT x FROM unnest(heading_node_list) AS x LOOP
+
+            CONTINUE WHEN heading_node !~ E'^\\s*<';
+
+            output_row.variant_type := NULL;
+            output_row.related_type := NULL;
+            output_row.thesaurus    := NULL;
+            output_row.heading      := NULL;
+
+            IF idx.heading_purpose = 'variant' AND idx.type_xpath IS NOT NULL THEN
+                type_value := ARRAY_TO_STRING(oils_xpath(idx.type_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+                BEGIN
+                    output_row.variant_type := type_value;
+                EXCEPTION WHEN invalid_text_representation THEN
+                    RAISE NOTICE 'Do not recognize variant heading type %', type_value;
+                END;
+            END IF;
+            IF idx.heading_purpose = 'related' AND idx.type_xpath IS NOT NULL THEN
+                type_value := ARRAY_TO_STRING(oils_xpath(idx.type_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+                BEGIN
+                    output_row.related_type := type_value;
+                EXCEPTION WHEN invalid_text_representation THEN
+                    RAISE NOTICE 'Do not recognize related heading type %', type_value;
+                END;
+            END IF;
+ 
+            IF idx.thesaurus_override_xpath IS NOT NULL THEN
+                output_row.thesaurus := ARRAY_TO_STRING(oils_xpath(idx.thesaurus_override_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+            END IF;
+            IF output_row.thesaurus IS NULL THEN
+                output_row.thesaurus := base_thesaurus;
+            END IF;
+
+            raw_text := NULL;
+
+            -- now iterate over components of heading
+            component_node_list := oils_xpath( idx.component_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+            FOR component_node IN SELECT x FROM unnest(component_node_list) AS x LOOP
+            -- XXX much of this should be moved into oils_xpath_string...
+                curr_text := ARRAY_TO_STRING(evergreen.array_remove_item_by_value(evergreen.array_remove_item_by_value(
+                    oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
+                        REGEXP_REPLACE( component_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
+                    ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
+                    joiner
+                );
+
+                CONTINUE WHEN curr_text IS NULL OR curr_text = '';
+
+                IF raw_text IS NOT NULL THEN
+                    raw_text := raw_text || joiner;
+                END IF;
+
+                raw_text := COALESCE(raw_text,'') || curr_text;
+            END LOOP;
+
+            IF raw_text IS NOT NULL THEN
+                output_row.heading := raw_text;
+                normalized_text := raw_text;
+
+                FOR normalizer IN
+                    SELECT  n.func AS func,
+                            n.param_count AS param_count,
+                            m.params AS params
+                    FROM  config.index_normalizer n
+                            JOIN authority.heading_field_norm_map m ON (m.norm = n.id)
+                    WHERE m.field = idx.id
+                    ORDER BY m.pos LOOP
+            
+                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                            quote_literal( normalized_text ) ||
+                            CASE
+                                WHEN normalizer.param_count > 0
+                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                                    ELSE ''
+                                END ||
+                            ')' INTO normalized_text;
+            
+                END LOOP;
+            
+                output_row.normalized_heading := normalized_text;
+            
+                RETURN NEXT output_row;
+            END IF;
+        END LOOP;
+
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION authority.extract_headings(rid BIGINT, restrict INT[] DEFAULT NULL) RETURNS SETOF authority.heading AS $func$
+DECLARE
+    auth        authority.record_entry%ROWTYPE;
+    output_row  authority.heading;
+BEGIN
+    -- Get the record
+    SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+    RETURN QUERY SELECT * FROM authority.extract_headings(auth.marc, restrict);
+END;
+$func$ LANGUAGE PLPGSQL;
 
 COMMIT;
 

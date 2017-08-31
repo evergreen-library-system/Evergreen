@@ -111,6 +111,7 @@ INSERT INTO config.xml_transform VALUES ( 'mods3', 'http://www.loc.gov/mods/v3',
 INSERT INTO config.xml_transform VALUES ( 'mods32', 'http://www.loc.gov/mods/v3', 'mods32', '');
 INSERT INTO config.xml_transform VALUES ( 'mods33', 'http://www.loc.gov/mods/v3', 'mods33', '');
 INSERT INTO config.xml_transform VALUES ( 'marc21expand880', 'http://www.loc.gov/MARC21/slim', 'marc', '' );
+INSERT INTO config.xml_transform VALUES ( 'mads21', 'http://www.loc.gov/mads/v2', 'mads21', '' );
 
 -- Index Definitions
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, facet_field, authority_xpath, browse_field ) VALUES
@@ -17772,3 +17773,188 @@ INSERT INTO config.i18n_core (fq_field, identity_value, translation, string )
           AND t.xlate IS NOT NULL
           AND t.name <> (xlate->value);
 
+INSERT INTO authority.heading_field(heading_type, heading_purpose, label, heading_xpath, component_xpath, type_xpath, thesaurus_xpath, thesaurus_override_xpath) VALUES
+ ( 'topical_term', 'main',    'Main Topical Term',    '/mads21:mads/mads21:authority', '//mads21:topic', NULL, '/mads21:mads/mads21:authority/mads21:topic[1]/@authority', NULL )
+,( 'topical_term', 'variant', 'Variant Topical Term', '/mads21:mads/mads21:variant',   '//mads21:topic', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:topic[1]/@authority', '//mads21:topic[1]/@authority')
+,( 'topical_term', 'related', 'Related Topical Term', '/mads21:mads/mads21:related',   '//mads21:topic', '/mads21:related/@type', '/mads21:mads/mads21:authority/mads21:topic[1]/@authority', '//mads21:topic[1]/@authority')
+,( 'personal_name', 'main', 'Main Personal Name',     '/mads21:mads/mads21:authority', '//mads21:name[@type="personal"]', NULL, NULL, NULL )
+,( 'personal_name', 'variant', 'Variant Personal Name',     '/mads21:mads/mads21:variant', '//mads21:name[@type="personal"]', NULL, NULL, NULL )
+,( 'personal_name', 'related', 'Related Personal Name',     '/mads21:mads/mads21:related', '//mads21:name[@type="personal"]', '/mads21:related/@type', NULL, NULL )
+,( 'corporate_name', 'main', 'Main Corporate name',     '/mads21:mads/mads21:authority', '//mads21:name[@type="corporate"]', NULL, NULL, NULL )
+,( 'corporate_name', 'variant', 'Variant Corporate Name',     '/mads21:mads/mads21:variant', '//mads21:name[@type="corporate"]', NULL, NULL, NULL )
+,( 'corporate_name', 'related', 'Related Corporate Name',     '/mads21:mads/mads21:related', '//mads21:name[@type="corporate"]', '/mads21:related/@type', NULL, NULL )
+,( 'meeting_name', 'main', 'Main Meeting name',     '/mads21:mads/mads21:authority', '//mads21:name[@type="conference"]', NULL, NULL, NULL )
+,( 'meeting_name', 'variant', 'Variant Meeting Name',     '/mads21:mads/mads21:variant', '//mads21:name[@type="conference"]', NULL, NULL, NULL )
+,( 'meeting_name', 'related', 'Related Meeting Name',     '/mads21:mads/mads21:related', '//mads21:name[@type="meeting"]', '/mads21:related/@type', NULL, NULL )
+,( 'geographic_name', 'main',    'Main Geographic Term',    '/mads21:mads/mads21:authority', '//mads21:geographic', NULL, '/mads21:mads/mads21:authority/mads21:geographic[1]/@authority', NULL )
+,( 'geographic_name', 'variant', 'Variant Geographic Term', '/mads21:mads/mads21:variant',   '//mads21:geographic', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:geographic[1]/@authority', '//mads21:geographic[1]/@authority')
+,( 'geographic_name', 'related', 'Related Geographic Term', '/mads21:mads/mads21:related',   '//mads21:geographic', '/mads21:related/@type', '/mads21:mads/mads21:authority/mads21:geographic[1]/@authority', '//mads21:geographic[1]/@authority')
+,( 'genre_form_term', 'main',    'Main Genre/Form Term',    '/mads21:mads/mads21:authority', '//mads21:genre', NULL, '/mads21:mads/mads21:authority/mads21:genre[1]/@authority', NULL )
+,( 'genre_form_term', 'variant', 'Variant Genre/Form Term', '/mads21:mads/mads21:variant',   '//mads21:genre', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:genre[1]/@authority', '//mads21:genre[1]/@authority')
+,( 'genre_form_term', 'related', 'Related Genre/Form Term', '/mads21:mads/mads21:related',   '//mads21:genre', '/mads21:related/@type', '/mads21:mads/mads21:authority/mads21:genre[1]/@authority', '//mads21:genre[1]/@authority')
+,( 'chronological_term', 'main',    'Main Chronological Term',    '/mads21:mads/mads21:authority', '//mads21:temporal', NULL, '/mads21:mads/mads21:authority/mads21:temporal[1]/@authority', NULL )
+,( 'chronological_term', 'variant', 'Variant Chronological Term', '/mads21:mads/mads21:variant',   '//mads21:temporal', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:temporal[1]/@authority', '//mads21:temporal[1]/@authority')
+,( 'chronological_term', 'related', 'Related Chronological Term', '/mads21:mads/mads21:related',   '//mads21:temporal', '/mads21:related/@type', '/mads21:mads/mads21:authority/mads21:temporal[1]/@authority', '//mads21:temporal[1]/@authority')
+,( 'uniform_title', 'main',    'Main Uniform Title',    '/mads21:mads/mads21:authority', '//mads21:title', NULL, '/mads21:mads/mads21:authority/mads21:title[1]/@authority', NULL )
+,( 'uniform_title', 'variant', 'Variant Uniform Title', '/mads21:mads/mads21:variant',   '//mads21:title', '/mads21:variant/@type', '/mads21:mads/mads21:authority/mads21:title[1]/@authority', '//mads21:title[1]/@authority')
+,( 'uniform_title', 'related', 'Related Uniform Title', '/mads21:mads/mads21:related',   '//mads21:title', '/mads21:related/@type', '/mads21:mads/mads21:authority/mads21:title[1]/@authority', '//mads21:title[1]/@authority')
+;
+
+-- NACO normalize all the things
+INSERT INTO authority.heading_field_norm_map (field, norm, pos)
+SELECT id, 1, 0
+FROM authority.heading_field;
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '100'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'personal_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '400'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'personal_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '500'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'personal_name';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '110'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'corporate_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '410'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'corporate_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '510'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'corporate_name';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '111'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'meeting_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '411'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'meeting_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '511'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'meeting_name';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '130'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'uniform_title';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '430'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'uniform_title';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '530'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'uniform_title';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '150'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'topical_term';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '450'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'topical_term';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '550'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'topical_term';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '151'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'geographic_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '451'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'geographic_name';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '551'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'geographic_name';
+
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '155'
+AND control_set = 1
+AND ahf.heading_purpose = 'main'
+AND ahf.heading_type = 'genre_form_term';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '455'
+AND control_set = 1
+AND ahf.heading_purpose = 'variant'
+AND ahf.heading_type = 'genre_form_term';
+UPDATE authority.control_set_authority_field acsaf
+SET heading_field = ahf.id
+FROM authority.heading_field ahf
+WHERE tag = '555'
+AND control_set = 1
+AND ahf.heading_purpose = 'related'
+AND ahf.heading_type = 'genre_form_term';
