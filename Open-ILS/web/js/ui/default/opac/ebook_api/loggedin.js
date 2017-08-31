@@ -67,7 +67,7 @@ function addTransactionsToPage() {
     if (active_ebook && typeof active_ebook.vendor !== 'undefined') {
         active_ebook.ses = active_ebook.ses || dojo.cookie(active_ebook.vendor);
     }
-    dojo.addClass('ebook_spinner', "hidden");
+    if (dojo.byId('ebook_spinner')) dojo.addClass('ebook_spinner', "hidden");
     if (myopac_page) {
         console.log('updating page with cached transaction details, if applicable');
         if (myopac_page === 'ebook_circs')
@@ -173,7 +173,7 @@ function updateHoldView() {
                 var ebook = new Ebook(this.vendor, this.title_id);
                 ebook.cancelHold(authtoken, patron_id, function(resp) {
                     if (resp.error_msg) {
-                        console.log('Cancel hold failed: ' . resp.error_msg);
+                        console.log('Cancel hold failed: ' + resp.error_msg);
                         dojo.removeClass('ebook_cancel_hold_failed', "hidden");
                     } else {
                         console.log('Cancel hold succeeded!');
@@ -339,7 +339,7 @@ function doCheckout() {
 function doPlaceHold() {
     active_ebook.placeHold(authtoken, patron_id, function(resp) {
         if (resp.error_msg) {
-            console.log('Place hold failed: ' . resp.error_msg);
+            console.log('Place hold failed: ' + resp.error_msg);
             dojo.removeClass('ebook_place_hold_failed', "hidden");
         } else {
             console.log('Place hold succeeded!');
