@@ -170,20 +170,24 @@ function updateHoldView() {
                 hold_status = h.queue_position + ' / ' + h.queue_size;
             }
             h.doCancelHold = function() {
-                var ebook = new Ebook(this.vendor, this.title_id);
-                ebook.cancelHold(authtoken, patron_id, function(resp) {
-                    if (resp.error_msg) {
-                        console.log('Cancel hold failed: ' + resp.error_msg);
-                        dojo.removeClass('ebook_cancel_hold_failed', "hidden");
-                    } else {
-                        console.log('Cancel hold succeeded!');
-                        dojo.destroy("hold-" + ebook.id);
-                        dojo.removeClass('ebook_cancel_hold_succeeded', "hidden");
-                        // Updating the transaction cache to remove the canceled hold
-                        // is inconvenient, so we skip cleanupAfterAction() and merely
-                        // clear transaction cache to force a refresh on next page load.
-                        dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
-                    }
+                var vendor = this.vendor;
+                var title_id = this.title_id;
+                checkSession(vendor, function() {
+                    var ebook = new Ebook(vendor, title_id);
+                    ebook.cancelHold(authtoken, patron_id, function(resp) {
+                        if (resp.error_msg) {
+                            console.log('Cancel hold failed: ' + resp.error_msg);
+                            dojo.removeClass('ebook_cancel_hold_failed', "hidden");
+                        } else {
+                            console.log('Cancel hold succeeded!');
+                            dojo.destroy("hold-" + ebook.id);
+                            dojo.removeClass('ebook_cancel_hold_succeeded', "hidden");
+                            // Updating the transaction cache to remove the canceled hold
+                            // is inconvenient, so we skip cleanupAfterAction() and merely
+                            // clear transaction cache to force a refresh on next page load.
+                            dojo.cookie('ebook_xact_cache', '', {path: '/', expires: '-1h'});
+                        }
+                    });
                 });
             };
             var tr = dojo.create("tr", { id: "hold-" + h.title_id }, dojo.byId('ebook_holds_main_table_body'));
