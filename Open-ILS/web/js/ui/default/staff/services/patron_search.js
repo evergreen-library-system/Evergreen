@@ -760,6 +760,18 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                     search[key].group = 1;
                 } else if (key == 'card') {
                     search[key].group = 3
+                } else if (key.match(/dob_/)) {
+                    // DOB should always be numeric
+                    search[key].value = search[key].value.replace(/\D/g,'');
+                    if (search[key].value.length == 0) {
+                        delete search[key];
+                    }
+                    else {
+                        if (!key.match(/year/)) {
+                            search[key].value = ('0'+search[key].value).slice(-2);
+                        }
+                        search[key].group = 4;
+                    }
                 }
             }
         });

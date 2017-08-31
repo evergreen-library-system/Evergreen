@@ -676,6 +676,7 @@ sub patron_search {
     # group 1 = address
     # group 2 = phone, ident
     # group 3 = barcode
+    # group 4 = dob
 
     # Treatment of name fields depends on whether the org has 
     # diacritic_insensitivity turned on or off.
@@ -685,6 +686,8 @@ sub patron_search {
     $diacritic_insensitive = ($diacritic_insensitive) ? $JSON->JSON2perl($diacritic_insensitive) : 0;
     my $usr;
     my @usrv;
+    my $dob;
+    my @dobv;
 
     if ($diacritic_insensitive) {
        $usr = join ' AND ', map { "evergreen.unaccent_and_squash(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
@@ -694,6 +697,23 @@ sub patron_search {
        $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
        @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
     }
+
+    while (($key, $value) = each (%$search)) {
+        if($$search{$key}{group} eq '4') {
+            my $tval = $key;
+            $tval =~ s/dob_//g;
+            my $right = "RIGHT('0'|| ";
+            my $end = ", 2)";
+            $end = $right = '' if lc $tval eq 'year';
+            $dob .= $right."CAST(DATE_PART('$tval', dob) AS text)$end ~ ? AND ";
+        }
+    }
+    # Trim the last " AND "
+    $dob = substr($dob,0,-4);
+    @dobv = map { _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '4' } keys %$search;
+    $usr .= ' AND ' if ( $usr && $dob );
+    $usr .= $dob if $dob; # $dob not in-line above in case $usr doesn't have any search vals (only searched for dob)
+    push(@usrv, @dobv) if @dobv;
 
     my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
     my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
