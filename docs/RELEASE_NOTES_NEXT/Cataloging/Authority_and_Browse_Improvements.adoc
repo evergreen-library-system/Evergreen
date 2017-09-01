@@ -1,0 +1,24 @@
+Authority Record and Headings Browse Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Various improvements are made to support for authority records
+and headings browsing:
+
+ * The MARC to MADS XSLT stylesheet is now used as part of parsing
+   headings from authority records. Since the MODS and MADS stylesheets
+   extract headings in similar ways, duplicate browse entries are now
+   much less likely to occur.
+ * A new configuration table, `authority.heading_field`, is now used
+   to specify how headings should be extracted from authority records.
+ * Related headings can now be identified as narrower or broader when
+   browsing in the public catalog.
+ * See references are now more reliably included in the browse list.
+ * Scope (public) notes now display only under the main heading.
+ * There is now a global flag, Display related headings (see-also) in browse,
+   that can be used to control whether related headings (see-alsos) are
+   displayed in the public catalog list.
+ * A complete set of thesauruses are now included in the seed data.  Thesauruses
+   can now be identified using short and long codes.
+ * The labels for see and see-also references in the public catalog are now
+   a bit more patron-friendly, and can now be tweaked via TPAC template
+   customization.
+
