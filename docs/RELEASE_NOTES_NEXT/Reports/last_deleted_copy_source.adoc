@@ -1,5 +1,5 @@
 New report source table allowing report of "last" deleted copy
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This source table allows you to construct a clever aggregate report template
 which will report bibliographic ID's where a library or a group of libraries 
