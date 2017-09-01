@@ -48,6 +48,18 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
     }
     service.resetPatronLists();  // initialize
 
+    // Max recents setting is loaded and scrubbed during egStartup.
+    // Copy it to a local variable here for ease of local access
+    // after startup has run.
+    egCore.startup.go().then(
+        function() {
+            egCore.org.settings('ui.staff.max_recent_patrons')
+            .then(function(s) {
+                service.maxRecentPatrons = s['ui.staff.max_recent_patrons'];
+            });
+        }
+    );
+
     // Returns true if the last alerted patron matches the current
     // patron.  Otherwise, the last alerted patron is set to the 
     // current patron and false is returned.
@@ -508,12 +520,6 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     $scope.gridControls = {
         selectedItems : function() {return []}
     }
-
-    // Max recents setting is loaded and scrubbed during egStartup.
-    // Copy it to a local variable here for ease of local access.
-    egCore.org.settings('ui.staff.max_recent_patrons').then(function(s) {
-        patronSvc.maxRecentPatrons = s['ui.staff.max_recent_patrons'];
-    });
 
     // The first time we encounter the show-recent CGI param, put the
     // service into show-recent mode.  The first time recents are shown,
