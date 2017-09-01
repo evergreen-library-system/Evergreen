@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1063', :eg_version);
+
 DO $temp$
 DECLARE
 	r RECORD;

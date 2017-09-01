@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1062', :eg_version);
 
 CREATE TABLE acq.edi_attr (
     key     TEXT PRIMARY KEY,

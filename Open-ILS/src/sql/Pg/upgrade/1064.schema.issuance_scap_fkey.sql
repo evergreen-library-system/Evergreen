@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1064', :eg_version);
+
 ALTER TABLE serial.issuance DROP CONSTRAINT IF EXISTS issuance_caption_and_pattern_fkey;
 
 -- Using NOT VALID and VALIDATE CONSTRAINT limits the impact to concurrent work.
