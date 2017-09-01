@@ -1,12 +1,13 @@
 #!perl
 
-use Test::More tests => 6;
+use Test::More tests => 22;
 
 diag("Tests open-ils.auth.login");
 
 use strict; use warnings;
 use OpenILS::Utils::TestUtils;
 use OpenILS::Application::AppUtils;
+use OpenSRF::Utils::Cache;
 our $U = "OpenILS::Application::AppUtils";
 
 OpenILS::Utils::TestUtils->new->bootstrap;
@@ -67,3 +68,28 @@ $resp = $U->simplereq(
 
 is($resp->{textcode}, 'SUCCESS', 'Identifier check for br1mclark OK');
 
+foreach my $i (1..15) {
+    $resp = $U->simplereq(
+        'open-ils.auth',
+        'open-ils.auth.login', {
+            identifier => 'br1mclark',
+            password => 'justplainwrong',
+            type => 'staff'
+        }
+    );
+    isnt($resp->{textcode}, 'SUCCESS', "Attempt $i: wrong password br1mclark does not work");
+}
+
+$resp = $U->simplereq(
+    'open-ils.auth',
+    'open-ils.auth.login', {
+        identifier => 'br1mclark',
+        password => 'montyc1234',
+        type => 'staff'
+    }
+);
+isnt($resp->{textcode}, 'SUCCESS', '... and consequently multiple failed attempts block');
+
+# and clean up
+my $cache = OpenSRF::Utils::Cache->new("global", 0);
+$cache->delete_cache('oils_auth_br1mclark_count');
