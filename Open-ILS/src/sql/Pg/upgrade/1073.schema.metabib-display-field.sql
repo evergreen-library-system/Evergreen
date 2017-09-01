@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1073', :eg_version);
+
 ALTER TABLE config.metabib_field 
     ADD COLUMN display_xpath TEXT, 
     ADD COLUMN display_field BOOL NOT NULL DEFAULT FALSE;

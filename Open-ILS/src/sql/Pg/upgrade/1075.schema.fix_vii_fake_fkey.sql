@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1075', :eg_version);
+
 CREATE OR REPLACE FUNCTION evergreen.vandelay_import_item_imported_as_inh_fkey() RETURNS TRIGGER AS $f$
 BEGIN   
         IF NEW.imported_as IS NULL THEN

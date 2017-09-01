@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1074', :eg_version);
+
 INSERT INTO config.internal_flag (name, enabled) 
     VALUES ('ingest.skip_display_indexing', FALSE);
 
