@@ -1062,9 +1062,9 @@ angular.module('egCoreMod')
                 new RegExp(service.org_settings['opac.username_regex']);
         }
 
-        if (service.org_settings['opac.barcode_regex']) {
+        if (service.org_settings['ui.patron.edit.ac.barcode.regex']) {
             patterns.ac.barcode = 
-                new RegExp(service.org_settings['opac.barcode_regex']);
+                new RegExp(service.org_settings['ui.patron.edit.ac.barcode.regex']);
         }
 
         if (service.org_settings['global.password_regex']) {
