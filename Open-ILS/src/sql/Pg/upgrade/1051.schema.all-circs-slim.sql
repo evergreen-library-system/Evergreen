@@ -3,7 +3,40 @@ BEGIN;
 SELECT evergreen.upgrade_deps_block_check('1051', :eg_version);
 
 CREATE OR REPLACE VIEW action.all_circulation_slim AS
-    SELECT * FROM action.circulation
+    SELECT
+        id,
+        usr,
+        xact_start,
+        xact_finish,
+        unrecovered,
+        target_copy,
+        circ_lib,
+        circ_staff,
+        checkin_staff,
+        checkin_lib,
+        renewal_remaining,
+        grace_period,
+        due_date,
+        stop_fines_time,
+        checkin_time,
+        create_time,
+        duration,
+        fine_interval,
+        recurring_fine,
+        max_fine,
+        phone_renewal,
+        desk_renewal,
+        opac_renewal,
+        duration_rule,
+        recurring_fine_rule,
+        max_fine_rule,
+        stop_fines,
+        workstation,
+        checkin_workstation,
+        copy_location,
+        checkin_scan_time,
+        parent_circ
+    FROM action.circulation
 UNION ALL
     SELECT
         id,
