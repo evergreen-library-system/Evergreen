@@ -895,7 +895,8 @@ sub transfer_copies_to_volume {
             my $part_obj = $editor->search_biblio_monograph_part(
               {
                    label=>$part_label,
-                   record=>$cn->record
+                   record=>$cn->record,
+                   deleted=>'f'
               }
            )->[0];
            if (!$part_obj) {
@@ -1428,7 +1429,8 @@ sub batch_volume_transfer {
                     my $part_obj = $e->search_biblio_monograph_part(
                        {
                             label=>$part_label,
-                            record=>$rec
+                            record=>$rec,
+                            deleted=>'f'
                        }
                     )->[0];
 
