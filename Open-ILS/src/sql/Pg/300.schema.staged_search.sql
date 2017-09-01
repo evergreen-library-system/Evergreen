@@ -1241,7 +1241,7 @@ SELECT  mbe.id,
                     AND EXISTS (
                         SELECT  1
                         FROM  metabib.browse_entry_def_map mbedm2
-                        WHERE mbedm2.authority = ash.record AND mbedm2.def = ANY(' || quote_literal(search_field) ||)
+                        WHERE mbedm2.authority = ash.record AND mbedm2.def = ANY(' || quote_literal(search_field) || ')
                     )
 
             )
