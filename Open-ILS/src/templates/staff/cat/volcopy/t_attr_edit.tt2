@@ -226,7 +226,7 @@
                     </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.price !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.price" string-to-number precision="2" ng-model="working.price" type="number" step="0.01"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.price" string-to-number ng-model="working.price" type="number" step="0.01"/>
                 </div>
             </div>
 
@@ -250,7 +250,7 @@
                     </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.cost !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.cost" string-to-number precision="2" ng-model="working.cost" type="number" step="0.01"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.cost" string-to-number ng-model="working.cost" type="number" step="0.01"/>
                 </div>
             </div>
 
@@ -320,7 +320,7 @@
                     </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit_amount !== undefined}">
-                    <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" string-to-number precision="2" ng-model="working.deposit_amount" type="number" step="0.01"/>
+                    <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" string-to-number ng-model="working.deposit_amount" type="number" step="0.01"/>
                 </div>
             </div>
 
