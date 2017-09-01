@@ -143,7 +143,7 @@ sub find_authority_headings_and_notes {
 
         foreach my $field (@fields) {
             my $h = { main_entry => ( $acsaf->main_entry ? 0 : 1 ),
-                      heading => _get_authority_heading($field, \%sf_lookup), $acsaf->joiner };
+                      heading => _get_authority_heading($field, \%sf_lookup, $acsaf->joiner) };
 
             my $norm = search_normalize($h->{heading});
             if (exists $heading_type_map{$norm}) {
