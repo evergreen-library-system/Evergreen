@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1070', :eg_version); --miker/gmcharlt/kmlussier
+
 CREATE TRIGGER thes_code_tracking_trigger
     AFTER UPDATE ON authority.thesaurus
     FOR EACH ROW EXECUTE PROCEDURE oils_i18n_code_tracking('at');

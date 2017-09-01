@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1069', :eg_version); --gmcharlt/kmlussier
+
 -- subset of types listed in https://www.loc.gov/marc/authority/ad1xx3xx.html
 -- for now, ignoring subdivisions
 CREATE TYPE authority.heading_type AS ENUM (
