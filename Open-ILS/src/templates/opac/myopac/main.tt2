@@ -12,7 +12,7 @@
 [%  IF myopac_cc_allowed;
     # http://www.w3.org/TR/WCAG20-TECHS/H32.html
     # avoid forms w/ no submit action %]
-<form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get">
+<form action="[% ctx.opac_root %]/myopac/main_payment_form#payment" method="get" id="selected_fines">
 [% END %]
 
     [% IF ctx.fines.circulation.size > 0 %]
@@ -154,10 +154,10 @@
                             title="[% l('Click to (un)select all fines') %]" />
                     </th>
                     [% END %]
-                    <th >[% l("Owed") %]</th><!-- NOBLE - Removed  word balance -->
-                    <th >[% l("Billing Type") %]</th><!-- added style for mobile - NOBLE -->
-                    <th >[% l("Note") %]</th> <!-- NOBLE - added -->
-                    <th >[% l("Date") %]</th><!-- NOBLE - Changed wording of "Transation Start time" -->
+                    <th >[% l("Owed") %]</th>
+                    <th >[% l("Billing Type") %]</th>
+                    <th >[% l("Note") %]</th>
+                    <th >[% l("Date") %]</th>
                     
 
                 </tr>
