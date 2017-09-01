@@ -110,6 +110,9 @@ ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_editor_fkey FOREIGN KEY (edit
 
 CREATE OR REPLACE FUNCTION evergreen.vandelay_import_item_imported_as_inh_fkey() RETURNS TRIGGER AS $f$
 BEGIN
+        IF NEW.imported_as IS NULL THEN
+                RETURN NEW;
+        END IF;
         PERFORM 1 FROM asset.copy WHERE id = NEW.imported_as;
         IF NOT FOUND THEN
                 RAISE foreign_key_violation USING MESSAGE = FORMAT(
