@@ -18,7 +18,7 @@
             CASE 'broader';
                l('Broader term');
             CASE 'narrower';
-               l('Broader term');
+               l('Narrower term');
             CASE 'other';
                l('Related term');
             CASE;
