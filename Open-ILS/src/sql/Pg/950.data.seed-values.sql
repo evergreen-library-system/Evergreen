@@ -207,7 +207,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label,
 
 INSERT INTO config.metabib_field ( id, field_class, name, label,
     format, xpath, display_field, display_xpath ) VALUES 
-    (37, 'author', 'creator', oils_i18n_gettext(8, 'All Creators', 'cmf', 'label'),
+    (37, 'author', 'creator', oils_i18n_gettext(37, 'All Creators', 'cmf', 'label'),
      'mods32', $$//mods32:mods/mods32:name[mods32:role/mods32:roleTerm[text()='creator']]$$, TRUE, $$//*[local-name()='namePart']$$ ); -- /* to fool vim */;
 
 
