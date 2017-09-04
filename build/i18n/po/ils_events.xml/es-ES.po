@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: 2016-11-11 21:44+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:43+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-08-16 04:41+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
 msgid "The requested container_copy_bucket was not found"
@@ -558,6 +558,11 @@ msgstr ""
 msgid "A record already exists with the requested TCN value"
 msgstr "Ya existe un registro con el valor TCN solicitado"
 
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
 msgstr "Evento de marcador de posición. Se utiliza para el desarrollo sólo"
@@ -692,12 +697,9 @@ msgstr "No se encontró el asset_stat_cat_entry solicitado"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "No se encontró el config_non_cataloged_type solicitado"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr ""
-"El tránsito en este artículo no puede ser abortado debido al estado del "
-"artículo,"
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr "La ruta de la copia no está vacía"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -779,10 +781,6 @@ msgstr "Objeto estación de trabajo solicitada no existe"
 #: 1628.MONEY_BILLING_NOT_FOUND:534
 msgid "The requested money_billing was not found"
 msgstr "No se encontró la money_billing solicitado"
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr "La ruta de la copia no está vacía"
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
@@ -1372,3 +1370,9 @@ msgstr "No se encontró el money_user_summary solicitado"
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "El ejmplar solicitado está en la estantería de apartados"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr ""
+#~ "El tránsito en este artículo no puede ser abortado debido al estado del "
+#~ "artículo,"

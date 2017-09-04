@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-03-15 16:25-0400\n"
-"PO-Revision-Date: 2017-03-19 16:51+0000\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
+"PO-Revision-Date: 2017-09-02 19:17+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-20 05:55+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2017-09-03 05:33+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -290,6 +290,10 @@ msgstr "CREATE_ORG_UNIT"
 msgid "Available"
 msgstr "Dostupné"
 
+#: 950.data.seed-values.sql:16761
+msgid "Item Print Label - Width for Left Label"
+msgstr "Tiskový štítek jednotky - Šířka pro levý štítek"
+
 # id::crcd.name__6
 #: 950.data.seed-values.sql:289
 msgid "35_days_1_renew"
@@ -517,6 +521,14 @@ msgstr ""
 "čtenáře zobrazeno jako navrhované. Navrhované pole se zobrazí spolu s "
 "povinnými poli i když není povinné. Pokud jde o povinné pole, je toto "
 "nastavení ignorováno."
+
+#: 950.data.seed-values.sql:16831
+msgid ""
+"This setting is used to set the default height (in number of lines) to use "
+"for call number wrapping in the left print label."
+msgstr ""
+"Toto  nastavení je použito pro nastavení výchozí výšky (v počtu řádků) pro "
+"zabalení signatury v levém tiskovém štítku"
 
 #: 950.data.seed-values.sql:772
 msgid "Allow a user to renew an item past the maximum renewal count"
@@ -1036,6 +1048,14 @@ msgstr ""
 "dostane pod toto procento, při pokusu utratit peníze z tohoto fondu obdží "
 "personál varovnou zprávu."
 
+#: 950.data.seed-values.sql:16713
+msgid "Item Print Label - Left Margin for Left Label"
+msgstr "Tiskový štítek jednotky - Levý okraj pro levý štítek"
+
+#: 950.data.seed-values.sql:5362
+msgid "Circulation History"
+msgstr "Historie výpůjček"
+
 #: 950.data.seed-values.sql:3215
 msgid "Hard stalling interval"
 msgstr "Tvrdý interval pro odklad"
@@ -1353,10 +1373,10 @@ msgstr "Navrhnout pole \"nezletilý\" na kartě registračních údajů čtená�
 msgid "Kara-Kalpak"
 msgstr "Karakalpačtina"
 
-# id::clm.value__swa
-#: 950.data.seed-values.sql:6955
-msgid "Swahili"
-msgstr "Svahilština"
+#: 950.data.seed-values.sql:1514
+msgid "Allows a user to cancel a transit on a copy with status of LOST"
+msgstr ""
+"Povolí uživateli zrušit přepravu exempláře se statusem ZTRACENO (čtenářem)"
 
 #: 950.data.seed-values.sql:11623
 msgid "Non-library Item"
@@ -1686,6 +1706,17 @@ msgstr "Sloučení pouze při shodě"
 msgid "Accession Number"
 msgstr "Přírůstkové číslo"
 
+#: 950.data.seed-values.sql:16671
+msgid ""
+"Set the preferred font family for item print labels. You can specify a list "
+"of CSS fonts, separated by commas, in order of preference; the system will "
+"use the first font it finds with a matching name. For example, \"Arial, "
+"Helvetica, serif\""
+msgstr ""
+"Nastavit výběr rodiny písem pro tisk štítků. Můžete specifikovat seznam CSS "
+"fontů oddělených čárkou v pořadí podle preference; systém použije první font "
+"ze seznamu, který najde. Příklad: \"Arial, Helvetica, serif\""
+
 #: 950.data.seed-values.sql:3332
 msgid "Org Unit Target Weight"
 msgstr "Váha cíle s ohledem na organizační jednotku."
@@ -1741,10 +1772,6 @@ msgstr "Aceh(ština)"
 #: 950.data.seed-values.sql:1408
 msgid "DELETE_METABIB_SEARCH_ALIAS"
 msgstr "DELETE_METABIB_SEARCH_ALIAS"
-
-#: 950.data.seed-values.sql:576
-msgid "Allow a user to mark an item as 'missing'"
-msgstr "Povolit uživateli označit exemplář jako \"postrádaný\""
 
 #: 950.data.seed-values.sql:3899 950.data.seed-values.sql:3902
 msgid "PayflowPro password"
@@ -1872,6 +1899,10 @@ msgstr "Samoobslužná výpůjčka"
 #: 950.data.seed-values.sql:6731
 msgid "Sichuan Yi"
 msgstr "S'čchuanština"
+
+#: 950.data.seed-values.sql:16665
+msgid "Item Print Label Font Family"
+msgstr "Rodina fontů pro tisk štítků"
 
 #: 950.data.seed-values.sql:4790
 msgid ""
@@ -2163,6 +2194,10 @@ msgstr "Umístění exempláře předchozích čísel"
 msgid "Established Heading Linking Entry -- Personal Name"
 msgstr "Záznam odkazující na systemizované záhlaví -- osobní jméno"
 
+#: 950.data.seed-values.sql:17124
+msgid "Define the time zone in which a library physically resides"
+msgstr "Definice časového pásma, ve kterém se knihovna fyzicky nachází"
+
 #: 950.data.seed-values.sql:896
 msgid "Allows a user to delete an MFHD record"
 msgstr "Povolí uživateli smazat MFHD záznam"
@@ -2218,9 +2253,9 @@ msgstr "Velikost  hřbetních a vnitřních štítků"
 msgid "Minimum Item Price"
 msgstr "Minimální cena exempláře"
 
-#: 950.data.seed-values.sql:16187
-msgid "Vandelay Generate Default Barcodes"
-msgstr "Vandelay Generování standardních kódů"
+#: 950.data.seed-values.sql:13152
+msgid "Author axis"
+msgstr "Osa autorů"
 
 #: 950.data.seed-values.sql:13104
 msgid "Heading -- General Subdivision"
@@ -2473,14 +2508,6 @@ msgid "The dob field will be required on the patron registration screen."
 msgstr ""
 "Pole \"datum narození\" bude požadováno na kartě registračních údajů čtenáře"
 
-#: 950.data.seed-values.sql:718
-msgid ""
-"Allow a user to abort a copy transit if the user is at the transit "
-"destination or source"
-msgstr ""
-"Povolit uživateli zrušit přepravu exempláře pokud je uživatel v cílové nebo "
-"zdrojové destinaci přepravy."
-
 #: 950.data.seed-values.sql:7658
 msgid "audio roll"
 msgstr "zvukový válec"
@@ -2642,6 +2669,12 @@ msgstr "Povoli uživateli vytvořit seznam pro vyzvednutí"
 msgid "Allow a user to modify an authority record"
 msgstr "Povolit uživatel upravit autoritní záznam"
 
+#: 950.data.seed-values.sql:17105
+msgid ""
+"If enabled, adds a \"Digital Bookplate\" option to the query type selectors "
+"in the public catalog for search on copy tags."
+msgstr ""
+
 # id::clfm.value__m
 #: 950.data.seed-values.sql:7068
 msgid "Mixed forms"
@@ -2671,6 +2704,10 @@ msgstr "Gayo"
 #: 950.data.seed-values.sql:8524 950.data.seed-values.sql:8554
 msgid "Standards/specifications"
 msgstr "Standardy/specifikace"
+
+#: 950.data.seed-values.sql:17121
+msgid "Library time zone"
+msgstr "Časové pásmo knihovny"
 
 #: 950.data.seed-values.sql:7946
 msgid "Cordiform"
@@ -2828,6 +2865,16 @@ msgstr ""
 "s požadovanými poli i když pole není povinné. Pokud je pole povinné, toto "
 "nastavení je ignorováno."
 
+#: 950.data.seed-values.sql:17070
+msgid ""
+"Format Dates with this pattern (examples: \"yyyy-MM-dd\" for \"2010-04-26\", "
+"\"MMM d, yyyy\" for \"Apr 26, 2010\").  This will be used in areas where a "
+"date without a timestamp is sufficient, like Date of Birth."
+msgstr ""
+"Formátovat data podle tohoto vzoru(příklady: \"yyyy-MM-dd\" pror \"2010-04-"
+"26\", \"d. MMM  yyyy\" for \"26. duben 2010\"). Tento formát bude použit "
+"všude, kde není potřeba datum s časovým razítkem, např. pro  datum narození."
+
 #: 950.data.seed-values.sql:15808
 msgid "Leave transaction open when long overdue balance equals zero"
 msgstr ""
@@ -2956,6 +3003,12 @@ msgstr "Maltština"
 msgid "Inupiaq"
 msgstr "Inupiak"
 
+#: 950.data.seed-values.sql:16767
+msgid ""
+"Set the default width for the leftmost item print label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:4095
 msgid ""
 "If enabled, patrons can create and edit existing addresses.  Addresses are "
@@ -3007,6 +3060,10 @@ msgstr "Bislama"
 #: 950.data.seed-values.sql:6547
 msgid "Acoli"
 msgstr "Ačoli"
+
+#: 950.data.seed-values.sql:13154
+msgid "Topic"
+msgstr "Téma"
 
 #: 950.data.seed-values.sql:7127 950.data.seed-values.sql:7128
 #: 950.data.seed-values.sql:7202 950.data.seed-values.sql:7203
@@ -3192,6 +3249,10 @@ msgstr ""
 msgid "UPDATE_IMPORT_ITEM_ATTR_DEF"
 msgstr "UPDATE_IMPORT_ITEM_ATTR_DEF"
 
+#: 950.data.seed-values.sql:8205
+msgid "Ohio "
+msgstr "Ohio "
+
 #: 950.data.seed-values.sql:468
 msgid "Your Bookmobile"
 msgstr "Vaše pojízdná knihovna"
@@ -3205,6 +3266,10 @@ msgstr ""
 #: 950.data.seed-values.sql:16256
 msgid "Default circulation modifier value for imported items"
 msgstr "V� hodnota modifik�ru v�y pro importovan�xempl�"
+
+#: 950.data.seed-values.sql:14992
+msgid "Kid's OPAC Search Filter"
+msgstr "Vyhledávací filtr pro dětský katalog"
 
 #: 950.data.seed-values.sql:6906
 msgid "Yakut"
@@ -3329,6 +3394,13 @@ msgstr "Khoisanské jazyky (ostatní)"
 msgid "Allow a user to update a copy location"
 msgstr "Povolit uživateli změnit umístění exempláře"
 
+#: 950.data.seed-values.sql:14980
+msgid ""
+"If this is unset, staff can view User Trigger Events regardless of age. When "
+"this is set to an interval, it represents the age of the oldest possible "
+"User Trigger Event that can be viewed."
+msgstr ""
+
 #: 950.data.seed-values.sql:1568
 msgid "Allows a user to create/retrieve/update/delete copy location groups"
 msgstr ""
@@ -3411,6 +3483,12 @@ msgstr ""
 #: 950.data.seed-values.sql:6641
 msgid "Czech"
 msgstr "Čeština"
+
+#: 950.data.seed-values.sql:16815
+msgid ""
+"This setting allows you to inject arbitrary CSS into the item print label "
+"template.  For example, \".printlabel { text-transform: uppercase; }\""
+msgstr ""
 
 # id::clm.value__mni
 #: 950.data.seed-values.sql:6831
@@ -3577,6 +3655,10 @@ msgstr "Verizon Wireless"
 #: 950.data.seed-values.sql:6869
 msgid "Ojibwa"
 msgstr "Odžibwejština"
+
+#: 950.data.seed-values.sql:16697
+msgid "Item Print Label Font Weight"
+msgstr ""
 
 #: 950.data.seed-values.sql:7530
 msgid "roll"
@@ -4328,6 +4410,12 @@ msgstr "Němčina"
 msgid "Holds Retarget Interval"
 msgstr "Interval pro přesměrování rezervací na nové cíle"
 
+#: 950.data.seed-values.sql:16847
+msgid ""
+"This setting is used to set the default width (in number of characters) to "
+"use for call number wrapping in the left print label."
+msgstr ""
+
 #: 950.data.seed-values.sql:12365
 msgid "Import failed due to barcode collision"
 msgstr "Import se nezdařil kvůli kolizi čárových kódů"
@@ -4461,14 +4549,6 @@ msgid "User may delete a patron statistical category entry map"
 msgstr ""
 "Uživatel může smazat mapu položek čtenářských statistických kategorií"
 
-#: 950.data.seed-values.sql:720
-msgid ""
-"Allow a user to abort a copy transit if the user is not at the transit "
-"source or dest"
-msgstr ""
-"Povolit uživateli zrušit přepravu exemplářů pokud uživatel není v cílové "
-"nebo zdrojové destinaci přepravy,"
-
 #: 950.data.seed-values.sql:11073
 msgid "A hold request history needs to be formatted for printing."
 msgstr "Historii požadavků na rezervaci je nutné zformátovat pro tisk."
@@ -4590,13 +4670,19 @@ msgstr "Povolit uživateli vrátit exemplář"
 msgid "Literary Form"
 msgstr "Literární žánr"
 
-#: 950.data.seed-values.sql:8235
-msgid "South Africa "
-msgstr "Jižní Afrika "
+#: 950.data.seed-values.sql:1190
+msgid "UPDATE_ORG_UNIT_SETTING.patron.password.use_phone"
+msgstr "UPDATE_ORG_UNIT_SETTING.patron.password.use_phone"
 
 #: 950.data.seed-values.sql:8173
 msgid "Mauritania "
 msgstr "Mauritánie "
+
+#: 950.data.seed-values.sql:16687
+msgid ""
+"Set the default font size for item print labels. Please include a unit of "
+"measurement that is valid CSS. For example, \"12pt\" or \"16px\" or \"1em\""
+msgstr ""
 
 #: 950.data.seed-values.sql:15201 950.data.seed-values.sql:15207
 msgid "Link Checker's Review Attempt interface's saved columns"
@@ -5159,6 +5245,10 @@ msgstr "EIAJ"
 msgid "Phoenician"
 msgstr "Foiničtina"
 
+#: 950.data.seed-values.sql:16681
+msgid "Item Print Label Font Size"
+msgstr ""
+
 #: 950.data.seed-values.sql:1016
 msgid "UPDATE_BIB_LEVEL"
 msgstr "UPDATE_BIB_LEVEL"
@@ -5190,6 +5280,13 @@ msgstr "Povolit uživateli upravit známky popularity"
 #: 950.data.seed-values.sql:7101
 msgid "CED videodisc"
 msgstr "CED videodisk"
+
+#: 950.data.seed-values.sql:16703
+msgid ""
+"Set the default font weight for item print labels. Please use the CSS "
+"specification for values for font-weight.  For example, \"normal\", "
+"\"bold\", \"bolder\", or \"lighter\""
+msgstr ""
 
 #: 950.data.seed-values.sql:6880
 msgid "Panjabi"
@@ -5519,6 +5616,10 @@ msgstr "Počet sekund čekání mezi pokusy o testování URL"
 msgid "UPDATE_TRANSLATION"
 msgstr "UPDATE_TRANSLATION"
 
+#: 950.data.seed-values.sql:13151
+msgid "Title axis"
+msgstr ""
+
 #: 950.data.seed-values.sql:7646
 msgid "computer card"
 msgstr "počítačová karta"
@@ -5710,6 +5811,10 @@ msgstr "Wakashské jazyky"
 #: 950.data.seed-values.sql:6962 950.data.seed-values.sql:6970
 msgid "Tajik"
 msgstr "Tadžičtina"
+
+#: 950.data.seed-values.sql:14999
+msgid "General/Adult Materials"
+msgstr ""
 
 #: 950.data.seed-values.sql:992
 msgid "DELETE_ORG_TYPE"
@@ -5904,6 +6009,10 @@ msgstr "Identifikátor"
 msgid "Rondos"
 msgstr "Rondo"
 
+#: 950.data.seed-values.sql:1681
+msgid "Administer copy tag"
+msgstr ""
+
 #: 950.data.seed-values.sql:333
 msgid "Checked out"
 msgstr "Vypůjčeno"
@@ -6043,6 +6152,10 @@ msgstr "CREATE_CIRC_DURATION"
 #: 950.data.seed-values.sql:13658
 msgid "Iridium"
 msgstr "Iridium"
+
+#: 950.data.seed-values.sql:17099
+msgid "Enable Digital Bookplate Search"
+msgstr ""
 
 #: 950.data.seed-values.sql:13450
 msgid "Rogers Wireless"
@@ -6392,9 +6505,9 @@ msgstr ""
 "Výchozí sady klávesových zkratek pro služebního klienta (jméno souboru bez "
 "\".keyset\") Např.: Výchozí, minimální, žádný"
 
-#: 950.data.seed-values.sql:7414
-msgid "performed music"
-msgstr "interpretovaná hudba"
+#: 950.data.seed-values.sql:834
+msgid "Allow a user to create/view/update/delete a funding source"
+msgstr "Povolit uživateli vytvořit/zobrazit/upravit/smazat finanční zdroj"
 
 #: 950.data.seed-values.sql:6934
 msgid "Inari Sami"
@@ -6529,6 +6642,10 @@ msgstr "Administrátor výpůjčního protokolu"
 #: 950.data.seed-values.sql:6700 950.data.seed-values.sql:6818
 msgid "Manx"
 msgstr "Manština (manx)"
+
+#: 950.data.seed-values.sql:16825
+msgid "Item Print Label - Call Number Wrap Filter Height"
+msgstr ""
 
 #: 950.data.seed-values.sql:13136
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
@@ -7862,6 +7979,18 @@ msgstr "Odkazy zkratek pro stránkování prohlížení v OPACu"
 msgid "Plates"
 msgstr "Obrazové přílohy"
 
+#: 950.data.seed-values.sql:17086
+msgid ""
+"Format Date+Time with this pattern (examples: \"yy-MM-dd h:m:s.SSS a\" for "
+"\"16-04-05 2:07:20.666 PM\", \"yyyy-dd-MMM HH:mm\" for \"2016-05-Apr "
+"14:07\").  This will be used in areas of the client where a date with a "
+"timestamp is needed, like Checkout, Due Date, or Record Created."
+msgstr ""
+
+#: 950.data.seed-values.sql:17064
+msgid "Format Dates with this pattern"
+msgstr ""
+
 #: 950.data.seed-values.sql:8278
 msgid "Egypt "
 msgstr "Egypt "
@@ -8131,9 +8260,9 @@ msgstr "Čtenář: heslo z telefonního čísla"
 msgid "Allow a user to view report output"
 msgstr "Povolit uživateli zobrazit výstup zprávy"
 
-#: 950.data.seed-values.sql:1190
-msgid "UPDATE_ORG_UNIT_SETTING.patron.password.use_phone"
-msgstr "UPDATE_ORG_UNIT_SETTING.patron.password.use_phone"
+#: 950.data.seed-values.sql:353
+msgid "Lost and Paid"
+msgstr ""
 
 #: 950.data.seed-values.sql:930
 msgid "CREATE_ITEM_TYPE"
@@ -8273,9 +8402,10 @@ msgstr "Uživatel smí smazat statistickou kategorii exempláře."
 msgid "Creoles and Pidgins, French-based (Other)"
 msgstr "Kreolština a jiné pigdiny na základě francouzštiny"
 
-#: 950.data.seed-values.sql:8205
-msgid "Ohio "
-msgstr "Ohio "
+# id::clm.value__swa
+#: 950.data.seed-values.sql:6955
+msgid "Swahili"
+msgstr "Svahilština"
 
 #: 950.data.seed-values.sql:6789 950.data.seed-values.sql:6932
 msgid "Sami"
@@ -8583,9 +8713,17 @@ msgid "Allow a user to add/remove users to/from the \"Data Review\" group"
 msgstr ""
 "Povolit uživateli přidat/odebrat uživatele ze skupiny \"Kontrola dat\""
 
+#: 950.data.seed-values.sql:16777
+msgid "Item Print Label - Height for Right Label"
+msgstr ""
+
 #: 950.data.seed-values.sql:8210
 msgid "Pennsylvania "
 msgstr "Pennsylvánie "
+
+#: 950.data.seed-values.sql:12368 950.data.seed-values.sql:12369
+msgid "Import failed due to system id collision"
+msgstr "Import se nezdařil kvůli kolizi systémových ID"
 
 #: 950.data.seed-values.sql:7470
 msgid "projected"
@@ -9407,6 +9545,10 @@ msgstr "Záznam odkazující na systemizované záhlaví -- věcný termín"
 msgid "Bulgaria "
 msgstr "Bulharsko "
 
+#: 950.data.seed-values.sql:7414
+msgid "performed music"
+msgstr "interpretovaná hudba"
+
 #: 950.data.seed-values.sql:7002
 msgid "Urdu"
 msgstr "Urdština"
@@ -9967,6 +10109,12 @@ msgstr ""
 msgid "Playing cards"
 msgstr "Hrací karty"
 
+#: 950.data.seed-values.sql:16751
+msgid ""
+"Set the default height for the leftmost item print label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:644
 msgid "Allow a user to create a new in-house-use "
 msgstr "Povolit živateli vytvořit novou prezenční výpůjčku "
@@ -10066,6 +10214,10 @@ msgstr ""
 msgid "Allow a user to create/view/update/delete a copy location order"
 msgstr ""
 "Povolit uživateli vytvořit / zobrazit / změnit / smazat pořadí lokací"
+
+#: 950.data.seed-values.sql:8235
+msgid "South Africa "
+msgstr "Jižní Afrika "
 
 #: 950.data.seed-values.sql:4799
 msgid ""
@@ -10708,6 +10860,12 @@ msgstr "Wolofština"
 msgid "Set the default font size for spine and pocket labels"
 msgstr "Nastavit výchozí velikost fontu pro hřbetní a knižní štítky"
 
+#: 950.data.seed-values.sql:716
+msgid ""
+"Allow a user to cancel a copy transit if the user is at the transit "
+"destination or source"
+msgstr ""
+
 #: 950.data.seed-values.sql:14798
 msgid "Max user activity entries to retrieve (staff client)"
 msgstr ""
@@ -10734,6 +10892,10 @@ msgstr "Glóbus"
 #: 950.data.seed-values.sql:570
 msgid "* no longer applicable"
 msgstr "* již nelze použít"
+
+#: 950.data.seed-values.sql:16841
+msgid "Item Print Label - Call Number Wrap Filter Width"
+msgstr ""
 
 #: 950.data.seed-values.sql:6631
 msgid "Coptic"
@@ -11455,6 +11617,10 @@ msgstr "Slovníky"
 msgid "Conference proceedings"
 msgstr "Materiály z konferencí"
 
+#: 950.data.seed-values.sql:13153
+msgid "Subject axis"
+msgstr ""
+
 #: 950.data.seed-values.sql:8031
 msgid "Belize "
 msgstr "Belize "
@@ -11586,11 +11752,6 @@ msgstr "Chansony, polyfonní"
 #: 950.data.seed-values.sql:1690
 msgid "Staff"
 msgstr "Personál"
-
-#: 950.data.seed-values.sql:1518
-msgid "Allows a user to abort a transit on a copy with status of MISSING"
-msgstr ""
-"Povolí uživateli zrušit přepravu exempláře se statusem \"postrádané\""
 
 #: 950.data.seed-values.sql:6569
 msgid "Arawak"
@@ -11732,9 +11893,9 @@ msgstr "Formáty pro vyhledávání"
 msgid "CREATE_BIBLIO_FINGERPRINT"
 msgstr "CREATE_BIBLIO_FINGERPRINT"
 
-#: 950.data.seed-values.sql:834
-msgid "Allow a user to create/view/update/delete a funding source"
-msgstr "Povolit uživateli vytvořit/zobrazit/upravit/smazat finanční zdroj"
+#: 950.data.seed-values.sql:376
+msgid "Canadian English"
+msgstr "Kanadská angličtina"
 
 #: 950.data.seed-values.sql:7736
 msgid "Overtures"
@@ -12340,6 +12501,10 @@ msgstr "Lahndština"
 msgid "Phonograph spoken recording"
 msgstr "Mluvený gramofonový záznam"
 
+#: 950.data.seed-values.sql:13154
+msgid "Topic Subject axis"
+msgstr ""
+
 #: 950.data.seed-values.sql:7848
 msgid "Chorus score"
 msgstr "Sborová partitura"
@@ -12352,6 +12517,10 @@ msgstr "Barbados "
 #: 950.data.seed-values.sql:6951
 msgid "Sukuma"
 msgstr "Sukuma"
+
+#: 950.data.seed-values.sql:16793
+msgid "Item Print Label - Width for Right Label"
+msgstr ""
 
 #: 950.data.seed-values.sql:2576
 msgid "Patron via OPAC"
@@ -12416,6 +12585,10 @@ msgstr "Záznam odkazující na systemizované záhlaví -- unifikovaný název"
 #: 950.data.seed-values.sql:13728
 msgid "C Beyond"
 msgstr "C Beyond"
+
+#: 950.data.seed-values.sql:16745
+msgid "Item Print Label - Height for Left Label"
+msgstr ""
 
 #: 950.data.seed-values.sql:1506
 msgid "Update Bibliographic Record Peer Type"
@@ -12692,10 +12865,6 @@ msgstr ""
 "čtenářské registrace zobrazí varování. Hodnotou je počet dnů, např. \"3\" "
 "pro tři dny."
 
-#: 950.data.seed-values.sql:1516
-msgid "Allows a user to abort a transit on a copy with status of LOST"
-msgstr "Povolit uživateli zrušit přepravu exempláře se statusem \"ztraceno\""
-
 #: 950.data.seed-values.sql:122
 msgid "Translated Title"
 msgstr "Přeložený název"
@@ -12826,6 +12995,12 @@ msgid ""
 "Date of distribution/release/issue and production/recording session when "
 "different"
 msgstr "Datum distribuce/uvolnění/vydání a produkce/nahrávání, pokud se liší"
+
+#: 950.data.seed-values.sql:718
+msgid ""
+"Allow a user to cancel a copy transit if the user is not at the transit "
+"source or dest"
+msgstr ""
 
 #: 950.data.seed-values.sql:16133
 msgid "Allow Patron Self-Registration"
@@ -12996,6 +13171,12 @@ msgstr ""
 msgid "text"
 msgstr "text"
 
+#: 950.data.seed-values.sql:16799
+msgid ""
+"Set the default width for the rightmost item print label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:1436
 msgid "UPDATE_USER_BTYPE"
 msgstr "UPDATE_USER_BTYPE"
@@ -13009,10 +13190,6 @@ msgstr ""
 #: 950.data.seed-values.sql:8124
 msgid "Iraq "
 msgstr "Irák "
-
-#: 950.data.seed-values.sql:376
-msgid "Canadian English"
-msgstr "Kanadská angličtina"
 
 #: 950.data.seed-values.sql:7786 950.data.seed-values.sql:7815
 #: 950.data.seed-values.sql:8449 950.data.seed-values.sql:8479
@@ -13064,6 +13241,10 @@ msgid ""
 msgstr ""
 "Počet sekund, po které se má čekat, než bude znovu obnoveno rozhraní pro "
 "samoobslužnou registraci, abys se vyčistily citlivé údaje."
+
+#: 950.data.seed-values.sql:17080
+msgid "Format Date+Time with this pattern"
+msgstr ""
 
 #: 950.data.seed-values.sql:1182
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
@@ -13266,6 +13447,14 @@ msgstr "Západní Austrálie "
 msgid "Bilingual"
 msgstr "Dvojjazyčný"
 
+#: 950.data.seed-values.sql:1679
+msgid "Administer copy tag types"
+msgstr ""
+
+#: 950.data.seed-values.sql:14995
+msgid "Children's Materials"
+msgstr ""
+
 #: 950.data.seed-values.sql:8347
 msgid "Reprint/reissue date and original date"
 msgstr "Datum reprintu/dotisku"
@@ -13311,6 +13500,13 @@ msgstr "Kantáty"
 #: 950.data.seed-values.sql:4769
 msgid "Show prefix field on patron registration"
 msgstr "Zobrazit pole \"prefix\"na kartě registračních údajů čtenáře"
+
+#: 950.data.seed-values.sql:16735
+msgid ""
+"Set the default left margin for the rightmost item print label (or in other "
+"words, the desired space between the two labels). Please include a unit of "
+"measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
 
 #: 950.data.seed-values.sql:7043
 msgid "Language material"
@@ -13376,6 +13572,10 @@ msgstr "Vynuceno personálem"
 #: 950.data.seed-values.sql:1418
 msgid "UPDATE_BIB_SOURCE"
 msgstr "UPDATE_BIB_SOURCE"
+
+#: 950.data.seed-values.sql:14997
+msgid "Young Adult Materials"
+msgstr ""
 
 #: 950.data.seed-values.sql:5009
 msgid "Tag Circulated Items in Results"
@@ -13815,6 +14015,13 @@ msgstr "Semitské jazyky (ostatní)"
 msgid "DELETE_IMPORT_ITEM_ATTR_DEF"
 msgstr "DELETE_IMPORT_ITEM_ATTR_DEF"
 
+#: 950.data.seed-values.sql:16719
+msgid ""
+"Set the default left margin for the leftmost item print Label. Please "
+"include a unit of measurement that is valid CSS. For example, \"1in\" or "
+"\"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:4140
 msgid ""
 "The OPAC should not display payments by patrons that are older than any "
@@ -13830,6 +14037,10 @@ msgstr "objekt"
 #: 950.data.seed-values.sql:7642
 msgid "computer chip cartridge"
 msgstr "kartridž počítačového čipu"
+
+#: 950.data.seed-values.sql:16809
+msgid "Item Print Label - Inline CSS"
+msgstr ""
 
 #: 950.data.seed-values.sql:7486
 msgid "audio"
@@ -13869,6 +14080,10 @@ msgstr "Povolit uživateli kontrolní sadu autorit"
 #: 950.data.seed-values.sql:8049
 msgid "Chad "
 msgstr "Čad "
+
+#: 950.data.seed-values.sql:16869
+msgid "Ebook API Integration"
+msgstr ""
 
 #: 950.data.seed-values.sql:15170
 msgid "All Link Checker filter dialogs"
@@ -13958,6 +14173,10 @@ msgstr "Seznam literatury"
 #: 950.data.seed-values.sql:832
 msgid "Allow a user to update a provider"
 msgstr "Povolit uživateli upravit dodavatele"
+
+#: 950.data.seed-values.sql:14974
+msgid "Maximum visible age of User Trigger Events in Staff Interfaces"
+msgstr ""
 
 #: 950.data.seed-values.sql:9481
 msgid "A patron has made an acquisitions request."
@@ -14059,9 +14278,9 @@ msgstr ""
 msgid "Gibraltar "
 msgstr "Gibraltar "
 
-#: 950.data.seed-values.sql:12368 950.data.seed-values.sql:12369
-msgid "Import failed due to system id collision"
-msgstr "Import se nezdařil kvůli kolizi systémových ID"
+#: 950.data.seed-values.sql:1516
+msgid "Allows a user to cancel a transit on a copy with status of MISSING"
+msgstr ""
 
 #: 950.data.seed-values.sql:518
 msgid "Allow a user to place a hold on a specific copy"
@@ -14150,6 +14369,12 @@ msgstr ""
 msgid "Patron in person"
 msgstr "Čtenář osobně"
 
+#: 950.data.seed-values.sql:16783
+msgid ""
+"Set the default height for the rightmost item print label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:3872
 msgid "Enable PayflowPro payments"
 msgstr "Povolit platby PayflowPro"
@@ -14167,6 +14392,10 @@ msgstr ""
 #: 950.data.seed-values.sql:6767
 msgid "Kikuyu"
 msgstr "Kukujština"
+
+#: 950.data.seed-values.sql:16187
+msgid "Vandelay Generate Default Barcodes"
+msgstr "Vandelay Generování standardních kódů"
 
 #: 950.data.seed-values.sql:4805
 msgid "Show suffix field on patron registration"
@@ -14473,6 +14702,10 @@ msgstr ""
 "volba \"zobrazit navrhovaná pole\". Pokud je pole zobrazeno nebo je povinné, "
 "toto nastavení bude ignorováno."
 
+#: 950.data.seed-values.sql:16729
+msgid "Item Print Label - Left Margin for Right Label"
+msgstr ""
+
 #: 950.data.seed-values.sql:602
 msgid "Allow a user to view other users' permission groups"
 msgstr "Povolit uživteli zobrazit skupinu oprávnění u jiných uživatelů"
@@ -14778,3 +15011,27 @@ msgstr "Flamenco"
 
 #~ msgid "Holds: Has Local Copy Alert"
 #~ msgstr "Rezervace: Upozornit, je-li exemplář k dispozici lokálně"
+
+#~ msgid "Allow a user to mark an item as 'missing'"
+#~ msgstr "Povolit uživateli označit exemplář jako \"postrádaný\""
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is at the transit "
+#~ "destination or source"
+#~ msgstr ""
+#~ "Povolit uživateli zrušit přepravu exempláře pokud je uživatel v cílové nebo "
+#~ "zdrojové destinaci přepravy."
+
+#~ msgid ""
+#~ "Allow a user to abort a copy transit if the user is not at the transit "
+#~ "source or dest"
+#~ msgstr ""
+#~ "Povolit uživateli zrušit přepravu exemplářů pokud uživatel není v cílové "
+#~ "nebo zdrojové destinaci přepravy,"
+
+#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
+#~ msgstr ""
+#~ "Povolí uživateli zrušit přepravu exempláře se statusem \"postrádané\""
+
+#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
+#~ msgstr "Povolit uživateli zrušit přepravu exempláře se statusem \"ztraceno\""

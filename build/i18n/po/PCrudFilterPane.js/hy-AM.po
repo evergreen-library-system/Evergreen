@@ -1,0 +1,125 @@
+# Armenian translation for evergreen
+# Copyright (c) 2017 Rosetta Contributors and Canonical Ltd 2017
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2017.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2017-07-26 11:03+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
+"Language-Team: Armenian <hy@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2017-07-27 05:33+0000\n"
+"X-Generator: Launchpad (build 18439)\n"
+
+#: PCrudFilterPane.js:OPERATOR_NE
+msgid "is not"
+msgstr "ոչ"
+
+#: PCrudFilterPane.js:OPERATOR_EQ
+msgid "is"
+msgstr "սա է"
+
+#: PCrudFilterPane.js:NAME_SAVED_FILTER_SET
+msgid "Enter a name for your saved filter set:"
+msgstr "Քո հիշված զտիչի բազմության համար մուտք արա անուն"
+
+#: PCrudFilterPane.js:OPERATOR_IN
+msgid "is in the set"
+msgstr "Բազմության մեջ է"
+
+#: PCrudFilterPane.js:OPERATOR_IS_NULL
+msgid "is null"
+msgstr "դատարկ է"
+
+#: PCrudFilterPane.js:OPERATOR_BETWEEN
+msgid "is between"
+msgstr "միջև է"
+
+#: PCrudFilterPane.js:OPERATOR_NOT_LIKE
+msgid "is not like"
+msgstr "նման չէ"
+
+#: PCrudFilterPane.js:OPERATOR_NOT_IN
+msgid "is not in the set"
+msgstr "բազմության մեջ չէ"
+
+#: PCrudFilterPane.js:CHOOSE_FILTER_TO_LOAD
+msgid "Choose filter sets to load"
+msgstr "Ընտրիր զտիչի բազմությունները բեռնելու համար"
+
+#: PCrudFilterPane.js:OPERATOR_LIKE
+msgid "is like"
+msgstr "նման է"
+
+#: PCrudFilterPane.js:OPERATOR_IS_NOT_NULL
+msgid "is not null"
+msgstr "դատարկ չէ"
+
+#: PCrudFilterPane.js:NEED_NAME
+msgid "You must enter a name for the saved filters."
+msgstr "Հիշված զտիչների համար պետք է մուտք անես անուն։"
+
+#: PCrudFilterPane.js:ADD_ROW
+msgid "Add Row"
+msgstr "Ավելացրու տող"
+
+#: PCrudFilterPane.js:EMPTY_CASE_COMPACT
+msgid "Add rows to filter results."
+msgstr "Արդյունքները զտելու համար ավելացրու տողեր։"
+
+#: PCrudFilterPane.js:OPERATOR_NOT_BETWEEN
+msgid "is not between"
+msgstr "միջև չէ"
+
+#: PCrudFilterPane.js:EMPTY_CASE
+msgid ""
+"Add rows to filter results, or just click Apply to see unfiltered results."
+msgstr ""
+"Ավելացրու տողեր արդյունքները զտելու համար, կամ պարզապես սեղմիր Կիրառել "
+"չզտված արդյունքները տեսնելու համար։"
+
+#: PCrudFilterPane.js:EMPTY_LIST
+msgid "Cannot compile search filter.  Empty lists not allowed."
+msgstr "Չի կարող կատարել փնտրման զտումը։ Դատարկ ցուցակները արգելված են։"
+
+#: PCrudFilterPane.js:OPERATOR_LT
+msgid "is less than"
+msgstr "փոքր է քան"
+
+#: PCrudFilterPane.js:DEFAULT_DIALOG_TITLE
+msgid "Filter Results"
+msgstr "Զտիր արդյունքները"
+
+#: PCrudFilterPane.js:OPERATOR_GT
+msgid "is greater than"
+msgstr "մեծ է քան"
+
+#: PCrudFilterPane.js:OPERATOR_GTE
+msgid "is greater than or equal to"
+msgstr "մեծ է քան կամ հավասար է"
+
+#: PCrudFilterPane.js:LOAD_FILTERS
+msgid "Load Filters"
+msgstr "Բեռնավորիր զտիչները"
+
+#: PCrudFilterPane.js:OPERATOR_LTE
+msgid "is less than or equal to"
+msgstr "փոքր է քան կամ հավասար է"
+
+#: PCrudFilterPane.js:CANCEL
+msgid "Cancel"
+msgstr "Չեղարկել"
+
+#: PCrudFilterPane.js:APPLY
+msgid "Apply"
+msgstr "Կիրառել"
+
+#: PCrudFilterPane.js:SAVE_FILTERS
+msgid "Save Filters"
+msgstr "Հիշիր զտիչները"

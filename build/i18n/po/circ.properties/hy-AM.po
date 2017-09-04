@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2016-05-08 19:20+0000\n"
-"Last-Translator: Serj Safarian <serjsafarian@gmail.com>\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
+"PO-Revision-Date: 2017-08-20 08:08+0000\n"
+"Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-08-21 05:12+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -25,10 +25,11 @@ msgstr "%1$s նյութը երբեք չի սպասարկվել:"
 #: staff.circ.item_no_user
 msgid "Item %1$s circulation is an aged circulation and has no linked user."
 msgstr ""
+"Այս նյութի տացքը %1$s տարիքային նյութի տացք է և չունի կապակցված օգտվող։"
 
 #: staff.circ.aged_circ
 msgid "<Aged Circulation>"
-msgstr ""
+msgstr "<Տարիքային տացք>"
 
 #: staff.circ.invalid_date
 msgid "Invalid Date"
@@ -250,6 +251,8 @@ msgid ""
 "If overridden now, subsequent checkouts during this patron's session will "
 "auto-override this event."
 msgstr ""
+"եթե հիմա գերազանցեց, այս ընթերցողի կապի ընթացքում հաջոդ տրումները այս "
+"գործընթացի ավտո գերազանցում կարձանագրեն։"
 
 #: staff.circ.checkout.error_retrieving_copy_status
 msgid "Could not retrieve the name of the current status for the copy"
@@ -307,8 +310,8 @@ msgid "Forgiving Checkin then Checkout"
 msgstr "Մարվում ե հանձնումը ապա դուրս տրում"
 
 #: staff.circ.checkout.abort_transit_then_checkout
-msgid "Abort Transit then Checkout"
-msgstr "Վիժեցրու տրանզիտը ապա դուրս տուր"
+msgid "Cancel Transit then Checkout"
+msgstr "Չեղյալ արա տեղափոխումը, ապա սպսարկիր։"
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
@@ -397,6 +400,10 @@ msgstr "Այս նյութը դեռ պետք է սպասարկվի"
 msgid "This item is not in transit."
 msgstr "Այս նյութը տրանզիտում չէ"
 
+#: staff.circ.copy_details.transit_caption
+msgid "In Transit"
+msgstr "Փոխանցման մեջ"
+
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
 msgstr "Դարակ"
@@ -413,6 +420,10 @@ msgstr "Հեռախոս"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
 msgstr "%1$s, %2$s : %3$s"
+
+#: staff.circ.copy_details.hold_caption
+msgid "Captured for Hold"
+msgstr "Բռնված պահման համար"
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
@@ -948,12 +959,12 @@ msgid "Receipt Template Editor"
 msgstr "Ձևանմուշի խմբագրիչի ստացական"
 
 #: staff.circ.utils.abort_transits.confirm
-msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr "Վստա՞հ ես որ կցանկանաիր վիժեցնել այս օրինակների տեղափոխումը"
+msgid "Are you sure you would like to cancel transits for copies: %1$s?"
+msgstr "Վստա՞հ ես, որ կցանկանաս չեղյալ անել այս պատճենների փոխանցումը։ %1$s"
 
 #: staff.circ.utils.abort_transits.title
-msgid "Aborting Transits"
-msgstr "Տեղափոխումների վիժեցում"
+msgid "Canceling Transits"
+msgstr "Փոխանցումը չեղյալ է արվում։"
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
@@ -971,15 +982,15 @@ msgstr "Օրինակի ID = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
+"This item was no longer in transit at the time of the cancellation.  Perhaps "
+"this happened from a stale display?"
 msgstr ""
-"Վիժեցման ժամանակ այս նյութը արդեն տեղափոխման մեջ չեր: Հավանաբար սա պատահել է "
-"սառեցված արտածման արդյունքում:"
+"Չեղյալ անելու պահին նյութը այլևս փոխանցման մեջ չէ։ Հավանաբար սա հնացած "
+"արտածման արդյունք է։"
 
 #: staff.circ.utils.abort_transits.unexpected_error
-msgid "Transit not likely aborted."
-msgstr "Ցանկալի չէ դադարեցնել տեխափոխումը"
+msgid "Transit not likely canceled."
+msgstr "Կարծես թե փոխանցումը չի չեղարկված։"
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
@@ -1102,7 +1113,7 @@ msgstr "Պահվո՞խ"
 
 #: staff.circ.utils.age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Տարիքի հետ կապված պահման պաշտպանություն"
 
 #: staff.circ.utils.floating
 msgid "Floating?"
@@ -1192,7 +1203,7 @@ msgstr "Ստեղծման ամսաթիվ"
 
 #: staff.circ.utils.active_date
 msgid "Date Active"
-msgstr ""
+msgstr "Ակտիվ ամսաթիվ"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited "
@@ -1876,6 +1887,8 @@ msgid ""
 "Check In May Have Failed.  Possible double-scan of the barcode.  Use Item "
 "Status to confirm Check In and possible Hold capture."
 msgstr ""
+"Մայիսի ընդունումը ձախողվեց։ Շտրիխ կոդի հնարավոր կրկնակի ստուգում։ Օգտագործիր "
+"Նյութի վիճակը ընդունումը և հնարավոր Պահման որսալը հաստատելու համար։"
 
 #: staff.circ.checkin.renew_failed.error
 msgid "Renew Failed for %1$s"
@@ -2083,14 +2096,18 @@ msgstr "Չկա նյութ այս շտրիխ կոդով \"%1$s\""
 
 #: staff.circ.utils.transit.copy_status_message.label
 msgid "Transit Copy Status Message"
-msgstr ""
+msgstr "Տրանզիտ պատճենի վիճակի հաղորդագրություն"
 
 #: staff.circ.utils.transit.copy_status_message
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr ""
+"Այս նյութի կարգավիճակն է %1$s, կպահանջվի աշխատակազմի լրացուցիչ գործողություն։"
 
 #~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
 #~ msgstr "Սխալ սկան կամ չմուտքագրված նյութ: Սպասարկե՞լ որպես քարտագրված նյութ:"
+
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "Վիժեցրու տրանզիտը ապա դուրս տուր"
 
 #~ msgid "Are you sure sure you want to delete these items? %1$s"
 #~ msgstr "Վստա՞հ ես որ ցանկանում ես ջնջել այս նյութերը %1$s"
@@ -2102,6 +2119,22 @@ msgstr ""
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Հատորները ջնջվել են"
+
+#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
+#~ msgstr "Վստա՞հ ես որ կցանկանաիր վիժեցնել այս օրինակների տեղափոխումը"
+
+#~ msgid "Aborting Transits"
+#~ msgstr "Տեղափոխումների վիժեցում"
+
+#~ msgid ""
+#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
+#~ "happened from a stale display?"
+#~ msgstr ""
+#~ "Վիժեցման ժամանակ այս նյութը արդեն տեղափոխման մեջ չեր: Հավանաբար սա պատահել է "
+#~ "սառեցված արտածման արդյունքում:"
+
+#~ msgid "Transit not likely aborted."
+#~ msgstr "Ցանկալի չէ դադարեցնել տեխափոխումը"
 
 #~ msgid "Hold Note(s)"
 #~ msgstr "Պահման նշում(ներ)"

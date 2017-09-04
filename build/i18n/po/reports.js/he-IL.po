@@ -2,14 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2010-06-07 02:03:45-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2017-06-22 10:05+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2017-06-23 05:34+0000\n"
+"X-Generator: Launchpad (build 18416)\n"
 
 #: reports.js:OPERATORS_IN_LIST reports.js:FILTERS_LABEL_IN
 msgid "In list"
@@ -58,6 +59,10 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
+#: reports.js:TRANSFORMS_MONTH_NAME
+msgid "Month Name"
+msgstr ""
+
 #: reports.js:TEMPLATE_CONF_BETWEEN
 msgid "Field value is between (comma separated):"
 msgstr ""
@@ -69,7 +74,8 @@ msgstr ""
 #: reports.js:SOURCE_SETUP_CONFIRM_EXIT
 msgid ""
 "You have started building a template!\n"
-" Selecting a new starting source will destroy the current template and start over.  Is this OK?"
+" Selecting a new starting source will destroy the current template and start "
+"over.  Is this OK?"
 msgstr ""
 
 #: reports.js:WIDGET_YEARS
@@ -241,6 +247,10 @@ msgstr ""
 msgid "All Available Sources"
 msgstr ""
 
+#: reports.js:FOLDERS_OUTPUT
+msgid "Output"
+msgstr ""
+
 #: reports.js:OPERATORS_LIKE reports.js:FILTERS_LABEL_LIKE
 msgid "Contains Matching substring"
 msgstr ""
@@ -286,6 +296,10 @@ msgstr ""
 msgid "Round"
 msgstr ""
 
+#: reports.js:TEMPLATE_FIELD_DOC_PROMPT_CHANGE
+msgid "Change the field hint to:"
+msgstr ""
+
 #: reports.js:FILTERS_LABEL_NULL_BLANK reports.js:OPERATORS_NULL_BLANK
 msgid "Is NULL or Blank"
 msgstr ""
@@ -316,10 +330,6 @@ msgstr ""
 
 #: reports.js:FILTERS_LABEL_NOT_NULL_BLANK reports.js:OPERATORS_NOT_NULL_BLANK
 msgid "Is not NULL or Blank"
-msgstr ""
-
-#: reports.js:WIDGET_DAYS
-msgid "Day(s)"
 msgstr ""
 
 #: reports.js:FOLDER_WINDOW_REPORT_OUTPUT
@@ -358,8 +368,8 @@ msgstr ""
 msgid "Please provide a report folder"
 msgstr ""
 
-#: reports.js:TRANSFORMS_MONTH_NAME
-msgid "Month Name"
+#: reports.js:WIDGET_DAYS
+msgid "Day(s)"
 msgstr ""
 
 #: reports.js:TFORMS_LABEL_FIRST5 reports.js:TRANSFORMS_FIRST5
@@ -382,8 +392,8 @@ msgstr ""
 msgid "Quarters ago"
 msgstr ""
 
-#: reports.js:FOLDERS_OUTPUT
-msgid "Output"
+#: reports.js:REPORT_EDITOR_ENTER_NEW_NAME_ALERT
+msgid "Please change the report name"
 msgstr ""
 
 #: reports.js:TEMPLATE_CONF_SELECT_CANCEL

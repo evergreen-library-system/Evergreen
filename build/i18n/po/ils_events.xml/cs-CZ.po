@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-03-11 09:14+0000\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
+"PO-Revision-Date: 2017-09-02 21:34+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-14 06:19+0000\n"
-"X-Generator: Launchpad (build 18331)\n"
+"X-Launchpad-Export-Date: 2017-09-03 05:33+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -544,6 +544,12 @@ msgstr "Nelze vytvořit nebo otevřít offline soubor nebo adresář."
 msgid "A record already exists with the requested TCN value"
 msgstr "Záznam s požadovanou hodnotou TCN  již existuje."
 
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+"Přeprava této jednotky nemusí být zrušena kvůli stavu, ve kterém jednotka je"
+
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
 msgstr "Událost ve vyhrazeném prostoru. Použito pouze pro development"
@@ -675,11 +681,9 @@ msgstr "Požadovaný asset_stat_cat_entry nebyl nalezen"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "Požadovaný config_non_cataloged_type  nebyl nalezen"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr ""
-"Přesun tohoto exempláře nemůže být zrušen vzhledem ke stavu exmpláře."
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr "Toto umístění není prázdné"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -760,10 +764,6 @@ msgstr "Požadovaná pracovní stanice neexistuje"
 #: 1628.MONEY_BILLING_NOT_FOUND:534
 msgid "The requested money_billing was not found"
 msgstr "Požadovaný money_billing nebyl nalezen"
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr "Toto umístění není prázdné"
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
@@ -1346,6 +1346,11 @@ msgstr "Požadovaný money_user_summary nebyl nalezen"
 
 #~ msgid "The requested acq.po_lineitem was not found"
 #~ msgstr "Požadovaný acq.po_lineitem nebyl nalezen"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr ""
+#~ "Přesun tohoto exempláře nemůže být zrušen vzhledem ke stavu exmpláře."
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "Požadovaný exemplář se nyní nachází na regále s rezervacemi"

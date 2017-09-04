@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: 2010-03-26 10:28+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-08-16 04:36+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.circ.alert
@@ -305,8 +305,8 @@ msgid "Forgiving Checkin then Checkout"
 msgstr "Прощание Приема а затем осуществить Выдачу"
 
 #: staff.circ.checkout.abort_transit_then_checkout
-msgid "Abort Transit then Checkout"
-msgstr "Прервать Передачу затем осуществить Выдачу"
+msgid "Cancel Transit then Checkout"
+msgstr ""
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
@@ -395,6 +395,10 @@ msgstr "Эта единица еще не циркулирована"
 msgid "This item is not in transit."
 msgstr "Эта единица не в транзите."
 
+#: staff.circ.copy_details.transit_caption
+msgid "In Transit"
+msgstr ""
+
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
 msgstr "Стол"
@@ -411,6 +415,10 @@ msgstr "Телефон"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
 msgstr "%1$s, %2$s : %3$s"
+
+#: staff.circ.copy_details.hold_caption
+msgid "Captured for Hold"
+msgstr ""
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
@@ -945,12 +953,12 @@ msgid "Receipt Template Editor"
 msgstr "Квитанция редактора шаблона"
 
 #: staff.circ.utils.abort_transits.confirm
-msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr "Вы уверены, что хотите прекратить транзиты для копий: %1$s?"
+msgid "Are you sure you would like to cancel transits for copies: %1$s?"
+msgstr ""
 
 #: staff.circ.utils.abort_transits.title
-msgid "Aborting Transits"
-msgstr "Прекращение передач"
+msgid "Canceling Transits"
+msgstr ""
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
@@ -968,15 +976,13 @@ msgstr "Копия ID = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
+"This item was no longer in transit at the time of the cancellation.  Perhaps "
+"this happened from a stale display?"
 msgstr ""
-"Эта единица больше не в транзите вовремя прекращения. Возможно это случилось "
-"из за устаревшего отображения?"
 
 #: staff.circ.utils.abort_transits.unexpected_error
-msgid "Transit not likely aborted."
-msgstr "Передача кажется не прекращена."
+msgid "Transit not likely canceled."
+msgstr ""
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
@@ -2063,6 +2069,9 @@ msgstr ""
 #~ "Неправильный скан или некаталогизированная единица. Выдать как пре-"
 #~ "каталогизированную единицу?"
 
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "Прервать Передачу затем осуществить Выдачу"
+
 #~ msgid "Are you sure sure you want to delete these items? %1$s"
 #~ msgstr "Вы уверены, что хотите удалить эти единицы? %1$s"
 
@@ -2074,6 +2083,22 @@ msgstr ""
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Тома удалены"
+
+#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
+#~ msgstr "Вы уверены, что хотите прекратить транзиты для копий: %1$s?"
+
+#~ msgid "Aborting Transits"
+#~ msgstr "Прекращение передач"
+
+#~ msgid ""
+#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
+#~ "happened from a stale display?"
+#~ msgstr ""
+#~ "Эта единица больше не в транзите вовремя прекращения. Возможно это случилось "
+#~ "из за устаревшего отображения?"
+
+#~ msgid "Transit not likely aborted."
+#~ msgstr "Передача кажется не прекращена."
 
 #~ msgid "Hold Note(s)"
 #~ msgstr "Примечание(я) хранения"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: 2017-02-23 20:31+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-25 05:35+0000\n"
-"X-Generator: Launchpad (build 18328)\n"
+"X-Launchpad-Export-Date: 2017-08-16 04:41+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -547,6 +547,11 @@ msgstr "ملف ـ دون اتصال ـ أو المسار لا يمكن إنشا�
 msgid "A record already exists with the requested TCN value"
 msgstr "التسجيلة موجودة مُسبقاً مع قيمة رقم التحكم بالنقل المطلوبة"
 
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
 msgstr "يُستخدم للتطوير فقط وضع وتحميل الحدث."
@@ -677,11 +682,9 @@ msgstr "لم يتم العثور على asset_stat_cat_entry المطلوب"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "لم يتم العثور على config_non_cataloged_type المطلوب"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr ""
-"مِن المحتمل أنه لم يتم إجهاض/إلغاء النقل في هذه النُسخة بسبب حالة النُسخة في"
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr "موقع النُسخة ليس فارغاً"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -762,10 +765,6 @@ msgstr "كائن محطة العمل المطلوبة غير موجودة"
 #: 1628.MONEY_BILLING_NOT_FOUND:534
 msgid "The requested money_billing was not found"
 msgstr "لم يتم العثور على money_billing المطلوب"
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr "موقع النُسخة ليس فارغاً"
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
@@ -1339,3 +1338,8 @@ msgstr "لم يتم العثور على money_user_summary المطلوب"
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "هذه النسخة المطلوبة حالياً في رف الحجوزات"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr ""
+#~ "مِن المحتمل أنه لم يتم إجهاض/إلغاء النقل في هذه النُسخة بسبب حالة النُسخة في"

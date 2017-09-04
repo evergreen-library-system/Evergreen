@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: 2013-10-15 08:54+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:43+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-08-16 04:41+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -545,6 +545,11 @@ msgstr "Offline-tiedostoa tai -hakemistoa ei voitu luoda tai käyttää"
 msgid "A record already exists with the requested TCN value"
 msgstr "Pyydetty tietuenumeron arvo on jo tietueessa"
 
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
 msgstr "Paikanvaraajatapahtuma. Vain kehityskäyttöön"
@@ -676,10 +681,9 @@ msgstr "Pyydettyä kohdetta asset_stat_cat_entry ei löytynyt"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "Pyydettyä kohdetta config_non_cataloged_type ei löytynyt"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr "Tämän niteen kuljetusta ei voida keskeyttää niteen tilasta johtuen"
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr ""
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -760,10 +764,6 @@ msgstr "Pyydettyä työasemaobjektia ei ole olemassa"
 #: 1628.MONEY_BILLING_NOT_FOUND:534
 msgid "The requested money_billing was not found"
 msgstr "Pyydettyä kohdetta money_billing ei löytynyt"
-
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr ""
 
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
@@ -1343,6 +1343,10 @@ msgstr "Pyydettyä kohdetta money_user_summary ei löytynyt"
 
 #~ msgid "The selecte bill has already been voided"
 #~ msgstr "Valittu maksu on jo mitätöity"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr "Tämän niteen kuljetusta ei voida keskeyttää niteen tilasta johtuen"
 
 #~ msgid ""
 #~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "

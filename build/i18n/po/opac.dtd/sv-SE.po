@@ -1,16 +1,16 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/opac.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:02-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"PO-Revision-Date: 2017-06-22 10:05+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2017-06-23 05:33+0000\n"
+"X-Generator: Launchpad (build 18416)\n"
 "X-Accelerator-Marker: &\n"
 
 #. =================================================================
@@ -209,7 +209,8 @@ msgid "Tips:"
 msgstr ""
 
 #: common.tips.tip1
-msgid "Click on a folder icon in the sidebar to access related quick searches"
+msgid ""
+"Click on a folder icon in the sidebar to access related quick searches"
 msgstr ""
 
 #: common.tips.tip2
@@ -383,6 +384,20 @@ msgstr ""
 msgid "Large"
 msgstr ""
 
+#: common.googlechromeframe.why
+msgid ""
+"Installing the Google Chrome Frame plugin for Internet Explorer will improve "
+"your Evergreen experience with more speed and advanced features!"
+msgstr ""
+
+#: common.googlechromeframe.install
+msgid "Install Now!"
+msgstr ""
+
+#: common.googlechromeframe.dontask
+msgid "Don't ask me again"
+msgstr ""
+
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
@@ -391,10 +406,9 @@ msgid ""
 "browser. \n"
 "To use the regular Evergreen Catalog, enable JavaScript by changing your "
 "browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog \n"
-"<a style='color: blue; text-decoration: underline;' "
-"href='/opac/extras/slimpac/start.html'>here</a>."
+"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. "
+"\n"
+"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
 msgstr ""
 
 #. =================================================================
@@ -595,6 +609,7 @@ msgstr ""
 #. MyOPAC Fines Page
 #. =================================================================
 #: myopac.fines.title
+msgctxt "myopac.fines.title"
 msgid "Summary"
 msgstr ""
 
@@ -689,6 +704,10 @@ msgstr ""
 
 #: myopac.holds.status.available
 msgid "Ready for Pickup"
+msgstr ""
+
+#: myopac.holds.status.suspended
+msgid "Suspended"
 msgstr ""
 
 #: myopac.holds.cancel
@@ -977,8 +996,7 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 
 #: myopac.summary.username.success
@@ -990,7 +1008,9 @@ msgid "Username update failed"
 msgstr ""
 
 #: myopac.summary.username.invalid
-msgid "Username cannot contain spaces or have the same format as a barcode"
+msgid ""
+"Username cannot contain spaces or have the same format as a barcode, and may "
+"be restricted by policy"
 msgstr ""
 
 #: myopac.summary.email.error
@@ -1258,6 +1278,10 @@ msgstr ""
 msgid "My Title Results"
 msgstr ""
 
+#: navigate.facetRefine
+msgid "Refine your search"
+msgstr ""
+
 #: navigate.title.details
 msgid "My Title Details"
 msgstr ""
@@ -1307,7 +1331,7 @@ msgid "GALILEO"
 msgstr ""
 
 #: footer.copyright
-msgid "Copyright &#xA9; 2006-2010 Georgia Public Library Service, and others"
+msgid "Copyright &#xA9; 2006-2012 Georgia Public Library Service, and others"
 msgstr ""
 
 #. Introduces the logo for the project
@@ -1368,8 +1392,16 @@ msgctxt "sidebar.quick.search"
 msgid "Quick Search"
 msgstr ""
 
+#: sidebar.authority.browse
+msgid "Authority Browse"
+msgstr ""
+
 #: sidebar.copy.not.found
 msgid "No copy with the requested barcode was found"
+msgstr ""
+
+#: sidebar.copy.not.cataloged
+msgid "The copy with the requested barcode is not cataloged"
 msgstr ""
 
 #. =================================================================
@@ -1446,6 +1478,10 @@ msgstr ""
 msgid "Evergreen Call Number Browse"
 msgstr ""
 
+#: opac.title.authbrowse
+msgid "Evergreen Authority Record Browse"
+msgstr ""
+
 #: opac.holds.forMe
 msgid "Place this hold for myself"
 msgstr ""
@@ -1486,6 +1522,12 @@ msgstr ""
 
 #: opac.holds.failure
 msgid "Hold was not successfully placed"
+msgstr ""
+
+#: opac.hold.has_parts
+msgid ""
+"The system was not able to place the requested hold.  The item requested has "
+"multiple parts to choose from.  Try selecting a specific part for the hold."
 msgstr ""
 
 #. =================================================================
@@ -1622,6 +1664,10 @@ msgstr ""
 msgid "print these details"
 msgstr ""
 
+#: rdetail.cn.part
+msgid "Part"
+msgstr ""
+
 #: rdetail.cn.barcode
 msgctxt "rdetail.cn.barcode"
 msgid "Barcode"
@@ -1637,6 +1683,10 @@ msgstr ""
 
 #: rdetail.cn.genesis
 msgid "Create Date"
+msgstr ""
+
+#: rdetail.cn.active
+msgid "Active Date"
 msgstr ""
 
 #: rdetail.cn.holdable
@@ -1658,6 +1708,14 @@ msgstr ""
 
 #: rdetail.cn.hold
 msgid "place hold"
+msgstr ""
+
+#: rdetail.cn.reserve
+msgid "book now"
+msgstr ""
+
+#: rdetail.cn.multi_home
+msgid "linked titles"
 msgstr ""
 
 #: rdetail.cn.disabled
@@ -1828,6 +1886,11 @@ msgctxt "rdetail.extras.browser"
 msgid "Shelf Browser"
 msgstr ""
 
+#: rdetail.extras.bib_summary
+msgctxt "rdetail.extras.bib_summary"
+msgid "Summary"
+msgstr ""
+
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
 msgid "Reviews"
@@ -1857,6 +1920,10 @@ msgstr ""
 msgid "MARC Record"
 msgstr ""
 
+#: rdetail.extras.foreign_items
+msgid "Linked Titles"
+msgstr ""
+
 #: rdetail.extras.call.null
 msgid "There are no call numbers for this item at this location."
 msgstr ""
@@ -1878,6 +1945,10 @@ msgstr ""
 msgid "Show a preview of this book from Google Book Search"
 msgstr ""
 
+#: rdetail.extras.novelist
+msgid "Suggestions by NoveList"
+msgstr ""
+
 #: rdetail.loading
 msgid "Loading copy information..."
 msgstr ""
@@ -1893,6 +1964,10 @@ msgstr ""
 #: rdetail.summary.subjects
 msgctxt "rdetail.summary.subjects"
 msgid "Subjects"
+msgstr ""
+
+#: rdetail.summary.issues_held
+msgid "Issues Held"
 msgstr ""
 
 #: result.sort_by
@@ -2012,8 +2087,16 @@ msgstr ""
 msgid "ISSN:"
 msgstr ""
 
+#: common.mono_parts.label
+msgid "Monograph Parts:"
+msgstr ""
+
 #: common.copy.barcode.label
 msgid "Copy Barcode:"
+msgstr ""
+
+#: common.issuance_label.label
+msgid "Issuance Label:"
 msgstr ""
 
 #: common.hold.place
@@ -2044,6 +2127,10 @@ msgstr ""
 msgid "Copy Hold"
 msgstr ""
 
+#: common.hold.issuance
+msgid "Issuance Hold"
+msgstr ""
+
 #: common.hold.advanced
 msgid "Advanced Hold Options"
 msgstr ""
@@ -2069,6 +2156,19 @@ msgstr ""
 msgid ""
 "A hold already exists on the requested item. Would you like to create the "
 "hold anyway?"
+msgstr ""
+
+#: common.hold.age_protect.override
+msgid ""
+"This hold may take extra time to fill due to library policies. Would you "
+"like to create the hold anyway?"
+msgstr ""
+
+#: common.hold.place_unfillable.override
+msgid ""
+"The requested hold cannot currently be filled. You have permission to place "
+"the hold regardless, but should only do so if you believe the hold will "
+"eventually be filled. Would you like to create the hold anyway?"
 msgstr ""
 
 #: common.hold.barred
@@ -2231,13 +2331,15 @@ msgid ""
 msgstr ""
 
 #: login.account.inactive
-msgid "This account has been deactivated.  Please contact your local library."
+msgid ""
+"This account has been deactivated.  Please contact your local library."
 msgstr ""
 
 #: login.failed
 msgid ""
 "Login failed. The username or password provided was not valid. \n"
-"Ensure Caps-Lock is off and try again or contact your local library."
+"Passwords are case-sensitive.  Check your Caps-Lock key and try again or "
+"contact your local library."
 msgstr ""
 
 #: button.go
@@ -2439,4 +2541,72 @@ msgstr ""
 
 #: selfck.day6
 msgid "Sunday"
+msgstr ""
+
+#: circ.fail_part.actor.usr.barred
+msgid "The patron is barred"
+msgstr ""
+
+#: circ.fail_part.asset.copy.circulate
+msgid "The item does not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy_location.circulate
+msgid "Items from this shelving location do not circulate"
+msgstr ""
+
+#: circ.fail_part.asset.copy.status
+msgid "The item cannot circulate at this time"
+msgstr ""
+
+#: circ.fail_part.circ.holds.target_skip_me
+msgid "The item's circulation library does not fulfill holds"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_circ_mod_test
+msgid "The patron has too many items of this type checked out"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.available_copy_hold_ratio
+msgid "The available item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.circulate
+msgid "Circulation rules reject this item as non-circulatable"
+msgstr ""
+
+#: circ.fail_part.config.circ_matrix_test.total_copy_hold_ratio
+msgid "The total item-to-hold ratio is too low"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.holdable
+msgid "Hold rules reject this item as unholdable"
+msgstr ""
+
+#: circ.fail_part.config.hold_matrix_test.max_holds
+msgid "The patron has reached the maximum number of holds"
+msgstr ""
+
+#: circ.fail_part.config.rule_age_hold_protect.prox
+msgid "The item is too new to transit this far"
+msgstr ""
+
+#: circ.fail_part.no_item
+msgid "The system could not find this item"
+msgstr ""
+
+#: circ.fail_part.no_ultimate_items
+msgid "The system could not find any items to match this hold request"
+msgstr ""
+
+#: circ.fail_part.no_matchpoint
+msgid "System rules do not define how to handle this item"
+msgstr ""
+
+#: circ.fail_part.no_user
+msgid "The system could not find this patron"
+msgstr ""
+
+#: circ.fail_part.transit_range
+msgid "The item cannot transit this far"
 msgstr ""
