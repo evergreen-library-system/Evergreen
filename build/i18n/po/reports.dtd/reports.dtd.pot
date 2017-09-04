@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -675,6 +675,46 @@ msgstr ""
 
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
+msgstr ""
+
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr ""
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr ""
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr ""
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr ""
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr ""
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr ""
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr ""
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
 msgstr ""
 
 #: reports.xul.template_builder.db_source_browser.label

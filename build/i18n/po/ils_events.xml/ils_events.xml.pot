@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-08-15 16:41:01-0400\n"
+"POT-Creation-Date: 2017-09-03 23:33:06-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -247,12 +247,20 @@ msgstr ""
 msgid "This account is marked as inactive"
 msgstr ""
 
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+msgid "The distribution still has dependent objects"
+msgstr ""
+
 #: 8003.OFFLINE_PARAM_ERROR:948
 msgid "Missing params in offline upload"
 msgstr ""
 
 #: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:562
 msgid "The requested reporter_report_folder was not found"
+msgstr ""
+
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+msgid "The prediction pattern still has dependent objects"
 msgstr ""
 
 #: 1545.PERM_EX_NOT_FOUND:293
@@ -423,6 +431,10 @@ msgstr ""
 
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:404
 msgid "The requested actor_org_address was not found"
+msgstr ""
+
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+msgid "The stream still has dependent objects"
 msgstr ""
 
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
