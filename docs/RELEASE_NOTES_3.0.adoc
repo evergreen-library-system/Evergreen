@@ -1233,7 +1233,14 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* Bibliomation
+* British Columbia Libraries Cooperative (BC Sitka)
+* C/W MARS
+* Georgia Public Library Service
+* King County Library System
+* MassLNC
+* Pennsylvania Integrated Library System
+* Pioneer Library System
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
