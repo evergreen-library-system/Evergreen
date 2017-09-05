@@ -1,0 +1,1253 @@
+Evergreen 3.0 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+The minimum version of PostgreSQL required to run Evergreen 3.0 is PostgreSQL 9.4.
+
+Deprecation of XUL staff client
+-------------------------------
+Starting with the release of 3.0.0, patches that fix XUL bugs will not
+be merged into master or backported unless they meet one or more of
+the following conditions:
+
+a. the bug is a security issue
+b. the bug involves the destruction of data
+c. the bug is a regression of functionality in the XUL staff client
+   introduced by other work done to Evergreen
+
+Under no circumstances will XUL staff client feature enhancements be merged.
+
+This policy will continue through the 3.0.x and 3.1.x maintenance
+release cycles, and will become moot upon the release of 3.2.0, when
+the XUL staff client is slated to be entirely removed.
+
+New Features
+------------
+
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+New EDI Order Generator 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Configuration
++++++++++++++
+
+. New database tables exist for configuring vendor-specific EDI order 
+attributes.
+
+ * acq.edi_attr 
+  ** List of EDI order generation toggles, e.g. "INCLUDE_COPIES" to add 
+     GIR segments
+ * acq.edi_attr_set
+  ** Collection of edi_attr's.  Each edi_account may be linked to one
+     edi_attr_set.
+  ** One edi_attr_set per known vendor is added to the stock data, matching
+     the stock configuration found in the JEDI template.
+ * acq.edi_attr_set_map
+  ** Link between edi_attr's and edi_attr_set's.
+
+. EDI Attribute Sets are manged via a new (browser client only) configuration
+  interface at Administration -> Acquisistions Administration -> EDI
+  Attribute Sets.
+
+. Each acq.edi_account should be linked to an acq.edi_attr_set.  If a link 
+  is not set, default values will be used.  Links between an EDI account
+  and an attribute set are managed in the EDI Accounts configuration 
+  interface.
+
+. Local modifications to the stock EG JEDI template are managed by modifying
+  and/or adding additional edi_att_set's as needed.
+
+. A new edi_order_pusher.pl script is added which replaces the functionality
+  of edi_pusher.pl.  edi_pusher.pl is still avaialable.
+
+. After moving to edi_order_pusher.pl, the JEDI Action/Trigger event
+  definition is no longer required.  It can be disabled.
+
+Migration
++++++++++
+
+EDI accounts have a new boolean field "Use EDI Attributes" (use_attrs) that 
+specifies whether PO's generated via the account should be built using 
+EDI attributes or fall back to traditional JEDI A/T template generation.
+
+This allows sites to activate EDI attributes on a per-account basis, making 
+it possible to migrate piecemeal to EDI attributes.  For the initial roll
+out of this new features, no accounts will be configured to use EDI 
+attributes by default.  
+
+
+
+
+
+3 Day Courtesy Notice by SMS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New optional SMS text notification to be sent out 3 days prior to the due
+date of any circulating item for patrons who have an SMS text number and
+carrier stored in their accounts. This action trigger is disabled by default,
+but can be enabled and modified by going into Admin > Local Administration >
+Notifications / Action Triggers.
+
+You may wish to make use of granularity so that these messages are batched
+and sent at the same time each day.
+
+
+
+
+Add Description Field to Circulation and Hold Configuration Entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The circulation and hold policy configuration rules now each have a
+description field. This allows administrators to add comments to
+describe the purpose of each rule.
+
+
+
+
+Apache Internal Port Configuration Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Apache configuration now supports a new variable which allows admins to
+specify the port used by Apache to handle HTTP traffic.  The value is
+used for HTTP requests routed from Perl handlers back to the same Apache
+instance, like added content requests.  Use this when running Apache
+with a non-standard port, typical with a proxy setup.  Defaults to "80".
+
+[source,conf]
+-------------------------------------------------------------------
+<Location /eg>
+    ...
+    PerlSetVar OILSWebInternalHTTPPort "7080"
+    ...
+</Location>
+-------------------------------------------------------------------
+
+
+
+
+Configurable Bib Record Display Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Admin -> Server Admin -> 'MARC Search/Facet Fields' have 2 new configuration 
+fields: 'Display Field?' and 'Display XPATH'.
+
+When 'Display Field' is set to true, data from the field will be extracted
+from each record and added to a new table of display data for each bib 
+record.  
+
+If a value is present in the 'Display XPATH' field, this XPATH will be
+applied to the extracted data *after* the base XPATH (from the 'XPath' 
+field) is applied to each field.
+
+This data acts as a replacement for the various and sundry ways bib record 
+data is currently extracted, including inline XPATH in the TPAC, reporter 
+views, real-time 'MVR' compilation from MODS, etc. and will be available
+to the user interface, notification templates, etc. for rendering bib 
+records.  
+
+The browser client gets a new service 'egBibDisplay' which is capable
+of translating the display field data from various formats into 
+data more suitable for JavaScript usage.
+
+The database gets 3 new VIEWs for representing display data in various
+formats:
+
+ * metabib.flat_display_entry
+  ** List of all display fields linked to their configuration.
+ * metabib.compressed_display_entry
+  ** Same as metabib.flat_display_entry except there's one row
+     per display field type, which 'mulit' rows compressed into
+     JSON arrays.  Non-multi fields are represented as JSON 
+     strings/numbers.
+ * metabib.wide_display_entry
+  ** Tabular view of display field data, one column per well-known
+     field.  Values are represented JSON, consistent with 
+     metabib.flat_display_entry.  The view DOE NOT CONTAIN locally
+     configured dispaly fields, as each field must be encoded in
+     the view and IDL definition.  This is essentially a replacement 
+     for reporter.simple_record.
+
+Reingesting
++++++++++++
+
+After making changes to display field configuration, it's possible to 
+reingest only display field data in the database using the following:
+
+[source,sql]
+---------------------------------------------------------------------
+SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE, 
+  (SELECT ARRAY_AGG(id)::INT[] FROM config.metabib_field WHERE display_field))
+  FROM biblio.record_entry WHERE NOT deleted AND id > 0;
+---------------------------------------------------------------------
+
+
+
+
+
+Fix COPY_STATUS_LONGOVERDUE.override Permission Typo
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The existing permission was incorrectly created with a code of
+COPY_STATUS_LONGOVERDUE.override, while the event thrown requires a
+permission with a code of COPY_STATUS_LONG_OVERDUE.override.  This
+update changes the permission code to match what the event requires.
+
+
+
+
+
+Hold Targeter V2 Repairs and Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Make the batch targeter more resilient to a single-hold failure.
+* Additional batch targeter info logging.
+* Set OSRF_LOG_CLIENT in hold_targeter_v2.pl for log tracing
+* Removes the confusingly named --target-all option
+ ** The same behavior can be achieved by using --retarget-interval "0s"
+* Removes --skip-viable (see --soft-retarget-interval below)
+
+New --next-check-interval Option
+++++++++++++++++++++++++++++++++
+Specify how long after the current run time the targeter will retarget
+the currently affected holds. Applying a specific interval is useful
+when the retarget-interval is shorter than the time between targeter
+runs.
+
+For example, if the targeter is run nightly at midnight with a
+--retarget-interval 36h, you would set --next-check-interval to 48hr,
+since the holds won't be processed again until 48 hours later. This
+ensures that the org unit closed date checks are looking at the correct
+date. 
+
+This setting overrides the default behavior of calculating the next 
+retarget time from the retarget-interval.
+
+New --soft-retarget-interval Option
++++++++++++++++++++++++++++++++++++
+This is a replacement for (and rebranding of) the --skip-viable option. 
+The new option allows for time-based soft-targeting instead simple binary 
+on/off soft-targeting.
+
+How soft-targeting works:
+* Update hold copy maps for all affected holds
+* Holds with viable targets (on the pull list) are otherwise left alone.
+* Holds without viable targets are retargeted in the usual manner. 
+
+
+
+
+
+New marc_export --descendants option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The marc_export script has a new option, --descendants.  This option
+takes one argument of an organizational unit shortname.  It works much
+like the existing --library option except that it is aware of the
+org. tree and will export records with holdings at the specified
+organizational unit and all of its decendants.  This is handy if you
+want to export the records for all of the branches of a system.  You
+can do that by specifying this option and the system's shortname,
+instead of specifying multiple --library options for each branch.
+
+The --descendants option can be repeated, as the --library option can.
+All of the specified org. units and their descendants will be included
+in the output.  It can also be combined with individual --library
+options when necessary.
+
+
+
+
+RTL and LTR Public Catalog Stylesheets Merged
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The RTL stylesheet for the public catalog,
+`templates/opac/css/style-rtl.css.tt2`, has been merged into the LTR
+one (`templates/opac/css/style.css.tt2`). The combined stylesheet
+template will emit RTL or LTR styles based on the value of
+the `rtl` flag of the active locale. An `rtl` variable is also available
+in the template to allow the correct style to be chosen.
+
+Upgrade notes
++++++++++++++
+Administrators of Evergreen who use RTL locales and who have customized
+`style-rtl.css.tt2` should now incorporate their customizations into
+`style.css.tt2`.
+
+
+
+
+Miscellaneous Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ * If a filter is in effect in the Library Settings Editor,
+   changing the selected library now results in the filter
+   continuing to be applied.
+ * Copy templates used for serials now correct link to age
+   protection rules and MARC item type values (for the
+   "Circ as Type" field). During upgrade, the database update
+   will set to NULL any age protection and circ as type fields
+   in serial copy templates that do not point to defined values.
+
+
+
+
+Obsolete Internal Flag Removed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An obsolete, and unused, ingest.disable_metabib_field_entry internal
+flag was removed from the config.internal_flags table.  It was
+rendered obsolete by the addition of the 3 flags to control the
+browse, search, and facet indexing.
+
+
+
+
+Tweaks to Caching/Expiry of Public Catalog Assets
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The default cache expiration time for static assets (e.g.,
+CSS, image, and JavaScript files) in the public catalog and
+the Kid's PAC has been increased to one year. Links to all
+such assets now have a cache-busting value tacked on as a
+query parameter. This value is refreshed when `autogen.sh` is
+run, but it can also be manually set by adjusting the
+`ctx.cache_key` Template Toolkit variable.
+
+
+
+
+Action/Trigger Events Data Purging
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Action/Trigger event definitions have a new field called "Retention 
+Interval".  When an optional interval value is applied, events and
+template output data linked to the event definition will be deleted
+from the database once they reach the specified age.
+
+Retention Interval Restrictions for Passive Hooks
++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Restrictions are placed on retention interval values for event definitions
+using passive hooks to prevent data from being deleted while it's still
+needed by the system.
+
+The presence of event data is how the system knows not to send duplicate
+events.  As long as a scenario exists where a duplicate event may be
+generated, the events must be retained.
+
+To apply a retention interval value to a passive-hook event definition:
+
+ * The event definition must have a max_delay value.
+ * The retention interval must be larger than the difference between
+   the delay and max_delay values.
+
+For example, if the delay is 7 days and max_delay is 10 days, the retention
+interval must be greater than 3 days to ensure no duplicate events are 
+created between the first event on day 7 and the end of the event validity
+window on day 10.
+
+Deployment
+++++++++++
+
+A new purge_at_events.sh script is installed in the bin directory
+(typically /openils/bin) wich should be added to CRON for regular
+maintanence.
+
+NOTE: On large data sets, this script can take a long time to run and
+create higher than normal I/O load as it churns though the event and
+event_output tables.  You may wish to run the script by hand the first
+time so it can be monitored.  It can be run in psql like so:
+
+[source,sql]
+---------------------------------------------------------------
+SELECT action_trigger.purge_events();
+---------------------------------------------------------------
+
+NOTE: On *very* large data sets (10s to 100s of millions of event and
+event_output rows), it may be advisable to first to repopulate the event
+and event_output tables with only the desired data before starting
+regular purges.  This can be done, for example, using the copy to temp
+table, truncate source table, repopulate source table from temp table
+approach.  This will be much faster than the purge_events() function
+in cases where most of the data will be purged.
+
+Hook Data Cleanup
++++++++++++++++++
+
+A number of action_trigger.hook entries which have always been treated
+as active hooks, though are configured as passive hooks, have been 
+updated to properly reflect the non-passive-ness.  This allows for 
+simpler configuration of their retention interval values.
+
+
+
+
+
+Remove JSPAC Redirects
+^^^^^^^^^^^^^^^^^^^^^^
+Future versions of Evergreen will no longer contain automatic redirects
+from JSPAC URLs to TPAC URLs, with the exception of myopac.xml, given
+that the JSPAC is no longer supported.  Existing sites, however, may
+wish to retain JSPAC redirects in their Apache configuration files since
+JSPAC URLs may still be used in the wild to access their catalogs.
+
+The original JSPAC URL redirects are all retained in the file 
+Open-ILS/examples/jspac_redirects.conf for reference.
+
+
+
+
+API
+~~~
+
+
+
+New open-ils.auth.login API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The open-ils.auth service has a new API for requesting an authentication
+token.  It performs the same steps as the 
+open-ils.auth.authenticate.init and .complete APIs in a single call,
+using the bare password.  No intermediate password hashing is required.
+
+The paramters are the same as the .complete call with a few modifications.
+
+1. Using the generic "identifier" parameter in combination with the
+   "org" parameter allows the API to reliably determine if an identifier
+   value is a username or barcode.  The caller is no longer required to 
+   make that determination up front.  
+
+2. The 'nonce' parameter is no longer used.
+
+Upgrade Notes
++++++++++++++
+
+The new open-ils.auth.login API must be added to the list of <log_protect>
+API's in the opensrf_core.xml file.
+
+Sample diff:
+
+[code,sh]
+---------------------------------------------------------------------
+--- a/Open-ILS/examples/opensrf_core.xml.example
++++ b/Open-ILS/examples/opensrf_core.xml.example
+@@ -180,6 +180,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
+     <log_protect>
+       <match_string>open-ils.auth.authenticate.verify</match_string>
+       <match_string>open-ils.auth.authenticate.complete</match_string>
++      <match_string>open-ils.auth.login</match_string>
+       <match_string>open-ils.auth_proxy.login</match_string>
+       <match_string>open-ils.actor.patron.password_reset.commit</match_string>
+       <match_string>open-ils.actor.user.password</match_string>
+---------------------------------------------------------------------
+
+
+
+
+
+Batch Patron Contact Invalidation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The following methods are used to mark patron contact fields
+as invalid by moving the invalid value to a standing penalty:
+
+ * `open-ils.actor.invalidate.email`
+ * `open-ils.actor.invalidate.day_phone`
+ * `open-ils.actor.invalidate.evening_phone`
+ * `open-ils.actor.invalidate.other_phone`
+
+These methods now accept a fifth argument specifying the value
+of the contact field, e.g., a specific phone number or email
+address. If supplied, and if a specific patron ID (the first
+argument) is not supplied, all patrons with that specific contact
+value will have it marked invalid.
+
+
+
+
+Architecture
+~~~~~~~~~~~~
+
+
+
+Pure-SQL catalog searching
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Public and staff catalog search is now both more accurate and faster
+by redesigning how the visibility of records is calculated.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Authority Record and Headings Browse Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Various improvements are made to support for authority records
+and headings browsing:
+
+ * The MARC to MADS XSLT stylesheet is now used as part of parsing
+   headings from authority records. Since the MODS and MADS stylesheets
+   extract headings in similar ways, duplicate browse entries are now
+   much less likely to occur.
+ * A new configuration table, `authority.heading_field`, is now used
+   to specify how headings should be extracted from authority records.
+ * Related headings can now be identified as narrower or broader when
+   browsing in the public catalog.
+ * See references are now more reliably included in the browse list.
+ * Scope (public) notes now display only under the main heading.
+ * There is now a global flag, Display related headings (see-also) in browse,
+   that can be used to control whether related headings (see-alsos) are
+   displayed in the public catalog list.
+ * A complete set of thesauruses are now included in the seed data.  Thesauruses
+   can now be identified using short and long codes.
+ * The labels for see and see-also references in the public catalog are now
+   a bit more patron-friendly, and can now be tweaked via TPAC template
+   customization.
+
+
+
+
+
+Copy Tags and Digital Bookplates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Copy tags will allow staff to apply custom, pre-defined labels or tags
+to copies.  Copy tags are searchable in both the staff client and public
+catalog.  This feature was designed to be used for Digital Bookplates to
+attach donation or memorial information to copies, but may be used for
+broader purposes to tag items.
+
+Each copy tag can either be publicly-visible or visible only to staff.
+Copy tags also have types that can be used for restricting catalog
+searches on copy tags to particular types.
+
+Copy tags are displayed in the copy table in the record summary page in
+the public catalog, and a new library setting can be used to add
+a "Digital Bookplate" search field.  Copy tags can also be used
+as a search filter, e.g.,
+
+  * `copy_tag(bookplate, jane smith)`: search for records that have a
+    copy tag of type `bookplate` whose value contains `jane smith`.
+  * `copy_tag(*, jane smith)`: search for records that have a
+    copy tag of any type whose value contains `jane smith`.
+
+All staff-side interfaces related to copy tags exist only in the web
+staff client.  There are two new administration interfaces for managing
+copy tags and copy tag types. The copy editor now has a `Copy Tags`
+button for applying copy tags to copies; that interface can also be
+used to create new copy tags on the fly. Furthermore, the copy buckets
+interface now has an `Apply Tags` action for assigning tags to groups
+of copies.
+
+Permissions
++++++++++++
+
+Two new permission are included:
+
+  * `ADMIN_COPY_TAG_TYPES`: required to create a new tag type under
+     Server Administration->Copy Tag Types
+  * `ADMIN_COPY_TAG`: required to create a new tag under
+    Local Administration->Copy Tags
+
+The existing permission `UPDATE_COPY` controls whether or not a user
+can link copies to tags.
+
+Library Settings
+++++++++++++++++
+A new library setting, "Enable Digital Bookplate Search", controls
+whether to display a "Digital Bookplate" field in the search index
+drop-downs in the catalog. A "Digital Bookplate" search will include
+all records that have a copy that matches the tag specified by the user.
+It should be noted that this library settings does not affect the
+display of copy tags on the catalog record summary page.
+
+
+
+
+Include Call Number Prefixes and Suffixes in Export and Z39.50 output
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The call number prefix and suffix, when present, are now included in
+subfields $k and $m of the 852 field when running `marc_export` with
+the `--items` switch. Similarly, when using Evergreen as a Z39.50
+server configured to embed item data in 852 fields, the affixes are now
+included in subfields $k and $m.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Batch Editing of Patron Records
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a now a new interface analogous to the Copy Bucket interface
+to record the selection and grouping of a set of users into a User Bucket.
+The addition of users to a User Bucket is possible from the Patron Search
+interface by the use of a new grid Action, and directly on the User Bucket
+interface by user barcode. It is also possible to add users by uploading
+a text file that contains a list of user barcodes.
+
+From this interface it is possible to perform a set of specific batch update
+operations against users generally.
+
+Editing users
++++++++++++++
+
+The fields can now be changed in batch via an action on the User Bucket
+grid if the staff user has the UPDATE_USER permission:
+
+ * Active flag
+ * Primary Permission Group (group application permissions consulted)
+ * Juvenile flag
+ * Home Library (UPDATE_USER checked against both old and new value)
+ * Privilege Expiration Date
+ * Barred flag (BAR_PATRON permission consulted)
+ * Internet Access Level
+
+Each change set requires a name. Buckets may have multiple change sets. All
+users in the Bucket at the time of processing are updated when the change
+set is processed, and change sets are processed immediately upon successful
+creation. The interface delivers progress information regarding the
+processing stage and percent of completion.
+
+While processing the users, the original value for each field edited is
+recorded for potential future rollback. Users can examine the success and
+failure of applied change sets.
+
+The user will be able to rollback the entire change set, but not parts thereof.
+The rollback will affect only those users that were successfully updated by the
+original change set and may be different from the current set of users in the
+Bucket. Users can manually discard change sets, removing them from the
+interface but preventing future rollback.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user update.
+
+Deleting users
+++++++++++++++
+
+The batch edit mechanism also allows for the batch deletion of user.  The staff
+user must have both the UPDATE_USER and DELETE_USER permissions.
+
+Each delete set requires a name. Buckets may have multiple delete sets. All
+users in the Bucket at the time of processing are marked as deleted when
+the delete set is processed. The interface delivers progress information
+regarding the processing stage and percent of completion.
+
+While processing the users, the original value for the "deleted" field will be
+recorded for potential future rollback. Users are able to examine the
+success and failure of applied delete sets in the same interface used for the
+above described change sets.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user deletion.
+
+This mechanism does not use the Purge User functionality, but instead simply
+marks the users as deleted.
+
+Editing Statistical Category Entries
+++++++++++++++++++++++++++++++++++++
+
+All users in the bucket can have their Statistical Category Entries
+modified. Unlike user data field updates, modification of Statistical
+Category Entries is permanent and cannot be rolled back. No named change
+sets are required. The interface will deliver progress information regarding
+the processing stage and percent of completion.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user update.
+
+New service requirement
++++++++++++++++++++++++
+
+This new functionality makes use of the QStore service, which was previously
+unused in production.  If this service has been removed from the configuration
+of a live Evergreen instances, it will need to be added back in order for
+batch user editing to succeed.
+
+
+
+
+Honor timezone of the acting library
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
++++++++
+
+* Display day-granular due dates in the circulating library's timezone.
+* Only display the date portion of the due date for day-granular circulations.
+* Display the full timestamp, in the client's timezone rather than the circulation library's, for hourly circulations.
+* Provide infrastructure for more advanced formatting of timestamps.
+* Override the built-in AngularJS date filter with an implementation that uses moment.js, providing consistency and better standards compliance.
+
+Upgrade note
+++++++++++++
+
+The following query will adjust all historical, unaged circulations so
+that if their due date field is pushed to the end of the day, it is done
+in the circulating library's time zone, and not the server time zone.
+
+It is safe to run this after any change to library time zones.
+
+Running this is not required, as no code before this change has
+depended on the time string of '23:59:59'.  It is also not necessary
+if all of your libraries are in the same time zone, and that time zone
+is the same as the database's configured time zone.
+
+[source,sql]
+----
+DO $$
+declare
+    new_tz  text;
+    ou_id   int;
+begin
+    for ou_id in select id from actor.org_unit loop
+        for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('lib.timezone',ou_id) loop
+            if new_tz is not null then
+                update  action.circulation
+                  set   due_date = (due_date::timestamp || ' ' || new_tz)::timestamptz
+                  where circ_lib = ou_id
+                        and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '23:59:59';
+            end if;
+        end loop;
+    end loop;
+end;
+$$;
+----
+
+Details
++++++++
+
+This is a followup to the work done in bug 1485374, where we added the ability
+for the client to specify a timezone in which timestamps should be interpreted
+in business logic and the database.
+
+Most specifically, this work focuses on circulation due dates and the closed
+date editor. Due dates, where displayed using stock templates (including
+receipt templates) and used for fine calculation, are now manipulated in the
+library's configured timezone. This is controlled by the new 'lib.timezone'
+YAOUS, loaded from the server when required. Additionally, closings are
+recorded in the library's timezone so that so that due date calculation is more
+accurate. The closed date editor is also taught how to display closings in the
+closed library's timezone. Closed date entries also explicitly record if they
+are a full day closing, or a multi-day closing. This significantly simplifies
+the editor, and may be useful in other contexts.
+
+To accomplish this, we use the moment.js library and the moment-timezone addon.
+This is necessary because the stock AngularJS date filter does not understand
+locale-aware timezone values, which are required to support DST. A simple
+mapper translates the differences in format values from AngularJS date to
+moment.js.
+
+Of special note are a set of new filters used for formatting timestamps under
+certain circumstances. The new egOrgDateInContext, egOrgDate, and egDueDate
+filters provide the functionality, and autogrid is enhanced to make use of
+these where applicable. egGrid and egGridField are also taught to accept
+default and field-specific options for applying date filters. These filters may
+be useful in other or related contexts.
+
+The egDueDate filter, used for all existing displays of due date via Angular
+code, intentionally interprets timestamps in two different ways WRT timezone,
+based on the circulation duration. If the duration is day-granular (that is,
+the number of seconds in the duration is divisible by 86,400, or 24 hours worth
+of seconds) then the date is interpreted as being in the circulation library's
+timezone. If it is an hourly loan (any duration that does not meet the
+day-granular criterium) then it is instead displayed in the client's timezone,
+just as all other timestamps currently are, because of the work in 1485374.
+
+The OPAC is adjusted to always display the due date in the circulating
+library's timezone. Because the OPAC displays only the date portion of the due
+date field, this difference is currently considered acceptable. If this proves
+to be a problem in the future, a minor adjustment can be made to match the
+egDueDate filter logic.
+
+Now that due dates are globally stored in the configured timezone of the
+circulating library, the automatic adjustment to day-granular due dates needs
+to take those timezones into account.
+
+An optional SQL command is provided by the upgrade script to retroactively
+adjust existing due dates after library configuration is complete.
+
+This work, as with 1485374, was funded by SITKA, and we thank them for their
+partnership in making this happen!
+
+
+
+
+
+Enhancements to Hard Due Date Functionality
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+It will now be possible to delete Hard Due Date Values for dates that have
+passed. Also, the Hard Due Date updater will no longer change Ceiling Dates
+to a past date. This allows editing Ceiling Dates directly in a Hard Due Date
+as well as scheduling Ceiling Date changes via Hard Due Date Values.
+
+
+
+
+Patron Search by Birth Date
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* Now you can include the patron birth year and/or birth month and/or
+  birth day when searching for patrons using the web based staff client.
+* Day and month values are exact matches.  E.g. month "1" (or "01")
+  matches January, "12" matches December.
+* Year searches are "contains" searches.  E.g. year "15" matches 2015,
+  1915, 1599, etc.  For exact matches use the full 4-digit year.
+
+
+
+Patron Search from Place Hold
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patron Search from Place Hold allows staff members, when placing a
+hold on behalf of a patron in the web staff client, to search for
+patrons by names and other searchable patron information, rather than
+relying on barcode alone. In particular, after performing a catalog
+search or going to a specific bib record and clicking the 'Place Hold'
+button, the form now includes a 'Patron Search' button. This button
+will open a dialog allowing the staff member search for and select
+a patron record.
+
+
+
+
+Retrieve Recent Patrons 
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new library setting 'Number of Retrievable Recent Patrons' 
+('ui.staff.max_recent_patrons') that specifies the number of recently
+retrieved patrons that can be re-fetched from the staff client.
+
+A value of 0 means no recent patrons can be retrieved.
+A value greater than 1 means staff will be able to retrive multiple
+recent patrons via a new Circulation 'Retrieve Recent Patrons' menu entry.
+
+The default value is 1 for backwards compatibility.
+
+
+
+
+
+
+Fuller title in XUL client Simplified Pull List
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Simplified Pull List in the XUL client will now display subfields n and
+p in the title field. The addition will make it easier for staff to distinguish
+between different parts or seasons in a series.
+
+
+
+
+
+Transit Cancel Time and Terminology Change
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Transit Cancel Time
++++++++++++++++++++
+
+Previously, Evergreen deleted canceled (aborted) transits from the database.  Now
+the rows in action.transit_copy, action.hold_transit_copy, and action.reservation_transit_copy
+are preserved in the database, though still not visible to the end user in the staff client.
+This allows for better tracking of when transits are canceled for the purposes of knowing
+which staff member canceled the transit, etc.
+
+NOTE: This change may require the re-creation of transit reports to filter out canceled
+transits from the results.  Cloning the template and adding a Base Filter of Cancel Time 
+Is NULL will suffice.
+
+"Canceled Transit" Terminology Change
++++++++++++++++++++++++++++++++++++++
+
+The term "abort" has been replaced with "cancel" in all of the affected user interfaces.
+For internal continuity, however, the following permission codes have not changed:
+
+ * ABORT_TRANSIT
+ * ABORT_REMOTE_TRANSIT
+ * ABORT_TRANSIT_ON_LOST
+ * ABORT_TRANSIT_ON_MISSING
+
+
+
+
+Client
+~~~~~~
+
+
+
+Add Circ Modifier to Record Detail Page in Staff TPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The circ_modifier field is added to the copy table to make
+more information available to staff without having to open
+the Holdings Maintenance view.
+
+
+
+
+
+Date+Time Format Settings for Web Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This change deprecates the existing Format Dates and Format Times settings
+and adds two settings for use with the webstaff client:
+
+  * Format Dates with this pattern
+  * Format Date+Time with this pattern
+
+These settings use format strings as documented here:
+
+https://docs.angularjs.org/api/ng/filter/date
+
+There is overlap with how the Dojo formats worked, but also some differences.
+
+The original Format Dates and Format Times settings worked together, but the
+new settings work independently.  Certain field elements will use one, and
+certain field elements will use the other.  These distinctions are hard-coded
+in the various UI templates, with the idea being that timestamp fields in
+which the date component alone is sufficient information (for example, DOB)
+will use the Format Dates setting.  Fields where the time component is
+important (for example, Checkout Time) will use the Format Date+Time setting.
+
+When the settings Format Dates and Format Date+Time are unset, we will default
+to "shortDate" (M/d/yy) and "short" (M/d/yy h:mm a), respectively.
+
+
+
+
+
+Global option to remove sound for a specific event
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new nosound.wav file has been added to the web client. The file can be used
+to globally disable audio alerts for a specific event on an Evergreen system.
+
+For example, to silence the alert that sounds after a successful patron search:
+
+  * mkdir -p /openils/var/web/audio/notifications/success/patron/
+  * cd /openils/var/web/audio/notifications/success/patron/
+  * ln -s ../../nosound.wav by_search.wav
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+Improvements to Bill Payment Pages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The bill payment pages in the public catalog have been revamped
+to
+
+ * use "charges" instead of "fees"
+ * include images of credit cards accepted
+ * make the print receipt template match other itemized receipts;
+   note that this change is not automatically applied when upgrading.
+ * display billing type
+ * add button to pay just selected charges
+ * reformat the page for inputting the credit card number
+
+
+
+
+Clickable Copy Locations
+^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a url field to the copy locations editor. When a url is entered in this field, 
+the associated copy location will display as a link in the opac summary display.
+
+
+
+
+Download Checkout History CSV Fixed for Large Number of Circulations
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Downloading checkout history as a CSV from My Account has been fixed
+for users with a large circulation history.  Previously, this would
+time out for patrons with more than 100 or so circulations.
+
+This feature no longer uses the action/trigger mechanism and the OPAC
+now generates the CSV directly.  The old action/trigger code is still
+present in the database and should be removed at some point in the
+near future.
+
+
+
+
+Google Books Preview rewrite
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Google Books Preview functionality in record detail pages has been
+rewritten to modernize its style and optimize its performance:
+
+* The Dojo JavaScript framework is no longer used, saving approximately
+  150K of JavaScript and CSS and four network requests per page load.
+* The Embedded Viewer is not loaded unless a possible preview is found,
+  saving more network and memory overhead.
+* The Google Books Loader is used to load the Embedded Viewer instead of the
+  https://productforums.google.com/forum/#!topic/books-api/lZrq5cWKrTo;context-place=forum/books-api[deprecated
+  Google Loader].
+* All variables are self-contained and do not pollute the global namespace.
+* Event listeners are registered to handle clicks, rather than attaching
+  `href="javascript:function()"` to <a> elements.
+* Book previews are displayed in a panel sized according to the viewport
+  of the browser, improving its appearance on both mobile and desktop
+  browsers.
+* The rewritten code is now served up directly from
+  `/js/ui/default/opac/ac_google_books.js` rather than as a TT2 template.
+
+
+
+
+jQuery for the TPAC
+^^^^^^^^^^^^^^^^^^^
+This release adds optional support for jQuery in the TPAC.  This support
+enabled by setting the ctx.want_jquery variable to a true value in the
+config.tt2 TPAC template.
+
+
+
+
+
+New Popularity Parameter
+^^^^^^^^^^^^^^^^^^^^^^^^
+New popularity parameters for in-house use over time and for count of distinct
+organizational units that own a title are now available. Evergreen sites
+can use these parameters to create new statistical popularity badges for
+sorting in the catalog by Most Popular or by Popularity-Adjusted Relevance.
+
+The in-house use parameters will apply a badge to titles that have the most
+in-house use activity over time. The organizational unit count parameter
+will apply a badge to titles owned by the most number of libraries in a
+consortium. Ownership is determined by the copy's circulation library.
+
+
+
+
+Option to Suspend Holds at the Time They are Placed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users now have the option to suspend a hold at the same time they place the
+hold. The _Place Hold_ screen has a checkbox that can be enabled for users
+who want to suspend a hold at the time it is placed. There is also an option
+to set the activation date at the same time. This option is also available
+when placing holds on a batch of titles from _My List_ and will apply to
+all the titles in the batch.
+
+
+
+
+
+Reports
+~~~~~~~
+
+
+
+Fix to reporter.classic_current_circ view
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The `reporter.classic_current_circ` view, which is part of some
+extra views defined in `Open-ILS/src/sql/Pg/example.reporter-extension.sql`,
+has been fixed to not exclude loans for patrons who do not have a
+billing address set. Users of this view should rerun
+`Open-ILS/src/sql/Pg/example.reporter-extension.sql` during upgrade.
+
+
+
+
+New report source table allowing report of "last" deleted copy
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This source table allows you to construct a clever aggregate report template
+which will report bibliographic ID's where a library or a group of libraries 
+no longer have a copy attached but had* a copy attached. This is especially
+useful when a holdings sync is required with an external vendor.
+
+
+Instructions for creating the report template:
+  * Create a new report template using the "Library Holdings Count with Deleted" as the source
+  * Add "Has Only Deleted Copies 0/1" (Min) to the Aggregate Filters -> Change Value to "1"
+  * Add "Last Edit Date" (Max) to Aggregate Filters -> Change Operator to "Between"
+  * Add Circulation Library -> "Organizational Unit ID" Raw Data to Base Filters -> Change Operator to "In list"
+  * Add "Bib ID" to Displayed Fields
+  * Add "Last Edit Date" to Displayed Fields and Change Transform to Max
+  * Add "Has Only Deleted Copies 0/1" to Displayed Fields and Change Transform to Min
+  * Add "Total copies attached" to Displayed Fields and Change Transform to Sum
+
+
+This template will only output bibliographic ID's where all of the copies for the specified branch(es)
+are deleted. Furthermore, it will only output bibs whose copies were edited (deleted) during the 
+specified date range. Unfortunatly the user will have to manually type the date range without the date
+picker. This view will also allow you to answer questions like "Show me bibs where I have one visible
+copy and more than two deleted copies."
+
+
+
+
+Add Provider to Provider Note link
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Provider reporting source now includes a link to Provider Note.
+
+
+
+
+Link ILS User and Working Location Reporting Sources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Working Location reporting source now has labels
+and it is now linked to the ILS User reporting source, allowing
+reports to display or filter on staff working location.
+
+
+
+
+New circulation report source "All Circulation Combined Types"
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This report source will allow you to create a single report template for all of the following:
+  * In House
+  * In House Non Cat
+  * Circulation (standard)
+  * Non Cat Circulation
+
+These columns are important to display:
+  * Item Type
+  * Circulation Type
+
+
+
+
+Reports Template Searching
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new form appears along the top of the reports interface for searching
+report templates.  Once found, typical template actions (e.g. create new
+report) are available from within the results interface.
+
+Searches may be performed across selected (visible) folders or all 
+folders visible to the logged in user.
+
+Searches are case-insensitive, any word order, with left-anchored words.  
+All searched words must appear in at least one of the searched fields.
+
+Examples
+++++++++
+
+ * Searching for 'stat cat' matches:
+  ** stat cat
+  ** statistical category
+  ** categories, statistical
+  ** patrons (stat cat)
+ * Searching for 'stat cat' does not match:
+  ** stat 
+   *** both words must be present in the searched field(s)
+  ** stat location
+    *** location contains 'cat' but it's not left-anchored.
+
+Reporter Paging
++++++++++++++++
+
+The templates, reports, and output interfaces now support paging via 
+new 'Next', 'Prev', and 'Start' links next to the output limit selector.
+
+
+
+
+
+
+Serials
+~~~~~~~
+
+
+
+Web Staff Client Serials Module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The serials module has been ported over to the web staff
+client, implementing a unified serials interface that combines
+ideas from both the serial control view and alternate serials
+control view from the old staff client.
+
+In addition to carrying over functionality that was available
+in the old staff client, several new features are included:
+
+* the ability to save prediction pattern codes as templates
+  that can be shared and reused within an Evergreen database
+* a more streamlined interface for managing subscriptions,
+  distributions, and streams
+* it is no longer necessary to create a starting issue in
+  order to predict a run of issues; the dialog box for
+  generating a set of predicted issues now lets you specify
+  the starting point directly.
+* the ability to more directly edit MFHDs
+    
+The new serials interfaces can be accessed from the record
+details page via a Serials drop-down button that links to
+a subscription management page, a quick-receive action, and
+a MFHD management page. There is also a new Serials Administration
+page where prediction pattern and serial copy templates can
+be managed.
+
+
+
+
+SIP
+~~~
+
+
+
+SIP Bugfix Requires SIPServer Upgrade
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The fix for Launchpad Bug 1542495: "OpenILS::SIP::clean_text() can
+crash" requires that you also upgrade SIPServer with the fix for
+Launchpad Bug 1463943: "Non-ascii Unicode characters in messages cause
+SIP client problems."  This means that if you use SIP2 with Evergreen,
+you must also upgrade SIPServer to the latest commit in the git
+repository.  Conversely, if you upgrade SIPServer to the latest commit
+in git, you must also upgrade Evergreen or, at least, apply the patch
+for Launchpad Bug 1542495.  These two patches are complementary and
+cannot be applied independently of one another.
+
+SIP Bugfix Changes How Encoding Is Determined in Configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The combined fix for the above mentioned SIP bugs alters the way that
+the output encoding is looked up in the configuration file (typically
+oils_sip.xml).  SIPServer now looks for the encoding in the following
+places:
+
+1. An +encoding+ attribute on the +account+ element for the currently active SIP account.
+2. The +encoding+ element that is a child of the +insitution+ element of the currently acctive SIP account.
+3. The +encoding+ element that is a child of the +implementation_config+ element that is itself a child of the +insitution+ element of the currently acctive SIP account.
+4. If none of the above exist, then ASCII encoding is used by default.
+
+Number 3 is provided to ease the transition to the new code.  It is
+the current location of the +encoding+ element in the sample
+configuration file and as such, where it is likely to be found in
+actual files.  It is recommended that you alter your configuration to
+move this element out of the +implementation_config+ element and into
+its parent +institution+ element.  SIPServer should *not* look into
+the implementation config, and this check may be removed at some time
+in the future.
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+TODO
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+TODO
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
