@@ -5,6 +5,7 @@ Evergreen 3.0 Release Notes
 
 Upgrade notes
 -------------
+
 The minimum version of PostgreSQL required to run Evergreen 3.0 is PostgreSQL 9.4.
 
 Deprecation of XUL staff client
@@ -23,6 +24,7 @@ Under no circumstances will XUL staff client feature enhancements be merged.
 This policy will continue through the 3.0.x and 3.1.x maintenance
 release cycles, and will become moot upon the release of 3.2.0, when
 the XUL staff client is slated to be entirely removed.
+
 
 New Features
 ------------
@@ -55,7 +57,7 @@ attributes.
   ** Link between edi_attr's and edi_attr_set's.
 
 . EDI Attribute Sets are manged via a new (browser client only) configuration
-  interface at Administration -> Acquisistions Administration -> EDI
+  interface at Administration -> Acquisitions Administration -> EDI
   Attribute Sets.
 
 . Each acq.edi_account should be linked to an acq.edi_attr_set.  If a link 
@@ -67,7 +69,7 @@ attributes.
   and/or adding additional edi_att_set's as needed.
 
 . A new edi_order_pusher.pl script is added which replaces the functionality
-  of edi_pusher.pl.  edi_pusher.pl is still avaialable.
+  of edi_pusher.pl.  edi_pusher.pl is still available.
 
 . After moving to edi_order_pusher.pl, the JEDI Action/Trigger event
   definition is no longer required.  It can be disabled.
@@ -155,21 +157,21 @@ The browser client gets a new service 'egBibDisplay' which is capable
 of translating the display field data from various formats into 
 data more suitable for JavaScript usage.
 
-The database gets 3 new VIEWs for representing display data in various
+The database gets 3 new views for representing display data in various
 formats:
 
  * metabib.flat_display_entry
   ** List of all display fields linked to their configuration.
  * metabib.compressed_display_entry
   ** Same as metabib.flat_display_entry except there's one row
-     per display field type, which 'mulit' rows compressed into
+     per display field type, with 'multi' rows compressed into
      JSON arrays.  Non-multi fields are represented as JSON 
      strings/numbers.
  * metabib.wide_display_entry
   ** Tabular view of display field data, one column per well-known
      field.  Values are represented JSON, consistent with 
-     metabib.flat_display_entry.  The view DOE NOT CONTAIN locally
-     configured dispaly fields, as each field must be encoded in
+     metabib.flat_display_entry.  The view does *not* contain locally
+     configured display fields, as each field must be encoded in
      the view and IDL definition.  This is essentially a replacement 
      for reporter.simple_record.
 
@@ -248,7 +250,7 @@ The marc_export script has a new option, --descendants.  This option
 takes one argument of an organizational unit shortname.  It works much
 like the existing --library option except that it is aware of the
 org. tree and will export records with holdings at the specified
-organizational unit and all of its decendants.  This is handy if you
+organizational unit and all of its descendants.  This is handy if you
 want to export the records for all of the branches of a system.  You
 can do that by specifying this option and the system's shortname,
 instead of specifying multiple --library options for each branch.
@@ -266,7 +268,7 @@ RTL and LTR Public Catalog Stylesheets Merged
 The RTL stylesheet for the public catalog,
 `templates/opac/css/style-rtl.css.tt2`, has been merged into the LTR
 one (`templates/opac/css/style.css.tt2`). The combined stylesheet
-template will emit RTL or LTR styles based on the value of
+template will provide RTL or LTR styles based on the value of
 the `rtl` flag of the active locale. An `rtl` variable is also available
 in the template to allow the correct style to be chosen.
 
@@ -283,8 +285,8 @@ Miscellaneous Improvements
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
  * If a filter is in effect in the Library Settings Editor,
-   changing the selected library now results in the filter
-   continuing to be applied.
+   the filter will continue to be applied after a user 
+   changes the selected library.
  * Copy templates used for serials now correct link to age
    protection rules and MARC item type values (for the
    "Circ as Type" field). During upgrade, the database update
@@ -352,8 +354,8 @@ Deployment
 ++++++++++
 
 A new purge_at_events.sh script is installed in the bin directory
-(typically /openils/bin) wich should be added to CRON for regular
-maintanence.
+(typically /openils/bin) which should be added to CRON for regular
+maintenance.
 
 NOTE: On large data sets, this script can take a long time to run and
 create higher than normal I/O load as it churns though the event and
@@ -411,7 +413,7 @@ token.  It performs the same steps as the
 open-ils.auth.authenticate.init and .complete APIs in a single call,
 using the bare password.  No intermediate password hashing is required.
 
-The paramters are the same as the .complete call with a few modifications.
+The paramaters are the same as the .complete call with a few modifications.
 
 1. Using the generic "identifier" parameter in combination with the
    "org" parameter allows the API to reliably determine if an identifier
@@ -585,14 +587,14 @@ Circulation
 Batch Editing of Patron Records
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is a now a new interface analogous to the Copy Bucket interface
-to record the selection and grouping of a set of users into a User Bucket.
+to select and group of a set of users into a User Bucket.
 The addition of users to a User Bucket is possible from the Patron Search
 interface by the use of a new grid Action, and directly on the User Bucket
-interface by user barcode. It is also possible to add users by uploading
-a text file that contains a list of user barcodes.
+interface by user barcode. It is also possible to add users to a User
+Bucket by uploading a text file that contains a list of user barcodes.
 
 From this interface it is possible to perform a set of specific batch update
-operations against users generally.
+operations against users.
 
 Editing users
 +++++++++++++
@@ -802,7 +804,7 @@ Patron Search by Birth Date
 
 Patron Search from Place Hold
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Patron Search from Place Hold allows staff members, when placing a
+This feature allows staff members, when placing a
 hold on behalf of a patron in the web staff client, to search for
 patrons by names and other searchable patron information, rather than
 relying on barcode alone. In particular, after performing a catalog
@@ -822,7 +824,7 @@ Adds a new library setting 'Number of Retrievable Recent Patrons'
 retrieved patrons that can be re-fetched from the staff client.
 
 A value of 0 means no recent patrons can be retrieved.
-A value greater than 1 means staff will be able to retrive multiple
+A value greater than 1 means staff will be able to retrieve multiple
 recent patrons via a new Circulation 'Retrieve Recent Patrons' menu entry.
 
 The default value is 1 for backwards compatibility.
@@ -834,8 +836,8 @@ The default value is 1 for backwards compatibility.
 
 Fuller title in XUL client Simplified Pull List
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Simplified Pull List in the XUL client will now display subfields n and
-p in the title field. The addition will make it easier for staff to distinguish
+The Simplified Pull List in the XUL client will now display subfields 245$n and
+$p in the title field. The addition will make it easier for staff to distinguish
 between different parts or seasons in a series.
 
 
@@ -879,7 +881,7 @@ Client
 
 Add Circ Modifier to Record Detail Page in Staff TPAC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The circ_modifier field is added to the copy table to make
+The circ_modifier field is added to the table of copies to make
 more information available to staff without having to open
 the Holdings Maintenance view.
 
@@ -942,21 +944,22 @@ Improvements to Bill Payment Pages
 The bill payment pages in the public catalog have been revamped
 to
 
- * use "charges" instead of "fees"
+ * use the term "charges" instead of "fees"
  * include images of credit cards accepted
- * make the print receipt template match other itemized receipts;
+ * make the default print receipt template match other itemized receipts;
    note that this change is not automatically applied when upgrading.
  * display billing type
- * add button to pay just selected charges
- * reformat the page for inputting the credit card number
+ * add button to pay only selected charges
+ * reformat the credit card number input page
+
 
 
 
 
 Clickable Copy Locations
 ^^^^^^^^^^^^^^^^^^^^^^^^
-Adds a url field to the copy locations editor. When a url is entered in this field, 
-the associated copy location will display as a link in the opac summary display.
+Adds a URL field to the copy locations editor. When a URL is entered in this field, 
+the associated copy location will display as a link in the OPAC summary display.
 
 
 
@@ -1002,15 +1005,15 @@ rewritten to modernize its style and optimize its performance:
 jQuery for the TPAC
 ^^^^^^^^^^^^^^^^^^^
 This release adds optional support for jQuery in the TPAC.  This support
-enabled by setting the ctx.want_jquery variable to a true value in the
+is enabled by setting the ctx.want_jquery variable to a true value in the
 config.tt2 TPAC template.
 
 
 
 
 
-New Popularity Parameter
-^^^^^^^^^^^^^^^^^^^^^^^^
+New Popularity Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^
 New popularity parameters for in-house use over time and for count of distinct
 organizational units that own a title are now available. Evergreen sites
 can use these parameters to create new statistical popularity badges for
@@ -1057,25 +1060,26 @@ New report source table allowing report of "last" deleted copy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This source table allows you to construct a clever aggregate report template
-which will report bibliographic ID's where a library or a group of libraries 
-no longer have a copy attached but had* a copy attached. This is especially
+which will report bibliographic IDs where a library or a group of libraries 
+no longer have a copy attached but *had* a copy attached. This is especially
 useful when a holdings sync is required with an external vendor.
 
 
-Instructions for creating the report template:
-  * Create a new report template using the "Library Holdings Count with Deleted" as the source
+Instructions for creating a report template with this source:
+
+  * Create a new report template using "Library Holdings Count with Deleted" as the source
   * Add "Has Only Deleted Copies 0/1" (Min) to the Aggregate Filters -> Change Value to "1"
-  * Add "Last Edit Date" (Max) to Aggregate Filters -> Change Operator to "Between"
-  * Add Circulation Library -> "Organizational Unit ID" Raw Data to Base Filters -> Change Operator to "In list"
+  * Add "Last Edit Date" (Max) to Aggregate Filters.  In Aggregate Filters, change the operator to "Between"
+  * Add Circulation Library -> "Organizational Unit ID" to Base Filters, with the Raw Data transform.  In the list of Base Filters, change the operator to "In list"
   * Add "Bib ID" to Displayed Fields
   * Add "Last Edit Date" to Displayed Fields and Change Transform to Max
   * Add "Has Only Deleted Copies 0/1" to Displayed Fields and Change Transform to Min
   * Add "Total copies attached" to Displayed Fields and Change Transform to Sum
 
 
-This template will only output bibliographic ID's where all of the copies for the specified branch(es)
+This template will only output bibliographic IDs where all of the copies for the specified branch(es)
 are deleted. Furthermore, it will only output bibs whose copies were edited (deleted) during the 
-specified date range. Unfortunatly the user will have to manually type the date range without the date
+specified date range. Unfortunately the user will have to manually type the date range without the date
 picker. This view will also allow you to answer questions like "Show me bibs where I have one visible
 copy and more than two deleted copies."
 
@@ -1084,7 +1088,7 @@ copy and more than two deleted copies."
 
 Add Provider to Provider Note link
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Provider reporting source now includes a link to Provider Note.
+The Provider reporting source now includes a link to the Provider Note reporting source.
 
 
 
@@ -1102,14 +1106,18 @@ New circulation report source "All Circulation Combined Types"
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This report source will allow you to create a single report template for all of the following:
-  * In House
-  * In House Non Cat
-  * Circulation (standard)
-  * Non Cat Circulation
 
-These columns are important to display:
-  * Item Type
-  * Circulation Type
+ * In-house uses
+ * In-house uses of non-cataloged items
+ * Circulations
+ * Circulations of non-cataloged items
+
+To distinguish between these different types of library use, it's important to display these columns
+in your report templates:
+
+ * Item Type
+ * Circulation Type
+
 
 
 
@@ -1208,23 +1216,24 @@ SIP Bugfix Changes How Encoding Is Determined in Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The combined fix for the above mentioned SIP bugs alters the way that
-the output encoding is looked up in the configuration file (typically
+SIPServer looks up the output encoding in the configuration file (typically
 oils_sip.xml).  SIPServer now looks for the encoding in the following
 places:
 
 1. An +encoding+ attribute on the +account+ element for the currently active SIP account.
-2. The +encoding+ element that is a child of the +insitution+ element of the currently acctive SIP account.
-3. The +encoding+ element that is a child of the +implementation_config+ element that is itself a child of the +insitution+ element of the currently acctive SIP account.
-4. If none of the above exist, then ASCII encoding is used by default.
+2. The +encoding+ element that is a child of the +institution+ element of the currently active SIP account.
+3. The +encoding+ element that is a child of the +implementation_config+ element that is itself a child of the +institution+ element of the currently active SIP account.
+4. If none of the above exist, then the default encoding (ASCII) is used.
 
 Number 3 is provided to ease the transition to the new code.  It is
 the current location of the +encoding+ element in the sample
 configuration file and as such, where it is likely to be found in
 actual files.  It is recommended that you alter your configuration to
 move this element out of the +implementation_config+ element and into
-its parent +institution+ element.  SIPServer should *not* look into
+its parent +institution+ element.  Ideally, SIPServer should *not* look into
 the implementation config, and this check may be removed at some time
 in the future.
+
 
 
 Acknowledgments
