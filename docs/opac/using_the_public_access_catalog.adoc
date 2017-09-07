@@ -562,6 +562,12 @@ Within *Items Checked Out* -> *Current Items Checked Out*, the following column 
 
 Within *Items Checked Out* -> *Check Out History*, the following column headers can be sorted: _Title_, _Author_, _Checkout Date_, _Due Date_, _Date Returned_, _Barcode_, and _Call Number_
 
+[NOTE]
+==========
+To protect patron privacy, the Check Out History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+area.
+==========
+
 
 Holds
 ^^^^^ 
@@ -590,6 +596,11 @@ To edit items on hold:
 . Click _Edit_ for selected holds. 
 . Select the change to make and follow the instructions.
 
+[NOTE]
+==========
+To protect patron privacy, the Holds History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+area.
+==========
 
 Account Preferences 
 ^^^^^^^^^^^^^^^^^^^
@@ -626,6 +637,12 @@ For example:
 ** Keep history of checked out items?
 
 ** Keep history of holds?
+
+[WARNING]
+========
+Turning off the _Keep history of checked out items?_ or _Keep history of holds?_ features will permanently delete all entries in the relevant patron screens.  After this is unchecked,
+there is no way for a patron to recover those data.
+========
 
 
 After changing any of these settings, you must click _Save_ to store your preferences.
