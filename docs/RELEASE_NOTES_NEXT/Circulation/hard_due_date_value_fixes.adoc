@@ -1,6 +1,0 @@
-Enhancements to Hard Due Date Functionality
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-It will now be possible to delete Hard Due Date Values for dates that have
-passed. Also, the Hard Due Date updater will no longer change Ceiling Dates
-to a past date. This allows editing Ceiling Dates directly in a Hard Due Date
-as well as scheduling Ceiling Date changes via Hard Due Date Values.

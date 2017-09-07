@@ -1,3 +1,0 @@
-Add Provider to Provider Note link
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Provider reporting source now includes a link to Provider Note.

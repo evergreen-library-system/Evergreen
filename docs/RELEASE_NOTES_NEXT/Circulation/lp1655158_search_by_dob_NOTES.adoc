@@ -1,8 +1,0 @@
-Patron Search by Birth Date
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-* Now you can include the patron birth year and/or birth month and/or
-  birth day when searching for patrons using the web based staff client.
-* Day and month values are exact matches.  E.g. month "1" (or "01")
-  matches January, "12" matches December.
-* Year searches are "contains" searches.  E.g. year "15" matches 2015,
-  1915, 1599, etc.  For exact matches use the full 4-digit year.

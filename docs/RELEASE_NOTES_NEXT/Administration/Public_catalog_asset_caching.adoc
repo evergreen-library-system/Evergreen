@@ -1,9 +1,0 @@
-Tweaks to Caching/Expiry of Public Catalog Assets
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The default cache expiration time for static assets (e.g.,
-CSS, image, and JavaScript files) in the public catalog and
-the Kid's PAC has been increased to one year. Links to all
-such assets now have a cache-busting value tacked on as a
-query parameter. This value is refreshed when `autogen.sh` is
-run, but it can also be manually set by adjusting the
-`ctx.cache_key` Template Toolkit variable.

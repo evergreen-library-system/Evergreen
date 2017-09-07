@@ -1,5 +1,0 @@
-Link ILS User and Working Location Reporting Sources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Working Location reporting source now has labels
-and it is now linked to the ILS User reporting source, allowing
-reports to display or filter on staff working location.

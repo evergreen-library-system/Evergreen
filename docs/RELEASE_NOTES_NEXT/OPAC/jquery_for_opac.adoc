@@ -1,6 +1,0 @@
-jQuery for the TPAC
-^^^^^^^^^^^^^^^^^^^
-This release adds optional support for jQuery in the TPAC.  This support
-enabled by setting the ctx.want_jquery variable to a true value in the
-config.tt2 TPAC template.
-
