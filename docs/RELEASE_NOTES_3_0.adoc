@@ -430,7 +430,7 @@ API's in the opensrf_core.xml file.
 
 Sample diff:
 
-[code,sh]
+[source,sh]
 ---------------------------------------------------------------------
 --- a/Open-ILS/examples/opensrf_core.xml.example
 +++ b/Open-ILS/examples/opensrf_core.xml.example
