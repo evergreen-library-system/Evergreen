@@ -570,11 +570,11 @@ _<ContentCafe>_ Section of _/openils/conf/opensrf.xml_.
 Edit the _userid_ and _password_ elements to match the user id and password for
 your Content Café account.
 
-Change the _return_behavior_on_no_jacket_image_ to set the behavior of your
-service when an image is not available for an item. By default this value is set
-to T which will result in a small image with the text "No Image Available" in
-place of a book cover. If you set this value to 1 a 1X1 blank image will be in
-place of a book cover. 
+This provider retrieves content based on ISBN or UPC, with a default preference
+for ISBNs.  If you wish for UPCs to be preferred, or wish one of the two identifier
+types to not be considered at all, you can change the "identifier_order" option
+in opensrf.xml.  When the option is present, only the identifier(s) listed will
+be sent.
 
 Google Analytics
 ~~~~~~~~~~~~~~~~
@@ -648,11 +648,18 @@ points to the Syndetic service:
 For changes to be activated for your public interface you will need to restart
 Evergreen and Apache.
 
+The Syndetic Solutions provider retrieves images based on the following identifiers
+found in bibliographic records:
+
+* ISBN
+* UPC
+* ISSN
+
 
 Clear External/Added Content Cache
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On the catalog’s record summary page, there is a link for staff that will forcibly clear 
+On the catalog's record summary page, there is a link for staff that will forcibly clear 
 the cache of the Added Content for that record. This is helpful for when the Added Content 
 retrieved the wrong cover jacket art, summary, etc. and caches the wrong result.
 
