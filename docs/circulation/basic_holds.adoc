@@ -1,0 +1,64 @@
+
+Placing Holds
+~~~~~~~~~~~~~
+
+Holds can be placed by staff in the _Staff Client_ and by patrons in the OPAC. In this chapter we demonstrate placing holds in the _Staff Client_.
+
+Holds Levels
+~~~~~~~~~~~~
+
+Evergreen has different levels of holds. Library staff can place holds at all levels, while patrons can only place title-level holds, and parts-level holds. The chart below summarizes the levels of holds.
+
+|==============================
+|*Hold level* |*Abbreviation* |*When to use*        |*How to use*   |*Who can use*    |*Hold tied to*
+|Title        |T              |Patron wants first available copy of a title  | Staff or patron click on _Place Hold_ next to title. | Patron or staff | Holdings attached to a single MARC (title) record
+|Parts        |P              |Patron wants a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
+|Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Volume Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
+|Copy         |C              |Patron or staff want a specific copy of an item |In the staff client, click on _Copy Hold_ under _Holdable?_ |Staff only |A specific copy (barcode)
+|===============================
+
+
+Title Level Hold
+~~~~~~~~~~~~~~~~
+
+[TIP]
+====================
+A default hold expiration date will be displayed if the library has set up a default holds expiration period in their library settings. Uncaptured holds will not be targeted after the expiration date.
+
+If you select the _Suspend this Hold_ checkbox, the hold will be suspended and not be captured until you activate it.
+====================
+
+. To place a title level hold, retrieve the title record on the catalog and click the _Place Hold_ link beside the title on the search results list, or click the _Place Hold_ link on the title summary screen.
++
+image::media/holds_title_searchresults.png[Search Results with Place Hold link]
++
+. Scan or type patron's barcode into the _Place hold for patron by
+barcode_ box, or choose _Place this hold for me_.
+. If this title contains multiple parts, you can specify which part to
+request. If you do not select a part, the hold will target any of the
+other copies on this record, that is, those with no parts attached.
+Those copies are usually the complete set, containing all the parts.
+. Edit patron hold notification and expiration date fields as required.
+Be sure to choose a valid _Pickup location_.
+. Click _Submit_.
++
+image::media/holds_title_options.png[Place Holds screen with Basic Options]
++
+. A confirmation screen appears with the message "Hold was successfully placed".
++
+image::media/holds_title_success.png[Place Holds confirmation screen]
+
+*Advanced Hold Options*
+
+Clicking the *Advanced Hold Options* link will take you into the
+metarecord level hold feature, where you can select multiple formats
+and/or languages, if available.
+
+Selecting multiple formats will not place all of these formats on hold.
+For example, selecting CD Audiobook and Book implies that either the CD
+format or the book format is the acceptable format to fill the hold. If
+no format is selected, then any of the available formats may be used to
+fill the hold. The same holds true for selecting multiple languages.
+
+image::media/holds_title_options_adv.png[Place Hold screen with Advanced Options]
+

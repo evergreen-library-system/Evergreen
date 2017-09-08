@@ -16,7 +16,7 @@ image::media/advsrchpg_1.jpg[]
 
 [TIP]
 Administrators can also configure the catalog to default to a *Group Formats and
-Editions* search by enabling the <<configtt2, relevant config.tt2 setting>> on
+Editions* search by enabling the relevant config.tt2 setting on
 the server. Setting this option will pre-select the checkbox on the Advanced 
 Search and Search Result Pages. Users can remove the checkmark, but new searches
 will revert to the default search behavior.

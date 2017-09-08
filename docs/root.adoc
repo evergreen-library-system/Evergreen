@@ -380,7 +380,12 @@ system.
 
 include::circulation/circulating_items_web_client.adoc[]
 
-include::circulation/holds.adoc[]
+Holds Management
+----------------
+
+include::circulation/basic_holds.adoc[]
+
+include::circulation/advanced_holds.adoc[]
 
 include::circulation/booking.adoc[]
 
@@ -505,7 +510,7 @@ include::development/data_unapi.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
-include::attributions.adoc[]
+include::shared/attributions.adoc[]
 
 include::licensing.adoc[]
 

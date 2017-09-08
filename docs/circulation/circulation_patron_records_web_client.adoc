@@ -407,9 +407,9 @@ Select the _Add New Note_ button. A _Create a new note_ window displays.
 
 [TIP] 
 ================================================ 
-To add a box in the _Add Note_ window for staff initials and require their
-entry, see the "Require staff initials..." settings in the
-<<_library_settings_editor,Library Settings Editor>> section.
+Your system administrator can add a box in the _Add Note_ window for staff initials and
+require those initials to be entered.  They can do so using the "Require staff initials..."
+settings in the Library Settings Editor.
 ================================================ 
 
 Enter note information. 

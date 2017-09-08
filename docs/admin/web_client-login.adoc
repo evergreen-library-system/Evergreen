@@ -1,8 +1,10 @@
 Logging into Evergreen
 -----------------------
 
+Basic Login
+~~~~~~~~~~~
+
 indexterm:[staff client, logging in]
-indexterm:[SSL certificate]
 
 . The default URL to log into the client is _https://localhost/eg/staff/login_
 . Enter your _Username_ and _Password_.
@@ -11,8 +13,8 @@ indexterm:[SSL certificate]
 Although workstation registration is not required in the web client, it is
 highly recommended that you register the workstation for all web client features
 to work correctly. If you have not yet registered a workstation, you need to log
-in with the workstation field unset and then follow instructions to
-<<register_workstation,register your workstation>>. 
+in with the workstation field unset, then answer the prompts to register and use
+a new workstation.
 
 [[browser_defaults]]
 Setting Browser Defaults for Web Client

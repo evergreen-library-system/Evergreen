@@ -1,6 +1,9 @@
 Offline Transactions
 ====================
 
+Introduction
+------------
+
 Evergreen's 'Standalone Interface' / 'Offline Interface' is designed to log
 transactions during network outage, which can be uploaded and processed once
 network operations are restored.

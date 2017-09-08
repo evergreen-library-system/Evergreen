@@ -1,6 +1,9 @@
 Triggered Events and Notices
 ----------------------------
 
+Introduction
+~~~~~~~~~~~~
+
 Improvements to the Triggered Events interface enables you to easily filter,
 sort, and print triggered events from the patron's account or an item's details.
 This feature is especially useful when tracking notice completion from a
