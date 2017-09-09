@@ -1,5 +1,9 @@
 Load MARC Order Records
 -----------------------
+
+Introduction
+~~~~~~~~~~~~
+
 The Acquisitions Load MARC Order Record interface enables you to add MARC
 records to selection lists and purchase orders and upload the records into the
 catalog.  You can both create and activate purchase orders in one step from this
@@ -10,7 +14,7 @@ interface, you can also utilize record matching mechanisms to prevent the
 creation of duplicate records. 
 
 For detailed instructions on record matching and importing, see
-<<batchimport, Batch Importing MARC Records>>.
+the cataloging manual.
 
 Basic Upload Options
 ~~~~~~~~~~~~~~~~~~~~

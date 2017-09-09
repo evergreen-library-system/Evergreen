@@ -1,6 +1,8 @@
 Invoices
 --------
 
+Introduction
+~~~~~~~~~~~~
 
 indexterm:[acquisitions,invoices]
 

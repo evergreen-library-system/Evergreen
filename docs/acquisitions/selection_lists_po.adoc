@@ -9,7 +9,7 @@ Selection lists allow you to create, manage, and save lists of items that you ma
 Create a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Selection lists can be created in four areas within the module. Selection lists can be created when you <<_brief_records,Add Brief Records>>, Upload MARC Order Records, or find records through the <<_marc_federated_search_2,MARC Federated Search>>. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
+Selection lists can be created in four areas within the module. Selection lists can be created when you <<_brief_records,Add Brief Records>>, Upload MARC Order Records, or find records through the <<_marc_federated_search,MARC Federated Search>>. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
 
 Selection lists can also be created through the My Selection Lists interface:
 
@@ -23,7 +23,7 @@ image::media/acq_selection_create.png[create selection list]
 Add items to a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can add items to a selection list in one of three ways: <<_brief_records,add a brief record>>; upload MARC order records; add records through a <<_marc_federated_search_2,federated search>>; or use the View/Place Orders menu item in the catalog.
+You can add items to a selection list in one of three ways: <<_brief_records,add a brief record>>; upload MARC order records; add records through a <<_marc_federated_search,federated search>>; or use the View/Place Orders menu item in the catalog.
 
 Clone selection lists
 ^^^^^^^^^^^^^^^^^^^^^

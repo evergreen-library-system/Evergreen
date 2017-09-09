@@ -1,6 +1,9 @@
 Managing patron purchase requests
 ---------------------------------
 
+Introduction
+~~~~~~~~~~~~
+
 indexterm:[purchase requests]
 
 Patrons may wish to suggest titles for your Library to purchase.  You can track these requests within Evergreen,
