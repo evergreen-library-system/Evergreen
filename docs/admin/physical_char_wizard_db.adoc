@@ -1,0 +1,18 @@
+Administering the Physical Characteristics Wizard
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The MARC 007 Field Physical Characteristics Wizard enables catalogers to interact with a
+database wizard that leads the user step-by-step through the MARC 007 field positions.
+The wizard displays the significance of the current position and provides dropdown lists
+of possible values for the various components of the MARC 007 field in a more
+user-friendly way.
+
+The information driving the MARC 007 Field Physical Characteristics Wizard is already a
+part of the Evergreen database. This data can be customized by individual sites and / or
+updated when the Library of Congress dictates new values or positions in the 007 field.
+There are three relevant tables where the information that drives the wizard is stored:
+
+. *config.marc21_physical_characteristic_type_map* contains the list of materials, or values, for the positions of the 007 field.
+. *config.marc21_physical_characteristic_subfield_map* contains rows that list the meaning of the various positions in the 007 field for each Category of Material.
+. *config.marc21_physical_characteristic_value_map* lists all of the values possible for all of the positions in the config.marc21_physical_characteristic_subfield_map table.
+

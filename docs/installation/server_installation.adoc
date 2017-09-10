@@ -135,7 +135,7 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-translator
 make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
-Optional: Extra steps for web staff client
+Extra steps for web staff client
 ------------------------------------------
 
 [NOTE]

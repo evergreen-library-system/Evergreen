@@ -137,8 +137,7 @@ indexterm:[pg_loader.pl]
 The major advantages of the command line approach are its speed and its
 convenience for system administrators who can perform bulk loads of
 authority records in a controlled environment. For alternate instructions,
-see <<_importing_authority_records_from_the_staff_client,Importing
-Authority Records from the Staff Client>>.
+see the cataloging manual.
 
  . Run *marc2are.pl* against the authority records, specifying the user
 name, password, MARC type (USMARC or XML). Use `STDOUT` redirection to

@@ -1,6 +1,9 @@
 Migrating Patron Data
 =====================
 
+Introduction
+------------
+
 This section will explain the task of migrating your patron data from comma
 delimited files into Evergreen. It does not deal with the process of exporting
 from the non-Evergreen system since this process may vary depending on where you

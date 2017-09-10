@@ -1,0 +1,114 @@
+Administering Evergreen through the Command Line
+================================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide to Evergreen is designed for system administrators who can
+access their Evergreen server using a command line.
+It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software. 
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+
+
+include::shared/about_evergreen.adoc[]
+
+Installing Evergreen
+====================
+include::installation/system_requirements.adoc[]
+
+:leveloffset: 1
+
+include::installation/server_installation.adoc[]
+
+:leveloffset: 0
+
+include::installation/server_upgrade.adoc[]
+
+include::installation/edi_setup.adoc[]
+
+:leveloffset: 1
+
+include::admin_initial_setup/migrating_your_data.adoc[]
+
+:leveloffset: 2
+
+include::admin_initial_setup/migrating_patron_data.adoc[]
+
+:leveloffset: 0
+
+Individual Evergreen Components
+===============================
+
+:leveloffset: 1
+
+include::development/intro_opensrf.adoc[]
+
+include::development/pgtap.adoc[]
+
+:leveloffset: 0
+
+include::development/support_scripts.adoc[]
+
+System Configuration
+====================
+
+:leveloffset: 1
+
+include::admin_initial_setup/describing_your_people.adoc[]
+
+include::admin_initial_setup/describing_your_catalog.adoc[]
+
+
+include::admin/authentication_proxy.adoc[]
+
+include::admin/patron_address_zip_code.adoc[]
+
+include::admin/apache_rewrite_tricks.adoc[]
+
+include::admin/apache_access_handler.adoc[]
+
+include::development/updating_translations_launchpad.adoc[]
+
+:leveloffset: 0
+
+
+Local Administration
+====================
+
+include::admin/actiontriggers.adoc[]
+
+Cataloging Administration
+=========================
+
+Cataloging Staff Interface
+--------------------------
+
+include::admin/physical_char_wizard_db.adoc[]
+
+UX Administration
+=================
+
+include::admin/template_toolkit.adoc[]
+
+:leveloffset: 1
+
+include::admin_initial_setup/designing_your_catalog.adoc[]
+
+:leveloffset: 0
+
+include::opac/opac/new_skin_customizations.adoc[]
+
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+
