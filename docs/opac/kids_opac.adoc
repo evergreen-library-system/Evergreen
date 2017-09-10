@@ -1,6 +1,9 @@
 Kids OPAC
 ---------
 
+Introduction
+~~~~~~~~~~~~
+
 The Kids OPAC (KPAC) is a public catalog search that was designed for children 
 and teens.  Colorful menu items,large buttons, and simple navigation make this 
 an appealing search interface for kids.  Librarians will appreciate the flexible 

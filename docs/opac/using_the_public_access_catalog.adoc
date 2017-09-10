@@ -625,10 +625,6 @@ the call number.
 
 image::media/textcn1.png[]
 
-See the *<<Sending_Copy_Details_via_Text_Message, Sending Copy Details via Text 
-Message>>* section of the documentation for more information on how to use this 
-feature.
-
 [WARNING]
 ==========
 Carrier charges may apply when using the SMS call number feature.
