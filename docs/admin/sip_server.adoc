@@ -1,6 +1,9 @@
 SIP Server
 ----------
 
+About the SIP Protocol
+~~~~~~~~~~~~~~~~~~~~~~
+
 indexterm:[Automated Circulation System]
 indexterm:[SelfCheck]
 indexterm:[Automated Material Handling]

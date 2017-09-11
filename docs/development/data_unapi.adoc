@@ -1,6 +1,9 @@
 Using UnAPI
 ===========
 
+URL format
+----------
+
 Evergreen's unAPI support includes access to many
 record types. For example, the following URL would fetch
 bib 267 in MODS32 along with holdings, volume, copy,

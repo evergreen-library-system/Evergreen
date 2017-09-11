@@ -4,10 +4,13 @@ RFID Product Integration
 Evergreen Integration with PV Supa GoodStuff RFID Reader
 --------------------------------------------------------
 
+Introduction
+~~~~~~~~~~~~
+
 This feature enables the Evergreen staff client to "talk" to the PV Supa Goodstuff RFID reader so that libraries can utilize PV Supa Goodstuff's RFID technology when checking items in and out. 
 
-*Administration*
-
+Administration
+~~~~~~~~~~~~~~
 
 To use PV Supa Goodstuff, you must add code to the Admin module that Evergreen can use to identify the reader.
 
@@ -30,7 +33,8 @@ To use PV Supa Goodstuff, you must add code to the Admin module that Evergreen c
 
 
 
-*Using RFID at the Circulation Desk*
+Using RFID at the Circulation Desk
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 RFID functionality is available in the Circulation module via the check-out interface, the check-out function in the patron account, and the check-in interface.
 

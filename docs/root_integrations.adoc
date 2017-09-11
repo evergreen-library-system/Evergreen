@@ -1,0 +1,49 @@
+Integrating Evergreen with Other Tools
+======================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide describes how to integrate Evergreen with other technologies, including Web browsers,
+Web sites, discovery layers, self-check machines, RFID equipment, SIP clients, auto-dialer phone
+scripts, and other applications.
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+
+
+include::shared/about_evergreen.adoc[]
+
+:leveloffset: -1
+
+include::opac/opensearch.adoc[]
+
+:leveloffset: 0
+
+include::development/data_supercat.adoc[]
+
+include::development/data_unapi.adoc[]
+
+include::admin/phonelist.adoc[]
+
+
+include::circulation/rfid_product_integration.adoc[]
+
+include::opac/search_form.adoc[]
+
+:leveloffset: -1
+
+include::admin/sip_server.adoc[]
+
+:leveloffset: 0
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+
