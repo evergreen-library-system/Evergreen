@@ -183,7 +183,7 @@
                 <div class="col-md-6" ng-class="{'bg-success': working.location !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.location" ng-model="working.location"
-                        ng-options="l.id() as l.name() for l in location_list"
+                        ng-options="l.id() as i18n.ou_qualified_location_name(l) for l in location_list"
                     ></select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.opac_visible !== undefined}">

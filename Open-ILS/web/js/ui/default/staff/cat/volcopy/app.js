@@ -139,7 +139,14 @@ function(egCore , $q) {
     service.get_locations = function(orgs) {
         return egCore.pcrud.search('acpl',
             {owning_lib : orgs, deleted : 'f'},
-            {order_by : { acpl : 'name' }}, {atomic : true}
+            {
+                flesh : 1,
+                flesh_fields : {
+                    acpl : ['owning_lib']
+                },
+                order_by : { acpl : 'name' }
+            },
+            {atomic : true}
         );
     };
 
@@ -809,6 +816,7 @@ function(egCore , $q) {
 function($scope , $q , $window , $routeParams , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , $uibModal) {
 
     $scope.forms = {}; // Accessed by t_attr_edit.tt2
+    $scope.i18n = egCore.i18n;
 
     $scope.defaults = { // If defaults are not set at all, allow everything
         barcode_checkdigit : false,
@@ -1844,6 +1852,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         },
         controller : ['$scope','$window','itemSvc','egCore','ngToast',
             function ( $scope , $window , itemSvc , egCore , ngToast) {
+
+                $scope.i18n = egCore.i18n;
 
                 $scope.defaults = { // If defaults are not set at all, allow everything
                     barcode_checkdigit : false,
