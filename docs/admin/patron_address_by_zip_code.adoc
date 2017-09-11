@@ -51,7 +51,7 @@ Most fields can be left blank if the information is not available and that data 
 . AreaCode - Phone number area code, unused.
 . *AlertMesg* - Message to display to staff to alert them of any special circumstances.
 
-TIP: The <<_address_alert,Address Alerts>> feature can also be used to alert staff about certain addresses.
+TIP: The Address Alerts feature -- described in the Staff Client Sysadmin manual -- can also be used to alert staff about certain addresses.
 
 Here is an example of what the data file should look like.
 

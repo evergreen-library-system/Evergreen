@@ -65,12 +65,10 @@ System Configuration
 
 include::admin_initial_setup/describing_your_people.adoc[]
 
-include::admin_initial_setup/describing_your_catalog.adoc[]
-
 
 include::admin/authentication_proxy.adoc[]
 
-include::admin/patron_address_zip_code.adoc[]
+include::admin/patron_address_by_zip_code.adoc[]
 
 include::admin/apache_rewrite_tricks.adoc[]
 
@@ -105,7 +103,7 @@ include::admin_initial_setup/designing_your_catalog.adoc[]
 
 :leveloffset: 0
 
-include::opac/opac/new_skin_customizations.adoc[]
+include::opac/new_skin_customizations.adoc[]
 
 
 include::shared/attributions.adoc[]
