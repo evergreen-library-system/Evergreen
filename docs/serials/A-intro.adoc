@@ -1,8 +1,6 @@
 Serials
 -------
 
-This documentation is intended for users who will be ordering subscriptions, distributing issues, and receiving issues in Evergreen.
-
 Serial Control View vs. Alternate Serial Control View 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -1,0 +1,50 @@
+Using Evergreen's Serials Module
+================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide to Evergreen is intended to meet the needs of library workers
+who work with serials.
+It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software. 
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+
+include::shared/about_evergreen.adoc[]
+
+:leveloffset: -1
+
+include::admin/web_client-login.adoc[]
+
+include::serials/A-intro.adoc[]
+
+:leveloffset: 0
+ 
+include::serials/B-copy_template.adoc[]
+
+include::serials/C-subscription-SCV.adoc[]
+
+include::serials/D-subscription-ASCV.adoc[]
+
+include::serials/E-edit_subscriptions.adoc[]
+
+include::serials/F-Receiving.adoc[]
+
+include::serials/Group_Serials_Issues_in_the_OPAC_2.2.adoc[]
+
+include::serials/G-Special_issue.adoc[]
+
+include::serials/H-holdings_statements.adoc[]
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+

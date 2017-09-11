@@ -17,7 +17,7 @@ To create a copy template, click *Admin* -> *Local Administration* -> *Copy Temp
 . Select a _Fine Level_ for the item from the drop down menu. This field is required.
 . Select a copy location from the _Location_ drop down menu. The menu is populated from the copy locations that you created in *Admin* -> *Local Administration* -> *Copy Locations*.
 . Select a _Circ Modifier_ from the drop down menu. The menu is populated from the modifiers that you created in *Admin* -> *Server Administration* -> *Circulation Modifiers*.
-. Select a _Floating Group_ if the item is part of a floating collection. For more information, see the chapter on <<_floating_groups,Floating Groups>>.
+. Select a _Floating Group_ if the item is part of a floating collection.
 . Check _Deposit?_ if patrons must place a deposit on the copy before they can use it.
 . Check _Reference?_ if the item is a reference item.
 . Check _Mint Condition?_ if the item is in mint condition.
