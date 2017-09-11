@@ -1,5 +1,5 @@
-Using Evergreen's Acquistions Module
-====================================
+Using Evergreen's Public Catalog
+================================
 Documentation Interest Group
 :doctype: book
 :toc:
