@@ -173,6 +173,19 @@ CREATE UNIQUE INDEX metabib_combined_series_field_entry_fakepk_idx ON metabib.co
 CREATE INDEX metabib_combined_series_field_entry_index_vector_idx ON metabib.combined_series_field_entry USING GIST (index_vector);
 CREATE INDEX metabib_combined_series_field_source_idx ON metabib.combined_series_field_entry (metabib_field);
 
+CREATE VIEW metabib.combined_all_field_entry AS
+    SELECT * FROM metabib.combined_title_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_author_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_subject_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_keyword_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_identifier_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_series_field_entry;
+
 CREATE TABLE metabib.facet_entry (
 	id		BIGSERIAL	PRIMARY KEY,
 	source		BIGINT		NOT NULL,
@@ -230,27 +243,75 @@ CREATE VIEW metabib.compressed_display_entry AS
 CREATE VIEW metabib.wide_display_entry AS
 /* Table-like view of well-known display fields.   
    This VIEW expands as well-known display fields are added. */
-    SELECT 
+    SELECT
         bre.id AS source,
         COALESCE(mcde_title.value, 'null') AS title,
         COALESCE(mcde_author.value, 'null') AS author,
-        COALESCE(mcde_subject.value, 'null') AS subject,
+        COALESCE(mcde_subject_geographic.value, 'null') AS subject_geographic,
+        COALESCE(mcde_subject_name.value, 'null') AS subject_name,
+        COALESCE(mcde_subject_temporal.value, 'null') AS subject_temporal,
+        COALESCE(mcde_subject_topic.value, 'null') AS subject_topic,
         COALESCE(mcde_creators.value, 'null') AS creators,
-        COALESCE(mcde_isbn.value, 'null') AS isbn
-    -- ensure one row per bre regardless of the presence of display entries
-    FROM biblio.record_entry bre 
-    LEFT JOIN metabib.compressed_display_entry mcde_title 
+        COALESCE(mcde_isbn.value, 'null') AS isbn,
+        COALESCE(mcde_issn.value, 'null') AS issn,
+        COALESCE(mcde_upc.value, 'null') AS upc,
+        COALESCE(mcde_tcn.value, 'null') AS tcn,
+        COALESCE(mcde_edition.value, 'null') AS edition,
+        COALESCE(mcde_physical_description.value, 'null') AS physical_description,
+        COALESCE(mcde_publisher.value, 'null') AS publisher,
+        COALESCE(mcde_series_title.value, 'null') AS series_title,
+        COALESCE(mcde_abstract.value, 'null') AS abstract,
+        COALESCE(mcde_toc.value, 'null') AS toc,
+        COALESCE(mcde_pubdate.value, 'null') AS pubdate,
+        COALESCE(mcde_type_of_resource.value, 'null') AS type_of_resource
+    FROM biblio.record_entry bre
+    LEFT JOIN metabib.compressed_display_entry mcde_title
         ON (bre.id = mcde_title.source AND mcde_title.name = 'title')
-    LEFT JOIN metabib.compressed_display_entry mcde_author 
+    LEFT JOIN metabib.compressed_display_entry mcde_author
         ON (bre.id = mcde_author.source AND mcde_author.name = 'author')
-    LEFT JOIN metabib.compressed_display_entry mcde_subject 
+    LEFT JOIN metabib.compressed_display_entry mcde_subject
         ON (bre.id = mcde_subject.source AND mcde_subject.name = 'subject')
-    LEFT JOIN metabib.compressed_display_entry mcde_creators 
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_geographic
+        ON (bre.id = mcde_subject_geographic.source
+            AND mcde_subject_geographic.name = 'subject_geographic')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_name
+        ON (bre.id = mcde_subject_name.source
+            AND mcde_subject_name.name = 'subject_name')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_temporal
+        ON (bre.id = mcde_subject_temporal.source
+            AND mcde_subject_temporal.name = 'subject_temporal')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_topic
+        ON (bre.id = mcde_subject_topic.source
+            AND mcde_subject_topic.name = 'subject_topic')
+    LEFT JOIN metabib.compressed_display_entry mcde_creators
         ON (bre.id = mcde_creators.source AND mcde_creators.name = 'creators')
-    LEFT JOIN metabib.compressed_display_entry mcde_isbn 
+    LEFT JOIN metabib.compressed_display_entry mcde_isbn
         ON (bre.id = mcde_isbn.source AND mcde_isbn.name = 'isbn')
+    LEFT JOIN metabib.compressed_display_entry mcde_issn
+        ON (bre.id = mcde_issn.source AND mcde_issn.name = 'issn')
+    LEFT JOIN metabib.compressed_display_entry mcde_upc
+        ON (bre.id = mcde_upc.source AND mcde_upc.name = 'upc')
+    LEFT JOIN metabib.compressed_display_entry mcde_tcn
+        ON (bre.id = mcde_tcn.source AND mcde_tcn.name = 'tcn')
+    LEFT JOIN metabib.compressed_display_entry mcde_edition
+        ON (bre.id = mcde_edition.source AND mcde_edition.name = 'edition')
+    LEFT JOIN metabib.compressed_display_entry mcde_physical_description
+        ON (bre.id = mcde_physical_description.source
+            AND mcde_physical_description.name = 'physical_description')
+    LEFT JOIN metabib.compressed_display_entry mcde_publisher
+        ON (bre.id = mcde_publisher.source AND mcde_publisher.name = 'publisher')
+    LEFT JOIN metabib.compressed_display_entry mcde_series_title
+        ON (bre.id = mcde_series_title.source AND mcde_series_title.name = 'series_title')
+    LEFT JOIN metabib.compressed_display_entry mcde_abstract
+        ON (bre.id = mcde_abstract.source AND mcde_abstract.name = 'abstract')
+    LEFT JOIN metabib.compressed_display_entry mcde_toc
+        ON (bre.id = mcde_toc.source AND mcde_toc.name = 'toc')
+    LEFT JOIN metabib.compressed_display_entry mcde_pubdate
+        ON (bre.id = mcde_pubdate.source AND mcde_pubdate.name = 'pubdate')
+    LEFT JOIN metabib.compressed_display_entry mcde_type_of_resource
+        ON (bre.id = mcde_type_of_resource.source
+            AND mcde_type_of_resource.name = 'type_of_resource')
 ;
-
 
 CREATE TABLE metabib.browse_entry (
     id BIGSERIAL PRIMARY KEY,
@@ -719,13 +780,14 @@ BEGIN
 
     -- Loop over the indexing entries
     FOR idx IN SELECT * FROM config.metabib_field WHERE id = ANY (only_fields) ORDER BY format LOOP
+        CONTINUE WHEN idx.xpath IS NULL OR idx.xpath = ''; -- pure virtual field
 
         process_idx := FALSE;
         IF idx.display_field AND 'display' = ANY (field_types) THEN process_idx = TRUE; END IF;
         IF idx.browse_field AND 'browse' = ANY (field_types) THEN process_idx = TRUE; END IF;
         IF idx.search_field AND 'search' = ANY (field_types) THEN process_idx = TRUE; END IF;
         IF idx.facet_field AND 'facet' = ANY (field_types) THEN process_idx = TRUE; END IF;
-        CONTINUE WHEN process_idx = FALSE;
+        CONTINUE WHEN process_idx = FALSE; -- disabled for all types
 
         joiner := COALESCE(idx.joiner, default_joiner);
 
@@ -884,10 +946,14 @@ BEGIN
     END LOOP;
 
 END;
-
 $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.update_combined_index_vectors(bib_id BIGINT) RETURNS VOID AS $func$
+DECLARE
+    rdata       TSVECTOR;
+    vclass      TEXT;
+    vfield      INT;
+    rfields     INT[];
 BEGIN
     DELETE FROM metabib.combined_keyword_field_entry WHERE record = bib_id;
     INSERT INTO metabib.combined_keyword_field_entry(record, metabib_field, index_vector)
@@ -937,6 +1003,32 @@ BEGIN
         SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
         FROM metabib.identifier_field_entry WHERE source = bib_id;
 
+    -- For each virtual def, gather the data from the combined real field
+    -- entries and append it to the virtual combined entry.
+    FOR vfield, rfields IN SELECT virtual, ARRAY_AGG(real)  FROM config.metabib_field_virtual_map GROUP BY virtual LOOP
+        SELECT  field_class INTO vclass
+          FROM  config.metabib_field
+          WHERE id = vfield;
+
+        SELECT  string_agg(index_vector::TEXT,' ')::tsvector INTO rdata
+          FROM  metabib.combined_all_field_entry
+          WHERE record = bib_id
+                AND metabib_field = ANY (rfields);
+
+        BEGIN -- I cannot wait for INSERT ON CONFLICT ... 9.5, though
+            EXECUTE $$
+                INSERT INTO metabib.combined_$$ || vclass || $$_field_entry
+                    (record, metabib_field, index_vector) VALUES ($1, $2, $3)
+            $$ USING bib_id, vfield, rdata;
+        EXCEPTION WHEN unique_violation THEN
+            EXECUTE $$
+                UPDATE  metabib.combined_$$ || vclass || $$_field_entry
+                  SET   index_vector = index_vector || $3
+                  WHERE record = $1
+                        AND metabib_field = $2
+            $$ USING bib_id, vfield, rdata;
+        END;
+    END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
 
@@ -1404,7 +1496,12 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib( bib_id BIGINT, fp TEXT, bib_is_deleted BOOL DEFAULT FALSE, retain_deleted BOOL DEFAULT FALSE ) RETURNS BIGINT AS $func$
+CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib(
+    bib_id bigint,
+    fp text,
+    bib_is_deleted boolean DEFAULT false,
+    retain_deleted boolean DEFAULT false
+) RETURNS bigint AS $function$
 DECLARE
     new_mapping     BOOL := TRUE;
     source_count    INT;
@@ -1415,11 +1512,11 @@ BEGIN
 
     -- We need to make sure we're not a deleted master record of an MR
     IF bib_is_deleted THEN
-        FOR old_mr IN SELECT id FROM metabib.metarecord WHERE master_record = bib_id LOOP
+        IF NOT retain_deleted THEN -- Go away for any MR that we're master of, unless retained
+            DELETE FROM metabib.metarecord_source_map WHERE source = bib_id;
+        END IF;
 
-            IF NOT retain_deleted THEN -- Go away for any MR that we're master of, unless retained
-                DELETE FROM metabib.metarecord_source_map WHERE source = bib_id;
-            END IF;
+        FOR old_mr IN SELECT id FROM metabib.metarecord WHERE master_record = bib_id LOOP
 
             -- Now, are there any more sources on this MR?
             SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = old_mr;
@@ -1491,8 +1588,7 @@ BEGIN
     RETURN old_mr;
 
 END;
-$func$ LANGUAGE PLPGSQL;
-
+$function$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT) RETURNS BIGINT AS $func$
     DELETE FROM authority.bib_linking WHERE bib = $1;

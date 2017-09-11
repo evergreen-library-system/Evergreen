@@ -34,6 +34,13 @@ __PACKAGE__->columns(Primary => 'id');
 __PACKAGE__->columns(Essential => qw/field_class name xpath weight format search_field facet_field display_xpath display_field/);
 #-------------------------------------------------------------------------------
 
+package config::metabib_field_virtual_map;
+use base qw/config/;
+__PACKAGE__->table('config_metabib_field_virtual_map');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/real virtual/);
+#-------------------------------------------------------------------------------
+
 package config::identification_type;
 use base qw/config/;
 __PACKAGE__->table('config_identification_type');

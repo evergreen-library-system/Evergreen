@@ -40,6 +40,11 @@ sub _initialize_parser {
                 'open-ils.cstore.direct.config.metabib_field.search.atomic',
                 { id => { "!=" => undef } }
             )->gather(1),
+        config_metabib_field_virtual_map    =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_virtual_map.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
         config_metabib_search_alias         =>
             $cstore->request(
                 'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
@@ -86,6 +91,49 @@ sub _initialize_parser {
     $cstore->disconnect;
     die("Cannot initialize $parser!") unless ($parser->initialization_complete);
 }
+
+sub fetch_highlighted_display_fields {
+    my $self = shift;
+    my $client = shift;
+    my $records = shift;
+    my $highlight_map = shift;
+
+    unless ($records) {
+        $client->respond_complete;
+        return;
+    }
+
+    my $hl_map_string = "''::HSTORE";
+    if (ref($highlight_map)) {
+        $hl_map_string = "";
+        for my $tsq (keys %$highlight_map) {
+            my $field_list = join(',', @{$$highlight_map{$tsq}});
+            $hl_map_string .= ' || ' if $hl_map_string;
+            $hl_map_string .= "hstore(($tsq)\:\:TEXT,'$field_list')";
+        }
+    }
+
+    my $sth = metabib::metarecord_source_map->db_Main->prepare(
+        "SELECT * FROM search.highlight_display_fields(?, $hl_map_string)"
+    );
+
+    $records = [$records] unless ref($records);
+    for my $record ( @$records ) {
+        next unless $record;
+        $sth->execute($record);
+        my $rows = $sth->fetchall_arrayref({});
+        $client->respond($rows);
+    }
+
+    return undef;
+}
+__PACKAGE__->register_method(
+    api_name    => 'open-ils.storage.fetch.metabib.display_field.highlight',
+    method      => 'fetch_highlighted_display_fields',
+    api_level   => 1,
+    stream      => 1
+);
+
 
 sub ordered_records_from_metarecord { # XXX Replace with QP-based search-within-MR
     my $self = shift;

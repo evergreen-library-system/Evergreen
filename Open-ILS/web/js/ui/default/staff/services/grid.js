@@ -1650,6 +1650,8 @@ angular.module('egGridMod',
         // idlClass as the base.
         cols.idlFieldFromPath = function(dotpath) {
             var class_obj = egCore.idl.classes[cols.idlClass];
+            if (!dotpath) return null;
+
             var path_parts = dotpath.split(/\./);
 
             var idl_parent;
@@ -1913,7 +1915,7 @@ angular.module('egGridMod',
                     angular.forEach(provider.columnsProvider.columns, 
                         function(col) {
                             // only query IDL-tracked columns
-                            if (!col.adhoc && (col.required || col.visible))
+                            if (!col.adhoc && col.name && col.path && (col.required || col.visible))
                                 queryFields[col.name] = col.path;
                         }
                     );

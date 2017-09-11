@@ -13,6 +13,7 @@ contents =  [
         label => l('Bibliography, etc. Note: '),
         xpath => '//*[@tag="504"]'
     }, {
+        display_field => 'toc',
         label => l('Formatted Contents Note: '),
         xpath => '//*[@tag="505"]'
     }, {
@@ -46,6 +47,7 @@ contents =  [
         label => l('Date/Time and Place of an Event Note: '),
         xpath => '//*[@tag="518"]'
     }, {
+        display_field => 'abstract',
         label => l('Summary, etc.: '),
         xpath => '//*[@tag="520"]'
     }, {
@@ -178,11 +180,17 @@ BLOCK render_contents;
             '</div>';
         END;
     END;
-END 
-%]
-[%  BLOCK render_all_contents;
+END;
+
+BLOCK render_all_contents;
     FOREACH cont IN contents;
-        content = PROCESS render_contents(xpath=cont.xpath);
+        content = '';
+        df = cont.display_field;
+        IF df AND attrs.hl.$df.size;
+            content = attrs.hl.$df.join('<br/>');
+        ELSE;
+            content = PROCESS render_contents(xpath=cont.xpath);
+        END;
         IF content.match('\S');
 -%]
 <tr>

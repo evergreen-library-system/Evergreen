@@ -1,0 +1,77 @@
+[% WRAPPER base.tt2 %]
+<h1>[% l('Virtual Field Data Providers') %]</h1> <br/>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
+    <div>[% l('Virtual Field Data Providers') %]</div>
+    <div>
+        <button dojoType='dijit.form.Button' onClick='cmfvmGrid.showCreateDialog()'>[% l('New Map') %]</button>
+        <button dojoType='dijit.form.Button' onClick='cmfvmGrid.deleteSelected()'>[% l('Delete Selected') %]</button>
+        <button dojoType='dijit.form.Button' onClick='cmfvmGrid.showClonePane()'>[% l('Clone Selected') %]</button>
+    </div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <span>[% l('Record Attribute Type: ') %]</span><div id='attr-def-div'></div>
+</div>
+
+<div dojoType="dijit.layout.ContentPane" layoutAlign="client">
+    <table  jsId="cmfvmGrid"
+            autoHeight='true'
+            dojoType="openils.widget.AutoGrid"
+            fieldOrder="['id', 'real', 'virtual', 'weight']"
+            query="{id: '*'}"
+            defaultCellWidth='"25%"'
+            fmClass='cmfvm'
+            showPaginator='true'
+            editOnEnter='true'>
+    </table>
+ </div>
+
+<script type ="text/javascript">
+
+    dojo.require('dijit.form.FilteringSelect');
+    dojo.require('openils.widget.AutoGrid');
+    dojo.require('openils.widget.AutoFieldWidget');
+    dojo.require('openils.PermaCrud');
+
+    var cmfId = '[% ctx.page_args.0 %]';
+
+    openils.Util.addOnLoad(
+        function() {
+
+            var selector = new openils.widget.AutoFieldWidget({
+                fmClass : 'cmfvm',
+                fmField : 'virtual',
+                parentNode : dojo.byId('attr-def-div')
+            });
+
+            selector.build(
+                function(w, ww) {
+                    dojo.connect(w, 'onChange', 
+                        function(newVal) {
+
+                            // see if this attr def supports composite entries
+                            w.store.fetch({
+                              query : {virtual : ''+newVal}
+                            });
+                            
+                            cmfvmGrid.resetStore();
+                            cmfvmGrid.loadAll({order_by : {cmfvm : 'id'}}, {virtual : newVal});
+                            cmfvmGrid.overrideWidgetArgs.vritual = {dijitArgs : {value : newVal}};
+                            // ^-- why is this not working?
+                        }
+                    );
+
+                    // if a cmf is already selected via URL, fetch the cmfvm's
+                    if (cmfId) w.attr('value', cmfId);
+                }
+            );
+
+            // hide the progress indicator since we're not loading any data up front
+            dojo.style(cmfvmGrid.loadProgressIndicator, 'visibility', 'hidden');
+        }
+    );
+
+</script>
+
+[% END %]

@@ -7,46 +7,46 @@ BEGIN;
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    38, 'identifier', 'edition', 
+    38, 'keyword', 'edition', 
     oils_i18n_gettext(38, 'Edition', 'cmf', 'label'),
     $$//mods33:mods/mods33:originInfo//mods33:edition[1]$$,
-    TRUE, FALSE, FALSE
+    TRUE, TRUE, FALSE
 );
 
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    39, 'identifier', 'physical_description', 
+    39, 'keyword', 'physical_description', 
     oils_i18n_gettext(39, 'Physical Descrption', 'cmf', 'label'),
     $$(//mods33:mods/mods33:physicalDescription/mods33:form|//mods33:mods/mods33:physicalDescription/mods33:extent|//mods33:mods/mods33:physicalDescription/mods33:reformattingQuality|//mods33:mods/mods33:physicalDescription/mods33:internetMediaType|//mods33:mods/mods33:physicalDescription/mods33:digitalOrigin)$$,
-    TRUE, FALSE, FALSE
+    TRUE, TRUE, FALSE
 );
 
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    40, 'identifier', 'publisher', 
+    40, 'keyword', 'publisher', 
     oils_i18n_gettext(40, 'Publisher', 'cmf', 'label'),
     $$//mods33:mods/mods33:originInfo//mods33:publisher[1]$$,
-    TRUE, FALSE, FALSE
+    TRUE, TRUE, FALSE
 );
 
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    41, 'identifier', 'abstract', 
+    41, 'keyword', 'abstract', 
     oils_i18n_gettext(41, 'Abstract', 'cmf', 'label'),
     $$//mods33:mods/mods33:abstract$$,
-    TRUE, FALSE, FALSE
+    TRUE, TRUE, FALSE
 );
 
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    42, 'identifier', 'toc', 
+    42, 'keyword', 'toc', 
     oils_i18n_gettext(42, 'Table of Contents', 'cmf', 'label'),
     $$//mods33:tableOfContents$$,
-    TRUE, FALSE, FALSE
+    TRUE, TRUE, FALSE
 );
 
 INSERT INTO config.metabib_field (id, field_class, name, 
@@ -176,35 +176,4 @@ CREATE VIEW metabib.wide_display_entry AS
 ;
 
 COMMIT;
-
-/** ROLLBACK 
-
-BEGIN;
-DELETE FROM metabib.display_entry WHERE field IN (1,11,12,13,14,19,20,26,38,39,40,41,42,43,44);
-DELETE FROM config.display_field_map WHERE field IN (1,11,12,13,14,19,20,26,38,39,40,41,42,43,44);
-DELETE FROM config.metabib_field WHERE id IN (38,39,40,41,42,43,44);
-COMMIT;
-
-*/
-
--- Perform a full display field reingest, since we didn't do one during
--- the 3.0 upgrade when display fields were introduced.
-
-\qecho
-\qecho Reingesting display field entries.  This may take a while.
-\qecho This command can be stopped (control-c) and rerun later if needed:
-\qecho
-\qecho SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE,     
-\qecho     (SELECT ARRAY_AGG(id)::INT[] FROM config.metabib_field WHERE display_field)) 
-\qecho     FROM biblio.record_entry WHERE id > 0; 
-\qecho
-
--- avoid displaying a row per entry by selecting the total count.
--- NOTE: extracting display data for deleted bibs because we occasionally
--- display deleted bib records.
-SELECT COUNT(*) AS bib_count FROM (
-  SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE,     
-    (SELECT ARRAY_AGG(id)::INT[] FROM config.metabib_field WHERE display_field)) 
-  FROM biblio.record_entry WHERE id > 0
-) x;
 

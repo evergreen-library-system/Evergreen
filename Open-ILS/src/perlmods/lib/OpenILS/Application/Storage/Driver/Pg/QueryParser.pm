@@ -8,6 +8,8 @@ use OpenSRF::Utils qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
+use OpenSRF::Utils::Logger qw($logger);
+use Data::Dumper;
 my $U = 'OpenILS::Application::AppUtils';
 
 my ${spc} = ' ' x 2;
@@ -228,6 +230,15 @@ sub search_field_id_map {
     return $self->custom_data->{search_field_id_map};
 }
 
+sub search_field_virtual_map {
+    my $self = shift;
+    my $map = shift;
+
+    $self->custom_data->{search_field_virtual_map} ||= {};
+    $self->custom_data->{search_field_virtual_map} = $map if ($map);
+    return $self->custom_data->{search_field_virtual_map};
+}
+
 sub add_search_field_id_map {
     my $self = shift;
     my $class = shift;
@@ -244,6 +255,18 @@ sub add_search_field_id_map {
         by_id => { $id => { classname => $class, field => $field, weight => $weight } },
         by_class => { $class => { $field => $id } }
     };
+}
+
+sub add_search_field_virtual_map {
+    my $self = shift;
+    my $realid = shift;
+    my $virtid = shift;
+
+    $self->search_field_virtual_map->{by_virt}{$virtid} ||= [];
+    push @{$self->search_field_virtual_map->{by_virt}{$virtid}}, $realid;
+
+    $self->search_field_virtual_map->{by_real}{$realid} ||= [];
+    push @{$self->search_field_virtual_map->{by_real}{$realid}}, $virtid;
 }
 
 sub search_field_class_by_id {
@@ -400,6 +423,17 @@ sub initialize_search_field_id_map {
     return $self->search_field_id_map;
 }
 
+sub initialize_search_field_virtual_map {
+    my $self = shift;
+    my $cmfvm_list = shift;
+
+    __PACKAGE__->add_search_field_virtual_map( $_->real, $_->virtual )
+        for (@$cmfvm_list);
+
+    $logger->debug('Virtual field map: ' . Dumper($self->search_field_virtual_map));
+    return $self->search_field_virtual_map;
+}
+
 sub initialize_aliases {
     my $self = shift;
     my $cmsa_list = shift;
@@ -513,6 +547,9 @@ sub initialize {
     $self->initialize_search_field_id_map( $args{config_metabib_field} )
         if ($args{config_metabib_field});
 
+    $self->initialize_search_field_virtual_map( $args{config_metabib_field_virtual_map} )
+        if ($args{config_metabib_field_virtual_map});
+
     $self->initialize_aliases( $args{config_metabib_search_alias} )
         if ($args{config_metabib_search_alias});
 
@@ -598,6 +635,8 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( keyword => keyword => first_word => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => full_match => 1 );
     
+    __PACKAGE__->add_search_field_virtual_map( 6 => 15 );
+
     __PACKAGE__->class_ts_config( 'series', undef, 1, 'english_nostop' );
     __PACKAGE__->class_ts_config( 'title', undef, 1, 'english_nostop' );
     __PACKAGE__->class_ts_config( 'author', undef, 1, 'english_nostop' );
@@ -635,6 +674,8 @@ sub TEST_SETUP {
     
     __PACKAGE__->add_search_field_alias( subject => name => 'bib.subjectName' );
     
+    #__PACKAGE__->search_class_combined( keyword => 1 );
+    __PACKAGE__->search_class_combined( author => 1 );
 }
 
 __PACKAGE__->default_search_class( 'keyword' );
@@ -1169,17 +1210,6 @@ sub flatten {
                     next;
                 }
 
-                my $table = $node->table;
-                my $ctable = $node->combined_table;
-                my $talias = $node->table_alias;
-
-                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
-
-                $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
-                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* search */\n"
-                      . ${spc} x 6 . "FROM  $table AS fe";
-                $from .= "\n" . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
-
                 my @bump_fields;
                 my @field_ids;
                 if (@{$node->fields} > 0) {
@@ -1196,27 +1226,83 @@ sub flatten {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
+                # use search_field_list to handle virtual index defs
+                my $search_field_list = $self->QueryParser->search_field_ids_by_class($node->classname);
+                $search_field_list = [@field_ids] if (@field_ids);
+
+                my $table = $node->table;
+                my $ctable = $node->combined_table;
+                my $talias = $node->table_alias;
+
+                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight * 1000, 0.0)";
+
+                $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
+                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* search */\n"
+                      . ${spc} x 6 . "FROM  $table AS fe\n"
+                      . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n     " if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
                     if ($node->combined_search) {
-                        $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source";
+                        $from .= "\n" . ${spc} x 7 . "JOIN $ctable AS com ON (com.record = fe.source";
                         if (@field_ids) {
                             $from .= " AND com.metabib_field IN (" . join(',',@field_ids) . "))";
                         } else {
                             $from .= " AND com.metabib_field IS NULL)";
                         }
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
+                        $from .= "\n" . ${spc} x 7 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
                     } else {
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                        $from .= "\n" . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                     }
                 } else {
-                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
+                    $from .= "\n" . ${spc} x 7 . ", (SELECT NULL::tsquery AS tsq, NULL::tsquery AS tsq_rank ) AS ${talias}_xq";
                 }
 
                 if (@field_ids) {
                     $from .= "\n" . ${spc} x 6 . "WHERE fe_weight.id IN  (" .
                         join(',', @field_ids) . ")";
+                }
+
+                # Even though virtual fields have all the real field data in
+                # their combined version, and thus a search against the real
+                # fields is not necessary to match records, we still want to
+                # UNION them in so we can get their virtual weight if they
+                # would match a search directly against them.
+                if ($node->dummy_count < @{$node->only_atoms} ) { # no point in searching real fields with no search terms
+                    for my $possible_vfield (@$search_field_list) {
+                        my $real_fields = $self->QueryParser->search_field_virtual_map->{by_virt}->{$possible_vfield};
+                        if ($real_fields and @$real_fields) { # this is a virt field
+                            # UNION in the others ... group by class?
+                            for my $real_field (@$real_fields) {
+                                $node->add_vfield($real_field);
+                                $logger->debug("Looking up virtual field for real field $real_field");
+                                my $vclass = $self->QueryParser->search_field_class_by_id($real_field)->{classname};
+                                my $vtable = $node->table($vclass);
+                                my $vfield = 'field';
+                                my $vrecord = 'source';
+                                $from .= "\n" . ${spc} x 8 . "UNION ALL\n";
+
+                                if ($node->combined_search) { # real fields inherit combine'dness from the virtual field
+                                    $vtable = $node->combined_table($vclass);
+                                    $vfield = 'metabib_field';
+                                    $vrecord = 'record';
+                                    $from .= ${spc} x 5 . "SELECT 0::BIGINT AS id, fe.record AS source, fe.metabib_field AS field, "
+                                          . "'' AS value, fe.index_vector, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n";
+                                } else {
+                                    $from .= ${spc} x 5 . "SELECT fe.id, fe.source, fe.field, fe.value, fe.index_vector, "
+                                          . "fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n";
+                                }
+                                
+                                $from .= ${spc} x 6 . "FROM  $vtable AS fe\n"
+                                      . ${spc} x 7 . "JOIN config.metabib_field_virtual_map AS fe_weight ON ("
+                                            ."fe_weight.virtual = $possible_vfield AND "
+                                            ."fe_weight.real = $real_field AND "
+                                            ."fe_weight.real = fe.$vfield)\n"
+                                      . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                            }
+                        }
+                    }
                 }
 
                 $from .= "\n" . ${spc} x 4 . ") AS $talias ON (m.source = ${talias}.source)";
@@ -1239,9 +1325,9 @@ sub flatten {
 
                 if(scalar @bumps > 0 && scalar @{$node->only_positive_atoms} > 0) {
                     # Note: Previous rank function used search_normalize outright. Duplicating that here.
-                    $node_rank .= "\n" . ${spc} x 5 . "* evergreen.rel_bump(('{' || quote_literal(search_normalize(";
+                    $node_rank .= "\n" . ${spc} x 5 . "* COALESCE(evergreen.rel_bump(('{' || quote_literal(search_normalize(";
                     $node_rank .= join(")) || ',' || quote_literal(search_normalize(",map { $self->QueryParser->quote_phrase_value($_->content) } @{$node->only_positive_atoms});
-                    $node_rank .= ")) || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[])";
+                    $node_rank .= ")) || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[]),1.0)";
                 }
 
                 my $NOT = '';
@@ -1665,11 +1751,13 @@ sub fields {
 
 sub table_alias {
     my $self = shift;
+    my $suffix = shift;
 
     my $table_alias = "$self";
     $table_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
     $table_alias .= '_' . $self->name;
     $table_alias =~ s/\|/_/go;
+    $table_alias .= "_$suffix" if ($suffix);
 
     return $table_alias;
 }
@@ -1777,6 +1865,86 @@ sub buildSQL {
 #-------------------------------
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::node;
 use base 'QueryParser::query_plan::node';
+use List::MoreUtils qw/uniq/;
+use Data::Dumper;
+
+sub abstract_node_additions {
+    my $self = shift;
+    my $aq = shift;
+
+    my $hm = $self->plan
+                ->QueryParser
+                ->parse_tree
+                ->get_abstract_data('highlight_map') || {};
+
+    my $field_set = $self->fields;
+    $field_set = $self->plan->QueryParser->search_fields->{$self->classname}
+        if (!@$field_set);
+
+    my @field_ids = grep defined, (
+        map {
+            $self->plan->QueryParser->search_field_ids_by_class(
+                $self->classname, $_
+            )->[0]
+        } @$field_set
+    );
+
+    push @field_ids, @{$self->{vfields}} if $self->{vfields};
+
+    my $ts_query = $self->tsquery_rank;
+
+    # We need to rework the hash so fields are only ever pointed at once.
+    # That means if a field is already being looked at elsewhere then we'll
+    # need to separate it out and combine its preexisting tsqueries.  This
+    # will be fairly brute-force, and could be improved later, likely, with
+    # a clever algorithm.
+
+    my %inverted_hm;
+    for my $t (keys %$hm) {
+        for my $f (@{$$hm{$t}}) {
+            $inverted_hm{$f} = $t;
+        }
+    }
+
+    # Then, loop over new fields and put them in the inverted hash.
+    my @existing_fields = keys %inverted_hm;
+
+    for my $f (@field_ids) {
+        if (grep { $f == $_ } @existing_fields) { # We've seen the field, should we combine?
+            my $t = $inverted_hm{$f};
+            if ($t ne $ts_query) { # Different tsquery, do it!
+                $t .= ' || '. $ts_query;
+                $inverted_hm{$f} = $t;
+            }
+        } else { # New field
+            $inverted_hm{$f} = $ts_query;
+        }
+    }
+
+    # Now, flip it back over.
+    $hm = {};
+    for my $f (keys %inverted_hm) {
+        my $t = $inverted_hm{$f};
+        if ($$hm{$t}) {
+            push @{$$hm{$t}}, $f;
+        } else {
+            $$hm{$t} = [$f];
+        }
+    }
+
+    $self->plan
+        ->QueryParser
+        ->parse_tree
+        ->set_abstract_data('highlight_map', $hm);
+}
+
+sub add_vfield {
+    my $self = shift;
+    my $vfield = shift;
+
+    $self->{vfields} ||= [];
+    push @{$self->{vfields}}, $vfield;
+}
 
 sub only_atoms {
     my $self = shift;
@@ -1824,18 +1992,14 @@ sub dummy_count {
 
 sub table {
     my $self = shift;
-    my $table = shift;
-    $self->{table} = $table if ($table);
-    return $self->{table} if $self->{table};
-    return $self->table( 'metabib.' . $self->classname . '_field_entry' );
+    my $classname = shift || $self->classname;
+    return 'metabib.' . $classname . '_field_entry';
 }
 
 sub combined_table {
     my $self = shift;
-    my $ctable = shift;
-    $self->{ctable} = $ctable if ($ctable);
-    return $self->{ctable} if $self->{ctable};
-    return $self->combined_table( 'metabib.combined_' . $self->classname . '_field_entry' );
+    my $classname = shift || $self->classname;
+    return 'metabib.combined_' . $classname . '_field_entry';
 }
 
 sub combined_search {
@@ -1845,16 +2009,15 @@ sub combined_search {
 
 sub table_alias {
     my $self = shift;
-    my $table_alias = shift;
-    $self->{table_alias} = $table_alias if ($table_alias);
-    return $self->{table_alias} if ($self->{table_alias});
+    my $suffix = shift;
 
-    $table_alias = "$self";
+    my $table_alias = "$self";
     $table_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
     $table_alias .= '_' . $self->requested_class;
     $table_alias =~ s/\|/_/go;
+    $table_alias .= "_$suffix" if ($suffix);
 
-    return $self->table_alias( $table_alias );
+    return $table_alias;
 }
 
 sub tsquery {
@@ -1881,7 +2044,7 @@ sub tsquery_rank {
         push @atomlines, "\n" . ${spc} x 3 . $atom->sql;
     }
     $self->{tsquery_rank} = join(' ||', @atomlines);
-    $self->{tsquery_rank} = 'NULL::tsquery' unless $self->{tsquery_rank};
+    $self->{tsquery_rank} = "''::tsquery" unless $self->{tsquery_rank};
     return $self->{tsquery_rank};
 }
 

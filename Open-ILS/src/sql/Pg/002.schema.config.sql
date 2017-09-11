@@ -202,7 +202,7 @@ CREATE TABLE config.metabib_field (
 	field_class	TEXT	NOT NULL REFERENCES config.metabib_class (name),
 	name		TEXT	NOT NULL,
 	label		TEXT	NOT NULL,
-	xpath		TEXT	NOT NULL,
+	xpath		TEXT,
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL REFERENCES config.xml_transform (name) DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
@@ -215,7 +215,7 @@ CREATE TABLE config.metabib_field (
 	authority_xpath TEXT,
 	joiner      TEXT,
 	restrict	BOOL    DEFAULT FALSE NOT NULL,
-    display_field BOOL NOT NULL DEFAULT FALSE
+    display_field BOOL NOT NULL DEFAULT TRUE
 );
 COMMENT ON TABLE config.metabib_field IS $$
 XPath used for record indexing ingest
@@ -224,6 +224,27 @@ This table contains the XPath used to chop up MODS into its
 indexable parts.  Each XPath entry is named and assigned to
 a "class" of either title, subject, author, keyword, series
 or identifier.
+$$;
+
+CREATE TABLE config.metabib_field_virtual_map (
+    id      SERIAL  PRIMARY KEY,
+    real    INT NOT NULL REFERENCES config.metabib_field (id),
+    virtual INT NOT NULL REFERENCES config.metabib_field (id),
+    weight  INT NOT NULL DEFAULT 1
+);
+COMMENT ON TABLE config.metabib_field_virtual_map IS $$
+Maps between real (physically extracted) index definitions
+and virtual (target sync, no required extraction of its own)
+index definitions.
+
+The virtual side may not extract any data of its own, but
+will collect data from all of the real fields.  This reduces
+extraction (ingest) overhead by eliminating duplcated extraction,
+and allows for searching across novel combinations of fields, such
+as names used as either subjects or authors.  By preserving this
+mapping rather than defining duplicate extractions, information
+about the originating, "real" index definitions can be used
+in interesting ways, such as highlighting in search results.
 $$;
 
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);

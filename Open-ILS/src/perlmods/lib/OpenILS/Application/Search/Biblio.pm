@@ -1306,6 +1306,30 @@ sub staged_search {
     return cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
 }
 
+sub passthrough_fetch_display_fields {
+    my $self = shift;
+    my $conn = shift;
+    my $highlight_map = shift;
+    my @records = @_;
+
+    return $U->storagereq(
+        'open-ils.storage.fetch.metabib.display_field.highlight',
+        $highlight_map,
+        @records
+    ) if (@records == 1);
+
+    return $U->storagereq(
+        'open-ils.storage.fetch.metabib.display_field.highlight.atomic',
+        $highlight_map,
+        \@records
+    );
+}
+__PACKAGE__->register_method(
+    method    => 'passthrough_fetch_display_fields',
+    api_name  => 'open-ils.search.fetch.metabib.display_field.highlight'
+);
+
+
 sub tag_circulated_records {
     my ($auth, $results, $metabib) = @_;
     my $e = new_editor(authtoken => $auth);

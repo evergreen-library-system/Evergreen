@@ -341,6 +341,16 @@ sub load_common {
     $self->load_org_util_funcs;
     $self->load_perm_funcs;
 
+    $ctx->{fetch_display_fields} = sub {
+        my $id = shift;
+        return $U->simplereq(
+            'open-ils.search', 
+            'open-ils.search.fetch.metabib.display_field.highlight',
+            $id,
+            $ctx->{query_struct}{additional_data}{highlight_map}
+        );
+    };
+
     return Apache2::Const::OK;
 }
 

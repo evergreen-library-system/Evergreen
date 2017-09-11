@@ -23,8 +23,23 @@ authors = [
     }
 ];
 
+BLOCK find_hl_value;
+    outlist = [];
+    norm_needle = PROCESS normalize_string(unnorm_string=needle);
+    FOREACH hl IN attrs.display_field_list;
+        norm_value = PROCESS normalize_string(unnorm_string=hl.value);
+        outlist.push(hl.highlight) IF norm_value == norm_needle;
+    END;
+
+    outlist.0;
+END;
+
+BLOCK normalize_string;
+    unnorm_string.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ').replace('\s+',' ').replace('^\s+','').replace('\s+$','');
+END;
+
 BLOCK normalize_qterm;
-    subfield.textContent.replace('[#"^$\+\-,\.:;&|\[\]()]', ' ');
+    PROCESS normalize_string(unnorm_string=subfield.textContent);
 END;
 
 BLOCK normalize_authors;
@@ -120,14 +135,23 @@ BLOCK build_author_links;
             END;
             iprop = iprop _ '"';
         END;
+
+        link_term = link_term.replace('^\s+', '');
+        match_term = link_term _ ' ' _ birthdate _ ' ' _ deathdate;
+        matching_author_hl = PROCESS find_hl_value needle=match_term;
+
         authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
         IF iprop; authtml = authtml _ '<span property="name">'; END;
-        authtml = authtml _ link_term.replace('^\s+', '');
+        IF matching_author_hl;
+            authtml = authtml _ matching_author_hl;
+        ELSE;
+            authtml = authtml _ link_term;
+        END;
         IF iprop; authtml = authtml _ '</span>'; END;
-        IF birthdate;
+        IF birthdate AND !matching_author_hl;
             authtml = authtml _ ' <span property="birthDate">' _ birthdate _ '</span>-';
         END;
-        IF deathdate;
+        IF deathdate AND !matching_author_hl;
             authtml = authtml _ '<span property="deathDate">' _ deathdate _ '</span>';
         END;
         authtml = authtml _ '</span></a>'; # End search link

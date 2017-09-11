@@ -1315,6 +1315,139 @@ BEGIN
 END;
 $p$ LANGUAGE PLPGSQL ROWS 10;
 
+CREATE OR REPLACE VIEW search.best_tsconfig AS
+    SELECT  m.id AS id,
+            COALESCE(f.ts_config, c.ts_config, 'simple') AS ts_config
+      FROM  config.metabib_field m
+            LEFT JOIN config.metabib_class_ts_map c ON (c.field_class = m.field_class AND c.index_weight = 'C')
+            LEFT JOIN config.metabib_field_ts_map f ON (f.metabib_field = m.id AND c.index_weight = 'C');
+
+CREATE TYPE search.highlight_result AS ( id BIGINT, source BIGINT, field INT, value TEXT, highlight TEXT );
+
+CREATE OR REPLACE FUNCTION search.highlight_display_fields(
+    rid         BIGINT,
+    tsq         TEXT,
+    field_list  INT[] DEFAULT '{}'::INT[],
+    css_class   TEXT DEFAULT 'oils_SH',
+    hl_all      BOOL DEFAULT TRUE,
+    minwords    INT DEFAULT 5,
+    maxwords    INT DEFAULT 25,
+    shortwords  INT DEFAULT 0,
+    maxfrags    INT DEFAULT 0,
+    delimiter   TEXT DEFAULT ' ... '
+) RETURNS SETOF search.highlight_result AS $f$
+DECLARE
+    opts            TEXT := '';
+    v_css_class     TEXT := css_class;
+    v_delimiter     TEXT := delimiter;
+    v_field_list    INT[] := field_list;
+    hl_query        TEXT;
+BEGIN
+    IF v_delimiter LIKE $$%'%$$ OR v_delimiter LIKE '%"%' THEN --"
+        v_delimiter := ' ... ';
+    END IF;
+
+    IF NOT hl_all THEN
+        opts := opts || 'MinWords=' || minwords;
+        opts := opts || ', MaxWords=' || maxwords;
+        opts := opts || ', ShortWords=' || shortwords;
+        opts := opts || ', MaxFragments=' || maxfrags;
+        opts := opts || ', FragmentDelimiter="' || delimiter || '"';
+    ELSE
+        opts := opts || 'HighlightAll=TRUE';
+    END IF;
+
+    IF v_css_class LIKE $$%'%$$ OR v_css_class LIKE '%"%' THEN -- "
+        v_css_class := 'oils_SH';
+    END IF;
+
+    opts := opts || $$, StopSel=</b>, StartSel="<b class='$$ || v_css_class; -- "
+
+    IF v_field_list = '{}'::INT[] THEN
+        SELECT ARRAY_AGG(id) INTO v_field_list FROM config.metabib_field WHERE display_field;
+    END IF;
+
+    hl_query := $$
+        SELECT  de.id,
+                de.source,
+                de.field,
+                de.value AS value,
+                ts_headline(
+                    ts_config::REGCONFIG,
+                    evergreen.escape_for_html(de.value),
+                    $$ || quote_literal(tsq) || $$,
+                    $1 || ' ' || mf.field_class || ' ' || mf.name || $xx$'>"$xx$ -- "'
+                ) AS highlight
+          FROM  metabib.display_entry de
+                JOIN config.metabib_field mf ON (mf.id = de.field)
+                JOIN search.best_tsconfig t ON (t.id = de.field)
+          WHERE de.source = $2
+                AND field = ANY ($3)
+          ORDER BY de.id;$$;
+
+    RETURN QUERY EXECUTE hl_query USING opts, rid, v_field_list;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION evergreen.escape_for_html (TEXT) RETURNS TEXT AS $$
+    SELECT  regexp_replace(
+                regexp_replace(
+                    regexp_replace(
+                        $1,
+                        '&',
+                        '&amp;',
+                        'g'
+                    ),
+                    '<',
+                    '&lt;',
+                    'g'
+                ),
+                '>',
+                '&gt;',
+                'g'
+            );
+$$ LANGUAGE SQL IMMUTABLE LEAKPROOF STRICT COST 10;
+
+CREATE OR REPLACE FUNCTION search.highlight_display_fields(
+    rid         BIGINT,
+    tsq_map     HSTORE, -- { '(a | b) & c' => '1,2,3,4', ...}
+    css_class   TEXT DEFAULT 'oils_SH',
+    hl_all      BOOL DEFAULT TRUE,
+    minwords    INT DEFAULT 5,
+    maxwords    INT DEFAULT 25,
+    shortwords  INT DEFAULT 0,
+    maxfrags    INT DEFAULT 0,
+    delimiter   TEXT DEFAULT ' ... '
+) RETURNS SETOF search.highlight_result AS $f$
+DECLARE
+    tsq     TEXT;
+    fields  TEXT;
+    afields INT[];
+    seen    INT[];
+BEGIN
+    FOR tsq, fields IN SELECT key, value FROM each(tsq_map) LOOP
+        SELECT  ARRAY_AGG(unnest::INT) INTO afields
+          FROM  unnest(regexp_split_to_array(fields,','));
+        seen := seen || afields;
+
+        RETURN QUERY
+            SELECT * FROM search.highlight_display_fields(
+                rid, tsq, afields, css_class, hl_all,minwords,
+                maxwords, shortwords, maxfrags, delimiter
+            );
+    END LOOP;
+
+    RETURN QUERY
+        SELECT  id,
+                source,
+                field,
+                value,
+                value AS highlight
+          FROM  metabib.display_entry
+          WHERE source = rid
+                AND NOT (field = ANY (seen));
+END;
+$f$ LANGUAGE PLPGSQL ROWS 10;
 
 COMMIT;
 

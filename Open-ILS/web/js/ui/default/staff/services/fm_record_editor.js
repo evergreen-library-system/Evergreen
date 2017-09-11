@@ -139,21 +139,12 @@ angular.module('egFmRecordEditorMod',
 
             function flatten_linked_values(cls, list) {
                 var results = [];
-                var fields = egCore.idl.classes[cls].fields;
-                var id_field;
-                var selector;
-                angular.forEach(fields, function(fld) {
-                    if (fld.datatype == 'id') {
-                        id_field = fld.name;
-                        selector = fld.selector ? fld.selector : id_field;
-                        return;
-                    }
-                });
+                var id_field = egCore.idl.classes[cls].pkey;
+                var selector = egCore.idl.classes[cls].field_map[id_field].selector || id_field;
                 angular.forEach(list, function(item) {
-                    var rec = egCore.idl.toHash(item);
                     results.push({
-                        id : rec[id_field],
-                        name : rec[selector]
+                        id : item[id_field](),
+                        name : item[selector]()
                     });
                 });
                 return results;
@@ -175,7 +166,7 @@ angular.module('egFmRecordEditorMod',
                         }
                     }
                     if (field.datatype == 'link') {
-                    egCore.pcrud.retrieveAll(
+                        egCore.pcrud.retrieveAll(
                             field.class, {}, {atomic : true}
                         ).then(function(list) {
                             field.linked_values = flatten_linked_values(field.class, list);

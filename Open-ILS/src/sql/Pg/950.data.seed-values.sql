@@ -150,7 +150,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, display_field ) VALUES 
     (15, 'keyword', 'keyword', oils_i18n_gettext(15, 'General Keywords', 'cmf', 'label'), 'mods32', $$//mods32:mods/*[not(local-name()='originInfo')]$$, FALSE, FALSE ); -- /* to fool vim */;
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, display_field ) VALUES
-    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject$$, FALSE, TRUE );
+    (16, 'subject', 'complete', oils_i18n_gettext(16, 'All Subjects', 'cmf', 'label'), 'mods32', $$//mods32:mods/mods32:subject[not(descendant::mods32:geographicCode)]$$, FALSE, TRUE );
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field ) VALUES
     (17, 'identifier', 'accession', oils_i18n_gettext(17, 'Accession Number', 'cmf', 'label'), 'marcxml', $$//marc:controlfield[@tag='001']$$, FALSE );
@@ -187,6 +187,7 @@ INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, 
 
 INSERT INTO config.metabib_field ( id, field_class, name, label, format, xpath, browse_field, facet_field, facet_xpath, joiner ) VALUES
     (33, 'identifier', 'genre', oils_i18n_gettext(33, 'Genre', 'cmf', 'label'), 'marcxml', $$//marc:datafield[@tag='655']$$, FALSE, TRUE, $$//*[local-name()='subfield' and contains('abvxyz',@code)]$$, ' -- ' ); -- /* to fool vim */;
+UPDATE config.metabib_field SET display_xpath = facet_xpath, display_field = TRUE WHERE id = 33;
 
 UPDATE config.metabib_field SET joiner = ' -- ' WHERE field_class = 'subject' AND name NOT IN ('name');
 
@@ -210,6 +211,122 @@ INSERT INTO config.metabib_field ( id, field_class, name, label,
     (37, 'author', 'creator', oils_i18n_gettext(37, 'All Creators', 'cmf', 'label'),
      'mods32', $$//mods32:mods/mods32:name[mods32:role/mods32:roleTerm[text()='creator']]$$, TRUE, $$//*[local-name()='namePart']$$ ); -- /* to fool vim */;
 
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    38, 'keyword', 'edition',
+    oils_i18n_gettext(38, 'Edition', 'cmf', 'label'),
+    $$//mods33:mods/mods33:originInfo//mods33:edition[1]$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    39, 'keyword', 'physical_description',
+    oils_i18n_gettext(39, 'Physical Descrption', 'cmf', 'label'),
+    $$(//mods33:mods/mods33:physicalDescription/mods33:form|//mods33:mods/mods33:physicalDescription/mods33:extent|//mods33:mods/mods33:physicalDescription/mods33:reformattingQuality|//mods33:mods/mods33:physicalDescription/mods33:internetMediaType|//mods33:mods/mods33:physicalDescription/mods33:digitalOrigin)$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    40, 'keyword', 'publisher',
+    oils_i18n_gettext(40, 'Publisher', 'cmf', 'label'),
+    $$//mods33:mods/mods33:originInfo//mods33:publisher[1]$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    41, 'keyword', 'abstract',
+    oils_i18n_gettext(41, 'Abstract', 'cmf', 'label'),
+    $$//mods33:mods/mods33:abstract$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    42, 'keyword', 'toc',
+    oils_i18n_gettext(42, 'Table of Contents', 'cmf', 'label'),
+    $$//mods33:tableOfContents$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    43, 'identifier', 'type_of_resource',
+    oils_i18n_gettext(43, 'Type of Resource', 'cmf', 'label'),
+    $$//mods33:mods/mods33:typeOfResource$$,
+    TRUE, FALSE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    44, 'identifier', 'pubdate',
+    oils_i18n_gettext(44, 'Publication Date', 'cmf', 'label'),
+    $$//mods33:mods/mods33:originInfo//mods33:dateIssued[@encoding="marc"]|//mods33:mods/mods33:originInfo//mods33:dateIssued[1]$$,
+    TRUE, FALSE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name, label, browse_field)
+    VALUES (45, 'keyword', 'blob', oils_i18n_gettext(45, 'All searchable fields', 'cmf', 'label'), FALSE);
+
+INSERT INTO config.metabib_field (id, field_class, name,
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    46, 'keyword', 'bibliography',
+    oils_i18n_gettext(46, 'Bibliography', 'cmf', 'label'),
+    $$//mods33:note[@type='bibliography']$$,
+    TRUE, TRUE, FALSE
+),(
+    47, 'keyword', 'thesis',
+    oils_i18n_gettext(47, 'Thesis', 'cmf', 'label'),
+    $$//mods33:note[@type='thesis']$$,
+    TRUE, TRUE, FALSE
+),(
+    48, 'keyword', 'production_credits',
+    oils_i18n_gettext(48, 'Creation/Production Credits', 'cmf', 'label'),
+    $$//mods33:note[@type='creation/production credits']$$,
+    TRUE, TRUE, FALSE
+),(
+    49, 'keyword', 'performers',
+    oils_i18n_gettext(49, 'Performers', 'cmf', 'label'),
+    $$//mods33:note[@type='performers']$$,
+    TRUE, TRUE, FALSE
+),(
+    50, 'keyword', 'general_note',
+    oils_i18n_gettext(50, 'General Note', 'cmf', 'label'),
+    $$//mods33:note[not(@type)]$$,
+    TRUE, TRUE, FALSE
+)
+;
+
+INSERT INTO config.metabib_field_virtual_map (real, virtual)
+    SELECT  id,
+            45
+      FROM  config.metabib_field
+      WHERE search_field
+            AND id NOT IN (15, 45)
+            AND id NOT IN (SELECT real FROM config.metabib_field_virtual_map);
+
+-- Modify existing config.metabib_field entries
+
+UPDATE config.metabib_field SET display_field = TRUE WHERE id IN (
+    1,  -- seriestitle
+    11, -- subject_geographic
+    12, -- subject_name
+    13, -- subject_temporal
+    14, -- subject_topic
+    19, -- ISSN
+    20, -- UPC
+    26  -- TCN
+);
 
 INSERT INTO config.metabib_field_index_norm_map (field,norm)
     SELECT  m.id,
@@ -226,7 +343,22 @@ INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('author', 8, FALSE),
     ('creators', 37, TRUE),
     ('subject', 16, TRUE),
-    ('isbn', 18, TRUE)
+    ('isbn', 18, TRUE),
+    ('series_title',         1, FALSE),
+    ('subject_geographic',  11, TRUE),
+    ('subject_name',        12, TRUE),
+    ('subject_temporal',    13, TRUE),
+    ('subject_topic',       14, TRUE),
+    ('issn',                19, TRUE),
+    ('upc',                 20, TRUE),
+    ('tcn',                 26, FALSE),
+    ('edition',             38, FALSE),
+    ('physical_description',39, TRUE),
+    ('publisher',           40, FALSE),
+    ('abstract',            41, FALSE),
+    ('toc',                 42, FALSE),
+    ('type_of_resource',    43, FALSE),
+    ('pubdate',             44, FALSE)
 ;
 
 INSERT INTO config.metabib_search_alias (alias,field_class) VALUES ('kw','keyword');
