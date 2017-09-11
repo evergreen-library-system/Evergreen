@@ -541,7 +541,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $scope.$apply();
 
         if (!$scope.in_opac_call) {
-            if ($scope.record_id) {
+            if ($scope.record_id && !$scope.record_tab) {
                 $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
                 tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
             } else {
@@ -1717,10 +1717,15 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // ------------------------------------------------------------------
     // Initialize the selected tab
 
+    // we explicitly initialize catalog_url because otherwise Firefox
+    // ends up setting it to $BASE_URL/{{url}}, which then messes
+    // things up. See LP#1708951
+    $scope.catalog_url = '';
+
     function init_cat_url() {
         // Set the initial catalog URL.  This only happens once.
         // The URL is otherwise generated through user navigation.
-        if ($scope.catalog_url) return; 
+        if ($scope.catalog_url) return;
 
         var url = $location.absUrl().replace(/\/staff.*/, '/opac/advanced');
 
