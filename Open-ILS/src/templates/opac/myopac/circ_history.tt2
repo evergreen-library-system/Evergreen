@@ -187,7 +187,12 @@
                             [% date.format(ctx.parse_datetime(circ.circ.xact_start),DATE_FORMAT); %]
                         </td>
                         <td>
-                            [% date.format(ctx.parse_datetime(circ.circ.due_date, circ.circ.circ_lib),DATE_FORMAT); %]
+                            [% IF circ.circ.source_circ;
+                                date.format(ctx.parse_datetime(circ.circ.due_date, circ.circ.source_circ.circ_lib),DATE_FORMAT);
+                               ELSE;
+                                date.format(ctx.parse_datetime(circ.circ.due_date, ctx.user.home_ou),DATE_FORMAT);
+                               END;
+                            %]
                         </td>
                         <td>
                             [% IF circ.circ.checkin_time;

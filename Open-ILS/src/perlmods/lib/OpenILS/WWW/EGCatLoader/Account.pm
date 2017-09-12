@@ -1645,7 +1645,7 @@ sub fetch_user_circ_history {
     my %flesh_ops = (
         flesh => 3,
         flesh_fields => {
-            auch => ['target_copy'],
+            auch => ['target_copy','source_circ'],
             acp => ['call_number'],
             acn => ['record']
         },
