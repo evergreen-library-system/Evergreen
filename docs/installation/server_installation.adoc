@@ -246,6 +246,16 @@ change the ownership on the files:
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------------------------
 
+Run ldconfig
+------------
+
+On Debian Stretch, run the following command as the root user:
+
+[source, bash]
+------------------------------------------------------------------------------
+ldconfig
+------------------------------------------------------------------------------
+
 Additional Instructions for Developers
 --------------------------------------
 

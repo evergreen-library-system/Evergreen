@@ -467,7 +467,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
                 <language>c</language>
-                <implementation>oils_auth.so</implementation>
+                <implementation>liboils_auth.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -490,7 +490,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>5</keepalive>
                 <stateless>1</stateless>
                 <language>c</language>
-                <implementation>oils_auth_internal.so</implementation>
+                <implementation>liboils_auth_internal.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -828,7 +828,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>3</keepalive>
                 <stateless>1</stateless>
                 <language>c</language>
-                <implementation>osrf_math.so</implementation>
+                <implementation>libosrf_math.so</implementation>
                 <unix_config>
                     <unix_sock>opensrf.math_unix.sock</unix_sock>
                     <unix_pid>opensrf.math_unix.pid</unix_pid>
@@ -845,7 +845,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>3</keepalive>
                 <stateless>1</stateless>
                 <language>c</language>
-                <implementation>osrf_dbmath.so</implementation>
+                <implementation>libosrf_dbmath.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <unix_log>opensrf.dbmath_unix.log</unix_log>
@@ -943,7 +943,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
-                <implementation>oils_cstore.so</implementation>
+                <implementation>liboils_cstore.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -973,7 +973,7 @@ vim:et:ts=4:sw=4:
                 <migratable>1</migratable>
                 <stateless>1</stateless>
                 <language>C</language>
-                <implementation>oils_pcrud.so</implementation>
+                <implementation>liboils_pcrud.so</implementation>
 
                 <unix_config>
                     <unix_log>open-ils.pcrud.log</unix_log>
@@ -1007,7 +1007,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
-                <implementation>oils_qstore.so</implementation>
+                <implementation>liboils_qstore.so</implementation>
                 <unix_config>
                     <max_requests>1000</max_requests>
                     <min_children>1</min_children>
@@ -1093,7 +1093,7 @@ vim:et:ts=4:sw=4:
                 <keepalive>6</keepalive>
                 <stateless>1</stateless>
                 <language>C</language>
-                <implementation>oils_rstore.so</implementation>
+                <implementation>liboils_rstore.so</implementation>
                 <unix_config>
                     <max_requests>400</max_requests>
                     <min_children>1</min_children>
