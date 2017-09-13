@@ -1,5 +1,9 @@
 MARC Batch Edit
 ---------------
+
+Introduction
+~~~~~~~~~~~~
+
 This function is used to batch edit MARC records either adding a field, removing a field or changing the contents of a field. 
 
 Record Source::

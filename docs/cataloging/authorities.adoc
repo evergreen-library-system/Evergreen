@@ -1,5 +1,9 @@
 Managing Authorities
 --------------------
+
+Introduction
+~~~~~~~~~~~~
+
 This section describes how you can create, import, view, modify, merge, and delete authority records in Evergreen.
 
 Creating Authorities

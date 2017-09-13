@@ -1,9 +1,3 @@
-Cataloging in the Web Client
-----------------------------
-
-Cataloguers should use this part for understanding the cataloguing procedures used in Evergreen.
-
-
 MARC Tag-table Service
 ~~~~~~~~~~~~~~~~~~~~~~
 The tag tables for the web staff client MARC editor are

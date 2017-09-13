@@ -1,8 +1,6 @@
 ﻿Working with the MARC Editor 
 ----------------------------
 
-You can use the MARC Editor to edit MARC fields, sub-fields, and indicators.
-
 Editing MARC Records 
 ~~~~~~~~~~~~~~~~~~~~
 

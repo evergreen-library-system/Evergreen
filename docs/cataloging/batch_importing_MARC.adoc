@@ -1,5 +1,9 @@
 Batch Importing MARC Records
 ----------------------------
+
+Introduction
+~~~~~~~~~~~~
+
 [[batchimport]]
 The cataloging module includes an enhanced MARC Batch Import interface for
 loading MARC (and MARCXML) records. In general, it can handle batches up to 5,000 records
