@@ -45,6 +45,53 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         }
     }
 
+    $scope.date_options = {
+        due_date : egCore.hatch.getSessionItem('eg.circ.checkout.due_date'),
+        sticky_date : egCore.hatch.getSessionItem('eg.circ.checkout.until_logout'),
+        until_logout : egCore.hatch.getSessionItem('eg.circ.checkout.until_logout')
+    }
+
+    if ($scope.date_options.until_logout) { // If until_logout is set there should also be a date set. 
+        $scope.checkoutArgs.due_date = new Date($scope.date_options.due_date);
+        $scope.checkoutArgs.sticky_date = true;
+    }
+
+    $scope.toggle_opt = function(opt) {
+        if ($scope.date_options[opt]) {
+            $scope.date_options[opt] = false;
+        } else {
+            $scope.date_options[opt] = true;
+        }
+    }
+
+    // The interactions between these options are complicated enough that $watch'ing them all is the only safe way to keep things sane.
+    $scope.$watch('date_options.sticky_date', function(newval) {
+        if ( newval ) { // was false, is true
+            // $scope.date_options.due_date = checkoutArgs.due_date;
+        } else {
+            $scope.date_options.until_logout = false;
+        }
+        $scope.checkoutArgs.sticky_date = newval;
+    });
+
+    $scope.$watch('date_options.until_logout', function(newval) {
+        if ( newval ) { // was false, is true
+            $scope.date_options.sticky_date = true;
+            $scope.date_options.due_date = $scope.checkoutArgs.due_date;
+            egCore.hatch.setSessionItem('eg.circ.checkout.until_logout', true);
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', $scope.checkoutArgs.due_date);
+        } else {
+            egCore.hatch.removeSessionItem('eg.circ.checkout.until_logout');
+            egCore.hatch.removeSessionItem('eg.circ.checkout.due_date');
+        }
+    });
+
+    $scope.$watch('checkoutArgs.due_date', function(newval) {
+        if ( $scope.date_options.until_logout ) {
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', newval);
+        }
+    });
+
     $scope.has_email_address = function() {
         return (
             patronSvc.current &&
