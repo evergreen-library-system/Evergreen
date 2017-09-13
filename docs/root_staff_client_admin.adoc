@@ -44,9 +44,7 @@ Organizational Unit administration
 
 include::admin_initial_setup/describing_your_organization.adoc[]
 
-include::admin_initial_setup/lsa-closed.adoc[]
-
-include::admin_initial_setup/lsa-standing_penalties.adoc[]
+include::admin/lsa-standing_penalties.adoc[]
 
 :leveloffset: 0
 
