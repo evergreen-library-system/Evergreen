@@ -32,14 +32,14 @@ angular.module('egCoreMod')
                             description: desc,
                             callback: function(e) {
                                 e.preventDefault();
-                                if (path) return navTo(path,route);
+                                if (path) return navTo(path);
                                 return $timeout(function(){$(elm).trigger('click')});
                             }
                         });
                     });
                 };
 
-                function inspect(elm) {
+                function find_accesskeys(elm) {
                     elm = angular.element(elm);
                     if (elm.attr('eg-accesskey')) {
                         $scope.addHotkey(
@@ -49,9 +49,8 @@ angular.module('egCoreMod')
                             elm
                         );
                     }
-                    angular.forEach(elm.children(), inspect);
+                    angular.forEach(elm.children(), find_accesskeys);
                 }
-                $timeout(function(){inspect($element)});
 
                 $scope.retrieveLastRecord = function() {
                     var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");
@@ -117,6 +116,10 @@ angular.module('egCoreMod')
                                 $scope.showRecentPatrons = val > 1;
                             });
                         }
+                        // need to defer initialization of hotkeys to this point
+                        // as some of them are conditional on whether one is logged in
+                        // or is working in offline circulation mode
+                        $timeout(function(){find_accesskeys($element)});
                     }
                 );
             }

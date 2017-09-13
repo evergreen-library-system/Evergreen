@@ -464,7 +464,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
         }
 
         $rootScope.save_offline_xacts = function () { return $scope.save() };
-        //$rootScope.active_tab = function (t) { $scope.active_tab = t };
+        $rootScope.active_tab = function (t) { $scope.active_tab = t };
 
         $scope.logout = function () {
             egCore.auth.logout();
