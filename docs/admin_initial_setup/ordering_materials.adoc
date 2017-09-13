@@ -1,6 +1,9 @@
 Ordering materials
 ==================
 
+Introduction
+------------
+
 Acquisitions allows you to order materials, track the expenditure of your
 collections funds, track invoices and set up policies for manual claiming. In
 this chapter, we're going to be describing how to use the most essential
@@ -201,8 +204,7 @@ Preparing to send electronic orders from Evergreen
 If your library wants to transmit electronic order information to a vendor, you
 will need to configure your server to use EDI. You need to install the EDI
 translator and EDI scripts on your server by following the instructions in the
-Evergreen 2.3 documentation.
-(http://docs.evergreen-ils.org/2.3/_installation.html)
+command line system administration manual.
 
 Configure your provider's EDI information by selecting *Admin > Server
 Administration > Acquisitions > EDI Accounts*. Give the account a name in the

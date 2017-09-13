@@ -301,8 +301,8 @@ indexterm:[EDI,accounts]
 Many libraries use Electronic Data Interchange (EDI) accounts to send purchase orders and receive invoices
  from providers electronically.  In Evergreen users can setup EDI accounts and manage EDI messages in 
  the admin module.  EDI messages and notes can be viewed in the acquisitions module. See
-also the <<_setting_up_edi_acquisitions,EDI Installation Instructions>>
-because this is required for use of EDI.
+also the command line system administration manual, which includes some initial setup steps that are
+required for use of EDI.
 
 Entering SANs (Standard Address Numbers)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

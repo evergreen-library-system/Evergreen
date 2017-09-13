@@ -1,5 +1,8 @@
 Library Settings Editor
 -----------------------
+
+Introduction
+~~~~~~~~~~~~
 (((Library Settings Editor)))
 
 With the *Library Settings Editor* one can optionally customize

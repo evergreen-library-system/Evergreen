@@ -1,0 +1,309 @@
+Evergreen System Administration at your Library
+===============================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide to Evergreen is intended to meet the needs of system administrators
+at local libraries who use the staff client for their day-to-day work.
+
+It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software. 
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+
+
+include::shared/about_evergreen.adoc[]
+
+:leveloffset: -1
+
+include::admin/web_client-login.adoc[]
+
+:leveloffset: 0
+
+include::admin/web_client-browser-tab-shortcuts.adoc[]
+
+:leveloffset: -1
+
+include::admin/librarysettings.adoc[]
+
+
+:leveloffset: 0
+
+Organizational Unit administration
+==================================
+
+:leveloffset: 1
+
+include::admin_initial_setup/describing_your_organization.adoc[]
+
+include::admin_initial_setup/lsa-closed.adoc[]
+
+include::admin_initial_setup/lsa-standing_penalties.adoc[]
+
+:leveloffset: 0
+
+include::admin_initial_setup/ordering_materials.adoc[]
+
+include::admin/acquisitions_admin.adoc[]
+
+
+
+// Cat
+Cataloging administration
+=========================
+
+include::admin/authorities.adoc[]
+
+include::admin/cn_prefixes_and_suffixes.adoc[]
+
+include::admin/lsa-statcat.adoc[]
+
+include::admin/MARC_Import_Remove_Fields.adoc[]
+
+include::admin/MARC_RAD_MVF_CRA.adoc[]
+
+include::admin/restrict_Z39.50_sources_by_perm_group.adoc[]
+
+:leveloffset: 1
+
+include::admin_initial_setup/importing_via_staff_client.adoc[]
+
+:leveloffset: 0
+// Circ
+Circulation administration
+==========================
+
+
+Circulation policies
+--------------------
+
+This section discusses the initial setup and subsequent troubleshooting and refinement of circulation policies.
+
+
+:leveloffset: 2
+
+include::admin_initial_setup/borrowing_items.adoc[]
+
+include::admin/circulation_limit_groups.adoc[]
+
+include::admin/hold_driven_recalls.adoc[]
+
+
+:leveloffset: 0
+
+include::admin/copy_statuses.adoc[]
+
+include::circulation/self_check.adoc[]
+
+
+
+Circulating uncataloged materials
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This section discusses settings for circulating items that are not cataloged.
+
+Pre-cataloged item settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Needs to be written.  There is a Pre-cat Item Circ Lib OU setting.
+
+Non-cataloged item settings
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Needs to be written.  This is about Local Admin > Non-cataloged item type.
+
+Hold policies
+-------------
+
+This section discusses hold policies.
+
+Transits and resource sharing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This section offers specific information and guidance about holds that involve multiple libraries.
+
+:leveloffset: 2
+
+include::admin/age_hold_protection.adoc[]
+
+include::admin/Best_Hold_Selection_Sort_Order.adoc[]
+
+include::admin/Org_Unit_Proximity_Adjustments.adoc[]
+
+:leveloffset: 3
+
+include::admin/floating_groups.adoc[]
+
+:leveloffset: 0
+
+Working with money
+------------------
+
+This section discusses how to manage and report on payments accepted by your library's circulation processes.
+
+Accepting credit card payments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen can accept credit card payments.
+
+Stripe
+^^^^^^
+
+Some info in the current Library Settings Editor docs
+
+Paypal, Authorize.net, etc.
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This section needs to be written
+
+Cash reports
+~~~~~~~~~~~~
+
+This section needs to be written
+
+Negative balances
+~~~~~~~~~~~~~~~~~
+
+This section needs to be written
+
+Circulation timesavers and workflows
+------------------------------------
+
+This section describes specific settings that may increase efficiency or accuracy at some libraries, but might not be suitable for every library.
+
+:leveloffset: 1
+
+include::admin/lsa-barcode_completion.adoc[]
+
+include::admin/lsa-address_alert.adoc[]
+
+include::admin/patron_address_by_zip_code.adoc[]
+
+:leveloffset: 0
+
+Library closures
+----------------
+
+This section describes both everyday closures and specific details suitable for school and academic libraries that operate on a term or semester system.
+
+Library hours
+~~~~~~~~~~~~~
+
+In OU settings
+
+Closed dates
+~~~~~~~~~~~~
+
+Need to move out of the describing your OU docs
+
+:leveloffset: 1
+
+include::admin_initial_setup/hard_due_dates.adoc[]
+
+:leveloffset: 0
+
+Age to lost
+~~~~~~~~~~~
+
+No documentation yet
+
+:leveloffset: 1
+
+include::admin/booking-admin.adoc[]
+
+:leveloffset: 0
+
+Offline circulation
+-------------------
+
+Need to extract this from the offline circulation documentation
+
+include::admin/workstation_admin_receipt_template_editor.adoc[]
+
+Self-check administration
+-------------------------
+
+Need to extract this from the self-check documentation
+
+// Patron UX
+Patron User Experience Administration
+=====================================
+
+Introduction
+------------
+
+This section describes settings for the OPAC, including patron self-registration and other functionalities.
+
+include::admin/SMS_messaging.adoc[]
+
+include::opac/linked_libraries.adoc[]
+
+
+Reports
+=======
+
+Introduction
+------------
+
+Learn how to create and use reports in Evergreen.
+
+
+include::reports/reporter_daemon.adoc[]
+
+include::reports/reporter_folder.adoc[]
+
+include::reports/reporter_create_templates.adoc[]
+
+include::reports/reporter_generating_reports.adoc[]
+
+include::reports/reporter_view_output.adoc[]
+
+include::reports/reporter_cloning_shared_templates.adoc[]
+
+include::reports/reporter_running_recurring_reports.adoc[]
+
+include::reports/reporter_template_terminology.adoc[]
+
+include::reports/reporter_template_enhancements.adoc[]
+
+include::reports/reporter_export_usingpgAdmin.adoc[]
+
+
+
+// Staff
+
+Staff administration
+====================
+
+Introduction
+------------
+
+This section describes how to administer staff accounts.
+
+:leveloffset: 1
+
+include::admin_initial_setup/describing_your_people.adoc[]
+
+:leveloffset: 0
+
+include::admin/permissions.adoc[]
+
+include::admin/lsa-work_log.adoc[]
+
+include::admin/recent_staff_searches.adoc[]
+
+
+:leveloffset: 0
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+

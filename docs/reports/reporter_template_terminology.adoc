@@ -8,20 +8,64 @@ indexterm:[reports, data types]
 
 The information in Evergreen's database can be classified in nine data types, formats that describe the type of data and/or its use.  These were represented by text-only labels in prior versions of Evergreen.  Evergreen 3.0 has replaced the text labels with icons.  When building templates in _Reports_, you will find these icons in the Field Name Pane of the template creation interface.
 
-[options="header,footer"]
-|========================
-|Webby Icon|Data Type      |Description	|Notes
-a|image::media/datatypes_timestamp.png[]    |timestamp      |An exact date and time (year, month, day, hour, minutes, and seconds) |Select appropriate date/time transform. Raw Data includes second and timezone information, usually more than is required for a report.
-a|image::media/datatypes_link.png[]    |link           |A link to another database table |Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items you could do a count on the Patron link data.
-a|image::media/datatypes_text.png[]    |text           |A field of text |Usually uses the Raw Data transform.
-a|image::media/datatypes_bool.png[]    |bool           |True or False |Commonly used to filter out deleted item or patron records.
-a|image::media/datatypes_orgunit.png[]    |org_unit       |Organizational Unit - a number representing a library, library system, or federation |When you want to filter on a library, make sure that the field name is on an org_unit or id data type.
-a|image::media/datatypes_id.png[]    |id             |A unique number assigned by the database to identify each record |A number that is a meaningful reference for the database but not of much use to a human user. Use in displayed fields when counting records or in filters.
-a|image::media/datatypes_money.png[]    |money          |A monetary amount  |
-a|image::media/datatypes_int.png[]    |int            |Integer (a number) |
-a|image::media/datatypes_interval.png[]    |interval       |A period of time |
-|          |               |    |
-|=======================
+timestamp
+^^^^^^^^^
+image::media/datatypes_timestamp.png[]
+
+An exact date and time (year, month, day, hour, minutes, and seconds).  Remember to select the appropriate date/time transform. Raw Data includes second and timezone information, which is usually more than is required for a report.
+
+link
+^^^^
+
+image::media/datatypes_link.png[]
+
+A link to another database table. Link outputs a number that is a meaningful reference for the database but not of much use to a human user. You will usually want to drill further down the tree in the Sources pane and select fields from the linked table. However, in some instances you might want to use a link field. For example, to count the number of patrons who borrowed items you could do a count on the Patron link data.
+
+text
+^^^^
+image::media/datatypes_text.png[]
+
+A field of text. You will usually want to use the Raw Data transform.
+
+bool
+^^^^
+image::media/datatypes_bool.png[]
+
+True or False. Commonly used to filter out deleted item or patron records.
+
+org_unit
+^^^^^^^^
+image::media/datatypes_orgunit.png[]
+
+Organizational Unit - a number representing a library, library system, or federation. When you want to filter on a library, make sure that the field name is on an org_unit or id data type.
+
+id
+^^
+
+image::media/datatypes_id.png[]
+
+A unique number assigned by the database to identify each record. These numbers are meaningful references for the database but not of much use to a human user. Use in displayed fields when counting records or in filters.
+
+money
+^^^^^
+
+image::media/datatypes_money.png[]
+
+A monetary amount.
+
+int
+^^^
+
+image::media/datatypes_int.png[]
+
+Integer (a number)
+
+interval
+^^^^^^^^
+
+image::media/datatypes_interval.png[]
+
+A period of time.
 
 [[field_transforms]]
 Field Transforms

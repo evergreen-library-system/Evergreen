@@ -115,7 +115,7 @@ Profile* button to map this information.
   tag.
 . At a minimum, you should add the subfields that identify the *Circulating
 Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
-. For more details, see the <<_import_item_attributes_2,full list of import fields>>
+. For more details, see the <<_import_item_attributes,full list of import fields>>
 
 NOTE: All fields (except for Name, Tag and Keep) can contain static
 values, a MARC subfield code (such as "a"), or an XPATH query.

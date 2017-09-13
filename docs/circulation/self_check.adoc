@@ -1,6 +1,9 @@
 Self checkout
 =============
 
+Introduction
+------------
+
 Evergreen includes a self check interface designed for libraries that simply
 want to record item circulation without worrying about security mechanisms like
 magnetic strips or RFID tags.
