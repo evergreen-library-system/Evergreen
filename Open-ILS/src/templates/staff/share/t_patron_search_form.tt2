@@ -139,7 +139,7 @@
         <div class="col-md-2">
           <div class="checkbox">
             <label>
-              <input type="checkbox" ng-model="searchArgs.inactive"/>
+              <input type="checkbox" ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
               [% l('Include Inactive?') %]
             </label>
           </div>

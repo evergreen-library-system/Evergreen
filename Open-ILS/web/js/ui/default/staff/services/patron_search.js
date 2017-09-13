@@ -745,7 +745,17 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     egCore.hatch.getItem('eg.circ.patron.search.show_extras')
     .then(function(val) {$scope.showExtras = val});
 
-    // map form arguments into search params
+// check searchArgs.inactive setting
+    egCore.hatch.getItem('searchArgs.inactive')
+                .then(function(searchInactive){
+                    if (searchInactive) $scope.searchArgs.inactive = searchInactive; 
+                });    
+
+     $scope.onSearchInactiveChanged = function(){
+        egCore.hatch.setItem('searchArgs.inactive', $scope.searchArgs.inactive);
+    }
+
+// map form arguments into search params
     function compileSearch(args) {
         var search = {};
         angular.forEach(args, function(val, key) {
