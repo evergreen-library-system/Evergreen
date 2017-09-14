@@ -1157,7 +1157,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         }
         $scope.hold_notify_type.phone = true;
         $scope.hold_notify_type.email = true;
-	$scope.hold_notify_type.sms = false;
+        $scope.hold_notify_type.sms = false;
 
         // staged users may be loaded w/ a profile.
         $scope.set_expire_date();
@@ -1227,6 +1227,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         $scope.user_settings = prs.user_settings;
         prs.user_settings = {};
+
+        // If a default pickup lib is applied to the patron, apply it 
+        // to the UI at page load time.  Otherwise, leave the value unset.
+        if ($scope.user_settings['opac.default_pickup_location']) {
+            $scope.patron._pickup_lib = egCore.org.get(
+                $scope.user_settings['opac.default_pickup_location']);
+        }
 
         extract_hold_notify();
         if ($scope.patron.isnew)
@@ -1653,6 +1660,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 
+    $scope.handle_pulib_changed = function(org) {
+        if (!$scope.user_settings) return; // still rendering
+        $scope.user_settings['opac.default_pickup_location'] = org.id();
+    }
+
     // This is called with every character typed in a form field,
     // since that's the only way to gaurantee something has changed.
     // See handle_field_changed for ng-change vs. ng-blur.
@@ -1782,6 +1794,12 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             org.ou_type() &&
             org.ou_type().can_have_users() == 'f'
         );
+    }
+
+    // returns true (disable) for orgs that cannot have vols (for holds pickup)
+    $scope.disable_pulib = function(org_id) {
+        if (!org_id) return;
+        return !egCore.org.CanHaveVolumes(org_id);
     }
 
     // Returns true if the Save and Save & Clone buttons should be disabled.
