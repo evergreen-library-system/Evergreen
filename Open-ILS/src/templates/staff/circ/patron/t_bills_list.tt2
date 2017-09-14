@@ -48,12 +48,12 @@
   <eg-grid-action label="[% l('Full Details') %]" 
     handler="showFullDetails"></eg-grid-action>
 
-  <eg-grid-field label="[% ('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
-  <eg-grid-field label="[% ('Bill #') %]" path='id'></eg-grid-field>
-  <eg-grid-field label="[% ('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
-  <eg-grid-field label="[% ('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
-  <eg-grid-field label="[% ('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
-  <eg-grid-field label="[% ('Type') %]" path='xact_type'></eg-grid-field>
+  <eg-grid-field label="[% l('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
+  <eg-grid-field label="[% l('Bill #') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
+  <eg-grid-field label="[% l('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
+  <eg-grid-field label="[% l('Type') %]" path='xact_type'></eg-grid-field>
 
   <!-- receipt data -->
   <eg-grid-field path='summary.last_billing_type' required></eg-grid-field>
@@ -91,7 +91,7 @@
   </eg-grid-field>
 
   <!-- virtual field -->
-  <eg-grid-field datatype="money" label="[% ('Payment Pending') %]" 
+  <eg-grid-field datatype="money" label="[% l('Payment Pending') %]" 
     name="payment_pending"></eg-grid-field>
 
   <!-- import all circ fields, hidden by default -->

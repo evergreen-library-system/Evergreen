@@ -8,7 +8,7 @@
       <ul>
         <li ng-repeat="map in tag_map" ng-show="!map.isdeleted()">
             <span class="copy_tag_label">{{map.tag().label()}}</span>
-            <button type="button" ng-click="map.isdeleted(1)" class="btn btn-xs btn-warning">[% ('Remove') %]</button>
+            <button type="button" ng-click="map.isdeleted(1)" class="btn btn-xs btn-warning">[% l('Remove') %]</button>
         </li>
       </ul>
       <div class="row">

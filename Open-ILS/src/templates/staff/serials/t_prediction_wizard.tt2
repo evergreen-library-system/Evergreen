@@ -71,12 +71,12 @@
                   <button class="btn btn-warning btn-sm"
                       ng-if="pattern.enum_levels.length > 1"
                       ng-click="pattern.drop_enum_level()">
-                      [% ('Remove Level') %]
+                      [% l('Remove Level') %]
                   </button>
                   <button class="btn btn-warning btn-sm"
                       ng-disabled="pattern.enum_levels.length >= 6"
                       ng-click="pattern.add_enum_level()">
-                      [% ('Add Level') %]
+                      [% l('Add Level') %]
                   </button>
                 </div>
             </div>
@@ -126,12 +126,12 @@
                   <button class="btn btn-warning btn-sm"
                       ng-if="pattern.alt_enum_levels.length > 1"
                       ng-click="pattern.drop_alt_enum_level()">
-                      [% ('Remove Level') %]
+                      [% l('Remove Level') %]
                   </button>
                   <button class="btn btn-warning btn-sm" 
                       ng-disabled="pattern.alt_enum_levels.length >= 2"
                       ng-click="pattern.add_alt_enum_level()">
-                      [% ('Add Level') %]
+                      [% l('Add Level') %]
                   </button>
                 </div>
             </div>

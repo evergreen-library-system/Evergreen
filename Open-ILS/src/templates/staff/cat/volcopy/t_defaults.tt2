@@ -27,7 +27,7 @@
                 <div class="col-xs-12">
                     <h4 class="pad-vert">[% l('Creation Defaults') %]</h4>
                     <select class="form-control" ng-change="saveDefaults()" ng-model="defaults.classification" ng-options="cl.id() as cl.name() for cl in classification_list">
-                        <option value="">[% ('Use Library Setting') %]</option>
+                        <option value="">[% l('Use Library Setting') %]</option>
                     </select>
                 </div>
             </div>
