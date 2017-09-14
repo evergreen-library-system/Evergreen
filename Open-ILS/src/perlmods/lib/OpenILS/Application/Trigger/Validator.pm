@@ -18,6 +18,7 @@ sub CircIsOpen {
     my $env = shift;
 
     return 0 if (defined($env->{target}->checkin_time));
+    return 0 if (defined($env->{target}->xact_finish));
 
     if ($env->{params}->{min_target_age}) {
         $env->{params}->{target_age_field} = 'xact_start';
