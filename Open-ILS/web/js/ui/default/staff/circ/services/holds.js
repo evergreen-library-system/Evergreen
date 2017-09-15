@@ -584,11 +584,14 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         generic_update(items, 'transfer_to_marked_title'); }
 
     service.mark_damaged = function(items) {
-        var copy_ids = items
-            .filter(function(item) { return Boolean(item.copy) })
-            .map(function(item) { return item.copy.id() });
-        if (copy_ids.length) 
-            egCirc.mark_damaged(copy_ids).then(service.refresh);
+        angular.forEach(items, function(item) {
+            if (item.copy) {
+                egCirc.mark_damaged({
+                    id: item.copy.id(),
+                    barcode: item.copy.barcode()
+                }).then(service.refresh);
+            }
+        });
     }
 
     service.mark_missing = function(items) {

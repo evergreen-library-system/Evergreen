@@ -142,7 +142,8 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
     $scope.selectedHoldingsDamaged = function () {
         itemSvc.selectedHoldingsDamaged([{
             id : $scope.args.copyId,
-            barcode : $scope.args.copyBarcode
+            barcode : $scope.args.copyBarcode,
+            refresh : true
         }]);
     }
 

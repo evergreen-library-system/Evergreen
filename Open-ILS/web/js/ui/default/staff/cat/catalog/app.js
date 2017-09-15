@@ -1533,9 +1533,18 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.selectedHoldingsDamaged = function () {
-        egCirc.mark_damaged(gatherSelectedHoldingsIds()).then(function() {
-            holdingsSvcInst.fetchAgain().then(function() {
-                $scope.holdingsGridDataProvider.refresh();
+        var copy_list = gatherSelectedRawCopies();
+        if (copy_list.length == 0) return;
+
+        angular.forEach(copy_list, function(cp) {
+            egCirc.mark_damaged({
+                id: cp.id(),
+                barcode: cp.barcode(),
+                circ_lib: cp.circ_lib().id()
+            }).then(function() {
+                holdingsSvcInst.fetchAgain().then(function() {
+                    $scope.holdingsGridDataProvider.refresh();
+                });
             });
         });
     }

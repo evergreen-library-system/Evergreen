@@ -574,8 +574,14 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     }
 
     service.selectedHoldingsDamaged = function (items) {
-        egCirc.mark_damaged(items.map(function(el){return el.id;})).then(function(){
-            angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+        angular.forEach(items, function(cp) {
+            if (cp) {
+                egCirc.mark_damaged({
+                    id: cp.id,
+                    barcode: cp.barcode,
+                    refresh: cp.refresh
+                });
+            }
         });
     }
 

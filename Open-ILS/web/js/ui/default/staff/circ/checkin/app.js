@@ -307,14 +307,15 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     $scope.showMarkDamaged = function(items) {
         var copy_ids = [];
         angular.forEach(items, function(item) {
-            if (item.acp) copy_ids.push(item.acp.id());
+            if (item.acp) {
+                egCirc.mark_damaged({
+                    id: item.acp.id(),
+                    barcode: item.acp.barcode()
+                })
+
+            }
         });
 
-        if (copy_ids.length) {
-            egCirc.mark_damaged(copy_ids).then(function() {
-                // update grid items?
-            });
-        }
     }
 
     $scope.abortTransit = function(items) {

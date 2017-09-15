@@ -1166,32 +1166,80 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         return deferred.promise;
     }
 
-    service.mark_damaged = function(copy_ids) {
-        return egConfirmDialog.open(
-            egCore.strings.MARK_DAMAGED_CONFIRM, '',
-            {   num_items : copy_ids.length,
-                ok : function() {},
-                cancel : function() {}
-            }
+    service.mark_damaged = function(params) {
+        if (!params) return $q.when();
+        return $uibModal.open({
+            templateUrl: './circ/share/t_mark_damaged',
+            controller:
+                ['$scope', '$uibModalInstance', 'egCore', 'egBilling', 'egItem',
+                function($scope, $uibModalInstance, egCore, egBilling, egItem) {
+                    var doRefresh = params.refresh;
+                    
+                    $scope.billArgs = {charge: params.charge};
+                    $scope.mode = 'charge';
+                    $scope.barcode = params.barcode;
+                    if (params.charge && params.charge > 0) {
+                        $scope.applyFine = "apply";
+                    }
+                    if (params.circ) {
+                        $scope.circ = params.circ;
+                        $scope.circ_checkin_time = params.circ.checkin_time();
+                        $scope.circ_patron_name = params.circ.usr().family_name() + ", "
+                            + params.circ.usr().first_given_name() + " "
+                            + params.circ.usr().second_given_name();
+                    }
+                    egBilling.fetchBillingTypes().then(function(res) {
+                        $scope.billingTypes = res;
+                    });
 
-        ).result.then(function() {
-            var promises = [];
-            angular.forEach(copy_ids, function(copy_id) {
-                promises.push(
-                    egCore.net.request(
-                        'open-ils.circ',
-                        'open-ils.circ.mark_item_damaged',
-                        egCore.auth.token(), copy_id
-                    ).then(function(resp) {
-                        if (evt = egCore.evt.parse(resp)) {
-                            console.error('mark damaged failed: ' + evt);
-                        }
-                    })
-                );
-            });
+                    $scope.btnChargeFees = function() {
+                        $scope.mode = 'charge';
+                        $scope.billArgs.charge = params.charge;
+                        $scope.applyFine = "apply";
+                    }
+                    $scope.btnWaiveFees = function() {
+                        $scope.mode = 'waive';
+                        $scope.billArgs.charge = 0;
+                        $scope.applyFine = "noapply";
+                    }
 
-            return $q.all(promises);
-        });
+                    $scope.cancel = function ($event) { 
+                        $uibModalInstance.dismiss();
+                    }
+                    $scope.ok = function() {
+                        handle_mark_item_damaged();
+                    }
+
+                    var handle_mark_item_damaged = function() {
+                        egCore.net.request(
+                            'open-ils.circ',
+                            'open-ils.circ.mark_item_damaged',
+                            egCore.auth.token(), params.id, {
+                                apply_fines: $scope.applyFine,
+                                override_amount: $scope.billArgs.charge,
+                                override_btype: $scope.billArgs.type,
+                                override_note: $scope.billArgs.note,
+                                handle_checkin: !$scope.applyFine
+                        }).then(function(resp) {
+                            if (evt = egCore.evt.parse(resp)) {
+                                doRefresh = false;
+                                console.debug("mark damaged more information required. Pushing back.");
+                                service.mark_damaged({
+                                    id: params.id,
+                                    barcode: params.barcode,
+                                    charge: evt.payload.charge,
+                                    circ: evt.payload.circ,
+                                    refresh: params.refresh
+                                });
+                                console.error('mark damaged failed: ' + evt);
+                            }
+                        }).then(function() {
+                            if (doRefresh) egItem.add_barcode_to_list(params.barcode);
+                        });
+                        $uibModalInstance.close();
+                    }
+                }]
+        }).result;
     }
 
     service.mark_missing = function(copy_ids) {
