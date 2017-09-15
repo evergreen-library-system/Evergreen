@@ -69,6 +69,7 @@ include::cataloging/z39.50_search_enhancements.adoc[]
 
 :leveloffset: -1
 
+include::opac/using_the_public_access_catalog.adoc[]
 
 
 :leveloffset: 0
