@@ -1725,6 +1725,11 @@ function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {
         To run in Firefox directly, must set signed.applets.codebase_principal_support
         to true in about:config
     */
+    if(window.IAMBROWSER){
+        xulG.edit_marc_modal(rec, function(breId){ vlLoadMARCHtml(breId, false, postReloadHTMLHandler); });
+        return;
+    }
+
     win = window.open('/xul/server/cat/marcedit.xul','','chrome'); // XXX version?
 
     var type;

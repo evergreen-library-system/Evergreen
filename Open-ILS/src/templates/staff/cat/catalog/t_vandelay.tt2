@@ -1,1 +1,1 @@
-<eg-embed-frame save-space="150" url="vandelay_url"></eg-embed-frame>
+<eg-embed-frame save-space="150" url="vandelay_url" handlers="funcs"></eg-embed-frame>

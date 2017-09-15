@@ -1830,9 +1830,34 @@ function($scope , $location) {
 }])
 
 .controller('VandelayCtrl',
-       ['$scope','$location',
-function($scope , $location) {
+       ['$scope','$location', 'egCore', '$uibModal',
+function($scope , $location, egCore, $uibModal) {
     $scope.vandelay_url = $location.absUrl().replace(/\/staff\/cat\/catalog\/vandelay/, '/vandelay/vandelay');
+    $scope.funcs = {};
+    $scope.funcs.edit_marc_modal = function(bre, callback){
+        var marcArgs = { 'marc_xml': bre.marc() };
+        var vqbibrecId = bre.id();
+        $uibModal.open({
+            templateUrl: './cat/catalog/t_edit_marc_modal',
+            size: 'lg',
+            controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+                $scope.focusMe = true;
+                $scope.recordId = vqbibrecId;
+                $scope.args = marcArgs;
+                $scope.dirty_flag = false;
+                $scope.ok = function(marg){
+                    $uibModalInstance.close(marg);
+                };
+                $scope.cancel = function(){ $uibModalInstance.dismiss() }
+            }]
+        }).result.then(function(res){
+            var new_xml = res.marc_xml;
+            egCore.pcrud.retrieve('vqbr', vqbibrecId).then(function(vqbib){
+                vqbib.marc(new_xml);
+                egCore.pcrud.update(vqbib).then( function(){ callback(vqbibrecId); });
+            });
+        });
+    };
 }])
 
 .controller('ManageAuthoritiesCtrl',
