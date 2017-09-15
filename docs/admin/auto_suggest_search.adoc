@@ -15,7 +15,7 @@ Enabling this Feature
 . Check the box adjacent to *Enabled* to turn on the feature.
 . The *Value* field is optional.  If you checked *Enabled* in step 4, and you leave this field empty, then Evergreen will only suggest searches for which there are any corresponding MARC records.
 +
-note: If you checked *Enabled* in step 4, and you enter the string, *opac_visible*, into this field, then Evergreen will suggest searches for which 
+NOTE: If you checked *Enabled* in step 4, and you enter the string, *opac_visible*, into this field, then Evergreen will suggest searches for which 
 there are matching MARC records with copies within your search scope.  For example, it will suggest MARC records with copies at your branch.
 +
 . Click *Save.*
