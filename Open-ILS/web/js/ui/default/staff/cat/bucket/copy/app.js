@@ -372,6 +372,11 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
     $scope.setTab('pending');
 
+    $scope.context = {
+        copyNotFound : false,
+        selectPendingBC : true
+    };
+
     var query;
     $scope.gridControls = {
         setQuery : function(q) {
@@ -379,19 +384,32 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
                 return {id : bucketSvc.pendingList};
             else
             return null;
+        },
+        allItemsRetrieved : function() {
+            $scope.context.selectPendingBC = true;
         }
     }
 
     $scope.search = function() {
         bucketSvc.barcodeRecords = [];
+        $scope.context.itemNotFound = false;
+
+        // clear selection so re-selecting can have an effect
+        $scope.context.selectPendingBC = false;
 
         egCore.pcrud.search(
             'acp',
             {barcode : bucketSvc.barcodeString, deleted : 'f'},
             {}
-        ).then(null, null, function(copy) {
-            bucketSvc.pendingList.push(copy.id());
-            $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+        ).then(function(copy) {
+            if (copy) {
+                bucketSvc.pendingList.push(copy.id());
+                $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+                bucketSvc.barcodeString = ''; // clear form on valid copy
+            } else {
+                $scope.context.itemNotFound = true;
+                $scope.context.selectPendingBC = true;
+            }
         });
     }
 
