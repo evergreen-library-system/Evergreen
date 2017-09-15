@@ -1269,10 +1269,15 @@ __PACKAGE__->register_method(
 
 sub mark_item {
     my( $self, $conn, $auth, $copy_id, $args ) = @_;
-    my $e = new_editor(authtoken=>$auth, xact =>1);
-    return $e->die_event unless $e->checkauth;
     $args ||= {};
 
+    # Items must be checked in before any attempt is made to mark damaged
+    my $evt = try_checkin($auth, $copy_id) if
+        ($self->api_name=~ /damaged/ && $args->{handle_checkin});
+    return $evt if $evt;
+
+    my $e = new_editor(authtoken=>$auth, xact =>1);
+    return $e->die_event unless $e->checkauth;
     my $copy = $e->retrieve_asset_copy([
         $copy_id,
         {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])
@@ -1340,6 +1345,31 @@ sub mark_item {
     OpenILS::Application::Circ::Holds->_reset_hold($e->requestor, $_) for @$holds;
 
     return 1;
+}
+
+sub try_checkin {
+    my($auth, $copy_id) = @_;
+
+    my $checkin = $U->simplereq(
+        'open-ils.circ',
+        'open-ils.circ.checkin.override',
+        $auth, {
+            copy_id => $copy_id,
+            noop => 1
+        }
+    );
+    if(ref $checkin ne 'ARRAY') { $checkin = [$checkin]; }
+
+    my $evt_code = $checkin->[0]->{textcode};
+    $logger->info("try_checkin() received event: $evt_code");
+
+    if($evt_code eq 'SUCCESS' || $evt_code eq 'NO_CHANGE') {
+        $logger->info('try_checkin() successful checkin');
+        return undef;
+    } else {
+        $logger->warn('try_checkin() un-successful checkin');
+        return $checkin;
+    }
 }
 
 sub handle_mark_damaged {
@@ -1421,8 +1451,6 @@ sub handle_mark_damaged {
 
         my $evt2 = OpenILS::Utils::Penalty->calculate_penalties($e, $circ->usr->id, $e->requestor->ws_ou);
         return $evt2 if $evt2;
-
-        return undef;
 
     } else {
         return OpenILS::Event->new('DAMAGE_CHARGE', 
