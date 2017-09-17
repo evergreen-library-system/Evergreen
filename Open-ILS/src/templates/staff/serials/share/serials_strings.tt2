@@ -20,7 +20,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CHRON_LABEL_HOUR   = "[% l('Hour') %]";
     s.EG_CONFIRM_DELETE_PATTERN_TEMPLATE_TITLE = "[% l('Confirm Prediction Pattern Template Deletion') %]";
     s.EG_CONFIRM_DELETE_PATTERN_TEMPLATE_BODY = "[% l('Delete {{count}} template(s)?') %]";
-    s.PATTERN_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted prediation pattern template(s)') %]";
+    s.PATTERN_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted prediction pattern template(s)') %]";
     s.PATTERN_TEMPLATE_FAIL_DELETE = "[% l('Failed to delete prediction template(s)') %]";
 }]);
 </script>
