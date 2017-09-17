@@ -99,22 +99,8 @@ include::admin/hold_driven_recalls.adoc[]
 
 include::admin/copy_statuses.adoc[]
 
+include::admin/circing_uncataloged_materials.adoc[]
 
-
-Circulating uncataloged materials
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This section discusses settings for circulating items that are not cataloged.
-
-Pre-cataloged item settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Needs to be written.  There is a Pre-cat Item Circ Lib OU setting.
-
-Non-cataloged item settings
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Needs to be written.  This is about Local Admin > Non-cataloged item type.
 
 Hold policies
 -------------
