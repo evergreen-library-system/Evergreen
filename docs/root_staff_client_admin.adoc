@@ -102,17 +102,10 @@ include::admin/copy_statuses.adoc[]
 include::admin/circing_uncataloged_materials.adoc[]
 
 
-Hold policies
--------------
+Holds, transits, and resource sharing
+-------------------------------------
 
-This section discusses hold policies.
-
-Transits and resource sharing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This section offers specific information and guidance about holds that involve multiple libraries.
-
-:leveloffset: 2
+:leveloffset: 1
 
 include::admin/age_hold_protection.adoc[]
 
@@ -120,7 +113,7 @@ include::admin/Best_Hold_Selection_Sort_Order.adoc[]
 
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
 
-:leveloffset: 3
+:leveloffset: 2
 
 include::admin/floating_groups.adoc[]
 
@@ -146,10 +139,11 @@ Paypal, Authorize.net, etc.
 
 This section needs to be written
 
-Cash reports
-~~~~~~~~~~~~
+:leveloffset: 1
 
-This section needs to be written
+include::admin/desk_payments.adoc[]
+
+:leveloffset: 0
 
 Negative balances
 ~~~~~~~~~~~~~~~~~

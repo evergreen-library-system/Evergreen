@@ -5,35 +5,42 @@ Before floating groups copies could float or not. If they floated then they floa
 
 After floating groups where a copy will float is defined by what group it has been assigned to.
 
-== Floating Groups
+Floating Groups
+---------------
 
 Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
 
 The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for a copy to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
 
-== Floating Group Members
+Floating Group Members
+~~~~~~~~~~~~~~~~~~~~~~
 
 Each member of a floating group references an org unit and has a stop depth, an optional max depth, and an exclude flag.
 
-=== Org Unit
+Org Unit
+~~~~~~~~
 
 The org unit and all descendants are included, unless max depth is set, in which case the tree is cut off at the max depth.
 
-=== Stop Depth
+Stop Depth
+~~~~~~~~~~
 
 The stop depth is the highest point from the current copy circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
 
-=== Max Depth
+Max Depth
+~~~~~~~~~
 
 As mentioned with the org unit, the max depth is the furthest down on the tree from the org unit that gets included. This is based on the entire tree, not just off of the org unit. So in the default tree a max depth of 1 will stop at the system level no matter if org unit is set to CONS or SYS1.
 
-=== Exclude
+Exclude
 
 Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an org unit from floating without having to worry about other rules overriding it.
 
-== Examples
+Examples
+--------
 
-=== Float Everywhere
+Float Everywhere
+~~~~~~~~~~~~~~~~
 
 This is a default floating rule to emulate the previous floating behavior for new installs and upgrades.
 
@@ -44,7 +51,8 @@ One member:
 * Max Depth: Unset
 * Exclude: Off
 
-=== Float Within System
+Float Within System
+~~~~~~~~~~~~~~~~~~~
 
 This would permit a copy to float anywhere within a system, but would return to the system if it was returned elsewhere.
 
@@ -55,7 +63,8 @@ One member:
 * Max Depth: Unset
 * Exclude: Off
 
-=== Float To All Branches
+Float To All Branches
+~~~~~~~~~~~~~~~~~~~~~
 
 This would permit a copy to float to any branch, but not to sublibraries or bookmobiles.
 
@@ -66,7 +75,8 @@ One member:
 * Max Depth: 2
 * Exclude: Off
 
-=== Float To All Branches Within System
+Float To All Branches Within System
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This would permit a copy to float to any branch in a system, but not to sublibraries or bookmobiles, and returning to the system if returned elsewhere.
 
@@ -77,7 +87,8 @@ One member:
 * Max Depth: 2
 * Exclude: Off
 
-=== Float Between BR1 and BR3
+Float Between BR1 and BR3
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This would permit a copy to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
 
@@ -88,7 +99,8 @@ It would consist of two members, identical other than the org unit:
 * Max Depth: 2
 * Exclude: Off
 
-=== Float Everywhere Except BM1
+Float Everywhere Except BM1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This would allow an item to float anywhere except for BM1. It accomplishes this with two members.
 
@@ -108,7 +120,8 @@ The second excludes BM1:
 
 That works because excludes are applied first.
 
-=== Float into, but not out of, BR2
+Float into, but not out of, BR2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This would allow an item to float into BR2, but once there it would never leave. Why you would want to allow items to float to but not from a single library I dunno, but here it is. This takes advantage of the fact that the rules say where we can float *to*, but outside of stop depth don't care where we are floating *from*.
 
