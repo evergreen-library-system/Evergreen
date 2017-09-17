@@ -58,6 +58,7 @@ include::opac/using_the_public_access_catalog.adoc[]
 
 :leveloffset: 0
 
+include::circulation/self_check.adoc[]
 
 
 

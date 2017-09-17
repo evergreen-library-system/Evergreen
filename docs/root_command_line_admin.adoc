@@ -103,8 +103,9 @@ include::admin_initial_setup/designing_your_catalog.adoc[]
 
 :leveloffset: 0
 
-include::opac/new_skin_customizations.adoc[]
+include::admin/audio_alerts.adoc[]
 
+include::opac/new_skin_customizations.adoc[]
 
 include::shared/attributions.adoc[]
 

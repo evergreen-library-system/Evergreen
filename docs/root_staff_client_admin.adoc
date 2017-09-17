@@ -99,8 +99,6 @@ include::admin/hold_driven_recalls.adoc[]
 
 include::admin/copy_statuses.adoc[]
 
-include::circulation/self_check.adoc[]
-
 
 
 Circulating uncataloged materials
@@ -172,6 +170,7 @@ Negative balances
 
 This section needs to be written
 
+
 Circulation timesavers and workflows
 ------------------------------------
 
@@ -226,10 +225,12 @@ Need to extract this from the offline circulation documentation
 
 include::admin/workstation_admin_receipt_template_editor.adoc[]
 
-Self-check administration
--------------------------
+:leveloffset: 1
 
-Need to extract this from the self-check documentation
+include::circulation/self_check_configuration.adoc[]
+
+:leveloffset: 0
+
 
 // Patron UX
 Patron User Experience Administration
