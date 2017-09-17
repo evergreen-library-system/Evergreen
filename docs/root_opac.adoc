@@ -16,7 +16,8 @@ workers in public services roles.
 It is organized into Parts, Chapters, and Sections addressing key
 aspects of the software. 
 
-Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+Copies of this guide can be accessed in PDF and HTML formats from
+http://docs.evergreen-ils.org/.
 
 
 
@@ -44,7 +45,14 @@ include::opac/kids_opac.adoc[]
 
 include::opac/opensearch.adoc[]
 
+include::opac/visibility_on_the_web.adoc[]
+
 :leveloffset: 0
+
+include::opac/sitemap.adoc[]
+
+See the Command Line System Administration Manual for details about
+running this script.
 
 include::shared/attributions.adoc[]
 

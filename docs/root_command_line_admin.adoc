@@ -104,6 +104,12 @@ include::admin/template_toolkit.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::opac/sitemap.adoc[]
+
+include::admin/sitemap_admin.adoc[]
+
+include::admin_initial_setup/troubleshooting_tpac.adoc[]
+
 :leveloffset: 0
 
 include::admin/audio_alerts.adoc[]

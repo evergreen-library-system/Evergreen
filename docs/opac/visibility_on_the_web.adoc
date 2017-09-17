@@ -1,0 +1,123 @@
+Library visibility on the Web
+-----------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+Evergreen follows a number of best practices to
+make Library data integrate with the rest of the
+Web.  Evergreen's public catalog pages are
+designed so that search engines can easily extract
+meaningful information about your library and
+collections.  Evergreen is also preparing for an
+eventual shift toward linked open bibliographic
+data.
+
+Catalog data in search engines
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Each record in the catalog is displayed to search
+engines using http://schema.org[schema.org] microdata.
+
+[IMPORTANT]
+Make sure your system administrator has not added
+a restrictive robots.txt file to your server.
+These files restrict search engines, up to the
+point of not allowing search engines to index your
+site at all.
+
+Details of the schema.org mapping
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+ * Each item is listed as a
+   http://schema.org/Offer[schema:Offer], which is
+   the same category that an online bookseller might
+   use to describe an item for sale.  These Offers
+   are always listed with a price of $0.00.
+ * Subject headings are exposed as
+   http://schema.org/about[schema:about]
+   properties.
+ * Electronic resources are assigned a
+   http://schema.org/url[schema:url]
+   property, and any notes or link text
+   are assigned a
+   http://schema.org/description[schema:description]
+   property.
+ * Given a Library of Congress relator code for
+   1xx and 7xx fields, Evergreen surfaces the URL
+   for that relator code along with the
+   http://schema.org/contributor[schema:contributor]
+   property to give machines a better chance
+   of understanding how the person or organization
+   actually contributed to this work.
+ * Linking out to related records:
+   ** Given an LCCN (010 field), Evergreen links to
+      the corresponding Library of Congress record
+      using http://schema.org/sameAs[schema:sameAs].
+   ** Given an OCLC number (035 field, subfield `a`
+      beginning with `(OCoLC)`), Evergreen links to
+      the corresponding WorldCat record using
+      http://schema.org/sameAs[schema:sameAs].
+   ** Given a URI (024 field, subfield 2 = `'uri'`),
+      Evergreen links to the corresponding OCLC
+      Work Entity record using
+      http://schema.org/exampleOfWork[schema:exampleOfWork].
+
+
+Viewing microdata
+^^^^^^^^^^^^^^^^^
+You can learn more about how Evergreen publicizes
+these data by viewing them directly.  The 
+http://linter.structured-data.org[structured data linter]
+is a helpful tool for viewing microdata.
+
+. Using your favorite Web browser, navigate to a
+  record in your public catalog.
+. Copy the URL that displays in your browser's
+  address bar.
+. Go to http://linter.structured-data.org
+. Under the _Lint by URL_ tab, paste your URL
+  into the text box.
+. Click _Submit_
+
+Other helpful features for search engines
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ * Titles of catalog pages follow a
+   "Page title - Library name" pattern to provide
+   specific titles in search engine results pages,
+   browser bookmarks, and browser tabs.
+ * Links that robots should not crawl, such as search
+   result links, are marked with the
+   https://support.google.com/webmasters/answer/96569?hl=en[@rel="nofollow"]
+   property.
+ * Catalog pages for record details and for library
+   descriptions express a
+   https://support.google.com/webmasters/answer/139066?hl=en[@rel="canonical"]
+   link to simplify the number of variations of page
+   URLs that could otherwise have been derived from
+   different search parameters.
+ * Catalog pages that do not exist return a proper
+   404 "HTTP_NOT_FOUND" HTTP status code, and record
+   detail pages for records that have been deleted
+   now return a proper 410 "HTTP_GONE" HTTP status code.
+ * Record detail and library pages include
+   http://ogp.me/[Open Graph Protocol] markup.
+ * Each library has its own page at
+   _http://localhost/eg/opac/library/LIBRARY_SHORTNAME_
+   that provides machine-readable hours and contact
+   information.
+
+SKOS support
+~~~~~~~~~~~~
+
+Some vocabularies used (or which could be used) for
+stock record attributes and coded value maps in Evergreen
+are published on the web using SKOS. The record
+attributes system can now associate Linked Data URIs
+with specific attribute values. In particular, seed data
+supplying URIs for the RDA Content Type, Media Type, and
+Carrier Type has been added.
+
+This is an experimental, "under-the-hood" feature that
+will be built upon in subsuquent releases.
+
