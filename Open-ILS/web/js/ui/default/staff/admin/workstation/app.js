@@ -108,7 +108,9 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
                                 service.register_ws_api(
                                     base_name, name, org_id, true, deferred)
                             },
-                            cancel : function() {deferred.reject()} 
+                            cancel : function() {
+                                deferred.reject();
+                            }
                         }
                     );
 
@@ -861,6 +863,8 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
                 return $scope.set_default_ws(new_ws.name);
             }
             $scope.newWSName = '';
+        }, function(err) {
+            $scope.is_registering = false;
         });
     }
 }])
