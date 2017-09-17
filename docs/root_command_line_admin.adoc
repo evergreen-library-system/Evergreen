@@ -58,6 +58,9 @@ include::development/pgtap.adoc[]
 
 include::development/support_scripts.adoc[]
 
+include::reports/reporter_daemon.adoc[]
+
+
 System Configuration
 ====================
 

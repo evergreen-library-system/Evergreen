@@ -232,9 +232,6 @@ Introduction
 
 Learn how to create and use reports in Evergreen.
 
-
-include::reports/reporter_daemon.adoc[]
-
 include::reports/reporter_folder.adoc[]
 
 include::reports/reporter_create_templates.adoc[]
