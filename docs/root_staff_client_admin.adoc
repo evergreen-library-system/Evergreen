@@ -162,8 +162,6 @@ include::admin/lsa-barcode_completion.adoc[]
 
 include::admin/lsa-address_alert.adoc[]
 
-include::admin/patron_address_by_zip_code.adoc[]
-
 :leveloffset: 0
 
 Library closures
