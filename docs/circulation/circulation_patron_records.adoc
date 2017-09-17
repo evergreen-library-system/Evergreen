@@ -318,30 +318,6 @@ Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
 
 
-[TIP]
-=======================
-If you need to change a patron or staff account password without using the staff client, here is how you can reset it with SQL.
-
-Connect to your Evergreen database using _psql_ or similar tool, and retreive and verify your admin username:
-
-[source, sql]
-------------------------------------------------------------------------------
-psql -U <user-name> -h <hostname> -d <database>
-
-SELECT id, usrname, passwd from actor.usr where usrname = 'admin';
-------------------------------------------------------------------------------
-
-If you do not remember the username that you set, search for it in the _actor.usr_ table, and then reset the password.
-
-[source, sql]
-------------------------------------------------------------------------------
-UPDATE actor.usr SET passwd = <password> WHERE id=<id of row to be updated>;
-------------------------------------------------------------------------------
-
-The new password will automatically be hashed. 
-
-=======================
-
 Barring a Patron 
 ~~~~~~~~~~~~~~~~
 

@@ -95,6 +95,8 @@ Cataloging Staff Interface
 
 include::admin/physical_char_wizard_db.adoc[]
 
+include::admin/staff_from_command_line.adoc[]
+
 UX Administration
 =================
 
