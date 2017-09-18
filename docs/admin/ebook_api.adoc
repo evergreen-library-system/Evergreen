@@ -1,0 +1,119 @@
+Ebook API integration
+---------------------
+
+Evergreen 2.12 supports partial integration with third-party APIs
+provided by OverDrive and OneClickdigital.  When ebook API integration
+is enabled, bibliographic records from these vendors that appear in your
+public catalog will include vendor holdings and availability information.  Also,
+when a user is logged in, the public catalog dashboard and My Account interface
+will include information about that user's checkouts and holds for
+supported vendors.
+
+For API integration to work, you need to request API access from the
+vendor and configure your Evergreen system according to the instructions
+below.  You also need to configure the new `open-ils.ebook_api` service.
+
+This feature assumes that you are importing MARC records supplied by the
+vendor into your Evergreen system, using Vandelay or some other MARC
+import method.  This feature does not search the vendor's online
+collections or automatically import vendor records into your system; it
+merely augments records that are already in Evergreen.
+
+A future Evergreen release will add the ability for users to check out
+titles, place holds, etc., directly via the public catalog.
+
+Ebook API service configuration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This feature uses the new `open-ils.ebook_api` OpenSRF service.  This
+service must be configured in your `opensrf.xml` and `opensrf_core.xml`
+config files for ebook API integration to work.  See
+`opensrf.xml.example` and `opensrf_core.xml.example` for guidance.
+
+OverDrive API integration
+~~~~~~~~~~~~~~~~~~~~~~~~~
+Before enabling OverDrive API integration, you will need to request API
+access from OverDrive.  OverDrive will provide the values to be used for
+the following new org unit settings:
+
+  * *OverDrive Basic Token*: The basic token used for API client
+    authentication.  To generate your basic token, combine your client
+    key and client secret provided by OverDrive into a single string
+    ("key:secret"), and then base64-encode that string.  On Linux, you
+    can use the following command: `echo -n "key:secret" | base64 -`
+  * *OverDrive Account ID*: The account ID (a.k.a. library ID) for your
+    OverDrive API account.
+  * *OverDrive Website ID*: The website ID for your OverDrive API
+    account.
+  * *OverDrive Authorization Name*: The authorization name (a.k.a.
+    library name) designated by OverDrive for your library.  If your
+    OverDrive subscription includes multiple Evergreen libraries, you
+    will need to add a separate value for this setting for each
+    participating library.
+  * *OverDrive Password Required*: If your library's OverDrive
+    subscription requires the patron's PIN (password) to be provided
+    during patron authentication, set this setting to "true."  If you do
+    not require the patron's PIN for OverDrive authentication, set this
+    setting to "false."  (If set to "true," the password entered by a
+    patron when logging into the public catalog will be cached in plain text in
+    memcached.)
+  * *OverDrive Discovery API Base URI* and *OverDrive Circulation API
+    Base URI*: By default, Evergreen uses OverDrive's production API, so
+    you should not need to set a value for these settings.  If you want
+    to use OverDrive's integration environment, you will need to add the
+    appropriate base URIs for the discovery and circulation APIs.  See
+    OverDrive's developer documentation for details.
+  * *OverDrive Granted Authorization Redirect URI*: Evergreen does not
+    currently support granted authorization with OverDrive, so this
+    setting is not currently in use.
+
+For more information, consult the
+https://developer.overdrive.com/docs/getting-started[OverDrive API
+documentation].
+
+To enable OverDrive API integration, adjust the following public catalog settings
+in `config.tt2`:
+
+  * `ebook_api.enabled`: set to "true".
+  * `ebook_api.overdrive.enabled`: set to "true".
+  * `ebook_api.overdrive.base_uris`: list of regular expressions
+    matching OverDrive URLs found in the 856$9 field of older OverDrive
+    MARC records.  As of fall 2016, OverDrive's URL format has changed,
+    and the record identifier is now found in the 037$a field of their
+    MARC records, with "OverDrive" in 037$b.  Evergreen will check the
+    037 field for OverDrive record identifiers; if your system includes
+    older-style OverDrive records with the record identifier embedded in
+    the 856 URL, you need to specify URL patterns with this setting.
+
+OneClickdigital API integration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Before enabling OneClickdigital API integration, you will need to
+request API access from OneClickdigital.  OneClickdigital will provide
+the values to be used for the following new org unit settings:
+
+  * *OneClickdigital Library ID*: The identifier assigned to your
+    library by OneClickdigital.
+  * *OneClickdigital Basic Token*: Your client authentication token,
+    supplied by OneClickdigital when you request access to their API.
+
+For more information, consult the
+http://developer.oneclickdigital.us/[OneClickdigital API documentation].
+
+To enable OneClickdigital API integration, adjust the following public catalog
+settings in `config.tt2`:
+
+  * `ebook_api.enabled`: set to "true".
+  * `ebook_api.oneclickdigital.enabled`: set to "true".
+  * `ebook_api.oneclickdigital.base_uris`: list of regular expressions
+    matching OneClickdigital URLs found in the 859$9 field of your MARC
+    records.  Evergreen uses the patterns specified here to extract
+    record identifiers for OneClickdigital titles.
+
+Additional configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+Evergreen communicates with third-party vendor APIs using the new
+`OpenILS::Utils::HTTPClient` module.  This module is configured using
+settings in `opensrf.xml`.  The default settings should work for most
+environments by default, but you may need to specify a custom location
+for the CA certificates installed on your server.  You can also disable
+SSL certificate verification on HTTPClient requests altogether, but
+doing so is emphatically discouraged.

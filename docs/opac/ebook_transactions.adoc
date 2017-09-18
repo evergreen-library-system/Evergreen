@@ -1,12 +1,12 @@
-Ebook transactions
-------------------
+Electronic resources in the catalog
+-----------------------------------
 
-This release adds support for checking out and placing holds on
+Checking out and placing holds
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Evergreen supports checking out and placing holds on
 OverDrive and OneClickdigital ebook titles from within the public
-catalog.  (This extends the partial integration with third-party APIs
-that was included in Evergreen 2.12.)
-
-This is an experimental feature.  It is not recommended for production
+catalog.  This is an experimental feature.  It is not recommended for production
 use without careful testing.
 
 When ebook integration is enabled, a "Check Out E-Item" link will be
@@ -25,9 +25,9 @@ holds, download already-checked-out titles, and cancel holds.
 For API integration to work, you need to request API access from the
 vendor, and the vendor must have a way of authenticating your patrons.
 Your Evergreen system also needs to be configured for ebook API
-integration, following the instructions in the
-https://evergreen-ils.org/documentation/release/RELEASE_NOTES_2_12.html#_public_catalog[Evergreen
-2.12 release notes].
+integration, following the instructions in the command line system
+administration manual
+
 
 This feature assumes that you are importing MARC records supplied by the
 vendor into your Evergreen system, using Vandelay or some other MARC

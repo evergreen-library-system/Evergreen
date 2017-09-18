@@ -114,6 +114,8 @@ include::admin_initial_setup/troubleshooting_tpac.adoc[]
 
 :leveloffset: 0
 
+include::admin/ebook_api.adoc[]
+
 include::admin/audio_alerts.adoc[]
 
 include::opac/new_skin_customizations.adoc[]

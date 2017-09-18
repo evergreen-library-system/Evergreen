@@ -41,6 +41,8 @@ include::opac/linked_libraries.adoc[]
 
 :leveloffset: -1
 
+include::opac/ebook_transactions.adoc[]
+
 include::opac/kids_opac.adoc[]
 
 include::opac/opensearch.adoc[]
@@ -48,6 +50,7 @@ include::opac/opensearch.adoc[]
 include::opac/visibility_on_the_web.adoc[]
 
 :leveloffset: 0
+
 
 include::opac/sitemap.adoc[]
 
