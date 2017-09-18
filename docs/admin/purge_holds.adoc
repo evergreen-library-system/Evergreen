@@ -1,0 +1,16 @@
+Purging holds
+-------------
+
+Similar to purging circulations one may wish to purge old (filled or canceled) hold information. This feature adds a database function and
+settings for doing so.
+
+Purged holds are moved to the _action.aged_hold_request_ table with patron identifying information scrubbed, much like circulations are moved
+to _action.aged_circulation_.
+
+The settings allow for a default retention age as well as distinct retention ages for holds filled, holds canceled, and holds canceled by
+specific cancel causes. The most specific one wins unless a patron is retaining their hold history. In the latter case the patron's holds
+are retained either way.
+
+Note that the function still needs to be called, which could be set up as a cron job or done more manually, say after statistics collection.
+You can use the _purge_holds.srfsh_ script to purge holds from cron.
+

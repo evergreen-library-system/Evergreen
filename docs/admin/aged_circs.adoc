@@ -1,0 +1,26 @@
+Aging circulations
+------------------
+
+Every time you attempt to `DELETE` a row from `action.circ`, it
+copies over the appropriate data to `action.aged_circulation`,
+then deletes the `action.circ` row.
+
+.Use case
+****
+
+Aging circulations helps to protect patron privacy and save disk space.
+
+****
+
+[TIP]
+==========
+Just aging circulations is not sufficient to protect patron circulation
+history.  Fully protecting these data would also involve a thoughtful
+approach to logs and backups of these data.
+==========
+
+[TIP]
+==========
+You can create a cron job to automatically age circulations.
+==========
+
