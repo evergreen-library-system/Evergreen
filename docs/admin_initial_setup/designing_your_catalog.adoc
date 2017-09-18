@@ -282,6 +282,25 @@ You can add any MARC field to your record details page. Moreover, this approach
 can also be used to display MARC fields in other pages, such as your results
 page.
 
+Using bibliographic source variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For bibliographic records, there is a "bib source" that can be associated with
+every record. This source and its ID are available as record attributes called
+_bib_source.source_ and _bib_source.id_.  These variables do not present
+themselves in the catalog display by default.
+
+.Example use case
+****
+
+In this example, a library imports e-resource records from a third party and
+uses the bib source to indicate where the records came from. Patrons can place
+holds on these titles, but they must be placed via the vendor website, not in
+Evergreen. By exposing the bib source, the library can alter the Place Hold
+link for these records to point at the vendor website.
+
+****
+
 Setting the default physical location for your library environment
 ------------------------------------------------------------------
 
