@@ -58,6 +58,8 @@ include::development/pgtap.adoc[]
 
 include::development/support_scripts.adoc[]
 
+include::admin/actiontriggers_process.adoc[]
+
 include::reports/reporter_daemon.adoc[]
 
 
@@ -81,11 +83,6 @@ include::development/updating_translations_launchpad.adoc[]
 
 :leveloffset: 0
 
-
-Local Administration
-====================
-
-include::admin/actiontriggers.adoc[]
 
 // CATALOGING ADMIN
 

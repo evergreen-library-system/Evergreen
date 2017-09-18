@@ -438,8 +438,8 @@ To enable the default set of hooks, issue the following command as the
 cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_trigger_filters.json
 ------------------------------------------------------------------------------
 
-For more information about configuring and using action triggers, see
-<<_notifications_action_triggers,Notifications / Action Triggers>>.
+For more information about configuring and running action triggers, see
+<<_processing_action_triggers,Notifications / Action Triggers>>.
 
 Creating the Evergreen database
 -------------------------------
