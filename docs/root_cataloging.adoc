@@ -29,7 +29,11 @@ include::cataloging/MARC_Editor.adoc[]
 
 include::cataloging/marc_tag_table.adoc[]
 
+:leveloffset: 1
+
 include::cataloging/physical_char_wizard.adoc[]
+
+:leveloffset: 0
 
 Working with holdings data
 ==========================
@@ -40,6 +44,8 @@ include::cataloging/monograph_parts.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
+include::cataloging/conjoined_items.adoc[]
+
 :leveloffset: -1
 
 include::cataloging/batch_importing_MARC.adoc[]
@@ -48,11 +54,12 @@ include::cataloging/authorities.adoc[]
 
 :leveloffset: 0
 
+Working with Electronic Resources
+=================================
+
 include::cataloging/cataloging_electronic_resources.adoc[]
 
 include::cataloging/link_checker.adoc[]
-
-include::cataloging/conjoined_items.adoc[]
 
 :leveloffset: -1
 

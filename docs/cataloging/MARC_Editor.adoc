@@ -5,7 +5,18 @@ Editing MARC Records
 ~~~~~~~~~~~~~~~~~~~~
 
 . Retrieve the record. 
-. MARC Edit.
++
+[TIP]
+======
+You can retrieve records in many ways, including:
+
+* If you know its database ID, enter it into Cataloging > Retrieve Bib Record by ID.
+* If you know its control number, enter it into Cataloging > Retrieve Bib Record by TCN.
+* Searching in the catalog.
+* Clicking on a link from the Acquisitions or Serials modules.
+======
++
+. Click on the MARC Edit tab.
 . The MARC record will display. 
 . Select viewing and editing options, if desired.
 * Stack subfields to display each subfield on its own line.
