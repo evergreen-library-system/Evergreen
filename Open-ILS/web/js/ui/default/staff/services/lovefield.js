@@ -31,12 +31,6 @@ osb.createTable('OfflineBlocks').
     addColumn('reason', lf.Type.STRING).
     addPrimaryKey(['barcode']);
 
-lf.connecting = true;
-osb.connect().then(function (db) {
-    lf.offlineDB = db;
-    lf.connecting = false;
-});
-
 /**
  * Core Service - egLovefield
  *
@@ -50,31 +44,47 @@ angular.module('egCoreMod')
     
     var service = {};
 
-    function connectOrGo (resolver) {
-        if (lf.offlineDB) {
-            return resolver();
+    function connectOrGo() {
+
+        if (lf.offlineDB) { // offline DB connected
+            return $q.when();
         }
 
-        // apparently, this might take a while...
-        if (lf.connecting) return $timeout(function() {
-                return connectOrGo(resolver);
-        });
+        if (service.cannotConnect) { // connection will never happen
+            return $q.reject();
+        }
 
-        console.log('egLovefield connecting to offline DB');
+        if (service.connectPromise) { // connection in progress
+            return service.connectPromise;
+        }
 
-        try {
-            return osb.connect().then(function (db) {
+        // start a new connection attempt
+        
+        var deferred = $q.defer();
+
+        console.debug('attempting offline DB connection');
+        osb.connect().then(
+            function(db) {
+                console.debug('successfully connected to offline DB');
+                service.connectPromise = null;
                 lf.offlineDB = db;
-                return resolver();
-            });
-        } catch (err) {
-                alert('attempted reconnect failure: ' + err.toString());
-        }
+                deferred.resolve();
+            },
+            function(err) {
+                // assumes that a single connection failure means
+                // a connection will never succeed.
+                service.cannotConnect = true;
+                console.error('Cannot connect to offline DB: ' + err);
+            }
+        );
+
+        service.connectPromise = deferred.promise;
+        return service.connectPromise;
     }
 
     service.isCacheGood = function (type) {
 
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var cacheDate = lf.offlineDB.getSchema().table('CacheDate');
 
             return lf.offlineDB.
@@ -95,7 +105,7 @@ angular.module('egCoreMod')
     }
 
     service.destroyPendingOfflineXacts = function () {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineXact');
             return lf.offlineDB.
                 delete().
@@ -105,7 +115,7 @@ angular.module('egCoreMod')
     }
 
     service.havePendingOfflineXacts = function () {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineXact');
             return lf.offlineDB.
                 select(table.reason).
@@ -118,7 +128,7 @@ angular.module('egCoreMod')
     }
 
     service.retrievePendingOfflineXacts = function () {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineXact');
             return lf.offlineDB.
                 select(table.value).
@@ -131,7 +141,7 @@ angular.module('egCoreMod')
     }
 
     service.destroyOfflineBlocks = function () {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineBlocks');
             return $q.when(
                 lf.offlineDB.
@@ -143,7 +153,7 @@ angular.module('egCoreMod')
     }
 
     service.addOfflineBlock = function (barcode, reason) {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineBlocks');
             return $q.when(
                 lf.offlineDB.
@@ -157,7 +167,7 @@ angular.module('egCoreMod')
 
     // Returns a promise with true for blocked, false for not blocked
     service.testOfflineBlock = function (barcode) {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineBlocks');
             return lf.offlineDB.
                 select(table.reason).
@@ -171,7 +181,7 @@ angular.module('egCoreMod')
     }
 
     service.addOfflineXact = function (obj) {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('OfflineXact');
             return $q.when(
                 lf.offlineDB.
@@ -186,7 +196,7 @@ angular.module('egCoreMod')
     service.setStatCatsCache = function (statcats) {
         if (lf.isOffline) return $q.when();
 
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
             var table = lf.offlineDB.getSchema().table('StatCat');
             var rlist = [];
 
@@ -205,7 +215,7 @@ angular.module('egCoreMod')
     }
 
     service.getStatCatsCache = function () {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
 
             var table = lf.offlineDB.getSchema().table('StatCat');
             var result = [];
@@ -243,7 +253,7 @@ angular.module('egCoreMod')
     service.setSettingsCache = function (settings) {
         if (lf.isOffline) return $q.when();
 
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
 
             var table = lf.offlineDB.getSchema().table('Setting');
             var rlist = [];
@@ -266,7 +276,7 @@ angular.module('egCoreMod')
     }
 
     service.getSettingsCache = function (settings) {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
 
             var table = lf.offlineDB.getSchema().table('Setting');
 
@@ -291,7 +301,7 @@ angular.module('egCoreMod')
     service.setListInOfflineCache = function (type, list) {
         if (lf.isOffline) return $q.when();
 
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
 
             service.isCacheGood(type).then(function(good) {
                 if (!good) {
@@ -321,7 +331,7 @@ angular.module('egCoreMod')
     }
 
     service.getListFromOfflineCache = function(type) {
-        return connectOrGo(function() {
+        return connectOrGo().then(function() {
 
             var object = lf.offlineDB.getSchema().table('Object');
 
