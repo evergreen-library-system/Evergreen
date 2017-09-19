@@ -10,8 +10,8 @@ Introduction
 
 include::shared/about_this_documentation.adoc[]
 
-This guide to Evergreen is intended to meet the needs of library workers
-who use Evergreen's Acquisitions module. 
+This guide to Evergreen is intended to meet the needs of catalogers
+in Evergreen libraries.
 It is organized into Parts, Chapters, and Sections addressing key
 aspects of the software. 
 
