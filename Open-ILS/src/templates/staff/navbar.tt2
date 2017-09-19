@@ -557,6 +557,12 @@
               [% l('Log Out') %]
             </a>
           </li>
+          <li>
+            <a href="./about" target="_self">
+              <span class="glyphicon glyphicon-question-sign"></span>
+              [% l('About') %]
+            </a>
+          </li>
           <li class="divider"></li>
           <li class="disabled">
             <a href disabled="disabled">

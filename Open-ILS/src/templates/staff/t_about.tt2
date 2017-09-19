@@ -1,0 +1,26 @@
+<div class="container-fluid text-center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('About Evergreen') %]</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">[% l('Server Details') %]</div>
+      <div class="panel-body">
+        <div class="row pad-vert nav-pills-like-tabs">
+          <div class="col-md-6">[% l('Evergreen Version') %]</div>
+          <div class="col-md-6">{{context.version}}</div>
+        </div>
+        <div class="row pad-vert">
+          <div class="col-md-6">[% l('Hostname') %]</div>
+          <div class="col-md-6">{{context.server}}</div>
+        </div>
+      </div>
+    </div><!--panel-->
+  </div>
+</div>
+
+
+
