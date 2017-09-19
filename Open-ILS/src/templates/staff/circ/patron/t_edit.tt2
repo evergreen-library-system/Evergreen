@@ -581,9 +581,11 @@ within the "form" by name for validation.
     <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <eg-org-selector 
-      xonchange="field_modified" 
-      selected="patron.home_ou"></eg-org-selector>
+    <eg-org-selector nodefault
+      disable-test="disable_pulib" 
+      selected="patron._pickup_lib"
+      onchange="handle_pulib_changed">
+    </eg-org-selector>
   </div>
 </div>
 

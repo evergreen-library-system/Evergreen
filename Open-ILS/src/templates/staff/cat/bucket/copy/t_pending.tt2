@@ -3,10 +3,18 @@
     <form ng-submit="search()">
       <div class="input-group">
         <span class="input-group-addon">[% l('Scan Item') %]</span>
-        <input type="text" class="form-control" focus-me="focusMe"
+        <input type="text" class="form-control" select-me="context.selectPendingBC"
         ng-model="bucketSvc.barcodeString" placeholder="[% l('Barcode...') %]">
       </div>
     </form>
+  </div>
+</div>
+
+<div class="row pad-vert" ng-if="context.itemNotFound">
+  <div class="col-md-6">
+    <div class="alert alert-danger">
+      [% l('Item Not Found') %]
+    </div>
   </div>
 </div>
 
