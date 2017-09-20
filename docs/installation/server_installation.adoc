@@ -54,8 +54,7 @@ autoreconf -i
 Installing prerequisites
 ------------------------
 
-  * **PostgreSQL**: Version 9.4 is recommended. 
-    The minimum supported version is 9.3.
+  * **PostgreSQL**: The minimum supported version is 9.4.
   * **Linux**: Evergreen has been tested on Debian Stretch (9), 
     Debian Jessie (8), Debian Wheezy (7), Ubuntu Xenial Xerus (16.04), 
     and Ubuntu Trusty Tahr (14.04).
