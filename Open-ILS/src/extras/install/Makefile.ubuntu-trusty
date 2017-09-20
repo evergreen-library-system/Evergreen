@@ -112,8 +112,6 @@ PGSQL_SERVER_DEBS_94 = \
 # sections to support building Evergreen packages on servers
 # where Evergreen and its prereqs are not installed.
 
-# nodejs-legacy creates a symlink for /usr/bin/node -> /usr/bin/nodejs
-# which is needed by our npm-installed packages
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
