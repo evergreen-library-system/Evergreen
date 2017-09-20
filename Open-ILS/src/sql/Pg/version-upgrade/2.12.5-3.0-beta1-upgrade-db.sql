@@ -1,5 +1,23 @@
 --Upgrade Script for 2.12.5 to 3.0-beta1
 \set eg_version '''3.0-beta1'''
+
+-- verify that we're running a recent enough version of Pg
+\set ON_ERROR_STOP on
+BEGIN;
+
+DO $$
+   DECLARE ver INTEGER;
+   BEGIN
+      SELECT current_setting('server_version_num') INTO ver;
+      IF (ver < 90400) THEN
+         RAISE EXCEPTION 'Not running a new enough version of PostgreSQL. Minimum required is 9.4; you have %', ver;
+      END IF;
+   END;
+$$;
+
+COMMIT;
+\set ON_ERROR_STOP off
+
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.0-beta1', :eg_version);
 
