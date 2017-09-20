@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version); -- miker
+SELECT evergreen.upgrade_deps_block_check('1076', :eg_version); -- miker/gmcharlt
 
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
