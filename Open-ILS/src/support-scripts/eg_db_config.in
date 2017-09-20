@@ -32,8 +32,6 @@ my $build_db_sh = '';
 my $offline_file = '';
 my $prefix = '';
 my $sysconfdir = '';
-my $pg_contribdir = '';
-my $create_db_sql_contribs = '';
 my $create_db_sql_extensions = '';
 my @services;
 
@@ -135,7 +133,7 @@ sub get_settings {
 	$settings->{pw} = $settings->{pw} || $opensrf_config->findnodes($pw);
 }
 
-=item create_database() - Creates the database using create_database_contribs.sql
+=item create_database() - Creates the database using create_database_extensions.sql
 =cut
 sub create_database {
 	my $settings = shift;
@@ -144,18 +142,21 @@ sub create_database {
 	$ENV{'PGPASSWORD'} = $settings->{pw};
 	$ENV{'PGPORT'} = $settings->{port};
 	$ENV{'PGHOST'} = $settings->{host};
-	my @temp = `psql -d postgres -qtc 'show server_version;' | xargs | cut -c1,3`;
+	my @temp = `psql -d postgres -qtc 'show server_version;' | xargs | cut -d. -f 1,2 | tr -d '.'`;
 	chomp $temp[0];
 	my $pgversion = $temp[0];
 	my $cmd;
-	# If it looks like it is 9.1 or greater, use create_database_extensions.sql
-	# Otherwise use create_database_contribs.sql
-	if($pgversion >= '91') {
-		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -d postgres -f ' . $create_db_sql_extensions;
-	} else {
-		$cmd = 'psql -vdb_name=' . $settings->{db} . ' -vcontrib_dir=' . $pg_contribdir .
-			' -d postgres -f ' . $create_db_sql_contribs;
+	unless ($pgversion >= '94') {
+        my @message = ();
+		push(@message,
+			"\n------------------------------------------------------------------------------\n",
+			"Cannot create database; version of PostgreSQL appears to be less than the\n",
+			"minimum required of 9.4\n",
+			"------------------------------------------------------------------------------\n",
+		);
+		die(@message);
 	}
+	$cmd = 'psql -vdb_name=' . $settings->{db} . ' -d postgres -f ' . $create_db_sql_extensions;
 	my @output = `$cmd 2>&1`;
 	if(grep(/(ERROR|No such file or directory)/,@output)) {
 		push(@output, "\n------------------------------------------------------------------------------\n",
@@ -267,8 +268,6 @@ GetOptions("create-schema" => \$cschema,
 		"update-config" => \$uconfig,
 		"config-file=s" => \$config_file,
 		"build-db-file=s" => \$build_db_sh,
-		"pg-contrib-dir=s" => \$pg_contribdir,
-		"create-db-sql-contribs=s" => \$create_db_sql_contribs,
 		"create-db-sql-extensions=s" => \$create_db_sql_extensions,
 		"pg-config=s" => \$pgconfig,
 		"admin-user=s" => \$admin_user,
@@ -303,17 +302,6 @@ if (!$prefix) {
 
 if (!$build_db_sh) {
 	$build_db_sh = File::Spec->catfile($script_dir, '../sql/Pg/build-db.sh');
-}
-
-if (!$pg_contribdir) {
-	$pgconfig = 'pg_config' if(!$pgconfig);
-	my @temp = `$pgconfig --sharedir`;
-	chomp $temp[0];
-	$pg_contribdir = File::Spec->catdir($temp[0], 'contrib');
-}
-
-if (!$create_db_sql_contribs) {
-	$create_db_sql_contribs = File::Spec->catfile($script_dir, '../sql/Pg/create_database_contribs.sql');
 }
 
 if (!$create_db_sql_extensions) {
