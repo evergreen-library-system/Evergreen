@@ -1,3 +1,94 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 5ddc46d47a58ba8feb4c71012c68d74d55af4716
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit d3e22e802cee873c22bdf3e2c31af147fb4a4e79
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Sep 19 23:09:17 2017 -0400
+
+    Docs: 2.11.9 release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+17	0	docs/RELEASE_NOTES_2_11.adoc
+
+commit ec922bd1feb2d9c7fd6e6a73e8b4f2d110279545
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 7 10:42:52 2017 -0700
+
+    Docs: adding to the patron myopac holds/circ history docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+17	0	docs/opac/using_the_public_access_catalog.adoc
+
+commit 5b8a13b88ff3484c107a17d306a1a007769f5383
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 7 09:54:46 2017 -0700
+
+    Docs: making support scripts adoc formatting more consistent, adding marc stream importer docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+30	3	docs/development/support_scripts.adoc
+
+commit d3c081052d2abcbf0e4144b30555fe0a3074d5b7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 7 09:27:51 2017 -0700
+
+    Docs: updates to My Lists in patron account docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+11	3	docs/opac/my_lists.adoc
+
+commit bddd59e569a5865ba7cdbac01b9564a1601ee14a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 7 09:13:47 2017 -0700
+
+    Docs: updates to Added Content instructions
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+13	6	docs/admin_initial_setup/designing_your_catalog.adoc
+
+commit 2909d09bafc960f093fbce0dcd5d603a84fc43f9
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Aug 11 17:52:13 2017 -0400
+
+    LP#1599894 - OPAC disable Add to MyList when doing metabib search
+    
+    Since adding a result to MyList yields to a random title
+    (due to bad id) being added to temp. lists, disable MyList if
+    metabib search is on, i.e "Group formats and editions"
+    checkbox is checked.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/result/table.tt2
+    
+    Conflicts:
+    	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Search.pm
+3	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit d13fec11b226c77ce8351dc0d63b860601474335
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 24 17:54:38 2017 -0400
+
+    Forward-port 2.11.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.11.7-2.11.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.11.7-2.11.8-upgrade-db.sql
