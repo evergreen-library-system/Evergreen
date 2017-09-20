@@ -6,7 +6,108 @@ Evergreen 3.0 Release Notes
 Upgrade notes
 -------------
 
-The minimum version of PostgreSQL required to run Evergreen 3.0 is PostgreSQL 9.4.
+The minimum version of PostgreSQL required to run Evergreen 3.0 is
+PostgreSQL 9.4. Evergreen 3.0 also requires OpenSRF 3.0.0 or later.
+
+Change to Names of Shared Libraries
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+OpenSRF 3.0 changes how the shared libraries for services written in
+C are named.  If upgrading from an earlier version of Evergreen,
+`opensrf.xml` should be edited so that shared library file names
+listed in the `<implementation>` tag start with "lib".  For example,
+
+[source,sh]
+---------------------------------------------------------------------
+            <open-ils.cstore>
+                <language>C</language>
+                <implementation>oils_cstore.so</implementation>
+---------------------------------------------------------------------
+
+should be changed to:
+
+[source,sh]
+---------------------------------------------------------------------
+            <open-ils.cstore>
+                <language>C</language>
+                <implementation>liboils_cstore.so</implementation>
+---------------------------------------------------------------------
+
+SIP Bugfix Requires SIPServer Upgrade
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The fix for Launchpad Bug 1542495: "OpenILS::SIP::clean_text() can
+crash" requires that you also upgrade SIPServer with the fix for
+Launchpad Bug 1463943: "Non-ascii Unicode characters in messages cause
+SIP client problems."  This means that if you use SIP2 with Evergreen,
+you must also upgrade SIPServer to the latest commit in the git
+repository.  Conversely, if you upgrade SIPServer to the latest commit
+in git, you must also upgrade Evergreen or, at least, apply the patch
+for Launchpad Bug 1542495.  These two patches are complementary and
+cannot be applied independently of one another.
+
+`open-ils.auth.login`
+~~~~~~~~~~~~~~~~~~~~~
+The new `open-ils.auth.login` API must be added to the list of `<log_protect>`
+API's in the `opensrf_core.xml` file.
+
+Sample diff:
+
+[source,sh]
+---------------------------------------------------------------------
+--- a/Open-ILS/examples/opensrf_core.xml.example
++++ b/Open-ILS/examples/opensrf_core.xml.example
+@@ -180,6 +180,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
+     <log_protect>
+       <match_string>open-ils.auth.authenticate.verify</match_string>
+       <match_string>open-ils.auth.authenticate.complete</match_string>
++      <match_string>open-ils.auth.login</match_string>
+       <match_string>open-ils.auth_proxy.login</match_string>
+       <match_string>open-ils.actor.patron.password_reset.commit</match_string>
+       <match_string>open-ils.actor.user.password</match_string>
+---------------------------------------------------------------------
+
+RTL CSS Stylesheet
+~~~~~~~~~~~~~~~~~~
+Administrators of Evergreen who use RTL locales and who have customized
+`style-rtl.css.tt2` should now incorporate their customizations into
+`style.css.tt2`.
+
+Multi-Time Zone Installations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For Evergreen consortia that span more than one time zone, the following
+query will adjust all historical, unaged circulations so
+that if their due date field is pushed to the end of the day, it is done
+in the circulating library's time zone, and not the server time zone.
+
+It is safe to run this after any change to library time zones.
+
+Running this is not required, as no code before this change has
+depended on the time string of '23:59:59'.  It is also not necessary
+if all of your libraries are in the same time zone, and that time zone
+is the same as the database's configured time zone.
+
+[source,sql]
+----
+DO $$
+declare
+    new_tz  text;
+    ou_id   int;
+begin
+    for ou_id in select id from actor.org_unit loop
+        for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('lib.timezone',ou_id) loop
+            if new_tz is not null then
+                update  action.circulation
+                  set   due_date = (due_date::timestamp || ' ' || new_tz)::timestamptz
+                  where circ_lib = ou_id
+                        and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '23:59:59';
+            end if;
+        end loop;
+    end loop;
+end;
+$$;
+----
+
 
 Deprecation of XUL staff client
 -------------------------------
@@ -272,12 +373,6 @@ template will provide RTL or LTR styles based on the value of
 the `rtl` flag of the active locale. An `rtl` variable is also available
 in the template to allow the correct style to be chosen.
 
-Upgrade notes
-+++++++++++++
-Administrators of Evergreen who use RTL locales and who have customized
-`style-rtl.css.tt2` should now incorporate their customizations into
-`style.css.tt2`.
-
 
 
 
@@ -421,28 +516,6 @@ The paramaters are the same as the .complete call with a few modifications.
    make that determination up front.  
 
 2. The 'nonce' parameter is no longer used.
-
-Upgrade Notes
-+++++++++++++
-
-The new open-ils.auth.login API must be added to the list of <log_protect>
-API's in the opensrf_core.xml file.
-
-Sample diff:
-
-[source,sh]
----------------------------------------------------------------------
---- a/Open-ILS/examples/opensrf_core.xml.example
-+++ b/Open-ILS/examples/opensrf_core.xml.example
-@@ -180,6 +180,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
-     <log_protect>
-       <match_string>open-ils.auth.authenticate.verify</match_string>
-       <match_string>open-ils.auth.authenticate.complete</match_string>
-+      <match_string>open-ils.auth.login</match_string>
-       <match_string>open-ils.auth_proxy.login</match_string>
-       <match_string>open-ils.actor.patron.password_reset.commit</match_string>
-       <match_string>open-ils.actor.user.password</match_string>
----------------------------------------------------------------------
 
 
 
@@ -685,41 +758,6 @@ Summary
 * Display the full timestamp, in the client's timezone rather than the circulation library's, for hourly circulations.
 * Provide infrastructure for more advanced formatting of timestamps.
 * Override the built-in AngularJS date filter with an implementation that uses moment.js, providing consistency and better standards compliance.
-
-Upgrade note
-++++++++++++
-
-The following query will adjust all historical, unaged circulations so
-that if their due date field is pushed to the end of the day, it is done
-in the circulating library's time zone, and not the server time zone.
-
-It is safe to run this after any change to library time zones.
-
-Running this is not required, as no code before this change has
-depended on the time string of '23:59:59'.  It is also not necessary
-if all of your libraries are in the same time zone, and that time zone
-is the same as the database's configured time zone.
-
-[source,sql]
-----
-DO $$
-declare
-    new_tz  text;
-    ou_id   int;
-begin
-    for ou_id in select id from actor.org_unit loop
-        for new_tz in select oils_json_to_text(value) from actor.org_unit_ancestor_setting('lib.timezone',ou_id) loop
-            if new_tz is not null then
-                update  action.circulation
-                  set   due_date = (due_date::timestamp || ' ' || new_tz)::timestamptz
-                  where circ_lib = ou_id
-                        and substring((due_date at time zone new_tz)::time::text from 1 for 8) <> '23:59:59';
-            end if;
-        end loop;
-    end loop;
-end;
-$$;
-----
 
 Details
 +++++++
@@ -1198,19 +1236,6 @@ SIP
 ~~~
 
 
-
-SIP Bugfix Requires SIPServer Upgrade
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The fix for Launchpad Bug 1542495: "OpenILS::SIP::clean_text() can
-crash" requires that you also upgrade SIPServer with the fix for
-Launchpad Bug 1463943: "Non-ascii Unicode characters in messages cause
-SIP client problems."  This means that if you use SIP2 with Evergreen,
-you must also upgrade SIPServer to the latest commit in the git
-repository.  Conversely, if you upgrade SIPServer to the latest commit
-in git, you must also upgrade Evergreen or, at least, apply the patch
-for Launchpad Bug 1542495.  These two patches are complementary and
-cannot be applied independently of one another.
 
 SIP Bugfix Changes How Encoding Is Determined in Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
