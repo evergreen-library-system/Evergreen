@@ -24,7 +24,7 @@ function($q , egCore , egWorkLog , patronSvc) {
         .then(function(summary) {return service.summary = summary})
     }
 
-    service.applyPayment = function(type, payments, note, check) {
+    service.applyPayment = function(type, payments, note, check, cc_args) {
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
@@ -34,7 +34,8 @@ function($q , egCore , egWorkLog , patronSvc) {
                 payment_type : type,
                 check_number : check,
                 payments : payments,
-                patron_credit : 0
+                patron_credit : 0,
+                cc_args : cc_args
             },
             patronSvc.current.last_xact_id()
         ).then(function(resp) {
@@ -143,10 +144,10 @@ function($q , egCore , egWorkLog , patronSvc) {
 .controller('PatronBillsCtrl',
        ['$scope','$q','$routeParams','egCore','egConfirmDialog','$location',
         'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egAlertDialog',
-        'egBilling',
+        'egBilling','$uibModal',
 function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
          egGridDataProvider , billSvc , patronSvc , egPromptDialog, egAlertDialog,
-         egBilling) {
+         egBilling , $uibModal) {
 
     $scope.initTab('bills', $routeParams.id);
     billSvc.userId = $routeParams.id;
@@ -316,10 +317,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     // generates payments, collects user note if needed, and sends payment
     // to server.
-    function sendPayment(note) {
+    function sendPayment(note, cc_args) {
         var make_payments = generatePayments();
-        billSvc.applyPayment(
-            $scope.payment_type, make_payments, note, $scope.check_number)
+        billSvc.applyPayment($scope.payment_type, 
+            make_payments, note, $scope.check_number, cc_args)
         .then(function(payment_ids) {
 
             if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
@@ -498,32 +499,78 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             return;
         }
 
-        if (($scope.payment_amount > $scope.warn_amount) && ($scope.amount_verified == false)) {
-            egConfirmDialog.open(
-                egCore.strings.PAYMENT_WARN_AMOUNT_TITLE, egCore.strings.PAYMENT_WARN_AMOUNT,
-                {   payment_amount : ''+$scope.payment_amount,
-                    ok : function() {
-                        $scope.amount_verfied = true;
-                        $scope.applyPayment();
-                    },
-                    cancel : function() {
-                        $scope.payment_amount = 0;
+        verify_payment_amount().then(
+            function() { // amount confirmed
+                add_payment_note().then(function(pay_note) {
+                    add_cc_args().then(function(cc_args) {
+                        sendPayment(pay_note, cc_args);
+                    })
+                });
+            },
+            function() { // amount rejected
+                console.warn('payment amount rejected');
+                $scope.payment_amount = 0;
+            }
+        );
+    }
+
+    function verify_payment_amount() {
+        if ($scope.payment_amount < $scope.warn_amount)
+            return $q.when();
+
+        return egConfirmDialog.open(
+            egCore.strings.PAYMENT_WARN_AMOUNT_TITLE, 
+            egCore.strings.PAYMENT_WARN_AMOUNT,
+            {payment_amount : ''+$scope.payment_amount}
+        ).result;
+    }
+
+    function add_payment_note() {
+        if (!$scope.annotate_payment) return $q.when();
+        return egPromptDialog.open(
+            egCore.strings.ANNOTATE_PAYMENT_MSG, '').result;
+    }
+
+    function add_cc_args() {
+        if ($scope.payment_type != 'credit_card_payment') 
+            return $q.when();
+
+        return $uibModal.open({
+            templateUrl : './circ/patron/t_cc_payment_dialog',
+            controller : [
+                        '$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
+
+                    $scope.context = {
+                        cc : {
+                            where_process : '1', // internal=1 ; external=0
+                            type : 'VISA', // external only
+                            billing_first : patronSvc.current.first_given_name(),
+                            billing_last : patronSvc.current.family_name()
+                        }
+                    }
+
+                    var addr = patronSvc.current.billing_address() ||
+                        patronSvc.current.mailing_address();
+                    if (addr) {
+                        var cc = $scope.context.cc;
+                        cc.billing_address = addr.street1() + 
+                            (addr.street2() ? ' ' + addr.street2() : '');
+                        cc.billing_city = addr.city();
+                        cc.billing_state = addr.state();
+                        cc.billing_zip = addr.post_code();
+                    }
+
+                    $scope.ok = function() {
+                        $uibModalInstance.close($scope.context.cc);
+                    }
+
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss();
                     }
                 }
-            );
-            return;
-        }
-
-        $scope.amount_verfied = false;
-
-        if ($scope.annotate_payment) {
-            egPromptDialog.open(
-                egCore.strings.ANNOTATE_PAYMENT_MSG, '',
-                {ok : function(value) {sendPayment(value)}}
-            );
-        } else {
-            sendPayment();
-        }
+            ]
+        }).result;
     }
 
     $scope.voidAllBillings = function(items) {

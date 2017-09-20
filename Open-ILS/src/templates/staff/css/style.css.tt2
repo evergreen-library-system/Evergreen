@@ -205,6 +205,13 @@ table.list tr.selected td { /* deprecated? */
   background-color: rgb(248, 248, 248);
 }
 
+/* Reduces the vertical space added by form-group's.  Especially useful
+ * for tall modal windows.
+ */
+.tight-vert-form .form-group {
+  margin-bottom: 5px;
+} 
+
 
 /* ----------------------------------------------------------------------
  * Grid
