@@ -8,8 +8,8 @@ Software Prerequisites
 
   * **PostgreSQL**: Version 9.4 is recommended.
     The minimum supported version is 9.3.
-  * **Linux**: Evergreen 2.12.0 has been tested on Debian Jessie (8.0),
-    Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04),
+  * **Linux**: Evergreen 2.12.0 has been tested on Debian Stretch,
+    Debian Jessie (8.0), Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04),
     and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want
     to upgrade before upgrading Evergreen. For instructions on upgrading these
