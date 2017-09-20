@@ -136,7 +136,7 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
 Extra steps for web staff client
-------------------------------------------
+--------------------------------
 
 [NOTE]
 Skip this entire section if you are using an official release tarball downloaded
