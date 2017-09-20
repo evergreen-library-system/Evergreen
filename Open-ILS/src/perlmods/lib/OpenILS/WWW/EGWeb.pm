@@ -220,8 +220,8 @@ sub load_context {
     my @template_paths = uniq $r->dir_config->get('OILSWebTemplatePath');
     $ctx->{template_paths} = [ reverse @template_paths ];
 
-    my %locales = $r->dir_config->get('OILSWebLocale');
-    load_locale_handlers($ctx, %locales);
+    my @locales = $r->dir_config->get('OILSWebLocale');
+    load_locale_handlers($ctx, @locales);
 
     $ctx->{locales} = \%registered_locales;
 
@@ -373,7 +373,13 @@ sub find_template {
 # Each module creates its own MakeText lexicon by parsing .po/.mo files
 sub load_locale_handlers {
     my $ctx = shift;
-    my %locales = @_;
+    my @raw = @_;
+    my %locales;
+    while (@raw) {
+        my ($l,$file) = (shift(@raw),shift(@raw)); 
+        $locales{$l} ||= [];
+        push @{$locales{$l}}, $file;
+    }
 
     my $editor = new_editor();
     my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
@@ -384,7 +390,7 @@ sub load_locale_handlers {
     for my $idx (0..$#locale_tags) {
 
         my $tag = $locale_tags[$idx];
-        next if grep { $_ eq $tag } keys %registered_locales;
+        my $parent_tag = 'OpenILS::WWW::EGWeb::I18N';
 
         my $res = $editor->json_query({
             "from" => [
@@ -396,7 +402,6 @@ sub load_locale_handlers {
         my $locale_name = $res->[0]->{"name"} if exists $res->[0]->{"name"};
         next unless $locale_name;
 
-        my $parent_tag = '';
         my $sub_idx = $idx;
 
         # find the parent locale if possible.  It will be 
@@ -404,34 +409,38 @@ sub load_locale_handlers {
         while( --$sub_idx >= 0 ) {
             my $ptag = $locale_tags[$sub_idx];
             if( substr($tag, 0, length($ptag)) eq $ptag ) {
-                $parent_tag = "::$ptag";
+                $parent_tag .= "::$ptag";
                 last;
             }
         }
 
-        my $messages = $locales{$tag} || '';
-
-        # TODO Can we do this without eval?
-        my $eval = <<"        EVAL";
+        my $eval = <<"        EVAL"; # Dynamic part
             package OpenILS::WWW::EGWeb::I18N::$tag;
-            use base 'OpenILS::WWW::EGWeb::I18N$parent_tag';
-            if(\$messages) {
+            use base '$parent_tag';
+        EVAL
+
+        $eval .= <<'        EVAL';
+            our %Lexicon;
+            if(@{$locales{$tag}}) {
                 use Locale::Maketext::Lexicon {
                     _decode => 1
                 };
                 use Locale::Maketext::Lexicon::Gettext;
-                if(open F, '$messages') {
-                    our %Lexicon = (%Lexicon, %{ Locale::Maketext::Lexicon::Gettext->parse(<F>) });
-                    close F;
-                } else {
-                    warn "EGWeb: unable to open messages file: $messages"; 
+                for my $messages (@{$locales{$tag}}) {
+                    if(open F, $messages) {
+                        %Lexicon = (%Lexicon, %{ Locale::Maketext::Lexicon::Gettext->parse(<F>) });
+                        close F;
+                    } else {
+                        warn "EGWeb: unable to open messages file: $messages"; 
+                    }
                 }
             }
         EVAL
+
         eval $eval;
 
         if ($@) {
-            warn "$@\n" if $@;
+            warn "$@\n";
         } else {
             $registered_locales{"$tag"} = $locale_name;
         }
