@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-29 02:28+0000\n"
+"POT-Creation-Date: 2017-08-30 02:21+0000\n"
 "PO-Revision-Date: 2017-04-09 07:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:25+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-08-31 05:37+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -80,9 +80,9 @@ msgstr "%1"
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#. (title, hold.hold.part.label)
 #. (copy.label, copy_org.name)
 #. (title, part.label)
+#. (title, hold.hold.part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:360 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:65 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -102,9 +102,9 @@ msgstr "%1 - %2"
 msgid "%1 OpenSearch"
 msgstr "%1 Բաց որոնում"
 
-#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
-#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
 #. (ou_avail, ou_count, ou_name)
+#. (attrs.plib_copy_counts.$depth.available, attrs.plib_copy_counts.$depth.count, ou_name)
+#. (attrs.copy_counts.$depth.available, attrs.copy_counts.$depth.count, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:40 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:33
 msgid "%1 of %quant(%2,copy,copies) available at %3."
 msgstr "%1 ընդամենը %քանակ(%2,պատճեն,պատճեններ) հասանելի են %3."
@@ -1515,7 +1515,7 @@ msgstr "Խմբագրի պահումը"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:266
 msgid "Edit List Description"
-msgstr ""
+msgstr "Խմբագրի Ցուցակի նկարագրությունը"
 
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:256
@@ -2842,7 +2842,7 @@ msgstr ""
 "Նշում։ Դու պետք է ունենաս գործող էլ. փոստի հասցե կապված գրադարանային քո "
 "հաշվի հետ։ Եթե ոչ, դիմիր աշխատակազմին աջակցության համար։"
 
-#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:28 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:29 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
 msgid "Note: carrier charges may apply"
 msgstr "Նշում. կարող է կիրառվեկ ուղեկցողի վճար"
 
@@ -3188,6 +3188,10 @@ msgid ""
 msgstr ""
 "Մուտք արա քո օգտվողի անունը կամ շտրիխ կոդը որպեսզի նույնականացնես գրադարանի "
 "քո հաշիվը և պահանջես գաղտնաբառի վերագրում։"
+
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:8
+msgid "Please fill out all required fields"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:25
 msgid "Please include leading zeros."
@@ -4849,7 +4853,7 @@ msgstr ""
 "գումարային արժեքը բացասական է։ Մենք չենք կարող աշխատել բացասական գումարների "
 "դեպքում։"
 
-#: ../../Open-ILS/src/templates/opac/parts/js.tt2:10
+#: ../../Open-ILS/src/templates/opac/parts/js.tt2:11
 msgid ""
 "You have entered an invalid date, or an improperly formatted date.  Please "
 "enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again."
