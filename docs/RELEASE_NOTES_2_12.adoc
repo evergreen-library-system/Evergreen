@@ -3,6 +3,68 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.6
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.5.
+
+* Removes the option to add a title to My List from Group Formats and
+Editions searches where the option never worked correctly due to a bad id.
+* Removes deleted shelving locations from the web client's volume/copy editor. Since there is no database constraint that prevents a copy from a deleted shelving location, if there are already copies attached to those shelving locations, the copy location selector will be blank. Evergreen admins can identify those items by running the following query:
+
+----
+select acp.id, acp.barcode, acpl.name
+from asset.copy acp
+join asset.copy_location acpl on (acpl.id = acp.location)
+where not acp.deleted
+and acpl.deleted
+order by acp.id;
+----
+* Adds the patron opt-in check in the web client whenever a patron is retrieved
+by barcode scan, patron search, or item circ history.
+* Fixes a bug where the price and acquisitions cost fields did not display
+their values. 
+* Fixes a bug where a patron's circulation history no longer moved to the lead
+account when merging patron accounts.
+* Now hides the ebook tabs in My Account for sites that have not yet enabled the
+Ebook API service.
+* Trims spaces from patron barcodes in the web client check out interface.
+* Makes a string in the holds validation alert translatable. 
+* Fixes a bug that prevented the web client patron registration screen from
+loading when there is an opt-in action triggers, such as the email checkout
+receipt, t set to be a registration default. 
+* Fixes a bug where barcode validation in the web client patron editor was 
+using the incorrect regular expression.
+* Replaces an empty string in the mobile carrier dropdown menu with a 'Please
+select your mobile carrier' label to improve usability and resolve a problem
+with translations.
+* Restores the ability to display a photo in the web client patron editor for
+accounts that have an actor.usr.photo_url.
+* Fixes a Firefox display issue in the web client that occurred when retrieving
+a bib record by TCN when the MARC Edit tab was set as the default view.
+* Fixes an bug where setting a patron's default pickup location in the web 
+client patron editor inadvertently changed the home library. It also disables
+any locations that are not viable pickup locations.
+* Fixes a bug where a misscan in a copy bucket failed silently.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.6 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Blake Henderson
+* Skye Howard
+* Kathy Lussier
+* Terran McCanna
+* Jane Sandberg
+* Ben Shum
+* Cesar Velez
+
 Evergreen 2.12.5
 ----------------
 This release contains several bug fixes improving on Evergreen 2.12.4.
