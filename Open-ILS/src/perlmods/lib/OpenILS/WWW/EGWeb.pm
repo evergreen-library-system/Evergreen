@@ -374,7 +374,7 @@ sub find_template {
 sub load_locale_handlers {
     my $ctx = shift;
     my @raw = @_;
-    my %locales;
+    my %locales = (en_us => []);
     while (@raw) {
         my ($l,$file) = (shift(@raw),shift(@raw)); 
         $locales{$l} ||= [];
@@ -383,9 +383,6 @@ sub load_locale_handlers {
 
     my $editor = new_editor();
     my @locale_tags = sort { length($a) <=> length($b) } keys %locales;
-
-    # always fall back to en_us, the assumed template language
-    push(@locale_tags, 'en_us');
 
     for my $idx (0..$#locale_tags) {
 
