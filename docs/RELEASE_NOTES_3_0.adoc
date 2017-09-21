@@ -915,6 +915,20 @@ For internal continuity, however, the following permission codes have not change
 Client
 ~~~~~~
 
+Offline Circ Available in Web Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Offline circ is now available in the web staff client. In order to use the
+offline interface, users must first log into the web staff client, perform
+a patron search, select a user from the results, and open the patron editor
+interface to collect all the relevent configuration information for the 
+workstation. In addition, the offline interface available from the Circulation
+menu provides a _Download block list_ button for users who are logged in.
+
+As is the case in the old staff client, users can check materials in and out,
+renew items, and create new patron accounts while offline. The patron fields
+available in the offline patron registration editor are the same ones that
+are available to staff when working online.
+
 
 
 Add Circ Modifier to Record Detail Page in Staff TPAC
