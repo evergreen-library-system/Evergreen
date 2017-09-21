@@ -1,9 +1,14 @@
-<div class="col-md-12" ng-show="!circ_list.length">
+<div class="col-md-12" ng-show="!isMaxCircHistoryZero && circ_list.length == 0">
   <div class="alert alert-info">
     [% l('Item has not circulated.') %]
   </div>
 </div>
-<div class="row" ng-show="circ_list.length">
+<div class="col-md-12" ng-show="isMaxCircHistoryZero">
+  <div class="alert alert-info">
+    [% l('Circulation History not available for display.') %]
+  </div>
+</div>
+<div class="row" ng-show="!isMaxCircHistoryZero && circ_list.length">
   <div class="flex-row">
       <div class="flex-cell well">
           <button class="btn btn-default" ng-click="retrieveAllPatrons()">
@@ -14,7 +19,7 @@
 </div>
 
 
-<div class="row" ng-repeat="circ in circ_list">
+<div class="row" ng-show="!isMaxCircHistoryZero" ng-repeat="circ in circ_list">
   <div class="flex-row">
     <div class="flex-cell well">
       <a ng-if="circ.usr()" target="_self"

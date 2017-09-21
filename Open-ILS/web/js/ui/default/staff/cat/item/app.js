@@ -625,63 +625,85 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         return deferred.promise;
     }
 
-    // if loadPrev load the two most recent circulations
-    function loadCurrentCirc(loadPrev) {
+    // load the two most recent circulations in /circs tab
+    function loadCurrentCirc() {
         delete $scope.circ;
         delete $scope.circ_summary;
         delete $scope.prev_circ_summary;
         delete $scope.prev_circ_usr;
         if (!copyId) return;
         
-        egCore.pcrud.search('aacs', 
-            {target_copy : copyId},
-            {   flesh : 2,
-                flesh_fields : {
-                    aacs : [
-                        'usr',
-                        'workstation',                                         
-                        'checkin_workstation',                                 
-                        'duration_rule',                                       
-                        'max_fine_rule',                                       
-                        'recurring_fine_rule'   
-                    ],
-                    au : ['card']
-                },
-                order_by : {aacs : 'xact_start desc'}, 
-                limit :  1
+        var copy_org =
+            itemSvc.copy.call_number().id() == -1 ?
+            itemSvc.copy.circ_lib().id() :
+            itemSvc.copy.call_number().owning_lib().id();
+
+        // since a user can still view patron checkout history here, check perms
+        egCore.perm.hasPermAt('VIEW_COPY_CHECKOUT_HISTORY', true)
+        .then(function(orgIds){
+            if(orgIds.indexOf(copy_org) == -1){
+                console.warn('User is not allowed to view circ history!');
+                $q.when(0);
             }
 
-        ).then(null, null, function(circ) {
-            $scope.circ = circ;
+            return fetchMaxCircHistory();
+        })
+        .then(function(maxHistCount){
 
-            // load the chain for this circ
-            egCore.net.request(
-                'open-ils.circ',
-                'open-ils.circ.renewal_chain.retrieve_by_circ.summary',
-                egCore.auth.token(), $scope.circ.id()
-            ).then(function(summary) {
-                $scope.circ_summary = summary;
-            });
+            if (!maxHistCount) $scope.isMaxCircHistoryZero = true;
 
-            if (!loadPrev) return;
-
-            // load the chain for the previous circ, plus the user
-            egCore.net.request(
-                'open-ils.circ',
-                'open-ils.circ.prev_renewal_chain.retrieve_by_circ.summary',
-                egCore.auth.token(), $scope.circ.id()
-
-            ).then(null, null, function(summary) {
-                $scope.prev_circ_summary = summary.summary;
-
-                if (summary.usr) { // aged circs have no 'usr'.
-                    egCore.pcrud.retrieve('au', summary.usr,
-                        {flesh : 1, flesh_fields : {au : ['card']}})
-
-                    .then(function(user) { $scope.prev_circ_usr = user });
+            egCore.pcrud.search('aacs',
+                {target_copy : copyId},
+                {   flesh : 2,
+                    flesh_fields : {
+                        aacs : [
+                            'usr',
+                            'workstation',
+                            'checkin_workstation',
+                            'duration_rule',
+                            'max_fine_rule',
+                            'recurring_fine_rule'
+                        ],
+                        au : ['card']
+                    },
+                    order_by : {aacs : 'xact_start desc'},
+                    limit :  1
                 }
+
+            ).then(null, null, function(circ) {
+                $scope.circ = circ;
+
+                if (!circ) return $q.when();
+
+                // load the chain for this circ
+                egCore.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.renewal_chain.retrieve_by_circ.summary',
+                    egCore.auth.token(), $scope.circ.id()
+                ).then(function(summary) {
+                    $scope.circ_summary = summary;
+                });
+
+                if (maxHistCount <= 1) return;
+
+                // load the chain for the previous circ, plus the user
+                egCore.net.request(
+                    'open-ils.circ',
+                    'open-ils.circ.prev_renewal_chain.retrieve_by_circ.summary',
+                    egCore.auth.token(), $scope.circ.id()
+
+                ).then(null, null, function(summary) {
+                    $scope.prev_circ_summary = summary.summary;
+
+                    if (summary.usr) { // aged circs have no 'usr'.
+                        egCore.pcrud.retrieve('au', summary.usr,
+                            {flesh : 1, flesh_fields : {au : ['card']}})
+
+                        .then(function(user) { $scope.prev_circ_usr = user });
+                    }
+                });
             });
-        });
+        })
     }
 
     var maxHistory;
@@ -691,7 +713,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
             'circ.item_checkout_history.max')
         .then(function(set) {
             maxHistory = set['circ.item_checkout_history.max'] || 4;
-            return maxHistory;
+            return Number(maxHistory);
         });
     }
 
@@ -718,13 +740,14 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         });
     }
 
+    // load data for /circ_list tab
     function loadCircHistory() {
         $scope.circ_list = [];
 
         var copy_org = 
             itemSvc.copy.call_number().id() == -1 ?
             itemSvc.copy.circ_lib().id() :
-            itemSvc.copy.call_number().owning_lib().id()
+            itemSvc.copy.call_number().owning_lib().id();
 
         // there is an extra layer of permissibility over circ
         // history views
@@ -738,25 +761,30 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             return fetchMaxCircHistory();
 
-        }).then(function(count) {
+        }).then(function(maxHistCount) {
 
-            egCore.pcrud.search('aacs', 
+            if(!maxHistCount) $scope.isMaxCircHistoryZero = true;
+
+            egCore.pcrud.search('aacs',
                 {target_copy : copyId},
                 {   flesh : 2,
                     flesh_fields : {
                         aacs : [
                             'usr',
-                            'workstation',                                         
-                            'checkin_workstation',                                 
-                            'recurring_fine_rule'   
+                            'workstation',
+                            'checkin_workstation',
+                            'recurring_fine_rule'
                         ],
                         au : ['card']
                     },
-                    order_by : {aacs : 'xact_start desc'}, 
-                    limit :  count
+                    order_by : {aacs : 'xact_start desc'},
+                    // fetch at least one to see if copy ever circulated
+                    limit : $scope.isMaxCircHistoryZero ? 1 : maxHistCount
                 }
 
             ).then(null, null, function(circ) {
+
+                $scope.circ = circ;
 
                 // flesh circ_lib locally
                 circ.circ_lib(egCore.org.get(circ.circ_lib()));
@@ -855,7 +883,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                 break;
 
             case 'circs':
-                loadCurrentCirc(true);
+                loadCurrentCirc();
                 break;
 
             case 'circ_list':
