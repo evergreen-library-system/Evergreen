@@ -826,6 +826,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 $scope.circModifiers = circMods;
                 $scope.ok = function(args) { $uibModalInstance.close(args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
+
+                // use this function as a keydown handler on form
+                // elements that should not submit the form on enter.
+                $scope.preventSubmit = function($event) {
+                    if ($event.keyCode == 13)
+                        $event.preventDefault();
+                }
             }],
             resolve : {
                 circMods : function() { 
