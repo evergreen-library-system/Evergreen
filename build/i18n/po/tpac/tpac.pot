@@ -15,10 +15,6 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:22
-msgid ""
-msgstr ""
-
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
 "\n"
@@ -3227,6 +3223,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:115
 msgid "Please select a valid library"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:22
+msgid "Please select your mobile carrier"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/filtersort.tt2:27
