@@ -15,6 +15,9 @@
 angular.module('egCoreMod').run(['egStrings', function(s) {
     s.VOL_COPY_TEMPLATE_SUCCESS_SAVE = "[% l('Saved volume/copy template(s)') %]";
     s.VOL_COPY_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted volume/copy template') %]";
+    [%# Note the "~" characters escape the gettext brackets %]
+    s.COPY_NOTE_INITIALS = 
+      "[% l('[_1] ~[ [_2] @ [_3] ~]', '{{value}}', '{{initials}}', '{{ws_ou}}') %]"
 }]);
 </script>
 [% END %]
