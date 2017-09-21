@@ -1697,7 +1697,16 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.ok = function(note) {
 
-                    if (note.initials) note.value += ' [' + note.initials + ']';
+                    if ($scope.initials) {
+                        note.value = egCore.strings.$replace(
+                            egCore.strings.COPY_NOTE_INITIALS, {
+                            value : note.value, 
+                            initials : $scope.initials,
+                            ws_ou : egCore.org.get(
+                                egCore.auth.user().ws_ou()).shortname()
+                        });
+                    }
+
                     angular.forEach(copy_list, function (cp) {
                         if (!angular.isArray(cp.notes())) cp.notes([]);
                         var n = new egCore.idl.acpn();

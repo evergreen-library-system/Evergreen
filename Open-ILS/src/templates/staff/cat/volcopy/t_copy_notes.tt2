@@ -73,10 +73,13 @@
             </div>
           </div>
           <div class="row pad-vert">
-            <div class="col-md-12">
+            <div class="col-md-10">
               <textarea class="form-control" ng-change="n.value(value) && n.ischanged(1)"
                 ng-model="value" placeholder="[% l('Note...') %]" ng-disabled="deleted">
               </textarea>
+            </div>
+            <div class="col-md-2">
+              {{n.create_date() | date:$root.egDateFormat}} 
             </div>
           </div>
           <div class="row">
