@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-08-15 16:41-0400\n"
+"POT-Creation-Date: 2017-09-03 23:33-0400\n"
 "PO-Revision-Date: 2013-10-15 08:54+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-08-16 04:41+0000\n"
+"X-Launchpad-Export-Date: 2017-09-05 04:42+0000\n"
 "X-Generator: Launchpad (build 18446)\n"
 "Language: fi\n"
 
@@ -264,6 +264,10 @@ msgstr "Lainaa ei voi enää uusia"
 msgid "This account is marked as inactive"
 msgstr "Tämä tili on merkitty ei-aktiiviseksi"
 
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+msgid "The distribution still has dependent objects"
+msgstr ""
+
 #: 8003.OFFLINE_PARAM_ERROR:948
 msgid "Missing params in offline upload"
 msgstr "Offline-latauksesta puuttuu parametrejä"
@@ -271,6 +275,10 @@ msgstr "Offline-latauksesta puuttuu parametrejä"
 #: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:562
 msgid "The requested reporter_report_folder was not found"
 msgstr "Pyydettyä kohdetta reporter_report_folder ei löytynyt"
+
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+msgid "The prediction pattern still has dependent objects"
+msgstr ""
 
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
@@ -447,6 +455,10 @@ msgstr "Pyydettyä kohdetta config_metabib_field ei löydy"
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:404
 msgid "The requested actor_org_address was not found"
 msgstr "Pyydettyä kohdetta actor_org_address ei löydy"
+
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+msgid "The stream still has dependent objects"
+msgstr ""
 
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
 msgid "Checkin attempted on item during minimum transit checkin interval."

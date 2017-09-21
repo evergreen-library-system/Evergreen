@@ -2,14 +2,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-08-20 08:13+0000\n"
+"POT-Creation-Date: 2017-09-03 23:33-0400\n"
+"PO-Revision-Date: 2017-09-06 11:45+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-08-21 05:12+0000\n"
+"X-Launchpad-Export-Date: 2017-09-07 04:37+0000\n"
 "X-Generator: Launchpad (build 18446)\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -261,6 +261,10 @@ msgstr "Սպասարկումը էլ չունի մնացող պահումներ"
 msgid "This account is marked as inactive"
 msgstr "Հաշիվը նշված է որպես ոչ ակտիվ"
 
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+msgid "The distribution still has dependent objects"
+msgstr "Բաշխումը դեռ ունի կախյալ օբյեկտներ։"
+
 #: 8003.OFFLINE_PARAM_ERROR:948
 msgid "Missing params in offline upload"
 msgstr "Բացակա պարամետրեր ցանցից անջատ բեռնավորման դեպքում"
@@ -268,6 +272,10 @@ msgstr "Բացակա պարամետրեր ցանցից անջատ բեռնավո
 #: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:562
 msgid "The requested reporter_report_folder was not found"
 msgstr "Հարցվող reporter_report_folder չի գտնված"
+
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+msgid "The prediction pattern still has dependent objects"
+msgstr "կանխատեսվող օրինակը դեռ ունի կախյալ օբյեկտներ։"
 
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
@@ -447,6 +455,10 @@ msgstr "Հարցվող config_metabib_field չի գտնված"
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:404
 msgid "The requested actor_org_address was not found"
 msgstr "Հարցվող actor_org_address չի գտնված"
+
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+msgid "The stream still has dependent objects"
+msgstr "հոսքը դեռ ունի կախյալ օբյեկտներ։"
 
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
 msgid "Checkin attempted on item during minimum transit checkin interval."

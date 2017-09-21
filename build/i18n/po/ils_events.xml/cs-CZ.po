@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-09-02 21:34+0000\n"
+"POT-Creation-Date: 2017-09-03 23:33-0400\n"
+"PO-Revision-Date: 2017-09-17 15:31+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-03 05:33+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-09-18 05:30+0000\n"
+"X-Generator: Launchpad (build 18449)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -263,6 +263,10 @@ msgstr "Bylo dosaženo maximálního možného počtu prodloužení"
 msgid "This account is marked as inactive"
 msgstr "Tento účet je označen jako neaktivní"
 
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+msgid "The distribution still has dependent objects"
+msgstr "Distribuce má stále připojené objekty"
+
 #: 8003.OFFLINE_PARAM_ERROR:948
 msgid "Missing params in offline upload"
 msgstr "Chybějící parametry při nahrání offline souboru"
@@ -270,6 +274,10 @@ msgstr "Chybějící parametry při nahrání offline souboru"
 #: 1637.REPORTER_REPORT_FOLDER_NOT_FOUND:562
 msgid "The requested reporter_report_folder was not found"
 msgstr "Požadovaný reporter_report_folder nebyl nalezen"
+
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+msgid "The prediction pattern still has dependent objects"
+msgstr "Schéma predikce má stále připojené objekty"
 
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
@@ -449,6 +457,10 @@ msgstr "Požadovaný config_metabib_field nebyl nalezen"
 #: 1584.ACTOR_ORG_ADDRESS_NOT_FOUND:404
 msgid "The requested actor_org_address was not found"
 msgstr "Požadovaný actor_org_address nebyl nalezen"
+
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+msgid "The stream still has dependent objects"
+msgstr "Řada exemplářů mů stále připojené objekty"
 
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
 msgid "Checkin attempted on item during minimum transit checkin interval."

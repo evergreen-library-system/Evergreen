@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:40-0400\n"
-"PO-Revision-Date: 2017-08-25 12:30+0000\n"
+"PO-Revision-Date: 2017-09-18 09:46+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-08-26 05:12+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-09-19 05:10+0000\n"
+"X-Generator: Launchpad (build 18449)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -6781,7 +6781,7 @@ msgstr "Režim:"
 
 #: staff.serial.manage_items.bind.label
 msgid "Bind"
-msgstr "Vazby"
+msgstr "Svázat"
 
 #: staff.serial.manage_items.receive.label
 msgid "Receive"
@@ -6952,7 +6952,7 @@ msgstr "Má varianty"
 
 #: staff.serial.patternwiz.units_per.undetermined.label
 msgid "Undetermined"
-msgstr "Nezjištěno"
+msgstr "Neurčeno"
 
 #: staff.serial.patternwiz.continuity.continuous.label
 msgid "Increments continuously"
@@ -7087,7 +7087,7 @@ msgstr "Z"
 
 #: staff.serial.patternwiz.compress.cannot
 msgid "Cannot compress or expand"
-msgstr "Zkrácení a rozpis"
+msgstr "Nelze zkrátit nebo rozepsat"
 
 #: staff.serial.patternwiz.compress.can_compress
 msgid "Can compress but not expand"
@@ -10384,7 +10384,7 @@ msgstr "Datum vydání"
 
 #: staff.cat.bib_brief.call_number.label
 msgid "Bib Call #:"
-msgstr "Signatura z bib. záznamu #:"
+msgstr "Signatura z bib. záznamu:"
 
 #. "TCN" is an abbreviation for "title control number"
 #: staff.cat.bib_brief.title_control_number.label
@@ -11462,7 +11462,7 @@ msgstr "Signatura"
 
 #: staff.cat.copy_summary.status.label
 msgid "Status:"
-msgstr "Statut:"
+msgstr "Status:"
 
 #: staff.cat.copy_summary.circulate.label
 msgid "Circulate:"
@@ -12615,7 +12615,7 @@ msgstr "Začáte&k platby"
 #: staff.patron.bill_history.bills.end_date.label
 msgctxt "staff.patron.bill_history.bills.end_date.label"
 msgid "End Date"
-msgstr "Ukončení platby"
+msgstr "Datum ukončení"
 
 #: staff.patron.bill_history.bills.retrieve.label
 #: staff.patron.bill_history.bills.retrieve.accesskey
@@ -14611,6 +14611,15 @@ msgid ""
 "here for legacy purposes, and the Custom/External Print strategy is more "
 "flexible."
 msgstr ""
+"Tato tisková strategie bude ignorovat nastavení tiskárny v sekci \"Běžná "
+"nastavení\". Ve  Windows musíte namapovat vašit tiskárnu na port LPT1 v menu "
+" Start  -&gt; Tiskárny a faxy -&gt; vaše tiskárn -&gt; kliknou pravým "
+"tlačítkem, Vlastnosti -&gt; Porty. Bude také ztraceno  HTML formátování jako "
+"různé řezy a velikosti písma a nebudou fungovat jakékoliv pokročilé šablony, "
+"které využívají  Javascript. Data jsou poslána na tiskárnu jako prost text. "
+"Tato možnost zde byla ponechána z historických důvodů - doporučujeme spíše "
+"použít Strategii pro přizpůsobený/externí tisk , která nabízí větší "
+"flexibilitu."
 
 #: staff.printing.advanced.custom_print.warning.header
 msgid "Note on Custom/External Print"
@@ -14622,6 +14631,9 @@ msgid ""
 "Settings\" section. Advanced templates using Javascript may not work, even "
 "if the external tool can take the receipt.html file."
 msgstr ""
+"Tato tisková strategie ignoruje nastavení tiskárny v sekci \"Běžná "
+"nastavení\". Pokročilé šablony, které používají Javascript, nemusí správně "
+"fungovat i přesto, že externí nástroj převzal soubor receipt.htm."
 
 #: staff.printing.advanced.html_templates.warning.header
 msgid "Also..."
@@ -14642,6 +14654,19 @@ msgid ""
 "&lt;p&gt;Hello World&lt;/p hex=\"0C\"&gt; will translate to Hello World + "
 "form feed control character."
 msgstr ""
+"Při použití šablon pro tisk stvrzenek se při volbě Tiskové strategie DOS "
+"LPT1 nebo  Přizpůsobené/externí tiskové strategie (s \"reciept.txt\")  "
+"klient pokusí převést jakékoliv HTML značky na text. Tento proces však může "
+"být neúplný a pokud používate tiskovu strategii prostého textu, měli byste "
+"kvůli zachování  nejlepší spolehlivosti  tiskového výstupu  zvážit "
+"přepracování Vašich šablon do prostého textu. Pokud ale používáte tiskovou "
+"strategii prostého textu spolu s HTML značkami, můžete použít zahrnout "
+"speciální znakové kódy ve dvoučíselném hexadecimálním tvaru v atributu "
+"\"hex\" pro daný prvek. Tyto kódy budou převedeny na skutečné znaky a budou "
+"vloženy na místo značky. Například  &lt;p hex=\"0C\"&gt;Ahoj světe&lt;/p&gt; "
+"bude převedeno na řídící znak pro zalomení + Ahoj světe. &lt;p&gt;Ahoj "
+"světe&lt;/p hex=\"0C\"&gt; bude převedeno na Ahoj světe + řídící znak pro "
+"zalomení."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"

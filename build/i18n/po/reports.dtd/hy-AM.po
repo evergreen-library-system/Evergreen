@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2017-07-26 07:11+0000\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"PO-Revision-Date: 2017-09-06 11:48+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-27 05:33+0000\n"
-"X-Generator: Launchpad (build 18439)\n"
+"X-Launchpad-Export-Date: 2017-09-07 04:37+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Accelerator-Marker: &\n"
 
 #: reports.oils_rpt_builder.close_window
@@ -706,6 +706,46 @@ msgstr "Ամիս(ներ)"
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
 msgstr " առաջ"
+
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr "Կաղապարի որոնման արդյունքներ։"
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr "Կաղապարի հարցում..."
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr "Փնտրիր կաղապարներ։"
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr "Բոլոր դաշտերը։"
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr "Անուն"
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr "Նկարագրություն"
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr "Բոլոր թղթապանակենրը։"
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr "Սկսել"
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr "Նախորդը"
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr "Հաջորդը"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"
