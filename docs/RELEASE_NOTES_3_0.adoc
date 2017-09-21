@@ -184,7 +184,7 @@ EDI attributes or fall back to traditional JEDI A/T template generation.
 
 This allows sites to activate EDI attributes on a per-account basis, making 
 it possible to migrate piecemeal to EDI attributes.  For the initial roll
-out of this new features, no accounts will be configured to use EDI 
+out of this new feature, no accounts will be configured to use EDI 
 attributes by default.  
 
 
@@ -336,6 +336,7 @@ The new option allows for time-based soft-targeting instead simple binary
 on/off soft-targeting.
 
 How soft-targeting works:
+
 * Update hold copy maps for all affected holds
 * Holds with viable targets (on the pull list) are otherwise left alone.
 * Holds without viable targets are retargeted in the usual manner. 
@@ -382,7 +383,7 @@ Miscellaneous Improvements
  * If a filter is in effect in the Library Settings Editor,
    the filter will continue to be applied after a user 
    changes the selected library.
- * Copy templates used for serials now correct link to age
+ * Copy templates used for serials now correctly link to age
    protection rules and MARC item type values (for the
    "Circ as Type" field). During upgrade, the database update
    will set to NULL any age protection and circ as type fields
@@ -463,7 +464,7 @@ SELECT action_trigger.purge_events();
 ---------------------------------------------------------------
 
 NOTE: On *very* large data sets (10s to 100s of millions of event and
-event_output rows), it may be advisable to first to repopulate the event
+event_output rows), it may be advisable to first repopulate the event
 and event_output tables with only the desired data before starting
 regular purges.  This can be done, for example, using the copy to temp
 table, truncate source table, repopulate source table from temp table
@@ -578,9 +579,9 @@ and headings browsing:
    displayed in the public catalog list.
  * A complete set of thesauruses are now included in the seed data.  Thesauruses
    can now be identified using short and long codes.
- * The labels for see and see-also references in the public catalog are now
+ * The labels for see and see-also references in the public catalog are 
    a bit more patron-friendly, and can now be tweaked via TPAC template
-   customization.
+   customization in the browse.tt2 file.
 
 
 
@@ -635,7 +636,7 @@ A new library setting, "Enable Digital Bookplate Search", controls
 whether to display a "Digital Bookplate" field in the search index
 drop-downs in the catalog. A "Digital Bookplate" search will include
 all records that have a copy that matches the tag specified by the user.
-It should be noted that this library settings does not affect the
+It should be noted that this library setting does not affect the
 display of copy tags on the catalog record summary page.
 
 
@@ -660,7 +661,7 @@ Circulation
 Batch Editing of Patron Records
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 There is a now a new interface analogous to the Copy Bucket interface
-to select and group of a set of users into a User Bucket.
+to select and group a set of users into a User Bucket.
 The addition of users to a User Bucket is possible from the Patron Search
 interface by the use of a new grid Action, and directly on the User Bucket
 interface by user barcode. It is also possible to add users to a User
@@ -762,7 +763,7 @@ Summary
 Details
 +++++++
 
-This is a followup to the work done in bug 1485374, where we added the ability
+This is a followup to the work done for 2.12, where we added the ability
 for the client to specify a timezone in which timestamps should be interpreted
 in business logic and the database.
 
@@ -770,9 +771,10 @@ Most specifically, this work focuses on circulation due dates and the closed
 date editor. Due dates, where displayed using stock templates (including
 receipt templates) and used for fine calculation, are now manipulated in the
 library's configured timezone. This is controlled by the new 'lib.timezone'
-YAOUS, loaded from the server when required. Additionally, closings are
-recorded in the library's timezone so that so that due date calculation is more
-accurate. The closed date editor is also taught how to display closings in the
+setting available via the Library Settings Editor, loaded from the server when
+required. Additionally, closings are recorded in the library's timezone so that
+due date calculation is more accurate. The closed date editor is also
+taught how to display closings in the
 closed library's timezone. Closed date entries also explicitly record if they
 are a full day closing, or a multi-day closing. This significantly simplifies
 the editor, and may be useful in other contexts.
@@ -797,7 +799,8 @@ the number of seconds in the duration is divisible by 86,400, or 24 hours worth
 of seconds) then the date is interpreted as being in the circulation library's
 timezone. If it is an hourly loan (any duration that does not meet the
 day-granular criterium) then it is instead displayed in the client's timezone,
-just as all other timestamps currently are, because of the work in 1485374.
+just as all other timestamps currently are, because of the previous Evergreen
+timezone work.
 
 The OPAC is adjusted to always display the due date in the circulating
 library's timezone. Because the OPAC displays only the date portion of the due
@@ -811,9 +814,6 @@ to take those timezones into account.
 
 An optional SQL command is provided by the upgrade script to retroactively
 adjust existing due dates after library configuration is complete.
-
-This work, as with 1485374, was funded by SITKA, and we thank them for their
-partnership in making this happen!
 
 
 
@@ -921,7 +921,7 @@ Add Circ Modifier to Record Detail Page in Staff TPAC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The circ_modifier field is added to the table of copies to make
 more information available to staff without having to open
-the Holdings Maintenance view.
+the Holdings View.
 
 
 
@@ -998,6 +998,8 @@ Clickable Copy Locations
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Adds a URL field to the copy locations editor. When a URL is entered in this field, 
 the associated copy location will display as a link in the OPAC summary display.
+This link can be useful for retrieving maps or other directions to the copy
+location to aid users in finding material.
 
 
 
