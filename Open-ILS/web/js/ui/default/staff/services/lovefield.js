@@ -41,7 +41,7 @@ angular.module('egCoreMod')
 
 .factory('egLovefield', ['$q','$rootScope','egCore','$timeout', 
                  function($q , $rootScope , egCore , $timeout) { 
-    
+
     var service = {};
 
     function connectOrGo() {
@@ -63,20 +63,27 @@ angular.module('egCoreMod')
         var deferred = $q.defer();
 
         console.debug('attempting offline DB connection');
-        osb.connect().then(
-            function(db) {
-                console.debug('successfully connected to offline DB');
-                service.connectPromise = null;
-                lf.offlineDB = db;
-                deferred.resolve();
-            },
-            function(err) {
-                // assumes that a single connection failure means
-                // a connection will never succeed.
-                service.cannotConnect = true;
-                console.error('Cannot connect to offline DB: ' + err);
-            }
-        );
+        try {
+            osb.connect().then(
+                function(db) {
+                    console.debug('successfully connected to offline DB');
+                    service.connectPromise = null;
+                    lf.offlineDB = db;
+                    deferred.resolve();
+                },
+                function(err) {
+                    // assumes that a single connection failure means
+                    // a connection will never succeed.
+                    service.cannotConnect = true;
+                    console.error('Cannot connect to offline DB: ' + err);
+                }
+            );
+        } catch (e) {
+            // .connect() will throw an error if it detects that a connection
+            // attempt is already in progress; this can happen with PhantomJS
+            console.error('Cannot connect to offline DB: ' + e);
+            service.cannotConnect = true;
+        }
 
         service.connectPromise = deferred.promise;
         return service.connectPromise;
