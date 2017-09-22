@@ -32,6 +32,12 @@
         %]
         <input type="hidden" name="redirect_to" value="[% redirect | html %]" />
         <input type="hidden" name="hold_source_page" value="[% CGI.param('hold_source_page') | html %]" />
+
+        <!-- Adding hidden fields so that parameters are maintained in
+        searchbar throughout the place hold process. -->
+        <input type="hidden" name="locg" value="[% CGI.param('locg') %]" />
+        <input type="hidden" name="qtype" value="[% CGI.param('qtype') %]" />
+        <input type="hidden" name="query" value="[% CGI.param('query') %]" />
         [%
             usr_barcode = CGI.param('usr_barcode') | html;
             is_requestor = CGI.param('is_requestor');
