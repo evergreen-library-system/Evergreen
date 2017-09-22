@@ -4,7 +4,7 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (stretch, jessie, wheezy),
+# Currently supports Debian (stretch, jessie),
 # Ubuntu (14.04), Ubuntu (16.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
@@ -13,8 +13,6 @@
 # 	make -f Makefile.install debian-stretch
 # 	- or -
 # 	make -f Makefile.install debian-jessie
-# 	- or -
-# 	make -f Makefile.install debian-wheezy
 # 	- or -
 # 	make -f Makefile.install ubuntu-trusty
 # 	- or -
@@ -68,8 +66,6 @@ debian-stretch:
 	@make -f $(DIR)/Makefile.debian-stretch
 debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie
-debian-wheezy:
-	@make -f $(DIR)/Makefile.debian-wheezy
 ubuntu-xenial:
 	@make -f $(DIR)/Makefile.ubuntu-xenial
 ubuntu-trusty:
@@ -81,8 +77,6 @@ postgres-server-debian-stretch:
 	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server
 postgres-server-debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
-postgres-server-debian-wheezy:
-	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
 postgres-server-ubuntu-xenial:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
 postgres-server-ubuntu-trusty:
@@ -98,8 +92,6 @@ debian-stretch-developer:
 	@make -f $(DIR)/Makefile.debian-stretch install_developer
 debian-jessie-developer:
 	@make -f $(DIR)/Makefile.debian-jessie install_developer
-debian-wheezy-developer:
-	@make -f $(DIR)/Makefile.debian-wheezy install_developer
 
 ubuntu-xenial-translator:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
@@ -109,8 +101,6 @@ debian-stretch-translator:
 	@make -f $(DIR)/Makefile.debian-stretch install_translator
 debian-jessie-translator:
 	@make -f $(DIR)/Makefile.debian-jessie install_translator
-debian-wheezy-translator:
-	@make -f $(DIR)/Makefile.debian-wheezy install_translator
 
 ubuntu-xenial-packager:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
@@ -120,7 +110,5 @@ debian-stretch-packager:
 	@make -f $(DIR)/Makefile.debian-stretch install_packager
 debian-jessie-packager:
 	@make -f $(DIR)/Makefile.debian-jessie install_packager
-debian-wheezy-packager:
-	@make -f $(DIR)/Makefile.debian-wheezy install_packager
 
 # vim:noet:sw=4:ts=4:

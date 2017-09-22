@@ -137,9 +137,7 @@ gen_scripts = \
 # config files that are generated from *.in files and can
 # be deleted by a make clean
 gen_docs = \
-	$(examples)/apache/eg.conf \
-	$(examples)/apache/eg_vhost.conf \
-	$(examples)/apache/eg_startup \
+	$(examples)/apache_24/eg_startup \
 	$(examples)/apache_24/eg_24.conf \
 	$(examples)/apache_24/eg_vhost_24.conf
 
@@ -234,14 +232,8 @@ $(supportscr)/offline-blocked-list.pl: Makefile $(supportscr)/offline-blocked-li
 	$(do_subst) $(supportscr)/offline-blocked-list.pl.in > "$@"
 	chmod 755 "$@"
 
-$(examples)/apache/eg.conf: Makefile $(examples)/apache/eg.conf.in
-	$(do_subst) $(examples)/apache/eg.conf.in > "$@"
-
-$(examples)/apache/eg_vhost.conf: Makefile $(examples)/apache/eg_vhost.conf.in
-	$(do_subst) $(examples)/apache/eg_vhost.conf.in > "$@"
-
-$(examples)/apache/eg_startup: Makefile $(examples)/apache/eg_startup.in
-	$(do_subst) $(examples)/apache/eg_startup.in > "$@"
+$(examples)/apache_24/eg_startup: Makefile $(examples)/apache_24/eg_startup.in
+	$(do_subst) $(examples)/apache_24/eg_startup.in > "$@"
 
 $(examples)/apache_24/eg_24.conf: Makefile $(examples)/apache_24/eg.conf.in
 	$(do_subst) $(examples)/apache_24/eg.conf.in > "$@"
