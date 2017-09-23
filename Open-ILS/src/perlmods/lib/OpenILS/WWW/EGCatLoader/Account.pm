@@ -1000,6 +1000,23 @@ sub load_place_hold {
 
     return $self->generic_redirect unless @targets;
 
+    # Check for multiple hold placement via the num_copies widget.
+    my $num_copies = int($cgi->param('num_copies')); # if undefined, we get 0.
+    if ($num_copies > 1) {
+        # Only if we have 1 hold target and no parts.
+        if (scalar(@targets) == 1 && !$parts[0]) {
+            # Also, only for M and T holds.
+            if ($ctx->{hold_type} eq 'M' || $ctx->{hold_type} eq 'T') {
+                # Add the extra holds to @targets. NOTE: We start with
+                # 1 and go to < $num_copies to account for the
+                # existing target.
+                for (my $i = 1; $i < $num_copies; $i++) {
+                    push(@targets, $targets[0]);
+                }
+            }
+        }
+    }
+
     $logger->info("Looking at hold_type: " . $ctx->{hold_type} . " and targets: @targets");
 
     $ctx->{staff_recipient} = $self->editor->retrieve_actor_user([
@@ -1241,15 +1258,23 @@ sub load_place_hold {
         # like a real P-type hold.
         my (@p_holds, @t_holds);
 
-        for my $idx (0..$#parts) {
-            my $hdata = $hold_data[$idx];
-            if (my $part = $parts[$idx]) {
-                $hdata->{target_id} = $part;
-                $hdata->{selected_part} = $part;
-                push(@p_holds, $hdata);
-            } else {
-                push(@t_holds, $hdata);
+        # Now that we have the num_copies field for mutliple title and
+        # metarecord hold placement, the number of holds and parts
+        # arrays can get out of sync.  We only want to parse out parts
+        # if the numbers are equal.
+        if ($#hold_data == $#parts) {
+            for my $idx (0..$#parts) {
+                my $hdata = $hold_data[$idx];
+                if (my $part = $parts[$idx]) {
+                    $hdata->{target_id} = $part;
+                    $hdata->{selected_part} = $part;
+                    push(@p_holds, $hdata);
+                } else {
+                    push(@t_holds, $hdata);
+                }
             }
+        } else {
+            @t_holds = @hold_data;
         }
 
         $self->apache->log->warn("$#parts : @t_holds");
@@ -1342,7 +1367,8 @@ sub attempt_hold_placement {
                 last;
             }
 
-            my ($hdata) = grep {$_->{target_id} eq $resp->{target}} @hold_data;
+            # Skip those that had the hold_success or hold_failed fields set for duplicate holds placement.
+            my ($hdata) = grep {$_->{target_id} eq $resp->{target} && !($_->{hold_failed} || $_->{hold_success})} @hold_data;
             my $result = $resp->{result};
 
             if ($U->event_code($result)) {
