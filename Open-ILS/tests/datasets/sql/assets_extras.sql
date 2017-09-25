@@ -61,7 +61,7 @@ INSERT INTO asset.copy_location (owning_lib, name, holdable) VALUES
 (5, 'Reserves', FALSE),
 (3, 'Reserves', FALSE),
 (5, 'Theses', FALSE),
-(7, 'Theses', FALSE),
+(7, 'Theses', TRUE),
 (2, 'Special Collections', FALSE),
 (6, 'Special Collections', FALSE),
 (7, 'Special Collections', FALSE);
