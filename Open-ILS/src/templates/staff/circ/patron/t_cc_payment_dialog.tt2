@@ -43,18 +43,6 @@
       </div><!--cc-internal-wrapper-->
       <div ng-if="context.cc.where_process == '0'">
         <div class="row form-group">
-          <div class="col-md-4"><label>[% l('Credit Card Type') %]</label></div>
-          <div class="col-md-8">
-            <select class="form-control" ng-model="context.cc.type">
-              <option value='VISA'>[% l('VISA') %]</option>
-              <option value='MasterCard'>[% l('Mastercard') %]</option>
-              <option value='American Express'>[% l('American Express') %]</option>
-              <option value='Discover'>[% l('Discover') %]</option>
-              <option value='Other'>[% l('Other') %]</option>
-            </select>
-          </div>
-        </div>
-        <div class="row form-group">
           <div class="col-md-4"><label>[% l('Approval Code') %]</label></div>
           <div class="col-md-8">
             <input type='text' class="form-control" ng-model="context.cc.approval_code"/>
