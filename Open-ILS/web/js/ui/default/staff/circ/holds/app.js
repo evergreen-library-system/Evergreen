@@ -301,7 +301,9 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.details.batch.retrieve.authoritative',
-            egCore.auth.token(), Object.keys(details_needed)
+            egCore.auth.token(), Object.keys(details_needed), {
+                include_usr : true
+            }
 
         ).then(null, null, function(hold_info) {
             egProgressDialog.increment();
