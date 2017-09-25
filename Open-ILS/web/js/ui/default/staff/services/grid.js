@@ -119,8 +119,10 @@ angular.module('egGridMod',
         controller : [
                     '$scope','$q','egCore','egGridFlatDataProvider','$location',
                     'egGridColumnsProvider','$filter','$window','$sce','$timeout',
+                    'egProgressDialog',
             function($scope,  $q , egCore,  egGridFlatDataProvider , $location,
-                     egGridColumnsProvider , $filter , $window , $sce , $timeout) {
+                     egGridColumnsProvider , $filter , $window , $sce , $timeout,
+                     egProgressDialog) {
 
             var grid = this;
 
@@ -945,9 +947,35 @@ angular.module('egGridMod',
                 return str;
             }
 
-            // sets the download file name and inserts the current CSV
-            // into a Blob URL for browser download.
-            $scope.generateCSVExportURL = function() {
+            /** Export the full data set as CSV.
+             *  Flow of events:
+             *  1. User clicks the 'download csv' link
+             *  2. All grid data is retrieved asychronously
+             *  3. Once all data is all present and CSV-ized, the download 
+             *     attributes are linked to the href.
+             *  4. The href .click() action is prgrammatically fired again,
+             *     telling the browser to download the data, now that the
+             *     data is available for download.
+             *  5 Once downloaded, the href attributes are reset.
+             */
+            grid.csvExportInProgress = false;
+            $scope.generateCSVExportURL = function($event) {
+
+                if (grid.csvExportInProgress) {
+                    // This is secondary href click handler.  Give the
+                    // browser a moment to start the download, then reset
+                    // the CSV download attributes / state.
+                    $timeout(
+                        function() {
+                            $scope.csvExportURL = '';
+                            $scope.csvExportFileName = ''; 
+                            grid.csvExportInProgress = false;
+                        }, 500
+                    );
+                    return;
+                } 
+
+                grid.csvExportInProgress = true;
                 $scope.gridColumnPickerIsOpen = false;
 
                 // let the file name describe the grid
@@ -956,12 +984,21 @@ angular.module('egGridMod',
                     .replace(/\s+/g, '_') + '_' + $scope.page();
 
                 // toss the CSV into a Blob and update the export URL
-                var csv = grid.generateCSV();
-                var blob = new Blob([csv], {type : 'text/plain'});
-                $scope.csvExportURL = 
-                    ($window.URL || $window.webkitURL).createObjectURL(blob);
+                grid.generateCSV().then(function(csv) {
+                    var blob = new Blob([csv], {type : 'text/plain'});
+                    $scope.csvExportURL = 
+                        ($window.URL || $window.webkitURL).createObjectURL(blob);
+
+                    // Fire the 2nd click event now that the browser has
+                    // information on how to download the CSV file.
+                    $timeout(function() {$event.target.click()});
+                });
             }
 
+            /*
+             * TODO: does this serve any purpose given we can 
+             * print formatted HTML?  If so, generateCSV() now
+             * returns a promise, needs light refactoring...
             $scope.printCSV = function() {
                 $scope.gridColumnPickerIsOpen = false;
                 egCore.print.print({
@@ -970,40 +1007,102 @@ angular.module('egGridMod',
                     content_type : 'text/plain'
                 });
             }
+            */
+
+            // Given a row item and column definition, extract the
+            // text content for printing.  Templated columns must be
+            // processed and parsed as HTML, then boiled down to their 
+            // text content.
+            grid.getItemTextContent = function(item, col) {
+                var val;
+                if (col.template) {
+                    val = $scope.translateCellTemplate(col, item);
+                    if (val) {
+                        var node = new DOMParser()
+                            .parseFromString(val, 'text/html');
+                        val = $(node).text();
+                    }
+                } else {
+                    val = grid.dataProvider.itemFieldValue(item, col);
+                    val = $filter('egGridValueFilter')(val, col, item);
+                }
+                return val;
+            }
+
+            /**
+             * Fetches all grid data and transates each item into a simple
+             * key-value pair of column name => text-value.
+             * Included in the response for convenience is the list of 
+             * currently visible column definitions.
+             * TODO: currently fetches a maximum of 10k rows.  Does this
+             * need to be configurable?
+             */
+            grid.getAllItemsAsText = function() {
+                var text_items = [];
+
+                // we don't know the total number of rows we're about
+                // to retrieve, but we can indicate the number retrieved
+                // so far as each item arrives.
+                egProgressDialog.open({value : 0});
+
+                var visible_cols = grid.columnsProvider.columns.filter(
+                    function(c) { return c.visible });
+
+                return grid.dataProvider.get(0, 10000).then(
+                    function() { 
+                        return {items : text_items, columns : visible_cols};
+                    }, 
+                    null,
+                    function(item) { 
+                        egProgressDialog.increment();
+                        var text_item = {};
+                        angular.forEach(visible_cols, function(col) {
+                            text_item[col.name] = 
+                                grid.getItemTextContent(item, col);
+                        });
+                        text_items.push(text_item);
+                    }
+                ).finally(egProgressDialog.close);
+            }
+
+            // Fetch "all" of the grid data, translate it into print-friendly 
+            // text, and send it to the printer service.
+            $scope.printHTML = function() {
+                $scope.gridColumnPickerIsOpen = false;
+                return grid.getAllItemsAsText().then(function(text_items) {
+                    return egCore.print.print({
+                        template : 'grid_html',
+                        scope : text_items
+                    });
+                });
+            }
 
             // generates CSV for the currently visible grid contents
             grid.generateCSV = function() {
-                var csvStr = '';
-                var colCount = grid.columnsProvider.columns.length;
+                return grid.getAllItemsAsText().then(function(text_items) {
+                    var columns = text_items.columns;
+                    var items = text_items.items;
+                    var csvStr = '';
 
-                // columns
-                angular.forEach(grid.columnsProvider.columns,
-                    function(col) {
-                        if (!col.visible) return;
+                    // column headers
+                    angular.forEach(columns, function(col) {
                         csvStr += grid.csvDatum(col.label);
                         csvStr += ',';
-                    }
-                );
+                    });
 
-                csvStr = csvStr.replace(/,$/,'\n');
-
-                // items
-                angular.forEach($scope.items, function(item) {
-                    angular.forEach(grid.columnsProvider.columns, 
-                        function(col) {
-                            if (!col.visible) return;
-                            // bare value
-                            var val = grid.dataProvider.itemFieldValue(item, col);
-                            // filtered value (dates, etc.)
-                            val = $filter('egGridValueFilter')(val, col, item);
-                            csvStr += grid.csvDatum(val);
-                            csvStr += ',';
-                        }
-                    );
                     csvStr = csvStr.replace(/,$/,'\n');
-                });
 
-                return csvStr;
+                    // items
+                    angular.forEach(items, function(item) {
+                        angular.forEach(columns, function(col) {
+                            csvStr += grid.csvDatum(item[col.name]);
+                            csvStr += ',';
+                        });
+                        csvStr = csvStr.replace(/,$/,'\n');
+                    });
+
+                    return csvStr;
+                });
             }
 
             // Interpolate the value for column.linkpath within the context
