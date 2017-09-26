@@ -130,6 +130,30 @@ the XUL staff client is slated to be entirely removed.
 New Features
 ------------
 
+New Staff Client
+~~~~~~~~~~~~~~~~
+
+Evergreen 3.0 features a new, modern staff client that runs in the web browser
+and can be used on desktop and mobile devices. All functional areas of the 
+system, including circulation, cataloging, acquisitions, serials, reports,
+booking, administration, and offline circulation, are available in the new staff 
+client. Chrome and Firefox are officially supported for use with the web client.
+
+Library staff will no longer need to download separate software to perform most 
+actions in Evergreen. A Chrome plugin called Hatch will be available as a 
+separate installation for workstations that require seamless, dialog-free
+printing to multiple printers.  
+
+In addition to adding more portability and stability, the new staff client also
+presents a cleaner and more modern interface for users. By virtue of running in
+a browser, actions that users are accustomed to performing on other web sites
+should now be available in the Evergreen client.
+
+The old, XUL client will continue to be available to allow for a gradual 
+transition to the browser-based client, but no new features will be added. The
+old client will totally be removed from Evergreen in the Fall 2018 3.2.0
+release.
+
 
 
 Administration
@@ -1279,6 +1303,97 @@ in the future.
 
 Acknowledgments
 ---------------
+
+Web Client Acknowledgements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The project to move Evergreen to a new browser-based web client launched four 
+years ago at the September 2017 Evergreen developer hack-a-way when the
+developer community voted to move away from the XUL client and explore other
+platforms. The first web client preview became available in Evergreen 2.7 when
+circulation was moved the the new platform.
+
+The browser-based client is available due to the work of many coders, testers,
+documentors, translators, project managers, spec writers, funders and other 
+contributors over the past four years.
+
+The Evergreen project would like to acknowledge the following organizations
+that funded development of the Web Staff Client:
+
+* Bibliomation
+* British Columbia Libraries Cooperative
+* C/W MARS
+* Georgia Public Library Service
+* Grand Rapids Public Library
+* The Howe Library
+* Kenton County Public Library
+* King County Library System
+* MassLNC
+* NC Cardinal
+* OhioNet
+* Pennsylvania Integrated Library System
+* Pioneer Library System
+* SC Lends
+
+The Evergreen project would also like to thank the following individuals who 
+contributed code, translations, documentations patches, tests, technical
+specifications and proect management to the Web Staff Client:
+
+* Jason Boyer
+* Adam Bowling
+* Christine Burns
+* Eva Cerniňáková
+* Galen Charlton
+* Dawn Dale
+* Jeff Davis
+* Grace Dunbar
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Sally Fortin
+* Jeff Godin
+* Rogan Hamby
+* Blake Henderson
+* Billy Horn
+* Skye Howard
+* Kyle Huckins
+* Linda Jansová
+* Tina Ji
+* Mary Jinglewski
+* Angela Kilsdonk
+* Victoria Lewis
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Christine Morgan
+* Michele Morgan
+* Stephen Moss
+* Andrea Neiman
+* Nawras Othman
+* Freddy Enrique Pelayo Huapalla
+* Jillianne Presley
+* Jennifer Pringle
+* Michelle Purcell
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Clare Sobotka
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Yamil Suarez
+* Scott Thomas
+* Anahi Valdez
+* Cesar Velez
+* Dan Wells
+* Beth Willis
+* Tigran Zargaryan
+
+Evergreen 3.0 Acknowledgements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
