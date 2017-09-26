@@ -816,6 +816,7 @@ CREATE TABLE action.fieldset_group (
     complete_time   TIMESTAMPTZ,
     container       INT,        -- Points to a container of some type ...
     container_type  TEXT,       -- One of 'biblio_record_entry', 'user', 'call_number', 'copy'
+    can_rollback    BOOL        DEFAULT TRUE,
     rollback_group  INT         REFERENCES action.fieldset_group (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     rollback_time   TIMESTAMPTZ,
     creator         INT         NOT NULL REFERENCES actor.usr (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
