@@ -7106,13 +7106,15 @@ ALTER TABLE biblio.record_entry ENABLE TRIGGER  fingerprint_tgr;
 COMMIT;
 
 \echo ---------------------------------------------------------------------
-\echo Reingest display fields.  This can ban canceled via Ctrl-C and run at
+\echo Reingest display fields.  This can be canceled via Ctrl-C and run at
 \echo a later time with the following (or similar) SQL:
 \echo
 \echo 'SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE, '
 \echo '    (SELECT ARRAY_AGG(id)::INT[] FROM config.metabib_field WHERE display_field))'
 \echo '    FROM biblio.record_entry WHERE NOT deleted AND id > 0;'
 \echo
+\echo Note that if you cancel now, you will also need to do the authority reingest
+\echo further down in the upgrade script.
 
 -- REINGEST DISPLAY ENTRIES
 SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE, 
@@ -7120,3 +7122,54 @@ SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE,
     FROM biblio.record_entry WHERE NOT deleted AND id > 0;
 
 
+\echo ---------------------------------------------------------------------
+\echo Reingest authority records. This can be canceled via Ctrl-C and run
+\echo at a later time; see the upgrade script.  Note that if you cancel now,
+\echo you should consult this upgrade script for the reingest actions required.
+BEGIN;
+
+CREATE TEMPORARY TABLE internal_flag_state AS
+    SELECT name, enabled
+    FROM config.internal_flag
+    WHERE name in (
+        'ingest.reingest.force_on_same_marc',
+        'ingest.disable_authority_auto_update',
+        'ingest.disable_authority_full_rec'
+    );
+
+-- work around fact that ingest.disable_authority_full_rec may not exist
+INSERT INTO config.internal_flag (name, enabled)
+SELECT 'ingest.disable_authority_full_rec', TRUE
+WHERE NOT EXISTS (SELECT 1 FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec');
+
+UPDATE config.internal_flag
+SET enabled = TRUE
+WHERE name in (
+    'ingest.reingest.force_on_same_marc',
+    'ingest.disable_authority_auto_update',
+    'ingest.disable_authority_full_rec'
+);
+
+ALTER TABLE authority.record_entry DISABLE TRIGGER a_marcxml_is_well_formed;
+ALTER TABLE authority.record_entry DISABLE TRIGGER b_maintain_901;
+ALTER TABLE authority.record_entry DISABLE TRIGGER c_maintain_control_numbers;
+ALTER TABLE authority.record_entry DISABLE TRIGGER map_thesaurus_to_control_set;
+
+UPDATE authority.record_entry SET id = id WHERE NOT DELETED;
+
+ALTER TABLE authority.record_entry ENABLE TRIGGER a_marcxml_is_well_formed;
+ALTER TABLE authority.record_entry ENABLE TRIGGER b_maintain_901;
+ALTER TABLE authority.record_entry ENABLE TRIGGER c_maintain_control_numbers;
+ALTER TABLE authority.record_entry ENABLE TRIGGER map_thesaurus_to_control_set;
+
+-- and restore
+UPDATE config.internal_flag a
+SET enabled = b.enabled
+FROM internal_flag_state b
+WHERE a.name = b.name;
+
+DELETE FROM config.internal_flag
+WHERE name = 'ingest.disable_authority_full_rec'
+AND NOT EXISTS (SELECT 1 FROM internal_flag_state WHERE name = 'ingest.disable_authority_full_rec');
+
+COMMIT;
