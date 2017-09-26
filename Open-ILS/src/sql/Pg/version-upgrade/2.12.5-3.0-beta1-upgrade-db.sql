@@ -2564,7 +2564,7 @@ INSERT INTO asset.copy_vis_attr_cache (target_copy, record, vis_attr_vector)
       FROM  asset.copy cp
             JOIN asset.call_number cn ON (cp.call_number = cn.id);
 
-UPDATE biblio.record_entry SET vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id);
+-- updating vis cache for biblio.record_entry deferred to end
 
 CREATE TRIGGER z_opac_vis_mat_view_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR DELETE ON biblio.peer_bib_copy_map FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
@@ -7078,6 +7078,30 @@ $func$ LANGUAGE PLPERLU;
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON serial.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_control_numbers();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON authority.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_control_numbers();
 CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_control_numbers();
+
+COMMIT;
+
+\echo ---------------------------------------------------------------------
+\echo Updating visibility attribute vector for biblio.record_entry
+BEGIN;
+
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  a_marcxml_is_well_formed;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  aaa_indexing_ingest_or_delete;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  audit_biblio_record_entry_update_trigger;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  b_maintain_901;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  bbb_simple_rec_trigger;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  c_maintain_control_numbers;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  fingerprint_tgr;
+
+UPDATE biblio.record_entry SET vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id) WHERE NOT DELETED;
+
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  a_marcxml_is_well_formed;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  aaa_indexing_ingest_or_delete;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  audit_biblio_record_entry_update_trigger;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  b_maintain_901;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  bbb_simple_rec_trigger;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  c_maintain_control_numbers;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  fingerprint_tgr;
 
 COMMIT;
 
