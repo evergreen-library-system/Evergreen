@@ -186,8 +186,6 @@ include::admin/staff_client-column_picker.adoc[]
 
 include::admin/staff_client-recent_searches.adoc[]
 
-include::admin/staff_client-return_to_results_from_marc.adoc[]
-
 include::admin/workstation_admin.adoc[]
 
 // Push titles down one level.
