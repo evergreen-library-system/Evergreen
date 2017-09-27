@@ -23,25 +23,32 @@
 </div>
 <div class="row">
   <div class="col-md-8">
-     <h2>What is Evergreen?</h2>
-     <p>Evergreen is library automation software that assists libraries
-        in day-to-day operations such as checking out materials, keeping
-        track of users, sharing resources among a group of libraries,
-        acquiring materials, and providing a web-based library catalog for
-        the public.</p>
-     <p>The open-source community developing and supporting Evergreen is
-        marked by a high degree of participation from developers and from
-        the librarians who use the software.</p>
-     <p>More information can be found at <a
-        href="https://evergreen-ils.org"> https://evergreen-ils.org</a>.
-        For help in using Evergreen, see our documentation
-        at <a href="http://docs.evergreen-ils.org">
-        http://docs.evergreen-ils.org.</a></p>
-     <p>Evergreen is Copyright &#0169; Georgia Public Library
-        Service - A Unit of the University System of Georgia, and
-        others. The Evergreen software is distributed under the <a
-        href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html">
-        GNU General Public License, Version 2.</a></p>
+    <h2>[% l('What is Evergreen?') %]</h2>
+    <p>[% |l %]Evergreen is library automation software that assists libraries
+       in day-to-day operations such as checking out materials, keeping
+       track of users, sharing resources among a group of libraries,
+       acquiring materials, and providing a web-based library catalog for
+       the public.[% END %]
+    </p>
+    <p>[% |l %]The open-source community developing and supporting Evergreen is
+       marked by a high degree of participation from developers and from
+       the librarians who use the software.[% END %]
+    </p>
+    <p>[% |l(
+    '<a href="https://evergreen-ils.org">https://evergreen-ils.org</a>',
+    '<a href="http://docs.evergreen-ils.org">http://docs.evergreen-ils.org</a>') 
+     %]More information can be found at [_1]. For help in using Evergreen, 
+       see our documentation at [_2].[% END %]
+    </p>
+    <p>[% |l(
+      '<a href="https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html">',
+      '</a>') 
+      %]Evergreen is Copyright &#0169; Georgia Public Library Service - 
+        A Unit of the University System of Georgia, and others. The 
+        Evergreen software is distributed under the [_1]GNU General Public 
+        License, Version 2.[_2]
+      [% END %]
+    </p>
   </div>
 </div>
 
