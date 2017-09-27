@@ -186,6 +186,7 @@ UpUp.start({
     s.CONFIRM_CLEAR_PENDING = "[% l('Clear pending transactions') %]";
     s.CONFIRM_CLEAR_PENDING_BODY = "[% l('Are you certain you want to clear these pending offline transactions? This action is irreversible. Transactions cannot be recovered after clearing!') %]";
     s.LOCATION_NAME_OU_QUALIFIED = "[% l('{{location_name}} ({{owning_lib_shortname}})') %]";
+    s.CONFIRM_IN_HOUSE_NUM_USES_COUNT_TITLE = "[% l('Are you sure you want to record {{num_uses}} uses for this?') %]";
   }]);
 </script>
 
