@@ -215,7 +215,7 @@ CREATE TABLE config.metabib_field (
 	authority_xpath TEXT,
 	joiner      TEXT,
 	restrict	BOOL    DEFAULT FALSE NOT NULL,
-    display_field BOOL NOT NULL DEFAULT TRUE
+    display_field BOOL NOT NULL DEFAULT FALSE
 );
 COMMENT ON TABLE config.metabib_field IS $$
 XPath used for record indexing ingest
