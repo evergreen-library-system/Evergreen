@@ -826,7 +826,7 @@ CREATE TABLE action.fieldset_group (
 CREATE TABLE action.fieldset (
     id              SERIAL          PRIMARY KEY,
     fieldset_group  INT             REFERENCES action.fieldset_group (id)
-                                    DEFERRABLE INITIALLY DEFERRED,
+                                    ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     owner           INT             NOT NULL REFERENCES actor.usr (id)
                                     DEFERRABLE INITIALLY DEFERRED,
 	owning_lib      INT             NOT NULL REFERENCES actor.org_unit (id)
