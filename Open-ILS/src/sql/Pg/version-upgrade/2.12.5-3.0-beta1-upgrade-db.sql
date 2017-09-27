@@ -7092,6 +7092,7 @@ ALTER TABLE biblio.record_entry DISABLE TRIGGER  b_maintain_901;
 ALTER TABLE biblio.record_entry DISABLE TRIGGER  bbb_simple_rec_trigger;
 ALTER TABLE biblio.record_entry DISABLE TRIGGER  c_maintain_control_numbers;
 ALTER TABLE biblio.record_entry DISABLE TRIGGER  fingerprint_tgr;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  z_opac_vis_mat_view_tgr;
 
 UPDATE biblio.record_entry SET vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id) WHERE NOT DELETED;
 
@@ -7102,6 +7103,7 @@ ALTER TABLE biblio.record_entry ENABLE TRIGGER  b_maintain_901;
 ALTER TABLE biblio.record_entry ENABLE TRIGGER  bbb_simple_rec_trigger;
 ALTER TABLE biblio.record_entry ENABLE TRIGGER  c_maintain_control_numbers;
 ALTER TABLE biblio.record_entry ENABLE TRIGGER  fingerprint_tgr;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  z_opac_vis_mat_view_tgr;
 
 COMMIT;
 
