@@ -54,6 +54,12 @@ include::circulation/booking.adoc[]
 
 include::circulation/triggered_events.adoc[]
 
+:leveloffset: 0
+
+include::circulation/user_buckets.adoc[]
+
+:leveloffset: -1
+
 include::opac/using_the_public_access_catalog.adoc[]
 
 :leveloffset: 0

@@ -692,12 +692,12 @@ interface by user barcode. It is also possible to add users to a User
 Bucket by uploading a text file that contains a list of user barcodes.
 
 From this interface it is possible to perform a set of specific batch update
-operations against users.
+operations on user records.
 
 Editing users
 +++++++++++++
 
-The fields can now be changed in batch via an action on the User Bucket
+These fields can now be changed in batch via an action on the User Bucket
 grid if the staff user has the UPDATE_USER permission:
 
  * Active flag
@@ -708,21 +708,7 @@ grid if the staff user has the UPDATE_USER permission:
  * Barred flag (BAR_PATRON permission consulted)
  * Internet Access Level
 
-Each change set requires a name. Buckets may have multiple change sets. All
-users in the Bucket at the time of processing are updated when the change
-set is processed, and change sets are processed immediately upon successful
-creation. The interface delivers progress information regarding the
-processing stage and percent of completion.
-
-While processing the users, the original value for each field edited is
-recorded for potential future rollback. Users can examine the success and
-failure of applied change sets.
-
-The user will be able to rollback the entire change set, but not parts thereof.
-The rollback will affect only those users that were successfully updated by the
-original change set and may be different from the current set of users in the
-Bucket. Users can manually discard change sets, removing them from the
-interface but preventing future rollback.
+Changes made in this interface can be rolled back.
 
 As a batch process, rather than a direct edit, this mechanism explicitly skips
 processing of Action/Trigger event definitions for user update.
@@ -733,15 +719,7 @@ Deleting users
 The batch edit mechanism also allows for the batch deletion of user.  The staff
 user must have both the UPDATE_USER and DELETE_USER permissions.
 
-Each delete set requires a name. Buckets may have multiple delete sets. All
-users in the Bucket at the time of processing are marked as deleted when
-the delete set is processed. The interface delivers progress information
-regarding the processing stage and percent of completion.
-
-While processing the users, the original value for the "deleted" field will be
-recorded for potential future rollback. Users are able to examine the
-success and failure of applied delete sets in the same interface used for the
-above described change sets.
+Changes made in this interface can be rolled back.
 
 As a batch process, rather than a direct edit, this mechanism explicitly skips
 processing of Action/Trigger event definitions for user deletion.
@@ -754,9 +732,7 @@ Editing Statistical Category Entries
 
 All users in the bucket can have their Statistical Category Entries
 modified. Unlike user data field updates, modification of Statistical
-Category Entries is permanent and cannot be rolled back. No named change
-sets are required. The interface will deliver progress information regarding
-the processing stage and percent of completion.
+Category Entries is permanent and cannot be rolled back.
 
 As a batch process, rather than a direct edit, this mechanism explicitly skips
 processing of Action/Trigger event definitions for user update.

@@ -150,6 +150,12 @@ Negative balances
 
 This section needs to be written
 
+:leveloffset: 1
+
+include::circulation/user_buckets.adoc[]
+
+:leveloffset: 0
+
 
 Circulation timesavers and workflows
 ------------------------------------

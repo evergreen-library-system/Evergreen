@@ -52,16 +52,25 @@ Individual Evergreen Components
 
 include::development/intro_opensrf.adoc[]
 
-include::development/pgtap.adoc[]
-
 :leveloffset: 0
 
 include::development/support_scripts.adoc[]
 
 include::admin/actiontriggers_process.adoc[]
 
+Daemons and services
+--------------------
+
+:leveloffset: 1
+
 include::reports/reporter_daemon.adoc[]
 
+include::admin/qstore_service.adoc[]
+
+
+include::development/pgtap.adoc[]
+
+:leveloffset: 0
 
 System Configuration
 ====================
