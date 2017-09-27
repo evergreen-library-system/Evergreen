@@ -983,7 +983,26 @@ For example, to silence the alert that sounds after a successful patron search:
   * ln -s ../../nosound.wav by_search.wav
 
 
+Documentation
+~~~~~~~~~~~~~
 
+The official Evergreen manual has been split into eight new manuals, each
+designed for a specific audience. This new approach is designed to make
+the documentation more readable and usable.
+
+The specific audiences for the new manuals are:
+
+* Acquisitions staff
+* Circulation staff
+* Cataloging staff
+* Public services staff who use the public catalog
+* Serials staff
+* System administrators who use the command line
+* System administrators who use the Web client
+* System administrators and programmers who wish to integrate Evergreen
+with other technologies
+
+All manuals are available at http://docs.evergreen-ils.org
 
 
 Public catalog
