@@ -36,27 +36,7 @@ indexterm:[staff client, logging in]
 . Verify that the correct workstation is selected and click *Sign In*.
 
 [[browser_defaults]]
-Setting Browser Defaults for Web Client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To ensure that staff can easily get to the web client portal page on login 
-without additional steps, you can set the browser's home page to default to the
-web client. 
-
-Setting the Web Client as the Home Page in Chrome
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-. In the top-right corner of your browser, click the Chrome menu.
-. Select *Settings*.
-. In the _On startup_ section, select _Open a specific page or set of pages._
-. Click the *Set Pages* link.
-. Add _https://localhost/eg/staff/_ to the _Enter URL_ box and click *OK*.
-
-Setting the Web Client as the Home Page in Firefox
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-. In the top-right corner of your browser, click the menu button.
-. Click *Options*.
-. In the _When Firefox starts:_ dropdown menu, select _Show my home page_.
-. In the _Home Page_ box, add _https://localhost/eg/staff/_ and click *OK*.
 
 Logging Out
 ~~~~~~~~~~~
