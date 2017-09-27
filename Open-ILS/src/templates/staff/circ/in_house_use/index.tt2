@@ -28,7 +28,7 @@
         </label>
         <input type="number" min="1" max="{{countMax}}"
           class="form-control" focus-me="useFocus"
-           id="in-house-num-uses" ng-model="args.num_uses"/>
+           id="in-house-num-uses" ng-model="args.num_uses" ng-change="onNumUsesChanged()" />
       </div>
     </div>
 

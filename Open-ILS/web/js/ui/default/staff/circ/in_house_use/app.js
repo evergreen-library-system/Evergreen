@@ -46,7 +46,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
     });
 
     $scope.useFocus = true;
-    $scope.args = {noncat_type : 'barcode', num_uses : 1};
+    $scope.args = {noncat_type : 'barcode', num_uses : 1, needsCountWarnModal: false };
     var checkouts = [];
 
     var provider = egGridDataProvider.instance({});
@@ -62,7 +62,25 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
         return type ? type.name() : null;
     }
 
-    $scope.checkout = function(args) {
+    $scope.onNumUsesChanged = function(){
+        $scope.args.needsCountWarnModal = countWarn < $scope.args.num_uses;
+    }
+
+    $scope.checkout = function(args){
+        if ($scope.args.needsCountWarnModal) {
+            // show modal to allow warning/confirmation
+            egConfirmDialog.open(egCore.strings.CONFIRM_IN_HOUSE_NUM_USES_COUNT_TITLE, '',
+                { num_uses: $scope.args.num_uses }
+            ).result.then(function(){
+                $scope.args.needsCountWarnModal = false
+                $scope.checkoutStart(args)
+            });
+        } else {
+            $scope.checkoutStart(args);
+        }
+    }
+
+    $scope.checkoutStart = function(args) {
         $scope.copyNotFound = false;
 
         var coArgs = {
