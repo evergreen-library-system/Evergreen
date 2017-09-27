@@ -986,8 +986,8 @@ For example, to silence the alert that sounds after a successful patron search:
 
 
 
-OPAC
-~~~~
+Public catalog
+~~~~~~~~~~~~~~
 
 
 
