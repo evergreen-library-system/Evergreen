@@ -145,6 +145,22 @@ CREATE CONSTRAINT TRIGGER inherit_asset_copy_note_copy_fkey
         AFTER UPDATE OR INSERT OR DELETE ON asset.copy_note
         DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_note_owning_copy_inh_fkey();
 
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_tag_copy_map_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_tag_copy_map_copy_fkey
+        AFTER UPDATE OR INSERT OR DELETE ON asset.copy_tag_copy_map
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_tag_copy_map_copy_inh_fkey();
+
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE asset.call_number ADD CONSTRAINT asset_call_number_owning_lib_fkey FOREIGN KEY (owning_lib) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;

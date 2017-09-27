@@ -977,8 +977,7 @@ CREATE TRIGGER asset_copy_tag_fti_trigger
 
 CREATE TABLE asset.copy_tag_copy_map (
     id              BIGSERIAL PRIMARY KEY,
-    copy            BIGINT REFERENCES asset.copy (id)
-                    ON UPDATE CASCADE ON DELETE CASCADE,
+    copy            BIGINT,
     tag             INTEGER REFERENCES asset.copy_tag (id)
                     ON UPDATE CASCADE ON DELETE CASCADE
 );
