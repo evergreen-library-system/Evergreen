@@ -7128,6 +7128,11 @@ SELECT metabib.reingest_metabib_field_entries(id, TRUE, FALSE, TRUE, TRUE,
 \echo you should consult this upgrade script for the reingest actions required.
 BEGIN;
 
+-- add the flag ingest.disable_authority_full_rec if it does not exist
+INSERT INTO config.internal_flag (name, enabled)
+SELECT 'ingest.disable_authority_full_rec', FALSE
+WHERE NOT EXISTS (SELECT 1 FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec');
+
 CREATE TEMPORARY TABLE internal_flag_state AS
     SELECT name, enabled
     FROM config.internal_flag
@@ -7136,11 +7141,6 @@ CREATE TEMPORARY TABLE internal_flag_state AS
         'ingest.disable_authority_auto_update',
         'ingest.disable_authority_full_rec'
     );
-
--- work around fact that ingest.disable_authority_full_rec may not exist
-INSERT INTO config.internal_flag (name, enabled)
-SELECT 'ingest.disable_authority_full_rec', TRUE
-WHERE NOT EXISTS (SELECT 1 FROM config.internal_flag WHERE name = 'ingest.disable_authority_full_rec');
 
 UPDATE config.internal_flag
 SET enabled = TRUE
@@ -7167,9 +7167,5 @@ UPDATE config.internal_flag a
 SET enabled = b.enabled
 FROM internal_flag_state b
 WHERE a.name = b.name;
-
-DELETE FROM config.internal_flag
-WHERE name = 'ingest.disable_authority_full_rec'
-AND NOT EXISTS (SELECT 1 FROM internal_flag_state WHERE name = 'ingest.disable_authority_full_rec');
 
 COMMIT;
