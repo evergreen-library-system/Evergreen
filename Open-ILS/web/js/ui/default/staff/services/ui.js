@@ -310,26 +310,32 @@ function($timeout , $parse) {
     var service = {};
 
     service.open = function(args) {
-        service.close(); // force-kill existing instances.
-
-        // Reset to an indeterminate progress bar, 
-        // overlay with caller values.
-        egProgressData.reset();
-        service.update(angular.extend({}, args));
-
         return $uibModal.open({
             templateUrl: './share/t_progress_dialog',
             controller: ['$scope','$uibModalInstance','egProgressData',
                 function( $scope , $uibModalInstance , egProgressData) {
-                  service.currentInstance = $uibModalInstance;
-                  $scope.data = egProgressData; // tiny service
+                    // Once the new modal instance is available, force-
+                    // kill any other instances
+                    service.close(true); 
+
+                    // Reset to an indeterminate progress bar, 
+                    // overlay with caller values.
+                    egProgressData.reset();
+                    service.update(angular.extend({}, args));
+
+                    service.currentInstance = $uibModalInstance;
+                    $scope.data = egProgressData; // tiny service
                 }
             ]
         });
     };
 
-    service.close = function() {
+    service.close = function(warn) {
         if (service.currentInstance) {
+            if (warn) {
+                console.warn("egProgressDialog replacing existing instance. "
+                    + "Only one may be open at a time.");
+            }
             service.currentInstance.close();
             delete service.currentInstance;
         }
