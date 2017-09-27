@@ -1,5 +1,5 @@
---Upgrade Script for 2.12.5 to 3.0-beta1
-\set eg_version '''3.0-beta1'''
+--Upgrade Script for 2.12.5 to 3.0-rc
+\set eg_version '''3.0-rc'''
 
 -- verify that we're running a recent enough version of Pg
 \set ON_ERROR_STOP on
