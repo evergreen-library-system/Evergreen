@@ -12,7 +12,7 @@ Using Offline Circulation
 
 The Offline Circulation interface can be found by navigating to *Circulation -> Offline Circulation*.
 
-The permanent link for the Offline Circulation is *\https://<yourhostname>/eg/staff/offline-interface*  and it is recommended that this link be bookmarked on staff workstations.  This is the location for both entering transactions while offline as well as processing them later.  You will see a slightly different version of this interface depending on whether or not you are logged in.
+The permanent link for the Offline Circulation is *https://<yourhostname>/eg/staff/offline-interface*  and it is recommended that this link be bookmarked on staff workstations.  This is the location for both entering transactions while offline as well as processing them later.  You will see a slightly different version of this interface depending on whether or not you are logged in.
 
 If you are logged out, you will see the tab default to *Checkout* and the button on the top-right will read *Export Transactions*.
 
@@ -214,4 +214,4 @@ Common event names in the Exceptions List include:
 * +ASSET_COPY_NOT_FOUND+ - Indicates the item barcode was mis-scanned/mis-typed.
 * +ACTOR_CARD_NOT_FOUND+ - Indicates the patron's library barcode was mis-scanned, mis-typed, or nonexistent.
 * +OPEN_CIRCULATION_EXISTS+ - Indicates a book was checked out that had never been checked in.
-* +MAX_RENEWALS_REACHED+ - Indicates the item has already been renewed the maximum times allowed.  Note that if the staff member processing the offline transaction set has the MAX_RENEWALS_REACHED.override permission at the appropriate level, the system will automatically override the error and will allow the renewal.
+* +MAX_RENEWALS_REACHED+ - Indicates the item has already been renewed the maximum times allowed.  Note that if the staff member processing the offline transaction set has the +MAX_RENEWALS_REACHED.override+ permission at the appropriate level, the system will automatically override the error and will allow the renewal.
