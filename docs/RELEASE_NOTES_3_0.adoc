@@ -1307,15 +1307,15 @@ Acknowledgments
 Web Client Acknowledgements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The project to move Evergreen to a new browser-based web client launched four 
-years ago at the September 2017 Evergreen developer hack-a-way when the
+The project to develop a new browser-based web client launched four 
+years ago at the September 2013 Evergreen developer hack-a-way when the
 developer community voted to move away from the XUL client and explore other
 platforms. The first web client preview became available in Evergreen 2.7 when
-circulation was moved the the new platform.
+circulation was available in the new platform.
 
 The browser-based client is available due to the work of many coders, testers,
-documentors, translators, project managers, spec writers, funders and other 
-contributors over the past four years.
+bug reporters, documentors, translators, project managers, spec writers, funders
+and other contributors over the past four years.
 
 The Evergreen project would like to acknowledge the following organizations
 that funded development of the Web Staff Client:
@@ -1336,12 +1336,13 @@ that funded development of the Web Staff Client:
 * SC Lends
 
 The Evergreen project would also like to thank the following individuals who 
-contributed code, translations, documentations patches, tests, technical
-specifications and proect management to the Web Staff Client:
+contributed code, translations, documentations patches, tests, bug reports, 
+technical specifications and project management to the Web Staff Client:
 
 * Jason Boyer
 * Adam Bowling
 * Christine Burns
+* Steve Callender
 * Eva Cerniňáková
 * Galen Charlton
 * Dawn Dale
@@ -1353,6 +1354,7 @@ specifications and proect management to the Web Staff Client:
 * Sally Fortin
 * Jeff Godin
 * Rogan Hamby
+* Elaine Hardy
 * Blake Henderson
 * Billy Horn
 * Skye Howard
@@ -1361,7 +1363,9 @@ specifications and proect management to the Web Staff Client:
 * Tina Ji
 * Mary Jinglewski
 * Angela Kilsdonk
+* Joan Kranich
 * Victoria Lewis
+* Mary Llewelyn
 * Jeanette Lundgren
 * Kathy Lussier
 * Terran McCanna
@@ -1374,19 +1378,24 @@ specifications and proect management to the Web Staff Client:
 * Jillianne Presley
 * Jennifer Pringle
 * Michelle Purcell
+* Erica Rohlfs
 * Mike Rylander
 * Jane Sandberg
+* Janet Schrader
 * Dan Scott
 * Chris Sharp
 * Ben Shum
 * Clare Sobotka
+* Tim Spindler
 * Remington Steed
 * Jason Stephenson
 * Josh Stompro
 * Yamil Suarez
+* Amy Terlaga
 * Scott Thomas
 * Anahi Valdez
 * Cesar Velez
+* Jessica Venturo
 * Dan Wells
 * Beth Willis
 * Tigran Zargaryan
