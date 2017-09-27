@@ -295,7 +295,7 @@ BEGIN
     IF thes_code IS NULL THEN
         thes_code := '|';
     ELSIF thes_code = 'z' THEN
-        thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), '' );
+        thes_code := COALESCE( oils_xpath_string('//*[@tag="040"]/*[@code="f"][1]', marcxml), 'z' );
     ELSE
         SELECT code INTO thes_code FROM authority.thesaurus WHERE short_code = thes_code;
         IF NOT FOUND THEN
@@ -417,6 +417,7 @@ CREATE OR REPLACE FUNCTION authority.simple_heading_set( marcxml TEXT ) RETURNS 
 DECLARE
     res             authority.simple_heading%ROWTYPE;
     acsaf           authority.control_set_authority_field%ROWTYPE;
+    heading_row     authority.heading%ROWTYPE;
     tag_used        TEXT;
     nfi_used        TEXT;
     sf              TEXT;
@@ -443,50 +444,58 @@ BEGIN
     res.thesaurus := authority.extract_thesaurus(marcxml);
 
     FOR acsaf IN SELECT * FROM authority.control_set_authority_field WHERE control_set = cset LOOP
-
         res.atag := acsaf.id;
-        tag_used := acsaf.tag;
-        nfi_used := acsaf.nfi;
-        joiner_text := COALESCE(acsaf.joiner, ' ');
 
-        FOR tmp_xml IN SELECT UNNEST(XPATH('//*[@tag="'||tag_used||'"]', marcxml::XML)::TEXT[]) LOOP
-
-            heading_text := COALESCE(
-                oils_xpath_string('./*[contains("'||acsaf.display_sf_list||'",@code)]', tmp_xml, joiner_text),
-                ''
-            );
-
-            IF nfi_used IS NOT NULL THEN
-
-                sort_text := SUBSTRING(
-                    heading_text FROM
-                    COALESCE(
-                        NULLIF(
-                            REGEXP_REPLACE(
-                                oils_xpath_string('./@ind'||nfi_used, tmp_xml::TEXT),
-                                $$\D+$$,
-                                '',
-                                'g'
-                            ),
-                            ''
-                        )::INT,
-                        0
-                    ) + 1
+        IF acsaf.heading_field IS NULL THEN
+            tag_used := acsaf.tag;
+            nfi_used := acsaf.nfi;
+            joiner_text := COALESCE(acsaf.joiner, ' ');
+    
+            FOR tmp_xml IN SELECT UNNEST(XPATH('//*[@tag="'||tag_used||'"]', marcxml::XML)::TEXT[]) LOOP
+    
+                heading_text := COALESCE(
+                    oils_xpath_string('./*[contains("'||acsaf.display_sf_list||'",@code)]', tmp_xml, joiner_text),
+                    ''
                 );
-
-            ELSE
-                sort_text := heading_text;
-            END IF;
-
-            IF heading_text IS NOT NULL AND heading_text <> '' THEN
-                res.value := heading_text;
-                res.sort_value := public.naco_normalize(sort_text);
+    
+                IF nfi_used IS NOT NULL THEN
+    
+                    sort_text := SUBSTRING(
+                        heading_text FROM
+                        COALESCE(
+                            NULLIF(
+                                REGEXP_REPLACE(
+                                    oils_xpath_string('./@ind'||nfi_used, tmp_xml::TEXT),
+                                    $$\D+$$,
+                                    '',
+                                    'g'
+                                ),
+                                ''
+                            )::INT,
+                            0
+                        ) + 1
+                    );
+    
+                ELSE
+                    sort_text := heading_text;
+                END IF;
+    
+                IF heading_text IS NOT NULL AND heading_text <> '' THEN
+                    res.value := heading_text;
+                    res.sort_value := public.naco_normalize(sort_text);
+                    res.index_vector = to_tsvector('keyword'::regconfig, res.sort_value);
+                    RETURN NEXT res;
+                END IF;
+    
+            END LOOP;
+        ELSE
+            FOR heading_row IN SELECT * FROM authority.extract_headings(marcxml, ARRAY[acsaf.heading_field]) LOOP
+                res.value := heading_row.heading;
+                res.sort_value := heading_row.normalized_heading;
                 res.index_vector = to_tsvector('keyword'::regconfig, res.sort_value);
                 RETURN NEXT res;
-            END IF;
-
-        END LOOP;
-
+            END LOOP;
+        END IF;
     END LOOP;
 
     RETURN;
