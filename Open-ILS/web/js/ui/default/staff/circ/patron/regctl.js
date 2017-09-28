@@ -1719,7 +1719,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 if ($scope.patron.day_phone && 
                     $scope.patron.isnew && 
                     $scope.org_settings['patron.password.use_phone']) {
-                    $scope.patron.passwd = phone.substr(-4);
+                    $scope.patron.passwd = $scope.patron.day_phone.substr(-4);
                 }
             case 'evening_phone' : 
             case 'other_phone' : 
