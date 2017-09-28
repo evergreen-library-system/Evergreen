@@ -718,7 +718,11 @@ function($scope,  $q,  $location , $filter,  egCore,  egUser,  patronSvc) {
             $scope.patron_id = patron_id;
             return patronSvc.setPrimary($scope.patron_id)
             .then(function() {return patronSvc.checkAlerts()})
-            .then(redirectToAlertPanel);
+            .then(redirectToAlertPanel)
+            .then(function(){
+                $scope.ident_type_name = $scope.patron().ident_type().name()
+                $scope.hasIdentTypeName = $scope.ident_type_name.length > 0;
+            });
         }
         return $q.when();
     }
