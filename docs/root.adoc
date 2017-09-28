@@ -82,8 +82,6 @@ include::installation/server_installation.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
-include::installation/staff_client_installation.adoc[]
-
 include::installation/server_upgrade.adoc[]
 
 include::installation/edi_setup.adoc[]
@@ -277,6 +275,8 @@ include::admin/hold_driven_recalls.adoc[]
 
 include::admin/actiontriggers.adoc[]
 
+include::admin/actiontriggers_process.adoc[]
+
 include::admin/recent_staff_searches.adoc[]
 
 include::admin/lsa-standing_penalties.adoc[]
@@ -310,7 +310,12 @@ include::acquisitions/blanket.adoc[]
 Cataloging
 ==========
 
-include::cataloging/cataloging_web_client.adoc[]
+Introduction
+------------
+
+This part describes cataloging in Evergreen.
+
+include::cataloging/marc_tag_table.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
@@ -331,7 +336,9 @@ include::cataloging/overlay_record_3950_import.adoc[]
 
 include::cataloging/z39.50_search_enhancements.adoc[]
 
+
 include::cataloging/monograph_parts.adoc[]
+
 
 include::cataloging/conjoined_items.adoc[]
 
