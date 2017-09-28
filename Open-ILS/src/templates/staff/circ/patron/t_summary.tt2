@@ -143,12 +143,12 @@
       <div class="col-md-7">{{patron().other_phone()}}</div>
     </div>
     <div class="row">
-      <div class="col-md-5">[% l('ID1') %]</div>
-      <div class="col-md-7">{{patron().ident_type().name()}}</div>
+      <div class="col-md-5">[% l('ID1') %]&nbsp;<span ng-if="hasIdentTypeName" class="ident_type">({{patron().ident_type().name()}})</span></div>
+      <div class="col-md-7">{{patron().ident_value()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('ID2') %]</div>
-      <div class="col-md-7">{{patron().ident_type2().name()}}</div>
+      <div class="col-md-7">{{patron().ident_value2()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Email') %]</div>
