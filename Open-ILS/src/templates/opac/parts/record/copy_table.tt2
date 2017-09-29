@@ -235,7 +235,7 @@ END; # FOREACH bib
             [% FOREACH tag IN copy_info.tags; %]
                 <tr class="copy_tag_row">
                     <td>&nbsp;</td>
-                    <td class="copy_tag" colspan="4"</td>
+                    <td class="copy_tag" colspan="4">
                         <span class="copy_tag_value">[% tag.value | html %]</span>
                     </td>
                 <tr>
