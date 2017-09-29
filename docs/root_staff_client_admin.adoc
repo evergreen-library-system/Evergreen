@@ -127,30 +127,12 @@ This section discusses how to manage and report on payments accepted by your lib
 Accepting credit card payments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Evergreen can accept credit card payments.
-
-Stripe
-^^^^^^
-
-Some info in the current Library Settings Editor docs
-
-Paypal, Authorize.net, etc.
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This section needs to be written
+Evergreen can interface with services like Authorize.net, stripe, PayPal, or Payflow to allow users to pay
+fines and other charges in the Public Catalog.  Credit card settings can be configured in the <<lse-credit-cards,Library Settings Editor>>.
 
 :leveloffset: 1
 
 include::admin/desk_payments.adoc[]
-
-:leveloffset: 0
-
-Negative balances
-~~~~~~~~~~~~~~~~~
-
-This section needs to be written
-
-:leveloffset: 1
 
 include::circulation/user_buckets.adoc[]
 
@@ -189,23 +171,9 @@ Need to move out of the describing your OU docs
 
 include::admin_initial_setup/hard_due_dates.adoc[]
 
-:leveloffset: 0
-
-Age to lost
-~~~~~~~~~~~
-
-No documentation yet
-
-:leveloffset: 1
-
 include::admin/booking-admin.adoc[]
 
 :leveloffset: 0
-
-Offline circulation
--------------------
-
-Need to extract this from the offline circulation documentation
 
 include::admin/workstation_admin_receipt_template_editor.adoc[]
 
@@ -213,8 +181,8 @@ include::admin/workstation_admin_receipt_template_editor.adoc[]
 
 include::circulation/self_check_configuration.adoc[]
 
-:leveloffset: 0
 
+:leveloffset: 0
 
 // Patron UX
 Patron User Experience Administration
