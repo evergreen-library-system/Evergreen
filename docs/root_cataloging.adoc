@@ -35,6 +35,8 @@ include::cataloging/physical_char_wizard.adoc[]
 
 :leveloffset: 0
 
+include::cataloging/specific_variable_fields.adoc[]
+
 Working with holdings data
 ==========================
 
