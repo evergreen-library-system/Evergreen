@@ -22,7 +22,7 @@ angular.module('egFmRecordEditorMod',
             //              field value using rec_flat[field.name]
             //   handlers - any functions you want to pass
             //              in to the custom template
-            customFieldTemplates : '=',
+            customFieldTemplates : '=?',
 
             // comma-separated list of fields that should not be
             // displayed
@@ -191,7 +191,7 @@ angular.module('egFmRecordEditorMod',
                         }
                         field.org_default_allowed = (field.name in $scope.org_default_allowed);
                     }
-                    if (field.name in $scope.customFieldTemplates) {
+                    if (angular.isObject($scope.customFieldTemplates) && (field.name in $scope.customFieldTemplates)) {
                         field.use_custom_template = true;
                         field.custom_template = $scope.customFieldTemplates[field.name].template;
                         field.handlers = $scope.customFieldTemplates[field.name].handlers;
