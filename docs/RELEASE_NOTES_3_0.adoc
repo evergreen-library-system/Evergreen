@@ -1299,7 +1299,7 @@ in the future.
 Acknowledgments
 ---------------
 
-Web Client Acknowledgements
+Web Client Acknowledgments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The project to develop a new browser-based web client launched four 
@@ -1331,8 +1331,8 @@ that funded development of the Web Staff Client:
 * SC Lends
 
 The Evergreen project would also like to thank the following individuals who 
-contributed code, translations, documentations patches, tests, bug reports, 
-technical specifications and project management to the Web Staff Client:
+contributed code, translations, documentation patches, tests, bug reports, 
+technical specifications, and project management to the Web Staff Client:
 
 * Jason Boyer
 * Adam Bowling
@@ -1395,7 +1395,7 @@ technical specifications and project management to the Web Staff Client:
 * Beth Willis
 * Tigran Zargaryan
 
-Evergreen 3.0 Acknowledgements
+Evergreen 3.0 Acknowledgments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The Evergreen project would like to acknowledge the following
@@ -1412,7 +1412,7 @@ Evergreen:
 * Pioneer Library System
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation patches, and tests to this release of
 Evergreen:
 
 * Adam Bowling
