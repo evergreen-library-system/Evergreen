@@ -24,6 +24,28 @@ function toggleActivationDate() {
     // Prevent the href from being followed, thus overriding the CSS.
     return false;
 }
+
+// Maybe enable or disable the num_copies select when the user selects
+// or deselects a part.
+function maybeToggleNumCopies(obj) {
+    var numCopies = document.getElementById("num_copies");
+    // Only if numCopies exists.
+    if (numCopies) {
+        var objValue;
+        if (obj.type == 'radio') {
+            if (obj.checked) objValue = obj.value;
+            else return;
+        } else {
+            objValue = obj.value;
+        }
+        if (objValue && objValue != '') {
+            if (numCopies.value != '1') numCopies.value = '1';
+            if (!numCopies.disabled) numCopies.disabled = true;
+        } else {
+            if (numCopies.disabled) numCopies.disabled = false;
+        }
+    }
+}
 </script>
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
     <h1>[% l('Place Hold') %]</h1>
@@ -132,10 +154,10 @@ function toggleActivationDate() {
                              <div class='radio-parts-selection'>
                              [% IF !hdata.part_required %]
                                 <span class='parts-radio-option'>
-                                 <input type='radio' name='part' value='' required>[% l('All Parts') %]</span>
+                                 <input type='radio' name='part' value='' onchange='maybeToggleNumCopies(this);' required>[% l('All Parts') %]</span>
                               [% END %]
                                [% FOR part IN hdata.parts %]
-                                 <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] required>
+                                 <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] onchange='maybeToggleNumCopies(this);' required>
                                   <label for=[% part.id %]>[% part.label | html %]</label></span>
                               [% END %]
                               </div>
@@ -143,7 +165,7 @@ function toggleActivationDate() {
                             <span style='font-weight: bold;'><label for='select_hold_part'>[%
                                 hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):')
                             %]</label></span>
-                            <select id='select_hold_part' name='part'>
+                            <select id='select_hold_part' name='part' onchange='maybeToggleNumCopies(this);'>
                                 [% IF !hdata.part_required %]
                                 <option selected='selected' value=''>[% l('- All Parts -') %]</option>
                                 [% END %]
