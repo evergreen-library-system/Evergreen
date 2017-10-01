@@ -184,6 +184,15 @@ include::circulation/self_check_configuration.adoc[]
 
 :leveloffset: 0
 
+// SEARCH ADMIN
+Search Settings
+===============
+
+include::admin/search_settings_web_client.adoc[]
+
+include::admin/popularity_badges_web_client.adoc[]
+
+
 // Patron UX
 Patron User Experience Administration
 =====================================
