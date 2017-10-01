@@ -157,15 +157,9 @@ Library closures
 
 This section describes both everyday closures and specific details suitable for school and academic libraries that operate on a term or semester system.
 
-Library hours
-~~~~~~~~~~~~~
+include::admin/hours.adoc[]
 
-In OU settings
-
-Closed dates
-~~~~~~~~~~~~
-
-Need to move out of the describing your OU docs
+include::admin/closed_dates.adoc[]
 
 :leveloffset: 1
 

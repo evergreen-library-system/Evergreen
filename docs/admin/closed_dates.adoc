@@ -1,0 +1,42 @@
+Set closed dates using the Closed Dates Editor 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[Closed Dates]
+
+These dates are in addition to your regular weekly closed days (see the section called “Library Hours of Operation”).    Both regular closed days and those entered in the Closed Dates Editor affect due dates and fines:
+
+* *Due dates.*  Due dates that would fall on closed days are automatically pushed forward to the next open day. Likewise, if an item is checked out at 8pm, for example, and would normally be due on a day when the library closes before 8pm, Evergreen pushes the due date forward to the next open day.
+* *Overdue fines.*  Overdue fines may not be charged on days when the library is closed.  This fine behavior depends on how the _Charge fines on overdue circulations when closed_ setting is configured in the Library Settings Editor.
+
+Closed dates do not affect the processing delays for Action/Triggers. For example, if your library has a trigger event that marks items as lost after 30 days, that 30 day period will include both open and closed dates.
+
+Adding a closure
+^^^^^^^^^^^^^^^^
+
+. Select _Administration > Local Administration_.
+. Select _Closed Dates Editor_.
+. Select type of closure: typically Single Day or Multiple Day.
+. Click the Calendar gadget to select the All Day date or starting and ending
+  dates.
+. Enter a Reason for closure (optional).
+. Click *Apply* to all of my libraries if your organizational unit has children
+  units that will also be closed.
+. Click *Save*.
+
+image::media/closed_dates.png[]
+
+Now that your organizational structure is established, you can begin
+configuring permissions for the staff users of your Evergreen system.
+
+Detailed closure
+^^^^^^^^^^^^^^^^
+
+If your closed dates include a portion of a business day, you should create a detailed closing.
+
+. Select _Administration -> Local Administration_.
+. Select _Closed Dates Editor_.
+. Select _Add Detailed Closing_.
+. Enter applicable dates, times, and a descriptive reason for the closing.
+. Click Save.
+. Check the Apply to all of my libraries box if your library is a multi-branch system and the closing applies to all of your branches.
+

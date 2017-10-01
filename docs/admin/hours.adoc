@@ -1,0 +1,10 @@
+Setting regular library hours
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may do this in _Administation_ > _Server Administration_ > _Organizational
+Units_.
+
+The *Hours of Operation* tab is where you enter regular, weekly hours. Holiday
+and other closures are set in the *Closed Dates Editor*. Hours of operation and
+closed dates impact due dates and fine accrual.
+
