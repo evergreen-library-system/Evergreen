@@ -178,6 +178,17 @@ that command looks like:
 psql -U evergreen -h localhost -d evergreen -f pg_loader-output.sql
 ----
 
+Juvenile-to-adult batch script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The batch `juv_to_adult.srfsh` script is responsible for toggling a patron
+from juvenile to adult. It should be set up as a cron job.
+
+This script changes patrons to adult when they reach the age value set in the
+library setting named "Juvenile Age Threshold" (`global.juvenile_age_threshold`).
+When no library setting value is present at a given patron's home library, the
+value passed in to the script will be used as a default.
+
 MARC Stream Importer
 ~~~~~~~~~~~~~~~~~~~~
 
