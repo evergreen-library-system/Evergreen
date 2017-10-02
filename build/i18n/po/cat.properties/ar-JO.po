@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-01-20 18:24+0000\n"
+"PO-Revision-Date: 2017-09-28 07:28+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-08-16 04:36+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-09-29 05:11+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -1264,7 +1264,7 @@ msgstr "تحتاج لـِ تمييز التسجيل كـَ وجهة نقل لع�
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
 msgid "All holds not available for pickup have been transferred."
-msgstr ""
+msgstr "جميع الحجوزات غير المتاحة للالتقاط تمّ نقلها."
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."

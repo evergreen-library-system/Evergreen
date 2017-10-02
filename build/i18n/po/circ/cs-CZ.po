@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-06-22 06:16+0000\n"
-"PO-Revision-Date: 2016-09-07 13:19+0000\n"
+"PO-Revision-Date: 2017-09-23 13:34+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2017-09-24 05:14+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:13
 msgid "American Express"
@@ -175,7 +175,7 @@ msgstr "Květen"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:10
 msgid "None"
-msgstr "Žádné"
+msgstr "Hodnota nezadána"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:40
 msgid "Nov"
@@ -211,7 +211,7 @@ msgstr "Prosím přihlašte se svým čárovým kódem"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:9
 msgid "Print"
-msgstr "Vytisknout"
+msgstr "Tisk"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:15
 msgid "Print List"

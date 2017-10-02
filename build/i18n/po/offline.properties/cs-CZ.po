@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2016-12-13 12:57+0000\n"
-"Last-Translator: Eva Cerninakova <Unknown>\n"
+"PO-Revision-Date: 2017-09-23 14:34+0000\n"
+"Last-Translator: Zbyněk Schwarz <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:32+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2017-09-24 05:13+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -156,7 +156,7 @@ msgstr "Obnovit"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -1243,7 +1243,7 @@ msgstr "Zobrazení dávky"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
@@ -1451,8 +1451,8 @@ msgid ""
 "After auto completion multiple barcodes may match your input. Please choose "
 "the barcode you intended below."
 msgstr ""
-"Po automatickém doplnění odpovídá vašemu vstupu n ěkolik čárových kódů. "
-"Prosím, níže vyberte čárový kód, který jste měli na mysli."
+"Po automatickém doplnění odpovídá vašemu vstupu několik čárových kódů.  "
+"Vyberte prosím čárový kód, který jste měli na mysli."
 
 #: barcode_choice.errors_found
 msgid ""
@@ -1488,7 +1488,7 @@ msgstr "Rezervace zdrojů : %1$s"
 
 #: staff.main.button_bar.none
 msgid "None"
-msgstr "Žádný"
+msgstr "Hodnota nezadána"
 
 #: staff.main.button_bar.default
 msgctxt "staff.main.button_bar.default"

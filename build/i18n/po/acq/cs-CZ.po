@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-06-22 06:17+0000\n"
-"PO-Revision-Date: 2017-09-17 19:57+0000\n"
+"PO-Revision-Date: 2017-09-28 09:48+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-18 05:30+0000\n"
-"X-Generator: Launchpad (build 18449)\n"
+"X-Launchpad-Export-Date: 2017-09-29 05:12+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -163,7 +163,7 @@ msgstr "Přidat vybrané položky na fakturu"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:236
 msgid "Add Tag"
-msgstr "Přidat štítek"
+msgstr "Přidat tag"
 
 #: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:10
 msgid "Add To Selection List"
@@ -580,7 +580,7 @@ msgstr "Odhadované náklady"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:132
 msgid "Estimated Price"
-msgstr "Odhadované cena"
+msgstr "Odhadovaná cena"
 
 #: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:21
 msgid "Evergreen Catalog"
@@ -1122,7 +1122,7 @@ msgstr "Čeká na zpracování"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
 msgid "Pending-Order"
-msgstr "Objednávky čekající na zpracování"
+msgstr "OBJ-nevyřízená"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:92
 msgid "Per Copy"
@@ -1154,7 +1154,7 @@ msgstr "Předchozí"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:271
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "Předchozí"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
 msgid "Print Purchase Order"
@@ -1176,9 +1176,8 @@ msgid ""
 "process."
 msgstr ""
 "Přenesení vytvoří nový fond pro následující fiskální rok založený na fondu "
-"zvoleného fiskálního roku. Ovlivněny budou pouze fondy, které mají "
-"aktivováno \"prenesení\". Během procesu přenesení nebudou změněny peníze ani "
-"zatížení."
+"zvoleného fiskálního roku. Ovlivněny budou pouze fondy, které mají Přenesení "
+"aktivováno. Během procesu přenesení nebudou změněny peníze ani zatížení."
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:173
 msgid "Prorate"
@@ -1435,7 +1434,7 @@ msgstr "Nastavena žádná rezervace"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:103 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:124
 msgid "Shelving Location"
-msgstr "Umístění regálu"
+msgstr "Umístění"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:41
 msgid "Show Details"
@@ -1508,19 +1507,19 @@ msgstr "Potvrdit"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83
 msgid "Summary"
-msgstr "Přehled"
+msgstr "Souhrn"
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:52
 msgid "Tag"
-msgstr "Štítek"
+msgstr "Tag"
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:18
 msgid "Tag: "
-msgstr "Štítek: "
+msgstr "Tag: "
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:229
 msgid "Tags"
-msgstr "Štítky"
+msgstr "Tagy"
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:26
 msgid "The remaining are listed below."
@@ -1618,11 +1617,11 @@ msgstr "Celkový počet exemplářů: %1"
 
 #: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:95
 msgid "Total Credits"
-msgstr "Příspěvky celkem"
+msgstr "Získáno celkem"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:96
 msgid "Total Debits"
-msgstr "Dlužné částky celkem"
+msgstr "Zaúčtováno celkem"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:170 ../../Open-ILS/src/templates/acq/po/view.tt2:73
 msgid "Total Encumbered"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-08-25 12:28+0000\n"
+"PO-Revision-Date: 2017-09-24 09:59+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-08-26 05:12+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -73,7 +73,7 @@ msgstr "Špatný čárový kód"
 #: staff.circ.cancel
 msgctxt "staff.circ.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.circ.barcode.accept
 msgid "Accept Barcode"
@@ -237,16 +237,16 @@ msgid ""
 "A billing for an Item Deposit will be added to the patron's account if this "
 "action is overrided."
 msgstr ""
-"Pokud při nyní zvolíte možnost\"obejít\", bude čtenáři naúčtován poplatek "
-"\"vklad\" za exemplář."
+"Pokud při nyní zvolíte možnost Obejít, bude čtenáři naúčtován poplatek za "
+"Vklad za exemplář."
 
 #: staff.circ.checkout.override.item_rental_fee_required.warning
 msgid ""
 "A billing for an Item Rental Fee will be added to the patron's account if "
 "this action is overrided."
 msgstr ""
-"Pokud při nyní zvolíte možnost \"obejít\", čtenáři bude naúčtován poplatek "
-"za půjčení."
+"Pokud při nyní zvolíte možnost Obejít\", čtenáři bude naúčtován poplatek za "
+"půjčení."
 
 #: staff.circ.checkout.override.will_auto
 msgid ""
@@ -620,7 +620,7 @@ msgstr "Smazat"
 #: staff.circ.copy_status.delete_volumes.cancel
 msgctxt "staff.circ.copy_status.delete_volumes.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
@@ -691,7 +691,7 @@ msgstr "Přesun"
 #: staff.circ.copy_status.transfer_volume.cancel.label
 msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.circ.copy_status.transfer_volume.cancel.accesskey
 msgid "C"
@@ -1489,8 +1489,8 @@ msgstr "Obejít selhání výpůjčky?"
 msgid ""
 "A paid deposit will be owed to this patron if this action is overrided."
 msgstr ""
-"Pokud nyní zvolíte možnost \"obejít\", bude knihovna čtenáři dlužit "
-"zaplacený vklad."
+"Pokud nyní zvolíte možnost Obejít, bude knihovna čtenáři dlužit zaplacený "
+"vklad."
 
 #: staff.circ.utils.billable.amount
 msgid "Transaction for %1$s billable $%2$s"
@@ -1680,7 +1680,7 @@ msgid ""
 "policy."
 msgstr ""
 "Tímto exemplářem mohla být splněna rezervace, ale zachycení exempláře bylo "
-"zdrženo z důvodu knihovních pravidel."
+"zdrženo z důvodu rezervačních pravidel."
 
 #: staff.circ.utils.hold_capture_delayed.titlebar
 msgid "Hold Capture Delayed"
@@ -1921,15 +1921,15 @@ msgid ""
 "For item with barcode %1$s, a billing for an Item Deposit will be added to "
 "the patron's account if this action is overrided."
 msgstr ""
-"Pokud nyní zvolíte možnost \"obejít\", pro exemplář s čárovým kódem %1$s "
-"bude čtenáři naúčtován poplatek \"vklad\"."
+"Pokud nyní zvolíte možnost Obejít, pro exemplář s čárovým kódem %1$s bude "
+"čtenáři naúčtován poplatek za Vklad za exemplář.."
 
 #: staff.circ.renew.override.item_rental_fee_required.warning.barcode
 msgid ""
 "For item with barcode %1$s, a billing for an Item Rental Fee will be added "
 "to the patron's account if this action is overrided."
 msgstr ""
-"Pokud nyní zvolíte možnost \"obejít\", za exemplář s čárovým kódem %1$s bude "
+"Pokud nyní zvolíte možnost Obejít, za exemplář s čárovým kódem %1$s bude "
 "čtenáři naúčtován poplatek za půjčení."
 
 #: staff.circ.holds.activate.prompt

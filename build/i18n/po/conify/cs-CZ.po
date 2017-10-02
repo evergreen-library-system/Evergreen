@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-06-22 06:16+0000\n"
-"PO-Revision-Date: 2017-03-20 20:13+0000\n"
+"PO-Revision-Date: 2017-09-28 19:29+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2017-09-29 05:12+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -197,7 +197,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:17
 msgid "Best-Hold Selection Sort Order"
-msgstr "Pořadí pro řazení \"nejvýhodnějších rezervací\""
+msgstr "Pořadí pro řazení Nejvýhodnějších rezervací"
 
 #: ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:2 ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:9
 msgid "Billing Types"
@@ -269,7 +269,7 @@ msgstr "Signatury: sufixy"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:56
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/cancel_reason.tt2:2
 msgid "Cancel Reasons"
@@ -557,7 +557,7 @@ msgstr "Ukončit zvolený průzkum"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:150
 msgid "Estimated Price"
-msgstr "Odhadované cena"
+msgstr "Odhadovaná cena"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:51
 msgid "Event Definition Tests"
@@ -617,7 +617,7 @@ msgstr "Kód finančního fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:2 ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:7
 msgid "Fund Tags"
-msgstr "Značka finančního fondu"
+msgstr "Tag  finančního fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:2 ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:5
 msgid "Global Flags"
@@ -717,7 +717,7 @@ msgstr "Počet exemplářů"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:40 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:51 ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:88
 msgid "Label"
-msgstr "Označení"
+msgstr "Štítek"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/lineitem_alert.tt2:9
 msgid "Line Item Alert Text"
@@ -797,7 +797,7 @@ msgstr "Konfigurace polí FTS pro tasety a hledání MARCu"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:128 ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:89
 msgid "MARC Tag and Subfield"
-msgstr "Pole a podpole MARC"
+msgstr "Tagy a podpole MARC"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:59 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:8
 msgid "Magazine"
@@ -1010,7 +1010,7 @@ msgstr "Nová formule"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:10
 msgid "New Fund Tag"
-msgstr "Nová značka fondu"
+msgstr "Nový tag fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:47
 msgid "New Hard Due Date Value"
@@ -1146,7 +1146,7 @@ msgstr "Pro tento typ háku definice události neexistuje test"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:41 ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:47
 msgid "Normal"
-msgstr "Běžné"
+msgstr "Běžná"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set_tree.tt2:90
 msgid "Normalized Authority Heading"
@@ -1190,7 +1190,7 @@ msgstr "Přizpůsobený strom organizačních jednotek"
 
 #: ../../Open-ILS/src/templates/conify/global/config/org_unit_proximity_adjustment.tt2:2
 msgid "Org Unit Proximity Adjustments"
-msgstr "Org Unit Proximity Adjustments"
+msgstr "Nastavení proximity organizační jednotky"
 
 #: ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:2 ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:21
 msgid "Org Unit Setting Types"
@@ -1198,7 +1198,7 @@ msgstr "Typy nastavení organizačních jednotek"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:55 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:6
 msgid "Other"
-msgstr "Jiné"
+msgstr "Jiný"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:87
 msgid "Owner"
@@ -1394,7 +1394,7 @@ msgstr "Zobrazit sady vlastněné zde nebo níže"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:16
 msgid "Show tags available to"
-msgstr "Zobrazit označení pro"
+msgstr "Zograzit tagy dostupné pro"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:16
 msgid "Show templates available at or above"
@@ -1468,7 +1468,7 @@ msgstr "Datum zahájení průzkumu"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/lineitem_marc_attr_def.tt2:24
 msgid "Tag"
-msgstr "Označení pole"
+msgstr "Tag"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:49
 msgid "Test"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2014-03-09 18:13+0000\n"
+"PO-Revision-Date: 2017-09-25 13:24+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <li@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-06-23 05:33+0000\n"
-"X-Generator: Launchpad (build 18416)\n"
+"X-Launchpad-Export-Date: 2017-09-26 05:10+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -49,7 +49,7 @@ msgstr "Jméno"
 
 #: common.none
 msgid "None"
-msgstr "Žádné"
+msgstr "Hodnota nezadána"
 
 #: common.title
 msgctxt "common.title"
@@ -103,7 +103,7 @@ msgstr "Nosič"
 #: common.loading
 msgctxt "common.loading"
 msgid "Loading..."
-msgstr "Načítání..."
+msgstr "Načítá se…"
 
 #: common.login
 msgctxt "common.login"
@@ -157,7 +157,7 @@ msgstr "Ano"
 #: common.cancel
 msgctxt "common.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: common.library
 msgctxt "common.library"
@@ -238,7 +238,7 @@ msgstr "Zavřít vše"
 #: common.org.cancel
 msgctxt "common.org.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: common.org.loading
 msgid "Loading library selector..."
@@ -670,7 +670,7 @@ msgstr ""
 #: myopac.fines.title
 msgctxt "myopac.fines.title"
 msgid "Summary"
-msgstr "Přehled"
+msgstr "Souhrn"
 
 #: myopac.fines.owed
 msgid "Total Owed"
@@ -687,7 +687,7 @@ msgstr "Dlužná částka"
 #: myopac.fines.status
 msgctxt "myopac.fines.status"
 msgid "Loading..."
-msgstr "Načítání..."
+msgstr "Načítá se…"
 
 #: myopac.fines.overdue
 msgid "Overdue Materials"
@@ -747,7 +747,7 @@ msgstr "Knihovna pro vyzvednutí rezervace"
 
 #: myopac.holds.edit
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: myopac.holds.status.none
 msgid "You have no items on hold at this time"
@@ -772,7 +772,7 @@ msgstr "Pozastaveno"
 #: myopac.holds.cancel
 msgctxt "myopac.holds.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: myopac.holds.verify
 msgid ""
@@ -796,7 +796,7 @@ msgstr "Nastavit datum aktivace"
 #: myopac.holds.cancel_selected
 msgctxt "myopac.holds.cancel_selected"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: myopac.holds.processing
 msgid "Processing holds... This may take a moment."
@@ -971,7 +971,7 @@ msgstr "Telefonní číslo večer"
 
 #: myopac.summary.phone.other
 msgid "Other Phone"
-msgstr "Jiné telefonní číslo"
+msgstr "Další telefonní číslo"
 
 #: myopac.summary.change
 msgid "Change"
@@ -1059,7 +1059,7 @@ msgstr "PSČ"
 
 #: myopac.summary.address.edit
 msgid "Edit Address"
-msgstr "Editovat adresu"
+msgstr "Upravit adresu"
 
 #: myopac.summary.address.invalid
 msgid "Invalid Address"
@@ -1230,7 +1230,7 @@ msgstr "Signatura"
 
 #: opac.advanced.copy_loc_filter
 msgid "Shelving Location"
-msgstr "Umístění regálu"
+msgstr "Umístění"
 
 #. ==========================================================
 #. MARC expert search
@@ -1876,7 +1876,7 @@ msgstr ""
 
 #: rdetail.none
 msgid "(none)"
-msgstr "(žádné)"
+msgstr "(Hodnota nezadána)"
 
 #: rdetail.bookbag.add.success
 msgid "Item successfully added to bookbag"
@@ -1973,7 +1973,7 @@ msgstr "Prohlížení regálu"
 #: rdetail.extras.bib_summary
 msgctxt "rdetail.extras.bib_summary"
 msgid "Summary"
-msgstr "Přehled"
+msgstr "Souhrn"
 
 #: rdetail.extras.reviews
 msgctxt "rdetail.extras.reviews"
@@ -2528,7 +2528,7 @@ msgstr "Potvrdit"
 
 #: selfck.clear
 msgid "Clear"
-msgstr "Vymazat"
+msgstr "Vyčistit"
 
 #: selfck.patron_barcode_label
 msgid "Please scan your library barcode"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-09-18 09:47+0000\n"
+"PO-Revision-Date: 2017-09-24 09:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-19 05:10+0000\n"
-"X-Generator: Launchpad (build 18449)\n"
+"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -169,7 +169,7 @@ msgstr "Smazat"
 #: staff.cat.copy_browser.delete_items.cancel
 msgctxt "staff.cat.copy_browser.delete_items.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.delete_items.override
 msgctxt "staff.cat.copy_browser.delete_items.override"
@@ -255,7 +255,7 @@ msgstr "Smazat"
 #: staff.cat.copy_browser.delete_volume.cancel
 msgctxt "staff.cat.copy_browser.delete_volume.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
@@ -328,7 +328,7 @@ msgstr "Přesunout"
 #: staff.cat.copy_browser.transfer.cancel.label
 msgctxt "staff.cat.copy_browser.transfer.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.transfer.cancel.accesskey
 msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
@@ -744,7 +744,7 @@ msgstr "A"
 #: staff.cat.copy_editor.cancel.label
 msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
@@ -998,7 +998,7 @@ msgstr "Smazat tuto poznámku"
 
 #: staff.cat.copy_notes.delete_note.prompt.msg
 msgid "Delete the note titled \"%1$s\" created on %2$s?"
-msgstr "Smazat tuto poznámku \"%1$s\" vytvořenou \"%2$s\"?"
+msgstr "Vymazat poznámku \"%1$s\" vytvořenou %2$s?"
 
 #: staff.cat.copy_notes.delete_note.prompt.title
 msgid "Delete Note"
@@ -1049,7 +1049,7 @@ msgstr "Iniciály"
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_notes.new_note.cancel.accesskey
 msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
@@ -1378,7 +1378,7 @@ msgstr "Smazat"
 #: staff.cat.record_buckets.delete_records.cancel_button.label
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
@@ -1563,7 +1563,7 @@ msgstr "Přesunout"
 #: staff.cat.util.transfer_copies.cancel.label
 msgctxt "staff.cat.util.transfer_copies.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.transfer_copies.cancel.accesskey
 msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
@@ -1616,7 +1616,7 @@ msgstr "Dávka "
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view_in_title
 msgctxt "staff.cat.util.copy_editor.view_in_title"
@@ -1638,7 +1638,7 @@ msgstr "Zobrazení dávky"
 #: staff.cat.util.copy_editor.edit
 msgctxt "staff.cat.util.copy_editor.edit"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view
 msgctxt "staff.cat.util.copy_editor.view"
@@ -1686,7 +1686,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_damaged.md_cancel_label
 msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_damaged.md_confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
@@ -1704,7 +1704,7 @@ msgstr "Běžné vrácení"
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
 msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
 msgid "Forgiving Checkin"
@@ -1775,7 +1775,7 @@ msgid ""
 msgstr ""
 "Akce selhala. Jeden nebo více exemplářů má speciální status, například "
 "\"Vypůjčeno\" nebo \"V přepravě\", a proto není možné změnit status na "
-"\"Nezvěstné\"."
+"Postrádané."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
@@ -1808,7 +1808,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_missing.ms_cancel_label
 msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_missing.ms_confirm_action
 msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
@@ -1843,7 +1843,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
 msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
 msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
@@ -2274,7 +2274,7 @@ msgstr "O"
 #: staff.cat.z3950.confirm_overlay.cancel.label
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-06-22 06:09+0000\n"
-"PO-Revision-Date: 2017-09-17 14:26+0000\n"
+"PO-Revision-Date: 2017-09-22 12:21+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-18 05:30+0000\n"
-"X-Generator: Launchpad (build 18449)\n"
+"X-Launchpad-Export-Date: 2017-09-23 05:33+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:107
 msgid "Add"
@@ -107,11 +107,11 @@ msgstr "Podpole"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:103
 msgid "Tag"
-msgstr "Označení pole"
+msgstr "Tag"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:97
 msgid "Tags and subfields to search for URLs:"
-msgstr "Označení polí a podpolí pro hledání URL:"
+msgstr "Tagy a podpole MARC pro hledání URL:"
 
 #: ../../Open-ILS/src/templates/url_verify/create_session.tt2:59
 msgid ""

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2017-09-03 23:33-0400\n"
-"PO-Revision-Date: 2017-09-17 15:31+0000\n"
+"PO-Revision-Date: 2017-09-24 17:57+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-18 05:30+0000\n"
-"X-Generator: Launchpad (build 18449)\n"
+"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -150,7 +150,7 @@ msgid ""
 "will be specified by an 'org' key within the event object"
 msgstr ""
 "Exemlář má být směrován do jiné knihovny. Cíl umístění bude určeno klíčem "
-"\"org\" během objektu události."
+"'org' během objektu události."
 
 #: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:317
 msgid "The requested config_rules_circ_duration was not found"
@@ -502,7 +502,7 @@ msgstr "Požadovaný metabib_metarecord_source_map nebyl nalezen"
 
 #: 7009.CIRC_CLAIMS_RETURNED:874
 msgid "Requested circulation is marked claims returned"
-msgstr "Požadovaná výpůjčka je označena jako \"údajně vrácená\""
+msgstr "Požadovaná výpůjčka je označena jako Údajně vrácená"
 
 #: 4.CACHE_MISS:24
 msgid "A cached object could not be retrieved by the given reference."
@@ -596,7 +596,7 @@ msgid ""
 "'name' field) that is already in use."
 msgstr ""
 "Pokoušíte  se vytvořit objekt v rámci jedinečného identifikátoru (jako je "
-"např. pole \"Název\"), který je již používán."
+"např. pole 'Název'), který je již používán."
 
 #: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:645
 msgid "The requested acq.fund_spent_balance was not found"
@@ -961,7 +961,7 @@ msgstr "K požadovanému exempláři je připojeno upozornění"
 
 #: 7006.COPY_IS_REFERENCE:865
 msgid "Copy is reference material"
-msgstr "Exemplář je označen jako \"příruční knihovna\""
+msgstr "Exemplář je označen jako Příruční knihovna"
 
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:299
 msgid "The requested config_item_form_map was not found"
@@ -1024,7 +1024,7 @@ msgstr "Požadovaný actor_stat_cat was nebyl nalezen"
 
 #: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:831
 msgid "The user attempted to set their password to a weak value."
-msgstr "Uživatel se pokusil o nastavení \"slabého\" hesla."
+msgstr "Uživatel se pokusil o nastavení slabého hesla."
 
 #: 9001.REPORT_REPORT_EXISTS:980
 msgid "A report with the given name and folder already exists"
