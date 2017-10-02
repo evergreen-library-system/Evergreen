@@ -1504,6 +1504,15 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             if (data.patron) {
                 print_context.hold = egCore.idl.toHash(evt.payload.hold);
+                var notes = print_context.hold.notes;
+                if(notes.length > 0){
+                    print_context.holdslip_notes = [];
+                    angular.forEach(notes, function(n){
+                        if (n.slip){
+                            print_context.holdslip_notes.push(n);
+                        }
+                    });
+                }
                 print_context.patron = egCore.idl.toHash(data.patron);
             }
 
