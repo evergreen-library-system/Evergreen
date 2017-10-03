@@ -1,3 +1,493 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 59973154f825cf7881b9d781fe1320a50100d50f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 8408675d1f473027cb7b0766700396f5b1e6010d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 18 17:42:05 2017 -0400
+
+    Fix stray beta1 in 3.0.0 upgrade script
+    
+    I do not think this actually affects anything.
+    
+    We'll fix this for early adopters in the 3.0.1 upgrade script, I
+    think.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/version-upgrade/2.12.6-3.0.0-upgrade-db.sql
+
+commit 251d80839f2951285d51360ee2594957a6ad1a1c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Oct 18 13:07:34 2017 -0400
+
+    Docs: 3.0.1 Release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+63	4	docs/RELEASE_NOTES_3_0.adoc
+
+commit f8ca464030075d7a5e4dc1808df15d910573331e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Oct 18 11:58:24 2017 -0400
+
+    Docs: 2.12.7 release notes
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+38	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit a0f458db871aba9c7545e6cb7abab6c26754f2fa
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri Sep 15 21:06:24 2017 +0000
+
+    LP#1659181 Mark Items Damaged Prompt
+    
+    - Add new prompt for marking an item as damaged.
+    - If there is a fee when marking an item as damaged, offer the
+    option to charge as normal, manually bill the patron, or to waive
+    the charge.
+    -Affected interfaces: Holds pull list, Holds Shelf, Patron Holds,
+    Record Holds, Record Holdings, Item Status(List), Item Status(Detail)
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+    	modified:   Open-ILS/src/templates/staff/cat/catalog/index.tt2
+    	modified:   Open-ILS/src/templates/staff/circ/checkin/index.tt2
+    	modified:   Open-ILS/src/templates/staff/circ/holds/index.tt2
+    	new file:   Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/item/app.js
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/item.js
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+32	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+1	0	Open-ILS/src/templates/staff/cat/catalog/index.tt2
+1	0	Open-ILS/src/templates/staff/circ/checkin/index.tt2
+1	0	Open-ILS/src/templates/staff/circ/holds/index.tt2
+53	0	Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2
+12	3	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+2	1	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+7	6	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+72	24	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+8	5	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+8	2	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+ create mode 100644 Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2
+
+commit 7273c8d37b78c0b17f4772e254cf6bbefc55c1d2
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Oct 18 09:58:55 2017 -0400
+
+    DOCS: added tip for patron insensitive search (ignores punctuation)
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+
+1	0	docs/circulation/circulation_patron_records_web_client.adoc
+
+commit 189ba25fb03c5ee8a50182fbe286cad5c0f02c70
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Oct 4 14:01:25 2017 -0400
+
+    LP#1712686 - display completed barcode on copy grids not partial input
+    
+    The check in, check out, and renew interfaces were not displaying
+    the actual complete(d) barcode when barcode completion is on.
+    This saves the inputted partial barcode in row_item.input_barcode
+    and let's the returned acp.barcode be in row_item.copy_barcode for
+    display.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	2	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+4	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+3	1	Open-ILS/web/js/ui/default/staff/circ/renew/app.js
+
+commit 240e34b1e964964525bc03c8571d7a0d00ccfad9
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Sep 28 13:08:48 2017 -0400
+
+    LP#1714060 -  fixes thinko when obeying patron.password.use_phone setting in patron regctl
+    
+    There was a bug, an undefined variable was being used to assign the last
+    four digits of the day_phone to usr.passwd when this library setting
+    was being used.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit bf110600bf0ebec99ef108ff0effd003c7fb607e
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Oct 4 10:49:02 2017 -0400
+
+    LP#1714056 - fix for webstaff patron registration not requiring DOB
+    
+    For some reason the ng-required attribute was not on the dob input
+    control. Setting 'ui.patron.edit.au.dob.require' should now work
+    as intended.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 88c220cf0e26e1889257a28b34c5f75337308998
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Oct 5 10:58:00 2017 -0400
+
+    LP#1721145 - fix Patron Message tab grids missing persist-keys
+    
+    In order to store grid column config preferences locally, a persist-key
+    attribute needs to be declared for the grid. Thus, for this UI a
+    'circ.patron.staff_messages' and a 'circ.patron.archived_messages'
+    persist-keys were added.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	2	Open-ILS/src/templates/staff/circ/patron/t_messages.tt2
+
+commit e9abffb9556d33a3b6edfa300e5d4f5e2e14987c
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Sep 21 15:58:49 2017 -0400
+
+    LP#1717025 - make Specific Due Dates Until Logout in Patron Checkout
+    
+    Made a few (opinionated) changes, that try to follow some JS
+    best practices. Changed Bool flags like date_options.sticky_date
+    to has_sticky_date, which avoids confusion with the checkoutArgs
+    property of the same name, and provides a clue about it's type
+    and function. Also added semicolons to any JS statements and
+    function expressions that were missing them.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+12	12	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+
+commit 8f294e26ca47cae973c38f872dabbe0538e01e3f
+Author: Jason Boyer <JBoyer@library.in.gov>
+Date:   Wed Sep 13 15:36:47 2017 -0500
+
+    LP1717025: Persist Specific Due Dates Until Logout
+    
+    Add an option to the specific due date feature to
+    save the specified date until logout. This allows
+    all circulations from a given workstation to be due
+    on the same date.
+    
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+34	6	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+47	0	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+
+commit 4eb23600cf3fb1fef7384d628a0c18702d238c47
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 25 10:35:07 2017 -0400
+
+    LP#1717010 Webstaff print/export full grid
+    
+    1. Adds a new 'Print Full Grid' action which generates printer-friendly
+    HTML output of all grid rows.  The print content matches the display
+    grid structure, uses the same field filters (e.g. for formatting dates)
+    and is retrieved using the same query and sort parameters as the display
+    grid.
+    
+    To render the grid as HTML, a new print HTML template is included at
+    print_templates/t_grid_html.tt2.
+    
+    2. Modifies the 'Export CSV' action to export all grid rows instead of
+    only the visible rows.  The link label is modified to 'Export Full CSV'
+    to better indicate its intent.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+26	0	Open-ILS/src/templates/staff/share/print_templates/t_grid_html.tt2
+4	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+131	32	Open-ILS/web/js/ui/default/staff/services/grid.js
+ create mode 100644 Open-ILS/src/templates/staff/share/print_templates/t_grid_html.tt2
+
+commit 085472193502d22ff4529940bd3bfafb677aab8d
+Author: Cesar Velez <Cesar.Velez@equinoxinitiative.org>
+Date:   Wed Sep 27 18:16:04 2017 +0100
+
+    LP#1716962 - honor In-House Use: num of uses threshold setting
+    
+    The 'ui.circ.in_house_use.entry_warn' library setting was not being
+    taken into account nor any confirmation/warning modal being shown.
+    This fix addresses that by watching the changes and if selected
+    num_uses value exceeds setting value, displays egConfirm modal.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+1	1	Open-ILS/src/templates/staff/circ/in_house_use/index.tt2
+20	2	Open-ILS/web/js/ui/default/staff/circ/in_house_use/app.js
+
+commit bd062fad7ed8495e1a4516c7f1f3b2a090378448
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Oct 12 17:31:37 2017 -0400
+
+    LP#1719967 - Add alert message field to volcopy editor
+    
+    As 1676608 was deferred to 3.1, this adds a copy alert_message
+    field, to the volcopy editor. The defaults tab "Alerts" checkbox has
+    been replaced by "Alert Message" and this new field will be active until replaced by
+    the changes of 3.1.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+28	6	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+3	2	Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2
+4	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 30be921dbdca77c1e7ca760028ab00cd53215a69
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Oct 15 21:10:00 2017 -0700
+
+    Docs: adding backup information to cli manual
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+207	0	docs/admin/backups.adoc
+58	0	docs/root.adoc
+2	0	docs/root_command_line_admin.adoc
+ create mode 100644 docs/admin/backups.adoc
+
+commit 4fd8ef78c2e151f8968b9753144fd1f59099b7dc
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Oct 15 10:50:42 2017 -0700
+
+    Docs: adding new services to command line manual
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	docs/root_command_line_admin.adoc
+
+commit 7a2c29e0de700d84b7c0b722b96e35ebad0941ad
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Oct 15 10:47:18 2017 -0700
+
+    Docs: 2 new services
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+12	0	docs/admin/ebook_api_service.adoc
+5	0	docs/admin/hold_targeter_service.adoc
+4	0	docs/root.adoc
+ create mode 100644 docs/admin/ebook_api_service.adoc
+ create mode 100644 docs/admin/hold_targeter_service.adoc
+
+commit d73bfa44fe3110b80ef4b2ea8aa85b0feff78583
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Oct 5 09:26:39 2017 -0400
+
+    LP#1721557 Fix Vandelay export within web client
+    
+    Triggering a file download from dojo pages within the web client
+    requires a new technique. This commit borrows from the acq lineitem
+    table export (acq/common/li_table.js) and applies the technique to the
+    vandelay feature.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/vandelay/vandelay.tt2
+18	7	Open-ILS/web/js/ui/default/vandelay/vandelay.js
+
+commit f2c17a558fcf6580d0a91686db9baea4decc0e2c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 11 07:43:05 2017 -0700
+
+    Docs: located URIs don't work with trailing spaces
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	docs/cataloging/cataloging_electronic_resources.adoc
+
+commit ca9341eafee5983126c72f1757e13ca3cf074853
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 10 20:11:35 2017 -0700
+
+    Docs: documentation for Record Buckets
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+62	0	docs/cataloging/record_buckets.adoc
+4	0	docs/root.adoc
+3	0	docs/root_cataloging.adoc
+ create mode 100755 docs/cataloging/record_buckets.adoc
+
+commit 399baa3339e393ab67066458bcfbc6def7ec596d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 10 18:14:30 2017 -0700
+
+    Docs: updating copy buckets docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	3	docs/cataloging/copy-buckets_web_client.adoc
+
+commit b7b1703c2f36d049701f5104d29c6a08e1b55b3d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Oct 6 07:12:24 2017 -0700
+
+    Docs: bumping release notes for consolidated manual to 3.0
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/root.adoc
+
+commit 50ed4c3692e55246769735b9500e19c36fd22306
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Oct 5 11:12:10 2017 -0400
+
+    Docs: remove electronic resources heading
+    
+    The additional heading isn't needed in the release notes.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	4	docs/RELEASE_NOTES_3_0.adoc
+
+commit 1417bb6b64fc6a5f51a1edff9750a5f17e80760b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Oct 5 11:04:54 2017 -0400
+
+    Docs: ebook api release note entry and doc changes
+    
+    Moved the content from ebook_transactions.adoc file to the 3.0 release notes.
+    I also incorporated changes introduced in 3.0 into the documentation on
+    ebook api.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+36	0	docs/RELEASE_NOTES_3_0.adoc
+18	6	docs/admin/ebook_api.adoc
+0	36	docs/opac/ebook_transactions.adoc
+ delete mode 100644 docs/opac/ebook_transactions.adoc
+
+commit 9a4cfcddc981d016b5932b748978eecb19bbb086
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Sep 29 11:10:03 2017 -0400
+
+    LP#1720394: This html thinko in copy tag display
+    
+    A closing td tag appears to be have been accidentally used when closing the
+    opening td tag. It doesn't appear to affect the display of the copy tag, but should probably be fixed.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/record/copy_table.tt2
+
+commit de31a7149cb2338472cc0605c1c1486716ebba23
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 27 11:30:47 2017 -0400
+
+    LP#1717007 Improve egProgressDialog collision handling
+    
+    Resolves a race condition where egProgressDialog.open() is called twice
+    before the first call completes (i.e. the dialog is opened), leaving 2
+    open dialogs, one of which cannot be closed because its reference is
+    lost.
+    
+    Going forward, attempts to open multiple dialogs will always result in
+    the most recently visible dialog taking preference.  When collisions
+    occur, a warning is also issued to the console.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	10	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 4a523631cd58db6b20867bc63253c52ee04cda54
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 4 12:10:31 2017 -0400
+
+    LP#1666512: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+22	0	Open-ILS/src/sql/Pg/upgrade/1078.data.add_possibly_missing_billing_types.sql
+0	22	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_possibly_missing_billing_types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1078.data.add_possibly_missing_billing_types.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_possibly_missing_billing_types.sql
+
+commit 32ae404b66a01f768bd16c6bb85a6a6d721f8344
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Sep 14 23:16:32 2017 -0400
+
+    LP#1666512 - Only insert if not already existing
+    
+    This repatch was requested by Galen Charlton to make it easier for
+    upgrades to avoid adding the entries or failing if the entries already
+    existed.
+    
+    Also drops the unnecessary i18n tagging for the billing type names
+    since it does not work with applying upgrade scripts (only for sourcing
+    db.seed data for translation to PO file)
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+11	6	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_possibly_missing_billing_types.sql
+
+commit 78a0782928fbe561125391bd64d5ff3576c43ec1
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Feb 21 08:03:55 2017 -0500
+
+    LP#1666512 - Add billing types from 2009-era features.
+    
+    For systems that were running Evergreen 1.2 or so and upgraded to 1.4
+    or so, there were billing types added that did not make it into an
+    upgrade script.  We add them here just in case you don't have them.
+    Systems installed since Evergreen 1.4 are probably not affected.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+17	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_possibly_missing_billing_types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add_possibly_missing_billing_types.sql
+
+commit 6bcb34bae83eaaa638e57a8705a21dcbeca8beef
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 3 16:50:41 2017 -0400
+
+    correct the acknowledgement of Consortium of Ohio Libraries
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	docs/RELEASE_NOTES_3_0.adoc
