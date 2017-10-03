@@ -1320,6 +1320,7 @@ that funded development of the Web Staff Client:
 
 * Bibliomation
 * British Columbia Libraries Cooperative
+* Consortium of Ohio Libraries
 * C/W MARS
 * Georgia Public Library Service
 * Grand Rapids Public Library
@@ -1328,7 +1329,6 @@ that funded development of the Web Staff Client:
 * King County Library System
 * MassLNC
 * NC Cardinal
-* OhioNet
 * Pennsylvania Integrated Library System
 * Pioneer Library System
 * SC LENDS
