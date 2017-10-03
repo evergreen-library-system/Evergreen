@@ -13,7 +13,7 @@ Template for printing hold request slips. Fields include:
 * hold.phone_notify
 * hold.sms_notify
 * hold.email_notify
-* holdslip_notes (array of slip-printable notes)
+* hold_notes (array of slip-printable notes)
 
 -->
 <div>
@@ -45,9 +45,9 @@ Template for printing hold request slips. Fields include:
   <div ng-if="hold.phone_notify">[% l('Notify by phone: [_1]', '{{hold.phone_notify}}') %]</div>
   <div ng-if="hold.sms_notify">[% l('Notify by text: [_1]', '{{hold.sms_notify}}') %]</div>
   <div ng-if="hold.email_notify == 't'">[% l('Notify by email: [_1]', '{{patron.email}}') %]</div>
-    <div ng-if="holdslip_notes">
+    <div ng-if="hold_notes">
       <ul>Notes:
-        <li ng-repeat="note in holdslip_notes">{{note}}</li>
+        <li ng-repeat="note in hold_notes | filter: {slip : 't'}"><strong>{{note.title}}</strong> - {{note.body}}</li>
       </ul>
     </div>
   <br/>
