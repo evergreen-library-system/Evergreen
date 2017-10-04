@@ -39,7 +39,19 @@ my $max_duration; # max processing duration in seconds
 my $help;         # show help text
 my $opt_pipe;     # Read record ids from STDIN.
 
+# Database connection options with defaults:
+my $db_user = $ENV{PGUSER} || 'evergreen';
+my $db_host = $ENV{PGHOST} || 'localhost';
+my $db_db = $ENV{PGDATABASE} || 'evergreen';
+my $db_password = $ENV{PGPASSWORD} || 'evergreen';
+my $db_port = $ENV{PGPORT} || 5432;
+
 GetOptions(
+    'user=s'         => \$db_user,
+    'host=s'         => \$db_host,
+    'db=s'           => \$db_db,
+    'password=s'     => \$db_password,
+    'port=i'         => \$db_port,
     'batch-size=i'   => \$batch_size,
     'max-child=i'    => \$max_child,
     'skip-browse'    => \$skip_browse,
@@ -151,7 +163,8 @@ if ($opt_pipe) {
         }
     }
 } else {
-    my $dbh = DBI->connect('DBI:Pg:');
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
     @input = @{$dbh->selectcol_arrayref($q)};
     $dbh->disconnect();
 }
@@ -221,7 +234,8 @@ sub browse_ingest {
         # previously counted.
         $lists++;
     } elsif ($pid == 0) {
-        my $dbh = DBI->connect('DBI:Pg:');
+        my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                               $db_user, $db_password);
         my $sth = $dbh->prepare("SELECT metabib.reingest_metabib_field_entries(?, TRUE, FALSE, TRUE)");
         foreach (@list) {
             if ($sth->execute($_)) {
@@ -250,7 +264,8 @@ sub reingest {
     } elsif ($pid > 0) {
         push(@running, $pid);
     } elsif ($pid == 0) {
-        my $dbh = DBI->connect('DBI:Pg:');
+        my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                               $db_user, $db_password);
         reingest_attributes($dbh, $list) unless ($skip_attrs);
         reingest_field_entries($dbh, $list)
             unless ($skip_facets && $skip_search);
