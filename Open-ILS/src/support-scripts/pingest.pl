@@ -278,7 +278,7 @@ sub reingest {
 sub reingest_field_entries {
     my $dbh = shift;
     my $list = shift;
-    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => ?, TRUE, skip_search => ?)');
+    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => ?, skip_browse => TRUE, skip_search => ?)');
     # Because reingest uses "skip" options we invert the logic of do variables.
     $sth->bind_param(2, ($skip_facets) ? 1 : 0);
     $sth->bind_param(3, ($skip_search) ? 1 : 0);
