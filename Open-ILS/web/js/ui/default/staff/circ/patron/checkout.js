@@ -137,7 +137,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         // immediate reaction to their barcode input action.
         var row_item = {
             index : $scope.checkouts.length,
-            copy_barcode : params.copy_barcode,
+            input_barcode : params.copy_barcode,
             noncat_type : params.noncat_type
         };
 
@@ -165,6 +165,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 angular.forEach(co_resp.data, function(val, key) {
                     row_item[key] = val;
                 });
+               
+                row_item['copy_barcode'] = row_item.acp.barcode();
+
                 munge_checkout_resp(co_resp, row_item);
             },
             function() {

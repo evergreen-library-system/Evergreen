@@ -176,7 +176,7 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
 
         var row_item = {
             index : checkinSvc.checkins.length,
-            copy_barcode : params.copy_barcode
+            input_barcode : params.copy_barcode
         };
 
         // track the item in the grid before sending the request
@@ -185,11 +185,13 @@ function($scope , $q , $window , $location , egCore , checkinSvc , egGridDataPro
 
         egCirc.checkin(params, options).then(
         function(final_resp) {
-
+            
             row_item.evt = final_resp.evt;
             angular.forEach(final_resp.data, function(val, key) {
                 row_item[key] = val;
             });
+            
+            row_item['copy_barcode'] = row_item.acp.barcode();
 
             if (row_item.mbts) {
                 var amt = Number(row_item.mbts.balance_owed());
