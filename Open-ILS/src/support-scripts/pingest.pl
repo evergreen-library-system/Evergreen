@@ -33,6 +33,7 @@ my $skip_browse;  # Skip the browse reingest.
 my $skip_attrs;   # Skip the record attributes reingest.
 my $skip_search;  # Skip the search reingest.
 my $skip_facets;  # Skip the facets reingest.
+my $skip_display  # Skip the display reingest.
 my $start_id;     # start processing at this bib ID.
 my $end_id;       # stop processing when this bib ID is reached.
 my $max_duration; # max processing duration in seconds
@@ -58,6 +59,7 @@ GetOptions(
     'skip-attrs'     => \$skip_attrs,
     'skip-search'    => \$skip_search,
     'skip-facets'    => \$skip_facets,
+    'skip-display'   => \$skip_display,
     'start-id=i'     => \$start_id,
     'end-id=i'       => \$end_id,
     'pipe'           => \$opt_pipe,
@@ -81,6 +83,7 @@ sub help {
     --skip-attrs
     --skip-search
     --skip-facets
+    --skip-display
         Skip the selected reingest component
 
     --start-id
@@ -236,7 +239,7 @@ sub browse_ingest {
     } elsif ($pid == 0) {
         my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
                                $db_user, $db_password);
-        my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => TRUE, skip_browse => FALSE, skip_search => TRUE)');
+        my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => TRUE, skip_browse => FALSE, skip_search => TRUE, skip_display => TRUE)');
         foreach (@list) {
             if ($sth->execute($_)) {
                 my $crap = $sth->fetchall_arrayref();
@@ -278,10 +281,11 @@ sub reingest {
 sub reingest_field_entries {
     my $dbh = shift;
     my $list = shift;
-    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => ?, skip_browse => TRUE, skip_search => ?)');
+    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => ?, skip_browse => TRUE, skip_search => ?, skip_display => ?)');
     # Because reingest uses "skip" options we invert the logic of do variables.
     $sth->bind_param(2, ($skip_facets) ? 1 : 0);
     $sth->bind_param(3, ($skip_search) ? 1 : 0);
+    $sth->bind_param(4, ($skip_display) ? 1: 0);
     foreach (@$list) {
         $sth->bind_param(1, $_);
         if ($sth->execute()) {
