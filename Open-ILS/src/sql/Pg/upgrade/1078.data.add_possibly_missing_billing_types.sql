@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1078', :eg_version); -- csharp/bshum/gmcharlt
 
 -- The following billing types would not have been automatically added
 -- in upgrade scripts between versions 1.2 and 1.4 (early 2009).  We
