@@ -1011,10 +1011,6 @@ All manuals are available at http://docs.evergreen-ils.org
 Public catalog
 ~~~~~~~~~~~~~~
 
-
-Electronic resources in the catalog
------------------------------------
-
 Improvements to ebook API
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
