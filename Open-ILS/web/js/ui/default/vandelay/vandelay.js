@@ -577,13 +577,24 @@ function vlExportRecordQueue(opts) {
     req.onreadystatechange = function () {
         if (req.readyState == 4) {
             var file_tag = opts.nonimported ? '_nonimported' : '';
-            openils.XUL.contentToFileSaveDialog(req.responseText, null, {
-                defaultString : currentQueueName + file_tag + '.mrc',
-                defaultExtension : '.mrc',
-                filterName : 'MARC21',
-                filterExtension : '*.mrc',
-                filterAll : true
-            } );
+            var filename = currentQueueName + file_tag + '.mrc';
+
+            try {
+                if (window.IAMBROWSER) {
+                    var blob = new Blob([req.responseText], {type: "application/octet-stream"});
+                    saveAs(blob, filename);
+                } else {
+                    openils.XUL.contentToFileSaveDialog(req.responseText, null, {
+                        defaultString : filename,
+                        defaultExtension : '.mrc',
+                        filterName : 'MARC21',
+                        filterExtension : '*.mrc',
+                        filterAll : true
+                    } );
+                }
+            } catch (E) {
+                alert(E);
+            }
         }
     }
 }
