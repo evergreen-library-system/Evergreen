@@ -1,13 +1,25 @@
 Ebook API integration
 ---------------------
 
-Evergreen 2.12 supports partial integration with third-party APIs
-provided by OverDrive and OneClickdigital.  When ebook API integration
-is enabled, bibliographic records from these vendors that appear in your
-public catalog will include vendor holdings and availability information.  Also,
-when a user is logged in, the public catalog dashboard and My Account interface
-will include information about that user's checkouts and holds for
+Evergreen supports integration with third-party APIs provided by OverDrive and
+OneClickdigital.
+
+When ebook API integration is enabled, the following features are supported:
+
+ * Bibliographic records from these vendors that appear in your
+public catalog will include vendor holdings and availability information.
+ * Patrons can check out and place holds on OverDrive and OneClickdigital ebook
+titles from within the public catalog. 
+ * When a user is logged in, the public catalog dashboard and My Account
+interface will include information about that user's checkouts and holds for
 supported vendors.
+
+[WARNING]
+--
+The ability to check out and place holds on ebook titles is an experimental
+feature in 3.0.  It is not recommended for production use without careful
+testing.
+--
 
 For API integration to work, you need to request API access from the
 vendor and configure your Evergreen system according to the instructions
