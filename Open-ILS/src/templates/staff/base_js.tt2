@@ -1,3 +1,16 @@
+[%#
+
+  ***************************************************************************
+  * !!! ATTENTION !!! !!! ATTENTION !!! !!! ATTENTION !!! !!! ATTENTION !!! *
+  ***************************************************************************
+
+If anything is added to the bottom half of this file
+for global use, it will probably need to be added to
+the UpUp resource list!
+
+%]
+
+
 <script src="/upup.min.js"></script>
 <script>
 UpUp.start({
@@ -58,6 +71,7 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/ui/default/staff/services/user.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/services/i18n.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/date.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js',
