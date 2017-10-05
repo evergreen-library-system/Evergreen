@@ -4,7 +4,8 @@
 <eg-grid
   idl-class="ausp"
   grid-controls="activeGridControls"
-  dateformat="{{$root.egDateAndTimeFormat}}">
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  persist-key="circ.patron.staff_messages">
 
   <eg-grid-menu-item handler="createPenalty"
     label="[% l('Apply Penalty / Message') %]"></eg-grid-menu-item>
@@ -44,7 +45,8 @@
 <eg-grid
   idl-class="ausp"
   grid-controls="archiveGridControls"
-  dateformat="{{$root.egDateAndTimeFormat}}">
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  persist-key="circ.patron.archived_messages">
 
   <eg-grid-field path="set_date" label="[% l('Applied On') %]" datatype="timestamp"></eg-grid-field>
   <eg-grid-field path="standing_penalty.label"></eg-grid-field>
