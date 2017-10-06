@@ -152,7 +152,8 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Email') %]</div>
-      <div class="col-md-7">{{patron().email()}}</div>
+	  <!-- Bound href="mailto: patron().email()" to an anchor tag to allow the patron's email address to be clicked directly from the summary. -->
+      <div class="col-md-7"><a ng-href="mailto:{{patron().email()}}">{{patron().email()}}</a></div>
     </div>
     <div class="row" ng-repeat="map in summary_stat_cats()">
       <div class="col-md-5">{{map.stat_cat().name()}}</div>

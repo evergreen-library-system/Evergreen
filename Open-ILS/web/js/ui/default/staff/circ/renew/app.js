@@ -7,8 +7,9 @@ angular.module('egRenewApp',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-    var resolver = {delay : function(egStartup) {return egStartup.go()}};
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export    
+	
+	var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/circ/renew/renew', {
         templateUrl: './circ/renew/t_renew',

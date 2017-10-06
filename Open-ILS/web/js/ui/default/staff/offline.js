@@ -11,7 +11,7 @@ angular.module('egOffline', ['ngRoute', 'ui.bootstrap', 'egCoreMod', 'egUiMod', 
 function($routeProvider , $locationProvider , $compileProvider) {
 
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/);
 
     /**
      * Route resolvers allow us to run async commands

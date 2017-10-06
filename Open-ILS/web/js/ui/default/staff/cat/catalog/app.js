@@ -19,8 +19,8 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egC
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : ['egCore','egStartup','egUser', function(egCore, egStartup, egUser) {
         egCore.env.classLoaders.aous = function() {
             return egCore.org.settings([

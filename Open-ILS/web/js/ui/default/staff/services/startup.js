@@ -16,7 +16,7 @@ angular.module('egCoreMod')
 .config(['$locationProvider','$compileProvider',
  function($locationProvider , $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/);
 }])
 
 .factory('egStartup', 

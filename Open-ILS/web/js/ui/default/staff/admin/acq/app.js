@@ -5,7 +5,7 @@ angular.module('egAcqAdmin',
  function($routeProvider , $locationProvider , $compileProvider) {
 
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); 
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); 
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/admin/acq/edi_attr_set', {

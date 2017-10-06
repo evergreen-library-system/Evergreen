@@ -9,8 +9,8 @@ angular.module('egPatronRegApp', ['ui.bootstrap','ngRoute','egCoreMod', 'egUiMod
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : 
         ['egStartup', function(egStartup) {return egStartup.go()}]}
 
