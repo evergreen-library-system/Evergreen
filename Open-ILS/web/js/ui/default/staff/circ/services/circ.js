@@ -1530,8 +1530,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             var print_context = {
                 copy : egCore.idl.toHash(evt.payload.copy),
                 title : evt.title,
-                author : evt.author
-            }
+                author : evt.author,
+                call_number : egCore.idl.toHash(evt.payload.volume)
+            };
+
+            var acn = print_context.call_number; // fix up pre/suffixes
+            if (acn.prefix == -1) acn.prefix = "";
+            if (acn.suffix == -1) acn.suffix = "";
 
             if (data.transit) {
                 // route_dialog includes the "route to holds shelf" 
