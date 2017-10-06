@@ -1,6 +1,7 @@
 <!--
 Template for printing hold request slips. Fields include:
 
+* call_number.label/prefix/suffix
 * hold.behind_desk
 * copy.barcode
 * title
@@ -29,6 +30,8 @@ Template for printing hold request slips. Fields include:
 
   [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
   [% l('Title: [_1]', '{{title}}') %]</div>
+  <br/>
+  <div>[% l('Call Number: [_1] [_2] [_3]', '{{call_number.prefix}}', '{{call_number.label}}', '{{call_number.suffix}}') %]</div>
 
   <br/>
   <br/>

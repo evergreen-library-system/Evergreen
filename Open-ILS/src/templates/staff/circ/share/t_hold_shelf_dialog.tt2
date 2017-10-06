@@ -28,6 +28,10 @@
       <span>[% l('Author:') %]</span>
       <span>{{author}}</span>
     </div>
+    <div>
+      <span>[% l('Call Number:') %]</span>
+      <span>{{call_number.prefix}}&nbsp;{{call_number.label}}&nbsp;{{call_number.suffix}}</span>
+    </div>
     <br/>
     <div>
     
