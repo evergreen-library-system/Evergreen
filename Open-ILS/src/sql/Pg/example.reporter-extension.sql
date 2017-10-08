@@ -316,6 +316,219 @@ CREATE OR REPLACE VIEW money.open_balance_by_usr_home_and_owning_lib AS
 	  FROM	money.open_circ_balance_by_usr_home_and_owning_lib x
 	  GROUP BY 1,2;
 
+CREATE OR REPLACE VIEW reporter.copy_statistics_view AS
+SELECT    acp.id as copy_id,
+	owning_lib.id as owning_lib_id,
+    -- last circulation date in corsortium
+    (SELECT COALESCE(MAX(xact_start), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+    ) AS consortium_last_circ_date,
+    -- last circulation date in system
+    (SELECT COALESCE(MAX(xact_start), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib in (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_last_circ_date,
+    -- last circulation date in branch
+    (SELECT COALESCE(MAX(xact_start), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_last_circ_date,
+    -- last checkin date in corsortium
+    (SELECT COALESCE(MAX(checkin_time), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+    ) AS consortium_last_checkin_date,
+    -- last checkin date in system
+    (SELECT COALESCE(MAX(checkin_time), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib in (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_last_checkin_date,
+    -- last checkin date in branch
+    (SELECT COALESCE(MAX(checkin_time), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_last_checkin_date,
+    -- last due date in consortium
+    (SELECT COALESCE(MAX(due_date), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+    ) AS consortium_last_due_date,
+    -- last due date in system
+    (SELECT COALESCE(MAX(due_date), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib in (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_last_due_date,
+    -- last due date in branch
+    (SELECT COALESCE(MAX(due_date), NULL)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_last_due_date,
+    -- month-to-date circ in corsortium
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND EXTRACT(MONTH FROM xact_start) = EXTRACT(MONTH FROM now())
+     AND target_copy = acp.id
+    ) AS consortium_month_to_date_circ,
+    -- month-to-date circ in system
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND EXTRACT(MONTH FROM xact_start) = EXTRACT(MONTH FROM now())
+     AND target_copy = acp.id
+     AND circ_lib in (
+       SELECT id
+       FROM actor.org_unit
+       WHERE parent_ou = owning_lib.parent_ou
+       )
+    ) AS system_month_to_date_circ,
+    -- month-to-date circ in branch
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND EXTRACT(MONTH FROM xact_start) = EXTRACT(MONTH FROM now())
+     AND target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_month_to_date_circ,
+    -- year-to-date circ in consortium
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND target_copy = acp.id
+    ) AS consortium_year_to_date_circ,
+    -- year-to-date circ in system
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND target_copy = acp.id
+     AND circ_lib in (
+       SELECT id
+       FROM actor.org_unit
+       WHERE parent_ou = owning_lib.parent_ou
+       )
+    ) AS system_year_to_date_circ,
+    -- year-to-date circ in branch
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE EXTRACT(YEAR FROM xact_start) = EXTRACT(YEAR FROM now())
+     AND target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_year_to_date_circ,
+    -- lifetime circ in consortium
+    erfcc.circ_count AS consortium_lifetime_circ,
+    -- lifetime circ in system
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib in (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_lifetime_circ,
+    -- lifetime circ in branch
+    (SELECT count(*)
+     FROM action.all_circulation
+     WHERE target_copy = acp.id
+     AND circ_lib = owning_lib.id
+    ) AS branch_lifetime_circ,
+    -- current title hold count in consortium
+    (SELECT count(*)
+     FROM action.hold_request ahr
+     WHERE cancel_time IS NULL
+     AND expire_time > now()
+     AND fulfillment_time IS NULL
+     AND target = bre.id
+     AND hold_type = 'T'
+    ) AS consortium_current_title_hold_count,
+    -- current title hold count in system
+    (SELECT count(*)
+     FROM action.hold_request ahr
+     WHERE cancel_time IS NULL
+     AND expire_time > now()
+     AND fulfillment_time IS NULL
+     AND target = bre.id
+     AND hold_type = 'T'
+     AND pickup_lib IN (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_current_title_hold_count,
+    -- current title hold count in branch
+    (SELECT count(*)
+     FROM action.hold_request ahr
+     WHERE cancel_time IS NULL
+     AND expire_time > now()
+     AND fulfillment_time IS NULL
+     AND target = bre.id
+     AND hold_type = 'T'
+     AND pickup_lib = owning_lib.parent_ou
+    ) AS branch_current_title_hold_count,
+    -- consortium lifetime holds
+    (SELECT count(*)
+     FROM action.all_hold_request
+     WHERE current_copy = acp.id) AS consortium_lifetime_holds,
+    -- system lifetime holds
+    (SELECT count(*)
+     FROM action.all_hold_request
+     WHERE current_copy = acp.id
+     AND pickup_lib IN (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_lifetime_holds,
+    -- branch lifetime holds
+    (SELECT count(*)
+     FROM action.all_hold_request
+     WHERE current_copy = acp.id
+     AND pickup_lib = owning_lib.parent_ou
+    ) AS branch_lifetime_holds,
+    -- consortium lifetime transits
+    (SELECT count(*)
+     FROM action.transit_copy
+     WHERE target_copy = acp.id
+    ) AS consortium_lifetime_transits,
+    -- system lifetime transits
+    (SELECT count(*)
+     FROM action.transit_copy
+     WHERE target_copy = acp.id
+     AND source IN (
+        SELECT id
+        FROM actor.org_unit
+        WHERE parent_ou = owning_lib.parent_ou
+        )
+    ) AS system_lifetime_transits,
+    -- branch lifetime transits
+    (SELECT count(*)
+     FROM action.transit_copy
+     WHERE target_copy = acp.id
+     AND source = owning_lib.id
+    ) AS branch_lifetime_transits
+FROM    asset.copy acp
+    INNER JOIN asset.call_number acn ON (acp.call_number = acn.id)
+    INNER JOIN biblio.record_entry bre ON (acn.record = bre.id)
+    INNER JOIN actor.org_unit owning_lib ON (acn.owning_lib = owning_lib.id)
+    LEFT OUTER JOIN extend_reporter.full_circ_count erfcc ON (erfcc.id = acp.id);
+
 COMMIT;
-
-

@@ -11059,6 +11059,43 @@ SELECT  usr,
 			<link field="owning_lib" reltype="has_a" key="id" map="" class="aou"/>
 		</links>
 	</class>
+	<class id="rcsv" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::copy_statistics_view" oils_persist:tablename="reporter.copy_statistics_view" reporter:label="Item Statistics View">
+		<fields oils_persist:primary="copy_id">
+			<field reporter:label="Item ID" name="copy_id" reporter:datatype="link"/>
+			<field reporter:label="Owning Library Link" name="owning_lib_id" reporter:datatype="link"/>
+			<field reporter:label="Consortium: Last Circulation Date" name="consortium_last_circ_date" reporter:datatype="timestamp"/>
+			<field reporter:label="System: Last Circulation Date" name="system_last_circ_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Branch: Last Circulation Date" name="branch_last_circ_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Consortium: Last Checkin Date" name="consortium_last_checkin_date" reporter:datatype="timestamp"/>
+			<field reporter:label="System: Last Checkin Date" name="system_last_checkin_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Branch: Last Checkin Date" name="branch_last_checkin_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Consortium: Last Due Date" name="consortium_last_due_date" reporter:datatype="timestamp"/>
+			<field reporter:label="System: Last Due Date" name="system_last_due_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Branch: Last Due Date" name="branch_last_due_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Consortium: Month-to-Date Circulation" name="consortium_month_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="System: Month-to-Date Circulation" name="system_month_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="Branch: Month-to-Date Circulation" name="branch_month_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="Consortium: Year-to-Date Circulation" name="consortium_year_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="System: Year-to-Date Circulation" name="system_year_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="Branch: Year-to-Date Circulation" name="branch_year_to_date_circ" reporter:datatype="int"/>
+			<field reporter:label="Consortium: Lifetime Circulation" name="consortium_lifetime_circ" reporter:datatype="int"/>
+			<field reporter:label="System: Lifetime Circulation" name="system_lifetime_circ" reporter:datatype="int"/>
+			<field reporter:label="Branch: Lifetime Circulation" name="branch_lifetime_circ" reporter:datatype="int"/>
+			<field reporter:label="Consortium: Current Title Hold Count" name="consortium_current_title_hold_count" reporter:datatype="int"/>
+			<field reporter:label="System: Current Title Hold Count" name="system_current_title_hold_count" reporter:datatype="int"/>
+			<field reporter:label="Branch: Current Title Hold Count" name="branch_current_title_hold_count" reporter:datatype="int"/>
+			<field reporter:label="Consortium: Lifetime Title Hold Count" name="consortium_lifetime_holds" reporter:datatype="int"/>
+			<field reporter:label="System: Lifetime Title Hold Count" name="system_lifetime_holds" reporter:datatype="int"/>
+			<field reporter:label="Branch: Lifetime Title Hold Count" name="branch_lifetime_holds" reporter:datatype="int"/>
+			<field reporter:label="Consortium: Lifetime Transits" name="consortium_lifetime_transits" reporter:datatype="int"/>
+			<field reporter:label="System: Lifetime Outbound Transits" name="system_lifetime_transits" reporter:datatype="int"/>
+			<field reporter:label="Branch: Lifetime Outbound Transits" name="branch_lifetime_transits" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="copy_id" reltype="has_a" key="id" map="" class="acp"/>
+			<link field="owning_lib_id" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+	</class>
 	<class id="acqdf" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="acq::distribution_formula" oils_persist:tablename="acq.distribution_formula" reporter:label="Distribution Formula">
 		<fields oils_persist:primary="id" oils_persist:sequence="acq.distribution_formula_id_seq">
 			<field reporter:label="Formula ID" name="id" reporter:datatype="id" reporter:selector="name" />
