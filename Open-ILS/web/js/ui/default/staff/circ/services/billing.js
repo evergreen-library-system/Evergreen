@@ -114,6 +114,7 @@ function($uibModal , $q , egCore) {
 
         return $uibModal.open({
             templateUrl: './circ/share/t_bill_patron_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','$timeout','billingTypes','xact','patron',
             function($scope , $uibModalInstance , $timeout , billingTypes , xact , patron) {

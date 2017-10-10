@@ -328,6 +328,7 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
             ).then(function(list) {
                 $uibModal.open({
                     templateUrl: './serials/t_routing_list',
+                    backdrop: 'static',
                     controller: 'RoutingCtrl',
                     resolve : {
                         rowInfo : function() {

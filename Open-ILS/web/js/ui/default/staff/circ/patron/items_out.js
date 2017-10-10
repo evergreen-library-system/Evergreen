@@ -286,6 +286,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
         $uibModal.open({
             templateUrl : './circ/patron/t_edit_due_date_dialog',
+            backdrop: 'static',
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -439,6 +440,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         return $uibModal.open({
             templateUrl : './circ/patron/t_edit_due_date_dialog',
             templateUrl : './circ/patron/t_renew_with_date_dialog',
+            backdrop: 'static',
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {

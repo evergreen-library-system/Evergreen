@@ -11,6 +11,7 @@ function($uibModal , egCore) {
     service.open = function(bibId, orgId) {
         return $uibModal.open({
             templateUrl: './share/t_mfhd_create_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.mfhd_lib = orgId ?

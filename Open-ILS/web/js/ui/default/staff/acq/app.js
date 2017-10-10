@@ -74,6 +74,7 @@ function($scope , $routeParams , $location , $window , $timeout , egCore , $uibM
         $uibModal.open({
             templateUrl: './acq/t_edit_marc_order_record',
             size: 'lg',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;

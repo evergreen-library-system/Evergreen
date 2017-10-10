@@ -97,6 +97,7 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         // FIXME what follows ought to be refactored into a factory
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
+            backdrop: 'static',
             animation: true,
             size: 'md',
             controller:

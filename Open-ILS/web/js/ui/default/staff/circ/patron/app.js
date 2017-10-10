@@ -577,6 +577,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_create',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -891,6 +892,7 @@ function($scope,  $filter , $routeParams , $location , egCore , patronSvc , $uib
     $scope.newNote = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_new_note_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance',
             function($scope, $uibModalInstance) {
@@ -1057,6 +1059,7 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
                 user.card(card);
                 $uibModal.open({
                     templateUrl: './circ/patron/t_move_to_group_dialog',
+                    backdrop: 'static',
                     controller: [
                                 '$scope','$uibModalInstance',
                         function($scope , $uibModalInstance) {

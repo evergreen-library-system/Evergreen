@@ -1053,6 +1053,7 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
         } else {
             last_promise = current_promise.then(function(){ return $uibModal.open({
                 templateUrl: './serials/t_receive_alerts',
+                backdrop: 'static',
                 controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                     $scope.title = egCore.strings.CONFIRM_CHANGE_ITEMS[mode];

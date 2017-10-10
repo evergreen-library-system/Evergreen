@@ -1475,6 +1475,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.cards_dialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_patron_cards_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','cards','perms',
             function($scope , $uibModalInstance , cards , perms) {
@@ -1548,6 +1549,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.secondary_groups_dialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_patron_groups_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','linked_groups','pgt_depth',
             function($scope , $uibModalInstance , linked_groups , pgt_depth) {

@@ -312,6 +312,7 @@ function($timeout , $parse) {
     service.open = function(args) {
         return $uibModal.open({
             templateUrl: './share/t_progress_dialog',
+            /* backdrop: 'static', */ /* allow 'cancelling' of progress dialog */
             controller: ['$scope','$uibModalInstance','egProgressData',
                 function( $scope , $uibModalInstance , egProgressData) {
                     // Once the new modal instance is available, force-
@@ -377,6 +378,7 @@ function($uibModal , $interpolate) {
     service.open = function(message, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_alert_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
@@ -407,6 +409,7 @@ function($uibModal, $interpolate) {
         msg_scope = msg_scope || {};
         return $uibModal.open({
             templateUrl: './share/t_confirm_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.title = $interpolate(title)(msg_scope);
@@ -449,6 +452,7 @@ function($uibModal, $interpolate) {
     service.open = function(message, promptValue, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_prompt_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
@@ -491,6 +495,7 @@ function($uibModal, $interpolate) {
     service.open = function(message, inputList, selectedValue, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_select_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);

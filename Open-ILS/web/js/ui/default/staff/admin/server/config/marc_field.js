@@ -36,6 +36,7 @@ function($scope , $q , $timeout , $location , $window , $uibModal , egCore , egG
         gridControls = $scope.gridControls;
         $uibModal.open({
             template : templ,
+            backdrop: 'static',
             controller : [
                         '$scope', '$uibModalInstance',
                 function($scope ,  $uibModalInstance) {

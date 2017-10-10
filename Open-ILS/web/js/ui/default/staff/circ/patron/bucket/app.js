@@ -110,6 +110,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_create',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -134,6 +135,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openEditBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_edit',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -160,6 +162,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openDeleteBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_delete',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -179,6 +182,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openSharedBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_load_shared',
+            backdrop: 'static',
             controller :
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -292,6 +296,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_update_statcats',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -434,6 +439,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_changesets',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -559,6 +565,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_update_all',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -703,6 +710,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_delete_all',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;

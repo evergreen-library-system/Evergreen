@@ -61,6 +61,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
        
         return $uibModal.open({
             templateUrl : './circ/share/t_cancel_hold_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', 'cancel_reasons',
                 function($scope, $uibModalInstance, cancel_reasons) {
@@ -115,6 +116,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
        
         return $uibModal.open({
             templateUrl : './circ/share/t_uncancel_hold_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -189,6 +191,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_copy_quality_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -212,6 +215,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_edit_pickup_lib',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -244,6 +248,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_notification_prefs',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', 'sms_carriers',
                 function($scope, $uibModalInstance, sms_carriers) {
@@ -304,6 +309,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_dates',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -687,6 +693,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 $scope.new_note = function() {
                     return $uibModal.open({
                         templateUrl : './circ/share/t_hold_note_dialog',
+                        backdrop: 'static',
                         controller : 
                             ['$scope', '$uibModalInstance',
                             function($scope, $uibModalInstance) {
@@ -717,6 +724,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 $scope.new_notification = function() {
                     return $uibModal.open({
                         templateUrl : './circ/share/t_hold_notification_dialog',
+                        backdrop: 'static',
                         controller : 
                             ['$scope', '$uibModalInstance',
                             function($scope, $uibModalInstance) {

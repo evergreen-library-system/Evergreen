@@ -1673,6 +1673,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         return $uibModal.open({
             templateUrl: './cat/volcopy/t_copy_notes',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -1737,6 +1738,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         return $uibModal.open({
             templateUrl: './cat/volcopy/t_copy_tags',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
