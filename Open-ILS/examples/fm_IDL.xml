@@ -7594,7 +7594,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="mbp" controller="open-ils.cstore" oils_obj:fieldmapper="money::bnm_payment" oils_persist:tablename="money.bnm_payment_view" reporter:core="true" reporter:label="Payments: Brick-and-mortar">
+	<class id="mbp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::bnm_payment" oils_persist:tablename="money.bnm_payment_view" reporter:core="true" reporter:label="Payments: Brick-and-mortar">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
@@ -7625,6 +7625,13 @@ SELECT  usr,
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mndp" controller="open-ils.reporter" oils_obj:fieldmapper="money::non_drawer_payment" oils_persist:tablename="money.non_drawer_payment_view" reporter:core="true" reporter:label="Payments: Non-drawer Staff">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
