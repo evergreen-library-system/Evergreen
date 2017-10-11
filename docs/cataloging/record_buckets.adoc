@@ -1,0 +1,62 @@
+Record Buckets
+==============
+
+Introduction
+------------
+
+Record buckets are containers for MARC records. Once records are in a bucket, you can take
+various types of actions, including:
+
+* Editing all the records at once using the MARC Batch Editor.
+* Deleting all the records in the bucket.
+* Merging all the records in the bucket.
+* Downloading the MARC files for all records in the bucket, so you can edit them in another
+program like http://marcedit.reeset.net[MARCEdit].
+
+Creating Record Buckets
+-----------------------
+
+. Click on _Cataloging_ -> _Record Buckets_.
+. On the _Buckets_ menu, click _New Bucket_.
+. Give the bucket a name and (optionally) a description.
+
+Adding Records to a Bucket
+--------------------------
+
+From the Record Bucket Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+. Click on _Cataloging_ -> _Record Buckets_.
+. On the _Buckets_ menu, choose the bucket that you'd like to add records to.
+. Go to the _Record Query_ tab.
+. Enter your query into the _Record Query_ box.
+. Select the records you would like to add.
+. On the _Actions_ menu, click _Add to Bucket_.
+
+.Advanced record queries
+****
+
+The _Record Query_ tab allows some advanced search functionality through the use of search keys,
+which can be combined with one another.
+
+.Record Bucket search keys
+[options="header"]
+|===================
+|Search key           |Abbreviated version |Usage example               |Description
+|author:              |au:                 |au:Anzaldua                 |An author, creator, or contributor
+|available:           |                    |available:yes               |Limits to available items. There is no way to limit to _unavailable_ items
+|keyword:             |kw:                 |kw:Schirmer                 |A keyword
+|lang:                |                    |lang:Spanish                |A language
+|series:              |se:                 |se:avatar last airbender    |A series title
+|site:                |                    |site:LIB3                   |The shortname of the library/system/consortium you'd like to search
+|subject:             |su:                 |su:open source software     |A subject
+|subject||geographic: |                    |subject\|geographic:Uruguay |A geographic subject
+|title:               |ti:                 |ti:Harry Potter             |Title proper or alternate title
+|title\|proper:       |                    |title\|proper:Harry Potter  |Title proper taken from 245
+|===================
+
+You can combine these in the same query, e.g. `ti:borderlands au:anzaldua available:yes`.  However -- with the exception of the _lang_ search key,
+you should not repeat the same search key twice.
+
+****
+
+
