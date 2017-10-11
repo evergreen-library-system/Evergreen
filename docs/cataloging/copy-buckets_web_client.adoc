@@ -154,10 +154,17 @@ image::media/copy-bucket-cat-3.png[Copy Bucket Interface]
 8. Repeat steps 1 through 7 to add additional copies.
 
 
-From the Item Status Interface
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+From the Scan Item Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-NOTE: Functionality currently missing.
+. Click on _Search_ -> _Search for Copies by Barcode_
+. Scan the barcode(s) of the item(s) you wish to add to the bucket.
+. Make sure that the items you want to add are selected (i.e. that the checkbox on the left
+side of the screen is checked.
+. Right click on one of the selected items.
+. Click _Add items to bucket_.
+. Choose the existing bucket that you'd like to add to, or create a new bucket.
+
 
 Removing Copies from a Bucket
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
