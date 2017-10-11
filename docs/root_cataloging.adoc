@@ -46,6 +46,7 @@ include::cataloging/monograph_parts.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
+
 include::cataloging/conjoined_items.adoc[]
 
 :leveloffset: -1
@@ -62,6 +63,8 @@ Working with Electronic Resources
 include::cataloging/cataloging_electronic_resources.adoc[]
 
 include::cataloging/link_checker.adoc[]
+
+include::cataloging/record_buckets.adoc[]
 
 :leveloffset: -1
 

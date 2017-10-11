@@ -322,6 +322,10 @@ include::cataloging/copy-buckets_web_client.adoc[]
 
 include::cataloging/MARC_Editor.adoc[]
 
+:leveloffset: 1
+
+include::cataloging/record_buckets.adoc[]
+
 // Push titles down one level.
 :leveloffset: 2
 
