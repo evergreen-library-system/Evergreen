@@ -68,6 +68,10 @@ subfield 9 to the 856 field or you can enter multiple 856 fields with a subfield
 +
 . Save the record
 
+[NOTE]
+When troubleshooting located URIs, check to make sure there are no spaces either
+before or after the organizational unit short name.
+
 Located URI Example 1
 ^^^^^^^^^^^^^^^^^^^^^
 
