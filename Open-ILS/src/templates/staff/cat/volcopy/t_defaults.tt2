@@ -102,8 +102,9 @@
                 </div>
                 <div class="col-xs-6">
                     <label>
-                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.alerts"/>
-                        [% l('Alerts') %]
+                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.alert_message"/>
+                        <!-- <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.alerts"/> -->
+                        [% l('Alert Message') %]
                     </label>
                 </div>
             </div>
