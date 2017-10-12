@@ -291,12 +291,27 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         if (patron_id) {
             $scope.patron_id = patron_id;
             return patronSvc.setPrimary($scope.patron_id)
+            .then(function() {
+                // the page title context label comes from the tab.
+                egCore.strings.setPageTitle(
+                    egCore.strings.PAGE_TITLE_PATRON_NAME, 
+                    egCore.strings['PAGE_TITLE_PATRON_' + tab.toUpperCase()],
+                    {   lname : patronSvc.current.family_name(),
+                        fname : patronSvc.current.first_given_name(),
+                        mname : patronSvc.current.second_given_name()
+                    }
+                );
+            })
             .then(function() {return patronSvc.checkAlerts()})
             .then(redirectToAlertPanel)
             .then(function(){
                 $scope.ident_type_name = $scope.patron().ident_type().name()
                 $scope.hasIdentTypeName = $scope.ident_type_name.length > 0;
             });
+        } else {
+            // No patron, use the tab name as the page title.
+            egCore.strings.setPageTitle(
+                egCore.strings['PAGE_TITLE_PATRON_' + tab.toUpperCase()]);
         }
         return $q.when();
     }
