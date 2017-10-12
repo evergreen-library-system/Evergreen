@@ -10,7 +10,9 @@
         display: none !important;
     }       
     </style>
-    <title>[% l('Evergreen Staff [_1]', ctx.page_title) %]</title>
+    <!-- The page title changes with $rootScope.pageTitle, 
+        defaulting to the static template page title. -->
+    <title ng-cloak>{{pageTitle || "[% ctx.page_title %]"}}</title>
     <base href="/eg/staff/">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

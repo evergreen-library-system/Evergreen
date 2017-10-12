@@ -60,6 +60,8 @@
 
     s.SERIALS_ISSUANCE_FAIL_SAVE = "[% l('Failed to save issuance') %]";
     s.SERIALS_ISSUANCE_SUCCESS_SAVE = "[% l('Issuance saved') %]";
+    s.PAGE_TITLE_CATALOG_CONTEXT = "[% l('Catalog') %]";
+    s.PAGE_TITLE_BIB_DETAIL = "[% l('Bib [_1]', '{{record_id}}') %]";
 
   }])
 </script>

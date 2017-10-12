@@ -259,6 +259,19 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.record_id = $routeParams.record_id;
     $scope.summary_pane_record;
 
+    if ($scope.record_id) {
+        // TODO: Apply tab-specific title contexts
+        egCore.strings.setPageTitle(
+            egCore.strings.PAGE_TITLE_BIB_DETAIL,
+            egCore.strings.PAGE_TITLE_CATALOG_CONTEXT,
+            {record_id : $scope.record_id}
+        );
+    } else {
+        // Default to title = Catalog
+        egCore.strings.setPageTitle(
+            egCore.strings.PAGE_TITLE_CATALOG_CONTEXT);
+    }
+
     if ($routeParams.record_id) $scope.from_route = true;
     else $scope.from_route = false;
 
@@ -532,6 +545,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             egHolds.fetch_holds(hold_ids).then($scope.hold_grid_data_provider.refresh);
             init_parts_url();
             $location.update_path('/cat/catalog/record/' + $scope.record_id);
+            // update_path() bypasses the controller for path 
+            // /cat/catalog/record/:record_id. Manually set title here too.
+            egCore.strings.setPageTitle(
+                egCore.strings.PAGE_TITLE_BIB_DETAIL,
+                egCore.strings.PAGE_TITLE_CATALOG_CONTEXT,
+                {record_id : $scope.record_id}
+            );
         } else {
             delete $scope.record_id;
             $scope.from_route = false;
