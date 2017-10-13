@@ -459,11 +459,11 @@ function($uibModal, $interpolate) {
                     $scope.args = {value : promptValue || ''};
                     $scope.focus = true;
                     $scope.ok = function() {
-                        if (msg_scope.ok) msg_scope.ok($scope.args.value);
-                        $uibModalInstance.close()
+                        if (msg_scope && msg_scope.ok) msg_scope.ok($scope.args.value);
+                        $uibModalInstance.close($scope.args);
                     }
                     $scope.cancel = function() {
-                        if (msg_scope.cancel) msg_scope.cancel();
+                        if (msg_scope && msg_scope.cancel) msg_scope.cancel();
                         $uibModalInstance.dismiss();
                     }
                 }
