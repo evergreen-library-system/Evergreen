@@ -1,0 +1,12 @@
+ebook_api service
+-----------------
+
+The `open-ils.ebook_api` service looks up title and
+patron information from specified ebook vendor APIs.
+
+The Evergreen catalog accesses data from this service
+through OpenSRF JS bindings.
+
+The `OpenILS::Utils::HTTPClient` module is required
+for this service.
+
