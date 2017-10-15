@@ -165,6 +165,10 @@ include::admin/apache_rewrite_tricks.adoc[]
 
 include::admin/apache_access_handler.adoc[]
 
+include::admin/ebook_api_service.adoc[]
+
+include::admin/hold_targeter_service.adoc[]
+
 
 Using the Browser Staff Client
 ==============================
