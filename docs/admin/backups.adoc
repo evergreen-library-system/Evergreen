@@ -1,0 +1,207 @@
+Backing up your Evergreen System
+================================
+
+Database backups
+----------------
+
+Although it might seem pessimistic, spending some of your limited time preparing for disaster is one of
+the best investments you can make for the long-term health of your Evergreen system. If one of your
+servers crashes and burns, you want to be confident that you can get a working system back in place --
+whether it is your database server that suffers, or an Evergreen application server.
+
+At a minimum, you need to be able to recover your system's data from your PostgreSQL database server:
+patron information, circulation transactions, bibliographic records, and the like. If all else fails,
+you can at least restore that data to a stock Evergreen system to enable your staff and patrons to find
+and circulate materials while you work on restoring your local customizations such as branding, colors,
+or additional functionality. This section describes how to back up your data so that you or a colleague
+can help you recover from various disaster scenarios.
+
+Creating logical database backups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The simplest method to back up your PostgreSQL data is to use the `pg_dump` utility to create a logical
+backup of your database. Logical backups have the advantage of taking up minimal space, as the indexes
+derived from the data are not part of the backup. For example, an Evergreen database with 2.25 million
+records and 3 years of transactions that takes over 120 GB on disk creates just a 7.0 GB compressed
+backup file. The drawback to this method is that you can only recover the data at the exact point in time
+at which the backup began; any updates, additions, or deletions of your data since the backup began will
+not be captured. In addition, when you restore a logical backup, the database server has to recreate all
+of the indexes--so it can take several hours to restore a logical backup of that 2.25 million record
+Evergreen database.
+
+As the effort and server space required for logical database backups are minimal, your first step towards
+preparing for disaster should be to automate regular logical database backups. You should also ensure
+that the backups are stored in a different physical location, so that if a flood or other disaster strikes
+your primary server room, you will not lose your logical backup at the same time.
+
+To create a logical dump of your PostgreSQL database:
+
+. Issue the command to back up your database: `pg_dump -Fc <database-name> > <backup-filename>`. If you
+are not running the command as the postgres user on the database server itself, you may need to include
+options such as `-U <user-name>` and `-h <hostname>` to connect to the database server. You can use a
+newer version of the PostgreSQL to run `pg_dump` against an older version of PostgreSQL if your client
+and server operating systems differ. The `-Fc` option specifies the "custom" format: a compressed format
+that gives you a great deal of flexibility at restore time (for example, restoring only one table from
+the database instead of the entire schema).
+. If you created the logical backup on the database server itself, copy it to a server located in a
+different physical location.
+
+You should establish a routine of nightly logical backups of your database, with older logical backups
+being automatically deleted after a given interval.
+
+Restoring from logical database backups
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To increase your confidence in the safety of your data, you should regularly test your ability to
+restore from a logical backup. Restoring a logical backup that you created using the custom format
+requires the use of the `pg_restore` tool as follows:
+
+. On the server on which you plan to restore the logical backup, ensure that you have installed
+PostgreSQL and the corresponding server package prerequisites. The `Makefile.instal` prerequisite
+installer than came with your version of Evergreen contains an installation target that should
+satisfy these requirements. Refer to the installation documentation for more details.
+. As the `postgres` user, create a new database using the `createdb` command into which you will
+restore the data. Base the new database on the _template0_ template database to enable the
+combination of UTF8 encoding and C locale options, and specify the character type and collation
+type as "C" using the `--lc-ctype` and `--lc-collate` parameters. For example, to create a new
+database called "testrestore": `createdb --template=template0 --lc-ctype=C --lc-collate=C testrestore`
+. As the `postgres` user, restore the logical backup into your newly created database using
+the `pg_restore` command. You can use the `-j` parameter to use more CPU cores at a time to make
+your recovery operation faster. If your target database is hosted on a different server, you can
+use the `-U <user-name>`  and `-h <hostname>` options to connect to that server. For example,
+to restore the logical backup from a file named evergreen_20121212.dump into the "testrestore"
+database on a system with 2 CPU cores: `pg_restore -j 2 -d testrestore evergreen_20171212.dump`
+
+Creating physical database backups with support for point-in-time recovery
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+While logical database backups require very little space, they also have the disadvantage of
+taking a great deal of time to restore for anything other than the smallest of Evergreen systems.
+Physical database backups are little more than a copy of the database file system, meaning that
+the space required for each physical backup will match the space used by your production database.
+However, physical backups offer the great advantage of almost instantaneous recovery, because the
+indexes already exist and simply need to be validated when you begin database recovery. Your
+backup server should match the configuration of your master server as closely as possible including
+the version of the operating system and PostgreSQL.
+
+Like logical backups, physical backups also represent a snapshot of the data at the point in time
+at which you began the backup. However, if you combine physical backups with write-ahead-log (WAL)
+segment archiving, you can restore a version of your database that represents any point in time
+between the time the backup began and the time at which the last WAL segment was archived, a
+feature referred to as point-in-time recovery (PITR). PITR enables you to undo the damage that an
+accidentally or deliberately harmful UPDATE or DELETE statement could inflict on your production
+data, so while the recovery process can be complex, it provides fine-grained insurance for the
+integrity of your data when you run upgrade scripts against your database, deploy new custom
+functionality, or make global changes to your data.
+
+To set up WAL archiving for your production Evergreen database, you need to modify your PostgreSQL
+configuration (typically located on Debian and Ubuntu servers in
+`/etc/postgresql/<version>/postgresql.conf`):
+
+. Change the value of `archive_mode` to on 
+. Set the value of archive_command to a command that accepts the parameters `%f` (representing the
+file name of the WAL segment) and %p (representing the complete path name for the WAL segment,
+including the file name). You should copy the WAL segments to a remote file system that can be read
+by the same server on which you plan to create your physical backups. For example, if `/data/wal`
+represents a remote file system to which your database server can write, a possible value of
+archive_command could be: `test ! -f /data/wal/%f && cp %p /data/wal/%f`, which effectively tests
+to see if the destination file already exists, and if it does not, copies the WAL segment to that
+location. This command can be and often is much more complex (for example, using `scp` or `rsync`
+to transfer the file to the remote destination rather than relying on a network share), but you
+can start with something simple.
+
+Once you have modified your PostgreSQL configuration, you need to restart the PostgreSQL server
+before the configuration changes will take hold:
+. Stop your OpenSRF services.
+. Restart your PostgreSQL server.
+. Start your OpenSRF services and restart your Apache HTTPD server.
+
+To create a physical backup of your production Evergreen database:
+
+. From your backup server, issue the
+`pg_basebackup -x -D <data-destination-directory> -U <user-name> -h <hostname> <database-name>`
+command to create a physical backup of database <database-name> on your backup server.
+
+You should establish a process for creating regular physical backups at periodic intervals,
+bearing in mind that the longer the interval between physical backups, the more WAL segments
+the backup database will have to replay at recovery time to get back to the most recent changes
+to the database. For example, to be able to relatively quickly restore the state of your database
+to any point in time over the past four weeks, you might take physical backups at weekly intervals,
+keeping the last four physical backups and all of the corresponding WAL segments.
+
+Creating a replicated database
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you have a separate server that you can use  to run a replica of your database, consider
+replicating your database to that server. In the event that your primary database server suffers a
+hardware failure, having a database replica gives you the ability to fail over to your database
+replica with very little downtime and little or no data loss. You can also improve the performance of
+your overall system by directing some read-only operations, such as reporting, to the database replica.
+In this section, we describe how to replicate your database using PostgreSQL's streaming replication
+support.
+
+You need to prepare your master PostgreSQL database server to support streaming replicas with several
+configuration changes. The PostgreSQL configuration file is typically located on Debian and Ubuntu
+servers at `/etc/postgresql/<version>/postgresql.conf`. The PostgreSQL host-based authentication
+(`pg_hba.conf`) configuration file is typically located on Debian and Ubuntu servers at
+`/etc/postgresql/<version>/pg_hba.conf`. Perform the following steps on your master database server:
+
+. Turn on streaming replication support. In postgresql.conf on your master database server,
+change `max_wal_senders` from the default value of 0 to the number of streaming replicas that you need
+to support. Note that these connections count as physical connections for the sake of the
+`max_connections` parameter, so you might need to increase that value at the same time.
+. Enable your streaming replica to endure brief network outages without having to rely on the
+archived WAL segments to catch up to the master. In `postgresql.conf` on your production database server,
+change `wal_keep_segments` to a value such as 32 or 64.
+. Increase the maximum number of log file segments between automatic WAL checkpoints. In `postgresql.conf`
+on your production database server, change checkpoint_segments from its default of 3 to a value such as
+16 or 32. This improves the performance of your database at the cost of additional disk space. 
+. Create a database user for the specific purpose of replication. As the postgres user on the production
+database server, issue the following commands, where replicant represents the name of the new user:
++
+[source,sql]
+createuser replicant
+psql -d <database> ALTER ROLE replicant WITH REPLICATION;
++
+. Enable your replica database to connect to your master database server as a streaming replica. In
+`pg_hba.conf` on your master database server, add a line to enable the database user replicant to connect
+to the master database server from IP address 192.168.0.164:
++
+[source,perl]
+host    replication   replicant       192.168.0.164/32          md5
++
+. To enable the changes to take effect, restart your PostgreSQL database server.
+
+To avoid downtime, you can prepare your master database server for streaming replication at any maintenance
+interval; then weeks or months later, when your replica server environment is available, you can begin
+streaming replication. Once you are ready to set up the streaming replica, perform the following steps on
+your replica server:
+
+. Ensure that the version of PostgreSQL on your replica server matches the version running on your production
+server. A difference in the minor version (for example, 9.1.3 versus 9.1.5) will not prevent streaming
+replication from working, but an exact match is recommended.
+. Create a physical backup of the master database server.
+. Add a `recovery.conf` file to your replica database configuration directory. This file contains the
+information required to begin recovery once you start the replica database:
++
+[source,perl]
+# turn on standby mode, disabling writes to the database
+standby_mode = 'on'
+# assumes WAL segments are available at network share /data/wal
+restore_command = 'cp /data/wal/%f %p'
+# connect to the master database to being streaming replication
+primary_conninfo = 'host=kochab.cs.uoguelph.ca user=replicant password=<password>
++
+. Start the PostgreSQL database server on your replica server. It should connect to the master. If the
+physical backup did not take too long and you had a high enough value for `wal_keep_segments` set on your
+master server, the replica should begin streaming replication. Otherwise, it will replay WAL segments
+until it catches up enough to begin streaming replication.
+. Ensure that the streaming replication is working. Check the PostgreSQL logs on your replica server and
+master server for any errors. Connect to the replica database as a regular database user and check for
+recent changes that have been made to your master server.
+
+Congratulations, you now have a streaming replica database that reflects the latest changes to your Evergreen
+data! Combined with a routine of regular logical and physical database backups and WAL segment archiving
+stored on a remote server, you have a significant insurance policy for your system's data in the event that
+disaster does strike.
+
