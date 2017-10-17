@@ -74,7 +74,9 @@
 
   <eg-grid-field label="[% l('# of Uses') %]"   path='num_uses' visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"     path='copy.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% l('CN Prefix') %]" path="copy.call_number.prefix.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Call Number') %]" path="copy.call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('CN Suffix') %]" path="copy.call_number.suffix.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"    path="copy.location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       path="title" visible></eg-grid-field>
 </eg-grid>

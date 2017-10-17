@@ -256,7 +256,7 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
                 'flesh_fields' : {
                     'atc' : ['target_copy','dest','source','hold_transit_copy'],
                     'acp' : ['call_number','location','circ_lib'],
-                    'acn' : ['record'],
+                    'acn' : ['record', 'prefix', 'suffix'],
                     'bre' : ['simple_record'],
                     'ahtc' : ['hold'],
                     'ahr' : ['usr'],

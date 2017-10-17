@@ -277,6 +277,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             return;
         }
 
+        // retrieve call number affixes prior to sending payload data to the grid
+        if (payload.volume && typeof payload.volume.prefix() != 'object') {
+            egCore.pcrud.retrieve('acnp',payload.volume.prefix()).then(function(p) {payload.volume.prefix(p)});
+        };
+        if (payload.volume && typeof payload.volume.suffix() != 'object') {
+            egCore.pcrud.retrieve('acns',payload.volume.suffix()).then(function(s) {payload.volume.suffix(s)});
+        };
+
         data.circ = payload.circ;
         data.parent_circ = payload.parent_circ;
         data.hold = payload.hold;
