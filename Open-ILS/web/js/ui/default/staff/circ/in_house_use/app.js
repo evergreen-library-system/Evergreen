@@ -95,7 +95,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
                 {   flesh : 3, 
                     flesh_fields : {
                         acp : ['call_number','location'],
-                        acn : ['record'],
+                        acn : ['record', 'prefix', 'suffix'],
                         bre : ['simple_record']
                     },
                     select : { bre : ['id'] } // avoid fleshing MARC

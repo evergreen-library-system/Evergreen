@@ -84,6 +84,8 @@
   <eg-grid-field path='hold.requestor.*' parent-idl-class="ahr" hidden></eg-grid-field>
   <eg-grid-field path='hold.requestor.card.*' parent-idl-class="ahr" hidden></eg-grid-field>
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path='volume.prefix.label' label="[% l('CN Prefix') %]" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path='volume.suffix.label' label="[% l('CN Suffix') %]" parent-idl-class="acn" hidden></eg-grid-field>
   <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
 </eg-grid>
 

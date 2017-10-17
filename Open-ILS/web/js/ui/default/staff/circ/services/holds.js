@@ -449,6 +449,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             || hold_data.status;
 
         var hold = hold_data.hold;
+        var volume = hold_data.volume;
         hold.pickup_lib(egCore.org.get(hold.pickup_lib()));
         hold.current_shelf_lib(egCore.org.get(hold.current_shelf_lib()));
         hold_data.id = hold.id();
@@ -480,6 +481,16 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                typeof hold.current_copy().status() != 'object')
                 egCore.pcrud.retrieve('ccs',hold.current_copy().status()
                     ).then(function(c) { hold.current_copy().status(c) });
+        }
+
+        //Call number affixes are not always fleshed in the API
+        if (volume.prefix() && typeof volume.prefix() != 'object') {
+            console.debug('fetching call number prefix');
+            egCore.pcrud.retrieve('acnp',volume.prefix()).then(function(p) {volume.prefix(p)});
+        }
+        if (volume.suffix() && typeof volume.suffix() != 'object') {
+            console.debug('fetching call number prefix');
+            egCore.pcrud.retrieve('acns',volume.suffix()).then(function(s) {volume.suffix(s)});
         }
     }
 

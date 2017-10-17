@@ -107,7 +107,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
                     acp : ['call_number', 'holds_count', 'status', 'circ_lib'],
-                    acn : ['record', 'owning_lib'],
+                    acn : ['record', 'owning_lib', 'prefix', 'suffix'],
                     bre : ['simple_record']
                 },
                 // avoid fetching the MARC blob by specifying which 
