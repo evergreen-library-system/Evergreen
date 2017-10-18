@@ -294,7 +294,7 @@ sub mk_copy_query {
 
     if($org != $self->ctx->{aou_tree}->()->id) { 
         # no need to add the org join filter if we're not actually filtering
-        $query->{from}->{acp}->{aou} = {
+        $query->{from}->{acp}->[1] = { aou => {
             fkey => 'circ_lib',
             field => 'id',
             filter => {
@@ -311,7 +311,7 @@ sub mk_copy_query {
                     }
                 }
             }
-        };
+        }};
     };
 
     # Unsure if we want these in the shared function, leaving here for now
