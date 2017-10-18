@@ -19,7 +19,7 @@ COMMIT;
 \set ON_ERROR_STOP off
 
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.0-beta1', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.0.0', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1032', :eg_version); -- Bmagic/csharp/gmcharlt
 
