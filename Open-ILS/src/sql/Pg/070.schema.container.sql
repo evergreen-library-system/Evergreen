@@ -75,7 +75,7 @@ END;
 $f$ LANGUAGE PLPGSQL VOLATILE COST 50;
 
 CREATE CONSTRAINT TRIGGER inherit_copy_bucket_item_target_copy_fkey
-        AFTER UPDATE OR INSERT OR DELETE ON container.copy_bucket_item
+        AFTER UPDATE OR INSERT ON container.copy_bucket_item
         DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.container_copy_bucket_item_target_copy_inh_fkey();
 
 
