@@ -46,6 +46,7 @@ image::media/circulation_patron_records-1b_web_client.png[circulation_patron_rec
 =================== 
 * Search one field or combine fields for more precise results.  
 * Truncate search terms for more search results.
+* Search ignores punctuation such as diacritics, apostrophes, hyphens and commas.
 ===================
 
 Once you have located the desired patron, click on the entry row for this patron in
