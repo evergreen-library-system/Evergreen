@@ -93,7 +93,7 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         // immediate reaction to their barcode input action.
         var row_item = {
             index : $scope.renewals.length,
-            copy_barcode : params.copy_barcode,
+            input_barcode : params.copy_barcode,
             noncat_type : params.noncat_type
         };
 
@@ -110,6 +110,8 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
                 angular.forEach(final_resp.data, function(val, key) {
                     row_item[key] = val;
                 });
+
+                row_item['copy_barcode'] = row_item.acp.barcode();
 
                 if (row_item.mbts) {
                     var amt = Number(row_item.mbts.balance_owed());

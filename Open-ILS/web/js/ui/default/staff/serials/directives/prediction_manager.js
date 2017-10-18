@@ -115,8 +115,8 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
     $scope.importScapFromBibRecord = function() {
         $uibModal.open({
             templateUrl: './serials/t_select_pattern_dialog',
-            size: 'md',
             backdrop: 'static',
+            size: 'md',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -170,6 +170,7 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
     $scope.openPatternEditorDialog = function(pred, form, viewOnly) {
         $uibModal.open({
             templateUrl: './serials/t_pattern_editor_dialog',
+            backdrop: 'static',
             size: 'lg',
             windowClass: 'eg-wide-modal',
             backdrop: 'static',

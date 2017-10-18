@@ -49,6 +49,7 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider ,
         }
         $uibModal.open({
             templateUrl: './share/t_edit_mfhd',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {

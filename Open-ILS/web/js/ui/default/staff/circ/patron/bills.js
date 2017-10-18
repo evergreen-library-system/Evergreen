@@ -537,6 +537,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
         return $uibModal.open({
             templateUrl : './circ/patron/t_cc_payment_dialog',
+            backdrop: 'static',
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {

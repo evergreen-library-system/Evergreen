@@ -497,6 +497,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     var args = { changed : false };
                     $uibModal.open({
                         templateUrl: './cat/share/t_authority_link_dialog',
+                        backdrop: 'static',
                         size: 'lg',
                         controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                             $scope.controlSet = cs;

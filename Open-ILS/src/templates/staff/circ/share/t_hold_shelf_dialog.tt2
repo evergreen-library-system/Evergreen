@@ -28,6 +28,10 @@
       <span>[% l('Author:') %]</span>
       <span>{{author}}</span>
     </div>
+    <div>
+      <span>[% l('Call Number:') %]</span>
+      <span>{{call_number.prefix}}&nbsp;{{call_number.label}}&nbsp;{{call_number.suffix}}</span>
+    </div>
     <br/>
     <div>
     
@@ -48,6 +52,10 @@
     <div>
       <span>[% l('Request Date:') %]</span>
       <span>{{hold.request_time | date:$root.egDateFormat}}</span>
+    </div>
+    <div>
+      <span>[% l('Request Notes:') %]</span>
+      <ul><li ng-repeat="n in hold_notes"><strong>{{n.title}}</strong>: {{n.body}} &nbsp;<span ng-if="n.slip =='t' || n.pub == 't'">[Patron-visible]</span></li></ul>
     </div>
     <div>
       <span>[% l('Slip Date:') %]</span>

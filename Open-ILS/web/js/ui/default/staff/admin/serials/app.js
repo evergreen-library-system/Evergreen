@@ -36,6 +36,7 @@ function(egCore , $q , $uibModal , ngToast ) {
     service.create_or_edit_template = function(id,ou,cb) {
         $uibModal.open({
             template: '<eg-serials-template template_id="' + id + '" owning_lib="' + ou + '"></eg-serials-template>',
+            backdrop: 'static',
             controller:
                    ['sharedScope','$uibModalInstance',
             function(sharedScope , $uibModalInstance ) {

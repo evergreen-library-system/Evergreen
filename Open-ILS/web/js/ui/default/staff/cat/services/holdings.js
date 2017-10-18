@@ -332,6 +332,7 @@ function(egCore , $q) {
                         if (key) {
                             $uibModal.open({
                                 templateUrl: './cat/share/t_embedded_volcopy',
+                                backdrop: 'static',
                                 size: 'lg',
                                 windowClass: 'eg-wide-modal',
                                 controller:

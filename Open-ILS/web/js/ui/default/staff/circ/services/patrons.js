@@ -10,6 +10,7 @@ function($uibModal , $q , egCore) {
         var deferred = $q.defer();
         $uibModal.open({
             templateUrl: './circ/share/t_merge_patrons',
+            backdrop: 'static',
             size: 'lg',
             windowClass: 'eg-wide-modal',
             controller:

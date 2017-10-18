@@ -180,14 +180,14 @@
           <span class="glyphicon glyphicon-refresh"></span>
           [% l('Reset Columns') %]
         </a></li>
-        <li><a ng-click="generateCSVExportURL()" 
+        <li><a ng-click="generateCSVExportURL($event)" 
           download="{{csvExportFileName}}.csv" ng-href="{{csvExportURL}}">
           <span class="glyphicon glyphicon-download"></span>
-          [% l('Download CSV') %]
+          [% l('Download Full CSV') %]
         </a></li>
-        <li><a href ng-click="printCSV()">
+        <li><a href ng-click="printHTML()">
           <span class="glyphicon glyphicon-print"></span>
-          [% l('Print CSV') %]
+          [% l('Print Full Grid') %]
         </a></li>
         <li role="presentation" class="divider"></li>
         <li ng-repeat="col in columns">

@@ -309,6 +309,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var recId = $scope.record_id;
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
+            backdrop: 'static',
             animation: true,
             size: 'md',
             controller:
@@ -373,6 +374,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         var recId = $scope.record_id;
         return $uibModal.open({
             templateUrl: './share/t_subscription_select_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
 
@@ -486,6 +488,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     patron_search_dialog = function() {
         return $uibModal.open({
             templateUrl: './share/t_patron_selector',
+            backdrop: 'static',
             size: 'lg',
             animation: true,
             controller:
@@ -589,6 +592,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_conjoined_selector',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -674,6 +678,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
+            backdrop: 'static',
             animation: true,
             size: 'md',
             controller:
@@ -780,6 +785,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             if (combined_results.length > 0) {
                 $uibModal.open({
                     template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
+                    backdrop: 'static',
                     animation: true,
                     size: 'md',
                     controller:
@@ -841,6 +847,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             if (combined_brt.length > 0 || combined_brsrc.length > 0) {
                 $uibModal.open({
                     template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
+                    backdrop: 'static',
                     animation: true,
                     size: 'md',
                     controller:
@@ -953,6 +960,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         angular.forEach(copy_list, function (cp) {
             $uibModal.open({
                 templateUrl: './cat/share/t_replace_barcode',
+                backdrop: 'static',
                 animation: true,
                 controller:
                            ['$scope','$uibModalInstance',
@@ -1278,6 +1286,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.markLibAsVolTarget = function() {
         return $uibModal.open({
             templateUrl: './cat/catalog/t_choose_vol_target_lib',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -1557,6 +1566,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
             return $uibModal.open({
                 templateUrl: './cat/catalog/t_conjoined_selector',
+                backdrop: 'static',
                 animation: true,
                 controller:
                        ['$scope','$uibModalInstance',
@@ -1839,6 +1849,7 @@ function($scope , $location, egCore, $uibModal) {
         var vqbibrecId = bre.id();
         $uibModal.open({
             templateUrl: './cat/catalog/t_edit_marc_modal',
+            backdrop: 'static',
             size: 'lg',
             controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;

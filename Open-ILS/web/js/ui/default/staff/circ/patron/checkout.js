@@ -45,6 +45,53 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         }
     }
 
+    $scope.date_options = {
+        due_date : egCore.hatch.getSessionItem('eg.circ.checkout.due_date'),
+        has_sticky_date : egCore.hatch.getSessionItem('eg.circ.checkout.is_until_logout'),
+        is_until_logout : egCore.hatch.getSessionItem('eg.circ.checkout.is_until_logout')
+    };
+
+    if ($scope.date_options.is_until_logout) { // If until_logout is set there should also be a date set.
+        $scope.checkoutArgs.due_date = new Date($scope.date_options.due_date);
+        $scope.checkoutArgs.sticky_date = true;
+    }
+
+    $scope.toggle_opt = function(opt) {
+        if ($scope.date_options[opt]) {
+            $scope.date_options[opt] = false;
+        } else {
+            $scope.date_options[opt] = true;
+        }
+    };
+
+    // The interactions between these options are complicated enough that $watch'ing them all is the only safe way to keep things sane.
+    $scope.$watch('date_options.has_sticky_date', function(newval) {
+        if ( newval ) { // was false, is true
+            // $scope.date_options.due_date = checkoutArgs.due_date;
+        } else {
+            $scope.date_options.is_until_logout = false;
+        }
+        $scope.checkoutArgs.sticky_date = newval;
+    });
+
+    $scope.$watch('date_options.is_until_logout', function(newval) {
+        if ( newval ) { // was false, is true
+            $scope.date_options.has_sticky_date = true;
+            $scope.date_options.due_date = $scope.checkoutArgs.due_date;
+            egCore.hatch.setSessionItem('eg.circ.checkout.is_until_logout', true);
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', $scope.checkoutArgs.due_date);
+        } else {
+            egCore.hatch.removeSessionItem('eg.circ.checkout.is_until_logout');
+            egCore.hatch.removeSessionItem('eg.circ.checkout.due_date');
+        }
+    });
+
+    $scope.$watch('checkoutArgs.due_date', function(newval) {
+        if ( $scope.date_options.is_until_logout ) {
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', newval);
+        }
+    });
+
     $scope.has_email_address = function() {
         return (
             patronSvc.current &&
@@ -137,7 +184,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         // immediate reaction to their barcode input action.
         var row_item = {
             index : $scope.checkouts.length,
-            copy_barcode : params.copy_barcode,
+            input_barcode : params.copy_barcode,
             noncat_type : params.noncat_type
         };
 
@@ -165,6 +212,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 angular.forEach(co_resp.data, function(val, key) {
                     row_item[key] = val;
                 });
+               
+                row_item['copy_barcode'] = row_item.acp.barcode();
+
                 munge_checkout_resp(co_resp, row_item);
             },
             function() {

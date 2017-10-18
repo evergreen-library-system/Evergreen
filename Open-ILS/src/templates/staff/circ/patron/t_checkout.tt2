@@ -38,20 +38,48 @@
   <div class="col-md-6">
     <div class="flex-row">
       <div class="flex-cell"></div>
-      <div class="checkbox pad-horiz">
+
+<div class="input-group">
+<div class="input-group-btn" uib-dropdown>
+      <button type="button" class="btn btn-default" uib-dropdown-toggle>
+        [% l('Date Options') %]
+        <span class="caret"></span>
+      </button>
+      <ul class="pull-right" uib-dropdown-menu>
+        <li>
+          <a href
+            ng-click="toggle_opt('has_sticky_date')">
+            <span ng-if="date_options.has_sticky_date"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!date_options.has_sticky_date"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Specific Due Date') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href
+            ng-click="toggle_opt('is_until_logout')">
+            <span ng-if="date_options.is_until_logout"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!date_options.is_until_logout"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Use Specific Due Date Until Logout') %]</span>
+          </a>
+        </li>
+      </ul>
+</div>
+
+      <!-- <div class="checkbox pad-horiz">
         <label>
           <input type="checkbox" ng-model="checkoutArgs.sticky_date"/>
           [% l('Specific Due Date') %]
         </label>
-      </div>
-      <!--
-      <div><input type="checkbox" class="checkbox" ng-model="checkoutArgs.sticky_date"/></div>
-      <div class="pad-horiz">[% l('Specific Due Date') %]</div>
-      -->
+      </div> -->
       <!-- FIXME: This needs a time component as well, but type="datetime" 
             is not yet supported by any browsers -->
       <div><eg-date-input ng-model="checkoutArgs.due_date"></eg-date-input>
       </div>
+</div>
     </div>
   </div>
 </div>

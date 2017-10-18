@@ -706,6 +706,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         egCore.audio.play('warning.circ.event_override');
         return $uibModal.open({
             templateUrl: './circ/share/t_event_override_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
@@ -744,6 +745,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
         return $uibModal.open({
             templateUrl: './circ/share/t_copy_not_avail_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance','copyStatus',
                 function($scope , $uibModalInstance , copyStatus) {
@@ -784,6 +786,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             return $uibModal.open({
                 templateUrl: './circ/share/t_noncat_dialog',
+                backdrop: 'static',
                 controller: 
                     ['$scope', '$uibModalInstance',
                     function($scope, $uibModalInstance) {
@@ -816,6 +819,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         return $uibModal.open({
             templateUrl: './circ/share/t_precat_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 'circMods',
                 function($scope, $uibModalInstance, circMods) {
@@ -884,6 +888,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
         return $uibModal.open({
             templateUrl: './circ/share/t_copy_in_transit_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance','transit',
                 function($scope , $uibModalInstance , transit) {
@@ -952,6 +957,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         
         return $uibModal.open({
             templateUrl: './circ/share/t_circ_exists_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -999,6 +1005,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.backdate_dialog = function(circ_ids) {
         return $uibModal.open({
             templateUrl: './circ/share/t_backdate_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -1088,6 +1095,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         return $uibModal.open({
             templateUrl: './circ/share/t_mark_claims_returned_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -1474,8 +1482,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             var print_context = {
                 copy : egCore.idl.toHash(evt.payload.copy),
                 title : evt.title,
-                author : evt.author
-            }
+                author : evt.author,
+                call_number : egCore.idl.toHash(evt.payload.volume)
+            };
+
+            var acn = print_context.call_number; // fix up pre/suffixes
+            if (acn.prefix == -1) acn.prefix = "";
+            if (acn.suffix == -1) acn.suffix = "";
 
             if (data.transit) {
                 // route_dialog includes the "route to holds shelf" 
@@ -1491,6 +1504,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             if (data.patron) {
                 print_context.hold = egCore.idl.toHash(evt.payload.hold);
+                var notes = print_context.hold.notes;
+                if(notes.length > 0){
+                    print_context.hold_notes = [];
+                    angular.forEach(notes, function(n){
+                        print_context.hold_notes.push(n);
+                    });
+                }
                 print_context.patron = egCore.idl.toHash(data.patron);
             }
 
@@ -1513,6 +1533,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             return $uibModal.open({
                 templateUrl: tmpl,
+                backdrop: 'static',
                 controller: [
                             '$scope','$uibModalInstance',
                     function($scope , $uibModalInstance) {
@@ -1557,6 +1578,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
         return $uibModal.open({
             templateUrl: './circ/checkin/t_hold_verify',
+            backdrop: 'static',
             controller:
                        ['$scope','$uibModalInstance','params',
                 function($scope , $uibModalInstance , params) {
@@ -1593,6 +1615,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         egCore.audio.play('warning.circ.bad_barcode');
         return $uibModal.open({
             templateUrl: './circ/share/t_bad_barcode_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
@@ -1688,6 +1711,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             .then(function() {
                 return $uibModal.open({
                     templateUrl: './circ/share/t_barcode_choice_dialog',
+                    backdrop: 'static',
                     controller:
                         ['$scope', '$uibModalInstance',
                         function($scope, $uibModalInstance) {
@@ -1706,6 +1730,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.create_penalty = function(user_id) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','staffPenalties',
             function($scope , $uibModalInstance , staffPenalties) {
@@ -1746,6 +1771,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.edit_penalty = function(usr_penalty) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','staffPenalties',
             function($scope , $uibModalInstance , staffPenalties) {

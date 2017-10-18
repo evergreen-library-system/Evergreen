@@ -843,7 +843,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             location : true,
             holdable : true,
             age_protect : true,
-            floating : true
+            floating : true,
+            alert_message : true
         }
     };
 
@@ -1586,6 +1587,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         createSimpleUpdateWatcher('mint_condition');
         createSimpleUpdateWatcher('opac_visible');
         createSimpleUpdateWatcher('ref');
+        createSimpleUpdateWatcher('alert_message');
 
         $scope.saveCompletedCopies = function (and_exit) {
             var cnHash = {};
@@ -1671,6 +1673,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         return $uibModal.open({
             templateUrl: './cat/volcopy/t_copy_notes',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -1735,6 +1738,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
         return $uibModal.open({
             templateUrl: './cat/volcopy/t_copy_tags',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -2162,6 +2166,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 createSimpleUpdateWatcher('mint_condition');
                 createSimpleUpdateWatcher('opac_visible');
                 createSimpleUpdateWatcher('ref');
+                createSimpleUpdateWatcher('alert_message');
 
                 $scope.suffix_list = [];
                 itemSvc.get_suffixes(egCore.auth.user().ws_ou()).then(function(list){

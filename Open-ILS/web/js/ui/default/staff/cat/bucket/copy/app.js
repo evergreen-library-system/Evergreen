@@ -278,6 +278,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_create',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -302,6 +303,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openEditBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_edit',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -328,6 +330,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openDeleteBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_delete',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -347,6 +350,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openSharedBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_load_shared',
+            backdrop: 'static',
             controller :
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -536,6 +540,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -699,6 +704,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     $scope.applyTags = function(copies) {
         return $uibModal.open({
             templateUrl: './cat/bucket/copy/t_apply_tags',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',

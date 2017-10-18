@@ -177,6 +177,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
+            backdrop: 'static',
             animation: true,
             size: 'md',
             controller:
@@ -275,6 +276,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             if (combined_results.length > 0) {
                 $uibModal.open({
                     template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
+                    backdrop: 'static',
                     animation: true,
                     size: 'md',
                     controller:
@@ -336,6 +338,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             if (combined_brt.length > 0 || combined_brsrc.length > 0) {
                 $uibModal.open({
                     template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
+                    backdrop: 'static',
                     animation: true,
                     size: 'md',
                     controller:
@@ -368,6 +371,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance','egUser',
@@ -439,6 +443,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
             return $uibModal.open({
                 templateUrl: './cat/catalog/t_conjoined_selector',
+                backdrop: 'static',
                 animation: true,
                 controller:
                        ['$scope','$uibModalInstance',
@@ -689,6 +694,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         angular.forEach(items, function (cp) {
             $uibModal.open({
                 templateUrl: './cat/share/t_replace_barcode',
+                backdrop: 'static',
                 animation: true,
                 controller:
                            ['$scope','$uibModalInstance',

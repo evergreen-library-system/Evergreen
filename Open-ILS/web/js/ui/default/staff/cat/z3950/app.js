@@ -151,6 +151,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.showRawSearchForm = function() {
         $uibModal.open({
             templateUrl: './cat/z3950/t_raw_search',
+            backdrop: 'static',
             size: 'md',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -254,6 +255,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         var recId = 0;
         $uibModal.open({
             templateUrl: './cat/z3950/t_marc_edit',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -280,6 +282,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         var items = $scope.gridControls.selectedItems();
         $uibModal.open({
             templateUrl: './cat/z3950/t_marc_html',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -302,6 +305,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         };
         $uibModal.open({
             templateUrl: './cat/z3950/t_overlay',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -347,6 +351,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 $scope.editOverlayRecord = function() {
                     $uibModal.open({
                         templateUrl: './cat/z3950/t_edit_overlay_record',
+                        backdrop: 'static',
                         size: 'lg',
                         controller:
                             ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {

@@ -292,7 +292,11 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
             $scope.patron_id = patron_id;
             return patronSvc.setPrimary($scope.patron_id)
             .then(function() {return patronSvc.checkAlerts()})
-            .then(redirectToAlertPanel);
+            .then(redirectToAlertPanel)
+            .then(function(){
+                $scope.ident_type_name = $scope.patron().ident_type().name()
+                $scope.hasIdentTypeName = $scope.ident_type_name.length > 0;
+            });
         }
         return $q.when();
     }
@@ -577,6 +581,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_create',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -891,6 +896,7 @@ function($scope,  $filter , $routeParams , $location , egCore , patronSvc , $uib
     $scope.newNote = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_new_note_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance',
             function($scope, $uibModalInstance) {
@@ -1057,6 +1063,7 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
                 user.card(card);
                 $uibModal.open({
                     templateUrl: './circ/patron/t_move_to_group_dialog',
+                    backdrop: 'static',
                     controller: [
                                 '$scope','$uibModalInstance',
                         function($scope , $uibModalInstance) {

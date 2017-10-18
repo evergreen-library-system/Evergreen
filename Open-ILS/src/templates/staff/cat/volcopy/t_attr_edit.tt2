@@ -98,7 +98,7 @@
             <b>[% l('Status') %]</b>
         </div>
         <div class="col-md-4">
-            <b>[% l('Statistical Categories') %]</b>
+            <b>[% l('Copy Alert') %]</b>
         </div>
     </div>
 
@@ -138,6 +138,7 @@
                 <div class="col-md-6">
                     <b>[% l('Reference?') %]</b>
                 </div>
+                
             </div>
 
             <div class="row">
@@ -414,13 +415,33 @@
         </div>
 
         <div class="col-md-4">
+            
+            <div class="row" >
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="nullable col-xs-12">
+                            <input class="form-control" type="text" ng-model="working.alert_message"
+                                ng-disabled="!defaults.attributes.alert_message" placeholder="Alert message" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
             <div class="row">
                 <div class="col-xs-12">
-                    <select class="form-control" ng-disabled="!defaults.statcats"
-                        ng-model="working.statcat_filter"
-                        ng-options="o.id() as o.shortname() for o in statcat_filter_list">
-                      <option value="">[% l('Filter by Library') %]</option>
-                    </select>
+                    <div class="row bg-info">
+                        <div class="col-xs-12">
+                            <b>Statistical Categories</b>
+                        </div>
+                    </div>
+                    <div class="row">
+			    <select class="form-control" ng-disabled="!defaults.statcats"
+				ng-model="working.statcat_filter"
+				ng-options="o.id() as o.shortname() for o in statcat_filter_list">
+			      <option value="">[% l('Filter by Library') %]</option>
+			    </select>
+                    </div>
                 </div>
             </div>
 
@@ -446,6 +467,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>

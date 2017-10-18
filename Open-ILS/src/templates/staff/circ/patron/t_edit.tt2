@@ -267,7 +267,8 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.dob')">
   [% draw_field_label('au', 'dob') %]
   <div class="col-md-3 reg-field-input">
-    <eg-date-input 
+    <eg-date-input
+      ng-required="field_required('au', 'dob')" 
       ng-model="patron.dob"
       ng-blur="handle_field_changed(patron, 'dob')">
     </eg-date-input>
