@@ -3,8 +3,67 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 3.0.1
+----------------
+This release contains several bug fixes improving on Evergreen 3.0.0
+
+* Fixes a bug in the web staff client that prevented initials from being
+stored with copy notes.
+* Adds billing types that may have been missed by systems that were 
+running Evergreen prior to the 1.4 release.
+* Fixes a web staff client bug with the CSV export option available from
+the Import Queue in the MARC Batch Import/Export interface.
+* Adds the missing copy alert field in the web client's volume/copy
+editor.
+* Fixes a bug where the setting to require date of birth in patron
+registration was not being honored in the web staff client.
+* Fixes a bug in the web staff client patron registration form where the 
+password wasn't generating from the last four digits of the patron's
+phone number.
+* Fixes an issue in the web staff client where the complete barcode did
+not display in some interfaces when partial barcodes were scanned.
+* Fixes an HTML error in the new copy tags that display on the record
+summary page.
+* Fixes a web staff client bug where recording a large number of in-house
+uses at one time doesn't display a confirmation dialog once it hits the 
+correct threshold.
+* Adds a _Print Full Grid_ action in the web staff client
+holds pull list to allow staff to print the entire pull list as it
+displays on the screen. This change also changes the _Export CSV_ action
+to an _Export Full CSV_ option.
+* Fixes an issue with the Patron Messages interface that prevented it
+from saving column configuration changes in the web staff client.
+* Fixes a bug in the web staff client where a billing prompt did not
+correctly display after marking an item damaged in those systems that
+have enabled the setting to bill for damaged items.
+* Adds an option to the specific due date feature that allows saving
+that due date until logout. This allows all circulations from a given
+workstation to be due on the same date. 
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.1 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Bill Erickson
+* Kyle Huckins
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
+* Dan Wells
+
+
+
+3.0.0 Upgrade notes
+-------------------
 
 The minimum version of PostgreSQL required to run Evergreen 3.0 is
 PostgreSQL 9.4. Evergreen 3.0 also requires OpenSRF 3.0.0 or later.
@@ -127,8 +186,8 @@ release cycles, and will become moot upon the release of 3.2.0, when
 the XUL staff client is slated to be entirely removed.
 
 
-New Features
-------------
+3.0.0 New Features
+------------------
 
 New Staff Client
 ~~~~~~~~~~~~~~~~
