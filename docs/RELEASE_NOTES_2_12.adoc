@@ -3,6 +3,44 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.7
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.6
+
+* Fixes a bug in the web staff client that prevented initials from being
+stored with copy notes.
+* Adds billing types that may have been missed by systems that were 
+running Evergreen prior to the 1.4 release.
+* Fixes a web staff client bug with the CSV export option available from
+the Import Queue in the MARC Batch Import/Export interface.
+* Adds the missing copy alert field in the web client's volume/copy
+editor.
+* Fixes a bug where the setting to require date of birth in patron
+registration was not being honored in the web staff client.
+* Fixes a bug in the web staff client patron registration form where the 
+password wasn't generating from the last four digits of the patron's
+phone number.
+* Fixes an issue in the web staff client where the complete barcode did
+not display in some interfaces when partial barcodes were scanned.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.7 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
+
+
 Evergreen 2.12.6
 ----------------
 This release contains several bug fixes improving on Evergreen 2.12.5.
