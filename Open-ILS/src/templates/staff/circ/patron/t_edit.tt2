@@ -317,6 +317,21 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<!-- ident_type2 -->
+
+<div class="row reg-field-row" ng-show="show_field('au.ident_type2')">
+  [% draw_field_label('au', 'ident_type2') %]
+  <div class="col-md-3 reg-field-input">
+    <select 
+      class="form-control" 
+      ng-model="patron.ident_type2"
+      ng-required="field_required('au', 'ident_type2')"
+      ng-blur="handle_field_changed(patron, 'ident_type2')"
+      ng-options="type.name() for type in ident_types track by type.id()">
+    </select>
+  </div>
+</div>
+
 <!-- IDENT_VALUE2 -->
 <div class="row reg-field-row" ng-show="show_field('au.ident_value2')">
   [% draw_field_label('au', 'ident_value2') %]
