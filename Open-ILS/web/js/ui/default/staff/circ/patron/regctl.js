@@ -622,6 +622,7 @@ angular.module('egCoreMod')
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
+        patron.ident_type2 = current.ident_type2();
         patron.groups = current.groups(); // pre-hash
 
         angular.forEach(
@@ -738,6 +739,8 @@ angular.module('egCoreMod')
         if (user.profile) user.profile = egCore.env.pgt.map[user.profile];
         if (user.ident_type) 
             user.ident_type = egCore.env.cit.map[user.ident_type];
+        if (user.ident_type2)
+            user.ident_type2 = egCore.env.cit.map[user.ident_type2];
         user.dob = service.parse_dob(user.dob);
 
         // Clear the usrname if it looks like a UUID
@@ -1269,6 +1272,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.first_given_name' : 3,
         'au.family_name' : 3,
         'au.ident_type' : 3,
+        'au.ident_type2' : 2,
         'au.home_ou' : 3,
         'au.profile' : 3,
         'au.expire_date' : 3,
