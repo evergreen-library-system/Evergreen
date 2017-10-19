@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-29 02:28+0000\n"
+"POT-Creation-Date: 2017-09-22 02:23+0000\n"
 "PO-Revision-Date: 2017-04-09 07:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:25+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-09-23 06:20+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -107,7 +107,7 @@ msgstr "%1 Բաց որոնում"
 #. (ou_avail, ou_count, ou_name)
 #: ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:22 ../../Open-ILS/src/templates/opac/parts/record/copy_counts.tt2:40 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:14 ../../Open-ILS/src/templates/opac/parts/result/copy_counts.tt2:33
 msgid "%1 of %quant(%2,copy,copies) available at %3."
-msgstr "%1 ընդամենը %քանակ(%2,պատճեն,պատճեններ) հասանելի են %3."
+msgstr "%1 ընդամենը %quant(%2,պատճեն,պատճեններ) հասանելի են %3."
 
 #: ../../Open-ILS/src/templates/opac/myopac/circ_history/export.tt2:1 ../../Open-ILS/src/templates/opac/parts/header.tt2:1
 msgid "%m/%d/%Y"
@@ -119,7 +119,7 @@ msgid ""
 "%quant(%1,current hold,current holds) with %quant(%2,total copy,total "
 "copies)."
 msgstr ""
-"%քանակ(%1,ընթացիկ պահում,ընթացիկ պահումներ) ըստ %քանակ(%2,ընդհանուր "
+"%quant(%1,ընթացիկ պահում,ընթացիկ պահումներ) ըստ %quant(%2,ընդհանուր "
 "պատճեն,ընդհանուր պատճեններ)։"
 
 #. (hwait)
@@ -319,7 +319,7 @@ msgid "Adapter"
 msgstr "Ադապտացիա"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Add %1 to my list"
 msgstr "Ավելացրու %1 իմ ցուցակին"
 
@@ -332,7 +332,7 @@ msgstr "Ավելացրու որոնման տող"
 msgid "Add item to a list: %1"
 msgstr "Ավելացրու նյութ ցուցակին: %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Add to my list"
 msgstr "Ավելացրու իմ ցուցակին"
 
@@ -1515,7 +1515,7 @@ msgstr "Խմբագրի պահումը"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:266
 msgid "Edit List Description"
-msgstr ""
+msgstr "Խմբագրի Ցուցակի նկարագրությունը"
 
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:256
@@ -2842,7 +2842,7 @@ msgstr ""
 "Նշում։ Դու պետք է ունենաս գործող էլ. փոստի հասցե կապված գրադարանային քո "
 "հաշվի հետ։ Եթե ոչ, դիմիր աշխատակազմին աջակցության համար։"
 
-#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:28 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:29 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
 msgid "Note: carrier charges may apply"
 msgstr "Նշում. կարող է կիրառվեկ ուղեկցողի վճար"
 
@@ -3189,6 +3189,10 @@ msgstr ""
 "Մուտք արա քո օգտվողի անունը կամ շտրիխ կոդը որպեսզի նույնականացնես գրադարանի "
 "քո հաշիվը և պահանջես գաղտնաբառի վերագրում։"
 
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:8
+msgid "Please fill out all required fields"
+msgstr "Լրացրու պահանջվող բոլոր դաշտերը։"
+
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:25
 msgid "Please include leading zeros."
 msgstr "Ներառ առաջատար զրոները"
@@ -3200,6 +3204,10 @@ msgstr "Գրանցումը ավարտելու համար դիմիր աշխատա
 #: ../../Open-ILS/src/templates/opac/register.tt2:115
 msgid "Please select a valid library"
 msgstr "Ընտրի թույլատրված գրադարան"
+
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:22
+msgid "Please select your mobile carrier"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/filtersort.tt2:27
 msgid "Popularity Adjusted Relevance"
@@ -3411,7 +3419,7 @@ msgstr "Ռադիո տնօրեն"
 msgid "Radio producer"
 msgstr "Ռադիո թողարկող"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:432
 msgid "Ratings Icon"
 msgstr "Գնահատումների պատկերիկ"
 
@@ -3489,7 +3497,7 @@ msgid "Remove %1 filter"
 msgstr "Հեռացրու %1 զտիչը"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Remove %1 from my list"
 msgstr "Հեռացրու %1 իմ ցուցակից"
 
@@ -3505,7 +3513,7 @@ msgstr "Հեռացրու որոնման տողը"
 msgid "Remove from list"
 msgstr "Հեռացնել ցանկից"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Remove from my list"
 msgstr "Հեռացնել իմ ցանկից"
 
@@ -3634,12 +3642,12 @@ msgstr "Գրախոսող"
 msgid "Reviews"
 msgstr "Գրախոսություններ"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:430
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:433
 msgid "Reviews &amp; More"
 msgstr "Գրախոսություններ &amp; Ավելին"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:425
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
 msgid "Reviews and More for %1"
 msgstr "Գրախոսականներ և ավելին սրա համար %1"
 
@@ -4849,7 +4857,7 @@ msgstr ""
 "գումարային արժեքը բացասական է։ Մենք չենք կարող աշխատել բացասական գումարների "
 "դեպքում։"
 
-#: ../../Open-ILS/src/templates/opac/parts/js.tt2:10
+#: ../../Open-ILS/src/templates/opac/parts/js.tt2:11
 msgid ""
 "You have entered an invalid date, or an improperly formatted date.  Please "
 "enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again."
