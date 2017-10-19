@@ -50,7 +50,10 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         // For ws_ou or wsid(), see egAuth.user().ws_ou(), etc.
         workstation : function() {
             return this.ws;
-        }
+        },
+
+        // Listen for logout events in other tabs
+        authChannel : new BroadcastChannel('eg.auth')
     };
 
     /* Returns a promise, which is resolved if valid
@@ -268,19 +271,33 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
      * Does that setting serve a purpose in a browser environment?
      */
     service.poll = function() {
-        if (!service.authtime()) return;
+
+        if (!service.authChannel.onmessage) {
+            // Now that we have an authtoken, listen for logout events 
+            // initiated by other tabs.
+            service.authChannel.onmessage = function(e) {
+                if (e.data.action == 'logout') {
+                    $rootScope.$broadcast(
+                        'egAuthExpired', {startedElsewhere : true});
+                }
+            }
+        }
 
         $timeout(
             function() {
-                if (!service.authtime()) return;
                 egNet.request(                                                     
                     'open-ils.auth',                                               
-                    'open-ils.auth.session.retrieve', service.token())   
-                .then(function(user) {
+                    'open-ils.auth.session.retrieve', 
+                    service.token(),
+                    0, // return extra auth details, unneeded here.
+                    1  // avoid extending the auth timeout
+                ).then(function(user) {
                     if (user && user.classname) { // all good
                         service.poll();
                     } else {
-                        $rootScope.$broadcast('egAuthExpired') 
+                        // NOTE: we should never get here, since egNet
+                        // filters responses for NO_SESSION events.
+                        $rootScope.$broadcast('egAuthExpired');
                     }
                 })
             },
@@ -290,7 +307,13 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         );
     }
 
-    service.logout = function() {
+    service.logout = function(broadcast) {
+
+        if (broadcast) {
+            // Tell the other tabs to shut it all down.
+            service.authChannel.postMessage({action : 'logout'});
+        }
+
         if (service.token()) {
             egNet.request(
                 'open-ils.auth', 

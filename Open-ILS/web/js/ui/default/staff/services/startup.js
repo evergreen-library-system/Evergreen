@@ -52,11 +52,16 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
 
     // returns true if we are staying on the current page
     // false if we are redirecting to login
-    service.expiredAuthHandler = function() {
+    service.expiredAuthHandler = function(data) {
         if (lf.isOffline) return true; // Only set by the offline UI
 
         console.debug('egStartup.expiredAuthHandler()');
-        egAuth.logout(); // clean up
+
+        // Only notify other tabs the auth session has expired 
+        // when this tab was the first tab to know it.
+        var broadcast = !(data && data.startedElsewhere);
+
+        egAuth.logout(broadcast); // clean up
 
         // no need to redirect if we're on the /login page
         if ($location.path() == '/login') return true;

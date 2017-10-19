@@ -98,10 +98,13 @@ int osrfAppInitialize() {
 		MODULENAME,
 		"open-ils.auth.session.retrieve",
 		"oilsAuthSessionRetrieve",
-		"Pass in the auth token and this retrieves the user object.  The auth "
-		"timeout is reset when this call is made "
+		"Pass in the auth token and this retrieves the user object.  By "
+		"default, the auth timeout is reset when this call is made.  If "
+		"a second non-zero parameter is passed, the auth timeout info is "
+		"returned to the caller along with the user object.  If a 3rd "
+		"non-zero parameter is passed, the auth timeout will not be reset."
 		"Returns the user object (password blanked) for the given login session "
-		"PARAMS( authToken )", 1, 0 );
+		"PARAMS( authToken[, returnTime[, doNotResetSession]] )", 1, 0 );
 
 	osrfAppRegisterMethod(
 		MODULENAME,
@@ -1206,6 +1209,7 @@ int oilsAuthResetTimeout( osrfMethodContext* ctx ) {
 int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	OSRF_METHOD_VERIFY_CONTEXT(ctx);
     bool returnFull = false;
+    bool noTimeoutReset = false;
 
 	const char* authToken = jsonObjectGetString( jsonObjectGetIndex(ctx->params, 0));
 
@@ -1214,6 +1218,14 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
         const char* rt = jsonObjectGetString(jsonObjectGetIndex(ctx->params, 1));
         if(rt && strcmp(rt, "0") != 0) 
             returnFull = true;
+
+        if (ctx->params->size > 2) {
+            // Avoid resetting the auth session timeout.
+            const char* noReset = 
+                jsonObjectGetString(jsonObjectGetIndex(ctx->params, 2));
+            if (noReset && strcmp(noReset, "0") != 0) 
+                noTimeoutReset = true;
+        }
     }
 
 	jsonObject* cacheObj = NULL;
@@ -1222,7 +1234,8 @@ int oilsAuthSessionRetrieve( osrfMethodContext* ctx ) {
 	if( authToken ){
 
 		// Reset the timeout to keep the session alive
-		evt = _oilsAuthResetTimeout(authToken, 0);
+        if (!noTimeoutReset) 
+		    evt = _oilsAuthResetTimeout(authToken, 0);
 
 		if( evt && strcmp(evt->event, OILS_EVENT_SUCCESS) ) {
 			osrfAppRespondComplete( ctx, oilsEventToJSON( evt ));    // can't reset timeout
