@@ -473,6 +473,10 @@ table.list tr.selected td { /* deprecated? */
   height: 25px;
 }
 
+eg-grid-field {
+  display: none;
+}
+
 [%# 
 vim: ft=css 
 %]
