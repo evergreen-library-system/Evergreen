@@ -250,6 +250,105 @@ function(egCore , $q) {
 
     };
 
+   service.get_acp_templates = function() {
+       // Already downloaded for this user? Return local copy. Changing users or logging out causes another download
+       // so users always have their own templates, and any changes made on other machines appear as expected.
+       if (egCore.hatch.getSessionItem('cat.copy.templates.usr') == egCore.auth.user().id()) {
+           return egCore.hatch.getItem('cat.copy.templates').then(function(templ) {
+               return templ;
+           });
+       } else {
+          // this can be disabled for debugging to force a re-download and translation of test templates
+          egCore.hatch.setSessionItem('cat.copy.templates.usr', egCore.auth.user().id());
+          return service.load_remote_acp_templates();
+      }
+
+   };
+
+   service.save_acp_templates = function(t) {
+       egCore.hatch.setItem('cat.copy.templates', t);
+       egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
+           egCore.auth.token(), egCore.auth.user().id(), { "webstaff.cat.copy.templates": t });
+       // console.warn('Saved ' + JSON.stringify({"webstaff.cat.copy.templates": t}));
+   };
+
+   service.load_remote_acp_templates = function() {
+       // After the XUL Client is completely removed everything related to staff_client.copy_editor.templates and convert_xul_templates can be thrown away.
+       return egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative',
+           egCore.auth.token(), egCore.auth.user().id(),
+           ['webstaff.cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
+               if (settings['webstaff.cat.copy.templates']) {
+                   egCore.hatch.setItem('cat.copy.templates', settings['webstaff.cat.copy.templates']);
+                   return settings['webstaff.cat.copy.templates'];
+               } else {
+                   if (settings['staff_client.copy_editor.templates']) {
+                      var new_templ = service.convert_xul_templates(settings['staff_client.copy_editor.templates']);
+                      egCore.hatch.setItem('cat.copy.templates', new_templ);
+                      // console.warn('Saving: ' + JSON.stringify({'webstaff.cat.copy.templates' : new_templ}));
+                      egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
+                          egCore.auth.token(), egCore.auth.user().id(), {'webstaff.cat.copy.templates' : new_templ});
+                      return new_templ;
+                   }
+               }
+               return {};
+       });
+   };
+
+   service.convert_xul_templates = function(xultempl) {
+       var conv_templ = {};
+       var templ_names = Object.keys(xultempl);
+       var name;
+       var xul_t;
+       var curr_templ;
+       var stat_cats;
+       var fields;
+       var field_name;
+       var curr_field;
+       var tmp_val;
+       var i, j;
+
+       if (templ_names){
+         for (i=0; i < templ_names.length; i++) {
+           name = templ_names[i];
+           curr_templ = {};
+           stat_cats = {};
+           xul_t  = xultempl[name];
+           fields = Object.keys(xul_t);
+
+           if (fields.length > 0) {
+             for (j=0; j < fields.length; j++) {
+               field_name = fields[j];
+               curr_field = xul_t[field_name];
+
+               if ( curr_field["field"] == null ) { continue; }
+               if ( curr_field["value"] == "<HACK:KLUDGE:NULL>" ) { continue; }
+
+               // floating changed from a boolean to an integer at one point; take this opportunity to remove the boolean from any old templates
+               if ( curr_field["type"] === "attribute" && curr_field["field"] === "floating" ) {
+                 if ( curr_field["value"].match(/[tf]/) ) { continue; }
+               }
+
+               if ( curr_field["type"] === "stat_cat" ) {
+                 stat_cats[curr_field["field"]] = parseInt(curr_field["value"]);
+               }
+               else {
+                 tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
+                 if ( tmp_val.match(/^[-0-9.]+$/) && !(curr_field["field"].match(/(?:loan_duration|fine_level)/))) { tmp_val = parseFloat(tmp_val); }
+                 curr_templ[curr_field["field"]] = tmp_val;
+               }
+             }
+
+             if ( (Object.keys(stat_cats)).length > 0 ){
+               curr_templ["statcats"] = stat_cats;
+             }
+
+             conv_templ[name] = curr_templ;
+           }
+         }
+       }
+       return conv_templ;
+   };
+
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
@@ -1085,10 +1184,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         $scope.template_name_list = [];
 
         $scope.fetchTemplates = function () {
-            egCore.hatch.getItem('cat.copy.templates').then(function(t) {
+            itemSvc.get_acp_templates().then(function(t) {
                 if (t) {
                     $scope.templates = t;
-                    $scope.template_name_list = Object.keys(t);
+                    $scope.template_name_list = Object.keys(t).sort();
                 }
             });
             egCore.hatch.getItem('cat.copy.last_template').then(function(t) {
@@ -1933,10 +2032,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.template_controls = true;
 
                 $scope.fetchTemplates = function () {
-                    egCore.hatch.getItem('cat.copy.templates').then(function(t) {
+                    itemSvc.get_acp_templates().then(function(t) {
                         if (t) {
                             $scope.templates = t;
-                            $scope.template_name_list = Object.keys(t);
+                            $scope.template_name_list = Object.keys(t).sort();
                         }
                     });
                 }
@@ -1962,9 +2061,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.deleteTemplate = function (n) {
                     if (n) {
                         delete $scope.templates[n]
-                        $scope.template_name_list = Object.keys($scope.templates);
+                        $scope.template_name_list = Object.keys($scope.templates).sort();
                         $scope.template_name = '';
-                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        itemSvc.save_acp_templates($scope.templates);
                         $scope.$parent.fetchTemplates();
                         ngToast.create(egCore.strings.VOL_COPY_TEMPLATE_SUCCESS_DELETE);
                     }
@@ -1984,15 +2083,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         });
             
                         $scope.templates[n] = tmpl;
-                        $scope.template_name_list = Object.keys($scope.templates);
+                        $scope.template_name_list = Object.keys($scope.templates).sort();
             
-                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        itemSvc.save_acp_templates($scope.templates);
                         $scope.$parent.fetchTemplates();
 
                         $scope.dirty = false;
                     } else {
                         // save all templates, as we might do after an import
-                        egCore.hatch.setItem('cat.copy.templates', $scope.templates);
+                        itemSvc.save_acp_templates($scope.templates);
                         $scope.$parent.fetchTemplates();
                     }
                     ngToast.create(egCore.strings.VOL_COPY_TEMPLATE_SUCCESS_SAVE);
@@ -2008,9 +2107,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         try {
                             var newTemplates = JSON.parse(newVal);
                             if (!Object.keys(newTemplates).length) return;
-                            $scope.templates = newTemplates;
-                            $scope.template_name_list = Object.keys(newTemplates);
-                            $scope.template_name = '';
+                            angular.forEach(Object.keys(newTemplates), function (k) {
+                                $scope.templates[k] = newTemplates[k];
+                            });
+                            itemSvc.save_acp_templates($scope.templates);
+                            $scope.fetchTemplates();
                         } catch (E) {
                             console.log('tried to import an invalid copy template file');
                         }
