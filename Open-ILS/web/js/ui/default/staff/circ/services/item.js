@@ -669,26 +669,30 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     }
 
     service.spawnHoldingsEdit = function (items,hide_vols,hide_copies){
-        angular.forEach(service.gatherSelectedRecordIds(items), function (r) {
-            egCore.net.request(
-                'open-ils.actor',
-                'open-ils.actor.anon_cache.set_value',
-                null, 'edit-these-copies', {
-                    record_id: r,
-                    copies: service.gatherSelectedHoldingsIds(items,r),
-                    raw: {},
-                    hide_vols : hide_vols,
-                    hide_copies : hide_copies
-                }
-            ).then(function(key) {
-                if (key) {
-                    var url = egCore.env.basePath + 'cat/volcopy/' + key;
-                    $timeout(function() { $window.open(url, '_blank') });
-                } else {
-                    alert('Could not create anonymous cache key!');
-                }
-            });
+        var item_ids = [];
+        angular.forEach(items, function(i){
+	    item_ids.push(i.id);
         });
+	
+	egCore.net.request(
+	    'open-ils.actor',
+	    'open-ils.actor.anon_cache.set_value',
+	    null,
+	    'edit-these-copies',
+	    {
+	        record_id: 0,  // disables record summary
+	        copies: item_ids,
+	        raw: {},
+	        hide_vols : hide_vols,
+	        hide_copies : hide_copies
+            }).then(function(key) {
+		if (key) {
+		    var url = egCore.env.basePath + 'cat/volcopy/' + key;
+		    $timeout(function() { $window.open(url, '_blank') });
+		} else {
+		    alert('Could not create anonymous cache key!');
+		}
+	    });
     }
 
     service.replaceBarcodes = function(items) {
