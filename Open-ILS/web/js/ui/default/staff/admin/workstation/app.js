@@ -395,7 +395,8 @@ function($scope , $q , egCore , ngToast) {
         sms_notify : '111-222-3333',
         email_notify : 'user@example.org',
         request_time : new Date().toISOString(),
-        hold_type : 'T'
+        hold_type : 'T',
+        shelf_expire_time : new Date().toISOString()
     }
 
     var seed_transit = {
@@ -505,21 +506,24 @@ function($scope , $q , egCore , ngToast) {
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'Ready for Pickup'
             },
             {
                 hold : one_hold, title : 'Some Title 2', author : 'Some Author 2',
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'Ready for Pickup'
             },
             {
                 hold : one_hold, title : 'Some Title 3', author : 'Some Author 3',
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'In Transit'
             }
         ]
     }
