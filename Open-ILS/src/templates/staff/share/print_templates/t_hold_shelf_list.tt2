@@ -11,6 +11,8 @@ Template for printing a list of items on the hold shelf. Fields include:
   * author
   * volume.label
   * copy.barcode
+  * status_string
+  * hold.shelf_expire_time
 
 -->
 <table id='shelf-list-template-table'>
@@ -29,6 +31,8 @@ Template for printing a list of items on the hold shelf. Fields include:
       <th>[% l('Author') %]</th>
       <th>[% l('Call Number') %]</th>
       <th>[% l('Barcode/Part') %]</th>
+      <th>[% l('Status') %]</th>
+      <th>[% l('Shelf Expire Time') %]</th>
     </tr>
   </thead>
   <tbody>
@@ -47,6 +51,8 @@ Template for printing a list of items on the hold shelf. Fields include:
       <td>{{hold_data.author}}</td>
       <td>{{hold_data.volume.label}}</td>
       <td>{{hold_data.copy.barcode}} {{hold_data.part.label}}</td>
+      <td>{{hold_data.status_string}}</td>
+      <td>{{hold_data.hold.shelf_expire_time | date:'yyyy-MM-dd HH:mm:ss'}}</td>
     </tr>
   </tbody>
 </table>
