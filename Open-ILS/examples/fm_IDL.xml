@@ -3807,10 +3807,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="source" reporter:label="Record ID" reporter:datatype="id" />
 			<field name="title" reporter:label="Title" reporter:datatype="text"/>
 			<field name="author" reporter:label="Author" reporter:datatype="text"/>
-			<field name="subject" reporter:label="Subject" reporter:datatype="text"/>
 			<field name="creators" reporter:label="Creators" reporter:datatype="text"/>
 			<field name="isbn" reporter:label="ISBN" reporter:datatype="text"/>
-			<!-- TODO add all well-known fields -->
+			<field name="issn" reporter:label="ISSN" reporter:datatype="text"/>
+			<field name="upc" reporter:label="UPC" reporter:datatype="text"/>
+			<field name="tcn" reporter:label="TCN" reporter:datatype="text"/>
+			<field name="edition" reporter:label="Edition" reporter:datatype="text"/>
+			<field name="physical_description" reporter:label="Physical Description" reporter:datatype="text"/>
+			<field name="publisher" reporter:label="Publisher" reporter:datatype="text"/>
+			<field name="series_title" reporter:label="Series Title" reporter:datatype="text"/>
+			<field name="subject_geographic" reporter:label="Geographic Subject" reporter:datatype="text"/>
+			<field name="subject_name" reporter:label="Name Subject" reporter:datatype="text"/>
+			<field name="subject_temporal" reporter:label="Temporal Subject" reporter:datatype="text"/>
+			<field name="subject_topic" reporter:label="Topic Subject" reporter:datatype="text"/>
+			<field name="abstract" reporter:label="Abstract" reporter:datatype="text"/>
+			<field name="toc" reporter:label="Table of Contents" reporter:datatype="text"/>
+			<field name="pubdate" reporter:label="Publication Date" reporter:datatype="text"/>
+			<field name="type_of_resource" reporter:label="Type of Resource" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
