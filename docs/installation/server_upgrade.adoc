@@ -353,6 +353,6 @@ from the Evergreen community.
 Review Release Notes
 ~~~~~~~~~~~~~~~~~~~~
 
-Review the <<_evergreen_2_12_1_release_notes,2.12 release notes>> for other tasks
+Review the <<_evergreen_2_12_release_notes,2.12 release notes>> for other tasks
 that need to be done after upgrading.  If you have upgraded over several 
 major versions, you will need to review the release notes for each version also.

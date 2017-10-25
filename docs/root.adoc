@@ -82,8 +82,6 @@ include::installation/server_installation.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
-include::installation/staff_client_installation.adoc[]
-
 include::installation/server_upgrade.adoc[]
 
 include::installation/edi_setup.adoc[]
