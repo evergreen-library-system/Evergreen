@@ -226,55 +226,6 @@ include::admin/authorities.adoc[]
 
 include::admin/Best_Hold_Selection_Sort_Order.adoc[]
 
-Using the Browser Staff Client
-==============================
-
-
-Introduction
-------------
-
-This part of the documentation deals with general Browser Client usage including
-logging in, navigation and shortcuts.
-
-For information about the XUL client, consult the http://docs.evergreen-ils.org/2.11/[Evergreen 2.11 documentation].
-
-include::admin/web_client-login.adoc[]
-
-include::admin/web-client-browser-best-practices.adoc[]
-
-include::admin/staff_client-column_picker.adoc[]
-
-include::admin/staff_client-recent_searches.adoc[]
-
-include::admin/workstation_admin.adoc[]
-
-// Push titles down one level.
-:leveloffset: 1
-
-include::admin/workstation_admin_receipt_template_editor.adoc[]
-
-// Return to normal title levels.
-:leveloffset: 0
-
-System Administration From the Staff Client
-===========================================
-
-Introduction
-------------
-
-This part deals with the options in the Server Administration menu found in the
-staff client. 
-
-// Follow structure from staff client system admin menu.
-
-include::admin/acquisitions_admin.adoc[]
-
-include::admin/age_hold_protection.adoc[]
-
-include::admin/authorities.adoc[]
-
-include::admin/Best_Hold_Selection_Sort_Order.adoc[]
-
 include::admin/booking-admin.adoc[]
 
 include::admin/cn_prefixes_and_suffixes.adoc[]
