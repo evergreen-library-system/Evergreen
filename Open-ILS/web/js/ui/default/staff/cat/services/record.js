@@ -143,25 +143,20 @@ angular.module('egCoreMod')
         },
         templateUrl : './cat/share/t_record_summary',
         controller : 
-                   ['$scope','egCore','$sce',
-            function($scope , egCore , $sce) {
+                   ['$scope','egCore','$sce','egBibDisplay',
+            function($scope , egCore , $sce , egBibDisplay) {
 
                 function loadRecord() {
                     egCore.pcrud.retrieve('bre', $scope.recordId, {
                         flesh : 1,
                         flesh_fields : {
-                            bre : ['creator','editor']
+                            bre : ['creator','editor','flat_display_entries']
                         }
                     }).then(function(rec) {
                         rec.owner(egCore.org.get(rec.owner()));
                         $scope.record = rec;
-                    });
-                    egCore.net.request(
-                        'open-ils.search',
-                        'open-ils.search.biblio.record.mods_slim.retrieve.authoritative',
-                        $scope.recordId
-                    ).then(function(mvr) {
-                        $scope.mvr = mvr;
+                        $scope.rec_display = 
+                            egBibDisplay.mfdeToHash(rec.flat_display_entries());
                     });
                     $scope.bib_cn = null;
                     $scope.bib_cn_tooltip = '';
