@@ -226,12 +226,23 @@ angular.module('egCoreMod')
  * Note that 'mwde' objects (which are proper IDL objects) only contain
  * the prescribed fields from the IDL (and database view), while the
  * 'mfde' hash-based objects contain all configured display fields,
- * including local/custom fields.
+ * including custom fields.
+ * 
+ * MWDE objects are best suited to cases where the available set of
+ * display fields must be auto-generated from the IDL.  They work well
+ * with egGrids because it can automatically determine from the IDL
+ * which fields should be added to the column picker.
+ *
+ * MFDE lists are well suited to cases where the set of fields to
+ * display is known in advance (e.g. hard-coded in the template) or when
+ * the caller needs data for custom fields.  FWIW, MFDE data is slightly
+ * leaner for retrieval in that it does not require the JSON round-trip
+ * for delivery.
  *
  * Example:
  *
  *  --
- *  // Display well-known fields
+ *  // MVR-style canned fields
  *
  *  $scope.record = copy.call_number().record();
  *
@@ -276,10 +287,10 @@ angular.module('egCoreMod')
      * Converts JSON-encoded values within a mwde object to Javascript
      * native strings, numbers, and arrays.
      *
-     * @collapseMulti collapse array (multi) fields down to a single string
-     * with values separated by a comma+space.  Useful for quickly 
-     * building displays (e.g. grids) without having to first munge 
-     * the array into a string.
+     * @collapseMulti collapse multi=true array values down to a single 
+     * comma-separated string.  This is useful for quickly  building 
+     * displays (e.g. grids) without having to first munge the array 
+     * into a string.
      */
     service.mwdeJSONToJS = function(entry, collapseMulti) {
         angular.forEach(egCore.idl.classes.mwde.fields, function(f) {
@@ -296,7 +307,7 @@ angular.module('egCoreMod')
      * Non-multi values are strings or numbers.
      * Multi values are arrays of strings or numbers.
      *
-     * @collapseMulti See service.mwdeJSONToJS()
+     * @collapseMulti See egBibDisplay.mwdeJSONToJS()
      */
     service.mfdeToHash = function(entries, collapseMulti) {
         var hash = service.mfdeToMetaHash(entries, collapseMulti);
@@ -311,7 +322,7 @@ angular.module('egCoreMod')
      * The scalar_or_array value is a string/number or an array of
      * string/numbers
      *
-     * @collapseMulti See service.mwdeJSONToJS()
+     * @collapseMulti See egBibDisplay.mwdeJSONToJS()
      */
     service.mfdeToMetaHash = function(entries, collapseMulti) {
         var hash = {};
@@ -329,10 +340,10 @@ angular.module('egCoreMod')
             if (entry.multi() == 't') {
                 if (collapseMulti) {
                     if (angular.isArray(hash[entry.name()].value)) {
-                        // new collapsed string
+                        // start a new collapsed string
                         hash[entry.name()].value = entry.value();
                     } else {
-                        // append to collapsed string
+                        // append to collapsed string in progress
                         hash[entry.name()].value += ', ' + entry.value();
                     }
                 } else {
