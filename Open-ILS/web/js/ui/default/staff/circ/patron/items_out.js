@@ -128,16 +128,16 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             circ.circ_lib(egCore.org.get(circ.circ_lib())); // local fleshing
 
             // Translate bib display field JSON blobs to JS.
+            // Collapse multi/array fields down to comma-separated strings.
             egBibDisplay.mwdeJSONToJS(
-                circ.target_copy().call_number().record().wide_display_entry());
+                circ.target_copy().call_number().record().wide_display_entry(), true);
 
             if (circ.target_copy().call_number().id() == -1) {
                 // dummy-up a record for precat items
                 circ.target_copy().call_number().record().wide_display_entry({
                     title : function() {return circ.target_copy().dummy_title()},
                     author : function() {return circ.target_copy().dummy_author()},
-                    // ISBN is a multi=true field.
-                    isbn : function() {return [circ.target_copy().dummy_isbn()]}
+                    isbn : function() {return circ.target_copy().dummy_isbn()}
                 })
             }
 
