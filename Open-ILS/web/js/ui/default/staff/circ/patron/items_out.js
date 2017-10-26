@@ -5,10 +5,12 @@
 angular.module('egPatronApp')
 
 .controller('PatronItemsOutCtrl',
-       ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc','$location',
-        'egGridDataProvider','$uibModal','egCirc','egConfirmDialog','egBilling','$window',
-function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $location, 
-         egGridDataProvider , $uibModal , egCirc , egConfirmDialog , egBilling , $window) {
+       ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc',
+        '$location','egGridDataProvider','$uibModal','egCirc','egConfirmDialog',
+        'egBilling','$window','egBibDisplay',
+function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc , 
+         $location , egGridDataProvider , $uibModal , egCirc , egConfirmDialog , 
+         egBilling , $window , egBibDisplay) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -108,7 +110,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
                     acp : ['call_number', 'holds_count', 'status', 'circ_lib'],
                     acn : ['record', 'owning_lib', 'prefix', 'suffix'],
-                    bre : ['simple_record']
+                    bre : ['wide_display_entry']
                 },
                 // avoid fetching the MARC blob by specifying which 
                 // fields on the bre to select.  More may be needed.
@@ -125,12 +127,17 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         }).then(deferred.resolve, null, function(circ) {
             circ.circ_lib(egCore.org.get(circ.circ_lib())); // local fleshing
 
+            // Translate bib display field JSON blobs to JS.
+            egBibDisplay.mwdeJSONToJS(
+                circ.target_copy().call_number().record().wide_display_entry());
+
             if (circ.target_copy().call_number().id() == -1) {
                 // dummy-up a record for precat items
-                circ.target_copy().call_number().record().simple_record({
+                circ.target_copy().call_number().record().wide_display_entry({
                     title : function() {return circ.target_copy().dummy_title()},
                     author : function() {return circ.target_copy().dummy_author()},
-                    isbn : function() {return circ.target_copy().dummy_isbn()}
+                    // ISBN is a multi=true field.
+                    isbn : function() {return [circ.target_copy().dummy_isbn()]}
                 })
             }
 
@@ -353,8 +360,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 circ : egCore.idl.toHash(circ),
                 copy : egCore.idl.toHash(circ.target_copy()),
                 call_number : egCore.idl.toHash(circ.target_copy().call_number()),
-                title : circ.target_copy().call_number().record().simple_record().title(),
-                author : circ.target_copy().call_number().record().simple_record().author(),
+                title : circ.target_copy().call_number().record().wide_display_entry().title(),
+                author : circ.target_copy().call_number().record().wide_display_entry().author()
             })
         });
 
