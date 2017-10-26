@@ -56,7 +56,7 @@ image::media/copy_locations_editor.png[screenshot of Copy Location Editor]
 * Copy locations can also be used as a data element in circulation policies. 
 
 User data
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
 
 Finally, several characteristics of specific patrons can affect circulation
 policies.  You may modify these characteristics in Search -> Search for Patrons
