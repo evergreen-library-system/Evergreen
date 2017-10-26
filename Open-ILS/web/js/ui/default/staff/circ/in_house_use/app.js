@@ -8,8 +8,10 @@ angular.module('egInHouseUseApp',
 })
 
 .controller('InHouseUseCtrl',
-       ['$scope','egCore','egGridDataProvider','egConfirmDialog', 'egAlertDialog',
-function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) {
+       ['$scope','egCore','egGridDataProvider','egConfirmDialog', 
+        'egAlertDialog','egBibDisplay',
+function($scope , egCore , egGridDataProvider , egConfirmDialog, 
+         egAlertDialog , egBibDisplay) {
 
     var countCap;
     var countMax;
@@ -95,7 +97,10 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
                     flesh_fields : {
                         acp : ['call_number','location'],
                         acn : ['record', 'prefix', 'suffix'],
-                        bre : ['simple_record']
+                        // We don't need to display a wide range of bib
+                        // fields in this UI.  Fetch the flat display since
+                        // it requires less DB-side munging (and as an example).  
+                        bre : ['flat_display_entries']
                     },
                     select : { bre : ['id'] } // avoid fleshing MARC
                 }
@@ -108,6 +113,11 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
                 }
 
                 coArgs.copyid = copy.id();
+
+                copy.call_number().record().flat_display_entries(
+                    egBibDisplay.mfdeToHash(
+                        copy.call_number().record().flat_display_entries())
+                );
 
                 // LP1507807: Display the copy alert if the setting is on.
                 if ($scope.copyAlert && copy.alert_message()) {
@@ -152,7 +162,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
             var item = {num_uses : resp.length};
             item.copy = data.copy;
             item.title = data.title || 
-                data.copy.call_number().record().simple_record().title();
+                data.copy.call_number().record().flat_display_entries().title;
             item.index = checkouts.length;
 
             checkouts.unshift(item);
