@@ -280,11 +280,19 @@ angular.module('egCoreMod')
     /**
      * Converts JSON-encoded values within a mwde object to Javascript
      * native strings, numbers, and arrays.
+     *
+     * @collapseMulti collapse array (multi) fields down to a single string
+     * with values separated by a comma+space.  Useful for quickly 
+     * building displays (e.g. grids) without having to first munge 
+     * the array into a string.
      */
-    service.mwdeJSONToJS = function(entry) {
+    service.mwdeJSONToJS = function(entry, collapseMulti) {
         angular.forEach(egCore.idl.classes.mwde.fields, function(f) {
             if (f.virtual) return;
-            entry[f.name](JSON.parse(entry[f.name]()));
+            var val = JSON.parse(entry[f.name]());
+            if (collapseMulti && angular.isArray(val))
+                val = val.join(', ');
+            entry[f.name](val);
         });
     }
 
@@ -292,9 +300,11 @@ angular.module('egCoreMod')
      * Converts a list of 'mfde' entry objects to a simple key=>value hash.
      * Non-multi values are strings or numbers.
      * Multi values are arrays of strings or numbers.
+     *
+     * @collapseMulti See service.mwdeJSONToJS()
      */
-    service.mfdeToHash = function(entries) {
-        var hash = service.mfdeToMetaHash(entries);
+    service.mfdeToHash = function(entries, collapseMulti) {
+        var hash = service.mfdeToMetaHash(entries, collapseMulti);
         angular.forEach(hash, 
             function(sub_hash, name) { hash[name] = sub_hash.value });
         return hash;
@@ -305,8 +315,10 @@ angular.module('egCoreMod')
      * {name => field_name, label => field_label, value => scalar_or_array}
      * The scalar_or_array value is a string/number or an array of
      * string/numbers
+     *
+     * @collapseMulti See service.mwdeJSONToJS()
      */
-    service.mfdeToMetaHash = function(entries) {
+    service.mfdeToMetaHash = function(entries, collapseMulti) {
         var hash = {};
         angular.forEach(entries, function(entry) {
 
@@ -320,7 +332,17 @@ angular.module('egCoreMod')
             }
 
             if (entry.multi() == 't') {
-                hash[entry.name()].value.push(entry.value());
+                if (collapseMulti) {
+                    if (angular.isArray(hash[entry.name()].value)) {
+                        // new collapsed string
+                        hash[entry.name()].value = entry.value();
+                    } else {
+                        // append to collapsed string
+                        hash[entry.name()].value += ', ' + entry.value();
+                    }
+                } else {
+                    hash[entry.name()].value.push(entry.value());
+                }
             } else {
                 hash[entry.name()].value = entry.value();
             }
