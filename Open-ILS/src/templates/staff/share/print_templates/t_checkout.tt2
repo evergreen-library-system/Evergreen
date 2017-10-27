@@ -7,6 +7,7 @@ Template for printing checkout receipts; fields available include:
   * title
   * copy_barcode
   * due_date
+  * patron_money.balance_owed - must be grabbed from a specific circulation, e.g. circulations[0].patron_money.balance_owed
 
 -->
 <div>

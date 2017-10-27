@@ -264,6 +264,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             if (co.circ) {
                 print_data.circulations.push({
                     circ : egCore.idl.toHash(co.circ),
+                    patron_money : egCore.idl.toHash(co.evt[0].payload.patron_money),
                     copy : egCore.idl.toHash(co.acp),
                     call_number : egCore.idl.toHash(co.acn),
                     title : co.title,
