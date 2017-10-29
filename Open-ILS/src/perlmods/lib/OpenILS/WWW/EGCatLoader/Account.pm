@@ -14,6 +14,7 @@ $Data::Dumper::Indent = 0;
 use DateTime;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
+use List::MoreUtils qw/uniq/;
 
 sub prepare_extended_user_info {
     my $self = shift;
@@ -984,7 +985,7 @@ sub load_place_hold {
     my $cgi = $self->cgi;
 
     $self->ctx->{page} = 'place_hold';
-    my @targets = $cgi->param('hold_target');
+    my @targets = uniq $cgi->param('hold_target');
     my @parts = $cgi->param('part');
 
     $ctx->{hold_type} = $cgi->param('hold_type');
