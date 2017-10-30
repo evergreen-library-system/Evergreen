@@ -441,7 +441,14 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         var xacts = [];
         egCore.pcrud.search('mbt', 
             {id : ids},
-            {flesh : 1, flesh_fields : {'mbt' : ['summary']}},
+            {flesh : 5, flesh_fields : {
+                'mbt' : ['summary', 'circulation'],
+                'circ' : ['target_copy'],
+                'acp' : ['call_number'],
+                'acn' : ['record'],
+                'bre' : ['simple_record']
+                }
+            },
             {authoritative : true}
         ).then(
             function() {
@@ -457,7 +464,21 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             }, 
             null, 
             function(xact) {
-                xacts.push(egCore.idl.toHash(xact));
+                newXact = {
+                    billing_total : xact.billing_total(),
+                    billings : xact.billings(),
+                    grocery : xact.grocery(),
+                    id : xact.id(),
+                    payment_total : xact.payment_total(),
+                    payments : xact.payments(),
+                    summary : egCore.idl.toHash(xact.summary()),
+                    unrecovered : xact.unrecovered(),
+                    xact_finish : xact.xact_finish(),
+                    xact_start : xact.xact_start(),
+                    copy_barcode : xact.circulation().target_copy().barcode(),
+                    title : xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                xacts.push(newXact);
             }
         );
     }
@@ -818,7 +839,14 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
         var xacts = [];
         egCore.pcrud.search('mbt', 
             {id : ids},
-            {flesh : 1, flesh_fields : {'mbt' : ['summary']}},
+            {flesh : 5, flesh_fields : {
+                'mbt' : ['summary', 'circulation'],
+                'circ' : ['target_copy'],
+                'acp' : ['call_number'],
+                'acn' : ['record'],
+                'bre' : ['simple_record']
+                }
+            },
             {authoritative : true}
         ).then(
             function() {
@@ -834,12 +862,24 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
             }, 
             null, 
             function(xact) {
-                xacts.push(egCore.idl.toHash(xact));
+                newXact = {
+                    billing_total : xact.billing_total(),
+                    billings : xact.billings(),
+                    grocery : xact.grocery(),
+                    id : xact.id(),
+                    payment_total : xact.payment_total(),
+                    payments : xact.payments(),
+                    summary : egCore.idl.toHash(xact.summary()),
+                    unrecovered : xact.unrecovered(),
+                    xact_finish : xact.xact_finish(),
+                    xact_start : xact.xact_start(),
+                    copy_barcode : xact.circulation().target_copy().barcode(),
+                    title : xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                xacts.push(newXact);
             }
         );
     }
-
-
 }])
 
 .controller('BillPaymentHistoryCtrl',

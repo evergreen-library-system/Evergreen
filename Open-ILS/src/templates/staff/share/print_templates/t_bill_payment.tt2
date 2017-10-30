@@ -8,6 +8,9 @@ includes:
 * new_balance - balance after the payments were applied
 * payments - list of specific payments
 
+Individual payments within payments contain:
+* payment.xact.copy_barcode - Copy barcode
+* payment.xact.title - Copy title
 -->
 Welcome to {{current_location.name}}!<br/>
 A receipt of your  transaction:<hr/>
