@@ -87,6 +87,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 -- load MR copies, etc.
 \i assets_mr.sql
 
+-- load survey data
+\i surveys.sql
+
 -- clean up the env
 \i env_destroy.sql
 
