@@ -503,7 +503,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             function() { // amount confirmed
                 add_payment_note().then(function(pay_note) {
                     add_cc_args().then(function(cc_args) {
-                        sendPayment(pay_note.value, cc_args);
+                        var note_text = pay_note ? pay_note.value || '' : null;
+                        sendPayment(note_text, cc_args);
                     })
                 });
             },
