@@ -51,5 +51,7 @@ In order to activate Authentication Proxy, the Evergreen system administrator wi
    
 [TIP]
 ====================================================================
-If using proxy authentication with library employees that will use the _Admin > Change Operator: New_ feature in the client software, then add "temp" as a *_login_types_*.
+If using proxy authentication with library employees that will click 
+the _Change Operator_ feature in the client software, then add
+"Temporary" as a *_login_types_*.
 ====================================================================

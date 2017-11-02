@@ -380,7 +380,7 @@ Editing the formats select box options in the search interface.
 You may wish to remove, rename or organize the options in the formats select
 box. This can be accomplished from the staff client.
 
-. From the staff client, navigate to *Admin > Server Administration > Marc Coded
+. From the staff client, navigate to *Administration -> Server Administration ->  Marc Coded
 Value Maps* 
 . Select _Type_ from the *Record Attribute Type* select box.
 . Double click on the format type you wish to edit.
@@ -431,7 +431,7 @@ staff client's Local Administration menu. This can be helpful if you want to
 simplify your patrons' experience by presenting them with only certain
 limiters (e.g. the most commonly used languages in your area).  To do this,
 
-. Click *Admin -> Local Administration -> Search Facet Groups*.
+. Click *Administration -> Local Administration -> Search Facet Groups*.
 . Click *New*.
 . Enter descriptive values into the code and label fields.  The owner needs to
 be set to your consortium.
