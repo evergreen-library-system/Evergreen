@@ -1087,6 +1087,7 @@ vim:et:ts=4:sw=4:
                     <!-- Accept only 852$[barcode] values that match this regular expression. E.g.
                     <barcode_filter>^[A-Za-z0-9]+</barcode_filter>
                     only renders 852 datafields that contain barcodes values that begin with letters and numbers.
+                    -->
                     <!--
                     <barcode_filter><barcode_filter>
                     -->
@@ -1094,6 +1095,7 @@ vim:et:ts=4:sw=4:
                     <!-- Accept only 852$[status] values that match this regular expression. E.g.
                     <status_filter>^Available$</status_filter>
                     only renders 852 datafields that contain status code values that exactly match the string 'Available'.
+                    -->
                     <!--
                     <status_filter></status_filter>
                     -->

@@ -79,7 +79,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
 		   oils_persist:tablename="oai.biblio">
 		<fields>
-			<field reporter:label="TCN Value\OAI identifier postfix" name="tcn" reporter:datatype="number"/>
+			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="number"/>
 			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>
@@ -89,7 +89,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
 		   oils_persist:tablename="oai.authority">
 		<fields>
-			<field reporter:label="TCN Value\OAI identifier postfix" name="tcn" reporter:datatype="number"/>
+			<field reporter:label="Record ID\OAI identifier postfix" name="rec_id" reporter:datatype="number"/>
 			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>

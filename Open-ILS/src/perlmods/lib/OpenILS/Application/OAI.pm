@@ -161,7 +161,7 @@ sub oai_biblio_retrieve {
 
     my $self = shift;
     my $client = shift;
-    my $tcn = shift;
+    my $rec_id = shift;
     my $metadataPrefix = shift;
 
     #  holdings hold an array of call numbers, which hold an array of copies
@@ -173,7 +173,7 @@ sub oai_biblio_retrieve {
     # Retrieve the bibliographic record and it's copies
     my $tree = $_storage->request(
         "open-ils.cstore.direct.biblio.record_entry.retrieve",
-        $tcn,
+        $rec_id,
         { flesh     => 5,
           flesh_fields  => {
                     bre => [qw/marc edit_date call_numbers/],
@@ -190,7 +190,7 @@ sub oai_biblio_retrieve {
     my %serials;
     if ( substr($marc->leader, 7, 1) eq 's' ) { # serial
         my $_search = OpenSRF::AppSession->create( 'open-ils.search' );
-        my $_serials = $_search->request('open-ils.search.serial.record.bib.retrieve', $tcn, 1, 0)->gather(1);
+        my $_serials = $_search->request('open-ils.search.serial.record.bib.retrieve', $rec_id, 1, 0)->gather(1);
         my $order = 0 ;
         for my $sre (@$_serials) {
             if ( $sre->location ) {
@@ -269,7 +269,7 @@ sub oai_biblio_retrieve {
         $marc->delete_field($_) for ($marc->field('001'));
         if (!$marc->field('001')) {
             $marc->insert_fields_ordered(
-                MARC::Field->new( '001', $tcn )
+                MARC::Field->new( '001', $rec_id )
             );
         }
 
@@ -300,6 +300,36 @@ sub oai_biblio_retrieve {
     my $xml = $xslt->transform( $_parser->parse_string( $marc->as_xml_record()) );
     return $xslt->output_as_chars( $xml ) ;
 }
+
+
+__PACKAGE__->register_method(
+    method    => 'oai_biblio_retrieve',
+    api_name  => 'open-ils.oai.biblio.retrieve',
+    api_level => 1,
+    argc      => 1,
+    signature =>
+    {
+        desc     => 'Returns the MARCXML representation of the requested bibliographic record.',
+        params   =>
+        [
+            {
+                name => 'rec_id',
+                desc => 'An OpenILS biblio::record_entry id.',
+                type => 'number'
+            },
+            {
+                name => 'metadataPrefix',
+                desc => 'The metadataPrefix of the schema.',
+                type => 'string'
+            }
+        ],
+        'return' =>
+        {
+            desc => 'An string of the XML in the desired schema.',
+            type => 'string'
+        }
+    }
+);
 
 
 sub most_recent_date {
@@ -338,47 +368,18 @@ sub _cp_is_visible {
     return $visible;
 }
 
-__PACKAGE__->register_method(
-    method    => 'oai_biblio_retrieve',
-    api_name  => 'open-ils.oai.biblio.retrieve',
-    api_level => 1,
-    argc      => 1,
-    signature =>
-    {
-        desc     => 'Returns the MARCXML representation of the requested bibliographic record.',
-        params   =>
-        [
-            {
-                name => 'tcn',
-                desc => 'An OpenILS biblio::record_entry id.',
-                type => 'number'
-            },
-            {
-                name => 'metadataPrefix',
-                desc => 'The metadataPrefix of the schema.',
-                type => 'string'
-            }
-        ],
-        'return' =>
-        {
-            desc => 'An string of the XML in the desired schema.',
-            type => 'string'
-        }
-    }
-);
-
 
 sub oai_authority_retrieve {
 
     my $self = shift;
     my $client = shift;
-    my $tcn = shift;
+    my $rec_id = shift;
     my $metadataPrefix = shift;
 
     my $_storage = OpenSRF::AppSession->create( 'open-ils.cstore' );
 
     # Retrieve the authority record
-    my $record = $_storage->request('open-ils.cstore.direct.authority.record_entry.retrieve', $tcn)->gather(1);
+    my $record = $_storage->request('open-ils.cstore.direct.authority.record_entry.retrieve', $rec_id)->gather(1);
     my $o = Fieldmapper::authority::record_entry->new($record) ;
     my $marc = MARC::Record->new_from_xml( $o->marc, 'UTF8', 'XML');
 
@@ -386,7 +387,7 @@ sub oai_authority_retrieve {
     $marc->delete_field($_) for ($marc->field('001'));
     if (!$marc->field('001')) {
         $marc->insert_fields_ordered(
-            MARC::Field->new( '001', $tcn )
+            MARC::Field->new( '001', $rec_id )
         );
     }
 
@@ -409,7 +410,7 @@ __PACKAGE__->register_method(
         params   =>
         [
             {
-                name => 'tcn',
+                name => 'rec_id',
                 desc => 'An OpenILS authority::record_entry id.',
                 type => 'number'
             },
@@ -433,16 +434,15 @@ sub oai_list_retrieve {
     my $self            = shift;
     my $client          = shift;
     my $record_class    = shift || 'biblio';
-    my $tcn             = shift || 0;
+    my $rec_id          = shift || 0;
     my $from            = shift;
     my $until           = shift;
     my $set             = shift ;
-    my $metadataPrefix  = shift;
     my $max_count       = shift;
     my $deleted_record  = shift || 'yes';
 
     my $query = {};
-    $query->{'tcn'}       = ($max_count eq 1) ? $tcn : {'>=' => $tcn} ;
+    $query->{'rec_id'}    = ($max_count eq 1) ? $rec_id : {'>=' => $rec_id} ;
     $query->{'set_spec'}  = $set                     if ( $set ); # unsupported
     $query->{'deleted'}   = 'f'                      unless ( $deleted_record eq 'yes' );
     $query->{'datestamp'} = {'>=', $from}            if ( $from && !$until ) ;
@@ -473,8 +473,8 @@ __PACKAGE__->register_method(
                 desc => '\'biblio\' for bibliographic records or \'authority\' for authority records',
                 type => 'string'
             },            {
-                name => 'tcn',
-                desc => 'An optional tcn number used as a cursor.',
+                name => 'rec_id',
+                desc => 'An optional rec_id number used as a cursor.',
                 type => 'number'
             },
             {
@@ -493,13 +493,8 @@ __PACKAGE__->register_method(
                 type => 'string'
             },
             {
-                name => 'metadataPrefix',
-                desc => 'The metadataPrefix of the schema.',
-                type => 'string'
-            },
-            {
-                name => 'offset',
-                desc => 'The start of the cursor position in the result set.',
+                name => 'max_count',
+                desc => 'The number of identifiers to return.',
                 type => 'number'
             },
             {

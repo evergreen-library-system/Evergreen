@@ -281,10 +281,10 @@ sub getRecord {
     # Do we have a valid identifier ?
     my $regex_identifier = "^${scheme}${delimiter}${repository_identifier}${delimiter}([0-9]+)\$";
     if ( $identifier =~ /$regex_identifier/i ) {
-        my $tcn = $1 ;
+        my $rec_id = $1 ;
 
         # Do we have a record ?
-        my $record = $oai->request('open-ils.oai.list.retrieve', $record_class, $tcn, undef, undef, undef, $metadataPrefix, 1, $deleted_record)->gather(1) ;
+        my $record = $oai->request('open-ils.oai.list.retrieve', $record_class, $rec_id, undef, undef, undef, 1, $deleted_record)->gather(1) ;
         if (@$record) {
             $response = HTTP::OAI::GetRecord->new();
             my $o = "Fieldmapper::oai::$record_class"->new(@$record[0]);
@@ -311,14 +311,14 @@ sub listIdentifiers {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $metadataPrefix, $max_count, $deleted_record)->gather(1) ;
+    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListIdentifiers->new();
         for my $record (@$r) {
             my $o = "Fieldmapper::oai::$record_class"->new($record) ;
             if ( $cursor++ == $max_count ) {
-                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->tcn ), '' ) ) ;
+                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->rec_id ), '' ) ) ;
                 $token->cursor($offset);
                 $response->resumptionToken($token) ;
             } else {
@@ -340,14 +340,14 @@ sub listRecords {
     my ($record_class, $requestURL, $from, $until, $set, $metadataPrefix, $offset ) = @_;
     my $response;
 
-    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $metadataPrefix, $max_count, $deleted_record)->gather(1) ;
+    my $r = $oai->request('open-ils.oai.list.retrieve', $record_class, $offset, $from, $until, $set, $max_count, $deleted_record)->gather(1) ;
     if (@$r) {
         my $cursor = 0 ;
         $response = HTTP::OAI::ListRecords->new();
         for my $record (@$r) {
             my $o = "Fieldmapper::oai::$record_class"->new($record) ;
             if ( $cursor++ == $max_count ) {
-                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->tcn ), '' ) ) ;
+                my $token = new HTTP::OAI::ResumptionToken( resumptionToken => encode_base64(join( '$', $metadataPrefix, $from, $until, $oai_sets->{$set}->{setSpec}, $o->rec_id ), '' ) ) ;
                 $token->cursor($offset);
                 $response->resumptionToken($token) ;
             } else {
@@ -378,7 +378,7 @@ sub _header {
     }
 
     return new HTTP::OAI::Header(
-            identifier  => $scheme . $delimiter . $repository_identifier . $delimiter . $o->tcn,
+            identifier  => $scheme . $delimiter . $repository_identifier . $delimiter . $o->rec_id,
             datestamp   => substr($o->datestamp, 0, 19) . 'Z',
             status      => $status,
             setSpec     => \@set_spec
@@ -395,7 +395,7 @@ sub _record {
 
     if ( $o->deleted eq 'f' ) {
         my $md = new HTTP::OAI::Metadata() ;
-        my $xml = $oai->request('open-ils.oai.' . $record_class . '.retrieve', $o->tcn, $metadataPrefix)->gather(1) ;
+        my $xml = $oai->request('open-ils.oai.' . $record_class . '.retrieve', $o->rec_id, $metadataPrefix)->gather(1) ;
         $md->dom( $parser->parse_string('<metadata>' . $xml . '</metadata>') ); # Not sure why I need to add the metadata element,
         $record->metadata( $md );                                               # because I expect ->metadata() would provide the wrapper for it.
     }
