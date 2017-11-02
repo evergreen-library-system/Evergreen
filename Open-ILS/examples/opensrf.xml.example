@@ -991,6 +991,116 @@ vim:et:ts=4:sw=4:
                 </app_settings>
             </open-ils.cstore>
 
+            <open-ils.oai>
+                <keepalive>5</keepalive>
+                <stateless>1</stateless>
+                <language>perl</language>
+                <implementation>OpenILS::Application::OAI</implementation>
+                <max_requests>199</max_requests>
+                <unix_config>
+                    <unix_sock>open-ils.oai_unix.sock</unix_sock>
+                    <unix_pid>open-ils.oai_unix.pid</unix_pid>
+                    <max_requests>1000</max_requests>
+                    <unix_log>open-ils.oai_unix.log</unix_log>
+                    <min_children>1</min_children>
+                    <max_children>5</max_children>
+                    <min_spare_children>1</min_spare_children>
+                    <max_spare_children>2</max_spare_children>
+                </unix_config>
+                <app_settings>
+
+                    <!-- Where necessary, override the default settings here in the app_settings element. -->
+
+                    <!-- The OAI endpoint. The domain is the name of your proxy or frontend opac website. -->
+                    <!-- <base_url>http://mydomain.org/opac/extras/oai</base_url> -->
+
+                    <!-- <repository_name>My organization(s)</repository_name> -->
+                    <!-- <admin_email>admin@mydomain.org</admin_email> -->
+
+                    <!-- The maximum number of records in a ListRecords and ListIdentifiers response. -->
+                    <!-- <max_count>50</max_count> -->
+
+                    <!-- <granularity>YYYY-MM-DDThh:mm:ss</granularity> -->
+                    <!-- <earliest_datestamp>0001-01-01</earliest_datestamp> -->
+                    <!-- <deleted_record>yes</deleted_record> -->
+                    <!-- <scheme>oai</scheme> -->
+                    <!-- <repository_identifier>mydomain.org</repository_identifier> -->
+                    <!-- <delimiter>:</delimiter> -->
+                    <!-- <sample_identifier>oai:mydomain.org:12345</sample_identifier> -->
+                    <!-- <list_sets>false</list_sets> -->
+
+                    <!--
+                    The metadataformat element contains the schema for the oai_dc and marcxml metadata formats.
+                    Each schema needs a reference to an xslt document.
+                    You can replace them with your custom xslt stylesheets.
+                    Place those in the /<openils sysdir>/var/xsl folder.
+                    You can also extend the OAI2 service further with new metadata schema.
+
+                    Bibliographic and authority records share the same stylesheet.
+                    Should you want to render them differently, use the
+                    marc:datafield[@tag='901']/marc:subfield[@code='t']
+                    value to identify the record type. -->
+
+                    <!--
+                    <metadataformat>
+                        <oai_dc>
+                            <namespace_uri>http://www.openarchives.org/OAI/2.0/oai_dc/</namespace_uri>
+                            <schema_location>http://www.openarchives.org/OAI/2.0/oai_dc.xsd</schema_location>
+                            <xslt>OAI2_OAIDC.xsl</xslt>
+                        </oai_dc>
+                        <marcxml>
+                            <namespace_uri>http://www.loc.gov/MARC21/slim</namespace_uri>
+                            <schema_location>http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd</schema_location>
+                            <xslt>OAI2_MARC21slim.xsl</xslt>
+                        </marcxml>
+                    </metadataformat> -->
+
+                    <!--
+                    You can add different schema to the metadataformat element thus:
+                        <mods>
+                            <namespace_uri>http://www.loc.gov/mods/</namespace_uri>
+                            <schema_location>http://www.loc.gov/standards/mods/mods.xsd</schema_location>
+                            <xslt>my-custom-marc2mods.xsl</xslt>
+                        </mods>
+                        <my-metadata_prefix>
+                            <namespace_uri>my-namespace_uri</namespace_uri>
+                            <schema_location>my-schema_location</schema_location>
+                            <xslt>my-marc2my-metadata.xsl</xslt>
+                        </my-metadata_prefix>
+                    -->
+
+                    <!-- Change the way the asset copy values are mapped to which subfield codes: -->
+                    <!--
+                    <copies>
+                        <a>location</a>
+                        <b>owning_lib</b>
+                        <c>callnumber</c>
+                        <d>circlib</d>
+                        <g>barcode</g>
+                        <n>status</n>
+                    </copies>
+                    -->
+                    <!-- Or add static values to the copies element like this:
+                        <z>A value that always should for example be in the 852$z</z>
+                    -->
+
+                    <!-- Accept only 852$[barcode] values that match this regular expression. E.g.
+                    <barcode_filter>^[A-Za-z0-9]+</barcode_filter>
+                    only renders 852 datafields that contain barcodes values that begin with letters and numbers.
+                    <!--
+                    <barcode_filter><barcode_filter>
+                    -->
+
+                    <!-- Accept only 852$[status] values that match this regular expression. E.g.
+                    <status_filter>^Available$</status_filter>
+                    only renders 852 datafields that contain status code values that exactly match the string 'Available'.
+                    <!--
+                    <status_filter></status_filter>
+                    -->
+
+                </app_settings>
+            </open-ils.oai>
+
             <open-ils.pcrud>
                 <keepalive>6</keepalive>
                 <migratable>1</migratable>
@@ -1364,7 +1474,8 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.storage</appname>  
                 <appname>open-ils.justintime</appname>  
                 <appname>open-ils.cstore</appname>  
-                <appname>open-ils.collections</appname>  
+                <appname>open-ils.collections</appname>
+                <appname>open-ils.oai</appname>
                 <appname>open-ils.qstore</appname>
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  

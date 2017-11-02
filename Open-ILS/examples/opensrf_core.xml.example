@@ -30,6 +30,7 @@ Example OpenSRF bootstrap configuration file for Evergreen
           <service>open-ils.courses</service>
           <service>open-ils.curbside</service>
           <service>open-ils.fielder</service>
+          <service>openils.oai</service>
           <service>open-ils.pcrud</service>
           <service>open-ils.permacrud</service>
           <service>open-ils.reporter</service>

@@ -74,6 +74,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 <IDL xmlns="http://opensrf.org/spec/IDL/base/v1" xmlns:idl="http://opensrf.org/spec/IDL/base/v1" xmlns:oils_persist="http://open-ils.org/spec/opensrf/IDL/persistence/v1" xmlns:oils_obj="http://open-ils.org/spec/opensrf/IDL/objects/v1" xmlns:reporter="http://open-ils.org/spec/opensrf/IDL/reporter/v1" xmlns:sr="http://open-ils.org/spec/opensrf/IDL/simple-reporter/v1" xmlns:permacrud="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 
 	<!-- Virtual classes -->
+
+	<class id="oai_biblio" controller="open-ils.cstore" oils_obj:fieldmapper="oai::biblio"
+		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
+		   oils_persist:tablename="oai.biblio">
+		<fields>
+			<field reporter:label="TCN Value\OAI identifier postfix" name="tcn" reporter:datatype="number"/>
+			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
+			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>
+		</fields>
+	</class>
+	<class id="oai_authority" controller="open-ils.cstore" oils_obj:fieldmapper="oai::authority"
+		   oils_persist:readonly="true" reporter:core="false" reporter:label="OAI2 record list"
+		   oils_persist:tablename="oai.authority">
+		<fields>
+			<field reporter:label="TCN Value\OAI identifier postfix" name="tcn" reporter:datatype="number"/>
+			<field reporter:label="Last edit date\OAI datestamp" name="datestamp" reporter:datatype="timestamp"/>
+			<field reporter:label="Is Deleted?" name="deleted" reporter:datatype="bool"/>
+			<field reporter:label="Setspec" name="set_spec" oils_persist:virtual="true"/>
+		</fields>
+	</class>
+
 	<class id="mups" controller="open-ils.cstore" oils_obj:fieldmapper="money::user_payment_summary" oils_persist:virtual="true" reporter:label="User Payment Summary">
 		<fields>
 			<field name="usr" oils_persist:virtual="true" />
