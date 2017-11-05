@@ -42,6 +42,8 @@ Working with holdings data
 
 include::cataloging/tpac_copy_edit_links.adoc[]
 
+include::cataloging/holdings_templates.adoc[]
+
 include::cataloging/monograph_parts.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
