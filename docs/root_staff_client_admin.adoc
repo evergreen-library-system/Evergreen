@@ -167,9 +167,9 @@ include::admin/closed_dates.adoc[]
 
 include::admin_initial_setup/hard_due_dates.adoc[]
 
-include::admin/booking-admin.adoc[]
-
 :leveloffset: 0
+
+include::admin/booking-admin.adoc[]
 
 include::admin/workstation_admin_receipt_template_editor.adoc[]
 
