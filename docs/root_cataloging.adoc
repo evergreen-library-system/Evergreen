@@ -23,6 +23,9 @@ include::shared/about_evergreen.adoc[]
 
 :leveloffset: -1
 
+include::admin/web_client-login.adoc[]
+
+
 include::cataloging/MARC_Editor.adoc[]
 
 :leveloffset: 0
