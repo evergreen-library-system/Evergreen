@@ -25,7 +25,7 @@ Enabling hold-driven recalls
 By default, holds do not trigger recalls. To enable hold-driven recalls
 of circulating items, library settings must be changed as follows:
 
-  . Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
+  . Click *Administration* -> *Local Administration* ->  *Library Settings Editor.*
   . Set the *Recalls: Circulation duration that triggers a recall
     (recall threshold)* setting. The recall threshold is specified as an
     interval (for example, "21 days"); any items with a loan duration of

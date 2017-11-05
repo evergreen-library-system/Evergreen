@@ -315,7 +315,7 @@ By default, the *Items Out* interface in the patron's account is divided into tw
 
 This enhancement enables you to customize the placement of items in the LOST, LONGOVERDUE, or CLAIMSRETURNED statuses in the top or bottom list.  The value of this enhancement includes increased control over and organization of the Items Out interface.
 
-1) Three new org unit settings enable you to control the placement of these items.  To access these settings, click *Admin* -> *Local Administration* -> *Library Settings Editor*, and search for the following settings:
+1) Three new org unit settings enable you to control the placement of these items.  To access these settings, click *Administration* -> *Local Administration* ->  *Library Settings Editor*, and search for the following settings:
 
 * Items Out Lost Display Setting
 

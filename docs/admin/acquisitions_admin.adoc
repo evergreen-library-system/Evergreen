@@ -6,9 +6,9 @@ Acquisitions Settings
 
 indexterm:[acquisitions,permissions]
 
-Several setting in the Library Settings area of the Admin module pertain to
+Several setting in the Library Settings area of the Administration module pertain to
 functions in the Acquisitions module. You can access these settings by clicking
-_Admin -> Local Administration -> Library Settings Editor_.
+_Administration -> Local Administration -> Library Settings Editor_.
 
 * CAT: Delete bib if all copies are deleted via Acquisitions lineitem
 cancellation - If you cancel a line item, then all of the on order copies in the
@@ -63,7 +63,7 @@ Acquisitions -> Cancel reasons_.
 . Select a using library from the drop-down menu. The using library indicates
 the organizational units whose staff can use this cancel reason. This menu is
 populated with the shortnames that you created for your libraries in the
-organizational units tree (See Admin -> Server Administration -> Organizational
+organizational units tree (See Administration -> Server Administration ->  Organizational
 Units.)
 
 . Create a label for the cancel reason. This label will appear when you select a
@@ -105,14 +105,14 @@ Create a claim policy
 The claim policy link enables you to name the claim policy and specify the
 organization that owns it.
 
-. To create a claim policy, click _Admin -> Server Administration -> 
+. To create a claim policy, click _Administration -> Server Administration ->  
 Acquisitions -> Claim Policies_.
 . Create a claim policy name. No limits exist on the number of characters that
 can be entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
 organizational units whose staff can use this claim policy. This menu is
 populated with the shortnames that you created for your libraries in the
-organizational units tree (See Admin -> Server Administration -> Organizational
+organizational units tree (See Administration -> Server Administration ->  Organizational
 Units).
 +
 [NOTE]
@@ -127,14 +127,14 @@ Create a claim type
 
 The claim type link enables you to specify the reason for a type of claim.
 
-. To create a claim type, click _Admin -> Server Administration -> Acquisitions 
+. To create a claim type, click _Administration -> Server Administration ->  Acquisitions 
 -> Claim types_.
 . Create a claim type. No limits exist on the number of characters that can be
 entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
 organizational units whose staff can use this claim type. This menu is populated
 with the shortnames that you created for your libraries in the organizational
-units tree (See Admin -> Server Administration -> Organizational Units).
+units tree (See Administration -> Server Administration ->  Organizational Units).
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
@@ -150,14 +150,14 @@ The claim event type describes the physical action that should occur when an
 item needs to be claimed. For example, the user should notify the vendor via
 email that the library is claiming an item.
 
-. To access the claim event types, click _Admin -> Server Administration ->
+. To access the claim event types, click _Administration -> Server Administration -> 
 Acquisitions -> Claim event type_.
 . Enter a code for the claim event type. No limits exist on the number of
 characters that can be entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
 organizational units whose staff can use this event type. This menu is populated
 with the shortnames that you created for your libraries in the organizational
-units tree (See Admin -> Server Administration -> Organizational Units).
+units tree (See Administration -> Server Administration ->  Organizational Units).
 +
 [NOTE]
 The rule of parental inheritance applies to this list.
@@ -179,7 +179,7 @@ Create a claim policy action
 The claim policy action enables you to specify how long a user should wait
 before claiming the item.
 
-. To access claim policy actions, click _Admin -> Server Administration -> 
+. To access claim policy actions, click _Administration -> Server Administration ->  
 Acquisitions ->Claim Policy Actions_.
 
 . Select an Action (Event Type) from the drop-down menu.
@@ -209,7 +209,7 @@ purchased in the currency associated with that fund.
 Create a currency type
 ^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new currency type, click _Admin -> Server Administration -> 
+. To create a new currency type, click _Administration -> Server Administration ->  
 Acquisitions -> Currency types_. 
 
 . Enter the currency code. No limits exist on the number of characters that can 
@@ -249,7 +249,7 @@ needed.
 Create a distribution formula
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click _Admin -> Server Administration -> Acquisitions ->Distribution
+. Click _Administration -> Server Administration ->  Acquisitions ->Distribution
 Formulas_.
 . Click _New Formula_.
 . Enter a Formula Name. No limits exist on the number of characters that can be
@@ -257,7 +257,7 @@ entered in this field.
 . Choose a Formula Owner from the drop-down menu. The Formula Owner indicates
 the organizational units whose staff can use this formula. This menu is
 populated with the shortnames that you created for your libraries in the
-organizational units tree (See Admin -> Server Administration -> Organizational
+organizational units tree (See Administration -> Server Administration ->  Organizational
 Units).
 +
 [NOTE]
@@ -268,7 +268,7 @@ The rule of parental inheritance applies to this list.
 . Click _New Entry_.
 . Select an Owning Library from the drop-down menu. This indicates the branch
 that will receive the items. This menu is populated with the shortnames that you
-created for your libraries in the organizational units tree (See _Admin -> 
+created for your libraries in the organizational units tree (See _Administration -> 
 Server Administration -> Organizational Units_).
 . Select/enter any of the following copy details you want to predefine in the
 distribution formula.
@@ -280,7 +280,7 @@ distribution formula.
 to the branch. You can enter the number or use the arrows on the right side of
 the field.
 . Click _Apply Changes_. The screen will reload.
-. To view the changes to your formula, click Admin -> Server Administration -> 
+. To view the changes to your formula, click Administration -> Server Administration ->  
 Acquisitions -> Distribution Formulas. The item_count will reflect the entries 
 to your distribution formula.
 
@@ -443,7 +443,7 @@ amount to credit to the receiving fund.
 Create an exchange rate
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new exchange rate, click _Admin -> Server Administration -> 
+. To create a new exchange rate, click _Administration -> Server Administration ->  
 Acquisitions -> Exchange Rates_.
 
 . Click New Exchange Rate.
@@ -505,14 +505,14 @@ fund.
 
 Create a Fund Tag
 
-. To create a fund tag, click _Admin -> Server Administration -> Acquisitions ->
+. To create a fund tag, click _Administration -> Server Administration ->  Acquisitions ->
 Fund Tags_.
 . Click _New Fund Tag_. No limits exist on the number of characters that can be
 entered in this field.
 . Select a Fund Tag Owner from the drop-down menu. The owner indicates the
 organizational unit(s) whose staff can use this fund tag. This menu is
 populated with the shortnames that you created for your libraries in the
-organizational units tree (See Admin -> Server Administration -> Organizational
+organizational units tree (See Administration -> Server Administration ->  Organizational
 Units).
 +
 [NOTE]
@@ -535,14 +535,14 @@ can be used to track exact amounts for accounts in your general ledger.  You can
 Create a funding source
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new funding source, click _Admin -> Server Administration ->
+. To create a new funding source, click _Administration -> Server Administration -> 
 Acquisitions -> Funding Source_.
 . Enter a funding source name. No limits exist on the number of characters that
 can be entered in this field.
 . Select an owner from the drop-down menu. The owner indicates the
 organizational unit(s) whose staff can use this funding source. This menu is
 populated with the shortnames that you created for your libraries in the
-organizational units tree (See Admin -> Server Administration -> Organizational 
+organizational units tree (See Administration -> Server Administration ->  Organizational 
 Units).
 +
 [NOTE]
@@ -619,7 +619,7 @@ interface, you can create funds; allocate credits from funding sources to funds;
 Create a fund
 ^^^^^^^^^^^^^
 
-. To create a new fund, click _Admin -> Server Administration -> Acquisitions ->
+. To create a new fund, click _Administration -> Server Administration ->  Acquisitions ->
  Funds_.
 . Enter a name for the fund. No limits exist on the number of characters that
 can be entered in this field.
@@ -630,7 +630,7 @@ format of the year is YYYY.
 . Select an org unit from the drop-down menu. The org unit indicates the
 organizational units whose staff can use this fund. This menu is populated with
 the shortnames that you created for your libraries in the organizational units
-tree (See Admin -> Server Administration -> Organizational Units).
+tree (See Administration -> Server Administration ->  Organizational Units).
 +
 [NOTE]
 The rule of parental inheritance applies to this list. See section
@@ -668,7 +668,7 @@ Allocate credits from funding sources to funds
 Credits can be applied to funds from funding sources using the fund interface.
 The credits that you apply to the fund can be applied later to purchases.
 
-. To access funds, click _Admin -> Server Administration -> Acquisitions -> 
+. To access funds, click _Administration -> Server Administration ->  Acquisitions -> 
 Funds_.
 
 . Click the hyperlinked name of the fund.
@@ -690,7 +690,7 @@ The credits that you allocate to funds can be transferred between funds if
 desired. In the following example, you can transfer $500.00 from the Young Adult
 Fiction fund to the Children's DVD fund.
 
-. To access funds, click _Admin -> Server Administration -> Acquisitions -> 
+. To access funds, click _Administration -> Server Administration ->  Acquisitions -> 
 Funds_.
 
 . Click the hyperlinked name of the originating fund.
@@ -763,7 +763,7 @@ current year and create analogous funds for the next year. It transfers
 encumbrances to the analogous funds, and it rolls over any remaining funds if
 you checked the rollover box when creating the fund.
 
-. To access the year end closeout of a fund, click Admin -> Server
+. To access the year end closeout of a fund, click Administration -> Server
 Administration -> Acquisitions -> Funds.
 
 . Click _Fund Propagation and Rollover_.
@@ -818,7 +818,7 @@ can add custom charge types to this list. Invoice item types can also be used
 when adding non-bibliographic items to a purchase order. When invoiced, the
 invoice item type will copy from the purchase order to the invoice.
 
-. To create a new charge type, click _Admin -> Server Administration ->
+. To create a new charge type, click _Administration -> Server Administration -> 
 Acquisitions -> Invoice Item Type_.
 
 . Click _New Invoice Item Type_.
@@ -844,7 +844,7 @@ payment method(s) that you accept. The text that you enter in the admin module
 will appear as a drop-down menu in the invoice type and payment method fields on
 the invoice.
 
-. To create a new invoice payment method, click _Admin -> Server Administration 
+. To create a new invoice payment method, click _Administration -> Server Administration 
 -> Acquisitions -> Invoice Payment Method_.
 
 . Click _New Invoice Payment Method_.
@@ -888,7 +888,7 @@ that can be entered in this field.
 . Select an owning library from the drop-down menu. The owning library indicates
 the organizational units whose staff can use this alert. This menu is populated
 with the shortnames that you created for your libraries in the organizational
-units tree (See Admin -> Server Administration -> Organizational Units).
+units tree (See Administration -> Server Administration ->  Organizational Units).
 
 . Click _Save_.
 
@@ -922,7 +922,7 @@ that can be entered in this field.
 . Select an owner from the drop-down menu. The owner indicates the
 organizational units whose staff can use this provider. This menu is populated
 with the shortnames that you created for your libraries in the organizational
-units tree (See Admin -> Server Administration -> Organizational Units).
+units tree (See Administration -> Server Administration ->  Organizational Units).
 +
 [NOTE]
 The rule of parental inheritance applies to this list.

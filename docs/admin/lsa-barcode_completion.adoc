@@ -36,7 +36,7 @@ descendants of that org unit.
 Access Points
 ~~~~~~~~~~~~~
 
-The admin interface for Barcode Completion is located under *Admin* 
+The admin interface for Barcode Completion is located under *Administration* 
 -> *Local Administration* -> *Barcode Completion*.
 
 image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin]
@@ -108,7 +108,7 @@ Create, Update, Filter, Delete/Disable Rules
 
 image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin]
 
-In the Barcode Completion admin interface at *Admin* -> *Local Administration* 
+In the Barcode Completion admin interface at *Administration* -> *Local Administration* 
 -> *Barcode Completion* you can create, update and disable rules.
 
 Create Rules

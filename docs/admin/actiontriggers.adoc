@@ -6,7 +6,7 @@ indexterm:[action triggers, event definitions, notifications]
 Action Triggers give administrators the ability to set up actions for
 specific events. They are useful for notification events such as hold notifications.
 
-To access the Action Triggers module, select *Admin* -> *Local Administration* -> *Notifications / Action triggers*.
+To access the Action Triggers module, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
 
 [NOTE]
 ==========
@@ -49,7 +49,7 @@ Table 1: Action Trigger Event Definitions
 
 Creating Action Triggers
 ~~~~~~~~~~~~~~~~~~~~~~~~
-. From the top menu, select *Admin* -> *Local Administration* -> *Notifications / Action triggers*.
+. From the top menu, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
 . Click on the _New_ button.
 . Select an _Owning Library_.
 . Create a unique _Name_ for your new action trigger.

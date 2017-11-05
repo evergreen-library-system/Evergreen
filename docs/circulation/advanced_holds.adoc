@@ -381,7 +381,7 @@ The alternate pick up location is disabled in Evergreen by default.  It can be e
 +
 `staff.patron.summary.hold_counts_behind_desk=Available / Total (Drive-Thru)`
 
-Libraries can also choose to give patrons the ability to opt-in to pick up holds at the alternate location through their OPAC account.  To add this option, set the *OPAC/Patron Visible* field in the User Setting Type *Hold is behind Circ Desk* to 'True'.  The User Setting Types can be found under *Admin -> Server Administration -> User Setting Types*.
+Libraries can also choose to give patrons the ability to opt-in to pick up holds at the alternate location through their OPAC account.  To add this option, set the *OPAC/Patron Visible* field in the User Setting Type *Hold is behind Circ Desk* to 'True'.  The User Setting Types can be found under *Administration -> Server Administration ->  User Setting Types*.
 
 *Display*
 

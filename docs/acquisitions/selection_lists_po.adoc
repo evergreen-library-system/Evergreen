@@ -163,7 +163,7 @@ image::media/Zero_Copies1.jpg[Zero_Copies1]
 Enhancements to Canceled and Delayed Items
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Cancel/Delay reasons have been modified so that you can easily differentiate between canceled and delayed items.  Each label now begins with *Canceled* or *Delayed*.  To view the list, click *Admin* -> *Server Administration* -> *Acquisitions* -> *Cancel Reasons*.
+Cancel/Delay reasons have been modified so that you can easily differentiate between canceled and delayed items.  Each label now begins with *Canceled* or *Delayed*.  To view the list, click *Administration* -> *Server Administration* -> *Acquisitions* -> *Cancel Reasons*.
 
 The cancel/delay reason label is displayed as the line item status in the list of line items or as the copy status in the list of copies.
 

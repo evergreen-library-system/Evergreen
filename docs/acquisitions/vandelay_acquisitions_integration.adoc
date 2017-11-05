@@ -85,7 +85,7 @@ Default Upload Settings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 You can set default upload values by modifying the following settings in
-*Admin* -> *Local Administration* -> *Library Settings Editor*:
+*Administration* -> *Local Administration* -> *Library Settings Editor*:
 
 - Upload Activate PO
 - Upload Create PO

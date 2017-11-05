@@ -15,11 +15,11 @@ Evergreen comes with six preconfigured Best-Hold Selection Sort Orders to choose
 * FIFO with Holds-go-home
 * FIFO with Holds-always-go-home
 
-The Holds-go-home and Holds-always-go-home options allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there.  Libraries can set this time limit in the library setting *Holds: Max foreign-circulation time*.  The Library Settings Editor can be found under *Admin -> Local Administration -> Library Settings Editor*.  
+The Holds-go-home and Holds-always-go-home options allow libraries to determine how long they want to allow items to transit outside of the item’s home library, before it must return to its home library to fulfill any holds that are to be picked up there.  Libraries can set this time limit in the library setting *Holds: Max foreign-circulation time*.  The Library Settings Editor can be found under *Administration -> Local Administration ->  Library Settings Editor*.  
 
 Create a New Best-Hold Selection Sort Order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To create a new Best-Hold Selection Sort Order, go to *Admin -> Server Administration -> Best-Hold Selection Sort Order*.  
+To create a new Best-Hold Selection Sort Order, go to *Administration -> Server Administration ->  Best-Hold Selection Sort Order*.  
 
 . Click *Create New*.
 . Assign your Best-Hold Selection Sort Order a *Name*.
@@ -31,7 +31,7 @@ image::media/best_hold_sort_order1.jpg[Best-Hold Selection Sort Order]
 
 Edit an Existing Best-Hold Selection Sort Order
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To edit an existing Best-Hold Selection Sort Order, go to *Admin -> Server Administration -> Best-Hold Selection Sort Order*.  
+To edit an existing Best-Hold Selection Sort Order, go to *Administration -> Server Administration ->  Best-Hold Selection Sort Order*.  
 
 . Click *Edit Existing*.
 . Choose the Best-Hold Selection Sort Order that you would like to edit from the drop down menu.
@@ -44,7 +44,7 @@ The Best-Hold Selection Sort Order can be set for an Org Unit in the *Library Se
 
 To select the Best-Hold Selection Sort Order that your Org Unit will use:
 
-. Go to *Admin -> Local Administration -> Library Settings Editor*.  
+. Go to *Administration -> Local Administration ->  Library Settings Editor*.  
 . Locate the setting *Holds: Best-hold selection sort order*, and click *Edit*.
 . Choose the *Context* org unit for this setting.
 . Select the Best-hold selection sort order, or *Value*, from the drop down menu.
