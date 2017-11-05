@@ -23,6 +23,14 @@ include::shared/about_evergreen.adoc[]
 
 include::admin/web_client-login.adoc[]
 
+include::admin/web-client-browser-best-practices.adoc[]
+
+:leveloffset: 0
+
+include::shared/workstation_settings.adoc[]
+
+:leveloffset: -1
+
 include::circulation/circulation_patron_records_web_client.adoc[]
 
 include::circulation/circulating_items_web_client.adoc[]
