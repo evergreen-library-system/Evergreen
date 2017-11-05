@@ -27,6 +27,10 @@ include::shared/about_evergreen.adoc[]
 
 include::opac/using_the_public_access_catalog.adoc[]
 
+include::opac/search_url.adoc[]
+
+include::opac/my_account.adoc[]
+
 :leveloffset: 0
 
 include::opac/my_lists.adoc[]
