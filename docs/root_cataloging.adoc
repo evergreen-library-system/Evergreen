@@ -25,6 +25,13 @@ include::shared/about_evergreen.adoc[]
 
 include::admin/web_client-login.adoc[]
 
+include::admin/web-client-browser-best-practices.adoc[]
+
+:leveloffset: 0
+
+include::shared/workstation_settings.adoc[]
+
+:leveloffset: -1
 
 include::cataloging/MARC_Editor.adoc[]
 

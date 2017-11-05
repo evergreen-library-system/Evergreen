@@ -26,14 +26,15 @@ include::shared/about_evergreen.adoc[]
 
 include::admin/web_client-login.adoc[]
 
+include::admin/web-client-browser-best-practices.adoc[]
+
 :leveloffset: 0
 
-include::admin/web_client-browser-tab-shortcuts.adoc[]
+include::shared/workstation_settings.adoc[]
 
 :leveloffset: -1
 
 include::admin/librarysettings.adoc[]
-
 
 :leveloffset: 0
 
