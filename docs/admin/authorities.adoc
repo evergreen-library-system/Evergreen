@@ -20,13 +20,13 @@ contain.  The Library of Congress control set exists in the staff client by
 default.  The control sets feature enables librarians to add or customize new
 control sets.
 
-To access existing control sets, click *Admin* -> *Server Administration* ->
+To access existing control sets, click *Administration* -> *Server Administration* -> 
 *Authorities* -> *Control Sets*.
 
 Add a Control Set
 ^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *Administration* -> *Server Administration* ->  *Authorities* -> *Control Sets*.
 . Click *New Control Set*.  
 . Add a *Name* to the control set. Enter any number
 of characters.  
@@ -45,16 +45,16 @@ should control a MARC record, is encoded in a fixed field using the mnemonic
 Subj in the authority record.  Eleven thesauri associated with the Library of
 Congress control set exist by default in the staff client.  
 
-To access an existing thesaurus, click *Admin* -> *Server Administration* ->
+To access an existing thesaurus, click *Administration* -> *Server Administration* -> 
 *Authorities* -> *Control Sets*, and choose the hyperlinked thesaurus that you
-want to access, or click *Admin* -> *Server Administration* -> *Authorities* ->
+want to access, or click *Administration* -> *Server Administration* ->  *Authorities* ->
 *Thesauri*.
 
 
 Add a Thesaurus
 ^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*,
+. Click *Administration* -> *Server Administration* ->  *Authorities* -> *Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
 -> *Server Administration* -> *Authorities* -> *Thesauri*.  
 . Click *New Thesaurus*.  
@@ -79,7 +79,7 @@ tag in the bibliographic record that would contain the same data.
 Create an Authority Field
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *Administration* -> *Server Administration* ->  *Authorities* -> *Control Sets*.
 . Click *Authority Fields*.  The number in parentheses indicates the number of
 authority fields that have been created for the control set.
 . Click *New Authority Field*.
@@ -117,7 +117,7 @@ axes.
 Create a new Browse Axis
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Browse Axes*
+. Click *Administration* -> *Server Administration* ->  *Authorities* -> *Browse Axes*
 . Click *New Browse Axis*.
 . Add a *code*.  Do not enter any spaces.
 . Add a *name* to the axis that will appear in the OPAC.  Enter any number of
@@ -128,7 +128,7 @@ the results will be displayed.
 +
 image::media/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
 . Assign the axis to an authority so that users can find the authority record
-when browsing authorities. Click *Admin* -> *Server Administration* ->
+when browsing authorities. Click *Administration* -> *Server Administration* -> 
 *Authorities* -> *Control Sets*. 
 . Choose the control set to which you will add the axis.  Click *Authority
 Fields*

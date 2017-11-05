@@ -6,7 +6,7 @@ The User Activity Types feature enables you to specify the user activity that yo
 Enabling this Feature
 ~~~~~~~~~~~~~~~~~~~~~
 
-Click *Admin* -> *Server Administration* -> *User Activity Types* to access the default set of user activity types and to add new ones.  The default set of user activity types records user logins to the Evergreen ILS and to third party products that communicate with Evergreen.
+Click *Administration* -> *Server Administration* ->  *User Activity Types* to access the default set of user activity types and to add new ones.  The default set of user activity types records user logins to the Evergreen ILS and to third party products that communicate with Evergreen.
 
 The *Label* is a free text field that enables you to describe the activity that you are tracking.
 

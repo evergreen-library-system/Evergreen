@@ -8,7 +8,7 @@ addresses with certain patterns are entered in patron records.
 
 This feature only serves to provide pertinent information to your library system's circulation staff during the registration process. An alert will not prevent the new patron account from being registered and the information will not be permanently associated with the patron account.
 
-To access the Address Alert module, select *Admin* -> *Local Administration* -> *Address Alerts*.
+To access the Address Alert module, select *Administration* -> *Local Administration* ->  *Address Alerts*.
 
 [NOTE]
 ==========
@@ -38,7 +38,7 @@ Adding a new Address Alert
 How to add an address to the alert list:
 
 . Log into the Evergreen Staff Client using a Local Administrator account or another account that has been granted the proper permission.
-. Click on Admin -> Local Administration -> Address Alerts.
+. Click on Administration -> Local Administration -> Address Alerts.
 . Click "New Address Alert."
 . A form will open with the following fields to fill out:
 +

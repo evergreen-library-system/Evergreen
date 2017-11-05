@@ -20,7 +20,7 @@ workstations at a particular library (see
 default group can be set up on individual workstations by the following
 steps.
 
-. Go to *Admin -> Workstation Administration -> Toolbars -> Current*.
+. Go to *Administration -> Workstation Administration ->  Toolbars -> Current*.
 +
 image::media/workstation-button_bar-2.png[button bar 2]
 +

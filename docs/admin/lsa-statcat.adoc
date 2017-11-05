@@ -3,7 +3,7 @@ Statistical Categories Editor
 
 This is where you configure your statistical categories (stat cats).  Stat cats are a way to save and report on additional information that doesn't fit elsewhere in Evergreen's default records.  It is possible to have stat cats for copies or patrons.
 
-1. Click *Admin -> Local Administration -> Statistical Categories Editor.*
+1. Click *Administration -> Local Administration ->  Statistical Categories Editor.*
 
 2. To create a new stat cat, enter the name of the category and select either _patron_ or _copy_ from the *Type* dropdown menu. Each category type has a number of options you may set.
 

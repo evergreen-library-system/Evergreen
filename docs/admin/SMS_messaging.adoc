@@ -26,7 +26,7 @@ to login to your OPAC account.
 
 To disable the patron login requirement:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
+. Click *Administration* -> *Local Administration* ->  *Library Settings Editor.*
 . Select the setting, *Disable auth requirement for texting call numbers*.
 . Set the value to *True,* and click *Update Setting.*
 
@@ -39,7 +39,7 @@ A list of SMS carriers that can transmit text messages to users is available in 
 
 To add or edit SMS carriers:
 
-. Click *Admin* -> *Server Administration* -> *SMS Carriers*.
+. Click *Administration* -> *Server Administration* ->  *SMS Carriers*.
 . To add a new carrier, click the *New Carrier* button in the top right corner of the screen.  To edit an existing carrier, double click in any white space in the carrier's row.
 +
 image::media/SMS_Text_Messaging3.jpg[SMS_Text_Messaging3] 
@@ -58,7 +58,7 @@ Library staff control the content and format of text messages through the templa
 
 To configure the text of the SMS text message:
 
-. Click *Admin* -> *Local Administration* -> *Notifications/Action Triggers.*
+. Click *Administration* -> *Local Administration* ->  *Notifications/Action Triggers.*
 . Create a new A/T and template, or use or modify an existing template.  For example, a default template, "Hold Ready for Pickup SMS Notification," notifies users that the hold is ready for pickup.  
 +
 image::media/SMS_Text_Messaging5.jpg[SMS_Text_Messaging5]

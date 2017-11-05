@@ -10,7 +10,7 @@ All receipts in Evergreen follow a basic format of a _Header_, _Line item_ and _
 
 The receipt templates follow full W3C html.  http://w3schools.com/html/default.asp.
 
-The Receipt Template Editor can be found at: *Admin -> Workstation Administration -> Receipt Template Editor*
+The Receipt Template Editor can be found at: *Administration -> Workstation Administration ->  Receipt Template Editor*
 
 The Editor can also be found on the default home page of the staff client.
 
@@ -18,7 +18,7 @@ Receipts come in various types: Bills, checkout, items, holds, transits and Paym
 
 To edit a Receipt:
 
-. Select *Admin -> Workstation Administration -> Receipt Template Editor*.
+. Select *Administration -> Workstation Administration ->  Receipt Template Editor*.
 
 . Choose the Receipt in the drop down list.
 +    

@@ -3,7 +3,7 @@ MARC Record Attributes
 
 The MARC Record Attribute Definitions support the ingesting, indexing, searching, filtering, and delivering of bibliographic record attributes.
 
-To Access the MARC Record Attributes, click *Admin* -> *Server Administration* -> *MARC Record Attributes*
+To Access the MARC Record Attributes, click *Administration* -> *Server Administration* ->  *MARC Record Attributes*
 
 Multi Valued Fields and Composite Record Attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

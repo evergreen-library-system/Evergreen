@@ -10,7 +10,7 @@ the work log also records holds that have been placed and payments that have
 been received.
 
 In this example, a staff member has collected a fine from a patron.  To view
-this action in the work log, click *Admin* -> *Local Administration* -> *Work
+this action in the work log, click *Administration* -> *Local Administration* ->  *Work
 Log*.  By default, the work log will record the staff member's username, the
 amount that was received, the payment type, the patron's barcode, and the
 patron's last name.
@@ -18,7 +18,7 @@ patron's last name.
 image::media/Expanding_the_Work_Log1.jpg[Expanding_the_Work_Log1]
 
 In this example, a staff member has placed a hold for a patron.  To view this
-action in the work log, click *Admin* -> *Local Administration* -> *Work Log*.
+action in the work log, click *Administration* -> *Local Administration* ->  *Work Log*.
 By default, the work log will record the staff member's username, the hold type,
 the patron's barcode, and the patron's last name.
 
