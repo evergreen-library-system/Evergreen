@@ -1368,25 +1368,6 @@ vim:et:ts=4:sw=4:
             </open-ils.resolver>
 -->
 
-            <open-ils.permacrud>
-               <keepalive>3</keepalive>
-               <stateless>1</stateless>
-               <language>perl</language>
-               <implementation>OpenILS::Application::PermaCrud</implementation>
-               <max_requests>17</max_requests>
-               <unix_config>
-                  <unix_sock>open-ils.permacrud_unix.sock</unix_sock>
-                  <unix_pid>open-ils.permacrud_unix.pid</unix_pid>
-                  <max_requests>1000</max_requests>
-                  <max_backlog_queue>100</max_backlog_queue>
-                  <unix_log>open-ils.permacrud_unix.log</unix_log>
-                  <min_children>5</min_children>
-                  <max_children>15</max_children>
-                  <min_spare_children>3</min_spare_children>
-                  <max_spare_children>5</max_spare_children>
-               </unix_config>
-            </open-ils.permacrud>
-
             <open-ils.fielder>
                <keepalive>3</keepalive>
                <stateless>1</stateless>
@@ -1601,7 +1582,6 @@ vim:et:ts=4:sw=4:
                 <appname>open-ils.reporter</appname>  
                 <appname>open-ils.reporter-store</appname>  
                 <!-- <appname>open-ils.resolver</appname> -->
-                <appname>open-ils.permacrud</appname>  
                 <appname>open-ils.pcrud</appname>  
                 <appname>open-ils.trigger</appname>  
                 <appname>open-ils.url_verify</appname>
