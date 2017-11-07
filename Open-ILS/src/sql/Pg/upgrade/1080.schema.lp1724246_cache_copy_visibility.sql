@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1080', :eg_version); -- miker/jboyer/gmcharlt
+
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
     ocn     asset.call_number%ROWTYPE;
