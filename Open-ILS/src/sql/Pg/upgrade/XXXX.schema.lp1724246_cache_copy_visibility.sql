@@ -1,7 +1,5 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1057', :eg_version); -- miker/gmcharlt/kmlussier
-
 CREATE OR REPLACE FUNCTION asset.cache_copy_visibility () RETURNS TRIGGER as $func$
 DECLARE
     ocn     asset.call_number%ROWTYPE;
@@ -71,6 +69,14 @@ BEGIN
                 UPDATE  biblio.record_entry
                   SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(ncn.record)
                   WHERE id = ocn.record;
+
+                -- We have to use a record-specific WHERE clause
+                -- to avoid modifying the entries for peer-bib copies.
+                UPDATE  asset.copy_vis_attr_cache
+                  SET   target_copy = NEW.id,
+                        record = ncn.record
+                  WHERE target_copy = OLD.id
+                        AND record = ocn.record;
             END IF;
         END IF;
 
@@ -79,9 +85,10 @@ BEGIN
            OLD.opac_visible <> NEW.opac_visible OR
            OLD.circ_lib     <> NEW.circ_lib
         THEN
-            -- any of these could change visibility, but
+            -- Any of these could change visibility, but
             -- we'll save some queries and not try to calculate
-            -- the change directly
+            -- the change directly.  We want to update peer-bib
+            -- entries in this case, unlike above.
             UPDATE  asset.copy_vis_attr_cache
               SET   target_copy = NEW.id,
                     vis_attr_vector = asset.calculate_copy_visibility_attribute_set(NEW.id)
@@ -137,4 +144,3 @@ END;
 $func$ LANGUAGE PLPGSQL;
 
 COMMIT;
-
