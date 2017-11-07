@@ -1014,7 +1014,10 @@ sub toSQL {
 
         $final_c_attr_test = 'EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source AND vis_attr_vector @@ c_attr.vis_test)';
         if (!$pc_vis_test) { # staff search
-            $final_c_attr_test = '(' . $final_c_attr_test . ' OR NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source))';
+            $final_c_attr_test = '(' . $final_c_attr_test . " OR (" .
+                    "NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source) " .
+                    "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
+                "))";
         }
     }
  
@@ -1051,9 +1054,6 @@ sub toSQL {
 
         # These are magic numbers... see: search.calculate_visibility_attribute() UDF
         $final_b_attr_test = '(b_attr.vis_test IS NULL OR bre.vis_attr_vector @@ b_attr.vis_test)';
-        if (!$pb_vis_test) { # staff search
-            $final_b_attr_test .= " OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) )";
-        }
     }
 
     if ($final_c_attr_test or $final_b_attr_test) { # something...
