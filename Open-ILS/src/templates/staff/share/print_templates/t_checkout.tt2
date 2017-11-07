@@ -1,13 +1,18 @@
 <!--
 Template for printing checkout receipts; fields available include:
 
+* patron_money - summary of the patron's current financial obligations:
+
+  * patron_money.balance_owed - current balance
+  * patron_money.total_paid - payments made on outstanding fines/fees
+  * patron_money.total_owed - total of outstanding fines/fees
+
 * circulations - list of loans made during this session. Each
   includes:
 
   * title
   * copy_barcode
   * due_date
-  * patron_money.balance_owed - must be grabbed from a specific circulation, e.g. circulations[0].patron_money.balance_owed
 
 -->
 <div>
