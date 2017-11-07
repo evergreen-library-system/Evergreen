@@ -469,14 +469,15 @@ function($scope , $q , egCore , ngToast) {
                 },
                 copy : seed_copy,
                 title : seed_record.title,
-                author : seed_record.author,
-                patron_money : {
-                    balance_owed : "$5.00",
-                    total_owed : "$10.10",
-                    total_paid : "$5.10"
-                }
+                author : seed_record.author
             },
         ],
+
+        patron_money : {
+            balance_owed : 5.01,
+            total_owed : 10.12,
+            total_paid : 5.11
+        },
 
         in_house_uses : [
             {
