@@ -1,0 +1,30 @@
+Removal of open-ils.permacrud service
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The open-ils.permacrud service has been deprecated for some time
+now. The open-ils.pcrud service should be used in its place.
+
+This release does not include the open-ils.permacrud service, and
+you should consider removing it from your existing install at
+upgrade time.
+
+If you are upgrading an existing install where the
+open-ils.permacrud service was present, you should update your
+opensrf_core.xml and opensrf.xml files to remove references to
+open-ils.permacrud, and you may also wish to remove the
+OpenILS/Application/PermaCrud.pm file from your Perl @INC path.
+
+In opensrf_core.xml, remove open-ils.permacrud from the list of
+services on the public router.
+
+In opensrf.xml, remove the entire <open-ils.permacrud> element from
+the <apps> element, and remove <appname>open-ils.permacrud</appname>
+from any <activeapps> elements where it is present.
+
+If you have the perldoc command installed, you can use the following
+command to locate the path on disk of the PermaCrud.pm file, which
+is no longer required and can be removed:
+
+[source, bash]
+-----------------------------------------------------------------
+perldoc -l OpenILS::Application::PermaCrud
+-----------------------------------------------------------------
