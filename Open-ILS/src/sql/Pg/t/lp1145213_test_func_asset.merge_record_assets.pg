@@ -78,14 +78,14 @@ SELECT is(
 SELECT is(
   (SELECT count(*) FROM asset.call_number WHERE record=60001 AND not deleted=true)::INT,
   0::INT,
-  'LP 1145213 asset.merge_record_assets() all call_numbers should point to bib rec #60,000 '
+  'LP 1145213 asset.merge_record_assets() all call_numbers should point to bib record #60,000 '
 );
 
 -- test copies to make sure none point to stale acn
 SELECT is(
   (SELECT count(*) from asset.copy where call_number=1000002)::INT,
   0::INT,
-  'LP 1145213 asset.merge_record_assets() all copies should point to acn #999999 which is for bibre #60,000 '
+  'LP 1145213 asset.merge_record_assets() all copies should point to acn #999999 which is for bib record #60,000 '
 );
 
 SELECT * FROM finish();
