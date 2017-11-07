@@ -1,0 +1,9 @@
+Copy Location Filter Displays for System Searches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Shelving Location filter now displays on the advanced search page when
+a search is scoped to a library system, not just to an individual branch. If
+a library system is selected as the Search Library, the shelving location
+limiter will display any shelving location that is owned by the selected system
+or by the consortium. It will NOT display shelving locations owned by child
+branches.
+
