@@ -593,7 +593,7 @@ BEGIN
             RETURN NEW;
         ELSIF TG_OP = 'DELETE' THEN
             DELETE FROM asset.copy_vis_attr_cache
-              WHERE record = NEW.peer_record AND target_copy = NEW.target_copy;
+              WHERE record = OLD.peer_record AND target_copy = OLD.target_copy;
 
             RETURN OLD;
         END IF;
