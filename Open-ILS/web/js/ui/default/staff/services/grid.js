@@ -119,10 +119,10 @@ angular.module('egGridMod',
         controller : [
                     '$scope','$q','egCore','egGridFlatDataProvider','$location',
                     'egGridColumnsProvider','$filter','$window','$sce','$timeout',
-                    'egProgressDialog',
+                    'egProgressDialog','$uibModal',
             function($scope,  $q , egCore,  egGridFlatDataProvider , $location,
                      egGridColumnsProvider , $filter , $window , $sce , $timeout,
-                     egProgressDialog) {
+                     egProgressDialog , $uibModal) {
 
             var grid = this;
 
@@ -1076,6 +1076,27 @@ angular.module('egGridMod',
                     });
                 });
             }
+
+            $scope.showColumnDialog = function() {
+                return $uibModal.open({
+                    templateUrl: './share/t_grid_columns',
+                    backdrop: 'static',
+                    size : 'lg',
+                    controller: ['$scope', '$uibModalInstance',
+                        function($dialogScope, $uibModalInstance) {
+                            $dialogScope.modifyColumnPos = $scope.modifyColumnPos;
+                            $dialogScope.disableMultiSort = $scope.disableMultiSort;
+                            $dialogScope.columns = $scope.columns;
+                            $dialogScope.toggle = function(col) {
+                                col.visible = !Boolean(col.visible);
+                            }
+                            $dialogScope.ok = $dialogScope.cancel = function() {
+                                $uibModalInstance.close()
+                            }
+                        }
+                    ]
+                });
+            },
 
             // generates CSV for the currently visible grid contents
             grid.generateCSV = function() {

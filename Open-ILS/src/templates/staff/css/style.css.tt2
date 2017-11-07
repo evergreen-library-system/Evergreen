@@ -473,6 +473,23 @@ table.list tr.selected td { /* deprecated? */
   height: 25px;
 }
 
+.eg-grid-columns-modal-body {
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.eg-grid-columns-modal-body .row {
+  padding: 2px 0px 2px 0px;
+  border-bottom: 1px solid #aaa;
+}
+
+.eg-grid-columns-modal-body .visible {
+  color: rgb(51, 51, 51);
+  background-color: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+
+
 eg-grid-field {
   display: none;
 }
