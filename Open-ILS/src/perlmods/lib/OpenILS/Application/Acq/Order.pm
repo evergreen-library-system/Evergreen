@@ -3155,7 +3155,9 @@ sub cancel_lineitem {
             or return 0;
 
         # gathering any real copies for deletion
-        if ($lid->eg_copy_id) {
+        # if there is a copy ID and the cancel reason keeps debits,
+        # do not delete. 
+        if ($lid->eg_copy_id && ! $U->is_true($cancel_reason->keep_debits)) {
             $lid->eg_copy_id->isdeleted('t');
             push @$copies, $lid->eg_copy_id;
         }
