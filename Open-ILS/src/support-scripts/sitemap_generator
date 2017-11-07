@@ -154,7 +154,7 @@ sub get_record_ids {
                     ELSE bre.edit_date::date
                 END AS edit_date
             FROM biblio.record_entry bre
-                 INNER JOIN asset.copy_attr_vis_cache vc ON (bre.id = vc.record
+                 INNER JOIN asset.copy_vis_attr_cache vc ON (bre.id = vc.record
                      AND vc.vis_attr_vector @@ (
                          SELECT  c_attrs::query_int
                            FROM  asset.patron_default_visibility_mask()
