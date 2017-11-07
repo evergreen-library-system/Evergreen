@@ -27,9 +27,9 @@ angular.module('egCatZ3950Search',
  */
 .controller('Z3950SearchCtrl',
        ['$scope','$q','$location','$timeout','$window','egCore','egGridDataProvider','egZ3950TargetSvc','$uibModal',
-        'egConfirmDialog',
+        'egConfirmDialog','egAlertDialog',
 function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc,  $uibModal,
-         egConfirmDialog) {
+         egConfirmDialog, egAlertDialog) {
 
     // get list of targets
     egZ3950TargetSvc.loadTargets();
@@ -227,6 +227,17 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             function() { deferred.resolve() },
             null, // onerror
             function(result) {
+                var evt = egCore.evt.parse(result);
+                if (evt) {
+                     if (evt.textcode == 'TCN_EXISTS') {
+                       egAlertDialog.open(
+                            egCore.strings.TCN_EXISTS
+                      );
+                     } else {
+                       // we shouldn't get here
+                       egAlertDialog.open(egCore.strings.TCN_EXISTS_ERR);
+                     }
+                } else {
                 egConfirmDialog.open(
                     egCore.strings.IMPORTED_RECORD_FROM_Z3950,
                     egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
@@ -238,6 +249,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     // for some reason
                     $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
                 });
+              }   
             }
         );
 
