@@ -35,9 +35,9 @@
 
         <!-- Adding hidden fields so that parameters are maintained in
         searchbar throughout the place hold process. -->
-        <input type="hidden" name="locg" value="[% CGI.param('locg') %]" />
-        <input type="hidden" name="qtype" value="[% CGI.param('qtype') %]" />
-        <input type="hidden" name="query" value="[% CGI.param('query') %]" />
+        <input type="hidden" name="locg" value="[% CGI.param('locg') | html %]" />
+        <input type="hidden" name="qtype" value="[% CGI.param('qtype') | html %]" />
+        <input type="hidden" name="query" value="[% CGI.param('query') | html %]" />
         [%
             usr_barcode = CGI.param('usr_barcode') | html;
             is_requestor = CGI.param('is_requestor');
