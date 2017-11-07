@@ -1,0 +1,27 @@
+Fixes to patron name/username search indexes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When using pg_restore to restore an Evergreen database, some of the
+indexes used to speed up patron searches on names and usernames
+could be lost.
+
+This release fixes the underlying issue and re-creates the indexes
+in question.
+
+Details
++++++++
+When using pg_restore to restore an affected database, the
+"unaccent" indexes on actor.usr would not be created due to an
+unqualified function reference in evergreen.unaccent_and_squash.
+
+The function will be replaced to resolve the search path issue,
+and the following indexes on actor.usr will be dropped and then
+re-created:
+
+  * actor_usr_first_given_name_unaccent_idx;
+  * actor_usr_second_given_name_unaccent_idx;
+  * actor_usr_family_name_unaccent_idx;
+  * actor_usr_usrname_unaccent_idx;
+
+This will be done even if the indexes are already present, and may
+take a few minutes on a database with many patrons.
+
