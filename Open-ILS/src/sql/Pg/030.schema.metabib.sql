@@ -1521,8 +1521,10 @@ DECLARE
     attr_value      TEXT[];
     norm_attr_value TEXT[];
     tmp_xml         TEXT;
+    tmp_array       TEXT[];
     attr_def        config.record_attr_definition%ROWTYPE;
     ccvm_row        config.coded_value_map%ROWTYPE;
+    jump_past       BOOL;
 BEGIN
 
     IF attr_list IS NULL OR rdeleted THEN -- need to do the full dance on INSERT or undelete
@@ -1544,15 +1546,15 @@ BEGIN
 
     FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE NOT composite AND name = ANY( attr_list ) ORDER BY format LOOP
 
+        jump_past := FALSE; -- This gets set when we are non-multi and have found something
         attr_value := '{}'::TEXT[];
         norm_attr_value := '{}'::TEXT[];
         attr_vector_tmp := '{}'::INT[];
 
         SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1; 
 
-        -- tag+sf attrs only support SVF
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-            SELECT  ARRAY[ARRAY_TO_STRING(ARRAY_AGG(value), COALESCE(attr_def.joiner,' '))] INTO attr_value
+            SELECT  ARRAY_AGG(value) INTO attr_value
               FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
               WHERE record = rid
                     AND tag LIKE attr_def.tag
@@ -1562,17 +1564,24 @@ BEGIN
                         ELSE TRUE
                     END
               GROUP BY tag
-              ORDER BY tag
-              LIMIT 1;
+              ORDER BY tag;
 
-        ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
-            attr_value := vandelay.marc21_extract_fixed_field_list(rmarc, attr_def.fixed_field);
+            IF NOT attr_def.multi THEN
+                attr_value := ARRAY[ARRAY_TO_STRING(attr_value, COALESCE(attr_def.joiner,' '))];
+                jump_past := TRUE;
+            END IF;
+        END IF;
+
+        IF NOT jump_past AND attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+            attr_value := attr_value || vandelay.marc21_extract_fixed_field_list(rmarc, attr_def.fixed_field);
 
             IF NOT attr_def.multi THEN
                 attr_value := ARRAY[attr_value[1]];
+                jump_past := TRUE;
             END IF;
+        END IF;
 
-        ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+        IF NOT jump_past AND attr_def.xpath IS NOT NULL THEN -- and xpath expression
 
             SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
         
@@ -1606,13 +1615,16 @@ BEGIN
                     EXIT WHEN NOT attr_def.multi;
                 END IF;
             END LOOP;
+        END IF;
 
-        ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-            SELECT  ARRAY_AGG(m.value) INTO attr_value
+        IF NOT jump_past AND attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+            SELECT  ARRAY_AGG(m.value) INTO tmp_array
               FROM  vandelay.marc21_physical_characteristics(rmarc) v
                     LEFT JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
               WHERE v.subfield = attr_def.phys_char_sf AND (m.value IS NOT NULL AND BTRIM(m.value) <> '')
                     AND ( ccvm_row.id IS NULL OR ( ccvm_row.id IS NOT NULL AND v.id IS NOT NULL) );
+
+            attr_value := attr_value || tmp_array;
 
             IF NOT attr_def.multi THEN
                 attr_value := ARRAY[attr_value[1]];

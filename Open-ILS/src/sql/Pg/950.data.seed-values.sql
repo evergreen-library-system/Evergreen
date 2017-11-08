@@ -6490,7 +6490,7 @@ INSERT INTO config.record_attr_definition (name,label,fixed_field,description) v
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('gpub','GPub','GPub');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,composite) values ('ills','Ills','Ills',TRUE);
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('indx','Indx','Indx');
-INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('item_lang','Lang','Lang',oils_i18n_gettext('item_lang', 'Language', 'crad', 'description'));
+INSERT INTO config.record_attr_definition (name,label,fixed_field,tag,sf_list,description) values ('item_lang','Lang','Lang','041','abdefgm',oils_i18n_gettext('item_lang', 'Language', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('language','Language (2.0 compat version)','Lang');
 INSERT INTO config.record_attr_definition (name,label,fixed_field,description) values ('lit_form','LitF','LitF',oils_i18n_gettext('lit_form', 'Literary Form', 'crad', 'description'));
 INSERT INTO config.record_attr_definition (name,label,fixed_field) values ('mrec','MRec','MRec');
