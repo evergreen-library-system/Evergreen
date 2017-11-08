@@ -238,18 +238,18 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                        egAlertDialog.open(egCore.strings.TCN_EXISTS_ERR);
                      }
                 } else {
-                egConfirmDialog.open(
-                    egCore.strings.IMPORTED_RECORD_FROM_Z3950,
-                    egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
-                    { id : result.id() },
-                    egCore.strings.GO_TO_RECORD,
-                    egCore.strings.GO_BACK
-                ).result.then(function() {
-                    // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
-                    // for some reason
-                    $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
-                });
-              }   
+                    egConfirmDialog.open(
+                        egCore.strings.IMPORTED_RECORD_FROM_Z3950,
+                        egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
+                        { id : result.id() },
+                        egCore.strings.GO_TO_RECORD,
+                        egCore.strings.GO_BACK
+                    ).result.then(function() {
+                        // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
+                        // for some reason
+                        $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
+                    });
+                }
             }
         );
 
