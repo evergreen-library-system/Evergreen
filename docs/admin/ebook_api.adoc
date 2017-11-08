@@ -15,11 +15,9 @@ interface will include information about that user's checkouts and holds for
 supported vendors.
 
 [WARNING]
---
 The ability to check out and place holds on ebook titles is an experimental
 feature in 3.0.  It is not recommended for production use without careful
 testing.
---
 
 For API integration to work, you need to request API access from the
 vendor and configure your Evergreen system according to the instructions
