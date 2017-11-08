@@ -1,1 +1,0 @@
-Adds a mailto link to the patron's email in their profile so it can be clicked to send and email to the patron. No new settings or permissions are included in this feature.
