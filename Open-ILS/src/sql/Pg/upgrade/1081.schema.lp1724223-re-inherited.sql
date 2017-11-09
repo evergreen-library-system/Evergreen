@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1081', :eg_version); -- jboyer/gmcharlt
 
 DROP TRIGGER IF EXISTS inherit_copy_bucket_item_target_copy_fkey ON container.copy_bucket_item;
 DROP TRIGGER IF EXISTS inherit_import_item_imported_as_fkey ON vandelay.import_item;
