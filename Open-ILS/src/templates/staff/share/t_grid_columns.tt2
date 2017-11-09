@@ -17,6 +17,11 @@
       <div class="col-md-1" ng-if="!disableMultiSort">
         [% l('Sort Priority') %]
       </div>
+      <div class="col-md-3">
+        <button class="btn btn-default" ng-click="elevateVisible()">
+          [% l('Sort Visible Columns To Top') %]
+        </button>
+      </div>
     </div>
     <div class="row" ng-repeat="col in columns" 
       ng-class="{visible : col.visible}">

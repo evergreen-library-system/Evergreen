@@ -1087,10 +1087,29 @@ angular.module('egGridMod',
                             $dialogScope.modifyColumnPos = $scope.modifyColumnPos;
                             $dialogScope.disableMultiSort = $scope.disableMultiSort;
                             $dialogScope.columns = $scope.columns;
+
+                            // Push visible columns to the top of the list
+                            $dialogScope.elevateVisible = function() {
+                                var new_cols = [];
+                                angular.forEach($dialogScope.columns, function(col) {
+                                    if (col.visible) new_cols.push(col);
+                                });
+                                angular.forEach($dialogScope.columns, function(col) {
+                                    if (!col.visible) new_cols.push(col);
+                                });
+
+                                // Update all references to the list of columns
+                                $dialogScope.columns = 
+                                    $scope.columns = 
+                                    grid.columnsProvider.columns = 
+                                    new_cols;
+                            }
+
                             $dialogScope.toggle = function(col) {
                                 col.visible = !Boolean(col.visible);
                             }
                             $dialogScope.ok = $dialogScope.cancel = function() {
+                                delete $scope.lastModColumn;
                                 $uibModalInstance.close()
                             }
                         }
