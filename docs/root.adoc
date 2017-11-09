@@ -375,17 +375,17 @@ Serials
 
 include::serials/A-intro.adoc[]
 
-include::serials/B-copy_template.adoc[]
+include::serials/B-serials_admin.adoc[]
 
-include::serials/C-subscription-SCV.adoc[]
+include::serials/C-serials_workflow.adoc[]
 
-include::serials/D-subscription-ASCV.adoc[]
+include::serials/D-Receiving.adoc[]
 
-include::serials/E-edit_subscriptions.adoc[]
+include::serials/E-routing_lists.adoc[]
 
-include::serials/F-Receiving.adoc[]
+include::serials/F-Special_issue.adoc[]
 
-include::serials/G-Special_issue.adoc[]
+include::serials/G-binding.adoc[]
 
 include::serials/H-holdings_statements.adoc[]
 
