@@ -1,6 +1,9 @@
 Offline Circulation
 ===================
 
+Introduction
+------------
+
 Evergreen's Offline Circulation interface is designed to log transactions during a network or server outage.  Transactions can be uploaded and processed once connectivity is restored.
 
 Offline Circulation in the Web Staff Client relies on the use of web service workers to store information for offline use.  Prior to using Offline Circulation you must have access to your production server and register your workstation on the computer and in the browser you intend to use.  You must also log in from that browser  at least once and visit *Search -> Search for Patrons*.  Perform a search, select a user from the results, and open the *Patron Edit* interface.  This will allow the Offline interface to collect the information it needs, such as workstation information and the patron registration form.
