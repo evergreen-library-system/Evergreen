@@ -25,31 +25,43 @@
     [%# dupe_search_encoded is uri escaped in the JS %]
     <div class="alert alert-danger" ng-show="dupe_counts.name">
       <a target="_blank"
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}&inactive=1">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.name}}&inactive=1">
       [% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
       </a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.email">
       <a target="_blank"
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.email}}">
         [% l('[_1] patron(s) with same email', 
         '{{dupe_counts.email}}') %]</a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.ident">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.ident}}">
         [% l('[_1] patron(s) with same identification', 
         '{{dupe_counts.ident}}') %]</a>
     </div>
-    <div class="alert alert-danger" ng-show="dupe_counts.phone">
+    <div class="alert alert-danger" ng-show="dupe_counts.day_phone">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.day_phone}}">
+        [% l('[_1] patron(s) with same phone', 
+        '{{dupe_counts.phone}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.evening_phone">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.evening_phone}}">
+        [% l('[_1] patron(s) with same phone', 
+        '{{dupe_counts.phone}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.other_phone">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.other_phone}}">
         [% l('[_1] patron(s) with same phone', 
         '{{dupe_counts.phone}}') %]</a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.address">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.address}}" >
         [% l('[_1] patron(s) with same address', 
         '{{dupe_counts.address}}') %]</a>
     </div>
