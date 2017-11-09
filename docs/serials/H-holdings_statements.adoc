@@ -12,24 +12,40 @@ Evergreen users can create, edit and delete their own MFHD.
 Create an MFHD record
 ^^^^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, and in the bottom right corner above the copy information, click Add MFHD Record. You can also add the MFHD statement by clicking *Actions for this Record* -> *MFHD Holdings* -> *Add MFHD Record*.
-. A message will confirm that you have created the MFHD Record. Click OK.
-. Click Reload in the top left corner of the record.
-. The Holdings Summary will appear. Click Edit Holdings in the right corner.
-. Click Edit Record.
-. The MFHD window will pop up. Enter holdings information. Click Save MFHD.
-. Close the MFHD window.
-. Click Reload in the top left corner of the record. The Holdings Summary will reflect the changes to the MFHD statement.
+*To create a MFHD record:*
+
+. From a serials record in the catalog, go to *Serials->Manage MFHDs*.  This will bring you to the _Manage MFHD_ tab within the serials module.
+. Click *Create MFHD*. 
+
+
+image::media/serials_mfhd1.PNG[]
+
+
+. A _Create new MFHD_ dialog box will appear.  _Select the library_ for which you are creating the MFHD record and click *Create*.
+. The MFHD record will appear in the list.  Go to *Actions->Edit MFHD* or _right-click_ on the row and select *Edit MFHD* from the drop down menu.
+
+
+image::media/serials_mfhd3.PNG[]
+
+
+. The MARC Editor will appear.  _Modify the MFHD record_ as needed and click *Save*.
+. The Textual Holdings statement will appear in the _Issues Held_ tab in the catalog.
+
+
+image::media/serials_mfhd6.PNG[]
+
 
 Edit a MFHD record
 ^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, click *Actions for this Record* -> *MFHD Record* -> *Edit MFHD Record* and select the appropriate MFHD. 
-. Edit the MFHD
-. Click Save MFHD
+. Open a serial record, go to *Serials* -> *MFHD Record* -> *Manage MFHDs* and select the appropriate MFHD.
+. Go to *Actions* or right-click on the MFHD and select *Edit MFHD*.
+. The MARC Editor will appear.  _Modify the MFHD record_ as needed and click *Save*.
+
 
 Delete a MFHD Record
 ^^^^^^^^^^^^^^^^^^^^
 
-. Open a serial record, click *Actions for this Record* -> *MFHD Record* -> *Delete MFHD Record* and select the appropriate MFHD. 
-. Click to confirm the deletion of the MFHD
+. Open a serial record, go to *Serials* -> *MFHD Record* -> *Manage MFHDs* and select the appropriate MFHD.
+. Go to *Actions* or right-click on the MFHD and select *Delete Selected MFHDs*.
+. Click *OK/Continue* to delete the record.
