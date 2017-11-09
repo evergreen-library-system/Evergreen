@@ -67,6 +67,8 @@ include::admin/lsa-statcat.adoc[]
 
 include::admin/MARC_Import_Remove_Fields.adoc[]
 
+include::admin/copy_tags_admin.adoc[]
+
 include::admin/MARC_RAD_MVF_CRA.adoc[]
 
 include::admin/restrict_Z39.50_sources_by_perm_group.adoc[]
