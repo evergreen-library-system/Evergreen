@@ -413,6 +413,8 @@ include::circulation/booking.adoc[]
 
 include::circulation/circulation_patron_records_web_client.adoc[]
 
+include::admin/patron_self_registration.adoc[]
+
 include::circulation/triggered_events.adoc[]
 
 // Push titles down one level.
