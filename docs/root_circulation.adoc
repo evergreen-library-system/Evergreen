@@ -46,7 +46,7 @@ include::circulation/advanced_holds.adoc[]
 
 :leveloffset: 0
 
-include::circulation/offline_mode.adoc[]
+include::circulation/offline_circ_webclient.adoc[]
 
 :leveloffset: -1
 
