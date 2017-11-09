@@ -553,6 +553,8 @@ angular.module('egCoreMod')
 
         console.log('Dupe search called with "'+ type +'" and value '+ value);
 
+        if (type.match(/phone/)) type = 'phone'; // day_phone, etc.
+
         switch (type) {
 
             case 'name':
@@ -1646,15 +1648,19 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     $scope.dupe_value_changed = function(type, value) {
+        if (!$scope.dupe_search_encoded)
+            $scope.dupe_search_encoded = {};
+
         $scope.dupe_counts[type] = 0;
+
         patronRegSvc.dupe_patron_search($scope.patron, type, value)
         .then(function(res) {
             $scope.dupe_counts[type] = res.count;
             if (res.count) {
-                $scope.dupe_search_encoded = 
+                $scope.dupe_search_encoded[type] = 
                     encodeURIComponent(js2JSON(res.search));
             } else {
-                $scope.dupe_search_encoded = '';
+                $scope.dupe_search_encoded[type] = '';
             }
         });
     }
@@ -1729,7 +1735,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 }
             case 'evening_phone' : 
             case 'other_phone' : 
-                $scope.dupe_value_changed('phone', value);
+                $scope.dupe_value_changed(field_name, value);
                 break;
 
             case 'ident_value':
