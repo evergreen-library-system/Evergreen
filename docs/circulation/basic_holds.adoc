@@ -62,3 +62,40 @@ fill the hold. The same holds true for selecting multiple languages.
 
 image::media/holds_title_options_adv.png[Place Hold screen with Advanced Options]
 
+
+Patron Search from Place Hold
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Patron Search from Place Hold allows staff members, when placing a hold on behalf of a patron in the web staff client, to search for patrons by names and other searchable patron information, rather than relying on barcode alone.
+
+
+To use Patron Search From Place Holds:
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1. After performing a search in the catalog, staff will retrieve a bibliographic record.
+2. Click *Place Hold* either in the search results or within the detailed bibliographic record. The Place Hold Screen will appear. Note: this feature also appears when placing volume level holds and copy level holds.
+
+image::media/PlaceHold-0.JPG[]
+
+3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client, not the desktop XUL-based staff client, nor the patron-facing OPAC.
+
+image::media/PlaceHold-1.JPG[]
+
+4. A dialog box will appear with the patron search interface used elsewhere in the staff client. By default, the search scopes to your workstation org unit, and you can search by patron last name, first name, and middle name.
+
+image::media/PlaceHold-2.JPG[]
+
+Clicking the *arrow icon* to the right of _Clear Form_ can either expand or condense the searchable fields display which includes other patron information.
+
+image::media/PlaceHold-3.JPG[]
+
+5. To search for a patron, fill out the relevant search fields, and click *Search* or hit ENTER on your keyboard. Results will appear below in Patron Search Results in the lower half of the screen.
+
+image::media/PlaceHold-4.JPG[]
+
+6. Click the row of the desired patron account, and click *Select*.
+
+image::media/PlaceHold-5.JPG[]
+
+7. The dialog box will close and the selected patron's barcode will appear next to _Place Hold for patron by barcode_. This will cause the patron's hold notification preferences to appear in the relevant fields in the bottom half of the screen. Changes to the Hold Notification preferences can be made before clicking *Submit* to finish placing a hold for the patron.
+
+image::media/PlaceHold-6.JPG[]
+
