@@ -58,6 +58,7 @@ include::cataloging/monograph_parts.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
+include::cataloging/copy_tags_cataloging.adoc[]
 
 include::cataloging/conjoined_items.adoc[]
 

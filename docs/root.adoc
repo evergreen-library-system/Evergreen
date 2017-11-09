@@ -246,6 +246,8 @@ include::admin/floating_groups.adoc[]
 
 include::admin/MARC_Import_Remove_Fields.adoc[]
 
+include::admin/copy_tags_admin.adoc[]
+
 include::admin/MARC_RAD_MVF_CRA.adoc[]
 
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
@@ -332,6 +334,7 @@ include::cataloging/marc_tag_table.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
+include::cataloging/copy_tags_cataloging.adoc[]
 
 include::cataloging/MARC_Editor.adoc[]
 
