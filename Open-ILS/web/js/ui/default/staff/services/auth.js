@@ -53,7 +53,10 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         },
 
         // Listen for logout events in other tabs
-        authChannel : new BroadcastChannel('eg.auth')
+        // Current version of phantomjs (unit tests, etc.) does not 
+        // support BroadcastChannel, so just dummy it up.
+        authChannel : (typeof BroadcastChannel == 'undefined') ? 
+            {} : new BroadcastChannel('eg.auth')
     };
 
     /* Returns a promise, which is resolved if valid
