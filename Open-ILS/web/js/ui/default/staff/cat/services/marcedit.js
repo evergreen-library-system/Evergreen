@@ -624,7 +624,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             // in-place mode means that the editor is being
             // used just to munge some MARCXML client-side, rather
             // than to (immediately) update the database
-            inPlaceMode : '@',
+            //
+            // In short, we can use inPlaceMode as a way to skip
+            // "normal" bre saving and then process the MARC ourselves
+            // via a callback
+            //
+            // inPlaceMode is r/w to allow our Z39.50 import editor to be
+            // switched back into a normal editor after the initial import
+            inPlaceMode : '=',
             fastAdd : '@',
             flatOnly : '@',
             embedded : '@',

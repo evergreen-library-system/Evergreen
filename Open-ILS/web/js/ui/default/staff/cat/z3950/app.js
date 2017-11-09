@@ -212,20 +212,25 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         });
         return groups;
     };
+
     $scope.import = function() {
-        var deferred = $q.defer();
         var items = $scope.gridControls.selectedItems();
+        return $scope._import(items[0]['marcxml']);
+    };
+
+    $scope._import = function(marc_xml) {
+        var deferred = $q.defer();
         egCore.net.request(
             'open-ils.cat',
             'open-ils.cat.biblio.record.xml.import',
             egCore.auth.token(),
-            items[0]['marcxml'],
+            marc_xml,
             null, // FIXME bib source
             null,
             null,
             $scope.selectFieldStripGroups()
         ).then(
-            function() { deferred.resolve() },
+            function(result) { deferred.resolve(result) },
             null, // onerror
             function(result) {
                 var evt = egCore.evt.parse(result);
@@ -265,6 +270,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.spawn_editor = function() {
         var items = $scope.gridControls.selectedItems();
         var recId = 0;
+        var _import = $scope._import;
         $uibModal.open({
             templateUrl: './cat/z3950/t_marc_edit',
             backdrop: 'static',
@@ -278,9 +284,23 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 $scope.ok = function(args) { $uibModalInstance.close(args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
                 $scope.save_label = egCore.strings.IMPORT_BUTTON_LABEL;
-                $scope.import_record_callback = function (record_id) {
-                    recId = record_id;
-                    $scope.save_label = egCore.strings.SAVE_BUTTON_LABEL;
+                // Wiring up angular inPlaceMode for editing later
+                $scope.in_place_mode = true;
+                $scope.import_record_callback = function () {
+                    if($scope.in_place_mode) {
+                        // This timeout is required to allow angular to finish variable assignments
+                        // in the marcediter app. Allowing marc_xml to propigate here.
+                        $timeout( function() {
+                            _import($scope.marc_xml).then( function(record_obj) {
+                                if( record_obj.id ) {
+                                    $scope.record_id = record_obj.id();
+                                    $scope.save_label = egCore.strings.SAVE_BUTTON_LABEL;
+                                    // Successful import, no longer want this special z39.50 callback to execute.
+                                    $scope.in_place_mode = undefined;
+                                }
+                            });
+                        });
+                    }
                 };
             }]
         }).result.then(function () {
