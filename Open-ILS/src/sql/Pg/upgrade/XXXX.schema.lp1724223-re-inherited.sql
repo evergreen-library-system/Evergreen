@@ -5,7 +5,7 @@ SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 DROP TRIGGER IF EXISTS inherit_copy_bucket_item_target_copy_fkey ON container.copy_bucket_item;
 DROP TRIGGER IF EXISTS inherit_import_item_imported_as_fkey ON vandelay.import_item;
 DROP TRIGGER IF EXISTS inherit_asset_copy_note_copy_fkey ON asset.copy_note;
-DROP TRIGGER inherit_asset_copy_tag_copy_map_copy_fkey ON asset.copy_tag_copy_map;
+DROP TRIGGER IF EXISTS inherit_asset_copy_tag_copy_map_copy_fkey ON asset.copy_tag_copy_map;
 
 CREATE CONSTRAINT TRIGGER inherit_copy_bucket_item_target_copy_fkey
   AFTER UPDATE OR INSERT ON container.copy_bucket_item
