@@ -141,12 +141,21 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                 })
             }
 
-            patronSvc.items_out.push(circ); // toss it into the cache
+	    // call open-ils to get overdue notice count and  Last notice date
+	    
+           egCore.net.request(
+               'open-ils.actor',
+               'open-ils.actor.user.itemsout.notices',
+               egCore.auth.token(), circ.id(), $scope.patron_id)
+           .then(function(notice){
+               if (notice.numNotices){
+                   circ.action_trigger_event_count = notice.numNotices;
+                   circ.action_trigger_latest_event_date = notice.lastDt;
+	       }
+               patronSvc.items_out.push(circ);
+           });
 
-            // We fetch all circs for client-side sorting, but only
-            // notify the caller for the page of requested circs.  
-            if (rendered++ >= offset && rendered <= count)
-                deferred.notify(circ);
+	       if (rendered++ >= offset && rendered <= count){ deferred.notify(circ) };
         });
 
         return deferred.promise;
