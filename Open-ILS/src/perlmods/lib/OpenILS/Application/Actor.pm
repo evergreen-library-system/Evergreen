@@ -3632,7 +3632,66 @@ sub copy_events {
 }
 
 
+__PACKAGE__->register_method (
+    method      => 'get_itemsout_notices',
+    api_name    => 'open-ils.actor.user.itemsout.notices',
+    stream      => 1,
+    argc        => 3
+);
 
+sub get_itemsout_notices{
+    my( $self, $conn, $auth, $circId, $patronId) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $requestorId = $e->requestor->id;
+
+    if( $patronId ne $requestorId ){
+        my $user = $e->retrieve_actor_user($requestorId) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $user->home_ou);
+    }
+
+    #my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    #my $req = $ses->request('open-ils.trigger.events_by_target',
+    #	'circ', {target => [$circId], event=> {state=>'complete'}});
+    # ^ Above removed in favor of faster json_query.
+    #
+    # SQL:
+    # select complete_time
+    # from action_trigger.event atev
+    #     JOIN action_trigger.event_definition def ON (def.id = atev.event_def)
+    #     JOIN action_trigger.hook athook ON (athook.key = def.hook)
+    # where hook = 'checkout.due' AND state = 'complete' and target = <circId>;
+    #
+
+    my $query = {
+	    select => { atev => ["complete_time"] },
+	    from => {
+		    atev => {
+			    atevdef => { field => "id",fkey => "event_def", join => { ath => { field => "key", fkey => "hook" }} }
+		    }
+	    },
+	    where => {"+ath" => { key => "checkout.due" },"+atevdef" => { active => 't' },"+atev" => { target => $circId, state => 'complete' }}
+    };
+
+    my %resblob = ( numNotices => 0, lastDt => undef );
+
+    my $res = $e->json_query($query);
+    for my $ndate (@$res) {
+	$resblob{numNotices}++;
+	if( !defined $resblob{lastDt}){
+	    $resblob{lastDt} = $$ndate{complete_time};
+        }
+
+	if ($resblob{lastDt} lt $$ndate{complete_time}){
+	   $resblob{lastDt} = $$ndate{complete_time};
+	}
+   }
+
+    $conn->respond(\%resblob);
+    return undef;
+}
 
 __PACKAGE__->register_method (
     method      => 'update_events',
