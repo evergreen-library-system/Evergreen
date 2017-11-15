@@ -1,0 +1,6 @@
+Username Login Hint
+^^^^^^^^^^^^^^^^^^^
+To make customization easier, the username hint on the OPAC login page ("Please
+include leading zeros...") has been moved to a separate TT2 template.  If you
+have customized the hint text, you will need to add your modifications to
+username_hint.tt2.
