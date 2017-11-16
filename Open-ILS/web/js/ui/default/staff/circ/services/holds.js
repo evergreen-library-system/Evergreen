@@ -489,14 +489,16 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                     ).then(function(c) { hold.current_copy().status(c) });
         }
 
-        //Call number affixes are not always fleshed in the API
-        if (volume.prefix() && typeof volume.prefix() != 'object') {
-            console.debug('fetching call number prefix');
-            egCore.pcrud.retrieve('acnp',volume.prefix()).then(function(p) {volume.prefix(p)});
-        }
-        if (volume.suffix() && typeof volume.suffix() != 'object') {
-            console.debug('fetching call number prefix');
-            egCore.pcrud.retrieve('acns',volume.suffix()).then(function(s) {volume.suffix(s)});
+        if (volume) {
+            //Call number affixes are not always fleshed in the API
+            if (volume.prefix() && typeof volume.prefix() != 'object') {
+                console.debug('fetching call number prefix');
+                egCore.pcrud.retrieve('acnp',volume.prefix()).then(function(p) {volume.prefix(p)});
+            }
+            if (volume.suffix() && typeof volume.suffix() != 'object') {
+                console.debug('fetching call number prefix');
+                egCore.pcrud.retrieve('acns',volume.suffix()).then(function(s) {volume.suffix(s)});
+            }
         }
     }
 
