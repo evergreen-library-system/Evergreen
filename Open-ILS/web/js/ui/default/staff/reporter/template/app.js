@@ -497,11 +497,23 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
     $scope.changeFilterValue = function (items) {
         items.forEach(function(item) {
             var l = null;
-            egPromptDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, item.value || '',
-                {ok : function(value) {
-                    if (value) egReportTemplateSvc.filter_fields[item.index].value = value;
-                }}
-            );
+            console.log(item);
+            if (item.datatype == "bool") {
+                egConfirmDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, item.value || '',
+                    {ok : function() {
+                        egReportTemplateSvc.filter_fields[item.index].value = true;
+                    },
+                    cancel : function() {
+                        egReportTemplateSvc.filter_fields[item.index].value = false;
+                    }}, egCore.strings.TEMPLATE_CONF_TRUE, egCore.strings.TEMPLATE_CONF_FALSE
+                );
+            } else {
+                egPromptDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, item.value || '',
+                    {ok : function(value) {
+                        if (value) egReportTemplateSvc.filter_fields[item.index].value = value;
+                    }}
+                );
+            }
         });
         fgrid.refresh();
     }
