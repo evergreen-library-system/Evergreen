@@ -74,10 +74,14 @@
   <eg-grid-field label="[% l('Cancel Cause') %]" path='hold.cancel_cause.label' hidden></eg-grid-field>
   <eg-grid-field path='hold.*' parent-idl-class="ahr" ignore="current_copy" hidden></eg-grid-field>
   <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.card.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.card.*' parent-idl-class="ahr" hidden></eg-grid-field>
+
+  <eg-grid-field path='hold.usr.id' parent-idl-class="ahr" label="[% l('User ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.usrname' parent-idl-class="ahr" label="[% l('Username') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.first_given_name' parent-idl-class="ahr" label="[% l('First Name') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.family_name' parent-idl-class="ahr" label="[% l('Last Name') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.requestor.id' parent-idl-class="ahr" label="[% l('Requestor ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.requestor.usrname' parent-idl-class="ahr" label="[% l('Requestor Username') %]" hidden></eg-grid-field>
+
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
   <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
 </eg-grid>
