@@ -595,7 +595,7 @@ Roll Back Batch Changes
 
 NOTE: Batch statistical category changes cannot be rolled back.
 
-image::media/userbucket10.PNG[]
+image::media/userbucket10.png[]
 
 image::media/userbucket9.PNG[]
 
