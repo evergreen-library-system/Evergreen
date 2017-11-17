@@ -219,6 +219,52 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             return ['xact_start']; 
         }
     }
+    // -------------
+    // Apply coloring to rows based on fines stop reason
+    $scope.colorizeBillsList = {
+        rowClass: function(item) {
+            if (!item['circulation.checkin_time']) {
+                if (item['circulation.stop_fines'] == 'LOST') {
+                    return 'dark-red-row-highlight';
+                } else if (item['circulation.stop_fines'] == 'LONGOVERDUE') {
+                    return 'red-row-highlight';
+                } else if (item['circulation.due_date'] &&  // Still checked out - need feedback on this approach, feel like there's a better way
+                          !item['circulation.stop_fines']) {
+                    return 'orange-row-highlight';
+                }
+            }
+        }
+    }
+
+    // Status Icon Column definition
+    $scope.statusIconColumn = {
+        isEnabled: true,
+        template: function(item) {
+            var template = "";
+            var icons = [];
+            var now = new Date();
+
+            if (item['circulation.due_date'] &&
+                !item['circulation.checkin_time']) {
+                var due_date = new Date(item['circulation.due_date']);
+
+                if (item['circulation.stop_fines'] &&
+                    item['circulation.stop_fines'] == "LOST") {
+                    icons.push('glyphicon-question-sign');
+                } else if (item['circulation.stop_fines'] &&
+                    item['circulation.stop_fines'] == "LONGOVERDUE") {
+                    icons.push('glyphicon-exclamation-sign');
+                } else if (now >= due_date) {
+                    icons.push('glyphicon-time');
+                }
+            }
+
+            angular.forEach(icons, function(icon) {
+                template = template + "<i class='glyphicon " + icon + "'></i>"
+            });
+            return template;
+        }
+    }
 
     billSvc.fetchSummary().then(function(s) {$scope.summary = s});
 

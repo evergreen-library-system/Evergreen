@@ -6,7 +6,9 @@
   grid-controls="gridControls"
   revision="gridRevision"
   persist-key="circ.patron.bills"
-  dateformat="{{$root.egDateAndTimeFormat}}">
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  row-class="colorizeBillsList"
+  status-cell="statusIconColumn">
 
   <eg-grid-menu-item label="[% l('Bill Patron') %]" 
     handler="showBillDialog"></eg-grid-menu-item>
@@ -48,7 +50,7 @@
   <eg-grid-action label="[% l('Full Details') %]" 
     handler="showFullDetails"></eg-grid-action>
 
-  <eg-grid-field label="[% l('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
+  <eg-grid-field label="[% l('Balance Owed') %]" path='summary.balance_owed' required></eg-grid-field>
   <eg-grid-field label="[% l('Bill #') %]" path='id'></eg-grid-field>
   <eg-grid-field label="[% l('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
@@ -101,6 +103,8 @@
   <eg-grid-field path='circulation.circ_lib' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.duration' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.due_date' dateonlyinterval="circulation.duration" datecontext="circulation.circ_lib" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Stop Fines') %]" path="circulation.stop_fines" hidden required>  </eg-grid-field>
+  <eg-grid-field path="circulation.checkin_time" hidden required></eg-grid-field>
   <eg-grid-field path='circulation.*' hidden> </eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]"
     path='circulation.circ_lib.shortname' required hidden> </eg-grid-field>
