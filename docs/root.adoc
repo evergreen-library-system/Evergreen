@@ -159,6 +159,12 @@ include::admin/phonelist.adoc[]
 
 include::admin/sip_server.adoc[]
 
+:leveloffset: 1
+
+include::admin/sip_privacy.adoc[]
+
+:leveloffset: 0
+
 include::admin/apache_rewrite_tricks.adoc[]
 
 include::admin/apache_access_handler.adoc[]
