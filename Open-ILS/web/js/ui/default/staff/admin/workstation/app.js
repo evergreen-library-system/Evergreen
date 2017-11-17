@@ -535,7 +535,7 @@ function($scope , $q , egCore , ngToast) {
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
                 patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
-                status_string : 'In Transit'
+                status_string : 'Canceled'
             }
         ]
     }
