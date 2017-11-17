@@ -5,9 +5,9 @@ to this template includes:
 * transasctions - a list of transactions, each of which
   contains:
 
-  summary - information about the transaction
-  title - Copy title
-  copy_barcode - Copy barcode
+  xact.summary - information about the transaction
+  xact.title - Copy title
+  xact.copy_barcode - Copy barcode
 
 -->
 Welcome to {{current_location.name}}!<br/>
