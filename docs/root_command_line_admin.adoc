@@ -139,6 +139,8 @@ include::admin/template_toolkit.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::admin/search_interface.adoc[]
+
 include::opac/sitemap.adoc[]
 
 include::admin/sitemap_admin.adoc[]
