@@ -301,9 +301,19 @@ table.list tr.selected td { /* deprecated? */
   text-align: center;
 }
 
-/* the conf header must be twice the stock flex */
+.eg-grid-cell-stock-status {
+  width: 4.4em;
+  text-align: center;
+}
+
+/* the conf header must be ~four times the stock flex */
 .eg-grid-cell-conf-header {
   width: 4.4em;
+  font-weight: bold;
+}
+
+.eg-grid-cell-conf-header-status {
+  width: 8.8em;
   font-weight: bold;
 }
 
@@ -333,6 +343,30 @@ table.list tr.selected td { /* deprecated? */
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
+
+/* patron bill row-highlighting */
+.red-row-highlight {
+  color: #FFF;
+  background-color: #FF0000;
+}
+.orange-row-highlight {
+  color: #FFF;
+  background-color: #FFA500 ;
+}
+.dark-red-row-highlight {
+  color: #FFF;
+  background-color: #800000;
+}
+.eg-grid-row-selected .red-row-highlight {
+  background-color: #CF0000;
+}
+.eg-grid-row-selected .orange-row-highlight {
+  background-color: #DE9000;
+}
+.eg-grid-row-selected .dark-red-row-highlight {
+  background-color: #5C0000;
+}
+
 .eg-grid-cell-content::selection {
   color: #000;
   background: rgb(201, 221, 225);

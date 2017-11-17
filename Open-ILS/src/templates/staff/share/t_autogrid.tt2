@@ -228,6 +228,9 @@
           type='checkbox' ng-model="selectAll"/> 
       </div>
     </div>
+    <div class="eg-grid-cell eg-grid-cell-stock-status" ng-show="statusCell.isEnabled">
+      <div title="[% l('Status Icon Column') %]">[% l('Status') %]</div>
+    </div>
     <div class="eg-grid-cell"
         eg-grid-column-drag-dest
         ng-class="{'eg-grid-column-last-mod' : isLastModifiedColumn(col)}"
@@ -257,7 +260,8 @@
 
   <!-- Inline grid configuration row -->
   <div class="eg-grid-row eg-grid-conf-row" ng-show="showGridConf">
-    <div class="eg-grid-cell eg-grid-cell-conf-header">
+    <div class="eg-grid-cell"
+      ng-class="statusicon.isEnabled ? 'eg-grid-cell-conf-header-status' : 'eg-grid-cell-conf-header'">
       <div class="eg-grid-conf-cell-entry">[% l('Expand') %]</div>
       <div class="eg-grid-conf-cell-entry">[% l('Shrink') %]</div>
     </div>
@@ -290,14 +294,16 @@
         ng-show="items.length > 0"
         ng-class="{'eg-grid-row-selected' : selected[indexValue(item)]}">
       <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex"
-        ng-click="handleRowClick($event, item)" title="[% l('Row Index') %]">
+        ng-click="handleRowClick($event, item)" title="[% l('Row Index') %]"
+          ng-class="rowClass.rowClass(item)">
         <a href ng-show="gridControls.activateItem" 
           ng-click="gridControls.activateItem(item)" style="font-weight:bold">
           {{$index + offset() + 1}}
         </a>
         <div ng-hide="gridControls.activateItem">{{$index + offset() + 1}}</div>
       </div>
-      <div class="eg-grid-cell eg-grid-cell-stock" ng-show="canMultiSelect">
+      <div class="eg-grid-cell eg-grid-cell-stock" ng-show="canMultiSelect"
+          ng-class="rowClass.rowClass(item)">
         <!-- ng-click=handleRowClick here has unintended 
              consequences and is unnecessary, avoid it -->
         <div>
@@ -306,12 +312,17 @@
             ng-model="selected[indexValue(item)]"/>
         </div>
       </div>
+      <div class="eg-grid-cell eg-grid-cell-stock-status" ng-show="statusCell.isEnabled"
+          ng-class="rowClass.rowClass(item)">
+          <span ng-bind-html="statusCell.template(item)"></span>
+      </div>
       <div class="eg-grid-cell eg-grid-cell-content"
           ng-click="handleRowClick($event, item)"
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
           style="text-align:{{col.align}}; flex:{{col.flex}}"
-          ng-show="col.visible">
+          ng-show="col.visible"
+          ng-class="rowClass.rowClass(item)">
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
