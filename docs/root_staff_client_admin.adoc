@@ -141,6 +141,12 @@ fines and other charges in the Public Catalog.  Credit card settings can be conf
 
 include::admin/desk_payments.adoc[]
 
+:leveloffset: 0
+
+include::admin/allowed_payments.adoc[]
+
+:leveloffset: 1
+
 include::circulation/user_buckets.adoc[]
 
 :leveloffset: 0
