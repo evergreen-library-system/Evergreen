@@ -18,7 +18,7 @@ image::media/copytags5.PNG[]
 ..    If you are cataloging a new copy, make any other changes to the item record.
 . Click *Save & Exit*.  The copy tag will now appear in the catalog.
 
-image::media/copytags6.PNG[]
+image::media/copytags6.png[]
 
 image::media/copytags7.PNG[]
 
