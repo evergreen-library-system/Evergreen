@@ -43,6 +43,8 @@ include::admin/sip_server.adoc[]
 
 :leveloffset: 0
 
+include::admin/sip_privacy.adoc[]
+
 include::shared/attributions.adoc[]
 
 include::shared/end_matter.adoc[]
