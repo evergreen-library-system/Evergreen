@@ -6,8 +6,7 @@ BEGIN;
 
 
 -- check whether patch can be applied
--- FIXME: uncomment when we have an upgrade number
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1083', :eg_version);
 
 CREATE OR REPLACE FUNCTION evergreen.unaccent_and_squash ( IN arg text) RETURNS text
     IMMUTABLE STRICT AS $$
