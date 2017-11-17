@@ -97,4 +97,24 @@ You may also change the default number of facets appearing under each category
 by editing the _facet.default_display_count_ value in _config.tt2_. The default 
 value is 5.
 
+Facilitating search scope changes
+---------------------------------
+
+Users often search in a limited scope, such as only searching items in their
+local library.  When they aren't able find materials that meet their needs in
+a limited scope, they may wish to repeat their search in a system-wide or
+consortium-wide scope.  Evergreen provides an optional button and checkbox
+to alter the depth of the search to a defined level.
+
+The button and checkbox are both enabled by default and can be configured
+in the Depth Button/Checkbox section of config.tt2.
+
+Noteworthy settings related to these features include:
+
+* `ctx.depth_sel_checkbox` -- set this to 1 to display the checkbox, 0 to hide it.  
+* `ctx.depth_sel_button` -- set this to 1 to display the button, 0 to hide it.
+* `ctx.depth_sel_depth` -- the depth that should be applied by the button and 
+checkbox.  A value of 0 would typically search the entire consortium, and 1 would
+typically search the library's system.
+
 
