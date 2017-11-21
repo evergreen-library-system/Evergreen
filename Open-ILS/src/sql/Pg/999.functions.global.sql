@@ -1220,6 +1220,12 @@ BEGIN
         SET merge_date = NOW(), merged_to = target_record
         WHERE id = source_record;
 
+    -- replace book bag entries of source_record with target_record
+    UPDATE container.biblio_record_entry_bucket_item
+        SET target_biblio_record_entry = target_record
+        WHERE bucket IN (SELECT id FROM container.biblio_record_entry_bucket WHERE btype = 'bookbag')
+        AND target_biblio_record_entry = source_record;
+
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
