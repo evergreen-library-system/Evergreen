@@ -33,7 +33,7 @@ my $skip_browse;  # Skip the browse reingest.
 my $skip_attrs;   # Skip the record attributes reingest.
 my $skip_search;  # Skip the search reingest.
 my $skip_facets;  # Skip the facets reingest.
-my $skip_display  # Skip the display reingest.
+my $skip_display;  # Skip the display reingest.
 my $start_id;     # start processing at this bib ID.
 my $end_id;       # stop processing when this bib ID is reached.
 my $max_duration; # max processing duration in seconds
