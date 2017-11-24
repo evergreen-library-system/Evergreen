@@ -239,7 +239,7 @@ sub browse_ingest {
     } elsif ($pid == 0) {
         my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
                                $db_user, $db_password);
-        my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => TRUE, skip_browse => FALSE, skip_search => TRUE, skip_display => TRUE)');
+        my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id := ?, skip_facet := TRUE, skip_browse := FALSE, skip_search := TRUE, skip_dispaly := TRUE)');
         foreach (@list) {
             if ($sth->execute($_)) {
                 my $crap = $sth->fetchall_arrayref();
@@ -281,7 +281,7 @@ sub reingest {
 sub reingest_field_entries {
     my $dbh = shift;
     my $list = shift;
-    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id => ?, skip_facet => ?, skip_browse => TRUE, skip_search => ?, skip_display => ?)');
+    my $sth = $dbh->prepare('SELECT metabib.reingest_metabib_field_entries(bib_id := ?, skip_facet := ?, skip_browse := TRUE, skip_search := ?, skip_display := ?)');
     # Because reingest uses "skip" options we invert the logic of do variables.
     $sth->bind_param(2, ($skip_facets) ? 1 : 0);
     $sth->bind_param(3, ($skip_search) ? 1 : 0);
@@ -301,7 +301,7 @@ sub reingest_attributes {
     my $dbh = shift;
     my $list = shift;
     my $sth = $dbh->prepare(<<END_OF_INGEST
-SELECT metabib.reingest_record_attributes(rid => id, prmarc => marc)
+SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc)
 FROM biblio.record_entry
 WHERE id = ?
 END_OF_INGEST
