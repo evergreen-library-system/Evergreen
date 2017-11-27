@@ -2663,6 +2663,12 @@ INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatyp
     oils_i18n_gettext('staff_client.copy_editor.templates', 'Copy Editor Template', 'cust', 'description'),
     'object');
 
+INSERT INTO config.usr_setting_type (name, label, description, datatype)
+    VALUES ('webstaff.cat.copy.templates',
+    oils_i18n_gettext('webstaff.cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'label'),
+    oils_i18n_gettext('webstaff.cat.copy.templates', 'Web Client Copy Editor Templates', 'cust', 'description'),
+    'object');
+
 INSERT INTO config.usr_setting_type (name,opac_visible,label,description,datatype)
     VALUES ('circ.holds_behind_desk', FALSE,
     oils_i18n_gettext('circ.holds_behind_desk', 'Hold is behind Circ Desk', 'cust', 'label'),
