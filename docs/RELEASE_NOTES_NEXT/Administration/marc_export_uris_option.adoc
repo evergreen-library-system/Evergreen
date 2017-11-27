@@ -1,0 +1,12 @@
+marc_export --uris option
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The marc_export support script now has a --uris option (short form:
+-u) to export records with located URIs.  When used by itself, it will
+export only records that have located URIs.  When used in conjunction
+with --items, it will add records with located URIs but no
+items/copies to the output.  If combined with a --library or
+--descendants option, this option will limit its output to those
+records with URIs at the designated libraries.  The best way to use
+this option is in combination with the --items and one of the
+--library or --descendants options to export *all* of a library's
+holdings both real and electronic.
