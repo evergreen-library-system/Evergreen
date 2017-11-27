@@ -125,6 +125,7 @@ var FM_TABLE_DISPLAY = {
 			'name',
 			'description',
             'docs',
+            'ui',
 			'create_time',
 			'owner',
 		],
@@ -143,6 +144,13 @@ var FM_TABLE_DISPLAY = {
                     return elem('a', args, 'External Documentation')
                 }
                 return text('');
+            },
+            ui : function (t) {
+                var d = JSON2js(t.data());
+                if (d.version >= 5) {
+                    return text('WebStaff');
+                }
+                return text('XUL');
             }
         },
 		sortdata : [ 'name', 1 ]
