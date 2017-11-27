@@ -250,115 +250,116 @@ function(egCore , $q) {
 
     };
 
-   service.get_acp_templates = function() {
-       // Already downloaded for this user? Return local copy. Changing users or logging out causes another download
-       // so users always have their own templates, and any changes made on other machines appear as expected.
-       if (egCore.hatch.getSessionItem('cat.copy.templates.usr') == egCore.auth.user().id()) {
-           return egCore.hatch.getItem('cat.copy.templates').then(function(templ) {
-               return templ;
-           });
-       } else {
-          // this can be disabled for debugging to force a re-download and translation of test templates
-          egCore.hatch.setSessionItem('cat.copy.templates.usr', egCore.auth.user().id());
-          return service.load_remote_acp_templates();
-      }
+    service.get_acp_templates = function() {
+        // Already downloaded for this user? Return local copy. Changing users or logging out causes another download
+        // so users always have their own templates, and any changes made on other machines appear as expected.
+        if (egCore.hatch.getSessionItem('cat.copy.templates.usr') == egCore.auth.user().id()) {
+            return egCore.hatch.getItem('cat.copy.templates').then(function(templ) {
+                return templ;
+            });
+        } else {
+            // this can be disabled for debugging to force a re-download and translation of test templates
+            egCore.hatch.setSessionItem('cat.copy.templates.usr', egCore.auth.user().id());
+            return service.load_remote_acp_templates();
+        }
 
-   };
+    };
 
-   service.save_acp_templates = function(t) {
-       egCore.hatch.setItem('cat.copy.templates', t);
-       egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
-           egCore.auth.token(), egCore.auth.user().id(), { "webstaff.cat.copy.templates": t });
-       // console.warn('Saved ' + JSON.stringify({"webstaff.cat.copy.templates": t}));
-   };
+    service.save_acp_templates = function(t) {
+        egCore.hatch.setItem('cat.copy.templates', t);
+        egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
+            egCore.auth.token(), egCore.auth.user().id(), { "webstaff.cat.copy.templates": t });
+        // console.warn('Saved ' + JSON.stringify({"webstaff.cat.copy.templates": t}));
+    };
 
-   service.load_remote_acp_templates = function() {
-       // After the XUL Client is completely removed everything related
-       // to staff_client.copy_editor.templates and convert_xul_templates
-       // can be thrown away.
-       return egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative',
-           egCore.auth.token(), egCore.auth.user().id(),
-           ['webstaff.cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
-               if (settings['webstaff.cat.copy.templates']) {
-                   egCore.hatch.setItem('cat.copy.templates', settings['webstaff.cat.copy.templates']);
-                   return settings['webstaff.cat.copy.templates'];
-               } else {
-                   if (settings['staff_client.copy_editor.templates']) {
-                      var new_templ = service.convert_xul_templates(settings['staff_client.copy_editor.templates']);
-                      egCore.hatch.setItem('cat.copy.templates', new_templ);
-                      // console.warn('Saving: ' + JSON.stringify({'webstaff.cat.copy.templates' : new_templ}));
-                      egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
-                          egCore.auth.token(), egCore.auth.user().id(), {'webstaff.cat.copy.templates' : new_templ});
-                      return new_templ;
-                   }
-               }
-               return {};
-       });
-   };
+    service.load_remote_acp_templates = function() {
+        // After the XUL Client is completely removed everything related
+        // to staff_client.copy_editor.templates and convert_xul_templates
+        // can be thrown away.
+        return egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative',
+            egCore.auth.token(), egCore.auth.user().id(),
+            ['webstaff.cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
+                if (settings['webstaff.cat.copy.templates']) {
+                    egCore.hatch.setItem('cat.copy.templates', settings['webstaff.cat.copy.templates']);
+                    return settings['webstaff.cat.copy.templates'];
+                } else {
+                    if (settings['staff_client.copy_editor.templates']) {
+                        var new_templ = service.convert_xul_templates(settings['staff_client.copy_editor.templates']);
+                        egCore.hatch.setItem('cat.copy.templates', new_templ);
+                        // console.warn('Saving: ' + JSON.stringify({'webstaff.cat.copy.templates' : new_templ}));
+                        egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.update',
+                            egCore.auth.token(), egCore.auth.user().id(), {'webstaff.cat.copy.templates' : new_templ});
+                        return new_templ;
+                    }
+                }
+                return {};
+        });
+    };
 
-   service.convert_xul_templates = function(xultempl) {
-       var conv_templ = {};
-       var templ_names = Object.keys(xultempl);
-       var name;
-       var xul_t;
-       var curr_templ;
-       var stat_cats;
-       var fields;
-       var curr_field;
-       var tmp_val;
-       var i, j;
+    service.convert_xul_templates = function(xultempl) {
+        var conv_templ = {};
+        var templ_names = Object.keys(xultempl);
+        var name;
+        var xul_t;
+        var curr_templ;
+        var stat_cats;
+        var fields;
+        var curr_field;
+        var tmp_val;
+        var i, j;
 
-       if (templ_names){
-         for (i=0; i < templ_names.length; i++) {
-           name = templ_names[i];
-           curr_templ = {};
-           stat_cats = {};
-           xul_t  = xultempl[name];
-           fields = Object.keys(xul_t);
+        if (templ_names) {
+            for (i=0; i < templ_names.length; i++) {
+                name = templ_names[i];
+                curr_templ = {};
+                stat_cats = {};
+                xul_t  = xultempl[name];
+                fields = Object.keys(xul_t);
 
-           if (fields.length > 0) {
-             for (j=0; j < fields.length; j++) {
-               curr_field = xul_t[fields[j]];
-               var field_name = curr_field["field"];
+                if (fields.length > 0) {
+                    for (j=0; j < fields.length; j++) {
+                        curr_field = xul_t[fields[j]];
+                        var field_name = curr_field["field"];
 
-               if ( field_name == null ) { continue; }
-               if ( curr_field["value"] == "<HACK:KLUDGE:NULL>" ) { continue; }
+                        if ( field_name == null ) { continue; }
+                        if ( curr_field["value"] == "<HACK:KLUDGE:NULL>" ) { continue; }
 
-               // floating changed from a boolean to an integer at one point;
-               // take this opportunity to remove the boolean from any old templates
-               if ( curr_field["type"] === "attribute" && field_name === "floating" ) {
-                 if ( curr_field["value"].match(/[tf]/) ) { continue; }
-               }
+                        // floating changed from a boolean to an integer at one point;
+                        // take this opportunity to remove the boolean from any old templates
+                        if ( curr_field["type"] === "attribute" && field_name === "floating" ) {
+                            if ( curr_field["value"].match(/[tf]/) ) { continue; }
+                        }
 
-               if ( curr_field["type"] === "stat_cat" ) {
-                 stat_cats[field_name] = parseInt(curr_field["value"]);
-               }
-               else {
-                 tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
-                 if ( tmp_val.match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) { tmp_val = parseFloat(tmp_val); }
+                        if ( curr_field["type"] === "stat_cat" ) {
+                            stat_cats[field_name] = parseInt(curr_field["value"]);
+                        } else {
+                            tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
+                            if ( tmp_val.match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) {
+                                tmp_val = parseFloat(tmp_val);
+                            }
 
-                 if (field_name.match(/^batch_.*_menulist$/)) {
-                   // special handling for volume fields
-                   if (!("callnumber" in curr_templ)) curr_templ["callnumber"] = {};
-                   if (field_name === "batch_class_menulist")  curr_templ["callnumber"]["classification"] = tmp_val;
-                   if (field_name === "batch_prefix_menulist") curr_templ["callnumber"]["prefix"] = tmp_val;
-                   if (field_name === "batch_suffix_menulist") curr_templ["callnumber"]["suffix"] = tmp_val;
-                 } else {
-                   curr_templ[field_name] = tmp_val;
-                 }
-               }
-             }
+                            if (field_name.match(/^batch_.*_menulist$/)) {
+                                // special handling for volume fields
+                                if (!("callnumber" in curr_templ)) curr_templ["callnumber"] = {};
+                                if (field_name === "batch_class_menulist")  curr_templ["callnumber"]["classification"] = tmp_val;
+                                if (field_name === "batch_prefix_menulist") curr_templ["callnumber"]["prefix"] = tmp_val;
+                                if (field_name === "batch_suffix_menulist") curr_templ["callnumber"]["suffix"] = tmp_val;
+                            } else {
+                                curr_templ[field_name] = tmp_val;
+                            }
+                        }
+                    }
 
-             if ( (Object.keys(stat_cats)).length > 0 ){
-               curr_templ["statcats"] = stat_cats;
-             }
+                    if ( (Object.keys(stat_cats)).length > 0 ) {
+                        curr_templ["statcats"] = stat_cats;
+                    }
 
-             conv_templ[name] = curr_templ;
-           }
-         }
-       }
-       return conv_templ;
-   };
+                    conv_templ[name] = curr_templ;
+                }
+            }
+        }
+        return conv_templ;
+    };
 
     service.flesh = {   
         flesh : 3, 
