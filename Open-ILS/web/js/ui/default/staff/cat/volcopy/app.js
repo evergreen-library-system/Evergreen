@@ -273,7 +273,9 @@ function(egCore , $q) {
    };
 
    service.load_remote_acp_templates = function() {
-       // After the XUL Client is completely removed everything related to staff_client.copy_editor.templates and convert_xul_templates can be thrown away.
+       // After the XUL Client is completely removed everything related
+       // to staff_client.copy_editor.templates and convert_xul_templates
+       // can be thrown away.
        return egCore.net.request('open-ils.actor', 'open-ils.actor.patron.settings.retrieve.authoritative',
            egCore.auth.token(), egCore.auth.user().id(),
            ['webstaff.cat.copy.templates','staff_client.copy_editor.templates']).then(function(settings) {
@@ -302,7 +304,6 @@ function(egCore , $q) {
        var curr_templ;
        var stat_cats;
        var fields;
-       var field_name;
        var curr_field;
        var tmp_val;
        var i, j;
@@ -317,24 +318,34 @@ function(egCore , $q) {
 
            if (fields.length > 0) {
              for (j=0; j < fields.length; j++) {
-               field_name = fields[j];
-               curr_field = xul_t[field_name];
+               curr_field = xul_t[fields[j]];
+               var field_name = curr_field["field"];
 
-               if ( curr_field["field"] == null ) { continue; }
+               if ( field_name == null ) { continue; }
                if ( curr_field["value"] == "<HACK:KLUDGE:NULL>" ) { continue; }
 
-               // floating changed from a boolean to an integer at one point; take this opportunity to remove the boolean from any old templates
-               if ( curr_field["type"] === "attribute" && curr_field["field"] === "floating" ) {
+               // floating changed from a boolean to an integer at one point;
+               // take this opportunity to remove the boolean from any old templates
+               if ( curr_field["type"] === "attribute" && field_name === "floating" ) {
                  if ( curr_field["value"].match(/[tf]/) ) { continue; }
                }
 
                if ( curr_field["type"] === "stat_cat" ) {
-                 stat_cats[curr_field["field"]] = parseInt(curr_field["value"]);
+                 stat_cats[field_name] = parseInt(curr_field["value"]);
                }
                else {
                  tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
-                 if ( tmp_val.match(/^[-0-9.]+$/) && !(curr_field["field"].match(/(?:loan_duration|fine_level)/))) { tmp_val = parseFloat(tmp_val); }
-                 curr_templ[curr_field["field"]] = tmp_val;
+                 if ( tmp_val.match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) { tmp_val = parseFloat(tmp_val); }
+
+                 if (field_name.match(/^batch_.*_menulist$/)) {
+                   // special handling for volume fields
+                   if (!("callnumber" in curr_templ)) curr_templ["callnumber"] = {};
+                   if (field_name === "batch_class_menulist")  curr_templ["callnumber"]["classification"] = tmp_val;
+                   if (field_name === "batch_prefix_menulist") curr_templ["callnumber"]["prefix"] = tmp_val;
+                   if (field_name === "batch_suffix_menulist") curr_templ["callnumber"]["suffix"] = tmp_val;
+                 } else {
+                   curr_templ[field_name] = tmp_val;
+                 }
                }
              }
 
