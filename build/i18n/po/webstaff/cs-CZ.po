@@ -7683,7 +7683,7 @@ msgid "Substring"
 msgstr "Podřetězec"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:50
-msgid "Succes testing credentials"
+msgid "Success testing credentials"
 msgstr "Úspěšný test ověření"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:66
