@@ -334,7 +334,7 @@ function(egCore , $q) {
                             stat_cats[field_name] = parseInt(curr_field["value"]);
                         } else {
                             tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
-                            if ( tmp_val.match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) {
+                            if ( tmp_val.toString().match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) {
                                 tmp_val = parseFloat(tmp_val);
                             }
 
