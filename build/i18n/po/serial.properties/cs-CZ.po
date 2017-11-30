@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-27 15:50-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-09-20 16:54-0500\n"
+"PO-Revision-Date: 2017-09-16 21:29+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:25+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-09-23 06:19+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -28,7 +28,7 @@ msgstr "Úspěšně uloženo"
 #: staff.serial.sbsum_editor.count
 msgctxt "staff.serial.sbsum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sbsum_editor.count.plural
 msgctxt "staff.serial.sbsum_editor.count.plural"
@@ -47,7 +47,7 @@ msgstr "M"
 #: staff.serial.sisum_editor.count
 msgctxt "staff.serial.sisum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sisum_editor.count.plural
 msgctxt "staff.serial.sisum_editor.count.plural"
@@ -66,7 +66,7 @@ msgstr "M"
 #: staff.serial.sssum_editor.count
 msgctxt "staff.serial.sssum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sssum_editor.count.plural
 msgctxt "staff.serial.sssum_editor.count.plural"
@@ -220,7 +220,7 @@ msgstr "M"
 
 #: staff.serial.sitem_editor.notes
 msgid "Item Notes"
-msgstr "Poznámky k exempláři"
+msgstr "Poznámky k jednotce"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
