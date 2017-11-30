@@ -1,3 +1,560 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d4d8adcde1212f9afbc9d37d76f83bab1eaa513a
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Nov 30 14:02:32 2017 -0600
+
+    bumping Perl version string for 2.12.8
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 4bb5782dedca3105b733a592850d1fc904f236b5
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Nov 30 13:59:25 2017 -0600
+
+    cd build/i18n && make newpot
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+1	1	build/i18n/po/FlattenerGrid.js/FlattenerGrid.js.pot
+1	1	build/i18n/po/PCrudFilterPane.js/PCrudFilterPane.js.pot
+1	1	build/i18n/po/Searcher.js/Searcher.js.pot
+1	1	build/i18n/po/TranslatorPopup.js/TranslatorPopup.js.pot
+1	1	build/i18n/po/URLVerify.js/URLVerify.js.pot
+1	1	build/i18n/po/User.js/User.js.pot
+1	1	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+1	1	build/i18n/po/acq.js/acq.js.pot
+1	1	build/i18n/po/admin.properties/admin.properties.pot
+1	1	build/i18n/po/auth.properties/auth.properties.pot
+1	1	build/i18n/po/authority.js/authority.js.pot
+1	1	build/i18n/po/capture.js/capture.js.pot
+1	1	build/i18n/po/cat.properties/cat.properties.pot
+1	1	build/i18n/po/circ.properties/circ.properties.pot
+1	1	build/i18n/po/common.properties/common.properties.pot
+1	1	build/i18n/po/conify.dtd/conify.dtd.pot
+1	1	build/i18n/po/conify.js/conify.js.pot
+4	4	build/i18n/po/conify/conify.pot
+1	1	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+1	1	build/i18n/po/ils_events.xml/ils_events.xml.pot
+1	1	build/i18n/po/lang.dtd/lang.dtd.pot
+1	1	build/i18n/po/match_set.js/match_set.js.pot
+1	1	build/i18n/po/offline.properties/offline.properties.pot
+1	1	build/i18n/po/opac.dtd/opac.dtd.pot
+1	1	build/i18n/po/opac.js/opac.js.pot
+1	1	build/i18n/po/patron.properties/patron.properties.pot
+1	1	build/i18n/po/pickup_and_return.js/pickup_and_return.js.pot
+1	1	build/i18n/po/pull_list.js/pull_list.js.pot
+1	1	build/i18n/po/register.js/register.js.pot
+1	1	build/i18n/po/reports.dtd/reports.dtd.pot
+1	1	build/i18n/po/reports.js/reports.js.pot
+1	1	build/i18n/po/reservation.js/reservation.js.pot
+1	1	build/i18n/po/selfcheck.js/selfcheck.js.pot
+1	1	build/i18n/po/serial.js/serial.js.pot
+1	1	build/i18n/po/serial.properties/serial.properties.pot
+20	20	build/i18n/po/tpac/tpac.pot
+1	1	build/i18n/po/vandelay.js/vandelay.js.pot
+2	2	build/i18n/po/vandelay/vandelay.pot
+123	106	build/i18n/po/webstaff/webstaff.pot
+
+commit 20b04955bfbf6e057b9cfd47c5c5d6b7bde1d5c0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Nov 30 11:24:25 2017 -0500
+
+    release notes for Evergreen 2.12.8
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+56	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit 5cf67e795d7b4dedb22eb74868a31c90370adea8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Sep 15 14:38:18 2017 -0400
+
+    LP#1178802: force ceiling dates to be end of day
+    
+    This patch ensures that when a hard due date (or hard due date value)
+    is created or edited, the ceiling date is set to the end of that day.
+    
+    This fixes a problem where a ceiling date would not be applied for
+    loans checked out earlier on the ceiling date itself.
+    
+    This patch intentionally does not touch existing hard due date
+    values.  It also does not use the database or middle layer to coerce
+    the ceiling dates to end of day to leave upon the possiblity that
+    an Angular version of the hard due date editor will allow operators
+    to set both date and time. (Note that Dojo does not readily have a
+    combined date/time picker.)
+    
+    To test
+    -------
+    [1] Apply the patch, then in the hard due date editor, verify that
+        when creating a hard due date _value_, the date gets saved as
+        ending at 23:59:59 in the local time zone.
+    [2] Similarly, verify that when editing an existing hard due date value,
+        the date gets saved as ending at 23:59:59.
+    [3] Repeat steps 1 and 2, but this time for hard due dates.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+21	0	Open-ILS/src/templates/conify/global/config/hard_due_date.tt2
+20	0	Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2
+
+commit b03e8a9ab643440399ca3f30a5a65bbddae3d47c
+Author: Alex Cautley <acautley@catalyte.io>
+Date:   Thu Nov 16 23:03:11 2017 +0000
+
+    lp1705133 view holds patron info redaction
+    
+    Removed extra or sensitive patron information from patron and record
+    hold grid
+    
+    Signed-off-by: Alex Cautley <acautley@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+    	modified:   Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+
+6	4	Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+8	4	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+
+commit 63e787b258b843c150f47f0a34c8c510379a7c0a
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Aug 31 22:06:31 2017 -0400
+
+    LP1714390:Remove acp Editor Formatting Frustration
+    
+    In bug 1713064 I added a directive to make it possible to use
+    a String as a Model in an Input tag with type Number. Unfortunately
+    there was also a formatting function in that branch that works well
+    sometimes but is far more frustrating than it is helpful for enough
+    workflows that it should be removed.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	3	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+0	13	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit a4f8c22dbd8c1c4009d759b5491f0f9e0f65cfc0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jun 15 14:11:41 2017 -0400
+
+    LP 1698176: Return undef with die event in Actor.pm _add_patron function.
+    
+    If the CStoreEditor create_actor_user call fails in the _add_patron
+    helper function in OpenILS/Application/Actor.pm, the CStorEditor's
+    die_event is returned as a scalar value.  The caller expects a list
+    return with two values: the user object in index 0 and the event, if
+    any, in index 1.
+    
+    Returning just the event causes the caller to use the event as if it
+    were the user object.  This leads to a different error message later
+    in the code: Can't call method "billing_address" on unblessed
+    reference at /path/to/perlib/OpenILS/Application/Actor.pm line 743.
+    
+    This commit changes the return value in the event of a database insert
+    failure to be the two member list as expected by the caller with undef
+    in index 0 and the die_event in index 1.  This returns the proper
+    error message to the client.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit 8ee82281557089082d76b9508ade0d716804fe39
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Nov 7 16:29:03 2017 -0500
+
+    LP#1671150 Document unaccented name index fix
+    
+    Release notes for evergreen.unaccent_and_squash function (and
+    dependent indexes) fix.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+27	0	docs/RELEASE_NOTES_NEXT/patron_name_username_index_fixes.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/patron_name_username_index_fixes.adoc
+
+commit cc45065963bb041398c113055ff04ac8946f2107
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Nov 17 15:15:15 2017 -0500
+
+    LP#1671150 Stamp database upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+31	0	Open-ILS/src/sql/Pg/upgrade/1083.scema.qualify_unaccent_refs.sql
+0	32	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.qualify_unaccent_refs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1083.scema.qualify_unaccent_refs.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.qualify_unaccent_refs.sql
+
+commit ad4e7e0e92bb751eacc3587bf14a7a3cbc60638f
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Thu Jun 22 20:03:29 2017 -0400
+
+    LP#1671150 fix unqualified unaccent call
+    
+    Fix index creation failures when using pg_restore by qualifying the
+    unaccent() function call in evergreen.unaccent_and_squash()
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/000.functions.general.sql
+32	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.qualify_unaccent_refs.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.qualify_unaccent_refs.sql
+
+commit d460f49ae2044fc481d1c09b2d351ebe15934569
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Nov 17 12:40:43 2017 -0500
+
+    LP#1708489: Adjust sample holds status
+    
+    Changed the sample holds status to a status that would show up on a real-world holds
+    shelf.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+
+commit 40aa14eb5c94bb537b8b4d32ad11a565a35f2040
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Oct 24 18:12:31 2017 +0000
+
+    LP#1708489 Hold Shelf Print Template Additions
+    
+    - Add Hold Status and Shelf Expiry Date to Hold Shelf Print
+    Template
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	0	Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2
+8	4	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+
+commit 3c14985ce6125639af73ea522d90eff4530fca08
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Nov 17 12:11:12 2017 -0500
+
+    LP#1708487: Update helper text in print template
+    
+    Update the helper text for title and barcode for bills printer templates to
+    include xact.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	3	Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2
+3	3	Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2
+
+commit 445b380c2b66f7a6f45de5e9eab50a2f38b21b7b
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Mon Oct 30 15:55:24 2017 +0000
+
+    LP#1708487 Add Title and Barcode to Bill Print Templates
+    
+    - Add additional documentation to Bills, Current; Bills, Payment; and Bills,
+    Historical print templates.
+    - Convert xacts to objects containing all required information for print
+    templates
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	0	Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+2	1	Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2
+2	0	Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2
+46	6	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit b27c5a67baeee185ea0984af404edf4fc0514868
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Sep 25 10:29:56 2017 -0400
+
+    LP#1672435: Make BR4's sample theses copy location holdable
+    
+    All of the part copies in the sample dataset live in a non-holdable
+    copy location, usually BR4's Theses location. This commit makes
+    that copy location holdable so that we can better test part holds
+    out of the box.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/tests/datasets/sql/assets_extras.sql
+
+commit c3d05cae76fee23ccc37e204217837d511d2882d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Nov 1 18:22:21 2017 -0400
+
+    LP#1704396: reset the facet alarm timer
+    
+    When using alarm() one must reset the timer via alarm(0) or incur the wrath
+    of the spurious signal.
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit 920028d5ba34a07e5088519624896ce7b9750584
+Author: Jason Boyer <JBoyer@library.in.gov>
+Date:   Wed Oct 18 22:05:05 2017 -0500
+
+    LP1724725: Handle ident_type2 in Web Staff User Editor
+    
+    While it was fairly harmless to not be able to set an ident_type2
+    value in the webstaff editor, the way things worked out if a user
+    had one set from the XUL client or direct manipulation an attempt
+    to save such a user would crash the cstore backend.
+    
+    To test
+    -------
+    [1] Use the patron editor to edit a patron that has a value set
+        for ident_value2. Save a change, but note that nothing is
+        displayed and that eventually an open-ils.cstore error is
+        reported in the browser console.
+    [2] Apply the patch and repeat step 1. This time, the patron
+        editor will display the secondary identification type field
+        and allow you to save changes to the record.
+    
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	0	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+4	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit b1494fbba30ec4550c0dcf7b3c9d893e4037c8c5
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Nov 7 15:41:59 2017 -0500
+
+    LP#1145213: add schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+263	0	Open-ILS/src/sql/Pg/upgrade/1079.schema.fix_asset_merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1079.schema.fix_asset_merge.sql
+
+commit dc2a3c2a92a4e2e4337a933271d1e4738923f515
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Nov 7 15:21:57 2017 -0500
+
+    LP#1145213: fix some typos
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/sql/Pg/t/lp1145213_test_func_asset.merge_record_assets.pg
+
+commit 56416f263338e11b4d963004cd7d452ec046ecc9
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Sep 1 10:29:36 2017 -0400
+
+    LP#1145213: add pgTAP test
+    
+    This tests the changes to the asset.merge_record_assets() function.
+    
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+94	0	Open-ILS/src/sql/Pg/t/lp1145213_test_func_asset.merge_record_assets.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1145213_test_func_asset.merge_record_assets.pg
+
+commit d1de62fc49257a895c958348bc404683534b6c72
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Wed Aug 9 08:50:41 2017 -0400
+
+    LP#1145213: improvements to record merge
+    
+    This patch checks for suffix and prefix of call number before merging
+    assets and ensures that unused call number records are marked
+    deleted.
+    
+    To test:
+    
+    [0] Apply the patch.
+    [1] Attempt a record merge where each record has a volumes with the
+        same call number label and owning library but different
+        affixes. Verify that the volumes and their associated copies
+        are not merged onto the same volume..
+    [2] Attempt a merge with records having matching volumes. Verify
+        that the copies are moved to one volume and that the other is
+        marked deleted.
+    
+    Signed-off-by: Rogan Hamby <rhamby@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+
+commit 854322f75b0203a57e6d00b9fb5fa8bc62fe0fa6
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Nov 7 14:33:16 2017 -0500
+
+    LP#1671635: escape some values to avoid XSS
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/src/templates/opac/parts/place_hold.tt2
+
+commit 63b8ca3abea5ae2f6078ee5a8a09ad376e0c05dd
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Sep 22 15:18:12 2017 -0400
+
+    LP#1671635: Maintain search parameters throughout place hold process
+    
+    Add hidden fields to the Place Hold form for the search query, type
+    and locg fields so that they will appear correctly in the search bar
+    on the holds confirmation page. This commit also keeps the query
+    parameter in the URL after clicking the Place Hold link from the search
+    results page.
+    
+    Test Plan:
+    Log into the public catalog and perform a search that is limited to a library
+    that differs from the user's preferred search library and using a search type
+    that is not keyword (e.g. title or author). Place a hold on any title from
+    either the search results or record page. After submitting the form, look
+    at the search parameters in the search bar on the hold confirmation page.
+    
+    Pre-patch, the query terms will not appear, the search type will revert back
+    to the default of keyword, and the search library will be the user's preferred
+    search library.
+    
+    Post-patch, the query parameters will be maintained in the search bar.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/src/templates/opac/parts/place_hold.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit a91faae8bc5da244251d0b05841c5612b2a29180
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri Oct 6 11:15:05 2017 -0700
+
+    LP#1706147: handle multiple matches on patron barcode completion in web client
+    
+    To test:
+    
+    1. Add a barcode completion rule for BR1, applying to users and set to
+       active, where "BR1" is the prefix.
+    
+    2. Create a user with barcode "BR100001" and home library BR1.
+    
+    3. Create another user with barcode "00001".
+    
+    4. Login to the web client with BR1 as your working location. Go to
+       "Check Out Item" and enter barcode "00001". EG will retrieve one of
+       the two accounts you created; it ought to present a dialog that
+       allows you to choose between BR00001 and 00001 (or none of the above).
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+111	56	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit a14caf01a1a92487f343dcb9caa062bd18ab22e5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 30 11:36:29 2017 -0400
+
+    LP#1728122 Webstaff survey display avoids deep fleshing
+    
+    Avoid collecting survey/question/answer data via deep pcrud fleshing.
+    Opt instead to organize the data locally using the values fleshed
+    directly on the response object.
+    
+    Additional fixes included:
+    
+    1. Avoid displaying survey responses for out-of-scope surveys.
+    2. Format survey response dates using the configured date format instead
+       of display a bare ISO date.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+18	11	Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2
+43	14	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit aff2a41e2b8dd2fb1687266fc2409e7f16169a4b
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Oct 26 14:37:50 2017 -0400
+
+    Docs: Fix AsciiDoc header syntax bug
+    
+    This docs section header was renamed, but the underline needs to be
+    changed to match.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/admin_initial_setup/borrowing_items.adoc
+
+commit ddc7b641433454d05e5d2e1d6ed31ae88d500005
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Oct 25 11:21:52 2017 -0400
+
+    Docs: Fix PDF build errors
+    
+    This commit fixes two minor errors that were preventing the PDF build
+    process from completing (a duplicate section ID, and a link to a
+    non-existing section ID).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/installation/server_upgrade.adoc
+0	2	docs/root.adoc
+
+commit d4b0cdb04f81d7962f80e80156ee5a261b8fb760
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Sep 28 10:48:58 2017 -0400
+
+    LP#1715423 - fix issues with the display of IDs in patron summary pane
+    
+    The Patron summary pane was not properly displaying the values
+    for the primary ID and secondary ID. Also added the type name of
+    the ID in next to primary ID label.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	3	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+5	1	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 6f49f439d00f48301eefc86aedf2de8bc0a79d69
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Oct 19 21:06:50 2017 -0400
+
+    forward-port 2.12.7 upgrade script
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+25	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.6-2.12.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.6-2.12.7-upgrade-db.sql
