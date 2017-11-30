@@ -380,7 +380,8 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 args.overlay_target = $scope.overlay_target;
                 $scope.ok = function(args) { $uibModalInstance.close(args) };
                 $scope.cancel = function () { $uibModalInstance.dismiss() };
-                $scope.editOverlayRecord = function() {
+                
+		$scope.editOverlayRecord = function() {
                     $uibModal.open({
                         templateUrl: './cat/z3950/t_edit_overlay_record',
                         backdrop: 'static',
@@ -391,7 +392,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                             $scope.record_id = 0;
                             $scope.dirty_flag = false;
                             $scope.args = args;
-                            $scope.ok = function(args) { $uibModalInstance.close(args) }
+                            $scope.ok = function() { $uibModalInstance.close($scope.args) }
                             $scope.cancel = function () { $uibModalInstance.dismiss() }
                         }]
                     }).result.then(function (args) {

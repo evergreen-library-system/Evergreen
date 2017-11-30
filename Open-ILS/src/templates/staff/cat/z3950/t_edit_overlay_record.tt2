@@ -6,11 +6,9 @@
   </div>
   <div class="modal-body">
     <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="args.marc_xml"
-                         in-place-mode="true" record-type="bre" save-label="[% l('Modify') %]" />
+                         on-save="ok" in-place-mode="true" record-type="bre" save-label="[% l('Save') %]" />
   </div>
   <div class="modal-footer">
-    <input type="submit" ng-click="ok(args)"
-        class="btn btn-primary" value="[% l('Use Edits') %]"/>
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
   </div>
 </div>
