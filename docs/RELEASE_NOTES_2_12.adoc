@@ -3,6 +3,62 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.8
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.7:
+
+* Many patron fields have been redacted from the web staff client's patron
+and record holds grids, leaving patron name, username, and ID.
+* Fixes two bugs where patron records could fail to be saved upon editing.
+* The patron summary in the web staff client now correctly displays
+primary and secondary ID values.
+* Patron barcode search completion in the web staff client now allows
+the user to select from all of the matching patron records.
+* The web staff print templates for current and historical bills can
+now include copy barcode and title.
+* Fixes a bug that resulted in some catalog searches unexpectedly
+timing out.
+* Fixes a bug where placing a hold request in the public catalog could result
+in "forgetting" the type and library of the user's previous search.
+* Fixes a bug that made using the volume/copy editor to change a copy's
+price problematic.
+* The administration interface for hard due dates now ensures that
+new (or edited) ceiling dates have their time component set to end
+of day, resolving an issue where ceiling dates would not be applied
+during the ceiling date itself.
+* Asset merging during bibliographic record merging now correctly
+recognizes call number prefixes and suffixes and deletes disused
+call number records.
+* The Concerto sample data set now includes data allowing for testing
+placing holds on monographic parts.
+* Fixes a bug where displaying user surveys could result in PCRUD
+drone starvation.
+* Fixes a bug where pg_restore of an Evergreen database could fail
+to create certain indexes on the `actor.usr` table.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.8 point release of
+Evergreen:
+
+* Alex Cautley 
+* Ben Shum 
+* Bill Erickson 
+* Cesar Velez 
+* Chris Sharp 
+* Galen Charlton 
+* Jason Boyer 
+* Jason Stephenson 
+* Jeff Davis 
+* Jeff Godin 
+* Kathy Lussier 
+* Kyle Huckins 
+* Michele Morgan 
+* Mike Rylander 
+* Remington Steed 
+* Rogan Hamby 
+
 Evergreen 2.12.7
 ----------------
 This release contains several bug fixes improving on Evergreen 2.12.6
