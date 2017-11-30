@@ -311,7 +311,7 @@ msgstr ""
 msgid "Limit to Records with Matches"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:8
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:9
 msgid "Loading..."
 msgstr ""
 
@@ -443,7 +443,7 @@ msgstr ""
 msgid "Record Bucket ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:36
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:37
 msgid "Record Display Attributes"
 msgstr ""
 
