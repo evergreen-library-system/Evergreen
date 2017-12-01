@@ -253,7 +253,7 @@ function(egCore , $q) {
 
                 var owner_name_list = [];
                 while (owner.parent_ou()) { // we're going to skip the top of the tree...
-                    owner_name_list.unshift(owner.name());
+                    owner_name_list.unshift(owner.shortname());
                     owner = egCore.org.get(owner.parent_ou());
                 }
 
