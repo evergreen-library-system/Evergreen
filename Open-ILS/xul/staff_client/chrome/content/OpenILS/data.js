@@ -466,7 +466,7 @@ OpenILS.data.prototype = {
                 },
                 'hold_transit_slip' : {
                     'type' : 'transits',
-                    'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\nBarcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\n%hold_for_msg%<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\nNotify by phone: %notify_by_phone%<br/>\r\nNotified by text: %notify_by_text%<br/>\r\nNotified by email: %notify_by_email%<br/>\r\n',
+                    'header' : 'This item needs to be routed to <b>%route_to%</b>:<br/>\r\n%route_to_org_fullname%<br/>\r\n%street1%<br/>\r\n%street2%<br/>\r\n%city_state_zip%<br/>\r\n<br/>\r\nBarcode: %item_barcode%<br/>\r\nTitle: %item_title%<br/>\r\nAuthor: %item_author%<br>\r\n<br/>\r\nBarcode: %PATRON_BARCODE%<br/>\r\n',
                     'line_item' : '%formatted_note%<br/>\r\n',
                     'footer' : '<br/>\r\nRequest date: %request_date%<br/>\r\nSlip Date: %TODAY_TRIM%<br/>\r\nPrinted by %STAFF_FIRSTNAME% at %SHORTNAME%<br/>\r\n<br/>\r\n'
                 },

@@ -43,14 +43,7 @@ Template for printing hold transit slips. Fields include:
 
   <br/>
 
-  <div>[% l('Hold for patron [_1], [_2] [_3]',
-    '{{patron.family_name}}',
-    '{{patron.first_given_name}}',
-    '{{patron.second_given_name}}') %]</div>
-  <div>[% l('Barcode: [_1]', '{{patron.card.barcode}}') %]</div>
-  <div ng-if="hold.phone_notify">[% l('Notify by phone: [_1]', '{{hold.phone_notify}}') %]</div>
-  <div ng-if="hold.sms_notify">[% l('Notify by text: [_1]', '{{hold.sms_notify}}') %]</div>
-  <div ng-if="hold.email_notify == 't'">[% l('Notify by email: [_1]', '{{patron.email}}') %]</div>
+  <div>[% l('Hold for patron [_1]', '{{patron.card.barcode}}') %]</div>
 
   <br/>
 
