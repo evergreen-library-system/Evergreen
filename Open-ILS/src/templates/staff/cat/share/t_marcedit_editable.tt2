@@ -1,0 +1,20 @@
+<span style="all:unset;">
+<input
+  ng-show="itype != 'sfv'"
+  ng-disabled="{{isInputDisabled}}"
+  ng-class="['marcedit', {'marcsfcode': itype == 'sfc','marcind': itype == 'ind' || itype == 'tag', 'focusable': itype != 'sfv'}]"
+  style="font-family: 'Lucida Console', Monaco, monospace; min-width: 1ch; margin: 0 -2px;"
+  ng-model="content"
+  size="{{content.length * 1.1}}"
+  maxlength="{{max}}"
+  class=""
+  type="text">
+</input>
+<div contenteditable
+  class=""
+  ng-class="['marcedit', {'marcsfvalue': itype == 'sfv', 'focusable': itype == 'sfv'}]"
+  ng-show="itype == 'sfv'"
+  style="font-family: 'Lucida Console', Monaco, monospace; display: inline-block; min-width: 1ch; margin: 0 -1px; padding: 0;"
+  ng-model="content"
+>{{content}}</div>
+</span>
