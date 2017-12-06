@@ -523,7 +523,7 @@ CREATE OR REPLACE FUNCTION asset.calculate_copy_visibility_attribute_set ( copy_
 DECLARE
     copy_row    asset.copy%ROWTYPE;
     lgroup_map  asset.copy_location_group_map%ROWTYPE;
-    attr_set    INT[];
+    attr_set    INT[] := '{}'::INT[];
 BEGIN
     SELECT * INTO copy_row FROM asset.copy WHERE id = copy_id;
 
@@ -547,26 +547,28 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION biblio.calculate_bib_visibility_attribute_set ( bib_id BIGINT ) RETURNS INT[] AS $f$
+CREATE OR REPLACE FUNCTION biblio.calculate_bib_visibility_attribute_set ( bib_id BIGINT, new_source INT DEFAULT NULL, force_source BOOL DEFAULT FALSE ) RETURNS INT[] AS $f$
 DECLARE
     bib_row     biblio.record_entry%ROWTYPE;
     cn_row      asset.call_number%ROWTYPE;
-    attr_set    INT[];
+    attr_set    INT[] := '{}'::INT[];
 BEGIN
     SELECT * INTO bib_row FROM biblio.record_entry WHERE id = bib_id;
 
-    IF bib_row.source IS NOT NULL THEN
+    IF force_source THEN
+        IF new_source IS NOT NULL THEN
+            attr_set := attr_set || search.calculate_visibility_attribute(new_source, 'bib_source');
+        END IF;
+    ELSIF bib_row.source IS NOT NULL THEN
         attr_set := attr_set || search.calculate_visibility_attribute(bib_row.source, 'bib_source');
     END IF;
 
     FOR cn_row IN
-        SELECT  cn.*
-          FROM  asset.call_number cn
-                JOIN asset.uri_call_number_map m ON (cn.id = m.call_number)
-                JOIN asset.uri u ON (u.id = m.uri)
-          WHERE cn.record = bib_id
-                AND cn.label = '##URI##'
-                AND u.active
+        SELECT  *
+          FROM  asset.call_number
+          WHERE record = bib_id
+                AND label = '##URI##'
+                AND NOT deleted
     LOOP
         attr_set := attr_set || search.calculate_visibility_attribute(cn_row.owning_lib, 'luri_org');
     END LOOP;
@@ -580,7 +582,10 @@ DECLARE
     ocn     asset.call_number%ROWTYPE;
     ncn     asset.call_number%ROWTYPE;
     cid     BIGINT;
+    dobib   BOOL;
 BEGIN
+
+    SELECT enabled = FALSE INTO dobib FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc';
 
     IF TG_TABLE_NAME = 'peer_bib_copy_map' THEN -- Only needs ON INSERT OR DELETE, so handle separately
         IF TG_OP = 'INSERT' THEN
@@ -608,7 +613,12 @@ BEGIN
                 asset.calculate_copy_visibility_attribute_set(NEW.id)
             );
         ELSIF TG_TABLE_NAME = 'record_entry' THEN
-            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id);
+            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id, NEW.source, TRUE);
+        ELSIF TG_TABLE_NAME = 'call_number' AND NEW.label = '##URI##' AND dobib THEN -- New located URI
+            UPDATE  biblio.record_entry
+              SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(NEW.record)
+              WHERE id = NEW.record;
+
         END IF;
 
         RETURN NEW;
@@ -637,81 +647,70 @@ BEGIN
             END IF;
 
             RETURN NEW;
-        ELSIF OLD.call_number  <> NEW.call_number THEN
-            SELECT * INTO ocn FROM asset.call_number cn WHERE id = OLD.call_number;
+        ELSIF OLD.location   <> NEW.location OR
+            OLD.status       <> NEW.status OR
+            OLD.opac_visible <> NEW.opac_visible OR
+            OLD.circ_lib     <> NEW.circ_lib OR
+            OLD.call_number  <> NEW.call_number
+        THEN
+            IF OLD.call_number  <> NEW.call_number THEN -- Special check since it's more expensive than the next branch
+                SELECT * INTO ocn FROM asset.call_number cn WHERE id = OLD.call_number;
 
-            IF ncn.record <> ocn.record THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(ncn.record)
-                  WHERE id = ocn.record;
+                IF ncn.record <> ocn.record THEN
+                    -- We have to use a record-specific WHERE clause
+                    -- to avoid modifying the entries for peer-bib copies.
+                    UPDATE  asset.copy_vis_attr_cache
+                      SET   target_copy = NEW.id,
+                            record = ncn.record
+                      WHERE target_copy = OLD.id
+                            AND record = ocn.record;
 
-                -- We have to use a record-specific WHERE clause
-                -- to avoid modifying the entries for peer-bib copies.
+                END IF;
+            ELSE
+                -- Any of these could change visibility, but
+                -- we'll save some queries and not try to calculate
+                -- the change directly.  We want to update peer-bib
+                -- entries in this case, unlike above.
                 UPDATE  asset.copy_vis_attr_cache
                   SET   target_copy = NEW.id,
-                        record = ncn.record
-                  WHERE target_copy = OLD.id
-                        AND record = ocn.record;
+                        vis_attr_vector = asset.calculate_copy_visibility_attribute_set(NEW.id)
+                  WHERE target_copy = OLD.id;
             END IF;
         END IF;
 
-        IF OLD.location     <> NEW.location OR
-           OLD.status       <> NEW.status OR
-           OLD.opac_visible <> NEW.opac_visible OR
-           OLD.circ_lib     <> NEW.circ_lib
-        THEN
-            -- Any of these could change visibility, but
-            -- we'll save some queries and not try to calculate
-            -- the change directly.  We want to update peer-bib
-            -- entries in this case, unlike above.
-            UPDATE  asset.copy_vis_attr_cache
-              SET   target_copy = NEW.id,
-                    vis_attr_vector = asset.calculate_copy_visibility_attribute_set(NEW.id)
-              WHERE target_copy = OLD.id;
+    ELSIF TG_TABLE_NAME = 'call_number' THEN
 
+        IF TG_OP = 'DELETE' AND OLD.label = '##URI##' AND dobib THEN -- really deleted located URI, if the delete protection rule is disabled...
+            UPDATE  biblio.record_entry
+              SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
+              WHERE id = OLD.record;
+            RETURN OLD;
         END IF;
 
-    ELSIF TG_TABLE_NAME = 'call_number' THEN -- Only ON UPDATE. Copy handler will deal with ON INSERT OR DELETE.
-
-        IF OLD.record <> NEW.record THEN
-            IF NEW.label = '##URI##' THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
-                  WHERE id = OLD.record;
-
+        IF OLD.label = '##URI##' AND dobib THEN -- Located URI
+            IF OLD.deleted <> NEW.deleted OR OLD.record <> NEW.record OR OLD.owning_lib <> NEW.owning_lib THEN
                 UPDATE  biblio.record_entry
                   SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(NEW.record)
                   WHERE id = NEW.record;
+
+                IF OLD.record <> NEW.record THEN -- maybe on merge?
+                    UPDATE  biblio.record_entry
+                      SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
+                      WHERE id = OLD.record;
+                END IF;
             END IF;
 
+        ELSIF OLD.record <> NEW.record OR OLD.owning_lib <> NEW.owning_lib THEN
             UPDATE  asset.copy_vis_attr_cache
               SET   record = NEW.record,
                     vis_attr_vector = asset.calculate_copy_visibility_attribute_set(target_copy)
               WHERE target_copy IN (SELECT id FROM asset.copy WHERE call_number = NEW.id)
                     AND record = OLD.record;
 
-        ELSIF OLD.owning_lib <> NEW.owning_lib THEN
-            UPDATE  asset.copy_vis_attr_cache
-              SET   vis_attr_vector = asset.calculate_copy_visibility_attribute_set(target_copy)
-              WHERE target_copy IN (SELECT id FROM asset.copy WHERE call_number = NEW.id)
-                    AND record = NEW.record;
-
-            IF NEW.label = '##URI##' THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
-                  WHERE id = OLD.record;
-            END IF;
         END IF;
 
-    ELSIF TG_TABLE_NAME = 'record_entry' THEN -- Only handles ON UPDATE OR DELETE
-
-        IF TG_OP = 'DELETE' THEN -- Shouldn't get here, normally
-            DELETE FROM asset.copy_vis_attr_cache WHERE record = OLD.id;
-            RETURN OLD;
-        ELSIF OLD.source <> NEW.source THEN
-            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id);
-        END IF;
-
+    ELSIF TG_TABLE_NAME = 'record_entry' AND OLD.source IS DISTINCT FROM NEW.source THEN -- Only handles ON UPDATE, INSERT above
+        NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id, NEW.source, TRUE);
     END IF;
 
     RETURN NEW;
@@ -720,7 +719,7 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER z_opac_vis_mat_view_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR DELETE ON biblio.peer_bib_copy_map FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
-CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER UPDATE ON asset.call_number FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
+CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE OR DELETE ON asset.call_number FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_del_tgr BEFORE DELETE ON asset.copy FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_del_tgr BEFORE DELETE ON serial.unit FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON asset.copy FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
@@ -1307,3 +1306,4 @@ $p$ LANGUAGE PLPGSQL ROWS 10;
 
 
 COMMIT;
+
