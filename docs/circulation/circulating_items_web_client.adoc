@@ -292,12 +292,12 @@ In-house Use (F6)
 ~~~~~~~~~~~~~~~~~
 1) To record in-house use, select *Circulation* -> *Record-In House Use*, click *Check Out* -> *Record In-House Use* on the circulation toolbar , or press *F6*. 
  
-image::media/record_in_house_action.png[]
+image::media/record_in_house_action_web_client.png[]
  
 2) To record in-house use for cataloged items, enter number of uses, scan 
  barcode or type barcode and click *Submit*.
  
-image::media/in_house_use.png[]
+image::media/in_house_use_web_client.png[]
  
 [NOTE]
 ====================================
