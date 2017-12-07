@@ -1,0 +1,9 @@
+Funding Source Codes are now Unique per Owner
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Funding source codes had to be unique across an
+entire installation which is aggravating when
+you can't actually see the other source codes.
+
+Now multiple locations can have the same codes if
+they desire.
+
