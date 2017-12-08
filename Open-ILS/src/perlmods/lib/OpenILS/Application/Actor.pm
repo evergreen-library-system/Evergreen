@@ -3665,6 +3665,8 @@ sub get_itemsout_notices{
     # where hook = 'checkout.due' AND state = 'complete' and target = <circId>;
     #
 
+    my $ctx_loc = $e->requestor->ws_ou;
+    my $exclude_courtesy_notices = $U->ou_ancestor_setting_value($ctx_loc, 'webstaff.circ.itemsout_notice_count_excludes_courtesies');
     my $query = {
 	    select => { atev => ["complete_time"] },
 	    from => {
@@ -3674,6 +3676,10 @@ sub get_itemsout_notices{
 	    },
 	    where => {"+ath" => { key => "checkout.due" },"+atevdef" => { active => 't' },"+atev" => { target => $circId, state => 'complete' }}
     };
+
+    if ($exclude_courtesy_notices){
+        $query->{"where"}->{"+atevdef"}->{validator} = { "<>" => "CircIsOpen"};
+    }
 
     my %resblob = ( numNotices => 0, lastDt => undef );
 
