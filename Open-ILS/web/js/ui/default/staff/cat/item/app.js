@@ -857,16 +857,20 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         });
     }
 
-    function loadTransits() {
+    function loadMostRecentTransit() {
         delete $scope.transit;
         delete $scope.hold_transit;
         if (!copyId) return;
 
         egCore.pcrud.search('atc', 
             {target_copy : copyId},
-            {order_by : {atc : 'source_send_time DESC'}}
+            {
+                order_by : {atc : 'source_send_time DESC'},
+                limit : 1
+            }
 
         ).then(null, null, function(transit) {
+            // use progress callback since we'll get up to one result
             $scope.transit = transit;
             transit.source(egCore.org.get(transit.source()));
             transit.dest(egCore.org.get(transit.dest()));
@@ -892,7 +896,7 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             case 'holds':
                 loadHolds()
-                loadTransits();
+                loadMostRecentTransit();
                 break;
 
             case 'triggered_events':
