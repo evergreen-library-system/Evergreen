@@ -359,7 +359,9 @@ function($routeProvider , $locationProvider , $compileProvider) {
 
                     if (match) {
                         // requested WS registered on this client
+                        $scope.workstation_obj = match;
                         $scope.workstation = match.id;
+                        $scope.workstation_owner = match.owning_lib;
                     } else {
                         // the requested WS is not registered on this client
                         $scope.wsNotRegistered = true;
@@ -721,6 +723,17 @@ function($routeProvider , $locationProvider , $compileProvider) {
             return check_digit;
         }
 
+        function fetch_org_after_tree_exists () {
+            $timeout(function(){
+                try {
+                    $scope.org = egCore.org.get($scope.current_workstation_owning_lib());
+                } catch(e) {
+                    fetch_org_after_tree_exists();
+                }
+            },100);
+        }
+
+        fetch_org_after_tree_exists();
     }
 ])
 
