@@ -160,7 +160,7 @@ END;
                                                         END
                                                     -%]
                                                     </div>
-                                                    [% IF rec.popularity > 0.0 %]
+                                                    [% IF rec.popularity > 0.0 AND ctx.hide_badge_scores != 'true' %]
                                                       <div>
                                                         <span><strong>[% l('Popularity:') %]</strong> [% rec.popularity %] / 5.0</span>
                                                       </div>

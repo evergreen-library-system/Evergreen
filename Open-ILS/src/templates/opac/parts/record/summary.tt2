@@ -466,7 +466,7 @@ END;
         </span>
     </li>
     [%- END %]
-    [%- IF (ctx.badge_scores.size > 0) %]
+    [%- IF (ctx.badge_scores.size > 0 && ctx.hide_badge_scores != 'true') %]
     <li id='rdetail_badges'>
         <strong class='rdetail_label'>[% l("Badges:") %]</strong>
         <ul>
