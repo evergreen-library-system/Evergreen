@@ -1120,10 +1120,8 @@ sub check_captured_holds {
                 fulfillment_time    => undef 
             },
             { limit => 1,
-              flesh => 2,
-              flesh_fields => { ahr => ['usr'],
-                                au => ['family_name', 'first_given_name']
-	      }
+              flesh => 1,
+              flesh_fields => { ahr => ['usr'] }
             }
         ]
     )->[0];
@@ -1131,21 +1129,22 @@ sub check_captured_holds {
     if ($hold and $hold->usr == $patron->id) {
         $self->checkout_is_for_hold(1);
         return undef;
+    } elsif ($hold) {
+        my $payload;
+        my $holdau = $hold->usr;
+
+        if ($holdau) {
+            $payload->{patron_name} = $holdau->first_given_name . ' ' . $holdau->family_name;
+        } else {
+            $payload->{patron_name} = "???";
+        }
+        $payload->{hold_id}     = $hold->id;
+        $self->push_events(OpenILS::Event->new('ITEM_ON_HOLDS_SHELF',
+                                               payload => $payload));
     }
 
     $logger->info("circulator: this copy is needed by a different patron to fulfill a hold");
 
-    my $payload;
-    my $holdau = $hold->usr;
-
-    if ($holdau) {
-       $payload->{patron_name} = $holdau->first_given_name . ' ' . $holdau->family_name;
-    } else {
-       $payload->{patron_name} = "???";
-    }
-    $payload->{hold_id}     = $hold->id;
-    $self->push_events(OpenILS::Event->new('ITEM_ON_HOLDS_SHELF',
-           payload => $payload));
 }
 
 
