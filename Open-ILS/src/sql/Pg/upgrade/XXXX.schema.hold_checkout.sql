@@ -11,9 +11,7 @@ VALUES
      		'Clear hold when other patron checks out item',
      		'coust', 'label'),
         oils_i18n_gettext('circ.clear_hold_on_checkout',
-                 'When patron A checks out item on hold for patron B, ' ||
-		 'automatically clear the hold for patron B. This is ' ||
-                 'desirable when checking out item for family members',
+            'Default to cancel the hold when patron A checks out item on hold for patron B.',
      		'coust', 'description'),
    	'bool');
 
