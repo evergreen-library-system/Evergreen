@@ -5432,6 +5432,20 @@ INSERT into config.org_unit_setting_type
      'Maximum number of duplicate title or metarecord holds allowed per patron.',
      'coust', 'description'),
    'integer', null)
+,( 'webstaff.circ.itemsout_notice_count_excludes_courtesies', 'circ',
+    oils_i18n_gettext(
+        'webstaff.circ.itemsout_notice_count_excludes_courtesies',
+        'Exclude Courtesy Notices from Patrons Itemsout Notices Count',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'webstaff.circ.itemsout_notice_count_excludes_courtesies',
+        'Exclude Courtesy Notices from Patrons Itemsout Notices Count',
+        'coust',
+        'description'
+    ),
+    'bool', null)
 ;
 
 UPDATE config.org_unit_setting_type
