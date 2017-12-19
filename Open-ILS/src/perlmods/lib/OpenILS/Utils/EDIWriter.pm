@@ -169,7 +169,7 @@ sub compile_po {
     $compiled{buyer_code} = $po->provider->edi_default->vendacct;
 
     $compiled{buyer_code} = # B&T
-        $compiled{vendor_san}.' '.$po->provider->edi_default->vendcode
+        $compiled{org_unit_san}.' '.$po->provider->edi_default->vendcode
         if $compiled{edi_attrs}->{BUYER_ID_INCLUDE_VENDCODE};
 
     $compiled{buyer_code} = $po->provider->edi_default->vendcode
