@@ -34,47 +34,13 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js',
     '[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-file-saver.bundle.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-animate.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tablesort.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/vendor.bundle.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff2',
     '[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js',
     '[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js',
     '[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_ws.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/core.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/strings.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/idl.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/event.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/net.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/auth.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/pcrud.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/env.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/org.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/startup.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/hatch.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/print.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/audio.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/user.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/i18n.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/date.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js',
-    '[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/core.bundle.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/services/file.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/offline.js',
     '[% ctx.base_path %]/staff/share/t_alert_dialog',
@@ -93,61 +59,24 @@ UpUp.start({
 <script src="/IDL2js"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
 
-[% IF EXPAND_WEB_IMPORTS %]
-
-<!-- angular -->
-<script src="[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-route.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ui-bootstrap-tpls.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/hotkeys.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-file-saver.bundle.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-location-update.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-animate.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js"></script>
-
 <!-- IDL / opensrf (network) -->
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/JSON_v1.js"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf.js"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/opensrf_ws.js"></script>
 
+<!-- angular -->
+<script src="[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/vendor.bundle.js"></script>
+
+<!-- 
+  Load momentjs via script tag.
+  https://github.com/webpack/webpack/issues/3128 
+-->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js"></script>
+
 <!-- evergreen core services -->
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/core.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/strings.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/idl.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/event.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/net.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/auth.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/pcrud.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/env.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/org.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/startup.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/hatch.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/print.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/audio.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/coresvc.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/navbar.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/i18n.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/date.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/op_change.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/lovefield.js"></script>
-
-[% ELSE %]
-
-<!-- concatenated, minified version of all of the above -->
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/evergreen-staff-client.[% EVERGREEN_VERSION %].min.js"></script>
-
-[% END %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/core.bundle.js"></script>
 
 <script>
   // Configure OpenSRF

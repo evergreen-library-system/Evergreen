@@ -6,25 +6,25 @@
   "homepage": "https://evergreen-ils.org/",
   "devDependencies": {
     "angular-mocks": "^1.6.7",
-    "grunt": "^1.0.1",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-cssmin": "^2.2.1",
-    "grunt-contrib-jasmine": "^1.1.0",
-    "grunt-contrib-uglify": "^3.2.1",
-    "grunt-exec": "^3.0.0",
-    "grunt-karma": "^2.0.0",
+    "clean-webpack-plugin": "^0.1.17",
+    "copy-webpack-plugin": "^4.3.0",
     "karma": "^1.7.1",
     "karma-jasmine": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
     "karma-script-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.32",
     "karma-story-reporter": "^0.3.1",
-    "phantomjs-prebuilt": "^2.1.16"
+    "phantomjs-prebuilt": "^2.1.16",
+    "webpack": "^3.10.0",
+    "webpack-merge": "^4.1.1"
   },
   "scripts": {
-    "test": "grunt test"
+    "create-mock-idl": "cd test/data && perl idl2js.pl",
+    "remove-mock-idl": "rm test/data/IDL2js.js",
+    "test": "npm run create-mock-idl ; karma start test/karma.conf --single-run; npm run remove-mock-idl",
+    "build": "webpack --env.dev",
+    "build-watch": "webpack --env.dev --watch",
+    "build-prod": "webpack --env.prod"
   },
   "dependencies": {
     "angular": "^1.6.7",

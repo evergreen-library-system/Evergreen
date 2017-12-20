@@ -83,7 +83,7 @@ while getopts ":hv:f:F:nptbrij:cx" opt; do
             echo "   -r prompt to preview upgrade SQL in editor before committing."
             echo "   -i skip i18n; primarily useful for (quickly) testing this script."
             echo "   -j opensrf javascript library path.  If osrf_config is found, the value derived from osrf_config --libdir."
-            echo "   -c build the experimental browser client;  requires nodejs/grunt-cli"
+            echo "   -c build the browser client;  requires nodejs"
             echo "   -x skip building the XUL client"
             echo "   NOTE: -t and -b override PREV_BRANCH/PREV_VERSION, but -b overrides -t."
             exit -1
@@ -336,7 +336,7 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     echo "Building browser staff client"
     cd Open-ILS/web/js/ui/default/staff/
     npm install   # fetch build dependencies
-    grunt build # copy to build dir and minify JS files
+    npm run build-prod # copy to build dir and minify JS files
     # npm cache is big and unnecessary in the final build. remove it.
     rm -r node_modules 
     cd ../../../../../../../ # release dir

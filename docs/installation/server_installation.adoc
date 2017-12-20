@@ -152,13 +152,6 @@ steps in <<install_files_for_web_staff_client,Install files for web staff client
 1. Install the long-term stability (LTS) release of
 https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
 environment variable `PATH`.
-+
-2. Install Grunt CLI
-+
-[source,sh]
-------------------------------------------------------------------------------
-% sudo npm install -g grunt-cli
-------------------------------------------------------------------------------
 
 [[install_files_for_web_staff_client]]
 Install files for web staff client
@@ -185,9 +178,9 @@ npm install   # fetch JS dependencies
 [source,sh]
 ------------------------------------------------------------------------------
 # build, run tests, concat+minify
-grunt all
+npm run build-prod
+npm run test
 ------------------------------------------------------------------------------
-
 
 Configuration and compilation instructions
 ------------------------------------------
