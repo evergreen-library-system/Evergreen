@@ -44,6 +44,12 @@ angular.module('egWorkstationAdmin',
         resolve : resolver
     });
 
+    $routeProvider.when('/admin/workstation/tests', {
+        templateUrl: './admin/workstation/t_tests',
+        controller: 'testsCtrl',
+        resolve : resolver
+    });
+    
     // default page 
     $routeProvider.otherwise({
         templateUrl : './admin/workstation/t_splash',
