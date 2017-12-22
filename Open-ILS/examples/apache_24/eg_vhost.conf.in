@@ -188,7 +188,8 @@ Options -Indexes
 
     # Specify the initial script URL for Novelist (containing account credentials, etc.)
     #SetEnv OILS_NOVELIST_URL
-    #
+    #SetEnv OILS_NOVELIST_PROFILE
+    #SetEnv OILS_NOVELIST_PASSWORD
 
     # Uncomment to force SSL any time a patron is logged in.  This protects 
     # authentication tokens.  Left commented out for backwards compat for now.
