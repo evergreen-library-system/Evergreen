@@ -1452,7 +1452,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         replace: true,
         template: '<span class="nullable">'+
-                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources">'+
+                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources | orderBy: \'source()\'">'+
                       '<option value="">Select a Source</option>'+
                     '</select>'+
                   '</span>',
