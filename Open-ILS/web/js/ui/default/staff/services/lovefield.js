@@ -62,7 +62,7 @@ angular.module('egCoreMod')
         
         var deferred = $q.defer();
 
-        console.debug('attempting offline DB connection');
+        //console.debug('attempting offline DB connection');
         try {
             osb.connect().then(
                 function(db) {

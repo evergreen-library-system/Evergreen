@@ -134,7 +134,7 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
             if (!egLovefield) {
                 egLovefield = $injector.get('egLovefield');
             }
-            console.debug('About to cache a list of ' + class_ + ' objects...');
+            //console.debug('About to cache a list of ' + class_ + ' objects...');
             egLovefield.isCacheGood(class_).then(function(good) {
                 if (!good) egLovefield.setListInOfflineCache(class_, blob.list);
             });

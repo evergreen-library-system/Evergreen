@@ -1437,7 +1437,7 @@ angular.module('egGridMod',
 
             if (!class_obj) return;
 
-            console.debug('egGrid: auto dotpath is: ' + dotpath);
+            //console.debug('egGrid: auto dotpath is: ' + dotpath);
             var path_parts = dotpath.split(/\./);
 
             // find the IDL class definition for the last element in the

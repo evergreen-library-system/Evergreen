@@ -125,7 +125,7 @@ angular.module('egCoreMod')
         // When the Hatch extension loads, it tacks an attribute onto
         // the top-level documentElement to indicate it's available.
         if (!$window.document.documentElement.getAttribute('hatch-is-open')) {
-            console.debug("Hatch is not available");
+            //console.debug("Hatch is not available");
             return;
         }
 
