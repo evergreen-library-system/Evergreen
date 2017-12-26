@@ -488,7 +488,7 @@ indexterm:[search results, facets: subjects, authors, and series]
 
 At the left, you may see a list of _Facets of Subjects_, _Authors_, and 
 _Series_. Selecting any one of these links filters your current search results 
-using that subject, author, or series to narrow done your current results. The 
+using that subject, author, or series to narrow down your current results. The 
 facet filters can be undone by clicking the link a second time, thus returning 
 your original results before the facet was activated. 
 
