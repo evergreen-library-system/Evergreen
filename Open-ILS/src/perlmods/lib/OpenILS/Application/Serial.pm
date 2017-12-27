@@ -1446,13 +1446,13 @@ sub unitize_items {
         return $evt if $evt;
 
         if ($mode eq 'receive') {
-            my $sdists = $editor->search_serial_distribution([
+            my $sdist = $editor->search_serial_distribution([
                 {"+sstr" => {"id" => $stream_id}},
                 {
                     "join" => {"sstr" => {}},
                     "flesh" => 1,
                     "flesh_fields" => {"sdist" => ["subscription"]}
-                }]);
+                }])->[0];
 
             #-------------------------------------------------------------------------
             # The following is copied from open-ils.serial.receive_items.one_unit_per
@@ -1462,6 +1462,13 @@ sub unitize_items {
             # issuance).  This will be used in up to two places: once when building
             # a summary, once when changing the copy location of the previous
             # issuance's copy.
+
+            # manually flesh distribution if not present
+            #
+            # this helps maintain compatiblity with XUL serial control receive
+            if (!ref($item->stream->distribution)) {
+                $item->stream->distribution($sdist);
+            }
             my $issuances_received = _issuances_received($editor, $item);
             if ($U->event_code($issuances_received)) {
                 $editor->rollback;
@@ -1469,7 +1476,7 @@ sub unitize_items {
             }
     
             # Find out if we need to to deal with previous copy location changing.
-            my $ou = $sdists->[0]->holding_lib;
+            my $ou = $sdist->holding_lib;
             unless (exists $prev_loc_setting_map->{$ou}) {
                 $prev_loc_setting_map->{$ou} = $U->ou_ancestor_setting_value(
                     $ou, "serial.prev_issuance_copy_location", $editor
