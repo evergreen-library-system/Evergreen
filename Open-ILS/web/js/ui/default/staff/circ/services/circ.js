@@ -101,6 +101,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'CIRC_CLAIMS_RETURNED',
         'COPY_ALERT_MESSAGE',
         'COPY_STATUS_LOST',
+        'COPY_STATUS_LOST_AND_PAID',
         'COPY_STATUS_LONG_OVERDUE',
         'COPY_STATUS_MISSING',
         'PATRON_EXCEEDS_FINES'
