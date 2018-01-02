@@ -12150,10 +12150,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="ADMIN_COPY_TAGS" context_field="owner"/>
+				<create permission="ADMIN_COPY_TAG" context_field="owner"/>
 				<retrieve/>
-				<update permission="ADMIN_COPY_TAGS" context_field="owner"/>
-				<delete permission="ADMIN_COPY_TAGS" context_field="owner"/>
+				<update permission="ADMIN_COPY_TAG" context_field="owner"/>
+				<delete permission="ADMIN_COPY_TAG" context_field="owner"/>
 			</actions>
 		</permacrud>
 	</class>
