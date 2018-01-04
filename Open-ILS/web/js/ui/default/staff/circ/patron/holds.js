@@ -90,7 +90,7 @@ function($scope,  $q,  $routeParams,  egCore,  egUser,  patronSvc,
             egCore.auth.token(), $scope.patron_id
 
         ).then(function(hold_ids) {
-            if (!hold_ids.length) { deferred.resolve(); return; }
+            if (!hold_ids.length || hold_ids.length < offset + 1) { deferred.resolve(); return; }
 
             patronSvc.hold_ids = hold_ids;
             fetchHolds(offset, count)

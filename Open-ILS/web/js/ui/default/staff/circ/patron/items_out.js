@@ -96,7 +96,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
     $scope.gridDataProvider = provider;
 
     function fetch_circs(id_list, offset, count) {
-        if (!id_list.length) return $q.when();
+        if (!id_list.length || id_list.length < offset + 1) return $q.when();
 
         var deferred = $q.defer();
         var rendered = 0;
