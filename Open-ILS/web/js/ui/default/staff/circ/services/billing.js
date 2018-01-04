@@ -64,8 +64,9 @@ function($uibModal , $q , egCore) {
     // fetch the org-focused billing types
     // Cache on egEnv
     service.fetchBillingTypes = function() {
-        if (egCore.env.cbt) 
+        if (egCore.env.cbt) {
             return $q.when(egCore.env.cbt.list);
+        }
 
         return egCore.pcrud.search('cbt', 
             {   // first 100 are reserved for system-generated bills
@@ -169,7 +170,4 @@ function($uibModal , $q , egCore) {
 
     return service;
 }]);
-
-
-
 

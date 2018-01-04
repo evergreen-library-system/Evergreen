@@ -59,11 +59,10 @@
           [% l('Billing Type:') %]
         </label>
         <div class="col-md-8">
-          <select ng-model="billArgs.billingType" class="form-control"
-            ng-change="updateDefaultPrice()">
-            <option ng-repeat="type in billingTypes | orderBy:'name()'" value="{{type.id()}}">
-              {{type.name()}}
-            </option>
+          <select str-to-int ng-required="true" ng-model="billArgs.billingType" class="form-control"
+            ng-change="updateDefaultPrice()"
+            ng-options="type.id() as type.name() for type in billingTypes | orderBy: 'name()'" >
+           <option value=""></option>
           </select>
         </div>
       </div>
@@ -71,7 +70,7 @@
         <label for="bill-dialog-amount" class="control-label col-md-4">[% l('Amount:') %]</label>
         <div class="col-md-8">
           <input type="number" min="0" step="any" class="form-control" 
-            focus-me='focus' required id="bill-dialog-amount" 
+            focus-me='focus' ng-required="true" id="bill-dialog-amount"
             ng-model="billArgs.amount"/>
         </div>
       </div>
