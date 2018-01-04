@@ -937,4 +937,84 @@ function($scope , egCore , ngToast) {
 
 }])
 
+/*
+ * Home of the Latency tester
+ * */
+.controller('testsCtrl', ['$scope', '$location', 'egCore', function($scope, $location, egCore) {
+    $scope.hostname = $location.host();
+
+    $scope.tests = [];
+    $scope.clearTestData = function(){
+        $scope.tests = [];
+        numPings = 0;
+    }
+
+    $scope.isTesting = false;
+    $scope.avrg = 0; // avrg latency
+    $scope.canCopyCommand = document.queryCommandSupported('copy');
+    var numPings = 0;
+    // initially fetch first 10 (gets a decent average)
+
+    function calcAverage(){
+
+        if ($scope.tests.length == 0) return 0;
+
+        if ($scope.tests.length == 1) return $scope.tests[0].l;
+
+        var sum = 0;
+        angular.forEach($scope.tests, function(t){
+            sum += t.l;
+        });
+
+        return sum / $scope.tests.length;
+    }
+
+    function ping(){
+        $scope.isTesting = true;
+        var t = Date.now();
+        return egCore.net.request(
+            "open-ils.pcrud", "opensrf.system.echo", "ping"
+        ).then(function(resp){
+            var t2 = Date.now();
+            var latency = t2 - t;
+            $scope.tests.push({t: new Date(t), l: latency});
+            console.log("Start: " + t + " and end: " + t2);
+            console.log("Latency: " + latency);
+            console.log(resp);
+        }).then(function(){
+            $scope.avrg = calcAverage();
+            numPings++;
+            $scope.isTesting = false;
+        });
+    }
+
+    $scope.testLatency = function(){
+
+        if (numPings >= 10){
+            ping(); // just ping once after the initial ten
+        } else {
+            ping()
+                .then($scope.testLatency)
+                .then(function(){
+                    if (numPings == 9){
+                        $scope.tests.shift(); // toss first result
+                        $scope.avrg = calcAverage();
+                    }
+                });
+        }
+    }
+
+    $scope.copyTests = function(){
+
+        var lNode = document.querySelector('#pingData');
+        var r = document.createRange();
+        r.selectNode(lNode);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(r);
+        document.execCommand('copy');
+    }
+
+}])
+
 
