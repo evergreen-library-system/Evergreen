@@ -333,11 +333,6 @@ function(egCore , $q) {
                         if ( curr_field["type"] === "stat_cat" ) {
                             stat_cats[field_name] = parseInt(curr_field["value"]);
                         } else {
-                            tmp_val = curr_field['value']; // so... some of the number fields are actually strings. Groovy.
-                            if ( tmp_val.toString().match(/^[-0-9.]+$/) && !(field_name.match(/(?:loan_duration|fine_level)/))) {
-                                tmp_val = parseFloat(tmp_val);
-                            }
-
                             if (field_name.match(/^batch_.*_menulist$/)) {
                                 // special handling for volume fields
                                 if (!("callnumber" in curr_templ)) curr_templ["callnumber"] = {};
@@ -445,21 +440,6 @@ function(egCore , $q) {
 
     return service;
 }])
-
-.directive('stringToNumber', function() {
-    return {
-        require: 'ngModel',
-        link: function(scope, element, attrs, ngModel) {
-            ngModel.$parsers.push(function(value) {
-                return value;
-            });
-
-            ngModel.$formatters.push(function(value) {
-                return parseFloat(value);
-            });
-        }
-    };
-})
 
 .directive("egVolCopyEdit", function () {
     return {

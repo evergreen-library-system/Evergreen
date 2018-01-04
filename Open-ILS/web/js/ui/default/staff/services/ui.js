@@ -73,6 +73,69 @@ function($timeout , $parse) {
     };
 }])
 
+// <select int-to-str ><option value="1">Value</option></select>
+// use integer models for string values
+.directive('intToStr', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return parseInt(value);
+            });
+            ngModel.$formatters.push(function(value) {
+                return '' + value;
+            });
+        }
+    };
+})
+
+// <input str-to-int value="10"/>
+.directive('strToInt', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return '' + value;
+            });
+            ngModel.$formatters.push(function(value) {
+                return parseInt(value);
+            });
+        }
+    };
+})
+
+// <input float-to-str
+.directive('floatToStr', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return parseFloat(value);
+            });
+            ngModel.$formatters.push(function(value) {
+                return '' + value;
+            });
+        }
+    };
+})
+
+.directive('strToFloat', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return '' + value;
+            });
+            ngModel.$formatters.push(function(value) {
+                return parseFloat(value);
+            });
+        }
+    };
+})
 
 // 'reverse' filter 
 // <div ng-repeat="item in items | reverse">{{item.name}}</div>
