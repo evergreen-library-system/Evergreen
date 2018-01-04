@@ -1013,14 +1013,18 @@ sub toSQL {
         $$flat_plan{with} .= "c_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'&'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
 
         $final_c_attr_test = 'EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source AND vis_attr_vector @@ c_attr.vis_test)';
-        if (!$pc_vis_test) { # staff search
-            $final_c_attr_test = '(' . $final_c_attr_test . " OR (" .
-                    "NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source) " .
-                    "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
-                "))";
-        }
     }
  
+    if ($self->find_modifier('staff')) { # staff search
+        $final_c_attr_test ||= 'FALSE';
+        $final_c_attr_test = '(' . $final_c_attr_test . " OR (" .
+                "NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source) " .
+                "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
+            "))";
+        # We need bre here, regardless
+        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+    }
+
     my $final_b_attr_test;
     my $b_attr_join = '';
     my $b_vis_test = '';
@@ -1318,6 +1322,36 @@ sub flatten {
         $depth_filter = $depth_filter->args->[0];
     }
 
+    my $ot = $U->get_org_tree;
+    my $site_org = $ot;
+    my $negate = 'FALSE';
+
+    my ($site_filter) = grep { $_->name eq 'site' } @{$self->filters};
+    if ($site_filter and @{$site_filter->args} == 1) {
+       $negate = $site_filter->negate ? 'TRUE' : 'FALSE';
+
+       my $sitename = $site_filter->args->[0];
+       $site_org = $U->find_org_by_shortname($ot, $sitename) || $ot;
+    }
+
+    my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
+    my $aorgs = $U->get_org_ancestors($site_org->id);
+
+    push @{$vis_filter{'c_attr'}},
+        "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
+
+    my $lorgs = [@$aorgs];
+    my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
+    push @$lorgs, @$dorgs if (
+        $luri_as_copy_gf
+        and $U->is_true($luri_as_copy_gf->enabled)
+        and $U->is_true($luri_as_copy_gf->value)
+    );
+
+    $uses_bre = 1;
+    push @{$vis_filter{'b_attr'}},
+        "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+
     my @dlist = ();
     my $common = 0;
     # for each dynamic filter, build more of the WHERE clause
@@ -1476,37 +1510,6 @@ sub flatten {
                     $key = 'm.metarecord' if (grep {$_->name eq 'metarecord' or $_->name eq 'metabib'} @{$self->QueryParser->parse_tree->modifiers});
                     $where .= $joiner if $where ne '';
                     $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
-                }
-
-            } elsif ($filter->name eq 'site') {
-                if (@{$filter->args} == 1) {
-                    if (!defined($depth_filter) or $depth_filter > 0) { # no point in filtering by "all"
-                        my $sitename = $filter->args->[0];
-
-                        my $ot = $U->get_org_tree;
-                        my $site_org = $U->find_org_by_shortname($ot, $sitename);
-
-                        if ($site_org and $site_org->id != $ot->id) { # no point in filtering by "all"
-                            my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
-                            my $aorgs = $U->get_org_ancestors($site_org->id);
-
-                            my $negate = $filter->negate ? 'TRUE' : 'FALSE';
-                            push @{$vis_filter{'c_attr'}},
-                                "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
-
-                            my $lorgs = [@$aorgs];
-                            my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
-                            push @$lorgs, @$dorgs if (
-                                $luri_as_copy_gf
-                                and $U->is_true($luri_as_copy_gf->enabled)
-                                and $U->is_true($luri_as_copy_gf->value)
-                            );
-
-                            $uses_bre = 1;
-                            push @{$vis_filter{'b_attr'}},
-                                "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
-                        }
-                    }
                 }
 
             } elsif ($filter->name eq 'locations') {
