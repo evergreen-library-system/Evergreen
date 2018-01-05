@@ -333,6 +333,11 @@ function(egCore , $q) {
                         if ( curr_field["type"] === "stat_cat" ) {
                             stat_cats[field_name] = parseInt(curr_field["value"]);
                         } else {
+                            tmp_val = curr_field['value'];
+                            if ( tmp_val.toString().match(/^[-0-9.]+$/)) {
+                                tmp_val = parseFloat(tmp_val);
+                            }
+
                             if (field_name.match(/^batch_.*_menulist$/)) {
                                 // special handling for volume fields
                                 if (!("callnumber" in curr_templ)) curr_templ["callnumber"] = {};
