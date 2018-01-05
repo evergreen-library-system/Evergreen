@@ -1799,7 +1799,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 }
                 pen.staff(egCore.auth.user().id());
                 pen.set_date('now');
-                return egCore.pcrud.create(pen);
+
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.penalty.apply',
+                    egCore.auth.token(), pen
+                );
             }
         );
     }
