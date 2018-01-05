@@ -5,8 +5,8 @@
     idl-class="mp"
     id-field="id"
     grid-controls="gridControls"
-    dateformat="{{$root.egDateAndTimeFormat}}">
-
+    dateformat="{{$root.egDateAndTimeFormat}}"
+    persist-key="circ.patron.billhistory_payments">
     <eg-grid-action 
       label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
 
@@ -18,6 +18,7 @@
     <eg-grid-field path="xact.summary.xact_type" label="[% l('Transaction Type') %]"></eg-grid-field>
     <eg-grid-field path="xact.summary.last_billing_type" label="[% l('Last Billing Type') %]"></eg-grid-field>
 
+    <eg-grid-field path="payment_type" label="Payment Type"></eg-grid-field>
     <eg-grid-field label="[% l('Title') %]" name="title" 
       path="xact.circulation.target_copy.call_number.record.simple_record.title">
       <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.record_id}}">{{item.title}}</a>
