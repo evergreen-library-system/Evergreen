@@ -1054,7 +1054,7 @@ sub toSQL {
 
         # WITH-clause just generates vis test
         $$flat_plan{with} .= "\n," if $$flat_plan{with};
-        $$flat_plan{with} .= "b_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'&'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
+        $$flat_plan{with} .= "b_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'|'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
 
         # These are magic numbers... see: search.calculate_visibility_attribute() UDF
         $final_b_attr_test = '(b_attr.vis_test IS NULL OR bre.vis_attr_vector @@ b_attr.vis_test)';
