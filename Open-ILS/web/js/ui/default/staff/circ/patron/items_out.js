@@ -261,7 +261,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         get_circ_ids().then(function() {
 
             id_list = $scope[$scope.items_out_display + '_list'];
-
+            $scope.gridDataProvider.grid.totalCount = id_list.length;
             // relay the notified circs back to the grid through our promise
             fetch_circs(id_list, offset, count).then(
                 deferred.resolve, null, deferred.notify);

@@ -84,6 +84,7 @@
     <button type="button" class="btn btn-default" 
       ng-show="showPagination"
       ng-class="{disabled : !hasNextPage()}"
+      ng-disabled="!hasNextPage()"
       ng-click="incrementPage()"
       title="[% l('Next Page') %]">
         <span class="glyphicon glyphicon-forward"></span>

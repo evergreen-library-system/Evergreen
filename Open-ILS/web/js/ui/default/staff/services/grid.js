@@ -178,6 +178,9 @@ angular.module('egGridMod',
                 delete $scope.idField;
 
                 grid.dataProvider = $scope.itemsProvider;
+                // make grid ref available in get() to set totalCount, if known.
+                // this allows us disable the 'next' paging button correctly
+                grid.dataProvider.grid = grid;
 
                 if (!grid.indexField && grid.idlClass)
                     grid.indexField = egCore.idl.classes[grid.idlClass].pkey;
