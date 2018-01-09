@@ -61,18 +61,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
             ]);
         }
 
-        return egCore.startup.go().then(function() {
-
-            // This call requires orgs to be loaded, because it
-            // calls egCore.org.ancestors(), so call it after startup
-            return egCore.pcrud.search('actsc', 
-                {owner : egCore.org.ancestors(
-                    egCore.auth.user().ws_ou(), true)},
-                {}, {atomic : true}
-            ).then(function(cats) {
-                egCore.env.absorbList(cats, 'actsc');
-            });
-        });
+        return egCore.startup.go();
     }]};
 
     $routeProvider.when('/circ/patron/search', {
