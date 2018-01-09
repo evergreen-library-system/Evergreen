@@ -48,14 +48,24 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
     }
     service.resetPatronLists();  // initialize
 
-    // Max recents setting is loaded and scrubbed during egStartup.
-    // Copy it to a local variable here for ease of local access
-    // after startup has run.
     egCore.startup.go().then(
         function() {
+            // Max recents setting is loaded and scrubbed during egStartup.
+            // Copy it to a local variable here for ease of local access
+            // after startup has run.
             egCore.org.settings('ui.staff.max_recent_patrons')
             .then(function(s) {
                 service.maxRecentPatrons = s['ui.staff.max_recent_patrons'];
+            });
+
+            // This call requires orgs to be loaded, because it
+            // calls egCore.org.ancestors(), so call it after startup
+            egCore.pcrud.search('actsc',
+                {owner : egCore.org.ancestors(
+                    egCore.auth.user().ws_ou(), true)},
+                {}, {atomic : true}
+            ).then(function(cats) {
+                egCore.env.absorbList(cats, 'actsc');
             });
         }
     );
