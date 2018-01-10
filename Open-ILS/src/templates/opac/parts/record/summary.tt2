@@ -138,6 +138,18 @@
                     </a>
                 </div>
             [% END %]
+            [% IF !search.no_highlight %]
+            <div class="rdetail_aux_utils highlighting">
+              [% IF CGI.param('no_highlight') %]
+                <a href="[% mkurl('', {}, ['no_highlight']) %]" class="no-dec">
+              [% ELSE %]
+                <a href="[% mkurl('', {no_highlight => '1'}) %]" class="no-dec">
+              [% END %]
+                     <img src="[% ctx.media_prefix %]/images/highlight.png[% ctx.cache_key %]" alt="[% l('Toggle highlighting') %]" />
+                     [% CGI.param('no_highlight') ?  l('Enable Highlighting') : l('Disable Highlighting') %]
+                </a>
+            </div>
+            [% END %]
             [%- IF ctx.is_staff %]
             <div class="rdetail_aux_utils clear_addedcontent_cache">
                 <a href="[% ctx.media_prefix %]/opac/extras/ac/clearcache/all/r/[% ctx.bre_id | uri %]" class="no-dec" target="_blank">
