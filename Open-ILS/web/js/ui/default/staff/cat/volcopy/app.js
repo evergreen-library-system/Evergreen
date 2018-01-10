@@ -1539,10 +1539,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         $scope.$watch('data.copies.length', function () {
             if ($scope.data.copies) {
                 var base_orgs = $scope.data.copies.map(function(cp){
-                    return cp.circ_lib()
+                    if (isNaN(cp.circ_lib())) return Number(cp.circ_lib().id());
+                    return Number(cp.circ_lib());
                 }).concat(
                     $scope.data.copies.map(function(cp){
-                        return cp.call_number().owning_lib()
+                        if (isNaN(cp.call_number().owning_lib())) return Number(cp.call_number().owning_lib().id());
+                        return Number(cp.call_number().owning_lib());
                     })
                 ).concat(
                     [egCore.auth.user().ws_ou()]
@@ -1557,7 +1559,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 var final_orgs = all_orgs.filter(function(e,i,a){
                     return a.lastIndexOf(e) === i;
-                }).sort(function(a, b){return parseInt(a)-parseInt(b)});
+                }).sort(function(a, b){return a-b});
 
                 if ($scope.location_orgs.toString() != final_orgs.toString()) {
                     $scope.location_orgs = final_orgs;

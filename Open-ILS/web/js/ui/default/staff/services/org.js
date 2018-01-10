@@ -54,7 +54,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         while( (node = service.get(node.parent_ou())))
             nodes.push(node);
         if (as_id) 
-            return nodes.map(function(n){return n.id()});
+            return nodes.map(function(n){return Number(n.id())});
         return nodes;
     };
 
@@ -85,7 +85,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         }
         descend(node);
         if (as_id) 
-            return nodes.map(function(n){return n.id()});
+            return nodes.map(function(n){return Number(n.id())});
         return nodes;
     }
 
@@ -94,7 +94,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         var list = service.ancestors(node_or_id).concat(
           service.descendants(node_or_id).slice(1));
         if (as_id) 
-            return list.map(function(n){return n.id()});
+            return list.map(function(n){return Number(n.id())});
         return list;
     }
 
