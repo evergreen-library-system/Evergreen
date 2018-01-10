@@ -461,7 +461,9 @@
                                 ng-model="working.statcats[sc.id()]"
                                 ng-options="e.id() as e.value() for e in sc.entries()"
                                 ng-required="sc.required() == 't'">
-                                <option value="">[% l('&lt;NONE&gt;') %]</option>
+                                <option value="">
+                                    {{ !working.statcats_multi[sc.id()] ? '[% l('&lt;NONE&gt;') %]' : '[% l('&lt;MULTIPLE&gt;') %]' }}
+                                </option>
                             </select>
                         </div>
                     </div>

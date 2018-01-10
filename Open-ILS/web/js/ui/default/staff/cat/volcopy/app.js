@@ -1098,6 +1098,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
     $scope.working = {
         statcats: {},
+        statcats_multi: {},
         statcat_filter: undefined
     };
 
@@ -1507,6 +1508,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 } else {
                                     none = true;
                                 }
+                            } else {
+                                none = true;
                             }
                         } else {
                             none = true;
@@ -1515,9 +1518,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                     if (!none && Object.keys(value_hash).length == 1) {
                         $scope.working.statcats[sc.id()] = value_hash[Object.keys(value_hash)[0]];
+                        $scope.working.statcats_multi[sc.id()] = false;
+                    } else if (item_list.length > 1 && Object.keys(value_hash).length > 0) {
+                        $scope.working.statcats[sc.id()] = undefined;
+                        $scope.working.statcats_multi[sc.id()] = true;
                     } else {
                         $scope.working.statcats[sc.id()] = undefined;
+                        $scope.working.statcats_multi[sc.id()] = false;
                     }
+
                 });
 
             } else {
@@ -1569,7 +1578,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             angular.forEach($scope.statcats, function (s) {
 
                                 if (!$scope.working)
-                                    $scope.working = { statcats: {}, statcat_filter: undefined};
+                                    $scope.working = { statcats_multi: {}, statcats: {}, statcat_filter: undefined};
+                                if (!$scope.working.statcats_multi)
+                                    $scope.working.statcats_multi = {};
                                 if (!$scope.working.statcats)
                                     $scope.working.statcats = {};
 
