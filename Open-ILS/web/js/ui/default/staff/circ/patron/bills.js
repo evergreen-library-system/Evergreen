@@ -498,8 +498,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                     unrecovered : xact.unrecovered(),
                     xact_finish : xact.xact_finish(),
                     xact_start : xact.xact_start(),
-                    copy_barcode : xact.circulation().target_copy().barcode(),
-                    title : xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                if (xact.circulation()) {
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
                 }
                 xacts.push(newXact);
             }
@@ -963,8 +965,10 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
                     unrecovered : xact.unrecovered(),
                     xact_finish : xact.xact_finish(),
                     xact_start : xact.xact_start(),
-                    copy_barcode : xact.circulation().target_copy().barcode(),
-                    title : xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                if (xact.circulation()) {
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
                 }
                 xacts.push(newXact);
             }
