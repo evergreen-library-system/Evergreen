@@ -5,6 +5,7 @@
             label => l('Subject: '),
             xpath => '//*[@tag="600" or @tag="610" or @tag="611" or @tag="630" or @tag="650" or @tag="651"]'
         }, {
+            display_field => 'genre',
             label => l('Genre: '),
             facet => 'identifier|genre',
             joiner => ' -- ',
@@ -82,9 +83,14 @@
     END;
 
     BLOCK render_hl_subject;
-        '<span property="about">';
+        total_term = s.value;
+        IF s.facet;
+            total_term = s.facet _ '[' _ s.value _ ']';
+        END;
+
+        '<span property="about"><!-- highlighted -->';
         %]<a href="[%-
-               mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>s.value}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
+               mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
         -%]">[% s.highlight %]</a> [%-
         '</span>';
     END;
@@ -97,6 +103,7 @@
         IF df AND attrs.hl_display_fields.$df.size;
             content = [];
             FOREACH hl_s IN attrs.hl_display_fields.$df;
+                hl_s.facet = subj.facet;
                 next_s = PROCESS render_hl_subject(s=hl_s);
                 content.push(next_s);
             END;

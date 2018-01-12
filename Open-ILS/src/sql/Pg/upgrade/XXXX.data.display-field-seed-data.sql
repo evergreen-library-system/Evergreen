@@ -4,6 +4,8 @@ BEGIN;
 
 -- NEW config.metabib_field entries
 
+UPDATE config.metabib_field SET display_xpath = facet_xpath, display_field = TRUE WHERE id = 33;
+
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
@@ -66,6 +68,36 @@ VALUES (
     $$//mods33:mods/mods33:originInfo//mods33:dateIssued[@encoding="marc"]|//mods33:mods/mods33:originInfo//mods33:dateIssued[1]$$,
     TRUE, FALSE, FALSE
 );
+
+INSERT INTO config.metabib_field (id, field_class, name, 
+    label, xpath, display_field, search_field, browse_field)
+VALUES (
+    46, 'keyword', 'bibliography', 
+    oils_i18n_gettext(46, 'Bibliography', 'cmf', 'label'),
+    $$//mods33:note[@type='bibliography']$$,
+    TRUE, TRUE, FALSE
+),(
+    47, 'keyword', 'thesis', 
+    oils_i18n_gettext(47, 'Thesis', 'cmf', 'label'),
+    $$//mods33:note[@type='thesis']$$,
+    TRUE, TRUE, FALSE
+),(
+    48, 'keyword', 'production_credits', 
+    oils_i18n_gettext(48, 'Creation/Production Credits', 'cmf', 'label'),
+    $$//mods33:note[@type='creation/production credits']$$,
+    TRUE, TRUE, FALSE
+),(
+    49, 'keyword', 'performers', 
+    oils_i18n_gettext(49, 'Performers', 'cmf', 'label'),
+    $$//mods33:note[@type='performers']$$,
+    TRUE, TRUE, FALSE
+),(
+    50, 'keyword', 'general_note', 
+    oils_i18n_gettext(50, 'General Note', 'cmf', 'label'),
+    $$//mods33:note[not(@type)]$$,
+    TRUE, TRUE, FALSE
+)
+;
 
 
 -- Modify existing config.metabib_field entries
