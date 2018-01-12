@@ -198,7 +198,7 @@
                         <a name='expand_inline_copies' 
                             href='javascript:;'>[% l('Expand') %]</a>
                     </td>
-                    <td><a title='FOOOBAR' name='copieslink' href='javascript:void(0);'>[% l('Copies([_1])', '<span name="count">0</span>') %]</a></td>
+                    <td><a title='[% l('View copy information') %]' name='copieslink' href='javascript:void(0);'>[% l('Copies([_1])', '<span name="count">0</span>') %]</a></td>
                     <td>
                         <a name='noteslink' href='javascript:void(0);'>[% l('Notes([_1])', '<span name="notes_count">0</span>') %]</a><span name="notes_alert_flag"></span>
                     </td>
