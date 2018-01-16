@@ -7,7 +7,7 @@ CREATE OR REPLACE FUNCTION asset.location_group_default () RETURNS TEXT AS $f$
       FROM  asset.copy_location_group
       WHERE NOT opac_visible;
 */
-$f$ LANGUAGE SQL STABLE;
+$f$ LANGUAGE SQL IMMUTABLE;
 
 COMMIT;
 
