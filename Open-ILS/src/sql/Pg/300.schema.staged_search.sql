@@ -761,7 +761,7 @@ CREATE OR REPLACE FUNCTION asset.location_group_default () RETURNS TEXT AS $f$
       FROM  asset.copy_location_group
       WHERE NOT opac_visible;
 */
-$f$ LANGUAGE SQL STABLE;
+$f$ LANGUAGE SQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION asset.location_default () RETURNS TEXT AS $f$
     SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'location')),'|') || ')'

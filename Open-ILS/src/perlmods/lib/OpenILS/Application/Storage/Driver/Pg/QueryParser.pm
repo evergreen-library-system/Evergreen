@@ -1511,15 +1511,17 @@ sub flatten {
             } elsif ($filter->name eq 'locations') {
                 if (@{$filter->args} > 0) {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
+                    my $filter_args = join(",", map(int, @{$filter->args}));
                     push @{$vis_filter{'c_attr'}},
-                        "search.calculate_visibility_attribute_test('location','{".join(',', @{$filter->args})."}',$negate)";
+                        "search.calculate_visibility_attribute_test('location',$filter_args,$negate)";
                 }
 
             } elsif ($filter->name eq 'location_groups') {
                 if (@{$filter->args} > 0) {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
+                    my $filter_args = join(",", map(int, @{$filter->args}));
                     push @{$vis_filter{'c_attr'}},
-                        "search.calculate_visibility_attribute_test('location_group','{".join(',', @{$filter->args})."}',$negate)";
+                        "search.calculate_visibility_attribute_test('location',(SELECT ARRAY_AGG(location) FROM asset.copy_location_group_map WHERE lgroup IN ($filter_args)),$negate)";
                 }
 
             } elsif ($filter->name eq 'statuses') {
