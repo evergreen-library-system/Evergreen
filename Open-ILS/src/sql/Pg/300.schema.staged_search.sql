@@ -795,6 +795,8 @@ DECLARE
 
     luri_org        TEXT; -- "b" attr
     bib_sources     TEXT; -- "b" attr
+
+    bib_tests       TEXT := '';
 BEGIN
     copy_flags      := asset.all_visible_flags(); -- Will always have at least one
 
@@ -805,14 +807,20 @@ BEGIN
     location        := NULLIF(asset.location_default(),'!()');
     location_group  := NULLIF(asset.location_group_default(),'!()');
 
-    luri_org        := NULLIF(asset.luri_org_default(),'!()');
+    -- LURIs will be handled at the perl layer directly
+    -- luri_org        := NULLIF(asset.luri_org_default(),'!()');
     bib_sources     := NULLIF(asset.bib_source_default(),'()');
 
-    RETURN QUERY SELECT
-        '('||ARRAY_TO_STRING(
-            ARRAY[luri_org,bib_sources],
-            '|'
-        )||')',
+
+    IF luri_org IS NOT NULL AND bib_sources IS NOT NULL THEN
+        bib_tests := '('||ARRAY_TO_STRING( ARRAY[luri_org,bib_sources], '|')||')&('||luri_org||')&';
+    ELSIF luri_org IS NOT NULL THEN
+        bib_tests := luri_org || '&';
+    ELSIF bib_sources IS NOT NULL THEN
+        bib_tests := bib_sources || '|';
+    END IF;
+
+    RETURN QUERY SELECT bib_tests,
         '('||ARRAY_TO_STRING(
             ARRAY[copy_flags,owning_lib,circ_lib,status,location,location_group]::TEXT[],
             '&'

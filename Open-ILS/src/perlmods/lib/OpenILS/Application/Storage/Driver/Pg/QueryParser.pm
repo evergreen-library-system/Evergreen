@@ -1041,20 +1041,21 @@ sub toSQL {
         $b_vis_test = join("||'&'||",@{$$flat_plan{vis_filter}{b_attr}});
     }
 
+    # bib vis tests are handled a little bit differently, as they're simpler but need special handling
     if ($b_vis_test or $pb_vis_test) {
         my $vis_test = '';
 
-        if ($b_vis_test and $pb_vis_test) {
-            $vis_test = $pb_vis_test . ",". $b_vis_test;
-        } elsif ($pb_vis_test) {
-            $vis_test = $pb_vis_test;
+        if ($b_vis_test and $pb_vis_test) { # $pb_vis_test supplies a query_int operator at its end
+            $vis_test = $pb_vis_test . '||'. $b_vis_test;
+        } elsif ($pb_vis_test) { # here we want to remove it
+            $vis_test = "RTRIM($pb_vis_test,'|&')";
         } else {
             $vis_test = $b_vis_test;
         }
 
         # WITH-clause just generates vis test
         $$flat_plan{with} .= "\n," if $$flat_plan{with};
-        $$flat_plan{with} .= "b_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'|'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
+        $$flat_plan{with} .= "b_attr AS (SELECT ($vis_test)::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
 
         # These are magic numbers... see: search.calculate_visibility_attribute() UDF
         $final_b_attr_test = '(b_attr.vis_test IS NULL OR bre.vis_attr_vector @@ b_attr.vis_test)';
@@ -1127,6 +1128,20 @@ SQL
     warn $sql if $self->QueryParser->debug;
     return $sql;
 
+}
+
+sub is_org_visible {
+    my $org = shift;
+    return 0 if (!$U->is_true($org->opac_visible));
+
+    my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+    return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
+
+    my $ot = $U->get_org_tree;
+    while ($org = $U->find_org($ot,$org->parent_ou)) {
+        return 0 if (!$U->is_true($org->opac_visible));
+    }
+    return 1;
 }
 
 sub flatten {
@@ -1336,6 +1351,12 @@ sub flatten {
 
     my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
     my $aorgs = $U->get_org_ancestors($site_org->id);
+
+    if (!$self->find_modifier('staff')) {
+        my $non_inherited_vis_gf = $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+        $dorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$dorgs ];
+        $aorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$aorgs ];
+    }
 
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
@@ -1578,7 +1599,7 @@ sub flatten {
                 if (@{$filter->args} > 0) {
                     $uses_bre = 1;
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
-                    push @{$vis_filter{'c_attr'}},
+                    push @{$vis_filter{'b_attr'}},
                         "search.calculate_visibility_attribute_test('source','{".join(',', @{$filter->args})."}',$negate)";
                 }
             } elsif ($filter->name eq 'from_metarecord') {
