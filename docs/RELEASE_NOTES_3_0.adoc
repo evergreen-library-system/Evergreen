@@ -3,6 +3,38 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.3
+----------------
+This release contains several bug fixes improving on Evergreen 3.0.1:
+
+* Fixes several issues related to the display of located URIs in search
+results.
+* Setting `opac_visible` to false for a copy location group now hides only
+the location group itself, rather than also hiding every single copy in the
+group.
+* Fixes a bug that prevented the copy editor from displaying the _fine level_
+and _loan duration_ fields.
+* The "Edit Items" grid action in the Item Status interface will now open
+in the combined volume/copy editor in batch.  This makes the behavior
+consistent with the "Edit Selected Items" grid action in the copy
+buckets interface.
+* Staff members are now required to choose a billing type when creating a
+bill on a user account.
+* The Web client now provides staff users with an alert and option to
+override when an item with the Lost and Paid status is checked in.
+* Fixes a bug where the Web client offline circ interface was not able
+to set its working location.
+* Fixes an issue that prevented the ADMIN_COPY_TAG permission from being
+granted.
+* The MARC editor in the Web staff client now presents bib sources in
+alphabetical order.
+* Both circulation and grocery bills are now printed when a staff user selects
+a patron account and clicks "Print Bills".
+* Fixes an issue in the XUL serials interface the "Receive move/selected"
+action from succeeding.
+* Fixes a typo in the user password testing interface.
+
+
 Evergreen 3.0.2
 ----------------
 This release contains several bug fixes improving on Evergreen 3.0.1:
