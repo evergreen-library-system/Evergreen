@@ -84,7 +84,7 @@
   <eg-grid-field label="[% l('Checkin Workstation') %]"  path="_circ_summary.last_checkin_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Date') %]"  path="_circ_summary.start_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ_summary.checkout_workstation" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ.circ_lib.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation ID') %]"        path="_circ.id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circ or Renewal Workstation') %]"  path="_circ.workstation.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Classification') %]"        path="call_number.label_class.name" hidden></eg-grid-field>
@@ -122,7 +122,7 @@
   <eg-grid-field label="[% l('Publisher') %]"             path="call_number.record.simple_record.publisher" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Quality') %]"               path="call_number.record.simple_record.quality" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Reference?') %]"            path="ref" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Remaining Renewals') %]"    path="_circ.renewals_remaining" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Remaining Renewals') %]"    path="_circ.renewal_remaining" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Status Changed Time') %]"   path="status_changed_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN') %]"                   path="call_number.record.tcn_value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN Source') %]"            path="call_number.record.tcn_source" hidden></eg-grid-field>
