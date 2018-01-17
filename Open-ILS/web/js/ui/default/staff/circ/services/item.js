@@ -30,7 +30,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     service.circFlesh = {
         flesh : 2,
         flesh_fields : {
-            circ : [
+            combcirc : [
                 'usr',
                 'workstation',
                 'checkin_workstation',
@@ -41,7 +41,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             ],
             au : ['card']
         },
-        order_by : {circ : 'xact_start desc'},
+        order_by : {combcirc : 'xact_start desc'},
         limit :  1
     }
 
