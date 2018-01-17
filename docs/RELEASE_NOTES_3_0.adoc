@@ -82,6 +82,25 @@ a patron account and clicks "Print Bills".
 action from succeeding.
 * Fixes a typo in the user password testing interface.
 
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.3 point release of
+Evergreen:
+
+* Jason Boyer
+* Bill Erickson
+* Kyle Huckins
+* Jeanette Lundgren
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Remington Steed
+* Cesar Velez
+* Dan Wells
+
+
 
 Evergreen 3.0.2
 ----------------
