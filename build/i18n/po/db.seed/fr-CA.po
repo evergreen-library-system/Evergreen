@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen ILS > db.seed.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2017-09-03 23:33-0400\n"
-"PO-Revision-Date: 2015-03-20 11:00+0000\n"
+"PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: Jean-Marc <Unknown>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-05 04:39+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-10-04 05:02+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: 950.data.seed-values.sql:8101
@@ -14769,133 +14769,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7738
 msgid "Flamenco"
 msgstr ""
-
-# id::aou.name__7
-# id::7
-#~ msgid "Example Branch 4"
-#~ msgstr "Exemple de succursale 4"
-
-# id::aou.name__5
-# id::5
-#~ msgid "Example Branch 2"
-#~ msgstr "Exemple de succursale 2"
-
-# id::clm.value''in__gwi
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-# id::aou.name__6
-# id::6
-#~ msgid "Example Branch 3"
-#~ msgstr "Exemple de succursale 3"
-
-# id::aou.name__4
-# id::4
-#~ msgid "Example Branch 1"
-#~ msgstr "Exemple de succursale 1"
-
-# id::cit.name__2
-# id::2
-#~ msgid "SSN"
-#~ msgstr "SSN"
-
-# id::pgt.name__10
-#~ msgid "Local System Administrator"
-#~ msgstr "Administrateur de système local"
-
-# id::aou.name__8
-# id::8
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Exemple de sous-bibliothèque 1"
-
-# id::aou.name__2
-# id::2
-#~ msgid "Example System 1"
-#~ msgstr "Exemple de système 1"
-
-# id::aou.name__3
-# id::3
-#~ msgid "Example System 2"
-#~ msgstr "Exemple de système 2"
-
-# id::aou.name__9
-# id::9
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Exemple de bibliobus de 1"
-
-# id::pgt.description__10
-#~ msgid "System maintenance, configuration, etc."
-#~ msgstr "Entretient du système, configuration, etc."
-
-#~ msgid "Holds: Has Local Copy Block"
-#~ msgstr "Articles mis en réserve : exemplaire local bloqué"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests "
-#~ "per user"
-#~ msgstr ""
-#~ "Prêts : Maximum de demandes actives en même temps de rétablissement autonome "
-#~ "d’un mot de passe par usager"
-
-#~ msgid "Holds: Block Renewal of Items Needed for Holds"
-#~ msgstr ""
-#~ "Articles mis en réserve : Bloquer le renouvellement d’articles qui doivent "
-#~ "être mis en réserve"
-
-#~ msgid "Holds: Clear shelf copy status"
-#~ msgstr "Article en réserve : Enlever l’état de la copie en étagère"
-
-#~ msgid "Selfcheck: Workstation Required"
-#~ msgstr "Auto-contrôle : Poste de travail nécessaire"
-
-#~ msgid "Circulation: Self-serve password reset request time-to-live"
-#~ msgstr ""
-#~ "Prêts : Durée de vie d’une demande de rétablissement autonome du mot de passe"
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr "GUI : registre de travail : maximum de mesures enregistrées"
-
-#~ msgid "List Published Book Bags"
-#~ msgstr "Énumérer les sacs de livres publiés"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests"
-#~ msgstr ""
-#~ "Prêts : Maximum de demandes autonomes de rétablissement du mot de passe "
-#~ "actives en même temps"
-
-#~ msgid ""
-#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
-#~ "notes/messages."
-#~ msgstr ""
-#~ "GUI : Initiales du personnel nécessaire pour entrer/modifier un "
-#~ "article/client/commentaire sur la pénalité/message"
-
-#~ msgid "Selfcheck: Audio Alerts"
-#~ msgstr "Auto-contrôle : alertes sonores"
-
-#~ msgid "Selfcheck: Require Patron Password"
-#~ msgstr "Auto-contrôle : Le mot de passe du client est obligatoire"
-
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Ajouter aux sacs de livres publiés"
-
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-#~ msgid "Appends staff initials and edit date into note content."
-#~ msgstr ""
-#~ "Ajouter les initiales de l’employé et modifier la date dans le contenu de la "
-#~ "note"
-
-#~ msgid "GUI: Work Log: Maximum Patrons Logged"
-#~ msgstr "GUI : Registre de travail : Maximum de clients en session"
-
-#~ msgid "Book Bag"
-#~ msgstr "Sac à livres"
-
-#~ msgid "Circ: Cap Max Fine at Item Price"
-#~ msgstr "Prêts : L’amende maximale est la valeur de l’article"
-
-#~ msgid "Holds: Has Local Copy Alert"
-#~ msgstr "Articles mis en réserve : alerte d’exemplaire local"
