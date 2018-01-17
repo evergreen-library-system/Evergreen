@@ -3,6 +3,23 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.9
+----------------
+This release contains bug fixes improving on Evergreen 2.12.8:
+
+* NodeJs is now installed from source, rather than using a pre-compiled binary.
+* NodeJs is now at version 6.11.3, which is the most recent LTS release.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.8 point release of
+Evergreen:
+
+* Jeanette Lundgren
+* Ben Shum
+* Remington Steed
+
 Evergreen 2.12.8
 ----------------
 This release contains several bug fixes improving on Evergreen 2.12.7:
