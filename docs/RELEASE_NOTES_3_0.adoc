@@ -5,10 +5,58 @@ Evergreen 3.0 Release Notes
 
 Evergreen 3.0.3
 ----------------
+Upgrade Notes
+~~~~~~~~~~~~~
+* The upgrade script for 3.0.3 contains a post-transaction command to forcibly
+update the visibility attributes of all bibs that make use of Located URIs or
+bib sources. It may take a while to run on large datasets.  If it it running
+too long, it can be canceled and the following psql commands will create and
+run a script that will perform the same action serially over time without
+blocking writes to bibs:
+----
+\t
+\o /tmp/luri_visibility_update.sql
+SELECT 'UPDATE biblio.record_entry SET ' ||
+  'vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id) ' ||
+  'WHERE id = ' || id || '; SELECT ' || id || ';'
+FROM biblio.record_entry
+  WHERE id IN (
+            SELECT  DISTINCT cn.record
+              FROM  asset.call_number cn
+              WHERE NOT cn.deleted
+                    AND cn.label = '##URI##'
+                    AND EXISTS (
+                        SELECT  1
+                          FROM  asset.uri_call_number_map m
+                          WHERE m.call_number = cn.id
+                    )
+                UNION
+            SELECT id FROM biblio.record_entry WHERE source IS NOT NULL
+
+        );
+\o
+\t
+\i /tmp/luri_visibility_update.sql
+----
+
+It will output the id of each updated bib so that the script can be killed
+and then edited to remove completed bibs.  The remainder can be run at a
+later time.
+
+NOTE: When the internal flag 'ingest.reingest.force_on_same_marc' is enabled,
+we do NOT update the bib's visibility attributes, as doing so causes a loop
+and an eventual trigger stack violation.  This flag should ONLY be used when
+forcing reingest of record attributes (NOT visibility attributes), search,
+facet, and display fields, so if using this flag under normal operation,
+proceed at your own risk and know that Located URI and bib source changes
+will not be reflected in the visibility attributes of the record.
+
+Bug Fixes
+~~~~~~~~~
 This release contains several bug fixes improving on Evergreen 3.0.1:
 
-* Fixes several issues related to the display of located URIs in search
-results.
+* Fixes several issues related to the display of located URIs and records with
+bib sources in search results.
 * Setting `opac_visible` to false for a copy location group now hides only
 the location group itself, rather than also hiding every single copy in the
 group.
