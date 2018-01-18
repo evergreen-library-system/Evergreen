@@ -210,23 +210,6 @@ CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE OR DELETE ON asset
 CREATE TRIGGER z_opac_vis_mat_view_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 
 
-UPDATE  biblio.record_entry
-  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id)
-  WHERE id IN (
-            SELECT  DISTINCT cn.record
-              FROM  asset.call_number cn
-              WHERE NOT cn.deleted
-                    AND cn.label = '##URI##'
-                    AND EXISTS (
-                        SELECT  1
-                          FROM  asset.uri_call_number_map m
-                          WHERE m.call_number = cn.id
-                    )
-                UNION
-            SELECT id FROM biblio.record_entry WHERE source IS NOT NULL
-        );
-
-
 SELECT evergreen.upgrade_deps_block_check('1086', :eg_version);
 
 CREATE OR REPLACE FUNCTION asset.location_group_default () RETURNS TEXT AS $f$
@@ -289,3 +272,20 @@ $f$ LANGUAGE PLPGSQL STABLE ROWS 1;
 
 
 COMMIT;
+
+
+UPDATE  biblio.record_entry
+  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id)
+  WHERE id IN (
+            SELECT  DISTINCT cn.record
+              FROM  asset.call_number cn
+              WHERE NOT cn.deleted
+                    AND cn.label = '##URI##'
+                    AND EXISTS (
+                        SELECT  1
+                          FROM  asset.uri_call_number_map m
+                          WHERE m.call_number = cn.id
+                    )
+                UNION
+            SELECT id FROM biblio.record_entry WHERE source IS NOT NULL
+        );
