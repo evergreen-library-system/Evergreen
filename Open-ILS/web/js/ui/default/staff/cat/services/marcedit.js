@@ -1368,7 +1368,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.saveRecord = function () {
                     if ($scope.inPlaceMode) {
                         $scope.marcXml = $scope.record.toXmlString();
-                        return processOnSaveCallbacks();
+                        return $timeout(processOnSaveCallbacks);
                     }
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());

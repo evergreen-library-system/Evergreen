@@ -80,7 +80,7 @@ function($scope , $routeParams , $location , $window , $timeout , egCore , $uibM
                 $scope.focusMe = true;
                 $scope.args = args;
                 $scope.dirty_flag = false;
-                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.ok = function() { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         }).result.then(function (args) {
