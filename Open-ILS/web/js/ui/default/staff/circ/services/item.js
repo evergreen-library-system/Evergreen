@@ -131,8 +131,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             if (copyData.circ) {
                 // flesh circ_lib locally
                 copyData.circ.circ_lib(egCore.org.get(copyData.circ.circ_lib()));
-                copyData.circ.checkin_workstation(
-                    egCore.org.get(copyData.circ.checkin_workstation()));
+
             }
             var flatCopy;
 
@@ -141,6 +140,9 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                 flatCopy = service.copies.filter(
                     function(c) {return c.id == copyData.copy.id()})[0];
             }
+
+            // flesh acn.owning_lib
+            copyData.copy.call_number().owning_lib(egCore.org.get(copyData.copy.call_number().owning_lib()));
 
             if (!flatCopy) {
                 flatCopy = egCore.idl.toHash(copyData.copy, true);
