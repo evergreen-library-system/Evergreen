@@ -86,10 +86,10 @@
   <eg-grid-field label="[% l('Checkin Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Workstation') %]"  path="_circ_summary.last_checkin_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout Date') %]"  path="_circ_summary.start_time" datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ_summary.checkout_workstation" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ.workstation.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation ID') %]"        path="_circ.id" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circ or Renewal Workstation') %]"  path="_circ.workstation.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circ or Renewal Workstation') %]"  path="_circ_summary.last_renewal_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Classification') %]"        path="call_number.label_class.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]"             path="call_number.prefix.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]"             path="call_number.suffix.label" hidden></eg-grid-field>
@@ -118,7 +118,7 @@
   <eg-grid-field label="[% l('Loan Duration') %]"         path="loan.duration" hidden></eg-grid-field>
   <eg-grid-field label="[% l('OPAC Visible?') %]"         path="opac_visible" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owned By') %]"              path="call_number.record.owner" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Owning Library') %]"        path="call_number.owning_lib" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Owning Library') %]"        path="call_number.owning_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Parts') %]"                 path="parts" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Price') %]"                 path="price" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publication Date') %]"      path="call_number.record.simple_record.pubdate" hidden></eg-grid-field>
