@@ -1534,7 +1534,7 @@ sub flatten {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
                     my $filter_args = join(",", map(int, @{$filter->args}));
                     push @{$vis_filter{'c_attr'}},
-                        "search.calculate_visibility_attribute_test('location',$filter_args,$negate)";
+                        "search.calculate_visibility_attribute_test('location','{$filter_args}',$negate)";
                 }
 
             } elsif ($filter->name eq 'location_groups') {
