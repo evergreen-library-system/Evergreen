@@ -1598,6 +1598,7 @@ sub flatten {
                     $with .= "             JOIN asset.copy cp ON (acptcm.copy = cp.id)\n";
                     $with .= "             JOIN asset.call_number cn ON (cp.call_number = cn.id)\n";
                     $with .= "       WHERE 1 = 1 \n";
+                    $with .= "       AND cp.circ_lib IN (" . join(',', @$dorgs) . ")\n";
                     if ($copy_tag_type ne '*') {
                         $with .= "             AND cctt.code = " . $self->QueryParser->quote_value($copy_tag_type) . "\n";
                     }
