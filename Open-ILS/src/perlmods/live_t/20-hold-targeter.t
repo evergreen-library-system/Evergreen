@@ -97,7 +97,7 @@ $maps = $e->search_action_hold_copy_map([
     }
 ]);
 
-is(scalar(@$maps), 31, "Hold $hold_id has 31 mapped potential copies");
+is(scalar(@$maps), 24, "Hold $hold_id has 24 mapped potential copies");
 
 # Only 1 bib record (42) links to metarecord 42.  It also satisfies the 
 # holdable_format criteria.
