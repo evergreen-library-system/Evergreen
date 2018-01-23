@@ -1449,6 +1449,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         new_card.active = true;
         new_card._primary = 'on';
         $scope.patron.card = new_card;
+
+        // Remove any previous attempts to replace the card, since they
+        // may be incomplete or created by accident.
+        $scope.patron.cards =
+            $scope.patron.cards.filter(function(c) {return !c.isnew})
         $scope.patron.cards.push(new_card);
     }
 
