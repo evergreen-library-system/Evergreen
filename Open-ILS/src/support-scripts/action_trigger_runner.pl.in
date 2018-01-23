@@ -42,7 +42,7 @@ my $opt_gran_only     = undef;
 (-f $opt_custom_filter) or undef($opt_custom_filter);   # discard default if no file exists
 
 GetOptions(
-    'max-sleep'        => \$opt_max_sleep,
+    'max-sleep=i'      => \$opt_max_sleep,
     'osrf-config=s'    => \$opt_osrf_config,
     'run-pending'      => \$opt_run_pending,
     'hooks=s'          => \$opt_hooks,
