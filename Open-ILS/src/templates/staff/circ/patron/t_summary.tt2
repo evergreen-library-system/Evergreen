@@ -22,7 +22,7 @@
       </div>
     </div>
     <div ng-if="patron().photo_url()" class="row">
-         <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" ></div>
+         <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
     </div>
     <div class="row" 
       ng-class="{'patron-summary-divider' : alert_penalties().length || patron().alert_message()}">
