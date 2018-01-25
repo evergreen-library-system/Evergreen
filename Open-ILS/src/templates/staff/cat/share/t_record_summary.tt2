@@ -29,7 +29,14 @@
     </div>
   </div>
 </div>
-
+<div ng-if="record.merged_to()" class="row alert alert-warning">
+  <a href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.merged_to()}}">
+    [% l('Record merged to #[_1] on [_2]', 
+         '{{record.merged_to()}}',
+         '{{record.merge_date() | date:$root.egDateAndTimeFormat}}') 
+    %]
+  </a>
+</div>
 <div class="flex-container-striped flex-container-bordered" ng-show="collapse_summary()">
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Title:') %]</div>
