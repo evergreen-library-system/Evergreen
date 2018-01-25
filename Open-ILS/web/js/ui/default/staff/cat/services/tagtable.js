@@ -461,10 +461,16 @@ function($q,   egCore,   egAuth) {
                 var sflist = [];                
                 for (var i = 0; i < field.subfields.length; i++) {
                     if (af.sf_list().indexOf(field.subfields[i][0]) > -1) {
-                        sflist.push(field.subfields[i]);
+                        if (typeof(field.subfields[i][1]) != 'undefined'
+                            && field.subfields[i][1] !== null
+                            && field.subfields[i][1].length > 0
+                        ) {
+                                sflist.push(field.subfields[i]);
+                        }
                     }
                 }
-    
+                if (sflist.length == 0) return null;
+
                 var m = new MARC21.Record ({rtype:'AUT'});
                 m.appendFields(
                     new MARC21.Field ({

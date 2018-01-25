@@ -1327,6 +1327,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             return;
                         }
                         var auth_match = $scope.controlSet.bibToAuthorities(f);
+                        if (auth_match.length == 0) return;
                         chain = chain.then(function() {
                             var promise = egCore.net.request(
                                 'open-ils.search',
