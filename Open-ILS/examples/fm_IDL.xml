@@ -3136,6 +3136,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Flat Display Entries" name="flat_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Compressed Display Entries" name="compressed_display_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Wide Display Entries" name="wide_display_entry" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Merge Date" name="merge_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Merged To" name="merged_to" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -3163,6 +3165,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="flat_display_entries" reltype="has_many" key="source" map="" class="mfde"/>
 			<link field="compressed_display_entries" reltype="has_many" key="source" map="" class="mcde"/>
 			<link field="wide_display_entry" reltype="might_have" key="source" map="" class="mwde"/>
+			<link field="merged_to" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>

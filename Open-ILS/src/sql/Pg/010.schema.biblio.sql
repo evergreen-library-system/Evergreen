@@ -54,7 +54,9 @@ CREATE TABLE biblio.record_entry (
 	last_xact_id	TEXT		NOT NULL,
     vis_attr_vector INT[],
     owner       INT,
-    share_depth INT
+    share_depth INT,
+    merge_date  TIMESTAMP WITH TIME ZONE,
+    merged_to   BIGINT REFERENCES biblio.record_entry(id)
 );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );

@@ -1212,6 +1212,14 @@ BEGIN
 		FROM asset.copy WHERE id = target_copy
 	);
 
+    -- Apply merge tracking
+    UPDATE biblio.record_entry 
+        SET merge_date = NOW() WHERE id = target_record;
+
+    UPDATE biblio.record_entry
+        SET merge_date = NOW(), merged_to = target_record
+        WHERE id = source_record;
+
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
