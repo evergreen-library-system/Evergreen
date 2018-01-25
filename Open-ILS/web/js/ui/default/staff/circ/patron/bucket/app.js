@@ -220,24 +220,28 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
 
     $scope.$watch('barcodesFromFile', function(newVal, oldVal) {
         if (newVal && newVal != oldVal) {
-            var promises = [];
+            var barcodes = [];
             // $scope.resetPendingList(); // ??? Add instead of replace
             angular.forEach(newVal.split(/\n/), function(line) {
                 if (!line) return;
                 // scrub any trailing spaces or commas from the barcode
                 line = line.replace(/(.*?)($|\s.*|,.*)/,'$1');
-                promises.push(egCore.pcrud.search(
-                    'ac',
-                    {barcode : line},
-                    {}
-                ).then(null, null, function(card) {
-                    bucketSvc.pendingList.push(card.usr());
-                }));
-            });
+                barcodes.push(line);
 
-            $q.all(promises).then(function () {
-                $scope.gridControls.setQuery({id : bucketSvc.pendingList});
             });
+            egCore.pcrud.search(
+                'ac',
+                {barcode : barcodes},
+                {}
+            ).then(
+                function() {
+                    $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+                },
+                null, 
+                function(card) {
+                    bucketSvc.pendingList.push(card.usr());
+                }
+            );
         }
     });
 
