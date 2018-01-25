@@ -62,7 +62,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     }
 
     service.getCirc = function(id) {
-        return egCore.pcrud.search('aacs', { target_copy : id },
+        return egCore.pcrud.search('combcirc', { target_copy : id },
             service.circFlesh).then(function(circ) {return circ});
     }
 
@@ -152,6 +152,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     flatCopy._circ_summary = egCore.idl.toHash(copyData.circ_summary, true);
                     flatCopy._circ_lib = copyData.circ.circ_lib();
                     flatCopy._duration = copyData.circ.duration();
+                    flatCopy._checkout_ws = copyData.circ.workstation().name();
                 }
                 flatCopy.index = service.index++;
                 service.copies.unshift(flatCopy);
