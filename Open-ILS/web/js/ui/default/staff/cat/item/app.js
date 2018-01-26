@@ -234,8 +234,13 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
  * List view - grid stuff
  */
 .controller('ListCtrl', 
-       ['$scope','$q','$routeParams','$location','$timeout','$window','egCore','egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
-function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog) {
+       ['$scope','$q','$routeParams','$location','$timeout','$window','egCore',
+        'egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
+        'egProgressDialog',
+function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
+         egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
+         egProgressDialog) {
+
     var copyId = [];
     var cp_list = $routeParams.idList;
     if (cp_list) {
@@ -282,18 +287,24 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
                 barcodes.push(line);
             });
 
-            if (barcodes.length > 0) {
-                var promises = [];
-                angular.forEach(barcodes, function (b) {
-                    promises.push(itemSvc.fetch(b));
-                });
+            // Serialize copy retrieval since there may be many, many copies.
+            function fetch_next_copy() {
+                var barcode = barcodes.pop();
+                egProgressDialog.increment();
 
-                $q.all(promises).then(
-                    function() {
-                        copyGrid.refresh();
-                        copyGrid.selectItems([itemSvc.copies[0].index]);
-                    }
-                );
+                if (!barcode) { // All done here.
+                    egProgressDialog.close();
+                    copyGrid.refresh();
+                    copyGrid.selectItems([itemSvc.copies[0].index]);
+                    return;
+                }
+
+                itemSvc.fetch(barcode).then(fetch_next_copy);
+            }
+
+            if (barcodes.length) {
+                egProgressDialog.open({value: 0, max: barcodes.length});
+                fetch_next_copy();
             }
         }
     });
