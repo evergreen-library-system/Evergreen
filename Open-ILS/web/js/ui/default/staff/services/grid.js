@@ -765,8 +765,14 @@ angular.module('egGridMod',
                     column.flex = 1;
             }
             $scope.modifyColumnFlex = function(col, val) {
-                $scope.lastModColumn = col.name;
+                $scope.lastModColumn = col;
                 grid.modifyColumnFlex(col, val);
+            }
+
+            $scope.isLastModifiedColumn = function(col) {
+                if ($scope.lastModColumn)
+                    return $scope.lastModColumn === col;
+                return false;
             }
 
             grid.modifyColumnPos = function(col, diff) {
@@ -801,7 +807,7 @@ angular.module('egGridMod',
             }
 
             $scope.modifyColumnPos = function(col, diff) {
-                $scope.lastModColumn = col.name;
+                $scope.lastModColumn = col;
                 return grid.modifyColumnPos(col, diff);
             }
 
