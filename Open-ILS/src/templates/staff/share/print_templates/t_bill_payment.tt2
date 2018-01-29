@@ -2,6 +2,18 @@
 Template for bill payment receipts. Data specific to this template
 includes:
 
+* patron - has several fields from the patron object, including a financial summary
+
+  * first_given_name
+  * second_given_name
+  * family_name
+  * suffix
+  * card.barcode
+  * expire_date
+  * alias - aka Holds Alias
+  * has_email - boolean value to show/hide elements on the receipt
+  * has_phone - same as has_email
+
 * current_location.name - name of workstation location
 * payment_type
 * payment_total - total paid

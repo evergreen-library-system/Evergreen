@@ -350,6 +350,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     function printReceipt(type, payment_ids, payments_made, note) {
         var payment_blobs = [];
+        var cusr = patronSvc.current;
+
         angular.forEach(payments_made, function(payment) {
             var xact_id = payment[0];
 
@@ -377,7 +379,21 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             payments : payment_blobs,
             current_location : egCore.idl.toHash(
                 egCore.org.get(egCore.auth.user().ws_ou()))
-        }
+        };
+
+        // Not a good idea to use patron_stats.fines for this; it's out of date
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            card : { barcode : cusr.card().barcode() },
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/).length),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         print_data.new_balance = (
             print_data.previous_balance * 100 - 

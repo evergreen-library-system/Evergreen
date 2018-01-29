@@ -345,7 +345,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
     $scope.print_receipt = function(items) {
         if (items.length == 0) return $q.when();
-        var print_data = {circulations : []}
+        var print_data = {circulations : []};
+        var cusr = patronSvc.current;
 
         angular.forEach(patronSvc.items_out, function(circ) {
             print_data.circulations.push({
@@ -356,6 +357,20 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 author : circ.target_copy().call_number().record().simple_record().author(),
             })
         });
+
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            card : { barcode : cusr.card().barcode() },
+            money_summary : patronSvc.patron_stats.fines,
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/).length),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         return egCore.print.print({
             context : 'default', 
