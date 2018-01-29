@@ -224,7 +224,7 @@
     </div>
     <div class="eg-grid-cell"
         eg-grid-column-drag-dest
-        ng-class="{'eg-grid-column-last-mod' : lastModColumn==col.name}"
+        ng-class="{'eg-grid-column-last-mod' : isLastModifiedColumn(col)}"
         column="{{col.name}}"
         eg-right-click="onContextMenu($event)"
         ng-repeat="col in columns"
