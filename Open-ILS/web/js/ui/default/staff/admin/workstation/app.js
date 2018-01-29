@@ -349,12 +349,23 @@ function($scope , $q , egCore , ngToast) {
     // alongside the templates.
     // NOTE: A lot of this data can be shared across templates.
     var seed_user = {
+        prefix : 'Mr',
         first_given_name : 'Slow',
         second_given_name : 'Joe',
         family_name : 'Jones',
+        suffix : 'III',
         card : {
             barcode : '30393830393'
-        }
+        },
+        money_summary : {
+            balance_owed : 4, // This is currently how these values are returned to the client
+            total_billed : '5.00',
+            total_paid : '1.00'
+        },
+        expire_date : '2020-12-31',
+        alias : 'the dude',
+        has_email : true,
+        has_phone : false
     }
     var seed_addr = {
         street1 : '123 Apple Rd',

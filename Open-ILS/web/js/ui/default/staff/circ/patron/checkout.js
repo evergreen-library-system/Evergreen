@@ -256,7 +256,8 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
     }
 
     $scope.print_receipt = function() {
-        var print_data = {circulations : []}
+        var print_data = {circulations : []};
+        var cusr = patronSvc.current;
 
         if ($scope.checkouts.length == 0) return $q.when();
 
@@ -272,7 +273,21 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             };
         });
 
+        // This is repeated in patron.* so everyting is in one place but left here so existing templates don't break.
         print_data.patron_money = patronSvc.patron_stats.fines;
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            card : { barcode : cusr.card().barcode() },
+            money_summary : patronSvc.patron_stats.fines,
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean($scope.has_email_address()),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         return egCore.print.print({
             context : 'default', 
