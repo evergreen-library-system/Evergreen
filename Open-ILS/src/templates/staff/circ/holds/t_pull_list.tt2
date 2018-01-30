@@ -56,29 +56,13 @@
   <!-- Define the column using the sort-able copy location order
        position, but display the location label in each cell -->
   <eg-grid-field name="copy_location_order_position" required 
-    label="[% l('Shelving Location') %]">
-    <span>{{item.shelving_loc}}</span>
-  </eg-grid-field>
-  <eg-grid-field name="shelving_loc" path="current_copy.location.name" 
-    required hidden label="[% l('Shelving Location Label') %]">
+    path="current_copy.location.name" label="[% l('Shelving Location') %]">
   </eg-grid-field>
 
-  <!-- Render the colum using the sort-able call number sort key, but 
-       display the call number label, complete with prefix and suffix 
-       in the cell. -->
-  <eg-grid-field name="call_number_sort_key" required
-    path="current_copy.call_number.label_sortkey" 
-    label="[% l('Call Number') %]">
-    <span>{{item.cn_prefix}} {{item.call_number_label}} {{item.cn_suffix}}</span>
-  </eg-grid-field>
   <eg-grid-field name="call_number_label" 
     path="call_number_label" required hidden
-    label="[% l('Call Number Label') %]"></eg-grid-field>
-  <eg-grid-field name="cn_prefix" path="current_copy.call_number.prefix.label" 
-    hidden required label="[% l('Call Number Prefix') %]"></eg-grid-field>
-  <eg-grid-field name="cn_suffix" path="current_copy.call_number.suffix.label"
-    hidden required label="[% l('Call Number Suffix') %]"></eg-grid-field>
-
+    label="[% l('Call Number') %]">
+  </eg-grid-field>
 
   <eg-grid-field name="author" 
     path="current_copy.call_number.record.simple_record.author" 
@@ -101,7 +85,7 @@
       {{item.barcode}}
     </a>
   </eg-grid-field>
-  <eg-grid-field name="parts" path="current_copy.parts.label" 
+  <eg-grid-field name="parts" path="part.label"
     label="[% l('Parts') %]"></eg-grid-field>
   <eg-grid-field name="copy_status" path="current_copy.status.name" 
     label="[% l('Copy Status') %]"></eg-grid-field>
@@ -126,15 +110,37 @@
     hidden label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="selection_ou" path="selection_ou.shortname" 
     hidden label="[% l('Selection Locus') %]"></eg-grid-field>
-  <eg-grid-field name="sms_carrier_name" path="sms_carrier.name" 
-    hidden label="[% l('SMS Carrier') %]"></eg-grid-field>
+  <eg-grid-field name="sms_notify" path="sms_notify"
+    hidden label="[% l('SMS Notify') %]"></eg-grid-field>
+  <eg-grid-field name="email_notify" path="email_notify"
+    hidden label="[% l('Email Notify') %]"></eg-grid-field>
+  <eg-grid-field name="phone_notify" path="phone_notify"
+    hidden label="[% l('Phone Notify') %]"></eg-grid-field>
+  <eg-grid-field name="staff_hold" path="_is_staff_hold" datatype="bool"
+    required hidden label="[% l('Staff Hold') %]"></eg-grid-field>
   <eg-grid-field label="[% l('Potential Copies') %]" 
     path='potential_copies'></eg-grid-field>
   <eg-grid-field label="[% l('Queue Position') %]" 
     path='queue_position' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold ID') %]" path='id' required hidden>
   </eg-grid-field>
+  <eg-grid-field label="[% l('Circ Modifier') %]" path='current_copy.circ_modifier' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Copy Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Hold Type') %]" path='hold_type' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('ISBN') %]" path='mvr.isbn' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Edition') %]" path='mvr.edition' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Top of Queue') %]" path='hold.cut_in_line' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Total Holds') %]" path='total_holds' hidden>
+  </eg-grid-field>
   <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Expire Date') %]" path='hold.expire_time' datatype="timestamp" hidden>
   </eg-grid-field>
 </eg-grid>
 
