@@ -316,6 +316,11 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
             angular.forEach(hold_info, 
                 function(val, key) { item[key] = val });
 
+            // check if this is a staff-created hold
+            // i.e requestor's profile != 2 (patron)
+
+            item['_is_staff_hold'] = item.hold.requestor().profile != 2;
+
         });
     }
 
