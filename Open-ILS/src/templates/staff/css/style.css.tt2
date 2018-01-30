@@ -347,21 +347,25 @@ table.list tr.selected td { /* deprecated? */
 /* patron bill row-highlighting */
 .red-row-highlight {
   color: #FFF;
-  background-color: #FF0000;
+  background-color: #EB0000;
+}
+.red-row-highlight a:link, .dark-red-row-highlight a:link {
+  color: #B8ECFF;
 }
 .orange-row-highlight {
-  color: #FFF;
-  background-color: #FFA500 ;
+  color: #000;
+  background-color: #FFE1A8;
 }
 .dark-red-row-highlight {
   color: #FFF;
   background-color: #800000;
+
 }
 .eg-grid-row-selected .red-row-highlight {
   background-color: #CF0000;
 }
 .eg-grid-row-selected .orange-row-highlight {
-  background-color: #DE9000;
+  background-color: #FFCF75;
 }
 .eg-grid-row-selected .dark-red-row-highlight {
   background-color: #5C0000;
