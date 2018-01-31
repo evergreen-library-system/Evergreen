@@ -992,8 +992,8 @@ BEGIN
         SELECT x.c_attrs, x.b_attrs INTO c_tests, b_tests FROM asset.patron_default_visibility_mask() x;
     END IF;
 
+    -- b_tests supplies its own query_int operator, c_tests does not
     IF c_tests <> '' THEN c_tests := c_tests || '&'; END IF;
-    IF b_tests <> '' THEN b_tests := b_tests || '&'; END IF;
 
     SELECT ARRAY_AGG(id) INTO c_orgs FROM actor.org_unit_descendants(context_org);
 
