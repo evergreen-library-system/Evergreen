@@ -1,0 +1,3 @@
+Auto-Cancel Lineitems When All Copies Are Canceled
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a copy (lineitem detail) is canceled through the Acquisitions interface, the parent lineitem is also canceled if all copies for that lineitem are also canceled.  The cancel reason given will be taken from the last copy with a cancel reason where Keep Debits is true, or failing that, the cancel reason used for the copy just canceled.
