@@ -3253,6 +3253,38 @@ sub cancel_lineitem {
     return $result;
 }
 
+sub autocancel_lineitem {
+    my $mgr = shift;
+    my $lid_id = shift;
+    my $candidate_cancel_reason = shift;
+
+    my $lid = $mgr->editor->search_acq_lineitem_detail({id => $lid_id});
+    my $li_id = $lid->[0]->lineitem;
+
+    my $all_lids = $mgr->editor->search_acq_lineitem_detail([{
+        lineitem => $li_id
+    },{
+        flesh => 1,
+        flesh_fields => { acqlid => ['cancel_reason'] }
+    }]);
+
+    my $all_lids_are_canceled = 1;
+    foreach my $lid ( @{ $all_lids } ) {
+        if (! $lid->cancel_reason ) {
+            $all_lids_are_canceled = 0;
+        }
+        if ($lid->cancel_reason) {
+            if ($U->is_true($lid->cancel_reason->keep_debits)) {
+                $candidate_cancel_reason = $lid->cancel_reason;
+            }
+        }
+    }
+    my $cancel_result;
+    if ($all_lids_are_canceled) {
+        eval { $cancel_result = cancel_lineitem($mgr, $li_id, $candidate_cancel_reason); };
+    }
+    return $cancel_result;
+}
 
 __PACKAGE__->register_method(
     method => "cancel_lineitem_detail_api",
@@ -3292,6 +3324,10 @@ sub cancel_lineitem_detail_api {
     } elsif ($result == -1) {
         $e->rollback;
         return new OpenILS::Event("ACQ_ALREADY_CANCELED");
+    }
+
+    if (defined autocancel_lineitem($mgr,$lid_id,$cancel_reason)) {
+        $$result{'li_update_needed'} = 1;
     }
 
     $e->commit or return $e->die_event;

@@ -2663,6 +2663,9 @@ function AcqLiTable() {
                                     r.lid[id].cancel_reason
                                 );
                                 self.updateLidState(self.copyCache[id]);
+                                if (r.li_update_needed) {
+                                    location.href = location.href; // sledgehammer
+                                }
                             }
                         }
                     }
