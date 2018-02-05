@@ -40,6 +40,15 @@ function($q , egCore , egWorkLog , patronSvc) {
             patronSvc.current.last_xact_id()
         ).then(function(resp) {
             console.debug('payments: ' + js2JSON(resp));
+
+            if (evt = egCore.evt.parse(resp)) {
+                // Ideally, all scenarios that lead to this alert appearing
+                // will be avoided by the application logic.  Leave the alert
+                // in place now to root out any that remain to be addressed.
+                alert(evt);
+                return $q.reject(''+evt);
+            }
+
             var total = 0; angular.forEach(payments,function(p) { total += p[1]; });
             var msg;
             switch(type) {
@@ -58,8 +67,6 @@ function($q , egCore , egWorkLog , patronSvc) {
                     'total_amount' : total
                 }
             );
-            if (evt = egCore.evt.parse(resp)) 
-                return alert(evt);
 
             // payment API returns the update xact id so we can track it
             // for future payments without having to refresh the user.
@@ -321,15 +328,20 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         var make_payments = generatePayments();
         billSvc.applyPayment($scope.payment_type, 
             make_payments, note, $scope.check_number, cc_args)
-        .then(function(payment_ids) {
+        .then(
+            function(payment_ids) {
 
-            if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
-                printReceipt(
-                    $scope.payment_type, payment_ids, make_payments, note);
+                if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
+                    printReceipt(
+                        $scope.payment_type, payment_ids, make_payments, note);
+                }
+
+                refreshDisplay();
+            },
+            function(msg) {
+                console.error('Payment was rejected: ' + msg);
             }
-
-            refreshDisplay();
-        })
+        )
     }
 
     $scope.onReceiptOnPayChanged = function(){
@@ -586,6 +598,12 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                     }
 
                     $scope.ok = function() {
+                        // CC payment form is not a <form>, 
+                        // so apply validation manually.
+                        if ( $scope.context.cc.where_process == 0 && 
+                            !$scope.context.cc.approval_code)
+                            return;
+
                         $uibModalInstance.close($scope.context.cc);
                     }
 

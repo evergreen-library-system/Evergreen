@@ -162,7 +162,8 @@ but the ones I'm finding aren't quite cutting it..*/
 /* Angular applies these classes based on the field's 
  * required and pattern settings */
 #patron-reg-container .ng-invalid,
-#patron-reg-container .ng-invalid-required {
+#patron-reg-container .ng-invalid-required,
+#patron-pay-by-credit-form .ng-invalid {
   background-color: yellow;
   color: red;
 }
