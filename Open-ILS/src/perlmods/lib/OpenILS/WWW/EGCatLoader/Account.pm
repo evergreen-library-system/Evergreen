@@ -951,7 +951,7 @@ sub load_myopac_holds {
     my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
-    my $hold_id = $self->cgi->param('id');
+    my $hold_id = $self->cgi->param('hid');
     my $available = int($self->cgi->param('available') || 0);
 
     my $hold_handle_result;
