@@ -5,7 +5,7 @@
     [% l('Credit Card Information') %]
   </h4>
 </div>
-<div class="modal-body tight-vert-form">
+<div class="modal-body tight-vert-form" id="patron-pay-by-credit-form">
   <div class="panel panel-default">
     <div class="panel-heading">[% l('Credit Card Info') %]</div>
     <div class="panel-body">
@@ -45,7 +45,8 @@
         <div class="row form-group">
           <div class="col-md-4"><label>[% l('Approval Code') %]</label></div>
           <div class="col-md-8">
-            <input type='text' class="form-control" ng-model="context.cc.approval_code"/>
+            <input type='text' class="form-control" 
+              required ng-model="context.cc.approval_code"/>
           </div>
         </div>
       </div><!--cc-external-wrapper-->
