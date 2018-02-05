@@ -946,6 +946,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         addDatafield(event, event.shiftKey); // shift key inserts before
                         event_return = false;
 
+                    } else if (event.which == 13 &&
+                              ($(event.target).hasClass('marcsf') || $(event.target.parentNode).hasClass('marcsf'))
+                              ) {
+                        // bare return; don't allow it
+                        event_return = false;
+
                     } else if (event.which == 46 && event.ctrlKey) { // ctrl+del, remove field
                         deleteDatafield(event);
                         event_return = false;
