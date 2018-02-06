@@ -13,17 +13,18 @@ translating to JSON (JEDI) for edi_fetcher.pl and to EDI for edi_pusher.pl,
 respectively.
 
 Files:
-    edi_webrick.bash - wrapper script for setting ENV, calling edi_webrick.rb
-    edi_webrick.cnf  - edi_webrick.rb config script
-    edi_webrick.rb   - the main EDI translator daemon script
-    install.sh       - dependency installer (for debian lenny)
-    README           - this file
-    misc/            - patches to EDI4R; purely temporary until we can
-                       get the changes accepted upstream
+    edi_webrick.bash  - wrapper script for setting ENV, calling edi_webrick.rb
+    edi_webrick.cnf   - edi_webrick.rb config script
+    edi_webrick.rb    - the main EDI translator daemon script
+    install.sh        - dependency installer for Debian Lenny
+    install-ubuntu.sh - dependency installer for Ubuntu Trusty and Xenial
+    README            - this file
+    misc/             - patches to EDI4R; purely temporary until we can
+                        get the changes accepted upstream
 
-This service can be run on a local or remote system that has the proper ruby environment
-established.  See the install.sh script for an example of how to install the needed ruby
-components (on debian lenny linux).
+This service can be run on a local or remote system that has the proper Ruby environment
+established.  See the install.sh script for an example of how to install the needed Ruby
+components (on Debian Lenny linux) or install-ubuntu.sh (on Ubuntu Trusty and Xenial).
 
 There is no such thing (yet?) as "push" from a vendor of their EDI responses.  Basically
 they just put responses in an FTP directory somewhere that you are expected to check.  It
