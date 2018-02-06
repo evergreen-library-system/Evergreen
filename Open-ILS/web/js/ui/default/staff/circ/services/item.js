@@ -152,7 +152,6 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     flatCopy._circ_summary = egCore.idl.toHash(copyData.circ_summary, true);
                     flatCopy._circ_lib = copyData.circ.circ_lib();
                     flatCopy._duration = copyData.circ.duration();
-                    flatCopy._checkout_ws = copyData.circ.workstation().name();
                 }
                 flatCopy.index = service.index++;
                 flatCopy.copy_alert_count = copyData.copy.copy_alerts().filter(function(aca) {
