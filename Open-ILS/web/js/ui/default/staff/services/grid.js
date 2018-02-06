@@ -781,7 +781,14 @@ angular.module('egGridMod',
                             if (column.visible) lastVisible = idx;
                         }
                     );
-                    targetIdx = lastVisible + 1;
+
+                    // When moving a column (down) causes one or more
+                    // visible columns to shuffle forward, our column
+                    // moves into the slot of the last visible column.
+                    // Otherwise, put it into the slot directly following 
+                    // the last visible column.
+                    targetIdx = 
+                        srcIdx < lastVisible ? lastVisible : lastVisible + 1;
                 }
 
                 // Splice column out of old position, insert at new position.
