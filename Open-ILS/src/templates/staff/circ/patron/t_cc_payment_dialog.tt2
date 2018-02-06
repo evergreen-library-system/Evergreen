@@ -110,7 +110,7 @@
   </div><!--panel-->
 </div><!--modal-body-->
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="ok()">[% l('Submit') %]</button>
+  <button class="btn btn-primary" ng-click="ok()" ng-disabled="context.cc.where_process == 0 && !context.cc.approval_code">[% l('Submit') %]</button>
   <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
 </div>
 
