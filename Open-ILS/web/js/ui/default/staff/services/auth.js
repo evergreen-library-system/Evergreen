@@ -312,7 +312,7 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
 
     service.logout = function(broadcast) {
 
-        if (broadcast) {
+        if (broadcast && service.authChannel.postMessage) {
             // Tell the other tabs to shut it all down.
             service.authChannel.postMessage({action : 'logout'});
         }
