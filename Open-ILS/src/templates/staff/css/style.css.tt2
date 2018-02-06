@@ -90,6 +90,13 @@
  * Local style
  */
 
+/* change default link color to provide adequate contrast */
+
+a {
+   color: #286090;
+}
+
+
 /* no bootstrap way to directly disable a link.  */
 a.disabled {
   pointer-events: none;
