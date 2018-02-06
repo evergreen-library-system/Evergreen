@@ -89,7 +89,8 @@
   <eg-grid-field label="[% l('Checkout Workstation') %]"  path="_circ_summary.checkout_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkout/Renewal Library') %]"  path="_circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation ID') %]"        path="_circ.id" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circ or Renewal Workstation') %]"  path="_circ_summary.last_renewal_workstation" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circ or Renewal Workstation') %]"  path="_circ_ws" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Last Renewal Workstation') %]"  path="_circ_summary.last_renewal_workstation" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Classification') %]"        path="call_number.label_class.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]"             path="call_number.prefix.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]"             path="call_number.suffix.label" hidden></eg-grid-field>
