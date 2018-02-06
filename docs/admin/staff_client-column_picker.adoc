@@ -6,17 +6,33 @@ indexterm:[Column Picker]
 From many screens and lists, you can click on the column picker
 drop-down menu to change which columns are displayed.
 
-image::media/column_picker_web.png[column_picker_xul]
+image::media/column_picker_web.png[Column picker menu options]
 
-When data are displayed in columns, you can add new columns, remove them,
-and change the display width. After customizing the display you may
-save your changes for future sessions under that login by choosing
-*Save Columns* from the drop-down menu. Some
-libraries use generic accounts and for those who do, staff need to be
-aware that their changes will be visible to anybody who uses the same
-staff account.
 
-image::media/column_picker_web_save.png[column_picker_xul_save]
+To show or hide a column, simply click the column name in the menu. For
+more advanced control of column visibility and their position in the
+grid, choose *Manage Columns* from the menu. The popup saves changes
+as they are made.
+
+Columns at the top of the list will appear at the left end of the grid.
+
+image::media/column_picker_popup.png[Column picker popup window]
+
+
+To adjust the width of columns, choose *Manage Column Widths* from
+the menu, then click the "Expand" or "Shrink" icons in each column.
+These can be clicked multiple times to reach the desired width.
+
+image::media/column_picker_config_widths.png[Column picker manage widths]
+
+
+After customizing the display you may save your changes by choosing
+*Save Columns* from the drop-down menu. These settings are stored in the
+browser and are not connected with a specific login or registered
+workstation. Each computer will need to be configured separately.
+
+image::media/column_picker_web_save.png[column_picker_web_save]
+
 
 Some lists have a different design, and some of them can also be customized.
 Simply right-click the header row of any of the columns, and the column
