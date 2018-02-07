@@ -180,7 +180,7 @@
     <div class="flex-cell">[% l('Copy Alerts') %]</div>
     <div class="flex-cell" id="item-status-alert-msg">
       <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>
-      <button class="btn btn-default" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>
+      <button class="btn btn-default" ng-disabled="!copy_alert_count" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>
     </div>
     <!-- hack to adjust positioning -->
     <div class="flex-cell"></div>

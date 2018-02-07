@@ -683,11 +683,15 @@ function($uibModal , $interpolate , egCore) {
                                 copy_alerts.push( a );
                             });
                             if (copy_alerts.length > 0) {
-                                egCore.pcrud.apply(copy_alerts);
+                                egCore.pcrud.apply(copy_alerts).finally(function() {
+                                    if (args.ok) args.ok();
+                                    $uibModalInstance.close()
+                                });
                             }
+                        } else {
+                            if (args.ok) args.ok();
+                            $uibModalInstance.close()
                         }
-                        if (args.ok) args.ok();
-                        $uibModalInstance.close()
                     }
                     $scope.cancel = function() {
                         if (args.cancel) args.cancel();
@@ -804,10 +808,14 @@ function($uibModal , $interpolate , egCore) {
                             }
                         });
                         if (acks.length > 0) {
-                            egCore.pcrud.apply(acks);
+                            egCore.pcrud.apply(acks).finally(function() {
+                                if (args.ok) args.ok($scope.params.the_next_status);
+                                $uibModalInstance.close()
+                            });
+                        } else {
+                            if (args.ok) args.ok($scope.params.the_next_status);
+                            $uibModalInstance.close()
                         }
-                        if (args.ok) args.ok($scope.params.the_next_status);
-                        $uibModalInstance.close()
                     }
                     $scope.cancel = function() {
                         if (args.cancel) args.cancel();
@@ -870,8 +878,9 @@ function($uibModal , $interpolate , egCore) {
                     });
 
                     $scope.ok = function() {
-                        egCore.pcrud.apply($scope.copy_alert_list);
-                        $uibModalInstance.close()
+                        egCore.pcrud.apply($scope.copy_alert_list).finally(function() {
+                            $uibModalInstance.close();
+                        });
                     }
                     $scope.cancel = function() {
                         if (args.cancel) args.cancel();

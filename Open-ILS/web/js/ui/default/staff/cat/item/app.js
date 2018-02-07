@@ -566,6 +566,9 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
     // use the cached record info
     if (itemSvc.copy) {
+        $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
+            return !aca.ack_time();
+        }).length;
         $scope.recordId = itemSvc.copy.call_number().record().id();
         $scope.args.recordId = $scope.recordId;
         $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -588,6 +591,9 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         // regardless of whether it matches the current item.
         if (!barcode && itemSvc.copy && itemSvc.copy.id() == copyId) {
             $scope.copy = itemSvc.copy;
+            $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
+                return !aca.ack_time();
+            }).length;
             $scope.recordId = itemSvc.copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -620,6 +626,10 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
 
             $scope.copy = copy;
+            $scope.copy_alert_count = copy.copy_alerts().filter(function(aca) {
+                return !aca.ack_time();
+            }).length;
+console.debug($scope.copy_alert_count);
             $scope.recordId = copy.call_number().record().id();
             $scope.args.recordId = $scope.recordId;
             $scope.args.cnId = itemSvc.copy.call_number().id();
@@ -969,12 +979,14 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
     $scope.addCopyAlerts = function(copy_id) {
         egCirc.add_copy_alerts([copy_id]).then(function() {
-            // update grid items?
+            // force a refresh
+            loadCopy($scope.copy.barcode()).then(loadTabData);
         });
     }
     $scope.manageCopyAlerts = function(copy_id) {
         egCirc.manage_copy_alerts([copy_id]).then(function() {
-            // update grid items?
+            // force a refresh
+            loadCopy($scope.copy.barcode()).then(loadTabData);
         });
     }
 
