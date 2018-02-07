@@ -217,7 +217,8 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             }
 
             if ($scope.trim_list && checkinSvc.checkins.length > 20)
-                checkinSvc.checkins = checkinSvc.checkins.splice(0, 20);
+                //cut array short at 20 items
+                checkinSvc.checkins.length = 20;
         },
         function() {
             // Checkin was rejected somewhere along the way.
