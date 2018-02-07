@@ -13,7 +13,7 @@
         <label for="copy-alert-type-selector">[% l('Alert Type') %]</label>
         <select id="copy-alert-type-selector" class="form-control"
           ng-model="record.alert_type"
-          ng-options="at.id() as at.name() for at in ccat">
+          ng-options="at.id() as at.name() for at in ccat | orderBy:'name()'">
         </select>
       </div>
       <div class="form-group">

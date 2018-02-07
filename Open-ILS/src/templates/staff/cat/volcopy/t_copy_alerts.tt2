@@ -10,7 +10,7 @@
           <label for="copy-alert-type-selector"> [% l('Type') %]</label>
           <select id="copy-alert-type-selector" class="form-control"
             ng-model="copy_alert.alert_type"
-            ng-options="at.id() as at.name() for at in alert_types">
+            ng-options="at.id() as at.name() for at in alert_types | orderBy:'name()'">
           </select>
         </div>
         <div class="col-md-3">
@@ -51,7 +51,7 @@
         </div>
       </div>
 
-      <div class="row" ng-repeat="a in copy_alert_list" ng-init="temp = (a.temp() == 't'); note = a.note(); acked = (a.ack_time() !== null); alert_type = a.alert_type().id()">
+      <div class="row" ng-repeat="a in copy_alert_list | orderBy:'id()'" ng-init="temp = (a.temp() == 't'); note = a.note(); acked = (a.ack_time() !== null); alert_type = a.alert_type().id()">
         <div class="col-md-12">
           <div class="row">
             <div class="col-md-6 form-inline">
@@ -59,7 +59,7 @@
               <select id="copy-alert-type-select-{{a.id()}}" class="form-control"
                       ng-model="alert_type"
                       ng-change="a.alert_type(alert_type) && a.ischanged(1)"
-                      ng-options="at.id() as at.name() for at in alert_types">
+                      ng-options="at.id() as at.name() for at in alert_types | orderBy:'name()'">
               </select>
             </div>
             <div class="col-md-3">
