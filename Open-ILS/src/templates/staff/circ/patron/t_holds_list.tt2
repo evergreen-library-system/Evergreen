@@ -1,6 +1,6 @@
 <eg-grid
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.holds"
   dateformat="{{$root.egDateAndTimeFormat}}">

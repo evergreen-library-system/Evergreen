@@ -127,10 +127,10 @@ angular.module('egGridMod',
         controller : [
                     '$scope','$q','egCore','egGridFlatDataProvider','$location',
                     'egGridColumnsProvider','$filter','$window','$sce','$timeout',
-                    'egProgressDialog','$uibModal',
+                    'egProgressDialog','$uibModal','egConfirmDialog','egStrings',
             function($scope,  $q , egCore,  egGridFlatDataProvider , $location,
                      egGridColumnsProvider , $filter , $window , $sce , $timeout,
-                     egProgressDialog , $uibModal) {
+                     egProgressDialog,  $uibModal , egConfirmDialog , egStrings) {
 
             var grid = this;
 
@@ -1187,6 +1187,18 @@ angular.module('egGridMod',
             }
 
             $scope.collect = function() { grid.collect() }
+
+
+            $scope.confirmAllowAllAndCollect = function(){
+                egConfirmDialog.open(egStrings.CONFIRM_LONG_RUNNING_ACTION_ALL_ROWS_TITLE,
+                    egStrings.CONFIRM_LONG_RUNNING_ACTION_MSG)
+                    .result
+                    .then(function(){
+                        $scope.offset(0);
+                        $scope.limit(10000);
+                        grid.collect();
+                });
+            }
 
             // asks the dataProvider for a page of data
             grid.collect = function() {

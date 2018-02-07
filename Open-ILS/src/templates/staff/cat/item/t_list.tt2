@@ -1,7 +1,7 @@
 <eg-grid
   id-field="index"
   idl-class="acp"
-  features="-display,clientsort"
+  features="-display,clientsort,allowAll"
   main-label="[% l('Item Status') %]"
   items-provider="gridDataProvider"
   grid-controls="gridControls"

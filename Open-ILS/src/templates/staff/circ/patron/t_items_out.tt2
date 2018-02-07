@@ -29,7 +29,7 @@
   ng-if="items_out_display == 'noncat'"
   idl-class="ancc"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out.noncat"
   dateformat="{{$root.egDateAndTimeFormat}}">

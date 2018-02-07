@@ -120,8 +120,13 @@
             {{t}}
           </a>
         </li>
+        <li ng-if="allowAll" ng-repeat="t in [500,1000]">
+          <a href ng-click='offset(0);limit(t);collect()'>
+            {{t}}
+          </a>
+        </li>
         <li ng-if="allowAll" >
-          <a href ng-click='offset(0);limit(10000);collect()'>[% l('All') %]</a>
+          <a href ng-click='confirmAllowAllAndCollect();'>[% l('All') %]</a>
         </li>
       </ul>
     </div>
