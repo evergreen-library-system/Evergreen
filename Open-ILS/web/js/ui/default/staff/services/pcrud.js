@@ -278,6 +278,7 @@ angular.module('egCoreMod')
                 if (action == 'apply') {
                     // object does not need updating; move along
                     this._CUD_next_request();
+                    return;
                 }
             }
 
