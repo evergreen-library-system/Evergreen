@@ -34,7 +34,7 @@ sub prepare_extended_user_info {
         {
             flesh => 1,
             flesh_fields => {
-                au => [qw/card home_ou addresses ident_type billing_address/, @extra_flesh]
+                au => [qw/card home_ou addresses ident_type billing_address waiver_entries/, @extra_flesh]
                 # ...
             }
         }
@@ -603,6 +603,9 @@ sub load_myopac_prefs_settings {
         }
     }
 
+    my $use_privacy_waiver = $self->ctx->{get_org_setting}->(
+        $e->requestor->home_ou, 'circ.privacy_waiver');
+
     return Apache2::Const::OK
         unless $self->cgi->request_method eq 'POST';
 
@@ -699,8 +702,52 @@ sub load_myopac_prefs_settings {
         'open-ils.actor.patron.settings.update',
         $self->editor->authtoken, undef, \%settings);
 
-    # re-fetch user prefs
     $self->ctx->{updated_user_settings} = \%settings;
+
+    if ($use_privacy_waiver) {
+        my %waiver;
+        my $saved_entries = ();
+        my @waiver_types = qw/place_holds pickup_holds checkout_items view_history/;
+
+        # initialize our waiver hash with waiver IDs from hidden input
+        # (this ensures that we capture entries with no checked boxes)
+        foreach my $waiver_row_id ($self->cgi->param("waiver_id")) {
+            $waiver{$waiver_row_id} = {};
+        }
+
+        # process our waiver checkboxes into a hash, keyed by waiver ID
+        # (a new entry, if any, has id = 'new')
+        foreach my $waiver_type (@waiver_types) {
+            if ($self->cgi->param("waiver_$waiver_type")) {
+                foreach my $waiver_id ($self->cgi->param("waiver_$waiver_type")) {
+                    # ensure this waiver exists in our hash
+                    $waiver{$waiver_id} = {} if !$waiver{$waiver_id};
+                    $waiver{$waiver_id}->{$waiver_type} = 1;
+                }
+            }
+        }
+
+        foreach my $k (keys %waiver) {
+            my $w = $waiver{$k};
+            # get name from textbox
+            $w->{name} = $self->cgi->param("waiver_name_$k");
+            $w->{id} = $k;
+            foreach (@waiver_types) {
+                $w->{$_} = 0 unless ($w->{$_});
+            }
+            push @$saved_entries, $w;
+        }
+
+        # update patron privacy waiver entries
+        $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.patron.privacy_waiver.update',
+            $self->editor->authtoken, undef, $saved_entries);
+
+        $self->ctx->{updated_waiver_entries} = $saved_entries;
+    }
+
+    # re-fetch user prefs
     return $self->_load_user_with_prefs || Apache2::Const::OK;
 }
 

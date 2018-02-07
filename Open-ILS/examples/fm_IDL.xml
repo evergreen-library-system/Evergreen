@@ -2320,6 +2320,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+	<class id="aupw" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::usr_privacy_waiver" oils_persist:tablename="actor.usr_privacy_waiver" reporter:label="Privacy Waiver">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_privacy_waiver_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="User" name="usr" reporter:datatype="link" />
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Place Holds?" name="place_holds" reporter:datatype="bool" />
+			<field reporter:label="Pick Up Holds?" name="pickup_holds" reporter:datatype="bool" />
+			<field reporter:label="View Borrowing History?" name="view_history" reporter:datatype="bool" />
+			<field reporter:label="Check Out Items?" name="checkout_items" reporter:datatype="bool" />
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="UPDATE_USER">
+					<context link="usr" field="home_ou"/>
+				</create>
+				<retrieve permission="VIEW_USER">
+					<context link="usr" field="home_ou"/>
+				</retrieve>
+				<update permission="UPDATE_USER">
+					<context link="usr" field="home_ou"/>
+				</update>
+				<delete permission="UPDATE_USER">
+					<context link="usr" field="home_ou"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="aupr" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_password_reset" oils_persist:tablename="actor.usr_password_reset" reporter:label="User password reset requests">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_password_reset_id_seq">
 			<field reporter:label="Request ID" name="id" reporter:datatype="id"/>
@@ -3601,6 +3631,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Standing Penalties" name="standing_penalties" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Statistical Category Entries" name="stat_cat_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Survey Responses" name="survey_responses" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Privacy Waiver Entries" name = "waiver_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstation Org Unit" name="ws_ou" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Workstation ID" name="wsid" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
@@ -3676,6 +3707,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="card" reltype="has_a" key="id" map="" class="ac"/>
 			<link field="ident_type2" reltype="has_a" key="id" map="" class="cit"/>
 			<link field="stat_cat_entries" reltype="has_many" key="target_usr" map="" class="actscecm"/>
+			<link field="waiver_entries" reltype="has_many" key="usr" map="" class="aupw"/>
 			<link field="groups" reltype="has_many" key="usr" map="grp" class="pugm"/>
 			<link field="usrgroup" reltype="has_many" key="usrgroup" map="" class="au"/>
 			<link field="checkouts" reltype="has_many" key="usr" map="" class="circ"/>

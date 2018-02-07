@@ -177,6 +177,20 @@
       <div class="col-md-5">[% l('Name Keywords') %]</div>
       <div class="col-md-7">{{patron().name_keywords()}}</div>
     </div>
+    <div class="row patron-summary-divider" ng-if="patron().waiver_entries().length > 0">
+      [% l('Allow others to use my account') %]
+    </div>
+    <div class="row" ng-repeat="waiver in patron().waiver_entries()">
+      <div class="col-md-5">{{waiver.name()}}</div>
+      <div class="col-md-7">
+        <ul>
+          <li ng-show="waiver.place_holds() == 't'">[% l('Place holds') %]</li>
+          <li ng-show="waiver.pickup_holds() == 't'">[% l('Pick up holds') %]</li>
+          <li ng-show="waiver.view_history() == 't'">[% l('View borrowing history') %]</li>
+          <li ng-show="waiver.checkout_items() == 't'">[% l('Check out items') %]</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="row" ng-repeat="addr in patron().addresses()">

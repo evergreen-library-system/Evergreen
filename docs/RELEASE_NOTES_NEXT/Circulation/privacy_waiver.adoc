@@ -1,0 +1,15 @@
+Allow Others to Use My Account (Privacy Waiver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons who wish to authorize other people to use their account may
+now do so via My Account.  In the Search and History Preferences tab
+under Account Preferences, a new section labeled "Allow others to use
+my account" allows patrons to enter a name and indicate that the
+specified person is allowed to place holds, pickup holds, view
+borrowing history, or check out items on their account.  This
+information is displayed to circulation staff in the patron account
+summary in the web client.  (Staff may also add, edit, and remove
+entries via the patron editor.)
+
+A new library setting, "Allow others to use patron account (privacy
+waiver)," is used to enable or disable this feature.
+

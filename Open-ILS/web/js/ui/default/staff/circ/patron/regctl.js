@@ -334,6 +334,7 @@ angular.module('egCoreMod')
             'ui.patron.registration.require_address',
             'circ.holds.behind_desk_pickup_supported',
             'circ.patron_edit.clone.copy_address',
+            'circ.privacy_waiver',
             'ui.patron.edit.au.prefix.require',
             'ui.patron.edit.au.prefix.show',
             'ui.patron.edit.au.prefix.suggest',
@@ -726,6 +727,13 @@ angular.module('egCoreMod')
         addr.pending = addr.pending === 't';
     }
 
+    service.ingest_waiver_entry = function(patron, waiver_entry) {
+        waiver_entry.place_holds = waiver_entry.place_holds == 't';
+        waiver_entry.pickup_holds = waiver_entry.pickup_holds == 't';
+        waiver_entry.view_history = waiver_entry.view_history == 't';
+        waiver_entry.checkout_items = waiver_entry.checkout_items == 't';
+    }
+
     /*
      * Existing patron objects reqire some data munging before insertion
      * into the scope.
@@ -772,6 +780,9 @@ angular.module('egCoreMod')
                     function(a) {return a.id == addr.replaces})[0];
             }
         });
+
+        angular.forEach(patron.waiver_entries,
+            function(waiver_entry) { service.ingest_waiver_entry(patron, waiver_entry) });
 
         service.get_linked_addr_users(patron.addresses);
 
@@ -824,6 +835,7 @@ angular.module('egCoreMod')
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
             stat_cat_entries : [],
+            waiver_entries : [],
             groups : [],
             addresses : [addr]
         };
@@ -1135,6 +1147,15 @@ angular.module('egCoreMod')
             newmap.stat_cat(cat_id);
             newmap.stat_cat_entry(value);
             patron.stat_cat_entries().push(newmap);
+        });
+
+        var waiver_hashes = patron.waiver_entries();
+        patron.waiver_entries([]);
+        angular.forEach(waiver_hashes, function(waiver_hash) {
+            if (!waiver_hash.isnew && !waiver_hash.isdeleted)
+                waiver_hash.ischanged = true;
+            var waiver_entry = egCore.idl.fromHash('aupw', waiver_hash);
+            patron.waiver_entries().push(waiver_entry);
         });
 
         if (!patron.isnew()) patron.ischanged(true);
@@ -1634,6 +1655,24 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 
+    $scope.new_waiver_entry = function() {
+        var waiver = egCore.idl.toHash(new egCore.idl.aupw());
+        patronRegSvc.ingest_waiver_entry($scope.patron, waiver);
+        waiver.id = patronRegSvc.virt_id--;
+        waiver.isnew = true;
+        $scope.patron.waiver_entries.push(waiver);
+    }
+
+    deleted_waiver_entries = [];
+    $scope.delete_waiver_entry = function(waiver_entry) {
+        if (waiver_entry.id > 0) {
+            waiver_entry.isdeleted = true;
+            deleted_waiver_entries.push(waiver_entry);
+        }
+        var index = $scope.patron.waiver_entries.indexOf(waiver_entry);
+        $scope.patron.waiver_entries.splice(index, 1);
+    }
+
     $scope.replace_card = function() {
         $scope.patron.card.active = false;
         $scope.patron.card.ischanged = true;
@@ -2059,6 +2098,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.patron.addresses = 
             $scope.patron.addresses.concat(deleted_addresses);
         
+        // ditto for waiver entries
+        $scope.patron.waiver_entries = 
+            $scope.patron.waiver_entries.concat(deleted_waiver_entries);
+
         compress_hold_notify();
 
         var updated_user;
