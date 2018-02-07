@@ -69,16 +69,16 @@
         </select>
       </div>
       <div class="form-group">
-        <label for="at-circ-selector">[% l('At Circulation Library?') %]</label>
+        <label for="at-circ-selector">[% l('Allow Only At Circulation Library?') %]</label>
         <select id="at-circ-selector" class="form-control" ng-model="record.at_circ">
-            <option value="">[% l('Do not care') %]</option>
+            <option value="">[% l('No') %]</option>
             <option value="t">[% l('Yes') %]</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="at-owning-selector">[% l('At Owning Library?') %]</label>
+        <label for="at-owning-selector">[% l('Allow Only At Owning Library?') %]</label>
         <select id="at-owning-selector" class="form-control" ng-model="record.at_owning">
-            <option value="">[% l('Do not care') %]</option>
+            <option value="">[% l('No') %]</option>
             <option value="t">[% l('Yes') %]</option>
         </select>
       </div>
