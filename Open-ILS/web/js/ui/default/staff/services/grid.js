@@ -788,7 +788,7 @@ angular.module('egGridMod',
                     // Otherwise, put it into the slot directly following 
                     // the last visible column.
                     targetIdx = 
-                        srcIdx < lastVisible ? lastVisible : lastVisible + 1;
+                        srcIdx <= lastVisible ? lastVisible : lastVisible + 1;
                 }
 
                 // Splice column out of old position, insert at new position.
