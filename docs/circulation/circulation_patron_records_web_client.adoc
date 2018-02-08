@@ -193,7 +193,7 @@ Open the patron record in edit mode as described in the section
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
-image::media/circulation_patron_records-13.png[circulation_patron_records 13]
+* image::media/circulation_patron_records-13.png[circulation_patron_records 13]
 
 This will clear the barcode field.  Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
@@ -231,14 +231,14 @@ described in the section <<searching_patrons,Searching Patrons>>.
 Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
-Select the _Reset Password_ button next to the _Password_ field.  
+Select the _Generate Password_ button next to the _Password_ field.  
 
-image::media/circulation_patron_records-15.png[circulation_patron_records 15]
+* image::media/circulation_patron_records-15.png[circulation_patron_records 15]
 
 NOTE: The existing password is not displayed in patron records for security
 reasons.
 
-A new number will populate the _Password_ and _Verify Password_ text boxes.
+A new number will populate the _Password_ text box.
 Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
 
