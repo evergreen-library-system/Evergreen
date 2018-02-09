@@ -2178,4 +2178,8 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
+-- Handy function for transforming marc to a variant available on config.xml_transform
+CREATE OR REPLACE FUNCTION evergreen.marc_to (marc text, xfrm text) RETURNS TEXT AS $$
+    SELECT evergreen.xml_pretty_print(xslt_process($1,xslt)::XML)::TEXT FROM config.xml_transform WHERE name = $2;
+$$ LANGUAGE SQL;
 

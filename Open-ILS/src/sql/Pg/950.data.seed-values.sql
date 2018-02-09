@@ -307,6 +307,26 @@ VALUES (
 )
 ;
 
+INSERT INTO config.metabib_field (id, field_class, name, format,
+    label, xpath, display_xpath, display_field, search_field, browse_field)
+VALUES (
+    51, 'author', 'first_author', 'mods32',
+    oils_i18n_gettext(51, 'Author', 'cmf', 'label'),
+    $$//mods32:mods/mods32:name[mods32:role/mods32:roleTerm[text()='creator']][1]$$,
+    $$//*[local-name()='namePart']$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name, format,
+    label, xpath, display_xpath, display_field, search_field, browse_field)
+VALUES (
+    52, 'keyword', 'origin_info', 'marcxml',
+    oils_i18n_gettext(52, 'Origin Info', 'cmf', 'label'),
+    $$//*[@tag='260']$$,
+    $$//*[local-name()='subfield' and contains('abc',@code)]$$,
+    TRUE, TRUE, FALSE
+);
+
 INSERT INTO config.metabib_field_virtual_map (real, virtual)
     SELECT  id,
             45
@@ -340,7 +360,7 @@ SELECT SETVAL('config.metabib_field_id_seq', GREATEST(1000, (SELECT MAX(id) FROM
 
 INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('title', 6, FALSE),
-    ('author', 8, FALSE),
+    ('author', 51, FALSE),
     ('creators', 37, TRUE),
     ('subject', 16, TRUE),
     ('isbn', 18, TRUE),
@@ -354,7 +374,7 @@ INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('tcn',                 26, FALSE),
     ('edition',             38, FALSE),
     ('physical_description',39, TRUE),
-    ('publisher',           40, FALSE),
+    ('publisher',           52, FALSE),
     ('abstract',            41, FALSE),
     ('toc',                 42, FALSE),
     ('type_of_resource',    43, FALSE),

@@ -333,13 +333,22 @@ END;
     </li>
         [%- END %]
     [%- END %]
-    [%- IF attrs.phys_desc %]
+    [%- IF attrs.hl.physical_description.size %]
+    <li id='rdetail_phys_desc'>
+        <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.physical_description.join('<br/>') %]</span>
+    </li>
+    [%- ELSIF attrs.phys_desc %]
     <li id='rdetail_phys_desc'>
         <strong class='rdetail_label'>[% l("Physical Description:") %]</strong>
         <span class='rdetail_value'>[% attrs.phys_desc | html %]</span>
     </li>
     [%- END %]
-    [%- IF attrs.edition %]
+    [%- IF attrs.hl.edition %]
+    <li id='rdetail_edition'>
+        <strong class='rdetail_label'>[% l("Edition:") %]</strong>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.edition %]</span>
+    [%- ELSIF attrs.edition %]
     <li id='rdetail_edition'>
         <strong class='rdetail_label'>[% l("Edition:") %]</strong>
         <span class='rdetail_value'>[% attrs.edition | html %]</span>
@@ -360,7 +369,12 @@ END;
         -%]
     </li>
     [%- END %]
-    [%- IF attrs.publisher %]
+    [%- IF attrs.hl.publisher %]
+    <li id='rdetail_publisher'>
+        <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
+        <span class='rdetail_value' highlighted='true'>[% attrs.hl.publisher %]</span>
+    </li>
+    [%- ELSIF attrs.publisher %]
     <li id='rdetail_publisher'>
         <strong class='rdetail_label'>[% l("Publisher:") %]</strong>
         <span class='rdetail_value' property="publisher" typeof="Organization">

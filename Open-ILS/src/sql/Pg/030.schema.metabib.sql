@@ -245,25 +245,25 @@ CREATE VIEW metabib.wide_display_entry AS
    This VIEW expands as well-known display fields are added. */
     SELECT
         bre.id AS source,
-        COALESCE(mcde_title.value, 'null') AS title,
-        COALESCE(mcde_author.value, 'null') AS author,
-        COALESCE(mcde_subject_geographic.value, 'null') AS subject_geographic,
-        COALESCE(mcde_subject_name.value, 'null') AS subject_name,
-        COALESCE(mcde_subject_temporal.value, 'null') AS subject_temporal,
-        COALESCE(mcde_subject_topic.value, 'null') AS subject_topic,
-        COALESCE(mcde_creators.value, 'null') AS creators,
-        COALESCE(mcde_isbn.value, 'null') AS isbn,
-        COALESCE(mcde_issn.value, 'null') AS issn,
-        COALESCE(mcde_upc.value, 'null') AS upc,
-        COALESCE(mcde_tcn.value, 'null') AS tcn,
-        COALESCE(mcde_edition.value, 'null') AS edition,
-        COALESCE(mcde_physical_description.value, 'null') AS physical_description,
-        COALESCE(mcde_publisher.value, 'null') AS publisher,
-        COALESCE(mcde_series_title.value, 'null') AS series_title,
-        COALESCE(mcde_abstract.value, 'null') AS abstract,
-        COALESCE(mcde_toc.value, 'null') AS toc,
-        COALESCE(mcde_pubdate.value, 'null') AS pubdate,
-        COALESCE(mcde_type_of_resource.value, 'null') AS type_of_resource
+        COALESCE(mcde_title.value, 'null')::TEXT AS title,
+        COALESCE(mcde_author.value, 'null')::TEXT AS author,
+        COALESCE(mcde_subject_geographic.value, 'null')::TEXT AS subject_geographic,
+        COALESCE(mcde_subject_name.value, 'null')::TEXT AS subject_name,
+        COALESCE(mcde_subject_temporal.value, 'null')::TEXT AS subject_temporal,
+        COALESCE(mcde_subject_topic.value, 'null')::TEXT AS subject_topic,
+        COALESCE(mcde_creators.value, 'null')::TEXT AS creators,
+        COALESCE(mcde_isbn.value, 'null')::TEXT AS isbn,
+        COALESCE(mcde_issn.value, 'null')::TEXT AS issn,
+        COALESCE(mcde_upc.value, 'null')::TEXT AS upc,
+        COALESCE(mcde_tcn.value, 'null')::TEXT AS tcn,
+        COALESCE(mcde_edition.value, 'null')::TEXT AS edition,
+        COALESCE(mcde_physical_description.value, 'null')::TEXT AS physical_description,
+        COALESCE(mcde_publisher.value, 'null')::TEXT AS publisher,
+        COALESCE(mcde_series_title.value, 'null')::TEXT AS series_title,
+        COALESCE(mcde_abstract.value, 'null')::TEXT AS abstract,
+        COALESCE(mcde_toc.value, 'null')::TEXT AS toc,
+        COALESCE(mcde_pubdate.value, 'null')::TEXT AS pubdate,
+        COALESCE(mcde_type_of_resource.value, 'null')::TEXT AS type_of_resource
     FROM biblio.record_entry bre
     LEFT JOIN metabib.compressed_display_entry mcde_title
         ON (bre.id = mcde_title.source AND mcde_title.name = 'title')
@@ -1027,6 +1027,8 @@ BEGIN
                   WHERE record = $1
                         AND metabib_field = $2
             $$ USING bib_id, vfield, rdata;
+        WHEN OTHERS THEN
+            -- ignore and move on
         END;
     END LOOP;
 END;

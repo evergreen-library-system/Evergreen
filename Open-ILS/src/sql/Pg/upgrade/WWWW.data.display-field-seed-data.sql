@@ -99,6 +99,26 @@ VALUES (
 )
 ;
 
+INSERT INTO config.metabib_field (id, field_class, name, format,
+    label, xpath, display_xpath, display_field, search_field, browse_field)
+VALUES (
+    51, 'author', 'first_author', 'mods32',
+    oils_i18n_gettext(51, 'Author', 'cmf', 'label'),
+    $$//mods32:mods/mods32:name[mods32:role/mods32:roleTerm[text()='creator']][1]$$,
+    $$//*[local-name()='namePart']$$,
+    TRUE, TRUE, FALSE
+);
+
+INSERT INTO config.metabib_field (id, field_class, name, format,
+    label, xpath, display_xpath, display_field, search_field, browse_field)
+VALUES (
+    52, 'keyword', 'origin_info', 'marcxml',
+    oils_i18n_gettext(52, 'Origin Info', 'cmf', 'label'),
+    $$//*[@tag='260']$$,
+    $$//*[local-name()='subfield' and contains('abc',@code)]$$,
+    TRUE, TRUE, FALSE
+);
+
 
 -- Modify existing config.metabib_field entries
 
@@ -126,38 +146,40 @@ INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('tcn',                 26, FALSE),
     ('edition',             38, FALSE),
     ('physical_description',39, TRUE),
-    ('publisher',           40, FALSE),
+    ('publisher',           52, FALSE),
     ('abstract',            41, FALSE),
     ('toc',                 42, FALSE),
     ('type_of_resource',    43, FALSE),
     ('pubdate',             44, FALSE)
 ;
 
+UPDATE config.display_field_map SET field = 51 WHERE name = 'author';
+
 -- Add a column to wide-display-entry per well-known field
 
-DROP VIEW metabib.wide_display_entry;
+DROP VIEW IF EXISTS metabib.wide_display_entry;
 CREATE VIEW metabib.wide_display_entry AS
     SELECT 
         bre.id AS source,
-        COALESCE(mcde_title.value, 'null') AS title,
-        COALESCE(mcde_author.value, 'null') AS author,
-        COALESCE(mcde_subject_geographic.value, 'null') AS subject_geographic,
-        COALESCE(mcde_subject_name.value, 'null') AS subject_name,
-        COALESCE(mcde_subject_temporal.value, 'null') AS subject_temporal,
-        COALESCE(mcde_subject_topic.value, 'null') AS subject_topic,
-        COALESCE(mcde_creators.value, 'null') AS creators,
-        COALESCE(mcde_isbn.value, 'null') AS isbn,
-        COALESCE(mcde_issn.value, 'null') AS issn,
-        COALESCE(mcde_upc.value, 'null') AS upc,
-        COALESCE(mcde_tcn.value, 'null') AS tcn,
-        COALESCE(mcde_edition.value, 'null') AS edition,
-        COALESCE(mcde_physical_description.value, 'null') AS physical_description,
-        COALESCE(mcde_publisher.value, 'null') AS publisher,
-        COALESCE(mcde_series_title.value, 'null') AS series_title,
-        COALESCE(mcde_abstract.value, 'null') AS abstract,
-        COALESCE(mcde_toc.value, 'null') AS toc,
-        COALESCE(mcde_pubdate.value, 'null') AS pubdate,
-        COALESCE(mcde_type_of_resource.value, 'null') AS type_of_resource
+        COALESCE(mcde_title.value, 'null')::TEXT AS title,
+        COALESCE(mcde_author.value, 'null')::TEXT AS author,
+        COALESCE(mcde_subject_geographic.value, 'null')::TEXT AS subject_geographic,
+        COALESCE(mcde_subject_name.value, 'null')::TEXT AS subject_name,
+        COALESCE(mcde_subject_temporal.value, 'null')::TEXT AS subject_temporal,
+        COALESCE(mcde_subject_topic.value, 'null')::TEXT AS subject_topic,
+        COALESCE(mcde_creators.value, 'null')::TEXT AS creators,
+        COALESCE(mcde_isbn.value, 'null')::TEXT AS isbn,
+        COALESCE(mcde_issn.value, 'null')::TEXT AS issn,
+        COALESCE(mcde_upc.value, 'null')::TEXT AS upc,
+        COALESCE(mcde_tcn.value, 'null')::TEXT AS tcn,
+        COALESCE(mcde_edition.value, 'null')::TEXT AS edition,
+        COALESCE(mcde_physical_description.value, 'null')::TEXT AS physical_description,
+        COALESCE(mcde_publisher.value, 'null')::TEXT AS publisher,
+        COALESCE(mcde_series_title.value, 'null')::TEXT AS series_title,
+        COALESCE(mcde_abstract.value, 'null')::TEXT AS abstract,
+        COALESCE(mcde_toc.value, 'null')::TEXT AS toc,
+        COALESCE(mcde_pubdate.value, 'null')::TEXT AS pubdate,
+        COALESCE(mcde_type_of_resource.value, 'null')::TEXT AS type_of_resource
     FROM biblio.record_entry bre 
     LEFT JOIN metabib.compressed_display_entry mcde_title 
         ON (bre.id = mcde_title.source AND mcde_title.name = 'title')
@@ -206,6 +228,27 @@ CREATE VIEW metabib.wide_display_entry AS
         ON (bre.id = mcde_type_of_resource.source 
             AND mcde_type_of_resource.name = 'type_of_resource')
 ;
+
+CREATE OR REPLACE VIEW reporter.old_super_simple_record AS
+SELECT  r.id,
+    r.fingerprint,
+    r.quality,
+    r.tcn_source,
+    r.tcn_value,
+    evergreen.oils_json_to_text(d.title) AS title,
+    evergreen.oils_json_to_text(d.author) AS author,
+    evergreen.oils_json_to_text(d.publisher) AS publisher,
+    evergreen.oils_json_to_text(d.pubdate) AS pubdate,
+    CASE WHEN d.isbn = 'null'
+        THEN NULL
+        ELSE (SELECT ARRAY(SELECT json_array_elements_text(d.isbn::JSON)))
+    END AS isbn,
+    CASE WHEN d.issn = 'null'
+        THEN NULL
+        ELSE (SELECT ARRAY(SELECT json_array_elements_text(d.issn::JSON)))
+    END AS issn
+  FROM  biblio.record_entry r
+        JOIN metabib.wide_display_entry d ON (r.id = d.source);
 
 COMMIT;
 

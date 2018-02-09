@@ -322,6 +322,8 @@ BEGIN
                   WHERE record = $1
                         AND metabib_field = $2
             $$ USING bib_id, vfield, rdata;
+        WHEN OTHERS THEN
+            -- ignore and move on
         END;
     END LOOP;
 END;
@@ -554,6 +556,10 @@ BEGIN
 
 END;
 $function$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION evergreen.marc_to (marc text, xfrm text) RETURNS TEXT AS $$
+    SELECT evergreen.xml_pretty_print(xslt_process($1,xslt)::XML)::TEXT FROM config.xml_transform WHERE name = $2;
+$$ LANGUAGE SQL;
 
 COMMIT;
 
