@@ -788,7 +788,6 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 </Location>
 
 <LocationMatch /eg/staff/>
-    SSLRequireSSL
     Options -MultiViews
     PerlSetVar OILSWebStopAtIndex "true"
 
