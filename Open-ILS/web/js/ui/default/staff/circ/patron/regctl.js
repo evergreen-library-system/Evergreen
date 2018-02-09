@@ -1271,7 +1271,23 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         prs.set_field_patterns(field_patterns);
         apply_username_regex();
+
+        add_date_watchers();
     });
+
+    function add_date_watchers() {
+
+        $scope.$watch('patron.dob', function(newVal, oldVal) {
+            // Even though this runs after page data load, there
+            // are still times when it fires unnecessarily.
+            if (newVal === oldVal) return;
+
+            console.debug('dob change: ' + newVal + ' : ' + oldVal);
+            maintain_juvenile_flag();
+        });
+
+        // No need to watch expire_date
+    }
 
 
     // update the currently displayed field documentation
@@ -1741,7 +1757,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         var cls = obj.classname; // set by egIdl
         var value = obj[field_name];
 
-        console.log('changing field ' + field_name + ' to ' + value);
+        console.debug('changing field ' + field_name + ' to ' + value);
 
         switch (field_name) {
             case 'day_phone' : 
@@ -1790,10 +1806,6 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 // TODO: finish barcode_changed handler.
                 $scope.barcode_changed(value);
                 apply_username_regex();
-                break;
-
-            case 'dob':
-                maintain_juvenile_flag();
                 break;
         }
     }
