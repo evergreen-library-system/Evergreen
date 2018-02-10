@@ -184,7 +184,7 @@ END;
                                                        role="presentation"
                                                        title="[% l('Record Holdings Summary') %]"
                                                        class="table_no_border_space table_no_cell_pad table_no_border results_info_table">
-                                                        [% UNLESS rec.mmr_id %]
+                                                        [% UNLESS rec.mmr_id OR show_detail_view %]
                                                            [% IF args.holdings.size > 0 %]
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td valign='top'>
