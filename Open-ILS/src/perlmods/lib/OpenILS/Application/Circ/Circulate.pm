@@ -4222,7 +4222,8 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
             $ods->[0]->billing_type(),
             $self->circ->id(),
             "System: $tag RETURNED - OVERDUES REINSTATED",
-            $ods->[0]->billing_ts() # date this restoration the same as the last overdue (for possible subsequent fine generation)
+            $ods->[-1]->period_start(),
+            $ods->[0]->period_end() # date this restoration the same as the last overdue (for possible subsequent fine generation)
         );
     }
 }

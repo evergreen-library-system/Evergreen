@@ -7987,7 +7987,10 @@ SELECT  usr,
 	<class id="mb" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::billing" oils_persist:tablename="money.billing" reporter:label="Billing Line Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
-			<field reporter:label="Billing Timestamp" name="billing_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Billing Period Start" name="period_start" reporter:datatype="timestamp"/>
+			<field reporter:label="Billing Period End" name="period_end" reporter:datatype="timestamp"/>
+			<field reporter:label="Legacy Billing Timestamp" name="billing_ts" reporter:datatype="timestamp"/>
 			<field reporter:label="Legacy Billing Type" name="billing_type" reporter:datatype="text"/>
 			<field reporter:label="Billing ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>

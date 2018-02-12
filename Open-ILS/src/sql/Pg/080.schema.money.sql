@@ -51,18 +51,32 @@ CREATE INDEX m_g_usr_idx ON "money".grocery (usr);
 CREATE TABLE money.billing (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
-	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	billing_ts	TIMESTAMP WITH TIME ZONE	NOT NULL, -- DEPRECATED, legacy only
 	voided		BOOL				NOT NULL DEFAULT FALSE,
 	voider		INT,
 	void_time	TIMESTAMP WITH TIME ZONE,
 	amount		NUMERIC(6,2)			NOT NULL,
 	billing_type	TEXT				NOT NULL,
 	btype		INT				NOT NULL REFERENCES config.billing_type (id) ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED,
-	note		TEXT
+	note		TEXT,
+	create_date	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
+	period_start	TIMESTAMP WITH TIME ZONE,
+	period_end	TIMESTAMP WITH TIME ZONE
 );
 CREATE INDEX m_b_xact_idx ON money.billing (xact);
 CREATE INDEX m_b_time_idx ON money.billing (billing_ts);
+CREATE INDEX m_b_create_date_idx ON money.billing (create_date);
+CREATE INDEX m_b_period_start_idx ON money.billing (period_start);
+CREATE INDEX m_b_period_end_idx ON money.billing (period_end);
 CREATE INDEX m_b_voider_idx ON money.billing (voider); -- helps user merge function speed
+CREATE OR REPLACE FUNCTION money.maintain_billing_ts () RETURNS TRIGGER AS $$
+BEGIN
+	NEW.billing_ts := COALESCE(NEW.period_end, NEW.create_date);
+	RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+CREATE TRIGGER maintain_billing_ts_tgr BEFORE INSERT OR UPDATE ON money.billing FOR EACH ROW EXECUTE PROCEDURE money.maintain_billing_ts();
+
 
 CREATE TABLE money.payment (
 	id		BIGSERIAL			PRIMARY KEY,

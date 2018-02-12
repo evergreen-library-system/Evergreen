@@ -978,7 +978,8 @@ sub _rebill_xact {
             $billing->billing_type,
             $xact_id,
             "System: MANUAL ADJUSTMENT, BILLING #".$billing->id." REINSTATED\n(PREV: ".$billing->note.")",
-            $billing->billing_ts()
+            $billing->period_start(),
+            $billing->period_end()
         );
         return $evt if $evt;
         $rebill_amount += $billing->amount;
