@@ -32,6 +32,9 @@ use OpenILS::Utils::Penalty;
 use Business::Stripe;
 $Data::Dumper::Indent = 0;
 use OpenILS::Const qw/:const/;
+use OpenSRF::Utils qw/:datetime/;
+use DateTime::Format::ISO8601;
+my $parser = DateTime::Format::ISO8601->new;
 
 sub get_processor_settings {
     my $e = shift;
@@ -1270,6 +1273,139 @@ sub retrieve_credit_payable_balance {
     }
 
     return $sum;
+}
+
+
+__PACKAGE__->register_method(
+    method    => "retrieve_statement",
+    authoritative => 1,
+    api_name    => "open-ils.circ.money.statement.retrieve",
+    notes        => "Returns an organized summary of a billable transaction, including all bills, payments, adjustments, and voids."
+    );
+
+sub _to_epoch {
+    my $ts = shift @_;
+
+    return $parser->parse_datetime(cleanse_ISO8601($ts))->epoch;
+}
+
+my %_statement_sort = (
+    'billing' => 0,
+    'account_adjustment' => 1,
+    'void' => 2,
+    'payment' => 3
+);
+
+sub retrieve_statement {
+    my ( $self, $client, $auth, $xact_id ) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $e->allowed('VIEW_TRANSACTION');
+
+    # XXX: move this lookup login into a DB query?
+    my @line_prep;
+
+    # collect all payments/adjustments
+    my $payments = $e->search_money_payment({ xact => $xact_id });
+    foreach my $payment (@$payments) {
+        my $type = $payment->payment_type;
+        $type = 'payment' if $type ne 'account_adjustment';
+        push(@line_prep, [$type, _to_epoch($payment->payment_ts), $payment->payment_ts, $payment->id, $payment]);
+    }
+
+    # collect all billings
+    my $billings = $e->search_money_billing({ xact => $xact_id });
+    foreach my $billing (@$billings) {
+        if ($U->is_true($billing->voided)){
+            push(@line_prep, ['void', _to_epoch($billing->void_time), $billing->void_time, $billing->id, $billing]); # voids get two entries, one to represent the bill event, one for the void event
+        }
+        push(@line_prep, ['billing', _to_epoch($billing->billing_ts), $billing->billing_ts, $billing->id, $billing]);
+    }
+
+    # order every event by timestamp, then bills/adjustments/voids/payments order, then id
+    my @ordered_line_prep = sort {
+        $a->[1] <=> $b->[1]
+            ||
+        $_statement_sort{$a->[0]} <=> $_statement_sort{$b->[0]}
+            ||
+        $a->[3] <=> $b->[3]
+    } @line_prep;
+
+    # let's start building the statement structure
+    my (@lines, %current_line, $running_balance);
+    foreach my $event (@ordered_line_prep) {
+        my $obj = $event->[4];
+        my $type = $event->[0];
+        my $ts = $event->[2];
+        my $billing_type = $type =~ /billing|void/ ? $obj->billing_type : ''; # TODO: get non-legacy billing type
+        my $note = $obj->note || '';
+        # last line should be void information, try to isolate it
+        if ($type eq 'billing' and $obj->voided) {
+            $note =~ s/\n.*$//;
+        } elsif ($type eq 'void') {
+            $note = (split(/\n/, $note))[-1];
+        }
+
+        # if we have new details, start a new line
+        if ($current_line{amount} and (
+                $type ne $current_line{type}
+                or ($note ne $current_line{note})
+                or ($billing_type ne $current_line{billing_type})
+            )
+        ) {
+            push(@lines, {%current_line}); # push a copy of the hash, not the real thing
+            %current_line = ();
+        }
+        if (!$current_line{type}) {
+            $current_line{type} = $type;
+            $current_line{billing_type} = $billing_type;
+            $current_line{note} = $note;
+        }
+        if (!$current_line{start_date}) {
+            $current_line{start_date} = $ts;
+        } elsif ($ts ne $current_line{start_date}) {
+            $current_line{end_date} = $ts;
+        }
+        $current_line{amount} += $obj->amount;
+        if ($current_line{details}) {
+            push(@{$current_line{details}}, $obj);
+        } else {
+            $current_line{details} = [$obj];
+        }
+    }
+    push(@lines, {%current_line}); # push last one on
+
+    # get/update totals, format notes
+    my %totals = (
+        billing => 0,
+        payment => 0,
+        account_adjustment => 0,
+        void => 0
+    );
+    foreach my $line (@lines) {
+        $totals{$line->{type}} += $line->{amount};
+        if ($line->{type} eq 'billing') {
+            $running_balance += $line->{amount};
+        } else { # not a billing; balance goes down for everything else
+            $running_balance -= $line->{amount};
+        }
+        $line->{running_balance} = $running_balance;
+        $line->{note} = $line->{note} ? [split(/\n/, $line->{note})] : [];
+    }
+
+    return {
+        xact_id => $xact_id,
+        summary => {
+            balance_due => $totals{billing} - ($totals{payment} + $totals{account_adjustment} + $totals{void}),
+            billing_total => $totals{billing},
+            credit_total => $totals{payment} + $totals{account_adjustment},
+            payment_total => $totals{payment},
+            account_adjustment_total => $totals{account_adjustment},
+            void_total => $totals{void}
+        },
+        lines => \@lines
+    }
 }
 
 

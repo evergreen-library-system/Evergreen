@@ -1,0 +1,72 @@
+<div ng-if="xact_tab == 'statement'">
+
+<h4>[% l('Billing Statement') %]</h4>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-2">[% l('Type') %]</div>
+            <div class="col-md-6">[% l('Description') %]</div>
+            <div class="col-md-2">[% l('Amount') %]</div>
+            <div class="col-md-2">[% l('Balance') %]</div>
+        </div>
+    </div>
+    <div class="panel-body flex-container-striped">
+        <div class="row" ng-repeat="line in statement_data.lines">
+            <div class="col-md-2" ng-switch="line.type">
+                <span ng-switch-when="billing">[% l('Billing') %]</span>
+                <span ng-switch-when="payment">[% l('Payment') %]</span>
+                <span ng-switch-when="account_adjustment">[% l('Adjustment') %]</span>
+                <span ng-switch-when="void">[% l('Void') %]</span>
+            </div>
+            <div class="col-md-6">
+                <span ng-if="line.billing_type" class="strong-text">{{line.billing_type}}<br/></span>
+                <span ng-if="line.note.length" ng-class="{'strong-text' : !line.billing_type}">{{line.note | join:', '}}<br/></span>
+                <span class="small">{{line.start_date  | date:$root.egDateAndTimeFormat}}</span><span ng-if="line.end_date" class="small"> - {{line.end_date  | date:$root.egDateAndTimeFormat}}</span>
+            </div>
+            <div ng-style="line.type != 'billing' && {'color':'red'}" class="col-md-2">
+                <span ng-if="line.type != 'billing'">-</span>{{line.amount | currency}}
+            </div>
+            <div class="col-md-2">
+                {{line.running_balance | currency}}
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-8">
+                <div class="row">
+                    <div class="col-md-6 strong-text">[% l('Total Charges') %]</div>
+                    <div class="col-md-6 text-right">
+                      {{statement_data.summary.billing_total | currency}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 strong-text">[% l('Total Payments') %]</div>
+                    <div class="col-md-6 text-right" style="color:red">
+                      -{{statement_data.summary.payment_total || 0 | currency}}
+                    </div>
+                </div>
+                <div ng-if="statement_data.summary.account_adjustment_total > 0" class="row">
+                    <div class="col-md-6 strong-text">[% l('Total Adjustments') %]</div>
+                    <div class="col-md-6 text-right" style="color:red">
+                      -{{statement_data.summary.account_adjustment_total | currency}}
+                    </div>
+                </div>
+                <div ng-if="statement_data.summary.void_total > 0" class="row">
+                    <div class="col-md-6 strong-text">[% l('Total Voids') %]</div>
+                    <div class="col-md-6 text-right" style="color:red">
+                      -{{statement_data.summary.void_total | currency}}
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <div class="col-md-6 strong-text">[% l('Balance Due') %]</div>
+                    <div class="col-md-6 text-right">
+                      {{statement_data.summary.balance_due | currency}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

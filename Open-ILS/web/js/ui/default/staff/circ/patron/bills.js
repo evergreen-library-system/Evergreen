@@ -87,6 +87,17 @@ function($q , egCore , egWorkLog , patronSvc) {
         );
     }
 
+    service.fetchStatement = function(xact_id) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.statement.retrieve',
+            egCore.auth.token(), xact_id
+        ).then(function(resp) {
+            if (evt = egCore.evt.parse(resp)) return alert(evt);
+            return resp;
+        });
+    }
+
     // TODO: no longer needed?
     service.fetchPayments = function(xact_id) {
         return egCore.net.request(
@@ -723,7 +734,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0].id);
+                patronSvc.current.id() + '/bill/' + all[0].id + '/statement');
     }
 
     $scope.activateBill = function(xact) {
@@ -741,6 +752,7 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
 
     $scope.initTab('bills', $routeParams.id);
     var xact_id = $routeParams.xact_id;
+    $scope.xact_tab = $routeParams.xact_tab;
 
     var xactGrid = $scope.xactGridControls = {
         setQuery : function() { return {xact : xact_id} },
@@ -827,6 +839,13 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
     }
 
     // -- retrieve our data
+    if ($scope.xact_tab == 'statement') {
+        //fetch combined billing statement data
+        billSvc.fetchStatement(xact_id).then(function(statement) {
+            //console.log(statement);
+            $scope.statement_data = statement;
+        });
+    }
     $scope.total_circs = 0; // start with 0 instead of undefined
     egBilling.fetchXact(xact_id).then(function(xact) {
         $scope.xact = xact;
@@ -940,7 +959,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0].id);
+                patronSvc.current.id() + '/bill/' + all[0].id + '/statement');
     }
 
     // For now, only adds billing to first selected item.
@@ -1043,7 +1062,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , $location) {
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0]['xact.id']);
+                patronSvc.current.id() + '/bill/' + all[0]['xact.id'] + '/statement');
     }
 
     $scope.totals.selected_paid = function() {

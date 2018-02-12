@@ -138,7 +138,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
         resolve : resolver
     });
 
-    $routeProvider.when('/circ/patron/:id/bill/:xact_id', {
+    $routeProvider.when('/circ/patron/:id/bill/:xact_id/:xact_tab', {
         templateUrl: './circ/patron/t_xact_details',
         controller: 'XactDetailsCtrl',
         resolve : resolver
