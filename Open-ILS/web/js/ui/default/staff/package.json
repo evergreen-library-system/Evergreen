@@ -8,6 +8,7 @@
     "angular-mocks": "^1.6.7",
     "clean-webpack-plugin": "^0.1.17",
     "copy-webpack-plugin": "^4.3.0",
+    "jasmine-core": "^2.99.1",
     "karma": "^1.7.1",
     "karma-jasmine": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
