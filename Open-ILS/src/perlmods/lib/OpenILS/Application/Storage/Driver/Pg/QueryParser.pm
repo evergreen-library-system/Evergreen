@@ -1277,29 +1277,24 @@ sub flatten {
                             for my $real_field (@$real_fields) {
                                 $node->add_vfield($real_field);
                                 $logger->debug("Looking up virtual field for real field $real_field");
-                                my $vclass = $self->QueryParser->search_field_class_by_id($real_field)->{classname};
-                                my $vtable = $node->table($vclass);
-                                my $vfield = 'field';
-                                my $vrecord = 'source';
-                                $from .= "\n" . ${spc} x 8 . "UNION ALL\n";
+                                my $vtable = $node->table(
+                                    $self->QueryParser
+                                        ->search_field_class_by_id($real_field)
+                                        ->{classname}
+                                );
 
-                                if ($node->combined_search) { # real fields inherit combine'dness from the virtual field
-                                    $vtable = $node->combined_table($vclass);
-                                    $vfield = 'metabib_field';
-                                    $vrecord = 'record';
-                                    $from .= ${spc} x 5 . "SELECT 0::BIGINT AS id, fe.record AS source, fe.metabib_field AS field, "
-                                          . "'' AS value, fe.index_vector, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n";
-                                } else {
-                                    $from .= ${spc} x 5 . "SELECT fe.id, fe.source, fe.field, fe.value, fe.index_vector, "
-                                          . "fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n";
-                                }
-                                
-                                $from .= ${spc} x 6 . "FROM  $vtable AS fe\n"
+                                # NOTE: only real fields that match the (component) tsquery will
+                                #       get to contribute to and increased rank for the record.
+                                $from .= "\n" . ${spc} x 8 . "UNION ALL\n"
+                                      . ${spc} x 5 . "SELECT fe.id, fe.source, fe.field, fe.value, fe.index_vector, "
+                                      . "fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n"
+                                      . ${spc} x 6 . "FROM  $vtable AS fe\n"
                                       . ${spc} x 7 . "JOIN config.metabib_field_virtual_map AS fe_weight ON ("
                                             ."fe_weight.virtual = $possible_vfield AND "
                                             ."fe_weight.real = $real_field AND "
-                                            ."fe_weight.real = fe.$vfield)\n"
-                                      . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                                            ."fe_weight.real = fe.field)\n"
+                                      . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)"
+                                ;
                             }
                         }
                     }
