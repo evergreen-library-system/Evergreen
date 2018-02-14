@@ -1273,7 +1273,9 @@ sub flatten {
                     for my $possible_vfield (@$search_field_list) {
                         my $real_fields = $self->QueryParser->search_field_virtual_map->{by_virt}->{$possible_vfield};
                         if ($real_fields and @$real_fields) { # this is a virt field
-                            # UNION in the others ... group by class?
+                            my %vtable_field_map;
+
+                            # UNION in the others ... group by class
                             for my $real_field (@$real_fields) {
                                 $node->add_vfield($real_field);
                                 $logger->debug("Looking up virtual field for real field $real_field");
@@ -1282,6 +1284,12 @@ sub flatten {
                                         ->search_field_class_by_id($real_field)
                                         ->{classname}
                                 );
+                                $vtable_field_map{$vtable} ||= [];
+                                push @{$vtable_field_map{$vtable}}, $real_field;
+                            }
+
+                            for my $vtable (keys %vtable_field_map) {
+                                my $real_fields = $vtable_field_map{$vtable};
 
                                 # NOTE: only real fields that match the (component) tsquery will
                                 #       get to contribute to and increased rank for the record.
@@ -1291,7 +1299,7 @@ sub flatten {
                                       . ${spc} x 6 . "FROM  $vtable AS fe\n"
                                       . ${spc} x 7 . "JOIN config.metabib_field_virtual_map AS fe_weight ON ("
                                             ."fe_weight.virtual = $possible_vfield AND "
-                                            ."fe_weight.real = $real_field AND "
+                                            ."fe_weight.real IN (".join(',',@$real_fields).") AND "
                                             ."fe_weight.real = fe.field)\n"
                                       . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)"
                                 ;
