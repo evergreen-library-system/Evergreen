@@ -1945,4 +1945,14 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             }
         });
     }
+
+    $scope.edit_passthru.print = function() {
+        var print_data = {patron : $scope.patron}
+
+        return egCore.print.print({
+            context : 'default',
+            template : 'patron_data',
+            scope : print_data
+        });
+    }
 }])

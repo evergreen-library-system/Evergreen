@@ -23,6 +23,10 @@
 <div class="flex-cell"></div>
 <div>
   <span class="pad-all-min">
+    <button type="button" class="btn btn-default"
+      ng-click="edit_passthru.print()">[% l('Print') %]</button>
+  </span>
+  <span class="pad-all-min">
     <button type="button" class="btn btn-default" 
       ng-disabled="edit_passthru.hide_save_actions()"
       ng-click="edit_passthru.save()">[% l('Save') %]</button>

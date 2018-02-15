@@ -371,16 +371,51 @@ function($scope , $q , egCore , ngToast) {
         expire_date : '2020-12-31',
         alias : 'the dude',
         has_email : true,
-        has_phone : false
+        has_phone : false,
+        dob : '1984-11-07T00:00:00-8:00',
+        juvenile : 'f',
+        usrname : '30393830393',
+        daytime_phone : '111-222-3333',
+        evening_phone : '222-333-1111',
+        other_phone : '333-111-2222',
+        email : 'user@example.com',
+        ident_value2 : 'Carol',
+        home_ou : {name: function() {return 'BR1'}},
+        profile : {name: function() {return 'Patrons'}},
+        net_access_level : {name: function() {return 'Filtered'}},
+        active : 't',
+        barred : 'f',
+        master_account : 'f',
+        claims_returned_count : '0',
+        claims_never_checked_out_count : '0',
+        alert_message : 'Very slow',
+        ident_type: {name: function() {return 'Other'}},
+        ident_value: '11332445',
+        addresses : [],
+        stat_cat_entries : [
+            {
+                stat_cat : {'name' : 'Favorite Donut'},
+                'stat_cat_entry' : 'Maple'
+            }, {
+                stat_cat : {'name' : 'Favorite Book'},
+                'stat_cat_entry' : 'Beasts Made of Night'
+            }
+        ]
     }
+
     var seed_addr = {
+        address_type : 'MAILING',
         street1 : '123 Apple Rd',
         street2 : 'Suite B',
         city : 'Anywhere',
         state : 'XX',
         country : 'US',
-        post_code : '12345'
+        post_code : '12345',
+        valid : 't',
+        within_city_limits: 't'
     }
+
+    seed_user.addresses.push(seed_addr);
 
     var seed_record = {
         title : 'Traveling Pants!!',

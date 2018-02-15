@@ -29,6 +29,7 @@
           <option value="item_status">[% l('Item Status') %]</option>
           <option value="items_out">[% l('Items Out') %]</option>
           <option value="patron_address">[% l('Patron Address') %]</option>
+          <option value="patron_data">[% l('Patron Data') %]</option>
           <option value="patron_note">[% l('Patron Note') %]</option>
           <option value="renew">[% l('Renew') %]</option>
           <option value="transit_list">[% l('Transit List') %]</option>
