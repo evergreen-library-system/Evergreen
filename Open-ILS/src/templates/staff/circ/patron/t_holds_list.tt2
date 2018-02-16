@@ -85,6 +85,7 @@
   <eg-grid-field path='hold.requestor.id' parent-idl-class="ahr" label="[% l('Requestor ID') %]" hidden></eg-grid-field>
   <eg-grid-field path='hold.requestor.usrname' parent-idl-class="ahr" label="[% l('Requestor Username') %]" hidden></eg-grid-field>
 
+  <eg-grid-field path='part.label' parent-idl-class="bmp" label="[% l('Part') %]" hidden></eg-grid-field>
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
   <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
 </eg-grid>
