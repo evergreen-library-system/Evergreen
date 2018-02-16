@@ -100,6 +100,9 @@
       {{item.patron_barcode}}
     </a>
   </eg-grid-field>
+  <eg-grid-field label="[% l('Patron alias') %]" path="patron_alias" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron First') %]" path="patron_first" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron Last') %]" path="patron_last" hidden></eg-grid-field>
   <eg-grid-field name="pickup_lib_name" path="pickup_lib.name" 
     hidden label="[% l('Pickup Library') %]"></eg-grid-field>
   <eg-grid-field name="pickup_lib_shortname" path="pickup_lib.shortname" 

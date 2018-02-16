@@ -319,7 +319,7 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
             // check if this is a staff-created hold
             // i.e requestor's profile != 2 (patron)
 
-            item['_is_staff_hold'] = item.hold.requestor().profile != 2;
+            item['_is_staff_hold'] = item.hold.requestor().id() != item.hold.usr().id();
 
         });
     }
