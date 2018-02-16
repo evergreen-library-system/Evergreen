@@ -338,7 +338,7 @@ CREATE OR REPLACE VIEW search.best_tsconfig AS
 
 CREATE TYPE search.highlight_result AS ( id BIGINT, source BIGINT, field INT, value TEXT, highlight TEXT );
 
-CREATE OR REPLACE FUNCTION search.highlight_display_fields(
+CREATE OR REPLACE FUNCTION search.highlight_display_fields_impl(
     rid         BIGINT,
     tsq         TEXT,
     field_list  INT[] DEFAULT '{}'::INT[],
@@ -424,7 +424,7 @@ $$ LANGUAGE SQL IMMUTABLE LEAKPROOF STRICT COST 10;
 
 CREATE OR REPLACE FUNCTION search.highlight_display_fields(
     rid         BIGINT,
-    tsq_map     HSTORE, -- { '(a | b) & c' => '1,2,3,4', ...}
+    tsq_map     TEXT, -- { '(a | b) & c' => '1,2,3,4', ...}
     css_class   TEXT DEFAULT 'oils_SH',
     hl_all      BOOL DEFAULT TRUE,
     minwords    INT DEFAULT 5,
@@ -434,18 +434,26 @@ CREATE OR REPLACE FUNCTION search.highlight_display_fields(
     delimiter   TEXT DEFAULT ' ... '
 ) RETURNS SETOF search.highlight_result AS $f$
 DECLARE
-    tsq     TEXT;
-    fields  TEXT;
-    afields INT[];
-    seen    INT[];
+    tsq_hstore  HSTORE;
+    tsq         TEXT;
+    fields      TEXT;
+    afields     INT[];
+    seen        INT[];
 BEGIN
-    FOR tsq, fields IN SELECT key, value FROM each(tsq_map) LOOP
+
+    IF (tsq_map ILIKE 'hstore%') THEN
+        EXECUTE 'SELECT ' || tsq_map INTO tsq_hstore;
+    ELSE
+        tsq_hstore := tsq_map::HSTORE;
+    END IF;
+    
+    FOR tsq, fields IN SELECT key, value FROM each(tsq_hstore) LOOP
         SELECT  ARRAY_AGG(unnest::INT) INTO afields
           FROM  unnest(regexp_split_to_array(fields,','));
         seen := seen || afields;
 
         RETURN QUERY
-            SELECT * FROM search.highlight_display_fields(
+            SELECT * FROM search.highlight_display_fields_impl(
                 rid, tsq, afields, css_class, hl_all,minwords,
                 maxwords, shortwords, maxfrags, delimiter
             );

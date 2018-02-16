@@ -136,7 +136,7 @@ UPDATE config.metabib_field SET display_field = TRUE WHERE id IN (
 -- Map display field names to config.metabib_field entries
 
 INSERT INTO config.display_field_map (name, field, multi) VALUES 
-    ('series_title',         1, FALSE),
+    ('series_title',         1, TRUE),
     ('subject_geographic',  11, TRUE),
     ('subject_name',        12, TRUE),
     ('subject_temporal',    13, TRUE),

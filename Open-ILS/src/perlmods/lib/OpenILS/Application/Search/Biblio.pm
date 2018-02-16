@@ -1306,26 +1306,42 @@ sub staged_search {
     return cache_facets($facet_key, $new_ids, $IAmMetabib, $ignore_facet_classes) if $docache;
 }
 
-sub passthrough_fetch_display_fields {
+sub fetch_display_fields {
     my $self = shift;
     my $conn = shift;
     my $highlight_map = shift;
     my @records = @_;
 
-    return $U->storagereq(
-        'open-ils.storage.fetch.metabib.display_field.highlight',
-        $highlight_map,
-        @records
-    ) if (@records == 1);
+    unless (@records) {
+        $conn->respond_complete;
+        return;
+    }
 
-    return $U->storagereq(
-        'open-ils.storage.fetch.metabib.display_field.highlight.atomic',
-        $highlight_map,
-        \@records
-    );
+    my $hl_map_string = "''::HSTORE";
+    if (ref($highlight_map) =~ /HASH/) {
+        $hl_map_string = "";
+        for my $tsq (keys %$highlight_map) {
+            my $field_list = join(',', @{$$highlight_map{$tsq}});
+            $hl_map_string .= ' || ' if $hl_map_string;
+            $hl_map_string .= "hstore(($tsq)\:\:TEXT,'$field_list')";
+        }
+    }
+
+    my $e = new_editor();
+
+    for my $record ( @records ) {
+        next unless $record;
+        $conn->respond(
+            $e->json_query(
+                {from => ['search.highlight_display_fields', $record, $hl_map_string]}
+            )
+        );
+    }
+
+    return undef;
 }
 __PACKAGE__->register_method(
-    method    => 'passthrough_fetch_display_fields',
+    method    => 'fetch_display_fields',
     api_name  => 'open-ils.search.fetch.metabib.display_field.highlight'
 );
 

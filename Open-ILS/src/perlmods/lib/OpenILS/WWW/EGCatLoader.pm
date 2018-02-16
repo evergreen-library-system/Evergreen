@@ -39,7 +39,7 @@ use constant COOKIE_ANON_CACHE => 'anoncache';
 use constant ANON_CACHE_MYLIST => 'mylist';
 use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
 
-use constant DEBUG_TIMING => 0;
+use constant DEBUG_TIMING => 1;
 
 sub new {
     my($class, $apache, $ctx) = @_;
@@ -50,6 +50,9 @@ sub new {
     $self->ctx($ctx);
     $self->cgi(new CGI);
     $self->timelog("New page");
+
+    # Add a timelog helper to the context
+    $self->ctx->{timelog} = sub { return $self->timelog(@_) };
 
     OpenILS::Utils::CStoreEditor->init; # just in case
     $self->editor(new_editor());
@@ -346,8 +349,8 @@ sub load_common {
         return $U->simplereq(
             'open-ils.search', 
             'open-ils.search.fetch.metabib.display_field.highlight',
-            $id,
-            $ctx->{query_struct}{additional_data}{highlight_map}
+            $ctx->{query_struct}{additional_data}{highlight_map},
+            map {int($_)} @$id
         );
     };
 

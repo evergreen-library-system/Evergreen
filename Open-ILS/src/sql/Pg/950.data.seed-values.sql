@@ -364,7 +364,7 @@ INSERT INTO config.display_field_map (name, field, multi) VALUES
     ('creators', 37, TRUE),
     ('subject', 16, TRUE),
     ('isbn', 18, TRUE),
-    ('series_title',         1, FALSE),
+    ('series_title',         1, TRUE),
     ('subject_geographic',  11, TRUE),
     ('subject_name',        12, TRUE),
     ('subject_temporal',    13, TRUE),
