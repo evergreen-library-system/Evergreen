@@ -52,8 +52,7 @@ msgid ""
 msgstr ""
 "\n"
 "          Hay una circulación abierta en el articulo solicitado.  \n"
-"    \n"
-"          Este objeto ya fue extraido a este usuario en%   1.\n"
+"          Este objeto ya fue extraido a este usuario en %1.\n"
 "          "
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:38
@@ -65,9 +64,7 @@ msgid ""
 msgstr ""
 "\n"
 "      Mantenga la posición durante patron {{patron.family_name}}, \n"
-"\n"
-"      {{Patron.first_given_name}}\n"
-"{{patron.second_given_name}}\n"
+"      {{patron.first_given_name}} {{patron.second_given_name}}\n"
 "      "
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:9
@@ -79,7 +76,6 @@ msgid ""
 msgstr ""
 "\n"
 "Asignar grupos de permisos adicionales a los usuarios aquí.  \n"
-"\n"
 "Esto no afecta a la política de la circulación.\n"
 "      "
 
@@ -101,9 +97,7 @@ msgid ""
 msgstr ""
 "\n"
 "Los valores de preferencia se almacenan como cadenas JSON.  \n"
-"\n"
 "Haga clic en una preferencia para ver el valor almacenado.\n"
-"\n"
 "Haga clic en el botón de eliminación (X) para eliminar el valor de una "
 "preferencia.\n"
 
@@ -150,27 +144,27 @@ msgstr ""
 #. ("{{dupe_counts.address}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:53
 msgid "%1 patron(s) with same address"
-msgstr "1% patrono(s) con la misma dirección"
+msgstr "%1 patrono(s) con la misma dirección"
 
 #. ("{{dupe_counts.email}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:35
 msgid "%1 patron(s) with same email"
-msgstr "1% patrono(s) con el mismo correo electrónico"
+msgstr "%1 patrono(s) con el mismo correo electrónico"
 
 #. ("{{dupe_counts.ident}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:41
 msgid "%1 patron(s) with same identification"
-msgstr "1% patrono(s) con la misma identificación"
+msgstr "%1 patrono(s) con la misma identificación"
 
 #. ("{{dupe_counts.name}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:29
 msgid "%1 patron(s) with same name"
-msgstr "1% patrono(s) con el mismo nombre"
+msgstr "%1 patrono(s) con el mismo nombre"
 
 #. ("{{dupe_counts.phone}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:47
 msgid "%1 patron(s) with same phone"
-msgstr "1% patrono(s) con el mismo teléfono"
+msgstr "%1 patrono(s) con el mismo teléfono"
 
 #. ("{{alert.already_checked_in}}")
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:70
@@ -329,7 +323,7 @@ msgstr "Activar"
 #. ("{{num_holds}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:14
 msgid "Activate %1 Hold(s)?"
-msgstr "Activar % 1 Hold(s)?"
+msgstr "Activar %1 Hold(s)?"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:100 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:123 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:158
 msgid "Activated"
@@ -738,7 +732,7 @@ msgstr "Estas seguro que desea aplicar un pago de $%1?"
 #: ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:13
 msgid "Are you sure you want to delete authority record %1 from the catalog?"
 msgstr ""
-"¿Está seguro de que quiere borrar registro de autoridad 1% del catálogo?"
+"¿Está seguro de que quiere borrar registro de autoridad %1 del catálogo?"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:15
 msgid ""
@@ -751,7 +745,7 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:12
 msgid "Are you sure you want to delete title record %1 from the catalog?"
 msgstr ""
-"¿Está seguro de que quiere borrar registro de título 1% del catálogo?"
+"¿Está seguro de que quiere borrar registro de título %1 del catálogo?"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:32 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:29
 msgid ""
@@ -775,7 +769,7 @@ msgid ""
 "transactions that follow the refunded transaction."
 msgstr ""
 "¿Está seguro de que desea a la devolución del pago en exceso en las facturas "
-"de 1%? Esta acción simplemente poner la cantidad en la columna de la "
+"de %1? Esta acción simplemente poner la cantidad en la columna de la "
 "Pendiente de Pago como un valor negativo. No obstante, debe seleccionar "
 "Aplicar Pago! Ciertos tipos de pagos no se pueden devolver. El reembolso "
 "puede ser aplicado a las transacciones controladas que siguen la transacción "
@@ -1010,7 +1004,7 @@ msgstr ""
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:18
 msgid "Barcode: %1 Due: %2"
-msgstr "Código de barras: %1 Debido:%2"
+msgstr "Código de barras: %1 Debido: %2"
 
 #. ("{{ihu.copy.barcode}}", "{{ihu.num_uses}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_in_house_use_list.tt2:21
@@ -2072,7 +2066,7 @@ msgstr "Copia #"
 #. ("{{copy_barcode}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:18
 msgid "Copy Alert Message for \"%1\""
-msgstr "Copiar mensaje de alerta para \"% 1\""
+msgstr "Copiar mensaje de alerta para \"%1\""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:86
 msgid "Copy Attributes"
@@ -2194,7 +2188,7 @@ msgstr "Fuentes centrales"
 #. ("{{id}}", "{{desc}}")
 #: ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:14
 msgid "Could not delete record %1: %2"
-msgstr "No se pudo eliminar el registro %1: % 2"
+msgstr "No se pudo eliminar el registro %1: %2"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:62
 msgid ""
@@ -2315,11 +2309,11 @@ msgstr "Creado por %1"
 #. ("{{note.create_date | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_patron_note.tt2:18
 msgid "Created on %1"
-msgstr "Creado el 1%"
+msgstr "Creado el %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2:9
 msgid "Created {{bucket().create_time() | date}}"
-msgstr "Creado {{cubo().create_time() | fecha}}"
+msgstr "Creado {{bucket().create_time() | date}}"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:28
 msgid "Creation Defaults"
@@ -2589,7 +2583,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_delete.tt2:9
 msgid "Delete bucket {{bucket().name()}}?"
-msgstr "Eliminar Cubo {{cubo().nombre()}}?"
+msgstr "Eliminar Cubo {{bucket().name()}}?"
 
 #. ("{{deleteKey}}")
 #: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:17
@@ -2929,7 +2923,7 @@ msgstr "Editar configuración de notificación"
 #. ("{{num_holds}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_notification_prefs.tt2:6
 msgid "Edit Notification Settings for %1 Hold(s)"
-msgstr "Editar configuración de notificación de 1% Retención (s)"
+msgstr "Editar configuración de notificación de %1 Retención (s)"
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2:5
 msgid "Edit Overlay Record"
@@ -3098,12 +3092,12 @@ msgstr "Introduzca código de barras original para el artículo"
 #. ("{{args.barcodes.toString()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_mark_claims_returned_dialog.tt2:11
 msgid "Enter claims returned date for items: %1"
-msgstr "Introduzca las reivindicaciones fecha devuelta por artículos: 1%"
+msgstr "Introduzca las reivindicaciones fecha devuelta por artículos: %1"
 
 #. ("{{args.barcodes.join(\" \")}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2:11
 msgid "Enter due date for items: %1"
-msgstr "Introduzca la fecha de vencimiento para los artículos: 1%"
+msgstr "Introduzca la fecha de vencimiento para los artículos: %1"
 
 #. ("{{ids}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:42
@@ -3857,7 +3851,7 @@ msgstr "Estantería de apartados"
 #. ("{{patron_stats().holds.ready}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_alerts.tt2:7
 msgid "Holds available: %1"
-msgstr "Sostienes disponibles: 1%"
+msgstr "Sostienes disponibles: %1"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:24
 msgid "Holds for Bib Record"
@@ -3870,7 +3864,7 @@ msgstr "Se mantiene para Patrón"
 #. ("{{holds[0].title}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:15
 msgid "Holds for record: %1"
-msgstr "Se cumple para registro: 1%"
+msgstr "Se cumple para registro: %1"
 
 #: ../../Open-ILS/src/templates/staff/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:28
 msgid "Home"
@@ -4118,12 +4112,12 @@ msgstr "Elemento \"%1\" está marcado como reclamaciones de devolución"
 #. ("{{alert.item_never_circed}}")
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:73
 msgid "Item %1 has never circulated."
-msgstr "De artículo 1% nunca ha circulado."
+msgstr "De artículo %1 nunca ha circulado."
 
 #. ("{{copy.barcode()}}", "{{copy.location().name()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:26
 msgid "Item %1 needs to be routed to %2"
-msgstr "Articulo% 1 tiene que ser encaminado al 2%"
+msgstr "Articulo %1 tiene que ser encaminado al %2"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:33 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:40
 msgid "Item Barcode"
@@ -4752,7 +4746,7 @@ msgstr ""
 #. ("{{barcodes.toString()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:37
 msgid "Mark Never Checked Out: %1"
-msgstr "Marca Nunca Prestado: 1%"
+msgstr "Marca Nunca Prestado: %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:23
 msgid "Mark as Title Hold Transfer Destination"
@@ -4869,7 +4863,7 @@ msgstr "Modificar"
 #. ("{{num_holds}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_dates.tt2:6
 msgid "Modify Dates for %1 Hold(s)"
-msgstr "Modificar Fechas para 1% de retención(s)"
+msgstr "Modificar Fechas para %1 de retención(s)"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_messages.tt2:13
 msgid "Modify Penalty / Message"
@@ -4910,7 +4904,7 @@ msgstr "Hace meses"
 #. ("{{recordNotFound}}")
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_tcn.tt2:25
 msgid "More than one Bib Record found with TCN: %1"
-msgstr "Más de un Bib Registro encontró con TCN: 1%"
+msgstr "Más de un Bib Registro encontró con TCN: %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:105
 msgid "Most Recent Circ Group"
@@ -4934,7 +4928,7 @@ msgid ""
 "Move %1 Hold(s) to the front of the holds queue above other holds that are "
 "not likewise flagged as Top of Queue?"
 msgstr ""
-"Mover % 1 Retención(s) al frente de las bodegas de cola por encima de otra "
+"Mover %1 Retención(s) al frente de las bodegas de cola por encima de otra "
 "sostiene que no se encuentra en posición asimismo como Principio de la cola?"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:18
@@ -5162,7 +5156,7 @@ msgstr "Ningún Reciente Grupo Circ"
 #: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:17
 msgid "No circulation found for item with barcode %1.  Item not modified."
 msgstr ""
-"Ningúna circulación encontrada para el artículo con código de barras 1%. "
+"Ningúna circulación encontrada para el artículo con código de barras %1. "
 "Artículo no modificado."
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:58
@@ -5299,17 +5293,17 @@ msgstr "Método de notificación..."
 #. ("{{patron.email}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:43 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:53
 msgid "Notify by email: %1"
-msgstr "Notificar por correo electrónico: 1%"
+msgstr "Notificar por correo electrónico: %1"
 
 #. ("{{hold.phone_notify}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:41 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:51
 msgid "Notify by phone: %1"
-msgstr "Notificar por teléfono: 1%"
+msgstr "Notificar por teléfono: %1"
 
 #. ("{{hold.sms_notify}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:42 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:52
 msgid "Notify by text: %1"
-msgstr "Notificar por el texto: 1%"
+msgstr "Notificar por el texto: %1"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_month_selector.tt2:12
 msgid "November"
@@ -5330,7 +5324,7 @@ msgstr ""
 #. ("{{dialog.num_circs}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:9
 msgid "Number of circulations selected: %1"
-msgstr "Número de circulaciones seleccionados: 1%"
+msgstr "Número de circulaciones seleccionados: %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:40
 msgid "Number of items: "
@@ -5599,7 +5593,7 @@ msgstr ""
 #. ("{{addr._linked_owner}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:691
 msgid "Owned by %1"
-msgstr "Propiedad de 1%"
+msgstr "Propiedad de %1"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:35
 msgid "Owner"
@@ -5919,7 +5913,7 @@ msgstr ""
 #. ("{{permission}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:22
 msgid "Permission Denied : %1"
-msgstr "Permiso denegado: 1%"
+msgstr "Permiso denegado: %1"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
 msgid "Permission Groups"
@@ -6212,7 +6206,7 @@ msgstr "Imprimir por %1"
 #. ("{{staff.first_given_name}}", "{{current_location.shortname}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:50 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:60 ../../Open-ILS/src/templates/staff/share/print_templates/t_transit_slip.tt2:38
 msgid "Printed by %1 at %2"
-msgstr "Impreso por 1% al 2%"
+msgstr "Impreso por %1 al %2"
 
 #: ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:28
 msgid "Printer"
@@ -6414,7 +6408,7 @@ msgstr ""
 #. ("{{payment.amount | currency}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2:66
 msgid "Received: %1"
-msgstr "Recibido: 1%"
+msgstr "Recibido: %1"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:148 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:105
 msgid "Receiving Call Number"
@@ -6488,7 +6482,7 @@ msgstr ""
 #. ("{{id}}")
 #: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:6
 msgid "Record imported as ID %1"
-msgstr "Registro importado como ID 1%"
+msgstr "Registro importado como ID %1"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_clone_subscription.tt2:36
 msgid "Record specified by this Bid ID:"
@@ -6710,7 +6704,7 @@ msgstr "Reemplazar código de barras del artículo"
 #. ("{{overlay_target.id}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:19
 msgid "Replace TCN %1 ..."
-msgstr "Reemplazar TCN % 1 ..."
+msgstr "Reemplazar TCN %1 ..."
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:40
 msgid "Report"
@@ -6768,7 +6762,7 @@ msgstr "Nombre de usuario solicitado"
 #. ("{{stage_user_requestor}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:78
 msgid "Requested by %1"
-msgstr "Solicitado por 1%"
+msgstr "Solicitado por %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:26
 msgid "Requestor"
@@ -6797,7 +6791,7 @@ msgstr "Restablecer Registro de Marcas"
 #. ("{{hold_ids}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:28
 msgid "Reset hold(s) %1?"
-msgstr "Restablecer asimiento(s) 1%?"
+msgstr "Restablecer asimiento(s) %1?"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:89
 msgid "Reset items"
@@ -7104,7 +7098,7 @@ msgstr "Ver también a partir de: %1"
 #. ("{{seefrom.heading}}")
 #: ../../Open-ILS/src/templates/staff/cat/share/t_authority_browser.tt2:29
 msgid "See from: %1"
-msgstr "Ver a partir de: 1%"
+msgstr "Ver a partir de: %1"
 
 #: ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:45
 msgid "Select"
@@ -7855,7 +7849,7 @@ msgstr "El cubo seleccionado \"{{bucketId}}\" no es visible a esta entrada."
 #. ("{{num_hold_transits}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:21
 msgid "There are %1 associated holds."
-msgstr "Hay% 1 asociado sostiene"
+msgstr "Hay %1 asociado sostiene"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/index.tt2:21
 msgid "There are no customized print template to export"
@@ -7872,7 +7866,7 @@ msgstr "Existe retención de 1 asociado."
 #. ("{{transit.target_copy().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:9
 msgid "There is an open transit on copy %1"
-msgstr "Hay un libre tránsito en el ejemplar 1%"
+msgstr "Hay un libre tránsito en el ejemplar %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:124
 msgid ""
@@ -7920,7 +7914,7 @@ msgstr ""
 #. ("<b>{{dest_location.shortname}}</b>")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2:26 ../../Open-ILS/src/templates/staff/share/print_templates/t_transit_slip.tt2:17
 msgid "This item needs to be routed to %1"
-msgstr "Este artículo necesita ser encaminado al 1%"
+msgstr "Este artículo necesita ser encaminado al %1"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:24
 msgid "This item needs to be routed to CATALOGING"
@@ -7936,17 +7930,17 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_slip.tt2:24
 msgid "This item needs to be routed to the %1Public Holds Shelf%2."
 msgstr ""
-"Este artículo necesita ser encaminado a la 1Public% Sostiene Estante2%."
+"Este artículo necesita ser encaminado a la %1Public Sostiene Estante%2."
 
 #. ("<strong>", "</strong>")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:10
 msgid "This item should be routed to the %1Private Holds Shelf%2"
-msgstr "Este artículo debe ser dirigido al %1Privado Sostiene Estante2%"
+msgstr "Este artículo debe ser dirigido al %1Privado Sostiene Estante%2"
 
 #. ("<strong>", "</strong>")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:14
 msgid "This item should be routed to the %1Public Holds Shelf%2"
-msgstr "Este artículo debe ser dirigido al 1%Público Sostiene Estante2%"
+msgstr "Este artículo debe ser dirigido al %1Público Sostiene Estante%2"
 
 #: ../../Open-ILS/src/templates/staff/base_js.tt2:67
 msgid "This page may have unsaved data."
@@ -8083,7 +8077,7 @@ msgstr "Total Pagado:"
 #. ("{{total_hits}}")
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:73
 msgid "Total hits: %1"
-msgstr "Total resultados: 1%"
+msgstr "Total resultados: %1"
 
 #. ("{{xact.id()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:1
@@ -8244,7 +8238,7 @@ msgstr "No se puede sacar copia \"%1\" : %2"
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:77
 msgid "Unable to load template '%1'.  The web server returned an error."
 msgstr ""
-"No se puede cargar la plantilla '% 1'. El servidor Web devuelve un error."
+"No se puede cargar la plantilla '%1'. El servidor Web devuelve un error."
 
 #. ("{{args.num_holds}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_uncancel_hold_dialog.tt2:7
@@ -8302,7 +8296,7 @@ msgstr ""
 #. ("{{num_holds}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:20
 msgid "Unset the Top of Queue flag for %1 Hold(s)?"
-msgstr "Anule el Inicio de bandera de cola para 1% de retención(s)?"
+msgstr "Anule el Inicio de bandera de cola para %1 de retención(s)?"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_apply_binding_template.tt2:52 ../../Open-ILS/src/templates/staff/serials/t_routing_list.tt2:115
 msgid "Update"
@@ -8658,7 +8652,7 @@ msgstr "Asociación de cargos"
 #. ("{{current_location.name}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkin.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:13 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_patron.tt2:10 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:13 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:12
 msgid "Welcome to %1"
-msgstr "Bienvenido al 1%"
+msgstr "Bienvenido al %1"
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:422
 msgid "Welcome, Stranger!"
@@ -8878,7 +8872,7 @@ msgstr "Renovó los siguientes artículos:"
 #. ("{{staff.first_given_name}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:26 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_patron.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:26 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:25
 msgid "You were helped by %1"
-msgstr "Usted fue ayudado por 1%"
+msgstr "Usted fue ayudado por %1"
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/index.tt2:1
 msgid "Z39.50"
