@@ -261,12 +261,13 @@ sub add_search_field_virtual_map {
     my $self = shift;
     my $realid = shift;
     my $virtid = shift;
+    my $weight = shift;
 
     $self->search_field_virtual_map->{by_virt}{$virtid} ||= [];
-    push @{$self->search_field_virtual_map->{by_virt}{$virtid}}, $realid;
+    push @{$self->search_field_virtual_map->{by_virt}{$virtid}}, { real => $realid, weight => $weight };
 
     $self->search_field_virtual_map->{by_real}{$realid} ||= [];
-    push @{$self->search_field_virtual_map->{by_real}{$realid}}, $virtid;
+    push @{$self->search_field_virtual_map->{by_real}{$realid}}, { virt => $virtid, weight => $weight };
 }
 
 sub search_field_class_by_id {
@@ -427,7 +428,7 @@ sub initialize_search_field_virtual_map {
     my $self = shift;
     my $cmfvm_list = shift;
 
-    __PACKAGE__->add_search_field_virtual_map( $_->real, $_->virtual )
+    __PACKAGE__->add_search_field_virtual_map( $_->real, $_->virtual, $_->weight )
         for (@$cmfvm_list);
 
     $logger->debug('Virtual field map: ' . Dumper($self->search_field_virtual_map));
@@ -635,7 +636,7 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( keyword => keyword => first_word => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => full_match => 1 );
     
-    __PACKAGE__->add_search_field_virtual_map( 6 => 15 );
+    __PACKAGE__->add_search_field_virtual_map( 6 => 15 => 5 );
 
     __PACKAGE__->class_ts_config( 'series', undef, 1, 'english_nostop' );
     __PACKAGE__->class_ts_config( 'title', undef, 1, 'english_nostop' );
@@ -1277,19 +1278,23 @@ sub flatten {
 
                             # UNION in the others ... group by class
                             for my $real_field (@$real_fields) {
-                                $node->add_vfield($real_field);
-                                $logger->debug("Looking up virtual field for real field $real_field");
+                                my $natural_field = $self->QueryParser->search_field_id_map->{by_id}{$$real_field{real}};
+
+                                $node->add_vfield($$real_field{real});
+                                $logger->debug("Looking up virtual field for real field $$real_field{real}");
                                 my $vtable = $node->table(
                                     $self->QueryParser
-                                        ->search_field_class_by_id($real_field)
+                                        ->search_field_class_by_id($$real_field{real})
                                         ->{classname}
                                 );
                                 $vtable_field_map{$vtable} ||= [];
-                                push @{$vtable_field_map{$vtable}}, $real_field;
+                                push(@{$vtable_field_map{$vtable}}, $$real_field{real})
+                                    if ($$real_field{weight} != $$natural_field{weight});
                             }
 
                             for my $vtable (keys %vtable_field_map) {
-                                my $real_fields = $vtable_field_map{$vtable};
+                                my $rfields = $vtable_field_map{$vtable};
+                                next unless (@$rfields);
 
                                 # NOTE: only real fields that match the (component) tsquery will
                                 #       get to contribute to and increased rank for the record.
@@ -1299,7 +1304,7 @@ sub flatten {
                                       . ${spc} x 6 . "FROM  $vtable AS fe\n"
                                       . ${spc} x 7 . "JOIN config.metabib_field_virtual_map AS fe_weight ON ("
                                             ."fe_weight.virtual = $possible_vfield AND "
-                                            ."fe_weight.real IN (".join(',',@$real_fields).") AND "
+                                            ."fe_weight.real IN (".join(',',@$rfields).") AND "
                                             ."fe_weight.real = fe.field)\n"
                                       . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)"
                                 ;
