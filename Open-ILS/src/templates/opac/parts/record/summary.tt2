@@ -312,7 +312,11 @@ END;
 
 <h2 id='rdetail_record_details'>[% l("Record details") %]</h2>
 <ul>
-    [%- IF attrs.isbns.0;
+    [%- IF attrs.hl.isbn.size; FOR isbn IN attrs.hl.isbn %]
+    <li class='rdetail_isbns'>
+        <strong class='rdetail_label'>[% l('ISBN:'); %]</strong> [% isbn %]
+    </li>
+    [%- END; ELSIF attrs.isbns.0;
           FOR isbn IN attrs.isbns;
             isbn_extra = '';
             IF (matches = isbn.match('^(.+?)(\s.+)$'));
@@ -326,7 +330,11 @@ END;
     </li>
         [%- END %]
     [%- END %]
-    [%- IF attrs.issns.0; FOR issn IN attrs.issns %]
+    [%- IF attrs.hl.issn.size; FOR issn IN attrs.hl.issn %]
+    <li class='rdetail_issns'>
+        <strong class='rdetail_label'>[% l('ISSN:'); %]</strong> [% issn %]
+    </li>
+    [%- END; ELSIF attrs.issns.0; FOR issn IN attrs.issns %]
     <li class='rdetail_issns'>
         <strong class='rdetail_label'>[% l('ISSN:'); %]</strong>
         <span class='rdetail_value'>[% issn | html  %]</span>
