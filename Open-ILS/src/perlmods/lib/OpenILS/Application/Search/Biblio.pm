@@ -1342,7 +1342,8 @@ sub fetch_display_fields {
 }
 __PACKAGE__->register_method(
     method    => 'fetch_display_fields',
-    api_name  => 'open-ils.search.fetch.metabib.display_field.highlight'
+    api_name  => 'open-ils.search.fetch.metabib.display_field.highlight',
+    stream   => 1
 );
 
 

@@ -346,12 +346,24 @@ sub load_common {
 
     $ctx->{fetch_display_fields} = sub {
         my $id = shift;
-        return $U->simplereq(
+
+        if (@$id == 1) {
+            return $ctx->{_hl_data}{''.$$id[0]}
+                if ($ctx->{_hl_data}{''.$$id[0]});
+        }
+
+        $self->timelog("HL data not cached, fetching from server.");
+
+        my $rows = $U->simplereq(
             'open-ils.search', 
             'open-ils.search.fetch.metabib.display_field.highlight',
             $ctx->{query_struct}{additional_data}{highlight_map},
             map {int($_)} @$id
         );
+
+        $ctx->{_hl_data}{''.$$id[0]} = $rows if (@$id == 1);
+
+        return $rows;
     };
 
     return Apache2::Const::OK;

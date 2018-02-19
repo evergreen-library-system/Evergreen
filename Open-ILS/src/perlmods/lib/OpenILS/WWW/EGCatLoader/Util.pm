@@ -374,6 +374,7 @@ sub get_records_and_facets {
     );
 
     my %tmp_data;
+    my %hl_tmp_data;
     my $outer_self = $self;
 
     my $sdepth = $unapi_args->{flesh_depth};
@@ -385,6 +386,7 @@ sub get_records_and_facets {
     $flesh =~ s/}$/,mmr.unapi}/g if $is_meta;
 
     my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+    my $hl_ses = OpenSRF::AppSession->create('open-ils.search');
 
     my @loop_recs;
     for my $bid (@$rec_ids) {
@@ -409,6 +411,13 @@ sub get_records_and_facets {
             undef, undef, $unapi_args->{pref_lib}
         ]}
     );
+
+    my $hl_req = $hl_ses->request(
+        'open-ils.search.fetch.metabib.display_field.highlight.atomic',
+        $self->ctx->{query_struct}{additional_data}{highlight_map},
+        @$rec_ids
+    ) if (!$is_meta);
+
 
     my $facets = {};
     if ($facet_req) {
@@ -444,7 +453,13 @@ sub get_records_and_facets {
 
     my $data = $unapi_req->gather(1);
 
-    $outer_self->timelog("get_records_and_facets(): got response content");
+    $outer_self->timelog("get_records_and_facets(): got feed content");
+
+    if (!$is_meta) {
+        my $hl_data = $hl_req->gather(1); # list of arrayref of hashrefs
+        $self->ctx->{_hl_data} = { map { ''.$$_[0]{source} => $_ } @$hl_data };
+        $outer_self->timelog("get_records_and_facets(): got highlighting content (". keys(%{$self->ctx->{_hl_data}}).")");
+    }
 
     # Protect against requests for non-existent records
     return unless $data->{$unapi_type};

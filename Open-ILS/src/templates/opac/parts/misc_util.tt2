@@ -110,9 +110,7 @@
         args.hl = {};
         IF !CGI.param('no_highlight') && !search.no_highlight;
 
-            junk = ctx.timelog('Fetching of highlighted display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
             args.display_field_list = ctx.fetch_display_fields(args.df_bib_list.list);
-            junk = ctx.timelog('Finished fetch of highlighted display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
 
             junk = ctx.timelog('Mapping highlighted display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
             FOR df IN args.display_field_list;
