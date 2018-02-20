@@ -24,7 +24,9 @@ use OpenILS::Utils::RemoteAccount;
 use OpenILS::Utils::Fieldmapper;
 
 my $osrf_config = '/openils/conf/opensrf_core.xml';
-my $start_date  = DateTime->now->strftime('%F');
+my $default_start_date = DateTime->now->strftime('%F');
+my $date        = '';
+my $start_date  = '';
 my $end_date    = '';
 my $event_defs  = '';
 my $granularity = '';
@@ -37,6 +39,7 @@ my $help        = 0;
 
 GetOptions(
     'osrf-config=s'     => \$osrf_config,
+    'date=s'            => \$date,
     'start-date=s'      => \$start_date,
     'end-date=s'        => \$end_date,
     'event-defs=s'      => \$event_defs,
@@ -92,6 +95,10 @@ Options
 
     --end-date 
         Only collect output for events whose run_time occurred before this ISO date
+
+    --date
+        Only collect output for events whose run_time is on this ISO date.
+        Cannot be used with either --start-date or --end-date
 
     --osrf-config
         To set the OpenSRF config to something other than the default of
@@ -154,6 +161,10 @@ if ($granularity) {
 
 print "Processing event-defs @event_defs\n" if $verbose;
 
+die "Can't use --date with --start-date or --end-date!" if ($date && ($start_date || $end_date) );
+
+$start_date = $default_start_date unless $start_date; # This is basically what happened pre- --date
+
 my %date_filter;
 $date_filter{run_time} = {'>=' => $start_date} if $start_date;
 
@@ -168,7 +179,11 @@ if ($end_date) {
         $date_filter{run_time} = {'<' => $end_date};
     }
 }
-                
+
+if ($date) {
+    delete $date_filter{run_time}; # will always exist because of defaulting $start_date
+    $date_filter{run_time} = { "=" => {"transform" => "date", "value" => $date}};
+}
 
 # collect the event tempate output data
 # use a real session here so we can stream results directly to the output file
