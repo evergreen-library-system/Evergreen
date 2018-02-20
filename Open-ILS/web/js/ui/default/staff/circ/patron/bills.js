@@ -325,6 +325,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     // generates payments, collects user note if needed, and sends payment
     // to server.
     function sendPayment(note, cc_args) {
+        $scope.applyingPayment = true;
         var make_payments = generatePayments();
         billSvc.applyPayment($scope.payment_type, 
             make_payments, note, $scope.check_number, cc_args)
@@ -342,6 +343,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 console.error('Payment was rejected: ' + msg);
             }
         )
+        .finally(function() { $scope.applyingPayment = false; })
     }
 
     $scope.onReceiptOnPayChanged = function(){
