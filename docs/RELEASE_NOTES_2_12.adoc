@@ -32,7 +32,7 @@ This release contains bug fixes improving on Evergreen 2.12.8:
 Acknowledgements
 ~~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed code,
-tests and documentation patches to the 2.12.8 point release of
+tests and documentation patches to the 2.12.9 point release of
 Evergreen:
 
 * Jeanette Lundgren
