@@ -299,6 +299,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     // generates payments, collects user note if needed, and sends payment
     // to server.
     function sendPayment(note) {
+        $scope.applyingPayment = true;
         var make_payments = generatePayments();
         billSvc.applyPayment(
             $scope.payment_type, make_payments, note, $scope.check_number)
@@ -311,6 +312,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
             refreshDisplay();
         })
+        .finally(function() { $scope.applyingPayment = false; })
     }
 
     function printReceipt(type, payment_ids, payments_made, note) {
