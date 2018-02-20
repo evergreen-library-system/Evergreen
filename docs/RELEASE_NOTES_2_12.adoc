@@ -3,6 +3,25 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.10
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.9:
+
+* The patron bills screen now prevents staff members from double-clicking
+on the Apply Payment button (which otherwise would apply two payments).
+* Fixes a performance bug related to patrons logging in by barcode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.10 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jason Stephenson
+* Dan Wells
+
 Evergreen 2.12.9
 ----------------
 This release contains bug fixes improving on Evergreen 2.12.8:
