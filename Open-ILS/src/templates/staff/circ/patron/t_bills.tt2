@@ -15,7 +15,7 @@
       <div class="col-md-2">{{patron().credit_forward_balance() | currency}}</div>
     </div>
     <div class="row">
-      <div class="col-md-4">[% l('Total Paid:') %]</div>
+      <div class="col-md-4">[% l('Total Paid/Credited:') %]</div>
       <div class="col-md-2">{{summary.total_paid() | currency}}</div>
       <div class="col-md-4">[% l('Session Voided:') %]</div>
       <div class="col-md-2">{{session_voided | currency}}</div>
@@ -34,7 +34,7 @@
       <div class="col-md-2 strong-text">{{pending_change() | currency}}</div>
     </div>
     <div class="row">
-      <div class="col-md-4">[% l('Paid for Selected:') %]</div>
+      <div class="col-md-4">[% l('Paid/Credited for Selected:') %]</div>
       <div class="col-md-2">{{paid_selected() | currency}}</div>
     </div>
   </div><!-- col -->

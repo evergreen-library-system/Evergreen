@@ -14,7 +14,7 @@
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Type') %]</div>
   <div class="col-md-2">{{xact.summary().xact_type()}}</div>
-  <div class="col-md-2 strong-text">[% l('Total Paid') %]</div>
+  <div class="col-md-2 strong-text">[% l('Total Paid/Credited') %]</div>
   <div class="col-md-2">{{xact.summary().total_paid() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Checked Out') %]</div>
   <div class="col-md-2">{{xact.circulation().xact_start() | date:$root.egDateAndTimeFormat}}</div>
@@ -22,7 +22,7 @@
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Start') %]</div>
   <div class="col-md-2">{{xact.xact_start() | date:$root.egDateAndTimeFormat}}</div>
-  <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
+  <div class="col-md-2 strong-text">[% l('Balance Due') %]</div>
   <div class="col-md-2">{{xact.summary().balance_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Due Date') %]</div>
   <div class="col-md-2">{{xact.circulation().due_date() | egDueDate:$root.egDateAndTimeFormat:xact.circulation().circ_lib():xact.circulation().duration()}}</div>
