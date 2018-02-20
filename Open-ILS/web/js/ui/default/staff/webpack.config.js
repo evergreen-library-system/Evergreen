@@ -100,7 +100,8 @@ const vendorJsFiles = [
   'angular-tree-control',
   'iframe-resizer',
   'angular-order-object-by',
-  'lovefield'
+  'lovefield',
+  'angular-tablesort'
 ];
 
 
