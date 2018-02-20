@@ -334,7 +334,7 @@ CREATE OR REPLACE VIEW search.best_tsconfig AS
             COALESCE(f.ts_config, c.ts_config, 'simple') AS ts_config
       FROM  config.metabib_field m
             LEFT JOIN config.metabib_class_ts_map c ON (c.field_class = m.field_class AND c.index_weight = 'C')
-            LEFT JOIN config.metabib_field_ts_map f ON (f.metabib_field = m.id AND c.index_weight = 'C');
+            LEFT JOIN config.metabib_field_ts_map f ON (f.metabib_field = m.id AND f.index_weight = 'C');
 
 CREATE TYPE search.highlight_result AS ( id BIGINT, source BIGINT, field INT, value TEXT, highlight TEXT );
 

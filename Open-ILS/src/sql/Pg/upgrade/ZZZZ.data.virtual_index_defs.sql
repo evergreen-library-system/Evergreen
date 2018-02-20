@@ -13,6 +13,13 @@ INSERT INTO config.metabib_field_virtual_map (real, virtual)
 
 UPDATE config.metabib_field SET xpath=$$//mods32:mods/mods32:subject[not(descendant::mods32:geographicCode)]$$ WHERE id = 16;
 
+-- Stemming for genre
+INSERT INTO config.metabib_field_ts_map (metabib_field, ts_config)
+    SELECT 33, 'english_nostop' WHERE NOT EXISTS (
+        SELECT 1 FROM config.metabib_field_ts_map WHERE metabib_field = 33 AND ts_config = 'english_nostop'
+    )
+;
+
 COMMIT;
 
 \qecho 
