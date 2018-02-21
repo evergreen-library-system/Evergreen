@@ -2070,6 +2070,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             if (angular.isObject(v)) { // we'll use the pkey
                                 if (v.id) v = v.id();
                                 else if (v.code) v = v.code();
+                                else v = angular.copy(v); // Should only be statcats and callnumbers currently
                             }
             
                             tmpl[k] = v;
