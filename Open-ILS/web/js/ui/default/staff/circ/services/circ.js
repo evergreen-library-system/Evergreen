@@ -752,6 +752,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
                    $scope.patronName = $scope.holdEvent.payload.patron_name;
                    $scope.holdID = $scope.holdEvent.payload.hold_id;
+                   $scope.patronID = $scope.holdEvent.payload.patron_id;
                 }
 
                 $scope.auto_override =

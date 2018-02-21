@@ -16739,14 +16739,6 @@ VALUES
      		'coust', 'description'),
    	'bool');
 
-INSERT INTO actor.org_unit_setting (
-    org_unit, name, value
-) VALUES (
-    (SELECT id FROM actor.org_unit WHERE parent_ou IS NULL),
-    'circ.clear_hold_on_checkout',
-    'false'
-);
-
 INSERT INTO config.org_unit_setting_type
 ( name, grp, label, description, datatype )
 VALUES
