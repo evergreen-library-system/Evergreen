@@ -66,7 +66,7 @@ image::media/holds-managing-1.png[holds-managing-1]
 . Manage the hold by choosing an action on the list.
 .. If you want to cancel the hold, click _Cancel Hold_ from the menu. You are prompted to select a reason and put in a note if required. To finish, click _Apply_.
 +
-image::media/holds-managing-2.png[holds-managing-2]
+image::media/holds-managing-2.JPG[holds-managing-2]
 +
 [NOTE]
 =============
@@ -81,60 +81,54 @@ Suspended holds will not be filled but its hold position will be kept. They will
 
 .. You may edit the _Activation Date_ and _Expiration Date_ by using the corresponding action on the _Actions_ dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click _Apply_. Use the _Clear_ button to unset the date.
 +
-image::media/holds-managing-4.png[holds-managing-4]
+image::media/holds-managing-4.JPG[holds-managing-4]
 +
 
 .. Hold shelf expire time is automatically recorded in the hold record when a hold is filled. You may edit this time by using the _Edit Shelf Expire Time_ on the _Actions_ dropdown menu. You will be prompted to enter the new date. Use the calendar widget to choose a date, then click _Apply_.
 
 .. If you want to enable or disable phone notification or change the phone number, click _Edit Notification Settings_. You will be prompted to enter the new phone number. Make sure you enter a valid and complete phone number. The phone number is used for this hold only and can be different from the one in the patron account. It has no impact on the patron account. If you leave it blank, no phone number will be printed on the hold slip. If you want to enable or disable email notification for the hold, check _Send Emails_ on the prompt screen.
 +
-image::media/holds-managing-5 and 6.JPG[holds-managing-5 and 6]
-+
-
-+
-* image::media/holds-managing-5.png[holds-managing-5]
-+
-
-+
-* image::media/holds-managing-6.png[holds-managing-6]
+image::media/holds-managing-5_and_6.JPG[holds-managing-5_and_6]
 +
 
 .. Pickup location can be changed by clicking _Edit Pickup Library_. Click the dropdown list of all libraries and choose the new pickup location. Click _Submit_.
 +
-image::media/holds-managing-7.png[holds-managing-7]
+image::media/holds-managing-7.JPG[holds-managing-7]
 +
 [NOTE]
 ==============
 Staff can change the pickup location for holds with in-transit status. Item will be sent in transit to the new destination. Staff cannot change the pickup location once an item is on the holds shelf.
 ==============
 
-.. The item’s physical condition is recorded in the copy record as _Good Condition_ or _Any Condition_. You may request that your holds be filled with copies of good quality only. Click _Set Desired Copy Quality_ on the
+.. The item’s physical condition is recorded in the copy record as _Good_ or _Mediocre_ in the _Quality_ field. You may request that your holds be filled with copies of good quality only. Click _Set Desired Copy Quality_ on the
 _Actions_ list. Make your choice in the pop-up window.
 +
-image::media/holds-managing-8.png[holds-managing-8]
+image::media/holds-managing-8.JPG[holds-managing-8]
 
 
 Transferring Holds
 ^^^^^^^^^^^^^^^^^^
 
-. Holds on one title can be transferred to another with the hold request time preserved. To do so, you need to find the destination title and click _Actions_ -> _Mark as Title Hold Transfer Destination_.
+. Holds on one title can be transferred to another with the hold request
+time preserved. To do so, you need to find the destination title and
+click _Mark for:_ -> _Title Hold Transfer_.
 +
 image::media/holds-managing-9.png[holds-managing-9]
 +
 . Select the hold you want to transfer. Click _Actions_ -> _Transfer to Marked Title_.
 +
-image::media/holds-managing-10.png[holds-managing-10]
+image::media/holds-managing-10.JPG[holds-managing-10]
 
 Cancelled Holds
 ^^^^^^^^^^^^^^^
 
 . Cancelled holds can be displayed. Click the _Recently Cancelled Holds_ button on the _Holds_ screen.
 +
-image::media/holds-managing-11.png[holds-managing-11]
+image::media/holds-managing-11.JPG[holds-managing-11]
 +
 . You can un-cancel holds.
 +
-image::media/holds-managing-12.png[holds-managing-12]
+image::media/holds-managing-12.JPG[holds-managing-12]
 +
 Based on your library’s setting, hold request time can be reset when a hold is un-cancelled.
 
@@ -144,15 +138,16 @@ Viewing Details & Adding Notes to Holds
 
 . You can view details of a hold by selecting a hold then clicking the _Detail View_ button on the _Holds_ screen.
 +
-image::media/holds-managing-13.png[holds-managing-13]
+image::media/holds-managing-13.JPG[holds-managing-13]
 +
 . You may add a note to a hold in the _Detail View_.
 +
-image::media/holds-managing-14.png[holds-managing-14]
+image::media/holds-managing-14.JPG[holds-managing-14]
 +
-. Notes can be printed on the hold slip if the _Print on slip?_ checkbox is selected. Key in the message then click _Add Note_.
+. Notes can be printed on the hold slip if the _Print on slip?_ checkbox
+is selected. Enter the message, then click _OK_.
 +
-image::media/holds-managing-15.png[holds-managing-15]
+image::media/holds-managing-15.JPG[holds-managing-15]
 
 
 Displaying Queue Position
@@ -175,11 +170,13 @@ image::media/holds-managing-17.png[holds-managing-17]
 +
 image::media/holds-managing-18.png[holds-managing-18]
 +
-. Highlight the hold you want to edit. Choose an action from the _Actions for Selected Holds_ menu. For more information see the <<_actions_for_selected_holds,Actions for Selected Holds>> section.
+. Highlight the hold you want to edit. Choose an action from the
+_Actions_ menu. For more information see the
+<<_actions_for_selected_holds,Actions for Selected Holds>> section. For
+example, you can retrieve the hold requestor’s account by selecting
+_Retrieve Patron_ from this menu.
 +
 image::media/holds-managing-19.png[holds-managing-19]
-+
-. You can retrieve the hold requestor’s account by selecting _Retrieve Patron_ on the above dropdown menu.
 
 
 Retargeting Holds
@@ -232,10 +229,6 @@ image::media/holds-pull-2.png[holds-pull-2]
 Column adjustments will only affect the screen display and the CSV download for the holds pull list. It will not affect the printable holds pull list.
 ===========
 
-. The maximum number of holds initially displayed on the pull list is about 100. Use _Fetch More Holds_ to retrieve more records. You may have to click _Reload_ for those records to appear in the display.
-+
-image::media/holds-pull-3.png[holds-pull-3]
-+
 . The following options are available for printing the pull list:
 
 * _Print Full Pull List_ prints _Title_, _Author_, _Shelving Location_, _Call Number_ and _Item Barcode_. This method uses less paper than the alternate strategy.
@@ -248,7 +241,7 @@ image::media/holds-pull-4.png[holds-pull-4]
 +
 With the CSV option, if you are including barcodes in the holds pull list, you will need to take the following steps to make the barcode display properly: in Excel, select the entire barcode column, right-click and select _Format Cells_, click _Number_ as the category and then reduce the number of decimal places to 0.
 
-. You may perform hold management tasks by using the _Actions for Selected Holds_ dropdown list.
+. You may perform hold management tasks by using the _Actions_ dropdown list.
 
 The _Holds Pull List_ is updated constantly. Once an item on the list is no longer available or a hold on the list is captured, the items will disappear from the list. The _Holds Pull List_ should be printed at least once a day.
 
@@ -257,23 +250,23 @@ Capturing Holds
 
 Holds can be captured when a checked-out item is returned (checked in) or an item on the _Holds Pull List_ is retrieved and captured. When a hold is captured, the hold slip will be printed and if the patron has chosen to be notified by email, the email notification will be sent out. The item should be put on the hold shelf.
 
-. To capture a hold, select _Circulation_ -> _Capture Holds_.
+. To capture a hold, select _Circulation_ -> _Capture Holds_ (or press
+_Shift-F2_).
 +
 image::media/holds-pull-5.png[holds-pull-5]
-+
-* image::media/holds-pull-5a.png[holds-pull-5a]
 +
 . Scan or type barcode and click _Submit_.
 +
 image::media/holds-pull-6.png[holds-pull-6]
 +
-. The following hold slip is automatically printed. A print window will appear for the hold slip contents
+. The following hold slip is automatically printed. If your workstation
+is not setup for silent printing (via Hatch), then a print window will appear.
 +
 image::media/holds-pull-7.png[holds-pull-7]
 +
-. If the item should be sent to another location, a print window will appear for the hold slip contents.
-+
-image::media/holds-pull-8.png[holds-pull-8]
+. If the item should be sent to another location, a hold transit slip
+will be printed. If your workstation is not setup for silent printing
+(via Hatch), then another print window will appear.
 +
 [TIP]
 ===============
@@ -305,9 +298,6 @@ image::media/holds-notifications-1.png[holds-notifications-1]
 image::media/holds-notifications-2.png[holds-notifications-2]
 +
 . The patron can remove these checkmarks at the time they place the hold or they can enter a different phone number if they prefer to be contacted at a different number. The patron cannot change their e-mail address at this time.
-+
-image::media/holds-notifications-3.png[holds-notifications-3]
-+
 
 . When the hold becomes available, the holds slip will display the patron’s e-mail address only if the patron selected the _Notify by Email by default when a hold is ready for pickup?_ checkbox. It will display a phone number only if the patron selected the _Notify by Phone by default when a hold is ready for pickup?_ checkbox.
 
@@ -322,7 +312,7 @@ Clearing Shelf-Expired Holds
 +
 image::media/holds-clearing-1.png[holds-clearing-1]
 +
-. The _Holds Shelf_ is displayed. Note the _Actions for Selected Holds_ are available, as in the patron record.
+. The _Holds Shelf_ is displayed. Note the _Actions_ menu is available, as in the patron record.
 +
 You can cancel stale holds here.
 +
@@ -332,14 +322,15 @@ image::media/holds-clearing-2.png[holds-clearing-2]
 +
 image::media/holds-clearing-3.png[holds-clearing-3]
 +
-. Check the _View Clearable Holds_ button to list expired holds, wrong-shelf holds and canceled holds only. Expired holds are holds that expired before today's date.
-
-. Click the _Print Full List_ button if you need a printed list. To format the printout customize the *Holds Shelf* receipt template. This can be done in _Administration_ -> _Workstation_ -> _Print Templates_.
-
-. The _Clear These Holds_ button is lit up. Click it and the expired holds will be canceled.
+. Click the _Show Clearable Holds_ button to list expired holds, wrong-shelf holds and canceled holds only. Expired holds are holds that expired before today's date.
 +
 image::media/holds-clearing-4.png[holds-clearing-4]
 +
+. Click the _Print Full List_ button if you need a printed list. To format the printout customize the *Holds Shelf* receipt template. This can be done in _Administration_ -> _Workstation_ -> _Print Templates_.
+
+. The _Clear These Holds_ button becomes enabled when viewing clearable
+holds. Click it and the expired holds will be canceled.
+
 . Bring items down from the hold shelf and check them in.
 
 [IMPORTANT]
