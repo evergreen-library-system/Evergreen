@@ -3,6 +3,87 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.4
+---------------
+This release contains bug fixes improving on Evergreen 3.0.3:
+
+* Fixes a bug that caused all searches limited by shelving location to
+return 0 results.
+* Fixes a bug that caused EDI orders to be sent with the vendor's SAN,
+rather than the ordering agency's SAN.
+* Fixes a bug that prevented Safari/iOS users from logging in to the
+web client.
+* Fixes a bug that prevented users from using the browse interface.
+* Fixes a bug in the Item Status List view that caused incorrect due
+dates to display.
+* Approval code is now a required field in the web client's patron
+credit card payment form.
+* Fixes a bug with credit card payments that caused a receipt to print
+showing that the patron paid the bill when the payment had not actually
+been applied.
+* Fixes a bug that prevented the EDI translator from being installed on
+Ubuntu 16.04.
+* Fixes a bug that caused entries to show up multiple times in the
+Items Out and Holds tabs in the patron record.
+* Fixes a bug that caused grids on Bills and Patron Messages
+screens to not display properly.
+* The following fields are now available for the Checkout and Items Out
+receipt templates:
+** first_given_name
+** second_given_name
+** family_name
+** suffix
+** barcode
+** money_summary.balance_owed
+** money_summary.total_paid
+** money_summary.total_owed
+** expire_date
+** alias
+** has_email
+** has_phone
+* The following fields are now available on the Bill Payment receipt templates:
+** first_given_name
+** second_given_name
+** family_name
+** suffix
+** barcode
+** expire_date
+** alias
+** has_email
+** has_phone
+* Payment type is now a column in the payments tab of the patron record
+Bill History section.
+* The "Replace Barcode" function now makes it more difficult for staff
+members to attempt to create blank patron barcodes.
+* The patron bills screen now prevents staff members from double-clicking
+on the Apply Payment button (which otherwise would apply two payments).
+* Fixes a bug that prevented patrons attached to statistical categories
+from displaying in the patron search-to-hold dialog.
+* Fixes a performance issue related to uploading CSV files of barcodes
+to the item status and patron bucket interfaces.
+* Fixes several small bugs in the Spanish translation.
+* Fixes a performance bug related to patrons logging in by barcode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.4 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Terran McCanna
+* Mike Rylander
+* Chris Sharp
+* Ben Shum
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
 Evergreen 3.0.3
 ----------------
 Upgrade Notes
