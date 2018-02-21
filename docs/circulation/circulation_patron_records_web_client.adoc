@@ -193,7 +193,7 @@ Open the patron record in edit mode as described in the section
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
-* image::media/circulation_patron_records-13.png[circulation_patron_records 13]
+image::media/circulation_patron_records_13.JPG[circulation_patron_records 13]
 
 This will clear the barcode field.  Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
@@ -207,7 +207,7 @@ edit mode as described in the section <<updating_patron_information,Updating Pat
 Select the _See All_ button next to the _Replace Barcode_ button.  This will
 display the current and past barcodes associated with this account. 
 
-image::media/circulation_patron_records-14.png[circulation_patron_records 14]
+image::media/circulation_patron_records_14.JPG[circulation_patron_records 14]
 
 Check the box(es) for all barcodes that should be ``active'' for the patron.  An
 ``active'' barcode may be used for circulation transactions.  A patron may have
@@ -231,9 +231,9 @@ described in the section <<searching_patrons,Searching Patrons>>.
 Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
-Select the _Generate Password_ button next to the _Password_ field.  
+Select the _Generate Password_ button next to the _Password_ field.
 
-* image::media/circulation_patron_records-15.png[circulation_patron_records 15]
+image::media/circulation_patron_records_15.JPG[circulation_patron_records 15]
 
 NOTE: The existing password is not displayed in patron records for security
 reasons.
