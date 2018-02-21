@@ -1,3 +1,1147 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 022e5bf6467f60b46a7a652dc356a7444d2d3b62
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Feb 21 17:36:23 2018 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	build/i18n/po/AutoFieldWidget.js/ar-JO.po
+3	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+3	3	build/i18n/po/AutoFieldWidget.js/de-DE.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+3	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+3	3	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+3	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/he-IL.po
+3	3	build/i18n/po/AutoFieldWidget.js/hu-HU.po
+3	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+3	3	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+3	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+3	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+3	3	build/i18n/po/AutoFieldWidget.js/sv-SE.po
+3	3	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+3	3	build/i18n/po/FlattenerGrid.js/ar-JO.po
+3	3	build/i18n/po/FlattenerGrid.js/cs-CZ.po
+3	3	build/i18n/po/FlattenerGrid.js/de-DE.po
+3	3	build/i18n/po/FlattenerGrid.js/en-CA.po
+34	0	build/i18n/po/FlattenerGrid.js/en-GB.po
+3	3	build/i18n/po/FlattenerGrid.js/es-ES.po
+3	3	build/i18n/po/FlattenerGrid.js/fi-FI.po
+3	3	build/i18n/po/FlattenerGrid.js/fr-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/hy-AM.po
+3	3	build/i18n/po/PCrudFilterPane.js/ar-JO.po
+3	3	build/i18n/po/PCrudFilterPane.js/cs-CZ.po
+3	3	build/i18n/po/PCrudFilterPane.js/de-DE.po
+3	3	build/i18n/po/PCrudFilterPane.js/es-ES.po
+3	3	build/i18n/po/PCrudFilterPane.js/fi-FI.po
+3	3	build/i18n/po/PCrudFilterPane.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/ar-JO.po
+3	3	build/i18n/po/Searcher.js/cs-CZ.po
+3	3	build/i18n/po/Searcher.js/de-DE.po
+3	3	build/i18n/po/Searcher.js/en-CA.po
+3	3	build/i18n/po/Searcher.js/en-GB.po
+3	3	build/i18n/po/Searcher.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/fi-FI.po
+3	3	build/i18n/po/Searcher.js/fr-CA.po
+7	7	build/i18n/po/Searcher.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/oc-FR.po
+3	3	build/i18n/po/Searcher.js/pt-BR.po
+3	3	build/i18n/po/Searcher.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/ar-JO.po
+3	3	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+3	3	build/i18n/po/TranslatorPopup.js/de-DE.po
+3	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+3	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+3	3	build/i18n/po/TranslatorPopup.js/fi-FI.po
+3	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/he-IL.po
+3	3	build/i18n/po/TranslatorPopup.js/hu-HU.po
+3	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+3	3	build/i18n/po/TranslatorPopup.js/oc-FR.po
+3	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+3	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/sv-SE.po
+3	3	build/i18n/po/TranslatorPopup.js/tr-TR.po
+3	3	build/i18n/po/URLVerify.js/ar-JO.po
+3	3	build/i18n/po/URLVerify.js/cs-CZ.po
+3	3	build/i18n/po/URLVerify.js/de-DE.po
+3	3	build/i18n/po/URLVerify.js/en-GB.po
+3	3	build/i18n/po/URLVerify.js/es-ES.po
+3	3	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/URLVerify.js/pt-BR.po
+3	3	build/i18n/po/User.js/ar-JO.po
+3	3	build/i18n/po/User.js/cs-CZ.po
+3	3	build/i18n/po/User.js/de-DE.po
+3	3	build/i18n/po/User.js/en-CA.po
+3	3	build/i18n/po/User.js/en-GB.po
+3	3	build/i18n/po/User.js/es-ES.po
+3	3	build/i18n/po/User.js/fi-FI.po
+3	3	build/i18n/po/User.js/fr-CA.po
+3	3	build/i18n/po/User.js/he-IL.po
+3	3	build/i18n/po/User.js/hu-HU.po
+3	3	build/i18n/po/User.js/hy-AM.po
+3	3	build/i18n/po/User.js/oc-FR.po
+3	3	build/i18n/po/User.js/pt-BR.po
+3	3	build/i18n/po/User.js/ru-RU.po
+3	3	build/i18n/po/User.js/sv-SE.po
+3	3	build/i18n/po/User.js/tr-TR.po
+3	3	build/i18n/po/XULTermLoader.js/ar-JO.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fi-FI.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/he-IL.po
+3	3	build/i18n/po/XULTermLoader.js/hu-HU.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/sv-SE.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+3	3	build/i18n/po/acq.js/ar-JO.po
+3	43	build/i18n/po/acq.js/cs-CZ.po
+3	3	build/i18n/po/acq.js/de-DE.po
+3	44	build/i18n/po/acq.js/en-CA.po
+3	44	build/i18n/po/acq.js/en-GB.po
+3	46	build/i18n/po/acq.js/es-ES.po
+3	17	build/i18n/po/acq.js/fi-FI.po
+3	50	build/i18n/po/acq.js/fr-CA.po
+3	3	build/i18n/po/acq.js/he-IL.po
+3	3	build/i18n/po/acq.js/hu-HU.po
+11	50	build/i18n/po/acq.js/hy-AM.po
+3	3	build/i18n/po/acq.js/oc-FR.po
+3	46	build/i18n/po/acq.js/pt-BR.po
+3	3	build/i18n/po/acq.js/ru-RU.po
+3	3	build/i18n/po/acq.js/sv-SE.po
+3	3	build/i18n/po/acq.js/tr-TR.po
+4	4	build/i18n/po/acq/ar-JO.po
+15	15	build/i18n/po/acq/cs-CZ.po
+4	4	build/i18n/po/acq/de-DE.po
+4	4	build/i18n/po/acq/es-ES.po
+4	4	build/i18n/po/acq/hy-AM.po
+4	4	build/i18n/po/acq/ru-RU.po
+4	4	build/i18n/po/actor/ar-JO.po
+4	4	build/i18n/po/actor/cs-CZ.po
+4	4	build/i18n/po/actor/de-DE.po
+4	4	build/i18n/po/actor/es-ES.po
+4	4	build/i18n/po/actor/hy-AM.po
+3	3	build/i18n/po/admin.properties/ar-JO.po
+4	4	build/i18n/po/admin.properties/cs-CZ.po
+3	3	build/i18n/po/admin.properties/de-DE.po
+3	3	build/i18n/po/admin.properties/en-CA.po
+3	3	build/i18n/po/admin.properties/en-GB.po
+3	3	build/i18n/po/admin.properties/es-ES.po
+3	3	build/i18n/po/admin.properties/fi-FI.po
+3	3	build/i18n/po/admin.properties/fr-CA.po
+3	3	build/i18n/po/admin.properties/he-IL.po
+3	3	build/i18n/po/admin.properties/hu-HU.po
+3	3	build/i18n/po/admin.properties/hy-AM.po
+3	3	build/i18n/po/admin.properties/oc-FR.po
+3	3	build/i18n/po/admin.properties/pt-BR.po
+3	3	build/i18n/po/admin.properties/ru-RU.po
+3	3	build/i18n/po/admin.properties/sv-SE.po
+3	3	build/i18n/po/admin.properties/tr-TR.po
+3	3	build/i18n/po/auth.properties/ar-JO.po
+3	3	build/i18n/po/auth.properties/cs-CZ.po
+3	3	build/i18n/po/auth.properties/de-DE.po
+3	3	build/i18n/po/auth.properties/en-CA.po
+3	3	build/i18n/po/auth.properties/en-GB.po
+3	3	build/i18n/po/auth.properties/es-ES.po
+3	3	build/i18n/po/auth.properties/fi-FI.po
+3	3	build/i18n/po/auth.properties/fr-CA.po
+3	3	build/i18n/po/auth.properties/he-IL.po
+3	3	build/i18n/po/auth.properties/hu-HU.po
+3	3	build/i18n/po/auth.properties/hy-AM.po
+3	3	build/i18n/po/auth.properties/oc-FR.po
+3	3	build/i18n/po/auth.properties/pt-BR.po
+3	3	build/i18n/po/auth.properties/ru-RU.po
+3	3	build/i18n/po/auth.properties/sv-SE.po
+3	3	build/i18n/po/auth.properties/tr-TR.po
+3	3	build/i18n/po/authority.js/ar-JO.po
+3	3	build/i18n/po/authority.js/cs-CZ.po
+3	3	build/i18n/po/authority.js/de-DE.po
+3	3	build/i18n/po/authority.js/en-CA.po
+3	3	build/i18n/po/authority.js/en-GB.po
+3	3	build/i18n/po/authority.js/es-ES.po
+3	3	build/i18n/po/authority.js/fi-FI.po
+3	3	build/i18n/po/authority.js/fr-CA.po
+3	3	build/i18n/po/authority.js/hy-AM.po
+3	3	build/i18n/po/authority.js/oc-FR.po
+3	3	build/i18n/po/authority.js/pt-BR.po
+3	3	build/i18n/po/authority.js/ru-RU.po
+3	3	build/i18n/po/authority.js/tr-TR.po
+4	4	build/i18n/po/booking/ar-JO.po
+4	4	build/i18n/po/booking/cs-CZ.po
+4	4	build/i18n/po/booking/de-DE.po
+4	4	build/i18n/po/booking/en-CA.po
+4	4	build/i18n/po/booking/en-GB.po
+4	4	build/i18n/po/booking/es-ES.po
+4	4	build/i18n/po/booking/hy-AM.po
+3	3	build/i18n/po/capture.js/ar-JO.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fi-FI.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/he-IL.po
+3	3	build/i18n/po/capture.js/hu-HU.po
+11	11	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/capture.js/sv-SE.po
+3	3	build/i18n/po/capture.js/tr-TR.po
+2	5	build/i18n/po/cat.properties/ar-JO.po
+16	75	build/i18n/po/cat.properties/cs-CZ.po
+3	34	build/i18n/po/cat.properties/de-DE.po
+3	33	build/i18n/po/cat.properties/en-CA.po
+3	62	build/i18n/po/cat.properties/en-GB.po
+3	60	build/i18n/po/cat.properties/es-ES.po
+3	14	build/i18n/po/cat.properties/fi-FI.po
+3	63	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/he-IL.po
+3	3	build/i18n/po/cat.properties/hu-HU.po
+3	60	build/i18n/po/cat.properties/hy-AM.po
+3	11	build/i18n/po/cat.properties/oc-FR.po
+3	63	build/i18n/po/cat.properties/pt-BR.po
+3	55	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/sv-SE.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+4	4	build/i18n/po/cat/ar-JO.po
+4	4	build/i18n/po/cat/cs-CZ.po
+4	4	build/i18n/po/cat/de-DE.po
+4	4	build/i18n/po/cat/en-CA.po
+4	4	build/i18n/po/cat/en-GB.po
+4	4	build/i18n/po/cat/es-ES.po
+4	4	build/i18n/po/cat/fr-CA.po
+4	4	build/i18n/po/cat/hy-AM.po
+4	4	build/i18n/po/cat/pt-BR.po
+4	4	build/i18n/po/cat/ru-RU.po
+2	20	build/i18n/po/circ.properties/ar-JO.po
+39	78	build/i18n/po/circ.properties/cs-CZ.po
+3	3	build/i18n/po/circ.properties/de-DE.po
+3	41	build/i18n/po/circ.properties/en-CA.po
+3	41	build/i18n/po/circ.properties/en-GB.po
+3	43	build/i18n/po/circ.properties/es-ES.po
+3	30	build/i18n/po/circ.properties/fi-FI.po
+3	44	build/i18n/po/circ.properties/fr-CA.po
+3	3	build/i18n/po/circ.properties/he-IL.po
+3	3	build/i18n/po/circ.properties/hu-HU.po
+3	39	build/i18n/po/circ.properties/hy-AM.po
+3	3	build/i18n/po/circ.properties/oc-FR.po
+3	41	build/i18n/po/circ.properties/pt-BR.po
+3	42	build/i18n/po/circ.properties/ru-RU.po
+3	3	build/i18n/po/circ.properties/sv-SE.po
+3	3	build/i18n/po/circ.properties/tr-TR.po
+4	4	build/i18n/po/circ/ar-JO.po
+6	6	build/i18n/po/circ/cs-CZ.po
+4	4	build/i18n/po/circ/de-DE.po
+4	4	build/i18n/po/circ/es-ES.po
+4	4	build/i18n/po/circ/hy-AM.po
+4	4	build/i18n/po/circ/ru-RU.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+25	32	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	9	build/i18n/po/common.properties/en-CA.po
+3	9	build/i18n/po/common.properties/en-GB.po
+3	9	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	9	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/he-IL.po
+3	3	build/i18n/po/common.properties/hu-HU.po
+19	25	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	9	build/i18n/po/common.properties/pt-BR.po
+3	9	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/common.properties/sv-SE.po
+3	3	build/i18n/po/common.properties/tr-TR.po
+3	3	build/i18n/po/conify.dtd/ar-JO.po
+3	6	build/i18n/po/conify.dtd/cs-CZ.po
+3	3	build/i18n/po/conify.dtd/de-DE.po
+3	3	build/i18n/po/conify.dtd/en-CA.po
+3	6	build/i18n/po/conify.dtd/en-GB.po
+3	6	build/i18n/po/conify.dtd/es-ES.po
+3	3	build/i18n/po/conify.dtd/fi-FI.po
+3	6	build/i18n/po/conify.dtd/fr-CA.po
+3	3	build/i18n/po/conify.dtd/he-IL.po
+3	3	build/i18n/po/conify.dtd/hu-HU.po
+3	6	build/i18n/po/conify.dtd/hy-AM.po
+3	3	build/i18n/po/conify.dtd/oc-FR.po
+3	6	build/i18n/po/conify.dtd/pt-BR.po
+3	6	build/i18n/po/conify.dtd/ru-RU.po
+3	3	build/i18n/po/conify.dtd/sv-SE.po
+3	3	build/i18n/po/conify.dtd/tr-TR.po
+3	3	build/i18n/po/conify.js/ar-JO.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fi-FI.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/he-IL.po
+3	3	build/i18n/po/conify.js/hu-HU.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/sv-SE.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+4	4	build/i18n/po/conify/ar-JO.po
+3	3	build/i18n/po/conify/cs-CZ.po
+4	4	build/i18n/po/conify/es-ES.po
+4	4	build/i18n/po/conify/hy-AM.po
+3141	3186	build/i18n/po/db.seed/ar-JO.po
+3172	3323	build/i18n/po/db.seed/cs-CZ.po
+3	14	build/i18n/po/db.seed/de-DE.po
+3	130	build/i18n/po/db.seed/en-CA.po
+3	130	build/i18n/po/db.seed/en-GB.po
+3	125	build/i18n/po/db.seed/es-ES.po
+3	100	build/i18n/po/db.seed/fi-FI.po
+3	133	build/i18n/po/db.seed/fr-CA.po
+3	3	build/i18n/po/db.seed/he-IL.po
+3	3	build/i18n/po/db.seed/hu-HU.po
+11	172	build/i18n/po/db.seed/hy-AM.po
+3	18	build/i18n/po/db.seed/oc-FR.po
+3	92	build/i18n/po/db.seed/pt-BR.po
+3	81	build/i18n/po/db.seed/ru-RU.po
+3	3	build/i18n/po/db.seed/sv-SE.po
+3	6	build/i18n/po/db.seed/tr-TR.po
+2606	2543	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2644	2605	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+1222	1203	build/i18n/po/fm_IDL.dtd/de-DE.po
+1225	1244	build/i18n/po/fm_IDL.dtd/en-CA.po
+1225	1247	build/i18n/po/fm_IDL.dtd/en-GB.po
+1226	1210	build/i18n/po/fm_IDL.dtd/es-ES.po
+1226	1222	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1222	1200	build/i18n/po/fm_IDL.dtd/fr-CA.po
+1222	1200	build/i18n/po/fm_IDL.dtd/he-IL.po
+1222	1200	build/i18n/po/fm_IDL.dtd/hu-HU.po
+1261	1282	build/i18n/po/fm_IDL.dtd/hy-AM.po
+1222	1200	build/i18n/po/fm_IDL.dtd/oc-FR.po
+1224	1232	build/i18n/po/fm_IDL.dtd/pt-BR.po
+1229	1243	build/i18n/po/fm_IDL.dtd/ru-RU.po
+1222	1200	build/i18n/po/fm_IDL.dtd/sv-SE.po
+1222	1200	build/i18n/po/fm_IDL.dtd/tr-TR.po
+2	10	build/i18n/po/ils_events.xml/ar-JO.po
+3	31	build/i18n/po/ils_events.xml/cs-CZ.po
+3	3	build/i18n/po/ils_events.xml/de-DE.po
+3	32	build/i18n/po/ils_events.xml/en-CA.po
+3	32	build/i18n/po/ils_events.xml/en-GB.po
+7	16	build/i18n/po/ils_events.xml/es-ES.po
+3	24	build/i18n/po/ils_events.xml/fi-FI.po
+3	33	build/i18n/po/ils_events.xml/fr-CA.po
+3	3	build/i18n/po/ils_events.xml/he-IL.po
+3	3	build/i18n/po/ils_events.xml/hu-HU.po
+3	30	build/i18n/po/ils_events.xml/hy-AM.po
+3	3	build/i18n/po/ils_events.xml/oc-FR.po
+3	23	build/i18n/po/ils_events.xml/pt-BR.po
+3	23	build/i18n/po/ils_events.xml/ru-RU.po
+3	3	build/i18n/po/ils_events.xml/sv-SE.po
+3	3	build/i18n/po/ils_events.xml/tr-TR.po
+4	4	build/i18n/po/kpac/ar-JO.po
+4	4	build/i18n/po/kpac/cs-CZ.po
+4	4	build/i18n/po/kpac/de-DE.po
+4	4	build/i18n/po/kpac/es-ES.po
+4	4	build/i18n/po/kpac/hy-AM.po
+2	55	build/i18n/po/lang.dtd/ar-JO.po
+187	1042	build/i18n/po/lang.dtd/cs-CZ.po
+3	309	build/i18n/po/lang.dtd/de-DE.po
+3	815	build/i18n/po/lang.dtd/en-CA.po
+3	863	build/i18n/po/lang.dtd/en-GB.po
+3	278	build/i18n/po/lang.dtd/es-ES.po
+3	513	build/i18n/po/lang.dtd/fi-FI.po
+3	775	build/i18n/po/lang.dtd/fr-CA.po
+3	3	build/i18n/po/lang.dtd/he-IL.po
+3	3	build/i18n/po/lang.dtd/hu-HU.po
+71	929	build/i18n/po/lang.dtd/hy-AM.po
+3	12	build/i18n/po/lang.dtd/oc-FR.po
+3	781	build/i18n/po/lang.dtd/pt-BR.po
+3	774	build/i18n/po/lang.dtd/ru-RU.po
+3	3	build/i18n/po/lang.dtd/sv-SE.po
+3	18	build/i18n/po/lang.dtd/tr-TR.po
+3	3	build/i18n/po/match_set.js/ar-JO.po
+3	3	build/i18n/po/match_set.js/cs-CZ.po
+3	3	build/i18n/po/match_set.js/en-GB.po
+3	3	build/i18n/po/match_set.js/es-ES.po
+3	3	build/i18n/po/match_set.js/fr-CA.po
+3	3	build/i18n/po/match_set.js/hy-AM.po
+7	126	build/i18n/po/multiclass_search_help.html/ar-JO.po
+13	133	build/i18n/po/multiclass_search_help.html/cs-CZ.po
+7	131	build/i18n/po/multiclass_search_help.html/de-DE.po
+13	131	build/i18n/po/multiclass_search_help.html/en-CA.po
+7	127	build/i18n/po/multiclass_search_help.html/en-GB.po
+7	131	build/i18n/po/multiclass_search_help.html/es-ES.po
+6	120	build/i18n/po/multiclass_search_help.html/fi-FI.po
+13	135	build/i18n/po/multiclass_search_help.html/fr-CA.po
+12	121	build/i18n/po/multiclass_search_help.html/he-IL.po
+7	121	build/i18n/po/multiclass_search_help.html/hu-HU.po
+13	128	build/i18n/po/multiclass_search_help.html/hy-AM.po
+7	123	build/i18n/po/multiclass_search_help.html/oc-FR.po
+7	133	build/i18n/po/multiclass_search_help.html/pt-BR.po
+13	130	build/i18n/po/multiclass_search_help.html/ru-RU.po
+12	121	build/i18n/po/multiclass_search_help.html/sv-SE.po
+7	121	build/i18n/po/multiclass_search_help.html/tr-TR.po
+3	3	build/i18n/po/offline.properties/ar-JO.po
+21	27	build/i18n/po/offline.properties/cs-CZ.po
+3	12	build/i18n/po/offline.properties/de-DE.po
+3	12	build/i18n/po/offline.properties/en-CA.po
+3	12	build/i18n/po/offline.properties/en-GB.po
+3	9	build/i18n/po/offline.properties/es-ES.po
+3	3	build/i18n/po/offline.properties/fi-FI.po
+3	9	build/i18n/po/offline.properties/fr-CA.po
+3	3	build/i18n/po/offline.properties/he-IL.po
+3	3	build/i18n/po/offline.properties/hu-HU.po
+13	22	build/i18n/po/offline.properties/hy-AM.po
+3	3	build/i18n/po/offline.properties/oc-FR.po
+3	12	build/i18n/po/offline.properties/pt-BR.po
+3	12	build/i18n/po/offline.properties/ru-RU.po
+3	3	build/i18n/po/offline.properties/sv-SE.po
+3	9	build/i18n/po/offline.properties/tr-TR.po
+3	3	build/i18n/po/opac.dtd/ar-JO.po
+3	43	build/i18n/po/opac.dtd/cs-CZ.po
+3	46	build/i18n/po/opac.dtd/de-DE.po
+3	42	build/i18n/po/opac.dtd/en-CA.po
+3	42	build/i18n/po/opac.dtd/en-GB.po
+3	48	build/i18n/po/opac.dtd/es-ES.po
+3	11	build/i18n/po/opac.dtd/fi-FI.po
+3	47	build/i18n/po/opac.dtd/fr-CA.po
+3	3	build/i18n/po/opac.dtd/he-IL.po
+3	3	build/i18n/po/opac.dtd/hu-HU.po
+34	74	build/i18n/po/opac.dtd/hy-AM.po
+3	3	build/i18n/po/opac.dtd/oc-FR.po
+3	43	build/i18n/po/opac.dtd/pt-BR.po
+3	40	build/i18n/po/opac.dtd/ru-RU.po
+3	3	build/i18n/po/opac.dtd/sv-SE.po
+3	3	build/i18n/po/opac.dtd/tr-TR.po
+3	3	build/i18n/po/opac.js/ar-JO.po
+3	6	build/i18n/po/opac.js/cs-CZ.po
+3	6	build/i18n/po/opac.js/de-DE.po
+3	6	build/i18n/po/opac.js/en-CA.po
+3	6	build/i18n/po/opac.js/en-GB.po
+3	6	build/i18n/po/opac.js/es-ES.po
+3	3	build/i18n/po/opac.js/fi-FI.po
+3	6	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/he-IL.po
+3	3	build/i18n/po/opac.js/hu-HU.po
+3	6	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	6	build/i18n/po/opac.js/pt-BR.po
+3	6	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	6	build/i18n/po/opac.js/tr-TR.po
+3	3	build/i18n/po/patron.properties/ar-JO.po
+5	27	build/i18n/po/patron.properties/cs-CZ.po
+3	18	build/i18n/po/patron.properties/de-DE.po
+3	25	build/i18n/po/patron.properties/en-CA.po
+3	25	build/i18n/po/patron.properties/en-GB.po
+3	10	build/i18n/po/patron.properties/es-ES.po
+3	22	build/i18n/po/patron.properties/fi-FI.po
+3	26	build/i18n/po/patron.properties/fr-CA.po
+3	3	build/i18n/po/patron.properties/he-IL.po
+3	3	build/i18n/po/patron.properties/hu-HU.po
+7	29	build/i18n/po/patron.properties/hy-AM.po
+3	7	build/i18n/po/patron.properties/oc-FR.po
+3	22	build/i18n/po/patron.properties/pt-BR.po
+3	18	build/i18n/po/patron.properties/ru-RU.po
+3	3	build/i18n/po/patron.properties/sv-SE.po
+3	6	build/i18n/po/patron.properties/tr-TR.po
+3	3	build/i18n/po/pickup_and_return.js/ar-JO.po
+3	3	build/i18n/po/pickup_and_return.js/cs-CZ.po
+3	3	build/i18n/po/pickup_and_return.js/de-DE.po
+3	3	build/i18n/po/pickup_and_return.js/en-CA.po
+3	3	build/i18n/po/pickup_and_return.js/en-GB.po
+3	3	build/i18n/po/pickup_and_return.js/es-ES.po
+3	3	build/i18n/po/pickup_and_return.js/fi-FI.po
+3	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+3	3	build/i18n/po/pickup_and_return.js/he-IL.po
+3	3	build/i18n/po/pickup_and_return.js/hu-HU.po
+3	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+3	3	build/i18n/po/pickup_and_return.js/oc-FR.po
+3	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+3	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+3	3	build/i18n/po/pickup_and_return.js/sv-SE.po
+3	3	build/i18n/po/pickup_and_return.js/tr-TR.po
+3	3	build/i18n/po/pull_list.js/ar-JO.po
+3	3	build/i18n/po/pull_list.js/cs-CZ.po
+3	3	build/i18n/po/pull_list.js/de-DE.po
+3	3	build/i18n/po/pull_list.js/en-CA.po
+3	3	build/i18n/po/pull_list.js/en-GB.po
+3	3	build/i18n/po/pull_list.js/es-ES.po
+3	3	build/i18n/po/pull_list.js/fi-FI.po
+3	3	build/i18n/po/pull_list.js/fr-CA.po
+3	3	build/i18n/po/pull_list.js/he-IL.po
+3	3	build/i18n/po/pull_list.js/hu-HU.po
+3	3	build/i18n/po/pull_list.js/hy-AM.po
+3	3	build/i18n/po/pull_list.js/oc-FR.po
+3	3	build/i18n/po/pull_list.js/pt-BR.po
+3	3	build/i18n/po/pull_list.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/sv-SE.po
+3	3	build/i18n/po/pull_list.js/tr-TR.po
+3	3	build/i18n/po/register.js/ar-JO.po
+3	8	build/i18n/po/register.js/cs-CZ.po
+3	8	build/i18n/po/register.js/de-DE.po
+3	8	build/i18n/po/register.js/en-CA.po
+3	8	build/i18n/po/register.js/en-GB.po
+3	9	build/i18n/po/register.js/es-ES.po
+3	8	build/i18n/po/register.js/fi-FI.po
+3	8	build/i18n/po/register.js/fr-CA.po
+3	3	build/i18n/po/register.js/he-IL.po
+3	3	build/i18n/po/register.js/hu-HU.po
+3	8	build/i18n/po/register.js/hy-AM.po
+3	8	build/i18n/po/register.js/oc-FR.po
+3	9	build/i18n/po/register.js/pt-BR.po
+3	8	build/i18n/po/register.js/ru-RU.po
+3	3	build/i18n/po/register.js/sv-SE.po
+3	3	build/i18n/po/register.js/tr-TR.po
+2	2	build/i18n/po/reports.dtd/ar-JO.po
+3	20	build/i18n/po/reports.dtd/cs-CZ.po
+3	6	build/i18n/po/reports.dtd/de-DE.po
+3	20	build/i18n/po/reports.dtd/en-CA.po
+3	20	build/i18n/po/reports.dtd/en-GB.po
+3	20	build/i18n/po/reports.dtd/es-ES.po
+3	20	build/i18n/po/reports.dtd/fi-FI.po
+3	20	build/i18n/po/reports.dtd/fr-CA.po
+3	3	build/i18n/po/reports.dtd/he-IL.po
+3	3	build/i18n/po/reports.dtd/hu-HU.po
+11	28	build/i18n/po/reports.dtd/hy-AM.po
+3	3	build/i18n/po/reports.dtd/oc-FR.po
+3	20	build/i18n/po/reports.dtd/pt-BR.po
+3	20	build/i18n/po/reports.dtd/ru-RU.po
+3	3	build/i18n/po/reports.dtd/sv-SE.po
+3	3	build/i18n/po/reports.dtd/tr-TR.po
+3	3	build/i18n/po/reports.js/ar-JO.po
+3	3	build/i18n/po/reports.js/cs-CZ.po
+3	3	build/i18n/po/reports.js/de-DE.po
+3	3	build/i18n/po/reports.js/en-CA.po
+3	3	build/i18n/po/reports.js/en-GB.po
+3	3	build/i18n/po/reports.js/es-ES.po
+3	3	build/i18n/po/reports.js/fi-FI.po
+3	3	build/i18n/po/reports.js/fr-CA.po
+3	3	build/i18n/po/reports.js/he-IL.po
+3	3	build/i18n/po/reports.js/hu-HU.po
+3	3	build/i18n/po/reports.js/hy-AM.po
+3	3	build/i18n/po/reports.js/oc-FR.po
+3	3	build/i18n/po/reports.js/pt-BR.po
+3	3	build/i18n/po/reports.js/ru-RU.po
+3	3	build/i18n/po/reports.js/sv-SE.po
+3	3	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/ar-JO.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+3	3	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+3	3	build/i18n/po/reservation.js/fi-FI.po
+3	3	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/he-IL.po
+3	3	build/i18n/po/reservation.js/hu-HU.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/reservation.js/sv-SE.po
+3	3	build/i18n/po/reservation.js/tr-TR.po
+3	3	build/i18n/po/selfcheck.js/ar-JO.po
+3	18	build/i18n/po/selfcheck.js/cs-CZ.po
+3	3	build/i18n/po/selfcheck.js/de-DE.po
+3	18	build/i18n/po/selfcheck.js/en-CA.po
+3	18	build/i18n/po/selfcheck.js/en-GB.po
+3	9	build/i18n/po/selfcheck.js/es-ES.po
+3	18	build/i18n/po/selfcheck.js/fi-FI.po
+3	18	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/he-IL.po
+3	3	build/i18n/po/selfcheck.js/hu-HU.po
+3	18	build/i18n/po/selfcheck.js/hy-AM.po
+3	6	build/i18n/po/selfcheck.js/oc-FR.po
+3	18	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/sv-SE.po
+3	3	build/i18n/po/selfcheck.js/tr-TR.po
+3	3	build/i18n/po/serial.js/ar-JO.po
+3	3	build/i18n/po/serial.js/cs-CZ.po
+3	3	build/i18n/po/serial.js/de-DE.po
+3	3	build/i18n/po/serial.js/en-GB.po
+3	3	build/i18n/po/serial.js/es-ES.po
+3	3	build/i18n/po/serial.js/hy-AM.po
+3	3	build/i18n/po/serial.properties/ar-JO.po
+3	3	build/i18n/po/serial.properties/cs-CZ.po
+3	3	build/i18n/po/serial.properties/de-DE.po
+3	3	build/i18n/po/serial.properties/en-CA.po
+3	14	build/i18n/po/serial.properties/en-GB.po
+3	3	build/i18n/po/serial.properties/es-ES.po
+3	3	build/i18n/po/serial.properties/fi-FI.po
+3	3	build/i18n/po/serial.properties/fr-CA.po
+11	22	build/i18n/po/serial.properties/hy-AM.po
+3	3	build/i18n/po/serial.properties/oc-FR.po
+3	3	build/i18n/po/serial.properties/pt-BR.po
+3	3	build/i18n/po/serial.properties/tr-TR.po
+4	4	build/i18n/po/serial/ar-JO.po
+4	4	build/i18n/po/serial/cs-CZ.po
+4	4	build/i18n/po/serial/es-ES.po
+4	4	build/i18n/po/serial/hy-AM.po
+199	293	build/i18n/po/tpac/ar-JO.po
+226	321	build/i18n/po/tpac/cs-CZ.po
+200	215	build/i18n/po/tpac/de-DE.po
+200	291	build/i18n/po/tpac/en-CA.po
+200	291	build/i18n/po/tpac/en-GB.po
+218	314	build/i18n/po/tpac/es-ES.po
+200	293	build/i18n/po/tpac/fi-FI.po
+200	297	build/i18n/po/tpac/fr-CA.po
+200	200	build/i18n/po/tpac/he-IL.po
+200	200	build/i18n/po/tpac/hu-HU.po
+199	294	build/i18n/po/tpac/hy-AM.po
+200	239	build/i18n/po/tpac/oc-FR.po
+200	292	build/i18n/po/tpac/pt-BR.po
+200	206	build/i18n/po/tpac/ru-RU.po
+200	200	build/i18n/po/tpac/sv-SE.po
+200	212	build/i18n/po/tpac/tr-TR.po
+4	4	build/i18n/po/urlverify/ar-JO.po
+4	4	build/i18n/po/urlverify/cs-CZ.po
+4	4	build/i18n/po/urlverify/de-DE.po
+4	4	build/i18n/po/urlverify/es-ES.po
+4	4	build/i18n/po/urlverify/hy-AM.po
+3	3	build/i18n/po/vandelay.js/ar-JO.po
+3	3	build/i18n/po/vandelay.js/cs-CZ.po
+3	3	build/i18n/po/vandelay.js/en-CA.po
+3	3	build/i18n/po/vandelay.js/en-GB.po
+3	3	build/i18n/po/vandelay.js/es-ES.po
+3	3	build/i18n/po/vandelay.js/hy-AM.po
+3	3	build/i18n/po/vandelay.js/pt-BR.po
+4	4	build/i18n/po/vandelay/ar-JO.po
+4	4	build/i18n/po/vandelay/cs-CZ.po
+4	4	build/i18n/po/vandelay/de-DE.po
+4	4	build/i18n/po/vandelay/es-ES.po
+4	4	build/i18n/po/vandelay/hy-AM.po
+1170	981	build/i18n/po/webstaff/ar-JO.po
+947	769	build/i18n/po/webstaff/cs-CZ.po
+9132	0	build/i18n/po/webstaff/en-GB.po
+910	743	build/i18n/po/webstaff/es-ES.po
+846	655	build/i18n/po/webstaff/hy-AM.po
+843	655	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/FlattenerGrid.js/en-GB.po
+ create mode 100644 build/i18n/po/webstaff/en-GB.po
+
+commit b46704cd208b7936a670702196fa0be88501287b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 813e46cd7f9e41ad9e222276441ce151fc2fadb7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Feb 20 18:27:47 2018 -0800
+
+    Adding 3.0.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+81	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit a5756d74932526e6ab7f94828269d3a242212fef
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Feb 20 14:35:53 2018 -0800
+
+    Docs: fixing typo in 2.12.9 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/RELEASE_NOTES_2_12.adoc
+
+commit e4071216fb4ba7f93b66017705ce80bdfb53175e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Feb 20 14:34:10 2018 -0800
+
+    Release notes for 2.12.10
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+19	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit f0d2a0a57ee4d9cd8d0fa019b9a08763e8da2392
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 20 11:05:49 2018 -0500
+
+    LP#1749992 Disable payment button during payment
+    
+    Since the display is not refreshed until the payment finishes, it
+    is possible to fire off a second payment by double-clicking.
+    
+    This commit is a simple way to disable the button while a payment is
+    in process, then enable it again after the display refreshes.
+    
+    Since the 'sendPayment()' function is wrapped, we may need to move
+    this logic up, but this being a single promise is simpler, and it
+    solved the problem in testing.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+2	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 31f93434a98993fb8839f7ed568712b6a51dac0e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Feb 20 10:09:33 2018 -0500
+
+    Lp 1746584: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+221	0	Open-ILS/src/sql/Pg/upgrade/1088.function.browse_visibility_test.sql
+0	219	Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse_visibility_test.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1088.function.browse_visibility_test.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse_visibility_test.sql
+
+commit 0f64cadbf9a81e71f37e4af26fad647df830c795
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 31 17:07:42 2018 -0500
+
+    LP#1746584: Adjust bib visibility test for patron browse
+    
+    With updates to address visibility testing issues for LURIs, a change was made
+    to allow the default bib tests to supply the most appropriate query_int
+    operator with which to join those to non-default tests.  The browse code,
+    however, is all database-level and was not adjusted with the Perl code that
+    implements general search.  This commit addresses that issue by acknowledging
+    that the bib vis testing code to provide its own operator, either | or &, as
+    appropriate to the actual default test values.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+219	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse_visibility_test.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.browse_visibility_test.sql
+
+commit 87cb606448ffccab02f89e383c22cc2b36da69e0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 26 16:42:08 2018 -0500
+
+    LP#1745499 De-Parallelify Item Status file upload
+    
+    Fetch copies in a series instead of in parallel when loading copy
+    barcodes from a file in the Item Status interface.  This helps avoid
+    excessive pcrud process count.
+    
+    Since this causes the action to take a little longer, the commit also
+    includes a progress dialog indicating copy retrieve progress.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+25	14	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit e8c27cb28cad4ac2fb5e9dd8c535a42bcb30fab1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 25 17:57:32 2018 -0500
+
+    LP#1745499 Patron bucket from file query consolidation
+    
+    Replace one-pcrud-call-per-barcode with a single (streaming) pcrud
+    search call to fetch patron cards when using the barcode file upload
+    option in the web staff pending patron bucket UI.  This avoids spawning
+    high number of pcrud processes.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+15	11	Open-ILS/web/js/ui/default/staff/circ/patron/bucket/app.js
+
+commit 322d25812b91a03a8466df49198766fdc9e1e6fd
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sat Feb 17 16:11:35 2018 -0500
+
+    i18n: fix es-ES webstaff translation
+    
+    Repairs a number of variables, spacing, and function names that were
+    mistranslated in the Spanish webstaff file.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+53	59	build/i18n/po/webstaff/es-ES.po
+
+commit b81e944f8f49fb75b0e15f332238919ca919def6
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Feb 14 18:32:46 2018 -0500
+
+    Lp 1749593: Fix TypeError: Cannot set property 'grid' of undefined
+    
+    Commit b35f0c0 added a reference to the grid in the grid.dataProvider
+    in services/grid.js in the web staff client.  This is great, but the
+    dataProvider could be undefined where it was being set.  This leads to
+    busted grid views and a TypeError in the console.
+    
+    This commit moves the code down until after a fallback dataProvider is
+    used when the dataProvider is undefined and thereby avoids both
+    problems of adding the grid to an undefined dataProvider.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	3	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit eb9ca01e659b9d238c895e96f7882dd7ba09b7ff
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Jan 29 17:02:01 2018 -0500
+
+    LP1737540: Add Patron Information to Receipts
+    
+    Adds the following fields to a patron object on print_data:
+    first_given_name
+    second_given_name
+    family_name
+    suffix
+    barcode
+    money_summary.balance_owed
+    money_summary.total_paid
+    money_summary.total_owed
+    expire_date
+    alias
+    has_email
+    has_phone
+    
+    On the following receipts: Checkout, Items Out, and Bill Payment.
+    
+    (money_summary left out on bill payment because it will always be out of date.)
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+12	0	Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+16	6	Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2
+18	1	Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2
+12	1	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+17	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+16	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+16	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 8cf71da81be14f11c390d4aa55528a27b130f163
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Mon Jan 8 16:55:56 2018 -0500
+
+    LP#1739648 - fix grid nextPage button by setting grid.totalCount
+    
+    This wires up the grid.totalCount in the implemented DataProvider's
+    get method, which allows us to properly disable the next page button
+    for when we know there's no more data.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+8	1	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+3	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit e18a315eb6a4a2082d3f96f6d4f655d0026d49a7
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Jan 4 17:36:02 2018 -0500
+
+    LP#1739648 - fix item duplication in itemsout and holds grids
+    
+    Since these grids have caching, if the offset was greater
+    the cached data length, the grid would try to fetch data again, even if
+    it's already there, pushing duplicate items into the cache. This should
+    prevent that.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/holds.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit dde5ae124df0648d890e85cf3424fdc075b9d961
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Feb 8 10:46:31 2018 -0500
+
+    Docs: Add missing section to root.adoc
+    
+    This section was separated into its own file a few months ago, and was
+    added to root_command_line_admin.adoc, but needs to also be added to the
+    main root.adoc. This commit does that.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	0	docs/root.adoc
+
+commit d44604114e6cd782a624ab67455f4551eb82b2aa
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Jan 5 14:23:01 2018 -0500
+
+    LP#1739669 - add PaymentType and persistkey bill payment hist grid
+    
+    This adds "circ.patron.billhistory_payments" as the persist-key for that
+    grid and also adds a Payment Type column. Note that the Payment Type is
+    that of the individual payment, while the Last Payment Type is that
+    of the most recent payment on the billing in question.
+    
+    To test
+    -------
+    [1] Set up a patron bill that has multiple payments on it off
+        different types (e.g., cash, credit, etc.)
+    [2] Apply the patch.
+    [3] In the payments tab of the Bill History page in the web staff
+        client, note that there is now a Payment Type column available.
+        Verify that it matches the types of the payments entered in
+        step 1.
+    [4] Verify that column settings for that payment history grid can be
+        saved.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2
+
+commit c096eb8751dac732c9e57809271cc24f909623ac
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jan 9 16:51:54 2018 -0500
+
+    LP#1724052: move stat-cat cache initialization to patron search service
+    
+    When the patron search was split out of the patron app per bug 1701001,
+    the startup code that copied the current patron stat-cat list into
+    egCore.env was not moved over as well and remained in the patron app. As
+    a consequence, the patron search-to-hold dialog would fail to display
+    any patrons in the results list that had statistical categories assigned.
+    This patch moves that bit of initialization into the service.
+    
+    To test
+    -------
+    [1] Ensure that some patron records have statistical categories assigned.
+    [2] In the web staff client, perform a catalog search, place a hold,
+        then use the 'Patron Search' button. Perform a search; note that
+        patrons with statistical categories are not displayed and that
+        errors are present in the browser debug console.
+    [3] Apply the patch and repeat step #2. This time, patrons that have
+        stat cats should be included in the results.
+    [4] Perform a patron search in the main patron search interface;
+        verify that patrons with statistical categories are retrieved.
+    [5] Directly go to the page listing stat cats for a patron (e.g.,
+        /eg/staff/circ/patron/$ID/stat_cats). Verify that the name
+        of the OU that owns the stat cat is displayed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	12	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+13	3	Open-ILS/web/js/ui/default/staff/services/patron_search.js
+
+commit 71a8f14cc21566d2e02d1a9dbcaf844200ba396b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Feb 6 17:09:31 2018 -0500
+
+    LP#1743220: update EDI translator's README
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+12	11	Open-ILS/src/edi_translator/README
+
+commit 9b6b37d5e039f56e441650750214cfe4ec6f66b2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Sun Jan 14 08:39:53 2018 -0500
+
+    LP#1743220: Update script to accommodate Ubuntu 16.04.
+    
+    - renamed the script to "install-ubuntu.sh"
+    - changed the hard-coded Ruby version to a variable
+      that depends on the Ubuntu release (per the lsb_release
+      command)
+    - saw the script work on my 16.04 server
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	16	Open-ILS/src/edi_translator/install-ubuntu-trusty.sh
+27	0	Open-ILS/src/edi_translator/install-ubuntu.sh
+ delete mode 100755 Open-ILS/src/edi_translator/install-ubuntu-trusty.sh
+ create mode 100755 Open-ILS/src/edi_translator/install-ubuntu.sh
+
+commit b7cd9e777c360a2303602114ea32bf6fa64fbe88
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Feb 6 15:58:57 2018 -0500
+
+    LP#1743262: (follow-up) disable submit button if approval code not supplied
+    
+    This patch causes the submit button to be disabled on the CC payment
+    dialog if the user specifies recording an externally-process CC payment
+    but has not yet supplied an approval code.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_cc_payment_dialog.tt2
+
+commit 98181a36b0748e0aac52d22d5a93c6b8af1bd453
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Feb 5 16:24:38 2018 -0500
+
+    LP#1743262 CC external payment requires app. code
+    
+    1. Indicate in the CC form that the approval_code field is required,
+       styled consistently with the patron edit app.
+    
+    2. Prevent the form dialog from closing via Submit when no approval code
+       is set.
+    
+    3. Handle payment failures better by preventing the post-API code from
+       running (i.e. receipt printing) when the API fails.
+    
+    To test
+    -------
+    [1] In the web staff client, attempt to record an externally-supplied
+        credit card payment without specifying an approval code. Note that
+        an alert message is presented.
+    [2] Apply the patch and repeat step 1. This time, the approval code is
+        displayed as a required field and the dialog cannot be submitted
+        until one is specified.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_cc_payment_dialog.tt2
+2	1	Open-ILS/src/templates/staff/css/circ.css.tt2
+27	9	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit ba3c0e4c8eb2ef4003262056b5b706218c7de261
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 17 12:25:49 2018 -0500
+
+    LP#1743819: Use combcirc rather than circ to get circ data
+    
+    This addresses a merge regression.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 4ffc5d353269f5930951fec19997b25ebcad82a1
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Feb 6 12:41:19 2018 -0500
+
+    LP#1746020 Fix Safari/iOS login issue
+    
+    Works around an issue where users cannot log into the web client using iOS
+    because Safari, which all browsers running on iOS use to some extent, does not
+    support BroadcastChannel.
+    
+    Many thanks to Galen Charlton for providing a diff with this solution!
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/services/auth.js
+
+commit 389f8af52cf6ab2c4c21e1f6b60d92e56523f84e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Jan 25 16:58:33 2018 -0500
+
+    LP#1745486: avoid retrieving user by id::numeric during auth init
+    
+    During open-ils.auth.authenticate.init, if looking up the user by barcode,
+    the actor.usr row is subsequently fetched by ID. However, the ID was
+    turned into a float, meaning that the query as sent to the database
+    was equivalent to
+    
+      SELECT * FROM actor.usr WHERE id = 123.0000;
+    
+    While PostgreSQL will accept this, it ends up doing a sequential
+    scan of the actor.usr table rather than an index lookup, making the
+    retrieval up to two orders of magnitude slower than it needs to be
+    and adding a couple percent unecessary I/O load on large, heavily
+    used database. This patch fixes that.
+    
+    To test
+    -------
+    [1] Turn on PostgreSQL statment logging and log in as a user
+        by barcode. Note that there's a retrieval of actor.usr by
+        a float form of the ID.
+    [2] Apply the patch and repeat step 1. This time, the query
+        retrieves the row by the integer form of the ID.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/c-apps/oils_utils.c
+
+commit c070bf2c62781536fac04c3bb9d18fbd99fe2d99
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 23 17:56:51 2018 -0500
+
+    LP#1743608 Replace barcode discards NULL/accidental entries
+    
+    When replacing a patron's barcode in the patron editor, discard any
+    previous replacement attempts done in the current edit session.  This
+    prevents cases where secondary, etc. replacement cards are accidentally
+    created or NULL cards that result in ugly error messages.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+5	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit b23085e033245e27b3f944f2cbd6fd243ae1e89d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 19 17:50:38 2017 -0500
+
+    LP#1739465 EDI consistent use of buyer org unit san
+    
+    Use the org unit (buyer) SAN instead of the the seller SAN when the
+    BUYER_ID_INCLUDE_VENDCODE EDI attribute is enabled.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/EDIWriter.pm
+
+commit a6e6d487a18850dd06fa080250262c4d17fc30fb
+Author: Jason Boyer <JBoyer@library.in.gov>
+Date:   Sat Jan 20 13:25:16 2018 -0500
+
+    LP1744489: Location Search Limiter
+    
+    search.calculate_visibility_attribute_test expects
+    an array for the second parameter and was getting
+    a plain integer (or too many parameters).
+    
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 1a8da47f9bd211180a5edb0b43f6a4bfca443399
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jan 17 17:58:18 2018 -0500
+
+    Forward port 3.0.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+291	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.2-3.0.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.2-3.0.3-upgrade-db.sql
