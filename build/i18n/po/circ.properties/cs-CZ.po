@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-09-24 09:59+0000\n"
+"PO-Revision-Date: 2018-02-15 09:10+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
-"X-Generator: Launchpad (build 18463)\n"
+"X-Launchpad-Export-Date: 2018-02-16 05:50+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -274,7 +274,7 @@ msgstr "Předkatalogizovaný"
 
 #: staff.circ.non_cataloged
 msgid "Non-cataloged"
-msgstr "Nezkatalogizovaný"
+msgstr "Nekatalogizované"
 
 #: staff.circ.checkout.cancelled
 msgid "Checkout cancelled"
@@ -337,7 +337,7 @@ msgstr "Upozornění = %1$s"
 
 #: staff.circ.checkout.permission_denied
 msgid "Permission Denied = %1$s"
-msgstr "Oprávnění odepřeno = %1$s"
+msgstr "Oprávnění zamítnuto = %1$s"
 
 #. # "Circulation" - check &staff.main.menu.circ.label; in lang.dtd
 #. # "Offline Interface" - check &staff.main.menu.circ.offline.label; in lang.dtd
@@ -573,7 +573,7 @@ msgstr "Nemáte oprávnění přidávat svazky do této knihovny."
 
 #: staff.circ.copy_status.add_volumes.title
 msgid "Add Volume/Item for Record # %1$s"
-msgstr "Přidat svazek/exemplář k záznamu číslo %1$s"
+msgstr "Přidat signaturu/exemplář k záznamu číslo %1$s"
 
 #: staff.circ.copy_status.edit_volumes.perm_failure
 msgid "You do not have permission to edit this volume."
@@ -603,7 +603,7 @@ msgstr "Svazky upraveny."
 
 #: staff.circ.copy_status.delete_volumes.singular
 msgid "Are you sure you would like to delete this volume?"
-msgstr "Opravdu chcete smazat tento svazek?"
+msgstr "Opravdu chcete smazat tuto signaturu?"
 
 #: staff.circ.copy_status.delete_volumes.plural
 msgid "Are you sure you would like to delete these volumes?"
@@ -611,7 +611,7 @@ msgstr "Opravdu chcete smazat tyto svazky?"
 
 #: staff.circ.copy_status.delete_volumes.title
 msgid "Delete Volumes?"
-msgstr "Smazat svazky?"
+msgstr "Smazat signatury?"
 
 #: staff.circ.copy_status.delete_volumes.delete
 msgid "Delete"
@@ -625,7 +625,7 @@ msgstr "Zrušit"
 #: staff.circ.copy_status.delete_volumes.override
 msgctxt "staff.circ.copy_status.delete_volumes.override"
 msgid "Override Delete Failure?"
-msgstr "Obejít chybu přis mazání?"
+msgstr "Obejít chybu při smazání?"
 
 #: staff.circ.copy_status.delete_volumes.delete_copies
 msgid ""
@@ -647,7 +647,7 @@ msgstr "Svazek označen jako cíl přesunu exempláře"
 
 #: staff.circ.copy_status.mark_volume.prompt
 msgid "Choose just one Volume to mark as Item Transfer Destination"
-msgstr "Označte pouze jeden svazek jako cíl přesunu exempláře"
+msgstr "Označte pouze jednu signaturu jako cíl přesunu exempláře"
 
 #: staff.circ.copy_status.mark_volume.title
 msgctxt "staff.circ.copy_status.mark_volume.title"
@@ -665,7 +665,7 @@ msgstr "Knihovna a záznam označeny jako cíl přesunu svazku"
 
 #: staff.circ.copy_status.mark_library.limit_one
 msgid "Choose just one Library to mark as Volume Transfer Destination"
-msgstr "Označte pouze jednu knihovnu jako cíl přesunu svazků"
+msgstr "Označte pouze jednu knihovnu jako cíl přesunu signatury"
 
 #: staff.circ.copy_status.mark_library.limit_one.title
 msgctxt "staff.circ.copy_status.mark_library.limit_one.title"
@@ -686,7 +686,7 @@ msgstr "Přesunout svazky %1$s do knihovny %2$s v následujícím záznamu?"
 
 #: staff.circ.copy_status.transfer_volume.transfer.label
 msgid "Transfer"
-msgstr "Přesun"
+msgstr "Přesunout"
 
 #: staff.circ.copy_status.transfer_volume.cancel.label
 msgctxt "staff.circ.copy_status.transfer_volume.cancel.label"
@@ -707,11 +707,11 @@ msgstr "Přesun zrušen"
 
 #: staff.circ.copy_status.transfer_volume.override_failure
 msgid "Override Volume Transfer Failure?"
-msgstr "Obejít chybu přesunu svazku?"
+msgstr "Obejít chybu v přesunu signatury?"
 
 #: staff.circ.copy_status.transfer_volume.cannot_have_vols
 msgid "That destination cannot have volumes."
-msgstr "Tato lokace nemůže mít svazky."
+msgstr "Tato destinace nemůže mít signatury."
 
 #: staff.circ.copy_status.transfer_volume.success
 msgid "Volumes transferred."
@@ -719,7 +719,7 @@ msgstr "Svazky přesunuty."
 
 #: staff.circ.copy_status.transfer_volume.error
 msgid "All volumes not likely transferred."
-msgstr "Pravděpodobně nebyly přesunuty všechny svazky."
+msgstr "Pravděpodobně nebyly přesunuty všechny signatury"
 
 #: staff.circ.copy_status.test_barcode.prompt
 msgctxt "staff.circ.copy_status.test_barcode.prompt"
@@ -741,7 +741,7 @@ msgstr "U %1$s byl buď špatně načten čárový kód,  nebo není zkatalogizo
 #: staff.circ.copy_status.status.not_cataloged
 msgctxt "staff.circ.copy_status.status.not_cataloged"
 msgid "Not Cataloged"
-msgstr "Nezkatalogizovaný"
+msgstr "Nekatalogizováno"
 
 #: staff.circ.copy_status.status.pre_cat
 msgid "Item is a pre-cataloged item."
@@ -801,7 +801,7 @@ msgstr "Autor:"
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.route_to
 msgid "Route to:"
-msgstr "Cesta k:"
+msgstr "Směrovat do:"
 
 #. # pad this with whitespace to align with the rest of the staff.circ.hold_capture.print.* entries
 #: staff.circ.hold_capture.print.patron
@@ -838,7 +838,7 @@ msgstr "PRIVÁTNÍ REGÁL S REZERVACEMI"
 
 #: staff.circ.in_house_use.tab_name
 msgid "In-House Use"
-msgstr "Prezenční výpůjčka"
+msgstr "Prezenční užití"
 
 #: staff.circ.in_house_use.barcode
 msgctxt "staff.circ.in_house_use.barcode"
@@ -851,7 +851,7 @@ msgstr "chyba v řazení nekatalogizovaných exemplářů:"
 
 #: staff.circ.in_house_use.noncataloged
 msgid "Non-Cataloged"
-msgstr "Nezkatalogizováno"
+msgstr "Nekatalogizované"
 
 #: staff.circ.in_house_use.items_dump
 msgid "items = "
@@ -863,7 +863,7 @@ msgstr "Jste si jisti, že chcete označit %1$s jako využitý %2$s krát?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
-msgstr "Ověření prezenční výpůjčky"
+msgstr "Ověření prezenčního užití"
 
 #: staff.circ.in_house_use.yes
 msgctxt "staff.circ.in_house_use.yes"
@@ -1011,7 +1011,7 @@ msgstr "Problém při načítání výpůjček."
 
 #: staff.circ.utils.offline.timestamp
 msgid "Timestamp"
-msgstr "Časová značka"
+msgstr "Časové razítko"
 
 #: staff.circ.utils.offline.checkout_time
 msgid "Check Out Time"
@@ -1023,7 +1023,7 @@ msgstr "Typ transakce"
 
 #: staff.circ.utils.offline.noncat
 msgid "Non-Cataloged?"
-msgstr "Nekatalogizováno?"
+msgstr "Nekatalogizované?"
 
 #: staff.circ.utils.offline.noncat_type
 msgid "Non-Cataloged Type ID"
@@ -1039,7 +1039,7 @@ msgstr "Čárový kód čtenáře"
 
 #: staff.circ.utils.offline.item_barcode
 msgid "Item Barcode"
-msgstr "Čárový kód exempláře"
+msgstr "Čárový kód jednotky"
 
 #: staff.circ.utils.offline.due_date
 msgid "Due Date"
@@ -1110,11 +1110,11 @@ msgstr "Půjčovat?"
 
 #: staff.circ.utils.deleted
 msgid "Deleted?"
-msgstr "Smazán?"
+msgstr "Smazáno?"
 
 #: staff.circ.utils.holdable
 msgid "Holdable?"
-msgstr "Možno rezervovat?"
+msgstr "Lze rezervovat?"
 
 #: staff.circ.utils.age_protect
 msgid "Age-based Hold Protection"
@@ -1236,7 +1236,7 @@ msgstr "Datum vydání"
 
 #: staff.circ.utils.publisher
 msgid "Publisher"
-msgstr "Nakladatel"
+msgstr "Vydavatel"
 
 #: staff.circ.utils.creator
 msgid "Created By"
@@ -1248,7 +1248,7 @@ msgstr "Vlastník"
 
 #: staff.circ.utils.editor
 msgid "Edited By"
-msgstr "Editováno"
+msgstr "Upravil(a)"
 
 #. # TCN is an acronym for Title Control Number
 #: staff.circ.utils.tcn
@@ -1269,7 +1269,7 @@ msgstr "Čas zastavení pokut"
 
 #: staff.circ.utils.route_to
 msgid "Route To"
-msgstr "Směrovat k"
+msgstr "Směrovat do"
 
 #: staff.circ.utils.message
 msgctxt "staff.circ.utils.message"
@@ -1443,7 +1443,7 @@ msgstr "Bez data"
 
 #: staff.circ.utils.pickup_lib
 msgid "Pickup Library (Full Name)"
-msgstr "Knihovna k vyzvednutí (úplné jméno)"
+msgstr "Knihovna pro vyzvednutí rezervace  (plný název)"
 
 #: staff.circ.utils.current_shelf_lib
 msgid "Current Shelf Library (Full Name)"
@@ -1471,7 +1471,7 @@ msgstr "Upozornění"
 
 #: staff.circ.utils.patron_alias
 msgid "Patron Alias"
-msgstr "Přezdívka čtenáře"
+msgstr "Alias čtenáře"
 
 #: staff.circ.utils.patron_family_name
 msgid "Patron Last Name"
@@ -1558,7 +1558,7 @@ msgstr "Doba zařazení na regál"
 #: staff.circ.utils.holds.shelf_expire_time
 msgctxt "staff.circ.utils.holds.shelf_expire_time"
 msgid "Shelf Expire Time"
-msgstr "Expirace rezervací na regále s rezervacemi"
+msgstr "Čas vypršení rezervace k vyzvednutí"
 
 #. # Hold for patron familyName, firstName secondName
 #: staff.circ.utils.payload.hold.patron
@@ -1589,7 +1589,7 @@ msgstr "Datum požadavku: %1$s"
 #: staff.circ.utils.payload.hold.slip_date
 msgctxt "staff.circ.utils.payload.hold.slip_date"
 msgid "Slip Date: %1$s"
-msgstr "Datum na stvrzence: %1$s"
+msgstr "Datum na průvodce: %1$s"
 
 #: staff.circ.utils.payload.hold.notes.staff_note
 msgid "Staff Note: %1$s : %2$s"
@@ -1639,7 +1639,7 @@ msgstr "Datum požadavku: %1$s"
 
 #: staff.circ.utils.payload.reservation.start_date
 msgid "Start Date: %1$s"
-msgstr "Počáteční datum: %1$s"
+msgstr "Datum začátku: %1$s"
 
 #: staff.circ.utils.payload.reservation.slip_date
 msgctxt "staff.circ.utils.payload.reservation.slip_date"
@@ -1994,19 +1994,19 @@ msgstr "Datum požadavku"
 msgid ""
 "Please enter an Expiration Date (or choose Remove to unset) for hold %1$s."
 msgstr ""
-"Prosím zadejte datum expirace (nebo v Odstranit zvolte nenastaveno) pro "
-"rezervaci %1$s."
+"Zadejte prosím datum vypršení platnosti rezervace %1$s (nebo nastavení "
+"zrušte  volbou Odebrat)."
 
 #: staff.circ.holds.expire_time.prompt.plural
 msgid ""
 "Please enter an Expiration Date (or choose Remove to unset) for holds %1$s."
 msgstr ""
-"Prosím zadejte datum expirace (nebo v Odstranit zvolte nenastaveno) pro "
-"rezervace %1$s."
+"Zadejte prosím datum vypršení platnosti rezervací %1$s (nebo nastavení "
+"zrušte  volbou Odebrat)."
 
 #: staff.circ.holds.expire_time.dialog.description
 msgid "Expiration Date"
-msgstr "Datum expirace"
+msgstr "Datum vypršení platnosti"
 
 #: staff.circ.holds.shelf_expire_time.prompt
 msgid "Please enter a Shelf Expiration Date for hold %1$s."
@@ -2021,7 +2021,7 @@ msgstr ""
 #: staff.circ.holds.shelf_expire_time.dialog.description
 msgctxt "staff.circ.holds.shelf_expire_time.dialog.description"
 msgid "Shelf Expire Time"
-msgstr "Expirace rezervací na regále s rezervacemi"
+msgstr "Čas vypršení rezervace k vyzvednutí"
 
 #: staff.circ.holds.modifying_holds
 msgid "Modifying Holds"
@@ -2108,42 +2108,3 @@ msgstr "Zpráva o statusu exempláře v přesunu"
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr ""
 "Tento exemplář má status  %1$s (může být vyžadována  akce personálu)."
-
-#~ msgid "Transit not likely aborted."
-#~ msgstr "Přesun nebyl pravděpodobně zrušen."
-
-#~ msgid "Abort Transit then Checkout"
-#~ msgstr "Zrušit přepravu, pak půjčit"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Svazky smazány."
-
-#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
-#~ msgstr "Jste si jisti, že chcete zrušit přepravy pro exempláře: %1$s?"
-
-#~ msgid "Aborting Transits"
-#~ msgstr "Zrušení přeprav"
-
-#~ msgid ""
-#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
-#~ "happened from a stale display?"
-#~ msgstr ""
-#~ "Tento exemplář již v době zrušení nebyl v přepravě. Možná se to stalo z "
-#~ "důvodu neaktualizovaného zobrazení?"
-
-#~ msgid "Hold Note(s)"
-#~ msgstr "Poznámka(y) o rezervaci"
-
-#~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
-#~ msgstr ""
-#~ "Špatně načtený čárový kód nebo nezkatalogizovaný exemplář. Vypůjčit jako "
-#~ "předkatalogizovaný exemplář?"
-
-#~ msgid "Are you sure sure you want to delete these items? %1$s"
-#~ msgstr "Opravdu chcete smazat tyto exempláře? %1$s"

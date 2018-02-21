@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2017-09-24 09:54+0000\n"
+"PO-Revision-Date: 2018-02-15 09:11+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
-"X-Generator: Launchpad (build 18463)\n"
+"X-Launchpad-Export-Date: 2018-02-16 05:50+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -260,7 +260,7 @@ msgstr "Zrušit"
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr "Obejít chybu při mazání?"
+msgstr "Obejít chybu při smazání?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
@@ -272,7 +272,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr "Smazat sigantury  a exempláře"
+msgstr "Smazat signatury  a exempláře"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
@@ -280,7 +280,7 @@ msgstr "Zrušit mazání"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
-msgstr "prohlížeč exemplářů -> smazat sigantury"
+msgstr "prohlížeč exemplářů -> smazat signatury"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
@@ -350,7 +350,7 @@ msgstr "Obejít chybu v přesunu signatury?"
 
 #: staff.cat.copy_browser.transfer.ineligible_destination
 msgid "That destination cannot have volumes."
-msgstr "Tento cíl nemůže mít signatury"
+msgstr "Tato destinace nemůže mít signatury."
 
 #: staff.cat.copy_browser.transfer.success
 msgid "Volumes transferred."
@@ -835,7 +835,7 @@ msgstr "Ne"
 
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr "Možno rezervovat?"
+msgstr "Lze rezervovat?"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
 msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
@@ -990,7 +990,7 @@ msgstr "Veřejné"
 
 #: staff.cat.copy_notes.widgets.private
 msgid "Private"
-msgstr "Soukromé"
+msgstr "Neveřejná"
 
 #: staff.cat.copy_notes.delete_note.label
 msgid "Delete This Note"
@@ -1032,7 +1032,7 @@ msgstr "Nová poznámka"
 
 #: staff.cat.copy_notes.new_note.public
 msgid "Public?"
-msgstr "Veřejná?"
+msgstr "Veřejné?"
 
 #: staff.cat.copy_notes.new_note.title
 msgid "Title"
@@ -1094,7 +1094,7 @@ msgstr "<Nenastaveno>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
-msgstr "Nezkatalogizováno"
+msgstr "Nekatalogizováno"
 
 #: staff.cat.marcedit.authority_see_also
 msgid "See also: %1$s"
@@ -1332,7 +1332,7 @@ msgstr "Zadejte číslo skupiny:"
 
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
-msgstr "Chyba při načítání skupiny. Zadali jste platné ID skupiny?"
+msgstr "Při načítání skupiny došlo k chybě. Použili jste platné ID skupiny?"
 
 #: staff.cat.record_buckets.delete_bucket_named
 msgctxt "staff.cat.record_buckets.delete_bucket_named"
@@ -1484,7 +1484,7 @@ msgstr "exempláře"
 
 #: staff.cat.spine_labels.generate.std_unexpeceted_err
 msgid "Generate"
-msgstr "Vygenerovat"
+msgstr "Generovat"
 
 #: staff.cat.spine_labels.preview.title
 msgctxt "staff.cat.spine_labels.preview.title"
@@ -1531,7 +1531,7 @@ msgstr "Nebylo možné změnit název. Nemáte dostatečné oprávnění."
 
 #: staff.cat.util.replace_barcode.item_rename_error
 msgid "Error renaming item."
-msgstr "Chyba při změně položky."
+msgstr "Chyba při přejmenování položky."
 
 #: staff.cat.util.replace_barcode.rename_error
 msgid "Rename did not likely occur."
@@ -1603,7 +1603,7 @@ msgstr "Hřbetní štítky"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
 msgid "%1$s is not cataloged"
-msgstr "%1$s nebyl zkatalogizován"
+msgstr "%1$s není zkatalogizováno"
 
 #: staff.cat.util.show_in_opac.catalog_error_for_doc_id
 msgid "Error opening catalog for document ID = %1$s"
@@ -1798,7 +1798,7 @@ msgstr "'Změnit status těchto exemplářů na Nezvěstné? Čárové kódy: %1
 
 #: staff.cat.util.mark_item_missing.ms_title
 msgid "Mark Missing"
-msgstr "Označit jako Nezvěstné"
+msgstr "Označit jako nezvěstné"
 
 #: staff.cat.util.mark_item_missing.ms_ok_label
 msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
@@ -2425,62 +2425,3 @@ msgstr "Exempláře:"
 #: staff.cat.bib_brief.items.available.tooltip
 msgid "%1$s available"
 msgstr "%1$s volných"
-
-#~ msgid "Record ID = %1$s"
-#~ msgstr "ID záznamu = %1$s"
-
-#~ msgid "Volumes deleted."
-#~ msgstr "Svazky smazány."
-
-#~ msgid "Record: %1$s"
-#~ msgstr "Záznam: %1$s"
-
-#~ msgid "Merge these records? (Select the \"lead\" record first)"
-#~ msgstr "Sloučit tyto záznamy? (Vyberte nejprve \"hlavní\" záznam)"
-
-#~ msgid "Merge"
-#~ msgstr "Sloučit"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.label"
-#~ msgid "Cancel"
-#~ msgstr "Storno"
-
-#~ msgctxt "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
-#~ msgid "C"
-#~ msgstr "C"
-
-#~ msgid "Lead Record? # %1$s"
-#~ msgstr "Hlavní záznam? # %1$s"
-
-# nutný kontext
-#~ msgid "Lead"
-#~ msgstr "Vedoucí"
-
-#~ msgid "Merge Aborted"
-#~ msgstr "Sloučení selhalo"
-
-#~ msgid "Records were successfully merged."
-#~ msgstr "Záznamy byly úspěšně sloučeny."
-
-#~ msgid "Call Numbers"
-#~ msgstr "Signatury"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.yes_or_true"
-#~ msgid "Yes"
-#~ msgstr "Ano"
-
-#~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
-#~ msgid "No"
-#~ msgstr "Ne"
-
-#~ msgid ""
-#~ "You must delete all the copies on the volume before you may delete the "
-#~ "volume itself."
-#~ msgstr ""
-#~ "Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
-
-#~ msgid "Holds transferred."
-#~ msgstr "Rezervace přesunuty."
-
-#~ msgid "Cancel "
-#~ msgstr "Storno "

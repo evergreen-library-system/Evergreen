@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-09-03 23:33-0400\n"
-"PO-Revision-Date: 2014-11-03 23:16+0000\n"
+"PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: André Yamada <andrehideo@hotmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-05 04:40+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-10-04 05:03+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 "X-Poedit-Country: BRAZIL\n"
 "Language: pt_BR\n"
 "X-Poedit-Language: Portuguese\n"
@@ -14255,92 +14255,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7738
 msgid "Flamenco"
 msgstr ""
-
-# id::clm.value''in__gwi
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-# id::cit.name__2
-#~ msgid "SSN"
-#~ msgstr "CPF"
-
-# id::pgt.name__10
-#~ msgid "Local System Administrator"
-#~ msgstr "Administrador Local do Sistema"
-
-# id::aou.name__8
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Exemplo Sub–Bibi 1"
-
-# id::aou.name__2
-#~ msgid "Example System 1"
-#~ msgstr "Exemplo Sistema 1"
-
-# id::aou.name__3
-#~ msgid "Example System 2"
-#~ msgstr "Exemplo Sistema 2"
-
-# id::aou.name__9
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Exemplo Biblioteca móvel 1"
-
-# id::pgt.description__10
-#~ msgid "System maintenance, configuration, etc."
-#~ msgstr "Manutenção do sistema, configuração, etc."
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr "GUI: Log de trabalho: Número máximo de ações registradas"
-
-#~ msgid "Example Branch 2"
-#~ msgstr "Exemplo de Setorial 2"
-
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "LC Cabeçalhos de assunto para literatura infantil"
-
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr "Biblioteca Nacional Agrícola arquivo de autoridade de assunto"
-
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "Enciclopédia de Arte e Arquitetura"
-
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-#~ msgid "Example Branch 4"
-#~ msgstr "Exemplo de Setorial 4"
-
-#~ msgid "Example Branch 3"
-#~ msgstr "Exemplo de Setorial 3"
-
-#~ msgid "Example Branch 1"
-#~ msgstr "Exemplo de Setorial 1"
-
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "Repertório de vedettes-matiere"
-
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "Library of Congress Título de Assuntos"
-
-#~ msgid "List Published Book Bags"
-#~ msgstr "Lista sacola de livros publicados"
-
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "Queimar Lista de cabeçalhos de assunto"
-
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Adicionar ao Sacos de livros publicados"
-
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "Título de Assuntos Canadenses"
-
-#~ msgid "Book Bag"
-#~ msgstr "Sacola de Livros"
-
-#~ msgid "Medical Subject Headings"
-#~ msgstr "Títulos de Assuntos Médicos"
-
-#~ msgid "Holds: Has Local Copy Block"
-#~ msgstr "Reservas: Tem bloqueio de exemplar local."
-
-#~ msgid "Holds: Block Renewal of Items Needed for Holds"
-#~ msgstr "Reservas: Bloquear Renovação de Itens com reservas solicitadas"

@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-25 00:15-0400\n"
-"PO-Revision-Date: 2017-09-24 18:24+0000\n"
+"PO-Revision-Date: 2018-02-11 20:46+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-25 05:10+0000\n"
-"X-Generator: Launchpad (build 18463)\n"
+"X-Launchpad-Export-Date: 2018-02-12 05:44+0000\n"
+"X-Generator: Launchpad (build 18544)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -563,7 +563,7 @@ msgstr "Čtenářské konto bylo načteno NEAKTIVNÍM průkazem."
 
 #: staff.patron.display.init.network_request.account_barred
 msgid "Patron account is BARRED."
-msgstr "Čtenářské konto je BLOKOVÁNO"
+msgstr "Čtenářské konto je BLOKOVÁNO."
 
 #: staff.patron.display.init.network_request.account_inactive
 msgid "Patron account is INACTIVE."
@@ -1714,7 +1714,7 @@ msgstr "Vrácení pravděpodobně neproběhlo."
 
 #: staff.patron.items.show_catalog.barcode_not_cataloged
 msgid "%1$s is not cataloged"
-msgstr "%1$s není zkatalogizováno."
+msgstr "%1$s není zkatalogizováno"
 
 #: staff.patron.items.show_catalog.retrieving_title
 msgctxt "staff.patron.items.show_catalog.retrieving_title"
@@ -2065,25 +2065,3 @@ msgstr "Dostupné / Celkem (u výpůjčního pultu)"
 #: staff.patron.summary.hold_counts
 msgid "Available / Total"
 msgstr "Dostuné / Celkem"
-
-#~ msgid "Record ID: %1$s Create Date: %2$s "
-#~ msgstr "ID záznamu: %1$s Datum vytvoření: %2$s "
-
-#~ msgctxt "staff.patron.bills.handle_refund.confirm_message"
-#~ msgid "Check here to confirm this message"
-#~ msgstr "Zaškrtnutím potvrďte tuto zprávu"
-
-#~ msgid "Patron account is INACTIVE.<br/><br/>"
-#~ msgstr "Čtenářský účet je NEAKTIVNÍ.<br/><br/>"
-
-#~ msgid "Patron account retrieved with an INACTIVE card.<br/><br/>"
-#~ msgstr "Byl načten čtenář s NEAKTIVNÍM průkazem"
-
-#~ msgid "Alert message: \"%1$s\"<br/><br/>"
-#~ msgstr "Upozornění: \"%1$s\"<br/><br/>"
-
-#~ msgid "Patron account is BARRED.<br/><br/>"
-#~ msgstr "Čtenářský účet má OMEZENÉ TRANSAKCE.<br/><br/>"
-
-#~ msgid "Patron account is EXPIRED.<br/><br/>"
-#~ msgstr "Platnost registrace čtenářského účtu VYPRŠELA. </br></br>"
