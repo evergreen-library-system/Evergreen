@@ -1,0 +1,20 @@
+Place Multiple Holds At Once
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users with the appropriate permissions now have the ability to place multiple
+title/metarecords holds at once. This feature is especially beneficial for book
+clubs and reading groups, which need to place holds on multiple copies of a 
+title.
+
+In order to use the feature:
+  * Set the _Maximum number of duplicate holds allowed_ Library Setting (
+circ.holds.max_duplicate_holds) to a number higher than 1
+  * Log in as a user with the CREATE_DUPLICATE_HOLDS
+
+When placing a title or metarecord hold, a _Number of copies_ field will 
+display for these users. This field is not available when placing part, volume
+or copy holds. 
+
+This feature does not change the way in which the system fills holds. The
+multiple holds will fill in the same way that they would if the user had placed
+multiple holds separately.
+
