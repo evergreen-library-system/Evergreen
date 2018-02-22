@@ -103,7 +103,7 @@
                 <div class="col-xs-6">
                     <label>
                         <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.attributes.alerts"/>
-                        [% l('Alerts') %]
+                        [% l('Add/Edit Copy Alerts') %]
                     </label>
                 </div>
             </div>
@@ -310,14 +310,6 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-xs-6">
-                    <label>
-                        <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.copy_alerts"/>
-                        [% l('Add/Edit Copy Alerts') %]
-                    </label>
-                </div>
-            </div>
         </div>
 
         <div class="col-md-4">

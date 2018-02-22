@@ -926,7 +926,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         statcats : true,
         copy_notes : true,
         copy_tags : true,
-        copy_alerts : true,
         attributes : {
             status : true,
             loan_duration : true,
@@ -946,7 +945,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             location : true,
             holdable : true,
             age_protect : true,
-            floating : true
+            floating : true,
+            alerts : true
         }
     };
 
