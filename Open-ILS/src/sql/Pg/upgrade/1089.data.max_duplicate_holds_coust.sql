@@ -1,6 +1,6 @@
 BEGIN;
 
--- INSERT INTO config.upgrade_log (version, applied_to) VALUES ('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1089', :eg_version);
 
 -- Add the circ.holds.max_duplicate_holds org. unit setting type.
 INSERT into config.org_unit_setting_type
