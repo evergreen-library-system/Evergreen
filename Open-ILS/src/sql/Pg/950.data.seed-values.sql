@@ -327,6 +327,15 @@ VALUES (
     TRUE, TRUE, FALSE
 );
 
+INSERT INTO config.metabib_field (id, field_class, name, format, weight,
+    label, xpath, display_field, search_field, browse_field, facet_field)
+VALUES (
+    53, 'title', 'maintitle', 'marcxml', 10,
+    oils_i18n_gettext(53, 'Main Title', 'cmf', 'label'),
+    $$//*[@tag='245']/*[@code='a']$$,
+    FALSE, TRUE, FALSE, FALSE
+);
+
 INSERT INTO config.metabib_field_virtual_map (real, virtual)
     SELECT  id,
             45
@@ -334,6 +343,18 @@ INSERT INTO config.metabib_field_virtual_map (real, virtual)
       WHERE search_field
             AND id NOT IN (15, 45)
             AND id NOT IN (SELECT real FROM config.metabib_field_virtual_map);
+
+UPDATE config.metabib_field_virtual_map SET weight = -1 WHERE real = 39;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 41;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 42;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 46;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 47;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 48;
+UPDATE config.metabib_field_virtual_map SET weight = 0 WHERE real = 50;
+UPDATE config.metabib_field_virtual_map SET weight = 8 WHERE real = 6;
+UPDATE config.metabib_field_virtual_map SET weight = 8 WHERE real = 8;
+UPDATE config.metabib_field_virtual_map SET weight = 8 WHERE real = 16;
+UPDATE config.metabib_field_virtual_map SET weight = 12 WHERE real = 53;
 
 -- Modify existing config.metabib_field entries
 
