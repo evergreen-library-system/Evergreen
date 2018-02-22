@@ -2,9 +2,9 @@ BEGIN;
 
 -- staff-usable alert types with no location awareness
 INSERT INTO config.copy_alert_type (id, scope_org, active, name, state, event, in_renew)
-VALUES (1, 1, FALSE, 'Normal checkout', 'NORMAL', 'CHECKOUT', FALSE);
+VALUES (1, 1, TRUE, 'Normal checkout', 'NORMAL', 'CHECKOUT', FALSE);
 INSERT INTO config.copy_alert_type (id, scope_org, active, name, state, event, in_renew)
-VALUES (2, 1, FALSE, 'Normal checkin', 'NORMAL', 'CHECKIN', FALSE);
+VALUES (2, 1, TRUE, 'Normal checkin', 'NORMAL', 'CHECKIN', FALSE);
 INSERT INTO config.copy_alert_type (id, scope_org, active, name, state, event, in_renew)
 VALUES (3, 1, FALSE, 'Normal renewal', 'NORMAL', 'CHECKIN', TRUE);
 

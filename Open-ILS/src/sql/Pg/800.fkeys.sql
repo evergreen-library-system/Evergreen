@@ -157,6 +157,22 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL VOLATILE COST 50;
 
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_alert_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_alert_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_alert
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_alert_copy_inh_fkey();
+
 CREATE CONSTRAINT TRIGGER inherit_asset_copy_tag_copy_map_copy_fkey
         AFTER UPDATE OR INSERT ON asset.copy_tag_copy_map
         DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_tag_copy_map_copy_inh_fkey();

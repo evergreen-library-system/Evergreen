@@ -69,6 +69,22 @@ CREATE TABLE config.copy_alert_type (
 );
 SELECT SETVAL('config.copy_alert_type_id_seq'::TEXT, 100);
 
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_alert_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_alert_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_alert
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_alert_copy_inh_fkey();
+
 CREATE TABLE actor.copy_alert_suppress (
     id          serial primary key,
     org         int not null references actor.org_unit (id) on delete cascade,
@@ -78,7 +94,7 @@ CREATE TABLE actor.copy_alert_suppress (
 CREATE TABLE asset.copy_alert (
     id      bigserial   primary key,
     alert_type  int     not null references config.copy_alert_type (id) on delete cascade,
-    copy        bigint  not null references asset.copy (id) on delete cascade,
+    copy        bigint  not null,
     temp        bool    not null default false,
     create_time timestamptz not null default now(),
     create_staff    bigint  not null references actor.usr (id) on delete set null,

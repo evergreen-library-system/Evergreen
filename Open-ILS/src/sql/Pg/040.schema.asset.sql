@@ -1065,7 +1065,7 @@ CREATE TABLE actor.copy_alert_suppress (
 CREATE TABLE asset.copy_alert (
     id      bigserial   primary key,
     alert_type  int     not null references config.copy_alert_type (id) on delete cascade,
-    copy        bigint  not null references asset.copy (id) on delete cascade,
+    copy        bigint  not null,
     temp        bool    not null default false,
     create_time timestamptz not null default now(),
     create_staff    bigint  not null references actor.usr (id) on delete set null,
