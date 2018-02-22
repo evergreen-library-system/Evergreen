@@ -20,7 +20,8 @@ function($timeout , $parse) {
             });
             element.bind('blur', function() {
                 $timeout(function() {
-                    scope.$apply(model.assign(scope, false));
+                    if (model.assign && typeof model.assign == 'function')
+                        scope.$apply(model.assign(scope, false));
                 });
             })
         }
