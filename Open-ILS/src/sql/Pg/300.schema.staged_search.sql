@@ -1432,7 +1432,7 @@ BEGIN
         tsq_hstore := tsq_map::HSTORE;
     END IF;
 
-    FOR tsq, fields IN SELECT key, value FROM each(tsq_hstore) LOOP
+    FOR tsq, fields IN SELECT key, value FROM each(tsq_hstore::HSTORE) LOOP
         SELECT  ARRAY_AGG(unnest::INT) INTO afields
           FROM  unnest(regexp_split_to_array(fields,','));
         seen := seen || afields;
