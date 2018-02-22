@@ -15677,6 +15677,8 @@ INSERT INTO config.metabib_class_ts_map(field_class, ts_config, index_weight, al
     ('subject','english_nostop','C',true),
     ('identifier','simple','A',true);
 
+INSERT INTO config.metabib_field_ts_map (metabib_field, ts_config) VALUES (33, 'english_nostop');
+
 INSERT INTO config.org_unit_setting_type (
     name, label, description, datatype, fm_class, update_perm, grp
 ) VALUES (
