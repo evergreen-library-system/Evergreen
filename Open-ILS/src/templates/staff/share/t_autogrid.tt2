@@ -322,6 +322,7 @@
           ng-click="handleRowClick($event, item)"
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
+          ng-class="col.cssSelector"
           style="text-align:{{col.align}}; flex:{{col.flex}}"
           ng-show="col.visible">
 

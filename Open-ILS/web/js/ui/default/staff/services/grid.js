@@ -119,6 +119,11 @@ angular.module('egGridMod',
             scope.collect();
 
             scope.grid_element = element;
+
+            if(!attrs.id){
+                $(element).attr('id', attrs.persistKey);
+            }
+
             $(element)
                 .find('.eg-grid-content-body')
                 .bind('contextmenu', scope.showActionContextMenu);
@@ -1360,7 +1365,11 @@ angular.module('egGridMod',
             // optional hash of functions that can be imported into
             // the directive's scope; meant for cases where the "compiled"
             // attribute is set
-            handlers : '='
+            handlers : '=',
+
+            // optional: CSS class name that we want to have for this field.
+            // Auto generated from path if nothing is passed in via eg-grid-field declaration
+            cssSelector : "@"
         },
         link : function(scope, element, attrs, egGridCtrl) {
 
@@ -1381,6 +1390,16 @@ angular.module('egGridMod',
                         scope[field] = true;
                 }
             );
+
+            scope.cssSelector = attrs['cssSelector'] ? attrs['cssSelector'] : "";
+
+            // auto-generate CSS selector name for field if none declared in tt2 and there's a path
+            if (scope.path && !scope.cssSelector){
+                var cssClass = 'grid' + "." + scope.path;
+                cssClass = cssClass.replace(/\./g,'-');
+                element.addClass(cssClass);
+                scope.cssSelector = cssClass;
+            }
 
             // any HTML content within the field is its custom template
             var tmpl = element.html();
@@ -1648,7 +1667,8 @@ angular.module('egGridMod',
                 datecontext      : colSpec.datecontext,
                 datefilter      : colSpec.datefilter,
                 dateonlyinterval : colSpec.dateonlyinterval,
-                parentIdlClass   : colSpec.parentIdlClass
+                parentIdlClass   : colSpec.parentIdlClass,
+                cssSelector      : colSpec.cssSelector
             };
         }
 
