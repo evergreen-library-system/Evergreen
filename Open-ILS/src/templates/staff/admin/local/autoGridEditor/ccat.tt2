@@ -49,7 +49,8 @@
       <div class="form-group">
         <label for="edit-alert-next-statuses">[% l('Next Status') %]</label>
         <select id="edit-alert-next-statuses" class="form-control" focus-me='focusMe'
-                multiple="multiple" ng-model="record.next_status">
+                multiple="multiple" ng-model="record.next_status"
+                ng-disabled="record.event != 'CHECKIN'">
             <option ng-repeat="s in ccs" value="{{s.id()}}">{{s.name()}}</option>
         </select>
       </div>
