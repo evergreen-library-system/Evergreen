@@ -365,7 +365,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
         switch(evt[0].textcode) {
             case 'COPY_NOT_AVAILABLE':
-                return service.copy_not_avail_dialog(evt[0], params, options);
+                return service.copy_not_avail_dialog(evt, params, options);
             case 'COPY_ALERT_MESSAGE':
                 return service.copy_alert_dialog(evt[0], params, options, 'checkout');
             default: 
@@ -718,6 +718,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         if (!angular.isArray(evt)) evt = [evt];
 
         egCore.audio.play('warning.circ.event_override');
+        var copy_alert = evt.filter(function(e) {
+            return e.textcode == 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt.filter(function(e) {
+            return e.textcode !== 'COPY_ALERT_MESSAGE';
+        });
+
         return $uibModal.open({
             templateUrl: './circ/share/t_event_override_dialog',
             backdrop: 'static',
@@ -740,6 +747,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             function() {
                 options.override = true;
 
+                if (copy_alert.length > 0) {
+                    return service.copy_alert_dialog(copy_alert, params, options, action);
+                }
+
                 if (action == 'checkin') {
                     return service.checkin(params, options);
                 }
@@ -756,7 +767,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     }
 
     service.copy_not_avail_dialog = function(evt, params, options) {
-        if (angular.isArray(evt)) evt = evt[0];
+        if (!angular.isArray(evt)) evt = [evt];
+
+        var copy_alert = evt.filter(function(e) {
+            return e.textcode == 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt.filter(function(e) {
+            return e.textcode !== 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt[0];
+
         return $uibModal.open({
             templateUrl: './circ/share/t_copy_not_avail_dialog',
             backdrop: 'static',
@@ -776,6 +796,11 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         }).result.then(
             function() {
                 options.override = true;
+
+                if (copy_alert.length > 0) {
+                    return service.copy_alert_dialog(copy_alert, params, options, 'checkout');
+                }
+
                 return service.checkout(params, options);
             }
         );
