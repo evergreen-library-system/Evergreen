@@ -598,7 +598,6 @@
 <!-- offline page app -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/offline.js"></script>
-<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tablesort.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
   s.OFFLINE_BLOCKLIST_SUCCESS = "[% l('Offline blocklist downloaded') %]";
