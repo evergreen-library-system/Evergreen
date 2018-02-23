@@ -17,7 +17,7 @@ INSERT INTO config.metabib_field_virtual_map (real, virtual)
             45
       FROM  config.metabib_field
       WHERE search_field
-            AND id NOT IN (15, 45)
+            AND id NOT IN (15, 45, 38, 40) -- keyword|keyword, self, edition, publisher
             AND id NOT IN (SELECT real FROM config.metabib_field_virtual_map);
 
 UPDATE config.metabib_field SET xpath=$$//mods32:mods/mods32:subject[not(descendant::mods32:geographicCode)]$$ WHERE id = 16;

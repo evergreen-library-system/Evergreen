@@ -9,7 +9,7 @@ UPDATE config.metabib_field SET display_xpath = facet_xpath, display_field = TRU
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    38, 'keyword', 'edition', 
+    38, 'identifier', 'edition', 
     oils_i18n_gettext(38, 'Edition', 'cmf', 'label'),
     $$//mods33:mods/mods33:originInfo//mods33:edition[1]$$,
     TRUE, TRUE, FALSE
@@ -27,7 +27,7 @@ VALUES (
 INSERT INTO config.metabib_field (id, field_class, name, 
     label, xpath, display_field, search_field, browse_field)
 VALUES (
-    40, 'keyword', 'publisher', 
+    40, 'identifier', 'publisher', 
     oils_i18n_gettext(40, 'Publisher', 'cmf', 'label'),
     $$//mods33:mods/mods33:originInfo//mods33:publisher[1]$$,
     TRUE, TRUE, FALSE
@@ -112,11 +112,11 @@ VALUES (
 INSERT INTO config.metabib_field (id, field_class, name, format,
     label, xpath, display_xpath, display_field, search_field, browse_field)
 VALUES (
-    52, 'keyword', 'origin_info', 'marcxml',
+    52, 'identifier', 'origin_info', 'marcxml',
     oils_i18n_gettext(52, 'Origin Info', 'cmf', 'label'),
     $$//*[@tag='260']$$,
     $$//*[local-name()='subfield' and contains('abc',@code)]$$,
-    TRUE, TRUE, FALSE
+    TRUE, FALSE, FALSE
 );
 
 
