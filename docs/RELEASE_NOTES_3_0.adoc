@@ -79,6 +79,7 @@ Evergreen:
 * Mike Rylander
 * Chris Sharp
 * Ben Shum
+* Remington Steed
 * Jason Stephenson
 * Cesar Velez
 * Dan Wells
