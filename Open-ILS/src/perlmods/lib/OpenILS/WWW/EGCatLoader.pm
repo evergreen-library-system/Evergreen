@@ -39,7 +39,7 @@ use constant COOKIE_ANON_CACHE => 'anoncache';
 use constant ANON_CACHE_MYLIST => 'mylist';
 use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
 
-use constant DEBUG_TIMING => 1;
+use constant DEBUG_TIMING => 0;
 
 sub new {
     my($class, $apache, $ctx) = @_;
