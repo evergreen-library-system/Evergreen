@@ -1,0 +1,135 @@
+Virtual Index Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The practical purpose of Virtual Index Definitions is to supply an Evergreen
+administrator with the ability to control the weighting and field inclusion of
+values in the general keyword index, commonly referred to as "the blob,"
+without requiring tricky configuration that has subtle semantics, an
+over-abundance of index definitions which can slow search generally, or the
+need to reingest all records on a regular basis as experiments are performed
+and the configuration refined. Significant results of recasting keyword indexes
+as a set of one or more Virtual Index Definitions will be simpler search
+configuration management, faster search speed overall, and more practical
+reconfiguration and adjustment as needed.
+
+Previous to this commit, in order to provide field-specific weighting to
+keyword matches against titles or authors, an administrator must duplicate many
+other index definitions and supply overriding weights to those duplicates. This
+not only complicates configuration, but slows down record ingest as well as
+search. It is also fairly ineffective at achieving the goal of weighted keyword
+fields. Virtual Index Definitions will substantially alleviate the need for
+these workarounds and their consequences.
+
+  * A Virtual Index Definition is not required supply any configuration for
+extracting bibliographic data from records, but instead can become a sink for
+data collected by other index definitions which is then colocated together to
+supply a search target made up of the separately extracted data. Virtual Index
+Definitions are effectively treated as aggregate definitions, matching across
+all values extracted from constituent non-virtual index definitions.  They can
+further make use of the Combined class functionality to colocate all values in a
+class together for matching even across virtual fields.
+
+  * Configuration allows for weighting of constituent index definitions that
+participate in a Virtual Index Definition. This weighting is separate from the
+weighting supplied when the index definition itself is a search target.
+
+  * The Evergreen QueryParser driver returns the list of fields actually
+searched using every user-supplied term set, including constituent expansion
+when a Virtual Index Definition is searched. In particular, this will facilitate
+Search Term Highlighting described below.
+
+  * Stock configuration changes make use of pre-existing, non-virtual index
+definitions mapped to new a Virtual Index Definition that implements the
+functionality provided by the keyword|keyword index definition. The
+keyword|keyword definition is left in place for the time being, until more data
+can be gathered about the real-world effect of removing it entirely and 
+replacing it with Virtual Index Definition mappings.
+
+  * New system administration functions will be created to facilitate
+modification of Virtual Index Definition mapping, avoiding the need for a full
+reingest when existing index definitions are added or removed from a virtual
+field.
+
+Increased use of Metabib Display Fields
++++++++++++++++++++++++++++++++++++++++
+In extention of changes proposed in other available branches, we here use
+Metabib Display Fields to render catalog search results, intermediate metarecord
+results, and record detail pages.This will requires the addition of several new
+Metabib Display Field definitions, as well as Perl services to gather and render
+the data.
+
+Search Term Highlighting
+++++++++++++++++++++++++
+This commit enables Search Term Highlighting in the OPAC on the main search
+results page, the record detail page, and intermediate pages such as metarecord
+grouped results page. Highlighting search terms will help the user determine why
+a particular record (or set of records) was retrieved.
+
+Highlighting of matched terms uses the same stemming used to accomplish the
+search, as configured per field and class.
+
+This feature will help the user more quickly determine the relevance of a
+particular record by calling their attention to search terms in context. Lastly,
+it will help familiarize the user with how records are searched, including which
+fields are searched as well as exposing concepts like stemming.
+
+Interfaces
+++++++++++
+A new AngularJS "MARC Search/Facet Fields" interface has been created to replace
+ the Dojo version, and both have been extended to support Virtual Index
+Definition data supplier mapping and weighting.
+
+Settings & Permissions
+++++++++++++++++++++++
+The new Virtual Index Definition data supplier mapping table, 
+config.metabib_field_virtual_map, requires the same permissions as the
+MARC Search/Facet Fields interface: CREATE_METABIB_FIELD, UPDATE_METABIB_FIELD,
+DELETE_METABIB_FIELD, or ADMIN_METABIB_FIELD for all actions
+
+There is a new template-level global configuration variable in config.tt2 called
+search.no_highlight which disables highlighting for users of that config.tt2
+instance.
+
+Public Catalog
+++++++++++++++
+The public and staff catalog will make use of new APIs to identify and display
+highlight-augmented values for those Display Fields used to render the search
+result pages, intermediate metarecord constituent pages, and record detail
+pages.  Highlighting of terms will be performed using the application of
+Template::Toolkit-driven CSS. A generic CSS class identifying a highlighted
+term, along with CSS classes identifying the search class and each search field
+will be available for use for customization of the highlighting. A stock CSS
+template is provided as a baseline upon which sites may expand.
+
+When highlighting is generally enabled, it may be turned on or off on a per-page
+basis through the use of a UI component which will request the page again
+without highlighting.
+
+Backend
++++++++
+There now exist several new database tables and functions primarily in support
+of search highlighting. Additionally, the QueryParser driver for Evergreen has
+been augmented to be able to return a data structure describing how the search
+was performed, in a way that allows a separate support API to gather a
+highlighted version of the Display Field data for a given record.
+
+Re-ingest or Indexing Dependencies
+++++++++++++++++++++++++++++++++++
+With the addition and modification of many Index Definitions, a full reingest is
+recommended.  However, search will continue to work as it did before the changes
+in this commit for those records that have not yet been reingested during that
+process.  Therefore a slow, rolling reingest is recommended.
+
+Performance Implications or Concerns
+++++++++++++++++++++++++++++++++++++
+Because the Metabib Display Fields infrastructure will eventually replace
+functionality that is significantly more CPU-intensive in the various forms of
+XML parsing, XSLT transformation, XPath calculation, and
+Metabib Virtual Record construction, it is expected that the overall CPU load
+will be reduced by this development, and ideally the overall time required to
+perform and render a search will likewise drop. It is unlikely that the speed 
+increase will be visible to users on a per-search basis, but that search in
+aggregate will become a smaller consumer of resources.
+
+
+
+
