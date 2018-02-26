@@ -1805,19 +1805,14 @@ sub buildSQL {
     $lang ||= $self->node->plan->QueryParser->default_preferred_language;
     my $ts_configs = [];
 
-    if (@{$self->node->phrases}) {
-        # We assume we want 'simple' for phrases. Gives us less to match against later.
-        $ts_configs = ['simple'];
+    if (!@$fields) {
+        $ts_configs = $self->node->plan->QueryParser->class_ts_config($classname, $lang);
     } else {
-        if (!@$fields) {
-            $ts_configs = $self->node->plan->QueryParser->class_ts_config($classname, $lang);
-        } else {
-            for my $field (@$fields) {
-                push @$ts_configs, @{$self->node->plan->QueryParser->field_ts_config($classname, $field, $lang)};
-            }
+        for my $field (@$fields) {
+            push @$ts_configs, @{$self->node->plan->QueryParser->field_ts_config($classname, $field, $lang)};
         }
-        $ts_configs = [keys %{{map { $_ => 1 } @$ts_configs}}];
     }
+    $ts_configs = [keys %{{map { $_ => 1 } @$ts_configs}}];
 
     # Assume we want exact if none otherwise provided.
     # Because we can reasonably expect this to exist
