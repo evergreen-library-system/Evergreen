@@ -1,0 +1,7 @@
+New Patron Billing Statement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen web staff client now includes a patron billing statement,
+which summarizes a patron's bills, credits and payments in a familiar
+layout.  This can be found on the "Statement" tab of the Patron Bill
+Details page. (From the Patron Bills page, double-click a row to view
+its details, or choose "Full Details" from the Actions menu.)
