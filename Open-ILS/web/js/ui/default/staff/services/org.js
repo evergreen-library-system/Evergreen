@@ -121,6 +121,9 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
                 });
         }
 
+
+        if (!egAuth.user()) return $q.when();
+
         var deferred = $q.defer();
         ou_id = ou_id || egAuth.user().ws_ou();
         var here = (ou_id == egAuth.user().ws_ou());

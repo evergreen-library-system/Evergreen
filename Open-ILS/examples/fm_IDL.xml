@@ -3275,6 +3275,145 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
+    <class  id="aecc"
+            controller="open-ils.cstore open-ils.pcrud"
+            oils_obj:fieldmapper="action::emergency_closing_circulation"
+            oils_persist:tablename="action.emergency_closing_circulation"
+            reporter:label="Emergency Closing Circulation Entry"
+            oils_persist:readonly="true"
+    > <!-- This is not a view, but is managed via functions, so it's readonly. -->
+        <fields oils_persist:primary="id">
+            <field name="id" reporter:datatype="id" />
+            <field name="circulation" reporter:datatype="link" />
+			<field name="emergency_closing" reporter:datatype="link"/>
+            <field name="original_due_date" reporter:datatype="timestamp" />
+            <field name="process_time" reporter:datatype="timestamp" />
+        </fields>
+        <links>
+            <link field="circulation" reltype="has_a" key="id" map="" class="circ"/>
+            <link field="emergency_closing" reltype="has_a" key="id" map="" class="aec"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+    </class>
+    <class  id="aecr"
+            controller="open-ils.cstore open-ils.pcrud"
+            oils_obj:fieldmapper="action::emergency_closing_reservation"
+            oils_persist:tablename="action.emergency_closing_reservation"
+            reporter:label="Emergency Closing Reservation Entry"
+            oils_persist:readonly="true"
+    > <!-- This is not a view, but is managed via functions, so it's readonly. -->
+        <fields oils_persist:primary="id">
+            <field name="id" reporter:datatype="id" />
+            <field name="reservation" reporter:datatype="link" />
+			<field name="emergency_closing" reporter:datatype="link"/>
+            <field name="original_end_time" reporter:datatype="timestamp" />
+            <field name="process_time" reporter:datatype="timestamp" />
+        </fields>
+        <links>
+            <link field="reservation" reltype="has_a" key="id" map="" class="bresv"/>
+            <link field="emergency_closing" reltype="has_a" key="id" map="" class="aec"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+    </class>
+    <class  id="aech"
+            controller="open-ils.cstore open-ils.pcrud"
+            oils_obj:fieldmapper="action::emergency_closing_hold"
+            oils_persist:tablename="action.emergency_closing_hold"
+            reporter:label="Emergency Closing Hold Entry"
+            oils_persist:readonly="true"
+    > <!-- This is not a view, but is managed via functions, so it's readonly. -->
+        <fields oils_persist:primary="id">
+            <field name="id" reporter:datatype="id" />
+            <field name="hold" reporter:datatype="link" />
+			<field name="emergency_closing" reporter:datatype="link"/>
+            <field name="original_shelf_expire_time" reporter:datatype="timestamp" />
+            <field name="process_time" reporter:datatype="timestamp" />
+        </fields>
+        <links>
+            <link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+            <link field="emergency_closing" reltype="has_a" key="id" map="" class="aec"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+    </class>
+    <class  id="aecs"
+            controller="open-ils.cstore open-ils.pcrud"
+            oils_obj:fieldmapper="action::emergency_closing_status"
+            oils_persist:tablename="action.emergency_closing_status"
+            reporter:label="Emergency Closing Status"
+            oils_persist:readonly="true"
+    >
+        <fields oils_persist:primary="id">
+            <field name="id" reporter:datatype="id" />
+            <field name="creator" reporter:datatype="link" />
+            <field name="create_time" reporter:datatype="timestamp" />
+            <field name="process_start_time" reporter:datatype="timestamp" />
+            <field name="process_end_time" reporter:datatype="timestamp" />
+            <field name="last_update_time" reporter:datatype="timestamp" />
+            <field name="circulations" reporter:datatype="int" />
+            <field name="circulations_complete" reporter:datatype="int" />
+            <field name="reservations" reporter:datatype="int" />
+            <field name="reservations_complete" reporter:datatype="int" />
+            <field name="holds" reporter:datatype="int" />
+            <field name="holds_complete" reporter:datatype="int" />
+        </fields>
+        <links>
+            <link field="id" reltype="has_a" key="id" map="" class="aec"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+    </class>
+    <class id="aec" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::emergency_closing" oils_persist:tablename="action.emergency_closing" reporter:label="Emergency Closing">
+        <fields oils_persist:primary="id" oils_persist:sequence="action.emergency_closing_id_seq">
+            <field name="id" reporter:datatype="id" />
+            <field name="creator" reporter:datatype="link" />
+            <field name="create_time" reporter:datatype="timestamp" />
+            <field name="process_start_time" reporter:datatype="timestamp" />
+            <field name="process_end_time" reporter:datatype="timestamp" />
+            <field name="last_update_time" reporter:datatype="timestamp" />
+            <field name="closing" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field name="status" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field name="reservations" oils_persist:virtual="true" reporter:datatype="link"/>
+            <field name="holds" oils_persist:virtual="true" reporter:datatype="link"/>
+        </fields>
+        <links>
+            <link field="creator" reltype="has_a" key="id" map="" class="au"/>
+            <link field="closing" reltype="might_have" key="emergency_closing" map="" class="aoucd"/>
+            <link field="status" reltype="might_have" key="id" map="" class="aecs"/>
+            <link field="circulations" reltype="has_many" key="emergency_closing" map="" class="aecc"/>
+            <link field="reservations" reltype="has_many" key="emergency_closing" map="" class="aecr"/>
+            <link field="holds" reltype="has_many" key="emergency_closing" map="" class="aech"/>
+        </links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="EMERGENCY_CLOSING">
+                    <context link="closing" field="org_unit" />
+                </create>
+                <retrieve/>
+                <update permission="EMERGENCY_CLOSING">
+                    <context link="closing" field="org_unit" />
+                </update>
+                <delete permission="EMERGENCY_CLOSING">
+                    <context link="closing" field="org_unit" />
+                </delete>
+            </actions>
+        </permacrud>
+    </class>
 	<class id="aoucd" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_unit::closed_date" oils_persist:tablename="actor.org_unit_closed" reporter:label="Closed Dates">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_unit_closed_id_seq">
 			<field name="close_end" reporter:datatype="timestamp" />
@@ -3284,9 +3423,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="reason" reporter:datatype="text"/>
 			<field name="full_day" reporter:datatype="bool"/>
 			<field name="multi_day" reporter:datatype="bool"/>
+			<field name="emergency_closing" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="emergency_closing" reltype="has_a" key="id" map="" class="aec"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>

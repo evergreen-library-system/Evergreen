@@ -1239,7 +1239,7 @@ function($uibModal , $interpolate , egCore) {
 
                 var default_format = 'mediumDate';
                 egCore.org.settings(['format.date']).then(function(set) {
-                    default_format = set['format.date'];
+                    if (set) default_format = set['format.date'];
                     scope.date_format = (scope.dateFormat) ?
                         scope.dateFormat :
                         default_format;

@@ -1903,7 +1903,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 605, 'UPDATE_COPY_ALERT', oils_i18n_gettext( 605,
     'Update copy alerts', 'ppl', 'description' )),
  ( 606, 'DELETE_COPY_ALERT', oils_i18n_gettext( 606,
-    'Delete copy alerts', 'ppl', 'description' ))
+    'Delete copy alerts', 'ppl', 'description' )),
+ ( 607, 'EMERGENCY_CLOSING', oils_i18n_gettext( 607,
+    'Create and manage Emergency Closings', 'ppl', 'description' ))
 ;
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);

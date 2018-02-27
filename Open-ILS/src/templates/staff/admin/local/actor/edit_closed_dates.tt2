@@ -1,0 +1,116 @@
+<form ng-submit="ok(args)" role="form" class="form-validated">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Library Closing') %]</h4>
+    </div>
+    <div class="modal-body">
+
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="org_unit">[% l('Library') %]</label>
+        </div>
+        <div class="col-md-9">
+          <eg-org-selector id="org_unit" selected="org_unit" onchange="update_org_unit"></eg-org-selector>
+        </div>
+      </div>
+
+      <div class="form-group row" ng-if="!is_update">
+        <div class="col-md-9">
+          <label for="apply_to_all">[% l('Apply to all of my libraries') %]</label>
+        </div>
+        <div class="col-md-3">
+          <input id="emergency" type="checkbox" ng-model="args.apply_to_all"/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="full_day">[% l('Closing type') %]</label>
+        </div>
+        <div class="col-md-9">
+            <select class="form-control" ng-model="args.type">
+                <option value="full">[% l('One Full Day') %]</option>
+                <option value="multi">[% l('Multiple Days') %]</option>
+                <option value="detailed">[% l('Detailed') %]</option>
+            </select>
+        </div>
+      </div>
+
+      <div class="form-group row" ng-show="args.type == 'full'">
+        <div class="col-md-3">
+          <label for="day">[% l('Date') %]</label>
+        </div>
+        <div class="col-md-9">
+          <eg-date-input id="day" ng-model="args.start"></eg-date-input>
+        </div>
+      </div>
+
+      <div class="form-group row" ng-show="args.type != 'full'">
+        <div class="col-md-3">
+          <label for="start">[% l('Start') %]</label>
+        </div>
+        <div class="col-md-9">
+          <eg-date-input id="start" show-time-picker hide-time-picker="args.is_not_detailed" ng-model="args.start"></eg-date-input>
+        </div>
+      </div>
+
+      <div class="form-group row" ng-show="args.type != 'full'">
+        <div class="col-md-3">
+          <label for="end">[% l('End') %]</label>
+        </div>
+        <div class="col-md-9">
+          <eg-date-input id="end" show-time-picker hide-time-picker="args.is_not_detailed" ng-model="args.end"></eg-date-input>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-3">
+          <label for="reason">[% l('Reason') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input id="reason" ng-model="args.reason"/>
+        </div>
+      </div>
+
+      <div class="row alert alert-warning" ng-show="!is_update && is_emergency">
+        [% l('Possible Emergency Closing') %]
+      </div>
+
+      <div class="row alert alert-warning" ng-show="is_update && args.aec">
+        <h2>[% l('Emergency Closing') %]</h2>
+        <dl>
+            <dt>[% l('Circulations') %]</dt>
+            <dd>{{args.aec.status().circulations_complete()}} / {{args.aec.status().circulations()}}</dd>
+            <dt>[% l('Holds') %]</dt>
+            <dd>{{args.aec.status().holds_complete()}} / {{args.aec.status().holds()}}</dd>
+            <dt>[% l('Booking Reservations') %]</dt>
+            <dd>{{args.aec.status().reservations_complete()}} / {{args.aec.status().reservations()}}</dd>
+        </dl>
+      </div>
+
+      <div class="form-group row" ng-hide="is_update && !unprocessed">
+        <div class="col-md-3">
+          <label for="emergency">[% l('Emergency') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input id="emergency" type="checkbox" ng-model="args.create_aec"/>
+        </div>
+      </div>
+
+      <div class="form-group row" ng-hide="is_update && !unprocessed">
+        <div class="col-md-3">
+          <label for="process">[% l('Process immediately') %]</label>
+        </div>
+        <div class="col-md-9">
+          <input id="process" ng-disabled="!args.create_aec" type="checkbox" ng-model="args.process_immediately"/>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+      <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>
