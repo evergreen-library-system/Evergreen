@@ -1493,8 +1493,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                         return $q.when(final_resp);
 
                     default:
-                        egCore.audio.play('error.checkin.unknown');
-                        console.error('Unhandled checkin copy status: ' 
+                        egCore.audio.play('success.checkin');
+                        console.debug('Unusual checkin copy status (may have been set via copy alert): '
                             + copy.status().id() + ' : ' + copy.status().name());
                         return $q.when(final_resp);
                 }
