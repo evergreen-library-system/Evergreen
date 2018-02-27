@@ -1,0 +1,17 @@
+Multi-source Attributes
+^^^^^^^^^^^^^^^^^^^^^^^
+We now allow record attribute definitions to extract data using more than
+one strategy (XPath, tag+subfield, fixed field, etc) as long as the values
+from various sources would, after normalization, have the same shape.
+
+Multilingual Search
++++++++++++++++++++
+This change allows us to configure multilingual search, by extracting values
+from both the 008 controlfield and the 041 datafield.  Because the values
+in each can be normalized to the same controlled list (and, in practice, are
+already from the same normalized value set), OPAC searches can now use normal
+boolean search semantics to find records with various combinations of
+language attributes.
+
+Eg., in the concerto test data: keyword: piano item_lang(eng) item_lang(ita)
+
