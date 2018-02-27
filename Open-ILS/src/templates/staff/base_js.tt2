@@ -44,6 +44,7 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/context-menu.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js',
@@ -107,6 +108,7 @@ UpUp.start({
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-sanitize.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-cookies.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ngToast.min.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/context-menu.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/angular-tree-control.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/ng-order-object-by.js"></script>
