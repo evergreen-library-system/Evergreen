@@ -1,7 +1,7 @@
 
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1090', :eg_version);
 
 ALTER TABLE biblio.record_entry
     ADD COLUMN merge_date TIMESTAMP WITH TIME ZONE,
