@@ -97,6 +97,7 @@ const vendorJsFiles = [
   'angular-sanitize',
   'angular-cookies',
   'ng-toast',
+  'context-menu',
   'angular-tree-control',
   'iframe-resizer',
   'angular-order-object-by',
