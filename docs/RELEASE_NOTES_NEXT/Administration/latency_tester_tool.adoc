@@ -1,0 +1,14 @@
+New Latency Tester Tool
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The Evergreen Web Staff Client now includes link to a section under the
+Administration > Workstation called Tests. This page houses a simple tool
+that can be used to test the latency of the websocket connection between the 
+client and the server (via the opensrf.echo service).
+
+This page displays which Evergreen host server is being queried. Upon hitting
+the blue "Start Test" button for the first time, it will issue 10 sequentially
+fired requests in order to get a solid initial average. Clicking the button a
+second time will just take one more measurement and recalculate the average
+latency. The results can be copied to clipboard for troubleshooting purposes
+and also cleared from display.
