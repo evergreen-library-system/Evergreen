@@ -33,6 +33,7 @@ Max Depth
 As mentioned with the org unit, the max depth is the furthest down on the tree from the org unit that gets included. This is based on the entire tree, not just off of the org unit. So in the default tree a max depth of 1 will stop at the system level no matter if org unit is set to CONS or SYS1.
 
 Exclude
+~~~~~~~
 
 Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an org unit from floating without having to worry about other rules overriding it.
 
