@@ -31,7 +31,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             'circ.clear_hold_on_checkout'
         ]).then(function(set) {
             service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
-	    service.clearHold = Boolean(set['circ.clear_hold_on_checkout']);
+            service.clearHold = Boolean(set['circ.clear_hold_on_checkout']);
 
             if (angular.isArray(set['circ.staff_client.do_not_auto_attempt_print'])) {
                 if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Hold Slip') > 1)
@@ -738,21 +738,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
                 // Find the event, if any, that is for ITEM_ON_HOLDS_SHELF
                 //  and grab the patron name of the owner. 
-                $scope.holdEvent = evt.filter(
-		     function(e) {
-                        return e.textcode === 'ITEM_ON_HOLDS_SHELF'
-                     }
-                );
+                $scope.holdEvent = evt.filter(function(e) {
+                    return e.textcode === 'ITEM_ON_HOLDS_SHELF'
+                });
 
-                if ($scope.holdEvent) {
-		   // Ensure we have a scalar here 
-                   if (angular.isArray($scope.holdEvent)) {
-                       $scope.holdEvent = $scope.holdEvent[0];
-                   }
+                if ($scope.holdEvent.length > 0) {
+                    // Ensure we have a scalar here
+                    if (angular.isArray($scope.holdEvent)) {
+                        $scope.holdEvent = $scope.holdEvent[0];
+                    }
 
-                   $scope.patronName = $scope.holdEvent.payload.patron_name;
-                   $scope.holdID = $scope.holdEvent.payload.hold_id;
-                   $scope.patronID = $scope.holdEvent.payload.patron_id;
+                    $scope.patronName = $scope.holdEvent.payload.patron_name;
+                    $scope.holdID = $scope.holdEvent.payload.hold_id;
+                    $scope.patronID = $scope.holdEvent.payload.patron_id;
                 }
 
                 $scope.auto_override =
@@ -767,21 +765,18 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 $scope.formdata = {clearHold : service.clearHold};
 
                 $scope.ok = function() { 
-                        $uibModalInstance.close();
-
-                        // Handle the cancellation of the assciated hold here
-                        if ($scope.formdata.clearHold && $scope.holdID) {
-                            $scope.args = {
-                            cancel_reason : 5,
-                                note: 'Item checked out by other patron'
-			    };
-                            egCore.net.request(
-                                'open-ils.circ', 'open-ils.circ.hold.cancel',
-                                egCore.auth.token(), $scope.holdID,
-                                $scope.args.cancel_reason,
-                                $scope.args.note);
-                        }
-		}
+                    // Handle the cancellation of the assciated hold here
+                    if ($scope.formdata.clearHold && $scope.holdID) {
+                        egCore.net.request(
+                            'open-ils.circ',
+                            'open-ils.circ.hold.cancel',
+                            egCore.auth.token(), $scope.holdID,
+                            5, // staff forced
+                            'Item checked out by other patron' // FIXME I18n
+                        );
+                    }
+                    $uibModalInstance.close();
+                }
 
                 $scope.cancel = function ($event) { 
                     $uibModalInstance.dismiss();
