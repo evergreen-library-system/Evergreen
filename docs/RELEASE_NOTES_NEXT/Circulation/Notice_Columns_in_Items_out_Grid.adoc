@@ -1,0 +1,13 @@
+New Notice Columns in Items Out Grid
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The grid in the patron "items out" page in the Evergreen web staff client has two new
+columns indicating the number of notifications generated for a given loan and the date of
+the most recent notification. These columns will allow circulation staff to better respond to
+patron questions about whether they were sent notification about an overdue item.
+
+The columns are based on the number of completed Action Trigger events on the
+loan that have a 'checkout.due' hook. In other words, they would include overdue
+and courtesy notices.
+
+A new library setting, "Exclude Courtesy Notices from Patrons Itemsout Notices Count",
+if set will cause the notice count and date fields to exclude courtesy notices.
