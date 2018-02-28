@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1102', :eg_version);
+
 update config.xml_transform set xslt = $XXXX$<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns="http://www.loc.gov/mods/v3" xmlns:marc="http://www.loc.gov/MARC21/slim" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="xlink marc" version="1.0">
         <xsl:output encoding="UTF-8" indent="yes" method="xml"/>

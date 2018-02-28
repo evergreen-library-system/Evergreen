@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1101', :eg_version);
+
 ALTER TABLE config.metabib_field ALTER COLUMN xpath DROP NOT NULL;
 
 CREATE TABLE config.metabib_field_virtual_map (

@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('TODO', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1100', :eg_version);
 
 -- NEW config.metabib_field entries
 

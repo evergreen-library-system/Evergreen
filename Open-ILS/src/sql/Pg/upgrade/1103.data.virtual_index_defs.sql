@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1103', :eg_version);
+
 INSERT INTO config.metabib_field (id, field_class, name, label, browse_field)
     VALUES (45, 'keyword', 'blob', 'All searchable fields', FALSE);
 
