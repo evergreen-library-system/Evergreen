@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1095', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.copy_state (cid BIGINT) RETURNS TEXT AS $$
 DECLARE
     last_circ_stop	TEXT;

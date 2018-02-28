@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1096', :eg_version);
+
 -- staff-usable alert types with no location awareness
 INSERT INTO config.copy_alert_type (id, scope_org, active, name, state, event, in_renew)
 VALUES (1, 1, TRUE, 'Normal checkout', 'NORMAL', 'CHECKOUT', FALSE);

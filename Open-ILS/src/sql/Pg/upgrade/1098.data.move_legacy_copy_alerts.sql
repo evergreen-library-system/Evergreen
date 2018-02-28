@@ -1,6 +1,6 @@
 BEGIN;
 
---- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1098', :eg_version);
 
 \qecho Copying copy alert messages to normal checkout copy alerts...
 INSERT INTO asset.copy_alert (alert_type, copy, note, create_staff)
