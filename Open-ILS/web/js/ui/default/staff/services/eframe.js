@@ -239,34 +239,56 @@ angular.module('egCoreMod')
                                 return null;
                             }
 
-                            // copied more or less directly from XUL menu.js
-                            var settings = {};
-                            for(var i = 0; i < user.settings().length; i++) {
-                                settings[user.settings()[i].name()] = 
-                                    JSON2js(user.settings()[i].value());
-                            }
+                            egCore.org.settings(['circ.staff_placed_holds_honor_patron_prefs_first',
+                                'circ.staff_placed_holds_staff_ws_ou_override'])
+                                .then(function(auth_usr_aous){
 
-                            if(!settings['opac.default_phone'] && user.day_phone()) 
-                                settings['opac.default_phone'] = user.day_phone();
-                            if(!settings['opac.hold_notify'] && settings['opac.hold_notify'] !== '') 
-                                settings['opac.hold_notify'] = 'email:phone';
+                                    // copied more or less directly from XUL menu.js
+                                    var settings = {};
+                                    for(var i = 0; i < user.settings().length; i++) {
+                                        settings[user.settings()[i].name()] = 
+                                            JSON2js(user.settings()[i].value());
+                                    }
 
-                            // Taken from patron/util.js format_name
-                            // FIXME: I18n
-                            var patron_name = 
-                                ( user.prefix() ? user.prefix() + ' ' : '') +
-                                user.family_name() + ', ' +
-                                user.first_given_name() + ' ' +
-                                ( user.second_given_name() ? user.second_given_name() + ' ' : '' ) +
-                                ( user.suffix() ? user.suffix() : '');
+                                    // find applicable YAOUSes for staff-placed holds
+                                    var honorPatronPrefPickupOU;
+                                    var overrideStaff_WS_OU;
+                                    var requestor = egCore.auth.user();
+                                    if (requestor.id() !== user.id()){
+                                        // this is a staff-placed hold
 
-                            deferred.resolve({
-                                "barcode": barcode, 
-                                "pickup_lib": user.home_ou(), 
-                                "settings" : settings, 
-                                "user_email" : user.email(), 
-                                "patron_name" : patron_name
-                            });
+                                        settings["staff_WS_OU"] = requestor.ws_ou();
+                                        if (auth_usr_aous['circ.staff_placed_holds_honor_patron_prefs_first']){
+                                            settings['honorPatronPrefPickupOU'] = true;
+                                        }
+
+                                        if (auth_usr_aous['circ.staff_placed_holds_staff_ws_ou_override']){
+                                            settings['overrideStaff_WS_OU'] = true;
+                                        }
+                                    }
+
+                                    if(!settings['opac.default_phone'] && user.day_phone()) 
+                                        settings['opac.default_phone'] = user.day_phone();
+                                    if(!settings['opac.hold_notify'] && settings['opac.hold_notify'] !== '') 
+                                        settings['opac.hold_notify'] = 'email:phone';
+
+                                    // Taken from patron/util.js format_name
+                                    // FIXME: I18n
+                                    var patron_name = 
+                                        ( user.prefix() ? user.prefix() + ' ' : '') +
+                                        user.family_name() + ', ' +
+                                        user.first_given_name() + ' ' +
+                                        ( user.second_given_name() ? user.second_given_name() + ' ' : '' ) +
+                                        ( user.suffix() ? user.suffix() : '');
+
+                                    deferred.resolve({
+                                        "barcode": barcode, 
+                                        "pickup_lib": user.home_ou(), 
+                                        "settings" : settings, 
+                                        "user_email" : user.email(), 
+                                        "patron_name" : patron_name
+                                    });
+                                });
                         });
 
                         return deferred.promise;
