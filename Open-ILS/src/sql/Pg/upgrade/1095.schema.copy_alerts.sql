@@ -83,10 +83,6 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL VOLATILE COST 50;
 
-CREATE CONSTRAINT TRIGGER inherit_asset_copy_alert_copy_fkey
-        AFTER UPDATE OR INSERT ON asset.copy_alert
-        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_alert_copy_inh_fkey();
-
 CREATE TABLE actor.copy_alert_suppress (
     id          serial primary key,
     org         int not null references actor.org_unit (id) on delete cascade,
@@ -104,6 +100,10 @@ CREATE TABLE asset.copy_alert (
     ack_time    timestamptz,
     ack_staff   bigint references actor.usr (id) on delete set null
 );
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_alert_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_alert
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_alert_copy_inh_fkey();
 
 CREATE VIEW asset.active_copy_alert AS
     SELECT  *
