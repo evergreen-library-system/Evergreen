@@ -1690,6 +1690,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 ok : function(the_next_status) {
                         if (the_next_status !== null) {
                             params.next_copy_status = [ the_next_status ];
+                            params.capture = 'nocapture';
                         }
                      },
                 cancel : function() {}
