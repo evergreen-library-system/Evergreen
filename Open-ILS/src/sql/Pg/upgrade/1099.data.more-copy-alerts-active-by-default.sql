@@ -1,6 +1,6 @@
 BEGIN;
 
---- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1099', :eg_version);
 
 \qecho Making the following copy alert types active by default; if you
 \qecho are not using the web staff client yet, you may want to disable
