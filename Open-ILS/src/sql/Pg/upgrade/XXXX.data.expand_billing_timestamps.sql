@@ -7,6 +7,11 @@ ALTER TABLE money.billing
 	ADD COLUMN period_start    TIMESTAMP WITH TIME ZONE,
 	ADD COLUMN period_end  TIMESTAMP WITH TIME ZONE;
 
+--Disable materialized update trigger
+--It takes forever, and doesn't matter yet for what we are doing, as the
+--view definition is unchanged (still using billing_ts)
+ALTER TABLE money.billing DISABLE TRIGGER mat_summary_upd_tgr;
+
 --Limit to btype=1 / 'Overdue Materials'
 --Update day-granular fines first (i.e. 24 hour, 1 day, 2 day, etc., all of which are multiples of 86400 seconds), and simply remove the time portion of timestamp
 UPDATE money.billing mb
@@ -26,6 +31,9 @@ WHERE mb.xact = ac.id
 
 SET CONSTRAINTS ALL IMMEDIATE;
 UPDATE money.billing SET create_date = COALESCE(period_start, billing_ts);
+
+--Re-enable update trigger
+ALTER TABLE money.billing ENABLE TRIGGER mat_summary_upd_tgr;
 
 ALTER TABLE money.billing ALTER COLUMN create_date SET DEFAULT NOW();
 ALTER TABLE money.billing ALTER COLUMN create_date SET NOT NULL;
