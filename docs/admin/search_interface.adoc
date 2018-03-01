@@ -12,6 +12,8 @@ Value Maps*
 . Select _Type_ from the *Record Attribute Type* select box.
 . Double click on the format type you wish to edit.
 
+image::media/coded-value-1.png[Coded Value Map Format Editor]
+
 To change the label for the type, enter a value in the *Search Label* field.
 
 To  move the option to a top list separated by a dashed line from the others,
@@ -58,7 +60,7 @@ staff client's Local Administration menu. This can be helpful if you want to
 simplify your patrons' experience by presenting them with only certain
 limiters (e.g. the most commonly used languages in your area).  To do this,
 
-. Click *Administration -> Local Administration -> Search Facet Groups*.
+. Click *Administration -> Local Administration -> Search Filter Groups*.
 . Click *New*.
 . Enter descriptive values into the code and label fields.  The owner needs to
 be set to your consortium.
