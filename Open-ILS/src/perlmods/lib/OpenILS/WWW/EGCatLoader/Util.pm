@@ -273,7 +273,13 @@ sub init_ro_object_cache {
         if ($context_org) {
             $context_org = $context_org->id if ref($context_org);
             my $tz = $locale_subs->{get_org_setting}->($context_org,'lib.timezone');
-            $date->set_time_zone($tz) if ($tz);
+            if ($tz) {
+                try {
+                    $date->set_time_zone($tz);
+                } catch Error with {
+                    $logger->warn("Invalid timezone: $tz");
+                };
+            }
         }
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
