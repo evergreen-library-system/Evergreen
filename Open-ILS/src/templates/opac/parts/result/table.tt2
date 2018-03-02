@@ -56,25 +56,40 @@
                             IF rec.mmr_id;
                                 IF rec.mr_constituent_count > 1;
                                     # metarecords link to record list page
-                                    record_url = mkurl(ctx.opac_root _ '/results', 
-                                        {metarecord => rec.mmr_id}, ['page']);
+                                    record_url_path = ctx.opac_root _ '/results'; 
+                                    add_parms = {metarecord => rec.mmr_id};
+                                    del_parms = ['page'];
                                 ELSE;
                                     # for MR, bre_id refers to the master and in
                                     # this case, only, record
-                                    record_url = mkurl(ctx.opac_root _ '/record/' _ attrs.mr_constituent_ids.0, { badges => rec.badges.join(',') });
+                                    record_url_path = ctx.opac_root _ '/record/' _ attrs.mr_constituent_ids.0;
+                                    add_parms = { badges => rec.badges.join(',') };
+                                    del_parms = [];
                                 END;
                                 hold_type = 'M';
                             ELSE;
-                                record_url = mkurl(ctx.opac_root _ '/record/' _ rec.bre_id, { badges => rec.badges.join(',') });
+                                record_url_path = ctx.opac_root _ '/record/' _ rec.bre_id; 
+                                add_parms = { badges => rec.badges.join(',') };
+                                del_parms = [];
                                 hold_type = 'T';
                             END;
-                    -%]
+
+                            IF is_advanced; 
+				    # Do not pass "advanced params" to result detail code.
+				    # Instead, pass the scrubed query in one-line form
+				    del_parms = del_parms.merge(['query', 'bool', 
+						     'qtype', 'contains', '_adv']);
+				    add_parms.import(
+					 {query => ctx.naive_query_scrub(ctx.user_query)} );
+                            END;
+                        %]
                         <tr class="result_table_row">
                                             <td class="results_row_count" name="results_row_count">[%
                                                     result_count; result_count = result_count + 1
                                                 %].</td>
                                             <td class='result_table_pic_header'>
-                                                <a href="[% record_url %]"><img alt="[% l('Book cover') %]"
+                                                <a href="[% mkurl(record_url_path, add_parms, del_parms); %]">
+                                                 <img alt="[% l('Book cover') %]"
                                                         name='item_jacket' class='result_table_pic' width="55"
                                                         src='[% ctx.media_prefix %]/opac/extras/ac/jacket/small/r/[% rec.bre_id | uri %]' /></a><br />
                                             </td>
@@ -386,10 +401,25 @@ END;
             && (ctx.holds_block.enabled != 'true' || attrs.org_copy_counts.$search_ou.available == 0)
         )
 %]
+
+                                                        [% del_parms = ['tag','subfield','term','_special',
+								    'sort','page'];
+                                                        add_parms = {hold_target => rec.id, 
+                                                                     hold_type => hold_type, 
+                                                                     hold_source_page => mkurl()};
+
+                                                        IF is_advanced;
+                                                            # Do not pass "advanced params" to hold code
+                                                            # Instead, pass the scrubed query in one-line form
+                                                            del_parms = del_parms.merge(['query', 'bool', 
+							                     'qtype', 'contains', '_adv']);
+                                                            add_parms.import(
+                                                                {query => ctx.naive_query_scrub(ctx.user_query)});
+                                                        END; %]
+
                                                         <div class="results_aux_utils place_hold"><a
                                                                 href="[% mkurl(ctx.opac_root _ '/place_hold',
-                                                                    {hold_target => rec.id, hold_type => hold_type, 
-                                                                      hold_source_page => mkurl()}, ['tag','subfield','term','_special','sort','page']) %]"
+                                                                    add_parms, del_parms) %]"
                                                                 [% html_text_attr('title', l('Place Hold on [_1]', attrs.title)) %]
                                                                     class="no-dec" rel="nofollow" vocab=""><img
                                                                 src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]"
