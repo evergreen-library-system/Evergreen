@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-09-03 23:33:06-0400\n"
+"POT-Creation-Date: 2018-03-02 14:12:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -375,8 +375,8 @@ msgid ""
 "more than one lineitem"
 msgstr ""
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This item is currently on the holds shelf for another patron"
+#: 10004.ACQ_LINEITEM_NO_PRICE:996
+msgid "The lineitem has no price"
 msgstr ""
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
@@ -1186,6 +1186,10 @@ msgstr ""
 msgid "The requested item is already marked as lost"
 msgstr ""
 
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron:"
+msgstr ""
+
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
 msgstr ""
@@ -1258,10 +1262,6 @@ msgstr ""
 
 #: 1848.ACQ_FUND_NOT_FOUND:627
 msgid "The requested acq.fund was not found"
-msgstr ""
-
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
 msgstr ""
 
 #: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
