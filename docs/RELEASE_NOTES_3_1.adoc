@@ -1,0 +1,427 @@
+Evergreen 3_1 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+
+New Features
+------------
+
+Administration
+~~~~~~~~~~~~~~
+
+New Latency Tester Tool
+^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen Web Staff Client now includes a link to a section under
+*Administration -> Workstation* called *Tests*. This page houses a simple tool
+that can be used to test the latency of the websocket connection between the
+client and the server (via the `opensrf.echo` service).
+
+This page displays which Evergreen host server is being queried. Upon hitting
+the blue "Start Test" button for the first time, it will issue 10 sequentially
+fired requests in order to get a solid initial average. Clicking the button a
+second time will just take one more measurement and recalculate the average
+latency. The results can be copied to clipboard for troubleshooting purposes
+and also cleared from display.
+
+marc_export --uris option
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The marc_export support script now has a `--uris` option (short form:
+`-u`) to export records with located URIs.  When used by itself, it will
+export only records that have located URIs.  When used in conjunction
+with `--items`, it will add records with located URIs but no
+items/copies to the output.  If combined with a `--library` or
+`--descendants` option, this option will limit its output to those
+records with URIs at the designated libraries.  The best way to use
+this option is in combination with the `--items` and one of the
+`--library` or `--descendants` options to export *all* of a library's
+holdings both real and electronic.
+
+
+Architecture
+~~~~~~~~~~~~
+
+Sample Data Includes Surveys
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Concerto sample data set now includes patron surveys, questions,
+answers, and responses.
+
+Virtual Index Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The practical purpose of Virtual Index Definitions is to supply an Evergreen
+administrator with the ability to control the weighting and field inclusion of
+values in the general keyword index, commonly referred to as "the blob,"
+without requiring tricky configuration that has subtle semantics, an
+over-abundance of index definitions which can slow search generally, or the
+need to reingest all records on a regular basis as experiments are performed
+and the configuration refined. Significant results of recasting keyword indexes
+as a set of one or more Virtual Index Definitions will be simpler search
+configuration management, faster search speed overall, and more practical
+reconfiguration and adjustment as needed.
+
+Previous to this commit, in order to provide field-specific weighting to
+keyword matches against titles or authors, an administrator must duplicate many
+other index definitions and supply overriding weights to those duplicates. This
+not only complicates configuration, but slows down record ingest as well as
+search. It is also fairly ineffective at achieving the goal of weighted keyword
+fields. Virtual Index Definitions will substantially alleviate the need for
+these workarounds and their consequences.
+
+  * A Virtual Index Definition does not require any configuration for
+extracting bibliographic data from records, but instead can become a sink for
+data collected by other index definitions, which is then colocated together to
+supply a search target made up of the separately extracted data. Virtual Index
+Definitions are effectively treated as aggregate definitions, matching across
+all values extracted from constituent non-virtual index definitions.  They can
+further make use of the Combined class functionality to colocate all values in a
+class together for matching even across virtual fields.
+
+  * Configuration allows for weighting of constituent index definitions that
+participate in a Virtual Index Definition. This weighting is separate from the
+weighting supplied when the index definition itself is a search target.
+
+  * The Evergreen QueryParser driver returns the list of fields actually
+searched using every user-supplied term set, including constituent expansion
+when a Virtual Index Definition is searched. In particular, this will facilitate
+Search Term Highlighting described below.
+
+  * Stock configuration changes make use of pre-existing, non-virtual index
+definitions mapped to new a Virtual Index Definition that implements the
+functionality provided by the `keyword|keyword` index definition. The
+`keyword|keyword` definition is left in place for the time being, until more data
+can be gathered about the real-world effect of removing it entirely and
+replacing it with Virtual Index Definition mappings.
+
+  * New system administration functions will be created to facilitate
+modification of Virtual Index Definition mapping, avoiding the need for a full
+reingest when existing index definitions are added or removed from a virtual
+field.
+
+Increased use of Metabib Display Fields
++++++++++++++++++++++++++++++++++++++++
+We use Metabib Display Fields (newly available in 3.0) to render catalog search
+results, intermediate metarecord results, and record detail pages. This requires
+the addition of several new Metabib Display Field definitions, as well as Perl
+services to gather and render the data.
+
+We also use more Metabib Display Fields in the client. As a result,
+bibliographic fields will display in proper case in more client interfaces and
+in Evergreen reports.
+
+Search Term Highlighting
+++++++++++++++++++++++++
+This commit enables Search Term Highlighting in the OPAC on the main search
+results page, the record detail page, and intermediate pages such as metarecord
+grouped results page. Highlighting search terms will help the user determine why
+a particular record (or set of records) was retrieved.
+
+Highlighting of matched terms uses the same stemming used to accomplish the
+search, as configured per field and class.
+
+This feature will help the user more quickly determine the relevance of a
+particular record by calling their attention to search terms in context. Lastly,
+it will help familiarize the user with how records are searched, including which
+fields are searched as well as exposing concepts like stemming.
+
+Interfaces
+++++++++++
+A new AngularJS "MARC Search/Facet Fields" interface has been created to replace
+the Dojo version, and both have been extended to support Virtual Index
+Definition data supplier mapping and weighting.
+
+Settings & Permissions
+++++++++++++++++++++++
+The new Virtual Index Definition data supplier mapping table,
+`config.metabib_field_virtual_map`, requires the same permissions as the
+MARC Search/Facet Fields interface: CREATE_METABIB_FIELD, UPDATE_METABIB_FIELD,
+DELETE_METABIB_FIELD, or ADMIN_METABIB_FIELD for all actions
+
+There is a new template-level global configuration variable in config.tt2 called
+`search.no_highlight` which disables highlighting for users of that config.tt2
+instance.
+
+Public Catalog
+++++++++++++++
+The public and staff catalog will make use of new APIs to identify and display
+highlight-augmented values for those Display Fields used to render the search
+result pages, intermediate metarecord constituent pages, and record detail
+pages.  Highlighting of terms will be performed using the application of
+Template::Toolkit-driven CSS. A generic CSS class identifying a highlighted
+term, along with CSS classes identifying the search class and each search field
+will be available for use for customization of the highlighting. A stock CSS
+template is provided as a baseline upon which sites may expand.
+
+When highlighting is generally enabled, it may be turned on or off on a per-page
+basis through the use of a UI component which will request the page again
+without highlighting.
+
+Backend
++++++++
+There now exist several new database tables and functions primarily in support
+of search highlighting. Additionally, the QueryParser driver for Evergreen has
+been augmented to be able to return a data structure describing how the search
+was performed, in a way that allows a separate support API to gather a
+highlighted version of the Display Field data for a given record.
+
+Default Weights
++++++++++++++++
+By default, the following fields will be weighted more heavily in keyword
+searches. Administrators can change these defaults by changing the values in the
+ "All searchable fields" virtual index in the "MARC Search/Facet Fields"
+interface.
+
+  * Title proper
+  * Main title (a new index limited to the words in the 245a)
+  * Personal author
+  * All subjects
+
+In addition, note indexes and the physical description index will receive
+less weight in default keyword searches.
+
+Re-ingest or Indexing Dependencies
+++++++++++++++++++++++++++++++++++
+With the addition and modification of many Index Definitions, a full reingest is
+recommended.  However, search will continue to work as it did before the changes
+in this commit for those records that have not yet been reingested during that
+process.  Therefore a slow, rolling reingest is recommended.
+
+Performance Implications or Concerns
+++++++++++++++++++++++++++++++++++++
+Because the Metabib Display Fields infrastructure will eventually replace
+functionality that is significantly more CPU-intensive in the various forms of
+XML parsing, XSLT transformation, XPath calculation, and
+Metabib Virtual Record construction, it is expected that the overall CPU load
+will be reduced by this development, and ideally the overall time required to
+perform and render a search will likewise drop. It is unlikely that the speed
+increase will be visible to users on a per-search basis, but that search in
+aggregate will become a smaller consumer of resources.
+
+
+Cataloging
+~~~~~~~~~~
+
+Track Record Merges
+^^^^^^^^^^^^^^^^^^^
+When 2 or more bib records are merged, all records involved are stamped
+with a new `merge_date` value.  For any bib record, this field indicates
+the last time it was involved in a merge.  At the same time, all
+subordinate records (i.e. those deleted as a product of the merge) are
+stamped with a `merged_to` value indicating which bib record the source
+record was merged with.
+
+In the browser client bib record display, a warning alert now appears
+along the top of the page (below the Deleted alert) indicating when a
+record was used in a merge, when it was merged, and which record it was
+merge with, rendered as a link to the target record.
+
+
+Circulation
+~~~~~~~~~~~
+
+Alternate Patron Hold Pickup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This feature adds a bit of convenience to a common task: checking out
+an item on hold to another patron (typically a family member or helper).
+
+When you checkout the item, you will get a pop-up window with warnings associated
+with this item.  The "ITEM_ON_HOLDS_SHELF" message is now expanded to
+
+ * Let you know the name of the person who had placed the hold.
+ * Give you the option (in the form of a checkbox) of cancelling the
+   hold placed by the above-named patron.  (Checked = Cancel the hold;
+   Unchecked = Leave the hold in place)
+
+The initial value of the checkbox is derived from the
+`circ.clear_hold_on_checkout` organizational setting.
+
+If the operator has CANCEL_HOLD privilege, then if the checkbox is checked and
+the checkout is allowed to proceed, the hold will be cancelled with a note that
+the item was checked out to another patron.
+
+This feature is available in the browser-based staff client.
+
+New Patron Billing Statement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen web staff client now includes a patron billing statement,
+which summarizes a patron's bills, credits and payments in a familiar
+layout.  This can be found on the "Statement" tab of the Patron Bill
+Details page. (From the Patron Bills page, double-click a row to view
+its details, or choose "Full Details" from the Actions menu.)
+
+Enhanced Billing Timestamp Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Previously, billings had to make do with a single timestamp attempting
+to fill two different roles.  In the case of an overdue fine, the
+timestamp represented the *end* of the fine period for that billing,
+while for all other fines, the timestamp was merely the time the bill
+was created.  This setup generally worked, but not without confusion,
+and limited our ability to understand and process the data.
+
+Billings will now have up to three timestamps: a create date, and when
+applicable, a fine period start and a fine period end.  This clarifies
+and simplifies things like backdating, retrospective fine generation,
+account balancing for negative balance avoidance, and billing timeline
+views.
+
+Copy Alerts and Suppression Matrix
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Copy Alerts feature allows library staff to add customized alert
+messages to copies. The copy alerts will appear when a specific event
+takes place, such as when the copy is checked in, checked out, or
+renewed. Alerts can be temporary or persistent: temporary alerts will be
+disabled after the initial alert and acknowledgement from staff, while
+persistent alerts will display each time the alert event takes place.
+Copy Alerts can be configured to display at the circulating or owning
+library only or, alternatively, when the library at which the alert
+event takes place is not the circulating or owning library.  Copy Alerts
+can also be configured to provide options for the next copy status that
+should be applied to an item.  Library administrators will have the
+ability to create and customize Copy Alert Types and to suppress copy
+alerts at specific org units.
+
+Copy alerts can be added via the volume/creator and the check in,
+check out, and renew pages.  Copy alerts can also be managed at the
+item status page.
+
+Copy alert types can be managed via the Copy Alert Types page in
+Local Administration, and suppression of them can be administered
+via the Copy Alert Suppression page under Local Administration.
+
+Place Multiple Holds At Once
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users with the appropriate permissions now have the ability to place multiple
+title/metarecords holds at once. This feature is especially beneficial for book
+clubs and reading groups, which need to place holds on multiple copies of a
+title.
+
+In order to use the feature:
+
+  * Set the _Maximum number of duplicate holds allowed_ Library Setting
+    (`circ.holds.max_duplicate_holds`) to a number higher than 1
+  * Log in as a user with the CREATE_DUPLICATE_HOLDS
+
+When placing a title or metarecord hold, a _Number of copies_ field will
+display for these users. This field is not available when placing part, volume
+or copy holds.
+
+This feature does not change the way in which the system fills holds. The
+multiple holds will fill in the same way that they would if the user had placed
+multiple holds separately.
+
+New Notice Columns in Items Out Grid
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The grid in the patron "items out" page in the Evergreen web staff client has two new
+columns indicating the number of notifications generated for a given loan and the date of
+the most recent notification. These columns will allow circulation staff to better respond to
+patron questions about whether they were sent notification about an overdue item.
+
+The columns are based on the number of completed Action Trigger events on the
+loan that have a 'checkout.due' hook. In other words, they would include overdue
+and courtesy notices.
+
+A new library setting, "Exclude Courtesy Notices from Patrons Itemsout Notices Count",
+if set will cause the notice count and date fields to exclude courtesy notices.
+
+Patron Email Addresses Now Clickable In Web Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a mailto link to the patron's email in their profile so it can
+be clicked to send and email to the patron. No new settings or
+permissions are included in this feature.
+
+
+OPAC
+~~~~
+
+Copy Location Filter Displays for System Searches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Shelving Location filter now displays on the advanced search page when
+a search is scoped to a library system, not just to an individual branch. If
+a library system is selected as the Search Library, the shelving location
+limiter will display any shelving location that is owned by the selected system
+or by the consortium. It will NOT display shelving locations owned by child
+branches.
+
+Multi-source Attributes
+^^^^^^^^^^^^^^^^^^^^^^^
+We now allow record attribute definitions to extract data using more than
+one strategy (XPath, tag+subfield, fixed field, etc.) as long as the values
+from various sources would, after normalization, have the same shape.
+
+Multilingual Search
++++++++++++++++++++
+This change allows us to configure multilingual search, by extracting values
+from both the 008 controlfield and the 041 datafield.  Because the values
+in each can be normalized to the same controlled list (and, in practice, are
+already from the same normalized value set), OPAC searches can now use normal
+boolean search semantics to find records with various combinations of
+language attributes.
+
+E.g., in the concerto test data:
+
+  * `keyword: piano item_lang(eng) item_lang(ita)`
+
+
+Optional Display of Badges in OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new setting controls whether badges (popularity, etc.) are displayed
+in the OPAC. If you do not wish badges to be displayed, set the
+`ctx.hide_badge_scores` setting to "true" in `config.tt2`.
+
+
+Miscellaneous
+-------------
+
+Fixes to patron name/username search indexes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When using pg_restore to restore an Evergreen database, some of the
+indexes used to speed up patron searches on names and usernames
+could be lost.
+
+This release fixes the underlying issue and re-creates the indexes
+in question.
+
+Details
+^^^^^^^
+When using pg_restore to restore an affected database, the
+"unaccent" indexes on actor.usr would not be created due to an
+unqualified function reference in `evergreen.unaccent_and_squash`.
+
+The function will be replaced to resolve the search path issue,
+and the following indexes on actor.usr will be dropped and then
+re-created:
+
+  * actor_usr_first_given_name_unaccent_idx;
+  * actor_usr_second_given_name_unaccent_idx;
+  * actor_usr_family_name_unaccent_idx;
+  * actor_usr_usrname_unaccent_idx;
+
+This will be done even if the indexes are already present, and may
+take a few minutes on a database with many patrons.
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+TODO
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+TODO
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+TODO
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.

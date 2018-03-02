@@ -1,5 +1,0 @@
-Optional Display of Badges in OPAC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A new setting controls whether badges (popularity, etc.) are displayed in the
-OPAC. If you do not wish badges to be displayed, set the `ctx.hide_badge_scores`
-setting to "true" in `config.tt2`.

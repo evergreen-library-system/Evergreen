@@ -1,4 +1,0 @@
-Sample Data Includes Surveys
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Concerto sample data set now includes patron surveys, questions,
-answers, and responses.
