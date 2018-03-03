@@ -63,6 +63,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_CHANGE_ITEMS.receive = "[% l('Receive selected items?') %]"
     s.CONFIRM_CHANGE_ITEMS.status = "[% l('Change status selected items?') %]"
 
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE = {};
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.delete = "[% l('Will delete {{items}} items(s)') %]";
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.reset = "[% l('Will reset {{items}} items(s)') %]"
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.receive = "[% l('Will receive {{items}} items(s)') %]"
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.status = "[% l('Will change the status of {{items}} items(s)') %]"
+
     s.CONFIRM_DELETE_MFHDS = "[% l('Delete selected MFHD(s)?') %]";
     s.CONFIRM_DELETE_MFHDS_MESSAGE = "[% l('Will delete {{items}} MFHD(s).') %]";
 
