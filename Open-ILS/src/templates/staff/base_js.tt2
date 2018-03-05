@@ -75,6 +75,12 @@ UpUp.start({
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js"></script>
 
+<!--
+  Load iframeResize via script tag
+  https://bugs.launchpad.net/evergreen/+bug/1753008
+-->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js"></script>
+
 <!-- evergreen core services -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/core.bundle.js"></script>
 

@@ -42,7 +42,9 @@ const IMAGE_FILES = [
 // https://github.com/webpack/webpack/issues/3128
 const JS_FILES = [
   './node_modules/moment/min/moment-with-locales.min.js',
-  './node_modules/moment-timezone/builds/moment-timezone-with-data.min.js'
+  './node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
+  './node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js',
+  './node_modules/iframe-resizer/js/iframeResizer.min.js'
 ]
 
 
@@ -99,7 +101,6 @@ const vendorJsFiles = [
   'ng-toast',
   'angular-tree-control',
   'angular-tree-control/context-menu.js',
-  'iframe-resizer',
   'angular-order-object-by',
   'lovefield',
   'angular-tablesort'
