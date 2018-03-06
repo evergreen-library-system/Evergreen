@@ -119,7 +119,14 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
                 if (i) { // not at the top of the tree
                     if (i == 1) join_path = join_path.split('-')[0];
 
-                    var uplink = p.uplink.name;
+                    // SQLBuilder relies on the first dash-separated component
+                    // of the join key to specify the column of left-hand relation
+                    // to join on; for has_many and might_have link types, we have to grab the
+                    // primary key of the left-hand table; otherwise, we can
+                    // just use the field/column name found in p.uplink.name.
+                    var uplink = (p.uplink.reltype == 'has_many' || p.uplink.reltype == 'might_have') ?
+                        egCore.idl.classes[p.from.split('.').slice(-1)[0]].pkey + '-' + p.uplink.name :
+                        p.uplink.name;
                     join_path += '-' + uplink;
                     alias = hex_md5(join_path);
 
