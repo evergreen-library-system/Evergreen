@@ -64,21 +64,16 @@ indexterm:[patrons, registering]
 To register a new patron, select _Circulation -> Register Patron_ from the menu bar. The Patron
 Registration form will display. 
 
-image::media/circulation_patron_records-4.png[Patron registration form]
+image::media/circulation_patron_records-4.JPG[Patron registration form]
 
 Mandatory fields display in yellow.
 
-image::media/circulation_patron_records-5.png[circulation_patron_records 5]
+image::media/circulation_patron_records-5.JPG[circulation_patron_records 5]
 
-The _Show Only Required Fields_ and _Show Suggested Fields_ may be used to limit
+The _Show: Required Fields_ and _Show: Suggested Fields_ links may be used to limit
 the options on this page.
 
-image::media/circulation_patron_records-6.png[circulation_patron_records 6]
-
-When one of these options is selected, it is possible switch to the other
-limited view or to revert to the original view by selecting _Show All Fields_. 
-
-image::media/circulation_patron_records-7.png[circulation_patron_records 7]
+image::media/circulation_patron_records-6.JPG[circulation_patron_records 6]
 
 When finished entering the necessary information, select _Save_ to save the new
 patron record or _Save & Clone_ to register a patron with the same address.
@@ -86,16 +81,16 @@ When _Save & Clone_ is selected, the address information is copied into the
 resulting patron registration screen.  It is linked to the original patron.
 Address information may only be edited through the original record.
 
-image::media/circulation_patron_records-8.png[circulation_patron_records 8]
+image::media/circulation_patron_records-8.JPG[circulation_patron_records 8]
 
 [TIP]
 ============================================================================
-* Requested fields may be configured in the _Library Settings Editor_ (_Admin ->
- Local Admin -> Library Settings Editor_).  
+* Requested fields may be configured in the _Library Settings Editor_
+(_Administration -> Local Administration -> Library Settings Editor_).
 * Statistical categories may be created for information tracked by your library 
-that is not in the default patron record.  
-* These may be configured in the _Statistical Categories Editor_ (_Admin -> 
-Local Admin -> Statistical Categories Editor_).  
+that is not in the default patron record.
+* These may be configured in the _Statistical Categories Editor_
+(_Administration -> Local Administration -> Statistical Categories Editor_).
 * Staff accounts may also function as patron accounts.
 * You must select a _Main (Profile) Permission Group_ before the _Update Expire
 Date_ button will work, since the permission group determines the expiration date.
@@ -169,11 +164,10 @@ Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
 Navigate to the information field labeled _Privilege Expiration Date_.  Enter a
-new date in this box.  When you place your cursor in the _Patron Expiration Date
-box_, a calendar widget will display to help you easily navigate to the desired
-date. 
+new date in this box.  Or click the calendar icon, and a calendar widget
+will display to help you easily navigate to the desired date.
 
-image::media/circulation_patron_records-12.png[circulation_patron_records 12]
+image::media/circulation_patron_records-12.JPG[circulation_patron_records 12]
 
 Select the date using the calendar widget or key the date in manually.  Click
 the _Save_ button.  The screen will refresh and the ``expired'' alerts on the
@@ -257,7 +251,7 @@ Open the patron record in edit mode as described in the section
 
 Check the box for _Barred_ in the patron account. 
 
-image::media/circulation_patron_records-16.png[circulation_patron_records 16]
+image::media/circulation_patron_records-16.JPG[circulation_patron_records 16]
 
 _Save_ the user.  The screen will refresh.  
 
