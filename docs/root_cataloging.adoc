@@ -47,6 +47,10 @@ include::cataloging/physical_char_wizard.adoc[]
 
 include::cataloging/specific_variable_fields.adoc[]
 
+
+include::admin/staff_client-return_to_results_from_marc.adoc[]
+
+
 Working with holdings data
 ==========================
 
