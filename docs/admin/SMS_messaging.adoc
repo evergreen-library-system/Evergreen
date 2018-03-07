@@ -2,7 +2,7 @@ SMS Text Messaging
 ------------------
 
 The SMS Text Messaging feature enables users to receive hold notices via text message.  Users can opt-in to this hold notification as their default setting for all holds, or they 
-can receive specific hold notifications via text message.    Users can also send call numbers and copy locations via text message.
+can receive specific hold notifications via text message. Users can also send call numbers and copy locations via text message.
 
 Administrative Setup
 ~~~~~~~~~~~~~~~~~~~~
@@ -12,7 +12,7 @@ You cannot receive text messages from Evergreen by default.  You must enable thi
 Enable Text Messages
 ^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Local Admin* -> *Library Settings Editor.*
+. Click *Administration* -> *Local Administration* -> *Library Settings Editor.*
 . Select the setting, *Enable features that send SMS text messages.*
 . Set the value to *True,* and click *Update Setting.*
 
