@@ -92,9 +92,13 @@
   </div>
 </div>
 
-[% MACRO draw_field_label (cls, field) BLOCK %]
+[%
+# draws a label for inputs based on the idl class's field's
+# label OR a supplied string
+MACRO draw_field_label (cls, field, label_override) BLOCK %]
   <div class="col-md-3 reg-field-label"> <!-- field label -->
-    <label>{{idl_fields.[% cls %].[% field %].label}}</label>
+    [% IF label_override %]<label>[% label_override %]</label>
+    [% ELSE %]<label>{{idl_fields.[% cls %].[% field %].label}}</label>[% END %]
     <!-- field documentation img/link -->
     <img ng-show="field_doc.[% cls %].[% field %]" 
       ng-click="set_selected_field_doc('[% cls %]','[% field %]')"
