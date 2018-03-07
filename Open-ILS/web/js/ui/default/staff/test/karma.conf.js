@@ -55,6 +55,7 @@ module.exports = function(config){
       'app.js',
       'circ/**/*.js',
       'cat/**/*.js',
+      'reporter/**/*.js',
       'admin/**/*.js',
       'test/unit/egIDL.js', // order matters for some of these
       'test/unit/egOrg.js', 
