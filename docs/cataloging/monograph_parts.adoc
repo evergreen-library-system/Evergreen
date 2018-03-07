@@ -66,11 +66,11 @@ image::media/monograph_parts5.jpg[monograph_parts5]
 
 . Review your completed copies on the "Completed Copies" tab.
 
-. When all copies have been stored and reviewed, click "Save {amp}
+. When all copies have been stored and reviewed, click "Save &#38;
 Exit".
 +
 NOTE: If you are only making one set of changes, you can simply click
-*Save {amp} Exit* and skip the *Store Selected* stage.
+*Save &#38; Exit* and skip the *Store Selected* stage.
 
 . The *Holdings View* tab now shows the new part information. These fields
 also appear in the OPAC View.
