@@ -155,7 +155,9 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
         });
 
         return tree;
-    }
+    };
+    // expose for testing
+    $scope._mergePaths = mergePaths;
 
     $scope.constructTemplate = function () {
         var param_counter = 0;
