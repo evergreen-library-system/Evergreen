@@ -855,14 +855,6 @@ sub transfer_copies_to_volume {
         $copy = $editor->search_asset_copy([
             { id => $copy_id , deleted => 'f' },
             {
-                join => {
-                    acpm => {
-                        type => 'left',
-                        join => {
-                            bmp => { type => 'left' }
-                        }
-                    }
-                },
                 flesh => 1,
                 flesh_fields => { acp => ['parts'] }
             }
@@ -1401,14 +1393,6 @@ sub batch_volume_transfer {
         my $copies = $e->search_asset_copy([
             { call_number => $vol->id , deleted => 'f' },
             {
-                join => {
-                    acpm => {
-                        type => 'left',
-                        join => {
-                            bmp => { type => 'left' }
-                        }
-                    }
-                },
                 flesh => 1,
                 flesh_fields => { acp => ['parts'] }
             }
