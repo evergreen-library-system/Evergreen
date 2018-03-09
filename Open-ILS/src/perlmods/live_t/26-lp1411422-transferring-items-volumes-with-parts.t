@@ -1,10 +1,10 @@
 #!perl
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 diag("Test transferring holds with parts.");
 
-use constant WORKSTATION_NAME => 'BR1-test-25-lp1411422-transferring-items-volumes-with-parts.t';
+use constant WORKSTATION_NAME => 'BR1-test-26-lp1411422-transferring-items-volumes-with-parts.t';
 use constant WORKSTATION_LIB => 4;
 
 use strict; use warnings;
