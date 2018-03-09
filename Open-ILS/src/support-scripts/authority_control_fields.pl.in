@@ -36,6 +36,7 @@ my ($start_id, $end_id, $refresh);
 my ($days_back);
 my $bootstrap = '@sysconfdir@/opensrf_core.xml';
 my @records;
+my $idstatement;
 
 my %options;
 my $result = GetOptions(
@@ -64,25 +65,8 @@ Fieldmapper->import(IDL => OpenSRF::Utils::SettingsClient->new->config_value("ID
 # must be loaded and initialized after the IDL is parsed
 use OpenILS::Utils::CStoreEditor;
 OpenILS::Utils::CStoreEditor::init();
-
 my $e = OpenILS::Utils::CStoreEditor->new;
 my $undeleted;
-if ($options{all}) {
-    # get a list of all non-deleted records from Evergreen
-    # open-ils.cstore open-ils.cstore.direct.biblio.record_entry.id_list.atomic {"deleted":"f"}
-    $undeleted = $e->request( 
-        'open-ils.cstore.direct.biblio.record_entry.id_list.atomic', 
-        [{deleted => 'f'}, {id => { '>' => 0}}]
-    );
-    @records = @$undeleted;
-}
-
-if ($start_id and $end_id) {
-    @records = ($start_id .. $end_id);
-}
-
-if (defined $days_back) { 
-@records=();
 
 # Grab DB information from local settings
 my $sc = OpenSRF::Utils::SettingsClient->new;
@@ -96,17 +80,39 @@ if (!$db_name) {
 }
 my $db_user = $sc->config_value( reporter => setup => database => 'user' );
 my $db_pw = $sc->config_value( reporter => setup => database => 'pw' );
-
 die "Unable to retrieve database connection information from the settings server" unless ($db_driver && $db_host && $db_port && $db_name && $db_user);
-
 my $dsn = "dbi:" . $db_driver . ":dbname=" . $db_name .';host=' . $db_host . ';port=' . $db_port;
 my $dbh = DBI->connect($dsn,$db_user,$db_pw, {AutoCommit => 1, pg_enable_utf8 => 1, RaiseError => 1}) or die "database connection error";
 
-# SQL Used to gather a list of ID's
-my $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry where (date(create_date) = date(now()) or date(edit_date) = date((NOW() - '$days_back day'::interval)))");
+if ($options{all}) {
+    @records=();
 
-# Load the list of ID's into the records array
-$idstatement->execute();
+    # SQL Used to gather a list of ID's
+    $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry
+         WHERE deleted IS FALSE ORDER BY ID DESC");
+
+    # Load the list of ID's into the records array
+    $idstatement->execute();
+    while (my $ref = $idstatement->fetchrow_hashref()) {
+        my $id_ref = $ref->{"id"};   # the column name in our sql query is "id"
+        push(@records, $id_ref);
+    }
+}
+
+if ($start_id and $end_id) {
+    @records = ($start_id .. $end_id);
+}
+
+if (defined $days_back) {
+    @records=();
+
+    # SQL Used to gather a list of ID's
+    $idstatement = $dbh->prepare("SELECT DISTINCT(id) AS id FROM biblio.record_entry
+         WHERE deleted IS FALSE AND date(edit_date) >= date((NOW() - '$days_back day'::interval))
+	 ORDER BY ID DESC");
+
+    # Load the list of ID's into the records array
+    $idstatement->execute();
     while (my $ref = $idstatement->fetchrow_hashref()) {
         my $id_ref = $ref->{"id"};   # the column name in our sql query is "id"
         push(@records, $id_ref);
@@ -385,8 +391,11 @@ my %controllees = (
     },
 );
 
+my $rec_count = @records;
+my $i = 0;
 foreach my $rec_id (@records) {
-    # print "$rec_id\n";
+    $i++;
+    #print "record: $rec_id $i of $rec_count\n";
 
     # State variable; was the record changed?
     my $changed = 0;
