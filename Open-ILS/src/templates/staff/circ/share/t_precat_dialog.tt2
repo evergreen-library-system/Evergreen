@@ -31,7 +31,7 @@
           <select class="form-control" id="precat-circmod" 
             ng-model="precatArgs.circ_modifier">
             <option value=""></option>
-            <option ng-repeat="mod in circModifiers" 
+            <option ng-repeat="mod in circModifiers | orderBy:'name()'"
               value="{{mod.code()}}">{{mod.name()}}</option>
           </select>
         </div>
