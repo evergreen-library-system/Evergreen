@@ -356,7 +356,7 @@ include::cataloging/physical_char_wizard.adoc[]
 // Return titles to correct level.
 :leveloffset: 0
 
-include::staff_client-return_to_results_from_marc.adoc[]
+include::admin/staff_client-return_to_results_from_marc.adoc[]
 
 include::cataloging/batch_importing_MARC.adoc[]
 
