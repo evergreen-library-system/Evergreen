@@ -262,7 +262,7 @@ include::admin/permissions.adoc[]
 
 include::admin/lsa-work_log.adoc[]
 
-include::admin/recent_staff_searches.adoc[]
+include::admin/staff_client-recent_searches.adoc[]
 
 
 :leveloffset: 0
