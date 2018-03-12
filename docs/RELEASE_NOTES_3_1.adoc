@@ -411,12 +411,12 @@ Evergreen:
 * Albany Public Library (Oregon)
 * Consortium of Ohio Libraries
 * C/W MARS
-* Evergreen Indiana
+* Indiana State Library
 * Georgia Public Library Service
 * Hagerstown - Jefferson Township Library
 * Linn-Benton Community College
 * MassLNC
-* PaILS
+* Pennsylvania Integrated Library System
 * Sage Library System
 * Union County Public Library (Indiana)
 
