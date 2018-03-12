@@ -408,7 +408,13 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* Albany Public Library (Oregon)
+* C/W MARS
+* Evergreen Indiana
+* Linn-Benton Community College
+* MassLNC
+* PaILS
+* Sage Library System
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
