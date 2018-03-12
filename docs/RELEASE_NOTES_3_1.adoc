@@ -420,7 +420,20 @@ We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jeff Godin
+* Rogan Hamby
+* Sam Link
+* Kathy Lussier
+* Dan Pearl
+* Mike Rylander
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
 
 
 We also thank the following organizations whose employees contributed
