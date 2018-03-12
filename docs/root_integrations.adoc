@@ -33,8 +33,6 @@ include::development/data_unapi.adoc[]
 include::admin/phonelist.adoc[]
 
 
-include::circulation/rfid_product_integration.adoc[]
-
 include::opac/search_form.adoc[]
 
 :leveloffset: -1

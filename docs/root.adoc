@@ -147,8 +147,6 @@ include::TechRef/KidsOPAC.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
-include::admin/customize_staff_client.adoc[]
-
 include::admin/patron_address_by_zip_code.adoc[]
 
 // Push titles down one level.
@@ -300,7 +298,7 @@ include::admin/actiontriggers.adoc[]
 
 include::admin/actiontriggers_process.adoc[]
 
-include::admin/recent_staff_searches.adoc[]
+include::admin/staff_client-recent_searches.adoc[]
 
 include::admin/lsa-standing_penalties.adoc[]
 
@@ -436,8 +434,6 @@ include::circulation/triggered_events.adoc[]
 include::circulation/offline_circ_webclient.adoc[]
 
 include::circulation/self_check.adoc[]
-
-include::circulation/rfid_product_integration.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
