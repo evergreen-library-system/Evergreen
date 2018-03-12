@@ -942,6 +942,24 @@ CREATE TABLE acq.user_request_type (
     label   TEXT    NOT NULL UNIQUE -- i18n-ize
 );
 
+CREATE TABLE acq.user_request_status_type (
+     id  SERIAL  PRIMARY KEY
+    ,label TEXT
+);
+
+INSERT INTO acq.user_request_status_type (id,label) VALUES
+     (0,oils_i18n_gettext(0,'Error','aurst','label'))
+    ,(1,oils_i18n_gettext(1,'New','aurst','label'))
+    ,(2,oils_i18n_gettext(2,'Pending','aurst','label'))
+    ,(3,oils_i18n_gettext(3,'Ordered, Hold Not Placed','aurst','label'))
+    ,(4,oils_i18n_gettext(4,'Ordered, Hold Placed','aurst','label'))
+    ,(5,oils_i18n_gettext(5,'Received','aurst','label'))
+    ,(6,oils_i18n_gettext(6,'Fulfilled','aurst','label'))
+    ,(7,oils_i18n_gettext(7,'Canceled','aurst','label'))
+;
+
+SELECT SETVAL('acq.user_request_status_type_id_seq'::TEXT, 100);
+
 CREATE TABLE acq.user_request (
     id                  SERIAL  PRIMARY KEY,
     usr                 INT     NOT NULL REFERENCES actor.usr (id), -- requesting user
@@ -959,6 +977,7 @@ CREATE TABLE acq.user_request (
   
     request_type        INT     NOT NULL REFERENCES acq.user_request_type (id),
     isxn                TEXT,
+    upc                 TEXT,
     title               TEXT,
     volume              TEXT,
     author              TEXT,
@@ -970,9 +989,11 @@ CREATE TABLE acq.user_request (
     mentioned           TEXT,
     other_info          TEXT,
 	cancel_reason       INT    REFERENCES acq.cancel_reason( id )
-	                           DEFERRABLE INITIALLY DEFERRED
+	                           DEFERRABLE INITIALLY DEFERRED,
+    cancel_time         TIMESTAMPTZ
 );
 
+ALTER TABLE action.hold_request ADD COLUMN acq_request INT REFERENCES acq.user_request (id);
 
 -- Functions
 

@@ -209,6 +209,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             </a>
           </li>
           <li>
+            <a href="./acq/requests/user/{{patron().id()}}" target="_top">
+              [% l('Acquisition Patron Requests') %]
+            </a>
+          </li>
+          <li>
             <a href="./booking/legacy/booking/reservation?patron_barcode={{patron().card().barcode()}}" target="_top">
               [% l('Booking: Create or Cancel Reservations') %]
             </a>

@@ -223,7 +223,11 @@ function compileBriefRecord(fields, editMarc) {
                     pcrud.update( aur_obj, {
                         'oncomplete' : function(r, cudResults) {
                             // Goes back to the list view
-                            location.href = oilsBasePath + '/acq/picklist/user_request';
+                            if (!window.IAMBROWSER) {
+                                location.href = oilsBasePath + '/acq/picklist/user_request';
+                            } else {
+                                window.top.location.href = '/eg/staff/acq/requests/list';
+                            }
                         }
                     });
                 } else {

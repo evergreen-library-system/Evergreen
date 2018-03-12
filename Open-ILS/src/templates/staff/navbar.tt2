@@ -359,7 +359,7 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/picklist/user_request" target="_self">
+            <a href="./acq/requests/list" target="_self">
               <span class="glyphicon glyphicon-thumbs-up"></span>
               [% l('Patron Requests') %]
             </a>

@@ -2332,7 +2332,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
 	</class>
-	<class id="aus" controller="open-ils.cstore" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
+	<class id="aus" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::user_setting" oils_persist:tablename="actor.usr_setting" reporter:label="User Setting">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_setting_id_seq">
 			<field reporter:label="Setting ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Name" name="name" reporter:datatype="link"/>
@@ -2343,6 +2343,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="name" reltype="has_a" key="name" map="" class="cust"/>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve permission="VIEW_USER">
+					<context link="usr" field="home_ou" />
+				</retrieve>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mafe" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::author_field_entry" oils_persist:tablename="metabib.author_field_entry" reporter:label="Author Field Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.author_field_entry_id_seq">
@@ -3691,7 +3698,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_USER" context_field="home_ou" />
+				<retrieve permission="VIEW_USER user_request.view" context_field="home_ou" />
 			</actions>
 		</permacrud>
 	</class>
@@ -6279,6 +6286,7 @@ SELECT  usr,
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
+			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -6297,6 +6305,7 @@ SELECT  usr,
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
+			<link field="acq_request" reltype="has_a" key="id" map="" class="aur"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -6426,6 +6435,7 @@ SELECT  usr,
 			<field reporter:label="Shelf Expire Time" name="shelf_expire_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
+			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link" />
 			<field reporter:label="Copy Location Sort Order" name="copy_location_order_position" reporter:datatype="int" />
 			<field reporter:label="User First Given Name" name="usr_first_given_name" reporter:datatype="text" />
 			<field reporter:label="User Second Given Name" name="usr_second_given_name" reporter:datatype="text" />
@@ -6459,6 +6469,7 @@ SELECT  usr,
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
+			<link field="acq_request" reltype="has_a" key="id" map="" class="aur"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -6510,6 +6521,7 @@ SELECT  usr,
 			<field reporter:label="Notes" name="notes" reporter:datatype="link" oils_persist:virtual="true"/>
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
+			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link" />
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -6527,6 +6539,7 @@ SELECT  usr,
 			<link field="cancel_cause" reltype="might_have" key="id" map="" class="ahrcc"/>
 			<link field="notes" reltype="has_many" key="hold" map="" class="ahrn"/>
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="acq_request" reltype="has_a" key="id" map="" class="aur"/>
 		</links>
 	</class>
 
@@ -6850,7 +6863,7 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<retrieve permission="VIEW_USER">
+				<retrieve permission="VIEW_USER user_request.view">
 					<context link="usr" field="home_ou" />
 				</retrieve>
 			</actions>
@@ -8378,6 +8391,7 @@ SELECT  usr,
 			<field reporter:label="Need Before Date/Time" name="need_before" reporter:datatype="timestamp" />
 			<field reporter:label="Max Acceptable Fee" name="max_fee" reporter:datatype="text" />
 			<field reporter:label="ISxN" name="isxn" reporter:datatype="text" />
+			<field reporter:label="UPC" name="upc" reporter:datatype="text" />
 			<field reporter:label="Title" name="title" reporter:datatype="text" />
 			<field reporter:label="Volume" name="volume" reporter:datatype="text" />
 			<field reporter:label="Author" name="author" reporter:datatype="text" />
@@ -8389,6 +8403,7 @@ SELECT  usr,
 			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
 			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
 			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp" />
 		</fields>
 		<links>
 			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
@@ -8412,6 +8427,88 @@ SELECT  usr,
                 <delete permission="user_request.delete">
                     <context link="usr" field="home_ou"/>
 				</delete>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="aurs" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request_status" reporter:label="User Purchase Request with Status" oils_persist="readonly">
+        <oils_persist:source_definition><![CDATA[
+            SELECT r.*, CASE
+                        WHEN r.cancel_reason IS NOT NULL THEN 7 -- Canceled
+                        WHEN h.fulfillment_time IS NOT NULL THEN 6 -- Fulfilled
+                        WHEN l.state = 'received' THEN 5 -- Received
+                        WHEN p.state = 'on-order' AND h.id IS NOT NULL THEN 4 -- Ordered, Hold Placed
+                        WHEN p.state = 'on-order' AND h.id IS NULL THEN 3 -- Ordered, Hold Not Placed
+                        WHEN l.id IS NOT NULL THEN 2 -- Pending
+                        WHEN l.id IS NULL THEN 1 -- New
+                        ELSE 0 -- Error
+                    END AS request_status
+                    ,u.home_ou
+            FROM      acq.user_request r
+            JOIN actor.usr u ON (r.usr = u.id)
+            LEFT JOIN acq.lineitem l ON (r.lineitem = l.id)
+            LEFT JOIN acq.purchase_order p ON (l.purchase_order = p.id)
+            LEFT JOIN action.hold_request h ON (h.acq_request = r.id)
+        ]]></oils_persist:source_definition>
+		<fields oils_persist:primary="id">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector='label'/>
+			<field reporter:label="User" name="usr" reporter:datatype="link" />
+			<field reporter:label="Request Type" name="request_type" oils_obj:required="true" reporter:datatype="link" />
+			<field reporter:label="Place Hold" name="hold" reporter:datatype="bool" />
+			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link" />
+			<field reporter:label="Holdable Formats" name="holdable_formats" reporter:datatype="text" />
+			<field reporter:label="Phone Notify" name="phone_notify" reporter:datatype="text" />
+			<field reporter:label="Email Notify" name="email_notify" reporter:datatype="bool" />
+			<field reporter:label="PO Line Item" name="lineitem" reporter:datatype="link" />
+			<field reporter:label="Bib Record" name="eg_bib" reporter:datatype="link" />
+			<field reporter:label="Request Date/Time" name="request_date" reporter:datatype="timestamp" />
+			<field reporter:label="Need Before Date/Time" name="need_before" reporter:datatype="timestamp" />
+			<field reporter:label="Max Acceptable Fee" name="max_fee" reporter:datatype="text" />
+			<field reporter:label="ISxN" name="isxn" reporter:datatype="text" />
+			<field reporter:label="UPC" name="upc" reporter:datatype="text" />
+			<field reporter:label="Title" name="title" reporter:datatype="text" />
+			<field reporter:label="Volume" name="volume" reporter:datatype="text" />
+			<field reporter:label="Author" name="author" reporter:datatype="text" />
+			<field reporter:label="Article Title" name="article_title" reporter:datatype="text" />
+			<field reporter:label="Article Pages" name="article_pages" reporter:datatype="text" />
+			<field reporter:label="Publisher" name="publisher" reporter:datatype="text" />
+			<field reporter:label="Publication Location" name="location" reporter:datatype="text" />
+			<field reporter:label="Publication Date" name="pubdate" reporter:datatype="text" />
+			<field reporter:label="Mentioned In" name="mentioned" reporter:datatype="text" />
+			<field reporter:label="Other Info" name="other_info" reporter:datatype="text" />
+			<field reporter:label="Cancel Reason" name="cancel_reason" reporter:datatype="link" />
+			<field reporter:label="Cancel Date/Time" name="cancel_time" reporter:datatype="timestamp" />
+			<field reporter:label="Request Status" name="request_status" reporter:datatype="link" />
+			<field reporter:label="Home Library" name="home_ou" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="lineitem" reltype="has_a" key="id" map="" class="jub"/>
+			<link field="eg_bib" reltype="has_a" key="id" map="" class="bre"/>
+			<link field="request_type" reltype="has_a" key="id" map="" class="aurt"/>
+			<link field="cancel_reason" reltype="has_a" key="id" map="" class="acqcr"/>
+			<link field="request_status" reltype="has_a" key="id" map="" class="aurst"/>
+			<link field="home_ou" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="user_request.view">
+                    <context link="usr" field="home_ou"/>
+				</retrieve>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="aurst" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="acq::user_request_status_type" oils_persist:tablename="acq.user_request_status_type" reporter:label="Acquisition Patron Request Status Type">
+		<fields oils_persist:primary="id">
+			<field reporter:label="Status ID" name="id" reporter:datatype="id" reporter:selector='label'/>
+			<field reporter:label="Status" name="label" reporter:datatype="text" oils_persist:i18n="true" />
+		</fields>
+		<links/>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
             </actions>
         </permacrud>
 	</class>

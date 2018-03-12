@@ -265,6 +265,17 @@ sub promote_lineitem_holds {
 
         next unless ($U->is_true( $request->hold ));
 
+        my $existing_hold = $mgr->editor->search_action_hold_request(
+            {acq_request => $request->id})->[0];
+        if ($existing_hold) {
+            $logger->warn("Existing hold found where acq_request = $request->id");
+            next;
+        }
+        if (! $li->eg_bib_id) {
+            $logger->error("Hold creation attempt for aur $request->id where li.eg_bib_id is null");
+            next;
+        }
+
         my $hold = Fieldmapper::action::hold_request->new;
         $hold->usr( $request->usr );
         $hold->requestor( $request->usr );
@@ -275,6 +286,7 @@ sub promote_lineitem_holds {
         $hold->phone_notify( $request->phone_notify );
         $hold->email_notify( $request->email_notify );
         $hold->expire_time( $request->need_before );
+        $hold->acq_request( $request->id );
 
         if ($request->holdable_formats) {
             my $mrm = $mgr->editor->search_metabib_metarecord_source_map( { source => $li->eg_bib_id } )->[0];
@@ -3605,6 +3617,21 @@ __PACKAGE__->register_method (
         }
     }
 );
+__PACKAGE__->register_method (
+    method    => 'update_user_request',
+    api_name  => 'open-ils.acq.user_request.set_yes_hold.batch',
+    stream    => 1,
+    signature => {
+        desc   => 'Set hold to true for a user request or set of requests',
+        params => [
+            { desc => 'Authentication token',              type => 'string' },
+            { desc => 'ID or array of IDs for the user requests to modify'  }
+        ],
+        return => {
+            desc => 'progress object, event on error',
+        }
+    }
+);
 
 sub update_user_request {
     my($self, $conn, $auth, $aur_ids, $cancel_reason) = @_;
@@ -3637,7 +3664,14 @@ sub update_user_request {
 
         if($self->api_name =~ /set_no_hold/) {
             if ($U->is_true($aur_obj->hold)) { 
-                $aur_obj->hold(0); 
+                $aur_obj->hold(0); # FIXME - this is not really removing holds per the description
+                $e->update_acq_user_request($aur_obj) or return $e->die_event;
+            }
+        }
+
+        if($self->api_name =~ /set_yes_hold/) {
+            if (!$U->is_true($aur_obj->hold)) {
+                $aur_obj->hold(1);
                 $e->update_acq_user_request($aur_obj) or return $e->die_event;
             }
         }
@@ -3645,12 +3679,112 @@ sub update_user_request {
         if($self->api_name =~ /cancel/) {
             if ( $cancel_reason ) {
                 $aur_obj->cancel_reason( $cancel_reason );
+                $aur_obj->cancel_time( 'now' );
                 $e->update_acq_user_request($aur_obj) or return $e->die_event;
                 create_user_request_events( $e, [ $aur_obj ], 'aur.rejected' );
             } else {
                 $e->delete_acq_user_request($aur_obj);
             }
         }
+
+        $conn->respond({maximum => scalar(@$aur_ids), progress => $x++});
+    }
+
+    $e->commit;
+    return {complete => 1};
+}
+
+__PACKAGE__->register_method (
+    method    => 'clear_completed_user_requests',
+    api_name  => 'open-ils.acq.clear_completed_user_requests',
+    stream    => 1,
+    signature => {
+        desc  => q/
+                Auto-cancel the specified user requests if they are complete.
+                Completed is defined as having either a Request Status of Fulfilled
+                (which happens when the request is not Canceled and has an associated
+                hold request that has a fulfillment time), or having a Request Status
+                of Received (which happens when the request status is not Canceled or
+                Fulfilled and has an associated Purchase Order with a State of
+                Received) and a Place Hold value of False.
+        /,
+        params => [
+            { desc => 'Authentication token',              type => 'string' },
+            { desc => 'ID for home library of user requests to auto-cancel.'  }
+        ],
+        return => {
+            desc => 'progress object, event on error',
+        }
+    }
+);
+
+sub clear_completed_user_requests {
+    my($self, $conn, $auth, $potential_aur_ids) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+    my $rid = $e->requestor->id;
+
+    my $potential_requests = $e->search_acq_user_request_status({
+             id => $potential_aur_ids
+            ,'-or' => [
+              { request_status => 6 }, # Fulfilled
+              { '-and' => [ { request_status => 5 }, { hold => 'f' } ] }  # Received
+            ]
+        }
+    );
+    my $aur_ids = [];
+
+    my %perm_test = (); my %perm_test2 = ();
+    for my $request (@$potential_requests) {
+        if ($rid != $request->usr()) {
+            if (!defined $perm_test{ $request->home_ou() }) {
+                $perm_test{ $request->home_ou() } =
+                    $e->allowed( ['user_request.view'], $request->home_ou() );
+            }
+            if (!defined $perm_test2{ $request->home_ou() }) {
+                $perm_test2{ $request->home_ou() } =
+                    $e->allowed( ['CLEAR_PURCHASE_REQUEST'], $request->home_ou() );
+            }
+            if (!$perm_test{ $request->home_ou() }) {
+                next; # failed test
+            }
+            if (!$perm_test2{ $request->home_ou() }) {
+                next; # failed test
+            }
+        }
+        push @$aur_ids, $request->id();
+    }
+
+    my $x = 1;
+    my %perm_test3 = ();
+    for my $id (@$aur_ids) {
+
+        my $aur_obj = $e->retrieve_acq_user_request([
+            $id,
+            {   flesh => 1,
+                flesh_fields => { "aur" => ['lineitem', 'usr'] }
+            }
+        ]) or return $e->die_event;
+
+        my $context_org = $aur_obj->usr()->home_ou();
+        $aur_obj->usr( $aur_obj->usr()->id() );
+
+        if ($rid != $aur_obj->usr) {
+            if (!defined $perm_test3{ $context_org }) {
+                $perm_test3{ $context_org } = $e->allowed( ['user_request.update'], $context_org );
+            }
+            if (!$perm_test3{ $context_org }) {
+                next; # failed test
+            }
+        }
+
+        $aur_obj->cancel_reason( 1015 ); # Canceled: Fulfilled
+        $aur_obj->cancel_time( 'now' );
+        $e->update_acq_user_request($aur_obj) or return $e->die_event;
+        create_user_request_events( $e, [ $aur_obj ], 'aur.rejected' );
+        # FIXME - hrmm, since this is a special type of "cancelation", should we not fire these
+        # events or should we put the burden on A/T to filter things based on cancel_reason if
+        # desired?  I don't think anyone is actually using A/T for these in practice
 
         $conn->respond({maximum => scalar(@$aur_ids), progress => $x++});
     }

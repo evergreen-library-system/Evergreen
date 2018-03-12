@@ -1913,7 +1913,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  (608, 'APPLY_WORKSTATION_SETTING',
    oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description')),
  ( 609, 'MANAGE_CUSTOM_PERM_GRP_TREE', oils_i18n_gettext( 609,
-    'Allows a user to manage custom permission group lists.', 'ppl', 'description' ))
+    'Allows a user to manage custom permission group lists.', 'ppl', 'description' )),
+ ( 610, 'CLEAR_PURCHASE_REQUEST', oils_i18n_gettext(610,
+    'Clear Completed User Purchase Requests', 'ppl', 'description'))
 ;
 
 
@@ -2591,6 +2593,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		aout.name = 'Consortium' AND
 		perm.code IN (
 			'ALLOW_ALT_TCN',
+			'CLEAR_PURCHASE_REQUEST',
 			'CREATE_BIB_IMPORT_QUEUE',
 			'CREATE_IMPORT_ITEM',
 			'CREATE_INVOICE',
@@ -2964,12 +2967,13 @@ INSERT INTO config.settings_group (name, label) VALUES
 
 
 INSERT INTO acq.user_request_type (id,label) VALUES (1, oils_i18n_gettext('1', 'Books', 'aurt', 'label'));
-INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Journal/Magazine & Newspaper Articles', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Articles', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (3, oils_i18n_gettext('3', 'Audiobooks', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (4, oils_i18n_gettext('4', 'Music', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (5, oils_i18n_gettext('5', 'DVDs', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (6, oils_i18n_gettext('6', 'Other', 'aurt', 'label'));
 
-SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 6);
+SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 7);
 
 
 -- org_unit setting types
@@ -3027,15 +3031,6 @@ INSERT into config.org_unit_setting_type
         'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.',
         'coust', 'description'),
     'integer', null)
-
-,( 'acq.holds.allow_holds_from_purchase_request', 'acq',
-    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
-        'Allows patrons to create automatic holds from purchase requests.',
-        'coust', 'label'),
-    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
-        'Allows patrons to create automatic holds from purchase requests.',
-        'coust', 'description'),
-    'bool', null)
 
 ,( 'acq.tmp_barcode_prefix', 'acq',
     oils_i18n_gettext('acq.tmp_barcode_prefix',
@@ -3484,19 +3479,19 @@ INSERT into config.org_unit_setting_type
 
 ,( 'circ.holds.canceled.display_age', 'holds',
     oils_i18n_gettext('circ.holds.canceled.display_age',
-        'Canceled holds display age',
+        'Canceled holds/requests display age',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.canceled.display_age',
-        'Show all canceled holds that were canceled within this amount of time',
+        'Show all canceled entries in patron holds and patron acquisition requests interfaces that were canceled within this amount of time',
         'coust', 'description'),
     'interval', null)
 
 ,( 'circ.holds.canceled.display_count', 'holds',
     oils_i18n_gettext('circ.holds.canceled.display_count',
-        'Canceled holds display count',
+        'Canceled holds/requests display count',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.canceled.display_count',
-        'How many canceled holds to show in patron holds interfaces',
+        'How many canceled entries to show in patron holds and patron acquisition requests interfaces',
         'coust', 'description'),
     'integer', null)
 
@@ -11959,6 +11954,8 @@ INSERT INTO acq.cancel_reason (keep_debits, id, org_unit, label, description) VA
 	oils_i18n_gettext(1007, 'This line item is not accepted by the seller.', 'acqcr', 'description')),
 ('f',( 10+1000), 1, oils_i18n_gettext(1010, 'Canceled: Not Found', 'acqcr', 'label'),
        oils_i18n_gettext(1010, 'This line item is not found in the referenced message.', 'acqcr', 'description')),
+('f',( 15+1000), 1, oils_i18n_gettext(1015, 'Canceled: Fulfilled', 'acqcr', 'label'),
+       oils_i18n_gettext(1015, 'This acquisition request has been fulfilled.', 'acqcr', 'description')),
 ('t',( 24+1000), 1, oils_i18n_gettext(1024, 'Delayed: Accepted with amendment', 'acqcr', 'label'),
        oils_i18n_gettext(1024, 'Accepted with changes which require no confirmation.', 'acqcr', 'description'));
 
