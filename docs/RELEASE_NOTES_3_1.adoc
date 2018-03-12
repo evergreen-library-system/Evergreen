@@ -420,6 +420,8 @@ We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
+* Eva Cerninakova
+* Andi Chandler
 * Galen Charlton
 * Jeff Davis
 * Bill Erickson
@@ -427,9 +429,11 @@ Evergreen:
 * Rogan Hamby
 * Sam Link
 * Kathy Lussier
+* Fares Othman
 * Dan Pearl
 * Mike Rylander
 * Chris Sharp
+* Ben Shum
 * Remington Steed
 * Jason Stephenson
 * Cesar Velez
