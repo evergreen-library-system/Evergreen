@@ -409,12 +409,16 @@ organizations that commissioned developments in this release of
 Evergreen:
 
 * Albany Public Library (Oregon)
+* Consortium of Ohio Libraries
 * C/W MARS
 * Evergreen Indiana
+* Georgia Public Library Service
+* Hagerstown - Jefferson Township Library
 * Linn-Benton Community College
 * MassLNC
 * PaILS
 * Sage Library System
+* Union County Public Library (Indiana)
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
