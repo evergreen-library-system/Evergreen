@@ -126,13 +126,9 @@
             <div ng-show="current_tab == 'settings'">
                 <div><span>[% l('These settings do get saved with templates and will override corresponding Library Settings.') %]<br/></span></div>
                 <div ng-repeat="s in org_unit_settings">
-                    <div class="row" style="margin-top: 5mm; border-top: solid thin black">
-                        <div class="col-md-6" style="font-weight: bold">{{s.label}}</div>
+                    <div class="row" style="margin-top: 5mm;">
+                        <div class="col-md-6"><label>{{s.label}} <eg-help-popover help-text="{{s.description}}"></label></div>
                         <div class="col-md-6"><input type="text" ng-model="preview_scope.settings[s.name]"></input></div>
-                    </div>
-
-                    <div class="row">
-                        <div>{{s.description}}</div>
                     </div>
                 </div>
 
