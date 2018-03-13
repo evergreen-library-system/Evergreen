@@ -683,6 +683,64 @@ CREATE TABLE config.usr_setting_type (
 
 );
 
+CREATE TABLE config.workstation_setting_type (
+    name            TEXT    PRIMARY KEY,
+    label           TEXT    UNIQUE NOT NULL,
+    grp             TEXT    REFERENCES config.settings_group (name),
+    description     TEXT,
+    datatype        TEXT    NOT NULL DEFAULT 'string',
+    fm_class        TEXT,
+    --
+    -- define valid datatypes
+    --
+    CONSTRAINT cwst_valid_datatype CHECK ( datatype IN
+    ( 'bool', 'integer', 'float', 'currency', 'interval',
+      'date', 'string', 'object', 'array', 'link' ) ),
+    --
+    -- fm_class is meaningful only for 'link' datatype
+    --
+    CONSTRAINT cwst_no_empty_link CHECK
+    ( ( datatype =  'link' AND fm_class IS NOT NULL ) OR
+      ( datatype <> 'link' AND fm_class IS NULL ) )
+);
+
+-- Prevent setting types from being both user and workstation settings.
+CREATE OR REPLACE FUNCTION config.setting_is_user_or_ws()
+RETURNS TRIGGER AS $FUNC$
+BEGIN
+
+    IF TG_TABLE_NAME = 'usr_setting_type' THEN
+        PERFORM TRUE FROM config.workstation_setting_type cwst
+            WHERE cwst.name = NEW.name;
+        IF NOT FOUND THEN
+            RETURN NULL;
+        END IF;
+    END IF;
+
+    IF TG_TABLE_NAME = 'workstation_setting_type' THEN
+        PERFORM TRUE FROM config.usr_setting_type cust
+            WHERE cust.name = NEW.name;
+        IF NOT FOUND THEN
+            RETURN NULL;
+        END IF;
+    END IF;
+
+    RAISE EXCEPTION 
+        '% Cannot be used as both a user setting and a workstation setting.', 
+        NEW.name;
+END;
+$FUNC$ LANGUAGE PLPGSQL STABLE;
+
+CREATE CONSTRAINT TRIGGER check_setting_is_usr_or_ws
+  AFTER INSERT OR UPDATE ON config.usr_setting_type
+  FOR EACH ROW EXECUTE PROCEDURE config.setting_is_user_or_ws();
+
+CREATE CONSTRAINT TRIGGER check_setting_is_usr_or_ws
+  AFTER INSERT OR UPDATE ON config.workstation_setting_type
+  FOR EACH ROW EXECUTE PROCEDURE config.setting_is_user_or_ws();
+
+
+
 -- Some handy functions, based on existing ones, to provide optional ingest normalization
 
 CREATE OR REPLACE FUNCTION public.left_trunc( TEXT, INT ) RETURNS TEXT AS $func$

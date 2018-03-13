@@ -785,7 +785,9 @@ function($scope , $q , egCore , egConfirmDialog) {
                         egCore.hatch.removeLocalItem(key);
                         refreshKeys();
                     } else {
-                        egCore.hatch.removeItem(key)
+                        // Honor requests to remove items from Hatch even
+                        // when Hatch is configured for data storage.
+                        egCore.hatch.removeRemoteItem(key)
                         .then(function() { refreshKeys() });
                     }
                 },

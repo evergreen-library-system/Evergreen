@@ -49,6 +49,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     $scope.grid_persist_key = $scope.is_capture ? 
         'circ.checkin.capture' : 'circ.checkin.checkin';
 
+    // TODO: add this to the setting batch lookup below
     egCore.hatch.getItem('circ.checkin.strict_barcode')
         .then(function(sb){ $scope.strict_barcode = sb });
 
@@ -88,9 +89,15 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     }
 
     // set modifiers from stored preferences
-    angular.forEach(modifiers, function(mod) {
-        egCore.hatch.getItem('eg.circ.checkin.' + mod)
-        .then(function(val) { if (val) $scope.modifiers[mod] = true });
+    var snames = modifiers.map(function(m) {return 'eg.circ.checkin.' + m;});
+    egCore.hatch.getItemBatch(snames).then(function(settings) {
+        angular.forEach(settings, function(val, key) {
+            if (val === true) {
+                var parts = key.split('.')
+                var mod = parts.pop();
+                $scope.modifiers[mod] = true;
+            }
+        })
     });
 
     // set / unset a checkin modifier

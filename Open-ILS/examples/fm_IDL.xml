@@ -12499,8 +12499,52 @@ SELECT  usr,
 	</permacrud>
         </class>
 
-	<!-- ********************************************************************************************************************* -->
+	<class id="cwst" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::workstation_setting_type" 
+		oils_persist:tablename="config.workstation_setting_type" 
+		reporter:label="Workstation Setting Type">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="description" reporter:datatype="text" oils_persist:i18n="true"/>
+			<field name="datatype" reporter:datatype="text"/>
+			<field name="fm_class" reporter:datatype="text"/>
+			<field name="grp" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="name" reltype="has_many" key="name" map="" class="aous"/>
+			<link field="grp" reltype="has_a" key="name" map="" class="csg"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_WORKSTATION_SETTING_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_WORKSTATION_SETTING_TYPE" global_required="true"/>
+				<delete permission="ADMIN_WORKSTATION_SETTING_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
 
+	<!-- no pcrud access is granted for now, because it's assumed these
+			 setting values will be applied and retrived via the API. -->
+	<class id="awss" 
+		controller="open-ils.cstore"
+		oils_obj:fieldmapper="actor::workstation_setting" 
+		oils_persist:tablename="actor.workstation_setting" 
+		reporter:label="Workstation Setting">
+		<fields oils_persist:primary="id" oils_persist:sequence="actor.workstation_setting_id_seq">
+			<field reporter:label="Setting ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="link"/>
+			<field reporter:label="Value" name="value" reporter:datatype="text"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="name" reltype="has_a" key="name" map="" class="cwst"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+		</links>
+	</class>
+
+	<!-- ********************************************************************************************************************* -->
 </IDL>
 
 <!--

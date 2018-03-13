@@ -23,6 +23,8 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PRINT_TEMPLATES_FAIL_IMPORT = "[% l('Failed to import any print template(s)') %]";
   s.HATCH_SETTINGS_MIGRATION_SUCCESS = "[% l('Settings successfully migrated') %]";
   s.HATCH_SETTINGS_MIGRATION_FAILURE = "[% l('Settings migration failed') %]";
+  s.HATCH_SERVER_SETTINGS_MIGRATION_CONFIRM = 
+    "[% l('This will delete the local version all settings configured to live on the server.  Continue?') %]";
 }]);
 </script>
 [% END %]
