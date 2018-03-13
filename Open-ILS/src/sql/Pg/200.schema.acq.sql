@@ -854,7 +854,10 @@ CREATE TABLE acq.invoice (
 	payment_method TEXT     REFERENCES acq.invoice_payment_method (code)
 	                        DEFERRABLE INITIALLY DEFERRED,
 	note        TEXT,
-    complete    BOOL        NOT NULL DEFAULT FALSE,
+    close_date  TIMESTAMPTZ,
+    closed_by   INTEGER     REFERENCES actor.usr (id) 
+                            DEFERRABLE INITIALLY DEFERRED,
+
     CONSTRAINT  inv_ident_once_per_provider UNIQUE(provider, inv_ident)
 );
 

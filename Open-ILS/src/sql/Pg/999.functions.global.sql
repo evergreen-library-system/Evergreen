@@ -224,6 +224,7 @@ BEGIN
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -422,6 +423,7 @@ BEGIN
 	UPDATE acq.lineitem SET selector = dest_usr WHERE selector = src_usr;
 	UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 	DELETE FROM acq.lineitem_usr_attr_definition WHERE usr = src_usr;
 
 	-- Update with a rename to avoid collisions
