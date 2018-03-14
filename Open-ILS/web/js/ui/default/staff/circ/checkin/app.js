@@ -189,7 +189,6 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
 
         // track the item in the grid before sending the request
         checkinSvc.checkins.unshift(row_item);
-        checkinGrid.refresh();
 
         egCirc.checkin(params, options).then(
         function(final_resp) {
