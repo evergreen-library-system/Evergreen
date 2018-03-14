@@ -375,7 +375,7 @@ function($scope , $q , egCore , ngToast) {
         dob : '1984-11-07T00:00:00-8:00',
         juvenile : 'f',
         usrname : '30393830393',
-        daytime_phone : '111-222-3333',
+        day_phone : '111-222-3333',
         evening_phone : '222-333-1111',
         other_phone : '333-111-2222',
         email : 'user@example.com',

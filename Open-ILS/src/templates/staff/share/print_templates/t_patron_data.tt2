@@ -23,7 +23,7 @@ Template for printing a patron's data, including addesses and statistical catego
   <div>Primary Identification: {{patron.ident_value}}</div>
   <div>Secondary Identification: {{patron.ident_value2}}</div>
   <div>Email Address: {{patron.email}}</div>
-  <div>Daytime Phone: {{patron.daytime_phone}}</div>
+  <div>Daytime Phone: {{patron.day_phone}}</div>
   <div>Evening Phone: {{patron.evening_phone}}</div>
   <div>Other Phone: {{patron.other_phone}}</div>
   <div>Home Library: {{patron.home_ou.name()}}</div>
