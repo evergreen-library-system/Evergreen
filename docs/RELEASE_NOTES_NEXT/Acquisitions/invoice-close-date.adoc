@@ -1,0 +1,34 @@
+Invoice Closed Date and Closed By Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Acquisitions invoices have 2 new fields:
+
+* Close Date -- This is set to the time when the ACQ user clicks the "Close"
+  button in the invoice interface.
+  ** This field 'replaces' the existing 'complete' field.  An invoice is
+     considered complete if a close date value is set.
+* Closed By -- This is set to the logged in staff user who performs the 
+  "Close" action.
+
+As with the now-defunct 'complete' field, but new fields are cleared in the 
+event an invoice is reopened.
+
+These new fields are visible in the invoice interface under the 
+'Show Details' action for closed invoices.
+
+Upgrading Invoice Reports
++++++++++++++++++++++++++
+
+Existing report templates that reference the invoice 'complete' field 
+should be modified to check whether the new close_date field is NOT NULL
+instead.
+
+Other Upgrade Considerations
+++++++++++++++++++++++++++++
+
+At deploy time, all invoices with a 'complete' value of TRUE will have their
+'close_date' field set to NOW.  A value is required, since this field is
+now the source of whether an invoice is open or closed.
+
+However, no values will be applied to the closed_by field for already closed
+invoices.
+
