@@ -105,6 +105,7 @@ Purchase Order Names are case sensitive.
 image::media/po_name_detection_1.JPG[PO Name Detection 1]
 
 When a duplicate purchase order name is detected during the creation of a new purchase order, the user may:
+
 * Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 * Click *Cancel* to cancel the creation of the new purchase order.
 * Within the _Name (optional)_ field, enter a different, unique name for the new purchase order.
@@ -116,6 +117,7 @@ If the purchase order name is not unique for the ordering agency, the Save butto
 *Duplicate PO Name Detection When Editing the Name of an Existing Purchase Order*
 
 To change the name of an existing purchase order:
+
 . Within the purchase order, the _Name_ of the purchase order is a link (located at the top left-hand side of the purchase order). Click the PO Name.
 . A new window will open, where users can rename the purchase order.
 . Enter the new purchase order name.
