@@ -93,7 +93,7 @@
   <eg-grid-field label="[% l('Circulate as Type') %]"     path="circ_as_type" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulate?') %]"            path="circulate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]"   path="_circ_lib.name" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy ID') %]"               path="id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Number') %]"           path="copy_number" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Created By') %]"            path="creator" hidden></eg-grid-field>
