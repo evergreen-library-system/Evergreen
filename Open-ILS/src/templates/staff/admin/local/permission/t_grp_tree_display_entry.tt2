@@ -1,0 +1,60 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Permission Group Tree Entries') %]
+  </div>
+</div>
+
+<div class="container">
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('Permission Group Entries in Library:') %]</label>
+      <eg-org-selector onchange="org_changed" selected="selectedOrg"></eg-org-selector>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <button class="btn btn-success"
+      ng-click="addChildEntry(selected_entry)">
+        <i class="glyphicon glyphicon-plus"></i> [% l('Add') %]
+    </button>
+    <button class="btn btn-danger"
+      ng-click="removeEntry(selected_entry)"
+      ng-disabled="!selected_entry || selected_entry.permanent">
+        <i class="glyphicon glyphicon-remove"></i> [% l('Remove') %]
+    </button>
+    <button class="btn btn-info"
+      ng-click="setPosition(selected_entry, 'up')"
+      ng-disabled="!selected_entry || selected_entry.permanent">
+        <i class="glyphicon glyphicon-arrow-up"></i> [% l('Move Up') %]
+    </button>
+    <button class="btn btn-info"
+      ng-click="setPosition(selected_entry, 'down')"
+      ng-disabled="!selected_entry || selected_entry.permanent">
+        <i class="glyphicon glyphicon-arrow-down"></i> [% l('Move Down') %]
+    </button>
+    <button class="btn btn-primary"
+      ng-click="saveEntries()">
+        <i class="glyphicon glyphicon-floppy-disk"></i> [% l('Save') %]
+    </button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4" ng-if="selectedOrg">
+    <treecontrol
+        class="tree-light"
+        tree-model="perm_tree"
+        options="tree_options"
+        on-selection="updateSelection(node, selected)"
+        selected-node="selected_entry"
+        order-by="orderby"
+        expanded-nodes="expanded_nodes"
+    >
+      {{node.grp().name()}}
+    </treecontrol>
+  </div>
+  <div class="col-md-12" ng-if="!selectedOrg">
+    <div class="alert alert-danger">[% l('No Org Unit Selected') %]</div>
+  </div>
+</div>
+</div>

@@ -2,12 +2,14 @@
 angular.module('egCoreMod')
 // toss tihs onto egCoreMod since the page app may vary
 
-.factory('patronRegSvc', ['$q', 'egCore', 'egLovefield', function($q, egCore, egLovefield) {
+.factory('patronRegSvc', ['$q', '$filter', 'egCore', 'egLovefield', function($q, $filter, egCore, egLovefield) {
 
     var service = {
         field_doc : {},            // config.idl_field_doc
         profiles : [],             // permission groups
+        profile_entries : [],      // permission gorup display entries
         edit_profiles : [],        // perm groups we can modify
+        edit_profile_entries : [], // perm group display entries we can modify
         sms_carriers : [],
         user_settings : {},        // applied user settings
         user_setting_types : {},   // config.usr_setting_type
@@ -38,6 +40,7 @@ angular.module('egCoreMod')
             common_data = [
                 service.get_field_doc(),
                 service.get_perm_groups(),
+                service.get_perm_group_entries(),
                 service.get_ident_types(),
                 service.get_org_settings(),
                 service.get_stat_cats(),
@@ -196,6 +199,44 @@ angular.module('egCoreMod')
                 });
 
                 traverse_grp_tree(egCore.env.pgt.tree);
+            }
+        );
+    }
+
+    service.set_edit_profile_entries = function() {
+        var all_app_perms = [];
+        var failed_perms = [];
+
+        // extract the application permissions
+        angular.forEach(service.profile_entries, function(entry) {
+            if (entry.grp().application_perm())
+                all_app_perms.push(entry.grp().application_perm());
+        });
+
+        // fill in service.edit_profiles by inspecting failed_perms
+        function traverse_grp_tree(entry, failed) {
+            failed = failed ||
+                failed_perms.indexOf(entry.grp().application_perm()) > -1;
+
+            if (!failed) service.edit_profile_entries.push(entry);
+
+            angular.forEach(
+                service.profile_entries.filter( // children of grp
+                    function(p) { return p.parent() == entry.id() }),
+                function(child) {traverse_grp_tree(child, failed)}
+            );
+        }
+
+        return egCore.perm.hasPermAt(all_app_perms, true).then(
+            function(perm_orgs) {
+                angular.forEach(all_app_perms, function(p) {
+                    if (perm_orgs[p].length == 0)
+                        failed_perms.push(p);
+                });
+
+                angular.forEach(egCore.env.pgtde.tree, function(tree) {
+                    traverse_grp_tree(tree);
+                });
             }
         );
     }
@@ -439,6 +480,41 @@ angular.module('egCoreMod')
                     return service.set_edit_profiles();
                 }
             );
+        }
+    }
+
+    service.get_perm_group_entries = function() {
+        if (egCore.env.pgtde) {
+            service.profile_entries = egCore.env.pgtde.list;
+            return service.set_edit_profile_entries();
+        } else {
+            return egCore.pcrud.search('pgtde', {org: egCore.auth.user().ws_ou(), parent: null},
+                {flesh : -1, flesh_fields : {pgtde : ['grp', 'children']}}, {atomic : true}
+            ).then(function(treeArray) {
+                function compare(a,b) {
+                  if (a.position() > b.position())
+                    return -1;
+                  if (a.position() < b.position())
+                    return 1;
+                  return 0;
+                }
+
+                var list = [];
+                function squash(node) {
+                    if (node.disabled() == 'f') {
+                        node.children().sort(compare)
+                        list.push(node);
+                        angular.forEach(node.children(), squash);
+                    }
+                }
+
+                angular.forEach(treeArray, squash);
+                var blob = egCore.env.absorbList(list, 'pgtde');
+                blob.tree = treeArray;
+
+                service.profile_entries = egCore.env.pgtde.list;
+                return service.set_edit_profile_entries();
+            });
         }
     }
 
@@ -1227,6 +1303,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.patron = patron;
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
+        $scope.edit_profile_entries = prs.edit_profile_entries;
         $scope.ident_types = prs.ident_types;
         $scope.net_access_levels = prs.net_access_levels;
         $scope.user_setting_types = prs.user_setting_types;
@@ -1295,6 +1372,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.pgt_depth = function(grp) {
         var d = 0;
         while (grp = egCore.env.pgt.map[grp.parent()]) d++;
+        return d;
+    }
+
+    // returns the tree depth of the selected profile group tree node.
+    $scope.pgtde_depth = function(entry) {
+        var d = 0;
+        while (entry = egCore.env.pgtde.map[entry.parent()]) d++;
         return d;
     }
 

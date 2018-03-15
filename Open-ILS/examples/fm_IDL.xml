@@ -7644,6 +7644,31 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
+	<class id="pgtde" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="permission::grp_tree_display_entry" oils_persist:tablename="permission.grp_tree_display_entry" reporter:label="Permission Group Tree Display Entry">
+		<fields oils_persist:primary="id" oils_persist:sequence="permission.grp_tree_id_seq">
+			<field reporter:label="Entry ID" name="id" reporter:selector="name" reporter:datatype="id"/>
+			<field reporter:label="Group ID" name="grp" reporter:datatype="link" oils_persist:i18n="true"/>
+			<field reporter:label="Parent Group" name="parent" reporter:datatype="link"/>
+			<field reporter:label="Org Unit" name="org" reporter:datatype="link"/>
+            <field reporter:label="Position" name="position" reporter:datatype="int"/>
+            <field reporter:label="Disabled" name="disabled" reporter:datatype="bool"/>
+			<field reporter:label="Child Entries" name="children" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="parent" reltype="has_a" key="id" map="" class="pgtde"/>
+			<link field="grp" reltype="has_a" key="id" map="" class="pgt"/>
+			<link field="org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="children" reltype="has_many" key="parent" map="" class="pgtde"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <create permission="CREATE_PERM" global_required="true"/>
+                <retrieve permission="STAFF_LOGIN" global_required="true"/>
+                <update permission="UPDATE_PERM" global_required="true"/>
+                <delete permission="DELETE_PERM" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="asva" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::survey_answer" oils_persist:tablename="action.survey_answer" reporter:label="Survey Answer">
 		<fields oils_persist:primary="id" oils_persist:sequence="action.survey_answer_id_seq">
 			<field reporter:label="Responses using this Answer" name="responses" oils_persist:virtual="true" reporter:datatype="link"/>

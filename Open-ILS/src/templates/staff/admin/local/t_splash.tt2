@@ -30,6 +30,7 @@
     ,[ l('Non-Cataloged Types Editor'), "./admin/local/config/non_cat_types" ]
     ,[ l('Notifications / Action Triggers'), "./admin/local/action_trigger/event_definition" ]
     ,[ l('Patrons with Negative Balances'), "./admin/local/circ/neg_balance_users" ]
+    ,[ l('Permission Tree Display Entries'), "./admin/local/permission/grp_tree_display_entry" ]
     ,[ l('Search Filter Groups'), "./admin/local/actor/search_filter_group" ]
     ,[ l('Standing Penalties'), "./admin/local/config/standing_penalty" ]
     ,[ l('Statistical Categories Editor'), "./admin/local/asset/stat_cat_editor" ]
