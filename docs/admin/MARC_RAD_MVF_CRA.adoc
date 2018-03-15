@@ -19,8 +19,8 @@ image::media/radmvcolumn_1.jpg[]
 
 To edit an existing record attribute definition and set the *Multi-valued?* field to *True*:
 
-.  Click *Admin* on the menu bar
-.  Hover over *Server Administration* and click *MARC Record Attributes*
+.  Click *Administration* on the menu bar
+.  Click *Server Administration*, then click *MARC Record Attributes*
 .  Double-click on the row of the record attribute definition that needs to be edited
 .  Select the *Multi-valued?* checkbox
 .  Click *Save*
@@ -45,8 +45,8 @@ Within the Coded Value Maps screen, there is a column named *Composite Definitio
 
 To edit an existing record attribute definition and set the *Composite attribute?* field to True:
 
-.   Click *Admin* on the menu bar
-.   Hover over *Server Administration* and click *MARC Record Attributes*
+.   Click *Admininstration* on the menu bar
+.   Click *Server Administration*, then click *MARC Record Attributes*
 .   Double-click on the row of the record attribute definition that needs to be edited
 .   Select the *Composite attribute?* checkbox
 .   Click *Save*
