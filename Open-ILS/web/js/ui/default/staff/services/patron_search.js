@@ -685,6 +685,10 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             return $q.when();
         }
 
+        var fleshFields = egUser.defaultFleshFields.slice(0);
+        if (fleshFields.indexOf('profile') == -1)
+            fleshFields.push('profile');
+
         egProgressDialog.open(); // Indeterminate
 
         patronSvc.patrons = [];
@@ -698,7 +702,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             fullSearch.sort,
             fullSearch.inactive,
             fullSearch.home_ou,
-            egUser.defaultFleshFields,
+            fleshFields,
             fullSearch.offset
 
         ).then(
