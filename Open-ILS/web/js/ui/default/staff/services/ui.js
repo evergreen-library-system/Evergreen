@@ -938,7 +938,7 @@ function($uibModal , $interpolate , egCore) {
                 '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
                 '<div class="input-group-btn" uib-dropdown ng-class="{open:isopen}">'+
                     '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default" uib-dropdown-toggle><span class="caret"></span></button>'+
-                    '<ul dropdown-menu class="dropdown-menu-right">'+
+                    '<ul uib-dropdown-menu class="dropdown-menu-right">'+
                         '<li ng-repeat="item in list|filter:selected:compare"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                         '<li ng-if="complete_list" class="divider"><span></span></li>'+
                         '<li ng-if="complete_list" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
