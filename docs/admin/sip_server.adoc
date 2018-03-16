@@ -287,7 +287,7 @@ We are using 6001 here which is associated with +SIP2+ as per our configuration.
 +
 If successful, the SIP server returns a +941+ result. A result of +940+,
 however, indicates an unsuccessful login attempt. Check the +<accounts>+
-section of your SIP configuration and try agin.
+section of your SIP configuration and try again.
 
 . Once you have logged in successfully, replace the variables in the following
 line and paste it into the telnet session:

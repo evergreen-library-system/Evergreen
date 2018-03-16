@@ -359,7 +359,7 @@ Evergreen with an up-to-date PO file downloaded from Launchpad.
 . Visit the Evergreen translation site in https://translations.launchpad.net/evergreen[Launchpad] 
 . Select required language (e.g. _Czech_ or _Spanish_)
 . Open the  _tpac_  template  and  then select option _Download translation_. Note: to be able to download the translation file you need to be logged in to Launchpad.
-. Select _PO format_ and submit the _request for download_ button. You can also request for download of all existitng templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
+. Select _PO format_ and submit the _request for download_ button. You can also request for download of all existing templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
 . Download the file and name it according to the language used (e.g., _cs-CZ.po_ for Czech or  _es-ES.po_ for Spanish)  
 . Copy the downloaded file to  _/openils/var/template/data/locale_. It is a good practice to backup the original PO file before.
 . Be sure that the desired language is set as default, using the <<_setting_a_default_language_and_adding_optional_languages,Default language>> procedures.
@@ -714,7 +714,7 @@ and move/rename the files to the following locations/name.
 You will need to create directories that are missing.
  
  * Small - Move the file *123-s.jpg* to */openils/var/web/opac/extras/ac/jacket/small/r/123*
- * Medium - Move the file *123-m.jpg* to */openils/var/web/opac/extras/ac/jacket/medum/r/123*.
+ * Medium - Move the file *123-m.jpg* to */openils/var/web/opac/extras/ac/jacket/medium/r/123*.
  * Large - Move the file *123-l.jpg* to */openils/var/web/opac/extras/ac/jacket/large/r/123*.
 
 [NOTE]

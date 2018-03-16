@@ -82,7 +82,7 @@ values.
 |Default copy location|Sets the default copy location(shelving location) for use in acquisitions.|Selection list|
 |Fund Spending Limit for Block|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.|Number|
 |Fund Spending Limit for Warning|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.|Number|
-|Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formalae to use new funds|True/False|
+|Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formulae to use new funds|True/False|
 |Set copy creator as receiver|When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy|True/False|
 |Temporary barcode prefix|Temporary barcode prefix added to temporary item records.|Text|
 |Temporary call number prefix|Temporary call number prefix|Text|

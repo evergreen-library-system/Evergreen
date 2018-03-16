@@ -57,7 +57,7 @@ restore from a logical backup. Restoring a logical backup that you created using
 requires the use of the `pg_restore` tool as follows:
 
 . On the server on which you plan to restore the logical backup, ensure that you have installed
-PostgreSQL and the corresponding server package prerequisites. The `Makefile.instal` prerequisite
+PostgreSQL and the corresponding server package prerequisites. The `Makefile.install` prerequisite
 installer than came with your version of Evergreen contains an installation target that should
 satisfy these requirements. Refer to the installation documentation for more details.
 . As the `postgres` user, create a new database using the `createdb` command into which you will

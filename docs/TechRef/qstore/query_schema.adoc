@@ -559,7 +559,7 @@ columns are as follows:
 
         default_value                text
 
-        laqbel                        text                not null
+        label                        text                not null
 
 The name column is the primary key, and contains the name of the
 variable
@@ -815,7 +815,7 @@ operator).
 xser: Series
 
 An “xser” expression is a series of expressions separated by a specified
-operator, or (if no operator is specifed) by commas:
+operator, or (if no operator is specified) by commas:
 
         A operator B operator C operator ... D
 

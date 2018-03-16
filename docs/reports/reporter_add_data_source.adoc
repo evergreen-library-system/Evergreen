@@ -23,7 +23,7 @@ data source.
 . Add a new class to _fm_IDL.xml_ for your data source.
 . Restart the affected services to see the new data source in Reporter.
 
-There are two possbile sources for new data sources:
+There are two possible sources for new data sources:
 
 indexterm:[PostgreSQL]
 
@@ -32,7 +32,7 @@ indexterm:[SQL]
 * An SQL query built directly into the class definition in _fm_IDL.xml_. You can 
 use this method if you are only going to access this data source through the 
 Evergreen reporter and/or cstore code that you write.
-* A new table or view in the Evergreen PostgresSQL database on which a class 
+* A new table or view in the Evergreen PostgreSQL database on which a class 
 definition in _fm_IDL.xml_. You can use this method if you want to be able to 
 access this data source through directly through SQL or using other reporting tool.
 
@@ -56,7 +56,7 @@ need to use a table to store the results of a query for performance reasons.
 
 To develop and test queries, views, and tables, you will need
 
-* Access to the Evergree PostgreSQL database at the command line. This is 
+* Access to the Evergreen PostgreSQL database at the command line. This is 
 normally the psql application. You 
 can access the Postgres documentation at the 
 http://http://www.postgresql.org/docs/[Official Postgres documentation] for 
@@ -72,8 +72,8 @@ for contribution to the core Evergreen code, create the Views and Tables in the
 extend_reporter schema. This schema is intended to be used for local 
 customizations and will not be modified during upgrades to the Evergreen system.
 
-You should make that you have an appropriate version control pocess for the SQL 
-used to create you data sources.
+You should make sure that you have an appropriate version control process for the SQL 
+used to create your data sources.
 
 Here's an example of a view created to incorporate some locally defined user 
 statistical categories:

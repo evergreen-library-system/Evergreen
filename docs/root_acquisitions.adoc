@@ -1,4 +1,4 @@
-Using Evergreen's Acquistions Module
+Using Evergreen's Acquisitions Module
 ====================================
 Documentation Interest Group
 :doctype: book

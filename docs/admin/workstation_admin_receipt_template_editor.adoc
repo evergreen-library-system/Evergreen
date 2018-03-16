@@ -553,7 +553,7 @@ Additional Macros for various slip types
 %title%:: Title
 %author%:: Author
 %barcode%:: Item Barcode
-%due_date%:: Due Date: formated by the date field in the library settings editor
+%due_date%:: Due Date: formatted by the date field in the library settings editor
 
 *Payment*
 
@@ -574,7 +574,7 @@ Additional Macros for various slip types
 %last_payment_type%:: The type of payment that was last used to pay the bill
 %mbts_xact_start%:: The date that the bill was started
 %last_payment_note%:: Notes on last payment
-%xact_type%:: Type of Biil
+%xact_type%:: Type of Bill
 %barcode%:: Item barcode
 %title%:: title of item
 
@@ -590,7 +590,7 @@ Additional Macros for various slip types
 %last_payment_note%:: Notes on last payment
 %last_payment_ts%:: The time stamp for the last payment
 %mbts_xact_start%:: The date that the bill was started (currently not working)
-%xact_type%:: Type of Biil
+%xact_type%:: Type of Bill
 %title%:: title of item
 
 *Transit*
@@ -603,10 +603,10 @@ Transit receipts come into two types, general Transit receipts and Transit slips
 %transit_item_author%:: Item author
 %transit_item_barcode%:: Barcode of item in transit
 %transit_item_callnumber%:: Call number of item in transit
-%transit_item_title%:: Title of Item intransit
+%transit_item_title%:: Title of Item in transit
 %transit_dest_lib%:: Destination Library
-%transit_source_send_time%:: Time item was sent intransit
-%transit_source%:: Library that placed the item intransit.
+%transit_source_send_time%:: Time item was sent in transit
+%transit_source%:: Library that placed the item in transit.
 
 
 .*Transit Slip*

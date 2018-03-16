@@ -6,7 +6,7 @@ Changing passwords
 
 If you need to change a patron or staff account password without using the staff client, here is how you can reset it with SQL.
 
-Connect to your Evergreen database using _psql_ or similar tool, and retreive and verify your admin username:
+Connect to your Evergreen database using _psql_ or similar tool, and retrieve and verify your admin username:
 
 [source, sql]
 ------------------------------------------------------------------------------
