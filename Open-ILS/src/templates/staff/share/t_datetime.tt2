@@ -30,7 +30,8 @@
   <div>
     <span>
       <uib-timepicker
-        ng-show="showTimePicker"
+        ng-if="showTimePicker"
+        ng-hide="hideTimePicker"
         ng-model="ngModel"
         ng-disabled="ngDisabled"
         ng-required="ngRequired"

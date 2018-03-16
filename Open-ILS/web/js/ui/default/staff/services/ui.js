@@ -412,6 +412,8 @@ function($timeout , $parse) {
             egProgressData.max = args.max;
         if (args.value != undefined) 
             egProgressData.value = args.value;
+        if (args.label != undefined) 
+            egProgressData.label = args.label;
     }
 
     // Increment the current value.  If no amount is specified,
@@ -1199,6 +1201,7 @@ function($uibModal , $interpolate , egCore) {
                 ngDisabled : '=',
                 ngRequired : '=',
                 hideDatePicker : '=',
+                hideTimePicker : '=?',
                 dateFormat : '=?',
                 outOfRange : '=?',
                 focusMe : '=?'
