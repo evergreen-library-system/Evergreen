@@ -6,7 +6,7 @@ Aging Circulations
 Aging circulations helps to protect patron privacy and save disk space.
 ****
 
-Evergreen allows for the bulk anonymization of circulation histories.  Evergreen calles this aged circulation. Circulation statistics are preserved (total circs, last checkout/renewal date, checkout/renewal/checkin workstation, etc) but patron information (name : barcode) is replaced with <Aged Circulation> text and the link to the patron record is removed.   
+Evergreen allows for the bulk anonymization of circulation histories.  Evergreen calls this aged circulation. Circulation statistics are preserved (total circs, last checkout/renewal date, checkout/renewal/checkin workstation, etc) but patron information (name : barcode) is replaced with <Aged Circulation> text and the link to the patron record is removed.   
 
 In the client, <Aged Circulation> will show in the patron field in Circulation History Tab and Show Last Few Circulations.
 
@@ -21,11 +21,11 @@ There are four global flags used for aging circulations.
 
 1. Historical Circulation Retention Age - determines the timeframe for aging circulations based on transaction age (7 days, 14 days, 30 days, etc). 
 
-2. Historical Circulations Per Copy - determines how many ciruclations to keep (ex. 1, 2, 3). If set to 1, Evergreen will always keep the last (most recent) circulation.
+2. Historical Circulations Per Copy - determines how many circulations to keep (ex. 1, 2, 3). If set to 1, Evergreen will always keep the last (most recent) circulation.
 
 3. Historical Circulations use most recent xact_finish date instead of last circ's (true or false)
 
-4. Historical Circulations are kept for global retention age at a minimum, regardless of user prefeences (true or false)
+4. Historical Circulations are kept for global retention age at a minimum, regardless of user preferences (true or false)
 
 
 

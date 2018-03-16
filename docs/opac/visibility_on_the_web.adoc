@@ -119,5 +119,5 @@ supplying URIs for the RDA Content Type, Media Type, and
 Carrier Type has been added.
 
 This is an experimental, "under-the-hood" feature that
-will be built upon in subsuquent releases.
+will be built upon in subsequent releases.
 

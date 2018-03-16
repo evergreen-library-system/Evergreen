@@ -160,7 +160,7 @@ Selected Fields_
 image::media/create-template-20.png[create-template-20]
 +
 . _Check Out Date/Time_ will appear in the _Displayed Fields_ pane. In the report 
-it will appear as a year and month _(YYYY-MM)_ corresponding to the selected tranform.
+it will appear as a year and month _(YYYY-MM)_ corresponding to the selected transform.
 +
 image::media/create-template-21.png[create-template-21]
 +

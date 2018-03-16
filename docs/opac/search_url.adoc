@@ -15,7 +15,7 @@ Here is a basic search URL structure:
 
 locg Parameter
 ^^^^^^^^^^^^^^
-This is the id of the search location. It is an integer and maches the id of the
+This is the id of the search location. It is an integer and matches the id of the
 location the user selected in the location drop down menu.
 
 qtype Parameter

@@ -482,7 +482,7 @@ The record shows details such as the cover image, title, author, publication
 information, and an abstract or summary, if available.
 
 Near the top of the record, users can easily see the number of copies that
-are currently available in the system and how many curent holds are on the
+are currently available in the system and how many current holds are on the
 title. 
 
 If there are other formats and editions of the same work in the 

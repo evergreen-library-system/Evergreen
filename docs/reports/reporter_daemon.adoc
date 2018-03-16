@@ -30,7 +30,7 @@ run; defaults to 10
 /tmp/reporter-LOCK
 * *concurrency=integer*: number of reporter daemon processes to run; defaults to 
 1
-* *boostrap=filename*: OpenSRF bootstrap configuration file; defaults to 
+* *bootstrap=filename*: OpenSRF bootstrap configuration file; defaults to 
 /openils/conf/opensrf_core.xml
 
 

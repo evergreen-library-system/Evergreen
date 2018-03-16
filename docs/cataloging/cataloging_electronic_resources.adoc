@@ -136,7 +136,7 @@ because it matches or is a child of the preferred search library. The URL
 belonging to the search library (if it is an exact match, not a child) will sort
 to the top.
 
-Using Transcendent Bib Sources for Electronic Resources
+Using Transcendant Bib Sources for Electronic Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Connecting a bib record to a transcendent bib source will make the record
 visible in search results regardless of the user's search scope.

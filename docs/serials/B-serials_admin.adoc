@@ -108,7 +108,7 @@ image::media/serials_wizard2.PNG[]
 
 .. MFHD Indicators
 ... *Compression Display Options*: Select the appropriate option for compressing or expanding your captions in the catalog from the compressibility and expandability drop down menu. The entries in the drop down menu correspond to the indicator codes and the subfield $w in the 853 tag. Compressibility and expandability correspond to the first indicator in the 853 tag.
-... *Caption Evaluation*: Choose the appropriate caption evaluation from the drop down menu.  Caption Evaluation corrdesponds to the second indicator in the 853 tag.
+... *Caption Evaluation*: Choose the appropriate caption evaluation from the drop down menu.  Caption Evaluation corresponds to the second indicator in the 853 tag.
 ... Click *Next* in the upper right hand corner.
 
 

@@ -163,7 +163,7 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 -Ignore Pre-cat Items: no prompt when checking in a pre-cat item. Item will be routed to Cataloguing with Cataloguing status.
 
--Supress Holds and Transit: item will not be used to fill holds or sent in transit. Item has Reshelving status.
+-Suppress Holds and Transit: item will not be used to fill holds or sent in transit. Item has Reshelving status.
 
 -Amnesty Mode/Forgive Fines: overdue fines will be voided if already created or not be inserted if not yet created (e.g. hourly loans).
 

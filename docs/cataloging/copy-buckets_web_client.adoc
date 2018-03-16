@@ -251,7 +251,7 @@ image::media/copy-bucket-remove-2.png[Copy Bucket Interface]
 +
 . Use the check boxes to select the item(s) you wish to delete.
 . Click *Actions*.
-. From the drop down menu select *Request Seleted Copies*.
+. From the drop down menu select *Request Selected Copies*.
 +
 image::media/copy-bucket-request-1.png[Copy Bucket Interface]
 +
