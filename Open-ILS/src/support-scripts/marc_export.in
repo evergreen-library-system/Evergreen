@@ -86,6 +86,7 @@ sub new {
                'mfhd',
                'all',
                'replace_001',
+               'strip=s@',
                'location=s',
                'money=s',
                'config=s',
@@ -126,6 +127,8 @@ Usage: $0 [options]
  --type or -t       Record type (BIBLIO, AUTHORITY) [BIBLIO]
  --all or -a        Export all records; ignores input list
  --replace_001      Replace the 001 field value with the record ID
+ --strip tagRE/subRE
+                    Strip fields or subfields matching regular expressions
  --store            Use the given storage backend to connect to the database.
                     Choices are (reporter, cstore, storage) [reporter]
  --since            Export records modified since a certain date and time.
@@ -162,6 +165,14 @@ libraries with the short names "BR1" and "BR2":
 
   $0 --library BR1 --library BR2 --encoding UTF-8 > sys1_bibs.mrc
 
+The --strip option can be used more than once which imples an "OR" operation.
+If the fie]d argument is omitted (e.g., "/0", it is treated like "..." (all fields).
+If the subfield argument is omitted (e.g. "100/", it is treated like "."
+(all subfields).  Examples:
+
+  --strip /0      Remove all 0 subfields
+  --strip 1[23].  Remove fields with tags 120 through 139, inclusive.
+  --strip /       Remove all subfields (probably not useful).
 HELP
         exit;
     }
@@ -192,6 +203,27 @@ HELP
         die "Please select a supported format.  ".
             "Right now that means one of [".
                 join('|',(FORMATS)). "]\n";
+    }
+    # Process --strip arguments.  They are in the form tagRE/subRE.  Note
+    # that the RE pieces cannot contain a slash (/), as this would create
+    # ambiguity.  If there is no /subRE, then it's OK, and just the tagRE
+    # is specified.
+    # $opts{strip} is an array-ref for this multi-valued option.
+    my @strip = ();
+
+    foreach my $strip_value (@{$opts{strip}}) {
+        my $trec = {};
+        if ($strip_value =~ /\//) {
+            $trec->{tag} = $`;
+            $trec->{tag} = "..." if ($` eq "");
+            $trec->{subfield} = $';
+            $trec->{subfield} = "." if ($' eq "");
+        } else {
+            # No slash case
+            $trec->{tag} = $strip_value;
+            $trec->{subfield} = '';
+        }
+        push @strip, $trec;
     }
 
     if ($opts{format} eq 'ARE' && $opts{type} ne 'authority') {
@@ -233,6 +265,8 @@ HELP
         }
     }
     $opts{encoding} = uc($opts{encoding});
+
+    $opts{strip} = \@strip;
 
     $self->{'options'} = \%opts;
     bless $self, $class;
@@ -524,6 +558,43 @@ sub next {
                         $marc->insert_fields_ordered($tcn);
                     }
                 }
+
+                my $strip_arg_ref = $Marque::config->option_value('strip');
+                my @strip = @{$strip_arg_ref};
+                foreach my $strip_ref (@strip) {
+                    my $tagRE = $strip_ref->{tag};
+                    my $subfieldRE = $strip_ref->{subfield};
+
+                    if ( $subfieldRE eq "") {
+                        # Case 1: Field only check, e.g. "--strip 5.[0,1]"
+                        # If the supplied regexp matches the field, then
+                        # delete that field.
+                        foreach my $test_field ($marc->fields()) {
+                            if ($test_field->tag() =~ /$tagRE/) {
+                                # A hit!
+                                $marc->delete_field($test_field);
+                            }
+                        }
+                    } elsif ($subfieldRE ne "" && $tagRE ne "") {
+                        # Case 2: Field & subfield supplied.
+                        # Note a blank tag will be wildcarded to "*".
+                        # Traverse fields, then traverse subfields if match
+                        # is found.
+                        foreach my $test_field ($marc->fields()) {
+                            if ( !$test_field->is_control_field() &&
+                                 $test_field->tag() =~ /$tagRE/) {
+                                # Traverse all subfields:
+                                foreach my $test_subfield ($test_field->subfields()) {
+                                    my $sfcode = @{$test_subfield}[0];
+                                    if ($sfcode =~ /$subfieldRE/) {
+                                        $test_field->delete_subfield($sfcode);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 if ($Marque::config->option_value('items')) {
                     my @acps = $self->acps_for_bre($r);
                     foreach my $acp (@acps) {
@@ -913,6 +984,44 @@ sub next {
                     $marc->insert_fields_ordered($tcn);
                 }
             }
+
+            my $strip_arg_ref = $Marque::config->option_value('strip');
+            my @strip = @{$strip_arg_ref};
+
+            foreach my $strip_ref (@strip) {
+                my $tagRE = $strip_ref->{tag};
+                my $subfieldRE = $strip_ref->{subfield};
+
+                if ( $subfieldRE eq "") {
+                    # Case 1: Field only check, e.g. "--strip 5.[0,1]"
+                    # If the supplied regexp matches the field, then
+                    # delete that field.
+                    foreach my $test_field ($marc->fields()) {
+                        if ($test_field->tag() =~ /$tagRE/) {
+                            # A hit!
+                            $marc->delete_field($test_field);
+                        }
+                    }
+                } elsif ($subfieldRE ne "" && $tagRE ne "") {
+                    # Case 2: Field & subfield supplied.
+                    # Note a blank tag will be wildcarded to "*".
+                    # Traverse fields, then traverse subfields if match
+                    # is found.
+                    foreach my $test_field ($marc->fields()) {
+                        if ( !$test_field->is_control_field() &&
+                             $test_field->tag() =~ /$tagRE/) {
+                            # Traverse all subfields:
+                            foreach my $test_subfield ($test_field->subfields()) {
+                                my $sfcode = @{$test_subfield}[0];
+                                if ($sfcode =~ /$subfieldRE/) {
+                                    $test_field->delete_subfield($sfcode);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             if ($Marque::config->option_value('since')) {
                 my $leader = $marc->leader();
                 if ($U->is_true($r->deleted())) {

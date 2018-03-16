@@ -1,0 +1,34 @@
+--strip option for marc_export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The --strip option is used to suppress generation of specified elements
+from the marc_export output. The option, which can be specified more than
+once, is in one if these forms:
+
+[source]
+--------
+        --strip <field RE>/<subfield RE>
+        --strip /<subfield RE>
+        --strip <field RE>
+
+Some examples:
+
+        --strip 856/0   [Delete subfield 0's in fields with tag 856.]
+
+Regular expressions are accepted:
+
+        --strip 8../0   [Delete subfield 0's in fields with tag 800-899.]
+
+If the field is omitted, it is as if you specified "..." for the field RE.
+
+    --strip /0      [Delete subfield 0's in all fields.]
+    --strip /[abc]  [Delete subfield a, b or c in all fields.]
+
+If the slash and subfield are omitted, it means to delete the given fields.
+
+    -strip 856     [Delete fields with tag 856]
+
+If the slash is present, but the subfield is omitted, it means "all subfields"
+
+    --strip 856/    [Delete all subfields with tag 856]
+--------
