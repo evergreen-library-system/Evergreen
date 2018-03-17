@@ -460,7 +460,7 @@ within the "form" by name for validation.
         </span>
         <span class="caret"></span>
       </button>
-      <ul uib-dropdown-menu>
+      <ul class="scrollable-menu" uib-dropdown-menu>
         <li ng-repeat="grp in edit_profiles" 
           ng-class="{disabled : grp.usergroup() == 'f'}">
           <a href 
