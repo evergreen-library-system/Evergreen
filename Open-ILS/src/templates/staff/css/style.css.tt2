@@ -32,6 +32,12 @@
   color: rgb(92, 184, 92); /* success */
 }
 
+body {
+    color: #000; /* note: this is not comprehensive; changing Bootstrap's
+                    default text color from #333 to #000 would require
+                    more work */
+}
+
 /* --------------------------------------------------------------------------
  * Structural modifications
  */
@@ -299,7 +305,7 @@ table.list tr.selected td { /* deprecated? */
 }
 
 .eg-grid-row-selected {
-  color: rgb(51, 51, 51);
+  color: #000;
   background-color: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
@@ -320,14 +326,17 @@ table.list tr.selected td { /* deprecated? */
   -webkit-user-select: text;
 }
 .eg-grid-cell-content::-moz-selection {
-  color: rgb(51, 51, 51);
+  color: #000;
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
 .eg-grid-cell-content::selection {
-  color: rgb(51, 51, 51);
+  color: #000;
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
+}
+.eg-grid-cell-content a {
+  text-decoration: underline;
 }
 
 .eg-grid-conf-cell-entry {
@@ -495,7 +504,7 @@ table.list tr.selected td { /* deprecated? */
 }
 
 .eg-grid-columns-modal-body .visible {
-  color: rgb(51, 51, 51);
+  color: #000;
   background-color: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
