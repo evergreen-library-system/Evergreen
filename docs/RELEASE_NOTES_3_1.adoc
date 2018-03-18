@@ -431,15 +431,19 @@ Evergreen:
 * Bill Erickson
 * Jeff Godin
 * Rogan Hamby
+* Angela Kilsdonk
 * Sam Link
+* Jeanette Lundgren
 * Kathy Lussier
 * Fares Othman
 * Dan Pearl
 * Mike Rylander
+* Jane Sandberg
 * Chris Sharp
 * Ben Shum
 * Remington Steed
 * Jason Stephenson
+* Kevin Tran
 * Cesar Velez
 * Dan Wells
 
@@ -447,7 +451,19 @@ Evergreen:
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* Bibliomation
+* British Columbia Libraries Cooperative
+* Calvin College
+* C/W MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Greater Clarks Hill Regional Library System
+* Jordanian Library and Information Association
+* King County Library System
+* Knihovna Jabok
+* Linn-Benton Community College
+* MassLNC
+* Traverse Area District Library
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
