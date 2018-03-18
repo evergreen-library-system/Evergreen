@@ -410,7 +410,7 @@ Evergreen:
 
 * Albany Public Library (Oregon)
 * Consortium of Ohio Libraries
-* C/W MARS
+* CW MARS
 * Indiana State Library
 * Georgia Public Library Service
 * Hagerstown - Jefferson Township Library
@@ -454,7 +454,7 @@ patches:
 * Bibliomation
 * British Columbia Libraries Cooperative
 * Calvin College
-* C/W MARS
+* CW MARS
 * Equinox Open Library Initiative
 * Georgia Public Library Service
 * Greater Clarks Hill Regional Library System
@@ -463,6 +463,7 @@ patches:
 * Knihovna Jabok
 * Linn-Benton Community College
 * MassLNC
+* Sigio
 * Traverse Area District Library
 
 We regret any omissions.  If a contributor has been inadvertently
