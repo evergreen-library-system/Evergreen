@@ -4,16 +4,11 @@
         opac_root = ctx.kpac_root;
     END;
 
+    # Requires a "fleshed_ou" (aou) object defined.
     # Allow fleshed circ_libs
-    IF copy_info.circ_lib.name; 
-       org_id = copy_info.circ_lib.id;
-       org_name = copy_info.circ_lib.name; 
-       org_sname = copy_info.circ_lib.shortname; 
-    ELSE;
-       org_id = copy_info.circ_lib;
-       org_name = ctx.get_aou(org_id).name;
-       org_sname = ctx.get_aou(org_id).shortname;
-    END;
+    org_id = fleshed_ou.id;
+    org_name = fleshed_ou.name; 
+    org_sname = fleshed_ou.shortname;
 
     lib_url = ctx.get_org_setting(org_id, 'lib.info_url');
     prefer_external_url = ctx.get_org_setting(org_id, 'lib.prefer_external_url');

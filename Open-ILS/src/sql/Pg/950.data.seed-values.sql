@@ -4345,6 +4345,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'opac.show_owning_lib_column', 'opac',
+    oils_i18n_gettext('opac.show_owning_lib_column',
+        'Show "Owning Lib" column in Items Out',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.show_owning_lib_column',
+        'If enabled, an addition column, Owning Lib, will be shown in the Items Out display. This may assist in requesting additional renewals',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'opac.barcode_regex', 'glob',
     oils_i18n_gettext('opac.barcode_regex',
         'Patron barcode format',

@@ -76,7 +76,13 @@
                 <th>[% sort_head("renews", l("Renewals Left")) %]</th>
                 <th>[% sort_head("due", l("Due Date")) %]</th>
                 <th>[% sort_head("barcode", l("Barcode")) %]</th>
-                <th>[% sort_head("callnum", l("Call number")) %]</th>
+                <th>[% sort_head("callnum", l("Call Number")) %]</th>
+                [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
+                   <th>[% sort_head("lib", l("Owning Library")) %]</th>
+                   [% column_count = 8;
+                ELSE ;
+                   column_count = 7;
+                END; %]
             </tr>
             </thead>
             <tbody>
@@ -112,6 +118,8 @@
 
                        CASE "callnum";
                           circ.SORTING = circ.circ.target_copy.call_number.label;
+                       CASE "lib";
+                          circ.SORTING = circ.circ.target_copy.call_number.owning_lib.name;
                        
                        CASE;
                           sort_field = "";
@@ -179,11 +187,19 @@
                         <td name="call_number">
                             [% circ.circ.target_copy.call_number.label | html %]
                         </td>
+                        [% IF ctx.get_org_setting(ctx.user.home_ou, 'opac.show_owning_lib_column'); %]
+                          <td name="lib">
+			  [%- fleshed_ou = circ.circ.target_copy.call_number.owning_lib;
+                            INCLUDE "opac/parts/library_name_link_from_ou.tt2";
+			  %]
+                          </td>
+                        [% END; %]
                     </tr>
+
                     [%  IF circ.renewal_response AND
                             circ.renewal_response.textcode != 'SUCCESS' %]
                     <tr>
-                        <td colspan="6">[%# XXX colspan="0" does not work in IE %]
+                        <td colspan="[% column_count %]">[%# XXX colspan="0" does not work in IE %]
                             <span class="failure-text" title="[% circ.renewal_response.textcode | html %] / [% circ.renewal_response.fail_part | html %]">
                                 [%
                                     renew_fail_msg = '';
@@ -201,9 +217,9 @@
                             </span>
                         </td>
                     </tr>
-                    [%  END; # FOR
+                    [% END; %]
 
-                    END %]
+                [% END; %]
                 </tbody>
             </table>
         </form>

@@ -1578,7 +1578,7 @@ sub fetch_user_circs {
         flesh_fields => {
             circ => ['target_copy'],
             acp => ['call_number'],
-            acn => ['record']
+            acn => ['record','owning_lib']
         }
     };
 
@@ -1793,7 +1793,7 @@ sub handle_circ_update {
     my $action   = shift;
     my $circ_ids = shift;
 
-    my $circ_ids //= [$self->cgi->param('circ_id')];
+    $circ_ids //= [$self->cgi->param('circ_id')];
 
     if ($action =~ /delete/) {
         my $options = {

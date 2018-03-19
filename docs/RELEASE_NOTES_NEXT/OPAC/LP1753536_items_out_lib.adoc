@@ -1,0 +1,11 @@
+New Column in Items Out Display
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new column, Owning Library, is now optionally available for the Items 
+Out display which shows the owning library of the item (not necessarily 
+the library at which the item was picked up).  When a patron has run
+ out of renewals, the owning library is the one with whom the patron 
+will negotiate additional renewals, and clicking on the library 
+name will provide contact information for that library.
+
+The column is controlled by the organization setting 
+"opac.show_owning_library_column".
