@@ -294,12 +294,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.juvenile')">
   [% draw_field_label('au', 'juvenile') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'juvenile')"
         type='checkbox' ng-model="patron.juvenile"/>
-    </div>
   </div>
 </div>
 
@@ -508,12 +506,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.active')">
   [% draw_field_label('au', 'active') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'active')"
         type='checkbox' ng-model="patron.active"/>
-    </div>
   </div>
 </div>
 
@@ -522,12 +518,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.barred')">
   [% draw_field_label('au', 'barred') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'barred')"
         type='checkbox' ng-model="patron.barred"/>
-    </div>
   </div>
 </div>
 
@@ -536,12 +530,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.master_account')">
   [% draw_field_label('au', 'master_account') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'master_account')"
         type='checkbox' ng-model="patron.master_account"/>
-    </div>
   </div>
 </div>
 
@@ -621,11 +613,9 @@ within the "form" by name for validation.
     <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
-    </div>
   </div>
 </div>
 
@@ -636,13 +626,11 @@ within the "form" by name for validation.
     <label>{{user_setting_types['circ.collections.exempt'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         type='checkbox' 
         ng-change="field_modified()" 
         ng-disabled="!perms.UPDATE_PATRON_COLLECTIONS_EXEMPT"
         ng-model="user_settings['circ.collections.exempt']"/>
-    </div>
   </div>
 </div>
 
@@ -833,14 +821,12 @@ within the "form" by name for validation.
   <div class="row reg-field-row" ng-show="show_field('aua.valid')">
     [% draw_field_label('aua', 'valid') %]
     <div class="col-md-3 reg-field-input">
-      <div class='checkbox'>
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'valid')"
           ng-model="patron.addresses[$index].valid"/>
-      </div>
     </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'valid') %]
@@ -852,14 +838,12 @@ within the "form" by name for validation.
   <div class="row reg-field-row" ng-show="show_field('aua.within_city_limits')">
     [% draw_field_label('aua', 'within_city_limits') %]
     <div class="col-md-3 reg-field-input">
-      <div class='checkbox'>
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'within_city_limits')"
           ng-model="patron.addresses[$index].within_city_limits"/>
-      </div>
     </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'within_city_limits') %]
