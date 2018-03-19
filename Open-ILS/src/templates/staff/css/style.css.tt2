@@ -1,3 +1,6 @@
+/* Create some padding at bottom of the page for breathing room */
+body { padding-bottom: 50px; }
+
 /* --------------------------------------------------------------------------
  * Simple default navbar style adjustements to apply the Evergreen color.
  * TODO: style other components to match EG color scheme
