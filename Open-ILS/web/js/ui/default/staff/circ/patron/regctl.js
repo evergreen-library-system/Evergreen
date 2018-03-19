@@ -22,29 +22,32 @@ angular.module('egCoreMod')
         init_done : false           // have we loaded our initialization data?
     };
 
-    // launch a series of parallel data retrieval calls
+    // Launch a series of parallel data retrieval calls.
     service.init = function(scope) {
 
-        // Data loaded here only needs to be retrieved the first time this
-        // tab becomes active within the current instance of the patron app.
-        // In other words, navigating between patron tabs will not cause
-        // all of this data to be reloaded.  Navigating to a separate app
-        // and returning will cause the data to be reloaded.
-        if (service.init_done) return $q.when();
-        service.init_done = true;
-
-        return $q.all([
-            service.get_field_doc(),
-            service.get_perm_groups(),
-            service.get_ident_types(),
+        // These are fetched with every instance of the page.
+        var page_data = [
             service.get_user_settings(),
-            service.get_org_settings(),
-            service.get_stat_cats(),
-            service.get_surveys(),
             service.get_clone_user(),
-            service.get_stage_user(),
-            service.get_net_access_levels()
-        ]);
+            service.get_stage_user()
+        ];
+
+        var common_data = [];
+        if (!service.init_done) {
+            // These are fetched with every instance of the app.
+            common_data = [
+                service.get_field_doc(),
+                service.get_perm_groups(),
+                service.get_ident_types(),
+                service.get_org_settings(),
+                service.get_stat_cats(),
+                service.get_surveys(),
+                service.get_net_access_levels()
+            ];
+            service.init_done = true;
+        }
+
+        return $q.all(common_data.concat(page_data));
     };
 
     service.get_clone_user = function() {
@@ -459,7 +462,12 @@ angular.module('egCoreMod')
 
     };
 
-    service.get_user_settings = function() {
+    service.get_user_setting_types = function() {
+
+        // No need to re-fetch the common setting types.
+        if (Object.keys(service.user_setting_types).length) 
+            return $q.when();
+
         var org_ids = egCore.org.ancestors(egCore.auth.user().ws_ou(), true);
 
         var static_types = [
@@ -494,6 +502,15 @@ angular.module('egCoreMod')
                     service.opt_in_setting_types[stype.name()] = stype;
                 }
             });
+        });
+    };
+
+    service.get_user_settings = function() {
+
+        return service.get_user_setting_types()
+        .then(function() {
+
+            var setting_types = Object.values(service.user_setting_types);
 
             if (service.patron_id) {
                 // retrieve applied values for the current user 
@@ -511,6 +528,7 @@ angular.module('egCoreMod')
                 ).then(function(settings) {
                     service.user_settings = settings;
                 });
+
             } else {
 
                 // apply default user setting values
@@ -1046,19 +1064,15 @@ angular.module('egCoreMod')
     }
 
     service.save_user_settings = function(new_user, user_settings) {
-        // user_settings contains the values from the scope/form.
-        // service.user_settings contain the values from page load time.
 
         var settings = {};
         if (service.patron_id) {
-            // only update modified settings for existing patrons
-            angular.forEach(user_settings, function(val, key) {
-                if (val !== service.user_settings[key])
-                    settings[key] = val;
-            });
+            // Update all user editor setting values for existing 
+            // users regardless of whether a value changed.
+            settings = user_settings;
 
         } else {
-            // all non-null setting values are updated for new patrons
+            // Create settings for all non-null setting values for new patrons.
             angular.forEach(user_settings, function(val, key) {
                 if (val !== null) settings[key] = val;
             });
