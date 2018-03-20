@@ -3,6 +3,52 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.5
+---------------
+This release contains bug fixes improving on Evergreen 3.0.4.
+
+* The MARC Editor in the Web staff client now wraps long fields.
+* The MARC Editor no longer allows catalogers to enter new lines
+into MARC subfields.
+* Fixes an issue that prevented serials items from being deleted or
+modified.
+* Fixes an issue that displayed the oldest -- rather than the newest
+-- transit in the Web staff client Item Status page.
+* Fixes an issue that prevented the reports module from being displayed
+in the Web client.
+* Fixes an issue in the Web staff client reports module that caused
+syntax errors in reports that use virtual fields and joins.
+* Fixes an issue that created duplicate copy data when copies or
+volumes with parts were transferred.
+* Fixes an issue with the http -> https redirect on Apache 2.4.
+* Fixes an color contrast accessibility issue in the Web staff
+client.
+* Adds automated regression and unit tests for the Web staff client
+reports module.
+* Adds a process for spell-checking the official documentation.
+* Adds a script that simplifies the release process related to translations.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.5 point release of
+Evergreen:
+
+* Galen Charlton
+* Blake Graham-Henderson
+* Kathy Lussier
+* Morkor Quarshie
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Kevin Tran
+* Cesar Velez
+
+
 Evergreen 3.0.4
 ---------------
 This release contains bug fixes improving on Evergreen 3.0.3:
