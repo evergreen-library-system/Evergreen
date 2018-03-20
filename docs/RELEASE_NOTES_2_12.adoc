@@ -3,6 +3,39 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.11
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.10:
+
+* The MARC Editor in the Web staff client now wraps long fields.
+* The MARC Editor no longer allows catalogers to enter new lines
+into MARC subfields.
+* Fixes an issue in the Web staff client reports module that caused
+syntax errors in reports that use virtual fields and joins.
+* Fixes an issue that created duplicate copy data when copies or
+volumes with parts were transferred.
+* Fixes an issue with the http -> https redirect on Apache 2.4.
+* Fixes an color contrast accessibility issue in the Web staff
+client.
+* Adds automated regression and unit tests for the Web staff client
+reports module.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.11 point release of
+Evergreen:
+
+* Galen Charlton
+* Blake Graham-Henderson
+* Kathy Lussier
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
+
 Evergreen 2.12.10
 -----------------
 This release contains bug fixes improving on Evergreen 2.12.9:
