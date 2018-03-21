@@ -416,7 +416,8 @@ sub get_records_and_facets {
                 $unapi_args->{site}, 
                 $unapi_args->{depth}, 
                 $slimit,
-                undef, undef, $unapi_args->{pref_lib}
+                undef, undef, undef, undef, undef, undef, undef, undef,
+                $unapi_args->{pref_lib}
             ]}
         );
     

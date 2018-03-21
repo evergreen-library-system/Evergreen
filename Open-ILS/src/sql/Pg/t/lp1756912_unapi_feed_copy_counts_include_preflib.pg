@@ -1,0 +1,46 @@
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO biblio.record_entry (marc, last_xact_id)
+VALUES ('<record xmlns="http://www.loc.gov/MARC21/slim"/>', 'test_lp1756912');
+
+SELECT cmp_ok(
+    (
+        SELECT ARRAY_LENGTH(XPATH(
+            '/marc:collection/marc:record/marc:holdings/marc:counts/marc:count[@type="pref_lib"]',
+            unapi.biblio_record_entry_feed(
+                ('{' || CURRVAL('biblio.record_entry_id_seq') || '}')::BIGINT[], 'marcxml',
+                '{holdings_xml,mra,acp,acnp,acns,bmp,cbs}', 'SYS1', '1', 'acn=>5,acp=>5',
+                NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                5
+            ),
+            ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']]
+        ), 1)
+    ),
+    '>',
+    0,
+    'unapi.biblio_record_entry_feed includes pref_lib holdings counts'
+);
+
+SELECT cmp_ok(
+    (
+        SELECT ARRAY_LENGTH(XPATH(
+            '/marc:collection/marc:record/marc:holdings/marc:counts/marc:count[@type="pref_lib"]',
+            unapi.metabib_virtual_record_feed(
+                ('{' || metarecord || '}')::BIGINT[], 'marcxml',
+                '{holdings_xml,mra,acp,acnp,acns,bmp,cbs}', 'SYS1', '1', 'acn=>5,acp=>5',
+                NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+                5
+            ),
+            ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']]
+        ), 1)
+        FROM metabib.metarecord_source_map
+        WHERE source = CURRVAL('biblio.record_entry_id_seq')
+    ),
+    '>',
+    0,
+    'unapi.metabib_virtual_record_feed includes pref_lib holdings counts'
+);
+
+ROLLBACK;
