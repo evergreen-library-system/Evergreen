@@ -1,3 +1,278 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 84b8ebe7013657366ba48df6c2a4405adcfe9bb0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Mar 21 13:18:36 2018 -0400
+
+    Bumping Perl version string for 2.12.11
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit d0938b827dcab8683ff7426445d1fdf805d5da95
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Mar 21 13:11:37 2018 -0400
+
+    Update upgrade instructions for 2.12.10.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+26	18	docs/installation/server_upgrade.adoc
+
+commit db92c6c1eb60ff089b8ef7f4e588030fa1617a8e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Mar 21 10:01:01 2018 -0400
+
+    LP#1756572: Update to point release notes to include underlined links
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	docs/RELEASE_NOTES_3_0.adoc
+
+2	2	docs/RELEASE_NOTES_2_12.adoc
+
+commit 5432b151d462b99ba467c6f6970ec843f2ac9706
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Sat Mar 17 13:38:01 2018 -0400
+
+    LP#1756572: accessibility tweaks to links in webstaff client
+    
+    This patch changes the default
+    text color of text inside egGrid cells to #000; changes the default text
+    color to #000 (but note that more work would be needed to do this
+    comprehensively); and adds underlines to links inside grid cells.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/css/style.css.tt2
+
+12	3	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit 95825cd9ff6f78d018c6814564a047f5c217bea8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Mar 20 14:29:07 2018 -0700
+
+    Docs: adding 2.12.11 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+33	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit d9834fd852d20b5567cce37be4782db9b3645687
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Mar 6 18:00:23 2018 -0500
+
+    LP#1721807: fix webstaff report templates that have might_have and has_many joins
+    
+    This patch fixes a bug where using a virtual field in the web staff
+    report template editor to join another table would result in a syntax
+    error in the generated SQL.
+    
+    To test
+    -------
+    [1] Apply the patch and verify that the regression test in the previous
+        commit passes.
+    [2] Create new report template in the web staff client that include
+        virtual fields and joins and verify that they work. One example
+        would be a report that uses ILS User as the base source and joins
+        in the patron notes virtual field.
+    [3] If available, clone a report template originally created in the web
+        staff client that had previously failed, then save it. The new
+        report should work.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 0c30ba2653f86c2f5e5a852102855d65cde3e55c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 7 14:27:44 2018 -0500
+
+    LP#1721807: regression test
+    
+    This adds an automated regression test as well as some additional
+    unit tests for the web staff reporter app and template service.  This
+    patch could be applied by itself to verify that the regression
+    test (run using 'npm run test' for master or 'grunt test' for rel_3_0)
+    fails.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+1	0	Open-ILS/web/js/ui/default/staff/test/karma.conf.js
+185	0	Open-ILS/web/js/ui/default/staff/test/unit/egReporter.js
+ create mode 100644 Open-ILS/web/js/ui/default/staff/test/unit/egReporter.js
+
+commit ec07bcef94bb38e1829b9900606b4c67c32489f0
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Feb 6 11:40:11 2018 -0500
+
+    LP#1746365 Change default staff link colors to provide adequate contrast
+    
+    The default link color from bootstrap works well on white backgrounds, but
+    doesn't provide adequate contrast once the background color is changed.
+    This introduces accessbility problems, particularly in cases where linked
+    text displays on a selected grid row that uses a light blue background
+    color. This change provides a darker default link color.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit 363020f182873c7f7b57b7b38635f3d4577f9982
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 5 18:04:12 2018 -0500
+
+    LP#1691263: discourage input of newlines in MARC editor
+    
+    This patch catches and discards enter keydown events when the
+    focus is in a contenteditable subfield value div; otherwise, newlines
+    can infect the MARC record.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	0	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit e0e1d9a79f7fde04f73ee6a8ca798c08b72f5192
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Mon Dec 4 12:45:35 2017 -0500
+
+    LP#1691263: make webstaff MARC editor wrap long fields
+    
+    This patch makes the MARC editor wrap long fields (e.g.,
+    bibliographic 505 fields) so that they fit the width of the enclosing
+    window or modal. The approach taken is replacing the text input
+    elements with contenteditable divs, which in turn can be better
+    styled.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Locate a record with a long 505 field and open it in the
+        MARC editor. Verify that the contents of the field wrap.
+    [3] Verify that record editing and saving work as expected.
+    
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+20	0	Open-ILS/src/templates/staff/cat/share/t_marcedit_editable.tt2
+82	23	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+ create mode 100644 Open-ILS/src/templates/staff/cat/share/t_marcedit_editable.tt2
+
+commit cc7e229d1570df89983dd55885fbbb5b705a6fef
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 14 08:54:52 2018 -0400
+
+    Docs: Fix AsciiDoc list formatting
+    
+    AsciiDoc lists (numbered or bulleted) generally need to be preceded by a
+    blank line. If not, they will be absorbed into the previous paragraph of
+    text.  This commit fixes two occurrences of this.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	0	docs/acquisitions/selection_lists_po.adoc
+
+commit 9e1c10551d135ebc2e36fa5cd96160c2fdcb8b0f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Mar 9 09:17:34 2018 -0500
+
+    Lp 1411422: Fix & rename test file.
+    
+    The tests added for this branch had a bad plan.  It specified 7 tests were
+    to be run when actually there are 8.
+    
+    I also renumbered the file to be 26, so that there would be only 1 test
+    numbered 25.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	183	Open-ILS/src/perlmods/live_t/25-lp1411422-transferring-items-volumes-with-parts.t
+183	0	Open-ILS/src/perlmods/live_t/26-lp1411422-transferring-items-volumes-with-parts.t
+ delete mode 100755 Open-ILS/src/perlmods/live_t/25-lp1411422-transferring-items-volumes-with-parts.t
+ create mode 100755 Open-ILS/src/perlmods/live_t/26-lp1411422-transferring-items-volumes-with-parts.t
+
+commit 0ed7981831375160eee48810de10c5ebadf44597
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Mar 8 14:11:31 2018 -0500
+
+    Lp#1411422: Clean up the code a little bit.
+    
+    We don't need to left join when we flesh fields.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	16	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit d98f70877e3dc7db68037a0c64367c72751bcd1d
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Sep 1 20:54:39 2017 +0000
+
+    LP1411422 Copy details repeated in search results when item/volume moved with parts attached
+    
+    Added regression test and tweaked the part lookup query to remove deleted parts.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+183	0	Open-ILS/src/perlmods/live_t/25-lp1411422-transferring-items-volumes-with-parts.t
+ create mode 100755 Open-ILS/src/perlmods/live_t/25-lp1411422-transferring-items-volumes-with-parts.t
+
+commit 959e264ef76c6ea0f20e0f1a4977fd0b7250e1c7
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon Jun 13 15:58:13 2016 -0500
+
+    LP1411422 Copy details repeated in search results when item/volume moved with parts attached
+    
+    Added the code in perl to respect the existence of parts. Both "transferring volume"
+    and "transferring items". "Transferring items" was coded to use
+    open-ils.cat.asset.copy.fleshed.batch.update which means most of the work was done in js.
+    The web based staff client is coded to use open-ils.cat.transfer_copies_to_volume.
+    Decided to use that method for xul as well. Making it more consistent with the "transferring
+    volume" code. Considered coding it to move the part level holds to the destination part but
+    it's possible that the source part still has items.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+97	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+1	0	Open-ILS/xul/staff_client/chrome/content/main/constants.js
+2	10	Open-ILS/xul/staff_client/server/cat/util.js
+
+commit 20ac7a795a7eb1cf69338efc9a787e24d4b034ea
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Feb 9 10:59:37 2018 -0500
+
+    LP#1748466: Fix http -> https /eg/staff rewrite on Apache 2.4.
+    
+    Remove the SSLRequireSSL directive from the Location /eg/staff stanza
+    in Open-ILS/examples/apache_24/eg_vhost.conf.in so that the rewrite
+    from http to https works for the web staff client without the user
+    getting a 403.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+0	1	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit b717427a2c82d126cd1a6d3ffac23fe4f8474384
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 27 13:27:16 2018 -0500
+
+    Forward-port 2.12.10 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.9-2.12.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.9-2.12.10-upgrade-db.sql
