@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-29 02:28+0000\n"
+"POT-Creation-Date: 2017-09-22 02:23+0000\n"
 "PO-Revision-Date: 2017-06-22 06:05+0000\n"
 "Last-Translator: Kathy Lussier <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:25+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-09-23 06:20+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -318,7 +318,7 @@ msgid "Adapter"
 msgstr "Autor adaptace"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Add %1 to my list"
 msgstr "Přidat  %1 do mého seznamu"
 
@@ -331,7 +331,7 @@ msgstr "Přidat vyhledávací řádek"
 msgid "Add item to a list: %1"
 msgstr "Přidat položku do seznamu: %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/bookbag_actions.tt2:44 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Add to my list"
 msgstr "Přidat do mého seznamu"
 
@@ -808,7 +808,7 @@ msgstr "Přepisovatel do Braillova písma"
 
 #: ../../Open-ILS/src/templates/opac/parts/library/core_info.tt2:48
 msgid "Branch relationship"
-msgstr "Knihovna v rámci organizační struktury"
+msgstr "Knihovna v hiearchické struktuře katalogu"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Broadcaster"
@@ -857,7 +857,7 @@ msgstr "Kaligraf"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:75 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:66 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:67 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:214 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:37 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:22 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:210 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:133
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:120
 msgid "Cancel if not filled by"
@@ -1518,7 +1518,7 @@ msgstr "Upravit rezervaci"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:266
 msgid "Edit List Description"
-msgstr ""
+msgstr "Upravit popis seznamu"
 
 #. (attrs.title)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:256
@@ -2050,7 +2050,7 @@ msgid ""
 "If this is your first time logging in, please enter the last 4 digits of "
 "your phone number. Example: 0926"
 msgstr ""
-"Pokud se zde přihlašujte poprvé, zadejt prosím poslední čtyři číslice Vašeho "
+"Pokud se zde přihlašujte poprvé, zadejte prosím poslední čtyři číslice svého "
 "telefonu. Např. 0926"
 
 #: ../../Open-ILS/src/templates/opac/parts/tips.tt2:6
@@ -2718,7 +2718,7 @@ msgstr "Jméno"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:268
 msgid "Name:"
-msgstr "Jméno:"
+msgstr "Název:"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Narrator"
@@ -2846,7 +2846,7 @@ msgstr ""
 "Pozor, ke čtenářskému průkazu musíte mít připojenu alespoň jednu e-mailovou "
 "adresu. Pokud ne, kontaktujte prosím vaši knihovnu s žádostí o  pomoc."
 
-#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:28 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:29 ../../Open-ILS/src/templates/opac/sms_cn.tt2:41
 msgid "Note: carrier charges may apply"
 msgstr "Poznámka: může být zpoplatněno dle tarifu operátora"
 
@@ -3016,7 +3016,7 @@ msgstr "Majitel patentu"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Patron"
-msgstr "Mecenáš"
+msgstr "Čtenář"
 
 #: ../../Open-ILS/src/templates/opac/parts/record/awards.tt2:6
 msgid "Patron Reviews:"
@@ -3147,7 +3147,7 @@ msgstr "Rezervovat pro čtenáře s čárovým kódem:"
 #. (ctx.user.first_given_name, ctx.user.family_name)
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:73
 msgid "Place this hold for me (%1 %2)"
-msgstr "Rezervovat pro mš (%1 %2)"
+msgstr "Rezervovat pro mě (%1 %2)"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Plaintiff"
@@ -3193,9 +3193,13 @@ msgstr ""
 "Prosím zadejte BUĎ uživatelské jméno NEBO čárový kód  vašeho čtenářského "
 "konta a potvrďte žádost o přenastavení hesla"
 
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:8
+msgid "Please fill out all required fields"
+msgstr "Prosím vyplňte povinná pole"
+
 #: ../../Open-ILS/src/templates/opac/parts/login/form.tt2:25
 msgid "Please include leading zeros."
-msgstr "Prosím, zadejte včetně počítečních nul"
+msgstr "Číslo prosím zadejte včetně počátečních nul"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:59 ../../Open-ILS/src/templates/opac/register.tt2:79
 msgid "Please see library staff to complete your registration."
@@ -3204,6 +3208,10 @@ msgstr "Pro dokončení registrace je nutná návštěva knihovny"
 #: ../../Open-ILS/src/templates/opac/register.tt2:115
 msgid "Please select a valid library"
 msgstr "Zvolte prosím platnou knihovnu."
+
+#: ../../Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2:22
+msgid "Please select your mobile carrier"
+msgstr "Zvolte prosím mobilního operátora"
 
 #: ../../Open-ILS/src/templates/opac/parts/filtersort.tt2:27
 msgid "Popularity Adjusted Relevance"
@@ -3365,7 +3373,7 @@ msgstr "Korektor tištěných materiálů"
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Provider"
-msgstr "Poskytovatel"
+msgstr "Dodavatel"
 
 #: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:323 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:376
 msgid "Publication Date"
@@ -3415,7 +3423,7 @@ msgstr "Rozhlasový ředitel"
 msgid "Radio producer"
 msgstr "Rozhlasový producent"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:429
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:432
 msgid "Ratings Icon"
 msgstr "Ikona hodnocení"
 
@@ -3493,7 +3501,7 @@ msgid "Remove %1 filter"
 msgstr "Odstranit  filtr  %1"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Remove %1 from my list"
 msgstr "Odebrat %1 z mého seznamu"
 
@@ -3509,7 +3517,7 @@ msgstr "Odebrat řádek vyhledávání"
 msgid "Remove from list"
 msgstr "Odebrat ze seznamu"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:404
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:87 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:406
 msgid "Remove from my list"
 msgstr "Odebrat z mého seznamu"
 
@@ -3638,12 +3646,12 @@ msgstr "Recenzent"
 msgid "Reviews"
 msgstr "Recenze"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:430
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:433
 msgid "Reviews &amp; More"
 msgstr "Recenze aj."
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:425
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:428
 msgid "Reviews and More for %1"
 msgstr "Recenze a další pro %1"
 
@@ -4002,7 +4010,7 @@ msgstr "Umístění"
 
 #: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:328
 msgid "Shelving location"
-msgstr "Umístení"
+msgstr "Umístění"
 
 #. (facet.cmf.label)
 #: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:71
@@ -4011,7 +4019,7 @@ msgstr "Zobrazit méně údajů  %"
 
 #: ../../Open-ILS/src/templates/opac/results.tt2:73
 msgid "Show Fewer Details"
-msgstr "Zobrazit méně podrobností"
+msgstr "Méně podrobností"
 
 #. (facet.cmf.label)
 #: ../../Open-ILS/src/templates/opac/parts/result/facets.tt2:76
@@ -4860,7 +4868,7 @@ msgstr ""
 "vybraných pokut čin má nulovou či negativní hodnotu. Nelze zpracovat platby, "
 "které mají nulovou/negativní hodnotu."
 
-#: ../../Open-ILS/src/templates/opac/parts/js.tt2:10
+#: ../../Open-ILS/src/templates/opac/parts/js.tt2:11
 msgid ""
 "You have entered an invalid date, or an improperly formatted date.  Please "
 "enter Date of Birth in YYYY-MM-DD or YYYY/MM/DD format and try again."

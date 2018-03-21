@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-27 15:50-0400\n"
+"POT-Creation-Date: 2017-09-20 16:54-0400\n"
 "PO-Revision-Date: 2017-04-09 07:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:17+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-09-23 06:11+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: 950.data.seed-values.sql:8080
 msgid "Estonia "
@@ -23,48 +23,44 @@ msgstr "Estonsko "
 
 #: 950.data.seed-values.sql:117
 msgid "Series Title"
-msgstr "Název edice"
+msgstr "Series Title"
 
-# id::clfm.value__p
 #: 950.data.seed-values.sql:7069 950.data.seed-values.sql:7875
 #: 950.data.seed-values.sql:8580 950.data.seed-values.sql:8601
 msgid "Poetry"
-msgstr "Poezie"
+msgstr "Poetry"
 
-# id::clm.value__pau
 #: 950.data.seed-values.sql:6882
 msgid "Palauan"
-msgstr "Palauština"
+msgstr "Palauan"
 
 #: 950.data.seed-values.sql:1592
 msgid ""
 "Allows users to save and load sets of filters for filter dialogs, available "
 "in certain staff interfaces"
 msgstr ""
-"Povolí uživatelům a ukádat a stahovat sady filtrů pro dialog filtrů, které "
-"jsou k dispozici v některých rozhraních pro personál"
+"Allows users to save and load sets of filters for filter dialogs, available "
+"in certain staff interfaces"
 
-# id::clm.value__kir
 #: 950.data.seed-values.sql:6769
 msgid "Kyrgyz"
-msgstr "Kyrgyzština"
+msgstr "Kyrgyz"
 
 #: 950.data.seed-values.sql:5306
 msgid "Z39.50 Source"
-msgstr "Z39.50 zdroj"
+msgstr "Z39.50 Source"
 
 #: 950.data.seed-values.sql:7570
 msgid "film reel"
-msgstr "filmový pás"
+msgstr "film reel"
 
 #: 950.data.seed-values.sql:1651
 msgid "Allow a user to modify a popularity badge parameter"
-msgstr "Povolit uživateli upravovat parametry známek popularity"
+msgstr "Allow a user to modify a popularity badge parameter"
 
-# id::clm.value__nor
 #: 950.data.seed-values.sql:6860
 msgid "Norwegian"
-msgstr "Norština"
+msgstr "Norwegian"
 
 # id::cza.label__3 id::cza.label__12 id::cza.label__21
 #: 950.data.seed-values.sql:414 950.data.seed-values.sql:435
@@ -74,24 +70,23 @@ msgstr "LCCN"
 
 #: 950.data.seed-values.sql:15621
 msgid "Rollover Distribution Formulae Funds"
-msgstr "Překlopit fondy distribučních formulí"
+msgstr "Rollover Distribution Formulae Funds"
 
 #: 950.data.seed-values.sql:35
 msgid "Alerting block on Circ"
-msgstr "Upozornění s blokací výpůjček"
+msgstr "Alerting block on Circ"
 
-# id::clm.value__dua
 #: 950.data.seed-values.sql:6653
 msgid "Duala"
-msgstr "Dualština"
+msgstr "Duala"
 
 #: 950.data.seed-values.sql:15377
 msgid "Upload Merge on Single Match by Default"
-msgstr "Standardně sloučit při nahrávání při jedné shodě."
+msgstr "Upload Merge on Single Match by Default"
 
 #: 950.data.seed-values.sql:7842
 msgid "Full score"
-msgstr "Velká partitura"
+msgstr "Full score"
 
 #: 950.data.seed-values.sql:4673
 msgid ""
@@ -99,11 +94,11 @@ msgid ""
 "Suggesting a field makes it appear when suggested fields are shown. If the "
 "field is shown or required this setting is ignored."
 msgstr ""
-"Pole \"číslo identifikačního dokladu 2\" (ident_value2) na kartě "
-"registračních údajů čtenáře zobrazeno jako navrhované. Navrhované pole je "
-"viditelné, pokud  je na kartě registračních údajů čtenáře aktivována volba "
-"\" zobrazit navrhovaná pole\". Pokud je aktivní volba \"zobrazit povinná "
-"pole\", toto nastavení je ignorováno."
+"Pole číslo identifikačního dokladu 2 (ident_value2) na kartě registračních "
+"údajů čtenáře zobrazeno jako navrhované. Navrhované pole je viditelné, pokud "
+" je na kartě registračních údajů čtenáře aktivována volba \" zobrazit "
+"navrhovaná pole\". Pokud je aktivní volba Zobrazit povinná pole, toto "
+"nastavení je ignorováno."
 
 #: 950.data.seed-values.sql:4904
 msgid "Require at least one address for Patron Registration"
@@ -119,7 +114,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1564
 msgid "Allows a user to create/retrieve/update/delete address alerts"
-msgstr "Povolí uživatelo vytvořit / zobrazit / smazat adresu upozornění."
+msgstr "Allows a user to create/retrieve/update/delete address alerts"
 
 #: 950.data.seed-values.sql:8199
 msgid "Nunavut "
@@ -1042,10 +1037,9 @@ msgstr ""
 msgid "Hard stalling interval"
 msgstr "Tvrdý interval pro odklad"
 
-# id::cam.value__f
 #: 950.data.seed-values.sql:7038
 msgid "Specialized"
-msgstr "Specializovaný"
+msgstr "Specialista"
 
 # id::i18n_l.description__en-US
 #: 950.data.seed-values.sql:370
@@ -3466,7 +3460,7 @@ msgstr "MERGE_BIB_RECORDS"
 
 #: 950.data.seed-values.sql:7001
 msgid "Undetermined"
-msgstr "Nezjištěno"
+msgstr "Neurčeno"
 
 #: 950.data.seed-values.sql:6968
 msgid "Terena"
@@ -4602,7 +4596,7 @@ msgstr "Mauritánie "
 
 #: 950.data.seed-values.sql:15201 950.data.seed-values.sql:15207
 msgid "Link Checker's Review Attempt interface's saved columns"
-msgstr "Uložené sloupce rozhraní"
+msgstr "Uložené slopuce revizních pokusů v rozhraní pro kontrolu odkazů"
 
 # id::crcd.name__5
 #: 950.data.seed-values.sql:287
@@ -8786,7 +8780,7 @@ msgstr "Mali "
 
 #: 950.data.seed-values.sql:7195 950.data.seed-values.sql:7890
 msgid "Direct electronic"
-msgstr "Direct electronic"
+msgstr "eletronický zdroj s přímým přístupem"
 
 #: 950.data.seed-values.sql:7783 950.data.seed-values.sql:7812
 #: 950.data.seed-values.sql:8446 950.data.seed-values.sql:8476
@@ -9710,7 +9704,7 @@ msgstr "Turečtina"
 
 #: 950.data.seed-values.sql:7490
 msgid "Published"
-msgstr "Publikováno"
+msgstr "Vydáno"
 
 #: 950.data.seed-values.sql:4814
 msgid "Suggest suffix field on patron registration"
@@ -13779,7 +13773,7 @@ msgstr "Kuaňamština"
 
 #: 950.data.seed-values.sql:6439
 msgid "Audience"
-msgstr "Audience"
+msgstr "Čtenářské určení"
 
 #: 950.data.seed-values.sql:7052
 msgid "Notated music"
@@ -13874,7 +13868,7 @@ msgstr "Čad "
 
 #: 950.data.seed-values.sql:15170
 msgid "All Link Checker filter dialogs"
-msgstr "Dialogy  filtrů všech \"link checkerů\""
+msgstr "Všechny dialogy filtrů kontroly odkazů"
 
 #: 950.data.seed-values.sql:2654
 msgid "Default Hold Pickup Location"
@@ -14396,7 +14390,7 @@ msgstr "Jazyk díla"
 
 #: 950.data.seed-values.sql:15182 950.data.seed-values.sql:15188
 msgid "Link Checker's URL Selection interface's saved columns"
-msgstr "Uložené sloupce rozhraní pro výběr URL \"Link checkeru\""
+msgstr "Uložené sloupce výběru URL v rozhraní pro kontrolu odkazů"
 
 #: 950.data.seed-values.sql:6544
 msgid "Afar"
