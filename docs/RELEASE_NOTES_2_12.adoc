@@ -15,8 +15,8 @@ syntax errors in reports that use virtual fields and joins.
 * Fixes an issue that created duplicate copy data when copies or
 volumes with parts were transferred.
 * Fixes an issue with the http -> https redirect on Apache 2.4.
-* Fixes an color contrast accessibility issue in the Web staff
-client.
+* Fixes a color contrast accessibility issue in the Web staff
+client and adds underlining to links in grids for added accessibility.
 * Adds automated regression and unit tests for the Web staff client
 reports module.
 

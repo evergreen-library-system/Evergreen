@@ -22,7 +22,7 @@ syntax errors in reports that use virtual fields and joins.
 volumes with parts were transferred.
 * Fixes an issue with the http -> https redirect on Apache 2.4.
 * Fixes an color contrast accessibility issue in the Web staff
-client.
+client and adds underlining to links in grid cells for added accessibility.
 * Adds automated regression and unit tests for the Web staff client
 reports module.
 * Adds a process for spell-checking the official documentation.
