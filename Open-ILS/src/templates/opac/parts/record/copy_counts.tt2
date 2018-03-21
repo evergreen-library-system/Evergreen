@@ -23,7 +23,7 @@
     [%- this_depth = ctx.get_aou(ou_id).ou_type.depth;
         IF ou_count > 0 && this_depth != ctx.copy_depth %]
     <a href="[% mkurl('', {copy_depth => this_depth}, ['copy_offset']); %]"
-       title="[% l('Show copies at [_1]', ou_name); %]">
+       title="[% l('Show copies at [_1]', ou_name) | html; %]">
        [%- l('(Show)'); %]</a>
     [%- END; %]
     </li>
@@ -43,7 +43,7 @@
             attrs.plib_copy_counts.$depth.count,
             ou_name) | html
     %] <a href="[% mkurl('', {locg => ou_id}, ['copy_offset']); %]"
-       title="[% l('Show copies at [_1]', ou_name); %]">[%
+       title="[% l('Show copies at [_1]', ou_name) | html; %]">[%
        l('(Show preferred library)');
     %]</a></li>
     [%- END %]
