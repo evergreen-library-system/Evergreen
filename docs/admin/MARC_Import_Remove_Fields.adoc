@@ -26,7 +26,7 @@ To create a MARC Import Remove Fields profile, go to *Administration -> Server A
 . Click *Return to Groups* to go back to the list of Remove Field profiles.
 
 
-image::media/marc_import_remove_fields3.jpg[MARC Remove Fields Profile]
+image::media/marc_import_remove_fields3.png[MARC Remove Fields Profile]
 
 
 Import Options
