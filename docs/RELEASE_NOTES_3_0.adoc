@@ -12,14 +12,22 @@ This release contains bug fixes improving on Evergreen 3.0.4.
 into MARC subfields.
 * Fixes an issue that prevented serials items from being deleted or
 modified.
+* The Web staff client Check In screen no longer reloads the whole
+page multiple times each time an item is scanned.
 * Fixes an issue that displayed the oldest -- rather than the newest
 -- transit in the Web staff client Item Status page.
 * Fixes an issue that prevented the reports module from being displayed
 in the Web client.
 * Fixes an issue in the Web staff client reports module that caused
 syntax errors in reports that use virtual fields and joins.
+* Fixes an issue that prevented several dropdown menus in the Web staff
+client from activating.
 * Fixes an issue that created duplicate copy data when copies or
 volumes with parts were transferred.
+* Fixes the Trim List feature in the Web staff client Check In screen.
+* The Item Status grid now displays the Circulation Modifier.
+* Restores missing data from the Profile column in Place Hold patron
+search results.
 * Fixes an issue with the http -> https redirect on Apache 2.4.
 * Fixes an color contrast accessibility issue in the Web staff
 client and adds underlining to links in grid cells for added accessibility.
@@ -36,6 +44,7 @@ tests and documentation patches to the 3.0.5 point release of
 Evergreen:
 
 * Galen Charlton
+* Jeff Davis
 * Blake Graham-Henderson
 * Kathy Lussier
 * Morkor Quarshie
