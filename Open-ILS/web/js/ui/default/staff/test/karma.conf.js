@@ -17,6 +17,8 @@ module.exports = function(config){
       'build/js/ui-bootstrap.js',
       'build/js/hotkeys.min.js',
       'build/js/angular-cookies.min.js',
+      'build/js/angular-tree-control.js',
+      'build/js/context-menu.js',
       /* OpenSRF must be installed first */
       '/openils/lib/javascript/md5.js',
       '/openils/lib/javascript/JSON_v1.js',
