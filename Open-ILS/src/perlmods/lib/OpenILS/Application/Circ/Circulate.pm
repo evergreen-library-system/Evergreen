@@ -1126,7 +1126,7 @@ sub check_captured_holds {
         ]
     )->[0];
 
-    if ($hold and $hold->usr == $patron->id) {
+    if ($hold and $hold->usr->id == $patron->id) {
         $self->checkout_is_for_hold(1);
         return undef;
     } elsif ($hold) {
