@@ -307,6 +307,11 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
 
         ).then(null, null, function(hold_info) {
             egProgressDialog.increment();
+
+            // check if this is a staff-created hold
+            // i.e., requestor is not the same as the user
+            hold_info['_is_staff_hold'] = hold_info.hold.requestor() != hold_info.hold.usr().id();
+
             var hold_id = hold_info.hold.id();
             cached_details[hold_id] = hold_info;
             var item = details_needed[hold_id];
@@ -315,11 +320,6 @@ function($scope , $q , $routeParams , $window , $location , egCore ,
             // flesh the grid item from the blob of hold data.
             angular.forEach(hold_info, 
                 function(val, key) { item[key] = val });
-
-            // check if this is a staff-created hold
-            // i.e requestor's profile != 2 (patron)
-
-            item['_is_staff_hold'] = item.hold.requestor().id() != item.hold.usr().id();
 
         });
     }
