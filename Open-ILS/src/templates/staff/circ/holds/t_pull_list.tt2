@@ -59,10 +59,20 @@
     path="current_copy.location.name" label="[% l('Shelving Location') %]">
   </eg-grid-field>
 
-  <eg-grid-field name="call_number_label" 
-    path="call_number_label" required hidden
+  <!-- Render the colum using the sort-able call number sort key, but
+       display the call number label, complete with prefix and suffix
+       in the cell. -->
+  <eg-grid-field name="call_number_sort_key" required
+    path="current_copy.call_number.label_sortkey"
     label="[% l('Call Number') %]">
+    <span>{{item.call_number_label}}</span>
   </eg-grid-field>
+  <!-- need call_number_label here so that the grid query always
+       fetches it; otherwise, the call number field above
+       won't consistently display values -->
+  <eg-grid-field name="call_number_label"
+    path="call_number_label" required hidden
+    label="[% l('Call Number Label') %]"></eg-grid-field>
 
   <eg-grid-field name="author" 
     path="current_copy.call_number.record.simple_record.author" 
@@ -100,9 +110,9 @@
       {{item.patron_barcode}}
     </a>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Patron alias') %]" path="patron_alias" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Patron First') %]" path="patron_first" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Patron Last') %]" path="patron_last" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron Alias') %]" path="patron_alias" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron First Name') %]" path="patron_first" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron Last Name') %]" path="patron_last" hidden></eg-grid-field>
   <eg-grid-field name="pickup_lib_name" path="pickup_lib.name" 
     hidden label="[% l('Pickup Library') %]"></eg-grid-field>
   <eg-grid-field name="pickup_lib_shortname" path="pickup_lib.shortname" 
@@ -113,6 +123,8 @@
     hidden label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="selection_ou" path="selection_ou.shortname" 
     hidden label="[% l('Selection Locus') %]"></eg-grid-field>
+  <eg-grid-field name="sms_carrier_name" path="sms_carrier.name"
+    hidden label="[% l('SMS Carrier') %]"></eg-grid-field>
   <eg-grid-field name="sms_notify" path="sms_notify"
     hidden label="[% l('SMS Notify') %]"></eg-grid-field>
   <eg-grid-field name="email_notify" path="email_notify"
@@ -137,13 +149,13 @@
   </eg-grid-field>
   <eg-grid-field label="[% l('Edition') %]" path='mvr.edition' hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Top of Queue') %]" path='hold.cut_in_line' hidden>
+  <eg-grid-field label="[% l('Top of Queue') %]" path='cut_in_line' hidden>
   </eg-grid-field>
   <eg-grid-field label="[% l('Total Holds') %]" path='total_holds' hidden>
   </eg-grid-field>
   <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Expire Date') %]" path='hold.expire_time' datatype="timestamp" hidden>
+  <eg-grid-field label="[% l('Expire Date') %]" path='expire_time' datatype="timestamp" hidden>
   </eg-grid-field>
 </eg-grid>
 
