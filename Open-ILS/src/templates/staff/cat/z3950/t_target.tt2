@@ -1,4 +1,4 @@
-<div ng-repeat="target in targets" class="z3950-target-list">
+<div ng-repeat="target in targets | orderBy:'settings.label'" class="z3950-target-list">
     <div class="checkbox">
         <input ng-model="target.selected" type="checkbox">
     <div>
