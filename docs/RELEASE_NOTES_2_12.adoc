@@ -1,54 +1,493 @@
-Evergreen 2_12 Release Notes
+Evergreen 2.12 Release Notes
 ============================
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 2.12.11
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.10:
 
-New Features
-------------
-
-
-
-Administration
-~~~~~~~~~~~~~~
-
-
-
-Apache Internal Port Configuration Option
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Apache configuration now supports a new variable which allows admins to
-specify the port used by Apache to handle HTTP traffic.  The value is
-used for HTTP requests routed from Perl handlers back to the same Apache
-instance, like added content requests.  Use this when running Apache
-with a non-standard port, typical with a proxy setup.  Defaults to "80".
-
-[source,conf]
--------------------------------------------------------------------
-<Location /eg>
-    ...
-    PerlSetVar OILSWebInternalHTTPPort "7080"
-    ...
-</Location>
--------------------------------------------------------------------
+* The MARC Editor in the Web staff client now wraps long fields.
+* The MARC Editor no longer allows catalogers to enter new lines
+into MARC subfields.
+* Fixes an issue in the Web staff client reports module that caused
+syntax errors in reports that use virtual fields and joins.
+* Fixes an issue that created duplicate copy data when copies or
+volumes with parts were transferred.
+* Fixes an issue with the http -> https redirect on Apache 2.4.
+* Fixes a color contrast accessibility issue in the Web staff
+client and adds underlining to links in grids for added accessibility.
+* Adds automated regression and unit tests for the Web staff client
+reports module.
 
 
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.11 point release of
+Evergreen:
 
-
-Fix COPY_STATUS_LONGOVERDUE.override Permission Typo
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The existing permission was incorrectly created with a code of
-COPY_STATUS_LONGOVERDUE.override, while the event thrown requires a
-permission with a code of COPY_STATUS_LONG_OVERDUE.override.  This
-update changes the permission code to match what the event requires.
+* Galen Charlton
+* Blake Graham-Henderson
+* Kathy Lussier
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
 
 
 
+Evergreen 2.12.10
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.9:
+
+* The patron bills screen now prevents staff members from double-clicking
+on the Apply Payment button (which otherwise would apply two payments).
+* Fixes a performance bug related to patrons logging in by barcode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.10 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jason Stephenson
+* Dan Wells
+
+Evergreen 2.12.9
+----------------
+This release contains bug fixes improving on Evergreen 2.12.8:
+
+* NodeJs is now installed from source, rather than using a pre-compiled binary.
+* NodeJs is now at version 6.11.3, which is the most recent LTS release.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.9 point release of
+Evergreen:
+
+* Jeanette Lundgren
+* Ben Shum
+* Remington Steed
+
+Evergreen 2.12.8
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.7:
+
+* Many patron fields have been redacted from the web staff client's patron
+and record holds grids, leaving patron name, username, and ID.
+* Fixes two bugs where patron records could fail to be saved upon editing.
+* The patron summary in the web staff client now correctly displays
+primary and secondary ID values.
+* Patron barcode search completion in the web staff client now allows
+the user to select from all of the matching patron records.
+* The web staff print templates for current and historical bills can
+now include copy barcode and title.
+* Fixes a bug that resulted in some catalog searches unexpectedly
+timing out.
+* Fixes a bug where placing a hold request in the public catalog could result
+in "forgetting" the type and library of the user's previous search.
+* Fixes a bug that made using the volume/copy editor to change a copy's
+price problematic.
+* The administration interface for hard due dates now ensures that
+new (or edited) ceiling dates have their time component set to end
+of day, resolving an issue where ceiling dates would not be applied
+during the ceiling date itself.
+* Asset merging during bibliographic record merging now correctly
+recognizes call number prefixes and suffixes and deletes disused
+call number records.
+* The Concerto sample data set now includes data allowing for testing
+placing holds on monographic parts.
+* Fixes a bug where displaying user surveys could result in PCRUD
+drone starvation.
+* Fixes a bug where pg_restore of an Evergreen database could fail
+to create certain indexes on the `actor.usr` table.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.8 point release of
+Evergreen:
+
+* Alex Cautley 
+* Ben Shum 
+* Bill Erickson 
+* Cesar Velez 
+* Chris Sharp 
+* Galen Charlton 
+* Jason Boyer 
+* Jason Stephenson 
+* Jeff Davis 
+* Jeff Godin 
+* Kathy Lussier 
+* Kyle Huckins 
+* Michele Morgan 
+* Mike Rylander 
+* Remington Steed 
+* Rogan Hamby 
+
+Evergreen 2.12.7
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.6
+
+* Fixes a bug in the web staff client that prevented initials from being
+stored with copy notes.
+* Adds billing types that may have been missed by systems that were 
+running Evergreen prior to the 1.4 release.
+* Fixes a web staff client bug with the CSV export option available from
+the Import Queue in the MARC Batch Import/Export interface.
+* Adds the missing copy alert field in the web client's volume/copy
+editor.
+* Fixes a bug where the setting to require date of birth in patron
+registration was not being honored in the web staff client.
+* Fixes a bug in the web staff client patron registration form where the 
+password wasn't generating from the last four digits of the patron's
+phone number.
+* Fixes an issue in the web staff client where the complete barcode did
+not display in some interfaces when partial barcodes were scanned.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.7 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
 
 
-Hold Targeter V2 Repairs and Improvements
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen 2.12.6
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.5.
+
+* Removes the option to add a title to My List from Group Formats and
+Editions searches where the option never worked correctly due to a bad id.
+* Removes deleted shelving locations from the web client's volume/copy editor. Since there is no database constraint that prevents a copy from a deleted shelving location, if there are already copies attached to those shelving locations, the copy location selector will be blank. Evergreen admins can identify those items by running the following query:
+
+----
+select acp.id, acp.barcode, acpl.name
+from asset.copy acp
+join asset.copy_location acpl on (acpl.id = acp.location)
+where not acp.deleted
+and acpl.deleted
+order by acp.id;
+----
+* Adds the patron opt-in check in the web client whenever a patron is retrieved
+by barcode scan, patron search, or item circ history.
+* Fixes a bug where the price and acquisitions cost fields did not display
+their values. 
+* Fixes a bug where a patron's circulation history no longer moved to the lead
+account when merging patron accounts.
+* Now hides the ebook tabs in My Account for sites that have not yet enabled the
+Ebook API service.
+* Trims spaces from patron barcodes in the web client check out interface.
+* Makes a string in the holds validation alert translatable. 
+* Fixes a bug that prevented the web client patron registration screen from
+loading when there is an opt-in action triggers, such as the email checkout
+receipt, t set to be a registration default. 
+* Fixes a bug where barcode validation in the web client patron editor was 
+using the incorrect regular expression.
+* Replaces an empty string in the mobile carrier dropdown menu with a 'Please
+select your mobile carrier' label to improve usability and resolve a problem
+with translations.
+* Restores the ability to display a photo in the web client patron editor for
+accounts that have an actor.usr.photo_url.
+* Fixes a Firefox display issue in the web client that occurred when retrieving
+a bib record by TCN when the MARC Edit tab was set as the default view.
+* Fixes an bug where setting a patron's default pickup location in the web 
+client patron editor inadvertently changed the home library. It also disables
+any locations that are not viable pickup locations.
+* Fixes a bug where a misscan in a copy bucket failed silently.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.6 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Blake Henderson
+* Skye Howard
+* Kathy Lussier
+* Terran McCanna
+* Jane Sandberg
+* Ben Shum
+* Cesar Velez
+
+Evergreen 2.12.5
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.4.
+
+* Hides the _Hold is Behind Circ Desk_ checkbox in the XUL client's patron
+registration screen for those libraries that have not enabled Behind Desk Pickup 
+support via the Library Settings Editor
+* Adds a missing error string that appears when marking an item damaged from
+an aged circulation.
+* Changes the hold request form so that it no longer defaults to the first SMS
+carrier for text notifications.
+* Adds a requirement for users to enter a phone/SMS number when they have
+enabled that notification method on the hold request form.
+* Changes the URL pointing to catalog images, CSS and javascript files to a full
+absolute URL instead of the relative URL previously used. This change fixes an
+issue with the Open Graph image property, which requires a full URL.
+* Fixes an issue where payment amounts sent to Stripe can be one cent less than
+the actual Evergreen payment.
+* Fixes an issue where the open-ils.storage OpenSRF module fails to start when
+using perl 5.24 or higher.
+* Fixes a problem in the web client where marking a transaction as claims
+returned or claims never checked out at the same time the patron's record is
+edited would not increase the count once the patron's record is saved.
+* Changes the cursor to a pointer for the record menus in the web client.
+* Fixes hardcoded patchs in srfsh support scripts.
+* Prevents a "Use of freed value in iteration" error that appeared in logs when
+adjusting a transaction to zero.
+* Prevents the temporary list page from crashing when a user adds the same title
+to the list more than once.
+* Removes duplicate rows from localized 950.data.seed-values.sql files.
+* Fixes the following two issues with conjoined items:
+   - Foreign items previously did not display there was no extra copy attached
+to the bib record.
+   - Conjoined items did not display unless there were two or more items in a
+set.
+* Fixes an issue in the web client where the Hold Verify prompt did not display
+for items in a Copy Location where the hold verify flag is enabled.
+* Fixes support for automatic item barcode completion in the web client check in,
+check out, renew, and item status interfaces.
+* Makes the courier code variable available for transit slips in the web client.
+* Fixes the ability to apply funds from the acquisitions selection list, 
+View/Place Order, and MARC Federated Search interfaces.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.5 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Josh Stompro
+* Cesar Velez
+* Liam Whalen
+* Dan Wells
+
+
+
+Evergreen 2.12.4
+----------------
+Upgrade Notes
+~~~~~~~~~~~~~
+* This release of Evergreen contains a fix to the _Hold/Copy Ratio per Bib
+and Pickup Library (and Descendants)_ data source. Report templates using
+this data source will need to be re-created to improve accuracy of the
+data reported from this source.
+* This release also contains a fix to downloading large checkout histories from
+My Account. This feature no longer uses the action/trigger mechanism and the 
+OPAC now generates the CSV directly.  The old action/trigger code is still
+present in the database and should be removed at some point in the
+near future.
+
+Bug Fixes
+~~~~~~~~~
+This release contains several bug fixes improving on Evergreen 2.12.3
+
+
+* A fix to a web client bug where adding copies through the _Add Volumes 
+and Copies_ menu item could fail silently.
+* A fix to a bug that allowed users to access some web client admin interfaces 
+without a login.
+* A fix to the display of the loan duration and fine level fields in the web
+client Item Status Detail view.
+* A fix to the display of duplicate data on the bib record View Holds page when 
+toggling between the holds and OPAC view. 
+* A fix to a bug that prevented the web client patron registration page from
+loading.
+* Support for Org Unit Includes alert text, notice text, event text, header
+text, and footer text in the web client print templates.
+* A fix to make the web client MARC Editor's flat text editor selection sticky.
+* A fix to make the Patron Search library selector sticky.
+* A fix to a bug in the web client that prevented the user from saving a new
+copy after using the MARC Edit _Add Item_ option.
+* A fix to a patron registration bug that did not require the entry of a required
+user statistical category for stat cats that do not allow free-text entries.
+* The addition of the bad bacode image file in the web client.
+* An improvement to the MARC Batch Edit progress indicator to reduce the 
+likelihood of system backlogs.
+* Downloading checkout history as a CSV from My Account has been fixed
+for users with a large circulation history.  Previously, this would
+time out for patrons with more than 100 or so circulations.
+* A fix to syntax in the Spanish lang.dtd file that was creating an error
+when using the Closed Date Editor.
+* Improvements to CSS to silence some Mozilla extension warnings.
+* A fix to a failure to update targeted circulations when utilzing the recall
+functionality.
+* The addition of text wrapping in the copy details table on the bib
+record to prevent contents from falling off the page.
+* A fix to the adjust to zero option so that it can be applied correctly
+to multiple billings.
+* A fix to the "Hold/Copy Ratio per Bib and Pickup Library
+(and Descendants)" data source so that it will now include counts of eligible
+copies at locations that are not a pickup library for bib's holds.
+* A fix to the XUL client Item Status -> Alternate View -> Holds / Transit
+tab so that it properly refreshes all data when switching between copies.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.4 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etherige
+* Pasi Kallinen
+* Angela Kilsdonk
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Ben Shum
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+
+Evergreen 2.12.3
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.12.2.
+
+Web Client Bug Fixes
+~~~~~~~~~~~~~~~~~~~~
+The web client, which is available for trial production use in libraries,
+received several fixes in this release:
+
+* The receipt on payment checkbox now prints a receipt at time of payment.
+* The Items Out count in the patron screen now includes long overdue
+items.
+* A fix was added to prevent values from a previously-edited patron from
+appearing in the edit form of a subsequent patron.
+* User notification preferences now save correctly in the patron
+registration and edit forms.
+* The UPDATE_MARC permission is no longer requested when performing a
+search from the staff catalog.
+* Non-cataloged circulations now display in the Items Out screen without
+requiring a refresh.
+* Required statistical categories are now required to be entered in the 
+copy editor. (A similar bug for the patron editor was fixed in the 2.12.1
+release).
+* Voiding bills now requires confirmation.
+* Staff can no longer use the copy editor to put items into or out of the
+following statuses: checked out, lost, in transit, on holds shelf, long
+overdue, and canceled transit.
+* The contrast is improved for alert text showing the amount a patron owes
+in bills.
+* Circ modifiers now sort alphabetically in the copy editor.
+
+Other Bug Fixes
+~~~~~~~~~~~~~~~
+* Code to prevent a hold already on the Holds Shelf from being
+transferred to another title.
+* A fix to a bug that prevented users from scheduling reports with a
+relative month if the report template used a date that applied the Year +
+Month transform with the On or After (>=) operator.
+* A fix to a bug where the max fines threshold was reached prematurely
+due to the presence of account adjustments.
+* A check that prevents a SMS message from attempting to sending when the SMS
+carrier is null.
+* For systems that provide search format as a filter on the advanced
+search page, a fix so that the format selected in the search bar when
+launching a new search from the results page overrides any previously-set 
+formats.
+* The addition of an optional new Apache/mod_perl configuration variable for
+defining the port Apache listens on for HTTP traffic. This resolves an issue
+where added content lookups attempting HTTP requests on the local Apache
+instance on port 80 failed because Apache was using non-standard ports.
+* A fix to the public catalog's My List page responsive design so that it now
+displays properly on mobile devices and allows users to place holds from My List. 
+* A fix to a bug where the second (and subsequent)
+pages of search results in the public catalog (when group
+formats and editions is in effect) does not correctly generate
+links to hits that are not part of of a multi-bib metarecords.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.3 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Terran McCanna
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
+* Dan Wells
+
+Evergreen 2.12.2
+----------------
+
+This release is a security release that also contains several other bug
+fixes improving on Evergreen 2.12.1.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/locale_picker.tt2`
+* `Open-ILS/src/templates/opac/parts/login/form.tt2`
+* `Open-ILS/src/templates/opac/parts/searchbar.tt2`
+
+Upgrade Notes
+~~~~~~~~~~~~~
+* Administrators of Evergreen who use RTL locales and who have customized
+`style-rtl.css.tt2` should now incorporate their customizations into
+`style.css.tt2`.
+* The `reporter.classic_current_circ` view, which is part of some
+extra views defined in `Open-ILS/src/sql/Pg/example.reporter-extension.sql`,
+has been fixed to not exclude loans for patrons who do not have a
+billing address set. Users of this view should rerun
+`Open-ILS/src/sql/Pg/example.reporter-extension.sql` during upgrade.
+
+Hold Targeter Repairs and Improvements
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A series of changes were made to the new hold targeter available in 2.12.
+
 * Make the batch targeter more resilient to a single-hold failure.
 * Additional batch targeter info logging.
 * Set OSRF_LOG_CLIENT in hold_targeter_v2.pl for log tracing
@@ -83,110 +522,891 @@ How soft-targeting works:
 * Holds with viable targets (on the pull list) are otherwise left alone.
 * Holds without viable targets are retargeted in the usual manner. 
 
+Other Bug Fixes
+~~~~~~~~~~~~~~
+* A fix to remove the Chilifresh patron reviews header for Evergreen sites
+that do not use Chilifresh.
+* A fix that marks acquisitions POs as received when all line items on the 
+PO are received or canceled.
+* A typo fix to the long overdue override permission that prevented staff
+from being able to override long overdue check ins.
+* A fix to use a library's configured currency in SIP patron responses
+instead of always using US dollars.
+* A fix to SIP timeouts caused by invalid sessions
+* A fix that allows boolean fields to be recognized in queries to the
+Z39.50 server.
+* A fix to use the correct method during adjust to zero on negative
+balances.
+* A correction to the datatype for the Vandelay Default Record Match Set
+setting.
+* The removal of the _Keep_ field from MARC Batch Import Item Attributes.
+The field was not previously implemented.
+* A fix to set the complete time value for grouped Action/Trigger events
+when an event's state reach complete, consistent with non-grouped events.
+* A fix to a bug in the rollover_phone_to_print.pl script that kept failed
+call files from being moved.
+* A new index for acq.edi_message that speeds up the check for duplicate
+EDI messages.
+* A fix that ensures JSON strings are converted to UTF8, ensuring that
+non-ASCII data display correctly.
+* A fix to avoid an erroneous unsaved data popup to appear during MARC
+record creation.
+* A typo fix in the web client's bill payment receipt template.
+* A correction to ebook account links on the My Account Summary page.
+* Improved responsive design for the ebook My Account screens so that
+they display better on mobile devices.
+* A fix to a bug that prevented a patron opt-in dialog from loading.
+* The RTL stylesheet for the public catalog,
+`templates/opac/css/style-rtl.css.tt2`, has been merged into the LTR
+one (`templates/opac/css/style.css.tt2`). The combined stylesheet
+template will emit RTL or LTR styles based on the value of
+the `rtl` flag of the active locale. An `rtl` variable is also available
+in the template to allow the correct style to be chosen.
+* A fix to leaking of the internal port number to the client when
+Apache is configured to use nonstandard ports in combination with a proxy
+server.
+* The addition of the vandelay.auto_overlay_bib_record upgrade script,
+which was missed in a 2.1-2.2 era upgrade script. It isn't necessary for
+sites that began using Evergreen since then to run the script, but
+it is harmless to run.
+* A web staff client fix that will hid the behind-desk option for
+for libraries that do not support "Behind Desk Pickup".
+* A web staff client fix that caused hold transit check ins to fail
+silently when the transit destination does not have a holds address.
+* A web staff client fix that now requires the entry of user statistical
+categories in the patron editor if those stat cats are configured to
+be required.
+* A fix to a problem with the "Exclude Electronic Resources" checkbox
+that prevented users from removing a selection from the box.
+* The removal of the search format limiters from the new advanced search
+limiter block on the search results page. The search format limiters
+should not display there because they can be selected from the search bar.
 
 
 
 
-Remove JSPAC Redirects
-^^^^^^^^^^^^^^^^^^^^^^
-Future versions of Evergreen will no longer contain automatic redirects
-from JSPAC URLs to TPAC URLs, with the exception of myopac.xml, given
-that the JSPAC is no longer supported.  Existing sites, however, may
-wish to retain JSPAC redirects in their Apache configuration files since
-JSPAC URLs may still be used in the wild to access their catalogs.
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.2 point release of
+Evergreen:
 
-The original JSPAC URL redirects are all retained in the file 
-Open-ILS/examples/jspac_redirects.conf for reference.
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Jeff Godin
+* Blake Henderson
+* Linda Jansova
+* Kathy Lussier
+* Jillianne Presley
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Remington Steed
+
+Evergreen 2.12.1 
+----------------
+
+This release contains several bug fixes improving on Evergreen 2.12.0
+
+* A fix to the 2.12 upgrade of the subject|temporal and subject|geographic 
+indexes, where the above-mentioned browse indexes were not turned off in favor
+of new browse versions of the indexes. Sites that are upgrading from 2.12.0
+can cancel the browse reingest that comes with the new upgrade script.
+
+* A change to the default pickup library when staff place a hold. The place hold
+screen will now default to the preferred pickup location for the patron. If the
+patron does not have a preferred pickup location, it will default to the
+patron's home library.
+* A fix to a problem where users could not change the selected Org Unit on the
+MARC Tag Tables server admin page.
+* A fix to the seed data for translations for some Coded Value Map entries.
+* The ability to skip the XUL staff client build when in make_release.
+* Revised layout and styling for the advanced search limiter block that displays
+on the search results page.
+* A fix that silences a log warning that appears for every checkout where a hard
+due date is not used.
+* Tweaks for sounds that are used in the web staff client.
+* The addition of f4 and ctrl-f2 as hotkeys in the web staff client.
+* Additional help text for receipt templates in the web staff client.
+* The reinstatement of the Reprint Last Receipt functionality in the web staff client.
+* The ability in the web staff client copy editor to add new volumes to
+libraries that were not selected in holdings view.
+* A fix to a billing issue where transactions were not re-opened after they
+acquired a non-zero balance at check in.
+* A change to the web staff client work log to prevent it from storing 
+unnecessary data.
+* A fix to a translation issue for the record attributes displayed in the 
+advanced search limiter block on the search results page.
+* A fix to hold targeting for metarecord holds when the new hold targeter is
+run in parallel mode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 2.12.1 point release of
+Evergreen:
+
+* Eva Cerniňáková
+* Galen Charlton
+* Bill Erickson
+* Jason Etherige
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Ben Shum
+* Robert Soulliere
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
+2.12.0 Upgrade notes
+--------------------
+Evergreen 2.12 now requires OpenSRF 2.5 or later; certain functionality
+will not work if you attempt to run Evergreen 2.12 on OpenSRF 2.4. Evergreen
+2.12 recommends PostgreSQL 9.4. The minimum supported version of PostgreSQL is
+9.3.
+
+The stock schema upgrade script performs a browse and facet reingest,
+recalculates bib fingerprints, and remaps metarecords.
+
+This version also adds two new services, `open-ils.ebook_api` and
+`open-ils.hold-targeter`.
+
+2.12.0 New Features
+-------------------
+
+Acquisitions
+~~~~~~~~~~~~
+Default status for received line items
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new Library Setting has been added to allow libraries to set the default
+status for received line items. The previous behavior was to use the
+"In process" status for all acquisitions items that are received.
+
+
+Administration
+~~~~~~~~~~~~~~
+
+
+
+Additional SMS Carriers
+^^^^^^^^^^^^^^^^^^^^^^^
+SMS carrier definitions are now included for Google Fi and
+Republic Wireless. These will be automatically loaded when
+installing a new Evergreen system; admins who wish to
+add these definitions during an upgrade can use the following
+email gateway values:
+
+ * Google Fi: `$number@msg.fi.google.com`
+ * Republic Wireless: `$number@text.republicwireless.com`
 
 
 
 
-OPAC
-~~~~
+Bibliographic Fingerprint Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The bibliographic fingerprint will now incorporate subfields $n and $p from MARC
+title fields to better distinguish among records of the same series that
+may share the same title but have a different part. With this change, these
+MARC records will no longer be grouped together in a 'Group Formats & Editions'
+search.
+
+The bibliographic fingerprint was also changed to better distinguish among
+the fields contributing to the fingerprint. This change will help the system
+distinguish between a record for the movie _Blue Steel_ and another record for
+the book _Blue_ written by Danielle Steel.
 
 
 
-Download Checkout History CSV Fixed for Large Number of Circulations
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Downloading checkout history as a CSV from My Account has been fixed
-for users with a large circulation history.  Previously, this would
-time out for patrons with more than 100 or so circulations.
-
-This feature no longer uses the action/trigger mechanism and the OPAC
-now generates the CSV directly.  The old action/trigger code is still
-present in the database and should be removed at some point in the
-near future.
 
 
 
+Batch Hold Targeter Speed-up and New Features
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Reports
-~~~~~~~
+Adds a new `open-ils.hold-targeter` service, supporting new targeting options
+and runtime optimizations to speed up targeting.  The service is launched
+from a new targeting script, `hold_targeter_v2.pl` (default location:
+`/openils/bin/hold_targeter_v2.pl`).
+
+This code has no effect on the existing hold targeter, which is still
+available as of this release and functions as before.
+
+New Features/Options
+++++++++++++++++++++
+
+* Adds a global configuration flag 'circ.holds.retarget_interval' for 
+  setting the hold retarget interval.
+
+* `--target-all` option forces the targeter to process all active
+  holds, regardless of when they were last targeted.
+
+* `--retarget-interval` option make is possible to override the new
+  'circ.holds.retarget_interval' setting via the command line 
+  when calling the hold targeter.
+
+* `--skip-viable` option causes the hold targeter to avoid modifying 
+  the currently targeted copy (i.e. the copy on the pull list) for holds 
+  that target a viable (capturable) copy.  
+  {empty} +
+  {empty} +
+  For skipped holds, no entry is added to the unfulfilled_hold_list.
+  The set of potential copies (hold copy maps) are refreshed for all
+  processed holds, regardless of target viability.
+  {empty} +
+  {empty} +
+  This option is useful for 1.) finding targets for holds that require 
+  new targets and 2.) adding new/modified copies to the potential copy 
+  lists (for opportunistic capture) more frequently than you may want to do full
+  retargeting of all holds.
+
+* `--newest-first` option processes holds in reverse order of request_time,
+  so that newer holds are (re)targeted first.  This is primarily useful
+  when a large backlog of old, un-targetable holds exist.  With 
+  `--newest-first`, the older holds will be processed last.
+
+* `--parallel` option overrides the parallel settings found in `opensrf.xml`
+  for simpler modification and testing.
+
+* `--lockfile` option allows the caller to specify a lock file instead
+  of using the default /tmp/hold_targeter-LOCK
+
+* `--verbose` option prints progress info to STDOUT, showing the number of
+  holds processed per parallel targeter instance.
+
+* When configured, hold target loops cycle through all org units (with 
+  targetable copies) instead of repeatedly targeting copies at the pickup
+  library when multiple targetable copies exist at the pickup library.
+
+* When configured, hold target loops prioritize (targetable) org units
+  first by the number of previous target attempts, then by their 
+  weight/proximity.  This effectively back-fills org units that had no
+  targetable copies during earlier target loops so that they are 
+  targeted as many times as other org units (to the extent possible, 
+  anyway).
+
+Examples
+++++++++
+
+* Traditional daily hold targeter with a value set for 
+  'circ.holds.retarget_interval'.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, only processing holds that 
+  have never been targeter or those that have not been re-targeted in
+  the last 12 hours.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skip-viable --retarget-interval "12h"
+--------------------------------------------------------------------------
+
+* (Re)target non-viable holds twice a day, processing all holds regardless
+  of when or if they were targeted before, running 3 targeters in
+  parallel.
+
+[source,sh]
+--------------------------------------------------------------------------
+/openils/bin/hold_targeter_v2.pl --skip-viable --target-all --parallel 3
+--------------------------------------------------------------------------
 
 
 
-Fix to reporter.classic_current_circ view
+
+
+Add separate make target for translators
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+For those only interested in building Evergreen translations, a separate
+"translator" make target has been added to allow for easier installation
+of i18n prerequisites.
+
+
+Allow admin to specify where Perl modules will be installed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Add `--with-perlbase` option to `configure` to specify an alternative
+location for installing the Perl modules. This can be useful for setups
+that want to run the Perl modules from a shared filesystem or
+environments that need to run multiple versions of Evergreen
+simultaneously.
+
+Users of `--with-perlbase` are responsible for ensuring that `PERL5LIB`
+is set appropriately.
+
+
+
+Addition of missing permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Required permissions that were previously missing from the stock data have now
+been added. If Evergreen sites have already manually added these permissions,
+the upgrade script will remove the old permission and create the new one,
+maintaining any maps to permission groups, with the stock permission ID.
+
+
+
+
+
+get_org_unit_ancestor_at_depth Helper Added to Action Trigger Reactor Helpers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In action trigger templates it's now possible to call
+`helpers.get_org_unit_ancestor_at_depth($id_or_aou, $depth)` in order to retrieve
+a fleshed aou for the target aou's ancestor at the chosen depth. This could be
+used to retrieve the name of the library system rather than a specific branch
+name, for instance.
+
+
+
+
+Removed unused selfcheck password setting
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The `reporter.classic_current_circ` view, which is part of some
-extra views defined in `Open-ILS/src/sql/Pg/example.reporter-extension.sql`,
-has been fixed to not exclude loans for patrons who do not have a
-billing address set. Users of this view should rerun
-`Open-ILS/src/sql/Pg/example.reporter-extension.sql` during upgrade.
+There was an unused duplicate selfcheck password setting that was removed
+to avoid confusion over which library setting was supposed to be set to
+enable passwords for selfcheck. After upgrading, verify that your library
+policy remains consistent for this setting.
 
 
 
-Miscellaneous
--------------
 
-Fixes to patron name/username search indexes
+
+Credit Processor Stripe Settings Permissions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When using pg_restore to restore an Evergreen database, some of the
-indexes used to speed up patron searches on names and usernames
-could be lost.
+Unprivileged users can retrieve organizational unit setting values for
+setting types lacking a "view" permission.  When the feature adding
+Stripe credit card processing was added, the upgrade script neglected
+to add the VIEW_CREDIT_CARD_PROCESSING permission to the
+organizational unit setting type.  This means that anyone can retrieve
+and view the settings for Stripe credit card processing.
 
-This release fixes the underlying issue and re-creates the indexes
-in question.
-
-Details
-+++++++
-When using pg_restore to restore an affected database, the
-"unaccent" indexes on actor.usr would not be created due to an
-unqualified function reference in evergreen.unaccent_and_squash.
-
-The function will be replaced to resolve the search path issue,
-and the following indexes on actor.usr will be dropped and then
-re-created:
-
-  * actor_usr_first_given_name_unaccent_idx;
-  * actor_usr_second_given_name_unaccent_idx;
-  * actor_usr_family_name_unaccent_idx;
-  * actor_usr_usrname_unaccent_idx;
-
-This will be done even if the indexes are already present, and may
-take a few minutes on a database with many patrons.
+Any system that upgraded from Evergreen version 2.5 to 2.6 is
+affected.  If you use Stripe for credit card processing, it is
+strongly recommended that you apply this upgrade.  Even if you do not
+use Stripe, applying this upgrade is still recommended.  If you did
+not upgrade from version 2.5 to 2.6 of Evergreen, but started with a
+later version, applying this upgrade is harmless.
 
 
-Acknowledgments
----------------
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+New Access Points for MARC Merge/Overlay Profiles
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Catalogers can now select a MARC merge/overlay profile to apply when
+merging records in the (browser client) record bucket merge and Z39.50
+record overlay interfaces. In both interfaces, if the user selects
+a merge profile, the results of the merge are displayed, giving the
+user the opportunity to choose a different merge profile or edit
+the records involved prior to committing to the merge.
+
+A new library setting, "Default Merge Profile (Z39.50 and Record Buckets)",
+specifies the merge profile to preselect in the new merge profile
+selectors in the record bucket merge and Z39.50 overlay logs. The
+selectors will also remember the last selection that the user made.
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Display Copy Alerts With In-House-Use
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two library settings are used to control the display of copy alert
+messages or copy location check in alerts when recording in-house-use
+in Evergreen.
+
+Setting 'Display copy alert for in-house-use' to true for an
+organization will cause an alert to appear with the copy's alert
+message, if it has one, when recording in-house-use for the copy.
+
+Setting 'Display copy location check in alert for in-house-use' to true
+for an organization will cause an alert to display a message
+indicating that the item needs to be routed to its location if the
+location has check in alert set to true.
+
+The settings are independent of one another because you may want to
+display one and not the other when recording in-house-use.
+
+
+
+
+Client
+~~~~~~
+
+
+
+Active Date Column Picker Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The active date will now be available as a column picker option in the Item
+Status screen.
+
+
+
+
+Punctuation Insensitive Patron Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When performing a patron search, punctuation characters will be
+ignored.  So if the patron is named O'Brien, then you can enter Obrien,
+O'Brien, O Brien, etc. in the search box.
+
+This behavior affects the Last Name (internally: family_name), First Name
+(first_given_name), and Middle Name (second_given_name) fields of the search.
+
+
+
+
+
+
+Touch screen improvements for Evergreen self-check interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Improvements were made to the Evergreen self-check interface to make it easier
+to use in a touch-screen environment.
+
+ * The pay fines link is now a pay fines button, matching other buttons on the
+page.
+ * The checkboxes have been enlarged, making them easier to activate when using
+a touch screen.
+
+
+
+
+
+Trial Production Use of the Web Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The new web staff client is ready for trial production use in all functional
+areas with the exception of serials and offline transactions. In addition to
+many bug fixes in the areas of circulation, cataloging, administration and
+reporting, Release 2.12 sees the following additions to web client
+functionality.
+
+ * Acquisitions interfaces and functionality have been integrated into the web
+ staff client.
+ * Booking interfaces and functionality have been integrated into the web staff
+ client.
+ * Hatch, the program that will allow for unmediated printing to multiple
+ printers, sharing of workstation settings, and, eventually, offline 
+ transactions is now available. A windows installer for Hatch will be available
+ on the Evergreen-ILS Downloads page.
+
+The Evergreen developers will keep pilot libraries updated about known web
+client issues by posting known bugs to https://wiki.evergreen-ils.org/doku.php?id=dev:browser_staff:known_issues .
+
+About Hatch
++++++++++++
+Hatch is not required to use the web client, but should be used for workstations
+that need to perform the following tasks.
+
+ * Unmediated printing to multiple printers. Workstations can print to multiple
+ printers without Hatch, but will need to click through a dialog to select a
+ printer. Hatch allows workstations to automatically print, without dialog, to
+ different printers. 
+ * Storage of workstation settings in a place outside the browser. Storing local
+ preferences in hatch will prevent tampering with preferences via the browser
+ developer tools and protect the settings from possible deletion if the browser
+ deletes settings in local storage.
+ * When offline functionality is available, hatch will be required to perform
+ offline transactions.
+ 
+Hatch is currently run as a Chrome extension and is not available in Firefox. To
+use hatch on Windows, Evergreen sites should:
+
+ . install a java runtime environment version 8 (or higher) if not already
+ installed,
+ . download and execute the installer from the Evergreen downloads page, 
+ . open Chrome and navigate to chrome://extensions,
+ . enable _Developer Mode_ along the top right of the page,
+ . click the _Load Unpacked Extension_ button,
+ . load the directory at Hatch -> extension -> app,
+ .. In Windows, the default location for the app directory will be
+ C:\Program Files (x86)\Hatch\extension\app
+ . enable hatch features in the web client by going to Administration ->
+ Workstation Administration -> Print/Storage Service ("Hatch") and choosing
+ which services to use with Hatch.
+ .. this page will also inform you that hatch is connected. 
+
+
+
+
+Infrastructure
+~~~~~~~~~~~~~~
+
+
+
+Client Timezone Awareness
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Previously, adjusting the time zone in which a database session operates
+could not be done in any way except globally, directly within the database.
+However, allowing modification of the timezone parameter now supports
+localization efforts for those consortia that span multiple time zones.
+
+Implementation
+++++++++++++++
+
+CStore and other services that interact with the primary Evergreen database
+make use of the functionality provided by LP#1485371 in OpenSRF in order to
+set the time zone configuration parameter available in PostgreSQL.  This has
+the effect of interpreting all timestamps written to or read from the database
+in the client's time zone.
+
+Within CStore (and related, C-based services), all stateful sessions make use
+of this capability, setting the database time zone upon a successful CONNECT
+message from the client.  The time zone is reset to the database default when
+a session is terminated either due to client DISCONNECT or server keepalive
+timeout.
+
+All stateless requests record the current database time zone, set the database
+time zone to that of the client's, run the query, and then reset the database
+time zone on each request that carries a client time zone value.  It is expected
+that this will not cause any noticeable increase in latency or query execution
+time, as this setting is local to the specific PostgreSQL server backend process.
+
+Within the Storage service, the timezone will be set automatically by a simple
+wrapper method used by the existing method registration mechanism for method
+publishing.  Disconnect and error callbacks are registered to revert the time
+zone setting within the database.  This provides completely transparent time
+zone manipulation for backend services that make use of open-ils.storage.
+
+
+
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+
+
+New Subject Browse Index Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New subject browse index definitions have been added that display the entire
+heading as a unit with hyphens between terms instead of displaying individual
+terms separately. 
+
+For example, the browse heading for:
+
+=650 \0$aCats$zUnited States$vCorrespondence.
+
+will display in a single entry as:
+
+Cats -- United States -- Correspondence
+
+Rather than separate entries for Cats and United States. 
+
+Name subjects will continue to display as separate entries because additional
+work would be required for the heading to be punctuated correctly.
+
+
+
+
+Advanced Search Limiters Enhancement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Advanced search limiters will no longer propagate to the basic search box in
+the catalog. Instead, the limiters applied to the search will appear underneath
+the search box where they can be easily cleared by clicking an 'x.' On a small,
+mobile device, the advanced search limiters can be seen by clicking an 'x filter
+applied' link. 
+
+The selected limiters will be applied to any search from the search bar until:
+ * The user actively removes the filters from the search or
+ * The user starts a new basic or advanced search from scratch.
+
+
+
+
+Arabic and Right-to-Left Language Support for the catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+New stylesheets and other changes to the catalog to allow for 
+better support of right-to-left (RTL) languages, such as Arabic.
+
+Also adds Arabic (Jordan) as a new supported language.
+
+
+
+
+Ebook API integration
+^^^^^^^^^^^^^^^^^^^^^
+Evergreen 2.12 supports partial integration with third-party APIs
+provided by OverDrive and OneClickdigital.  When ebook API integration
+is enabled, bibliographic records from these vendors that appear in your
+public catalog will include vendor holdings and availability information.  Also,
+when a user is logged in, the public catalog dashboard and My Account interface
+will include information about that user's checkouts and holds for
+supported vendors.
+
+For API integration to work, you need to request API access from the
+vendor and configure your Evergreen system according to the instructions
+below.  You also need to configure the new `open-ils.ebook_api` service.
+
+This feature assumes that you are importing MARC records supplied by the
+vendor into your Evergreen system, using Vandelay or some other MARC
+import method.  This feature does not search the vendor's online
+collections or automatically import vendor records into your system; it
+merely augments records that are already in Evergreen.
+
+A future Evergreen release will add the ability for users to check out
+titles, place holds, etc., directly via the public catalog.
+
+Ebook API service configuration
++++++++++++++++++++++++++++++++
+This feature uses the new `open-ils.ebook_api` OpenSRF service.  This
+service must be configured in your `opensrf.xml` and `opensrf_core.xml`
+config files for ebook API integration to work.  See
+`opensrf.xml.example` and `opensrf_core.xml.example` for guidance.
+
+OverDrive API integration
++++++++++++++++++++++++++
+Before enabling OverDrive API integration, you will need to request API
+access from OverDrive.  OverDrive will provide the values to be used for
+the following new org unit settings:
+
+  * *OverDrive Basic Token*: The basic token used for API client
+    authentication.  To generate your basic token, combine your client
+    key and client secret provided by OverDrive into a single string
+    ("key:secret"), and then base64-encode that string.  On Linux, you
+    can use the following command: `echo -n "key:secret" | base64 -`
+  * *OverDrive Account ID*: The account ID (a.k.a. library ID) for your
+    OverDrive API account.
+  * *OverDrive Website ID*: The website ID for your OverDrive API
+    account.
+  * *OverDrive Authorization Name*: The authorization name (a.k.a.
+    library name) designated by OverDrive for your library.  If your
+    OverDrive subscription includes multiple Evergreen libraries, you
+    will need to add a separate value for this setting for each
+    participating library.
+  * *OverDrive Password Required*: If your library's OverDrive
+    subscription requires the patron's PIN (password) to be provided
+    during patron authentication, set this setting to "true."  If you do
+    not require the patron's PIN for OverDrive authentication, set this
+    setting to "false."  (If set to "true," the password entered by a
+    patron when logging into the public catalog will be cached in plain text in
+    memcached.)
+  * *OverDrive Discovery API Base URI* and *OverDrive Circulation API
+    Base URI*: By default, Evergreen uses OverDrive's production API, so
+    you should not need to set a value for these settings.  If you want
+    to use OverDrive's integration environment, you will need to add the
+    appropriate base URIs for the discovery and circulation APIs.  See
+    OverDrive's developer documentation for details.
+  * *OverDrive Granted Authorization Redirect URI*: Evergreen does not
+    currently support granted authorization with OverDrive, so this
+    setting is not currently in use.
+
+For more information, consult the
+https://developer.overdrive.com/docs/getting-started[OverDrive API
+documentation].
+
+To enable OverDrive API integration, adjust the following public catalog settings
+in `config.tt2`:
+
+  * `ebook_api.enabled`: set to "true".
+  * `ebook_api.overdrive.enabled`: set to "true".
+  * `ebook_api.overdrive.base_uris`: list of regular expressions
+    matching OverDrive URLs found in the 856$9 field of older OverDrive
+    MARC records.  As of fall 2016, OverDrive's URL format has changed,
+    and the record identifier is now found in the 037$a field of their
+    MARC records, with "OverDrive" in 037$b.  Evergreen will check the
+    037 field for OverDrive record identifiers; if your system includes
+    older-style OverDrive records with the record identifier embedded in
+    the 856 URL, you need to specify URL patterns with this setting.
+
+OneClickdigital API integration
++++++++++++++++++++++++++++++++
+Before enabling OneClickdigital API integration, you will need to
+request API access from OneClickdigital.  OneClickdigital will provide
+the values to be used for the following new org unit settings:
+
+  * *OneClickdigital Library ID*: The identifier assigned to your
+    library by OneClickdigital.
+  * *OneClickdigital Basic Token*: Your client authentication token,
+    supplied by OneClickdigital when you request access to their API.
+
+For more information, consult the
+http://developer.oneclickdigital.us/[OneClickdigital API documentation].
+
+To enable OneClickdigital API integration, adjust the following public catalog
+settings in `config.tt2`:
+
+  * `ebook_api.enabled`: set to "true".
+  * `ebook_api.oneclickdigital.enabled`: set to "true".
+  * `ebook_api.oneclickdigital.base_uris`: list of regular expressions
+    matching OneClickdigital URLs found in the 859$9 field of your MARC
+    records.  Evergreen uses the patterns specified here to extract
+    record identifiers for OneClickdigital titles.
+
+Additional configuration
+++++++++++++++++++++++++
+Evergreen communicates with third-party vendor APIs using the new
+`OpenILS::Utils::HTTPClient` module.  This module is configured using
+settings in `opensrf.xml`.  The default settings should work for most
+environments by default, but you may need to specify a custom location
+for the CA certificates installed on your server.  You can also disable
+SSL certificate verification on HTTPClient requests altogether, but
+doing so is emphatically discouraged.
+
+
+
+Links to Other Formats and Editions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The record summary pages in the catalog will now link to other formats and
+editions of a title. The links will allow users to quickly jump to another
+format of the title or an edition written in another language. 
+
+
+
+
+
+Metarecord Search Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This release brings several improvement to the Group Formats and Editions
+search. 
+
+ * Limiters on the advanced search page can now be successfully applied to 
+Group Formats and Editions searches,
+ * Electronic resources are now retrievable through these searches,
+ * Paged navigation has improved.
+
+
+
+
+Allow Metarecord Search by default
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Before the TPAC, a site could configure the public catalog to use metarecord searching
+by default, via a configuration file.  Here we bring that back.
+
+A new setting called search.metarecord_default is present in
+`templates/opac/parts/config.tt2` to enable this feature.  By setting this to
+a true value (normally 1) the TPAC will silently include the #metabib search
+modifier in the search form on any interfaces that do not have a UI component
+that allows the user to control the setting.
+
+
+
+RDA Improvements
+^^^^^^^^^^^^^^^^
+ * Author fields are now normalized to strip ending periods so that authors from
+RDA and non-RDA records are collapsed in browse and facet headings.
+ * All author/contributor roles will now display in the record detail page.
+Previously, some of the roles were omitted or were duplicated.
+
+
+Obalkyknih.cz Integration
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now integrates with Czech added content provider obalkyknih.cz. A new
+setting called obalkyknih_cz.enabled is available in
+`templates/opac/parts/config.tt2` to enable this new feature.
+
+
+2.12.0 Acknowledgments
+----------------------
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* Bibliomation
+* British Columbia Libraries Cooperative
+* C/W MARS
+* Georgia PINES
+* King County Library System
+* Linn Libraries Consortium
+* MassLNC
+* Pennsylvania Integrated Library System
+* Pioneer Library System
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
-
+* Adam Bowling
+* Anahi Valdez
+* Ben Shum
+* Bill Erickson
+* Billy Horn
+* Blake Henderson
+* Bob Wicksall
+* Chris Sharp
+* Christine Burns
+* Christine Morgan
+* Clare Sobotka
+* Dan Pearl
+* Dan Scott
+* Dan Wells
+* Darrell Rodgers
+* Debbie Luchenbill
+* Eva Cerninakova
+* Fares Othman
+* Galen Charlton
+* Jakub Kotrla
+* Jane Sandberg
+* Jason Boyer
+* Jason Etheridge
+* Jason Stephenson
+* Jeanette Lundgren
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* Jillianne Presley
+* Jim Keenan
+* Job Diógenes Ribeiro Borges
+* Jonathan Schatz
+* Josh Stompro
+* Kate Butler
+* Kathy Lussier
+* Kyle Huckins
+* Linda Jansová 
+* Michele Morgan
+* Michelle Purcell
+* Mike Rylander
+* Nawras Othman
+* Remington Steed
+* Rogan Hamby
+* Terran McCanna
+* Thomas Berezansky
+* Victoria Lewis
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* British Columbia Libraries Cooperative
+* Calvin College
+* Catalyst DevWorks
+* C/W MARS
+* Emerald Data Networks, Inc.
+* Equinox Open Library Initiative
+* Georgia PINES
+* Indiana State Library
+* The Institute for the Study of Totalitarian Regimes, Prague
+* Jabok Library
+* Jordanian Library and Information Association
+* King County Library System
+* Lake Agassiz Regional Library
+* Laurentian University
+* Linn-Benton Community College
+* MassLNC
+* Merrimack Valley Library Consortium
+* MOBIUS Consortium
+* North of Boston Library Exchange
+* Pioneer Library System
+* Rodgers Memorial Library
+* Sigio
+* Traverse Area District Library
+
 
 We regret any omissions.  If a contributor has been inadvertently
-missed, please open a bug at http://bugs.launchpad.net/evergreen/
+missed, please open a bug at https://bugs.launchpad.net/evergreen/
 with a correction.
 
