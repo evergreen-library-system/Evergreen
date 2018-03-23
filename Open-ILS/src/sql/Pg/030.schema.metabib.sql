@@ -1870,7 +1870,7 @@ BEGIN
         RETURN NEW; -- and we're done
     END IF;
 
-    IF TG_OP = 'UPDATE' THEN -- re-ingest?
+    IF TG_OP = 'UPDATE' AND OLD.deleted IS FALSE THEN -- re-ingest?
         PERFORM * FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc' AND enabled;
 
         IF NOT FOUND AND OLD.marc = NEW.marc THEN -- don't do anything if the MARC didn't change
