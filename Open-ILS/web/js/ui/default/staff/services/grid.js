@@ -60,7 +60,7 @@ angular.module('egGridMod',
 
             // optional: object that enables status icon field and contains
             //    function to handle what status icons should exist and why.
-            statusCell : '=',
+            statusColumn : '=',
 
             // optional primary grid label
             mainLabel : '@',
@@ -117,9 +117,6 @@ angular.module('egGridMod',
             // load auto fields after eg-grid-field's so they are not clobbered
             scope.handleAutoFields();
             scope.collect();
-
-            var statusCell = scope.statusCell;
-            var rowClass = scope.rowClass;
 
             scope.grid_element = element;
             $(element)
