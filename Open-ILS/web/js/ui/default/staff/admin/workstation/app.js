@@ -356,8 +356,8 @@ function($scope , $q , egCore , ngToast) {
     // NOTE: A lot of this data can be shared across templates.
     var seed_user = {
         prefix : 'Mr',
-        first_given_name : 'Slow',
-        second_given_name : 'Joe',
+        first_given_name : 'Joseph',
+        second_given_name : 'Martin',
         family_name : 'Jones',
         suffix : 'III',
         card : {
@@ -369,17 +369,16 @@ function($scope , $q , egCore , ngToast) {
             total_paid : '1.00'
         },
         expire_date : '2020-12-31',
-        alias : 'the dude',
+        alias : 'Joey J.',
         has_email : true,
         has_phone : false,
-        dob : '1984-11-07T00:00:00-8:00',
+        dob : '1980-01-01T00:00:00-8:00',
         juvenile : 'f',
         usrname : '30393830393',
         day_phone : '111-222-3333',
         evening_phone : '222-333-1111',
         other_phone : '333-111-2222',
         email : 'user@example.com',
-        ident_value2 : 'Carol',
         home_ou : {name: function() {return 'BR1'}},
         profile : {name: function() {return 'Patrons'}},
         net_access_level : {name: function() {return 'Filtered'}},
@@ -388,9 +387,11 @@ function($scope , $q , egCore , ngToast) {
         master_account : 'f',
         claims_returned_count : '0',
         claims_never_checked_out_count : '0',
-        alert_message : 'Very slow',
-        ident_type: {name: function() {return 'Other'}},
+        alert_message : 'Coat is in the lost-and-found behind the circ desk',
+        ident_type: {name: function() {return 'Drivers License'}},
         ident_value: '11332445',
+        ident_type2: {name: function() {return 'Other'}},
+        ident_value2 : '55442211',
         addresses : [],
         stat_cat_entries : [
             {
@@ -408,6 +409,7 @@ function($scope , $q , egCore , ngToast) {
         street1 : '123 Apple Rd',
         street2 : 'Suite B',
         city : 'Anywhere',
+        county : 'Great County',
         state : 'XX',
         country : 'US',
         post_code : '12345',
