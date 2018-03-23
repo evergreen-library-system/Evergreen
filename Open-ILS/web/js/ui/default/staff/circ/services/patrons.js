@@ -77,6 +77,24 @@ function($uibModal , $q , egCore) {
                     return user_stats;
                 }
 
+                // show/obscure DOB logic copied from the circ patron app
+                $scope._show_dob = {};
+                $scope.show_dob = function (val) {
+                    if ($scope.patron()) {
+                        if (typeof val != 'undefined') $scope._show_dob[$scope.patron().id()] = val;
+                        return $scope._show_dob[$scope.patron().id()];
+                    }
+                    return !egCore.env.aous['circ.obscure_dob'];
+                }
+
+                $scope.obscure_dob = function() {
+                    return egCore.env.aous && egCore.env.aous['circ.obscure_dob'];
+                }
+                $scope.now_show_dob = function() {
+                    return egCore.env.aous && egCore.env.aous['circ.obscure_dob'] ?
+                        $scope.show_dob() : true;
+                }
+
                 // needed because this directive shares a template with
                 // the patron summary in circ app, but the circ app
                 // displays the patron name elsewhere. 
