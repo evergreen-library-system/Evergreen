@@ -239,8 +239,7 @@ angular.module('egCoreMod')
                                 return null;
                             }
 
-                            egCore.org.settings(['circ.staff_placed_holds_honor_patron_prefs_first',
-                                'circ.staff_placed_holds_staff_ws_ou_override'])
+                            egCore.org.settings(['circ.staff_placed_holds_fallback_to_ws_ou'])
                                 .then(function(auth_usr_aous){
 
                                     // copied more or less directly from XUL menu.js
@@ -251,19 +250,12 @@ angular.module('egCoreMod')
                                     }
 
                                     // find applicable YAOUSes for staff-placed holds
-                                    var honorPatronPrefPickupOU;
-                                    var overrideStaff_WS_OU;
                                     var requestor = egCore.auth.user();
+                                    var pickup_lib = user.home_ou(); // default to home ou
                                     if (requestor.id() !== user.id()){
-                                        // this is a staff-placed hold
-
-                                        settings["staff_WS_OU"] = requestor.ws_ou();
-                                        if (auth_usr_aous['circ.staff_placed_holds_honor_patron_prefs_first']){
-                                            settings['honorPatronPrefPickupOU'] = true;
-                                        }
-
-                                        if (auth_usr_aous['circ.staff_placed_holds_staff_ws_ou_override']){
-                                            settings['overrideStaff_WS_OU'] = true;
+                                        // this is a staff-placed hold, optionally default to ws ou
+                                        if (auth_usr_aous['circ.staff_placed_holds_fallback_to_ws_ou']){
+                                            pickup_lib = requestor.ws_ou();
                                         }
                                     }
 
@@ -283,7 +275,7 @@ angular.module('egCoreMod')
 
                                     deferred.resolve({
                                         "barcode": barcode, 
-                                        "pickup_lib": user.home_ou(), 
+                                        "pickup_lib": pickup_lib,
                                         "settings" : settings, 
                                         "user_email" : user.email(), 
                                         "patron_name" : patron_name

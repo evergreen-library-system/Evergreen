@@ -5446,6 +5446,16 @@ INSERT into config.org_unit_setting_type
         'description'
     ),
     'bool', null)
+,( 'circ.staff_placed_holds_fallback_to_ws_ou', 'circ',
+   oils_i18n_gettext(
+     'circ.staff_placed_holds_fallback_to_ws_ou',
+     'Workstation OU fallback for staff-placed holds',
+     'coust', 'label'),
+   oils_i18n_gettext(
+     'circ.staff_placed_holds_fallback_to_ws_ou',
+     'For staff-placed holds, in the absence of a patron preferred pickup location, fall back to using the staff workstation OU (rather than patron home OU)',
+     'coust', 'description'),
+   'bool', null)
 ;
 
 UPDATE config.org_unit_setting_type

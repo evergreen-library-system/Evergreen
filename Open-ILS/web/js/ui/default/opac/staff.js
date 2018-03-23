@@ -110,31 +110,13 @@ function staff_hold_usr_barcode_changed2(
     }
     cur_hold_barcode = load_info.barcode;
     if (!only_settings || (isload && isload !== true)) {
+        // Safe at this point as we already set cur_hold_barcode
         document.getElementById('hold_usr_input').value = load_info.barcode;
-        // Safe at this point as we already set cur_hold_barcode
-    }
 
-    var patronDefaultPickupOU;
-    if (!only_settings || (isload && isload !== true) && load_info.pickup_lib) {
-
-        // Patron default is either their preferred pickup loc or their home OU
-        patronDefaultPickupOU = load_info.settings['opac.default_pickup_location']
-            ? load_info.settings['opac.default_pickup_location'] : load_info.pickup_lib;
-
-        document.getElementById('pickup_lib').value = patronDefaultPickupOU;
-        // Safe at this point as we already set cur_hold_barcode
-    }
-
-    if (load_info.settings['staff_WS_OU']){ // this is staff-placed hold!
-
-        // check wether we want to default to staff's WS OU or just the patron's Home OU
-        document.getElementById('pickup_lib').value = load_info.settings['overrideStaff_WS_OU']
-            ? patronDefaultPickupOU : load_info.settings['staff_WS_OU'];
-
-        // use staff WS OU as default pickup_lib unless YAOUS says otherwise
-        document.getElementById('pickup_lib').value = load_info.settings['honorPatronPrefPickupOU']
-            ?  patronDefaultPickupOU : load_info.settings['staff_WS_OU'];
-
+        // Patron preferred pickup loc always overrides the default pickup lib
+        document.getElementById('pickup_lib').value = 
+            load_info.settings['opac.default_pickup_location'] ?
+            load_info.settings['opac.default_pickup_location'] : load_info.pickup_lib;
     }
 
     if (!load_info.settings['opac.default_sms_notify']){
