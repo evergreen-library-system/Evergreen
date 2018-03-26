@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:09+0000\n"
+"POT-Creation-Date: 2018-03-02 19:44+0000\n"
 "PO-Revision-Date: 2017-07-27 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-28 05:14+0000\n"
-"X-Generator: Launchpad (build 18439)\n"
+"X-Launchpad-Export-Date: 2018-03-03 05:33+0000\n"
+"X-Generator: Launchpad (build 18566)\n"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
 msgid "&#171; Previous"
@@ -313,7 +313,7 @@ msgstr "Սահմանափակվիր ներմուծման սխալներով գր�
 msgid "Limit to Records with Matches"
 msgstr "Սահմանափակվիր համընկնող գրառումներով"
 
-#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:8
+#: ../../Open-ILS/src/templates/vandelay/vandelay.tt2:9
 msgid "Loading..."
 msgstr "Բեռնում..."
 
@@ -445,7 +445,7 @@ msgstr "Հերթի դրված գրառման որակ"
 msgid "Record Bucket ID"
 msgstr "Գրառման փնջի ID"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:36
+#: ../../Open-ILS/src/templates/vandelay/inc/toolbar.tt2:9 ../../Open-ILS/src/templates/vandelay/vandelay.tt2:37
 msgid "Record Display Attributes"
 msgstr "Գրառման արտածման հատկացուցիչներ"
 

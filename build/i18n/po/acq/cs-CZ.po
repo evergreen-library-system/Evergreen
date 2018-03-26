@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-06-22 06:17+0000\n"
-"PO-Revision-Date: 2018-02-15 19:07+0000\n"
+"POT-Creation-Date: 2018-03-02 19:43+0000\n"
+"PO-Revision-Date: 2018-03-19 21:26+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-02-16 05:17+0000\n"
-"X-Generator: Launchpad (build 18553)\n"
+"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
+"X-Generator: Launchpad (build 18571)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -1766,6 +1766,10 @@ msgstr "Zobrazit objednávku"
 #: ../../Open-ILS/src/templates/acq/picklist/upload.tt2:71 ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:68
 msgid "View Selection List"
 msgstr "Zobrazit akviziční seznam"
+
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr "Zobrazit informace o exempláři"
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
 msgid ""

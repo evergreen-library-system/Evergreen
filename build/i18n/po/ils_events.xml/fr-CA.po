@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > ils_events.xml.po\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-09-03 23:33-0400\n"
+"POT-Creation-Date: 2018-03-02 14:12-0400\n"
 "PO-Revision-Date: 2009-12-10 21:46+0000\n"
 "Last-Translator: Solarus <Unknown>\n"
 "Language-Team: NRCan Library <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-05 04:42+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2018-03-03 05:27+0000\n"
+"X-Generator: Launchpad (build 18566)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Poedit-Language: French\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -422,9 +422,9 @@ msgstr ""
 "La commande d’achat demandée ne peut être divisée car elle ne contient pas "
 "plus d’un article ou d’une ligne."
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This item is currently on the holds shelf for another patron"
-msgstr ""
+#: 10004.ACQ_LINEITEM_NO_PRICE:996
+msgid "The lineitem has no price"
+msgstr "La lineitem n'a pas de prix"
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
 msgid ""
@@ -1307,6 +1307,10 @@ msgstr "L’élément demandé appelé acq.picklist n’a pas été trouvé"
 msgid "The requested item is already marked as lost"
 msgstr "L’article demandé indique déjà qu’il est perdu"
 
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron:"
+msgstr ""
+
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
 msgstr "L’élément demandé appelé config_circ_modifier n’a pas été trouvé"
@@ -1389,10 +1393,6 @@ msgstr "L’élément demandé appelé authority_record_note n’a pas été tro
 #: 1848.ACQ_FUND_NOT_FOUND:627
 msgid "The requested acq.fund was not found"
 msgstr "L’élément demandé appelé acq.fund n’a pas été trouvé"
-
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
-msgstr "La lineitem n'a pas de prix"
 
 #: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
 msgid ""
