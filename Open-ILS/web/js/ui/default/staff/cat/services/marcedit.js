@@ -222,15 +222,16 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div class="col-md-2">'+
-                    '<div class="col-md-1"><label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedField}}</label></div>'+
+                    '<div class="col-md-1"><label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedFieldLabel}}</label></div>'+
                     '<div class="col-md-1"><input type="text" style="padding-left: 5px; margin-left: 1em" size="4" id="{{fixedField}}_ff_input"/></div>'+
                   '</div>',
-        scope: { record: "=", fixedField: "@" },
+        scope: { record: "=", fixedField: "@", fixedFieldLabel: "@" },
         replace: true,
         controller : ['$scope', '$element', 'egTagTable',
             function ( $scope ,  $element ,  egTagTable) {
                 $($element).removeClass('fixed-field-box');
                 $($element).children().css({ display : 'none' });
+                $scope.fixedFieldLabel = $scope.fixedFieldLabel || $scope.fixedField;
                 $scope.me = null;
                 $scope.content = null; // this is where context menus dump their values
                 $scope.item_container = [];
