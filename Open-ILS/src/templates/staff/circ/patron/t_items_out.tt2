@@ -46,7 +46,7 @@
   ng-if="items_out_display != 'noncat'"
   idl-class="circ"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out"
   dateformat="{{$root.egDateAndTimeFormat}}">
