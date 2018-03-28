@@ -15,30 +15,30 @@ Administration
 
 New Latency Tester Tool
 ^^^^^^^^^^^^^^^^^^^^^^^
-The Evergreen Web Staff Client now includes a link to a section under
-*Administration -> Workstation* called *Tests*. This page houses a simple tool
+The Evergreen Web Staff Client now includes a section called *Tests* linked from
+*Administration -> Workstation*. The *Tests* page houses a simple tool
 that can be used to test the latency of the websocket connection between the
 client and the server (via the `opensrf.echo` service).
 
 This page displays which Evergreen host server is being queried. Upon hitting
 the blue "Start Test" button for the first time, it will issue 10 sequentially
 fired requests in order to get a solid initial average. Clicking the button a
-second time will just take one more measurement and recalculate the average
+second time will take one more measurement and recalculate the average
 latency. The results can be copied to clipboard for troubleshooting purposes
 and also cleared from display.
 
 marc_export --uris option
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 The marc_export support script now has a `--uris` option (short form:
-`-u`) to export records with located URIs.  When used by itself, it will
-export only records that have located URIs.  When used in conjunction
-with `--items`, it will add records with located URIs but no
-items/copies to the output.  If combined with a `--library` or
+`-u`) to export records with located URIs (i.e. electronic resources).  When
+used by itself, it will export only records that have located URIs.  When
+used in conjunction with `--items`, it will add records with located URIs
+but no items/copies to the output.  If combined with a `--library` or
 `--descendants` option, this option will limit its output to those
 records with URIs at the designated libraries.  The best way to use
 this option is in combination with the `--items` and one of the
 `--library` or `--descendants` options to export *all* of a library's
-holdings both real and electronic.
+holdings both physical and electronic.
 
 
 Architecture
@@ -62,7 +62,7 @@ as a set of one or more Virtual Index Definitions will be simpler search
 configuration management, faster search speed overall, and more practical
 reconfiguration and adjustment as needed.
 
-Previous to this commit, in order to provide field-specific weighting to
+Previously, in order to provide field-specific weighting to
 keyword matches against titles or authors, an administrator must duplicate many
 other index definitions and supply overriding weights to those duplicates. This
 not only complicates configuration, but slows down record ingest as well as
@@ -111,21 +111,6 @@ We also use more Metabib Display Fields in the client. As a result,
 bibliographic fields will display in proper case in more client interfaces and
 in Evergreen reports.
 
-Search Term Highlighting
-++++++++++++++++++++++++
-This commit enables Search Term Highlighting in the OPAC on the main search
-results page, the record detail page, and intermediate pages such as metarecord
-grouped results page. Highlighting search terms will help the user determine why
-a particular record (or set of records) was retrieved.
-
-Highlighting of matched terms uses the same stemming used to accomplish the
-search, as configured per field and class.
-
-This feature will help the user more quickly determine the relevance of a
-particular record by calling their attention to search terms in context. Lastly,
-it will help familiarize the user with how records are searched, including which
-fields are searched as well as exposing concepts like stemming.
-
 Interfaces
 ++++++++++
 A new AngularJS "MARC Search/Facet Fields" interface has been created to replace
@@ -138,25 +123,6 @@ The new Virtual Index Definition data supplier mapping table,
 `config.metabib_field_virtual_map`, requires the same permissions as the
 MARC Search/Facet Fields interface: CREATE_METABIB_FIELD, UPDATE_METABIB_FIELD,
 DELETE_METABIB_FIELD, or ADMIN_METABIB_FIELD for all actions
-
-There is a new template-level global configuration variable in config.tt2 called
-`search.no_highlight` which disables highlighting for users of that config.tt2
-instance.
-
-Public Catalog
-++++++++++++++
-The public and staff catalog will make use of new APIs to identify and display
-highlight-augmented values for those Display Fields used to render the search
-result pages, intermediate metarecord constituent pages, and record detail
-pages.  Highlighting of terms will be performed using the application of
-Template::Toolkit-driven CSS. A generic CSS class identifying a highlighted
-term, along with CSS classes identifying the search class and each search field
-will be available for use for customization of the highlighting. A stock CSS
-template is provided as a baseline upon which sites may expand.
-
-When highlighting is generally enabled, it may be turned on or off on a per-page
-basis through the use of a UI component which will request the page again
-without highlighting.
 
 Backend
 +++++++
@@ -184,9 +150,9 @@ less weight in default keyword searches.
 Re-ingest or Indexing Dependencies
 ++++++++++++++++++++++++++++++++++
 With the addition and modification of many Index Definitions, a full reingest is
-recommended.  However, search will continue to work as it did before the changes
-in this commit for those records that have not yet been reingested during that
-process.  Therefore a slow, rolling reingest is recommended.
+recommended.  However, search will continue to work as it did previously
+for those records that have not yet been reingested. Therefore a slow, rolling
+reingest is recommended.
 
 Performance Implications or Concerns
 ++++++++++++++++++++++++++++++++++++
@@ -345,8 +311,37 @@ is placing the hold on their behalf.
   library listed, the hold pickup library will default to the
   patron's home library.
 
-OPAC
-~~~~
+Public Catalog
+~~~~~~~~~~~~~~
+
+Search Term Highlighting
+^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now highlights search terms on the public catalog's main search
+results page, the record detail page, and intermediate pages such as metarecord
+grouped results page. Highlighting search terms will help the user determine why
+a particular record (or set of records) was retrieved.
+
+Highlighting of matched terms uses the same stemming used to accomplish the
+search, as configured per field and class.
+
+This feature will help the user more quickly determine the relevance of a
+particular record by calling their attention to search terms in context. Lastly,
+it will help familiarize the user with how records are searched, including which
+fields are searched as well as exposing concepts like stemming.
+
+You can turn off search term highlighting by uncommenting the line
+`search.no_highlight = 1;` in `config.tt2`.
+
+When highlighting is generally enabled, it may be turned on or off on a per-page
+basis through the use of a UI component which will request the page again
+without highlighting.
+
+Highlighting of terms uses Template::Toolkit-driven CSS. A generic CSS class
+identifying a highlighted term, along with CSS classes identifying the search
+class and each search field are available for use for customization of the
+highlighting. A stock CSS template is provided as a baseline upon which sites
+may expand.
+
 
 Copy Location Filter Displays for System Searches
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -368,7 +363,7 @@ Multilingual Search
 This change allows us to configure multilingual search, by extracting values
 from both the 008 controlfield and the 041 datafield.  Because the values
 in each can be normalized to the same controlled list (and, in practice, are
-already from the same normalized value set), OPAC searches can now use normal
+already from the same normalized value set), catalog searches can now use normal
 boolean search semantics to find records with various combinations of
 language attributes.
 
@@ -377,10 +372,10 @@ E.g., in the concerto test data:
   * `keyword: piano item_lang(eng) item_lang(ita)`
 
 
-Optional Display of Badges in OPAC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Optional Display of Badges in Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A new setting controls whether badges (popularity, etc.) are displayed
-in the OPAC. If you do not wish badges to be displayed, set the
+in the catalog. If you do not wish badges to be displayed, set the
 `ctx.hide_badge_scores` setting to "true" in `config.tt2`.
 
 
