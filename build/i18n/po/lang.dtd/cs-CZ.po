@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-07-27 15:50-0500\n"
-"PO-Revision-Date: 2017-04-09 07:00+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2017-09-20 16:53-0500\n"
+"PO-Revision-Date: 2017-09-21 11:54+0000\n"
+"Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-07-30 06:21+0000\n"
-"X-Generator: Launchpad (build 18441)\n"
+"X-Launchpad-Export-Date: 2017-09-23 06:16+0000\n"
+"X-Generator: Launchpad (build 18463)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -143,7 +143,7 @@ msgstr "z"
 #: common.cancel
 msgctxt "common.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: common.library
 msgctxt "common.library"
@@ -803,7 +803,7 @@ msgstr "Formát ankety:"
 #: staff.admin.survey.name.label
 msgctxt "staff.admin.survey.name.label"
 msgid "Name:"
-msgstr "Jméno:"
+msgstr "Název:"
 
 #: staff.admin.survey.opac_visible.label
 msgctxt "staff.admin.survey.opac_visible.label"
@@ -1224,7 +1224,7 @@ msgstr "Příruční knihovna"
 #: staff.browse_list.shelving_loc
 msgctxt "staff.browse_list.shelving_loc"
 msgid "Shelving Location"
-msgstr "Umístění regálu"
+msgstr "Umístění"
 
 #: staff.browse_list.status
 msgctxt "staff.browse_list.status"
@@ -1501,7 +1501,7 @@ msgctxt ""
 "staff.cat.record_buckets.merge_records.cancel_button.label "
 "staff.cat.record_buckets.merge_records.cancel_button.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.cat.record_buckets.merge_records.lead
 msgid "Lead Record?"
@@ -2023,7 +2023,7 @@ msgctxt ""
 "staff.circ.backdate_post_checkin.cancel_btn.label "
 "staff.circ.backdate_post_checkin.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.circ.backdate_post_checkin.apply_btn.label
 #: staff.circ.backdate_post_checkin.apply_btn.accesskey
@@ -2300,7 +2300,7 @@ msgstr "Ano"
 #: staff.copy.attr.shelving_location
 msgctxt "staff.copy.attr.shelving_location"
 msgid "Shelving Location"
-msgstr "Umístění regálu"
+msgstr "Umístění"
 
 #: staff.copy.attr.shelving_location.example1
 msgid "Stacks"
@@ -6062,7 +6062,7 @@ msgctxt ""
 "staff.patron_display.apply_penalty_dialog.cancel_btn.label "
 "staff.patron_display.apply_penalty_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.patron_display.apply_penalty_dialog.apply_btn.label
 #: staff.patron_display.apply_penalty_dialog.apply_btn.accesskey
@@ -6125,7 +6125,7 @@ msgctxt ""
 "staff.patron_display.edit_penalty_dialog.cancel_btn.label "
 "staff.patron_display.edit_penalty_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.patron_display.edit_penalty_dialog.apply_btn.label
 #: staff.patron_display.edit_penalty_dialog.apply_btn.accesskey
@@ -6782,7 +6782,7 @@ msgstr "Režim:"
 
 #: staff.serial.manage_items.bind.label
 msgid "Bind"
-msgstr "Vazby"
+msgstr "Svázat"
 
 #: staff.serial.manage_items.receive.label
 msgid "Receive"
@@ -6953,7 +6953,7 @@ msgstr "Má varianty"
 
 #: staff.serial.patternwiz.units_per.undetermined.label
 msgid "Undetermined"
-msgstr "Nezjištěno"
+msgstr "Neurčeno"
 
 #: staff.serial.patternwiz.continuity.continuous.label
 msgid "Increments continuously"
@@ -7088,7 +7088,7 @@ msgstr "Z"
 
 #: staff.serial.patternwiz.compress.cannot
 msgid "Cannot compress or expand"
-msgstr "Zkrácení a rozpis"
+msgstr "Nelze zkrátit nebo rozepsat"
 
 #: staff.serial.patternwiz.compress.can_compress
 msgid "Can compress but not expand"
@@ -8185,7 +8185,7 @@ msgstr "Uložit"
 #: staff.server.admin.closed_dates.cancel
 msgctxt "staff.server.admin.closed_dates.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.server.admin.closed_dates.confirm_delete
 msgid "Are you sure you wish to delete the selected close date?"
@@ -8347,7 +8347,7 @@ msgstr "Potvrdit"
 #: staff.server.admin.copy_locations.cancel
 msgctxt "staff.server.admin.copy_locations.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.server.admin.copy_locations.update_success
 msgid "Update Succeeded"
@@ -8542,7 +8542,7 @@ msgstr "Potvrdit"
 #: staff.server.admin.non_cat_types.cancel
 msgctxt "staff.server.admin.non_cat_types.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.server.admin.non_cat_types.delete.confirm
 msgid "Are you sure you wish to delete the selected non-cataloged type?"
@@ -9280,7 +9280,7 @@ msgstr "Smazat statistickou kategorii"
 #: staff.server.admin.stat_cat.cancel
 msgctxt "staff.server.admin.stat_cat.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.server.admin.stat_cat.edit_entry_owner
 msgid "Owned By "
@@ -10228,7 +10228,7 @@ msgstr "&Modifikátor výpůjčky"
 #: staff.circ.pre_cat.cancel.accesskey
 msgctxt "staff.circ.pre_cat.cancel.label staff.circ.pre_cat.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.circ.pre_cat.checkout.label
 #: staff.circ.pre_cat.checkout.accesskey
@@ -10377,7 +10377,7 @@ msgstr "Datum vydání"
 
 #: staff.cat.bib_brief.call_number.label
 msgid "Bib Call #:"
-msgstr "Signatura z bib. záznamu #:"
+msgstr "Signatura z bib. záznamu:"
 
 #. "TCN" is an abbreviation for "title control number"
 #: staff.cat.bib_brief.title_control_number.label
@@ -10671,7 +10671,7 @@ msgstr "Zrušit rezervaci"
 #: staff.hold_list.cancel_hold_dialog.header
 msgctxt "staff.hold_list.cancel_hold_dialog.header"
 msgid "Cancel Hold"
-msgstr "Zrušení rezervace"
+msgstr "Zrušit rezervaci"
 
 #: staff.hold_list.cancel_hold_dialog.description
 msgid "Reason and Notes"
@@ -11324,7 +11324,7 @@ msgctxt ""
 "staff.cat.copy_buckets_quick.item_buckets.cancel.label "
 "staff.cat.copy_buckets_quick.item_buckets.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.cat.copy_editor.window.label
 msgctxt "staff.cat.copy_editor.window.label"
@@ -11455,7 +11455,7 @@ msgstr "Signatura"
 
 #: staff.cat.copy_summary.status.label
 msgid "Status:"
-msgstr "Statut:"
+msgstr "Status:"
 
 #: staff.cat.copy_summary.circulate.label
 msgid "Circulate:"
@@ -11950,7 +11950,7 @@ msgctxt ""
 "staff.cat.record_buckets_quick.cancel.label "
 "staff.cat.record_buckets_quick.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.cat.spine_labels.re-generate.label
 #: staff.cat.spine_labels.re-generate.accesskey
@@ -12140,7 +12140,7 @@ msgstr "Upra&vit"
 msgctxt ""
 "staff.cat.volume_editor.cancel.label staff.cat.volume_editor.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.cat.volume_editor.automerge.label
 #: staff.cat.volume_editor.automerge.accesskey
@@ -12447,7 +12447,7 @@ msgctxt ""
 "staff.patron.bill_cc_info.cancel.label "
 "staff.patron.bill_cc_info.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.patron.bill_cc_info.submit.label
 #: staff.patron.bill_cc_info.submit.accesskey
@@ -12488,7 +12488,7 @@ msgctxt ""
 "staff.patron.bill_check_info.cancel.label "
 "staff.patron.bill_check_info.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.patron.bill_check_info.submit.label
 #: staff.patron.bill_check_info.submit.accesskey
@@ -12608,7 +12608,7 @@ msgstr "Začáte&k platby"
 #: staff.patron.bill_history.bills.end_date.label
 msgctxt "staff.patron.bill_history.bills.end_date.label"
 msgid "End Date"
-msgstr "Ukončení platby"
+msgstr "Datum ukončení"
 
 #: staff.patron.bill_history.bills.retrieve.label
 #: staff.patron.bill_history.bills.retrieve.accesskey
@@ -13005,7 +13005,7 @@ msgctxt ""
 "staff.patron.bill_wizard.cancel.label "
 "staff.patron.bill_wizard.cancel.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.patron.bill_wizard.submit.label
 #: staff.patron.bill_wizard.submit.accesskey
@@ -14504,7 +14504,7 @@ msgctxt ""
 "staff.util.timestamp_dialog.cancel_btn.label "
 "staff.util.timestamp_dialog.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.util.timestamp_dialog.remove_btn.label
 #: staff.util.timestamp_dialog.remove_btn.accesskey
@@ -14604,6 +14604,15 @@ msgid ""
 "here for legacy purposes, and the Custom/External Print strategy is more "
 "flexible."
 msgstr ""
+"Tato tisková strategie bude ignorovat nastavení tiskárny v sekci \"Běžná "
+"nastavení\". Ve  Windows musíte namapovat vašit tiskárnu na port LPT1 v menu "
+" Start  -&gt; Tiskárny a faxy -&gt; vaše tiskárn -&gt; kliknou pravým "
+"tlačítkem, Vlastnosti -&gt; Porty. Bude také ztraceno  HTML formátování jako "
+"různé řezy a velikosti písma a nebudou fungovat jakékoliv pokročilé šablony, "
+"které využívají  Javascript. Data jsou poslána na tiskárnu jako prost text. "
+"Tato možnost zde byla ponechána z historických důvodů - doporučujeme spíše "
+"použít Strategii pro přizpůsobený/externí tisk , která nabízí větší "
+"flexibilitu."
 
 #: staff.printing.advanced.custom_print.warning.header
 msgid "Note on Custom/External Print"
@@ -14615,6 +14624,9 @@ msgid ""
 "Settings\" section. Advanced templates using Javascript may not work, even "
 "if the external tool can take the receipt.html file."
 msgstr ""
+"Tato tisková strategie ignoruje nastavení tiskárny v sekci \"Běžná "
+"nastavení\". Pokročilé šablony, které používají Javascript, nemusí správně "
+"fungovat i přesto, že externí nástroj převzal soubor receipt.htm."
 
 #: staff.printing.advanced.html_templates.warning.header
 msgid "Also..."
@@ -14635,6 +14647,19 @@ msgid ""
 "&lt;p&gt;Hello World&lt;/p hex=\"0C\"&gt; will translate to Hello World + "
 "form feed control character."
 msgstr ""
+"Při použití šablon pro tisk stvrzenek se při volbě Tiskové strategie DOS "
+"LPT1 nebo  Přizpůsobené/externí tiskové strategie (s \"reciept.txt\")  "
+"klient pokusí převést jakékoliv HTML značky na text. Tento proces však může "
+"být neúplný a pokud používate tiskovu strategii prostého textu, měli byste "
+"kvůli zachování  nejlepší spolehlivosti  tiskového výstupu  zvážit "
+"přepracování Vašich šablon do prostého textu. Pokud ale používáte tiskovou "
+"strategii prostého textu spolu s HTML značkami, můžete použít zahrnout "
+"speciální znakové kódy ve dvoučíselném hexadecimálním tvaru v atributu "
+"\"hex\" pro daný prvek. Tyto kódy budou převedeny na skutečné znaky a budou "
+"vloženy na místo značky. Například  &lt;p hex=\"0C\"&gt;Ahoj světe&lt;/p&gt; "
+"bude převedeno na řídící znak pro zalomení + Ahoj světe. &lt;p&gt;Ahoj "
+"světe&lt;/p hex=\"0C\"&gt; bude převedeno na Ahoj světe + řídící znak pro "
+"zalomení."
 
 #: staff.client.portal.title
 msgid "Evergreen Staff Client Portal"
@@ -14907,7 +14932,7 @@ msgctxt ""
 "staff.item.batch.hold.cancel_btn.label "
 "staff.item.batch.hold.cancel_btn.accesskey"
 msgid "&Cancel"
-msgstr "Stor&no"
+msgstr "&Zrušit"
 
 #: staff.item.batch.hold.failures_and_settings
 msgid "The settings above may be changed for retries and overrides."
