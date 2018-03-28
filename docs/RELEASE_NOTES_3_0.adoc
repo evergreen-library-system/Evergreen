@@ -3,6 +3,66 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.6
+---------------
+This release is a security release that fixes cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog. This release
+also includes several other bugfixes improving on Evergreen 3.0.5.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/contents.tt2`
+* `Open-ILS/src/templates/opac/parts/record/copy_counts.tt2`
+* `Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2`
+
+Note that exploiting the XSS vulnerabilities fixed in this release
+would require either the ability to create maliciously-constructed
+MARC bibliographic or holdings records or the ability to set a
+maliciously constructed organizational unit name.
+
+Other Bugfixes
+~~~~~~~~~~~~~~
+Evergreen 3.0.6 also includes the following changes:
+
+* When using 'Selection Lists -> Edit MARC Order Record' in the web
+  staff client, now only one click is required to save the MARC
+  record rather than two.
+* The volume/copy editor in the web staff client now better handles
+  editing multiple items that have different sets of statistical
+  category values assigned to them.
+* The act of merging bibliographic records now updates bookbags
+  that referred to the source bibliographic record rather than
+  effectively deleting entries for that record.
+* Additional columns were added to the Holds Pull List in the
+  web staff client.
+* The patron registration form in the web staff client now correctly
+  manages setting user preferences.
+* An error in a pgTAP unit test was corrected.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.6 security release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Andrea Neiman
+* Mike Rylander
+* Dan Scott
+* Chris Sharp
+* Cesar Velez
+
 Evergreen 3.0.5
 ---------------
 This release contains bug fixes improving on Evergreen 3.0.4.
