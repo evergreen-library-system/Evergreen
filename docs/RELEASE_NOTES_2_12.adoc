@@ -3,6 +3,39 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.12
+-----------------
+This release is a security release that fixes cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/contents.tt2`
+* `Open-ILS/src/templates/opac/parts/record/copy_counts.tt2`
+* `Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2`
+
+Note that exploiting the XSS vulnerabilities fixed in this release
+would require either the ability to create maliciously-constructed
+MARC bibliographic or holdings records or the ability to set a
+maliciously constructed organizational unit name.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.12 security release of
+Evergreen:
+
+* Galen Charlton
+* Dan Scott
+* Chris Sharp
+
 Evergreen 2.12.11
 -----------------
 This release contains bug fixes improving on Evergreen 2.12.10:
