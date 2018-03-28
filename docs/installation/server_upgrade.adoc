@@ -47,8 +47,8 @@ the https://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
 +
 [source, bash]
 -----------------------------------------------
-wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.1.rc.tar.gz
-tar xzf Evergreen-ILS-3.1.rc.tar.gz
+wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.1.0.tar.gz
+tar xzf Evergreen-ILS-3.1.0.tar.gz
 -----------------------------------------------
 +
 [NOTE]
@@ -58,7 +58,7 @@ For the latest edition of Evergreen, check the https://evergreen-ils.org/egdownl
 +
 [source, bash]
 ---------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.1.rc
+cd /home/opensrf/Evergreen-ILS-3.1.0
 ---------------------------------------------
 +
 On the next command, replace `[distribution]` with one of these values for your
@@ -82,7 +82,7 @@ make -f Open-ILS/src/extras/Makefile.install [distribution]
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.1.rc
+cd /home/opensrf/Evergreen-ILS-3.1.0
 PATH=/openils/bin:$PATH ./configure --prefix=/openils --sysconfdir=/openils/conf
 make
 ------------------------------------------------------------
@@ -93,7 +93,7 @@ These instructions assume that you have also installed OpenSRF under /openils/. 
 +
 [source, bash]
 ------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.1.rc
+cd /home/opensrf/Evergreen-ILS-3.1.0
 make STAFF_CLIENT_STAMP_ID=rel_3_1_0 install
 ------------------------------------------------------------
 +
@@ -130,7 +130,7 @@ Copying these configuration files will remove any customizations you have made t
 +
 [source, bash]
 -------------------------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.1.rc
+cd /home/opensrf/Evergreen-ILS-3.1.0
 perl Open-ILS/src/support-scripts/eg_db_config --update-config --service all \
 --create-offline --database evergreen --host localhost --user evergreen --password evergreen
 -------------------------------------------------------------------------
@@ -154,21 +154,21 @@ The diff command can be used to show the differences between the distribution ve
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.1.rc/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup
+cp /home/opensrf/Evergreen-ILS-3.1.0/Open-ILS/examples/apache/eg_startup /etc/apache2/eg_startup
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/eg_vhost.conf by copying the example from Open-ILS/examples/apache/eg_vhost.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.1.rc/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf
+cp /home/opensrf/Evergreen-ILS-3.1.0/Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/eg_vhost.conf
 ----------------------------------------------------------
 +
 .. Update /etc/apache2/sites-available/eg.conf by copying the example from Open-ILS/examples/apache/eg.conf.
 +
 [source, bash]
 ----------------------------------------------------------
-cp /home/opensrf/Evergreen-ILS-3.1.rc/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
+cp /home/opensrf/Evergreen-ILS-3.1.0/Open-ILS/examples/apache/eg.conf /etc/apache2/sites-available/eg.conf
 ----------------------------------------------------------
 
 Upgrade the Evergreen database schema
@@ -237,7 +237,7 @@ as a user with the ability to connect to the database server.
 
 [source, bash]
 ----------------------------------------------------------
-cd /home/opensrf/Evergreen-ILS-3.1.rc/Open-ILS/src/sql/Pg
+cd /home/opensrf/Evergreen-ILS-3.1.0/Open-ILS/src/sql/Pg
 psql -U evergreen -h localhost -f version-upgrade/3.0.5-3.1.0-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
