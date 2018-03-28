@@ -121,6 +121,9 @@ fund.
   *Tags* tab and then click the *Add Tag* button. Select the tag from the
   dropdown menu.
 
+For convenience when propagating or rolling over a fund for a new fiscal year,
+fund tags will be copied from the current fund to the new year's fund.
+
 Ordering
 --------
 
