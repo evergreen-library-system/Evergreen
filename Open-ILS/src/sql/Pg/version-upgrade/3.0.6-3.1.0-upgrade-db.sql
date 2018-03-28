@@ -1,4 +1,4 @@
---Upgrade Script for 3.0.5 to 3.1.0
+--Upgrade Script for 3.0.6 to 3.1.0
 \set eg_version '''3.1.0'''
 BEGIN;
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.1.0', :eg_version);

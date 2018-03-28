@@ -238,7 +238,7 @@ as a user with the ability to connect to the database server.
 [source, bash]
 ----------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-3.1.0/Open-ILS/src/sql/Pg
-psql -U evergreen -h localhost -f version-upgrade/3.0.5-3.1.0-upgrade-db.sql evergreen
+psql -U evergreen -h localhost -f version-upgrade/3.0.6-3.1.0-upgrade-db.sql evergreen
 ----------------------------------------------------------
 
 [TIP]
