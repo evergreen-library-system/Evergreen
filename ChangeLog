@@ -1,3 +1,83 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 286abbcd8d72d6eb560f5a44f5e0400cef015780
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:44:18 2018 -0400
+
+    update upgrade instructions
+
+18	17	docs/installation/server_upgrade.adoc
+
+commit fdc72a782f6471205471588c1b585b657a1fe555
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:40:59 2018 -0400
+
+    2.12.11-2.12.12 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.11-2.12.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.11-2.12.12-upgrade-db.sql
+
+commit c51e12673204e9fbeee8da3d1e7907275c804f29
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:14:41 2018 -0400
+
+    release notes for Evergreen 2.12.12
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+33	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit 411307667f8fd4c4b4190760de2432036eb3a6e5
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Mar 27 16:30:35 2018 -0400
+
+    LP#1757526: escape more catalog data (MFHD edition)
+    
+    This patch ensures that data derived from MFHDs is escaped
+    for in the issues held tab on the public catalog record display
+    page.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2
+
+commit 95d73451efba7de6eb0d820bc781364133ba88f9
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Mar 21 22:08:35 2018 +0100
+
+    LP1757526 Escape displayed catalogue data
+    
+    Content in content fields (5xx) as well as for the names of locations in copy
+    count alt text was not being properly escaped, allowing for the possibility of
+    executing arbitrary JavaScript in the case of a malicious catalogue record
+    (whether edited in the system, or imported)
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	2	Open-ILS/src/templates/opac/parts/record/contents.tt2
+2	2	Open-ILS/src/templates/opac/parts/record/copy_counts.tt2
+
+commit 21df36c0bcd5994f1a274a54fdf607dfe5c1b8cc
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Mar 21 14:29:42 2018 -0400
+
+    Forward port 2.12.10-2.12.11 db upgrade script.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.10-2.12.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.10-2.12.11-upgrade-db.sql
+
+commit e51644fda2edc05d562899eb60c77f2e60c9d968
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Mar 21 14:29:08 2018 -0400
+
+    Forward port upgrade instructions
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+18	17	docs/installation/server_upgrade.adoc
