@@ -12,4 +12,5 @@ DROP FUNCTION evergreen.populate_circ
     (INTEGER, INTEGER, BIGINT, INTEGER, TEXT, TEXT, TEXT, BOOLEAN);
 DROP FUNCTION evergreen.populate_hold 
     (TEXT, BIGINT, INTEGER, INTEGER, INTEGER, BOOLEAN, TIMESTAMP WITH TIME ZONE, TEXT);
-
+DROP FUNCTION evergreen.populate_booking_resource_type(INTEGER, TEXT);
+DROP FUNCTION evergreen.populate_booking_resource(TEXT);

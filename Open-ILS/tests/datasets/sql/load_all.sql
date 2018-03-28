@@ -80,12 +80,21 @@ DELETE FROM marcxml_import;
 -- load metarecord bibs
 \i bibs_mr.sql
 
+-- load booking bibs
+\i bibs_booking.sql
+
 -- insert all loaded bibs into the biblio.record_entry in insert order
 INSERT INTO biblio.record_entry (marc, last_xact_id)
     SELECT marc, tag FROM marcxml_import ORDER BY id;
 
 -- load MR copies, etc.
 \i assets_mr.sql
+
+-- load booking assets
+\i assets_booking.sql
+
+-- load booking resource types and resources
+\i booking_resources_types.sql
 
 -- load survey data
 \i surveys.sql

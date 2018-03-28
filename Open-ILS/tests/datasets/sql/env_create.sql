@@ -226,4 +226,36 @@ $$ LANGUAGE PLPGSQL;
 
 
 
+/**
+ * Create a booking resource type for all 
+ * bib records with a specific last_xact_id
+*/
+CREATE FUNCTION evergreen.populate_booking_resource_type	
+    (ownlib INTEGER, bib_tag TEXT)
+RETURNS void AS $$
+    INSERT INTO booking.resource_type(name, owner, catalog_item, transferable, record)
+        SELECT TRIM (' ./' FROM (XPATH(
+                '//marc:datafield[@tag="245"]/marc:subfield[@code="a"]/text()',
+                marc::XML,
+                ARRAY[ARRAY['marc', 'http://www.loc.gov/MARC21/slim']]
+        ))[1]::TEXT),
+        $1, True, True, id
+        FROM biblio.record_entry
+        WHERE id > 0 AND last_xact_id = $2;
+$$ LANGUAGE SQL;
+
+/**
+ * Make all items with barcodes that start 
+ * with a certain substring bookable
+*/
+
+CREATE FUNCTION evergreen.populate_booking_resource
+    (barcode_start TEXT)
+RETURNS void AS $$
+    INSERT INTO booking.resource(owner, type, barcode)
+        SELECT circ_lib, resource_type.id, barcode FROM asset.copy
+        INNER JOIN asset.call_number on copy.call_number=call_number.id
+        INNER JOIN booking.resource_type on call_number.record=resource_type.record
+        WHERE barcode LIKE $1 || '%';
+$$ LANGUAGE SQL;
 
