@@ -331,6 +331,19 @@ Adds a mailto link to the patron's email in their profile so it can
 be clicked to send and email to the patron. No new settings or
 permissions are included in this feature.
 
+Pickup Library for Staff-placed Holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a new library setting, _circ.staff_placed_holds_fallback_to_ws_ou_,
+that helps determine the hold pickup library in cases where patrons don't
+have a preferred hold pickup library in their account and a staff member
+is placing the hold on their behalf.
+
+  * When this setting is true and the patron doesn't have a preferred
+  library listed, the hold pickup library will default to the
+  workstation's organizational unit.
+  * When this setting is false and the patron doesn't have a preferred
+  library listed, the hold pickup library will default to the
+  patron's home library.
 
 OPAC
 ~~~~
