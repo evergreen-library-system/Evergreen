@@ -1,3 +1,362 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 38395df8b43438e4d002abf81a76eca28d8016af
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 12:19:37 2018 -0400
+
+    bumping Perl version string for 3.0.6
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit c936692a2627630437a3422b7be15cc4c82f554a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:40:59 2018 -0400
+
+    2.12.11-2.12.12 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.11-2.12.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.11-2.12.12-upgrade-db.sql
+
+commit a0b4d9887ccd83c031c42568d2bc826c60591aa0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:38:59 2018 -0400
+
+    3.0.5-3.0.6 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+272	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.5-3.0.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.5-3.0.6-upgrade-db.sql
+
+commit 467530e2098646ae2797c6ce263b896a91034b96
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:14:41 2018 -0400
+
+    release notes for Evergreen 2.12.12
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+33	0	docs/RELEASE_NOTES_2_12.adoc
+
+commit 6554ee5448d1112fcbd8121dcb53fb1726182baf
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 28 10:29:12 2018 -0400
+
+    release notes for Evergreen 3.0.6
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+60	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit facbf340beb258bbe065e1f44326c09268da1e7f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Mar 27 16:30:35 2018 -0400
+
+    LP#1757526: escape more catalog data (MFHD edition)
+    
+    This patch ensures that data derived from MFHDs is escaped
+    for in the issues held tab on the public catalog record display
+    page.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2
+
+commit 9d7b19f77d0ba1c2d898f0e73b3d8fa82331950f
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Wed Mar 21 22:08:35 2018 +0100
+
+    LP1757526 Escape displayed catalogue data
+    
+    Content in content fields (5xx) as well as for the names of locations in copy
+    count alt text was not being properly escaped, allowing for the possibility of
+    executing arbitrary JavaScript in the case of a malicious catalogue record
+    (whether edited in the system, or imported)
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	2	Open-ILS/src/templates/opac/parts/record/contents.tt2
+2	2	Open-ILS/src/templates/opac/parts/record/copy_counts.tt2
+
+commit 373cce64eafebd4b90bf040cf91f5b464540c057
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Mar 28 07:08:04 2018 -0700
+
+    Docs: fund tag preservation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/admin_initial_setup/ordering_materials.adoc
+
+commit 6a8421181a9612a901975f7295c61b13a56de872
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Mar 27 12:01:00 2018 -0400
+
+    Revert "LP#1758347: ensure that upgrade includes latest asset.merge_record_assets()"
+    
+    This reverts commit 214ef11de23d81fb631e8debc7b8c04e23d8e752.
+
+0	277	Open-ILS/src/sql/Pg/upgrade/1108.schema.lp1758347_fix_merge_record_assets.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1108.schema.lp1758347_fix_merge_record_assets.sql
+
+commit d6a09e851896bc86e7500d329eb1f5fe65b262c9
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Mar 23 08:35:56 2018 -0400
+
+    LP#1758322: Fix  lp1731960_test_preserving_bookbag_entries test
+    
+    A typo inserted the incorrect record number for the
+     lp1731960_test_preserving_bookbag_entries. This patch fixes
+    the typo.
+    
+    Thanks to Jason Boyer for spotting the problem!
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/t/lp1731960_test_preserving_bookbag_entries.pg
+
+commit 214ef11de23d81fb631e8debc7b8c04e23d8e752
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Mar 23 10:23:19 2018 -0400
+
+    LP#1758347: ensure that upgrade includes latest asset.merge_record_assets()
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+277	0	Open-ILS/src/sql/Pg/upgrade/1108.schema.lp1758347_fix_merge_record_assets.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1108.schema.lp1758347_fix_merge_record_assets.sql
+
+commit 83e923049146ecf41625805d922fcc86336fc8fe
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Mar 22 19:36:19 2018 -0400
+
+    LP#1731960: Stamping upgrade script for preserve book bags on bib merge
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+            Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.preserve_book_bags_on_bib_merge.sql => 1107.schema.preserve_book_bags_on_bib_merge.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{xxxx.schema.preserve_book_bags_on_bib_merge.sql => 1107.schema.preserve_book_bags_on_bib_merge.sql} (99%)
+
+commit 6f7aeaa56d0aa4671ba03dc863ea2a3c650f7171
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Thu Mar 22 13:50:52 2018 -0400
+
+    LP#1731960: adding upgrade script for updating the function
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+269	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.preserve_book_bags_on_bib_merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.preserve_book_bags_on_bib_merge.sql
+
+commit 978479d8e6f50465ec4049db60d01c002a09c1b9
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Tue Nov 21 18:50:34 2017 -0500
+
+    LP#1731960-preserving book bag entries with new values during bib merge
+    
+    The asset.merge_record_assets() removes bib records from containers when
+    merging and deleting the record as appropriate but bib containers with
+    the btype of 'bookbag' (used as reading lists) should instead be updated
+    to the new bib record. Includes Pgtap test.
+    
+    Signed-off-by: Rogan Hamby <rhamby@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+            Open-ILS/src/sql/Pg/999.functions.global.sql
+    
+    Conflicts:
+            Open-ILS/src/sql/Pg/999.functions.global.sql
+
+6	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+59	0	Open-ILS/src/sql/Pg/t/lp1731960_test_preserving_bookbag_entries.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1731960_test_preserving_bookbag_entries.pg
+
+commit cde4a57059d6ab75a632114cd89ea3e0f2a55f35
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 22 15:36:50 2018 -0400
+
+    Forward port 2.12.11 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/2.12.10-2.12.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/2.12.10-2.12.11-upgrade-db.sql
+
+commit 1c4ed5443d09dd73cb1ce3031994d99f7a147f80
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 22 14:39:14 2018 -0400
+
+    Forward port 3.0.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.4-3.0.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.4-3.0.5-upgrade-db.sql
+
+commit 1f58167fd4072e4ebaa02f700403da376bfb0cfd
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Mar 22 12:51:45 2018 -0400
+
+    LP#1728147: more tweaks to grid
+    
+    * Make paths to expire_time and cut_in_line more concise
+    * Add SMS Carrier column back
+    * Tweak labels of the patron first and last name columns
+    * Ensure that the "Call Number" column continues to be sortable
+      by normalized call number label. Note that due to a quirk of
+      egGrid, which doesn't currently have a way to specify that a column
+      always be retrieved by a fielder query but /not/ be directly
+      available as a displayable column, we also need a "Call Number Label"
+      column at the moment.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+19	7	Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2
+
+commit 8ac71ff5f78eefc2dbd4d42544166e45d49515e3
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Mar 22 12:14:17 2018 -0400
+
+    LP#1728147: correct fleshing of staff hold column
+    
+    This patch fixes the test (ahr.usr is fleshed, but not ahr.requestor)
+    and ensures that the value is cached correctly.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	5	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 8bcde79d5b05d87b6a9fb21ac30e7b7e3d6dfdd3
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Feb 16 14:40:17 2018 -0500
+
+    LP#1728147: Add patron's first/last name and Alias column
+    
+    These were also missing from the Holds Pull grid.
+    
+    This patch also corrects the determination of whether a hold
+    was staff-placed or not.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	0	Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit cd04530a6134e08a3be6b132a4e7f20383b4e5e2
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Jan 30 13:13:52 2018 -0500
+
+    LP#1728147 - fix some Holds Pull List grid columns
+    
+    This adds a few missing columns to the Holds Pull List grid,
+    and addresses a few display issues.
+    
+    New columns added are Hold Type, Circ Mod, Staff Hold,
+    Email/Phone/SMS Notify, Copy Status Change Time, ISBN,
+    Edition, Top of Queue, Total Holds, and Expire Date.
+    
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+28	22	Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2
+5	0	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 584a166b2936bd33fc1f6625073690c09ec00c18
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Jan 19 14:43:38 2018 -0500
+
+    LP#1702557-Make Acq MarcEditor Just Have Save Button
+    
+    Like the changes to the z3950 marceditor UI, and serials,
+    make the Acq marceditor have a simple Save button, instead
+    of the Modify + Save Edits buttons needed to save a change.
+    Same change as in 1710405, et al. Note this also fixes a
+    propagation issue that prevented changes from marceditor's
+    scope.marcXml from making it to the modal controller scope,
+    and being saved. Props to miker for helping me debug this!
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	3	Open-ILS/src/templates/staff/acq/t_edit_marc_order_record.tt2
+1	1	Open-ILS/web/js/ui/default/staff/acq/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 5c27ff5e90e6ab14dcf87b2d884c474023793d88
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 19 15:22:44 2018 -0400
+
+    LP#1361258 Patron reg repair user settings saving/loading
+    
+    Avoid caching user setting values at the service (app) level in the user
+    editor.  In other words, always fetch a fresh copy of the current user's
+    setting with each instance of the editor page.
+    
+    This solves a number problems where stale versions of the cached data
+    were referenced and acted on, both when displaying an updating user
+    settings.
+    
+    Additionally, ensure that clone user and stage user data is refreshed
+    on all page instances as the URL params that affect these values can
+    change per instance.
+    
+    Other data that is common to all instances (e.g. the set of profile
+    groups) is still cached as before.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+42	28	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 85faf875b000dca04e19e9fff79477976e4013b9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 10 11:25:27 2018 -0500
+
+    LP#1742779: Distinguish between no statcat values and multiple values in copy editor to assist staff
+    
+    WRT stat cats, the copy editor in the web client will display the value of a
+    stat cat IFF all selected copies both use the stat cat AND use the same value
+    for that stat cat. Otherwise it displays <NONE>, which is confusing in the
+    case of some selected copies just not using the stat cat, or all selected
+    copies using it, but using different values.
+    
+    This commit provides tracking of the mixed-use stat, and displays <MULTIPLE>
+    for the value instead of <NONE> in that case.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+12	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit d32dd91cbd9c24a8e89401b64abaaa619a7e5fba
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Mar 22 07:05:21 2018 -0700
+
+    Docs: adding several bug fixes to 3.0.5
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	0	docs/RELEASE_NOTES_3_0.adoc
