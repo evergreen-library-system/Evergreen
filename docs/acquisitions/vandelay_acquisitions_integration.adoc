@@ -40,6 +40,9 @@ system will use the organizational unit's default fiscal year stored in the
 database. If not fiscal year is set, the system will default to the current
 calendar year.
 
+image::media/load_marc_order_records.png[Acquisitions MARC upload screen]
+
+
 Record Matching Options
 ~~~~~~~~~~~~~~~~~~~~~~~
 Use the options below the horizontal rule for the system to check for matching
@@ -81,6 +84,9 @@ will load them as acquisitions copies. (Note: These can be overlayed with real c
 during the MARC batch importing process.) Or you can select *Load Items for
 Imported Records* to load them as live copies that display in the catalog.
 
+image::media/load_marc_order_records.png[Acquisitions MARC upload screen]
+
+
 Default Upload Settings
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -99,6 +105,9 @@ You can set default upload values by modifying the following settings in
 - Upload Merge on Best Match by Default
 - Upload Merge on Exact Match by Default
 - Upload Merge on Single Match by Default
+
+image::media/acq_upload_library_settings.png[Acq upload settings in Library Settings Editor]
+
 
 Sticky Settings
 ~~~~~~~~~~~~~~~
