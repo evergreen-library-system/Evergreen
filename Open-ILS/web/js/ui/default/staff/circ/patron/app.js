@@ -709,6 +709,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
 function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
     $scope.initTab('messages', $routeParams.id);
     var usr_id = $routeParams.id;
+    var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
 
     // setup date filters
     var start = new Date(); // now - 1 year
@@ -735,6 +736,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
         setQuery : function() {
             return {
                 usr : usr_id,
+                org_unit : org_ids,
                 '-or' : [
                     {stop_date : null},
                     {stop_date : {'>' : 'now'}}
@@ -750,6 +752,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
         setQuery : function() {
             return {
                 usr : usr_id, 
+                org_unit : org_ids,
                 stop_date : {'<=' : 'now'},
                 set_date : {between : date_range()}
             };
