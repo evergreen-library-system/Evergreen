@@ -21,7 +21,7 @@ Add a new permission:
 
 3) In the *New Permission* field, enter the text that describes the new permission.
 
-image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.png[Create new permission to limit use of Z39.50 servers]
 
 4) Click *Add*.
 
@@ -38,7 +38,7 @@ Restrict Z39.50 Sources by Permission Group
 
 3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
 
-image::media/Restrict_Z39_50_Sources_by_Permission_Group2.jpg[]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
 
 4) Click *Save*.
 
