@@ -130,7 +130,7 @@
     <div class="flex-cell well">{{copy.id()}}</div>
 
     <div class="flex-cell">[% l('Holdable') %]</div>
-    <div class="flex-cell well">{{copy.opac_visible()}}</div>
+    <div class="flex-cell well">{{copy.holdable() | boolText}}</div>
 
     <div class="flex-cell">[% l('In-House Uses') %]</div>
     <div class="flex-cell well">{{copy._inHouseUseCount}}</div>
