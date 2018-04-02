@@ -180,7 +180,7 @@ sub handler {
     }
 
 
-    $r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
+    $r->headers_out->set("Content-Disposition" => "attachment; filename=$filename");
 
     if (uc($format) eq 'XML') {
         $r->content_type('application/xml');
