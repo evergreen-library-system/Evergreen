@@ -1547,6 +1547,7 @@ CREATE TABLE action.usr_circ_history (
 );
 
 CREATE INDEX action_usr_circ_history_usr_idx ON action.usr_circ_history ( usr );
+CREATE INDEX action_usr_circ_history_source_circ_idx ON action.usr_circ_history ( source_circ );
 
 CREATE TRIGGER action_usr_circ_history_target_copy_trig 
     AFTER INSERT OR UPDATE ON action.usr_circ_history 
