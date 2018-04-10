@@ -800,15 +800,29 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
                 return c.year() == new Date().getFullYear();
             });
 
-            $scope.total_circs_this_year = 
-                this_year.length ? this_year[0].count() : 0;
+            $scope.total_circs_this_year = (function() {
+                total = 0;
+                if (this_year.length == 2) {
+                    total = (Number(this_year[0].count()) + Number(this_year[1].count()));
+                } else if (this_year.length == 1) {
+                    total = Number(this_year[0].count());
+                }
+                return total;
+            })();
 
             var prev_year = counts.filter(function(c) {
                 return c.year() == new Date().getFullYear() - 1;
             });
 
-            $scope.total_circs_prev_year = 
-                prev_year.length ? prev_year[0].count() : 0;
+            $scope.total_circs_prev_year = (function() {
+                total = 0;
+                if (prev_year.length == 2) {
+                    total = (Number(prev_year[0].count()) + Number(prev_year[1].count()));
+                } else if (prev_year.length == 1) {
+                    total = Number(prev_year[0].count());
+                }
+                return total;
+            })();
 
         });
     }
