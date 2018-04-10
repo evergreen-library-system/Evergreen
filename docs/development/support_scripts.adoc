@@ -101,31 +101,61 @@ cat /home/opensrf/records.txt | ./marc_export --store -i -c /openils/conf/opensr
 
 [NOTE]
 ====================
-`marc_export` was updated in Evergreen 2.6 and now does not output progress
-as it executes.
+`marc_export` does not output progress as it executes.
 ====================
 
-[NOTE]
-====================
-You can use the `--since` option to export records modified after a
-certain date and time.
-====================
+Options
+^^^^^^^
 
-[NOTE]
-====================
+The *marc_export* support script includes several options.  You can find a complete list
+by running `./marc_export -h`.  A few key options are also listed below:
+
+--descendants and --library
++++++++++++++++++++++++++++
+
+The `marc_export` script has two related options, `--descendants` and
+`--library`.  Both options take one argument of an organizational unit
+
+The `--library` option will export records with holdings at the specified
+organizational unit only.  By default, this only includes physical holdings,
+not electronic ones (also known as located URIs).
+
+The `descendants` option works much like the `--library` option
+except that it is aware of the org. tree and will export records with
+holdings at the specified organizational unit and all of its descendants.
+This is handy if you want to export the records for all of the branches
+of a system.  You can do that by specifying this option and the system's
+shortname, instead of specifying multiple `--library` options for each branch.
+
+Both the `--library` and `--descendants` options can be repeated.
+All of the specified org. units and their descendants will be included
+in the output.  You can also combine `--library` and `--descendants`
+options when necessary.
+
+--since
++++++++
+
+You can use the `--since` option to export records modified after a certain date and time.
+
+--store
++++++++
+
 By default, marc_export will use the reporter storage service, which should
 work in most cases. But if you have a separate reporter database and you
 know you want to talk directly to your main production database, then you
 can set the `--store` option to `cstore` or `storage`. 
-====================
 
-[NOTE]
-====================
-For more information, run marc_export with the -h option:
-
- ./marc_export -h
-====================
-
+--uris
+++++++
+The `--uris` option (short form: `-u`) allows you to  export records with
+located URIs (i.e. electronic resources).  When used by itself, it will export
+only records that have located URIs.  When used in conjunction with `--items`,
+it will add records with located URIs but no items/copies to the output. 
+If combined with a `--library` or `--descendants` option, this option will
+limit its output to those records with URIs at the designated libraries.  The
+best way to use this option is in combination with the `--items` and one of the
+`--library` or `--descendants` options to export *all* of a library's
+holdings both physical and electronic.
 
 
 Importing Authority Records from Command Line
