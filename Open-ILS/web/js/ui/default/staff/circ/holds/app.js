@@ -204,9 +204,12 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
         $scope.print_list_progress = 0;
 
         // collect the full list of holds
+        var method = 'open-ils.circ.captured_holds.id_list.on_shelf.retrieve.authoritative.atomic';
+        if (clear_mode)
+            method = 'open-ils.circ.captured_holds.id_list.expired_on_shelf_or_wrong_shelf.retrieve.atomic';
         egCore.net.request(
             'open-ils.circ',
-            'open-ils.circ.captured_holds.id_list.on_shelf.retrieve.authoritative.atomic',
+            method,
             egCore.auth.token(), $scope.pickup_ou.id()
         ).then( function(idlist) {
 
