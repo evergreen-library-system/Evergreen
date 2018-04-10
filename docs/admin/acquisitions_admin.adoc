@@ -55,8 +55,8 @@ you could choose to keep the debits associated with the purchase.
 Create a cancel/delay reason
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. To add a new cancel reason, click _Administration -> Server Administration ->
-Acquisitions -> Cancel reasons_.
+. To add a new cancel reason, click _Administration -> Acquisitions Administration ->
+Cancel reasons_.
 
 . Click _New Cancel Reason_.
 
@@ -105,8 +105,8 @@ Create a claim policy
 The claim policy link enables you to name the claim policy and specify the
 organization that owns it.
 
-. To create a claim policy, click _Administration -> Server Administration ->  
-Acquisitions -> Claim Policies_.
+. To create a claim policy, click _Administration -> Acquisitions Administration ->
+Claim Policies_.
 . Create a claim policy name. No limits exist on the number of characters that
 can be entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
@@ -127,8 +127,8 @@ Create a claim type
 
 The claim type link enables you to specify the reason for a type of claim.
 
-. To create a claim type, click _Administration -> Server Administration ->  Acquisitions 
--> Claim types_.
+. To create a claim type, click _Administration -> Acquisitions Administration ->
+Claim types_.
 . Create a claim type. No limits exist on the number of characters that can be
 entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
@@ -150,8 +150,8 @@ The claim event type describes the physical action that should occur when an
 item needs to be claimed. For example, the user should notify the vendor via
 email that the library is claiming an item.
 
-. To access the claim event types, click _Administration -> Server Administration -> 
-Acquisitions -> Claim event type_.
+. To access the claim event types, click _Administration -> Acquisitions Administration ->
+Claim event type_.
 . Enter a code for the claim event type. No limits exist on the number of
 characters that can be entered in this field.
 . Select an org unit from the drop-down menu. The org unit indicates the
@@ -179,8 +179,8 @@ Create a claim policy action
 The claim policy action enables you to specify how long a user should wait
 before claiming the item.
 
-. To access claim policy actions, click _Administration -> Server Administration ->  
-Acquisitions ->Claim Policy Actions_.
+. To access claim policy actions, click _Administration -> Acquisitions Administration ->
+Claim Policy Actions_.
 
 . Select an Action (Event Type) from the drop-down menu.
 
@@ -209,8 +209,8 @@ purchased in the currency associated with that fund.
 Create a currency type
 ^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new currency type, click _Administration -> Server Administration ->  
-Acquisitions -> Currency types_. 
+. To create a new currency type, click _Administration -> Acquisitions Administration ->
+Currency types_.
 
 . Enter the currency code. No limits exist on the number of characters that can 
 be entered in this field. 
@@ -249,8 +249,7 @@ needed.
 Create a distribution formula
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click _Administration -> Server Administration ->  Acquisitions ->Distribution
-Formulas_.
+. Click _Administration -> Acquisitions Administration -> Distribution Formulas_.
 . Click _New Formula_.
 . Enter a Formula Name. No limits exist on the number of characters that can be
 entered in this field.
@@ -280,9 +279,9 @@ distribution formula.
 to the branch. You can enter the number or use the arrows on the right side of
 the field.
 . Click _Apply Changes_. The screen will reload.
-. To view the changes to your formula, click Administration -> Server Administration ->  
-Acquisitions -> Distribution Formulas. The item_count will reflect the entries 
-to your distribution formula.
+. To view the changes to your formula, click Administration ->
+Acquisitions Administration -> Distribution Formulas. The item_count will reflect
+the entries to your distribution formula.
 
 [NOTE]
 To edit the Formula Name, click the hyperlinked name of the formula in the top
@@ -316,7 +315,7 @@ Entering a Library's SAN
 
 These steps only need to be done once per library.
 
-. In Evergreen select _Admin_ -> _Server Administration_ -> _Organizational Units_ 
+. In Evergreen select _Administration_ -> _Server Administration_ -> _Organizational Units_ 
 . Find your library in the tree on the left side of the page and click on it to open the settings.
 +
 [NOTE]
@@ -336,14 +335,14 @@ Entering a Provider's SAN
 
 These steps need to be repeated for every provider with which EDI is used.
 
-. In Evergreen select _Admin_ -> _Server Administration_ -> _Acquisitions_ -> _Providers_.
+. In Evergreen select _Administration_ -> _Acquisitions Administration_ -> _Providers_.
 . Click the hyperlinked name of the provider you would like to edit.
-
++
 image::media/enter-provider-san-1.png[Enter Provider SAN]
 
 . Enter your provider's SAN in the field labeled _SAN_.
 . Click _Save_.
-
++
 image::media/enter-provider-san-2.png[Enter Provider SAN]
 
 Create an EDI Account
@@ -360,9 +359,9 @@ CAUTION: You *must* create your provider before you create an EDI account for th
 * Provider's SAN
 
 
-. In Evergreen select _Admin_ -> _Server Administration_ -> _Acquisitions_ -> _EDI Accounts_.
+. In Evergreen select _Administration_ -> _Acquisitions Administration_ -> _EDI Accounts_.
 . Click _New Account_. A pop-up will appear.
-
++
 image::media/create-edi-accounts-2.png[Create EDI Account]
 
 . Fill in the following fields:
@@ -399,11 +398,11 @@ image::media/create-edi-accounts-3.png[Create EDI Account]
  
 . Click _Save_.
 . Click on the link in the _Provider_ field.
-
++
 image::media/create-edi-accounts-4.png[Create EDI Account]
 
 . Select the EDI account that has just been created from the _EDI Default_ drop down menu.
-
++
 image::media/create-edi-accounts-5.png[Create EDI Account]
 
 . Click _Save_.
@@ -443,8 +442,8 @@ amount to credit to the receiving fund.
 Create an exchange rate
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new exchange rate, click _Administration -> Server Administration ->  
-Acquisitions -> Exchange Rates_.
+. To create a new exchange rate, click _Administration -> Acquisitions Administration ->
+Exchange Rates_.
 
 . Click New Exchange Rate.
 
@@ -505,8 +504,7 @@ fund.
 
 Create a Fund Tag
 
-. To create a fund tag, click _Administration -> Server Administration ->  Acquisitions ->
-Fund Tags_.
+. To create a fund tag, click _Administration -> Acquisitions Administration -> Fund Tags_.
 . Click _New Fund Tag_. No limits exist on the number of characters that can be
 entered in this field.
 . Select a Fund Tag Owner from the drop-down menu. The owner indicates the
@@ -535,8 +533,8 @@ can be used to track exact amounts for accounts in your general ledger.  You can
 Create a funding source
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a new funding source, click _Administration -> Server Administration -> 
-Acquisitions -> Funding Source_.
+. To create a new funding source, click _Administration -> Acquisitions Administration ->
+Funding Source_.
 . Enter a funding source name. No limits exist on the number of characters that
 can be entered in this field.
 . Select an owner from the drop-down menu. The owner indicates the
@@ -619,8 +617,7 @@ interface, you can create funds; allocate credits from funding sources to funds;
 Create a fund
 ^^^^^^^^^^^^^
 
-. To create a new fund, click _Administration -> Server Administration ->  Acquisitions ->
- Funds_.
+. To create a new fund, click _Administration -> Acquisitions Administration -> Funds_.
 . Enter a name for the fund. No limits exist on the number of characters that
 can be entered in this field.
 . Create a code for the fund. No limits exist on the number of characters that
@@ -668,8 +665,7 @@ Allocate credits from funding sources to funds
 Credits can be applied to funds from funding sources using the fund interface.
 The credits that you apply to the fund can be applied later to purchases.
 
-. To access funds, click _Administration -> Server Administration ->  Acquisitions -> 
-Funds_.
+. To access funds, click _Administration -> Acquisitions Administration -> Funds_.
 
 . Click the hyperlinked name of the fund.
 
@@ -690,8 +686,7 @@ The credits that you allocate to funds can be transferred between funds if
 desired. In the following example, you can transfer $500.00 from the Young Adult
 Fiction fund to the Children's DVD fund.
 
-. To access funds, click _Administration -> Server Administration ->  Acquisitions -> 
-Funds_.
+. To access funds, click _Administration -> Acquisitions Administration -> Funds_.
 
 . Click the hyperlinked name of the originating fund.
 
@@ -818,8 +813,8 @@ can add custom charge types to this list. Invoice item types can also be used
 when adding non-bibliographic items to a purchase order. When invoiced, the
 invoice item type will copy from the purchase order to the invoice.
 
-. To create a new charge type, click _Administration -> Server Administration -> 
-Acquisitions -> Invoice Item Type_.
+. To create a new charge type, click _Administration -> Acquisitions Administration ->
+Invoice Item Type_.
 
 . Click _New Invoice Item Type_.
 
@@ -844,8 +839,8 @@ payment method(s) that you accept. The text that you enter in the admin module
 will appear as a drop-down menu in the invoice type and payment method fields on
 the invoice.
 
-. To create a new invoice payment method, click _Administration -> Server Administration 
--> Acquisitions -> Invoice Payment Method_.
+. To create a new invoice payment method, click _Administration ->
+Acquisitions Administration -> Invoice Payment Method_.
 
 . Click _New Invoice Payment Method_.
 
@@ -874,8 +869,8 @@ of its copies, are marked as received.
 Create a line item alert
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-. To create a line item alert, click _Administration -> Server Administration ->
-Acquisitions -> Line Item Alerts_.
+. To create a line item alert, click _Administration -> Acquisitions Administration ->
+Line Item Alerts_.
 
 . Click _New Line Item Alert Text_.
 
@@ -911,8 +906,8 @@ information.
 Create a provider
 ^^^^^^^^^^^^^^^^^
 
-. To create a new provider, click _Admin_ -> _Server Administration_ -> 
-_Acquisitions_ -> _Providers_.
+. To create a new provider, click _Administration_ -> _Acquisitions Administration_ ->
+_Providers_.
 
 . Enter the provider name.
 
