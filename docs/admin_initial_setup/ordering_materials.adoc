@@ -48,8 +48,8 @@ Funding. Alternatively, you can name funding sources by year, e.g. County
 Funding 2010 and County Funding 2011, and apply credits each year to the
 matching source.
 
-. To create a funding source, select *Administration -> Server Administration -> 
-  Acquisitions > Funding Source*. Click the *New Funding Source* button. Give
+. To create a funding source, select *Administration -> Acquisitions Administration ->
+  Funding Source*. Click the *New Funding Source* button. Give
   the funding source a name, an owning library, and code. You should also
   identify the type of currency that is used for the fund.
 . You must add money to the funding source before you can use it. Click the
@@ -116,8 +116,8 @@ fund.
 . To create a fund tag, select *Administration -> Acquisitions Administration ->
   Fund Tags*. Click the *New Fund Tag* button. Select a owning library and
   add the name for the fund tag.
-. To apply a fund tag to a fund, select *Administration -> Server Administration -> 
-  Acquisitions > Funds*. Click on the hyperlinked name for the fund. Click the
+. To apply a fund tag to a fund, select *Administration -> Acquisitions Administration ->
+  Funds*. Click on the hyperlinked name for the fund. Click the
   *Tags* tab and then click the *Add Tag* button. Select the tag from the
   dropdown menu.
 
@@ -131,8 +131,8 @@ Providers (Required)
 ~~~~~~~~~~~~~~~~~~~~
 Providers are the vendors from whom you order titles.
 
-. To add a provider record,  select *Administration -> Server Administration -> 
-  Acquisitions > Providers*.
+. To add a provider record,  select *Administration -> Acquisitions Administration ->
+  Providers*.
 . Enter information about the provider. At a minimum, you need to add a
   *Provider Name*, *Code*, *Owner*, and *Currency*. You also need to select the
   *Active* checkbox to use the provider.
