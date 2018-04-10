@@ -540,6 +540,8 @@ include::development/data_supercat.adoc[]
 
 include::development/data_unapi.adoc[]
 
+include::development/data_opensearch.adoc[]
+
 // Return to normal title levels.
 :leveloffset: 0
 
