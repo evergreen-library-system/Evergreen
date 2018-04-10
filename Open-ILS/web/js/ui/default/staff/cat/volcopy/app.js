@@ -272,7 +272,8 @@ function(egCore , $q) {
 
         return egCore.pcrud.search('bmp',
             {record : rec, deleted : 'f'},
-            null, {atomic : true}
+            {order_by: {bmp : 'label_sortkey DESC'}},
+            {atomic : true}
         ).then(function(list) {
             service.bmp_parts[rec] = list;
             return list;
