@@ -503,9 +503,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         egCore.pcrud.search('acp',
             {deleted : 'f', id : items.map(function(el){return el.id;}) },
             { flesh : 1, flesh_fields : { acp : ['call_number'] } }
-        ).then(function(copy) {
-            copy_objects.push(copy);
-        }).then(function() {
+        ).then(function() {
 
             var cnHash = {};
             var perCnCopies = {};
@@ -555,6 +553,10 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
                 });
             });
+        },
+        null,
+        function(copy) {
+            copy_objects.push(copy);
         });
     }
 
