@@ -1361,13 +1361,15 @@ sub flatten {
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
 
-    my $lorgs = [@$aorgs];
-    my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
-    push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
+    if (!$self->find_filter('locations') && !$self->find_filter('location_groups')) {
+        my $lorgs = [@$aorgs];
+        my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
+        push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
 
-    $uses_bre = 1;
-    push @{$vis_filter{'b_attr'}},
-        "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+        $uses_bre = 1;
+        push @{$vis_filter{'b_attr'}},
+            "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+    }
 
     my @dlist = ();
     my $common = 0;
