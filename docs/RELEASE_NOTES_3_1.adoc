@@ -3,12 +3,36 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 3.1.1
+---------------
+This release contains bug fixes improving on Evergreen 3.1.0.
+
+* Fixes a performance issue with the Patron Billing History screen and
+other screens that cause Flattener.pm to re-create joins
+unnecessarily.
+* Fixes an issue that prevented patron alerts from showing to staff at
+other libraries.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.1 point release of
+Evergreen:
+
+* Bill Erickson
+* Morkor Quarshie
+* Jane Sandberg
+* Remington Steed
+* Kevin Tran
+* Dan Wells
 
 
-New Features
-------------
+3.1.0 Upgrade notes
+-------------------
+
+
+3.1.0 New Features
+------------------
 
 Administration
 ~~~~~~~~~~~~~~
@@ -380,10 +404,10 @@ in the catalog. If you do not wish badges to be displayed, set the
 
 
 Miscellaneous
--------------
+~~~~~~~~~~~~~
 
 Fixes to patron name/username search indexes
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When using pg_restore to restore an Evergreen database, some of the
 indexes used to speed up patron searches on names and usernames
 could be lost.
@@ -392,7 +416,7 @@ This release fixes the underlying issue and re-creates the indexes
 in question.
 
 Details
-^^^^^^^
++++++++
 When using pg_restore to restore an affected database, the
 "unaccent" indexes on actor.usr would not be created due to an
 unqualified function reference in `evergreen.unaccent_and_squash`.
@@ -410,8 +434,8 @@ This will be done even if the indexes are already present, and may
 take a few minutes on a database with many patrons.
 
 
-Acknowledgments
----------------
+3.1.0 Acknowledgments
+---------------------
 The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
