@@ -3,6 +3,29 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.7
+---------------
+This release contains bug fixes improving on Evergreen 3.0.6.
+
+* Fixes a performance issue with the Patron Billing History screen and
+other screens that cause Flattener.pm to re-create joins
+unnecessarily.
+* Fixes an issue that prevented patron alerts from showing to staff at
+other libraries.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.5 point release of
+Evergreen:
+
+* Bill Erickson
+* Morkor Quarshie
+* Remington Steed
+* Kevin Tran
+* Dan Wells
+
+
 Evergreen 3.0.6
 ---------------
 This release is a security release that fixes cross-site scripting
