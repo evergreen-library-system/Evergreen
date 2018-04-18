@@ -3,22 +3,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2017-09-03 23:33-0400\n"
-"PO-Revision-Date: 2017-09-06 11:43+0000\n"
+"PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-07 04:37+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
-
-#: 950.data.seed-values.sql:385
-msgid "American English"
-msgstr "Ամերիկյան անգլերեն"
-
-#: 950.data.seed-values.sql:6984
-msgid "Tamil"
-msgstr "Թամիլերեն"
+"X-Launchpad-Export-Date: 2017-10-04 05:01+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 
 #: 950.data.seed-values.sql:8101
 msgid "Estonia "
@@ -1105,6 +1097,10 @@ msgstr "Կոշտ կանգառի միջակայք"
 #: 950.data.seed-values.sql:7059
 msgid "Specialized"
 msgstr "Մասնագիտացված"
+
+#: 950.data.seed-values.sql:385
+msgid "American English"
+msgstr "Ամերիկյան անգլերեն"
 
 # id::clm.value__nno
 # id::nno
@@ -9015,6 +9011,10 @@ msgstr "Կիրառիր այս նախածանցը որևէ ավտոգեներաց
 msgid "The item is a speech or collection of speeches."
 msgstr "Նյութը ելույթներ կամ ելույթների հավաքածու է։"
 
+#: 950.data.seed-values.sql:6984
+msgid "Tamil"
+msgstr "Թամիլերեն"
+
 #: 950.data.seed-values.sql:535
 msgid ""
 "Allow a user to create holds for another user (if true, we still check to "
@@ -15762,164 +15762,3 @@ msgstr "Կիրբատի "
 #: 950.data.seed-values.sql:7738
 msgid "Flamenco"
 msgstr "Ֆլամենգո"
-
-# id::aou.name__7
-# id::7
-#~ msgid "Example Branch 4"
-#~ msgstr "Օրինակ մասնաճյուղ 4"
-
-# id::aou.name__5
-# id::5
-#~ msgid "Example Branch 2"
-#~ msgstr "Օրինակ մասնաճյուղ 2"
-
-# id::aou.name__6
-# id::6
-#~ msgid "Example Branch 3"
-#~ msgstr "Օրինակ մասնաճյուղ 3"
-
-# id::aou.name__4
-# id::4
-#~ msgid "Example Branch 1"
-#~ msgstr "Օրինակ մասնաճյուղ 1"
-
-# id::cit.name__2
-# id::2
-#~ msgid "SSN"
-#~ msgstr "SSN"
-
-# id::aou.name__2
-# id::2
-#~ msgid "Example System 1"
-#~ msgstr "Օրինակ համակարգ 1"
-
-# id::aou.name__3
-# id::3
-#~ msgid "Example System 2"
-#~ msgstr "Օրինակ համակարգ 2"
-
-# id::aou.name__9
-# id::9
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Example Bookmobile 1"
-
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-#~ msgid "List Published Book Bags"
-#~ msgstr "Թվարկիր տպագրված գրքերի պայուսակները"
-
-#~ msgid "Holds: Clear shelf copy status"
-#~ msgstr "Պահումներ։ Մաքրիր պատճենի դարակի վիճակը"
-
-#~ msgid "Selfcheck: Workstation Required"
-#~ msgstr "Ինքնաստուգում։ Պահանջվում է աշխատանքային կայան"
-
-#~ msgid "Local System Administrator"
-#~ msgstr "Տեղային համակարգի կառավարիչ"
-
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Օրինակ։ Ենթագրադարան 1"
-
-#~ msgid "Selfcheck: Require Patron Password"
-#~ msgstr "Ինքնաստուգում։ Պահանջում է ընթերցողի գաղտնաբառ։"
-
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Ավելացրու Հրատարակված գրքերի պայուսակում"
-
-#~ msgid "Book Bag"
-#~ msgstr "Գրքի պայուսակ"
-
-#~ msgid "System maintenance, configuration, etc."
-#~ msgstr "Համակարգի շահագործում, կարգաբերում, և այլն"
-
-#~ msgid "GUI: Work Log: Maximum Patrons Logged"
-#~ msgstr "ՕԳՄ։ Աշխատանքային լոգ։ Գրանցված են մաքսիմում ընթերցողներ։"
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr "ՕԳՄ։ Աշխատանքային լոգ Մաքսիմում գործողություններ են ակտիվ։"
-
-#~ msgid "Circ: Cap Max Fine at Item Price"
-#~ msgstr "Տացք: Cap Max տուգանք նյութի գնին համապատասխան"
-
-#~ msgid "Holds: Has Local Copy Block"
-#~ msgstr "Պահումներ։ Ունի տեղային պատճենի բլոկ"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests "
-#~ "per user"
-#~ msgstr ""
-#~ "Տացք. Ամենաշատ մրցակից ակտիվ ինքնագրվող գաղտնաբառի վերագրման առաջարկներ ըմտ "
-#~ "մեկ օգտվողի"
-
-#~ msgid "Circulation: Self-serve password reset request time-to-live"
-#~ msgstr "Տացք։ ինքնստուգվող գաղնաբառի վերագրման թողնելու գալու ժամ"
-
-#~ msgid "Selfcheck: Audio Alerts"
-#~ msgstr "Ինքնստուգում։ Ձայնային զգուշացում"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests"
-#~ msgstr ""
-#~ "Տացք։ Ամենաշատ մրցակից ակտիվ ինքնաստուգվող գաղտնաբառերի վերագրման պահանջ"
-
-#~ msgid ""
-#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
-#~ "notes/messages."
-#~ msgstr ""
-#~ "ՕԳՄ։ Պահանջում է աշխատակցի սկզբնատառերը որպեսզի խմբագրի/մուտքագրի "
-#~ "նյութի/ընթերցողի/տուգանքի նշումների/հաղորդումները"
-
-#~ msgid "Appends staff initials and edit date into note content."
-#~ msgstr "Կիրառում է աշխատակազմի սկզբնատառերը և խմբագրում է ամսաթիվը նշումի"
-
-#~ msgid "Holds: Block Renewal of Items Needed for Holds"
-#~ msgstr "Պահումներ։ Պահման համար պահանջվող նյութերի թարմացումներ"
-
-#~ msgid "Holds: Has Local Copy Alert"
-#~ msgstr "Պահումներ. ունի տեղային պատճենի ահազանգ"
-
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "Կոնգրեսի գրադարանի խորագրեր մանկական գրականության համար"
-
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "Արվեստի և ճարտարապետության տեզաուրուս"
-
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr ""
-#~ "Գյուղատնտեսական գրականության ազգային գրադարանի խորագրերի հեղինակավոր ֆայլ"
-
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "Repertoire de vedettes-matiere"
-
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "Կոնգրեսի գրադարանի խորագրեր"
-
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "Խորագրերի Սիրսի ցուցակ"
-
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "Կանադական խորագրեր"
-
-#~ msgid "Medical Subject Headings"
-#~ msgstr "Բժշկական թեմաների խորագրեր"
-
-#~ msgid "Allow a user to mark an item as 'missing'"
-#~ msgstr "Թույլ տուր օգտվողին նշելու նյութը որպես 'բացակա'"
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is at the transit "
-#~ "destination or source"
-#~ msgstr ""
-#~ "Թույլ տուր ընթերցողին վիժեցնելու պատճենի տեղափոխումը եթե օգտվողը տեղափոխման "
-#~ "նպատակակետում է կամ աղբյուրում"
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is not at the transit "
-#~ "source or dest"
-#~ msgstr ""
-#~ "Թույլ տուր օգտվողին վիժեցնել պատճենի տրանզիտը եթե օգտվողը տրանզիտի "
-#~ "աղբյուրում կամ նպատակակետում չէ։"

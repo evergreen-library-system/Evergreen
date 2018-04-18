@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2017-09-03 23:33-0400\n"
-"PO-Revision-Date: 2015-10-16 09:16+0000\n"
+"PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: Anthony Harrington <untaintableangel@ubuntu.com>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-09-05 04:40+0000\n"
-"X-Generator: Launchpad (build 18446)\n"
+"X-Launchpad-Export-Date: 2017-10-04 05:03+0000\n"
+"X-Generator: Launchpad (build 18471)\n"
 
 #: 950.data.seed-values.sql:8101
 msgid "Estonia "
@@ -13659,130 +13659,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7738
 msgid "Flamenco"
 msgstr ""
-
-#~ msgid "Example Branch 4"
-#~ msgstr "Example Branch 4"
-
-#~ msgid "Example Branch 2"
-#~ msgstr "Example Branch 2"
-
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-#~ msgid "List Published Book Bags"
-#~ msgstr "List Published Book Bags"
-
-#~ msgid "Holds: Clear shelf copy status"
-#~ msgstr "Reservations: Clear shelf copy status"
-
-#~ msgid "Example Branch 3"
-#~ msgstr "Example Branch 3"
-
-#~ msgid "Example Branch 1"
-#~ msgstr "Example Branch 1"
-
-#~ msgid "SSN"
-#~ msgstr "SSN"
-
-#~ msgid "Selfcheck: Workstation Required"
-#~ msgstr "Selfissue: Workstation Required"
-
-#~ msgid "Local System Administrator"
-#~ msgstr "Local System Administrator"
-
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Example Sub-library 1"
-
-#~ msgid "Selfcheck: Require Patron Password"
-#~ msgstr "Selfissue: Require Patron Password"
-
-#~ msgid "Example System 1"
-#~ msgstr "Example System 1"
-
-#~ msgid "Example System 2"
-#~ msgstr "Example System 2"
-
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Example Bookmobile 1"
-
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Add to Published Book Bags"
-
-#~ msgid "GUI: Work Log: Maximum Patrons Logged"
-#~ msgstr "GUI: Work Log: Maximum Patrons Logged"
-
-#~ msgid "Book Bag"
-#~ msgstr "Book Bag"
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr "GUI: Work Log: Maximum Actions Logged"
-
-#~ msgid "System maintenance, configuration, etc."
-#~ msgstr "System maintenance, configuration, etc."
-
-#~ msgid "Circ: Cap Max Fine at Item Price"
-#~ msgstr "Circ: Cap Max Fine at Item Price"
-
-#~ msgid "Holds: Has Local Copy Block"
-#~ msgstr "Holds: Has Local Copy Block"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests "
-#~ "per user"
-#~ msgstr ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests "
-#~ "per user"
-
-#~ msgid "Holds: Block Renewal of Items Needed for Holds"
-#~ msgstr "Holds: Block Renewal of Items Needed for Holds"
-
-#~ msgid "Circulation: Self-serve password reset request time-to-live"
-#~ msgstr "Circulation: Self-serve password reset request time-to-live"
-
-#~ msgid ""
-#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
-#~ "notes/messages."
-#~ msgstr ""
-#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
-#~ "notes/messages."
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests"
-#~ msgstr ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests"
-
-#~ msgid "Selfcheck: Audio Alerts"
-#~ msgstr "Selfcheck: Audio Alerts"
-
-#~ msgid "Appends staff initials and edit date into note content."
-#~ msgstr "Appends staff initials and edit date into note content."
-
-#~ msgid "Holds: Has Local Copy Alert"
-#~ msgstr "Holds: Has Local Copy Alert"
-
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "LC subject headings for children's literature"
-
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr "National Agricultural Library subject authority file"
-
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "Art and Architecture Thesaurus"
-
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "Repertoire de vedettes-matiere"
-
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "Library of Congress Subject Headings"
-
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "Sears List of Subject Headings"
-
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "Canadian Subject Headings"
-
-#~ msgid "Medical Subject Headings"
-#~ msgstr "Medical Subject Headings"
