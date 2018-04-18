@@ -12,6 +12,9 @@ other screens that cause Flattener.pm to re-create joins
 unnecessarily.
 * Fixes an issue that prevented patron alerts from showing to staff at
 other libraries.
+* Corrects the "Holdable" attribute display on the Item Status detailed
+view.
+* Fixes the ability to delete multiple copies from Item Status.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
@@ -19,16 +22,14 @@ We would like to thank the following individuals who contributed code,
 tests and documentation patches to the 3.1.1 point release of
 Evergreen:
 
+* Jason Boyer
 * Bill Erickson
 * Morkor Quarshie
 * Jane Sandberg
 * Remington Steed
+* Jason Stephenson
 * Kevin Tran
 * Dan Wells
-
-
-3.1.0 Upgrade notes
--------------------
 
 
 3.1.0 New Features
