@@ -32,6 +32,15 @@ Evergreen:
 * Dan Wells
 
 
+3.1.0 Upgrade Notes
+-------------------
+Like many major Evergreen upgrades, 3.1 requires a full reingest of your
+bibliographic records before the system is usable again.  While a basic reingest
+is included at the end of the upgrade script, it happens after the main
+COMMIT, so it is safe to cancel that and run the required reingest as you see
+fit (e.g. via pingest.pl).
+
+
 3.1.0 New Features
 ------------------
 
