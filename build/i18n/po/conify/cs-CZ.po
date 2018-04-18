@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:42+0000\n"
-"PO-Revision-Date: 2018-03-19 21:27+0000\n"
+"POT-Creation-Date: 2018-03-26 19:34+0000\n"
+"PO-Revision-Date: 2018-04-09 14:18+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2018-04-10 06:01+0000\n"
+"X-Generator: Launchpad (build 18599)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -285,7 +285,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:75
 msgid "Check Only?"
-msgstr ""
+msgstr "Půjčit pouze?"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:87 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:90
 msgid "Choose a best-hold order"
@@ -625,7 +625,7 @@ msgstr "Tag  finančního fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:2 ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:5
 msgid "Global Flags"
-msgstr "Globální indikátoy"
+msgstr "Globální indikátory"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:67
 msgid "Go"
@@ -1587,7 +1587,7 @@ msgstr "Video páska"
 
 #: ../../Open-ILS/src/templates/conify/global/config/metabib_field_virtual_map.tt2:2 ../../Open-ILS/src/templates/conify/global/config/metabib_field_virtual_map.tt2:5
 msgid "Virtual Field Data Providers"
-msgstr ""
+msgstr "Poskytovatelé virtuálních datových polí"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:126
 msgid "Visible"

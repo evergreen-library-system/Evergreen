@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2017-02-28 02:28+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Galen Charlton <gmc@equinoxinitiative.org>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:31+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:02+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 "Language: fi\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
@@ -5165,96 +5165,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Haluatko varmasti veloittaa %1 luottokortiltasi?"
-
-#~ msgid "August"
-#~ msgstr "Elokuu"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Maksuja maksamatta"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Siirry takaisin ja valitse tai poista valinnat muista maksuista "
-#~ "napsauttamalla %1Peruuta%2."
-
-#~ msgid "December"
-#~ msgstr "Joulukuu"
-
-#~ msgid "February"
-#~ msgstr "Helmikuu"
-
-#~ msgid "Fines:"
-#~ msgstr "Sakot:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Yritä uudelleen siirtymällä takaisin tai peruuta tämä maksuyritys."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Velan alkusumma"
-
-#~ msgid "January"
-#~ msgstr "Tammikuu"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Viimeisin maksuaika"
-
-#~ msgid "March"
-#~ msgstr "Maaliskuu"
-
-#~ msgid "November"
-#~ msgstr "Marraskuu"
-
-#~ msgid "October"
-#~ msgstr "Lokakuu"
-
-#~ msgid "Other Fees"
-#~ msgstr "Muut veloitukset"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Maksa maksut"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Maksa valitut maksut"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Valitut maksut, joita olet maksamassa:"
-
-#~ msgid "September"
-#~ msgstr "Syyskuu"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Suorita maksu"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Maksettu yhteensä"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Maksettavaa yhteensä:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Maksutapahtuman aloitusaika"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Sinulla ei ole maksuja maksettavana, tai olet valinnut maksut, joiden summa "
-#~ "on negatiivinen.  Emme voi käsitellä negatiivisia summia."
-
-#~ msgid "April"
-#~ msgstr "Huhti"
-
-#~ msgid "Fines"
-#~ msgstr "Maksut"
-
-#~ msgid "July"
-#~ msgstr "Heinä"
-
-#~ msgid "June"
-#~ msgstr "Kesä"
-
-#~ msgid "May"
-#~ msgstr "Touko"

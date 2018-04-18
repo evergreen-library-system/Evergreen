@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2016-10-04 14:23+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:32+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:02+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -5109,42 +5109,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "April"
-#~ msgstr "Abril"
-
-#~ msgid "August"
-#~ msgstr "Agost"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Sòlde degut"
-
-#~ msgid "December"
-#~ msgstr "Decembre"
-
-#~ msgid "February"
-#~ msgstr "Febrièr"
-
-#~ msgid "January"
-#~ msgstr "Genièr"
-
-#~ msgid "July"
-#~ msgstr "Julhet"
-
-#~ msgid "June"
-#~ msgstr "Junh"
-
-#~ msgid "March"
-#~ msgstr "Març"
-
-#~ msgid "May"
-#~ msgstr "Mai"
-
-#~ msgid "November"
-#~ msgstr "Novembre"
-
-#~ msgid "October"
-#~ msgstr "Octobre"
-
-#~ msgid "September"
-#~ msgstr "Setembre"

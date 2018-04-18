@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2018-03-13 20:50+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-14 05:17+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:02+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -5219,99 +5219,3 @@ msgstr "zobrazit"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "signatura"
-
-#~ msgid "April"
-#~ msgstr "Duben"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Opravdu chcete naúčtovat %1 na vaši kreditní kartu?"
-
-#~ msgid "August"
-#~ msgstr "Srpen"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Dlužná částka"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Kliknutím na %1Cancel%2 se vrátíte zpět a zrušíte výběr dalších pokut."
-
-#~ msgid "December"
-#~ msgstr "Prosinec"
-
-#~ msgid "February"
-#~ msgstr "Únor"
-
-#~ msgid "Fines"
-#~ msgstr "Pokuty"
-
-#~ msgid "Fines:"
-#~ msgstr "Pokuty:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Vrátit se zpět nebo zrušit tento pokus o platbu"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Počáteční dlužná částka"
-
-#~ msgid "June"
-#~ msgstr "Červen"
-
-#~ msgid "January"
-#~ msgstr "Leden"
-
-#~ msgid "July"
-#~ msgstr "Červenec"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Čas platby"
-
-#~ msgid "May"
-#~ msgstr "Květen"
-
-#~ msgid "March"
-#~ msgstr "Březen"
-
-#~ msgid "November"
-#~ msgstr "Listopad"
-
-#~ msgid "October"
-#~ msgstr "Říjen"
-
-#~ msgid "Other Fees"
-#~ msgstr "Další poplatky"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Zaplatit vybrané pokuty"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Zaplatit pokuty"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Pokuty vybrané pro tuto platbu:"
-
-#~ msgid "September"
-#~ msgstr "Září"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Potvrdit platbu"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Celkem k platbě"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Datum zahájení transakce"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Celkem zaplaceno"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Buď nemáte žádné pokuty k zaplacení, nebo pokuty, nebo celková výše "
-#~ "vybraných pokut čin má nulovou či negativní hodnotu. Nelze zpracovat platby, "
-#~ "které mají nulovou/negativní hodnotu."
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Výsledky  %1 - %2 z přibližně %3"
