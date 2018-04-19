@@ -1,3 +1,348 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 7f5fdd41f63f2b4555d61f92c77ecdba0bc31a6d
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Apr 18 22:45:27 2018 -0400
+
+    Updating upgrade docs for 3.0.7.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+18	16	docs/installation/server_upgrade.adoc
+
+commit b9fd9ca20554ad2318e77325a7615c92eaa8c53b
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Apr 18 17:43:18 2018 -0400
+
+    Bumping Perl version string for 3.0.7
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit ca858b998faca770332b0b67a4b4969fbafd8a69
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 18 16:25:34 2018 -0400
+
+    Touch up release notes for 3.0.7
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit 228aba9d6bfca23888d9632e987f6462bdf37705
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Apr 2 16:14:43 2018 -0400
+
+    LP1760662: Item Status Holdable Field Display Follow-up
+    
+    Remove the boolText filter because it was always return false.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+
+commit f525699f90b715c239cb1f20b92f12dc859b5db2
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Apr 2 13:55:02 2018 -0400
+
+    LP1760662: Item Status Holdable Field Display
+    
+    The Holdable field on the Summary tab of the Detail View
+    of Item Status was displaying the value for OPAC Visible.
+    Let's change that from opac_visible() to holdable().
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+
+commit e9e0b4e0998ea304b55b1fa5e974880a76c5f01e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 12 10:47:40 2018 -0400
+
+    Lp 1735539: Fix Item Status ability to delete multiple copies.
+    
+    Use the notify handler instead of the resolve handler to collect our
+    copies.  This ensures we get them all instead of just the last one.
+    
+    To reproduce the bug:
+       1. Open Item Status in the web staff client.
+       2. Load multiple items, perhaps by uploading a file of barcodes.
+       3. Select more than 1 item from the list.
+       4. Choose "Delete Items" from the Actions menu.
+       5. Note that the dialog indicates that you will delete 1 copy.
+       6. Click the Cancel button in the dialog.
+    
+    To test, after applying the fix branch:
+       1. Open Item Status in the web staff client.
+       2. Load multiple items, perhaps by uploading a file of barcodes.
+       3. Select more than 1 item from the list.
+       4. Choose "Delete Items" from the Actions menu.
+       5. Note that that the dialog indicates you will delete X copies,
+          where X is the number of items selected.
+       6. Click OK and confirm that all copies were deleted.
+       7. You can confirm 6 by reloading the interface and uploading the
+          file of barcodes again.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	3	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit f8e98c9d481e603971e854b094dd3e9f2bd38e8b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Apr 17 11:52:24 2018 -0700
+
+    Docs: starting release notes for 3.0.7
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+23	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit e0b6c83cd09af656b0b7d0d2101b05e1e099a279
+Author: Morkor Quarshie <msq2@students.calvin.edu>
+Date:   Tue Apr 10 16:14:49 2018 -0400
+
+    Docs: Minor updates in Ordering_materials.adoc
+    
+      - A menu item was slightly incorrect. This fixes it.
+      - Added a missing step to click "New" button.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+3	3	docs/admin_initial_setup/ordering_materials.adoc
+
+commit 246a7b1bdbf03030da12703b00fb7cb4287d8ad0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 29 17:06:16 2018 -0400
+
+    LP#1729934 Webstaff display org-scoped penalties
+    
+    Consistent with the XUL client, only display patron standing penalties
+    (AKA Messages) that are linked to an org unit which is an ancestor,
+    matching, or descendant org unit of the workstation (e.g. the full
+    path).
+    
+    To test:
+    
+    [1] Create a patron Message which applies to a branch using a branch or
+    null-depth penalty (e.g. at BR1).
+    
+    [2] Create a second message that links to the root org unit (e.g. CONS)
+    via depth=0 penalty.
+    
+    [2] Log out and back in to the browser client at a workstation under a
+    different section of the org unit tree (e.g. BR3) and confirm the
+    Messages created at BR1 do not display, but the messages created at CONS
+    do.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	0	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 24b3dc1d16c887bfe0e9a5ad4dcb6e1c4ba704a5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 5 14:55:56 2018 -0500
+
+    LP#1729934 Webstaff penalty create org/depth repair
+    
+    Apply correct org unit to patron penalties created in the web staff
+    client.  Specifically, be sure the standing penalty depth value is
+    honored when set.
+    
+    Commit replaces manual pcrud creation with the XUL-tested API, which
+    calculates the correct org unit by depth for us.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+6	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 828832b916223a4c4cb765163fba5a2b88f27169
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Apr 10 14:00:31 2018 -0400
+
+    Docs: Update "Ordering materials" for web client
+    
+      - Update menu names to match web client
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+6	6	docs/admin_initial_setup/ordering_materials.adoc
+
+commit f5f711f8d39d6c49060f4947321d8191c87b57bb
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Apr 10 10:43:27 2018 -0400
+
+    Docs: Update "Acquisitions Admin" for web client
+    
+      - Change menu names to match web client ("Admin" to "Administration", and
+        "Server Admin -> Acq" becomes "Acq Admin")
+      - Fix list formatting where images were breaking a numbered list into
+        two lists
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+40	45	docs/admin/acquisitions_admin.adoc
+
+commit 71d6594ce721b1d12908c5366bf28e555b2d3145
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Mar 2 12:54:46 2018 -0500
+
+    LP#1738488 Optimize Flattener join logic
+    
+    The current Flattener.pm autogenerates necessary joins for sorting
+    and filtering, but in doing so, it gives every intermediate table a
+    unique alias, even if the path to that table is exactly the same as
+    another member in the map we are flattening.
+    
+    Instead, let's reuse joins whenever the path is identical, even for
+    intermediate tables.  We do so by tracking every path to each core
+    type, then reusing as much of that join path as we can.  In cases
+    where we have different paths to the same type, we still necessarily
+    provide a new unique alias.
+    
+    This problem was first noticed in the web staff billing history
+    interface, where the particular stacking of joins resulted (for one
+    specific library) in 17 joins and 44,575,740,147,225,592,344,870,912
+    potential rows.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+41	13	Open-ILS/src/perlmods/lib/OpenILS/Application/Flattener.pm
+
+commit edae2423cc5f20fdd3cdcf05cae8a3b04ff268a3
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 29 17:12:19 2018 -0400
+
+    Docs: Update "User Activity Types" for web client
+    
+      - Update screenshot, provided by Kevin Tran
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/User_Activity_Types2A.jpg
+
+commit 05f505b438b7d9c36ffec8c3c7b34c99bf75710a
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 29 16:58:19 2018 -0400
+
+    Docs: Update "Z39.50 Servers" for web client
+    
+      - Switch incorrectly placed screenshots
+      - Update first screenshot for web client
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/admin/restrict_Z39.50_sources_by_perm_group.adoc
+-	-	docs/media/Restrict_Z39_50_Sources_by_Permission_Group2.png
+ create mode 100644 docs/media/Restrict_Z39_50_Sources_by_Permission_Group2.png
+
+commit 1aef84c5ae63008726386c49a31db4a2073714a8
+Author: Kevin Tran <kdt8@students.calvin.edu>
+Date:   Thu Mar 1 11:34:10 2018 -0500
+
+    Docs: Update circulation_limit_groups.adoc for web client
+    
+      - Updated menu label to "Circ Limit Sets".
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/admin/circulation_limit_groups.adoc
+
+commit 3070af8b68433e642763d9546540e7b13ff91e98
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 29 09:55:08 2018 -0400
+
+    Docs: Add screenshots to "Load MARC Order Records"
+    
+    Thanks to Morkor Quarshie for the screenshots.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+9	0	docs/acquisitions/vandelay_acquisitions_integration.adoc
+-	-	docs/media/acq_upload_library_settings.png
+-	-	docs/media/load_marc_order_records.png
+ create mode 100644 docs/media/acq_upload_library_settings.png
+ create mode 100644 docs/media/load_marc_order_records.png
+
+commit 9533f8cd466ea61fd38674f63d28913a1e9ed16f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 21 17:01:05 2018 -0400
+
+    Docs: Update "User and Group Permissions" for web client
+    
+      - Update instructions for web client
+      - New screenshot shows menu path from patron screen. Thanks to Kevin
+        Tran for the screenshot.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+5	2	docs/admin/permissions.adoc
+-	-	docs/media/permissions_1.png
+ create mode 100644 docs/media/permissions_1.png
+
+commit 1bd29bc500bd8530556e632a7eab08de9cf0ae35
+Author: Kevin Tran <kdt8@students.calvin.edu>
+Date:   Thu Mar 15 10:48:09 2018 -0400
+
+    Docs: Update MARC_RAD_MVF_CRA.adoc for web client
+    
+      - Updated instructions for web client
+      - Narrower screenshot (with arrow) for Coded Value Map section
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+4	4	docs/admin/MARC_RAD_MVF_CRA.adoc
+-	-	docs/media/cvmpage_4.jpg
+
+commit f5a6c9f22e99dfd010bc87de653f2004d41f54d0
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 21 16:20:50 2018 -0400
+
+    Docs: New screenshot for "MARC Import Remove Fields"
+    
+      - New screenshot for "MARC Import Remove Fields", which still showed
+        small amount of XUL client. Thanks to Kevin Tran for the screenshot.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/admin/MARC_Import_Remove_Fields.adoc
+-	-	docs/media/marc_import_remove_fields3.png
+ create mode 100644 docs/media/marc_import_remove_fields3.png
+
+commit 9f5a512616aa8f21faec1ef32df0899860094279
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Mar 29 08:51:28 2018 -0400
+
+    Docs: Update "Selection Lists" and "Invoices" for web client
+    
+      - Update references to Acq Admin menu
+      - Make menu name formatting more consistent (should be bold or
+        italics)
+      - Remove outdated reference to old Evergreen version under "Activate
+        Purchase Order with Zero Copies"
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+7	7	docs/acquisitions/invoices.adoc
+26	22	docs/acquisitions/selection_lists_po.adoc
+
+commit 5d56da85e18961e55bbb1f230f451047ce397ea4
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 28 15:53:18 2018 -0400
+
+    Docs: Update "Hold-driven recalls" for web client
+    
+      - Update reference to "Admin" menu
+      - Remove old note about when feature was added to Evergreen
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	3	docs/admin/hold_driven_recalls.adoc
