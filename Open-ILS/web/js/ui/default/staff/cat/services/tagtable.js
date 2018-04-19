@@ -62,58 +62,64 @@ function($q,   egCore,   egAuth) {
         });
     };
 
+    var _ffpos_promises = {};
     service.fetchFFPosTable = function(rtype) {
-        var deferred = $q.defer();
+        if (!(rtype in _ffpos_promises)) {
+            _ffpos_promises[rtype] = $q.defer();
 
-        var hatch_pos_key = 'FFPosTable_'+rtype;
+            var hatch_pos_key = 'FFPosTable_'+rtype;
 
-        egCore.hatch.getItem(hatch_pos_key).then(function(cached_table) {
-            if (cached_table) {
-                service.ff_pos_map[rtype] = cached_table;
-                deferred.resolve(cached_table);
+            egCore.hatch.getItem(hatch_pos_key).then(function(cached_table) {
+                if (cached_table) {
+                    service.ff_pos_map[rtype] = cached_table;
+                    _ffpos_promises[rtype].resolve(cached_table);
 
-            } else {
+                } else {
 
-                egCore.net.request( // First, get the list of FFs (minus 006)
-                    'open-ils.fielder',
-                    'open-ils.fielder.cmfpm.atomic',
-                    { query : { tag : { '!=' : '006' } } }
-                ).then(function (data)  {
-                    service.ff_pos_map[rtype] = data;
-                    egCore.hatch.setItem(hatch_pos_key, data);
-                    deferred.resolve(data);
-                });
-            }
-        });
+                    egCore.net.request( // First, get the list of FFs (minus 006)
+                        'open-ils.fielder',
+                        'open-ils.fielder.cmfpm.atomic',
+                        { query : { tag : { '!=' : '006' } } }
+                    ).then(function (data)  {
+                        service.ff_pos_map[rtype] = data;
+                        egCore.hatch.setItem(hatch_pos_key, data);
+                        _ffpos_promises[rtype].resolve(data);
+                    });
+                }
+            });
+        }
 
-        return deferred.promise;
+        return _ffpos_promises[rtype].promise;
     };
 
+    var _ffval_promises = {};
     service.fetchFFValueTable = function(rtype) {
-        var deferred = $q.defer();
+        if (!(rtype in _ffval_promises)) {
+            _ffval_promises[rtype] = $q.defer();
 
-        var hatch_value_key = 'FFValueTable_'+rtype;
+            var hatch_value_key = 'FFValueTable_'+rtype;
 
-        egCore.hatch.getItem(hatch_value_key).then(function(cached_table) {
-            if (cached_table) {
-                service.ff_value_map[rtype] = cached_table;
-                deferred.resolve(cached_table);
+            egCore.hatch.getItem(hatch_value_key).then(function(cached_table) {
+                if (cached_table) {
+                    service.ff_value_map[rtype] = cached_table;
+                    _ffval_promises[rtype].resolve(cached_table);
 
-            } else {
+                } else {
 
-                egCore.net.request(
+                    egCore.net.request(
                         'open-ils.cat',
                         'open-ils.cat.biblio.fixed_field_values.by_rec_type',
                         rtype
-                ).then(function (data)  {
-                    service.ff_value_map[rtype] = data;
-                    egCore.hatch.setItem(hatch_value_key, data);
-                    deferred.resolve(data);
-                });
-            }
-        });
+                    ).then(function (data)  {
+                        service.ff_value_map[rtype] = data;
+                        egCore.hatch.setItem(hatch_value_key, data);
+                        _ffval_promises[rtype].resolve(data);
+                    });
+                }
+            });
+        }
 
-        return deferred.promise;
+        return _ffval_promises[rtype].promise;
     };
 
     service.loadRemoteTagTable = function(fields, tt_key) {
