@@ -523,6 +523,16 @@ var MARC21 = {
                         value = value.substr(0, MARC21.Record._ff_pos[field]._8[rtype].len);
                     while (value.length < MARC21.Record._ff_pos[field]._8[rtype].len)
                         value += MARC21.Record._ff_pos[field]._8[rtype].def;
+
+                    // first ensure that 008 is padded to appropriate length
+                    var f008_length = (rtype in MARC21.Record._ff_lengths['008']) ?
+                        MARC21.Record._ff_lengths['008'][rtype] :
+                        MARC21.Record._ff_lengths['008']['default'];
+                    if (_8.length < f008_length) {
+                        for (var i = _8.length; i < f008_length; i++) {
+                            _8 += ' ';
+                        }
+                    }
                     this.field('008').update(
                         _8.substring(0, MARC21.Record._ff_pos[field]._8[rtype].start) +
                         value +
@@ -1110,6 +1120,13 @@ MARC21.Record._recType = {
     AUT : { Type : /[z]{1}/,    BLvl : /.{1}/ },
     MFHD : { Type : /[uvxy]{1}/,  BLvl : /.{1}/ }
 };
+
+MARC21.Record._ff_lengths = {
+    '008' : {
+        default : 40,
+        MFHD    : 32
+    }
+}
 
 MARC21.Record._ff_pos = {
     AccM : {
