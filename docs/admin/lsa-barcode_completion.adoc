@@ -5,13 +5,12 @@ indexterm:[Barcode Completion,Lazy Circ]
 
 The Barcode Completion feature gives users the ability to only enter the 
 unique part of patron and item barcodes.  This can significantly reduce the 
-amount of typing required for manual barcode input.  This feature was also 
-known as *Lazy Circ* at one point.
+amount of typing required for manual barcode input.
 
 This feature can also be used if there is a difference between what the 
 barcode scanner outputs and what is stored in the database, as long as the 
 barcode that is stored has more characters then what the scanner is 
-outputting. Barcode Completion is additive only, you cannot use it match a 
+outputting. Barcode Completion is additive only; you cannot use it to match a
 stored barcode that has less characters than what is entered. For example, if 
 your barcode scanners previously output *a123123b* and now exclude the prefix 
 and suffix, you could match both formats using Barcode Completion rules.
@@ -19,8 +18,6 @@ and suffix, you could match both formats using Barcode Completion rules.
 Because this feature adds an extra database search for each enabled rule to 
 the process of looking up a barcode, it can add extra delays to the check-out 
 process.  Please test in your environment before using in production.
-
-*Released:* 2.2 - June 2012
 
 Scoping and Permissions
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -39,26 +36,44 @@ Access Points
 The admin interface for Barcode Completion is located under *Administration* 
 -> *Local Administration* -> *Barcode Completion*.
 
-image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin]
+image::media/lsa-barcode_completion_admin.png[Barcode Completion Admin List]
 
 The barcode completion functionality is available at the following interfaces.
 
-.For Actors (Users) Barcodes
- * Lookup Patron by Barcode/Check Out.
- * Optionally during check out if library setting "Load patron from Checkout" 
-is set. (Automatically detects if an actor/user barcode is scanned during 
-check out, and starts a new check out session using that user.)
- * OPAC's Staff Client Place Hold.
+Check Out Step 1: Lookup Patron by Barcode
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+image::media/Barcode_Checkout_Patron_Barcode.png[Patron Barcode Lookup for Checking Out]
+
+Check Out Step 2: Scanning Item Barcodes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+image::media/Barcode_Checkout_Item_Barcode.png[Item Barcode at Check Out]
+
+Staff Client Place Hold from Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+image::media/Barcode_OPAC_Staff_Place_Hold.png[Patron Barcode Lookup for Staff Placing Hold]
  
-.For Assets (Copy) Barcodes
- * Check Out.
- * Check In.
- * Item Status / Search for copies by Barcode / Show Item Status by Barcode.
+Check In
+^^^^^^^^
+
+image::media/Barcode_Check_In.png[Item Barcode at Check In]
+
+Item Status
+^^^^^^^^^^^
+
+image::media/Barcode_Item_Status.png[Item Barcode at Item Status screen]
+
+
+NOTE: Barcode completion is also available during check out if library
+setting "Load patron from Checkout" is set.
+(Automatically detects if an actor/user barcode is scanned during
+check out, and starts a new check out session using that user.)
 
 NOTE: Barcode Completion does not work in the 
  *Search for Patron [by Name]* interface. 
 
-image::media/lsa-barcode_completion_accesspoints.png[Barcode Completion Access Points]
 
 Multiple Matches
 ~~~~~~~~~~~~~~~~
