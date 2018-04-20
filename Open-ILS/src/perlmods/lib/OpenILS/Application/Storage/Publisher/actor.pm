@@ -677,6 +677,7 @@ sub patron_search {
     # group 2 = phone, ident
     # group 3 = barcode
     # group 4 = dob
+    # group 5 = profile
 
     # Treatment of name fields depends on whether the org has 
     # diacritic_insensitivity turned on or off.
@@ -717,6 +718,10 @@ sub patron_search {
 
     my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
     my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+
+    # should only be 1 profile sent but this construction makes dealing with the lists simpler.
+    my ($prof) = map { $$search{$_}{value} } grep {''.$$search{$_}{group} eq '5' } keys %$search;
+    $prof = int($prof) if $prof; # int or out
 
     my $pv = _clean_regex_chars($$search{phone}{value});
     my $iv = _clean_regex_chars($$search{ident}{value});
@@ -816,6 +821,7 @@ sub patron_search {
     }
 
     my $descendants = "actor.org_unit_descendants($search_org)";
+    my $profile = "JOIN permission.grp_descendants($prof) p ON (p.id = users.profile)" if $prof;
 
     my $opt_in_where = '';
     if (lc($strict_opt_in) eq 'true') {
@@ -843,6 +849,7 @@ sub patron_search {
         SELECT  $distinct_list
           FROM  $u_table AS users $card
             JOIN $descendants d ON (d.id = users.home_ou)
+            $profile
             $select
             $clone_select
             $penalty_join
