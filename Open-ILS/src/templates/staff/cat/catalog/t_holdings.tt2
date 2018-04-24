@@ -18,11 +18,16 @@
     grid-controls="holdingsGridControls"
     persist-key="cat.holdings">
 
-     <eg-grid-menu-item handler="holdings_checkbox_handler"
+    <eg-grid-menu-item handler="holdings_checkbox_handler"
       label="[% l('Show empty volumes') %]"
       checkbox="holdings_show_empty"
       checked="holdings_show_empty"/>
- 
+
+    <eg-grid-menu-item handler="holdings_checkbox_handler"
+      label="[% l('Show empty libraries') %]"
+      checkbox="holdings_show_empty_org"
+      checked="holdings_show_empty_org"/>
+
     <eg-grid-menu-item handler="holdings_checkbox_handler"
       label="[% l('Show copy detail') %]"
       checkbox="holdings_show_copies"
