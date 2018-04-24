@@ -405,8 +405,9 @@
                 <div class="col-md-6" ng-class="{'bg-success': working.floating !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.floating" ng-model="working.floating"
-                        ng-options="a.id() as a.name() for a in floating_list"
-                    ></select>
+                        ng-options="a.id() as a.name() for a in floating_list">
+                      <option value="">[% l('&lt;NONE&gt;') %]</option>
+                    </select>
                 </div>
                 <div class="col-md-6">
                     <button
