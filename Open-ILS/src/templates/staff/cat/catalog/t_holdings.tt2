@@ -72,6 +72,8 @@
     <eg-grid-action handler="markVolAsItemTarget" group="[% l('Mark') %]" disabled="vols_not_shown"
       label="[% l('Volume as Item Transfer Destination') %]"></eg-grid-action>
 
+    <eg-grid-action handler="selectedHoldingsVolAdd" group="[% l('Add') %]"
+      label="[% l('Volumes') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]" disabled="vols_not_shown"
       label="[% l('Copies') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
