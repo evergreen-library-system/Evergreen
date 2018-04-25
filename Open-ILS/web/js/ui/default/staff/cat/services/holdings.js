@@ -360,6 +360,15 @@ function(egCore , $q) {
                     }
                 });
 
+                function gatherSelectedOwners () {
+                    var owner_list = [];
+                    angular.forEach(
+                        $scope.holdingsGridControls.selectedItems(),
+                        function (item) { owner_list.push(item.owner_id) }
+                    );
+                    return owner_list;
+                }
+
                 function gatherHoldingsIds () {
                     var cp_id_list = [];
                     angular.forEach(
@@ -369,7 +378,7 @@ function(egCore , $q) {
                     return cp_id_list;
                 }
 
-                var spawn_volume_editor = function (copies_too) {
+                var spawn_volume_editor = function (copies_too,add_vol) {
                     egCore.net.request(
                         'open-ils.actor',
                         'open-ils.actor.anon_cache.set_value',
@@ -377,7 +386,9 @@ function(egCore , $q) {
                             record_id: $scope.recordId,
                             copies: gatherHoldingsIds(),
                             hide_vols : false,
-                            hide_copies : ((copies_too) ? false : true)
+                            hide_copies : ((copies_too) ? false : true),
+                            only_add_vol : ((add_vol) ? true : false),
+                            owners : gatherSelectedOwners()
                         }
                     ).then(function(key) {
                         if (key) {
@@ -399,11 +410,14 @@ function(egCore , $q) {
                         }
                     });
                 }
+                $scope.add_emtpy_volumes = function() {
+                    spawn_volume_editor(false,true);
+                }
                 $scope.edit_volumes = function() {
-                    spawn_volume_editor(false);
+                    spawn_volume_editor(false,false);
                 }
                 $scope.edit_copies = function() {
-                    spawn_volume_editor(true);
+                    spawn_volume_editor(true,false);
                 }
 
                 function load_holdings() {
