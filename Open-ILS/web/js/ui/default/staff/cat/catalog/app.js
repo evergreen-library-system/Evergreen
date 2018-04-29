@@ -447,6 +447,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         ngToast.create(egCore.strings.MARK_VOL_TARGET);
         $scope.current_voltransfer_target = $scope.record_id;
         egCore.hatch.setLocalItem('eg.cat.marked_volume_transfer_record',$scope.record_id);
+        egCore.hatch.removeLocalItem('eg.cat.volume_transfer_target');
     };
 
     $scope.markOverlay = function () {
@@ -1341,6 +1342,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.markLibAsVolTarget = function() {
+        var recId = $scope.record_id;
         return $uibModal.open({
             templateUrl: './cat/catalog/t_choose_vol_target_lib',
             backdrop: 'static',
@@ -1357,6 +1359,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                         'eg.cat.volume_transfer_target',
                         org.id()
                     );
+                    egCore.hatch.setLocalItem(
+                        'eg.cat.marked_volume_transfer_record',
+                        recId
+                    );
                     $uibModalInstance.close();
                 }
                 $scope.cancel = function($event) {
@@ -1370,6 +1376,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         egCore.hatch.setLocalItem(
             'eg.cat.volume_transfer_target',
             $scope.holdingsGridControls.selectedItems()[0].owner_id
+        );
+        egCore.hatch.setLocalItem(
+            'eg.cat.marked_volume_transfer_record',
+            $scope.record_id
         );
         ngToast.create(egCore.strings.MARK_VOL_TARGET);
     }
