@@ -49,8 +49,10 @@
       label="[% l('Request Items') %]"></eg-grid-action>
     <eg-grid-action handler="attach_to_peer_bib"
       label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
+<!--
     <eg-grid-action handler="markLibAsVolTarget"
       label="[% l('Choose Library for Volume/Copy Transfer Destination') %]"></eg-grid-action>
+-->
 
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
       label="[% l('Item Status (list)') %]"></eg-grid-action>
@@ -95,14 +97,21 @@
     <eg-grid-action handler="selectedHoldingsVolCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
       label="[% l('Volumes and Copies') %]"></eg-grid-action>
 
+<!--
     <eg-grid-action handler="transferVolumesToRecord" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Record') %]"></eg-grid-action>
     <eg-grid-action handler="transferVolumesToLibrary" group="[% l('Transfer') %]"
       label="[% l('Volumes to Previously Marked Library') %]"></eg-grid-action>
+-->
+
     <eg-grid-action handler="transferVolumesToRecordAndLibrary" group="[% l('Transfer') %]"
-      label="[% l('Volumes to Previously Marked Record and Library') %]"></eg-grid-action>
+      label="[% l('Volumes to Previously Marked Destination') %]"></eg-grid-action>
+
+<!--
     <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
       label="[% l('Copies to Previously Marked Library') %]"></eg-grid-action>
+-->
+
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
       label="[% l('Items to Previously Marked Volume') %]"></eg-grid-action>
 
