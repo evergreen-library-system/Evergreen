@@ -116,6 +116,8 @@ include::admin/marc_templates.adoc[]
 
 :leveloffset: 0
 
+include::admin/schema_bibliographic.adoc[]
+
 // STAFF ADMIN
 include::admin/staff_from_command_line.adoc[]
 
