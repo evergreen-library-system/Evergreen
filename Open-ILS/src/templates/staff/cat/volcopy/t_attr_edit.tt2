@@ -460,7 +460,7 @@
                                 ng-change="statcatUpdate(sc.id())"
                                 ng-model="working.statcats[sc.id()]"
                                 ng-options="e.id() as e.value() for e in sc.entries()"
-                                ng-required="sc.required() == 't'">
+                                ng-required="sc.required() == 't' && !working.statcats_multi[sc.id()]">
                                 <option value="">
                                     {{ !working.statcats_multi[sc.id()] ? '[% l('&lt;NONE&gt;') %]' : '[% l('&lt;MULTIPLE&gt;') %]' }}
                                 </option>
