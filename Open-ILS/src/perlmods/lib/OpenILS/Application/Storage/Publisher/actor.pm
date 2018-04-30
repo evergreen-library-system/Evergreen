@@ -775,7 +775,13 @@ sub patron_search {
         $name = '(' . join(' OR ', @ns) . ')';
     }
 
-    my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name);
+    my $profile = '';
+    my @profv = ();
+    if ($prof) {
+        $profile = '(profile IN (SELECT id FROM permission.grp_descendants(?)))';
+        push @profv, $prof;
+    }
+    my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name,$profile);
     my $addr_where = $addr;
 
 
@@ -821,7 +827,6 @@ sub patron_search {
     }
 
     my $descendants = "actor.org_unit_descendants($search_org)";
-    my $profile = "JOIN permission.grp_descendants($prof) p ON (p.id = users.profile)" if $prof;
 
     my $opt_in_where = '';
     if (lc($strict_opt_in) eq 'true') {
@@ -849,7 +854,6 @@ sub patron_search {
         SELECT  $distinct_list
           FROM  $u_table AS users $card
             JOIN $descendants d ON (d.id = users.home_ou)
-            $profile
             $select
             $clone_select
             $penalty_join
@@ -862,7 +866,7 @@ sub patron_search {
           OFFSET $offset
     SQL
 
-    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));
+    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@profv,@addrv));
 }
 __PACKAGE__->register_method(
     api_name    => 'open-ils.storage.actor.user.crazy_search',
