@@ -28,7 +28,7 @@ BLOCK find_hl_value;
     norm_needle = PROCESS normalize_string(unnorm_string=needle);
     FOREACH hl IN attrs.display_field_list;
         norm_value = PROCESS normalize_string(unnorm_string=hl.value);
-        outlist.push(hl.highlight) IF norm_value == norm_needle;
+        outlist.push(hl.$f) IF norm_value == norm_needle;
     END;
 
     outlist.0;
@@ -138,7 +138,7 @@ BLOCK build_author_links;
 
         link_term = link_term.replace('^\s+', '');
         match_term = link_term _ ' ' _ birthdate _ ' ' _ deathdate;
-        matching_author_hl = PROCESS find_hl_value needle=match_term;
+        matching_author_hl = PROCESS find_hl_value needle=match_term f=attrs.hl_field;
 
         authtml = ' <span class="rdetail-author-div"' _ iprop _ ' resource="' _ contrib_ref _ '"><a href="' _ url _ '"><span resource="' _ contrib_ref _ '">';
         IF iprop; authtml = authtml _ '<span property="name">'; END;
