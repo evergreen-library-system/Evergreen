@@ -380,6 +380,10 @@ include::cataloging/authorities.adoc[]
 
 include::cataloging/link_checker.adoc[]
 
+include::admin/schema_bibliographic.adoc[]
+
+include::admin/marc_templates.adoc[]
+
 
 Serials
 =======
