@@ -56,6 +56,26 @@ image::media/circulation_patron_records-2_web_client.png[circulation_patron_reco
 
 The _Patron Search_ button on the upper right may be used to resume searching for patrons.
 
+Retrieve Recent Patrons
+~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, retrieving recent]
+
+Setting up Retrieve Recent Patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* This feature must be configured in the _Library Settings Editor_ (_Admin -> Local Admin -> Library Settings Editor_). The library setting is called "Number of Retrievable Recent Patrons" and is located in the Circulation settings group. 
+** A value of 0 means no recent patrons can be retrieved. A value greater than 1 means staff will be able to retrieve multiple recent patrons via a new Circulation Retrieve Recent Patrons menu entry.
+The default value is 1 for backwards compatibility.
+
+Retrieving Recent Patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^
+* Once the library setting has been configured to a number greater than 1, the option Retrieve Recent Patrons will appear below the Retrieve Last patron option in the Circulation drop-down from the Menu Bar (_Circulation -> Retrieve Recent Patrons_). 
+
+* When selected, a grid will appear listing patrons accessed by that workstation in the current session. The length of the list will be limited by the value configured in the _Library Settings Editor_. If no patrons have been accessed, the grid will display "No Items To Display."
+
+
+
 Registering New Patrons 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
