@@ -864,11 +864,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.find_copy_transit = function(evt, params, options) {
         if (angular.isArray(evt)) evt = evt[0];
 
-        if (evt && evt.payload && evt.payload.transit)
-            return $q.when(evt.payload.transit);
+        // NOTE: evt.payload.transit may exist, but it's not necessarily
+        // the transit we want, since a transit close + open in the API
+        // returns the closed transit.
 
          return egCore.pcrud.search('atc',
-            {   dest_recv_time : null},
+            {   dest_recv_time : null, cancel_time : null},
             {   flesh : 1, 
                 flesh_fields : {atc : ['target_copy']},
                 join : {
@@ -881,7 +882,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 },
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'}, 
-            }
+            }, {authoritative : true}
         ).then(function(transit) {
             transit.source(egCore.org.get(transit.source()));
             transit.dest(egCore.org.get(transit.dest()));
