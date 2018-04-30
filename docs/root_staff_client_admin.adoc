@@ -182,7 +182,7 @@ include::admin_initial_setup/hard_due_dates.adoc[]
 
 include::admin/booking-admin.adoc[]
 
-include::admin/workstation_admin_receipt_template_editor.adoc[]
+include::admin/receipt_template_editor.adoc[]
 
 :leveloffset: 1
 
