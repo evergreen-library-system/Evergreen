@@ -177,10 +177,13 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 -Capture Local Holds as Transits. With this checkin modifier, any local holds will be given an in transit status instead of on holds shelf. The intent is to stop the system from sending holds notifications before the item is ready to be placed on the holds shelf and item will have a status of in-transit until checked in again. If you wish to simply delay notification and allow time for staff to process item to holds shelf, you may wish to use the Hold Shelf Status Delay setting in Library Settings Editor instead. See Local Administration section for more information.
 
+-Manual Floating Active. Floating Groups must be configured for this modifier to function. The manual flag in Floating Groups dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for a copy to float. This allows for greater control over when items float. 
+
+-Update Inventory. When this checkin modifier is selected, scanned barcodes will have the current date/time added as the inventory date while the item is checked in. 
 
 These options may be selected simultaneously. The selected option is displayed in the header area.
 
-image::media/checkin_options_web_client.png[]
+image::media/checkinmodifiers-with-inventory2.png[Web client check-in modifiers]
 
 ===================================================
   
