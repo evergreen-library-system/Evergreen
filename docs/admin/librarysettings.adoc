@@ -159,6 +159,7 @@ values.
 |Max patron claims returned count|When this count is exceeded, a staff override is required to mark the item as claims returned.|Number|
 |Maximum visible age of User Trigger Events in Staff Interfaces|If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.|Duration|
 |Minimum transit checkin interval|In-Transit items checked in this close to the transit start time will be prevented from checking in|Duration|
+|Number of Retrievable Recent Patrons|Number of most recently accessed patrons that can be re-retrieved in the staff client. A value of 0 or less disables the feature. Defaults to 1.|Number|
 |Patron merge address delete|Delete address(es) of subordinate user(s) in a patron merge.|True/False|
 |Patron merge barcode delete|Delete barcode(s) of subordinate user(s) in a patron merge|True/False|
 |Patron merge deactivate card|Mark barcode(s) of subordinate user(s) in a patron merge as inactive.|True/False|
