@@ -2532,7 +2532,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     $scope.age_protect_list = list;
                 });
                 createSimpleUpdateWatcher('age_protect');
-            
+
+                $scope.floating_list = [];
+                itemSvc.get_floating_groups().then(function(list){
+                    $scope.floating_list = list;
+                });
+                createSimpleUpdateWatcher('floating');
+
                 createSimpleUpdateWatcher('circulate');
                 createSimpleUpdateWatcher('holdable');
                 createSimpleUpdateWatcher('fine_level');
