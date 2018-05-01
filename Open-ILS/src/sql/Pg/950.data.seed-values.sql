@@ -224,7 +224,7 @@ INSERT INTO config.metabib_field (id, field_class, name,
     label, xpath, display_field, search_field, browse_field)
 VALUES (
     39, 'keyword', 'physical_description',
-    oils_i18n_gettext(39, 'Physical Descrption', 'cmf', 'label'),
+    oils_i18n_gettext(39, 'Physical Description', 'cmf', 'label'),
     $$(//mods33:mods/mods33:physicalDescription/mods33:form|//mods33:mods/mods33:physicalDescription/mods33:extent|//mods33:mods/mods33:physicalDescription/mods33:reformattingQuality|//mods33:mods/mods33:physicalDescription/mods33:internetMediaType|//mods33:mods/mods33:physicalDescription/mods33:digitalOrigin)$$,
     TRUE, TRUE, FALSE
 );
