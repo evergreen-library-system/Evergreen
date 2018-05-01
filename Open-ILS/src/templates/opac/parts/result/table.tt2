@@ -64,13 +64,13 @@
                                     # this case, only, record
                                     record_url_path = ctx.opac_root _ '/record/' _ attrs.mr_constituent_ids.0;
                                     add_parms = { badges => rec.badges.join(',') };
-                                    del_parms = [];
+                                    del_parms = ['quux'];
                                 END;
                                 hold_type = 'M';
                             ELSE;
                                 record_url_path = ctx.opac_root _ '/record/' _ rec.bre_id; 
                                 add_parms = { badges => rec.badges.join(',') };
-                                del_parms = [];
+                                del_parms = ['quux'];
                                 hold_type = 'T';
                             END;
 
@@ -105,7 +105,7 @@
                                                     </abbr>
                                                     [% END %]
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
-                                                        href="[% record_url %]"
+                                                        href="[% mkurl(record_url_path, add_parms, del_parms); %]"
                                                         [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
                                                         [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title | html; END %]
                                                      </a>
