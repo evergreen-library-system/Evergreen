@@ -141,6 +141,8 @@ include::admin/template_toolkit.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::admin_initial_setup/different_styles_for_searchbar.adoc[]
+
 include::admin/search_interface.adoc[]
 
 include::opac/sitemap.adoc[]

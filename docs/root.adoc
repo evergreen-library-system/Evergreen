@@ -114,6 +114,8 @@ include::admin_initial_setup/ordering_materials.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::admin_initial_setup/different_styles_for_searchbar.adoc[]
+
 include::admin/search_interface.adoc[]
 
 include::admin_initial_setup/borrowing_items.adoc[]
