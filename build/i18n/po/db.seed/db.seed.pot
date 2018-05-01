@@ -4054,7 +4054,7 @@ msgstr ""
 
 # id::cmf.label__39
 #: 950.data.seed-values.sql:227
-msgid "Physical Descrption"
+msgid "Physical Description"
 msgstr ""
 
 # id::ccvm.value__400

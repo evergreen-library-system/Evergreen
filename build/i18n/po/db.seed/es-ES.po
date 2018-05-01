@@ -3558,7 +3558,7 @@ msgid "notated music"
 msgstr "música anotada"
 
 #: 950.data.seed-values.sql:227
-msgid "Physical Descrption"
+msgid "Physical Description"
 msgstr ""
 
 #: 950.data.seed-values.sql:7217

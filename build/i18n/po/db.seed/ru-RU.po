@@ -3410,7 +3410,7 @@ msgid "notated music"
 msgstr ""
 
 #: 950.data.seed-values.sql:227
-msgid "Physical Descrption"
+msgid "Physical Description"
 msgstr ""
 
 # id::clm.value__son

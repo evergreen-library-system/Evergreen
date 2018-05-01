@@ -3623,7 +3623,7 @@ msgid "notated music"
 msgstr "hudební zápis"
 
 #: 950.data.seed-values.sql:227
-msgid "Physical Descrption"
+msgid "Physical Description"
 msgstr "Fyzický popis"
 
 #: 950.data.seed-values.sql:7217
