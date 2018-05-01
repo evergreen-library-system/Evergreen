@@ -16151,7 +16151,7 @@ INSERT INTO config.org_unit_setting_type
     oils_i18n_gettext(
         'circ.longoverdue.xact_open_on_zero',
         'Leave transaction open when long-overdue balance equals zero.  ' ||
-            'This leaves the lost copy on the patron record when it is paid',
+            'This leaves the long-overdue copy on the patron record when it is paid',
         'coust',
         'description'
     )
@@ -17597,9 +17597,9 @@ INSERT INTO config.org_unit_setting_type
          oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_long_overdue_checkin',
             'Forgive fines when checking out a long-overdue item and copy alert is suppressed?',
             'coust', 'label'),
-         oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_lost_checkin',
+         oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_long_overdue_checkin',
             'Controls whether fines are automatically forgiven when checking out an '||
-            'item that has been marked as lost, and the corresponding copy alert has been '||
+            'item that has been marked as long-overdue, and the corresponding copy alert has been '||
             'suppressed.',
             'coust', 'description'),
         'bool');

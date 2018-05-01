@@ -230,7 +230,7 @@ values.
 |Charge processing fee for damaged items|Optional processing fee billed to last patron who checked out the damaged item. Staff receive an alert with patron information and must confirm the billing.|Number(Dollar)| Disabled when set to 0
 |Default item price|Replacement charge for lost items if price is unset in the *Copy Editor*. Does not apply if item price is set to $0|Number(dollars)|
 |Disable Patron Credit|Do not allow patrons to accrue credit or pay fines/fees with accrued credit|True/False|
-|Leave transaction open when long overdue balance equals zero|Leave transaction open when long-overdue balance equals zero. This leaves the lost copy on the patron record when it is paid|True/False|
+|Leave transaction open when long overdue balance equals zero|Leave transaction open when long-overdue balance equals zero. This leaves the long-overdue copy on the patron record when it is paid|True/False|
 |Leave transaction open when lost balance equals zero|Leave transaction open when lost balance equals zero. This leaves the lost copy on the patron record when it is paid|True/False|
 |Long-Overdue Materials Processing Fee|The amount charged in addition to item price when an item is marked Long-Overdue|Number|Currency
 |Lost materials processing fee|The amount charged in addition to item price when an item is marked lost.| Number|Currency
