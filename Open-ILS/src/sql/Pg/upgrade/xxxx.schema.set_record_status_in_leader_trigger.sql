@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('1110', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
 
 CREATE OR REPLACE FUNCTION biblio.set_record_status_in_leader() RETURNS TRIGGER AS $func$
 use strict;
