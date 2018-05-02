@@ -350,25 +350,25 @@ CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON asset.copy FOR 
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON serial.unit FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 
 CREATE OR REPLACE FUNCTION asset.all_visible_flags () RETURNS TEXT AS $f$
-    SELECT  '(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(1 << x, 'copy_flags')),'&') || ')'
+    SELECT  '(' || STRING_AGG(search.calculate_visibility_attribute(1 << x, 'copy_flags')::TEXT,'&') || ')'
       FROM  GENERATE_SERIES(0,0) AS x; -- increment as new flags are added.
 $f$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION asset.visible_orgs (otype TEXT) RETURNS TEXT AS $f$
-    SELECT  '(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, $1)),'|') || ')'
+    SELECT  '(' || STRING_AGG(search.calculate_visibility_attribute(id, $1)::TEXT,'|') || ')'
       FROM  actor.org_unit
       WHERE opac_visible;
 $f$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION asset.invisible_orgs (otype TEXT) RETURNS TEXT AS $f$
-    SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, $1)),'|') || ')'
+    SELECT  '!(' || STRING_AGG(search.calculate_visibility_attribute(id, $1)::TEXT,'|') || ')'
       FROM  actor.org_unit
       WHERE NOT opac_visible;
 $f$ LANGUAGE SQL STABLE;
 
 -- Bib-oriented defaults for search
 CREATE OR REPLACE FUNCTION asset.bib_source_default () RETURNS TEXT AS $f$
-    SELECT  '(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'bib_source')),'|') || ')'
+    SELECT  '(' || STRING_AGG(search.calculate_visibility_attribute(id, 'bib_source')::TEXT,'|') || ')'
       FROM  config.bib_source
       WHERE transcendant;
 $f$ LANGUAGE SQL IMMUTABLE;
@@ -381,20 +381,20 @@ $f$ LANGUAGE SQL STABLE;
 CREATE OR REPLACE FUNCTION asset.location_group_default () RETURNS TEXT AS $f$
     SELECT '!()'::TEXT; -- For now, as there's no way to cause a location group to hide all copies.
 /*
-    SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'location_group')),'|') || ')'
+    SELECT  '!(' || STRING_AGG(search.calculate_visibility_attribute(id, 'location_group')::TEXT,'|') || ')'
       FROM  asset.copy_location_group
       WHERE NOT opac_visible;
 */
 $f$ LANGUAGE SQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION asset.location_default () RETURNS TEXT AS $f$
-    SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'location')),'|') || ')'
+    SELECT  '!(' || STRING_AGG(search.calculate_visibility_attribute(id, 'location')::TEXT,'|') || ')'
       FROM  asset.copy_location
       WHERE NOT opac_visible;
 $f$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION asset.status_default () RETURNS TEXT AS $f$
-    SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'status')),'|') || ')'
+    SELECT  '!(' || STRING_AGG(search.calculate_visibility_attribute(id, 'status')::TEXT,'|') || ')'
       FROM  config.copy_status
       WHERE NOT opac_visible;
 $f$ LANGUAGE SQL STABLE;

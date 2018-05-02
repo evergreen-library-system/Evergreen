@@ -1711,7 +1711,7 @@ BEGIN
         parts := parts || xpath(sub_xpath, subrec.marc::XML)::TEXT[];
     END LOOP;
 
-    SELECT ARRAY_TO_STRING( ARRAY_AGG( DISTINCT p ), '' )::XML INTO subxml FROM UNNEST(parts) p;
+    SELECT STRING_AGG( DISTINCT p , '' )::XML INTO subxml FROM UNNEST(parts) p;
 
     -- append data from the subordinate records to the 
     -- main record document before applying the XSLT
