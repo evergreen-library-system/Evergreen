@@ -170,6 +170,18 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                 copyData.copy._inHouseUseCount = uses.length;
             });
 
+            //Get Monograph Parts
+            egCore.pcrud.search('acpm',
+                {target_copy: flatCopy.id},
+                { flesh : 1, flesh_fields : { acpm : ['part'] } },
+                {atomic :true})
+            .then(function(acpm_array) {
+                angular.forEach(acpm_array, function(acpm) {
+                    flatCopy.parts = egCore.idl.toHash(acpm.part());
+                    copyData.copy.parts = egCore.idl.toHash(acpm.part());
+                });
+            });
+
             return lastRes = {
                 copy : copyData.copy,
                 index : flatCopy.index

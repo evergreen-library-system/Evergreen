@@ -117,7 +117,7 @@
   <eg-grid-field label="[% l('OPAC Visible?') %]"         path="opac_visible" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owned By') %]"              path="call_number.record.owner" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owning Library') %]"        path="call_number.owning_lib.shortname" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Parts') %]"                 path="parts" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Parts') %]"                 path="parts.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Price') %]"                 path="price" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publication Date') %]"      path="call_number.record.simple_record.pubdate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publisher') %]"             path="call_number.record.simple_record.publisher" hidden></eg-grid-field>
