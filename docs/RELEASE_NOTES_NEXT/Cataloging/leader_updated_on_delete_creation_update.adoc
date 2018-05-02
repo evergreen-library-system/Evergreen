@@ -1,7 +1,0 @@
-MARC Leader Updated on Bib Deletion, Creation and Update
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-There is now a trigger in place on the bibliographic record table that 
-will update the Leader/05 when a new record is inserted, when a record 
-is updated or deleted.  On insert (created new or imported) it will be 
-marked as 'n' for new, on update (including undeletion) it will be 
-marked 'c' for modified and on deletion will be marked 'd' for deleted.
