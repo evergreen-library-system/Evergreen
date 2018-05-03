@@ -372,7 +372,13 @@ include::cataloging/conjoined_items.adoc[]
 
 include::cataloging/cataloging_electronic_resources.adoc[]
 
+include::cataloging/volcopy_editor.adoc[]
+
+:leveloffset: 1
+
 include::cataloging/tpac_copy_edit_links.adoc[]
+
+:leveloffset: 0
 
 include::cataloging/MARC_batch_edit.adoc[]
 

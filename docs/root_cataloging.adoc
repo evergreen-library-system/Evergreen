@@ -54,7 +54,13 @@ include::admin/staff_client-return_to_results_from_marc.adoc[]
 Working with holdings data
 ==========================
 
+include::cataloging/volcopy_editor.adoc[]
+
+:leveloffset: 1
+
 include::cataloging/tpac_copy_edit_links.adoc[]
+
+:leveloffset: 0
 
 include::cataloging/holdings_templates.adoc[]
 
