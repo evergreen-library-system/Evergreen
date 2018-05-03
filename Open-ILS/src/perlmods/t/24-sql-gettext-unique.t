@@ -2,12 +2,13 @@ use strict;
 use warnings;
 use Test::More;
 use Test::Output;
+use FindBin;
 
 my $num_tests = 0;
 
 my $data;
 {
-    open(my $fh, "<", "../sql/Pg/950.data.seed-values.sql")
+    open(my $fh, "<", "$FindBin::Bin/../../sql/Pg/950.data.seed-values.sql")
         or die "Can't open 950.data.seed-values.sql: $!";
     local $/ = undef;
     $data = <$fh>;
