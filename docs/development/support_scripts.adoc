@@ -21,7 +21,7 @@ to more thorough documentation, if available.
    -- Links reference headings in authority records to main entry headings
       in other authority records. Should be run at least once a day (only for
 	  changed records).
- * authority_control_fields.pl
+ * <<_authority_control_fields,authority_control_fields.pl>>
    -- Links bibliographic records to the best matching authority record.
       Should be run at least once a day (only for changed records).
       You can accomplish this by running _authority_control_fields.pl --days-back=1_
@@ -53,6 +53,44 @@ to more thorough documentation, if available.
  * parallel_pg_loader.pl
    -- Uses the output of marc2bre.pl (or similar tools) to generate the SQL
       for importing records into Evergreen in a parallel fashion
+
+anchor:_authority_control_fields[]
+
+authority_control_fields: Connecting Bibliographic and Authority records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[authority control]
+
+This script matches headings in bibliographic records to the appropriate
+authority records. When it finds a match, it will add a subfield 0 to the 
+matching bibliographic field.
+
+Here is how the matching works:
+
+[options="header",cols="1,1,3"]
+|=========================================================
+|Bibliographic field|Authority field it matches|Subfields that it examines
+
+|100|100|a,b,c,d,f,g,j,k,l,n,p,q,t,u
+|110|110|a,b,c,d,f,g,k,l,n,p,t,u
+|111|111|a,c,d,e,f,g,j,k,l,n,p,q,t,u
+|130|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t
+|600|100|a,b,c,d,f,g,h,j,k,l,m,n,o,p,q,r,s,t,v,x,y,z
+|610|110|a,b,c,d,f,g,h,k,l,m,n,o,p,r,s,t,v,w,x,y,z
+|611|111|a,c,d,e,f,g,h,j,k,l,n,p,q,s,t,v,x,y,z
+|630|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t,v,x,y,z
+|648|148|a,v,x,y,z
+|650|150|a,b,v,x,y,z
+|651|151|a,v,x,y,z
+|655|155|a,v,x,y,z
+|700|100|a,b,c,d,f,g,j,k,l,n,p,q,t,u
+|710|110|a,b,c,d,f,g,k,l,n,p,t,u
+|711|111|a,c,d,e,f,g,j,k,l,n,p,q,t,u
+|730|130|a,d,f,g,h,j,k,m,n,o,p,r,s,t
+|751|151|a,v,x,y,z
+|800|100|a,b,c,d,e,f,g,j,k,l,n,p,q,t,u,4
+|830|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t
+|=========================================================
 
 
 anchor:_marc_export[]
