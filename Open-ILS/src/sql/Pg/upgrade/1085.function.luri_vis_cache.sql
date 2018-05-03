@@ -208,6 +208,19 @@ CREATE TRIGGER z_opac_vis_mat_view_tgr BEFORE INSERT OR UPDATE ON biblio.record_
 
 COMMIT;
 
+\echo ---------------------------------------------------------------------
+\echo Updating visibility attribute vector for biblio.record_entry
+BEGIN;
+
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  a_marcxml_is_well_formed;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  aaa_indexing_ingest_or_delete;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  audit_biblio_record_entry_update_trigger;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  b_maintain_901;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  bbb_simple_rec_trigger;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  c_maintain_control_numbers;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  fingerprint_tgr;
+ALTER TABLE biblio.record_entry DISABLE TRIGGER  z_opac_vis_mat_view_tgr;
+
 UPDATE  biblio.record_entry
   SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(id)
   WHERE id IN (
@@ -224,3 +237,13 @@ UPDATE  biblio.record_entry
             SELECT id FROM biblio.record_entry WHERE source IS NOT NULL
         );
 
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  a_marcxml_is_well_formed;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  aaa_indexing_ingest_or_delete;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  audit_biblio_record_entry_update_trigger;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  b_maintain_901;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  bbb_simple_rec_trigger;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  c_maintain_control_numbers;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  fingerprint_tgr;
+ALTER TABLE biblio.record_entry ENABLE TRIGGER  z_opac_vis_mat_view_tgr;
+
+COMMIT;
