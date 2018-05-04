@@ -126,10 +126,11 @@ function($routeProvider , $locationProvider , $compileProvider) {
             });
         }
 
+        $scope.sessions = [];
         $scope.refreshSessions = function () {
 
             return $http.get(formURL({action:'status',status_type:'sessions'})).then(function(res) {
-                if (res.data) {
+                if (angular.isArray(res.data)) {
                     $scope.sessions = res.data;
                     return $q.when();
                 }
