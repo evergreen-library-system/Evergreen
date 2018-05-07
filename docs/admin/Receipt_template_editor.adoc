@@ -104,7 +104,7 @@ If you do not format dates, they will appear in a system format which isn't easi
 Currency Formatting
 +++++++++++++++++++
 
-Add " \| currency" after any dollar amount that you wish to display as currency.
+Add " | currency" after any dollar amount that you wish to display as currency.
 
 Example:
 {{xact.summary.balance_owed | currency}} is $2.50
@@ -132,7 +132,7 @@ See also: https://docs.angularjs.org/api/ng/directive/ngIf
 Substrings
 ++++++++++
 
-To print just a sub-string of a variable, you can use a *limitTo* function.  {{variable | limitTo:limit:begin}} where limit is the number of characters you are wanting, and begin is where you want to start printing those characters. The begin number is not mandatory. To limit the variable to the first four characters, you can use{{variable | limitTo:4}} would get you "vari". To limit to the last five characters you can use {{variable | limitTo:-5}} will get you "iable". {{variable | limitTo:3:3}} will get "ria"
+To print just a sub-string of a variable, you can use a *limitTo* function.  {{variable | limitTo:*limit*:*begin*}} where limit is the number of characters you are wanting, and begin is where you want to start printing those characters. The begin number is not mandatory. To limit the variable to the first four characters, you can use{{variable | limitTo:4}} would get you "vari". To limit to the last five characters you can use {{variable | limitTo:-5}} will get you "iable". {{variable | limitTo:3:3}} will get "ria"
 
 |========================================================================================================
 | Original                               | Code                                   | Result
