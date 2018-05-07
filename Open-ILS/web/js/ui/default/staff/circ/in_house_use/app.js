@@ -46,7 +46,7 @@ function($scope , egCore , egGridDataProvider , egConfirmDialog,
         });
     });
 
-    $scope.useFocus = true;
+    $scope.bcFocus = true;
     $scope.args = {noncat_type : 'barcode', num_uses : 1, needsCountWarnModal: false };
     var checkouts = [];
 
