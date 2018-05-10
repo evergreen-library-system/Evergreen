@@ -230,8 +230,9 @@ Profile* button to map this information.
 . At a minimum, you should add the subfields that identify the *Circulating
 Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
 
-NOTE: All fields (except for Name and Tag) can contain static
-values, a MARC subfield code (such as "a"), or an XPATH query.
+NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
+(such as "a") or an XPATH query. You can also use the
+<<lse-vandelay,related library settings>> to set defaults for some of these fields.
 
 image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
 
@@ -242,8 +243,6 @@ image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Pr
 |Name | Yes | Name you will choose from the MARC Batch Import screen
 |Tag | Yes | MARC Holdings Tag/Field (e.g. 949). Use the Tag field to
 identify the MARC tag that contains your holdings information.
-tag in the record after it is imported. Otherwise, Evergreen will remove
-this holdings tag.
 |Barcode | Yes |
 |Call Number | Yes |
 |Circulating Library | Yes |
@@ -258,6 +257,7 @@ this holdings tag.
 |Holdable ||
 |OPAC Visible ||
 |Overlay Match ID || The copy ID of an existing copy to overlay
+|Parts Data || Of the format `PART LABEL 1\|PART LABEL 2`.
 |Price ||
 |Private Note ||
 |Public Note ||
