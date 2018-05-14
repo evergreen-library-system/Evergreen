@@ -338,8 +338,26 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         }
     }
 
-    $scope.add_to_record_bucket = function() {
-        var recId = $scope.record_id;
+    $scope.add_cart_to_record_bucket = function() {
+        var cartkey = $cookies.get('cartcache');
+        if (!cartkey) return;
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.get_value',
+            cartkey,
+            'mylist'
+        ).then(function(list) {
+            list = list.map(function(x) {
+                return parseInt(x);
+            });
+            $scope.add_to_record_bucket(list);
+        });
+    }
+
+    $scope.add_to_record_bucket = function(recs) {
+        if (!angular.isArray(recs)) {
+            recs = [ $scope.record_id ];
+        }
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
             backdrop: 'static',
@@ -360,14 +378,18 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 ).then(function(buckets) { $scope.allBuckets = buckets; });
 
                 $scope.add_to_bucket = function() {
-                    var item = new egCore.idl.cbrebi();
-                    item.bucket($scope.bucket_id);
-                    item.target_biblio_record_entry(recId);
-                    egCore.net.request(
-                        'open-ils.actor',
-                        'open-ils.actor.container.item.create',
-                        egCore.auth.token(), 'biblio', item
-                    ).then(function(resp) {
+                    var promises = [];
+                    angular.forEach(recs, function(recId) {
+                        var item = new egCore.idl.cbrebi();
+                        item.bucket($scope.bucket_id);
+                        item.target_biblio_record_entry(recId);
+                        promises.push(egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.container.item.create',
+                            egCore.auth.token(), 'biblio', item
+                        ));
+                    });
+                    $q.all(promises).then(function(resp) {
                         $uibModalInstance.close();
                     });
                 }
@@ -605,7 +627,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                     $(doc).find('#hold_usr_input').val(barc);
                     $(doc).find('#hold_usr_input').change();
                 });
-            })
+            });
+            $(doc).find('#select_basket_action').on('change', function() {
+                if (this.options[this.selectedIndex].value && this.options[this.selectedIndex].value == "add_cart_to_bucket") {
+                    $scope.add_cart_to_record_bucket();
+                }
+            });
         }
 
     }

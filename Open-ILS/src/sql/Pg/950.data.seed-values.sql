@@ -11772,11 +11772,12 @@ Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Bibliographic Records
 Auto-Submitted: auto-generated
 
-[% FOR cbreb IN target %][% title = '' %]
+[% FOR cbreb IN target %]
 [% FOR item IN cbreb.items;
     bre_id = item.target_biblio_record_entry;
 
     bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+    title = '';
     FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
         title = title _ part.textContent;
     END;
@@ -11820,11 +11821,12 @@ $$
 <div>
     <style> li { padding: 8px; margin 5px; }</style>
     <ol>
-    [% FOR cbreb IN target %][% title = '' %]
+    [% FOR cbreb IN target %]
     [% FOR item IN cbreb.items;
         bre_id = item.target_biblio_record_entry;
 
         bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+        title = '';
         FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
             title = title _ part.textContent;
         END;

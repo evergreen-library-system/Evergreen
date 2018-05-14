@@ -37,6 +37,7 @@
                     id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
         
             <span class="browse_the_catalog_lbl mobile_hide">[% l('Browse the Catalog') %]</span>
+            [% INCLUDE 'opac/parts/cart.tt2' %]
         </div>
     </div>
     <div id="content-wrapper">

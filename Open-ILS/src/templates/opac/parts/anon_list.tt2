@@ -1,9 +1,9 @@
         [% IF ctx.mylist.size %]
         <div class="bookbag-specific">
-        <p class="big-strong">[% l('Temporary List') %]</p>
+        <p class="big-strong">[% l('Basket') %]</p>
         <div class="sort">
             <form method="get">
-                <label for="anonsort">[% l("Sort list items by: ") %]</label>
+                <label for="anonsort">[% l("Sort cart items by: ") %]</label>
                 [% INCLUDE "opac/parts/filtersort.tt2" mode='bookbag'
                     id="anonsort" name="anonsort" value=CGI.param("anonsort") %]
                 <input type="hidden" name="id"
@@ -12,12 +12,17 @@
                 <input class="opac-button" type="submit" value="[% l('Sort') %]" />
             </form>
         </div>
-        <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="get">
+        <form action="[% mkurl(ctx.opac_root _ '/mylist/move') %]" method="post">
+        <input type="hidden" name="orig_referrer" value="[% CGI.referer | html %]" />
+        <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
         <div class="bbag-action" style="clear:both;">
             <select name="action">
                 <option>[% l('-- Actions for these items --') %]</option>
                 <option value="place_hold">[% l('Place hold') %]</option>
-                <option value="delete">[% l('Remove from list') %]</option>
+                <option value="print">[% l('Print title details') %]</option>
+                <option value="email">[% l('Email title details') %]</option>
+                <option value="delete">[% l('Remove from basket') %]</option>
+                <option value="new_list">[% l('Add to new list') %]</option>
                 [% IF ctx.user AND ctx.bookbags.size %]
                     <optgroup label="[% l('Move selected items to list:') %]">
                     [% FOR bbag IN ctx.bookbags %]]
@@ -28,13 +33,17 @@
             </select>
             [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
             <input class="opac-button" type="submit" value="[% l('Go') %]" />
+            <input type="checkbox" name="clear_cart">[% l('Clear entire basket when action complete') %]</input>
+            [% IF CGI.param('cart_none_selected') %]
+                <span class="error">[% l('No items were selected') %]</span>
+            [% END %]
         </div>
         <div class="bbag-content">
             <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border">
                 <thead id="acct_list_header_anon">
                     <tr>
                         <td class='list_checkbox'>
-                            <input type="checkbox" onclick="
+                            <input type="checkbox" checked="checked" onclick="
                                 var inputs=document.getElementsByTagName('input'); 
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
@@ -50,7 +59,7 @@
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
                         <td class="list_checkbox">
-                            <input type="checkbox" name="record" value="[% item %]" />
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" />
                         </td>
                         <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
                         <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-

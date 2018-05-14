@@ -10,17 +10,17 @@ my $U = 'OpenILS::Application::AppUtils';
 # Retrieve the users cached records AKA 'My List'
 # Returns an empty list if there are no cached records
 sub fetch_mylist {
-    my ($self, $with_marc_xml) = @_;
+    my ($self, $with_marc_xml, $skip_sort) = @_;
 
     my $list = [];
-    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_ANON_CACHE);
+    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_CART_CACHE);
 
     if($cache_key) {
 
         $list = $U->simplereq(
             'open-ils.actor',
             'open-ils.actor.anon_cache.get_value', 
-            $cache_key, (ref $self)->ANON_CACHE_MYLIST);
+            $cache_key, (ref $self)->CART_CACHE_MYLIST);
 
         if(!$list) {
             $cache_key = undef;
@@ -59,7 +59,7 @@ sub fetch_mylist {
 
     # Leverage QueryParser to sort the items by values of config.metabib_fields
     # from the items' marc records.
-    if (@$list) {
+    if (@$list && !$skip_sort) {
         my ($sorter, $modifier) = $self->_get_bookbag_sort_params("anonsort");
         my $query = $self->_prepare_anonlist_sorting_query($list, $sorter, $modifier);
         my $args = {
@@ -73,19 +73,40 @@ sub fetch_mylist {
     return ($cache_key, $list, $marc_xml);
 }
 
+sub load_api_mylist_retrieve {
+    my $self = shift;
+
+    # this has the effect of instantiating an empty one if need be
+    my ($cache_key, $list) = $self->fetch_mylist(0, 1);
+
+    $self->ctx->{json_response} = {
+        mylist => [ map { 0 + $_ } @$list ], # force integers
+    };
+    $self->ctx->{json_reponse_cookie} =
+        $self->cgi->cookie(
+            -name => (ref $self)->COOKIE_CART_CACHE,
+            -path => '/',
+            -value => ($cache_key) ? $cache_key : '',
+            -expires => ($cache_key) ? undef : '-1h'
+        );
+
+    return Apache2::Const::OK;
+}
+
+sub load_api_mylist_clear {
+    my $self = shift;
+
+    $self->clear_anon_cache;
+
+    # and return fresh, empty cart
+    return $self->load_api_mylist_retrieve();
+}
 
 # Adds a record (by id) to My List, creating a new anon cache + list if necessary.
 sub load_mylist_add {
     my $self = shift;
-    my $rec_id = $self->cgi->param('record');
 
-    my ($cache_key, $list) = $self->fetch_mylist;
-    push(@$list, $rec_id);
-
-    $cache_key = $U->simplereq(
-        'open-ils.actor',
-        'open-ils.actor.anon_cache.set_value', 
-        $cache_key, (ref $self)->ANON_CACHE_MYLIST, $list);
+    my ($cache_key, $list) = $self->_do_mylist_add();
 
     # Check if we need to warn patron about adding to a "temporary"
     # list:
@@ -96,19 +117,145 @@ sub load_mylist_add {
     return $self->mylist_action_redirect($cache_key);
 }
 
-sub load_mylist_delete {
+sub load_api_mylist_add {
     my $self = shift;
-    my $rec_id = $self->cgi->param('record');
 
-    my ($cache_key, $list) = $self->fetch_mylist;
-    $list = [ grep { $_ ne $rec_id } @$list ];
+    my ($cache_key, $list) = $self->_do_mylist_add();
+
+    $self->ctx->{json_response} = {
+        mylist => [ map { 0 + $_ } @$list ], # force integers
+    };
+    $self->ctx->{json_reponse_cookie} =
+        $self->cgi->cookie(
+            -name => (ref $self)->COOKIE_CART_CACHE,
+            -path => '/',
+            -value => ($cache_key) ? $cache_key : '',
+            -expires => ($cache_key) ? undef : '-1h'
+        );
+
+    return Apache2::Const::OK;
+}
+
+sub _do_mylist_add {
+    my $self = shift;
+    my @rec_ids = $self->cgi->param('record');
+
+    my ($cache_key, $list) = $self->fetch_mylist(0, 1);
+    push(@$list, @rec_ids);
 
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, (ref $self)->ANON_CACHE_MYLIST, $list);
+        $cache_key, (ref $self)->CART_CACHE_MYLIST, $list);
+
+    return ($cache_key, $list);
+}
+
+sub load_mylist_delete {
+    my $self = shift;
+
+    my ($cache_key, $list) = $self->_do_mylist_delete;
 
     return $self->mylist_action_redirect($cache_key);
+}
+
+sub load_api_mylist_delete {
+    my $self = shift;
+
+    my ($cache_key, $list) = $self->_do_mylist_delete();
+
+    $self->ctx->{json_response} = {
+        mylist => [ map { 0 + $_ } @$list ], # force integers
+    };
+    $self->ctx->{json_reponse_cookie} =
+        $self->cgi->cookie(
+            -name => (ref $self)->COOKIE_CART_CACHE,
+            -path => '/',
+            -value => ($cache_key) ? $cache_key : '',
+            -expires => ($cache_key) ? undef : '-1h'
+        );
+
+    return Apache2::Const::OK;
+}
+
+sub _do_mylist_delete {
+    my $self = shift;
+    my @rec_ids = $self->cgi->param('record');
+
+    my ($cache_key, $list) = $self->fetch_mylist(0, 1);
+    foreach my $rec_id (@rec_ids) {
+        $list = [ grep { $_ ne $rec_id } @$list ];
+    }
+
+    $cache_key = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.anon_cache.set_value', 
+        $cache_key, (ref $self)->CART_CACHE_MYLIST, $list);
+
+    return ($cache_key, $list);
+}
+
+sub load_mylist_print {
+    my $self = shift;
+
+    my $cache_key = shift // $self->cgi->cookie((ref $self)->COOKIE_CART_CACHE);
+
+    if (!$cache_key) {
+        return $self->generic_redirect;
+    }
+
+    my $url = sprintf(
+        "%s://%s%s/record/print/%s",
+        $self->ctx->{proto},
+        $self->ctx->{hostname},
+        $self->ctx->{opac_root},
+        $cache_key,
+    );
+
+    my $redirect = $self->cgi->param('redirect_to');
+    $url .= '?redirect_to=' . uri_escape_utf8($redirect);
+    my $clear_cart = $self->cgi->param('clear_cart');
+    $url .= '&is_list=1';
+    $url .= '&clear_cart=1' if $clear_cart;
+
+    return $self->generic_redirect($url);
+}
+
+sub load_mylist_email {
+    my $self = shift;
+
+    my $cache_key = shift // $self->cgi->cookie((ref $self)->COOKIE_CART_CACHE);
+
+    if (!$cache_key) {
+        return $self->generic_redirect;
+    }
+
+    my $url = sprintf(
+        "%s://%s%s/record/email/%s",
+        $self->ctx->{proto},
+        $self->ctx->{hostname},
+        $self->ctx->{opac_root},
+        $cache_key,
+    );
+
+    my $redirect = $self->cgi->param('redirect_to');
+    $url .= '?redirect_to=' . uri_escape_utf8($redirect);
+    my $clear_cart = $self->cgi->param('clear_cart');
+    $url .= '&is_list=1';
+    $url .= '&clear_cart=1' if $clear_cart;
+
+    return $self->generic_redirect($url);
+}
+
+sub _stash_record_list_in_anon_cache {
+    my $self = shift;
+    my @rec_ids = @_;
+
+    my $cache_key = $U->simplereq(
+        'open-ils.actor',
+        'open-ils.actor.anon_cache.set_value',
+        undef, (ref $self)->CART_CACHE_MYLIST, [ @rec_ids ]);
+    return $cache_key;
 }
 
 sub load_mylist_move {
@@ -116,10 +263,35 @@ sub load_mylist_move {
     my @rec_ids = $self->cgi->param('record');
     my $action = $self->cgi->param('action') || '';
 
-    return $self->load_myopac_bookbag_update('place_hold', undef, @rec_ids)
-        if $action eq 'place_hold';
-
     my ($cache_key, $list) = $self->fetch_mylist;
+
+    unless ((scalar(@rec_ids) > 0) ||
+        ($self->cgi->param('entire_list') && scalar(@$list) > 0)) {
+        my $url = $self->ctx->{referer};
+        $url .= ($url =~ /\?/ ? '&' : '?') . 'cart_none_selected=1';
+        return $self->generic_redirect($url);
+    }
+
+    if ($action eq 'place_hold') {
+        if ($self->cgi->param('entire_list')) {
+            @rec_ids = @$list;
+        }
+        return $self->load_myopac_bookbag_update('place_hold', undef, @rec_ids);
+    }
+    if ($action eq 'print') {
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@rec_ids);
+        return $self->load_mylist_print($temp_cache_key);
+    }
+    if ($action eq 'email') {
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@rec_ids);
+        return $self->load_mylist_email($temp_cache_key);
+    }
+    if ($action eq 'new_list') {
+        my $url = $self->apache->unparsed_uri;
+        $url =~ s!/mylist/move!/myopac/lists!;
+        return $self->generic_redirect($url);
+    }
+
     return $self->mylist_action_redirect unless $cache_key;
 
     my @keep;
@@ -128,8 +300,13 @@ sub load_mylist_move {
     $cache_key = $U->simplereq(
         'open-ils.actor',
         'open-ils.actor.anon_cache.set_value', 
-        $cache_key, (ref $self)->ANON_CACHE_MYLIST, \@keep
+        $cache_key, (ref $self)->CART_CACHE_MYLIST, \@keep
     );
+
+    if ($action eq 'delete' && scalar(@keep) == 0) {
+        my $url = $self->cgi->param('orig_referrer') // $self->ctx->{referer};
+        return $self->generic_redirect($url);
+    }
 
     if ($self->ctx->{user} and $action =~ /^\d+$/) {
         # in this case, action becomes list_id
@@ -151,7 +328,7 @@ sub clear_anon_cache {
     my $self = shift;
     my $field = shift;
 
-    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_ANON_CACHE) or return;
+    my $cache_key = $self->cgi->cookie((ref $self)->COOKIE_CART_CACHE) or return;
 
     $U->simplereq(
         'open-ils.actor',
@@ -170,14 +347,16 @@ sub mylist_action_redirect {
     if( my $anchor = $self->cgi->param('anchor') ) {
         # on the results page, we want to redirect 
         # back to record that was affected
-        $url = $self->ctx->{referer};
+        $url = $self->cgi->param('redirect_to') // $self->ctx->{referer};
         $url =~ s/#.*|$/#$anchor/;
-    } 
+    } else {
+        $url = $self->cgi->param('redirect_to') // $self->ctx->{referer};
+    }
 
     return $self->generic_redirect(
         $url,
         $self->cgi->cookie(
-            -name => (ref $self)->COOKIE_ANON_CACHE,
+            -name => (ref $self)->COOKIE_CART_CACHE,
             -path => '/',
             -value => ($cache_key) ? $cache_key : '',
             -expires => ($cache_key) ? undef : '-1h'
@@ -209,7 +388,7 @@ sub mylist_warning_redirect {
     return $self->generic_redirect(
         $base_url,
         $self->cgi->cookie(
-            -name => (ref $self)->COOKIE_ANON_CACHE,
+            -name => (ref $self)->COOKIE_CART_CACHE,
             -path => '/',
             -value => ($cache_key) ? $cache_key : '',
             -expires => ($cache_key) ? undef : '-1h'
@@ -221,6 +400,12 @@ sub load_mylist {
     my ($self) = shift;
     (undef, $self->ctx->{mylist}, $self->ctx->{mylist_marc_xml}) =
         $self->fetch_mylist(1);
+
+    # get list of bookbags in case user wants to move cart contents to
+    # one
+    if ($self->ctx->{user}) {
+        $self->_load_lists_and_settings;
+    }
 
     return Apache2::Const::OK;
 }

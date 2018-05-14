@@ -68,6 +68,12 @@
 <script src='[% ctx.media_prefix %]/js/ui/default/opac/ac_google_books.js[% ctx.cache_key %]' async defer></script>
 [%- END %]
 
+<script>
+    window.egStrings = [];
+    window.egStrings['CONFIRM_BASKET_EMPTY'] = "[% l('Remove all records from basket?') %]";
+</script>
+<script src='[% ctx.media_prefix %]/js/ui/default/opac/record_selectors.js[% ctx.cache_key %]' async defer></script>
+
 <!-- Require some inputs and selections for browsers that don't support required form field element -->
 [% IF ctx.page == 'place_hold' %]
   <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/holds-validation.js[% ctx.cache_key %]">
@@ -143,3 +149,7 @@ var aou_hash = {
 
 <script type="text/javascript">if ($('client_tz_id')) { $('client_tz_id').value = OpenSRF.tz }</script>
 [%- END; # want_dojo -%]
+
+[%- IF ctx.max_cart_size; %]
+<script type="text/javascript">var max_cart_size = [% ctx.max_cart_size %];</script>
+[%- END; %]
