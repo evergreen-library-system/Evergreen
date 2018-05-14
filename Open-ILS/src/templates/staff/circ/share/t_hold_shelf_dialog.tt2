@@ -3,6 +3,7 @@
     <button type="button" class="close" 
       ng-click="ok()" aria-hidden="true">&times;</button>
     <h4 class="modal-title">[% l('Hold Slip') %]</h4>
+    <img src="/images/portal/holds.png" alt="holds icon" style="padding:5px;">
   </div>
   <div class="modal-body">
     <div ng-switch on="hold.behind_desk">
