@@ -3,6 +3,83 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.8
+---------------
+This release contains bug fixes improving on Evergreen 3.0.7.
+
+* Fixes an issue that caused records with located URIs to be
+retrieved in Copy Location and Copy Location Group searches.
+* Fixes an error message that appeared in the search box
+while placing hold after an advanced search.
+* Fixes regression errors in the search results page.
+* Removes redundant call numbers from the Show More Details
+search results.
+* Adds spaces between subfields when suggesting a call
+number for a new volume.
+* MarcXML exports from the MARC Batch Import/Export ->
+Export Records screen now downloads the file, rather than opening
+it in the browser.
+* Adds some padding to the bottom of Web Client interfaces.
+* Fixes an issue that prevented users from searching for
+receivable issues using Database ID or ISSN in the Serials
+Batch Receive interface.
+* The Item Status Circulation Library column now displays a 
+shortname rather than the full library name.
+* The Item Status Remaining Renewals column now displays
+correctly.
+* The Item Status now has a "Last Renewal Workstation" column
+available.
+* Fixes the circulation counts displayed in Item Status Details.
+* Staff members can now manually override the patron juvenile
+flag value, regardless of the patron's date of birth.
+* Checkboxes on patron registration screen are now properly aligned
+with other fields.
+* The user permission group dropdowns in the patron registration,
+edit, and search interfaces now have scrollbars.
+* The Merge Patrons interface now displays the date of birth.
+* When a patron summary contains an image of the patron,
+that image tag now has a null alt attribute to remove it from
+the flow of a screen reader.
+* The MARC editor now handles 008 fields better.
+* Corrects an issue that caused the transit dialog showed the
+wrong branch.
+* The cursor in the in-house use screen now automatically goes
+to the barcode field.
+* The novelist entry in `eg_vhost.conf` includes two new
+parameters.
+* Corrects an issue with the `--max-sleep` argument on the
+`action_trigger_runner.pl` support script.
+* Corrects an issue with how the `eg_pbx_allocator.pl` script
+detects an existing lock file.
+* The 3.0.2-3.0.3 upgrade script disables triggers before
+recalculating bib visibility.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.8 point release of
+Evergreen:
+
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Rogan Hamby
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Dan Pearl
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+
+
 Evergreen 3.0.7
 ---------------
 This release contains bug fixes improving on Evergreen 3.0.6.
@@ -19,7 +96,7 @@ view.
 Acknowledgements
 ~~~~~~~~~~~~~~~~
 We would like to thank the following individuals who contributed code,
-tests and documentation patches to the 3.0.5 point release of
+tests and documentation patches to the 3.0.7 point release of
 Evergreen:
 
 * Jason Boyer
