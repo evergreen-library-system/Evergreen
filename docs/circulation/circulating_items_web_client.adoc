@@ -411,12 +411,14 @@ Once an item has been overdue for a configurable amount of time, Evergreen will 
 
 . The item will go into the status of “Long Overdue” 
 
-. The item will be moved to the “Other/Special Circulations” section of the
-  Items Out screen in the patron’s account
-
 . The accrual of overdue fines will be stopped
 
-Optionally the patron can be billed for the item price, a long overdue processing fee, and any overdue fines can be voided from the account.  Patrons can also be sent a notification that the item was marked long overdue.
+Optionally the patron can be billed for the item price, a long overdue
+processing fee, and any overdue fines can be voided from the account.  Patrons
+can also be sent a notification that the item was marked long overdue. And
+long-overdue items can be included on the "Items Checked Out" or "Other/Special
+Circulations" tabs of the "Items Out" view of a patron's record. These are all
+controlled by <<longoverdue_library_settings,library settings>>.
  
 image::media/long_overdue1.png[Patron Account-Long Overdue]
 
@@ -437,6 +439,7 @@ Evergreen has two sample Notification/Action Triggers that are related to markin
 
 ** 6 Month Long Overdue Notice—will send patron notification that an item has been marked long overdue on their account
 
+[[longoverdue_library_settings]]
 *Library Settings* 
 
 The following Library Settings enable you to set preferences related to long overdue items:
@@ -463,6 +466,8 @@ The following Library Settings enable you to set preferences related to long ove
 * *Finances: Long-Overdue Materials Processing Fee*
 
 * *Finances: Void Overdue Fines When Items are Marked Long-Overdue*
+
+* *GUI: Items Out Long-Overdue display setting*
 
 [TIP]
 Learn more about these settings in the chapter about the
