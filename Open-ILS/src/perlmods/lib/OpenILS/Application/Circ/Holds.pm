@@ -1978,8 +1978,6 @@ sub _reset_hold {
 
         } elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
-            # We don't want the copy to remain "in transit"
-            $copy->status(OILS_COPY_STATUS_RESHELVING);
             $logger->warn("! reseting hold [$hid] that is in transit");
             my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
 
