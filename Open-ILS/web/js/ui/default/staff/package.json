@@ -28,7 +28,7 @@
     "build-prod": "webpack --env.prod"
   },
   "dependencies": {
-    "angular": "^1.6.7",
+    "angular": "~1.6.7",
     "angular-animate": "^1.6.7",
     "angular-cookies": "^1.6.7",
     "angular-file-saver": "^1.1.3",
