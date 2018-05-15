@@ -402,13 +402,15 @@ angular.module('egCoreMod')
                 angular.forEach(list, function (item) {
                     item.children([]); // just clear it out if there's junk in there
 
-                    if (item[parent_field]()) {
-                        item[parent_field]( hash[''+item[parent_field]()] );
-                    }
-
                     item.children( list.filter(function (kid) {
                         return kid[parent_field]() == item[pkey]();
                     }) );
+                });
+
+                angular.forEach(list, function (item) {
+                    if (item[parent_field]()) {
+                        item[parent_field]( hash[''+item[parent_field]()] );
+                    }
                 });
 
                 egCore.env.absorbTree(top, type, true)
