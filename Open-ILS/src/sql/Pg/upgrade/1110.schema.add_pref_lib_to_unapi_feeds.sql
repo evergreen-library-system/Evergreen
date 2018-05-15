@@ -1,6 +1,6 @@
 BEGIN;
 
---- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1110', :eg_version);
 
 DROP FUNCTION IF EXISTS unapi.biblio_record_entry_feed (BIGINT[], TEXT, TEXT[], TEXT, INT, HSTORE, HSTORE,
                                                         BOOL, TEXT, TEXT, TEXT, TEXT, TEXT, XML);
