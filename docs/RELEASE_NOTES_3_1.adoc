@@ -58,6 +58,8 @@ detects an existing lock file.
 no longer relies on capitalization.
 * The 3.0.2-3.0.3 upgrade script disables triggers before
 recalculating bib visibility.
+* Fixes an issue where multiple copies with different values for required
+statistical categories could not be edited and saved in batch.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
