@@ -12,9 +12,12 @@ function($q , egCore , egWorkLog , patronSvc) {
     // fetch org unit settings specific to the bills display
     service.fetchBillSettings = function() {
         if (service.settings) return $q.when(service.settings);
-        return egCore.org.settings(
-            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit','circ.staff_client.do_not_auto_attempt_print']
-        ).then(function(s) {return service.settings = s});
+        return egCore.org.settings([
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'ui.circ.billing.amount_warn', 'ui.circ.billing.amount_limit',
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.disable_patron_credit'
+        ]).then(function(s) {return service.settings = s});
     }
 
     // user billing summary
@@ -24,7 +27,9 @@ function($q , egCore , egWorkLog , patronSvc) {
         .then(function(summary) {return service.summary = summary})
     }
 
-    service.applyPayment = function(type, payments, note, check, cc_args) {
+    service.applyPayment = function(
+        type, payments, note, check, cc_args, patron_credit) {
+
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
@@ -34,7 +39,7 @@ function($q , egCore , egWorkLog , patronSvc) {
                 payment_type : type,
                 check_number : check,
                 payments : payments,
-                patron_credit : 0,
+                patron_credit : patron_credit,
                 cc_args : cc_args
             },
             patronSvc.current.last_xact_id()
@@ -179,6 +184,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.annotate_payment = false;
     $scope.receipt_count = 1;
     $scope.receipt_on_pay = { isChecked: false };
+    $scope.convert_to_credit = {isChecked: false};
     $scope.warn_amount = 1000;
     $scope.max_amount = 100000;
     $scope.amount_verified = false;
@@ -338,8 +344,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     function sendPayment(note, cc_args) {
         $scope.applyingPayment = true;
         var make_payments = generatePayments();
+        var patron_credit = $scope.convert_to_credit.isChecked ?
+            $scope.pending_change() : 0; 
         billSvc.applyPayment($scope.payment_type, 
-            make_payments, note, $scope.check_number, cc_args)
+            make_payments, note, $scope.check_number, cc_args, patron_credit)
         .then(
             function(payment_ids) {
 
@@ -478,6 +486,9 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             $scope.disable_auto_print = Boolean(
                 s['circ.staff_client.do_not_auto_attempt_print'].indexOf('Bill Pay') > -1
             );
+        }
+        if (s['circ.disable_patron_credit']) {
+            $scope.disablePatronCredit = true;
         }
     });
 
