@@ -97,7 +97,7 @@ BLOCK build_author_links;
                     END;
                     indexed_term = 1;
                     sf_raw = PROCESS normalize_qterm;
-                    qterm = qterm _ sf_raw;
+                    qterm = qterm _ ' ' _ sf_raw;
                 END;
             ELSIF tag.substr(1,2) == '10';
                 IF code.match('[abcdn]');
