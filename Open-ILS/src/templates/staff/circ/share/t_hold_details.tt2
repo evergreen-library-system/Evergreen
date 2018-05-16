@@ -11,9 +11,6 @@
 <div class="flex-row">
   <div class="flex-cell">[% l('Hold Type') %]</div>
   <div class="flex-cell well">{{hold.hold_type()}}<span ng-if="hold.hold_type() == 'P'">&nbsp;-&nbsp;{{part.label()}}</span></div>
-  <!-- adding another cell messes up 3 column grid -->
-  <!-- <div ng-if="hold.hold_type() == 'P'" class="flex-cell">[% l('Part') %]</div> -->
-  <!-- <div ng-if="hold.hold_type() == 'P'" class="flex-cell well">{{part.label()}}</div> -->
   <div class="flex-cell">[% l('Current Copy') %]</div>
   <div class="flex-cell well">
     <a href="./cat/item/{{hold.current_copy().id()}}" target="_self">
