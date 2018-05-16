@@ -105,6 +105,14 @@ off to the right.  flex-row is honoring the boundaries better.
 not sure what's up, there. -->
 <div class="flex-row" ng-if="!disable_auto_print">
   <div class="flex-cell"></div>
+  <div ng-hide="disablePatronCredit" class="pad-right">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="convert_to_credit.isChecked">
+        [% l('Convert Change to Patron Credit') %]
+      </label>
+    </div>
+  </div>
   <form class="form-inline" role="form">
    <div class="checkbox">
       <label>
