@@ -102,7 +102,7 @@
   <eg-grid-field name="copy_circ_lib_id" path="current_copy.circ_lib.id" 
     required hidden label="[% l('Copy Circ Lib ID') %]"></eg-grid-field>
   <eg-grid-field name="notes" path="notes.body" 
-    hidden label="[% l('Hold Notes') %]"></eg-grid-field>
+    hidden required label="[% l('Hold Notes') %]"></eg-grid-field>
   <eg-grid-field name="patron_id" path="usr.id" hidden required></eg-grid-field>
   <eg-grid-field name="patron_barcode" path="usr.card.barcode" 
     hidden label="[% l('Patron Barcode') %]">
@@ -114,23 +114,23 @@
   <eg-grid-field label="[% l('Patron First Name') %]" path="patron_first" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Patron Last Name') %]" path="patron_last" hidden></eg-grid-field>
   <eg-grid-field name="pickup_lib_name" path="pickup_lib.name" 
-    hidden label="[% l('Pickup Library') %]"></eg-grid-field>
+    hidden required label="[% l('Pickup Library') %]"></eg-grid-field>
   <eg-grid-field name="pickup_lib_shortname" path="pickup_lib.shortname" 
-    hidden label="[% l('Pickup Library (Shortname)') %]"></eg-grid-field>
+    hidden required label="[% l('Pickup Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="request_lib_name" path="request_lib.name" 
-    hidden label="[% l('Request Library') %]"></eg-grid-field>
+    hidden required label="[% l('Request Library') %]"></eg-grid-field>
   <eg-grid-field name="request_lib_shortname" path="request_lib.shortname" 
-    hidden label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
+    hidden required label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="selection_ou" path="selection_ou.shortname" 
-    hidden label="[% l('Selection Locus') %]"></eg-grid-field>
+    hidden required label="[% l('Selection Locus') %]"></eg-grid-field>
   <eg-grid-field name="sms_carrier_name" path="sms_carrier.name"
-    hidden label="[% l('SMS Carrier') %]"></eg-grid-field>
+    hidden required label="[% l('SMS Carrier') %]"></eg-grid-field>
   <eg-grid-field name="sms_notify" path="sms_notify"
-    hidden label="[% l('SMS Notify') %]"></eg-grid-field>
+    hidden required label="[% l('SMS Notify') %]"></eg-grid-field>
   <eg-grid-field name="email_notify" path="email_notify"
-    hidden label="[% l('Email Notify') %]"></eg-grid-field>
+    hidden required label="[% l('Email Notify') %]"></eg-grid-field>
   <eg-grid-field name="phone_notify" path="phone_notify"
-    hidden label="[% l('Phone Notify') %]"></eg-grid-field>
+    hidden required label="[% l('Phone Notify') %]"></eg-grid-field>
   <eg-grid-field name="staff_hold" path="_is_staff_hold" datatype="bool"
     required hidden label="[% l('Staff Hold') %]"></eg-grid-field>
   <eg-grid-field label="[% l('Potential Copies') %]" 
@@ -141,9 +141,9 @@
   </eg-grid-field>
   <eg-grid-field label="[% l('Circ Modifier') %]" path='current_copy.circ_modifier' hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden>
+  <eg-grid-field label="[% l('Copy Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden required>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Hold Type') %]" path='hold_type' hidden>
+  <eg-grid-field label="[% l('Hold Type') %]" path='hold_type' hidden required>
   </eg-grid-field>
   <eg-grid-field label="[% l('ISBN') %]" path='mvr.isbn' hidden>
   </eg-grid-field>
@@ -153,9 +153,9 @@
   </eg-grid-field>
   <eg-grid-field label="[% l('Total Holds') %]" path='total_holds' hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" hidden>
+  <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" required hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Expire Date') %]" path='expire_time' datatype="timestamp" hidden>
+  <eg-grid-field label="[% l('Expire Date') %]" path='expire_time' datatype="timestamp" required hidden>
   </eg-grid-field>
 </eg-grid>
 
