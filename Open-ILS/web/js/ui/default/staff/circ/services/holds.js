@@ -490,12 +490,31 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object') {
             hold.current_copy(hold_data.copy);
-            
+
             // likewise, current_copy's status isn't fleshed in the API
             if(hold.current_copy().status() !== null &&
                typeof hold.current_copy().status() != 'object')
                 egCore.pcrud.retrieve('ccs',hold.current_copy().status()
                     ).then(function(c) { hold.current_copy().status(c) });
+        }
+
+        // current_copy's shelving location position isn't always accessible
+        if (hold.current_copy().location()) {
+            console.debug('fetching hold copy location order');
+            var location_id;
+            if (typeof hold.current_copy().location() != 'object') {
+                location_id = hold.current_copy().location();
+            } else {
+                location_id = hold.current_copy().location().id();
+            }
+            egCore.pcrud.search(
+                'acplo',
+                {location: location_id, org: egCore.auth.user().ws_ou()},
+                null,
+                {atomic:true}
+            ).then(function(orders) {
+                hold_data.hold._copy_location_position = orders[0].position();
+            });
         }
 
         if (volume) {
