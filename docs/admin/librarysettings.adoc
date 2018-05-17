@@ -201,7 +201,7 @@ values.
 |AuthorizeNet test mode|Places Authorize.Net transactions in Test Mode|True/False|
 |Enable AuthorizeNet payments|This actually enables use of Authorize.Net|True/False|
 |Enable PayPal payments|This will enable use of PayPal payments through the staff client.|True/False|
-|Enable PayflowPro payments|This will enable the use of PayPal's Payflow Pro. This is not the same is PayPal.|True/False|
+|Enable PayflowPro payments|This will enable the use of PayPal's Payflow Pro. This is not the same as PayPal.|True/False|
 |Enable Stripe payments|This will enable the use of the stripe credit card processing.|True/False|https://stripe.com
 |Name default credit processor|This might be "AuthorizeNet", "PayPal", "PayflowPro", or "Stripe".|Text|This sets the company that you will use to process the credit cards.
 |PayPal login|Enter the PayPal login Username|Text|Obtain from PayPal
