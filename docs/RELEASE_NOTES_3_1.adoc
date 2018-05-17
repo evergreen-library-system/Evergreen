@@ -3,14 +3,19 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+
 Evergreen 3.1.2
 ---------------
 This release contains bug fixes improving on Evergreen 3.1.1.
 
+* Pins AngularJS support to version 1.6, which prevents unsupported
+AngularJS versions (such as 1.7) from breaking the build process.
 * Fixes an issue that caused records with located URIs to be
 retrieved in Copy Location and Copy Location Group searches.
 * Fixes an error message that appeared in the search box
-while placing hold after an advanced search.
+in the public catalog while placing hold after an advanced search.
+* Restores the display of copy information for the user's
+preferred library in the public catalog.
 * Author and contributor names are no longer highlighted in 
 search results when the user has turned off highlighting.
 * Fixes regression errors in the search results page.
@@ -86,6 +91,7 @@ Evergreen:
 * Josh Stompro
 * Cesar Velez
 * Dan Wells
+* Bob Wicksall
 
 
 
