@@ -1083,6 +1083,7 @@ angular.module('egGridMod',
                     }
                 } else {
                     val = grid.dataProvider.itemFieldValue(item, col);
+                    if (val === null || val === undefined || val === '') return '';
                     val = $filter('egGridValueFilter')(val, col, item);
                 }
                 return val;
