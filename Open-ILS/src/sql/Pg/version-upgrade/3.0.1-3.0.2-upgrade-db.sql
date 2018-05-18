@@ -412,6 +412,54 @@ $func$ LANGUAGE PLPGSQL;
 
 SELECT evergreen.upgrade_deps_block_check('1081', :eg_version); -- jboyer/gmcharlt
 
+CREATE OR REPLACE FUNCTION evergreen.container_copy_bucket_item_target_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.target_copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, target_copy:%s$$, NEW.target_copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_note_owning_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.owning_copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, owning_copy:%s$$, NEW.owning_copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_tag_copy_map_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_alert_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
 DROP TRIGGER IF EXISTS inherit_copy_bucket_item_target_copy_fkey ON container.copy_bucket_item;
 DROP TRIGGER IF EXISTS inherit_import_item_imported_as_fkey ON vandelay.import_item;
 DROP TRIGGER IF EXISTS inherit_asset_copy_note_copy_fkey ON asset.copy_note;
