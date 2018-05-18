@@ -10,6 +10,13 @@ the UpUp resource list!
 
 %]
 
+[% 
+# $locale is encoded as aa_bb.  The IDL needs aa-BB.
+SET idl_locale = '';
+IF ctx.locale;
+  idl_locale = ctx.locale.split('_').0 _ '-' _ ctx.locale.split('_').1.upper;
+END;
+%]
 
 <script src="/upup.min.js"></script>
 <script>
@@ -18,7 +25,7 @@ UpUp.start({
   'cache-version': '[% USE date(format = '%Y-%m-%d'); date.format; %]',
   'service-worker-url': '/upup.sw.min.js',
   'assets': [
-    '/IDL2js',
+    '/IDL2js?locale=[% idl_locale %]',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/bootstrap.min.css',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/hotkeys.min.css',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/ngToast.min.css',
@@ -91,7 +98,7 @@ UpUp.start({
 });
 </script>
 
-<script src="/IDL2js"></script>
+<script src="/IDL2js?locale=[% idl_locale %]"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
 
 [% IF EXPAND_WEB_IMPORTS %]
