@@ -15,7 +15,7 @@ authors = [
     }, {
         type => 'cast', 
         label => l('Cast'),
-        xpath => '//*[@tag="508"]'
+        xpath => '//*[@tag="511"][@ind1="1"]'
     }, {
         type => 'notes', 
         label => l('Author Notes: '),
