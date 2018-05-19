@@ -44,7 +44,7 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Home Library') %]</div>
-      <div class="col-md-7">{{patron().home_ou().shortname()}}</div>
+      <div class="col-md-7" title="{{patron().home_ou().name()}}">{{patron().home_ou().shortname()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Net Access') %]</div>
@@ -58,7 +58,7 @@
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
-      <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:$root.egDateFormat}}</div>
+      <div class="col-md-7" title="{{patron().usr_activity()[0].etype().label()}}">{{patron().usr_activity()[0].event_time() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Updated') %]</div>
