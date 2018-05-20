@@ -510,7 +510,7 @@
       <div ng-if="hasMulti()"> </div>
     </li>
 
-    <li ng-repeat="sc in statcats" ng-if="statcat_visible(sc.owner().id())">
+    <li ng-repeat="sc in statcats | orderBy:['owner().name()','name()']" ng-if="statcat_visible(sc.owner().id())">
       <div class="bg-info"><label>{{sc.owner().name() }} : {{ sc.name()}}</label></div>
       <div ng-class="{'bg-success': working.statcats[sc.id()] !== undefined}">
         <select class="form-control" ng-disabled="!defaults.statcats"
