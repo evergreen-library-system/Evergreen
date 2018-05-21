@@ -94,7 +94,7 @@ function($scope,  egCore,  egGridDataProvider , egConfirmDialog, egAlertDialog) 
                 {barcode : args.barcode, deleted : 'f'},
                 {   flesh : 3, 
                     flesh_fields : {
-                        acp : ['call_number','location'],
+                        acp : ['call_number','location','status'],
                         acn : ['record', 'prefix', 'suffix'],
                         bre : ['simple_record']
                     },
