@@ -15,9 +15,11 @@
 
                 <td class='light_border'>[% l(
                     HUMAN_NAME_FORMAT,
-                    ctx.user.prefix, ctx.user.first_given_name,
-                    ctx.user.second_given_name, ctx.user.family_name,
-                    ctx.user.suffix
+                    (ctx.user.pref_prefix || ctx.user.prefix), 
+                    (ctx.user.pref_first_given_name || ctx.user.first_given_name),
+                    (ctx.user.pref_second_given_name || ctx.user.second_given_name), 
+                    (ctx.user.pref_family_name || ctx.user.family_name),
+                    (ctx.user.pref_suffix || ctx.user.suffix)
                 ) | html %]</td>
 
                 <td></td>

@@ -360,6 +360,9 @@ function($scope , $q , egCore , ngToast) {
         second_given_name : 'Martin',
         family_name : 'Jones',
         suffix : 'III',
+        pref_first_given_name : 'Martin',
+        pref_second_given_name : 'Joe',
+        pref_family_name : 'Smith',
         card : {
             barcode : '30393830393'
         },

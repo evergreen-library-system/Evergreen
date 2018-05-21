@@ -690,14 +690,44 @@ sub patron_search {
     my $dob;
     my @dobv;
 
-    if ($diacritic_insensitive) {
-       $usr = join ' AND ', map { "evergreen.unaccent_and_squash(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-       @usrv = map { "^" . _prepare_name_argument($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    # Compile the WHERE component of the actor.usr fields.
+    # When a name field is encountered, search both the name field and
+    # the alternate version of the name field.
+    my @name_fields = qw/prefix first_given_name second_given_name family_name suffix/;
+    my @usr_where_parts;
 
-    } else {
-       $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-       @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    my @usr_fields = grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    for my $usr_field (@usr_fields) {
+
+        # sprintf template
+        my $where_func = $diacritic_insensitive ?
+            "evergreen.unaccent_and_squash(CAST(%s AS text)) ~ ?" :
+            "evergreen.lowercase(CAST(%s AS text)) ~ ?";
+
+        my $val = $diacritic_insensitive ?
+            "^" . _prepare_name_argument($$search{$usr_field}{value}) :
+            "^" . _clean_regex_chars($$search{$usr_field}{value});
+
+        if (grep {$_ eq $usr_field} @name_fields) {
+            # When searching a name field include an OR search
+            # on the alternate version of the same field.
+
+            push(@usr_where_parts, sprintf(
+                "($where_func OR $where_func)", $usr_field, "pref_$usr_field")
+            );
+
+            # search main field and alt name field with same value.
+            push(@usrv, $val);
+            push(@usrv, $val);
+
+        } else {
+
+            push(@usr_where_parts, sprintf($where_func, $usr_field));
+            push(@usrv, $val);
+        }
     }
+
+    $usr = join ' AND ', @usr_where_parts;
 
     while (($key, $value) = each (%$search)) {
         if($$search{$key}{group} eq '4') {
@@ -760,19 +790,23 @@ sub patron_search {
         $ident = '(' . join(' OR ', @is) . ')';
     }
 
+    # name keywords search
     my $name = '';
     my @ns;
     my @namev;
-    if (0 && $nv) {
-        for my $n ( qw/first_given_name second_given_name family_name/ ) {
-            if ($diacritic_insensitive) {
-                push @ns, "evergreen.unaccent_and_squash($n) ~ ?";
-            } else {
-                push @ns, "evergreen.lowercase($n) ~ ?";
-            }
-            push @namev, "^$nv";
-        }
-        $name = '(' . join(' OR ', @ns) . ')';
+    if ($nv) {
+        $name = "name_kw_tsvector @@ to_tsquery(?)";
+
+        # Remove characters that to_tsquery might treat as operators.
+        # Note using plainto_tsquery to ignore operators won't let us
+        # also do prefix matching.
+        $nv =~ s/[^\w\s\.\-']//g;
+
+        my @parts = split(' ', $nv);
+
+        # tsquery on multiple names joined w/ '&'
+        # Adding :* gives us prefix matching
+        push @namev, join(' & ', map { "$_:*" } @parts);
     }
 
     my $profile = '';

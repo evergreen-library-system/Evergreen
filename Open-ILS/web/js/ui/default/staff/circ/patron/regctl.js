@@ -1236,6 +1236,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // has at the currently selected patron home org unit.
     $scope.perms = {};
 
+    $scope.name_tab = 'primary';
+
     if (!$scope.edit_passthru) {
         // in edit more, scope.edit_passthru is delivered to us by
         // the enclosing controller.  In register mode, there is 
@@ -1407,6 +1409,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.passwd' :  3,
         'au.first_given_name' : 3,
         'au.family_name' : 3,
+        'au.pref_first_given_name' : 2,
+        'au.pref_family_name' : 2,
         'au.ident_type' : 3,
         'au.ident_type2' : 2,
         'au.home_ou' : 3,
@@ -1424,7 +1428,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'aua.valid' : 2,
         'aua.within_city_limits' : 2,
         'stat_cats' : 1,
-        'surveys' : 1
+        'surveys' : 1,
+        'au.name_keywords': 1
     }; 
 
     // Returns true if the selected field should be visible
@@ -1438,12 +1443,26 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         if (field_visibility[field_key] == undefined) {
             // compile and cache the visibility for the selected field
 
-            var req_set = 'ui.patron.edit.' + field_key + '.require';
-            var sho_set = 'ui.patron.edit.' + field_key + '.show';
-            var sug_set = 'ui.patron.edit.' + field_key + '.suggest';
+            // The preferred name fields use the primary name field settings
+            var org_key = field_key;
+            var alt_name = false;
+            if (field_key.match(/^au.alt_/)) {
+                alt_name = true;
+                org_key = field_key.slice(7);
+            }
+
+            var req_set = 'ui.patron.edit.' + org_key + '.require';
+            var sho_set = 'ui.patron.edit.' + org_key + '.show';
+            var sug_set = 'ui.patron.edit.' + org_key + '.suggest';
 
             if ($scope.org_settings[req_set]) {
-                field_visibility[field_key] = 3;
+                if (alt_name) {
+                    // Avoid requiring alt name fields when primary 
+                    // name fields are required.
+                    field_visibility[field_key] = 2;
+                } else {
+                    field_visibility[field_key] = 3;
+                }
 
             } else if ($scope.org_settings[sho_set]) {
                 field_visibility[field_key] = 2;

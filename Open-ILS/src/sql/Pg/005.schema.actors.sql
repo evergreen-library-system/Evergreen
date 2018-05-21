@@ -42,6 +42,13 @@ CREATE TABLE actor.usr (
 	second_given_name	TEXT,
 	family_name		TEXT				NOT NULL,
 	suffix			TEXT,
+    pref_prefix TEXT,
+    pref_first_given_name TEXT,
+    pref_second_given_name TEXT,
+    pref_family_name TEXT,
+    pref_suffix TEXT,
+    name_keywords TEXT,
+    name_kw_tsvector TSVECTOR,
 	alias			TEXT,
 	day_phone		TEXT,
 	evening_phone		TEXT,
@@ -86,6 +93,13 @@ CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr (evergreen.una
 CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(second_given_name));
 CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(family_name));
 CREATE INDEX actor_usr_usrname_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(usrname));
+
+CREATE INDEX actor_usr_pref_first_given_name_idx ON actor.usr (evergreen.lowercase(pref_first_given_name));
+CREATE INDEX actor_usr_pref_second_given_name_idx ON actor.usr (evergreen.lowercase(pref_second_given_name));
+CREATE INDEX actor_usr_pref_family_name_idx ON actor.usr (evergreen.lowercase(pref_family_name));
+CREATE INDEX actor_usr_pref_first_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(pref_first_given_name));
+CREATE INDEX actor_usr_pref_second_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(pref_second_given_name));
+CREATE INDEX actor_usr_pref_family_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(pref_family_name));
 
 CREATE INDEX actor_usr_usrname_idx ON actor.usr (evergreen.lowercase(usrname));
 CREATE INDEX actor_usr_email_idx ON actor.usr (evergreen.lowercase(email));
@@ -143,6 +157,37 @@ CREATE TRIGGER actor_crypt_pw_insert_trigger
 	EXECUTE PROCEDURE actor.crypt_pw_insert ();
 
 CREATE RULE protect_user_delete AS ON DELETE TO actor.usr DO INSTEAD UPDATE actor.usr SET deleted = TRUE WHERE OLD.id = actor.usr.id;
+
+CREATE OR REPLACE FUNCTION actor.user_ingest_name_keywords() 
+    RETURNS TRIGGER AS $func$
+BEGIN
+    NEW.name_kw_tsvector := TO_TSVECTOR(
+        COALESCE(NEW.prefix, '')                || ' ' || 
+        COALESCE(NEW.first_given_name, '')      || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.first_given_name), '') || ' ' || 
+        COALESCE(NEW.second_given_name, '')     || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.second_given_name), '') || ' ' || 
+        COALESCE(NEW.family_name, '')           || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.family_name), '') || ' ' || 
+        COALESCE(NEW.suffix, '')                || ' ' || 
+        COALESCE(NEW.pref_prefix, '')            || ' ' || 
+        COALESCE(NEW.pref_first_given_name, '')  || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.pref_first_given_name), '') || ' ' || 
+        COALESCE(NEW.pref_second_given_name, '') || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.pref_second_given_name), '') || ' ' || 
+        COALESCE(NEW.pref_family_name, '')       || ' ' || 
+        COALESCE(evergreen.unaccent_and_squash(NEW.pref_family_name), '') || ' ' || 
+        COALESCE(NEW.pref_suffix, '')            || ' ' || 
+        COALESCE(NEW.name_keywords, '')
+    );
+    RETURN NEW;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Add after the batch upate above to avoid duplicate updates.
+CREATE TRIGGER user_ingest_name_keywords_tgr 
+    BEFORE INSERT OR UPDATE ON actor.usr 
+    FOR EACH ROW EXECUTE PROCEDURE actor.user_ingest_name_keywords();
 
 CREATE TABLE actor.usr_note (
 	id		BIGSERIAL			PRIMARY KEY,

@@ -352,11 +352,32 @@ BEGIN
         -- do nothing
     END;
 
+    -- propagate preferred name values from the source user to the
+    -- destination user, but only when values are not being replaced.
+    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr)
+    UPDATE actor.usr SET 
+        pref_prefix = 
+            COALESCE(pref_prefix, (SELECT pref_prefix FROM susr)),
+        pref_first_given_name = 
+            COALESCE(pref_first_given_name, (SELECT pref_first_given_name FROM susr)),
+        pref_second_given_name = 
+            COALESCE(pref_second_given_name, (SELECT pref_second_given_name FROM susr)),
+        pref_family_name = 
+            COALESCE(pref_family_name, (SELECT pref_family_name FROM susr)),
+        pref_suffix = 
+            COALESCE(pref_suffix, (SELECT pref_suffix FROM susr)),
+        name_keywords =
+            COALESCE(name_keywords, '') || ' ' ||
+                COALESCE((SELECT name_keywords FROM susr), '')
+    WHERE id = dest_usr;
+
     -- Finally, delete the source user
     DELETE FROM actor.usr WHERE id = src_usr;
 
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
 Merges all user date from src_usr to dest_usr.  When collisions occur, 

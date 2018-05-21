@@ -17,6 +17,11 @@ but the ones I'm finding aren't quite cutting it..*/
 .patron-summary-act-link {font-size: .8em;}
 .patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
 
+.patron-summary-pref-name {
+  padding-left: 6px;
+  color: #5cb85c;
+}
+
 /* FIXME: use .barcode instead */
 #patron-checkout-barcode,
 #patron-renewal-barcode,
@@ -166,6 +171,15 @@ but the ones I'm finding aren't quite cutting it..*/
 #patron-pay-by-credit-form .ng-invalid {
   background-color: yellow;
   color: red;
+}
+
+.patron-reg-names-separator {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.patron-reg-pref-names {
+  background-color: rgb(215, 215, 215);
 }
 
 /* -- end patron registration -- */

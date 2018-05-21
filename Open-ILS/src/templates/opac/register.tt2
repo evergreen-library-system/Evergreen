@@ -27,6 +27,9 @@ register_fields = [
     {class => 'stgu',  name = 'first_given_name', label => l('First Name')},
     {class => 'stgu',  name = 'second_given_name', label => l('Middle Name')},
     {class => 'stgu',  name = 'family_name', label => l('Last Name')},
+    {class => 'stgu',  name = 'pref_first_given_name', label => l('Preferred First Name')},
+    {class => 'stgu',  name = 'pref_second_given_name', label => l('Preferred Middle Name')},
+    {class => 'stgu',  name = 'pref_family_name', label => l('Preferred Last Name')},
     {class => 'stgma', name = 'street1', label => l('Street Address')},
     {class => 'stgma', name = 'street2', label => l('Street Address (2)')},
     {class => 'stgma', name = 'city', label => l('City')},
@@ -123,7 +126,15 @@ END;
 FOR field_def IN register_fields;
     fclass = field_def.class;
     fname = field_def.name;
+    orig_name = fname;
+
     field_path = fclass _ "." _ fname;
+
+    IF fname.match('^pref_');
+        # Preferred name fields adopt most visibility, etc.
+        # settings from the primary name counterparts.
+        fname = fname.remove('^pref_');
+    END;
 
     show = ctx.register.settings.$fclass.$fname.show;
     require = ctx.register.settings.$fclass.$fname.require;
@@ -132,6 +143,11 @@ FOR field_def IN register_fields;
 
     invalid_require = ctx.register.invalid.$fclass.$fname.require;
     invalid_regex = ctx.register.invalid.$fclass.$fname.regex;
+
+    IF orig_name.match('^pref_');
+        show = show || require;
+        require = 0; # pref name values never required
+    END;
 
     NEXT UNLESS require OR show;
 %]

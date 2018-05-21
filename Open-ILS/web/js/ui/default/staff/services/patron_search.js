@@ -780,6 +780,8 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                 search.home_ou = args.home_ou.id(); // passed separately
             } else if (key == 'inactive') {
                 search.inactive = val;
+            } else if (key == 'name') { // name keywords search
+                search.name = {value: val};
             } else {
                 search[key] = {value : val, group : 0};
             }

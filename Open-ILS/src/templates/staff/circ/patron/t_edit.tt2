@@ -214,53 +214,143 @@ within the "form" by name for validation.
   </div>
 </div>
 
-<!-- PREFIX -->
-
-<div class="row reg-field-row" ng-show="show_field('au.prefix')">
-  [% draw_field_label('au', 'prefix') %]
-  [% draw_form_input('au', 'prefix'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'prefix') %]
+<div class="row reg-field-row">
+  <div class="col-md-6">
+    <ul class="nav nav-pills nav-pills-like-tabs">
+      <li ng-class="{active : name_tab == 'primary'}">
+        <a ng-click="name_tab='primary'">[% l('Primary Name') %]</a>
+      </li>
+      <li ng-class="{active : name_tab == 'preferred'}">
+        <a ng-click="name_tab='preferred'">[% l('Preferred Name') %]</a>
+      </li>
+    </ul>
   </div>
 </div>
 
-<!-- FIRST_GIVEN_NAME -->
+<div ng-show="name_tab == 'primary'">
 
-<div class="row reg-field-row" ng-show="show_field('au.first_given_name')">
-  [% draw_field_label('au', 'first_given_name') %]
-  [% draw_form_input('au', 'first_given_name'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'first_given_name') %]
+  <!-- PREFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.prefix')">
+    [% draw_field_label('au', 'prefix') %]
+    [% draw_form_input('au', 'prefix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'prefix') %]
+    </div>
   </div>
+
+  <!-- FIRST_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.first_given_name')">
+    [% draw_field_label('au', 'first_given_name') %]
+    [% draw_form_input('au', 'first_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'first_given_name') %]
+    </div>
+  </div>
+
+  <!-- SECOND_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.second_given_name')">
+    [% draw_field_label('au', 'second_given_name') %]
+    [% draw_form_input('au', 'second_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'second_given_name') %]
+    </div>
+  </div>
+
+  <!-- FAMILY_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.family_name')">
+    [% draw_field_label('au', 'family_name') %]
+    [% draw_form_input('au', 'family_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'family_name') %]
+    </div>
+  </div>
+
+  <!-- SUFFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.suffix')">
+    [% draw_field_label('au', 'suffix') %]
+    [% draw_form_input('au', 'suffix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'suffix') %]
+    </div>
+  </div>
+</div> <!-- ng-show == primary -->
+
+<div ng-show="name_tab == 'preferred'" class="patron-reg-pref-names">
+
+  <!-- PREFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_prefix')">
+    [% draw_field_label('au', 'pref_prefix') %]
+    [% draw_form_input('au', 'pref_prefix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_prefix') %]
+    </div>
+  </div>
+
+  <!-- FIRST_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_first_given_name')">
+    [% draw_field_label('au', 'pref_first_given_name') %]
+    [% draw_form_input('au', 'pref_first_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_first_given_name') %]
+    </div>
+  </div>
+
+  <!-- SECOND_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_second_given_name')">
+    [% draw_field_label('au', 'pref_second_given_name') %]
+    [% draw_form_input('au', 'pref_second_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_second_given_name') %]
+    </div>
+  </div>
+
+  <!-- FAMILY_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_family_name')">
+    [% draw_field_label('au', 'pref_family_name') %]
+    [% draw_form_input('au', 'pref_family_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_family_name') %]
+    </div>
+  </div>
+
+  <!-- SUFFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_suffix')">
+    [% draw_field_label('au', 'pref_suffix') %]
+    [% draw_form_input('au', 'pref_suffix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_suffix') %]
+    </div>
+  </div>
+</div> <!-- ng-show == preferred -->
+
+<!-- indicate bottom of name tabs -->
+<div class="row reg-field-row">
+  <div class="col-md-6"><hr class="patron-reg-names-separator"/></div>
 </div>
 
-<!-- SECOND_GIVEN_NAME -->
-
-<div class="row reg-field-row" ng-show="show_field('au.second_given_name')">
-  [% draw_field_label('au', 'second_given_name') %]
-  [% draw_form_input('au', 'second_given_name'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'second_given_name') %]
+<div class="row reg-field-row" ng-show="show_field('au.name_keywords')">
+  [% draw_field_label('au', 'name_keywords') %]
+  <div class="col-md-3 reg-field-input">
+    <textarea 
+      class="form-control" 
+      ng-model="patron.name_keywords"
+      ng-pattern="field_pattern('au', 'name_keywords')"
+      ng-change="field_modified()" 
+      ng-blur="handle_field_changed(patron, 'name_keywords')">
+    </textarea>
   </div>
-</div>
-
-<!-- FAMILY_NAME -->
-
-<div class="row reg-field-row" ng-show="show_field('au.family_name')">
-  [% draw_field_label('au', 'family_name') %]
-  [% draw_form_input('au', 'family_name'); %]
   <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'family_name') %]
-  </div>
-</div>
-
-<!-- SUFFIX -->
-
-<div class="row reg-field-row" ng-show="show_field('au.suffix')">
-  [% draw_field_label('au', 'suffix') %]
-  [% draw_form_input('au', 'suffix'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'suffix') %]
+    [% draw_example_text('au', 'name_keywords') %]
   </div>
 </div>
 

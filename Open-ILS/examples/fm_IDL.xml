@@ -3591,6 +3591,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="OPAC/Staff Client Holds Alias" name="alias"  reporter:datatype="text"/>
 			<field reporter:label="Juvenile" name="juvenile"  reporter:datatype="bool"/>
 			<field reporter:label="Record Last Update Time" name="last_update_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Preferred Prefix" name="pref_prefix" reporter:datatype="text"/>
+			<field reporter:label="Preferred First Name" name="pref_first_given_name" reporter:datatype="text"/>
+			<field reporter:label="Preferred Middle Name" name="pref_second_given_name" reporter:datatype="text"/>
+			<field reporter:label="Preferred Last Name" name="pref_family_name"  reporter:datatype="text"/>
+			<field reporter:label="Preferred Suffix" name="pref_suffix" reporter:datatype="text"/>
+			<field reporter:label="Name Keywords" name="name_keywords" reporter:datatype="text"/>
 			<field reporter:label="Additional Permission Groups" name="groups" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Is Deleted" name="deleted" reporter:datatype="bool"/>
 			<field reporter:label="User Notes" name="notes" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -10382,6 +10388,9 @@ SELECT  usr,
             <field reporter:label="Date of Birth" name="dob" reporter:datatype="text"/>
             <field reporter:label="Complete" name="complete" reporter:datatype="bool"/>
             <field reporter:label="Requesting User" name="requesting_usr" reporter:datatype="link"/>
+						<field reporter:label="Preferred First Name" name="pref_first_given_name" reporter:datatype="text"/>
+						<field reporter:label="Preferred Middle Name" name="pref_second_given_name" reporter:datatype="text"/>
+						<field reporter:label="Preferred Last Name" name="pref_family_name"  reporter:datatype="text"/>
         </fields>
         <links>
             <link field="requesting_usr" reltype="has_a" key="id" map="" class="au"/>

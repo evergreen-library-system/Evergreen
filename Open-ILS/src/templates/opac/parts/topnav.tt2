@@ -19,7 +19,10 @@
         <div id="dash_wrapper">
             <div id="dash_identity">
                 <span id="dash_user">
-                    [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) | html %]
+                    [%  l('[_1] [_2]', 
+                      (ctx.user.pref_first_given_name || ctx.user.first_given_name), 
+                      (ctx.user.pref_family_name || ctx.user.family_name)
+                    ) | html %]
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash_account_buttons">
