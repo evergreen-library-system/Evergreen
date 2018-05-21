@@ -516,13 +516,26 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_current', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 
@@ -988,13 +1001,26 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_historical', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 
