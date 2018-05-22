@@ -24,7 +24,9 @@
     handler="addToBucket" disabled="need_one_selected"></eg-grid-menu-item>
 
   <eg-grid-field label="[% l('ID') %]" path='id' visible></eg-grid-field>
-  <eg-grid-field label="[% l('Card') %]" path='card.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% l('Card') %]" path='card.barcode' visible>
+    <a href="./circ/patron/{{item.id()}}/checkout">{{item.card().barcode()}}</a>
+  </eg-grid-field>
   <eg-grid-field label="[% l('Profile') %]" path='profile.name' visible></eg-grid-field>
   <eg-grid-field label="[% l('Last Name') %]" path='family_name' visible sortable multisortable></eg-grid-field>
   <eg-grid-field label="[% l('First Name') %]" path='first_given_name' visible sortable multisortable></eg-grid-field>
