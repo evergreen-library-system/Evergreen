@@ -1515,7 +1515,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			(ath.core_type = 'circ' AND targ_circ.id = atev.target)
 		LEFT JOIN action.hold_request targ_ahr ON
 			(ath.core_type = 'ahr' AND targ_ahr.id = atev.target)
-		WHERE atev.add_time > NOW() - (SELECT MAX(value) FROM (
+		WHERE atev.add_time > NOW() - (SELECT MIN(value) FROM (
 			SELECT value::INTERVAL FROM actor.org_unit_ancestor_setting(
 				'circ.staff.max_visible_event_age',
 				COALESCE(targ_circ.circ_lib, targ_ahr.pickup_lib)
