@@ -37,6 +37,7 @@ correctly.
 * The Item Status now has a "Last Renewal Workstation" column
 available.
 * Fixes the circulation counts displayed in Item Status Details.
+* Fixes an issue with searching patrons by permission group.
 * Staff members can now manually override the patron juvenile
 flag value, regardless of the patron's date of birth.
 * Checkboxes on patron registration screen are now properly aligned
@@ -72,9 +73,11 @@ We would like to thank the following individuals who contributed code,
 tests and documentation patches to the 3.1.2 point release of
 Evergreen:
 
+* Jason Boyer
 * Galen Charlton
 * Jeff Davis
 * Bill Erickson
+* Lynn Floyd
 * Rogan Hamby
 * Sam Link
 * Jeanette Lundgren
