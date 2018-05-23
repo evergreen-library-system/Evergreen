@@ -2662,7 +2662,8 @@ sub do_checkin {
             $copy_circ_lib, 'circ.checkin.lost_zero_balance.do_not_change',
             $self->editor) || 0;
 
-        if ($dont_change_lost_zero) {
+        # Don't assume there's always a circ based on copy status
+        if ($dont_change_lost_zero && $self->circ) {
             my ($obt) = $U->fetch_mbts($self->circ->id, $self->editor);
             $dont_change_lost_zero = 0 if( $obt and $obt->balance_owed != 0 );
         }
