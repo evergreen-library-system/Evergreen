@@ -1526,7 +1526,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     case 11: /* CATALOGING */
                         egCore.audio.play('info.checkin.cataloging');
                         evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
-                        return $q.when(final_resp);
+                        if (options.no_precat_alert)
+                            return $q.when(final_resp);
+                        return egAlertDialog.open(
+                            egCore.strings.PRECAT_CHECKIN_MSG, params)
+                            .result.then(function() {return final_resp});
+
 
                     case 15: /* ON_RESERVATION_SHELF */
                         egCore.audio.play('info.checkin.reservation');
