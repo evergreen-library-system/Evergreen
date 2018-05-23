@@ -66,11 +66,8 @@ angular.module('egCoreMod')
                     // URL, since it creates an intermediate path change.
                     // Instead, use the ham-fisted approach of killing any
                     // search args and applying the args we want.
-                    $window.location.href = 
-                        $window.location.href.replace(
-                            /(\?|\&).*/,
-                            '?set_eg_locale=' + encodeURIComponent(locale)
-                        );
+                    $window.location.href = egCore.env.basePath +
+                        '?set_eg_locale=' + encodeURIComponent(locale);
                 }
 
                 $scope.changeOperatorUndo = function() {
