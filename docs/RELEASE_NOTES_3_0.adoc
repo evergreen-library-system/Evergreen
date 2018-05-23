@@ -5,7 +5,74 @@ Evergreen 3.0 Release Notes
 
 Evergreen 3.0.8
 ---------------
-This release contains bug fixes improving on Evergreen 3.0.7.
+This release contains bug fixes improving on Evergreen 3.0.7.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Cataloging
+^^^^^^^^^^
+
+* The MARC editor now handles 008 fields better.
+* Adds spaces between subfields when suggesting a call
+number for a new volume.
+* MarcXML exports from the MARC Batch Import/Export ->
+Export Records screen now downloads the file, rather than opening
+it in the browser.
+* The Item Status Circulation Library column now displays a 
+shortname rather than the full library name.
+* The Item Status Remaining Renewals column now displays
+correctly.
+* The Item Status now has a "Last Renewal Workstation" column
+available.
+* Fixes the circulation counts displayed in Item Status Details.
+* Fixes an issue where multiple copies with different values for required
+statistical categories could not be edited and saved in batch.
+* Add an option to remove floating in the copy editor.
+* Fixes an issue with the floating dropdown in the copy editor.
+* Reduces the number of API calls that the MARC Editor requires.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue with searching patrons by permission group.
+* Staff members can now manually override the patron juvenile
+flag value, regardless of the patron's date of birth.
+* Checkboxes on patron registration screen are now properly aligned
+with other fields.
+* The user permission group dropdowns in the patron registration,
+edit, and search interfaces now have scrollbars.
+* The Merge Patrons interface now displays the date of birth.
+* The payment button on patron bills screen is now inactive if the
+Payment Received field is blank.
+* When a patron summary contains an image of the patron,
+that image tag now has a null alt attribute to remove it from
+the flow of a screen reader.
+* Corrects an issue that caused the transit dialog to show the
+wrong branch.
+* The cursor in the in-house use screen now automatically goes
+to the barcode field.
+* Add support for converting change to patron credit in the patron bills
+interface, consistent with the XUL feature.
+* Fixes a bug that caused pickup/request library fields to be
+blank sometimes.
+* Fixes a bug in the offline org unit tree.
+
+Command-line system administration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* The novelist entry in `eg_vhost.conf` includes two new
+parameters.
+* Corrects an issue with the `--max-sleep` argument on the
+`action_trigger_runner.pl` support script.
+* Corrects an issue with how the `eg_pbx_allocator.pl` script
+detects an existing lock file.
+* The 3.0.2-3.0.3 upgrade script disables triggers before
+recalculating bib visibility.
+
+Public catalog
+^^^^^^^^^^^^^^
 
 * Fixes an issue that caused records with located URIs to be
 retrieved in Copy Location and Copy Location Group searches.
@@ -16,48 +83,19 @@ preferred library in the public catalog.
 * Fixes regression errors in the search results page.
 * Removes redundant call numbers from the Show More Details
 search results.
-* Adds spaces between subfields when suggesting a call
-number for a new volume.
-* MarcXML exports from the MARC Batch Import/Export ->
-Export Records screen now downloads the file, rather than opening
-it in the browser.
-* Adds some padding to the bottom of Web Client interfaces.
+
+Serials
+^^^^^^^
+
 * Fixes an issue that prevented users from searching for
 receivable issues using Database ID or ISSN in the Serials
 Batch Receive interface.
-* The Item Status Circulation Library column now displays a 
-shortname rather than the full library name.
-* The Item Status Remaining Renewals column now displays
-correctly.
-* The Item Status now has a "Last Renewal Workstation" column
-available.
-* Fixes the circulation counts displayed in Item Status Details.
-* Fixes an issue with searching patrons by permission group.
-* Staff members can now manually override the patron juvenile
-flag value, regardless of the patron's date of birth.
-* Checkboxes on patron registration screen are now properly aligned
-with other fields.
-* The user permission group dropdowns in the patron registration,
-edit, and search interfaces now have scrollbars.
-* The Merge Patrons interface now displays the date of birth.
-* When a patron summary contains an image of the patron,
-that image tag now has a null alt attribute to remove it from
-the flow of a screen reader.
-* The MARC editor now handles 008 fields better.
-* Corrects an issue that caused the transit dialog showed the
-wrong branch.
-* The cursor in the in-house use screen now automatically goes
-to the barcode field.
-* The novelist entry in `eg_vhost.conf` includes two new
-parameters.
-* Corrects an issue with the `--max-sleep` argument on the
-`action_trigger_runner.pl` support script.
-* Corrects an issue with how the `eg_pbx_allocator.pl` script
-detects an existing lock file.
-* The 3.0.2-3.0.3 upgrade script disables triggers before
-recalculating bib visibility.
-* Fixes an issue where multiple copies with different values for required
-statistical categories could not be edited and saved in batch.
+
+General
+^^^^^^^
+
+* Adds some padding to the bottom of Web Client interfaces.
+
 
 
 Acknowledgements
@@ -68,10 +106,13 @@ Evergreen:
 
 * Jason Boyer
 * Galen Charlton
+* Garry Collum
+* Dawn Dale
 * Jeff Davis
 * Bill Erickson
 * Lynn Floyd
 * Rogan Hamby
+* Kyle Huckins
 * Sam Link
 * Jeanette Lundgren
 * Kathy Lussier
@@ -79,6 +120,7 @@ Evergreen:
 * Terran McCanna
 * Dan Pearl
 * Mike Rylander
+* Laura Sachjen
 * Jane Sandberg
 * Chris Sharp
 * Ben Shum
