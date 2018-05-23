@@ -5,6 +5,7 @@ Template for printing hold request slips. Fields include:
 * hold.behind_desk
 * copy.barcode
 * title
+* patron.alias
 * patron.family_name
 * patron.first_given_name
 * patron.second_given_name
@@ -36,7 +37,7 @@ Template for printing hold request slips. Fields include:
   <br/>
   <br/>
 
-  <div>[% l('Hold for patron [_1], [_2] [_3]',
+  <div>[% l('Hold for patron: [_1], [_2] [_3]',
     '{{patron.family_name}}',
     '{{patron.first_given_name}}',
     '{{patron.second_given_name}}') %]</div>
