@@ -1112,15 +1112,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $scope.holdings_cb_changed(item.checkbox,item.checked);
     }
 
-    function gatherSelectedOwners () {
-        var owner_list = [];
-        angular.forEach(
-            $scope.holdingsGridControls.selectedItems(),
-            function (item) { owner_list.push(item.owner_id) }
-        );
-        return owner_list;
-    }
-
     function gatherSelectedHoldingsIds () {
         var cp_id_list = [];
         angular.forEach(
@@ -1234,7 +1225,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.selectedHoldingsVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,true) }
     $scope.selectedHoldingsEmptyVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,false) }
 
-    spawnHoldingsAdd = function (vols,copies){
+    spawnHoldingsAdd = function (vols,copies,only_add_vol){
         var raw = [];
         if (copies) { // just a copy on existing volumes
             angular.forEach(gatherSelectedVolumeIds(), function (v) {
@@ -1247,7 +1238,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                     function (item) {
                         raw.push({
                             owner : item.owner_id,
-                            label : item.call_number.label
+                            label : ((item.call_number) ? item.call_number.label : null)
                         });
                     });
             } else {
@@ -1266,7 +1257,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 record_id: $scope.record_id,
                 raw: raw,
                 hide_vols : false,
-                hide_copies : false
+                hide_copies : ((only_add_vol) ? true : false),
+                only_add_vol : only_add_vol
             }
         ).then(function(key) {
             if (key) {
@@ -1277,31 +1269,22 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }
         });
     }
-    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(true,false) }
-    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(false,true) }
+    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(true,false,false) }
+    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(false,true,false) }
+    $scope.selectedHoldingsVolAdd = function () { spawnHoldingsAdd(true,false,true) }
 
-    spawnHoldingsEdit = function (hide_vols,hide_copies,add_vol){
-
-        var raw;
-        if (add_vol) {
-            raw = [{callnumber:null}];
-        } else {
-            raw = gatherSelectedEmptyVolumeIds().map(
-                function(v){ return { callnumber : v } }
-            );
-        }
-
+    spawnHoldingsEdit = function (hide_vols,hide_copies){
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.anon_cache.set_value',
             null, 'edit-these-copies', {
                 record_id: $scope.record_id,
                 copies: gatherSelectedHoldingsIds(),
-                raw: raw,
+                raw: gatherSelectedEmptyVolumeIds().map(
+                    function(v){ return { callnumber : v } }
+                ),
                 hide_vols : hide_vols,
-                hide_copies : hide_copies,
-                only_add_vol : ((add_vol) ? true : false),
-                owners : gatherSelectedOwners()
+                hide_copies : hide_copies
             }
         ).then(function(key) {
             if (key) {
@@ -1315,8 +1298,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.selectedHoldingsVolCopyEdit = function () { spawnHoldingsEdit(false,false) }
     $scope.selectedHoldingsVolEdit = function () { spawnHoldingsEdit(false,true) }
     $scope.selectedHoldingsCopyEdit = function () { spawnHoldingsEdit(true,false) }
-
-    $scope.selectedHoldingsVolAdd = function () { spawnHoldingsEdit(false,true,true) }
 
     $scope.selectedHoldingsItemStatus = function (){
         var url = egCore.env.basePath + 'cat/item/search/' + gatherSelectedHoldingsIds().join(',')

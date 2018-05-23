@@ -1292,8 +1292,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         ).then(function (data) {
 
             if (data) {
-                var owners = [ egCore.auth.user().ws_ou() ];
-
                 if (data.hide_vols && !$scope.defaults.always_volumes) $scope.show_vols = false;
                 if (data.hide_copies) {
                     $scope.show_copies = false;
@@ -1301,9 +1299,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 }
                 if (data.only_add_vol) {
                     $scope.only_add_vol = true;
-                    $scope.only_vols = true;
-                    $scope.show_copies = false;
-                    owners = data.owners;
                 }
 
                 $scope.record_id = data.record_id;
@@ -1347,56 +1342,59 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     itemSvc.addCopy(cp)
                                 });
                             } else {
-                                angular.forEach(owners, function(owner) {
-                                    var cn = new egCore.idl.acn();
-                                    cn.id( --itemSvc.new_cn_id );
-                                    cn.isnew( true );
-                                    cn.prefix( $scope.defaults.prefix || -1 );
-                                    cn.suffix( $scope.defaults.suffix || -1 );
-                                    cn.owning_lib( owner );
-                                    cn.record( $scope.record_id );
-                                    egCore.org.settings(
-                                        ['cat.default_classification_scheme'],
-                                        cn.owning_lib()
-                                    ).then(function (val) {
-                                        cn.label_class(
-                                            $scope.defaults.classification ||
-                                            val['cat.default_classification_scheme'] ||
-                                            1
-                                        );
-                                        if (proto.label) {
-                                            cn.label( proto.label );
-                                        } else {
-                                            egCore.net.request(
-                                                'open-ils.cat',
-                                                'open-ils.cat.biblio.record.marc_cn.retrieve',
-                                                $scope.record_id,
-                                                cn.label_class()
-                                            ).then(function(cn_array) {
-                                                if (cn_array.length > 0) {
-                                                    for (var field in cn_array[0]) {
-                                                        cn.label( cn_array[0][field] );
-                                                        break;
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    });
-
-                                    var cp = new itemSvc.generateNewCopy(
-                                        cn,
-                                        proto.owner || egCore.auth.user().ws_ou(),
-                                        $scope.is_fast_add,
-                                        true
+                                var cn = new egCore.idl.acn();
+                                cn.id( --itemSvc.new_cn_id );
+                                cn.isnew( true );
+                                cn.prefix( $scope.defaults.prefix || -1 );
+                                cn.suffix( $scope.defaults.suffix || -1 );
+                                cn.owning_lib( proto.owner || egCore.auth.user().ws_ou() );
+                                cn.record( $scope.record_id );
+                                egCore.org.settings(
+                                    ['cat.default_classification_scheme'],
+                                    cn.owning_lib()
+                                ).then(function (val) {
+                                    cn.label_class(
+                                        $scope.defaults.classification ||
+                                        val['cat.default_classification_scheme'] ||
+                                        1
                                     );
-
-                                    if (proto.barcode) {
-                                        cp.barcode( proto.barcode );
-                                        cp.empty_barcode = false;
+                                    if (proto.label) {
+                                        cn.label( proto.label );
+                                    } else {
+                                        egCore.net.request(
+                                            'open-ils.cat',
+                                            'open-ils.cat.biblio.record.marc_cn.retrieve',
+                                            $scope.record_id,
+                                            cn.label_class()
+                                        ).then(function(cn_array) {
+                                            if (cn_array.length > 0) {
+                                                for (var field in cn_array[0]) {
+                                                    cn.label( cn_array[0][field] );
+                                                    break;
+                                                }
+                                            }
+                                        });
                                     }
-
-                                    itemSvc.addCopy(cp)
                                 });
+
+                                // If we are adding an empty vol,
+                                // this is ultimately just a placeholder copy
+                                // which gets removed before saving.
+                                // TODO: consider ways to remove this
+                                // requirement
+                                var cp = new itemSvc.generateNewCopy(
+                                    cn,
+                                    proto.owner || egCore.auth.user().ws_ou(),
+                                    $scope.is_fast_add,
+                                    true
+                                );
+
+                                if (proto.barcode) {
+                                    cp.barcode( proto.barcode );
+                                    cp.empty_barcode = false;
+                                }
+
+                                itemSvc.addCopy(cp)
                             }
                         }
                     );
