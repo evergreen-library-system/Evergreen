@@ -338,8 +338,9 @@
                 <div class="col-md-6" ng-class="{'bg-success': working.age_protect !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.age_protect" ng-model="working.age_protect"
-                        ng-options="a.id() as a.name() for a in age_protect_list"
-                    ></select>
+                        ng-options="a.id() as a.name() for a in age_protect_list">
+                      <option value="">[% l('&lt;NONE&gt;') %]</option>
+                    </select>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.mint_condition !== undefined}">
                     <div class="row">
