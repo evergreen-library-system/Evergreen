@@ -77,7 +77,7 @@
 
 
   <eg-grid-field label="[% l('Acquisition Cost') %]"     path="cost" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Author') %]"               path="call_number.record.simple_record.author"  hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Date') %]"         path="_circ_summary.last_checkin_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" datatype="timestamp" hidden></eg-grid-field>
@@ -105,7 +105,9 @@
   <eg-grid-field label="[% l('Deleted?') %]"              path="deleted" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Document ID') %]"           path="call_number.record.id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Edited By') %]"             path="editor.usrname" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden>
+    <span>{{item['fine_level'] | string_pick:'[% l('Low') %]':'[% l('Normal') %]':'[% l('High') %]'}}</span>
+  </eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]"         path="_circ_summary.last_stop_fines" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped Time') %]"    path="_circ_summary.last_stop_fines_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Floating Group') %]"        path="floating.name" hidden></eg-grid-field>
@@ -113,7 +115,9 @@
   <eg-grid-field label="[% l('Holds Count') %]"           path="holds_count" hidden></eg-grid-field>
   <eg-grid-field label="[% l('In-House Uses') %]"         path="_inHouseUseCount" hidden></eg-grid-field>
   <eg-grid-field label="[% l('ISBN') %]"                  path="call_number.record.simple_record.isbn" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Loan Duration') %]"         path="loan.duration" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Loan Duration') %]"         path="loan_duration" hidden>
+    <span>{{item['loan_duration'] | string_pick:'[% l('Short') %]':'[% l('Normal') %]':'[% l('Extended') %]'}}</span>
+  </eg-grid-field>
   <eg-grid-field label="[% l('OPAC Visible?') %]"         path="opac_visible" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owned By') %]"              path="call_number.record.owner" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owning Library') %]"        path="call_number.owning_lib.shortname" hidden></eg-grid-field>
@@ -128,7 +132,6 @@
   <eg-grid-field label="[% l('TCN') %]"                   path="call_number.record.tcn_value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('TCN Source') %]"            path="call_number.record.tcn_source" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Transaction Complete') %]"  path="_circ.xact_finish" datatype="timestamp" hidden></eg-grid-field>
-</eg-grid>
 </eg-grid>
 
 <div class="flex-row pad-vert">

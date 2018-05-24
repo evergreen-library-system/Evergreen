@@ -939,3 +939,4 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
     return service;
 }])
+.filter('string_pick', function() { return function(i){ return arguments[i] || ''; }; })
