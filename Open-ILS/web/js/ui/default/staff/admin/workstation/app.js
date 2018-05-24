@@ -433,24 +433,28 @@ function($scope , $q , egCore , ngToast) {
             {
                 id : 1,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 1.50,
                     last_payment_note : 'Test Note 1',
                     last_payment_type : 'cash_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 1.00
                 }
             }, {
                 id : 2,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 2.50,
                     last_payment_note : 'Test Note 2',
                     last_payment_type : 'credit_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 2.00
                 }
