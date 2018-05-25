@@ -122,6 +122,8 @@ General
 * Adds some padding to the bottom of Web Client interfaces.
 * Logins now honor all org unit timeout settings.
 * Evergreen will now identify and handle invalid timezones.
+* Fixes an issue where a column header in some interfaces were automatically
+highlighted in green when retrieving the interface.
 
 
 
