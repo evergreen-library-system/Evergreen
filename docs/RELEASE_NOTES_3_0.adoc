@@ -36,6 +36,8 @@ statistical categories could not be edited and saved in batch.
 Circulation
 ^^^^^^^^^^^
 
+* Fixes an issue that prevented the offline patron registration
+screen from loading.
 * Fixes an issue with searching patrons by permission group.
 * Staff members can now manually override the patron juvenile
 flag value, regardless of the patron's date of birth.
@@ -43,14 +45,21 @@ flag value, regardless of the patron's date of birth.
 with other fields.
 * The user permission group dropdowns in the patron registration,
 edit, and search interfaces now have scrollbars.
+* The check-in screen now includes a copy status column.
 * The Merge Patrons interface now displays the date of birth.
 * The payment button on patron bills screen is now inactive if the
 Payment Received field is blank.
+* The Bill History receipt now includes a Finish date and a Last
+Payment date.
 * When a patron summary contains an image of the patron,
 that image tag now has a null alt attribute to remove it from
 the flow of a screen reader.
 * Corrects an issue that caused the transit dialog to show the
 wrong branch.
+* Restores the call number prefix and suffix fields to the holds
+pull list.
+* The documentation at the top of the hold shelf slip template
+adds `patron.alias`.
 * The cursor in the in-house use screen now automatically goes
 to the barcode field.
 * Add support for converting change to patron credit in the patron bills
@@ -104,6 +113,7 @@ We would like to thank the following individuals who contributed code,
 tests and documentation patches to the 3.0.8 point release of
 Evergreen:
 
+* John Amundson
 * Jason Boyer
 * Galen Charlton
 * Garry Collum
