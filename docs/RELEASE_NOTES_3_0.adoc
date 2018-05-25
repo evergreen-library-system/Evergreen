@@ -39,14 +39,17 @@ Circulation
 * Fixes an issue that prevented the offline patron registration
 screen from loading.
 * Fixes an issue with searching patrons by permission group.
+* The barcodes in the patron search are now clickable.
 * Staff members can now manually override the patron juvenile
 flag value, regardless of the patron's date of birth.
 * Checkboxes on patron registration screen are now properly aligned
 with other fields.
 * The user permission group dropdowns in the patron registration,
 edit, and search interfaces now have scrollbars.
+* The checkout with specific due date option is now less hidden.
 * The check-in screen now includes a copy status column.
 * The Merge Patrons interface now displays the date of birth.
+* The user bucket screen now displays the Bucket ID.
 * The payment button on patron bills screen is now inactive if the
 Payment Received field is blank.
 * The Bill History receipt now includes a Finish date and a Last
@@ -56,12 +59,19 @@ that image tag now has a null alt attribute to remove it from
 the flow of a screen reader.
 * Corrects an issue that caused the transit dialog to show the
 wrong branch.
+* Corrects an issue with printing transit lists.
+* "Find another target" on transiting hold no longer leaves the 
+copy "in-transit".
+* The images now display to distinguish hold and transit slips.
+* The Clearable Holds list printout now only shows holds that have
+expired.
 * Restores the call number prefix and suffix fields to the holds
 pull list.
 * The documentation at the top of the hold shelf slip template
 adds `patron.alias`.
 * The cursor in the in-house use screen now automatically goes
 to the barcode field.
+* The in-house use screen now shows a copy status column.
 * Add support for converting change to patron credit in the patron bills
 interface, consistent with the XUL feature.
 * Fixes a bug that caused pickup/request library fields to be
@@ -92,6 +102,9 @@ preferred library in the public catalog.
 * Fixes regression errors in the search results page.
 * Removes redundant call numbers from the Show More Details
 search results.
+* The cast field in the catalog is now taken from the 511 field
+when first indicator = 1, rather than the 508.
+* Fixes a display issue caused by editing holds.
 
 Serials
 ^^^^^^^
@@ -104,6 +117,8 @@ General
 ^^^^^^^
 
 * Adds some padding to the bottom of Web Client interfaces.
+* Logins now honor all org unit timeout settings.
+* Evergreen will now identify and handle invalid timezones.
 
 
 
@@ -128,6 +143,7 @@ Evergreen:
 * Kathy Lussier
 * Katie G. Martin
 * Terran McCanna
+* Michele Morgan
 * Dan Pearl
 * Mike Rylander
 * Laura Sachjen
