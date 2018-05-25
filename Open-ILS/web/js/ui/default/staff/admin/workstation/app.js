@@ -525,6 +525,7 @@ function($scope , $q , egCore , ngToast) {
         patron : seed_user,
         address : seed_addr,
         dest_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
+        dest_courier_code : 'ABC 123',
         dest_address : seed_addr,
         hold : one_hold,
         holds : [
