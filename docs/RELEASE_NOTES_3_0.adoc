@@ -31,6 +31,8 @@ available.
 statistical categories could not be edited and saved in batch.
 * Add an option to remove floating in the copy editor.
 * Fixes an issue with the floating dropdown in the copy editor.
+* Fixes a problem in which the copy template didn't properly copy
+certain objects.
 * Reduces the number of API calls that the MARC Editor requires.
 
 Circulation
@@ -46,7 +48,8 @@ flag value, regardless of the patron's date of birth.
 with other fields.
 * The user permission group dropdowns in the patron registration,
 edit, and search interfaces now have scrollbars.
-* The checkout with specific due date option is now less hidden.
+* The date picker on the checkout screen is now hidden unless
+circ staff activates a specific due date option.
 * The check-in screen now includes a copy status column.
 * The Merge Patrons interface now displays the date of birth.
 * The user bucket screen now displays the Bucket ID.
