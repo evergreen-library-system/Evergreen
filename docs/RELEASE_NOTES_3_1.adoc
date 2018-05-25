@@ -116,7 +116,7 @@ search results.
 * The cast field in the catalog is now taken from the 511 field
 when first indicator = 1, rather than the 508.
 * Fixes a display issue caused by editing holds.
-
+* Repairs broken author search links on the catalog record page.
 
 Serials
 ^^^^^^^
