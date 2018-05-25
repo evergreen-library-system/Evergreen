@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1111', :eg_version);
 
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 594, 'ADMIN_COPY_ALERT_TYPE', oils_i18n_gettext( 594,
