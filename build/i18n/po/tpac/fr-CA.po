@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2017-02-10 21:07+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Dan Scott <dan@coffeecode.net>\n"
 "Language-Team: French <fr@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:31+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:02+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -5171,100 +5171,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "April"
-#~ msgstr "avril"
-
-#~ msgid "August"
-#~ msgstr "août"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Solde dû"
-
-#~ msgid "December"
-#~ msgstr "décembre"
-
-#~ msgid "Fines"
-#~ msgstr "Amendes"
-
-#~ msgid "Fines:"
-#~ msgstr "Amendes :"
-
-#~ msgid "February"
-#~ msgstr "février"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Montant initial dû"
-
-#~ msgid "January"
-#~ msgstr "janvier"
-
-#~ msgid "July"
-#~ msgstr "juillet"
-
-#~ msgid "June"
-#~ msgstr "juin"
-
-#~ msgid "May"
-#~ msgstr "mai"
-
-#~ msgid "March"
-#~ msgstr "mars"
-
-#~ msgid "November"
-#~ msgstr "novembre"
-
-#~ msgid "October"
-#~ msgstr "octobre"
-
-#~ msgid "Other Fees"
-#~ msgstr "Autres frais"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Voulez-vous vraiment débiter %1 de votre carte de crédit?"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Retour pour réessayer ou annuler le paiement"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Date du dernier paiement"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Payer les amendes sélectionnées"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Payer les amendes"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Sélectionner les amendes à payer :"
-
-#~ msgid "September"
-#~ msgstr "Septembre"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Soumettre un paiement"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Montant total à payer :"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Début de la transaction"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Montant total payé"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Vous n’avez pas d’amendes à payer ou vous avez sélectionner des amendes dont "
-#~ "le solde n’est pas positif. Nous ne pouvons traiter des montants non "
-#~ "positifs."
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Cliquez sur %1Annuler%2 pour retourner en arrière et modifier la sélection "
-#~ "d’amendes."
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Resultats %1 à %2 de %3"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2017-11-05 06:27+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:31+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:01+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -5189,97 +5189,3 @@ msgstr "عرض"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "المجلد"
-
-#~ msgid "April"
-#~ msgstr "نيسان"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "هل تؤكد دفع %1 من بطاقتك الإئتمانية؟"
-
-#~ msgid "August"
-#~ msgstr "آب"
-
-#~ msgid "September"
-#~ msgstr "أيلول"
-
-#~ msgid "Submit Payment"
-#~ msgstr "حفظ الدفع"
-
-#~ msgid "Balance Owed"
-#~ msgstr "الرصيد المُستحق"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "انقر على %1إلغاء%2 للرجوع أو لتحديد/لإلغاء تحديد الغرامات الأخرى."
-
-#~ msgid "December"
-#~ msgstr "كانون الأول"
-
-#~ msgid "February"
-#~ msgstr "شباط"
-
-#~ msgid "March"
-#~ msgstr "آذار"
-
-#~ msgid "May"
-#~ msgstr "أيار"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "المجموع الكلي المدفوع"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "المجموع النهائي للدفع:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "بداية تاريخ الإجراء"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "قد لا يكون عليك أي غرامات للدفع، أو مجموع مبلغ الغرامات يساوي عدد سالب، لا "
-#~ "يمكننا معالجة المبالغ السالبة."
-
-#~ msgid "Fines"
-#~ msgstr "الغرامات"
-
-#~ msgid "Fines:"
-#~ msgstr "الغرامات:"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "تاريخ آخر دفع"
-
-#~ msgid "November"
-#~ msgstr "تشرين الثاني"
-
-#~ msgid "October"
-#~ msgstr "تشرين الأول"
-
-#~ msgid "Other Fees"
-#~ msgstr "الرسوم الأخرى"
-
-#~ msgid "Pay Fines"
-#~ msgstr "دفع الغرامات"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "دفع الغرامات المحددة"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "نتائج %1 - %2 حول %3"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "الغرامات المحددة التي ستدفعها:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "يمكنك الرجوع من أجل المحاولة مرة أخرى أو إلغاء محاولة الدفع هذه"
-
-#~ msgid "January"
-#~ msgstr "كانون الثاني"
-
-#~ msgid "July"
-#~ msgstr "تموز"
-
-#~ msgid "June"
-#~ msgstr "حزيران"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "المبلغ أو الكمية الأولية المستحقة"

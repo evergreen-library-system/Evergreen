@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2013-02-01 15:15+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Warren Layton <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:32+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:03+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -5144,94 +5144,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Are you sure you are ready to charge %1 to your credit card?"
-
-#~ msgid "April"
-#~ msgstr "April"
-
-#~ msgid "August"
-#~ msgstr "August"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Balance Owed"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "Click %1Cancel%2 to go back and (un)select other fines."
-
-#~ msgid "December"
-#~ msgstr "December"
-
-#~ msgid "Fines"
-#~ msgstr "Fines"
-
-#~ msgid "February"
-#~ msgstr "February"
-
-#~ msgid "Fines:"
-#~ msgstr "Fines:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Go back to try again or to cancel this payment attempt."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Initial Amount Owed"
-
-#~ msgid "January"
-#~ msgstr "January"
-
-#~ msgid "July"
-#~ msgstr "July"
-
-#~ msgid "June"
-#~ msgstr "June"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Last Payment Time"
-
-#~ msgid "May"
-#~ msgstr "May"
-
-#~ msgid "March"
-#~ msgstr "March"
-
-#~ msgid "October"
-#~ msgstr "October"
-
-#~ msgid "November"
-#~ msgstr "November"
-
-#~ msgid "Other Fees"
-#~ msgstr "Other Fees"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pay selected fines"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pay Fines"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Selected fines you are paying for:"
-
-#~ msgid "September"
-#~ msgstr "September"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Submit Payment"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Total amount to pay:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Transaction Start Time"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Total Amount Paid"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."

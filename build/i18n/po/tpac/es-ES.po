@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
-"PO-Revision-Date: 2017-10-19 15:39+0000\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Dan Wells <dbw2@calvin.edu>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:32+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-03-27 06:02+0000\n"
+"X-Generator: Launchpad (build 18573)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
 msgid ""
@@ -5240,99 +5240,3 @@ msgstr "ver"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "volumen"
-
-#~ msgid "April"
-#~ msgstr "Abril"
-
-#~ msgid "August"
-#~ msgstr "Agosto"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Total Debido"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr ""
-#~ "¿Estás seguro de querer realizar el cargo %1 a tu tarjeta de crédito?"
-
-#~ msgid "December"
-#~ msgstr "Diciembre"
-
-#~ msgid "February"
-#~ msgstr "Febrero"
-
-#~ msgid "Fines"
-#~ msgstr "Multas"
-
-#~ msgid "Fines:"
-#~ msgstr "Multas:"
-
-#~ msgid "January"
-#~ msgstr "Enero"
-
-#~ msgid "July"
-#~ msgstr "Julio"
-
-#~ msgid "June"
-#~ msgstr "Junio"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Fecha del último pago"
-
-#~ msgid "March"
-#~ msgstr "Marzo"
-
-#~ msgid "May"
-#~ msgstr "Mayo"
-
-#~ msgid "November"
-#~ msgstr "Noviembre"
-
-#~ msgid "October"
-#~ msgstr "Octubre"
-
-#~ msgid "Other Fees"
-#~ msgstr "Otros gastos"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pagar Multas"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pagar multas seleccionadas"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Multas seleccionadas que estas por pagar:"
-
-#~ msgid "September"
-#~ msgstr "Septiembre"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Enviar Pago"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Cantidad total pagada"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Cantidad total a pagar:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Fecha de inicio de la transacción"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Regrese para intentar nuevamente o para cancelar el intento de pago."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Monto de Adeudo Inicial"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Resultados %1 - %2 de %3"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Haga clic en %1Cancel %2 para volver y (des) seleccionar otras multas"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Usted o no tiene ninguna multa a pagar o haya seleccionado multas cuyo total "
-#~ "es totalizado a no positivo . No podemos procesar cantidades no positivos ."
