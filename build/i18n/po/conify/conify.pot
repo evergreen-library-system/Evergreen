@@ -476,7 +476,7 @@ msgstr ""
 msgid "Delete Tree"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:50
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:70
 msgid "Deleted Selected"
 msgstr ""
 
@@ -596,7 +596,7 @@ msgstr ""
 msgid "Group Penalty Thresholds"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:43
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:63
 msgid "Hard Due Date Values"
 msgstr ""
 
@@ -970,7 +970,7 @@ msgstr ""
 msgid "New Fund Tag"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:47
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:67
 msgid "New Hard Due Date Value"
 msgstr ""
 
@@ -1370,7 +1370,7 @@ msgstr ""
 msgid "Showing only control set bib fields linked to authority field:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:74
 msgid "Showing only hard due date values related to hard due date object"
 msgstr ""
 
