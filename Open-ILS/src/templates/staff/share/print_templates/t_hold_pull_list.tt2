@@ -29,7 +29,7 @@ Template for printing a table of holds to pull. Fields include:
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="hold_data in holds | orderBy : ['hold._copy_location_position', 'volume.label']">
+    <tr ng-repeat="hold_data in holds | orderBy : ['hold._copy_location_position', 'volume.prefix', 'volume.label']">
       <td>{{hold_data.hold.hold_type}}</td>
       <td>{{hold_data.title}}</td>
       <td>{{hold_data.author}}</td>
