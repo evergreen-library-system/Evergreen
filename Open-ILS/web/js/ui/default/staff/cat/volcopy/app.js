@@ -573,7 +573,7 @@ function(egCore , $q) {
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
-                if (!$scope.callNumber.label()) $scope.callNumber.emtpy_label = true;
+                if (!$scope.callNumber.label()) $scope.callNumber.empty_label = true;
 
                 $scope.empty_label = false;
                 $scope.empty_label_string = window.empty_label_string;
@@ -703,11 +703,6 @@ function(egCore , $q) {
                 }
 
                 $scope.updateLabel = function () {
-                    if ($scope.label == '') {
-                        $scope.callNumber.empty_label = $scope.empty_label = true;
-                    } else {
-                        $scope.callNumber.empty_label = $scope.empty_label = false;
-                    }
                     angular.forEach($scope.copies, function(cp) {
                         cp.call_number().label($scope.label);
                         cp.call_number().ischanged(1);
@@ -716,6 +711,11 @@ function(egCore , $q) {
 
                 $scope.$watch('callNumber.label()', function (v) {
                     $scope.label = v;
+                    if ($scope.label == '') {
+                        $scope.callNumber.empty_label = $scope.empty_label = true;
+                    } else {
+                        $scope.callNumber.empty_label = $scope.empty_label = false;
+                    }
                 });
 
                 $scope.prefix = $scope.callNumber.prefix();
@@ -1297,9 +1297,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     $scope.show_copies = false;
                     $scope.only_vols = true;
                 }
-                if (data.only_add_vol) {
-                    $scope.only_add_vol = true;
-                }
 
                 $scope.record_id = data.record_id;
 
@@ -1402,7 +1399,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     return itemSvc.copies;
                 }
 
-                if (!$scope.only_add_vol && data.copies && data.copies.length)
+                if (data.copies && data.copies.length)
                     return itemSvc.fetchIds(data.copies).then(fetchRaw);
 
                 return fetchRaw();
@@ -1421,7 +1418,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             angular.forEach(
                 itemSvc.copies,
                 function (i) {
-                    if (!$scope.only_add_vol) {
+                    if (!$scope.only_vols) {
                         if (i.duplicate_barcode || i.empty_barcode || i.call_number().empty_label) {
                             can_save = false;
                         }
@@ -1431,7 +1428,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 }
             );
 
-            if ($scope.forms.myForm && $scope.forms.myForm.$invalid) {
+            if (!$scope.only_vols && $scope.forms.myForm && $scope.forms.myForm.$invalid) {
                 can_save = false;
             }
 
@@ -1724,7 +1721,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     cnHash[cn_id].suffix(cnHash[cn_id].suffix().id()); // un-object-ize some fields
             });
 
-            if ($scope.only_add_vol) { // strip off copies when we're in add-empty-vol mode
+            if ($scope.only_vols) { // strip off copies when we're in vol-only mode
                 angular.forEach(cnHash, function (v, k) {
                     cnHash[k].copies([]);
                 });

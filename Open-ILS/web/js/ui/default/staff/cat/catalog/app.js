@@ -1135,7 +1135,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         angular.forEach(
             $scope.holdingsGridControls.selectedItems(),
             function (item) {
-                if (item.copy_count == 0)
+                if (item.copy_count == 0 || (!item.id && item.call_number))
+                    // we are in a compressed row with no copies, or we are in a single
+                    // call number row with no copy (testing for presence of 'id')
+                    // In either case, the call number is 'empty'
                     cn_id_list.push(item.call_number.id)
             }
         );
@@ -1225,13 +1228,13 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.selectedHoldingsVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,true) }
     $scope.selectedHoldingsEmptyVolCopyDelete = function () { $scope.selectedHoldingsDelete(true,false) }
 
-    spawnHoldingsAdd = function (vols,copies,only_add_vol){
+    spawnHoldingsAdd = function (add_vols,add_copies){
         var raw = [];
-        if (copies) { // just a copy on existing volumes
+        if (!add_vols && add_copies) { // just a copy on existing volumes
             angular.forEach(gatherSelectedVolumeIds(), function (v) {
                 raw.push( {callnumber : v} );
             });
-        } else if (vols) {
+        } else if (add_vols) {
             if (typeof $scope.holdingsGridControls.selectedItems == "function" &&
                 $scope.holdingsGridControls.selectedItems().length > 0) {
                 angular.forEach($scope.holdingsGridControls.selectedItems(),
@@ -1257,8 +1260,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 record_id: $scope.record_id,
                 raw: raw,
                 hide_vols : false,
-                hide_copies : ((only_add_vol) ? true : false),
-                only_add_vol : only_add_vol
+                hide_copies : !add_copies
             }
         ).then(function(key) {
             if (key) {
@@ -1269,9 +1271,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             }
         });
     }
-    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(true,false,false) }
-    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(false,true,false) }
-    $scope.selectedHoldingsVolAdd = function () { spawnHoldingsAdd(true,false,true) }
+    $scope.selectedHoldingsVolCopyAdd = function () { spawnHoldingsAdd(true,true) }
+    $scope.selectedHoldingsCopyAdd = function () { spawnHoldingsAdd(false,true) }
+    $scope.selectedHoldingsVolAdd = function () { spawnHoldingsAdd(true,false) }
 
     spawnHoldingsEdit = function (hide_vols,hide_copies){
         egCore.net.request(
