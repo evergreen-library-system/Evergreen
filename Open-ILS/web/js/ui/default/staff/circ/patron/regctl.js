@@ -752,11 +752,7 @@ angular.module('egCoreMod')
     service.parse_dob = function(dob) {
         if (!dob) return null;
         var parts = dob.split('-');
-        var d = new Date(); // always local time zone, yay.
-        d.setFullYear(parts[0]);
-        d.setMonth(parts[1] - 1);
-        d.setDate(parts[2]);
-        return d;
+        return new Date(parts[0], parts[1] - 1, parts[2])
     }
 
     service.copy_stage_data = function(user) {
