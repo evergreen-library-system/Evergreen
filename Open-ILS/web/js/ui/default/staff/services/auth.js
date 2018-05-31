@@ -286,6 +286,19 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
             }
         }
 
+        // add a 5 second delay to give the token plenty of time
+        // to expire on the server.
+        var pollTime = service.authtime() * 1000 + 5000;
+
+        if (pollTime < 60000) {
+            // Never poll more often than once per minute.
+            pollTime = 60000;
+        } else if (pollTime > 2147483647) {
+            // Avoid integer overflow resulting in $timeout() effectively
+            // running with timeout=0 in a loop.
+            pollTime = 2147483647;
+        }
+
         $timeout(
             function() {
                 egNet.request(                                                     
@@ -304,9 +317,7 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
                     }
                 })
             },
-            // add a 5 second delay to give the token plenty of time
-            // to expire on the server.
-            service.authtime() * 1000 + 5000
+            pollTime
         );
     }
 
