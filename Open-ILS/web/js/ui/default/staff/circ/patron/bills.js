@@ -225,11 +225,11 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         apply: function(item) {
             if (!item['circulation.checkin_time']) {
                 if (item['circulation.stop_fines'] == 'LOST') {
-                    return 'dark-red-row-highlight';
+                    return 'lost-row';
                 } else if (item['circulation.stop_fines'] == 'LONGOVERDUE') {
-                    return 'red-row-highlight';
+                    return 'longoverdue-row';
                 } else {
-                    return 'orange-row-highlight';
+                    return 'overdue-row';
                 }
             }
         }

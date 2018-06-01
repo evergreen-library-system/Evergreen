@@ -346,29 +346,29 @@ table.list tr.selected td { /* deprecated? */
 }
 
 /* patron bill row-highlighting */
-.red-row-highlight {
+.overdue-row {
   color: #FFF;
   background-color: #EB0000 !important;
 }
-.red-row-highlight a:link, .dark-red-row-highlight a:link {
+.overdue-row a:link, .lost-row a:link {
   color: #B8ECFF;
 }
-.orange-row-highlight {
+.longoverdue-row {
   color: #000;
   background-color: #FFE1A8 !important;
 }
-.dark-red-row-highlight {
+.lost-row {
   color: #FFF;
   background-color: #800000 !important;
 
 }
-.eg-grid-row-selected.red-row-highlight {
+.eg-grid-row-selected.overdue-row {
   background-color: #CF0000 !important;
 }
-.eg-grid-row-selected.orange-row-highlight {
+.eg-grid-row-selected.longoverdue-row {
   background-color: #FFCF75 !important;
 }
-.eg-grid-row-selected.dark-red-row-highlight {
+.eg-grid-row-selected.lost-row {
   background-color: #5C0000 !important;
 }
 
