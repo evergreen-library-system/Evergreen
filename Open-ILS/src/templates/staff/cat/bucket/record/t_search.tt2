@@ -43,4 +43,9 @@
   <eg-grid-action label="[% l('Add To Bucket') %]" 
     handler="addToBucket"></eg-grid-action>
 
+  <eg-grid-field label="[% l('Title') %]" path="title">
+    <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.id}}">
+    {{item.title}}
+    </a>
+  </eg-grid-field>
 </eg-grid>
