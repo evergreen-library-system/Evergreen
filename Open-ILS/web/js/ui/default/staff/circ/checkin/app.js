@@ -376,7 +376,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         angular.forEach(items, function(i){
             i.acp.call_number(i.acn);
             i.acp.call_number().record(i.record);
-            itemSvc.mark_missing_pieces(i.acp);
+            itemSvc.mark_missing_pieces(i.acp,$scope);
         });
     }
 
