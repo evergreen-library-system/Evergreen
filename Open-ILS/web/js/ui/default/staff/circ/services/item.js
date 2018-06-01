@@ -880,7 +880,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         }
     }
 
-    service.mark_missing_pieces = function(copy) {
+    service.mark_missing_pieces = function(copy,outer_scope) {
         var b = copy.barcode();
         var t = egCore.idl.toHash(copy.call_number()).record.title;
         egConfirmDialog.open(
@@ -920,7 +920,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             }
 
             if (payload.letter) {
-                $scope.letter = payload.letter.template_output().data();
+                outer_scope.letter = payload.letter.template_output().data();
             }
 
             // apply patron penalty
