@@ -202,7 +202,7 @@ while ($count < $lists) {
     if (scalar(@lol) && scalar(@running) < $max_child && !$duration_expired) {
         # Reuse $records for the lulz.
         $records = shift(@lol);
-        if ($skip_search && $skip_facets && $skip_attrs) {
+        if ($skip_search && $skip_facets && $skip_attrs && $skip_display) {
             $count++;
         } else {
             reingest($records);
@@ -271,7 +271,7 @@ sub reingest {
                                $db_user, $db_password);
         reingest_attributes($dbh, $list) unless ($skip_attrs);
         reingest_field_entries($dbh, $list)
-            unless ($skip_facets && $skip_search);
+            unless ($skip_facets && $skip_search && $skip_display);
         $dbh->disconnect();
         exit(0);
     }
