@@ -37,6 +37,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                     include_current_copy : true,
                     include_usr          : true,
                     include_cancel_cause : true,
+                    include_sms_carrier  : true,
                     include_requestor    : true
                 }
 
@@ -478,6 +479,11 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             egCore.pcrud.retrieve('au',hold.usr()).then(function(u) { hold.usr(u) });
         }
 
+        if (hold.sms_carrier() && typeof hold.sms_carrier() != 'object') {
+            console.debug('fetching sms carrier');
+            egCore.pcrud.retrieve('csc',hold.sms_carrier()).then(function(c) { hold.sms_carrier(c) });
+        }
+
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object') {
             hold.current_copy(hold_data.copy);
@@ -684,6 +690,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                             include_current_copy : true,
                             include_usr          : true,
                             include_cancel_cause : true,
+                            include_sms_carrier  : true,
                             include_requestor    : true
                         }
                     ).then(function(hold_data) { 
