@@ -24,7 +24,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         select : { 
             // avoid fleshing MARC on the bre
             // note: don't add simple_record.. not sure why
-            bre : ['id','tcn_value','creator','editor'],
+            bre : ['id','tcn_value','creator','editor', 'create_date', 'edit_date'],
         } 
     }
 
