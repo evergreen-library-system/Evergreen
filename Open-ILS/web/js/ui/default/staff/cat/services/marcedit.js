@@ -575,7 +575,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'ng-show="showPhysCharLink()"'+
                       'ng-click="spawnPhysCharWizard()"'+
                       '>'+
-                      '<span class="glyphicon glyphicon-link"></span>'+
+                      '<span class="glyphicon glyphicon-edit"></span>'+
                       '</button>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
