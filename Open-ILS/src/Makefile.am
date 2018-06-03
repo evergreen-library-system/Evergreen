@@ -129,7 +129,8 @@ gen_scripts = \
 	$(supportscr)/authority_authority_linker.pl \
 	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export \
-	$(supportscr)/offline-blocked-list.pl
+	$(supportscr)/offline-blocked-list.pl \
+	$(supportscr)/pingest.pl
 
 gen_docs = \
 	$(examples)/apache/eg.conf \
