@@ -746,7 +746,7 @@ function($scope , $q , egCore , egConfirmDialog) {
     // fetch the keys
 
     function refreshKeys() {
-        $scope.keys = {local : [], remote : []};
+        $scope.keys = {local : [], remote : [], server_workstation: []};
 
         if (egCore.hatch.hatchAvailable) {
             egCore.hatch.getRemoteKeys().then(
@@ -755,6 +755,9 @@ function($scope , $q , egCore , egConfirmDialog) {
     
         // local calls are non-async
         $scope.keys.local = egCore.hatch.getLocalKeys();
+
+        egCore.hatch.getServerKeys(null, {workstation_only: true}).then(
+            function(keys) {$scope.keys.server_workstation = keys});
     }
     refreshKeys();
 
@@ -764,10 +767,14 @@ function($scope , $q , egCore , egConfirmDialog) {
 
         if ($scope.context == 'local') {
             $scope.currentKeyContent = egCore.hatch.getLocalItem(key);
-        } else {
+        } else if ($scope.context == 'remote') {
             egCore.hatch.getRemoteItem(key)
             .then(function(content) {
                 $scope.currentKeyContent = content
+            });
+        } else if ($scope.context == 'server_workstation') {
+            egCore.hatch.getServerItem(key).then(function(content) {
+                $scope.currentKeyContent = content;
             });
         }
     }
@@ -784,10 +791,13 @@ function($scope , $q , egCore , egConfirmDialog) {
                     if ($scope.context == 'local') {
                         egCore.hatch.removeLocalItem(key);
                         refreshKeys();
-                    } else {
+                    } else if ($scope.context == 'remote') {
                         // Honor requests to remove items from Hatch even
                         // when Hatch is configured for data storage.
                         egCore.hatch.removeRemoteItem(key)
+                        .then(function() { refreshKeys() });
+                    } else if ($scope.context == 'server_workstation') {
+                        egCore.hatch.removeServerItem(key)
                         .then(function() { refreshKeys() });
                     }
                 },

@@ -248,6 +248,14 @@ __PACKAGE__->register_method (
             This is a staff-only API created primarily to support the
             getKeys() functionality used in the browser client for
             server-managed settings.
+
+            Note as of now, this API can return names for user settings
+            which are unrelated to the staff client.  ALL user setting
+            names matching the selected prefix are returned!
+
+            Use the workstation_only option to avoid returning any user
+            setting names.
+
         /,
         params => [
             {desc => 'authtoken', type => 'string'},
@@ -264,11 +272,13 @@ __PACKAGE__->register_method (
 );
 
 sub applied_settings {
-    my ($self, $client, $auth, $prefix) = @_;
+    my ($self, $client, $auth, $prefix, $options) = @_;
 
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $e->allowed('STAFF_LOGIN');
+
+    $options ||= {};
 
     my $query = {
         select => {awss => ['name']},
@@ -283,6 +293,8 @@ sub applied_settings {
     for my $key (@{$e->json_query($query)}) {
         $client->respond($key->{name});
     }
+
+    return undef if $options->{workstation_only};
 
     $query = {
         select => {aus => ['name']},

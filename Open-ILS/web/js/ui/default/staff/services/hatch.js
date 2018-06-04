@@ -741,13 +741,13 @@ angular.module('egCoreMod')
         return $q.when(service.getLocalKeys(prefix));
     }
 
-    service.getServerKeys = function(prefix) {
+    service.getServerKeys = function(prefix, options) {
         if (!service.auth) service.auth = $injector.get('egAuth');
         if (!service.auth.token()) return $q.when({});
         return egNet.request(
             'open-ils.actor',
             'open-ils.actor.settings.staff.applied.names.authoritative.atomic',
-            service.auth.token(), prefix
+            service.auth.token(), prefix, options
         );
     }
 

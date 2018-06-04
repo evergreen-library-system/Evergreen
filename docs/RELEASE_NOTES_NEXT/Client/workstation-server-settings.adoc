@@ -28,6 +28,14 @@ consistent for all users.
 A setting is read-only when an org unit setting type exists (regardless of 
 whether a value is applied) and no user or workstation setting type exists.
 
+Server-Stored Workstation Settings Workstation Admin View
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+There's a new "Server Workstation Prefs" tab to the stored preferences
+workstation admin interface.  From here, users can view which
+preferences are stored as server-stored workstation preferences and
+delete select values.
+
 Upgrade Notes
 +++++++++++++
 
