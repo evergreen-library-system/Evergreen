@@ -1,8 +1,8 @@
-<!-- 
+<!--
   main navigation bar
-    
+
   note the use of target="_self" for navigation links.
-  this tells angular to treat the href as a new page 
+  this tells angular to treat the href as a new page
   and not an intra-app route.  This is necessary when
   moving between applications.
 
@@ -16,7 +16,7 @@
 
   <!-- navbar-header here needed for supporting angular-ui-bootstrap -->
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle" 
+    <button type="button" class="navbar-toggle"
         ng-init="navCollapsed = true" ng-click="navCollapsed = !navCollapsed">
       <span class="sr-only">[% l('Toggle navigation') %]</span>
       <span class="icon-bar" aria-hidden="true"></span>
@@ -25,7 +25,7 @@
     </button>
   </div>
 
-  <div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
+<div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
     <ul class="nav navbar-nav">
       <li><a href='/eg2/staff/' title="[% l('Home') %]" target="_self"
         class="glyphicon glyphicon-home"></a><li>
@@ -38,18 +38,18 @@
         <ul uib-dropdown-menu>
           <li>
             <a href="./circ/patron/search" target="_self"
-              eg-accesskey="[% l('alt+s') %] [% l('f4') %]" 
+              eg-accesskey="[% l('alt+s') %] [% l('f4') %]"
               eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              <span eg-accesskey-label>[% l('Search for Patrons') %]</span>
+              <span eg-accesskey-label>[% l('Search for Patrons') %][% l('- F4') %]</span>
             </a>
           </li>
           <li>
             <a href="./cat/item/search" target="_self"
-              eg-accesskey="[% l('f5') %]" 
+              eg-accesskey="[% l('f5') %]"
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
-              <span>[% l('Search for Items by Barcode') %]</span>
+              <span>[% l('Search for Items by Barcode') %][% l('- F5') %]</span>
             </a>
           </li>
           <li>
@@ -57,23 +57,22 @@
               eg-accesskey="[% l('f3') %]" 
               eg-accesskey-desc="[% l('Catalog') %]">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              <span>[% l('Search the Catalog') %]</span>
+              <span>[% l('Search the Catalog') %][% l('- F3') %]</span>
             </a>
           </li>
         </ul>
       </li>
 
-
-      <!-- circulation -->
+<!-- circulation -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Circulation') %]<b class="caret" 
           aria-hidden="true"></b>
         </a>
-
-        <ul uib-dropdown-menu>
+	
+	<ul uib-dropdown-menu>
           <li ng-if="username">
             <a href="./circ/patron/bcsearch" target="_self"
-              eg-accesskey="[% l('f1') %]" 
+              eg-accesskey="[% l('f1') %]"
               eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
               [% l('Check Out') %]
@@ -81,34 +80,34 @@
           </li>
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('checkout')" target="_self"
-              eg-accesskey="[% l('f1') %]" 
+              eg-accesskey="[% l('f1') %]"
               eg-accesskey-desc="[% l('Check Out') %]">
               <span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-              [% l('Check Out') %]
+              [% l('Check Out') %][% l('- F1') %]
             </a>
           </li>
           <li ng-if="username">
             <a href="./circ/checkin/checkin" target="_self"
-              eg-accesskey="[% l('f2') %]" 
+              eg-accesskey="[% l('f2') %]"
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
               [% l('Check In') %]
             </a>
           </li>
-          <li ng-if="!username">
+ 	  <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('checkin')" target="_self"
-              eg-accesskey="[% l('f2') %]" 
+              eg-accesskey="[% l('f2') %]"
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import" aria-hidden="true"></span>
-              [% l('Check In') %]
+              [% l('Check In') %][% l('- F2') %]
             </a>
-          </li>
-          <li>
+           </li>
+           <li>
             <a href="./circ/checkin/capture" target="_self"
-              eg-accesskey="[% l('shift+f2') %]" 
+              eg-accesskey="[% l('shift+f2') %]"
               eg-accesskey-desc="[% l('Capture Holds') %]">
               <span class="glyphicon glyphicon-pushpin" aria-hidden="true"></span>
-              [% l('Capture Holds') %]
+              [% l('Capture Holds') %][% l('- Shift+F2') %]
             </a>
           </li>
           <li>
@@ -116,10 +115,10 @@
               <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
               [% l('Pull List for Hold Requests') %]
             </a>
-          </li>
-          <li ng-if="username">
+           </li>
+           <li ng-if="username">
             <a href="./circ/renew/renew" target="_self"
-              eg-accesskey="[% l('ctrl+f2') %]" 
+              eg-accesskey="[% l('ctrl+f2') %]"
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
               [% l('Renew Items') %]
@@ -128,34 +127,34 @@
 
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('renew')" target="_self"
-              eg-accesskey="[% l('ctrl+f2') %]" 
+              eg-accesskey="[% l('ctrl+f2') %]"
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
-              [% l('Renew Items') %]
+              [% l('Renew Items') %][% l('- Ctrl+F2') %]
             </a>
-          </li>
-          <li ng-if="username">
+           </li>
+           <li ng-if="username">
             <a href="./circ/patron/register" target="_self"
-              eg-accesskey="[% l('shift+f1') %]" 
+              eg-accesskey="[% l('shift+f1') %]"
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
               [% l('Register Patron') %]
             </a>
-          </li>
-          <li ng-if="!username">
+           </li>
+           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('register')" target="_self"
-              eg-accesskey="[% l('shift+f1') %]" 
+              eg-accesskey="[% l('shift+f1') %]"
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              [% l('Register Patron') %]
+              [% l('Register Patron') %][% l('- Shift+F1') %]
             </a>
-          </li>
-          <li ng-if="showRecentPatron">
+           </li>
+	<li ng-if="showRecentPatron">
             <a href="./circ/patron/last" target="_self"
-              eg-accesskey="[% l('f8') %]" 
+              eg-accesskey="[% l('f8') %]"
               eg-accesskey-desc="[% l('Retrieve Last Patron') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              [% l('Retrieve Last Patron') %]
+              [% l('Retrieve Last Patron') %][% l('- F8') %]
             </a>
           </li>
           <li ng-if="showRecentPatrons">
@@ -184,7 +183,7 @@
             </a>
           </li>
           <li class="divider"></li>
-          <li>
+	<li>
             <a href="./circ/patron/credentials" target="_self">
               <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
               <span>[% l('Verify Credentials') %]</span>
@@ -192,7 +191,7 @@
           </li>
           <li ng-if="username">
             <a href="./circ/in_house_use/index" target="_self"
-              eg-accesskey="[% l('f6') %]" 
+              eg-accesskey="[% l('f6') %]"
               eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
               <span>[% l('Record In-House Use') %]</span>
@@ -200,10 +199,10 @@
           </li>
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('in_house_use')" target="_self"
-              eg-accesskey="[% l('f6') %]" 
+              eg-accesskey="[% l('f6') %]"
               eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-              <span>[% l('Record In-House Use') %]</span>
+              <span>[% l('Record In-House Use') %][% l('- F6') %]</span>
             </a>
           </li>
           <li>
@@ -212,7 +211,7 @@
               <span>[% l('Holds Shelf') %]</span>
             </a>
           </li>
-          <li class="divider"></li>
+	<li class="divider"></li>
           <li>
             <a href="./cat/item/replace_barcode/index" target="_self">
               <span class="glyphicon glyphicon-barcode" aria-hidden="true"></span>
@@ -232,12 +231,12 @@
             </a>
           </li>
           <li class="divider"></li>
-          <li>
+	<li>
             <a href="" ng-click="reprintLast($event)"
-              eg-accesskey="[% l('f9') %]" 
+              eg-accesskey="[% l('f9') %]"
               eg-accesskey-desc="[% l('Reprint Last Receipt') %]">
               <span class="glyphicon glyphicon-print" aria-hidden="true"></span>
-              <span>[% l('Reprint Last Receipt') %]</span>
+              <span>[% l('Reprint Last Receipt') %][% l('- F9') %]</span>
             </a>
           </li>
           <li class="divider"></li>
@@ -343,7 +342,7 @@
           <li ng-if="showTraditionalCatalog">
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-              [% l('Search the Catalog (Traditional)') %]
+              [% l('Search the Catalog (Traditional)') %][% l('- F3') %]
             </a>
           </li>
           <li>
@@ -378,15 +377,15 @@
               eg-accesskey="[% l('shift+f3') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>
-              [% l('Retrieve Bib Record by TCN') %]
+              [% l('Retrieve Bib Record by TCN') %][% l('- Shift+F3') %]
             </a>
           </li>
-          <li>
+	  <li>
             <a href="" ng-click="retrieveLastRecord()" target="_self"
-              eg-accesskey="[% l('shift+f8') %]" 
+              eg-accesskey="[% l('shift+f8') %]"
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-share-alt" aria-hidden="true"></span>
-              [% l('Retrieve Last Bib Record') %]
+              [% l('Retrieve Last Bib Record') %][% l('- Shift+F8') %]
             </a>
           </li>
           <li class="divider"></li>
@@ -410,7 +409,7 @@
               [% l('MARC Batch Import/Export') %]
             </a>
           </li>
-          <li>
+	  <li>
             <a href="/eg2/staff/cat/marcbatch">
               <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
               [% l('MARC Batch Edit') %]
@@ -438,8 +437,8 @@
           </li>
        </ul>
       </li>
-
-      <!-- acquisitions -->
+	
+	      <!-- acquisitions -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Acquisitions') %]<b class="caret" 
           aria-hidden="true"></b>
@@ -553,7 +552,7 @@
        </ul>
       </li>
 
-      <!-- booking -->
+	<!-- booking -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Booking') %]<b class="caret" 
           aria-hidden="true"></b>
@@ -598,6 +597,7 @@
         </ul>
       </li>
 
+	
       <!-- admin -->
       <li class="dropdown" uib-dropdown>
         <a href uib-dropdown-toggle>[% l('Administration') %]<b class="caret" 
@@ -672,8 +672,7 @@
             {{username}} @ {{workstation}}
         </a>
       </li>
-
-      <!-- locale selector.  
+      <!-- locale selector.
         only shown if multiple locales are registered -->
       [% IF ctx.locales.keys.size > 1 %]
       <li class="dropdown" uib-dropdown>
@@ -722,7 +721,7 @@
               [% l('About') %]
             </a>
           </li>
-          <li class="divider"></li>
+	<li class="divider"></li>
           <li class="disabled">
             <a href disabled="disabled">
               <span
