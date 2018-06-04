@@ -947,6 +947,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
+    service.show_in_catalog = function(copy_list){
+        angular.forEach(copy_list, function(copy){
+            window.open('/eg/opac/record/'+copy['call_number.record.id'], '_blank')
+        });
+    }
+
     return service;
 }])
 .filter('string_pick', function() { return function(i){ return arguments[i] || ''; }; })

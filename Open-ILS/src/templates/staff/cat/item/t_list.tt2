@@ -10,6 +10,8 @@
 
   <eg-grid-action handler="add_copies_to_bucket"
     label="[% l('Add Items to Bucket') %]"></eg-grid-action>
+  <eg-grid-action handler="show_in_catalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-action>
   <eg-grid-action handler="make_copies_bookable"
     label="[% l('Make Items Bookable') %]"></eg-grid-action>
   <eg-grid-action handler="book_copies_now"
