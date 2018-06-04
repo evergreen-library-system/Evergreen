@@ -91,7 +91,7 @@
   <eg-grid-field label="[% l('Classification') %]"        path="call_number.label_class.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]"             path="call_number.prefix.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]"             path="call_number.suffix.label" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circulate as Type') %]"     path="circ_as_type" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulate as Type') %]"     path="circ_as_type.value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulate?') %]"            path="circulate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]"   path="circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
