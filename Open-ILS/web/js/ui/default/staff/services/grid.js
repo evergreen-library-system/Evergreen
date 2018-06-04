@@ -171,6 +171,10 @@ angular.module('egGridMod',
 
                 var stored_limit = 0;
                 if ($scope.showPagination) {
+                    // localStorage of grid limits is deprecated. Limits 
+                    // are now stored along with the columns configuration.  
+                    // Values found in localStorage will be migrated upon 
+                    // config save.
                     if (grid.persistKey) {
                         var stored_limit = Number(
                             egCore.hatch.getLocalItem('eg.grid.' + grid.persistKey + '.limit')
@@ -324,9 +328,10 @@ angular.module('egGridMod',
                 }
 
                 controls.setLimit = function(limit,forget) {
-                    if (!forget && grid.persistKey)
-                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', limit);
                     grid.limit = limit;
+                    if (!forget && grid.persistKey) {
+                        $scope.saveConfig();
+                    }
                 }
                 controls.getLimit = function() {
                     return grid.limit;
@@ -431,11 +436,11 @@ angular.module('egGridMod',
                 }
 
                 // only store information about visible columns.
-                var conf = grid.columnsProvider.columns.filter(
+                var cols = grid.columnsProvider.columns.filter(
                     function(col) {return Boolean(col.visible) });
 
                 // now scrunch the data down to just the needed info
-                conf = conf.map(function(col) {
+                cols = cols.map(function(col) {
                     var c = {name : col.name}
                     // Apart from the name, only store non-default values.
                     // No need to store col.visible, since that's implicit
@@ -445,12 +450,23 @@ angular.module('egGridMod',
                     return c;
                 });
 
+                var conf = {
+                    version: 2,
+                    limit: grid.limit,
+                    columns: cols
+                };
+
                 egCore.hatch.setItem('eg.grid.' + grid.persistKey, conf)
                 .then(function() { 
                     // Save operation performed from the grid configuration UI.
                     // Hide the configuration UI and re-draw w/ sort applied
                     if ($scope.showGridConf) 
                         $scope.toggleConfDisplay();
+
+                    // Once a version-2 grid config is saved (with limit
+                    // included) we can remove the local limit pref.
+                    egCore.hatch.removeLocalItem(
+                        'eg.grid.' + grid.persistKey + '.limit');
                 });
             }
 
@@ -468,7 +484,20 @@ angular.module('egGridMod',
                     var columns = grid.columnsProvider.columns;
                     var new_cols = [];
 
-                    angular.forEach(conf, function(col) {
+                    if (Array.isArray(conf)) {
+                        console.debug(  
+                            'upgrading version 1 grid config to version 2');
+                        conf = {
+                            version : 2,
+                            columns : conf
+                        };
+                    }
+
+                    if (conf.limit) {
+                        grid.limit = Number(conf.limit);
+                    }
+
+                    angular.forEach(conf.columns, function(col) {
                         var grid_col = columns.filter(
                             function(c) {return c.name == col.name})[0];
 
@@ -495,7 +524,7 @@ angular.module('egGridMod',
                     // configuration are marked as non-visible and 
                     // appended to the end of the new list of columns.
                     angular.forEach(columns, function(col) {
-                        var found = conf.filter(
+                        var found = conf.columns.filter(
                             function(c) {return (c.name == col.name)})[0];
                         if (!found) {
                             col.visible = false;
@@ -534,9 +563,10 @@ angular.module('egGridMod',
 
             $scope.limit = function(l) { 
                 if (angular.isNumber(l)) {
-                    if (grid.persistKey)
-                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', l);
                     grid.limit = l;
+                    if (grid.persistKey) {
+                        $scope.saveConfig();
+                    }
                 }
                 return grid.limit 
             }
