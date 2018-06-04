@@ -554,6 +554,10 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
         });
     }
 
+    $scope.show_in_catalog = function(){
+        itemSvc.show_in_catalog(copyGrid.selectedItems());
+    }
+
     if (copyId.length > 0) {
         itemSvc.fetch(null,copyId).then(
             function() {
