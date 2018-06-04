@@ -33,7 +33,7 @@ but the ones I'm finding aren't quite cutting it..*/
     left: 45px;
     padding-top: 20px;
     padding-top: 10px;
-    z-index: 3;
+    z-index: 4;
     background-color: rgba(255,255,255,1);
 }
 
