@@ -39,7 +39,7 @@
               eg-accesskey="[% l('alt+s') %] [% l('f4') %]" 
               eg-accesskey-desc="[% l('Patron search by name, address, etc.') %]">
               <span class="glyphicon glyphicon-user"></span>
-              <span eg-accesskey-label>[% l('Search for Patrons') %]</span>
+              <span eg-accesskey-label>[% l('Search for Patrons - F4') %]</span>
             </a>
           </li>
           <li>
@@ -47,7 +47,7 @@
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode"></span>
-              <span>[% l('Search for Copies by Barcode') %]</span>
+              <span>[% l('Search for Copies by Barcode - F5') %]</span>
             </a>
           </li>
           <li>
@@ -55,7 +55,7 @@
               eg-accesskey="[% l('f3') %]" 
               eg-accesskey-desc="[% l('OPAC') %]">
               <span class="glyphicon glyphicon-search"></span>
-              <span>[% l('Search the Catalog') %]</span>
+              <span>[% l('Search the Catalog - F3') %]</span>
             </a>
           </li>
         </ul>
@@ -79,9 +79,9 @@
           <li ng-if="!username">
             <a href="" ng-click="rs.active_tab('checkout')" target="_self"
               eg-accesskey="[% l('f1') %]" 
-              eg-accesskey-desc="[% l('Check Out') %]">
+              eg-accesskey-desc="[% l('Check Out ') %]">
               <span class="glyphicon glyphicon-export"></span>
-              [% l('Check Out') %]
+              [% l('Check Out - F1') %]
             </a>
           </li>
           <li ng-if="username">
@@ -97,7 +97,7 @@
               eg-accesskey="[% l('f2') %]" 
               eg-accesskey-desc="[% l('Check In') %]">
               <span class="glyphicon glyphicon-import"></span>
-              [% l('Check In') %]
+              [% l('Check In - F2') %]
             </a>
           </li>
           <li>
@@ -105,7 +105,7 @@
               eg-accesskey="[% l('shift+f2') %]" 
               eg-accesskey-desc="[% l('Capture Holds') %]">
               <span class="glyphicon glyphicon-pushpin"></span>
-              [% l('Capture Holds') %]
+              [% l('Capture Holds - Shift+F2') %]
             </a>
           </li>
           <li>
@@ -127,7 +127,7 @@
               eg-accesskey="[% l('ctrl+f2') %]" 
               eg-accesskey-desc="[% l('Renew items') %]">
               <span class="glyphicon glyphicon-refresh"></span>
-              [% l('Renew Items') %]
+              [% l('Renew Items - Ctrol+F2') %]
             </a>
           </li>
           <li ng-if="username">
@@ -143,7 +143,7 @@
               eg-accesskey="[% l('shift+f1') %]" 
               eg-accesskey-desc="[% l('Register Patron') %]">
               <span class="glyphicon glyphicon-user"></span>
-              [% l('Register Patron') %]
+              [% l('Register Patron - Shift+F1') %]
             </a>
           </li>
           <li ng-if="showRecentPatron">
@@ -193,7 +193,7 @@
               eg-accesskey="[% l('f6') %]" 
               eg-accesskey-desc="[% l('Record In-House Use') %]">
               <span class="glyphicon glyphicon-pencil"></span>
-              <span>[% l('Record In-House Use') %]</span>
+              <span>[% l('Record In-House Use - F6') %]</span>
             </a>
           </li>
           <li>
@@ -227,7 +227,7 @@
               eg-accesskey="[% l('f9') %]" 
               eg-accesskey-desc="[% l('Reprint Last Receipt') %]">
               <span class="glyphicon glyphicon-print"></span>
-              <span>[% l('Reprint Last Receipt') %]</span>
+              <span>[% l('Reprint Last Receipt - F9') %]</span>
             </a>
           </li>
           <li class="divider"></li>
@@ -248,7 +248,7 @@
           <li>
             <a href="./cat/catalog/index" target="_self">
               <span class="glyphicon glyphicon-search"></span>
-              [% l('Search the Catalog') %]
+              [% l('Search the Catalog - F3') %]
             </a>
           </li>
           <li>
@@ -275,7 +275,7 @@
               eg-accesskey="[% l('shift+f3') %]" 
               eg-accesskey-desc="[% l('Retrieve Last Bib Record') %]">
               <span class="glyphicon glyphicon-tag"></span>
-              [% l('Retrieve Bib Record by TCN') %]
+              [% l('Retrieve Bib Record by TCN - Shift+F3') %]
             </a>
           </li>
           <li>
@@ -579,5 +579,3 @@
     </ul>
   </div>
 </div>
-
-
