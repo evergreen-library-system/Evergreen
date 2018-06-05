@@ -625,13 +625,15 @@ BEGIN
 
     FOR ans IN SELECT u.id, t.depth FROM actor.org_unit_ancestors(org) AS u JOIN actor.org_unit_type t ON (u.ou_type = t.id) LOOP
         RETURN QUERY
+        WITH available_statuses AS (SELECT ARRAY_AGG(id) AS ids FROM config.copy_status WHERE is_available)
         SELECT  ans.depth,
                 ans.id,
                 COUNT( cp.id ),
-                SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
+                SUM( (cp.status = ANY (available_statuses.ids))::INT ),
                 SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
                 trans
           FROM
+                available_statuses,
                 actor.org_unit_descendants(ans.id) d
                 JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
                 JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
