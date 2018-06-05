@@ -15,7 +15,7 @@ __PACKAGE__->register_method(
     argc      => 1,
     stream    => 1,
     # Caller is given control over how often to receive responses.
-    max_chunk_size => 0,
+    max_bundle_count => 1,
     signature => {
         desc     => q/Batch or single hold targeter./,
         params   => [

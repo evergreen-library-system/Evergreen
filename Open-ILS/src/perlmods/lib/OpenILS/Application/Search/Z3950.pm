@@ -536,7 +536,7 @@ __PACKAGE__->register_method(
     api_name  => 'open-ils.search.z3950.bucket_search_queue',
     stream    => 1,
     # disable opensrf chunking so the caller can receive timely responses
-    max_chunk_size => 0,
+    max_bundle_count => 1,
     signature => {
         desc => q/
             Performs a Z39.50 search for every record in a bucket, using the

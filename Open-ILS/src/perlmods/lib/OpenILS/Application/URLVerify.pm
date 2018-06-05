@@ -35,7 +35,7 @@ __PACKAGE__->register_method(
     method => 'verify_session',
     api_name => 'open-ils.url_verify.session.verify',
     stream => 1,
-    max_chunk_size => 0,
+    max_bundle_count => 1,
     signature => {
         desc => q/
             Performs verification on all (or a subset of the) URLs within the requested session.

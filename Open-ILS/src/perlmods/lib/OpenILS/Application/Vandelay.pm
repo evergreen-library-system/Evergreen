@@ -302,8 +302,6 @@ sub process_spool {
     my $session_name = shift;
     my $exit_early = shift;
 
-    $client->max_chunk_count($self->{max_bundle_count}) if (!$client->can('max_bundle_count') && $self->{max_bundle_count});
-
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
 
@@ -892,7 +890,6 @@ __PACKAGE__->register_method(
 
 sub import_queue {
     my($self, $conn, $auth, $q_id, $options) = @_;
-    $conn->max_chunk_count($self->{max_bundle_count}) if (!$conn->can('max_bundle_count') && $self->{max_bundle_count});
 
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
@@ -1053,7 +1050,7 @@ sub import_record_list_impl {
         exit_early => $exit_early
     };
 
-    $conn->max_chunk_count(1) if (!$conn->can('max_bundle_size') && $conn->can('max_chunk_size') && $$args{report_all});
+    $conn->max_bundle_count(1) if ($$args{report_all});
 
     my $auto_overlay_exact = $$args{auto_overlay_exact};
     my $auto_overlay_1match = $$args{auto_overlay_1match};

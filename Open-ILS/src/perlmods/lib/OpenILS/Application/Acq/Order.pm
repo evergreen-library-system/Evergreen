@@ -1477,7 +1477,7 @@ __PACKAGE__->register_method(
     method   => 'upload_records',
     api_name => 'open-ils.acq.process_upload_records',
     stream   => 1,
-    max_chunk_count => 1
+    max_bundle_count => 1
 );
 
 sub upload_records {
@@ -1820,7 +1820,7 @@ __PACKAGE__->register_method(
         ],
         return => {desc => 'Streams a total versus completed counts object, event on error'}
     },
-    max_chunk_count => 1
+    max_bundle_count => 1
 );
 
 sub create_po_assets {
@@ -1877,7 +1877,7 @@ __PACKAGE__->register_method(
         ],
         return => {desc => 'The purchase order id, Event on failure'}
     },
-    max_chunk_count => 1
+    max_bundle_count => 1
 );
 
 sub create_purchase_order_api {
