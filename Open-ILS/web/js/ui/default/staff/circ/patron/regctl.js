@@ -1401,6 +1401,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         var now_epoch = new Date().getTime();
         $scope.patron.expire_date = new Date(
             now_epoch + (seconds * 1000 /* milliseconds */))
+        $scope.field_modified();
     }
 
     // grp is the pgt object
