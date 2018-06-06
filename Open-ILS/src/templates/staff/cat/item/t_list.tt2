@@ -111,7 +111,7 @@
   <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]"         path="_circ_summary.last_stop_fines" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped Time') %]"    path="_circ_summary.last_stop_fines_time" datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Floating?') %]"             path="floating" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Floating Group') %]"        path="floating.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holdable?') %]"             path="holdable" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holds Count') %]"           path="holds_count" hidden></eg-grid-field>
   <eg-grid-field label="[% l('In-House Uses') %]"         path="_inHouseUseCount" hidden></eg-grid-field>
