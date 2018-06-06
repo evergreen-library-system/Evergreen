@@ -2154,7 +2154,7 @@ BEGIN
 	FROM
     	acq.fund AS oldf
     	LEFT JOIN acq.fund AS newf
-        	ON ( oldf.code = newf.code )
+        	ON ( oldf.code = newf.code AND oldf.org = newf.org )
 	WHERE
  		    oldf.year = old_year
 		AND oldf.propagate
