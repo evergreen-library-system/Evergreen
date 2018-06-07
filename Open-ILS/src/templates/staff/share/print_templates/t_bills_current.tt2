@@ -2,12 +2,26 @@
 Template for printing a list of current bills. Data specific
 to this template includes:
 
+* today - Today's date and time
+* current_location - the current library
+    current_location.name - Current location's name
+    current_location.shortname - Current location's shortname
+* patron - the patron who was billed, which contains:
+    patron.prefix - Prefix of the patron 
+    patron.first_given_name - First given name of the patron 
+    patron.second_given_name - Second given name of the patron 
+    patron.family_name - Family name of the patron 
+    patron.suffix - Suffix of the patron 
+    patron.card - The patron's barcode number
+    patron.expire_date - The patron's expiration date
+    patron.alias - The patron's alias
+    patron.has_email - Whether or not the patron has an email address
+    patron.has_phone - Whether or not the patron has a phone number
 * transasctions - a list of transactions, each of which
   contains:
-
-  xact.summary - information about the transaction
-  xact.title - Copy title
-  xact.copy_barcode - Copy barcode
+    xact.summary - information about the transaction
+    xact.title - Copy title
+    xact.copy_barcode - Copy barcode
 -->
 Welcome to {{current_location.name}}!<br/>
 You have the following bills:
