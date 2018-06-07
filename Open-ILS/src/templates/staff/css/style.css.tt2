@@ -523,6 +523,12 @@ table.list tr.selected td { /* deprecated? */
   .eg-grid-row {
     flex-direction: column;
   }
+  #top-navbar.navbar-default .navbar-nav>li>ul>li>a {
+    color: #eee;
+  }
+  #top-navbar.navbar-default .navbar-nav>li>ul>li>a:hover {
+    color: #000;
+  }
 }
 
 /* optional class to make 'lg' Bootstrap modals even wider */
