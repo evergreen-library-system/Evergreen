@@ -95,8 +95,14 @@ Use the Actions menu to convert a selection list to a purchase order.
 Purchase Orders
 ~~~~~~~~~~~~~~~
 
-Duplicate Purchase Order Name Warning Dialog
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Purchase Orders allow you to keep track of orders and, if EDI is enabled, communicate with your provider.
+To view purchase orders, click
+*Acquisitions* -> *Purchase Orders*.
+
+Naming your purchase order
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can give your purchase order a name.
 
 When creating a purchase order or editing an existing purchase order, the purchase order name must be unique for the ordering agency.  Evergreen will display a warning dialog to users, if they attempt to create or edit purchase order names that match the names of already existing purchase orders at the same ordering agency. The *Duplicate Purchase Order Name Warning Dialog* includes a link that will open the matching purchase order in a new tab.
 
@@ -137,8 +143,8 @@ When a duplicate purchase order name is detected during the renaming of an exist
 * Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 * Repeat the steps to change the name of an existing purchase order and make the name unique.
 
-Purchase Order Activation Progress Bar
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Activating your purchase order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After you click *Activate Order*, you will be presented with the record import interface for records that are not already in the catalog. Once you complete entering in the parameters for the record import interface, the progress screen will appear. As of Evergreen 2.9, this progress screen consists of a progress bar in the foreground, and a tally of the following in the background of the bottom-left corner:
 
@@ -150,7 +156,7 @@ After you click *Activate Order*, you will be presented with the record import i
 * Real Copies Processed
 
 Activate Purchase Order with Zero Copies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++++++++++++++++++
 
 By default, a purchase order cannot be activated if a line item on the
 purchase order has zero copies. To activate a purchase order with line
@@ -159,11 +165,18 @@ zero-copy lineitems*.
 
 image::media/Zero_Copies1.jpg[Zero_Copies1]
 
-Enhancements to Canceled and Delayed Items
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Line item statuses
+^^^^^^^^^^^^^^^^^^
 
-Cancel/Delay reasons have been modified so that you can easily
-differentiate between canceled and delayed items.  Each label now begins
+The purchase orders interface keeps track of various statuses that your
+line items might be in.  This section lists some of the statuses you might
+see when looking at purchase orders.
+
+Canceled and Delayed Items
+++++++++++++++++++++++++++
+
+In the purchase order interface, you can easily
+differentiate between canceled and delayed items.  Each label begins
 with *Canceled* or *Delayed*.  To view the list, click *Administration*
 -> *Acquisitions Administration* -> *Cancel Reasons*.
 
@@ -179,7 +192,7 @@ A delayed line item can now be canceled.  You can mark a line item as delayed, a
 Cancel/delay reasons now appear on the worksheet and the printable purchase order.
 
 Paid PO Line Items
-^^^^^^^^^^^^^^^^^^
+++++++++++++++++++
 
 Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
 
