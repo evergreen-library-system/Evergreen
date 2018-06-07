@@ -536,24 +536,25 @@ function(egCore , $q) {
                     }
                     $scope.copy.ischanged(1);
                 }
-                $scope.$watch('part', $scope.updatePart);
-
-                $scope.barcode = $scope.copy.barcode();
-                $scope.copy_number = $scope.copy.copy_number();
-
-                if ($scope.copy.parts()) {
-                    $scope.part = $scope.copy.parts()[0];
-                    if ($scope.part) $scope.part = $scope.part.label();
-                };
 
                 $scope.parts = [];
                 $scope.part_list = [];
 
-                itemSvc.get_parts($scope.callNumber.record()).then(function(list){
+                itemSvc.get_parts($scope.callNumber.record())
+                .then(function(list){
                     $scope.part_list = list;
                     angular.forEach(list, function(p){ $scope.parts.push(p.label()) });
                     $scope.parts = angular.copy($scope.parts);
+                
+                    $scope.$watch('part', $scope.updatePart);
+                    if ($scope.copy.parts()) {
+                        var the_part = $scope.copy.parts()[0];
+                        if (the_part) $scope.part = the_part.label();
+                    };
                 });
+
+                $scope.barcode = $scope.copy.barcode();
+                $scope.copy_number = $scope.copy.copy_number();
 
             }
         ]
