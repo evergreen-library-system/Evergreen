@@ -1,36 +1,3 @@
-var osb = lf.schema.create('offline', 2);
-
-osb.createTable('Object').
-    addColumn('type', lf.Type.STRING).          // class hint
-    addColumn('id', lf.Type.STRING).           // obj id
-    addColumn('object', lf.Type.OBJECT).
-    addPrimaryKey(['type','id']);
-
-osb.createTable('CacheDate').
-    addColumn('type', lf.Type.STRING).          // class hint
-    addColumn('cachedate', lf.Type.DATE_TIME).  // when was it last updated
-    addPrimaryKey(['type']);
-
-osb.createTable('Setting').
-    addColumn('name', lf.Type.STRING).
-    addColumn('value', lf.Type.STRING).
-    addPrimaryKey(['name']);
-
-osb.createTable('StatCat').
-    addColumn('id', lf.Type.INTEGER).
-    addColumn('value', lf.Type.OBJECT).
-    addPrimaryKey(['id']);
-
-osb.createTable('OfflineXact').
-    addColumn('seq', lf.Type.INTEGER).
-    addColumn('value', lf.Type.OBJECT).
-    addPrimaryKey(['seq'], true);
-
-osb.createTable('OfflineBlocks').
-    addColumn('barcode', lf.Type.STRING).
-    addColumn('reason', lf.Type.STRING).
-    addPrimaryKey(['barcode']);
-
 /**
  * Core Service - egLovefield
  *
@@ -42,321 +9,349 @@ angular.module('egCoreMod')
 .factory('egLovefield', ['$q','$rootScope','egCore','$timeout', 
                  function($q , $rootScope , egCore , $timeout) { 
 
-    var service = {};
+    var service = {
+        autoId: 0, // each request gets a unique id.
+        cannotConnect: false,
+        pendingRequests: [],
+        activeSchemas: ['cache'], // add 'offline' in the offline UI
+        schemasInProgress: {},
+        connectedSchemas: [],
+        // TODO: relative path would be more portable
+        workerUrl: '/js/ui/default/staff/offline-db-worker.js'
+    };
 
-    function connectOrGo() {
+    service.connectToWorker = function() {
+        if (service.worker) return;
 
-        if (lf.offlineDB) { // offline DB connected
-            return $q.when();
-        }
-
-        if (service.cannotConnect) { // connection will never happen
-            return $q.reject();
-        }
-
-        if (service.connectPromise) { // connection in progress
-            return service.connectPromise;
-        }
-
-        // start a new connection attempt
-        
-        var deferred = $q.defer();
-
-        console.debug('attempting offline DB connection');
         try {
-            osb.connect().then(
-                function(db) {
-                    console.debug('successfully connected to offline DB');
-                    service.connectPromise = null;
-                    lf.offlineDB = db;
-                    deferred.resolve();
-                },
-                function(err) {
-                    // assumes that a single connection failure means
-                    // a connection will never succeed.
-                    service.cannotConnect = true;
-                    console.error('Cannot connect to offline DB: ' + err);
-                }
-            );
-        } catch (e) {
-            // .connect() will throw an error if it detects that a connection
-            // attempt is already in progress; this can happen with PhantomJS
-            console.error('Cannot connect to offline DB: ' + e);
+            // relative path would be better...
+            service.worker = new SharedWorker(service.workerUrl);
+        } catch (E) {
+            console.error('SharedWorker() not supported', E);
+            service.cannotConnect = true;
+            return;
+        }
+
+        service.worker.onerror = function(err) {
+            console.error('Error loading shared worker', err);
             service.cannotConnect = true;
         }
 
-        service.connectPromise = deferred.promise;
-        return service.connectPromise;
+        // List for responses and resolve the matching pending request.
+        service.worker.port.addEventListener('message', function(evt) {
+            var response = evt.data;
+            var reqId = response.id;
+            var req = service.pendingRequests.filter(
+                function(r) { return r.id === reqId})[0];
+
+            if (!req) {
+                console.error('Recieved response for unknown request ' + reqId);
+                return;
+            }
+
+            if (response.status === 'OK') {
+                req.deferred.resolve(response.result);
+            } else {
+                console.error('worker request failed with ' + response.error);
+                req.deferred.reject(response.error);
+            }
+        });
+
+        service.worker.port.start();
+    }
+
+    service.connectToSchemas = function() {
+
+        if (service.cannotConnect) { 
+            // This can happen in certain environments
+            return $q.reject();
+        }
+        
+        service.connectToWorker(); // no-op if already connected
+
+        var promises = [];
+
+        service.activeSchemas.forEach(function(schema) {
+            promises.push(service.connectToSchema(schema));
+        });
+
+        return $q.all(promises).then(
+            function() {},
+            function() {service.cannotConnect = true}
+        );
+    }
+
+    // Connects if necessary to the active schemas then relays the request.
+    service.request = function(args) {
+        return service.connectToSchemas().then(
+            function() {
+                return service.relayRequest(args);
+            }
+        );
+    }
+
+    // Send a request to the web worker and register the request for
+    // future resolution.
+    // Store the request ID in the request arguments, so it's included
+    // in the response, and in the pendingRequests list for linking.
+    service.relayRequest = function(args) {
+        var deferred = $q.defer();
+        var reqId = service.autoId++;
+        args.id = reqId;
+        service.pendingRequests.push({id : reqId, deferred: deferred});
+        service.worker.port.postMessage(args);
+        return deferred.promise;
+    }
+
+    // Create and connect to the give schema
+    service.connectToSchema = function(schema) {
+
+        if (service.connectedSchemas.includes(schema)) {
+            // already connected
+            return $q.when();
+        }
+
+        if (service.schemasInProgress[schema]) {
+            return service.schemasInProgress[schema];
+        }
+
+        var deferred = $q.defer();
+
+        service.relayRequest(
+            {schema: schema, action: 'createSchema'}) 
+        .then(
+            function() {
+                return service.relayRequest(
+                    {schema: schema, action: 'connect'});
+            },
+            deferred.reject
+        ).then(
+            function() { 
+                service.connectedSchemas.push(schema); 
+                delete service.schemasInProgress[schema];
+                deferred.resolve();
+            },
+            deferred.reject
+        );
+
+        return service.schemasInProgress[schema] = deferred.promise;
     }
 
     service.isCacheGood = function (type) {
-
-        return connectOrGo().then(function() {
-            var cacheDate = lf.offlineDB.getSchema().table('CacheDate');
-
-            return lf.offlineDB.
-                select(cacheDate.cachedate).
-                from(cacheDate).
-                where(cacheDate.type.eq(type)).
-                exec().then(function(results) {
-                    if (results.length == 0) {
-                        return $q.when(false);
-                    }
-
-                    var now = new Date();
-    
-                    // hard-coded 1 day offline cache timeout
-                    return $q.when((now.getTime() - results[0]['cachedate'].getTime()) <= 86400000);
-                })
-        });
+        return service.request({
+            schema: 'cache',
+            table: 'CacheDate',
+            action: 'selectWhereEqual',
+            field: 'type',
+            value: type
+        }).then(
+            function(result) {
+                var row = result[0];
+                if (!row) { return false; }
+                // hard-coded 1 day offline cache timeout
+                return (new Date().getTime() - row.cachedate.getTime()) <= 86400000;
+            }
+        );
     }
 
     service.destroyPendingOfflineXacts = function () {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineXact');
-            return lf.offlineDB.
-                delete().
-                from(table).
-                exec();
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineXact',
+            action: 'deleteAll'
         });
     }
 
     service.havePendingOfflineXacts = function () {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineXact');
-            return lf.offlineDB.
-                select(table.reason).
-                from(table).
-                exec().
-                then(function(list) {
-                    return $q.when(Boolean(list.length > 0))
-                });
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineXact',
+            action: 'hasRows'
         });
     }
 
     service.retrievePendingOfflineXacts = function () {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineXact');
-            return lf.offlineDB.
-                select(table.value).
-                from(table).
-                exec().
-                then(function(list) {
-                    return $q.when(list.map(function(x) { return x.value }))
-                });
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineXact',
+            action: 'selectAll'
+        }).then(function(resp) {
+            return resp.map(function(x) { return x.value });
         });
     }
 
-    service.destroyOfflineBlocks = function () {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineBlocks');
-            return $q.when(
-                lf.offlineDB.
-                    delete().
-                    from(table).
-                    exec()
-            );
-        });
-    }
-
-    service.addOfflineBlock = function (barcode, reason) {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineBlocks');
-            return $q.when(
-                lf.offlineDB.
-                    insertOrReplace().
-                    into(table).
-                    values([ table.createRow({ barcode : barcode, reason : reason }) ]).
-                    exec()
-            );
+    service.populateBlockList = function() {
+        return service.request({
+            action: 'populateBlockList',
+            authtoken: egCore.auth.token()
         });
     }
 
     // Returns a promise with true for blocked, false for not blocked
     service.testOfflineBlock = function (barcode) {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineBlocks');
-            return lf.offlineDB.
-                select(table.reason).
-                from(table).
-                where(table.barcode.eq(barcode)).
-                exec().then(function(list) {
-                    if(list.length > 0) return $q.when(list[0].reason);
-                    return $q.when(null);
-                });
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineBlocks',
+            action: 'selectWhereEqual',
+            field: 'barcode',
+            value: barcode
+        }).then(function(resp) {
+            if (resp.length === 0) return null;
+            return resp[0].reason;
         });
     }
 
     service.addOfflineXact = function (obj) {
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('OfflineXact');
-            return $q.when(
-                lf.offlineDB.
-                    insertOrReplace().
-                    into(table).
-                    values([ table.createRow({ value : obj }) ]).
-                    exec()
-            );
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineXact',
+            action: 'insertOrReplace',
+            rows: [{value: obj}]
         });
     }
 
     service.setStatCatsCache = function (statcats) {
-        if (lf.isOffline) return $q.when();
+        if (lf.isOffline || !statcats || statcats.length === 0) 
+            return $q.when();
 
-        return connectOrGo().then(function() {
-            var table = lf.offlineDB.getSchema().table('StatCat');
-            var rlist = [];
+        var rows = statcats.map(function(cat) {
+            return {id: cat.id(), value: egCore.idl.toHash(cat)}
+        });
 
-            angular.forEach(statcats, function (val) {
-                rlist.push(table.createRow({
-                    id    : val.id(),
-                    value : egCore.idl.toHash(val)
-                }));
-            });
-            return lf.offlineDB.
-                insertOrReplace().
-                into(table).
-                values(rlist).
-                exec();
+        return service.request({
+            schema: 'cache',
+            table: 'StatCat',
+            action: 'insertOrReplace',
+            rows: rows
         });
     }
 
     service.getStatCatsCache = function () {
-        return connectOrGo().then(function() {
 
-            var table = lf.offlineDB.getSchema().table('StatCat');
+        return service.request({
+            schema: 'cache',
+            table: 'StatCat',
+            action: 'selectAll'
+        }).then(function(list) {
             var result = [];
-            return lf.offlineDB.
-                select(table.value).
-                from(table).
-                exec().then(function(list) {
-                    angular.forEach(list, function (s) {
-                        var sc = egCore.idl.fromHash('actsc', s.value);
-    
-                        if (angular.isArray(sc.default_entries())) {
-                            sc.default_entries(
-                                sc.default_entries().map( function (k) {
-                                    return egCore.idl.fromHash('actsced', k);
-                                })
-                            );
-                        }
-    
-                        if (angular.isArray(sc.entries())) {
-                            sc.entries(
-                                sc.entries().map( function (k) {
-                                    return egCore.idl.fromHash('actsce', k);
-                                })
-                            );
-                        }
-    
-                        result.push(sc);
-                    });
-                    return $q.when(result);
-                });
-    
+            list.forEach(function(s) {
+                var sc = egCore.idl.fromHash('actsc', s.value);
+
+                if (Array.isArray(sc.default_entries())) {
+                    sc.default_entries(
+                        sc.default_entries().map( function (k) {
+                            return egCore.idl.fromHash('actsced', k);
+                        })
+                    );
+                }
+
+                if (Array.isArray(sc.entries())) {
+                    sc.entries(
+                        sc.entries().map( function (k) {
+                            return egCore.idl.fromHash('actsce', k);
+                        })
+                    );
+                }
+
+                result.push(sc);
+            });
+
+            return result;
         });
     }
 
     service.setSettingsCache = function (settings) {
         if (lf.isOffline) return $q.when();
 
-        return connectOrGo().then(function() {
+        var rows = [];
+        angular.forEach(settings, function (val, key) {
+            rows.push({name  : key, value : JSON.stringify(val)});
+        });
 
-            var table = lf.offlineDB.getSchema().table('Setting');
-            var rlist = [];
-
-            angular.forEach(settings, function (val, key) {
-                rlist.push(
-                    table.createRow({
-                        name  : key,
-                        value : JSON.stringify(val)
-                    })
-                );
-            });
-
-            return lf.offlineDB.
-                insertOrReplace().
-                into(table).
-                values(rlist).
-                exec();
+        return service.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'insertOrReplace',
+            rows: rows
         });
     }
 
     service.getSettingsCache = function (settings) {
-        return connectOrGo().then(function() {
 
-            var table = lf.offlineDB.getSchema().table('Setting');
+        var promise;
 
-            var search_pred = table.name.isNotNull();
-            if (settings && settings.length) {
-                search_pred = table.name.in(settings);
+        if (settings && settings.length) {
+            promise = service.request({
+                schema: 'cache',
+                table: 'Setting',
+                action: 'selectWhereIn',
+                field: 'name',
+                value: settings
+            });
+        } else {
+            promise = service.request({
+                schema: 'cache',
+                table: 'Setting',
+                action: 'selectAll'
+            });
+        }
+
+        return promise.then(
+            function(resp) {
+                resp.forEach(function(s) { s.value = JSON.parse(s.value); });
+                return resp;
             }
-                
-            return lf.offlineDB.
-                select(table.name, table.value).
-                from(table).
-                where(search_pred).
-                exec().then(function(list) {
-                    angular.forEach(list, function (s) {
-                        s.value = JSON.parse(s.value)
-                    });
-                    return $q.when(list);
-                });
-        });
+        );
     }
 
     service.setListInOfflineCache = function (type, list) {
         if (lf.isOffline) return $q.when();
 
-        return connectOrGo().then(function() {
+        return service.isCacheGood(type).then(function(good) {
+            if (good) { return };  // already cached
 
-            service.isCacheGood(type).then(function(good) {
-                if (!good) {
-                    var object = lf.offlineDB.getSchema().table('Object');
-                    var cacheDate = lf.offlineDB.getSchema().table('CacheDate');
-                    var pkey = egCore.idl.classes[type].pkey;
-        
-                    angular.forEach(list, function(item) {
-                        var row = object.createRow({
-                            type    : type,
-                            id      : '' + item[pkey](),
-                            object  : egCore.idl.toHash(item)
-                        });
-                        lf.offlineDB.insertOrReplace().into(object).values([row]).exec();
-                    });
-        
-                    var row = cacheDate.createRow({
-                        type      : type,
-                        cachedate : new Date()
-                    });
-        
-                    console.log('egLovefield saving ' + type + ' list');
-                    lf.offlineDB.insertOrReplace().into(cacheDate).values([row]).exec();
-                }
-            })
+            var pkey = egCore.idl.classes[type].pkey;
+            var rows = Object.values(list).map(function(item) {
+                return {
+                    type: type, 
+                    id: '' + item[pkey](), 
+                    object: egCore.idl.toHash(item)
+                };
+            });
+
+            return service.request({
+                schema: 'cache',
+                table: 'Object',
+                action: 'insertOrReplace',
+                rows: rows
+            }).then(function(resp) {
+                return service.request({
+                    schema: 'cache',
+                    table: 'CacheDate',
+                    action: 'insertOrReplace',
+                    rows: [{type: type, cachedate : new Date()}]
+                });
+            });
         });
     }
 
     service.getListFromOfflineCache = function(type) {
-        return connectOrGo().then(function() {
-
-            var object = lf.offlineDB.getSchema().table('Object');
-
-            return lf.offlineDB.
-                select(object.object).
-                from(object).
-                where(object.type.eq(type)).
-                exec().then(function(results) {
-                    return $q.when(results.map(function(item) {
-                        return egCore.idl.fromHash(type,item['object'])
-                    }));
-                });
+        return service.request({
+            schema: 'cache',
+            table: 'Object',
+            action: 'selectWhereEqual',
+            field: 'type',
+            value: type
+        }).then(function(resp) {
+            return resp.map(function(item) {
+                return egCore.idl.fromHash(type,item['object']);
+            });
         });
     }
 
     service.reconstituteList = function(type) {
         if (lf.isOffline) {
-            console.log('egLovefield reading ' + type + ' list');
+            console.debug('egLovefield reading ' + type + ' list');
             return service.getListFromOfflineCache(type).then(function (list) {
                 egCore.env.absorbList(list, type, true)
                 return $q.when(true);
@@ -367,7 +362,7 @@ angular.module('egCoreMod')
 
     service.reconstituteTree = function(type) {
         if (lf.isOffline) {
-            console.log('egLovefield reading ' + type + ' tree');
+            console.debug('egLovefield reading ' + type + ' tree');
 
             var pkey = egCore.idl.classes[type].pkey;
             var parent_field = 'parent';
