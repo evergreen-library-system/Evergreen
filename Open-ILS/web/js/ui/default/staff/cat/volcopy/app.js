@@ -1289,11 +1289,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         // trim out all deleted ones; the API used to
                         // do the update doesn't actually consult
                         // isdeleted for stat cat entries
-                        cp.stat_cat_entries(
-                            cp.stat_cat_entries().filter(function (e) {
-                                return !Boolean(e.isdeleted());
-                            })
-                        );
+                        if (cp.stat_cat_entries()) {
+                            cp.stat_cat_entries(
+                                cp.stat_cat_entries().filter(function (e) {
+                                    return !Boolean(e.isdeleted());
+                                })
+                            );
+                        }
    
                         cp.ischanged(1);
                     }
