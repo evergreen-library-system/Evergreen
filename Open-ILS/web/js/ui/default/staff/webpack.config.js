@@ -44,7 +44,10 @@ const JS_FILES = [
   './node_modules/moment/min/moment-with-locales.min.js',
   './node_modules/moment-timezone/builds/moment-timezone-with-data.min.js',
   './node_modules/iframe-resizer/js/iframeResizer.contentWindow.min.js',
-  './node_modules/iframe-resizer/js/iframeResizer.min.js'
+  './node_modules/iframe-resizer/js/iframeResizer.min.js',
+  // lovefield is loaded from multiple locations.  Make it stand-alone
+  // so we only need a single copy.
+  './node_modules/lovefield/dist/lovefield.min.js'
 ]
 
 
@@ -102,7 +105,6 @@ const vendorJsFiles = [
   'angular-tree-control',
   'angular-tree-control/context-menu.js',
   'angular-order-object-by',
-  'lovefield',
   'angular-tablesort'
 ];
 
