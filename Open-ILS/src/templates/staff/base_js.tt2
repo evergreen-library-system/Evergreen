@@ -40,6 +40,7 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/dojo/opensrf/md5.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js',
     '[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/vendor.bundle.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff',
@@ -81,6 +82,13 @@ UpUp.start({
 -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js"></script>
+
+<!--
+  Load the lovefield libs as a standaline file so both the main
+  application and the offline shared worker can reference (and cache)
+  the same file
+-->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js"></script>
 
 <!--
   Load iframeResize via script tag
