@@ -111,13 +111,16 @@ function($q,  $rootScope,  egEvent) {
                 // bother JSON-ifying it, since there is the off
                 // chance that JSON-ification could fail, e.g if 
                 // the object has circular refs.
-                console.error(request.method + 
-                    ' (' + request.params + ')  failed.  See server logs.');
-                deferred.reject(msg);
+                var note = request.method + 
+                    ' (' + request.params + ')  failed.  See server logs.';
+                console.error(note, msg);
+                request.deferred.reject(note);
             },
             onmethoderror : function(req, statCode, statMsg) { 
-                console.error('error calling method ' + 
-                    request.method + ' : ' + statCode + ' : ' + statMsg);
+                var msg = 'error calling method ' + 
+                    request.method + ' : ' + statCode + ' : ' + statMsg;
+                console.error(msg);
+                request.deferred.reject(msg);
             }
 
         }).send();
