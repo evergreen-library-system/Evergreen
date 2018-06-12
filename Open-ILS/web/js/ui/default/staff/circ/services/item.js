@@ -779,7 +779,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     // this "transfers" selected copies to a new owning library,
     // auto-creating volumes and deleting unused volumes as required.
     service.changeItemOwningLib = function(items) {
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_lib');
         if (!xfer_target || !items.length) {
             return;
         }
@@ -804,7 +804,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
 
         var promises = [];
-        angular.forEach(vols_to_move, function(vol) {
+        angular.forEach(vols_to_move, function(vol, vol_id) {
             promises.push(egCore.net.request(
                 'open-ils.cat',
                 'open-ils.cat.call_number.find_or_create',
@@ -823,24 +823,21 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     'open-ils.cat.transfer_copies_to_volume',
                     egCore.auth.token(),
                     resp.acn_id,
-                    copies_to_move[vol.id]
+                    copies_to_move[vol_id]
                 );
             }));
         });
 
-        angular.forEach(
-            items,
-            function(cp){
-                promises.push(
-                    function(){ service.add_barcode_to_list(cp.barcode) }
-                )
+        $q.all(promises)
+        .then(
+            function() {
+                angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
             }
         );
-        $q.all(promises);
     }
 
     service.transferItems = function (items){
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_vol');
         var copy_ids = service.gatherSelectedHoldingsIds(items);
         if (xfer_target && copy_ids.length > 0) {
             egCore.net.request(
