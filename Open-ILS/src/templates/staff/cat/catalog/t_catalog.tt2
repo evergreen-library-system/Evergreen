@@ -66,9 +66,9 @@
                 </a>
             </li>
             <li role="menuitem">
-                <a ng-click="markVolTransfer()" href="">
-                    [% l('Volume Transfer') %]
-                    <span class="target-record-aside" ng-if="current_voltransfer_target">[% l('(Currently [_1])', '{{current_voltransfer_target}}') %]</span>
+                <a ng-click="markHoldingsTransfer()" href="">
+                    [% l('Holdings Transfer') %]
+                    <span class="target-record-aside" ng-if="current_transfer_target">[% l('(Currently [_1])', '{{current_transfer_target}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">

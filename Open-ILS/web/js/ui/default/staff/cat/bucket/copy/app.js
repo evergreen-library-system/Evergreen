@@ -725,7 +725,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     }
 
     $scope.transferCopies = function(copies) {
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_vol');
         var copy_ids = copies.map(
             function(curr,idx,arr) {
                 return curr.id;
