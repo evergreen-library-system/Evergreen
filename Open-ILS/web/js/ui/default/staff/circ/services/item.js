@@ -978,7 +978,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
     service.show_in_catalog = function(copy_list){
         angular.forEach(copy_list, function(copy){
-            window.open('/eg/opac/record/'+copy['call_number.record.id'], '_blank')
+            window.open('/eg/staff/cat/catalog/record/'+copy['call_number.record.id']+'/catalog', '_blank')
         });
     }
 
