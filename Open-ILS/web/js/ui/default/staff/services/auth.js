@@ -169,7 +169,6 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         }
 
         service.login_api(args).then(function(evt) {
-
             if (evt.textcode == 'SUCCESS') {
                 service.handle_login_ok(args, evt);
                 ops.deferred.resolve({
@@ -240,7 +239,13 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         return service.testAuthToken();
     }
 
-    service.login_api = function(args) {
+    service.login_via_auth_proxy = function(args) {
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.login', args);
+    }
+
+    service.login_via_auth = function(args) {
         return egNet.request(
             'open-ils.auth',
             'open-ils.auth.authenticate.init', args.username)
@@ -253,6 +258,27 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
                 return egNet.request(
                     'open-ils.auth',
                     'open-ils.auth.authenticate.complete', login_args)
+            }
+        );
+    }
+
+    service.login_api = function(args) {
+
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.enabled')
+        .then(
+            function(enabled) {
+                console.log('proxy check returned ' + enabled);
+                if (Number(enabled) === 1) {
+                    return service.login_via_auth_proxy(args);
+                } else {
+                    return service.login_via_auth(args);
+                }
+            },
+            function() {
+                // request failed, likely a result of auth_proxy not running.
+               return service.login_via_auth(args);
             }
         );
     }
