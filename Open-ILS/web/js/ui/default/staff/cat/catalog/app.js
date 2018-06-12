@@ -376,7 +376,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.current_overlay_target     = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record');
-    $scope.current_voltransfer_target = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
+    $scope.current_transfer_target    = egCore.hatch.getLocalItem('eg.cat.transfer_target_record');
     $scope.current_conjoined_target   = egCore.hatch.getLocalItem('eg.cat.marked_conjoined_record');
 
     $scope.quickReceive = function () {
@@ -441,11 +441,12 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         ngToast.create(egCore.strings.MARK_CONJ_TARGET);
     };
 
-    $scope.markVolTransfer = function () {
-        ngToast.create(egCore.strings.MARK_VOL_TARGET);
-        $scope.current_voltransfer_target = $scope.record_id;
-        egCore.hatch.setLocalItem('eg.cat.marked_volume_transfer_record',$scope.record_id);
-        egCore.hatch.removeLocalItem('eg.cat.volume_transfer_target');
+    $scope.markHoldingsTransfer = function () {
+        $scope.current_transfer_target = $scope.record_id;
+        egCore.hatch.setLocalItem('eg.cat.transfer_target_record',$scope.record_id);
+        egCore.hatch.removeLocalItem('eg.cat.transfer_target_lib');
+        egCore.hatch.removeLocalItem('eg.cat.transfer_target_vol');
+        ngToast.create(egCore.strings.MARK_HOLDINGS_TARGET);
     };
 
     $scope.markOverlay = function () {
@@ -456,10 +457,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
     $scope.clearRecordMarks = function () {
         $scope.current_overlay_target     = null;
-        $scope.current_voltransfer_target = null;
+        $scope.current_transfer_target    = null;
         $scope.current_conjoined_target   = null;
         $scope.current_hold_transfer_dest = null;
-        egCore.hatch.removeLocalItem('eg.cat.marked_volume_transfer_record');
+        egCore.hatch.removeLocalItem('eg.cat.transfer_target_record');
         egCore.hatch.removeLocalItem('eg.cat.marked_conjoined_record');
         egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
         egCore.hatch.removeLocalItem('eg.circ.hold.title_transfer_target');
@@ -1306,56 +1307,26 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         $timeout(function() { $window.open(url, '_blank') });
     }
 
-    $scope.markVolAsItemTarget = function() {
-        if ($scope.holdingsGridControls.selectedItems()[0].call_number.id) { // cn.id missing when vols are collapsed
-            egCore.hatch.setLocalItem(
-                'eg.cat.item_transfer_target',
-                $scope.holdingsGridControls.selectedItems()[0].call_number.id
-            );
-            ngToast.create(egCore.strings.MARK_ITEM_TARGET);
-        }
-    }
-
-    $scope.markLibAsVolTarget = function() {
-        var recId = $scope.record_id;
-        return $uibModal.open({
-            templateUrl: './cat/catalog/t_choose_vol_target_lib',
-            animation: true,
-            controller:
-                   ['$scope','$uibModalInstance',
-            function($scope , $uibModalInstance) {
-
-                var orgId = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target') || 1;
-                $scope.org = egCore.org.get(orgId);
-                $scope.cant_have_vols = function (id) { return !egCore.org.CanHaveVolumes(id); };
-                $scope.ok = function(org) {
-                    egCore.hatch.setLocalItem(
-                        'eg.cat.volume_transfer_target',
-                        org.id()
-                    );
-                    egCore.hatch.setLocalItem(
-                        'eg.cat.marked_volume_transfer_record',
-                        recId
-                    );
-                    $uibModalInstance.close();
-                }
-                $scope.cancel = function($event) {
-                    $uibModalInstance.dismiss();
-                    $event.preventDefault();
-                }
-            }]
-        });
-    }
-    $scope.markLibFromSelectedAsVolTarget = function() {
+    $scope.markFromSelectedAsHoldingsTarget = function() {
         egCore.hatch.setLocalItem(
-            'eg.cat.volume_transfer_target',
+            'eg.cat.transfer_target_lib',
             $scope.holdingsGridControls.selectedItems()[0].owner_id
         );
         egCore.hatch.setLocalItem(
-            'eg.cat.marked_volume_transfer_record',
+            'eg.cat.transfer_target_record',
             $scope.record_id
         );
-        ngToast.create(egCore.strings.MARK_VOL_TARGET);
+        if ($scope.holdingsGridControls.selectedItems()[0].call_number.id) { // cn.id missing when vols are collapsed, or we are on an empty lib
+            egCore.hatch.setLocalItem(
+                'eg.cat.transfer_target_vol',
+                $scope.holdingsGridControls.selectedItems()[0].call_number.id
+            );
+        } else {
+            // clear out the stale value if we're on a lib-only
+            // or vol-collapsed row
+            egCore.hatch.removeLocalItem('eg.cat.transfer_target_vol');
+        }
+        ngToast.create(egCore.strings.MARK_HOLDINGS_TARGET);
     }
 
     $scope.selectedHoldingsItemStatusDetail = function (){
@@ -1369,20 +1340,35 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         );
     }
 
-    $scope.transferVolumesToRecord = function (){
-        var target_record = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
-        if (!target_record) return;
-        if ($scope.record_id == target_record) return;
-        var items = $scope.holdingsGridControls.selectedItems();
-        if (!items.length) return;
+    $scope.transferVolumes = function (){
+        var target_record = egCore.hatch.getLocalItem('eg.cat.transfer_target_record');
+        var target_lib = egCore.hatch.getLocalItem('eg.cat.transfer_target_lib');
+        if (!target_lib
+            && (!target_record || ($scope.record_id == target_record) )
+        ) return;
 
-        var vols_to_move   = {};
-        angular.forEach(items, function(item) {
-            if (!(item.call_number.owning_lib in vols_to_move)) {
-                vols_to_move[item.call_number.owning_lib] = new Array;
+        var vols_to_move = {};
+        if (target_lib) {
+            // we're moving volumes to a different library
+            var vol_ids = gatherSelectedVolumeIds();
+            if (vol_ids.length) {
+                vols_to_move[target_lib] = vol_ids;
+
+                // if we're *only* switching libs,
+                // grab the current record as the target
+                target_record = target_record || $scope.record_id;
             }
-            vols_to_move[item.call_number.owning_lib].push(item.call_number.id);
-        });
+        } else {
+            // we're moving volumes to the same library they exist in
+            // currently, but on a different record
+            var items = $scope.holdingsGridControls.selectedItems();
+            angular.forEach(items, function(item) {
+                if (!(item.call_number.owning_lib in vols_to_move)) {
+                    vols_to_move[item.call_number.owning_lib] = new Array;
+                }
+                vols_to_move[item.call_number.owning_lib].push(item.call_number.id);
+            });
+        }
 
         var promises = [];        
         angular.forEach(vols_to_move, function(vols, owning_lib) {
@@ -1408,54 +1394,35 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
-    function transferVolumes(new_record){
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
-
-        if (xfer_target) {
-            egCore.net.request(
-                'open-ils.cat',
-                'open-ils.cat.asset.volume.batch.transfer.override',
-                egCore.auth.token(), {
-                    docid   : (new_record ? new_record : $scope.record_id),
-                    lib     : xfer_target,
-                    volumes : gatherSelectedVolumeIds()
-                }
-            ).then(function(success) {
-                if (success) {
-                    ngToast.create(egCore.strings.VOLS_TRANSFERED);
-                    holdingsSvcInst.fetchAgain().then(function() {
-                        $scope.holdingsGridDataProvider.refresh();
-                    });
-                } else {
-                    alert('Could not transfer volumes!');
-                }
-            });
-        }
-        
-    }
-
-    $scope.transferVolumesToLibrary = function() {
-        transferVolumes();
-    }
-
-    $scope.transferVolumesToRecordAndLibrary = function() {
-        var target_record = egCore.hatch.getLocalItem('eg.cat.marked_volume_transfer_record');
-        if (!target_record) return;
-        transferVolumes(target_record);
-    }
-
     // this "transfers" selected copies to a new owning library,
-    // auto-creating volumes and deleting unused volumes as required.
-    $scope.changeItemOwningLib = function() {
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
+    // auto-creating volumes as required
+    $scope.transferItemsAutoFill = function() {
+        var target_record = egCore.hatch.getLocalItem('eg.cat.transfer_target_record');
+        var target_lib = egCore.hatch.getLocalItem('eg.cat.transfer_target_lib');
+        if (!target_lib
+            && (!target_record || ($scope.record_id == target_record) )
+        ) return;
+
         var items = $scope.holdingsGridControls.selectedItems();
-        if (!xfer_target || !items.length) {
+        if (!items.length) {
             return;
         }
+
         var vols_to_move   = {};
         var copies_to_move = {};
         angular.forEach(items, function(item) {
-            if (item.call_number.owning_lib != xfer_target) {
+            var needs_move = false;
+            if (target_lib
+                && (item.call_number.owning_lib != target_lib)) {
+                    item.call_number.owning_lib = target_lib;
+                    needs_move = true;
+            }
+            if (target_record
+                && (item.call_number.record != target_record)) {
+                    item.call_number.record = target_record;
+                    needs_move = true;
+            }
+            if (needs_move) {
                 if (item.call_number.id in vols_to_move) {
                     copies_to_move[item.call_number.id].push(item.id);
                 } else {
@@ -1465,7 +1432,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 }
             }
         });
-    
+
         var promises = [];
         angular.forEach(vols_to_move, function(vol) {
             promises.push(egCore.net.request(
@@ -1473,8 +1440,8 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 'open-ils.cat.call_number.find_or_create',
                 egCore.auth.token(),
                 vol.label,
-                vol.record,
-                xfer_target,
+                vol.record, // may be new
+                vol.owning_lib, // may be new
                 vol.prefix.id,
                 vol.suffix.id,
                 vol.label_class
@@ -1499,9 +1466,16 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     }
 
     $scope.transferItems = function (){
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_vol');
+
+        if (!xfer_target) {
+            // we have no specific volume, let's try to fill in the
+            // blanks instead
+            return $scope.transferItemsAutoFill();
+        }
+
         var copy_ids = gatherSelectedHoldingsIds();
-        if (xfer_target && copy_ids.length > 0) {
+        if (copy_ids.length > 0) {
             egCore.net.request(
                 'open-ils.cat',
                 'open-ils.cat.transfer_copies_to_volume',
