@@ -3,8 +3,7 @@ MARC Tag-table Service
 The tag tables for the web staff client MARC editor are
 now stored in the database rather than a separate XML
 tooltips file as used by the XUL MARC editor.  The tag-table
-service, which is part of the web staff client sprint 2
-preview in this release, has the following features:
+service has the following features:
 
 - specifies whether (sub)fields are optional or mandatory
 - specifies whether (sub)fields are repeatable or not
@@ -17,6 +16,14 @@ preview in this release, has the following features:
 - values supplied by the tag-table service are used to
   populate values in context menus in the web staff client
   MARC editor.
+
+MARC Tag Tables can be found under Administration -> Server Administration -> MARC Tag Tables.
+
+MARC Tag Tables Grid:
+image::media/MARC_Tag_Tables_Grid.PNG[Grid view of MARC Tag Tables]
+
+MARC Tag Tables Detail:
+image::media/MARC_Tag_Tables_Detail.PNG[Detail view of MARC Tag Tables]
 
 The initial seed data for the in-database tag table is
 derived from the current tooltips XML file.
