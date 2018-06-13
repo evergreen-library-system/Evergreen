@@ -75,7 +75,7 @@ To use Patron Search From Place Holds:
 +
 image::media/PlaceHold-0.JPG[]
 +
-3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client, not the desktop XUL-based staff client, nor the patron-facing OPAC.
+3. Next to _Place Hold for patron by barcode_, click on *Patron Search*. Please note that Patron Search will only appear in this interface when using the web-based staff client.  It will not appear in the patron-facing OPAC.
 +
 image::media/PlaceHold-1.JPG[]
 +
