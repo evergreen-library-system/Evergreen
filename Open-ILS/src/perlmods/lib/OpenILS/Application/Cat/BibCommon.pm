@@ -107,7 +107,7 @@ sub biblio_record_xml_import {
     my $record = Fieldmapper::biblio::record_entry->new;
 
     $record->source(bib_source_from_name($source)) if $source;
-    $record->tcn_source($tcn_source);
+    $record->tcn_source($tcn_source) if $tcn_source;
     $record->tcn_value($tcn) if ($tcn);
     $record->creator($e->requestor->id);
     $record->editor($e->requestor->id);
