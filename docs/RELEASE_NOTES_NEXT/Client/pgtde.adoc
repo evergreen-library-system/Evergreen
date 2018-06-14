@@ -1,0 +1,53 @@
+Permission Group Display Entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In some cases, it is useful to have the ability to reorder permission, or to make
+only specific groups available in the permission group selector for specific
+Org Units. An interface has been made available to allow this.
+
+Group Tree Display Entry Interface
+++++++++++++++++++++++++++++++++++
+
+Permission Group Display Entries can be reordered, added, or removed via
+_Administration -> Local Admin -> Permission Tree Display Entries_.
+Select the Org Unit you wish to edit the entries in.
+
+Entries may be added using the Add functionality, creating entries based
+on permission groups that have not been added to the tree for the Org
+Unit you wish to add them to.
+
+image::media/pgtde_01.png[Group Tree Display Entry Admin UI]
+
+Moving an Entry
++++++++++++++++
+Moving an entry will shift its position up or down in the patron profile
+selector for a given Org Unit.
+
+* Select an entry
+* Press either the *Move Up* or *Move Down* button. The entry will be 
+moved up or down, accordingly.
+* Click *Save* to save your edits.  
+
+NOTE: You may only move up or down entries that have sibling entries.
+
+Removing an Entry
++++++++++++++++++
+If you want a particular Org Unit to not have access to specific
+entries, you may remove an entry. Removing an entry will remove it from 
+view. The entry will remain in the database, marked as disabled.
+
+* Select an entry and press the *Remove* button.
+
+Adding an Entry
++++++++++++++++
+You may "add" entries that have been removed previously. This is useful
+for moving entries to different parents, or making them root entries.
+
+image::media/pgtde_02.png[Add Entry modal]
+
+* If desired, select an entry to be used as the parent entry. 
+* Press the *Add* button. 
+* Select a permission group from the dropdown.
+* If you've selected a parent entry, you may check the *Add Root Entry*
+box to override that parent and add the entry on the root level. 
+* If you did not select a parent entry, the entry will be added on the root 
+level of the tree.
