@@ -59,8 +59,9 @@ User data
 ~~~~~~~~~
 
 Finally, several characteristics of specific patrons can affect circulation
-policies.  You may modify these characteristics in Search -> Search for Patrons
-or Circulation -> Register Patron.
+policies.  You can modify these characteristics in a patron's record (*Search ->
+Search for Patrons*, select a patron, choose *Edit* tab) or when registering a
+new patron (*Circulation -> Register Patron*).
 
 * The user permission group is also commonly used as a data element in
 circulation policies. 
@@ -88,7 +89,7 @@ Administration -> Circulation Recurring Fine Rules*.
 image::media/circ_recurring_fine_rules.jpg[]
 
 *Max fine* describes the maximum amount of fines that will be assessed for a
-specific circulation. Set the *Use Percent* field to True if the maximum fine
+specific circulation. Set the *Is Percent* field to True if the maximum fine
 should be a percentage of the item's price.
 
 You can find Circ Max Fine Rules by navigating to *Administration -> Server
@@ -117,20 +118,20 @@ The below instructions will allow you to create limits based on circulation
 modifiers.
 
 * Configure the circulation limit sets by selecting *Administration -> Local
-Administration -> Circulation Limit Sets*.
-* *Items Out* -  the maximum number of items circulated to a patron at the same
+Administration -> Circ Limit Sets*.
+* *Items Out* -  The maximum number of items circulated to a patron at the same
 time.
-* *Depth* - Enter the Min Depth, or the minimum depth, in the org tree that
+* *Min Depth* - Enter the minimum depth in the org tree that
 Evergreen will consider as valid circulation libraries for counting items out.
 The min depth is based on org unit type depths. For example, if you want the
 items in all of the circulating libraries in your consortium to be eligible for
 restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field. 
-* *Global* - Check the box adjacent to Global Flag if you want all of the org
+* *Global* - Check the box adjacent to Global if you want all of the org
 units in your consortium to be restricted by this limit set when it is applied
 to a circulation policy. Otherwise, Evergreen will only apply the limit to the
 direct ancestors and descendants of the owning library.
-* *Linked Limit Groups* - add any circulation modifiers, copy locations, or circ
+* *Linked Limit Groups* - Add any circulation modifiers, copy locations, or circ
 limit groups that should be part of this limit set.
 
 *Example*
@@ -140,7 +141,7 @@ library in the consortium. Items with DVD, BLURAY, and VHS circ modifiers should
 be included in this maximum checkout count. 
 
 To create this limit set, you would add 5 to the *Items Out* field, 0 to the
-*Depth* field and select the *Global Flag*. Add the DVD, BLURAY and VHS circ
+*Min Depth* field and select the *Global* flag. Add the DVD, BLURAY and VHS circ
 modifiers to the limit set.
 
 Creating Circulation Policies
@@ -165,7 +166,7 @@ return the various parameters that are applied to the matching transaction.
 
 * Circulation policies by checkout library or owning library?
    - If your policies should follow the rules of the library that checks out the
-item, select the checkout library as the *Org Unit(org_unit)*.
+item, select the checkout library as the *Org Unit (org_unit)*.
    - If your policies should follow the rules of the library that owns the item,
 select the consortium as the *Org Unit (org_unit)* and select the owning library
 as the *Copy Circ Lib (copy_circ_lib)*.
