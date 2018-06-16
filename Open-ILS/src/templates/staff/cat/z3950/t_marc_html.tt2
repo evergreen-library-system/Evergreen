@@ -5,8 +5,14 @@
     <h4 class="modal-title">[% l('View MARC') %]</h4>
   </div>
   <div class="modal-body">
-    <img ng-src="/opac/extras/ac/jacket/large/{{isbn}}"></img>
-    <eg-record-html marc-xml="{{marc_xml}}" />
+    <div class="media">
+      <div class="media-left hidden-xs">
+        <img ng-src="/opac/extras/ac/jacket/medium/{{isbn}}"></img>
+      </div>
+      <div class="media-body">
+        <eg-record-html marc-xml="{{marc_xml}}" />
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
