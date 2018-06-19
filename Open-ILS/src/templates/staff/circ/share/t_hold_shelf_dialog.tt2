@@ -35,7 +35,7 @@
     </div>
     <br/>
     <div>
-    
+
     <div ng-show="patron.alias">
       [% l('Hold for patron {{patron.alias}}') %]
     </div>
@@ -49,6 +49,9 @@
       <span>[% l('Patron Barcode:') %]</span>
       <span>{{patron.card.barcode}}</span>
     </div>
+    <div ng-if="hold.phone_notify">Notify by phone: {{hold.phone_notify}}</div>
+    <div ng-if="hold.sms_notify">Notify by text: {{hold.sms_notify}}</div>
+    <div ng-if="hold.email_notify == 't'">Notify by email: {{patron.email}}</div>
     <br/>
     <div>
       <span>[% l('Request Date:') %]</span>
