@@ -487,16 +487,21 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
     $scope.checkin = function(items) {
         if (!items.length) return;
-        var barcodes = items.map(function(circ) 
-            { return circ.target_copy().barcode() });
+        var copies = items.map(function(circ) { return circ.target_copy() });
+        var barcodes = copies.map(function(copy) { return copy.barcode() });
 
         return egConfirmDialog.open(
             egCore.strings.CHECK_IN_CONFIRM, barcodes.join(' '), {
 
         }).result.then(function() {
+            var copy;
             function do_one() {
-                if (bc = barcodes.pop()) {
-                    egCirc.checkin({copy_barcode : bc})
+                if (copy = copies.pop()) {
+                    // Checkin expects a barcode, but will pass other
+                    // parameters too.  Passing the copy ID allows
+                    // for the checkin of deleted copies on the server.
+                    egCirc.checkin(
+                        {copy_barcode: copy.barcode(), copy_id: copy.id()})
                     .finally(do_one);
                 } else {
                     reset_page();
