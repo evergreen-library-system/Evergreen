@@ -166,14 +166,18 @@ angular.module('egCoreMod')
                     $scope.bib_cn = null;
                     $scope.bib_cn_tooltip = '';
                     var label_class = 1;
-                    if (egCore.env.aous) 
-                        label_class = egCore.env.aous['cat.default_classification_scheme'] || 1;
-                    egCore.net.request(
-                        'open-ils.cat',
-                        'open-ils.cat.biblio.record.marc_cn.retrieve',
-                        $scope.recordId,
-                        label_class
-                    ).then(function(cn_array) {
+                    egCore.org.settings(['cat.default_classification_scheme'])
+                    .then(function(s) {
+                        var scheme = s['cat.default_classification_scheme'];
+                        label_class = scheme || 1;
+
+                        return egCore.net.request(
+                            'open-ils.cat',
+                            'open-ils.cat.biblio.record.marc_cn.retrieve',
+                            $scope.recordId,
+                            label_class
+                        )
+                    }).then(function(cn_array) {
                         var tooltip = '';
                         if (cn_array.length > 0) {
                             for (var field in cn_array[0]) {
