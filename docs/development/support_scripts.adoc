@@ -99,6 +99,7 @@ marc_export: Exporting Bibliographic Records into MARC files
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[marc_export]
+indexterm:[MARC records,exporting,using the command line]
 
 The following procedure explains how to export Evergreen bibliographic
 records into MARC files using the *marc_export* support script. All steps
@@ -201,6 +202,7 @@ Importing Authority Records from Command Line
 
 indexterm:[marc2are.pl]
 indexterm:[pg_loader.pl]
+indexterm:[MARC records,importing,using the command line]
 
 The major advantages of the command line approach are its speed and its
 convenience for system administrators who can perform bulk loads of
@@ -259,6 +261,8 @@ value passed in to the script will be used as a default.
 
 MARC Stream Importer
 ~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[MARC records,importing,using the command line]
 
 The MARC Stream Importer can import authority records or bibliographic records.
 A single running instance of the script can import either type of record, based
