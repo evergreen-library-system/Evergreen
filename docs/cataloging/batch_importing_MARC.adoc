@@ -232,7 +232,7 @@ Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
 
 NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
 (such as "a") or an XPATH query. You can also use the
-<<lse-vandelay,related library settings>> to set defaults for some of these fields.
+related library settings to set defaults for some of these fields.
 
 image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
 
