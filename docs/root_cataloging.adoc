@@ -54,6 +54,8 @@ include::admin/staff_client-return_to_results_from_marc.adoc[]
 Working with holdings data
 ==========================
 
+include::cataloging/item_status.adoc[]
+
 include::cataloging/volcopy_editor.adoc[]
 
 :leveloffset: 1
