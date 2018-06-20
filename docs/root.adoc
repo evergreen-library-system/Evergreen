@@ -372,6 +372,8 @@ include::cataloging/conjoined_items.adoc[]
 
 include::cataloging/cataloging_electronic_resources.adoc[]
 
+include::cataloging/item_status.adoc[]
+
 include::cataloging/volcopy_editor.adoc[]
 
 :leveloffset: 1

@@ -1,0 +1,53 @@
+Using the Item Status interface
+-------------------------------
+indexterm:[copies]
+indexterm:[items]
+
+The Item Status interface is a powerful tool that can give you a lot of information
+about specific items in your catalog.
+
+Accessing the Item Status interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are three ways to access the item status interface:
+
+Through the Search menu
+^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click *Search -> Search for Copies by Barcode*.
+. Scan your barcode.
+
+Through the Circulation menu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click *Circulation -> Item Status*.
+. Scan your barcode.
+
+From the OPAC view
+^^^^^^^^^^^^^^^^^^
+
+. Click *Search -> Search the Catalog*.
+. Find a bibliographic record that you are interested in.
+. Make sure you are on the _OPAC View_ tab of that record.
+. Locate the _BARCODE_ column in the holdings session.
+. Click _view_ next to the barcode of the item you're interested
+in.
+
+
+Specific fields
+~~~~~~~~~~~~~~~
+
+Active date
+^^^^^^^^^^^
+indexterm:[active date]
+indexterm:[copies,activating]
+indexterm:[items,activating]
+
+This date is automatically added by Evergreen the first time
+an item receives a status that is considered active (i.e. the
+first date on which patrons could access the copy).  While your
+consortium may customize which statuses are considered active
+and which are not, statuses like _Available_ and _On holds shelf_
+are typically considered active, and statuses like _In process_ or
+_On order_ are typically not.
+
