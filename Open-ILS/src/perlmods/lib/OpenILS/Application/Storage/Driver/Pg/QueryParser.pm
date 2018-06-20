@@ -883,8 +883,8 @@ sub toSQL {
         $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted';
         # The above suffices for filters too when the #deleted modifier
         # is in use.
-    } elsif ($$flat_plan{uses_bre} or !$self->find_modifier('staff')) {
-        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+    } else {
+        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
     }
 
     my $desc = 'ASC';
@@ -1064,7 +1064,7 @@ sub toSQL {
                 "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
             "))";
         # We need bre here, regardless
-        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
     }
 
     my $final_b_attr_test;
