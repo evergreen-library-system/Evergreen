@@ -171,6 +171,29 @@ All of the specified org. units and their descendants will be included
 in the output.  You can also combine `--library` and `--descendants`
 options when necessary.
 
+--items
++++++++
+
+The `--items` option will add an 852 field for every relevant item to the MARC
+record.  This 852 field includes the following information:
+
+[options="header",cols="2,3"]
+|===================================
+|Subfield          |Contents
+|$b (occurrence 1) |Call number owning library shortname
+|$b (occurrence 2) |Item circulating library shortname
+|$c                |Shelving location
+|$g                |Circulation modifier
+|$j                |Call number
+|$k                |Call number prefix
+|$m                |Call number suffix
+|$p                |Barcode
+|$t                |Copy number
+|$x                |Miscellaneous item information
+|$y                |Price
+|===================================
+
+
 --since
 +++++++
 
