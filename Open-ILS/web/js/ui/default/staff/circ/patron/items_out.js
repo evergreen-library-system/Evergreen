@@ -108,7 +108,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             {   flesh : 4,
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
-                    acp : ['call_number', 'holds_count', 'status', 'circ_lib'],
+                    acp : ['call_number', 'holds_count', 'status', 'circ_lib', 'location', 'floating', 'age_protect'],
                     acn : ['record', 'owning_lib', 'prefix', 'suffix'],
                     bre : ['wide_display_entry']
                 },
