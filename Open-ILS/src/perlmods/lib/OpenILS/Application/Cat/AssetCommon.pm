@@ -250,7 +250,7 @@ sub update_copy_notes {
         } elsif ($incoming_note->ischanged) {
             $incoming_note = $editor->update_asset_copy_note($incoming_note)
         } elsif ($incoming_note->isdeleted) {
-            $incoming_note = $editor->delete_asset_copy_note($incoming_note->id)
+            $incoming_note = $editor->delete_asset_copy_note($incoming_note)
         }
     
     }
