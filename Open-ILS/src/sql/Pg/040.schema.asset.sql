@@ -1008,7 +1008,7 @@ BEGIN
 
     SELECT stop_fines INTO last_circ_stop
       FROM  action.circulation
-      WHERE target_copy = cid
+      WHERE target_copy = cid AND checkin_time IS NULL
       ORDER BY xact_start DESC LIMIT 1;
 
     IF FOUND THEN
