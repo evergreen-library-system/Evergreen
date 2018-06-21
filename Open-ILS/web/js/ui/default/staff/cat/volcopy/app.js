@@ -1879,8 +1879,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 egCore.org.settings([
                     'ui.staff.require_initials.copy_notes'
                 ]).then(function(set) {
-                    $scope.require_initials = Boolean(set['ui.staff.require_initials.copy_notes']);
+                    $scope.require_initials_ous = Boolean(set['ui.staff.require_initials.copy_notes']);
                 });
+
+                $scope.are_initials_required = function() {
+                  $scope.require_initials = $scope.require_initials_ous && ($scope.note.value.length > 0 || $scope.note.title.length > 0);
+                };
+
+                $scope.$watch('note.value.length', $scope.are_initials_required);
+                $scope.$watch('note.title.length', $scope.are_initials_required);
 
                 $scope.note_list = [];
                 if (copy_list.length == 1) {
@@ -1889,27 +1896,29 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.ok = function(note) {
 
-                    if ($scope.initials) {
-                        note.value = egCore.strings.$replace(
-                            egCore.strings.COPY_NOTE_INITIALS, {
-                            value : note.value, 
-                            initials : $scope.initials,
-                            ws_ou : egCore.org.get(
-                                egCore.auth.user().ws_ou()).shortname()
+                    if (note.value.length > 0 || note.title.length > 0) {
+                        if ($scope.initials) {
+                            note.value = egCore.strings.$replace(
+                                egCore.strings.COPY_NOTE_INITIALS, {
+                                value : note.value,
+                                initials : $scope.initials,
+                                ws_ou : egCore.org.get(
+                                    egCore.auth.user().ws_ou()).shortname()
+                            });
+                        }
+
+                        angular.forEach(copy_list, function (cp) {
+                            if (!angular.isArray(cp.notes())) cp.notes([]);
+                            var n = new egCore.idl.acpn();
+                            n.isnew(1);
+                            n.creator(note.creator);
+                            n.pub(note.pub);
+                            n.title(note.title);
+                            n.value(note.value);
+                            n.owning_copy(cp.id());
+                            cp.notes().push( n );
                         });
                     }
-
-                    angular.forEach(copy_list, function (cp) {
-                        if (!angular.isArray(cp.notes())) cp.notes([]);
-                        var n = new egCore.idl.acpn();
-                        n.isnew(1);
-                        n.creator(note.creator);
-                        n.pub(note.pub);
-                        n.title(note.title);
-                        n.value(note.value);
-                        n.owning_copy(cp.id());
-                        cp.notes().push( n );
-                    });
 
                     $uibModalInstance.close();
                 }
