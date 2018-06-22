@@ -1,475 +1,6 @@
-DROP SCHEMA IF EXISTS unapi CASCADE;
-
 BEGIN;
-CREATE SCHEMA unapi;
 
-CREATE OR REPLACE FUNCTION evergreen.org_top()
-RETURNS actor.org_unit AS $$
-    SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1;
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION array_remove(inp ANYARRAY, el ANYELEMENT)
-RETURNS anyarray AS $$
-    SELECT ARRAY_AGG(x.e) FROM UNNEST( $1 ) x(e) WHERE x.e <> $2;
-$$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.rank_ou(lib INT, search_lib INT, pref_lib INT DEFAULT NULL)
-RETURNS INTEGER AS $$
-    SELECT COALESCE(
-
-        -- lib matches search_lib
-        (SELECT CASE WHEN $1 = $2 THEN -20000 END),
-
-        -- lib matches pref_lib
-        (SELECT CASE WHEN $1 = $3 THEN -10000 END),
-
-
-        -- pref_lib is a child of search_lib and lib is a child of pref lib.  
-        -- For example, searching CONS, pref lib is SYS1, 
-        -- copies at BR1 and BR2 sort to the front.
-        (SELECT distance - 5000
-            FROM actor.org_unit_descendants_distance($3) 
-            WHERE id = $1 AND $3 IN (
-                SELECT id FROM actor.org_unit_descendants($2))),
-
-        -- lib is a child of search_lib
-        (SELECT distance FROM actor.org_unit_descendants_distance($2) WHERE id = $1),
-
-        -- all others pay cash
-        1000
-    );
-$$ LANGUAGE SQL STABLE;
-
--- this version exists mainly to accommodate JSON query transform limitations
--- (the transform argument must be an IDL field, not an entire row/object)
--- XXX is there another way?
-CREATE OR REPLACE FUNCTION evergreen.rank_cp(copy_id BIGINT)
-RETURNS INTEGER AS $$
-DECLARE
-    copy asset.copy%ROWTYPE;
-BEGIN
-    SELECT * INTO copy FROM asset.copy WHERE id = copy_id;
-    RETURN evergreen.rank_cp(copy);
-END;
-$$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.rank_cp(copy asset.copy)
-RETURNS INTEGER AS $$
-DECLARE
-    rank INT;
-BEGIN
-    WITH totally_available AS (
-        SELECT id, 0 AS avail_rank
-        FROM config.copy_status
-        WHERE opac_visible IS TRUE
-            AND copy_active IS TRUE
-            AND id != 1 -- "Checked out"
-    ), almost_available AS (
-        SELECT id, 10 AS avail_rank
-        FROM config.copy_status
-        WHERE holdable IS TRUE
-            AND opac_visible IS TRUE
-            AND copy_active IS FALSE
-            OR id = 1 -- "Checked out"
-    )
-    SELECT COALESCE(
-        CASE WHEN NOT copy.opac_visible THEN 100 END,
-        (SELECT avail_rank FROM totally_available WHERE copy.status IN (id)),
-        CASE WHEN copy.holdable THEN
-            (SELECT avail_rank FROM almost_available WHERE copy.status IN (id))
-        END,
-        100
-    ) INTO rank;
-
-    RETURN rank;
-END;
-$$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.ranked_volumes(
-    bibid BIGINT[], 
-    ouid INT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    pref_lib INT DEFAULT NULL,
-    includes TEXT[] DEFAULT NULL::TEXT[]
-) RETURNS TABLE(id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT) AS $$
-    WITH RECURSIVE ou_depth AS (
-        SELECT COALESCE(
-            $3,
-            (
-                SELECT depth
-                FROM actor.org_unit_type aout
-                    INNER JOIN actor.org_unit ou ON ou_type = aout.id
-                WHERE ou.id = $2
-            )
-        ) AS depth
-    ), descendant_depth AS (
-        SELECT  ou.id,
-                ou.parent_ou,
-                out.depth
-        FROM  actor.org_unit ou
-                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-                JOIN anscestor_depth ad ON (ad.id = ou.id),
-                ou_depth
-        WHERE ad.depth = ou_depth.depth
-            UNION ALL
-        SELECT  ou.id,
-                ou.parent_ou,
-                out.depth
-        FROM  actor.org_unit ou
-                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-                JOIN descendant_depth ot ON (ot.id = ou.parent_ou)
-    ), anscestor_depth AS (
-        SELECT  ou.id,
-                ou.parent_ou,
-                out.depth
-        FROM  actor.org_unit ou
-                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-        WHERE ou.id = $2
-            UNION ALL
-        SELECT  ou.id,
-                ou.parent_ou,
-                out.depth
-        FROM  actor.org_unit ou
-                JOIN actor.org_unit_type out ON (out.id = ou.ou_type)
-                JOIN anscestor_depth ot ON (ot.parent_ou = ou.id)
-    ), descendants as (
-        SELECT ou.* FROM actor.org_unit ou JOIN descendant_depth USING (id)
-    )
-
-    SELECT ua.id, ua.name, ua.label_sortkey, MIN(ua.rank) AS rank FROM (
-        SELECT acn.id, owning_lib.name, acn.label_sortkey,
-            evergreen.rank_cp(acp),
-            RANK() OVER w
-        FROM asset.call_number acn
-            JOIN asset.copy acp ON (acn.id = acp.call_number)
-            JOIN descendants AS aou ON (acp.circ_lib = aou.id)
-            JOIN actor.org_unit AS owning_lib ON (acn.owning_lib = owning_lib.id)
-        WHERE acn.record = ANY ($1)
-            AND acn.deleted IS FALSE
-            AND acp.deleted IS FALSE
-            AND CASE WHEN ('exclude_invisible_acn' = ANY($7)) THEN 
-                EXISTS (
-                    WITH basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
-                         circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY[acp.circ_lib]) AS mask)
-                    SELECT  1 
-                      FROM  basevm, circvm, asset.copy_vis_attr_cache acvac
-                      WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
-                            AND acvac.target_copy = acp.id
-                            AND acvac.record = acn.record
-                ) ELSE TRUE END
-        GROUP BY acn.id, evergreen.rank_cp(acp), owning_lib.name, acn.label_sortkey, aou.id
-        WINDOW w AS (
-            ORDER BY 
-                COALESCE(
-                    CASE WHEN aou.id = $2 THEN -20000 END,
-                    CASE WHEN aou.id = $6 THEN -10000 END,
-                    (SELECT distance - 5000
-                        FROM actor.org_unit_descendants_distance($6) as x
-                        WHERE x.id = aou.id AND $6 IN (
-                            SELECT q.id FROM actor.org_unit_descendants($2) as q)),
-                    (SELECT e.distance FROM actor.org_unit_descendants_distance($2) as e WHERE e.id = aou.id),
-                    1000
-                ),
-                evergreen.rank_cp(acp)
-        )
-    ) AS ua
-    GROUP BY ua.id, ua.name, ua.label_sortkey
-    ORDER BY rank, ua.name, ua.label_sortkey
-    LIMIT ($4 -> 'acn')::INT
-    OFFSET ($5 -> 'acn')::INT;
-$$ LANGUAGE SQL STABLE ROWS 10;
-
-CREATE OR REPLACE FUNCTION evergreen.ranked_volumes
-    ( bibid BIGINT, ouid INT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, pref_lib INT DEFAULT NULL, includes TEXT[] DEFAULT NULL::TEXT[] )
-    RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank BIGINT)
-    AS $$ SELECT * FROM evergreen.ranked_volumes(ARRAY[$1],$2,$3,$4,$5,$6,$7) $$ LANGUAGE SQL STABLE;
-
-
-CREATE OR REPLACE FUNCTION evergreen.located_uris (
-    bibid BIGINT[], 
-    ouid INT,
-    pref_lib INT DEFAULT NULL
-) RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT) AS $$
-    WITH all_orgs AS (SELECT COALESCE( enabled, FALSE ) AS flag FROM config.global_flag WHERE name = 'opac.located_uri.act_as_copy')
-    SELECT DISTINCT ON (id) * FROM (
-    SELECT acn.id, COALESCE(aou.name,aoud.name), acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
-      FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number
-           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           LEFT JOIN actor.org_unit_ancestors( COALESCE($3, $2) ) aou ON (acn.owning_lib = aou.id)
-           LEFT JOIN actor.org_unit_descendants( COALESCE($3, $2) ) aoud ON (acn.owning_lib = aoud.id),
-           all_orgs
-      WHERE acn.record = ANY ($1)
-          AND acn.deleted IS FALSE
-          AND auri.active IS TRUE
-          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL))
-    UNION
-    SELECT acn.id, COALESCE(aou.name,aoud.name) AS name, acn.label_sortkey, evergreen.rank_ou(aou.id, $2, $3) AS pref_ou
-      FROM asset.call_number acn
-           INNER JOIN asset.uri_call_number_map auricnm ON acn.id = auricnm.call_number
-           INNER JOIN asset.uri auri ON auri.id = auricnm.uri
-           LEFT JOIN actor.org_unit_ancestors( $2 ) aou ON (acn.owning_lib = aou.id)
-           LEFT JOIN actor.org_unit_descendants( $2 ) aoud ON (acn.owning_lib = aoud.id),
-           all_orgs
-      WHERE acn.record = ANY ($1)
-          AND acn.deleted IS FALSE
-          AND auri.active IS TRUE
-          AND ((NOT all_orgs.flag AND aou.id IS NOT NULL) OR (all_orgs.flag AND COALESCE(aou.id,aoud.id) IS NOT NULL)))x
-    ORDER BY id, pref_ou DESC;
-$$
-LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION evergreen.located_uris ( bibid BIGINT, ouid INT, pref_lib INT DEFAULT NULL)
-    RETURNS TABLE (id BIGINT, name TEXT, label_sortkey TEXT, rank INT)
-    AS $$ SELECT * FROM evergreen.located_uris(ARRAY[$1],$2,$3) $$ LANGUAGE SQL STABLE;
-
-CREATE TABLE unapi.bre_output_layout (
-    name                TEXT    PRIMARY KEY,
-    transform           TEXT    REFERENCES config.xml_transform (name) ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    mime_type           TEXT    NOT NULL,
-    feed_top            TEXT    NOT NULL,
-    holdings_element    TEXT,
-    title_element       TEXT,
-    description_element TEXT,
-    creator_element     TEXT,
-    update_ts_element   TEXT
-);
-
-INSERT INTO unapi.bre_output_layout
-    (name,           transform, mime_type,              holdings_element, feed_top,         title_element, description_element, creator_element, update_ts_element)
-        VALUES
-    ('holdings_xml', NULL,      'application/xml',      NULL,             'hxml',           NULL,          NULL,                NULL,            NULL),
-    ('marcxml',      'marcxml', 'application/marc+xml', 'record',         'collection',     NULL,          NULL,                NULL,            NULL),
-    ('mods32',       'mods32',  'application/mods+xml', 'mods',           'modsCollection', NULL,          NULL,                NULL,            NULL)
-;
-
--- Dummy functions, so we can create the real ones out of order
-CREATE OR REPLACE FUNCTION unapi.aou    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acnp   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acns   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acn    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ssub   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sdist  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sstr   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sitem  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sunit  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sisum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sbsum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.sssum  ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.siss   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.auri   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acpn   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.acl    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ccs    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.bre (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.mmr (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.bmp    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.mmr_mra    ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, pref_lib INT DEFAULT NULL) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-CREATE OR REPLACE FUNCTION unapi.circ   ( obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.holdings_xml (
-    bid BIGINT,
-    ouid INT,
-    org TEXT,
-    depth INT DEFAULT NULL,
-    includes TEXT[] DEFAULT NULL::TEXT[],
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.mmr_holdings_xml (
-    mid BIGINT,
-    ouid INT,
-    org TEXT,
-    depth INT DEFAULT NULL,
-    includes TEXT[] DEFAULT NULL::TEXT[],
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-)
-RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$ SELECT NULL::XML $F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.memoize (classname TEXT, obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-DECLARE
-    key     TEXT;
-    output  XML;
-BEGIN
-    key :=
-        'id'        || COALESCE(obj_id::TEXT,'') ||
-        'format'    || COALESCE(format::TEXT,'') ||
-        'ename'     || COALESCE(ename::TEXT,'') ||
-        'includes'  || COALESCE(includes::TEXT,'{}'::TEXT[]::TEXT) ||
-        'org'       || COALESCE(org::TEXT,'') ||
-        'depth'     || COALESCE(depth::TEXT,'') ||
-        'slimit'    || COALESCE(slimit::TEXT,'') ||
-        'soffset'   || COALESCE(soffset::TEXT,'') ||
-        'include_xmlns'   || COALESCE(include_xmlns::TEXT,'');
-    -- RAISE NOTICE 'memoize key: %', key;
-
-    key := MD5(key);
-    -- RAISE NOTICE 'memoize hash: %', key;
-
-    -- XXX cache logic ... memcached? table?
-
-    EXECUTE $$SELECT unapi.$$ || classname || $$( $1, $2, $3, $4, $5, $6, $7, $8, $9);$$ INTO output USING obj_id, format, ename, includes, org, depth, slimit, soffset, include_xmlns;
-    RETURN output;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.biblio_record_entry_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$
-DECLARE
-    layout          unapi.bre_output_layout%ROWTYPE;
-    transform       config.xml_transform%ROWTYPE;
-    item_format     TEXT;
-    tmp_xml         TEXT;
-    xmlns_uri       TEXT := 'http://open-ils.org/spec/feed-xml/v1';
-    ouid            INT;
-    element_list    TEXT[];
-BEGIN
-
-    IF org = '-' OR org IS NULL THEN
-        SELECT shortname INTO org FROM evergreen.org_top();
-    END IF;
-
-    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
-    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
-
-    IF layout.name IS NULL THEN
-        RETURN NULL::XML;
-    END IF;
-
-    SELECT * INTO transform FROM config.xml_transform WHERE name = layout.transform;
-    xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
-
-    -- Gather the bib xml
-    SELECT XMLAGG( unapi.bre(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib)) INTO tmp_xml FROM UNNEST( id_list ) i;
-
-    IF layout.title_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
-    END IF;
-
-    IF layout.description_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description;
-    END IF;
-
-    IF layout.creator_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator;
-    END IF;
-
-    IF layout.update_ts_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts;
-    END IF;
-
-    IF unapi_url IS NOT NULL THEN
-        EXECUTE $$SELECT XMLCONCAT( XMLELEMENT( name link, XMLATTRIBUTES( 'http://www.w3.org/1999/xhtml' AS xmlns, 'unapi-server' AS rel, $1 AS href, 'unapi' AS title)), $2)$$ INTO tmp_xml USING unapi_url, tmp_xml::XML;
-    END IF;
-
-    IF header_xml IS NOT NULL THEN tmp_xml := XMLCONCAT(header_xml,tmp_xml::XML); END IF;
-
-    element_list := regexp_split_to_array(layout.feed_top,E'\\.');
-    FOR i IN REVERSE ARRAY_UPPER(element_list, 1) .. 1 LOOP
-        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', XMLATTRIBUTES( $1 AS xmlns), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML;
-    END LOOP;
-
-    RETURN tmp_xml::XML;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.metabib_virtual_record_feed ( id_list BIGINT[], format TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE, title TEXT DEFAULT NULL, description TEXT DEFAULT NULL, creator TEXT DEFAULT NULL, update_ts TEXT DEFAULT NULL, unapi_url TEXT DEFAULT NULL, header_xml XML DEFAULT NULL, pref_lib INT DEFAULT NULL ) RETURNS XML AS $F$
-DECLARE
-    layout          unapi.bre_output_layout%ROWTYPE;
-    transform       config.xml_transform%ROWTYPE;
-    item_format     TEXT;
-    tmp_xml         TEXT;
-    xmlns_uri       TEXT := 'http://open-ils.org/spec/feed-xml/v1';
-    ouid            INT;
-    element_list    TEXT[];
-BEGIN
-
-    IF org = '-' OR org IS NULL THEN
-        SELECT shortname INTO org FROM evergreen.org_top();
-    END IF;
-
-    SELECT id INTO ouid FROM actor.org_unit WHERE shortname = org;
-    SELECT * INTO layout FROM unapi.bre_output_layout WHERE name = format;
-
-    IF layout.name IS NULL THEN
-        RETURN NULL::XML;
-    END IF;
-
-    SELECT * INTO transform FROM config.xml_transform WHERE name = layout.transform;
-    xmlns_uri := COALESCE(transform.namespace_uri,xmlns_uri);
-
-    -- Gather the bib xml
-    SELECT XMLAGG( unapi.mmr(i, format, '', includes, org, depth, slimit, soffset, include_xmlns, pref_lib)) INTO tmp_xml FROM UNNEST( id_list ) i;
-
-    IF layout.title_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.title_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, title;
-    END IF;
-
-    IF layout.description_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.description_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, description;
-    END IF;
-
-    IF layout.creator_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.creator_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, creator;
-    END IF;
-
-    IF layout.update_ts_element IS NOT NULL THEN
-        EXECUTE 'SELECT XMLCONCAT( XMLELEMENT( name '|| layout.update_ts_element ||', XMLATTRIBUTES( $1 AS xmlns), $3), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML, update_ts;
-    END IF;
-
-    IF unapi_url IS NOT NULL THEN
-        EXECUTE $$SELECT XMLCONCAT( XMLELEMENT( name link, XMLATTRIBUTES( 'http://www.w3.org/1999/xhtml' AS xmlns, 'unapi-server' AS rel, $1 AS href, 'unapi' AS title)), $2)$$ INTO tmp_xml USING unapi_url, tmp_xml::XML;
-    END IF;
-
-    IF header_xml IS NOT NULL THEN tmp_xml := XMLCONCAT(header_xml,tmp_xml::XML); END IF;
-
-    element_list := regexp_split_to_array(layout.feed_top,E'\\.');
-    FOR i IN REVERSE ARRAY_UPPER(element_list, 1) .. 1 LOOP
-        EXECUTE 'SELECT XMLELEMENT( name '|| quote_ident(element_list[i]) ||', XMLATTRIBUTES( $1 AS xmlns), $2)' INTO tmp_xml USING xmlns_uri, tmp_xml::XML;
-    END LOOP;
-
-    RETURN tmp_xml::XML;
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
+SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
 
 CREATE OR REPLACE FUNCTION unapi.bre (
     obj_id BIGINT,
@@ -923,101 +454,6 @@ CREATE OR REPLACE FUNCTION unapi.sisum ( obj_id BIGINT, format TEXT,  ename TEXT
       GROUP BY id, generated_coverage, textual_holdings, distribution, show_generated;
 $F$ LANGUAGE SQL STABLE;
 
-
-CREATE OR REPLACE FUNCTION unapi.aou ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-DECLARE
-    output XML;
-BEGIN
-    IF ename = 'circlib' THEN
-        SELECT  XMLELEMENT(
-                    name circlib,
-                    XMLATTRIBUTES(
-                        'http://open-ils.org/spec/actors/v1' AS xmlns,
-                        id AS ident
-                    ),
-                    name
-                ) INTO output
-          FROM  actor.org_unit aou
-          WHERE id = obj_id;
-    ELSE
-        EXECUTE $$SELECT  XMLELEMENT(
-                    name $$ || ename || $$,
-                    XMLATTRIBUTES(
-                        'http://open-ils.org/spec/actors/v1' AS xmlns,
-                        'tag:open-ils.org:U2@aou/' || id AS id,
-                        shortname, name, opac_visible
-                    )
-                )
-          FROM  actor.org_unit aou
-         WHERE id = $1 $$ INTO output USING obj_id;
-    END IF;
-
-    RETURN output;
-
-END;
-$F$ LANGUAGE PLPGSQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acl ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name location,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    id AS ident,
-                    holdable,
-                    opac_visible,
-                    label_prefix AS prefix,
-                    label_suffix AS suffix
-                ),
-                name
-            )
-      FROM  asset.copy_location
-      WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.ccs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name status,
-                XMLATTRIBUTES(
-                    CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                    id AS ident,
-                    holdable,
-                    opac_visible
-                ),
-                name
-            )
-      FROM  config.copy_status
-      WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acpn ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name copy_note,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        create_date AS date,
-                        title
-                    ),
-                    value
-                )
-          FROM  asset.copy_note
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.ascecm ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name statcat,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        sc.name,
-                        sc.opac_visible
-                    ),
-                    asce.value
-                )
-          FROM  asset.stat_cat_entry asce
-                JOIN asset.stat_cat sc ON (sc.id = asce.stat_cat)
-          WHERE asce.id = $1;
-$F$ LANGUAGE SQL STABLE;
-
 CREATE OR REPLACE FUNCTION unapi.bmp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name monograph_part,
@@ -1279,36 +715,6 @@ CREATE OR REPLACE FUNCTION unapi.acn ( obj_id BIGINT, format TEXT,  ename TEXT, 
           GROUP BY acn.id, o.shortname, o.opac_visible, deleted, label, label_sortkey, label_class, owning_lib, record, acn.prefix, acn.suffix;
 $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.acnp ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name call_number_prefix,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        id AS ident,
-                        label,
-                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
-                        label_sortkey
-                    )
-                )
-          FROM  asset.call_number_prefix
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.acns ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-        SELECT  XMLELEMENT(
-                    name call_number_suffix,
-                    XMLATTRIBUTES(
-                        CASE WHEN $9 THEN 'http://open-ils.org/spec/holdings/v1' ELSE NULL END AS xmlns,
-                        id AS ident,
-                        label,
-                        'tag:open-ils.org:U2@aou/' || owning_lib AS owning_lib,
-                        label_sortkey
-                    )
-                )
-          FROM  asset.call_number_suffix
-          WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
 CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
         SELECT  XMLELEMENT(
                     name uri,
@@ -1332,64 +738,6 @@ CREATE OR REPLACE FUNCTION unapi.auri ( obj_id BIGINT, format TEXT,  ename TEXT,
           GROUP BY uri.id, use_restriction, href, label;
 $F$ LANGUAGE SQL STABLE;
 
-CREATE OR REPLACE FUNCTION unapi.cbs ( obj_id BIGINT, format TEXT,  ename TEXT, includes TEXT[], org TEXT, depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-                name bib_source,
-                XMLATTRIBUTES(
-                    NULL AS xmlns, -- TODO needs equivalent to http://open-ils.org/spec/holdings/v1
-                    id AS ident,
-                    quality,
-                    transcendant,
-                    can_have_copies
-                ),
-                source
-            )
-      FROM  config.bib_source
-      WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.mra (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE
-) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-        name attributes,
-        XMLATTRIBUTES(
-            CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
-            'tag:open-ils.org:U2@mra/' || $1 AS id, 
-            'tag:open-ils.org:U2@bre/' || $1 AS record 
-        ),  
-        (SELECT XMLAGG(foo.y)
-          FROM (
-            SELECT  XMLELEMENT(
-                        name field,
-                        XMLATTRIBUTES(
-                            mra.attr AS name,
-                            cvm.value AS "coded-value",
-                            cvm.id AS "cvmid",
-                            rad.composite,
-                            rad.multi,
-                            rad.filter,
-                            rad.sorter
-                        ),
-                        mra.value
-                    )
-              FROM  metabib.record_attr_flat mra
-                    JOIN config.record_attr_definition rad ON (mra.attr = rad.name)
-                    LEFT JOIN config.coded_value_map cvm ON (cvm.ctype = mra.attr AND code = mra.value)
-              WHERE mra.id = $1
-            )foo(y)
-        )   
-    )   
-$F$ LANGUAGE SQL STABLE;
-
 CREATE OR REPLACE FUNCTION unapi.circ (obj_id BIGINT, format TEXT, ename TEXT, includes TEXT[], org TEXT DEFAULT '-', depth INT DEFAULT NULL, slimit HSTORE DEFAULT NULL, soffset HSTORE DEFAULT NULL, include_xmlns BOOL DEFAULT TRUE ) RETURNS XML AS $F$
     SELECT XMLELEMENT(
         name circ,
@@ -1404,106 +752,6 @@ CREATE OR REPLACE FUNCTION unapi.circ (obj_id BIGINT, format TEXT, ename TEXT, i
     )
     FROM action.circulation
     WHERE id = $1;
-$F$ LANGUAGE SQL STABLE;
-
-CREATE OR REPLACE FUNCTION unapi.mmr_mra (
-    obj_id BIGINT,
-    format TEXT,
-    ename TEXT,
-    includes TEXT[],
-    org TEXT,
-    depth INT DEFAULT NULL,
-    slimit HSTORE DEFAULT NULL,
-    soffset HSTORE DEFAULT NULL,
-    include_xmlns BOOL DEFAULT TRUE,
-    pref_lib INT DEFAULT NULL
-) RETURNS XML AS $F$
-    SELECT  XMLELEMENT(
-        name attributes,
-        XMLATTRIBUTES(
-            CASE WHEN $9 THEN 'http://open-ils.org/spec/indexing/v1' ELSE NULL END AS xmlns,
-            'tag:open-ils.org:U2@mmr/' || $1 AS metarecord
-        ),
-        (SELECT XMLAGG(foo.y)
-          FROM (
-            WITH sourcelist AS (
-                WITH aou AS (SELECT COALESCE(id, (evergreen.org_top()).id) AS id FROM actor.org_unit WHERE shortname = $5 LIMIT 1),
-                     basevm AS (SELECT c_attrs FROM  asset.patron_default_visibility_mask()),
-                     circvm AS (SELECT search.calculate_visibility_attribute_test('circ_lib', ARRAY_AGG(aoud.id)) AS mask
-                                  FROM aou, LATERAL actor.org_unit_descendants(aou.id, $6) aoud)
-                SELECT  source
-                  FROM  aou, circvm, basevm, metabib.metarecord_source_map mmsm
-                  WHERE mmsm.metarecord = $1 AND (
-                    EXISTS (
-                        SELECT  1
-                          FROM  circvm, basevm, asset.copy_vis_attr_cache acvac
-                          WHERE acvac.vis_attr_vector @@ (basevm.c_attrs || '&' || circvm.mask)::query_int
-                                AND acvac.record = mmsm.source
-                    )
-                    OR EXISTS (SELECT 1 FROM evergreen.located_uris(source, aou.id, $10) LIMIT 1)
-                    OR EXISTS (SELECT 1 FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = mmsm.source)
-                )
-            )
-            SELECT  cmra.aid,
-                    XMLELEMENT(
-                        name field,
-                        XMLATTRIBUTES(
-                            cmra.attr AS name,
-                            cmra.value AS "coded-value",
-                            cmra.aid AS "cvmid",
-                            rad.composite,
-                            rad.multi,
-                            rad.filter,
-                            rad.sorter,
-                            cmra.source_list
-                        ),
-                        cmra.value
-                    )
-              FROM  (
-                SELECT DISTINCT aid, attr, value, STRING_AGG(x.id::TEXT, ',') AS source_list
-                  FROM (
-                    SELECT  v.source AS id,
-                            c.id AS aid,
-                            c.ctype AS attr,
-                            c.code AS value
-                      FROM  metabib.record_attr_vector_list v
-                            JOIN config.coded_value_map c ON ( c.id = ANY( v.vlist ) )
-                    ) AS x
-                    JOIN sourcelist ON (x.id = sourcelist.source)
-                    GROUP BY 1, 2, 3
-                ) AS cmra
-                JOIN config.record_attr_definition rad ON (cmra.attr = rad.name)
-                UNION ALL
-            SELECT  umra.aid,
-                    XMLELEMENT(
-                        name field,
-                        XMLATTRIBUTES(
-                            umra.attr AS name,
-                            rad.composite,
-                            rad.multi,
-                            rad.filter,
-                            rad.sorter
-                        ),
-                        umra.value
-                    )
-              FROM  (
-                SELECT DISTINCT aid, attr, value
-                  FROM (
-                    SELECT  v.source AS id,
-                            m.id AS aid,
-                            m.attr AS attr,
-                            m.value AS value
-                      FROM  metabib.record_attr_vector_list v
-                            JOIN metabib.uncontrolled_record_attr_value m ON ( m.id = ANY( v.vlist ) )
-                    ) AS x
-                    JOIN sourcelist ON (x.id = sourcelist.source)
-                ) AS umra
-                JOIN config.record_attr_definition rad ON (umra.attr = rad.name)
-                ORDER BY 1
-
-            )foo(id,y)
-        )
-    )
 $F$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION unapi.mmr_holdings_xml (
@@ -1739,47 +987,369 @@ BEGIN
 END;
 $F$ LANGUAGE PLPGSQL STABLE;
 
--- note not adding a companion version which takes an int[] as 
--- the first arument, similar to evergreen.located_uris(), because
--- json_query is unable to distinguish between the type of paramaters, 
--- leading to 'Could not choose a best candidate function' errors.
-CREATE OR REPLACE FUNCTION evergreen.located_uris_as_uris 
-    (bibid BIGINT, ouid INT, pref_lib INT DEFAULT NULL)
-    RETURNS SETOF asset.uri AS $FUNK$
-    /* Maps a bib directly to its scoped asset.uri's */
+CREATE OR REPLACE FUNCTION authority.extract_headings(marc TEXT, restrict INT[] DEFAULT NULL) RETURNS SETOF authority.heading AS $func$
+DECLARE
+    idx         authority.heading_field%ROWTYPE;
+    xfrm        config.xml_transform%ROWTYPE;
+    prev_xfrm   TEXT;
+    transformed_xml TEXT;
+    heading_node    TEXT;
+    heading_node_list   TEXT[];
+    component_node    TEXT;
+    component_node_list   TEXT[];
+    raw_text    TEXT;
+    normalized_text    TEXT;
+    normalizer  RECORD;
+    curr_text   TEXT;
+    joiner      TEXT;
+    type_value  TEXT;
+    base_thesaurus TEXT := NULL;
+    output_row  authority.heading;
+BEGIN
 
-    SELECT uri.* 
-    FROM evergreen.located_uris($1, $2, $3) located_uri
-    JOIN asset.uri_call_number_map map ON (map.call_number = located_uri.id)
-    JOIN asset.uri uri ON (uri.id = map.uri)
-$FUNK$ LANGUAGE SQL STABLE;
+    -- Loop over the indexing entries
+    FOR idx IN SELECT * FROM authority.heading_field WHERE restrict IS NULL OR id = ANY (restrict) ORDER BY format LOOP
 
+        output_row.field   := idx.id;
+        output_row.type    := idx.heading_type;
+        output_row.purpose := idx.heading_purpose;
 
-/*
+        joiner := COALESCE(idx.joiner, ' ');
 
- -- Some test queries
+        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
 
-SELECT unapi.memoize( 'bre', 1,'mods32','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'marcxml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
-SELECT unapi.memoize( 'bre', 1,'holdings_xml','','{holdings_xml,acp}'::TEXT[], 'SYS1');
+        -- See if we can skip the XSLT ... it's expensive
+        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+            -- Can't skip the transform
+            IF xfrm.xslt <> '---' THEN
+                transformed_xml := oils_xslt_process(marc, xfrm.xslt);
+            ELSE
+                transformed_xml := marc;
+            END IF;
 
-SELECT unapi.biblio_record_entry_feed('{1}'::BIGINT[],'mods32','{holdings_xml,acp}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://c64/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+            prev_xfrm := xfrm.name;
+        END IF;
 
-SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'marcxml','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
-EXPLAIN ANALYZE SELECT unapi.biblio_record_entry_feed('{7209,7394}'::BIGINT[],'mods32','{holdings_xml}'::TEXT[],'SYS1',NULL,'acn=>1',NULL, NULL,NULL,NULL,NULL,'http://fulfillment2.esilibrary.com/opac/extras/unapi', '<totalResults xmlns="http://a9.com/-/spec/opensearch/1.1/">2</totalResults><startIndex xmlns="http://a9.com/-/spec/opensearch/1.1/">1</startIndex><itemsPerPage xmlns="http://a9.com/-/spec/opensearch/1.1/">10</itemsPerPage>');
+        IF idx.thesaurus_xpath IS NOT NULL THEN
+            base_thesaurus := ARRAY_TO_STRING(oils_xpath(idx.thesaurus_xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+        END IF;
 
-SELECT unapi.biblio_record_entry_feed('{216}'::BIGINT[],'marcxml','{}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.bre(216,'marcxml','record','{holdings_xml,bre.unapi}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.bre(216,'holdings_xml','record','{}'::TEXT[], 'BR1');
-EXPLAIN ANALYZE SELECT unapi.holdings_xml(216,4,'BR1',2,'{bre}'::TEXT[]);
-EXPLAIN ANALYZE SELECT unapi.bre(216,'mods32','record','{}'::TEXT[], 'BR1');
+        heading_node_list := oils_xpath( idx.heading_xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
 
--- Limit to 5 call numbers, 5 copies, with a preferred library of 4 (BR1), in SYS2 at a depth of 0
-EXPLAIN ANALYZE SELECT unapi.bre(36,'marcxml','record','{holdings_xml,mra,acp,acnp,acns,bmp}','SYS2',0,'acn=>5,acp=>5',NULL,TRUE,4);
+        FOR heading_node IN SELECT x FROM unnest(heading_node_list) AS x LOOP
 
-*/
+            CONTINUE WHEN heading_node !~ E'^\\s*<';
+
+            output_row.variant_type := NULL;
+            output_row.related_type := NULL;
+            output_row.thesaurus    := NULL;
+            output_row.heading      := NULL;
+
+            IF idx.heading_purpose = 'variant' AND idx.type_xpath IS NOT NULL THEN
+                type_value := ARRAY_TO_STRING(oils_xpath(idx.type_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+                BEGIN
+                    output_row.variant_type := type_value;
+                EXCEPTION WHEN invalid_text_representation THEN
+                    RAISE NOTICE 'Do not recognize variant heading type %', type_value;
+                END;
+            END IF;
+            IF idx.heading_purpose = 'related' AND idx.type_xpath IS NOT NULL THEN
+                type_value := ARRAY_TO_STRING(oils_xpath(idx.type_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+                BEGIN
+                    output_row.related_type := type_value;
+                EXCEPTION WHEN invalid_text_representation THEN
+                    RAISE NOTICE 'Do not recognize related heading type %', type_value;
+                END;
+            END IF;
+ 
+            IF idx.thesaurus_override_xpath IS NOT NULL THEN
+                output_row.thesaurus := ARRAY_TO_STRING(oils_xpath(idx.thesaurus_override_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]), '');
+            END IF;
+            IF output_row.thesaurus IS NULL THEN
+                output_row.thesaurus := base_thesaurus;
+            END IF;
+
+            raw_text := NULL;
+
+            -- now iterate over components of heading
+            component_node_list := oils_xpath( idx.component_xpath, heading_node, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+            FOR component_node IN SELECT x FROM unnest(component_node_list) AS x LOOP
+            -- XXX much of this should be moved into oils_xpath_string...
+                curr_text := ARRAY_TO_STRING(array_remove(array_remove(
+                    oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
+                        REGEXP_REPLACE( component_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
+                    ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
+                    joiner
+                );
+
+                CONTINUE WHEN curr_text IS NULL OR curr_text = '';
+
+                IF raw_text IS NOT NULL THEN
+                    raw_text := raw_text || joiner;
+                END IF;
+
+                raw_text := COALESCE(raw_text,'') || curr_text;
+            END LOOP;
+
+            IF raw_text IS NOT NULL THEN
+                output_row.heading := raw_text;
+                normalized_text := raw_text;
+
+                FOR normalizer IN
+                    SELECT  n.func AS func,
+                            n.param_count AS param_count,
+                            m.params AS params
+                    FROM  config.index_normalizer n
+                            JOIN authority.heading_field_norm_map m ON (m.norm = n.id)
+                    WHERE m.field = idx.id
+                    ORDER BY m.pos LOOP
+            
+                        EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                            quote_literal( normalized_text ) ||
+                            CASE
+                                WHEN normalizer.param_count > 0
+                                    THEN ',' || REPLACE(REPLACE(BTRIM(normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                                    ELSE ''
+                                END ||
+                            ')' INTO normalized_text;
+            
+                END LOOP;
+            
+                output_row.normalized_heading := normalized_text;
+            
+                RETURN NEXT output_row;
+            END IF;
+        END LOOP;
+
+    END LOOP;
+END;
+$func$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION authority.extract_headings(rid BIGINT, restrict INT[] DEFAULT NULL) RETURNS SETOF authority.heading AS $func$
+DECLARE
+    auth        authority.record_entry%ROWTYPE;
+    output_row  authority.heading;
+BEGIN
+    -- Get the record
+    SELECT INTO auth * FROM authority.record_entry WHERE id = rid;
+
+    RETURN QUERY SELECT * FROM authority.extract_headings(auth.marc, restrict);
+END;
+$func$ LANGUAGE PLPGSQL;
+
+COMMIT;
+
+    sort_value          TEXT
+);
+
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
+    rid BIGINT,
+    default_joiner TEXT,
+    field_types TEXT[],
+    only_fields INT[]
+) RETURNS SETOF metabib.field_entry_template AS $func$
+DECLARE
+    bib     biblio.record_entry%ROWTYPE;
+    idx     config.metabib_field%ROWTYPE;
+    xfrm        config.xml_transform%ROWTYPE;
+    prev_xfrm   TEXT;
+    transformed_xml TEXT;
+    xml_node    TEXT;
+    xml_node_list   TEXT[];
+    facet_text  TEXT;
+    display_text TEXT;
+    browse_text TEXT;
+    sort_value  TEXT;
+    raw_text    TEXT;
+    curr_text   TEXT;
+    joiner      TEXT := default_joiner; -- XXX will index defs supply a joiner?
+    authority_text TEXT;
+    authority_link BIGINT;
+    output_row  metabib.field_entry_template%ROWTYPE;
+    process_idx BOOL;
+BEGIN
+
+    -- Start out with no field-use bools set
+    output_row.browse_field = FALSE;
+    output_row.facet_field = FALSE;
+    output_row.display_field = FALSE;
+    output_row.search_field = FALSE;
+
+    -- Get the record
+    SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
+
+    -- Loop over the indexing entries
+    FOR idx IN SELECT * FROM config.metabib_field WHERE id = ANY (only_fields) ORDER BY format LOOP
+        CONTINUE WHEN idx.xpath IS NULL OR idx.xpath = ''; -- pure virtual field
+
+        process_idx := FALSE;
+        IF idx.display_field AND 'display' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.browse_field AND 'browse' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.search_field AND 'search' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.facet_field AND 'facet' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        CONTINUE WHEN process_idx = FALSE; -- disabled for all types
+
+        joiner := COALESCE(idx.joiner, default_joiner);
+
+        SELECT INTO xfrm * from config.xml_transform WHERE name = idx.format;
+
+        -- See if we can skip the XSLT ... it's expensive
+        IF prev_xfrm IS NULL OR prev_xfrm <> xfrm.name THEN
+            -- Can't skip the transform
+            IF xfrm.xslt <> '---' THEN
+                transformed_xml := oils_xslt_process(bib.marc,xfrm.xslt);
+            ELSE
+                transformed_xml := bib.marc;
+            END IF;
+
+            prev_xfrm := xfrm.name;
+        END IF;
+
+        xml_node_list := oils_xpath( idx.xpath, transformed_xml, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+
+        raw_text := NULL;
+        FOR xml_node IN SELECT x FROM unnest(xml_node_list) AS x LOOP
+            CONTINUE WHEN xml_node !~ E'^\\s*<';
+
+            -- XXX much of this should be moved into oils_xpath_string...
+            curr_text := ARRAY_TO_STRING(array_remove(array_remove(
+                oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
+                    REGEXP_REPLACE( xml_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
+                ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
+                joiner
+            );
+
+            CONTINUE WHEN curr_text IS NULL OR curr_text = '';
+
+            IF raw_text IS NOT NULL THEN
+                raw_text := raw_text || joiner;
+            END IF;
+
+            raw_text := COALESCE(raw_text,'') || curr_text;
+
+            -- autosuggest/metabib.browse_entry
+            IF idx.browse_field THEN
+
+                IF idx.browse_xpath IS NOT NULL AND idx.browse_xpath <> '' THEN
+                    browse_text := oils_xpath_string( idx.browse_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    browse_text := curr_text;
+                END IF;
+
+                IF idx.browse_sort_xpath IS NOT NULL AND
+                    idx.browse_sort_xpath <> '' THEN
+
+                    sort_value := oils_xpath_string(
+                        idx.browse_sort_xpath, xml_node, joiner,
+                        ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]]
+                    );
+                ELSE
+                    sort_value := browse_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(browse_text, E'\\s+', ' ', 'g'));
+                output_row.sort_value :=
+                    public.naco_normalize(sort_value);
+
+                output_row.authority := NULL;
+
+                IF idx.authority_xpath IS NOT NULL AND idx.authority_xpath <> '' THEN
+                    authority_text := oils_xpath_string(
+                        idx.authority_xpath, xml_node, joiner,
+                        ARRAY[
+                            ARRAY[xfrm.prefix, xfrm.namespace_uri],
+                            ARRAY['xlink','http://www.w3.org/1999/xlink']
+                        ]
+                    );
+
+                    IF authority_text ~ '^\d+$' THEN
+                        authority_link := authority_text::BIGINT;
+                        PERFORM * FROM authority.record_entry WHERE id = authority_link;
+                        IF FOUND THEN
+                            output_row.authority := authority_link;
+                        END IF;
+                    END IF;
+
+                END IF;
+
+                output_row.browse_field = TRUE;
+                -- Returning browse rows with search_field = true for search+browse
+                -- configs allows us to retain granularity of being able to search
+                -- browse fields with "starts with" type operators (for example, for
+                -- titles of songs in music albums)
+                IF idx.search_field THEN
+                    output_row.search_field = TRUE;
+                END IF;
+                RETURN NEXT output_row;
+                output_row.browse_field = FALSE;
+                output_row.search_field = FALSE;
+                output_row.sort_value := NULL;
+            END IF;
+
+            -- insert raw node text for faceting
+            IF idx.facet_field THEN
+
+                IF idx.facet_xpath IS NOT NULL AND idx.facet_xpath <> '' THEN
+                    facet_text := oils_xpath_string( idx.facet_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    facet_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(facet_text, E'\\s+', ' ', 'g'));
+
+                output_row.facet_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.facet_field = FALSE;
+            END IF;
+
+            -- insert raw node text for display
+            IF idx.display_field THEN
+
+                IF idx.display_xpath IS NOT NULL AND idx.display_xpath <> '' THEN
+                    display_text := oils_xpath_string( idx.display_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    display_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(display_text, E'\\s+', ' ', 'g'));
+
+                output_row.display_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.display_field = FALSE;
+            END IF;
+
+        END LOOP;
+
+        CONTINUE WHEN raw_text IS NULL OR raw_text = '';
+
+        -- insert combined node text for searching
+        IF idx.search_field THEN
+            output_row.field_class = idx.field_class;
+            output_row.field = idx.id;
+            output_row.source = rid;
+            output_row.value = BTRIM(REGEXP_REPLACE(raw_text, E'\\s+', ' ', 'g'));
+
+            output_row.search_field = TRUE;
+            RETURN NEXT output_row;
+            output_row.search_field = FALSE;
+        END IF;
+
+    END LOOP;
+
+END;
+$func$ LANGUAGE PLPGSQL;
+
+-- Shall we drop it?
+-- DROP FUNCTION evergreen.array_remove_item_by_value(ANYARRAY, ANYELEMENT)
 
 COMMIT;
 
