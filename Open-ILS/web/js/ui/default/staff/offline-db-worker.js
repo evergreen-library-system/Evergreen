@@ -181,6 +181,15 @@ function deleteAll(schemaName, tableName) {
     return info.schema.db.delete().from(info.table).exec();
 }
 
+// Delete rows from selected table where field equals value
+function deleteWhereEqual(schemaName, tableName, field, value) {
+    var info = getTableInfo(schemaName, tableName);
+    if (info.error) { return Promise.reject(info.error); }
+
+    return info.schema.db.delete().from(info.table)
+        .where(info.table[field].eq(value)).exec();
+}
+
 // Resolves to true if the selected table contains any rows.
 function hasRows(schemaName, tableName) {
 
@@ -368,6 +377,11 @@ function dispatchRequest(port, data) {
 
         case 'deleteAll':
             deleteAll(data.schema, data.table).then(replySuccess, replyError);
+            break;
+
+        case 'deleteWhereEqual':
+            deleteWhereEqual(data.schema, data.table, data.field, data.value)
+                .then(replySuccess, replyError);
             break;
 
         case 'hasRows':
