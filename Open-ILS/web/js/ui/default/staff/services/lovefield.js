@@ -83,6 +83,8 @@ angular.module('egCoreMod')
 
     // Connects if necessary to the active schemas then relays the request.
     service.request = function(args) {
+        // useful, but very chatty, leaving commented out.
+        // console.debug('egLovfield sending request: ', args);
         return service.connectToSchemas().then(
             function() {
                 return service.relayRequest(args);
@@ -154,19 +156,34 @@ angular.module('egCoreMod')
         );
     }
 
+    // Remove all pending offline transactions and delete the cached
+    // offline transactions date to indicate no transactions remain.
     service.destroyPendingOfflineXacts = function () {
         return service.request({
             schema: 'offline',
             table: 'OfflineXact',
             action: 'deleteAll'
+        }).then(function() {
+            return service.request({
+                schema: 'cache',
+                table: 'CacheDate',
+                action: 'deleteWhereEqual',
+                field: 'type',
+                value: '_offlineXact'
+            });
         });
     }
 
+    // Returns the cache date when xacts exit, null otherwise.
     service.havePendingOfflineXacts = function () {
         return service.request({
-            schema: 'offline',
-            table: 'OfflineXact',
-            action: 'hasRows'
+            schema: 'cache',
+            table: 'CacheDate',
+            action: 'selectWhereEqual',
+            field: 'type',
+            value: '_offlineXact'
+        }).then(function(results) {
+            return results[0] ? results[0].cachedate : null;
         });
     }
 
@@ -177,6 +194,24 @@ angular.module('egCoreMod')
             action: 'selectAll'
         }).then(function(resp) {
             return resp.map(function(x) { return x.value });
+        });
+    }
+
+    // Add an offline transaction and update the cache indicating
+    // now() as the most recent addition of an offline xact.
+    service.addOfflineXact = function (obj) {
+        return service.request({
+            schema: 'offline',
+            table: 'OfflineXact',
+            action: 'insertOrReplace',
+            rows: [{value: obj}]
+        }).then(function() {
+            return service.request({
+                schema: 'cache',
+                table: 'CacheDate',
+                action: 'insertOrReplace',
+                rows: [{type: '_offlineXact', cachedate : new Date()}]
+            });
         });
     }
 
@@ -198,15 +233,6 @@ angular.module('egCoreMod')
         }).then(function(resp) {
             if (resp.length === 0) return null;
             return resp[0].reason;
-        });
-    }
-
-    service.addOfflineXact = function (obj) {
-        return service.request({
-            schema: 'offline',
-            table: 'OfflineXact',
-            action: 'insertOrReplace',
-            rows: [{value: obj}]
         });
     }
 

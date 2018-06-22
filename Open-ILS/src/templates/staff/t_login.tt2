@@ -49,9 +49,14 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-md-offset-4 col-md-6">
-                <span ng-show="pendingXacts" class="label label-warning">[% l('Unprocessed offline transactions waiting for upload') %]</span>
+            <div class="form-group" ng-if="pendingXacts">
+              <div class="col-md-offset-4 col-md-8">
+                <div class="alert alert-warning">
+                  [% | l('{{pendingXacts | date:"short"}}') %]
+                  Unprocessed offline transactions waiting for upload.  
+                  Last transaction added at [_1].
+                  [% END %]
+                </div>
               </div>
             </div>
 
