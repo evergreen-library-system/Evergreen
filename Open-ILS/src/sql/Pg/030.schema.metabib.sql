@@ -812,7 +812,7 @@ BEGIN
             CONTINUE WHEN xml_node !~ E'^\\s*<';
 
             -- XXX much of this should be moved into oils_xpath_string...
-            curr_text := ARRAY_TO_STRING(evergreen.array_remove_item_by_value(evergreen.array_remove_item_by_value(
+            curr_text := ARRAY_TO_STRING(array_remove(array_remove(
                 oils_xpath( '//text()', -- get the content of all the nodes within the main selected node
                     REGEXP_REPLACE( xml_node, E'\\s+', ' ', 'g' ) -- Translate adjacent whitespace to a single space
                 ), ' '), ''),  -- throw away morally empty (bankrupt?) strings
