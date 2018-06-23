@@ -55,7 +55,7 @@
                 default-file-name="'[% l('exported_label_templates.json') %]'">
                 [% l('Export') %]
             </label>
-            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</button>
+            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</label>
         </div>
     </div>
     <div class="col-md-1 pull-right">
