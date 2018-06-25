@@ -176,7 +176,7 @@
         FOREACH res IN openurls;
 %]
         <tr>
-            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name | html %]</a></td>
+            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]" target="_blank">[% res.public_name | html %]</a></td>
             <td>[% res.target_coverage | html %]
             [%- IF res.target_embargo != '';
                     ' - ';
@@ -203,7 +203,7 @@ IF num_uris > 0;
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- END -%]
-        <a href="[% uri.href %]" class="uri_link" property="url">
+        <a href="[% uri.href %]" class="uri_link" property="url" target="_blank">
         [%- IF uri.href != uri.link;
                 '<span property="description">' _ uri.link _ '</span>';
             ELSE;
