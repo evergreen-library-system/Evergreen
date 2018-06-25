@@ -327,8 +327,12 @@
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
-          <span ng-if="col.template && !col.compiled" style="padding-left:5px; padding-right:10px;"
-            ng-bind-html="translateCellTemplate(col, item)">
+          <span ng-if="col.template && !col.compiled" 
+            style="padding-left:5px; padding-right:10px;"
+            ng-init="html_value=translateCellTemplate(col, item)">
+            <span uib-tooltip-html="html_value" tooltip-class="eg-grid-tooltip">
+              <span ng-bind-html="html_value"></span>
+            </span>
           </span>
 
           <span ng-if="col.template && col.compiled" style="padding-left:5px; padding-right:10px;"
@@ -337,8 +341,12 @@
 
           <!-- otherwise, simply display the item value, which may 
                pass through datatype-specific filtering. -->
-          <span ng-if="!col.template" style="padding-left:5px; padding-right:10px;">
-            {{itemFieldValue(item, col) | egGridValueFilter:col:item}}
+          <span ng-if="!col.template" 
+            ng-init="text_value = (itemFieldValue(item, col) | egGridValueFilter:col:item)"
+            uib-tooltip="{{text_value}}"
+            tooltip-class="eg-grid-tooltip"
+            style="padding-left:5px; padding-right:10px;">
+            {{text_value}}
           </span>
       </div>
     </div>

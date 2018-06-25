@@ -464,6 +464,14 @@ table.list tr.selected td { /* deprecated? */
   box-shadow: none;
 }
 
+.eg-grid-tooltip {
+  font-size: 110%;
+}
+/* avoid visited "blue" links over black background */
+.eg-grid-tooltip a {
+  color: white;
+}
+
 
 /* ----------------------------------------------------------------------
  * /Grid
