@@ -703,18 +703,22 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         angular.forEach(items, function(i){
 	    item_ids.push(i.id);
         });
-	
-	egCore.net.request(
-	    'open-ils.actor',
-	    'open-ils.actor.anon_cache.set_value',
-	    null,
-	    'edit-these-copies',
-	    {
-	        record_id: 0,  // disables record summary
-	        copies: item_ids,
-	        raw: {},
-	        hide_vols : hide_vols,
-	        hide_copies : hide_copies
+
+        // provide record_id iff one record is selected.
+        // 0 disables record summary
+        var record_ids = service.gatherSelectedRecordIds(items);
+        var record_id  = record_ids.length === 1 ? record_ids[0] : 0;
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null,
+            'edit-these-copies',
+            {
+                record_id: record_id,
+                copies: item_ids,
+                raw: {},
+                hide_vols : hide_vols,
+                hide_copies : hide_copies
             }).then(function(key) {
 		if (key) {
 		    var url = egCore.env.basePath + 'cat/volcopy/' + key;
