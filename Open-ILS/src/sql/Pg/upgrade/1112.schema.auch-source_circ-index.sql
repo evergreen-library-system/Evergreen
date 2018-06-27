@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1112', :eg_version);
 
 -- Add an index to action.usr_circ_history (source_circ) to speed up aging circs and purging accounts
 
