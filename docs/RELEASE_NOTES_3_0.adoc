@@ -3,6 +3,62 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.9
+---------------
+This release contains bug fixes improving on Evergreen 3.0.8.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes specific cases in which deleted records appear in search results.
+* Fixes a performance issue with deleting patrons.
+* The hold shelf dialog popup now lists the patron's notification
+preferences.
+* Fixes an issue that prevented editing items when a monograph part
+is present.
+* Patron information is now available for use in the bills_current
+and bills_historical receipt templates.
+* The browser's "This page may contain unsaved data" warning now 
+appears when users click the update
+expire date button in a patron account and attempt to navigate away
+without saving.
+* The holds tab of the patron record now includes a monograph part
+column.
+* The barcode box in the checkout screen
+no longer hovers above patron record tabs when
+staff users scroll down.
+* Fixes an issue with the date of birth in the patron edit scren.
+* Fixes an issue with the dropdown of billing type options.
+* The Item Status screen now includes as a floating group column.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.9 point release of
+Evergreen:
+
+* BC Libraries Cooperative
+* A. Bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Blake Graham-Henderson
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Dan Pearl
+* Mike Rylander
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
 Evergreen 3.0.8
 ---------------
 This release contains bug fixes improving on Evergreen 3.0.7.  Note that
