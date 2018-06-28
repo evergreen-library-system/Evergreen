@@ -396,7 +396,7 @@ export class GridRowSelector {
 
 export interface GridRowFlairEntry {
     icon: string;   // name of material icon
-    title: string;  // tooltip string
+    title?: string;  // tooltip string
 }
 
 export class GridColumnPersistConf {

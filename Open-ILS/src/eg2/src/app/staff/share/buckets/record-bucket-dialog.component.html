@@ -1,6 +1,7 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
-    <h4 class="modal-title" i18n>Add To Record #{{recId}} to Bucket</h4>
+    <h4 class="modal-title" *ngIf="recId" i18n>Add To Record #{{recId}} to Bucket</h4>
+    <h4 class="modal-title" *ngIf="qId" i18n>Add Records from queue #{{qId}} to Bucket</h4>
     <button type="button" class="close" 
       i18n-aria-label aria-label="Close" 
       (click)="dismiss('cross_click')">

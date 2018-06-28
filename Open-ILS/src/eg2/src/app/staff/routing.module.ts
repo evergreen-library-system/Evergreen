@@ -31,6 +31,9 @@ const routes: Routes = [{
     path: 'circ',
     loadChildren : '@eg/staff/circ/routing.module#CircRoutingModule'
   }, {
+    path: 'cat',
+    loadChildren : '@eg/staff/cat/routing.module#CatRoutingModule'
+  }, {
     path: 'catalog',
     loadChildren : '@eg/staff/catalog/catalog.module#CatalogModule'
   }, {

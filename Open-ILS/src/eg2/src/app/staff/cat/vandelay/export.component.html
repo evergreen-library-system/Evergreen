@@ -1,0 +1,119 @@
+<h2 i18n>Export Records</h2>
+
+<div class="common-form striped-even form-validated">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="row"><label>Select a Record Source</label></div>
+      <ngb-accordion [closeOthers]="true" activeIds="csv" 
+        (panelChange)="sourceChange($event)">
+        <ngb-panel id="csv" title="CSV File">
+          <ng-template ngbPanelContent>
+            <div class="row">
+              <div class="col-lg-6">
+                <label i18n>Use Field Number</label>
+              </div>
+              <div class="col-lg-6">
+                <input id='csv-input' type="number" class="form-control" 
+                  [(ngModel)]="fieldNumber"
+                  i18n-placeholder placeholder="Starts at 0..."/>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6">
+                <label i18n>From CSV file</label>
+              </div>
+              <div class="col-lg-6">
+                <input #fileSelector (change)="fileSelected($event)" 
+                  class="form-control" type="file"/>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="record-id" title="Record ID">
+          <ng-template ngbPanelContent>
+            <div class="row">
+              <div class="col-lg-6">
+                <label i18n>Record ID</label>
+              </div>
+              <div class="col-lg-6">
+                <input id='record-id-input' type="number" 
+                  class="form-control" [(ngModel)]="recordId"/>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+        <ngb-panel id="bucket-id" title="Bucket">
+          <ng-template ngbPanelContent>
+            <div class="row">
+              <div class="col-lg-6">
+                <label i18n>Bucket ID</label>
+              </div>
+              <div class="col-lg-6">
+                <input id='bucket-id-input' type="number" 
+                  class="form-control" [(ngModel)]="bucketId"/>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div><!-- col -->
+    <div class="col-lg-6">
+      <div class="row">
+        <div class="col-lg-6">
+          <label i18n>Record Type</label>
+        </div>
+        <div class="col-lg-6">
+          <select class="form-control" [(ngModel)]="recordType">
+            <option i18n value="biblio">Bibliographic Records</option>
+            <option i18n value="authority">Authority Records</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <label i18n>Record Format</label>
+        </div>
+        <div class="col-lg-6">
+          <select class="form-control" [(ngModel)]="recordFormat">
+            <option i18n value="USMARC">MARC21</option>
+            <option i18n value="UNIMARC">UNIMARC</option>
+            <option i18n value="XML">MARC XML</option>
+            <option i18n value="BRE">Evergreen Record Entry</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <label i18n>Record Encoding</label>
+        </div>
+        <div class="col-lg-6">
+          <select class="form-control" [(ngModel)]="recordEncoding">
+            <option i18n value="UTF-8">UTF-8</option>
+            <option i18n value="MARC8">MARC8</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-6">
+          <label i18n>Include holdings in Bibliographic Records</label>
+        </div>
+        <div class="col-lg-6">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="includeHoldings">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-10 offset-lg-1">
+          <button class="btn btn-success btn-lg btn-block font-weight-bold"
+            [disabled]="isExporting || !hasNeededData()" 
+            (click)="exportRecords()" i18n>Export</button>
+        </div>
+      </div>
+      <div class="row" [hidden]="!isExporting">
+        <div class="col-lg-10 offset-lg-1">
+          <eg-progress-inline #exportProgress></eg-progress-inline>
+        </div>
+      </div>
+    </div><!-- left col -->
+  </div><!-- row -->
+</div>
+

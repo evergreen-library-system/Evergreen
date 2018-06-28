@@ -24,9 +24,17 @@ export class RecordBucketDialogComponent
     newBucketDesc: string;
     buckets: any[];
 
+    @Input() bucketType: string;
+
     recId: number;
     @Input() set recordId(id: number) {
         this.recId = id;
+    }
+
+    // Add items from a (vandelay) bib queue to a bucket
+    qId: number;
+    @Input() set queueId(id: number) {
+        this.qId = id;
     }
 
     constructor(
@@ -41,6 +49,12 @@ export class RecordBucketDialogComponent
     }
 
     ngOnInit() {
+        
+        if (this.qId) {
+            this.bucketType = 'vandelay_queue';
+        } else {
+            this.bucketType = 'staff_client';
+        }
 
         this.onOpen$.subscribe(ok => {
             // Reset data on dialog open
@@ -53,7 +67,7 @@ export class RecordBucketDialogComponent
                 'open-ils.actor',
                 'open-ils.actor.container.retrieve_by_class.authoritative',
                 this.auth.token(), this.auth.user().id(),
-                'biblio', 'staff_client'
+                'biblio', this.bucketType
             ).subscribe(buckets => this.buckets = buckets);
         });
     }
@@ -69,7 +83,7 @@ export class RecordBucketDialogComponent
         bucket.owner(this.auth.user().id());
         bucket.name(this.newBucketName);
         bucket.description(this.newBucketDesc);
-        bucket.btype('staff_client');
+        bucket.btype(this.bucketType);
 
         this.net.request(
             'open-ils.actor',
@@ -80,6 +94,11 @@ export class RecordBucketDialogComponent
             if (evt) {
                 this.toast.danger(evt.desc);
             } else {
+                // make it find-able to the queue-add method which
+                // requires the bucket name.
+                bucket.id(bktId);
+                this.buckets.push(bucket);
+
                 this.addToBucket(bktId);
             }
         });
@@ -87,14 +106,40 @@ export class RecordBucketDialogComponent
 
     // Add the record to the selected existing bucket
     addToBucket(id: number) {
+        if (this.recId) {
+            this.addRecordToBucket(id);
+        } else if (this.qId) {
+            this.addQueueToBucket(id);
+        }
+    }
+
+    addRecordToBucket(bucketId: number) {
         const item = this.idl.create('cbrebi');
-        item.bucket(id);
+        item.bucket(bucketId);
         item.target_biblio_record_entry(this.recId);
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.create',
             this.auth.token(), 'biblio', item
         ).subscribe(resp => {
+            const evt = this.evt.parse(resp);
+            if (evt) {
+                this.toast.danger(evt.toString());
+            } else {
+                this.close();
+            }
+        });
+    }
+
+    addQueueToBucket(bucketId: number) {
+        const bucket = this.buckets.filter(b => b.id() === bucketId)[0];
+        if (!bucket) { return; }
+
+        this.net.request(
+            'open-ils.vandelay',
+            'open-ils.vandelay.bib_queue.to_bucket',
+            this.auth.token(), this.qId, bucket.name()
+        ).toPromise().then(resp => {
             const evt = this.evt.parse(resp);
             if (evt) {
                 this.toast.danger(evt.toString());

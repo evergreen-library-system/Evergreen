@@ -532,17 +532,25 @@ sub retrieve_queued_records {
 
         } elsif( $$options{with_item_import_error} and $type eq 'bib') {
 
-            $query->{from} = {$class => 'vii'};
+            $query->{from} = {$class => {'vii' => {}}};
             $query->{where}->{'+vii'} = {import_error => {'!=' => undef}};
         }
     }
 
     if($self->api_name =~ /matches/) {
         # find only records that have matches
-        $query->{from} = {$class => {$mclass => {type => 'right'}}};
+        if (ref $query->{from}) {
+            $query->{from}{$class}{$mclass} = {type => 'right'};
+        } else {
+            $query->{from} = {$class => {$mclass => {type => 'right'}}};
+        }
     } else {
         # join to mclass for sorting (see below)
-        $query->{from} = {$class => {$mclass => {type => 'left'}}};
+        if (ref $query->{from}) {
+            $query->{from}{$class}{$mclass} = {type => 'left'};
+        } else {
+            $query->{from} = {$class => {$mclass => {type => 'left'}}};
+        }
     }
 
     # order by the matched bib records to group like queued records
@@ -915,7 +923,7 @@ sub create_session_tracker {
         # if other trackers exist for this key, adopt the name
         my $existing = 
             $e->search_vandelay_session_tracker({session_key => $key})->[0];
-        $name = $existing->name if $name;
+        $name = $existing->name if $existing;
 
     } else {
         # anonymous tracker
@@ -1536,7 +1544,7 @@ __PACKAGE__->register_method(
 );
 
 sub owner_queue_retrieve {
-    my($self, $conn, $auth, $owner_id, $filters) = @_;
+    my($self, $conn, $auth, $owner_id, $filters, $pager) = @_;
     my $e = new_editor(authtoken => $auth, xact => 1);
     return $e->die_event unless $e->checkauth;
     $owner_id = $e->requestor->id; # XXX add support for viewing other's queues?
@@ -1545,12 +1553,18 @@ sub owner_queue_retrieve {
     my $search = {owner => $owner_id};
     $search->{$_} = $filters->{$_} for keys %$filters;
 
+    my %paging;
+    if ($pager) {
+        $paging{limit} = $pager->{limit} || 1000;
+        $paging{offset} = $pager->{offset} || 0;
+    }
+
     if($self->{record_type} eq 'bib') {
         $queues = $e->search_vandelay_bib_queue(
-            [$search, {order_by => {vbq => 'evergreen.lowercase(name)'}}]);
+            [$search, {%paging, order_by => {vbq => 'evergreen.lowercase(name)'}}]);
     } else {
         $queues = $e->search_vandelay_authority_queue(
-            [$search, {order_by => {vaq => 'evergreen.lowercase(name)'}}]);
+            [$search, {%paging, order_by => {vaq => 'evergreen.lowercase(name)'}}]);
     }
     $conn->respond($_) for @$queues;
     $e->rollback;

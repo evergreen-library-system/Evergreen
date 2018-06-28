@@ -1,0 +1,17 @@
+
+<ngb-tabset #tabs [activeId]="attrType" (tabChange)="onTabChange($event)">
+	<ngb-tab title="Bibliographic Attributes" i18n-title id="bib">
+		<ng-template ngbTabContent>
+      <div class="mt-3">
+        <eg-admin-page idlClass="vqbrad"></eg-admin-page>
+      </div>
+		</ng-template>
+	</ngb-tab>
+	<ngb-tab title="Authority Attributes" i18n-title id="authority">
+		<ng-template ngbTabContent>
+      <div class="mt-3">
+        <eg-admin-page idlClass="vqarad"></eg-admin-page>
+      </div>
+		</ng-template>
+	</ngb-tab>
+</ngb-tabset>

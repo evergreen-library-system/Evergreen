@@ -1,0 +1,69 @@
+<ng-template #nodeStrTmpl let-point="point" let-showmatch="showmatch" i18n>
+  <ng-container *ngIf="point">
+    <span *ngIf="point.negate()">NOT </span>
+    <span *ngIf="point.heading()">Normalized Heading</span>
+    <span>{{point.bool_op()}}{{point.svf()}}{{point.tag()}}</span>
+    <span *ngIf="point.subfield()"> ‡{{point.subfield()}}</span>
+    <span *ngIf="showmatch && !point.bool_op()"> | Match score {{point.quality()}}</span>
+  </ng-container>
+</ng-template>
+<eg-string key="staff.cat.vandelay.matchpoint.label" 
+  [template]="nodeStrTmpl"></eg-string>
+
+<div class="row mt-2">
+  <div class="col-lg-7">
+    <div class="row ml-2">
+      <span class="text-white bg-dark p-2" i18n>
+        Your Expression: {{expressionAsString()}}
+      </span>
+    </div>
+    <div class="row ml-2 mt-4">
+      <span class="mr-2" i18n>Add New:</span>
+      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType=='biblio'"
+        (click)="newPointType='attr'" i18n>Record Attribute</button>
+      <button class="btn btn-outline-dark mr-2" 
+        (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
+      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType=='authority'"
+        (click)="newPointType='heading'" i18n>Normalized Authority Heading</button>
+      <button class="btn btn-outline-dark mr-2" 
+        (click)="newPointType='bool'" i18n>Boolean Operator</button>
+    </div>
+    <eg-match-set-new-point #newPoint [pointType]="newPointType">
+    </eg-match-set-new-point>
+    <div class="row mt-2 ml-2" *ngIf="newPointType">
+      <button class="btn btn-success" (click)="addChildNode()" 
+        [disabled]="!selectedIsBool()" i18n>
+        Add To Selected Node
+      </button>
+    </div>
+    <div class="row mt-2 ml-2 font-italic" *ngIf="newPointType">
+      <ol i18n>
+        <li>Define a new match point using the above fields.</li>
+        <li>Select a boolean node in the tree.</li>
+        <li>Click the "Add..." button to add the new matchpoint
+          as a child of the selected node.</li>
+      </ol>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <ng-container *ngIf="tree">
+      <div class="d-flex">
+        <button class="btn btn-warning mr-1" (click)="deleteNode()" 
+          [disabled]="!hasSelectedNode()" i18n>
+          Remove Selected Node
+        </button>
+        <button class="btn btn-success mr-1" (click)="saveTree()"
+          [disabled]="!changesMade" i18n>
+          Save Changes 
+        </button>
+      </div>
+      <div class="pt-2">
+        <eg-tree
+          [tree]="tree" 
+          (nodeClicked)="nodeClicked($event)">
+        </eg-tree>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

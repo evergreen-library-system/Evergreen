@@ -312,7 +312,7 @@
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/vandelay" target="_self">
+            <a href="/eg2/staff/cat/vandelay/import">
               <span class="glyphicon glyphicon-transfer"></span>
               [% l('MARC Batch Import/Export') %]
             </a>
