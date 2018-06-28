@@ -804,6 +804,50 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="vst" controller="open-ils.cstore open-ils.pcrud" 
+		oils_obj:fieldmapper="vandelay::session_tracker" 
+		oils_persist:tablename="vandelay.session_tracker" 
+		reporter:label="Vandelay Session Tracker">
+		<fields oils_persist:primary="id" oils_persist:sequence="vandelay.session_tracker_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Session Key" name="session_key" reporter:datatype="text"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="User" name="usr" reporter:datatype="link"/>
+			<field reporter:label="Workstation" name="workstation" reporter:datatype="link"/>
+			<field reporter:label="Record Type" name="record_type" reporter:datatype="text"/>
+			<!-- queue doesn't use datatype 'link' because it may refer to a bib
+					 queue or an auth queue and there's no IDL class for vandelay.queue .
+					 parent table.
+			-->
+			<field reporter:label="Source Queue" name="queue" reporter:datatype="int"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestsamp"/>
+			<field reporter:label="Update Time" name="update_time" reporter:datatype="timestsamp"/>
+			<field reporter:label="State" name="state" reporter:datatype="text"/>
+			<field reporter:label="Action Type" name="action_type" reporter:datatype="text"/>
+			<field reporter:label="Total Actions" name="total_actions" reporter:datatype="int"/>
+			<field reporter:label="Actions Performed" name="actions_performed" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<!-- created by the API -->
+				<retrieve global_required="true"
+					permission="CREATE_BIB_IMPORT_QUEUE CREATE_AUTHORITY_IMPORT_QUEUE"/>
+				<update global_required="true"
+					permission="UPDATE_BIB_IMPORT_QUEUE UPDATE_AUTHORITY_IMPORT_QUEUE">
+					<context link="workstation" field="owning_lib"/>
+				</update>
+				<delete 
+					permission="DELETE_BIB_IMPORT_QUEUE DELETE_AUTHORITY_IMPORT_QUEUE">
+					<context link="workstation" field="owning_lib"/>
+				</delete>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="auoi" controller="open-ils.cstore" oils_obj:fieldmapper="actor::usr_org_unit_opt_in" oils_persist:tablename="actor.usr_org_unit_opt_in" reporter:label="User Sharing Opt-in">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.usr_org_unit_opt_in_id_seq">
 			<field reporter:label="Opt-in ID" name="id" reporter:datatype="id"/>

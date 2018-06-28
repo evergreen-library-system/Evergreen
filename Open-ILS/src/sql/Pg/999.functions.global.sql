@@ -195,6 +195,8 @@ BEGIN
 		END LOOP;
 	END LOOP;
 
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
+
     -- money.*
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'usr', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'collector', src_usr, dest_usr);
@@ -711,6 +713,8 @@ BEGIN
 			EXIT;
 		END LOOP;
 	END LOOP;
+
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
 
     -- NULL-ify addresses last so other cleanup (e.g. circ anonymization)
     -- can access the information before deletion.
