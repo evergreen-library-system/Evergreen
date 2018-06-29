@@ -1317,9 +1317,8 @@ sub fetch_display_fields {
         return;
     }
 
-    my $hl_map_string = "''::HSTORE";
+    my $hl_map_string = "";
     if (ref($highlight_map) =~ /HASH/) {
-        $hl_map_string = "";
         for my $tsq (keys %$highlight_map) {
             my $field_list = join(',', @{$$highlight_map{$tsq}});
             $hl_map_string .= ' || ' if $hl_map_string;
@@ -1330,7 +1329,7 @@ sub fetch_display_fields {
     my $e = new_editor();
 
     for my $record ( @records ) {
-        next unless $record;
+        next unless ($record && $hl_map_string);
         $conn->respond(
             $e->json_query(
                 {from => ['search.highlight_display_fields', $record, $hl_map_string]}
