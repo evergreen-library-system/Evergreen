@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-05-25 00:15-0400\n"
+"POT-Creation-Date: 2018-05-27 09:53-0400\n"
 "PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-10-04 05:00+0000\n"
-"X-Generator: Launchpad (build 18471)\n"
+"X-Launchpad-Export-Date: 2018-05-29 06:01+0000\n"
+"X-Generator: Launchpad (build 18667)\n"
 
 #: common.exception
 msgid ""
@@ -213,7 +213,7 @@ msgstr "Price"
 
 #: staff.acp_label_cost
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Acquisition Cost"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
@@ -222,7 +222,7 @@ msgstr "Status"
 
 #: staff.acp_label_age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Age-based Hold Protection"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-10-03 18:56+0000\n"
+"POT-Creation-Date: 2018-05-28 02:23+0000\n"
 "PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-10-04 05:01+0000\n"
-"X-Generator: Launchpad (build 18471)\n"
+"X-Launchpad-Export-Date: 2018-05-29 06:01+0000\n"
+"X-Generator: Launchpad (build 18667)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -197,7 +197,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:17
 msgid "Best-Hold Selection Sort Order"
-msgstr "Pořadí pro řazení Nejvýhodnějších rezervací"
+msgstr "Pořadí pro řazení výběru Nejvýhodnějších rezervací"
 
 #: ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:2 ../../Open-ILS/src/templates/conify/global/config/billing_type.tt2:9
 msgid "Billing Types"
@@ -285,7 +285,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:75
 msgid "Check Only?"
-msgstr ""
+msgstr "Půjčit pouze?"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:87 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:90
 msgid "Choose a best-hold order"
@@ -313,7 +313,7 @@ msgstr "Skupiny výpůjčních limitů"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:1 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:5
 msgid "Circulation Limit Set"
-msgstr "Sestava výpůjčních limitů"
+msgstr "Sada výpůjčních limitů"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:192 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:2 ../../Open-ILS/src/templates/conify/global/config/circ_modifier.tt2:21
 msgid "Circulation Modifier"
@@ -515,7 +515,7 @@ msgstr "Smazat vybraný uzel"
 msgid "Delete Tree"
 msgstr "Smazat strom"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:50
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:70
 msgid "Deleted Selected"
 msgstr "Smazat vybrané"
 
@@ -621,7 +621,7 @@ msgstr "Tag  finančního fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:2 ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:5
 msgid "Global Flags"
-msgstr "Globální indikátoy"
+msgstr "Globální indikátory"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:67
 msgid "Go"
@@ -635,7 +635,7 @@ msgstr "Skupiny položek"
 msgid "Group Penalty Thresholds"
 msgstr "Úroveň pro aktivaci sankcí a blokací"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:43
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:63
 msgid "Hard Due Date Values"
 msgstr "Hodnoty pevných dat vrácení"
 
@@ -677,11 +677,11 @@ msgstr "ID"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:62
 msgid "Import Bib Trash Fields"
-msgstr ""
+msgstr "Pole vyuloučená z importu bib záznamu"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/import_bib_trash_group.tt2:2
 msgid "Import Bib Trash Groups"
-msgstr ""
+msgstr "Skupiny polí vyloučených z importu bib záznamu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/org_unit_setting_type.tt2:8 ../../Open-ILS/src/templates/conify/global/config/usr_setting_type.tt2:8
 msgid "Integer"
@@ -1012,7 +1012,7 @@ msgstr "Nová formule"
 msgid "New Fund Tag"
 msgstr "Nový tag fondu"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:47
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:67
 msgid "New Hard Due Date Value"
 msgstr "Nová hodnota pevného data vrácení"
 
@@ -1238,7 +1238,7 @@ msgstr "Cena"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:7
 msgid "Provider"
-msgstr "Provider"
+msgstr "Dodavatel"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:41 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:43
 msgid "Provider Address"
@@ -1298,11 +1298,11 @@ msgstr "Vzdálené účty"
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:33 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:39 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:54 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:60 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:76 ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:83 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_matchpoint.tt2:38 ../../Open-ILS/src/templates/conify/global/config/circ_matrix_matchpoint.tt2:46 ../../Open-ILS/src/templates/conify/global/config/floating_groups.tt2:33 ../../Open-ILS/src/templates/conify/global/config/floating_groups.tt2:42
 msgid "Remove"
-msgstr "Odstranit"
+msgstr "Odebrat"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:79
 msgid "Remove &rarr;"
-msgstr "Vzdálený  &rarr;"
+msgstr "Odebrat  &rarr;"
 
 #: ../../Open-ILS/src/templates/conify/global/booking/resource_attr_map.tt2:2 ../../Open-ILS/src/templates/conify/global/booking/resource_attr_map.tt2:4
 msgid "Resource Attribute Maps"
@@ -1322,7 +1322,7 @@ msgstr "Typy zdroje"
 
 #: ../../Open-ILS/src/templates/conify/global/booking/resource.tt2:2 ../../Open-ILS/src/templates/conify/global/booking/resource.tt2:4
 msgid "Resources"
-msgstr "Rezervovatelné zdroje"
+msgstr "Zdroje"
 
 #: ../../Open-ILS/src/templates/conify/global/actor/search_filter_group.tt2:24
 msgid "Return to Filter Groups"
@@ -1394,7 +1394,7 @@ msgstr "Zobrazit sady vlastněné zde nebo níže"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/fund_tag.tt2:16
 msgid "Show tags available to"
-msgstr "Zograzit tagy dostupné pro"
+msgstr "Zobrazit tagy dostupné pro"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:16
 msgid "Show templates available at or above"
@@ -1416,7 +1416,7 @@ msgid "Showing only control set bib fields linked to authority field:"
 msgstr ""
 "Zobrazuji pouze bibliografická pole kontrolní sady navázaná a autoritní pole"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:74
 msgid "Showing only hard due date values related to hard due date object"
 msgstr ""
 "Zobrazuji pouze hodnoty nastavení k pevnému datu související s objektem "
@@ -1432,7 +1432,7 @@ msgstr "Pozice třídění"
 
 #: ../../Open-ILS/src/templates/conify/global/config/standing_penalty.tt2:5 ../../Open-ILS/src/templates/conify/global/config/standing_penalty.tt2:9
 msgid "Standing Penalty Types"
-msgstr "Typy pokut"
+msgstr "Typy blokací a penále"
 
 #: ../../Open-ILS/src/templates/conify/global/action/survey.tt2:48
 msgid "Start Date"
@@ -1628,7 +1628,7 @@ msgstr "Z39.50 servery"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set.tt2:41
 msgid "authority"
-msgstr "autority"
+msgstr "autorita"
 
 #: ../../Open-ILS/src/templates/conify/global/vandelay/match_set.tt2:40
 msgid "biblio"

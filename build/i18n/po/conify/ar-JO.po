@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-10-03 18:56+0000\n"
+"POT-Creation-Date: 2018-05-28 02:23+0000\n"
 "PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-10-04 05:01+0000\n"
-"X-Generator: Launchpad (build 18471)\n"
+"X-Launchpad-Export-Date: 2018-05-29 06:01+0000\n"
+"X-Generator: Launchpad (build 18667)\n"
 "Language: ar\n"
 
 #. (i18n_vac)
@@ -514,7 +514,7 @@ msgstr "حذف العقدة المحددة"
 msgid "Delete Tree"
 msgstr "حذف الشجرة"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:50
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:70
 msgid "Deleted Selected"
 msgstr "حذف المُحدد"
 
@@ -634,7 +634,7 @@ msgstr "مداخل المجموعة"
 msgid "Group Penalty Thresholds"
 msgstr "حد عقوبة المجموعة"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:43
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:63
 msgid "Hard Due Date Values"
 msgstr "القيّم القاسية لـِ تاريخ الاستحقاق"
 
@@ -1011,7 +1011,7 @@ msgstr "صيغة جديدة"
 msgid "New Fund Tag"
 msgstr "تاج تمويل جديد"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:47
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:67
 msgid "New Hard Due Date Value"
 msgstr "قيمة تاريخ استحقاق قاسي جديد"
 
@@ -1413,7 +1413,7 @@ msgid "Showing only control set bib fields linked to authority field:"
 msgstr ""
 "عرض فقط الحقول الببليوغرافية لمجموعة التحكم المرتبطة بـِ حقل الإسناد:"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:74
 msgid "Showing only hard due date values related to hard due date object"
 msgstr ""
 "عرض فقط قيم تاريخ الاستحقاق القاسية المتعلقة بـِ كائن تاريخ الاستحقاق الصعب"
@@ -1497,7 +1497,7 @@ msgid ""
 "To choose which Best-Hold Selection Sort Order will be used by Evergreen at "
 "copy capture time, see the Library Settings interface."
 msgstr ""
-"من أجل اختيار فرز وترتيب أفضل اختيار حجز سيتم استخدامها من قبل إيفرغرين في "
+"من أجل اختيار فرز وترتيب أفضل اختيار حجز سيتم استخدامها من قبل إِفرغرين في "
 "وقت استلام النسخة، أنظر وراجع واجهة إعدادات المكتبة."
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:19

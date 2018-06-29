@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-10-03 18:56+0000\n"
+"POT-Creation-Date: 2018-05-28 02:23+0000\n"
 "PO-Revision-Date: 2017-10-03 18:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-10-04 05:01+0000\n"
-"X-Generator: Launchpad (build 18471)\n"
+"X-Launchpad-Export-Date: 2018-05-29 06:01+0000\n"
+"X-Generator: Launchpad (build 18667)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -513,7 +513,7 @@ msgstr "Ջնջիր ընտրված հանգույցները"
 msgid "Delete Tree"
 msgstr "Ջնջիր ծառը"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:50
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:70
 msgid "Deleted Selected"
 msgstr "Ջնջված ընտրվածներ"
 
@@ -633,7 +633,7 @@ msgstr "Խմբային մուտքեր"
 msgid "Group Penalty Thresholds"
 msgstr "Խմոբային տուգանքի նախաշեմ"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:43
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:2 ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:63
 msgid "Hard Due Date Values"
 msgstr "Կոշտ վերադարձի ամսաթվերի արժեքներ"
 
@@ -1009,7 +1009,7 @@ msgstr "Նոր բանաձև"
 msgid "New Fund Tag"
 msgstr "Դրամագլխի նոր ցուցիչ"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:47
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:67
 msgid "New Hard Due Date Value"
 msgstr "Կոշտ վերադարձի ամսաթվի նոր արժեք"
 
@@ -1416,7 +1416,7 @@ msgstr ""
 "Ցույց են տրվում միայն վերահսկման բազմության մատեն դաշտերը, հղումով կապված "
 "հեղինակավորի դաշտին։"
 
-#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:54
+#: ../../Open-ILS/src/templates/conify/global/config/hard_due_date_values.tt2:74
 msgid "Showing only hard due date values related to hard due date object"
 msgstr ""
 "Ցույց են տրվում միայն կոշտ վերադարձի ամսաթվի արժեքները առնչվող կոշտ "
