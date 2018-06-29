@@ -257,29 +257,128 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
 
     }
 
+    $scope.upgradeTemplate = function(template) {
+        template.name(template.name() + ' (converted from XUL)');
+        template.data.version = 5;
+
+        var order_by;
+        var rels = [];
+        for (var key in template.data.rel_cache) {
+            if (key == 'order_by') {
+                order_by = template.data.rel_cache[key];
+            } else {
+                rels.push(template.data.rel_cache[key]);
+            }
+        }
+
+        template.data['display_cols'] = [];
+        template.data['filter_cols'] = [];
+
+        var dispcol_index = 0;
+
+        function _convertPath(orig, rel) {
+            var newPath = [];
+
+            var table_path = rel.path.split(/\./);
+            if (table_path.length > 1 || rel.path.indexOf('-') > -1) table_path.push( rel.idlclass );
+
+            var prev_type = '';
+            var prev_link = '';
+            table_path.forEach(function(link) {
+                var cls = link.split(/-/)[0];
+                var fld = link.split(/-/)[1];
+                var args = {
+                    label : egCore.idl.classes[cls].label
+                }
+                if (prev_link != '') {
+                    args['from'] = prev_link.split(/-/)[0];
+                    var prev_col = prev_link.split(/-/)[1].split(/>/)[0];
+                    egCore.idl.classes[prev_link.split(/-/)[0]].fields.forEach(function(f) {
+                        if (prev_col == f.name) {
+                            args['link'] = f;
+                        }
+                    });
+                }
+                newPath.push(egCore.idl.classTree.buildNode(cls, args));
+                prev_link = link;
+            });
+            return newPath;
+
+        }
+
+        rels.map(function(rel) {
+            for (var col in rel.fields.dis_tab) {
+                var orig = rel.fields.dis_tab[col];
+                var display_col = {
+                    name        : orig.colname,
+                    path        : _convertPath(orig, rel),
+                    index       : dispcol_index++,
+                    label       : orig.alias,
+                    datatype    : orig.datatype,
+                    doc_text    : orig.field_doc,
+                    transform   : {
+                                    label     : orig.transform_label,
+                                    transform : orig.transform,
+                                    aggregate : orig.aggregate
+                                  },
+                    path_label  : rel.label
+                };
+                template.data.display_cols.push(display_col);
+            }
+        });
+
+        rels.map(function(rel) {
+            for (var col in rel.fields.filter_tab) {
+                var orig = rel.fields.filter_tab[col];
+                var filter_col = {
+                    name        : orig.colname,
+                    path        : _convertPath(orig, rel),
+                    index       : dispcol_index++,
+                    label       : orig.alias,
+                    datatype    : orig.datatype,
+                    doc_text    : orig.field_doc,
+                    operator    : {
+                                    op        : orig.op,
+                                    label     : orig.op_label
+                                  },
+                    transform   : {
+                                    label     : orig.transform_label,
+                                    transform : orig.transform,
+                                    aggregate : orig.aggregate
+                                  },
+                    path_label  : rel.label
+                };
+                if ('value' in orig.op_value) {
+                    filter_col['value'] = orig.op_value.value;
+                }
+                template.data.filter_cols.push(filter_col);
+            }
+        });
+
+    }
+
     function loadTemplate () {
         if (!template_id) return;
         egCore.pcrud.retrieve( 'rt', template_id)
         .then( function(template) {
             template.data = angular.fromJson(template.data());
-            if (template.data.version < 5) { // redirect to old editor...
-                $window.location.href = egCore.env.basePath + 'reporter/legacy/template/clone/'+folder_id + '/' + template_id;
-            // } else if (template.data.version < 5) { // redirect to old editor...
-            } else {
-                $scope.templateName = template.name() + ' (clone)';
-                $scope.templateDescription = template.description();
-                $scope.templateDocURL = template.data.doc_url;
-
-                $scope.changeCoreSource( template.data.core_class );
-
-                egReportTemplateSvc.display_fields = template.data.display_cols;
-                egReportTemplateSvc.filter_fields = template.data.filter_cols;
-
-                $timeout(function(){
-                    dgrid.refresh();
-                    fgrid.refresh();
-                });
+            if (template.data.version < 5) {
+                $scope.upgradeTemplate(template);
             }
+
+            $scope.templateName = template.name() + ' (clone)';
+            $scope.templateDescription = template.description();
+            $scope.templateDocURL = template.data.doc_url;
+
+            $scope.changeCoreSource( template.data.core_class );
+
+            egReportTemplateSvc.display_fields = template.data.display_cols;
+            egReportTemplateSvc.filter_fields = template.data.filter_cols;
+
+            $timeout(function(){
+                dgrid.refresh();
+                fgrid.refresh();
+            });
         });
 
     }
