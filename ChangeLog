@@ -1,3 +1,404 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 76d7bea52583d725010d3e60490067c384609165
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jun 29 08:08:58 2018 -0400
+
+    Updating upgrade docs for 3.0.9.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+16	15	docs/installation/server_upgrade.adoc
+
+commit 0c72abbe44718a133718d4a288cb295704c84537
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jun 29 08:08:21 2018 -0400
+
+    Bumping Perl version string for 3.0.9
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+16	32	docs/installation/server_upgrade.adoc
+
+commit 19785b44bd87db819b0f293514cedaffcd59b2fc
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 28 12:19:22 2018 -0700
+
+    Docs: Adding 3.0.9 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+56	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit e9accd82769f4ec396b7365c25579de9d8c0ff31
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jun 20 09:22:38 2018 -0400
+
+    LP#1773832: Empty deleted records can be surfaced in search results
+    
+    There are cases where we avoid checking the deleted flag of bibs as an
+    optimization that avoids a JOIN in the search query.  However, for some
+    shapes of real-world data, particularly in upgraded instances, deleted
+    records can slip through.  This commit adds an explicit check for the
+    flag to all search queries.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Daniel Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 3ea9d98244ff052b9a36ceb1db5e2c0d790afa08
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 27 16:08:17 2018 -0400
+
+    LP 1758160: Bump version in upgrade_log.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/1112.schema.auch-source_circ-index.sql
+0	12	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auch-source_circ-index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1112.schema.auch-source_circ-index.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auch-source_circ-index.sql
+
+commit f1745afe5e28c4a3c8e230b2b7fa8a08b4375c32
+Author: blake <blake@mobiusconsortium.org>
+Date:   Mon Apr 9 19:52:08 2018 -0500
+
+    LP1758160_Deleting_patrons_can_exceed_staff_client_timeouts
+    
+    Added an index to action.usr_circ_history for much needed postgresql justice.
+    This will increase the speed when deleting patrons with large number of circulations.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auch-source_circ-index.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auch-source_circ-index.sql
+
+commit 17fe954e1efa8625014b647fb3c65700f542dec3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 20 14:33:25 2018 -0700
+
+    Docs: improving index terms for MARC import/export options
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	docs/cataloging/batch_importing_MARC.adoc
+4	0	docs/development/support_scripts.adoc
+
+commit f44be2fdf073f4cec387bf90c9c92253fcdc2e76
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Tue Jun 19 15:21:50 2018 -0400
+
+    added fields for hold notification preference to display
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4	1	Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2
+
+commit 10e25842a8478f2076f94b765eaf94e48b296aa2
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 7 10:11:43 2018 -0700
+
+    LP1772444: Updating list of variables in bill template descriptions
+    
+    Bill: repaired merge conflicts and applied some additional docs
+    consistency across the two billing templates.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+18	4	Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2
+19	6	Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2
+
+commit 745ec1f35b659b83791a7c79da3b734867cebf9c
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon May 21 12:09:09 2018 -0400
+
+    LP1772444: Add Patron Names to Bill Receipts
+    
+    The bills_current and bills_historical receipt templates
+    were missing patron information. This has been added to
+    match most other receipt templates (money_summary is not
+    included since it could potentially be stale).
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+28	2	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 055e6441dd15885db9640ed3dc5d6ba8d5352cf3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 31 10:58:38 2018 -0400
+
+    LP#1774427 Parse DoB dates as whole dates
+    
+    Fixes DoB parsing in the browser client patron edit interface by
+    creating date objects from a whole YMD date string instead of compiling
+    the date as collection of pieces.  Compiling dates from pieces (calling
+    setFullYear(), setMonth(), etc.) can have unexpected consequences,
+    because a change of month can result in a change of days as well, if the
+    number of days in the date object exceeds the capacity of the selected
+    month.
+    
+    For example:
+    
+    ---
+    > d = new Date()
+    2018-05-31T14:59:26.186Z
+    > d.setMonth(1)
+    1520092766186
+    > d
+    2018-03-03T15:59:26.186Z
+    --
+    
+    Parsing as Date(YYYY,MM,DD) instead avoids this kind of shuffling.
+    
+    To test
+    
+    [1] Log in to the staff client on the 31st day of the month :)
+    [2] Change a patron's DoB to a month that does not contain 31 days.
+    [3] Save patron and note on reload, the DoB shows the wrong value.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	5	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit c5f0c487ffa9b2c8340bedf76ee9c2a12e2c2675
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Jun 14 09:31:33 2018 -0400
+
+    Docs: Minor corrections to "Borrowing items" section
+    
+    This commit fixes a number of small inconsistencies in wording (between
+    the docs and the interface) and formatting (e.g. making menu names bold).
+    Also, one sentence is expanded for clarity.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+11	10	docs/admin_initial_setup/borrowing_items.adoc
+
+commit 836960e863327e6b038ff52db536e6b66322c3f9
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Mar 29 11:46:03 2018 -0400
+
+    LP#1740535: retrieve list of billing types
+    
+    This patch changes how the web staff client retrieves the list
+    of billing types available for use by the Bill Patron modal. PCRUD
+    permissions on config.billing_type don't quite match how the
+    the set of billing types available to a staff user used to work
+    in the XUL staff client, so this patch uses the
+    open-ils.circ.billing_type.ranged.retrieve.all method instead.
+    
+    To test
+    -------
+    [1] Log in as a Circulators staff user (assuming stock data
+        and permissions).
+    [2] Try the Bill Patron dialog in the web staff client; note that
+        no billing types are accessible.
+    [3] Apply the patch and repeat step #2. This time, it should
+        include the miscellaneous billing type.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+9	7	Open-ILS/web/js/ui/default/staff/circ/services/billing.js
+
+commit 9fd00201ba32b0193ba2d6aa89c6284c6dbef98e
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Thu Jun 7 14:20:49 2018 -0400
+
+    LP1739271 - Fix Item Edit when Part Present
+    
+    Cannot edit item or call number after mono part
+    assigned.  This was indeed a timing error where parts were referenced before
+    they were completely assigned to the structure in which they were to reside.
+    I have restructured the code to ensure the parts are available.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+11	10	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 8960fb1d3ed7cb927f7d818bc758728f84429436
+Author: a. bellenir <ab@grpl.org>
+Date:   Wed Jun 6 09:41:06 2018 -0400
+
+    LP1770752: clicking 'update expire date' should flag field_modified
+    
+    ensure user is warned that unsaved data may be lost when navigating away
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 1a7a1a9af9b9f339d6f4d0e2d974e1511c99af4f
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Mon Jun 4 16:23:49 2018 -0500
+
+    LP#16989634 - Changing z-index to 4 to allow active text boxes to pass under patron tabs naturally.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit 765eb249c121a40f91c5003f394d2f301ab352bc
+Author: a. bellenir <ab@grpl.org>
+Date:   Tue Jun 5 20:31:46 2018 -0400
+
+    LP1775294: item status should show floating group name
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+
+commit c0336824d73ffce797c38d3ce478a845e59d573b
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed May 16 10:50:59 2018 -0400
+
+    LP#1745422 - Removed three commented out lines from the code and signoff.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+0	3	Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2
+
+commit 5f1d959cb9fed7fb34f3de78005fad90a558d7fd
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Feb 16 11:01:23 2018 -0500
+
+    LP#1745422 - Add Parts column to Patron holds grids and detail view
+    
+    The webstaff's patron ui did not have a display for the Part,
+    which will be fetched for any hold type "P" (monographic part).
+    This adds a Part column to the hold grids and inthe detail view
+    IF the hold type is P, it'll append the part.label in the same
+    field/well.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+4	1	Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2
+
+commit c9a88fb08f5cbbb15344498d0638a9a043924fda
+Author: BC Libraries Cooperative <office@bc.libraries.coop>
+Date:   Thu Jun 7 12:00:00 2018 -0700
+
+    Docs: Adding information about activating POs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+16	0	docs/acquisitions/selection_lists_po.adoc
+
+commit 665b73d914ac7529eba63e93f47c6a9384851647
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 7 11:55:07 2018 -0700
+
+    Docs: Reorganizing purchase order chapter
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+23	10	docs/acquisitions/selection_lists_po.adoc
+
+commit 1fa56056d25405af0d4a212f6ed796a0c85f7934
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jun 4 09:06:55 2018 -0400
+
+    Forward port 3.0.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+131	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.7-3.0.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.7-3.0.8-upgrade-db.sql
+
+commit 15bcf0c929f2e175849b888ab47632c85b9c1942
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 31 13:59:30 2018 -0400
+
+    Docs: Add bullet number images removed in 2.10
+    
+    These number images are used by the code callout feature of AsciiDoc,
+    used by the new Receipt Template Editor chapter (and possibly other
+    docs). I had renamed them in 2015, supposedly to prevent an ePub build
+    error, but that broke the code callout images. And since I cannot
+    replicate the ePub error now, I am renaming them back to their original
+    state, with sincere apologies to code callout readers everywhere.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+-	-	docs/media/1.png
+-	-	docs/media/10.png
+-	-	docs/media/11.png
+-	-	docs/media/12.png
+-	-	docs/media/13.png
+-	-	docs/media/14.png
+-	-	docs/media/15.png
+-	-	docs/media/2.png
+-	-	docs/media/3.png
+-	-	docs/media/4.png
+-	-	docs/media/5.png
+-	-	docs/media/6.png
+-	-	docs/media/7.png
+-	-	docs/media/8.png
+-	-	docs/media/9.png
+-	-	docs/media/media1.png
+-	-	docs/media/media10.png
+-	-	docs/media/media11.png
+-	-	docs/media/media12.png
+-	-	docs/media/media13.png
+-	-	docs/media/media14.png
+-	-	docs/media/media15.png
+-	-	docs/media/media2.png
+-	-	docs/media/media3.png
+-	-	docs/media/media4.png
+-	-	docs/media/media5.png
+-	-	docs/media/media6.png
+-	-	docs/media/media7.png
+-	-	docs/media/media8.png
+-	-	docs/media/media9.png
+ create mode 100644 docs/media/1.png
+ create mode 100644 docs/media/10.png
+ create mode 100644 docs/media/11.png
+ create mode 100644 docs/media/12.png
+ create mode 100644 docs/media/13.png
+ create mode 100644 docs/media/14.png
+ create mode 100644 docs/media/15.png
+ create mode 100644 docs/media/2.png
+ create mode 100644 docs/media/3.png
+ create mode 100644 docs/media/4.png
+ create mode 100644 docs/media/5.png
+ create mode 100644 docs/media/6.png
+ create mode 100644 docs/media/7.png
+ create mode 100644 docs/media/8.png
+ create mode 100644 docs/media/9.png
+ delete mode 100644 docs/media/media1.png
+ delete mode 100644 docs/media/media10.png
+ delete mode 100644 docs/media/media11.png
+ delete mode 100644 docs/media/media12.png
+ delete mode 100644 docs/media/media13.png
+ delete mode 100644 docs/media/media14.png
+ delete mode 100644 docs/media/media15.png
+ delete mode 100644 docs/media/media2.png
+ delete mode 100644 docs/media/media3.png
+ delete mode 100644 docs/media/media4.png
+ delete mode 100644 docs/media/media5.png
+ delete mode 100644 docs/media/media6.png
+ delete mode 100644 docs/media/media7.png
+ delete mode 100644 docs/media/media8.png
+ delete mode 100644 docs/media/media9.png
