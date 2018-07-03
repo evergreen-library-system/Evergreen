@@ -120,12 +120,18 @@
                             </label>
                         </div>
                     </div>
+                    <div class="container" ng-show="working.MultiMap.circulate.length > 1 && working.circulate === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.circulate" render="labelYesNo" on-select="select_by_circulate"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.status !== undefined}">
                     <select class="form-control"
                         ng-disabled="!defaults.attributes.status" ng-model="working.status"
                         ng-options="s.id() as s.name() disable when magic_status_list.indexOf(s.id(),0) > -1 for s in status_list">
                     </select>
+                    <div class="container" ng-show="working.MultiMap.status.length > 1 && working.status === undefined">
+                        <eg-list-counts label="[% l('Multiple statuses') %]" list="working.MultiMap.status" render="statusName" on-select="select_by_status"></eg-list-counts>
+                    </div>
                 </div>
             </div>
 
@@ -149,6 +155,9 @@
                         label="[% l('(Unset)') %]"
                         disable-test="cant_have_vols"
                     ></eg-org-selector>
+                    <div class="container" ng-show="working.MultiMap.circ_lib.length > 1 && working.circ_lib === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.circ_lib" render="orgShortname" on-select="select_by_circ_lib"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.ref !== undefined}">
                     <div class="row">
@@ -164,6 +173,9 @@
                                 [% l('No') %]
                             </label>
                         </div>
+                    </div>
+                    <div class="container" ng-show="working.MultiMap.ref.length > 1 && working.ref === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.ref" render="labelYesNo" on-select="select_by_ref"></eg-list-counts>
                     </div>
                 </div>
             </div>
@@ -185,6 +197,9 @@
                         ng-disabled="!defaults.attributes.location" ng-model="working.location"
                         ng-options="l.id() as i18n.ou_qualified_location_name(l) for l in location_list"
                     ></select>
+                    <div class="container" ng-show="working.MultiMap.location.length > 1 && working.location === undefined">
+                        <eg-list-counts label="[% l('Multiple locations') %]" list="working.MultiMap.location" render="locationName" on-select="select_by_location"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.opac_visible !== undefined}">
                     <div class="row">
@@ -200,6 +215,9 @@
                                 [% l('No') %]
                             </label>
                         </div>
+                    </div>
+                    <div class="container" ng-show="working.MultiMap.opac_visible.length > 1 && working.opac_visible === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.opac_visible" render="labelYesNo" on-select="select_by_opac_visible"></eg-list-counts>
                     </div>
                 </div>
             </div>
@@ -223,9 +241,15 @@
                     >
                         <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.circ_modifier.length > 1 && working.circ_modifier === undefined">
+                        <eg-list-counts label="[% l('Multiple modifiers') %]" list="working.MultiMap.circ_modifier" render="circmodName" on-select="select_by_circ_modifier"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.price !== undefined}">
                     <input class="form-control" ng-disabled="!defaults.attributes.price" str-to-float ng-model="working.price" type="number" step="0.01"/>
+                    <div class="container" ng-show="working.MultiMap.price.length > 1 && working.price === undefined">
+                        <eg-list-counts label="[% l('Multiple prices') %]" list="working.MultiMap.price" on-select="select_by_price"></eg-list-counts>
+                    </div>
                 </div>
             </div>
 
@@ -247,9 +271,15 @@
                         <option value="2" selected>[% l('Normal') %]</option>
                         <option value="3">[% l('Extended') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.loan_duration.length > 1 && working.loan_duration === undefined">
+                        <eg-list-counts label="[% l('Multiple durations') %]" list="working.MultiMap.loan_duration" render="durationLabel" on-select="select_by_loan_duration"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.cost !== undefined}">
                     <input class="form-control" ng-disabled="!defaults.attributes.cost" str-to-float ng-model="working.cost" type="number" step="0.01"/>
+                    <div class="container" ng-show="working.MultiMap.cost.length > 1 && working.cost === undefined">
+                        <eg-list-counts label="[% l('Multiple costs') %]" list="working.MultiMap.cost" on-select="select_by_cost"></eg-list-counts>
+                    </div>
                 </div>
             </div>
 
@@ -271,6 +301,9 @@
                         ng-options="t.code() as t.value() for t in circ_type_list">
                       <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.circ_as_type.length > 1 && working.circ_as_type === undefined">
+                        <eg-list-counts label="[% l('Multiple types') %]" list="working.MultiMap.circ_as_type" render="circTypeValue" on-select="select_by_circ_as_type"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit !== undefined}">
                     <div class="row">
@@ -286,6 +319,9 @@
                                 [% l('No') %]
                             </label>
                         </div>
+                    </div>
+                    <div class="container" ng-show="working.MultiMap.deposit.length > 1 && working.deposit === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.deposit" render="labelYesNo" on-select="select_by_deposit"></eg-list-counts>
                     </div>
                 </div>
             </div>
@@ -317,9 +353,15 @@
                             </label>
                         </div>
                     </div>
+                    <div class="container" ng-show="working.MultiMap.holdable.length > 1 && working.holdable === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.holdable" render="labelYesNo" on-select="select_by_holdable"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.deposit_amount !== undefined}">
                     <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" str-to-float ng-model="working.deposit_amount" type="number" step="0.01"/>
+                    <div class="container" ng-show="working.MultiMap.deposit_amount.length > 1 && working.deposit_amount === undefined">
+                        <eg-list-counts label="[% l('Multiple amounts') %]" list="working.MultiMap.deposit_amount" on-select="select_by_deposit_amount"></eg-list-counts>
+                    </div>
                 </div>
             </div>
 
@@ -341,6 +383,9 @@
                         ng-options="a.id() as a.name() for a in age_protect_list">
                       <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.age_protect.length > 1 && working.age_protect === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.age_protect" render="ageprotectName" on-select="select_by_age_protect"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6" ng-class="{'bg-success': working.mint_condition !== undefined}">
                     <div class="row">
@@ -356,6 +401,9 @@
                                 [% l('Damaged') %]
                             </label>
                         </div>
+                    </div>
+                    <div class="container" ng-show="working.MultiMap.mint_condition.length > 1 && working.mint_condition === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.mint_condition" render="labelYesNo" on-select="select_by_mint_condition"></eg-list-counts>
                     </div>
                 </div>
             </div>
@@ -375,6 +423,9 @@
                         <option value="2" selected>[% l('Normal') %]</option>
                         <option value="3">[% l('High') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.fine_level.length > 1 && working.fine_level === undefined">
+                        <eg-list-counts label="[% l('Multiple levels') %]" list="working.MultiMap.fine_level" render="fineLabel" on-select="select_by_fine_level"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <button
@@ -409,6 +460,9 @@
                         ng-options="a.id() as a.name() for a in floating_list">
                       <option value="">[% l('&lt;NONE&gt;') %]</option>
                     </select>
+                    <div class="container" ng-show="working.MultiMap.floating.length > 1 && working.floating === undefined">
+                        <eg-list-counts label="[% l('Multiple values') %]" list="working.MultiMap.floating" render="floatingName" on-select="select_by_floating"></eg-list-counts>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <button

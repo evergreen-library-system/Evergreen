@@ -283,6 +283,10 @@ angular.module('egGridMod',
                     return grid.getSelectedItems()
                 }
 
+                controls.selectItemsByValue = function(c,v) {
+                    return grid.selectItemsByValue(c,v)
+                }
+
                 controls.allItems = function() {
                     return $scope.items;
                 }
@@ -741,6 +745,21 @@ angular.module('egGridMod',
             grid.selectOneItem = function(index) {
                 $scope.selected = {};
                 $scope.selected[index] = true;
+            }
+
+            // selects items by a column value, first clearing selected list.
+            // we overwrite the object so that we can watch $scope.selected
+            grid.selectItemsByValue = function(column, value) {
+                $scope.selected = {};
+                angular.forEach($scope.items, function(item) {
+                    var col_value;
+                    if (angular.isFunction(item[column]))
+                        col_value = item[column]();
+                    else
+                        col_value = item[column];
+
+                    if (value == col_value) $scope.selected[grid.indexValue(item)] = true
+                }); 
             }
 
             // selects or deselects an item, without affecting the others.
