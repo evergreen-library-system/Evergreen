@@ -1086,6 +1086,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             var newval = $scope.working[field];
 
             if (typeof newval != 'undefined') {
+                delete $scope.working.MultiMap[field];
                 if (angular.isObject(newval)) { // we'll use the pkey
                     if (newval.id) newval = newval.id();
                     else if (newval.code) newval = newval.code();
@@ -1117,6 +1118,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
     }
 
     $scope.working = {
+        MultiMap: {},
         statcats: {},
         statcats_multi: {},
         statcat_filter: undefined
@@ -1277,6 +1279,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     });
                 }
             });
+            delete $scope.working.MultiMap[k];
             egCore.hatch.setItem('cat.copy.last_template', n);
         }
 
@@ -1359,6 +1362,87 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         $scope.workingGridControls = {};
         $scope.add_vols_copies = false;
         $scope.is_fast_add = false;
+
+        // Generate some functions for selecting items by column value in the working grid
+        angular.forEach(
+            ['circulate','status','circ_lib','ref','location','opac_visible','circ_modifier','price',
+             'loan_duration','cost','circ_as_type','deposit','holdable','deposit_amount','age_protect',
+             'mint_condition','fine_level','floating'],
+            function (field) {
+                $scope['select_by_' + field] = function (x) {
+                    $scope.workingGridControls.selectItemsByValue(field,x);
+                }
+            }
+        );
+
+        var truthy = /^t|1/;
+        $scope.labelYesNo = function (x) {
+            return truthy.test(x) ? egCore.strings.YES : egCore.strings.NO;
+        }
+
+        $scope.orgShortname = function (x) {
+            return egCore.org.get(x).shortname();
+        }
+
+        $scope.statusName = function (x) {
+            var s = $scope.status_list.filter(function(y) {
+                return y.id() == x;
+            });
+
+            return s[0].name();
+        }
+
+        $scope.locationName = function (x) {
+            var s = $scope.location_list.filter(function(y) {
+                return y.id() == x;
+            });
+
+            return $scope.i18n.ou_qualified_location_name(s[0]);
+        }
+
+        $scope.durationLabel = function (x) {
+            return [egCore.strings.SHORT, egCore.strings.NORMAL, egCore.strings.EXTENDED][-1 + x]
+        }
+
+        $scope.fineLabel = function (x) {
+            return [egCore.strings.LOW, egCore.strings.NORMAL, egCore.strings.HIGH][-1 + x]
+        }
+
+        $scope.circTypeValue = function (x) {
+            if (x === null) return egCore.strings.UNSET;
+            var s = $scope.circ_type_list.filter(function(y) {
+                return y.code() == x;
+            });
+
+            return s[0].value();
+        }
+
+        $scope.ageprotectName = function (x) {
+            if (x === null) return egCore.strings.UNSET;
+            var s = $scope.age_protect_list.filter(function(y) {
+                return y.id() == x;
+            });
+
+            return s[0].name();
+        }
+
+        $scope.floatingName = function (x) {
+            if (x === null) return egCore.strings.UNSET;
+            var s = $scope.floating_list.filter(function(y) {
+                return y.id() == x;
+            });
+
+            return s[0].name();
+        }
+
+        $scope.circmodName = function (x) {
+            if (x === null) return egCore.strings.UNSET;
+            var s = $scope.circ_modifier_list.filter(function(y) {
+                return y.code() == x;
+            });
+
+            return s[0].name();
+        }
 
         egNet.request(
             'open-ils.actor',
@@ -1557,6 +1641,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 angular.forEach(Object.keys($scope.defaults.attributes), function (attr) {
 
                     var value_hash = {};
+                    var value_list = [];
                     angular.forEach(item_list, function (item) {
                         if (item[attr]) {
                             var v = item[attr]()
@@ -1564,9 +1649,12 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 if (v.id) v = v.id();
                                 else if (v.code) v = v.code();
                             }
+                            value_list.push(v);
                             value_hash[v] = 1;
                         }
                     });
+
+                    $scope.working.MultiMap[attr] = value_list;
 
                     if (Object.keys(value_hash).length == 1) {
                         if (attr == 'circ_lib') {
@@ -2358,6 +2446,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.clearWorking = function () {
                     angular.forEach($scope.working, function (v,k,o) {
+                        $scope.working.MultiMap[k] = [];
                         if (!angular.isObject(v)) {
                             if (typeof v != 'undefined')
                                 $scope.working[k] = undefined;

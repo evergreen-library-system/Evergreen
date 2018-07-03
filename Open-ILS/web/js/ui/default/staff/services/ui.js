@@ -1001,6 +1001,50 @@ function($uibModal , $interpolate , egCore) {
     };
 })
 
+.directive('egListCounts', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            label: "@",
+            list: "=", // list of things
+            render: "=", // function to turn thing into string; default to stringification
+            onSelect: "=" // function to fire when option selected. passed one copy of the selected value
+        },
+        templateUrl: './share/t_listcounts',
+        controller: ['$scope','$timeout',
+            function( $scope , $timeout ) {
+
+                $scope.isopen = false;
+                $scope.count_hash = {};
+
+                $scope.renderer = $scope.render ? $scope.render : function (x) { return ""+x };
+
+                $scope.$watchCollection('list',function() {
+                    $scope.count_hash = {};
+                    angular.forEach($scope.list, function (item) {
+                        var str = $scope.renderer(item);
+                        if (!$scope.count_hash[str]) {
+                            $scope.count_hash[str] = {
+                                count : 1,
+                                value : str,
+                                original : item
+                            };
+                        } else {
+                            $scope.count_hash[str].count++;
+                        }
+                    });
+                });
+
+                $scope.selectValue = function (item) {
+                    if ($scope.onSelect) $scope.onSelect(item);
+                }
+
+            }
+        ]
+    };
+})
+
 /**
  * Nested org unit selector modeled as a Bootstrap dropdown button.
  */
