@@ -61,6 +61,12 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egC
         resolve : resolver
     });
 
+    $routeProvider.when('/cat/catalog/retrieve_by_authority_id', {
+        templateUrl: './cat/catalog/t_retrieve_by_authority_id',
+        controller: 'CatalogRecordRetrieve',
+        resolve : resolver
+    });
+
     $routeProvider.when('/cat/catalog/new_bib', {
         templateUrl: './cat/catalog/t_new_bib',
         controller: 'NewBibCtrl',
@@ -135,6 +141,11 @@ function($scope , $routeParams , $location , $q , egCore ) {
         .path('/cat/catalog/record/' + record_id);
     }
 
+    function loadAuthorityRecord(record_id) {
+        $location
+        .path('/cat/catalog/authority/' + record_id + '/marc_edit');
+    }
+
     $scope.submitId = function(args) {
         $scope.recordNotFound = null;
         if (!args.record_id) return;
@@ -143,6 +154,15 @@ function($scope , $routeParams , $location , $q , egCore ) {
         $scope.selectMe = false;
 
         return loadRecord(args.record_id);
+    }
+
+    $scope.submitAuthorityId = function(args) {
+        if (!args.record_id) return;
+
+        // blur so next time it's set to true it will re-apply select()
+        $scope.selectMe = false;
+
+        return loadAuthorityRecord(args.record_id);
     }
 
     $scope.submitTCN = function(args) {
