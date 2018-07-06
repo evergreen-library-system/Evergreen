@@ -258,6 +258,7 @@ sub fleshed_item_alter {
     my %found_sdist_ids;
     my %found_sstr_ids;
     my %siss_to_potentially_delete;
+    my @deleted_items;
     for my $item (@$items) {
         my $sstr_id = ref $item->stream ? $item->stream->id : $item->stream;
         if (!exists($found_sstr_ids{$sstr_id})) {
@@ -282,7 +283,9 @@ sub fleshed_item_alter {
         if( $item->isdeleted ) {
             my $siss_id = ref $item->issuance ? $item->issuance->id : $item->issuance;
             $siss_to_potentially_delete{$siss_id}++;
-            $evt = _delete_sitem( $editor, $override, $item);
+            # We don't want to do a bunch of resetting churn for multiple items
+            # in the same unit/dist, so just gather ids for now
+            push(@deleted_items, $item);
         } elsif( $item->isnew ) {
             # TODO: reconsider this
             # if the item has a new issuance, create the issuance first
@@ -294,6 +297,25 @@ sub fleshed_item_alter {
         } else {
             _cleanse_dates($item, ['date_expected','date_received']);
             $evt = _update_sitem( $editor, $override, $item );
+        }
+    }
+
+    if (@deleted_items) {
+        # First, reset as a batch any assigned to units.  This cleans up units
+        # and rebuilds summaries as needed
+        #
+        # XXX: if we ever add a 'deleted' flag to items, we may want to
+        # preserve rather than reset the received information
+        my @unit_items = grep {$_->unit} @deleted_items;
+        my $reset_info = $self->method_lookup('open-ils.serial.reset_items')->run($auth, \@unit_items) if @unit_items;
+
+        # Next, do the actual deletes, unless we got an event
+        if ($U->event_code($reset_info)) {
+            $evt = $reset_info;
+        } else {
+            foreach my $item (@deleted_items) {
+                $evt = _delete_sitem( $editor, $override, $item);
+            }
         }
     }
 

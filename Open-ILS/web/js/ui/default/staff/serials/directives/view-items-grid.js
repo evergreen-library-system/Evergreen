@@ -89,10 +89,8 @@ function($scope , $q , egSerialsCoreSvc , egCore , egGridDataProvider , orderByF
         var list = [];
 
         angular.forEach(items, function (i) {
-            var obj = egCore.idl.fromHash('sitem',i);
+            var obj = egSerialsCoreSvc.itemMap[i.id];
             obj.isdeleted(1);
-            obj.stream(obj.stream().id); // API wants scalar or FM object
-            obj.issuance(obj.issuance().id);
             list.push(obj);
         });
 
