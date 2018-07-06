@@ -1307,7 +1307,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     /* data.raw data structure looks like this:
                      * [{
                      *      callnumber : $cn_id, // optional, to add a copy to a cn
-                     *      owner      : $org, // optional, defaults to ws_ou
+                     *      owner      : $org, // optional, defaults to cn.owning_lib or ws_ou
                      *      label      : $cn_label, // optional, to supply a label on a new cn
                      *      barcode    : $cp_barcode // optional, to supply a barcode on a new cp
                      *      fast_add   : boolean // optional, to specify whether this came
@@ -1326,7 +1326,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 .then(function(cn) {
                                     var cp = new itemSvc.generateNewCopy(
                                         cn,
-                                        proto.owner || egCore.auth.user().ws_ou(),
+                                        proto.owner || cn.owning_lib(),
                                         $scope.is_fast_add,
                                         ((!$scope.only_vols) ? true : false)
                                     );
@@ -1381,7 +1381,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 // requirement
                                 var cp = new itemSvc.generateNewCopy(
                                     cn,
-                                    proto.owner || egCore.auth.user().ws_ou(),
+                                    proto.owner || cn.owning_lib(),
                                     $scope.is_fast_add,
                                     true
                                 );
