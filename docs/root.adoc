@@ -258,6 +258,12 @@ include::admin/MARC_RAD_MVF_CRA.adoc[]
 
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
 
+:leveloffset: -1
+
+include::admin/physical_char_wizard_db.adoc[]
+
+:leveloffset: 0
+
 include::admin/permissions.adoc[]
 
 include::admin/SMS_messaging.adoc[]
@@ -348,13 +354,10 @@ include::cataloging/MARC_Editor.adoc[]
 
 include::cataloging/record_buckets.adoc[]
 
-// Push titles down one level.
-:leveloffset: 2
-
-include::cataloging/physical_char_wizard.adoc[]
-
 // Return titles to correct level.
 :leveloffset: 0
+
+include::cataloging/physical_char_wizard.adoc[]
 
 include::admin/staff_client-return_to_results_from_marc.adoc[]
 
