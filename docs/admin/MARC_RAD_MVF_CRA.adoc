@@ -5,6 +5,31 @@ The MARC Record Attribute Definitions support the ingesting, indexing, searching
 
 To Access the MARC Record Attributes, click *Administration* -> *Server Administration* ->  *MARC Record Attributes*
 
+Managing Fixed Field Drop-down Context Menus
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[Fixed fields]
+indexterm:[MARC editor,configuring]
+
+The MARC Editor includes Fixed Field Drop-down Context Menus, which make it easier for catalogers to select the right values for fixed fields
+in both Bibliographic and Authority records.  You can use the MARC Record Attributes interface to modify these dropdowns to make them better
+suited for catalogers in your consortium.
+
+To edit these menus, you can follow these steps:
+
+. Click *Administration -> Server Administration -> MARC Record Attributes*.
+. If there's not already a dropdown for your fixed field, click *New Attr. Definition* and fill out the form using other fixed field
+attribute definitions as a model.
+. If you can find an attribute definition for your fixed field in the list, click the "Manage" link in the Coded Value Maps column.
+. Click *New Map*.
+. In the SVF Attribute field, type the name of the Attribute you identified in steps 2-3.
+. In the code field, type the actual value that will go into the fixed field (typically 1-4 characters).  You can add an option to keep that fixed field empty by typing a space into this field.
+. In the value field, type the short description you'd like your catalogers to see in the dropdown menu.
+. Optional: add a longer description of this value in the Description field.
+. Check the OPAC Visible checkbox.
+
+
+
 Multi Valued Fields and Composite Record Attributes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
