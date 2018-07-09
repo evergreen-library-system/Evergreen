@@ -141,7 +141,7 @@ sub fetch_dates {
         [{ 
             '-or' => [
                 { close_start => { ">=" => $start }, close_end => { "<=" => $end } },
-                { emergency => { "!=" => undef }, "+aec" => { process_end_time => { "=" => undef } } }
+                { emergency_closing => { "!=" => undef }, "+aec" => { process_end_time => { "=" => undef } } }
             ],
             org_unit => $org,
         }, {flesh        => 2,
