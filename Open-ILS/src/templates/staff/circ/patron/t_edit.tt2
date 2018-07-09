@@ -677,7 +677,7 @@ within the "form" by name for validation.
   </div>
   <div class="col-md-3 reg-field-input">
     <span class="nullable">
-      <select class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers">
+      <select str-to-int class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers">
         <option value="">Select a Carrier</option>
       </select>
     </span>
