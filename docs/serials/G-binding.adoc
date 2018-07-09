@@ -1,10 +1,19 @@
 Binding Issues
 --------------
 
+*Apply a binding template:*
+
+To bind issues, first a binding template needs to be applied to the associated Distribution.
+
+. Go to the _Manage Subscriptions_ tab and from the grid, select the Distribution(s) with issues you’d like to bind.
+. _Right-click_ on the Distribution(s) or go to *Actions* and select *Apply Binding Template*.
+. In the dialog box that appears, select the Serial Copy Template you’d like to use from the dropdown and click *Update*.
+
+
 *To bind received issues together:*
 
 . Go to the _Manage Issues_ tab and select the issues you want to bind together.
-. _Right-click_ on the issues or go to *Action* and select *Bind*.
+. _Right-click_ on the issues or go to *Actions* and select *Bind*.
 . The _Bind Items_ interface will appear and all items will be represented on the screen.  The first item's fields will be editable.  _Modify the Call Number_ if needed.  Replace the *Barcode* and click *Save*.
 
 NOTE: The barcode must be replaced with a new barcode.  The binding will fail if you attempt to reuse an existing barcode from one of the items being bound.  Evergreen views it as a duplicate barcode.
