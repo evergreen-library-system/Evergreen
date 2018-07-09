@@ -121,5 +121,7 @@
   <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>
   <eg-grid-field path="transit.*" parent-idl-class="atc" hidden></eg-grid-field>
   <eg-grid-field path="hold.*" parent-idl-class="ahr" hidden></eg-grid-field>
+  <eg-grid-field path="acp.last_copy_inventory.inventory_date" label="[% l('Inventory Date') %]" datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path="acp.last_copy_inventory.inventory_workstation.name" label="[% l('Inventory Workstation')%]" hidden></eg-grid-field>
 </eg-grid>
 

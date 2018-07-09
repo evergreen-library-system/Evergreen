@@ -7393,6 +7393,7 @@ SELECT  usr,
 			<field reporter:label="Peer Record Maps" name="peer_record_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Peer Records" name="peer_records" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Last Copy Inventory" name="last_copy_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Has Holds" name="holds_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Alerts" name="copy_alerts" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -7419,6 +7420,7 @@ SELECT  usr,
 			<link field="peer_record_maps" reltype="has_many" key="target_copy" map="" class="bpbcm"/>
 			<link field="peer_records" reltype="has_many" key="target_copy" map="peer_record" class="bpbcm"/>
 			<link field="last_captured_hold" reltype="has_a" key="current_copy" map="" class="alhr"/>
+			<link field="last_copy_inventory" reltype="might_have" key="copy" map="" class="alci"/>
 			<link field="floating" reltype="has_a" key="id" map="" class="cfg"/>
 			<link field="holds_count" reltype="might_have" key="id" map="" class="hasholdscount"/>
 			<link field="tags" reltype="has_many" key="copy" map="" class="acptcm"/>
@@ -7437,6 +7439,27 @@ SELECT  usr,
                 <delete permission="DELETE_COPY">
                     <context link="call_number" field="owning_lib"/>
                 </delete>
+            </actions>
+        </permacrud>
+	</class>
+
+	<class id="alci" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::last_copy_inventory" oils_persist:tablename="asset.last_copy_inventory" reporter:core="true" reporter:label="Last Copy Inventory">
+		<fields oils_persist:primary="id" oils_persist:sequence="asset.last_copy_inventory_id_seq">
+            <field reporter:label="Last Inventory ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Last Inventory Date" name="inventory_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Last Inventory Workstation" name="inventory_workstation" reporter:datatype="link"/>
+			<field reporter:label="Copy" name="copy" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="inventory_workstation" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="copy" reltype="has_a" key="id" map="" class="acp"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+				<create/>
+				<retrieve/>
+				<update/>
+				<delete/>
             </actions>
         </permacrud>
 	</class>

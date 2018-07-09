@@ -215,6 +215,16 @@ angular.module('egCatCopyBuckets',
         return deferred.promise;
     }
 
+    // apply last inventory data to fetched bucket items
+    service.fetchRecentInventoryData = function(copy) {
+        return egCore.pcrud.search('alci',
+            {copy: copy.id},
+            {flesh: 2, flesh_fields: {alci: ['inventory_workstation']}}
+        ).then(function(alci) {
+            return alci;
+        });
+    }
+
     return service;
 }])
 

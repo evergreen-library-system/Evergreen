@@ -32,6 +32,10 @@
       "[% l('One or more items could not be transferred. Override?') %]";
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+    s.SUCCESS_UPDATE_INVENTORY =
+      "[% l('Updated most recent inventory data for selected items.') %]";
+    s.FAIL_UPDATE_INVENTORY =
+      "[% l('Failed to update recent inventory data for selected items.')%]"
   }])
 </script>
 [% END %]
@@ -84,6 +88,7 @@
         <li><a href ng-click="checkin()">[% l('Check In Items') %]</a></li>
         <li><a href ng-click="renew()">[% l('Renew Items') %]</a></li>
         <li><a href ng-click="cancel_transit()">[% l('Cancel Transit') %]</a></li>
+        <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
 
         <p><b>[% l('Mark') %]</b></p>    
         <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>

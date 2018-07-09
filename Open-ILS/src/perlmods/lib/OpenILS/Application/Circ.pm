@@ -370,6 +370,37 @@ sub new_set_circ_lost {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method    => "update_last_copy_inventory",
+    api_name  => "open-ils.circ.circulation.update_last_copy_inventory");
+
+sub update_last_copy_inventory {
+    my( $self, $conn, $auth, $args ) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $copies = $$args{copy_list};
+    foreach my $copyid (@$copies) {
+        my $copy = $e->retrieve_asset_copy($copyid);
+        my $alci = $e->search_asset_last_copy_inventory({copy => $copyid})->[0];
+
+        if($alci) {
+            $alci->inventory_date('now');
+            $alci->inventory_workstation($e->requestor->wsid);
+            $e->update_asset_last_copy_inventory($alci) or return $e->die_event;
+        } else {
+            my $alci = Fieldmapper::asset::last_copy_inventory->new;
+            $alci->inventory_date('now');
+            $alci->inventory_workstation($e->requestor->wsid);
+            $alci->copy($copy->id);
+            $e->create_asset_last_copy_inventory($alci) or return $e->die_event;
+        }
+
+        $copy->last_copy_inventory($alci);
+    }
+    $e->commit;
+    return 1;
+}
 
 __PACKAGE__->register_method(
     method  => "set_circ_claims_returned",

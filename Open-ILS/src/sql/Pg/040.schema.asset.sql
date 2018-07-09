@@ -120,6 +120,14 @@ CREATE TABLE asset.copy_part_map (
 );
 CREATE UNIQUE INDEX copy_part_map_cp_part_idx ON asset.copy_part_map (target_copy, part);
 
+CREATE TABLE asset.last_copy_inventory (
+    id                          SERIAL                      PRIMARY KEY,
+    inventory_workstation       INTEGER                     REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
+    inventory_date              TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+    copy                        BIGINT				        NOT NULL
+);
+CREATE INDEX last_copy_inventory_copy_idx ON asset.last_copy_inventory (copy);
+
 CREATE TABLE asset.opac_visible_copies (
   id        BIGSERIAL primary key,
   copy_id   BIGINT, -- copy id

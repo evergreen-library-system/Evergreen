@@ -177,6 +177,19 @@
   </div>
 
   <div class="flex-row">
+    <div class="flex-cell">[% l('Inventory Date') %]</div>
+    <div class="flex-cell well">{{copy.last_copy_inventory().inventory_date() | date:egDateAndTimeFormat}}</div>
+
+    <div class="flex-cell">[% l('Inventory Workstation') %]</div>
+    <div class="flex-cell well">{{copy.last_copy_inventory().inventory_workstation().name()}}</div>
+
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+    <div class="flex-cell"></div>
+  </div>
+
+  <div class="flex-row">
     <div class="flex-cell">[% l('Copy Alerts') %]</div>
     <div class="flex-cell" id="item-status-alert-msg">
       <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>

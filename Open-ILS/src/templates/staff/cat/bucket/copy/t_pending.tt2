@@ -58,5 +58,7 @@
       {{item['call_number.record.simple_record.title']}}
     </a>
   </eg-grid-field>
+  <eg-grid-field path="last_copy_inventory.inventory_date" datatype="timestamp" label="[% l('Inventory Date') %]"></eg-grid-field>
+  <eg-grid-field path="last_copy_inventory.inventory_workstation.name" label="[% l('Inventory Workstation') %]"></eg-grid-field>
 
 </eg-grid>

@@ -300,6 +300,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         data.record = payload.record;
         data.acp = payload.copy;
         data.acn = payload.volume ?  payload.volume : payload.copy ? payload.copy.call_number() : null;
+        data.alci = egCore.idl.toHash(payload.last_copy_inventory, true);
         data.au = payload.patron;
         data.transit = payload.transit;
         data.status = payload.status;
@@ -309,8 +310,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         data.isbn = final_resp.evt[0].isbn;
         data.route_to = final_resp.evt[0].route_to;
 
+
         if (payload.circ) data.duration = payload.circ.duration();
         if (payload.circ) data.circ_lib = payload.circ.circ_lib();
+        if (payload.do_inventory_update) {
+            if (payload.last_copy_inventory.id()) {
+                egCore.pcrud.update(payload.last_copy_inventory);
+            } else {
+                egCore.pcrud.create(payload.last_copy_inventory);
+            }
+        }
 
         // for checkin, the mbts lives on the main circ
         if (payload.circ && payload.circ.billable_transaction())
@@ -1463,11 +1472,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
         var final_resp = {evt : evt, params : params, options : options};
 
-        var copy, hold, transit;
+        var copy, hold, transit, last_copy_inventory;
         if (evt[0].payload) {
             copy = evt[0].payload.copy;
             hold = evt[0].payload.hold;
             transit = evt[0].payload.transit;
+            last_copy_inventory = evt[0].payload.last_copy_inventory;
         }
 
         // track the barcode regardless of whether it's valid

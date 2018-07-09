@@ -86,6 +86,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     } else {
         modifiers.push('noop'); // AKA suppress holds and transits
         modifiers.push('auto_print_holds_transits');
+        modifiers.push('do_inventory_update');
     }
 
     // set modifiers from stored preferences
@@ -160,14 +161,17 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
                 params.retarget_mode = 'retarget';
             }
         }
+        if ($scope.modifiers.do_inventory_update) params.do_inventory_update = true;
 
         egCore.hatch.setItem('circ.checkin.strict_barcode', $scope.strict_barcode);
+        egCore.hatch.setItem('circ.checkin.do_inventory_update', $scope.modifiers.do_inventory_update);
         var options = {
             check_barcode : $scope.strict_barcode,
             no_precat_alert : $scope.modifiers.no_precat_alert,
             auto_print_holds_transits : 
                 $scope.modifiers.auto_print_holds_transits,
-            suppress_popups : suppress_popups
+            suppress_popups : suppress_popups,
+            do_inventory_update : $scope.modifiers.do_inventory_update
         };
 
         return {params : params, options: options};
@@ -196,7 +200,6 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
 
         // track the item in the grid before sending the request
         checkinSvc.checkins.unshift(row_item);
-
         egCirc.checkin(params, options).then(
         function(final_resp) {
             
@@ -206,6 +209,9 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             });
             
             row_item['copy_barcode'] = row_item.acp.barcode();
+
+            if (row_item.acp.last_copy_inventory().inventory_date() == "now")
+                row_item.acp.last_copy_inventory().inventory_date(Date.now());
 
             if (row_item.mbts) {
                 var amt = Number(row_item.mbts.balance_owed());

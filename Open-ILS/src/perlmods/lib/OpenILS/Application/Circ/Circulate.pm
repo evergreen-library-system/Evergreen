@@ -418,6 +418,8 @@ my @AUTOLOAD_FIELDS = qw/
     remote_hold
     backdate
     reservation
+    do_inventory_update
+    last_copy_inventory
     copy
     copy_id
     copy_barcode
@@ -2673,6 +2675,20 @@ sub do_checkin {
         $self->dont_change_lost_zero($dont_change_lost_zero);
     }
 
+    my $last_copy_inventory = Fieldmapper::asset::last_copy_inventory->new;
+
+    if ($self->do_inventory_update) {
+        $last_copy_inventory->inventory_date('now');
+        $last_copy_inventory->inventory_workstation($self->editor->requestor->wsid);
+        $last_copy_inventory->copy($self->copy->id());
+    } else {
+        my $alci = $self->editor->search_asset_last_copy_inventory(
+            {copy => $self->copy->id}
+        );
+        $last_copy_inventory = $alci->[0]
+    }
+    $self->last_copy_inventory($last_copy_inventory);
+
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
         $self->hold($U->fetch_open_hold_by_copy($self->copy->id));
@@ -3953,6 +3969,23 @@ sub checkin_flesh_events {
         );
     }
 
+    if ($self->last_copy_inventory) {
+        # flesh some workstation fields before returning
+        $self->last_copy_inventory->inventory_workstation(
+            $self->editor->retrieve_actor_workstation([$self->last_copy_inventory->inventory_workstation])
+        );
+    }
+
+    if($self->last_copy_inventory && !$self->last_copy_inventory->id) {
+        my $alci = $self->editor->search_asset_last_copy_inventory(
+            {copy => $self->last_copy_inventory->copy}
+        );
+        if($alci->[0]) {
+            $self->last_copy_inventory->id($alci->[0]->id);
+        }
+    }
+    $self->copy->last_copy_inventory($self->last_copy_inventory);
+
     for my $evt (@{$self->events}) {
 
         my $payload         = {};
@@ -3966,6 +3999,8 @@ sub checkin_flesh_events {
         $payload->{patron}  = $self->patron;
         $payload->{reservation} = $self->reservation
             unless (not $self->reservation or $self->reservation->cancel_time);
+        $payload->{last_copy_inventory} = $self->last_copy_inventory;
+        if ($self->do_inventory_update) { $payload->{do_inventory_update} = 1; }
 
         $evt->{payload}     = $payload;
     }

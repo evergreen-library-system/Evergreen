@@ -13,12 +13,13 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     };
 
     service.flesh = {   
-        flesh : 3, 
+        flesh : 4,
         flesh_fields : {
             acp : ['call_number','location','status','location','floating','circ_modifier',
-                'age_protect','circ_lib','copy_alerts', 'editor', 'circ_as_type'],
+                'age_protect','circ_lib','copy_alerts', 'editor', 'circ_as_type', 'last_copy_inventory'],
             acn : ['record','prefix','suffix','label_class'],
-            bre : ['simple_record','creator','editor']
+            bre : ['simple_record','creator','editor'],
+            alci : ['inventory_workstation']
         },
         select : { 
             // avoid fleshing MARC on the bre
@@ -103,7 +104,6 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         return fetchCopy(barcode, id).then(function(res) {
 
             if(!res.copy) { return $q.when(); }
-
             return fetchCirc(copyData.copy).then(function(res) {
                 if (copyData.circ) {
                     return fetchSummary(copyData.circ).then(function() {
@@ -193,6 +193,33 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
 
 
+    }
+
+    service.updateInventory = function(copy_list, all_items, refresh) {
+        if (copy_list.length == 0) return;
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.circulation.update_last_copy_inventory',
+            egCore.auth.token(), {copy_list: copy_list}
+        ).then(function(res) {
+            if (res) {
+                if (all_items) angular.forEach(copy_list, function(copy) {
+                    angular.forEach(all_items, function(item) {
+                        if (copy == item.id) {
+                            egCore.pcrud.search('alci', {copy: copy},
+                              {flesh: 1, flesh_fields:
+                                {alci: ['inventory_workstation']}
+                            }).then(function(alci) {
+                                item._last_copy_inventory.inventory_date = alci.inventory_date();
+                                item._last_copy_inventory._inventory_workstation_name =
+                                    alci.inventory_workstation().name();
+                            });
+                        }
+                    });
+                });
+                return all_items || res;
+            }
+        });
     }
 
     service.add_copies_to_bucket = function(copy_list) {

@@ -41,12 +41,15 @@
     <div ng-if="modifiers.manual_float" class="alert-danger pad-all-min">
       [% l('Manual Floating Active') %]
     </div>
+    <div ng-if="modifiers.do_inventory_update" class="alert-danger pad-all-min">
+      [% l('Update Inventory') %]
+    </div>
   </div>
 </div>
 
 <!-- checkin form -->
 <div class="row pad-vert">
-  <div class="col-md-5">
+  <div class="col-md-4">
     <form ng-submit="checkin(checkinArgs)" role="form" class="form-inline">
       <div class="input-group">
 
@@ -75,7 +78,7 @@
     </div>
   </div>
 
-  <div class="col-md-4" ng-if="!is_capture">
+  <div class="col-md-3" ng-if="!is_capture">
     <div class="flex-row">
       <div class="flex-cell"></div>
       <div class="pad-horiz">[% l('Effective Date') %]</div>
@@ -229,6 +232,16 @@
             <span ng-if="!modifiers.manual_float"
               class="label label-warning">&#x2717;</span>
             <span>[% l('Manual Floating Active') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href
+            ng-click="toggle_mod('do_inventory_update')">
+            <span ng-if="modifiers.do_inventory_update"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!modifiers.do_inventory_update"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Update Inventory') %]</span>
           </a>
         </li>
       </ul>

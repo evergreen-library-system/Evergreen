@@ -104,6 +104,13 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
         itemSvc.requestItems([$scope.args.copyId]);
     }
 
+    $scope.update_inventory = function() {
+        itemSvc.updateInventory([$scope.args.copyId], null)
+        .then(function(res) {
+            $timeout(function() { location.href = location.href; }, 1000);
+        });
+    }
+
     $scope.attach_to_peer_bib = function() {
         itemSvc.attach_to_peer_bib([{
             id : $scope.args.copyId,
@@ -236,10 +243,10 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
 .controller('ListCtrl', 
        ['$scope','$q','$routeParams','$location','$timeout','$window','egCore',
         'egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
-        'egProgressDialog',
+        'egProgressDialog', 'ngToast',
 function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
          egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
-         egProgressDialog) {
+         egProgressDialog, ngToast) {
 
     var copyId = [];
     var cp_list = $routeParams.idList;
@@ -383,6 +390,18 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
     $scope.add_copies_to_bucket = function() {
         var copy_list = gatherSelectedHoldingsIds();
         itemSvc.add_copies_to_bucket(copy_list);
+    }
+
+    $scope.update_inventory = function() {
+        var copy_list = gatherSelectedHoldingsIds();
+        itemSvc.updateInventory(copy_list, $scope.gridControls.allItems()).then(function(res) {
+            if (res) {
+                $scope.gridControls.allItems(res);
+                ngToast.create(egCore.strings.SUCCESS_UPDATE_INVENTORY);
+            } else {
+                ngToast.warning(egCore.strings.FAIL_UPDATE_INVENTORY);
+            }
+        });
     }
 
     $scope.need_one_selected = function() {
@@ -591,6 +610,9 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         // regardless of whether it matches the current item.
         if (!barcode && itemSvc.copy && itemSvc.copy.id() == copyId) {
             $scope.copy = itemSvc.copy;
+            if (itemSvc.last_copy_inventory && itemSvc.last_copy_inventory.copy() == copyId) {
+                $scope.last_copy_inventory = itemSvc.last_copy_inventory;
+            }
             $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
             }).length;
@@ -623,9 +645,11 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             var copy = res.copy;
             itemSvc.copy = copy;
+            if (res.last_copy_inventory) itemSvc.last_copy_inventory = res.last_copy_inventory;
 
 
             $scope.copy = copy;
+            $scope.last_copy_inventory = res.last_copy_inventory;
             $scope.copy_alert_count = copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
             }).length;
