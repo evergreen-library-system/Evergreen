@@ -165,6 +165,20 @@ function(egCore , $q) {
         );
     };
 
+    service.fetch_locations = function(locs) {
+        return egCore.pcrud.search('acpl',
+            {id : locs},
+            {
+                flesh : 1,
+                flesh_fields : {
+                    acpl : ['owning_lib']
+                },
+                order_by : { acpl : 'name' }
+            },
+            {atomic : true}
+        );
+    };
+
     service.get_suffixes = function(org) {
         return egCore.pcrud.search('acns',
             {owning_lib : egCore.org.fullPath(org, true)},
@@ -1568,6 +1582,17 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }).then( function() {
             $scope.data = itemSvc;
             $scope.workingGridDataProvider.refresh();
+
+            return itemSvc.fetch_locations(
+                $scope.data.copies.map(function(cp){
+                    return cp.location();
+                }).filter(function(e,i,a){
+                    return a.lastIndexOf(e) === i;
+                })
+            ).then(function(list){
+                $scope.location_list = list;
+            });
+
         });
 
         $scope.can_save = false;
@@ -1809,9 +1834,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
 
         $scope.location_list = [];
-        itemSvc.get_locations().then(function(list){
-            $scope.location_list = list;
-        });
         createSimpleUpdateWatcher('location');
 
         $scope.status_list = [];
