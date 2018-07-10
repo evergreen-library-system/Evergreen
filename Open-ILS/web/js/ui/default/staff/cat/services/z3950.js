@@ -140,6 +140,18 @@ function($q,   egCore,   egAuth) {
         egCore.hatch.setLocalItem('eg.cat.z3950.default_targets', saved_targets);
     }
 
+    // store default field
+    service.saveDefaultField = function(default_field) {
+        console.log('saveDefaultField',default_field);
+        egCore.hatch.setLocalItem('eg.cat.z3950.default_field', default_field);
+    }
+
+    service.fetchDefaultField = function() {
+        var default_field = egCore.hatch.getLocalItem('eg.cat.z3950.default_field') || 'isbn';
+        console.log('fetchDefaultField',default_field);
+        return default_field;
+    }
+
     return service;
 }])
 .directive("egZ3950TargetList", function () {
@@ -169,6 +181,14 @@ function($q,   egCore,   egAuth) {
             templateUrl: './cat/z3950/t_search_fields',
             link: function(scope, elem, attr) {
                 scope.fields = egZ3950TargetSvc.searchFields;
+                scope.default_field = egZ3950TargetSvc.fetchDefaultField();
+                scope.infocus = {};
+                scope.infocus[scope.default_field] = true;
+                scope.save = function(v) {
+                    egZ3950TargetSvc.saveDefaultField(v);
+                    scope.default_field = v;
+                    scope.infocus[scope.default_field] = true;
+                }
             }
         };
     }
