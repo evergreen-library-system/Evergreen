@@ -70,6 +70,7 @@ function($scope , $q , $timeout , $location , $window , $uibModal , ngToast ,
             var e = new Date(i.close_end);
             i._duration = ((e - s) / 1000) + 1;
             i._duration = '' + i._duration + ' seconds';
+            i._format = $scope.$root.egDateAndTimeFormat;
 
             if (i.emergency_closing) {
                 var x = i.emergency_closing.status.circulations - i.emergency_closing.status.circulations_complete;

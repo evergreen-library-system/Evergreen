@@ -248,7 +248,7 @@ function($timeout , $parse) {
 
     function eg_context_date_filter (date, format, orgID, interval) {
         var fmt = format;
-        if (!fmt) fmt = 'shortDate';
+        if (!fmt) fmt = 'short';
 
         // if this is a simple, one-word format, and it doesn't say "Date" in it...
         if (['short','medium','long','full'].filter(function(x){return fmt == x}).length > 0 && interval) {

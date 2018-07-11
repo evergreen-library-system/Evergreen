@@ -61,10 +61,10 @@
     <eg-grid-action label="[% l('Delete closing') %]" handler="delete_aoucd"></eg-grid-action> 
 
     <eg-grid-field label="[% l('Closing Start') %]" flex="1" path="close_start" visible>
-      {{item.close_start | egDueDate:$root.egDateAndTimeFormat:item.org_unit:item._duration}}
+      {{item.close_start | egOrgDateInContext:item._format:item.org_unit:item._duration}}
     </eg-grid-field>
     <eg-grid-field label="[% l('Closing End') %]" flex="1" path="close_end" visible>
-      {{item.close_end | egDueDate:$root.egDateAndTimeFormat:item.org_unit:item._duration}}
+      {{item.close_end | egOrgDateInContext:item._format:item.org_unit:item._duration}}
     </eg-grid-field>
     <eg-grid-field label="[% l('Reason for Closing') %]" flex="2" path="reason" visible></eg-grid-field>
     <eg-grid-field label="[% l('Emergency Closing Processing Summary') %]" flex="2" path="emergency_closing.status" visible>
