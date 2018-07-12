@@ -110,7 +110,7 @@
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Bill #') %]"     
+  <eg-grid-field label="[% l('Circ ID') %]"
     path='circ.id'></eg-grid-field>
 
   <eg-grid-field label="[% l('Call Number') %]" 
