@@ -77,7 +77,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.PAGE_TITLE_PATRON_HOLDS = "[% l('Holds') %]";
   s.PAGE_TITLE_PATRON_ITEMS_OUT = "[% l('Items Out') %]";
   s.PAGE_TITLE_PATRON_EDIT = "[% l('Edit') %]";
-  s.MERGE_SELF_NOT_ALLOWED = "[% l('Logged in account cannot be merged') %]"
+  s.MERGE_SELF_NOT_ALLOWED = "[% l('Logged in account cannot be merged') %]";
+  s.TEST_NOTIFY_SUCCESS = "[% l('Test Notification sent') %]";
+  s.TEST_NOTIFY_FAIL = "[% l('Test Notification failed to send') %]"
 }]);
 </script>
 

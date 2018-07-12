@@ -4353,6 +4353,25 @@ sub check_password_strength_custom {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method    => "fire_test_notification",
+    api_name  => "open-ils.actor.event.test_notification"
+);
+
+sub fire_test_notification {
+    my($self, $conn, $auth, $args) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+    return $e->event unless $$args{home_ou};
+    return $e->die_event unless $e->allowed('UPDATE_USER', $$args{home_ou});
+
+    my $event_hook = $$args{event_def_type} or return $e->event;
+    my $usr = $e->retrieve_actor_user($$args{target});
+
+    return $e->event unless $usr;
+
+    return $U->fire_object_event(undef, $event_hook, $usr, $e->requestor->ws_ou);
+}
 
 
 __PACKAGE__->register_method(

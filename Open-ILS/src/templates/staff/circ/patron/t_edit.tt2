@@ -461,7 +461,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.email')">
   [% draw_field_label('au', 'email') %]
   [% draw_form_input('au', 'email', '', 'email') %]
-  <div class="col-md-6 patron-reg-example">
+  <div class="col-md-3" ng-if="patron.email && !patron.isnew">
+    <button class="btn btn-default" ng-click="send_test_message({test_type:'email'})">[% l('Send Test Email') %]</button>
+  </div>
+  <div class="col-md-3 patron-reg-example">
     <button ng-show="patron.email && !patron.isnew" 
       class="btn btn-default" 
       ng-click="invalidate_field('email')">[% l('Invalidate') %]</button>
@@ -782,6 +785,9 @@ within the "form" by name for validation.
       ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
       ng-blur="handle_field_changed(user_settings, 'opac.default_sms_notify')"
       type='text'/>
+  </div>
+  <div class="col-md-3" ng-if="user_settings['opac.default_sms_notify'] && !patron.isnew">
+    <button class="btn btn-default" ng-click="send_test_message({test_type:'sms_text'})">[% l('Send Test Text') %]</button>
   </div>
 </div>
 

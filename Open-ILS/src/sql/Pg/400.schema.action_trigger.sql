@@ -58,6 +58,8 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout.du
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.shelf_expire.emergency_closing','aech','Hold shelf expire time was adjusted by the Emergency Closing handler');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('booking.due.emergency_closing','aecr','Booking reservation return date was adjusted by the Emergency Closing handler');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('bre.edit','bre','A bib record was edited');
+INSERT INTO action_trigger.hook (key, core_type, description) VALUES ('au.email.test', 'au', 'A test email has been requested for this user');
+INSERT INTO action_trigger.hook (key, core_type, description) VALUES ('au.sms_text.test', 'au', 'A test SMS has been requested for this user');
 
 -- and much more, I'm sure
 

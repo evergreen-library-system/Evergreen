@@ -1,7 +1,8 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'prefs' %]
+    prefs_page = 'prefs';
+    can_call_action_trigger = 'true' %]
 
 <h3 class="sr-only">[% l('Account Preferences') %]</h3>
 <div id="acct_info_main">
@@ -23,6 +24,7 @@
                 ) | html %]</td>
 
                 <td></td>
+                <td></td>
             </tr>
             [% IF ctx.user.pref_first_given_name || ctx.user.pref_second_given_name || ctx.user.pref_family_name %]
             <tr>
@@ -39,6 +41,7 @@
                 ) | html %]</td>
 
                 <td></td>
+                <td></td>
             </tr>
             [%  END %]
 
@@ -46,17 +49,20 @@
                 <td class='color_4 light_border'>[% l("Day Phone") %]</td>
                 <td class='light_border'>[% ctx.user.day_phone | html %]</td>
                 <td></td>
+                <td></td>
             </tr>
 
             <tr>
                 <td class='color_4 light_border'>[% l("Evening Phone") %]</td>
                 <td class='light_border'>[% ctx.user.evening_phone | html %]</td>
                 <td></td>
+                <td></td>
             </tr>
 
             <tr>
                 <td class='color_4 light_border'>[% l("Other Phone") %]</td>
                 <td class='light_border'>[% ctx.user.other_phone | html %]</td>
+                <td></td>
                 <td></td>
             </tr>
 
@@ -66,6 +72,7 @@
                    </div>[% l("Username") %]
                 </td>
                 <td class='light_border'>[% ctx.user.usrname | html %]</td>
+                <td></td>
                 [%- IF ctx.username_change_disallowed %]
                 <td></td>
                 [%- ELSE %]
@@ -76,6 +83,7 @@
             <tr>
                 <td class='color_4 light_border'>[% l("Password") %]</td>
                 <td class='light_border'>[% l("(not shown)") %]</td>
+                <td></td>
                 [%- IF disable_password_change == 'true' %]
                 <td></td>
                 [%- ELSE %]
@@ -86,6 +94,13 @@
             <tr>
                 <td class='color_4 light_border'>[% l("Email Address") %]</td>
                 <td class='light_border'>[% ctx.user.email | html %]</td>
+                <td class='light_border'>
+                [%- IF ctx.user.email %]
+                <a href="#" onclick="sendTestNotification(
+                        [% ctx.user.id %], [% ctx.user.home_ou.id %], 'email', '[% ctx.authtoken %]'
+                    )"
+                    title="[% l('Send Test Email') %]">[% l('Send Test Email') %]</a></td>
+                [%- END %]
                 [%- IF disable_email_change == 'true' %]
                 <td></td>
                 [%- ELSE %]
@@ -93,7 +108,12 @@
                     title="[% l('Update Email Address') %]">[% l('Change') %]</a></td>
                 [%- END %]
             </tr>
-
+            <tr id="test_notification_banner" style="display:none">
+                <td colspan="4">
+                    [% INCLUDE "opac/myopac/test_notification.tt2" %]
+                </td>
+            </tr>
+            <tr>
             [% IF ctx.user.ident_value %]<tr class="hide_me">
                 <td class='color_4 light_border'>
                 [% l("Primary Identification") %]</td>
@@ -107,11 +127,13 @@
                     %]
                 </td>
                 <td></td>
+                <td></td>
             </tr>[% END %]
 
             <tr>
                 <td class='color_4 light_border'>[% l("Active Barcode") %]</td>
                 <td class='light_border'>[% ctx.user.card.barcode %]</td>
+                <td></td>
                 <td></td>
             </tr>
 
@@ -136,10 +158,12 @@
                     %]
                 </td>
                 <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td class='color_4 light_border'>[% l("Account Creation Date") %]</td>
                 <td class='light_border'>[% date.format(ctx.parse_datetime(ctx.user.create_date), DATE_FORMAT) %]</td>
+                <td></td>
                 <td></td>
             </tr>
             <tr>
@@ -152,6 +176,7 @@
                         [% date.format(ctx.parse_datetime(ctx.user.expire_date), DATE_FORMAT) %]
                     [% END %]
                 </td>
+                <td></td>
                 <td></td>
             </tr>
         </tbody>

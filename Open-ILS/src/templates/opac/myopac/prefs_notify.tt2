@@ -1,7 +1,8 @@
 [%  PROCESS "opac/parts/header.tt2";
     WRAPPER "opac/parts/myopac/prefs_base.tt2";
     myopac_page = "prefs";
-    prefs_page = 'prefs_notify' %]
+    prefs_page = 'prefs_notify'
+    can_call_action_trigger = 'true' %]
 
 <h3 class="sr-only">[% l('Notification Preferences') %]</h3>
     [% IF ctx.affectedChgs %]
@@ -129,7 +130,18 @@
                         <td>
                             <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
+                            [% IF ctx.user_setting_map.$setting; %]
+                            <a href="#" onclick="sendTestNotification(
+                                [% ctx.user.id %], [% ctx.user.home_ou.id %], 'email', '[% ctx.authtoken %]'
+                            )"
+                            title="[% l('Send Test Text Message') %]">[% l('Send Test Text Message') %]</a><br />
                             [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
+                            [% END %]
+                        </td>
+                    </tr>
+                    <tr id="test_notification_banner" style="display:none">
+                        <td colspan="4">
+                            [% INCLUDE "opac/myopac/test_notification.tt2" %]
                         </td>
                     </tr>
                     [% END %]

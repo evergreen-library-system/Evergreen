@@ -656,6 +656,18 @@ angular.module('egCoreMod')
         });
     }
 
+    service.send_test_message = function(patron, args) {
+        var hook = 'au.' + args.test_type + '.test';
+
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.event.test_notification',
+            egCore.auth.token(), {event_def_type: hook, target: patron.id, home_ou: patron.home_ou}
+        ).then(function(res) {
+            return res;
+        });
+    }
+
     service.dupe_patron_search = function(patron, type, value) {
         var search;
 
@@ -1252,10 +1264,10 @@ angular.module('egCoreMod')
 .controller('PatronRegCtrl',
        ['$scope','$routeParams','$q','$uibModal','$window','egCore',
         'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
-        'egWorkLog', '$timeout',
+        'egWorkLog', '$timeout','ngToast',
 function($scope , $routeParams , $q , $uibModal , $window , egCore ,
          patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog ,
-         egWorkLog, $timeout) {
+         egWorkLog, $timeout, ngToast) {
 
     $scope.page_data_loaded = false;
     $scope.hold_notify_type = { phone : null, email : null, sms : null };
@@ -1956,6 +1968,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.invalidate_field = function(field) {
         patronRegSvc.invalidate_field($scope.patron, field).then(function() {
             $scope.handle_field_changed($scope.patron, field);
+        });
+    }
+
+    $scope.send_test_message = function(args) {
+        patronRegSvc.send_test_message($scope.patron, args).then(function(res) {
+            if (res && res.template_output() && res.template_output().is_error() == 'f') {
+                 ngToast.success(egCore.strings.TEST_NOTIFY_SUCCESS);
+            } else {
+                ngToast.warning(egCore.strings.TEST_NOTIFY_FAIL);
+                if (res) console.log(res);
+            }
         });
     }
 

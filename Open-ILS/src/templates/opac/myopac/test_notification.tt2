@@ -1,0 +1,14 @@
+<div class="color_4">
+    [% l('Notification Sent') %]
+</div>
+<div>
+    [% l('If you do not receive a notification, contact your Library for more information.') %]
+</div>
+
+<div>[% ctx.user.home_ou.name %]</div>
+[%- IF ctx.user.home_ou.phone; %]
+    <div>[% ctx.user.home_ou.phone %]</div>
+[%- END %]
+[%- IF ctx.user.home_ou.email %]
+    <div>[% ctx.user.home_ou.email %]</div>
+[%- END %]
