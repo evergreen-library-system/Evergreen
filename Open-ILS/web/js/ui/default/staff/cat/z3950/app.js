@@ -332,6 +332,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.overlay_record = function() {
         var items = $scope.gridControls.selectedItems();
         var overlay_target = $scope.local_overlay_target;
+        var live_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
         var args = {
             'marc_xml' : items[0]['marcxml']
         };
@@ -341,19 +342,15 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
-                $scope.focusMe = true;
-                $scope.merge_profile = null;
-                $scope.overlay_target = {
-                    id : overlay_target,
-                    merged : false
-                };
 
-                $scope.overlay_target.marc_xml = args.marc_xml;
-                egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
-                .then(function(rec) {
-                    $scope.overlay_target.orig_marc_xml = rec.marc();
-                    $scope.merge_marc(); // in case a sticky value was already set
-                });
+                $scope.immediate_merge = function () {
+                    $scope.overlay_target.marc_xml = args.marc_xml;
+                    egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
+                    .then(function(rec) {
+                        $scope.overlay_target.orig_marc_xml = rec.marc();
+                        $scope.merge_marc(); // in case a sticky value was already set
+                    });
+                }
 
                 $scope.merge_marc = function() {
                     if (!$scope.merge_profile) return;
@@ -370,18 +367,8 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                         }
                     });
                 }
-                $scope.$watch('merge_profile', function(newVal, oldVal) {
-                    if (newVal && newVal !== oldVal) {
-                        $scope.merge_marc();
-                    }
-                });
 
-                $scope.args = args;
-                args.overlay_target = $scope.overlay_target;
-                $scope.ok = function(args) { $uibModalInstance.close(args) };
-                $scope.cancel = function () { $uibModalInstance.dismiss() };
-                
-		$scope.editOverlayRecord = function() {
+                $scope.editOverlayRecord = function() {
                     $uibModal.open({
                         templateUrl: './cat/z3950/t_edit_overlay_record',
                         backdrop: 'static',
@@ -400,6 +387,55 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                         if (!args || !args.name) return;
                     });
                 };
+
+                $scope.focusMe = true;
+                $scope.merge_profile = null;
+                $scope.overlay_target = {
+                    id : overlay_target,
+                    live_id : live_overlay_target,
+                    merged : false
+                };
+
+                $scope.$watch('merge_profile', function(newVal, oldVal) {
+                    if (newVal && newVal !== oldVal) {
+                        $scope.merge_marc();
+                    }
+                });
+
+                $scope.args = args;
+                args.overlay_target = $scope.overlay_target;
+                $scope.ok = function(args) { $uibModalInstance.close(args) };
+                $scope.cancel = function () { $uibModalInstance.dismiss() };
+                
+                if (overlay_target != live_overlay_target) {
+                    var confirm_title = egCore.strings.OVERLAY_CHANGED_TITLE;
+                    var confirm_msg = egCore.strings.OVERLAY_CHANGED;
+
+                    if (live_overlay_target == 0) { // someone unset the target...
+                        confirm_title = egCore.strings.OVERLAY_REMOVED_TITLE;
+                        confirm_msg = egCore.strings.OVERLAY_REMOVED;
+                    }
+
+                    egConfirmDialog.open(
+                        confirm_title,
+                        confirm_msg,
+                        { id : overlay_target, live_id : live_overlay_target }
+                    ).result.then(
+                        function () { // proceed -- but check live overlay for unset-ness
+                            if (live_overlay_target != 0) {
+                                $scope.overlay_target.id = $scope.overlay_target.live_id;
+                                overlay_target = live_overlay_target;
+                            }
+                            $scope.immediate_merge();
+                        },
+                        function () {
+                            $scope.cancel();
+                        }
+                    );
+                } else {
+                    $scope.immediate_merge();
+                }
+
             }]
         }).result.then(function (args) {
             egCore.net.request(
