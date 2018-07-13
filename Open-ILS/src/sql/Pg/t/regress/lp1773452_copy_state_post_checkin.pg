@@ -10,11 +10,11 @@ INSERT INTO action.circulation (id,usr,target_copy,circ_lib,circ_staff,renewal_r
   VALUES (8765309,1,8765309,1,1,0,
     1,1,1,'LONGOVERDUE','0 hours');
 
-SELECT is(asset.copy_state(8765309),'LONGOVERDUE', 'Copy state is LONGOVERDUE when stop_fines='LONGOVERDUE' and checkin_time is null');
+SELECT is(asset.copy_state(8765309),'LONGOVERDUE', 'Copy state is LONGOVERDUE when stop_fines is LONGOVERDUE and checkin_time is null.');
 
 -- Our long overdue item has returned!
 UPDATE action.circulation SET checkin_time=now() WHERE id=8765309;
 
-SELECT is(asset.copy_state(8765309),'NORMAL', 'Copy state is NORMAL when stop_fines='LONGOVERDUE' and checkin_time is not null');
+SELECT is(asset.copy_state(8765309),'NORMAL', 'Copy state is NORMAL when stop_fines is LONGOVERDUE and checkin_time is not null.');
 
 ROLLBACK;
