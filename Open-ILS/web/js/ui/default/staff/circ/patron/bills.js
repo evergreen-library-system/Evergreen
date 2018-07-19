@@ -223,7 +223,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     // Apply coloring to rows based on fines stop reason
     $scope.colorizeBillsList = {
         apply: function(item) {
-            if (!item['circulation.checkin_time']) {
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
                 if (item['circulation.stop_fines'] == 'LOST') {
                     return 'lost-row';
                 } else if (item['circulation.stop_fines'] == 'LONGOVERDUE') {
@@ -240,7 +240,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         isEnabled: true,
         template: function(item) {
             var icon = '';
-            if (!item['circulation.checkin_time']) {
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
                 if (item['circulation.stop_fines'] == "LOST") {
                     icon = 'glyphicon-question-sign';
                 } else if (item['circulation.stop_fines'] == "LONGOVERDUE") {
