@@ -11,6 +11,15 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     var service = {};
 
+    service.fetch_wide_holds = function(restrictions, order_by, limit, offset) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.hold.wide_hash.stream',
+            egCore.auth.token(),
+            restrictions, order_by, limit, offset
+        );
+    }
+
     service.fetch_holds = function(hold_ids) {
         var deferred = $q.defer();
 
@@ -531,10 +540,26 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         return egHolds.cancel_holds(hold_ids).then(service.refresh);
     }
 
+    service.cancel_wide_hold = function(items) {
+        var hold_ids = items.filter(function(item) {
+            return !item.hold.cancel_time;
+        }).map(function(item) {return item.hold.id});
+
+        return egHolds.cancel_holds(hold_ids).then(service.refresh);
+    }
+
     service.uncancel_hold = function(items) {
         var hold_ids = items.filter(function(item) {
             return item.hold.cancel_time();
         }).map(function(item) {return item.hold.id()});
+
+        return egHolds.uncancel_holds(hold_ids).then(service.refresh);
+    }
+
+    service.uncancel_wide_hold = function(items) {
+        var hold_ids = items.filter(function(item) {
+            return item.hold.cancel_time;
+        }).map(function(item) {return item.hold.id});
 
         return egHolds.uncancel_holds(hold_ids).then(service.refresh);
     }
@@ -554,12 +579,38 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         });
     }
 
+    // jump to circ list for either 1) the targeted copy or
+    // 2) the hold target copy for copy-level holds
+    service.show_recent_circs_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            if (item.hold.cp_id) {
+                var url = egCore.env.basePath +
+                          '/cat/item/' +
+                          item.hold.cp_id +
+                          '/circ_list';
+                $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+            }
+        });
+    }
+
     service.show_patrons = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
             var url = egCore.env.basePath +
                       'circ/patron/' +
                       item.hold.usr().id() +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
+    service.show_patrons_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'circ/patron/' +
+                      item.hold.usr_id +
                       '/holds';
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
         });
@@ -576,10 +627,27 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         });
     }
 
+    service.show_holds_for_title_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'cat/catalog/record/' +
+                      item.hold.record_id +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
 
     function generic_update(items, action) {
         if (!items.length) return $q.when();
         var hold_ids = items.map(function(item) {return item.hold.id()});
+        return egHolds[action](hold_ids).then(service.refresh);
+    }
+
+    function generic_update_wide(items, action) {
+        if (!items.length) return $q.when();
+        var hold_ids = items.map(function(item) {return item.hold.id});
         return egHolds[action](hold_ids).then(service.refresh);
     }
 
@@ -602,12 +670,42 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
     service.transfer_to_marked_title = function(items) {
         generic_update(items, 'transfer_to_marked_title'); }
 
+    service.set_copy_quality_wide = function(items) {
+        generic_update_wide(items, 'set_copy_quality'); }
+    service.edit_pickup_lib_wide = function(items) {
+        generic_update_wide(items, 'edit_pickup_lib'); }
+    service.edit_notify_prefs_wide = function(items) {
+        generic_update_wide(items, 'edit_notify_prefs'); }
+    service.edit_dates_wide = function(items) {
+        generic_update_wide(items, 'edit_dates'); }
+    service.suspend_wide = function(items) {
+        generic_update_wide(items, 'suspend_holds'); }
+    service.activate_wide = function(items) {
+        generic_update_wide(items, 'activate_holds'); }
+    service.set_top_of_queue_wide = function(items) {
+        generic_update_wide(items, 'set_top_of_queue'); }
+    service.clear_top_of_queue_wide = function(items) {
+        generic_update_wide(items, 'clear_top_of_queue'); }
+    service.transfer_to_marked_title_wide = function(items) {
+        generic_update_wide(items, 'transfer_to_marked_title'); }
+
     service.mark_damaged = function(items) {
         angular.forEach(items, function(item) {
             if (item.copy) {
                 egCirc.mark_damaged({
                     id: item.copy.id(),
                     barcode: item.copy.barcode()
+                }).then(service.refresh);
+            }
+        });
+    }
+
+    service.mark_damaged_wide = function(items) {
+        angular.forEach(items, function(item) {
+            if (item.copy) {
+                egCirc.mark_damaged({
+                    id: item.hold.cp_id,
+                    barcode: item.hold.cp_barcode
                 }).then(service.refresh);
             }
         });
@@ -621,8 +719,21 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
             egCirc.mark_missing(copy_ids).then(service.refresh);
     }
 
+    service.mark_missing_wide = function(items) {
+        var copy_ids = items
+            .filter(function(item) { return Boolean(item.hold.cp_id) })
+            .map(function(item) { return item.hold.cp_id });
+        if (copy_ids.length) 
+            egCirc.mark_missing(copy_ids).then(service.refresh);
+    }
+
     service.retarget = function(items) {
         var hold_ids = items.map(function(item) { return item.hold.id() });
+        egHolds.retarget(hold_ids).then(service.refresh);
+    }
+
+    service.retarget_wide = function(items) {
+        var hold_ids = items.map(function(item) { return item.hold.id });
         egHolds.retarget(hold_ids).then(service.refresh);
     }
 

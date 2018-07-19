@@ -3347,6 +3347,49 @@ sub all_rec_holds {
     return $resp;
 }
 
+__PACKAGE__->register_method(
+    method           => 'stream_wide_holds',
+    authoritative    => 1,
+    stream           => 1,
+    api_name         => 'open-ils.circ.hold.wide_hash.stream'
+);
+
+sub stream_wide_holds {
+    my($self, $client, $auth, $restrictions, $order_by, $limit, $offset) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    $e->checkauth or return $e->event;
+    $e->allowed('VIEW_HOLD') or return $e->event;
+
+    my $st = OpenSRF::AppSession->create('open-ils.storage');
+    my $req = $st->request(
+        'open-ils.storage.action.live_holds.wide_hash',
+        $restrictions, $order_by, $limit, $offset
+    );
+
+    my $count = $req->recv;
+    if(!$count) {
+        return 0;
+    }
+
+    if(UNIVERSAL::isa($count,"Error")) {
+        throw $count ($count->stringify);
+    }
+
+    $count = $count->content;
+
+    # Force immediate send of count response
+    my $mbc = $client->max_bundle_count;
+    $client->max_bundle_count(1);
+    $client->respond($count);
+    $client->max_bundle_count($mbc);
+
+    while (my $hold = $req->recv) {
+        $client->respond($hold->content) if $hold->content;
+    }
+
+    $client->respond_complete;
+}
 
 
 

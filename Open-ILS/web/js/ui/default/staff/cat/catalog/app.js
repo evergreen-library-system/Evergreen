@@ -589,7 +589,6 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             conjoinedSvc.fetch($scope.record_id).then(function(){
                 $scope.conjoinedGridDataProvider.refresh();
             });
-            egHolds.fetch_holds(hold_ids).then($scope.hold_grid_data_provider.refresh);
             init_parts_url();
             $location.update_path('/cat/catalog/record/' + $scope.record_id);
             // update_path() bypasses the controller for path 
@@ -1706,69 +1705,84 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     var provider = egGridDataProvider.instance({});
     $scope.hold_grid_data_provider = provider;
     $scope.grid_actions = egHoldGridActions;
-    $scope.grid_actions.refresh = function () { provider.refresh() };
+    $scope.grid_actions.refresh = function () { holds = []; hold_count = 0; provider.refresh() };
     $scope.hold_grid_controls = {};
 
-    var hold_ids = []; // current list of holds
-    function fetchHolds(offset, count) {
-        var ids = hold_ids.slice(offset, offset + count);
-
-        return egHolds.fetch_holds(ids).then(null, null,
-            function(hold_data) { 
-                return hold_data;
-            }
-        );
-    }
-
+    var holds = []; // current list of holds
+    var hold_count = 0;
     provider.get = function(offset, count) {
         if ($scope.record_tab != 'holds') return $q.when();
-        var deferred = $q.defer();
-        hold_ids = []; // no caching ATM
 
-        // open a determinate progress dialog, max value set below.
-        egProgressDialog.open({max : 1, value : 0});
+        // see if we have the requested range cached
+        if (holds[offset]) {
+            return provider.arrayNotifier(holds, offset, count);
+        }
 
-        // fetch the IDs
-        egCore.net.request(
-            'open-ils.circ',
-            'open-ils.circ.holds.retrieve_all_from_title',
-            egCore.auth.token(), $scope.record_id, 
-            {pickup_lib : egCore.org.descendants($scope.pickup_ou.id(), true)}
-        ).then(
-            function(hold_data) {
-                hold_ids = []; // clear the list of ids, hack to avoid dups
-                // TODO: fix the underlying problem, which is that
-                // this gets called twice when switching to the holds
-                // tab; once explicitly, and once via the change handler
-                // on the OU selector
-                angular.forEach(hold_data, function(list, type) {
-                    hold_ids = hold_ids.concat(list);
-                });
+        hold_count = 0;
+        holds = [];
+        var restrictions = {
+                is_staff_request : 'true',
+                fulfillment_time : null,
+                cancel_time      : null,
+                record_id        : $scope.record_id,
+                pickup_lib       : egCore.org.descendants($scope.pickup_ou.id(), true)
+        };
 
-                // Set the max value of the progress bar to the lesser of
-                // the total number of holds to fetch or the page size
-                // of the grid.
-                egProgressDialog.update(
-                    {max : Math.min(hold_ids.length, count)});
-
-                var holds_fetched = 0;
-                fetchHolds(offset, count)
-                .then(deferred.resolve, null, 
-                    function(hold_data) {
-                        holds_fetched++;
-                        deferred.notify(hold_data);
-                        egProgressDialog.increment();
+        var order_by = [{ capture_time : null }];
+        if (provider.sort && provider.sort.length) {
+            order_by = [];
+            angular.forEach(provider.sort, function (c) {
+                if (!angular.isObject(c)) {
+                    if (c.match(/^hold\./)) {
+                        var i = c.replace('hold.','');
+                        var ob = {};
+                        ob[i] = null;
+                        order_by.push(ob);
                     }
-                )['finally'](egProgressDialog.close);
-            }
-        );
+                } else {
+                    var i = Object.keys(c)[0];
+                    var direction = c[i];
+                    if (i.match(/^hold\./)) {
+                        i = i.replace('hold.','');
+                        var ob = {}
+                        ob[i] = {dir:direction};
+                        order_by.push(ob);
+                    }
+                }
+            });
+        }
 
-        return deferred.promise;
+        egProgressDialog.open({max : 1, value : 0});
+        var first = true;
+        return egHolds.fetch_wide_holds(
+            restrictions,
+            order_by
+        ).then(function () {
+                return provider.arrayNotifier(holds, offset, count);
+            },
+            null,
+            function(hold_data) {
+                if (first) {
+                    hold_count = hold_data;
+                    first = false;
+                    egProgressDialog.update({max:hold_count});
+                } else {
+                    egProgressDialog.increment();
+                    var new_item = { id : hold_data.id, hold : hold_data };
+                    new_item.status_string =
+                        egCore.strings['HOLD_STATUS_' + hold_data.hold_status]
+                        || hold_data.hold_status;
+
+                    holds.push(new_item);
+                }
+            }
+        ).finally(egProgressDialog.close);
+
     }
 
     $scope.detail_view = function(action, user_data, items) {
         if (h = items[0]) {
-            $scope.detail_hold_id = h.hold.id();
+            $scope.detail_hold_id = h.hold.id;
         }
     }
 
@@ -1780,28 +1794,43 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     $scope.pickup_ou = egCore.org.get(egCore.auth.user().ws_ou());
     $scope.pickup_ou_changed = function(org) {
         $scope.pickup_ou = org;
+        holds = []
+        hold_count = 0;
         provider.refresh();
     }
 
+    function map_prefix_to_subhash (h,pf) {
+        var newhash = {};
+        angular.forEach(Object.keys(h), function (k) {
+            if (k.startsWith(pf)) {
+                var nk = k.substr(pf.length);
+                newhash[nk] = h[k];
+            }
+        });
+        return newhash;
+    }
+
     $scope.print_holds = function() {
-        var holds = [];
-        angular.forEach($scope.hold_grid_controls.allItems(), function(item) {
-            holds.push({
-                hold : egCore.idl.toHash(item.hold),
-                patron_last : item.patron_last,
-                patron_alias : item.patron_alias,
-                patron_barcode : item.patron_barcode,
-                copy : egCore.idl.toHash(item.copy),
-                volume : egCore.idl.toHash(item.volume),
-                title : item.mvr.title(),
-                author : item.mvr.author()
+        var pholds = [];
+        angular.forEach(holds, function(item) {
+            pholds.push({
+                hold : item.hold,
+                status_string : item.status_string,
+                patron_first : item.hold.usr_first_given_name,
+                patron_last : item.hold.usr_family_name,
+                patron_alias : item.hold.usr_alias,
+                patron_barcode : item.hold.ucard_barcode,
+                copy : map_prefix_to_subhash(item.hold,'cp_'),
+                volume : map_prefix_to_subhash(item.hold,'cn_'),
+                title : item.hold.title,
+                author : item.hold.author
             });
         });
 
         egCore.print.print({
             context : 'receipt', 
             template : 'holds_for_bib', 
-            scope : {holds : holds}
+            scope : {holds : pholds}
         });
     }
 
@@ -1817,7 +1846,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // UI presents this option as "all holds"
     $scope.transfer_holds_to_marked = function() {
         var hold_ids = $scope.hold_grid_controls.allItems().map(
-            function(hold_data) {return hold_data.hold.id()});
+            function(hold_data) {return hold_data.hold.id});
         egHolds.transfer_to_marked_title(hold_ids);
     }
 

@@ -595,7 +595,11 @@ angular.module('egCoreMod')
         } else if (value === undefined) {
             return;
         }
-        $window.localStorage.setItem(key, jsonified);
+        try {
+            $window.localStorage.setItem(key, jsonified);
+        } catch (e) {
+            console.log('localStorage.setItem (overwrite) failed for '+key+': ', e);
+        }
     }
 
     service.appendItem = function(key, value) {
@@ -631,7 +635,11 @@ angular.module('egCoreMod')
             jsonified = JSON.stringify(value);
 
         var old_value = $window.localStorage.getItem(key) || '';
-        $window.localStorage.setItem( key, old_value + jsonified );
+        try {
+            $window.localStorage.setItem( key, old_value + jsonified );
+        } catch (e) {
+            console.log('localStorage.setItem (append) failed for '+key+': ', e);
+        }
     }
 
     // Set the value for the given key.  
