@@ -140,18 +140,6 @@ function($q,   egCore,   egAuth) {
         egCore.hatch.setLocalItem('eg.cat.z3950.default_targets', saved_targets);
     }
 
-    // store default field
-    service.saveDefaultField = function(default_field) {
-        console.log('saveDefaultField',default_field);
-        egCore.hatch.setLocalItem('eg.cat.z3950.default_field', default_field);
-    }
-
-    service.fetchDefaultField = function() {
-        var default_field = egCore.hatch.getLocalItem('eg.cat.z3950.default_field') || 'isbn';
-        console.log('fetchDefaultField',default_field);
-        return default_field;
-    }
-
     return service;
 }])
 .directive("egZ3950TargetList", function () {
@@ -181,13 +169,6 @@ function($q,   egCore,   egAuth) {
             templateUrl: './cat/z3950/t_search_fields',
             link: function(scope, elem, attr) {
                 scope.fields = egZ3950TargetSvc.searchFields;
-                scope.default_field = egZ3950TargetSvc.fetchDefaultField();
-                scope.$watch('default_field', function(oldVal, newVal) {
-                    egZ3950TargetSvc.saveDefaultField(newVal);
-                }, true);
-                scope.save = function(v) { // FIXME - should be able to do this through $watch instead of ng-change
-                    egZ3950TargetSvc.saveDefaultField(v);
-                }
             }
         };
     }
