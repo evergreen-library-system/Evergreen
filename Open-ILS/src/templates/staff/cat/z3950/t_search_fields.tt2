@@ -1,19 +1,9 @@
 <div class="form-horizontal">
-    <div class="z3950-search-field-list row">
-        <label class="col-xs-2">[% l('Default') %]</label>
-        <label class="col-xs-3">[% l('Field') %]</label>
-        <label class="col-xs-7">[% l('Value') %]</label>
-    </div>
-    <div ng-repeat="search_field in fields | orderObjectBy: 'label'" class="z3950-search-field-list row">
-        <div class="col-xs-2">
-            <input type="radio" name="default_field" ng-model="default_field" value="{{search_field.key}}" ng-change="save(search_field.key)"/>
-        </div>
-        <div class="col-xs-3">
-            <label for="z3950-field-{{search_field.key}}" class="control-label">{{search_field.label}}</label>
-        </div>
-        <div class="col-xs-7">
-            <input type="text" class="form-control" id="z3950-field-{{search_field.key}}" ng-model="search_field.query" ng-if="search_field.key != 'item_type'" focus-me="default_field == search_field.key"/>
-            <select id="z3950-field-item_type" ng-if="search_field.key == 'item_type'" ng-model="search_field.query" focus-me="default_field == 'item_type'">
+    <div ng-repeat="search_field in fields | orderObjectBy: 'label'" class="z3950-search-field-list form-group">
+        <label for="z3950-field-{{search_field.key}}" class="col-xs-6 control-label">{{search_field.label}}</label>
+        <div class="col-xs-6">
+            <input type="text" class="form=control" id="z3950-field-{{search_field.key}}" ng-model="search_field.query" ng-if="search_field.key != 'item_type'">
+            <select ng-if="search_field.key == 'item_type'" ng-model="search_field.query">
                 <option value="">[% l('All Formats') %]</option>
                 <option value='art'>[% l('Papers or Articles') %]</option>
                 <option value='bks'>[% l('Books') %]</option>
