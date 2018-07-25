@@ -1,3 +1,680 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 9480841f4b9a163ac8fba6f6cd5592f1b29b89a8
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Jul 25 17:23:47 2018 -0400
+
+    Updating upgrade docs for 3.0.10.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+16	32	docs/installation/server_upgrade.adoc
+
+commit c13e6a2dc337228a92971e9875dfab68c12f4b1b
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Jul 25 17:23:31 2018 -0400
+
+    Bumping Perl version string for 3.0.10
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit e790b1bc5aa4aaf07d1ed290b91af57babf3996f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jul 25 12:13:32 2018 -0700
+
+    Docs: adding to 3.0.10 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit ddacdb459ecd19cadb5ad4edc0d1d6a0ced8402a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jul 25 12:08:06 2018 -0700
+
+    Docs: Adding 3.0.10 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+61	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit 6fe600c50f0c15431e08600b1014f76e2d45c9a4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 25 15:00:48 2018 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+23	20	build/i18n/po/webstaff/ar-JO.po
+23	20	build/i18n/po/webstaff/cs-CZ.po
+20	20	build/i18n/po/webstaff/en-GB.po
+116	100	build/i18n/po/webstaff/es-ES.po
+20	20	build/i18n/po/webstaff/hy-AM.po
+20	20	build/i18n/po/webstaff/ru-RU.po
+
+commit 613b4c0f2e755e9bf713316bdc6acd16a3845f06
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 25 14:59:07 2018 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+32	14	build/i18n/po/webstaff/webstaff.pot
+
+commit 17dc274ceb06747f018476a8b00681f630faa802
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jul 6 11:47:42 2018 -0400
+
+    LP#1414197 Serial Item Delete Improvements
+    
+    If a serial item is received, then deleted without any further status,
+    it can leave the system in an inconsistent state:
+    
+    1) If from a multi-item unit, the unit contents are not updated.
+    2) If from a single-item unit, the unit is not deleted.
+    3) If the last holding of its kind, holdings summaries are not updated.
+    
+    Since 'resetting' items has all the necessary logic to handle the above
+    needs, this commit runs each deleted item through the reset code before
+    doing the actual delete.  This also gives the benefit of keeping the
+    logic centralized for future fixes/enhancements.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+23	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+1	3	Open-ILS/web/js/ui/default/staff/serials/directives/view-items-grid.js
+
+commit 0104ba716052bb8e84e98899afad2c0c8c7979f6
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Jul 6 09:50:40 2018 -0400
+
+    LP#1738249: Fix Circulation Library in Item Status Column Picker
+    
+    When the original branch was merged, the change to fix the display of
+    the Circulation Library to the copy's circ_lib in Item Status was
+    lost.  This commit restores it and uses the original patch author's
+    name on the commit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+
+commit 45db93c94e2b6c389f47b9e51d347c3af55db759
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Jul 12 16:28:45 2018 -0400
+
+    LP#1781473 - fix cosmetic issue with circ Id column
+    
+    The column for Circ.Id on the Patron Checkout grid was
+    mislabeled "Bill#"
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+
+commit fc571075295646b3007d02fa792cee259d4b538b
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Sat Jun 23 01:06:13 2018 -0400
+
+    LP#1778268: Fix incorrect close tag for label on line 58 of
+    Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit 6b014fa4b8d37b44c555b59fc0aabede2625f2b6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jul 13 14:04:00 2018 -0400
+
+    LP#1777954 Open Electronic Resource Links in New Tab, Part 2
+    
+    For the same reasons given in the previous commit, let's also open
+    resource links in a new tab/window when clicking from the results
+    list.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 744163d6f7c1348350c206f79522c7f0746a6695
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Jun 25 12:15:21 2018 -0400
+
+    LP#1777954 Open Electronic Resource Links in New Tab
+    
+    Open electronic resources links in new browser tab to accommodate
+    for external non-https links that will not otherwise open from the
+    web client.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+
+commit 9a9db135db10c88e65a4410927b0ac9332137eeb
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Jul 24 13:19:07 2018 -0400
+
+    LP#1739286: Revert "lp1739286 default search box in Z39.50"
+    
+    This commit caused unexpected side effects, reported in bug 1782401
+    ( https://bugs.launchpad.net/evergreen/+bug/1782401 ). Reverting before
+    it ends up in a release.
+    
+    This reverts commit 6996a3630dea3d6fd967c127417a800aba561603.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+5	15	Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2
+0	19	Open-ILS/web/js/ui/default/staff/cat/services/z3950.js
+
+commit ade3396686f255ba86d10b5bf1639a17e100a90b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jul 12 11:03:44 2018 -0400
+
+    LP#1710401: Z39.50 should notice overlay target change
+    
+    Currently, we record the overlay target at UI startup and use that going
+    forward until the interface is reloaded.  This commit inspects the local
+    storage version of the target for changes and offers the user the chance to
+    proceed with the new target or cancel the action.  If the target has been
+    unset, the user is given the option of proceeding with the load-time target.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	0	Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2
+58	21	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+
+commit 6647fa37102cfedfb3b22aa65594f9f78770a08a
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jul 12 09:28:07 2018 -0400
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+211	0	Open-ILS/src/sql/Pg/upgrade/1113.function.acq.rollover-by-org-tree.sql
+0	211	Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1113.function.acq.rollover-by-org-tree.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+
+commit 858e6fa4d2b5d80e9328b01e259bd2431fe9025a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Jun 6 14:59:41 2018 -0400
+
+    LP 1478712: Fix acq.fund_rollover_funds_by_org_tree DB function.
+    
+    When looking for new funds, we need to also use the org unit from the
+    old fund because different org units may use the same fund code.  What
+    happens without this check is the second library to rollover ends up
+    assigning their rolled over debits to the first library that rolled
+    over or propagated funds with the same code.
+    
+    Unfortunately, I do not know of a good way to test this branch with
+    the concerto data.  I will elaborate how I tested with a copy of our
+    production data in a test database below.
+    
+    What I did to test with our production data was first to repair the
+    debits that had been moved to the wrong library's funds from the
+    previous year.  I then ran the acq.rollover_funds_by_org_tree function
+    for two libraries that share acq fund codes.  I verified that the fund
+    debits for the second library did indeed get assigned to funds with
+    the same code that were rolled over for the first library.  The debits
+    ended up on the newly propagated funds of the library that went first.
+    
+    I reloaded the database, replaced the acq.rollover_funds_by_org_tree
+    function with the implementation from this branch, and repeated the
+    above steps.  The second library's debits rolled over to new funds
+    owned by that library as was expected.
+    
+    This would be a good candidate for a pgtap test with additional data
+    added to concerto if anyone is feeling ambitious.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/200.schema.acq.sql
+211	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+
+commit bb594ad94f9292399595fa698e703d97e0a0197d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Apr 30 11:05:11 2018 -0400
+
+    LP#1749795 Close circ on adjustment when rebilled
+    
+    When doing a re-bill, we were aborting too early when it rebilled to
+    exactly zero.  Move the 'zero' check to the top of the loop, and
+    thereby make sure we check if the xact can be closed if we do any
+    adjustment, up or down.
+    
+    To test:
+    - Run new billing test from previous commit, see it fail
+    - Apply patch
+    - Run tests again; all should pass
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+18	15	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Money.pm
+
+commit 5fed92e899c457f5cdb0f0a2241c9d9d6b688cb3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 19 14:23:42 2018 -0400
+
+    LP#1751368 Items-out checkin of deleted copies
+    
+    Allow deleted copies to be checked in from the patron items out list.
+    Checkin is based on copy ID instead of barcode.  Note that both values
+    are sent to the server, to reduce the number of changes in the UI code,
+    but the API inspects the ID first.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+9	4	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit ecaca5004596039b4b8893589f234899afd4f469
+Author: a. bellenir <ab@grpl.org>
+Date:   Tue Jun 19 18:25:05 2018 -0400
+
+    LP#1669856 and LP#1776557: right clicks on egGrid
+    
+    select the row if right-clicking on a row that is not selected.
+    use the defult browser context-menu when right-clicking on links in eg grids.
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+17	2	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 1cb1eb6cc636b4108f23895faa9dba5b4d010955
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Fri May 25 16:31:21 2018 -0400
+
+    LP#1730003 Courier code doesn't display in transit slip receipt preview
+    
+    Adds seed data for the transit and hold-transit slip preview in the print template editor.
+    
+    To test add {{dest_courier_code}} as a variable in either the transit slip or hold transit slip template.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+
+commit f6bdeb165f7fe06df77abb3e6207cf73d29dc799
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jun 1 13:50:21 2018 -0400
+
+    LP#1736269: Mark Missing Pieces is non-functional
+    
+    In the work to separate the item service into a reusable component, a
+    reference to $scope was left hanging around.  This causes the service to die
+    before it can complete its work.  The code using $scope does seem to be
+    necessary, so we'll have the function accept an outer_scope parameter and
+    adjust the call sites.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/cat/item/missing_pieces.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+2	2	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 34995670769210df9b54a03212ce496dae709e19
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Jan 25 14:57:40 2018 -0500
+
+    LP#1745462: avoid trying to validate empty fields
+    
+    This patch is the belt to the previous patch's suspenders and ensures
+    that the web staff client does not attempt to authority-validate headings
+    fields in the MARC editor if they're empty (i.e., no subfield values).
+    
+    To test
+    -------
+    [1] In the web staff client, create a new bib. Ensure that at least one of the
+        authority-controlled fields has no subfield values.
+    [2] Hit the Validate button.
+    [3] Note that the field(s) with empty headings show the tick
+        mark indicating that they've been "validated".
+    [4] Apply the patch and repeat steps 1 and 2. This time, empty headings
+        field should not be checked.
+    [5] Verify that validating headings that are not empty does continue
+        to work.
+    
+    Patch inspired by Mike Rylander.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+8	2	Open-ILS/web/js/ui/default/staff/cat/services/tagtable.js
+
+commit 97422ed57cdab35625e4274ebfb305180c06736c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Jan 25 14:40:47 2018 -0500
+
+    LP#1745462: guard against scanning entire authority table
+    
+    This patch ensures that if, for whatever reason, a MARC editor headings
+    validation action includes a field whose subfield values are empty, it
+    ignores any cases where the normalized heading works out to NULL or the
+    empty string. Otherwise, the database can be asked to fetch the IDs
+    of most/all records in the database, and open-ils.cstore backend can be
+    asked to store the entire result set in memory.
+    
+    To test
+    -------
+    [0] Ensure that statement logging is turned on in the PostgreSQL database.
+    [1] In the web staff client, create a new bib. Ensure that at least one of the
+        authority-controlled fields has no subfield values.
+    [2] Hit the Validate button.
+    [3] Note that the following query is logged by the database:
+    
+    SELECT "are".id AS "id" FROM authority.record_entry AS "are"
+    WHERE "are".control_set = '1'
+    AND "are".deleted = 'f' AND "are".simple_heading IS NOT NULL;
+    
+    [4] Apply the patch and repeat steps 1 and 2. This time, note that
+        no such query is recorded.
+    [5] Verify that validating headings that are not empty does continue
+        to work.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Authority.pm
+
+commit 0a9e00ed0ada77c89b4b0a10600a49e1989ccf10
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 23 11:54:34 2018 -0400
+
+    LP#1537228 Precat subsequent checkin shows route alert
+    
+    Display the 'route to cataloging' alert every time a precat copy is
+    checked in, consistent with the XUL client, instead of displaying
+    it only with the first checkin.
+    
+    As with the first checkin, if the alert is configured not to display,
+    it will not show.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 26b4105f4c688bceefa9eb595503ec89547aade1
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Jan 22 18:01:00 2018 -0500
+
+    LP#1745207: tie together copy_tag() and site() search filters
+    
+    The copy_tag() filter will now restrict itself to records that
+    have copies that both have matching copy tags and a circ_lib
+    within the site() scope.
+    
+    To test
+    -------
+    [1] Define two digital bookplate copy tags at two difference org units, e.g.,
+        "BR1 Smith" at BR1 and "BR4 Smith" at "BR4".
+    [2] Arrange that a record has items in both BR1 and BR4, and assign the "BR4 Smith"
+        copy tag to one of the BR4 items.
+    [3] On a separate record, set up a similar situation, but use BR1 instead.
+    [4] Enable the digital bookplate search option and do a bookplate search
+        for "Smith" with the scope limited to BR1.
+    [5] Note that both of the records set up in #2 and #3 are included in the results
+        set.
+    [6] Apply the patch and repeat step 5. This time, only the record set up in #3
+        should be included.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit 4fdd7e0fe6b4d79f8b18256c483dccc6a06c1f49
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Jan 11 14:12:55 2018 -0500
+
+    LP1742782 - fix display of cbox label in list of removable fields
+    
+    The checkbox input element was being displayed in the middle
+    of the label text.
+    
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+6	6	Open-ILS/src/templates/staff/cat/z3950/t_list.tt2
+
+commit 1f57c68b7dafb2c0d88ed2573b5499563b67818c
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Mar 6 10:46:49 2018 -0800
+
+    LP#1738499: barcode completion for copy buckets
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+82	13	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+
+commit 567b33f0d6410202be1bdf00d1999f88e8429843
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Thu Sep 14 11:48:31 2017 -0400
+
+    LP#1692116 - Action trigger validator fix for paid Long Overdue items
+    
+    Adds a check for a NULL xact_finish to the CircIsOpen validator. The
+    result is that overdue notification a/t events for Long Overdue items that
+    have been paid for, and the transaction closed, will be invalid.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Validator.pm
+
+commit d20caafb029b6634d8426a12cf9b004151fc4191
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Tue Jul 10 19:46:04 2018 -0400
+
+    lp1739286 default search box in Z39.50
+    
+    This change tweaks the layout of search fields in the web client Z39.50
+    interface and adds radio buttons for the default search field to auto-focus.
+    The behavior is "sticky" without the need for an explicit Save action.  If the
+    current default field is not present due to a given combination of selected
+    services, then no field will be focused by default.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+15	5	Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2
+19	0	Open-ILS/web/js/ui/default/staff/cat/services/z3950.js
+
+commit c7f84cea8607298dd254dc99d22dc031cc468ccd
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Jul 9 12:47:10 2018 -0400
+
+    LP1736243: SMS Carrier Editing in Patron Editor
+    
+    The XUL Client treats many user setting entries as
+    quoted strings. Angular needs some help to recognize
+    that it needs to convert these incoming "strings"
+    to ints for use as the data model when editing. The
+    str-to-int directive gives it this hint.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 9334ba6042635aafb088cfc3940eb4636e228212
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu May 24 09:34:17 2018 -0400
+
+    LP 1772993: Ability to blank Age Hold Protection in Vol/Copy Editor.
+    
+    Add the <NONE> option to the age-based hold protection field in the
+    web staff client Vol/Copy Editor.
+    
+    To test:
+    
+    1. Add a value for age-based hold protection to a copy.
+    
+    2. Attempt to remove the value in the copy editor.  Note that the
+       dropdown does not allow you to do so.
+    
+    3. Apply this commit.
+    
+    4. Repeat step 2.  Now there is a <NONE> option that removes the value
+       from the copy.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+
+3	2	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 3bc7e09540fab979134084f301021afe923cbaf1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 29 12:41:26 2018 -0400
+
+    Forward port 3.0.9 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.8-3.0.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.8-3.0.9-upgrade-db.sql
+
+commit 3e916d092a61b45bee1e2cc894a9898cc4e6d037
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 29 12:34:07 2018 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	4	build/i18n/po/cat.properties/ar-JO.po
+5	5	build/i18n/po/cat.properties/cs-CZ.po
+3	3	build/i18n/po/cat.properties/de-DE.po
+3	3	build/i18n/po/cat.properties/en-CA.po
+7	5	build/i18n/po/cat.properties/en-GB.po
+3	3	build/i18n/po/cat.properties/es-ES.po
+3	3	build/i18n/po/cat.properties/fi-FI.po
+3	3	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/he-IL.po
+3	3	build/i18n/po/cat.properties/hu-HU.po
+3	3	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/cat.properties/oc-FR.po
+3	3	build/i18n/po/cat.properties/pt-BR.po
+3	3	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/sv-SE.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+3	3	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	3	build/i18n/po/common.properties/en-CA.po
+5	5	build/i18n/po/common.properties/en-GB.po
+3	3	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	3	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/he-IL.po
+3	3	build/i18n/po/common.properties/hu-HU.po
+3	3	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	3	build/i18n/po/common.properties/pt-BR.po
+3	3	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/common.properties/sv-SE.po
+3	3	build/i18n/po/common.properties/tr-TR.po
+8	8	build/i18n/po/conify/ar-JO.po
+20	20	build/i18n/po/conify/cs-CZ.po
+7	7	build/i18n/po/conify/es-ES.po
+7	7	build/i18n/po/conify/hy-AM.po
+2715	2692	build/i18n/po/db.seed/ar-JO.po
+2687	2681	build/i18n/po/db.seed/cs-CZ.po
+2653	2649	build/i18n/po/db.seed/de-DE.po
+2653	2649	build/i18n/po/db.seed/en-CA.po
+2653	2649	build/i18n/po/db.seed/en-GB.po
+2653	2649	build/i18n/po/db.seed/es-ES.po
+2653	2649	build/i18n/po/db.seed/fi-FI.po
+2653	2649	build/i18n/po/db.seed/fr-CA.po
+2653	2649	build/i18n/po/db.seed/he-IL.po
+2653	2649	build/i18n/po/db.seed/hu-HU.po
+2653	2649	build/i18n/po/db.seed/hy-AM.po
+2653	2649	build/i18n/po/db.seed/oc-FR.po
+2653	2649	build/i18n/po/db.seed/pt-BR.po
+2653	2649	build/i18n/po/db.seed/ru-RU.po
+2653	2649	build/i18n/po/db.seed/sv-SE.po
+2653	2649	build/i18n/po/db.seed/tr-TR.po
+38	27	build/i18n/po/lang.dtd/ar-JO.po
+119	75	build/i18n/po/lang.dtd/cs-CZ.po
+26	25	build/i18n/po/lang.dtd/de-DE.po
+38	26	build/i18n/po/lang.dtd/en-CA.po
+38	26	build/i18n/po/lang.dtd/en-GB.po
+39	25	build/i18n/po/lang.dtd/es-ES.po
+39	25	build/i18n/po/lang.dtd/fi-FI.po
+26	25	build/i18n/po/lang.dtd/fr-CA.po
+26	25	build/i18n/po/lang.dtd/he-IL.po
+26	25	build/i18n/po/lang.dtd/hu-HU.po
+90	48	build/i18n/po/lang.dtd/hy-AM.po
+26	25	build/i18n/po/lang.dtd/oc-FR.po
+26	25	build/i18n/po/lang.dtd/pt-BR.po
+26	25	build/i18n/po/lang.dtd/ru-RU.po
+26	25	build/i18n/po/lang.dtd/sv-SE.po
+26	25	build/i18n/po/lang.dtd/tr-TR.po
+138	136	build/i18n/po/tpac/ar-JO.po
+81	81	build/i18n/po/tpac/cs-CZ.po
+71	71	build/i18n/po/tpac/de-DE.po
+71	71	build/i18n/po/tpac/en-CA.po
+893	824	build/i18n/po/tpac/en-GB.po
+71	71	build/i18n/po/tpac/es-ES.po
+71	71	build/i18n/po/tpac/fi-FI.po
+71	71	build/i18n/po/tpac/fr-CA.po
+71	71	build/i18n/po/tpac/he-IL.po
+71	71	build/i18n/po/tpac/hu-HU.po
+71	71	build/i18n/po/tpac/hy-AM.po
+71	71	build/i18n/po/tpac/oc-FR.po
+71	71	build/i18n/po/tpac/pt-BR.po
+71	71	build/i18n/po/tpac/ru-RU.po
+71	71	build/i18n/po/tpac/sv-SE.po
+71	71	build/i18n/po/tpac/tr-TR.po
+7	7	build/i18n/po/vandelay/ar-JO.po
+12	12	build/i18n/po/vandelay/cs-CZ.po
+5	5	build/i18n/po/vandelay/de-DE.po
+5	5	build/i18n/po/vandelay/es-ES.po
+5	5	build/i18n/po/vandelay/hy-AM.po
+456	361	build/i18n/po/webstaff/ar-JO.po
+467	372	build/i18n/po/webstaff/cs-CZ.po
+445	356	build/i18n/po/webstaff/en-GB.po
+522	433	build/i18n/po/webstaff/es-ES.po
+448	356	build/i18n/po/webstaff/hy-AM.po
+445	356	build/i18n/po/webstaff/ru-RU.po
+
+commit 813ff377f4d60376877dc63099049409a9f46ebe
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 29 12:29:47 2018 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+17	17	build/i18n/po/webstaff/webstaff.pot
