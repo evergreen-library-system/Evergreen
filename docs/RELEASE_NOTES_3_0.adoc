@@ -3,6 +3,67 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.10
+----------------
+This release contains bug fixes improving on Evergreen 3.0.9.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes right-click issues with the Web client grids
+* Fixes an issue with the Default SMS Carrier in the patron edit form.
+* Fixes an issue that allowed overdue notices to be sent to a patron
+whose long overdue item has been paid for.
+* Checking in precat items now displays the "Route to Cataloging" alert each
+time the item is checked in.
+* Fixes an issue in which the Adjust to Zero feature
+does not close a checked-in lost circ.
+* Deleted copies that are still checked out can now be checked in.
+* Fixes a mislabeled column in the patron checkout grid.
+* Fixes an error with the missing pieces functionality.
+* Courier codes now display in the transit slip receipt preview.
+* The Item Status grid now displays OU shortnames instead of full names
+for the "Circulation Library" column.
+* The Volume/Copy editor now allows users to remove a value from the Age
+Hold Protection field.
+* Barcode completion now works in copy buckets.
+* The Z39.50 interface now notices when another record has been marked
+for overlay.
+* Fixes a display issue for the Remove MARC Field Groups checkboxes in
+the Z39.50 interface.
+* Fixes a performance issue for the Validate button in the MARC Editor.
+* Fixes an incorrect close tag in the Print Item Labels toolbar.
+* Better scoping of copy tags in search results.
+* Electronic Resource links now open in a new tab.
+* Fixes an issue with the fiscal year close-out operation.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.10 point release of
+Evergreen:
+
+* A. Bellenir
+* Adam Bowling
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
+
 Evergreen 3.0.9
 ---------------
 This release contains bug fixes improving on Evergreen 3.0.8.  Note that
