@@ -37,6 +37,7 @@ the Z39.50 interface.
 * Better scoping of copy tags in search results.
 * Electronic Resource links now open in a new tab.
 * Fixes an issue with the fiscal year close-out operation.
+* Improves serials item deletes.
 
 Acknowledgements
 ~~~~~~~~~~~~~~~~
