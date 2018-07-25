@@ -17,12 +17,19 @@ Bug fixes
 whose long overdue item has been paid for.
 * Checking in precat items now displays the "Route to Cataloging" alert each
 time the item is checked in.
+* Fixes an issue where alerts that had been cleared by a check-in continued
+to display.
 * Fixes an issue in which the Adjust to Zero feature
 does not close a checked-in lost circ.
 * Deleted copies that are still checked out can now be checked in.
 * Fixes a mislabeled column in the patron checkout grid.
+* Grocery bills are no longer styled the same way as overdue bills.
 * Fixes an error with the missing pieces functionality.
 * Courier codes now display in the transit slip receipt preview.
+* Fixes several issues related to adding volumes.
+* Fixes several issues related to empty volumes.
+* Fixes several issues related to item and volume transfers.
+* Fixes several issues with checkboxes in the volume/copy editor.
 * The Item Status grid now displays OU shortnames instead of full names
 for the "Circulation Library" column.
 * The Volume/Copy editor now allows users to remove a value from the Age
@@ -35,6 +42,7 @@ the Z39.50 interface.
 * Fixes a performance issue for the Validate button in the MARC Editor.
 * Fixes an incorrect close tag in the Print Item Labels toolbar.
 * Better scoping of copy tags in search results.
+* Prevents sending invalid search.highlight_display_fields calls.
 * Electronic Resource links now open in a new tab.
 * Fixes an issue with the fiscal year close-out operation.
 
