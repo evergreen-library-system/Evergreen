@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1115', :eg_version);
 
 INSERT INTO permission.perm_list (id,code,description) VALUES ( 607, 'EMERGENCY_CLOSING', 'Create and manage Emergency Closings');
 
