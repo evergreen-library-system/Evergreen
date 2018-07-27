@@ -373,7 +373,7 @@ angular.module('egCoreMod')
         }
 
         var deferred = $q.defer();
-        service.setBrowserItem(key, value).then(
+        return service.setBrowserItem(key, value).then(
             function(val) {deferred.resolve(val);},
 
             function() { // Hatch error
