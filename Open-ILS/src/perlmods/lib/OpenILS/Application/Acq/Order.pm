@@ -3272,16 +3272,15 @@ sub autocancel_lineitem {
     foreach my $lid ( @{ $all_lids } ) {
         if (! $lid->cancel_reason ) {
             $all_lids_are_canceled = 0;
-        }
-        if ($lid->cancel_reason) {
-            if ($U->is_true($lid->cancel_reason->keep_debits)) {
+        } elsif (
+            !$U->is_true($candidate_cancel_reason->keep_debits) &&
+             $U->is_true($lid->cancel_reason->keep_debits)) {
                 $candidate_cancel_reason = $lid->cancel_reason;
-            }
         }
     }
     my $cancel_result;
     if ($all_lids_are_canceled) {
-        eval { $cancel_result = cancel_lineitem($mgr, $li_id, $candidate_cancel_reason); };
+        $cancel_result = cancel_lineitem($mgr, $li_id, $candidate_cancel_reason);
     }
     return $cancel_result;
 }
