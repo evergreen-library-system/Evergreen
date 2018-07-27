@@ -1,8 +1,8 @@
 BEGIN;
 
 INSERT INTO permission.perm_list (id, code, description) VALUES
- (607, 'APPLY_WORKSTATION_SETTING',
-   oils_i18n_gettext(607, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description'));
+ (608, 'APPLY_WORKSTATION_SETTING',
+   oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description'));
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
