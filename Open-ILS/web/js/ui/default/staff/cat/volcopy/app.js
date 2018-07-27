@@ -493,7 +493,7 @@ function(egCore , $q) {
                     '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-3"><input class="form-control" type="number" min="1" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
-                '<div class="col-xs-4"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
+                '<div class="col-xs-3"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
         scope: { focusNext: "=", copy: "=", callNumber: "=", index: "@", record: "@" },
@@ -584,6 +584,7 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-2">'+
+                    '<button style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
                     '<select ng-disabled="record == 0" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
@@ -602,7 +603,7 @@ function(egCore , $q) {
                 '</div>'+
             '</div>',
 
-        scope: {focusNext: "=", allcopies: "=", copies: "=", onlyVols: "=", record: "@" },
+        scope: {focusNext: "=", allcopies: "=", copies: "=", onlyVols: "=", record: "@", struct:"=" },
         controller : ['$scope','itemSvc','egCore',
             function ( $scope , itemSvc , egCore ) {
                 $scope.callNumber =  $scope.copies[0].call_number();
@@ -759,6 +760,34 @@ function(egCore , $q) {
                 $scope.copy_count = $scope.copies.length;
                 $scope.orig_copy_count = $scope.copy_count;
 
+                $scope.removeCN = function(){
+                    var cn = $scope.callNumber;
+                    if (cn.not_ephemeral) return;  // can't delete existing volumes
+
+                    angular.forEach(Object.keys($scope.struct), function(k){
+                        angular.forEach($scope.struct[k], function(cp){
+                            var struct_cn = cp.call_number();
+                            if (struct_cn.id() == cn.id()){
+                                console.log("X'ed CN id" + cn.id() + " and struct CN id match!");
+                                // remove any copies in $scope.struct[k]
+                                angular.forEach($scope.copies, function(c){
+                                    var idx = $scope.allcopies.indexOf(c);
+                                    $scope.allcopies.splice(idx, 1);
+                                });
+
+                                $scope.copies = [];
+                                // remove added vol:
+                                delete $scope.struct[k];
+                            }
+                        });
+                    });
+
+                    // manually decrease cn_count numeric input
+                    var cn_spinner = $("input[name='cn_count_lib"+ cn.owning_lib() +"']");
+                    cn_spinner.val(parseInt(cn_spinner.val()) - 1);
+
+                }
+
                 $scope.changeCPCount = function () {
                     while ($scope.copy_count > $scope.copies.length) {
                         var cp = itemSvc.generateNewCopy(
@@ -801,11 +830,11 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
+                '<div class="col-xs-1"><input name="cn_count_lib{{lib}}" ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
                     '<eg-vol-row only-vols="onlyVols" record="{{record}}"'+
                         'ng-repeat="(cn,copies) in struct" '+
-                        'focus-next="focusNextFirst" copies="copies" allcopies="allcopies">'+
+                        'focus-next="focusNextFirst" copies="copies" allcopies="allcopies" struct="struct">'+
                     '</eg-vol-row>'+
                 '</div>'+
             '</div>',
@@ -988,6 +1017,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         );
 
         $scope.data.addCopy(cp);
+
+        // manually increase cn_count numeric input
+        var cn_spinner = $("input[name='cn_count_lib"+ newLib.id() +"']");
+        cn_spinner.val(parseInt(cn_spinner.val()) + 1);
 
         if (!$scope.defaults.classification) {
             egCore.org.settings(
