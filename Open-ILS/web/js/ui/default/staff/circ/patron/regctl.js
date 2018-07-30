@@ -637,6 +637,7 @@ angular.module('egCoreMod')
             addr.id == patron.mailing_address.id);
         addr._is_billing = (patron.billing_address && 
             addr.id == patron.billing_address.id);
+        addr.pending = addr.pending === 't';
     }
 
     /*
@@ -677,6 +678,14 @@ angular.module('egCoreMod')
 
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
+
+        // Link replaced address to its pending address.
+        angular.forEach(patron.addresses, function(addr) {
+            if (addr.replaces) {
+                addr._replaces = patron.addresses.filter(
+                    function(a) {return a.id == addr.replaces})[0];
+            }
+        });
 
         service.get_linked_addr_users(patron.addresses);
 
@@ -988,6 +997,7 @@ angular.module('egCoreMod')
             patron.addresses().push(addr);
             addr.valid(addr.valid() ? 't' : 'f');
             addr.within_city_limits(addr.within_city_limits() ? 't' : 'f');
+            addr.pending(addr.pending() ? 't' : 'f');
             if (addr_hash._is_mailing) patron.mailing_address(addr);
             if (addr_hash._is_billing) patron.billing_address(addr);
         });
@@ -1452,6 +1462,37 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
         $scope.patron.addresses = addresses;
     } 
+
+    $scope.approve_pending_address = function(addr) {
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.pending_address.approve',
+            egCore.auth.token(), addr.id
+        ).then(function(replaced_id) {
+            var evt = egCore.evt.parse(replaced_id);
+            if (evt) { alert(evt); return; }
+
+            // Remove the pending address and the replaced address
+            // from the local list of patron addresses.
+            var addresses = [];
+            angular.forEach($scope.patron.addresses, function(a) {
+                if (a.id != addr.id && a.id != replaced_id) {
+                    addresses.push(a);
+                }
+            });
+            $scope.patron.addresses = addresses;
+
+            // Fetch a fresh copy of the modified address from the server.
+            // and add it back to the list.
+            egCore.pcrud.retrieve('aua', replaced_id, {}, {authoritative: true})
+            .then(null, null, function(new_addr) {
+                new_addr = egCore.idl.toHash(new_addr);
+                patronRegSvc.ingest_address($scope.patron, new_addr);
+                $scope.patron.addresses.push(new_addr);
+            });
+        });
+    }
 
     $scope.post_code_changed = function(addr) { 
         egCore.net.request(

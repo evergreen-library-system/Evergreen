@@ -729,6 +729,35 @@ within the "form" by name for validation.
       </div>
   </div>
 
+  <div ng-if="addr.pending" class="row">
+    <div class="col-md-6 patron-reg-pending-address">
+      <div class="row">
+        <div class="col-md-6">
+          [% l('This is a pending address') %]
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-success" 
+            ng-click="approve_pending_address(addr)">[% l('Approve') %]</button>
+        </div>
+      </div>
+      <div class="row" ng-if="addr._replaces">
+        <div class="col-md-6">
+          [% | l(
+            '{{addr._replaces.street1}}',
+            '{{addr._replaces.street2}}',
+            '<br/>'
+            '{{addr._replaces.city}}',
+            '{{addr._replaces.state}}',
+            '{{addr._replaces.post_code}}') %]
+            Replaces: [_1] [_2] [_3] [_4], [_5] [_6]
+          [% END %]
+        </div>
+      </div>
+    </div>
+    <!-- make sure we occupy the entire row -->
+    <div class="col-md-6"> </div>
+  </div>
+
   <!-- ADDRESS_TYPE -->
   <div class="row reg-field-row" ng-show="show_field('aua.address_type')">
     [% draw_field_label('aua', 'address_type') %]
