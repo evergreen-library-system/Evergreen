@@ -41,10 +41,13 @@ sub create_closed_date {
 sub update_closed_date {
     my $aoucd = shift;
     $aoucd->reason($aoucd->reason . ' modified');
-    return $apputils->simplereq(
+
+    my $cd = $apputils->simplereq(
         'open-ils.actor',
         'open-ils.actor.org_unit.closed.update',
         $script->authtoken, $aoucd);
+
+    return ref $cd eq 'Fieldmapper::actor::org_unit::closed_date';
 }
 
 sub delete_closed_date {
