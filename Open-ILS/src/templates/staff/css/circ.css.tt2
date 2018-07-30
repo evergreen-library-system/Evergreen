@@ -168,6 +168,13 @@ but the ones I'm finding aren't quite cutting it..*/
   color: red;
 }
 
+.patron-reg-pending-address {
+  border:2px dashed #d9e8f9;
+  -moz-border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+
 /* -- end patron registration -- */
 
 [%# 
