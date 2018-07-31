@@ -250,6 +250,8 @@ angular.module('egCoreMod')
     // get the value for a stored item
     service.getItem = function(key) {
 
+        console.debug('getting item: ' + key);
+
         if (!service.keyStoredInBrowser(key)) {
             return service.getServerItem(key);
         }
@@ -544,19 +546,31 @@ angular.module('egCoreMod')
         var foundValues = {};
         return egNet.request(
             'open-ils.actor',
-            'open-ils.actor.settings.retrieve',
+            'open-ils.actor.settings.retrieve.atomic',
             keys, service.auth.token()
         ).then(
-            function() { return foundValues; }, 
-            function() {},
-            function(setting) {
-                var val = setting.value;
-                // The server returns null for undefined settings.
-                // Treat as undefined locally for backwards compat.
-                service.keyCache[setting.name] = 
-                    foundValues[setting.name] = 
-                    (val === null) ? undefined : val;
-            }
+            function(settings) { 
+                //return foundValues; 
+
+                var deferred = $q.defer();
+                function checkOne(setting) {
+                    if (!setting) {
+                        deferred.resolve(foundValues);
+                        return;
+                    }
+                    service.handleServerItemResponse(setting)
+                    .then(function(resp) {
+                        if (resp !== undefined) {
+                            foundValues[setting.name] = resp;
+                        }
+                        settings.shift();
+                        checkOne(settings[0]);
+                    });
+                }
+
+                checkOne(settings[0]);
+                return deferred.promise;
+            },
         );
     }
 
