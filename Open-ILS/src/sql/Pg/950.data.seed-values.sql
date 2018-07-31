@@ -1906,8 +1906,8 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
     'Delete copy alerts', 'ppl', 'description' )),
  ( 607, 'EMERGENCY_CLOSING', oils_i18n_gettext( 607,
     'Create and manage Emergency Closings', 'ppl', 'description' )),
- (607, 'APPLY_WORKSTATION_SETTING',
-   oils_i18n_gettext(607, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description'))
+ (608, 'APPLY_WORKSTATION_SETTING',
+   oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description'))
 ;
 
 
@@ -18426,6 +18426,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'circ.checkout.strict_barcode', 'circ', 'bool',
+    oils_i18n_gettext(
+        'circ.checkout.strict_barcode',
+        'Checkout: Strict Barcode',
+        'cwst', 'label'
+    )
+), (
     'cat.holdings_show_copies', 'cat', 'bool',
     oils_i18n_gettext(
         'cat.holdings_show_copies',
@@ -18440,10 +18447,38 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'cat.holdings_show_empty_org', 'cat', 'bool',
+    oils_i18n_gettext(
+        'cat.holdings_show_empty_org',
+        'Holdings View Show Empty Orgs',
+        'cwst', 'label'
+    )
+), (
     'cat.holdings_show_vols', 'cat', 'bool',
     oils_i18n_gettext(
         'cat.holdings_show_vols',
         'Holdings View Show Volumes',
+        'cwst', 'label'
+    )
+), (
+    'cat.copy.defaults', 'cat', 'object',
+    oils_i18n_gettext(
+        'cat.copy.defaults',
+        'Copy Edit Default Values',
+        'cwst', 'label'
+    )
+), (
+    'cat.printlabels.default_template', 'cat', 'string',
+    oils_i18n_gettext(
+        'cat.printlabels.default_template',
+        'Print Label Default Template',
+        'cwst', 'label'
+    )
+), (
+    'cat.printlabels.templates', 'cat', 'object',
+    oils_i18n_gettext(
+        'cat.printlabels.templates',
+        'Print Label Templates',
         'cwst', 'label'
     )
 ), (
