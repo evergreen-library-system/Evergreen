@@ -1,6 +1,6 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Volume/Copy Editor"); 
+  ctx.page_title = l("Volume/Item Editor"); 
   ctx.page_app = "egVolCopy";
 %]
 

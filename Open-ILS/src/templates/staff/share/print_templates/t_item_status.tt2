@@ -2,7 +2,7 @@
 Template for printing copies from the Item Status page. Available
 macros include:
 
-copies - list; each entry is a fleshed, flattened copy record
+copies - list; each entry is a fleshed, flattened item record
 with a variety of keys, including
 
   barcode

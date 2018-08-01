@@ -63,7 +63,7 @@
 </form>
 
 <div clas="row" ng-if="copyNotFound">
-  <div class="col-md-6 alert alert-danger">[% l('Copy Not Found') %]</div>
+  <div class="col-md-6 alert alert-danger">[% l('Item Not Found') %]</div>
 </div>
 
 <eg-grid
@@ -80,7 +80,7 @@
   <eg-grid-field label="[% l('CN Suffix') %]" path="copy.call_number.suffix.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"    path="copy.location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       path="title" visible></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]" path="copy.status.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="copy.status.name" visible></eg-grid-field>
 </eg-grid>
 
 <div class="flex-row pad-vert">

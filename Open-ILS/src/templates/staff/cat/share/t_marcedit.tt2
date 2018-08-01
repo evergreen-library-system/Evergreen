@@ -161,8 +161,8 @@
           </div>
           <div class="col-md-4">
             <ul>
-               <li>[% l('Copy Current Row Above: CTRL+Up') %]</li>
-               <li>[% l('Copy Current Row Below: CTRL+Down') %]</li>
+               <li>[% l('Item Current Row Above: CTRL+Up') %]</li>
+               <li>[% l('Item Current Row Below: CTRL+Down') %]</li>
                <li>[% l('Add Subfield: CTRL+D or CTRL+I') %]</li>
                <li>[% l('Remove Row: CTRL+Del') %]</li>
             </ul>

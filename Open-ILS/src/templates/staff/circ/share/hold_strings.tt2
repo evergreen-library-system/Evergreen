@@ -3,7 +3,7 @@
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
 s['HOLD_STATUS_-1'] = "[% l('Error (-1)') %]";
-s.HOLD_STATUS_1 = "[% l('Waiting for Copy') %]";
+s.HOLD_STATUS_1 = "[% l('Waiting for Item') %]";
 s.HOLD_STATUS_2 = "[% l('Waiting for Capture') %]";
 s.HOLD_STATUS_3 = "[% l('In Transit') %]";
 s.HOLD_STATUS_4 = "[% l('Ready for Pickup') %]";

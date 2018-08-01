@@ -83,7 +83,7 @@
     <div class="row pad-vert" ng-if="template_controls && defaults.show_vol_template_controls">
         <div class="row">
             <div class="col-xs-12">
-                <h4 class="center-block">[% l('Copy Attributes') %]</h4>
+                <h4 class="center-block">[% l('Item Attributes') %]</h4>
             </div>
         </div>
     </div>
@@ -382,14 +382,14 @@
                       ng-disabled="!defaults.copy_notes"
                       ng-click="copy_notes_dialog(workingGridControls.selectedItems())"
                       type="button">
-                        [% l('Copy Notes') %]
+                        [% l('Item Notes') %]
                     </button>
                     <button
                       class="btn btn-default"
                       ng-disabled="!defaults.attributes.alerts"
                       ng-click="copy_alerts_dialog(workingGridControls.selectedItems())"
                       type="button">
-                        [% l('Copy Alerts') %]
+                        [% l('Item Alerts') %]
                     </button>
                 </div>
             </div>
@@ -416,7 +416,7 @@
                       ng-disabled="!defaults.copy_tags"
                       ng-click="copy_tags_dialog(workingGridControls.selectedItems())"
                       type="button">
-                        [% l('Copy Tags') %]
+                        [% l('Item Tags') %]
                     </button>
                 </div>
             </div>

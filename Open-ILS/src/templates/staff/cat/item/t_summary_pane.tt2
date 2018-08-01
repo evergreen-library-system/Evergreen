@@ -41,7 +41,7 @@
 	<div class="flex-cell">[% l('Acquisition Cost') %]</div>
     <div class="flex-cell well">{{copy.cost()}}</div>
 
-    <div class="flex-cell">[% l('Copy Location') %]</div>
+    <div class="flex-cell">[% l('Shelving Location') %]</div>
     <div
       class="flex-cell well"
       title="[% l('Holdable') %]: {{copy.location().holdable() | boolText}} / [% l('OPAC Visible') %]: {{copy.location().opac_visible() | boolText}}"
@@ -126,7 +126,7 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Copy ID') %]</div>
+    <div class="flex-cell">[% l('Item ID') %]</div>
     <div class="flex-cell well">{{copy.id()}}</div>
 
     <div class="flex-cell">[% l('Holdable') %]</div>
@@ -190,7 +190,7 @@
   </div>
 
   <div class="flex-row">
-    <div class="flex-cell">[% l('Copy Alerts') %]</div>
+    <div class="flex-cell">[% l('Item Alerts') %]</div>
     <div class="flex-cell" id="item-status-alert-msg">
       <button class="btn btn-default" ng-click="addCopyAlerts(copy.id())" >[% l('Add') %]</button>
       <button class="btn btn-default" ng-disabled="!copy_alert_count" ng-click="manageCopyAlerts(copy.id())" >[% l('Manage') %]</button>

@@ -190,7 +190,7 @@ grid[name="-none-"] * label { color: black; }
 }
 
 /*
- * Volume / Copy Editor Styles
+ * Volume / Item Editor Styles
  * /
 
 /* Wrapping in bootstrap style can separate radio buttons from their labels. */

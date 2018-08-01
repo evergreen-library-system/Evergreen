@@ -121,7 +121,7 @@ not sure what's up, there. -->
       </label>
     </div>
     <div class="form-group" style="margin-left:10px">
-      <label for="bill-receipt-copies">[% l('# Copies') %]</label>
+      <label for="bill-receipt-copies">[% l('# Items') %]</label>
       <input type="number" min="1" style="width:5em"
         ng-model="receipt_count"
         class="form-control" id="bill-receipt-copies"/>

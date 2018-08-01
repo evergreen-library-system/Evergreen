@@ -24,7 +24,7 @@
   <div class="col-md-6">
     <div class="pull-right">
     <button type="button" class="btn btn-default" ng-click="selectedHoldingsVolCopyAdd()">
-        [% l('Add Copies') %]
+        [% l('Add Items') %]
     </button>
     <div class="btn-group" uib-dropdown dropdown-append-to-body>
         <button id="serials-button" type="button" class="btn btn-default" uib-dropdown-toggle>

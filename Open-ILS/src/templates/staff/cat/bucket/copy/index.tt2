@@ -1,6 +1,6 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Copy Buckets"); 
+  ctx.page_title = l("Item Buckets"); 
   ctx.page_app = "egCatCopyBuckets";
   ctx.page_ctrl = "CopyBucketCtrl";
 %]
@@ -38,7 +38,7 @@ changing routes with each tab selection anyway.
 <ul class="nav nav-tabs">
   <li ng-class="{active : tab == 'pending'}">
     <a href="./cat/bucket/copy/pending/{{bucketSvc.currentBucket.id()}}">
-        [% l('Pending Copies') %]
+        [% l('Pending Items') %]
         <span ng-cloak>({{bucketSvc.pendingList.length}})</span>
     </a>
   </li>

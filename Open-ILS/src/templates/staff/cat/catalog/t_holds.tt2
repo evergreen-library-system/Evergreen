@@ -25,12 +25,12 @@
 	<eg-grid-menu-item handler="transfer_holds_to_marked"
       label="[% l('Transfer All Title Holds') %]"></eg-grid-menu-item> -->
 
-    <eg-grid-action handler="grid_actions.show_recent_circs_wide" group="[% l('Copy') %]"
+    <eg-grid-action handler="grid_actions.show_recent_circs_wide" group="[% l('Item') %]"
       label="[% l('Show Last Few Circulations') %]"></eg-grid-action>
     <eg-grid-action handler="grid_actions.show_patrons_wide" group="[% l('Patron') %]"
       label="[% l('Retrieve Patron') %]"></eg-grid-action>
     <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.set_copy_quality_wide"
-      label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+      label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
     <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.edit_pickup_lib_wide"
       label="[% l('Edit Pickup Library') %]"></eg-grid-action>
     <eg-grid-action group="[% l('Hold') %]" handler="grid_actions.edit_notify_prefs_wide"
@@ -47,9 +47,9 @@
       label="[% l('Un-Set Top of Queue') %]"></eg-grid-action>
     <eg-grid-action handler="grid_actions.transfer_to_marked_title_wide" group="[% l('Hold') %]"
       label="[% l('Transfer To Marked Title') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.mark_damaged_wide" group="[% l('Copy') %]"
+    <eg-grid-action handler="grid_actions.mark_damaged_wide" group="[% l('Item') %]"
       label="[% l('Mark Item Damaged') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.mark_missing_wide" group="[% l('Copy') %]"
+    <eg-grid-action handler="grid_actions.mark_missing_wide" group="[% l('Item') %]"
       label="[% l('Mark Item Missing') %]"></eg-grid-action>
     <eg-grid-action handler="grid_actions.retarget_wide" group="[% l('Hold') %]"
       label="[% l('Find Another Target') %]"></eg-grid-action>
@@ -57,7 +57,7 @@
       label="[% l('Cancel Hold') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
-    <eg-grid-field label="[% l('Current Copy') %]" 
+    <eg-grid-field label="[% l('Current Item') %]" 
       path='hold.cp_barcode'>
       <a href="./cat/item/{{item.hold.cp_id}}/summary" target="_self">
         {{item.hold.cp_barcode}}
@@ -79,7 +79,7 @@
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Author') %]" path='hold.author'></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Copies') %]" path='hold.potentials'></eg-grid-field>
+  <eg-grid-field label="[% l('Potential Items') %]" path='hold.potentials'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
   <eg-grid-field label="[% l('Queue Position') %]" path='hold.relative_queue_position' hidden></eg-grid-field>
@@ -91,7 +91,7 @@
     <eg-grid-field path='hold.rusr_id' label="[% l('Requestor ID') %]" hidden></eg-grid-field>
     <eg-grid-field path='hold.rusr_usrname' label="[% l('Requestor Username') %]" hidden></eg-grid-field>
 
-   <eg-grid-field label="[% l('Copy Status') %]" path="hold.cs_name" hidden></eg-grid-field>
+   <eg-grid-field label="[% l('Item Status') %]" path="hold.cs_name" hidden></eg-grid-field>
 
     <eg-grid-field path='hold.acnp_label' label="[% l('CN Prefix') %]" hidden></eg-grid-field>
     <eg-grid-field path='hold.acns_label' label="[% l('CN Suffix') %]" hidden></eg-grid-field>

@@ -21,8 +21,8 @@ to this template includes:
 * transasctions - a list of transactions, each of which
   contains:
     xact.summary - information about the transaction
-    xact.title - Copy title
-    xact.copy_barcode - Copy barcode
+    xact.title - Item title
+    xact.copy_barcode - Item barcode
 -->
 Welcome to {{current_location.name}}!<br/>
 You have the following bills:

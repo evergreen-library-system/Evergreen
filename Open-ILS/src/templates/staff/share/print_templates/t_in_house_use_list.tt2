@@ -5,13 +5,13 @@ includes:
 in_house_uses - list; each entry contains:
 
   * num_uses - number of uses
-  * copy - data for a copy, including the following keys:
+  * copy - data for an item, including the following keys:
 
               barcode : barcode
               location.name : shelving location
               call_number.label : call number
 
-  * title - copy title
+  * title - item title
 -->
 <div>
   <div>[% l('You marked the following in-house items used:') %]</div>

@@ -11,7 +11,7 @@
 <div class="flex-row">
   <div class="flex-cell">[% l('Hold Type') %]</div>
   <div class="flex-cell well">{{hold.hold_type()}}<span ng-if="hold.hold_type() == 'P'">&nbsp;-&nbsp;{{part.label()}}</span></div>
-  <div class="flex-cell">[% l('Current Copy') %]</div>
+  <div class="flex-cell">[% l('Current Item') %]</div>
   <div class="flex-cell well">
     <a href="./cat/item/{{hold.current_copy().id()}}" target="_self">
       {{hold.current_copy().barcode()}}
@@ -33,7 +33,7 @@
   <div class="flex-cell well">{{hold.current_shelf_lib().shortname()}}</div>
   <div class="flex-cell">[% l('Current Copy Location') %]</div>
   <div class="flex-cell well">{{hold.current_copy().location().name()}}</div>
-  <div class="flex-cell">[% l('Force Copy Quality') %]</div>
+  <div class="flex-cell">[% l('Force Item Quality') %]</div>
   <div class="flex-cell well">{{hold.mint_condition() == 't'}}</div>
 </div>
 <div class="flex-row">

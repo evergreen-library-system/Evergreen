@@ -47,7 +47,7 @@
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode"></span>
-              <span>[% l('Search for Copies by Barcode') %]</span>
+              <span>[% l('Search for Items by Barcode') %]</span>
             </a>
           </li>
           <li>
@@ -272,7 +272,7 @@
           <li>
             <a href="./cat/bucket/copy/view" target="_self">
               <span class="glyphicon glyphicon-list-alt"></span>
-              [% l('Copy Buckets') %]
+              [% l('Item Buckets') %]
             </a>
           </li>
           <li class="divider"></li>

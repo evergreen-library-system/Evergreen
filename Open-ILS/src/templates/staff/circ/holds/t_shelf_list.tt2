@@ -29,7 +29,7 @@
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.set_copy_quality_wide"
-    label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+    label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_pickup_lib_wide"
     label="[% l('Edit Pickup Library') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_notify_prefs_wide"
@@ -59,7 +59,7 @@
     label="[% l('Uncancel Hold') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
-  <eg-grid-field label="[% l('Current Copy') %]" 
+  <eg-grid-field label="[% l('Current Item') %]" 
     path='hold.cp_barcode'>
     <a href="./cat/item/{{item.hold.cp_id}}/summary" target="_self">
       {{item.hold.cp_barcode}}
@@ -80,11 +80,11 @@
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Author') %]" path='hold.author'></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Copies') %]" path='hold.potentials'></eg-grid-field>
+  <eg-grid-field label="[% l('Potential Items') %]" path='hold.potentials'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
   <eg-grid-field label="[% l('Queue Position') %]" path='hold.relative_queue_position' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]" path="hold.cs_name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="hold.cs_name" hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Fulfillment Date/Time') %]" path='hold.fulfillment_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Time') %]" path='hold.checkin_time' datatype="timestamp" hidden></eg-grid-field>

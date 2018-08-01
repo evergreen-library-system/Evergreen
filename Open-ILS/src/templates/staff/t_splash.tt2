@@ -54,7 +54,7 @@
           </div>
           <div>
             <img src="[% ctx.media_prefix %]/images/portal/bucket.png"/>
-            <a target="_self" href="./cat/bucket/copy/">[% l('Copy Buckets') %]</a>
+            <a target="_self" href="./cat/bucket/copy/">[% l('Item Buckets') %]</a>
           </div>
         </div>
       </div>

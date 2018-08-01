@@ -24,7 +24,7 @@
 
   <!--
   need to decide if these are necessary here w/ inline links
-  to record and copy details (though they could be hidden).
+  to record and item details (though they could be hidden).
   it's misleading to allow the user to select multiple bills
   but only open the link to one
 
@@ -75,9 +75,9 @@
       {{item.copy_barcode}}
     </a>
   </eg-grid-field>
-  <!-- fetch the copy ID so we can link to it.  hide it by default -->
+  <!-- fetch the item ID so we can link to it.  hide it by default -->
   <eg-grid-field path="circulation.target_copy.id" 
-    label="[% l('Copy ID') %]" name="copy_id" required hidden>
+    label="[% l('Item ID') %]" name="copy_id" required hidden>
   </eg-grid-field>
 
   <eg-grid-field path="circulation.target_copy.circ_modifier" 

@@ -26,7 +26,7 @@
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.set_copy_quality"
-    label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+    label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_pickup_lib"
     label="[% l('Edit Pickup Library') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_notify_prefs"
@@ -102,7 +102,7 @@
   <eg-grid-field name="copy_id" 
     path="current_copy.id" hidden required></eg-grid-field>
   <eg-grid-field name="barcode" 
-    path="current_copy.barcode" label="[% l('Current Copy') %]">
+    path="current_copy.barcode" label="[% l('Current Item') %]">
     <a href="./cat/item/{{item.copy_id}}/summary" target="_self">
       {{item.barcode}}
     </a>
@@ -110,9 +110,9 @@
   <eg-grid-field name="parts" path="part.label"
     label="[% l('Parts') %]"></eg-grid-field>
   <eg-grid-field name="copy_status" path="current_copy.status.name" 
-    label="[% l('Copy Status') %]"></eg-grid-field>
+    label="[% l('Item Status') %]"></eg-grid-field>
   <eg-grid-field name="copy_circ_lib_id" path="current_copy.circ_lib.id" 
-    required hidden label="[% l('Copy Circ Lib ID') %]"></eg-grid-field>
+    required hidden label="[% l('Item Circ Lib ID') %]"></eg-grid-field>
   <eg-grid-field name="notes" path="notes.body" 
     hidden required label="[% l('Hold Notes') %]"></eg-grid-field>
   <eg-grid-field name="patron_id" path="usr.id" hidden required></eg-grid-field>
@@ -145,7 +145,7 @@
     hidden required label="[% l('Phone Notify') %]"></eg-grid-field>
   <eg-grid-field name="staff_hold" path="_is_staff_hold" datatype="bool"
     required hidden label="[% l('Staff Hold') %]"></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Copies') %]" 
+  <eg-grid-field label="[% l('Potential Items') %]" 
     path='potential_copies'></eg-grid-field>
   <eg-grid-field label="[% l('Queue Position') %]" 
     path='queue_position' hidden></eg-grid-field>
@@ -153,7 +153,7 @@
   </eg-grid-field>
   <eg-grid-field label="[% l('Circ Modifier') %]" path='current_copy.circ_modifier' hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden required>
+  <eg-grid-field label="[% l('Item Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden required>
   </eg-grid-field>
   <eg-grid-field label="[% l('Hold Type') %]" path='hold_type' hidden required>
   </eg-grid-field>

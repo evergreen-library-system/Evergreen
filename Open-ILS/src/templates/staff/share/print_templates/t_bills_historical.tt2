@@ -20,7 +20,7 @@ to this template includes:
     pref_ versions of all name fields (e.g. pref_family_name);
 * transasctions - a list of transactions, each of which contains:
   xact.id - Bill unique id
-  xact.copy_barcode - Copy barcode
+  xact.copy_barcode - Item barcode
   xact.xact_finish - Billing finish date and time
   xact.xact_start - Billing start date and time
   xact.summary - Information about the transaction
@@ -33,10 +33,10 @@ to this template includes:
     xact.summary.total_owed - Total billed 
     xact.summary.total_paid - Total paid
     xact.summary.xact_type - Billing type 
-  xact.title - Copy title
+  xact.title - Item title
     xact.summary - information about the transaction
-    xact.title - Copy title
-    xact.copy_barcode - Copy barcode
+    xact.title - Item title
+    xact.copy_barcode - Item barcode
 
 -->
 Welcome to {{current_location.name}}!<br/>

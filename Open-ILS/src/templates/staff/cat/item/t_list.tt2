@@ -49,25 +49,25 @@
   <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]"
     label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
-    label="[% l('Volumes and Items') %]"></eg-grid-action>
+    label="[% l('Call Numbers and Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]"
-    label="[% l('Copy Alerts') %]"></eg-grid-action>
+    label="[% l('Item Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes') %]"></eg-grid-action>
+    label="[% l('Call Numbers') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyEdit" group="[% l('Edit') %]"
     label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes and Items') %]"></eg-grid-action>
+    label="[% l('Call Numbers and Items') %]"></eg-grid-action>
   <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
     label="[% l('Replace Barcodes') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyAlertsEdit" group="[% l('Edit') %]"
-    label="[% l('Manage Copy Alerts') %]"></eg-grid-action>
+    label="[% l('Manage Item Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
     label="[% l('Items to Previously Marked Library') %]"></eg-grid-action>
   <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
-    label="[% l('Items to Previously Marked Volume') %]"></eg-grid-action>
+    label="[% l('Items to Previously Marked Call Number') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Alert Message') %]"  path='alert_message' visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"        path='barcode' visible></eg-grid-field>
@@ -75,7 +75,7 @@
   <eg-grid-field label="[% l('Due Date') %]"       path="_circ.due_date" datecontext="_circ_lib" dateonlyinterval="_duration" datatype="timestamp" visible></eg-grid-field>
 
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]"    path="status.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]"    path="status.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       
     path="call_number.record.simple_record.title" visible>
     <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
@@ -102,8 +102,8 @@
   <eg-grid-field label="[% l('Circulate?') %]"            path="circulate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]"   path="circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy ID') %]"               path="id" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Number') %]"           path="copy_number" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item ID') %]"               path="id" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Number') %]"           path="copy_number" hidden></eg-grid-field>
 
   <eg-grid-field label="[% l('Created By') %]"
     path="creator" hidden>

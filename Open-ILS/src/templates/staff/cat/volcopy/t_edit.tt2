@@ -4,12 +4,12 @@
     <script>window.empty_label_string = "[% l('Missing Call Number') %]";</script>
     <div ng-show="!only_vols" class="btn-group">
         <label class="btn btn-default" ng-click="show_vols = !show_vols">
-            <span ng-show="show_vols" style="padding-right: 5px;">[% l('Hide Volume/Copy Details') %]</span>
-            <span ng-hide="show_vols" style="padding-right: 5px;">[% l('Show Volume/Copy Details') %]</span>
+            <span ng-show="show_vols" style="padding-right: 5px;">[% l('Hide Volume/Item Details') %]</span>
+            <span ng-hide="show_vols" style="padding-right: 5px;">[% l('Show Volume/Item Details') %]</span>
         </label>
         <label class="btn btn-default" ng-click="show_copies = !show_copies">
-            <span ng-show="show_copies" style="padding-right: 5px;">[% l('Hide Copy Attributes') %]</span>
-            <span ng-hide="show_copies" style="padding-right: 5px;">[% l('Show Copy Attributes') %]</span>
+            <span ng-show="show_copies" style="padding-right: 5px;">[% l('Hide Item Attributes') %]</span>
+            <span ng-hide="show_copies" style="padding-right: 5px;">[% l('Show Item Attributes') %]</span>
         </label>
     </div>
 
@@ -46,11 +46,11 @@
                     <div class="col-xs-1"><b>[% l('Prefix') %]</b></div>
                     <div class="col-xs-2"><b>[% l('Call Number') %]</b></div>
                     <div class="col-xs-1"><b>[% l('Suffix') %]</b></div>
-                    <div class="col-xs-1" ng-hide="only_vols"><b>[% l('Copies') %]</b></div>
+                    <div class="col-xs-1" ng-hide="only_vols"><b>[% l('Items') %]</b></div>
                     <div class="col-xs-5" ng-hide="only_vols">
                         <div class="row">
                             <div class="col-xs-5"><b>[% l('Barcode') %]</b></div>
-                            <div class="col-xs-3"><b>[% l('Copy #') %]</b></div>
+                            <div class="col-xs-3"><b>[% l('Item #') %]</b></div>
                             <div class="col-xs-4"><b>[% l('Part') %]</b></div>
                         </div>
                     </div>
@@ -87,10 +87,10 @@
 
         <ul ng-model="copytab" class="nav nav-tabs">
           <li ng-class="{active : copytab == 'working'}">
-            <a ng-click="copytab='working'" >[% l('Working Copies') %]</a>
+            <a ng-click="copytab='working'" >[% l('Working Items') %]</a>
           </li>
           <li ng-class="{active : copytab == 'complete'}">
-            <a ng-click="copytab='complete'" >[% l('Completed Copies') %]</a>
+            <a ng-click="copytab='complete'" >[% l('Completed Items') %]</a>
           </li>
         </ul>
 
@@ -125,7 +125,7 @@
                           <eg-grid-field label="[% l('CN Prefix') %]" path="call_number.prefix.label" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
                           <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label" visible></eg-grid-field>
-                          <eg-grid-field label="[% l('Copy ID') %]"     path="id" hidden></eg-grid-field>
+                          <eg-grid-field label="[% l('Item ID') %]"     path="id" hidden></eg-grid-field>
                         
                         </eg-grid>
         
@@ -169,7 +169,7 @@
                  <eg-grid-field label="[% l('Reference?') %]"  path="ref" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Status') %]"      flesher="statusById" path="status.name" visible></eg-grid-field>
                  <eg-grid-field label="[% l('OPAC Visible') %]" path="opac_visible" visible></eg-grid-field>
-                 <eg-grid-field label="[% l('Copy ID') %]"      path="id" hidden></eg-grid-field>
+                 <eg-grid-field label="[% l('Item ID') %]"      path="id" hidden></eg-grid-field>
 
                </eg-grid>
             </div>
