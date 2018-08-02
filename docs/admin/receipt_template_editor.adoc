@@ -1,6 +1,8 @@
-Receipt Template Editor
+Print (Receipt) Templates
 -----------------------
 indexterm:[web client, receipt template editor]
+indexterm:[print templates]
+indexterm:[web client, print templates]
 indexterm:[receipt template editor]
 indexterm:[receipt template editor, macros]
 indexterm:[receipt template editor, checkout]
