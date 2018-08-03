@@ -8,7 +8,7 @@ CREATE TYPE actor.cascade_setting_summary AS (
     has_workstation_setting BOOLEAN
 );
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1116', :eg_version);
 
 CREATE TABLE config.workstation_setting_type (
     name            TEXT    PRIMARY KEY,
