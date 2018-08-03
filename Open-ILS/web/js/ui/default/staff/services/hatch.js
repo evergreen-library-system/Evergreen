@@ -570,7 +570,7 @@ angular.module('egCoreMod')
 
                 checkOne(settings[0]);
                 return deferred.promise;
-            },
+            }
         );
     }
 
