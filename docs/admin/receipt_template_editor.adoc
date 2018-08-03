@@ -1,5 +1,5 @@
 Print (Receipt) Templates
------------------------
+-------------------------
 indexterm:[web client, receipt template editor]
 indexterm:[print templates]
 indexterm:[web client, print templates]
