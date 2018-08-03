@@ -136,7 +136,7 @@ function(egCore , $q) {
         );
     };
 
-    service.get_locations = function(orgs) {
+    service.get_locations_by_org = function(orgs) {
         return egCore.pcrud.search('acpl',
             {owning_lib : orgs, deleted : 'f'},
             {
@@ -1505,17 +1505,17 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             }
 
         }).then( function() {
-            $scope.data = itemSvc;
-            $scope.workingGridDataProvider.refresh();
 
             return itemSvc.fetch_locations(
-                $scope.data.copies.map(function(cp){
+                itemSvc.copies.map(function(cp){
                     return cp.location();
                 }).filter(function(e,i,a){
                     return a.lastIndexOf(e) === i;
                 })
             ).then(function(list){
+                $scope.data = itemSvc;
                 $scope.location_list = list;
+                $scope.workingGridDataProvider.refresh();
             });
 
         });
@@ -1689,45 +1689,45 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 if ($scope.location_orgs.toString() != final_orgs.toString()) {
                     $scope.location_orgs = final_orgs;
                     if ($scope.location_orgs.length) {
-                        itemSvc.get_locations($scope.location_orgs).then(function(list){
+                        itemSvc.get_locations_by_org($scope.location_orgs).then(function(list){
                             angular.forEach(list, function(l) {
                                 $scope.location_cache[ ''+l.id() ] = l;
                             });
                             $scope.location_list = list;
-                        });
-
-                        $scope.statcat_filter_list = [];
-                        angular.forEach($scope.location_orgs, function (o) {
-                            $scope.statcat_filter_list.push(egCore.org.get(o));
-                        });
-
-                        itemSvc.get_statcats($scope.location_orgs).then(function(list){
-                            $scope.statcats = list;
-                            angular.forEach($scope.statcats, function (s) {
-
-                                if (!$scope.working)
-                                    $scope.working = { statcats_multi: {}, statcats: {}, statcat_filter: undefined};
-                                if (!$scope.working.statcats_multi)
-                                    $scope.working.statcats_multi = {};
-                                if (!$scope.working.statcats)
-                                    $scope.working.statcats = {};
-
-                                if (!$scope.in_item_select) {
-                                    $scope.working.statcats[s.id()] = undefined;
-                                }
-                                createStatcatUpdateWatcher(s.id());
+                        }).then(function() {
+                            $scope.statcat_filter_list = [];
+                            angular.forEach($scope.location_orgs, function (o) {
+                                $scope.statcat_filter_list.push(egCore.org.get(o));
                             });
-                            $scope.in_item_select = false;
-                            // do a refresh here to work around a race
-                            // condition that can result in stat cats
-                            // not being selected.
-                            $scope.workingGridDataProvider.refresh();
+
+                            itemSvc.get_statcats($scope.location_orgs).then(function(list){
+                                $scope.statcats = list;
+                                angular.forEach($scope.statcats, function (s) {
+
+                                    if (!$scope.working)
+                                        $scope.working = { statcats_multi: {}, statcats: {}, statcat_filter: undefined};
+                                    if (!$scope.working.statcats_multi)
+                                        $scope.working.statcats_multi = {};
+                                    if (!$scope.working.statcats)
+                                        $scope.working.statcats = {};
+
+                                    if (!$scope.in_item_select) {
+                                        $scope.working.statcats[s.id()] = undefined;
+                                    }
+                                    createStatcatUpdateWatcher(s.id());
+                                });
+                                $scope.in_item_select = false;
+                                // do a refresh here to work around a race
+                                // condition that can result in stat cats
+                                // not being selected.
+                                $scope.workingGridDataProvider.refresh();
+                            });
                         });
                     }
                 }
+            } else {
+                $scope.workingGridDataProvider.refresh();
             }
-
-            $scope.workingGridDataProvider.refresh();
         });
 
         $scope.statcat_visible = function (sc_owner) {
@@ -2339,7 +2339,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 $scope.location_cache = {};
             
                 $scope.location_list = [];
-                itemSvc.get_locations(
+                itemSvc.get_locations_by_org(
                     egCore.org.fullPath( egCore.auth.user().ws_ou(), true )
                 ).then(function(list){
                     $scope.location_list = list;
