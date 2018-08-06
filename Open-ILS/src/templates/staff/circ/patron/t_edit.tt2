@@ -465,7 +465,7 @@ within the "form" by name for validation.
             ng-click="set_profile(entry.grp())">{{entry.grp().name()}}</a>
         </li>
         <li ng-repeat="grp in edit_profiles" ng-if="!edit_profile_entries.length"
-          ng-class="{disabled : grp().usergroup() == 'f'}">
+          ng-class="{disabled : grp.usergroup() == 'f'}">
           <a href 
             style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
             ng-click="set_profile(grp)">{{grp.name()}}</a>
