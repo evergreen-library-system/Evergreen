@@ -207,7 +207,11 @@ var buildingBlockList = false;
 // Fetches the offline block list and rebuilds the offline blocks
 // table from the new data.
 function populateBlockList(authtoken) {
-    if (buildingBlockList) return;
+
+    if (buildingBlockList) {
+        return Promise.reject('Block list download already in progress');
+    }
+
     buildingBlockList = true;
 
     var url = '/standalone/list.txt?ses=' + 
@@ -234,6 +238,7 @@ function populateBlockList(authtoken) {
                         }
                     );
                 } else {
+                    buildingBlockList = false;
                     reject('Error fetching offline block list');
                 }
             }
@@ -300,7 +305,7 @@ function insertOfflineBlocks(lines) {
 function insertOfflineChunks(chunks, offset, resolve, reject) {
     var chunk = chunks[offset];
     if (!chunk || chunk.length === 0) {
-        console.debug('Block list successfully stored');
+        console.debug('Block list store completed');
         return resolve();
     }
 

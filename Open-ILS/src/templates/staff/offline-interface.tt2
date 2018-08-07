@@ -35,6 +35,7 @@
         </button>
         <button
           class="btn btn-default"
+          ng-disabled="buildingBlockList"
           ng-if="logged_in"
           ng-click="downloadBlockList()">
             [% l('Download block list') %]
