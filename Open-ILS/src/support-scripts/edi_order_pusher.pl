@@ -183,6 +183,22 @@ for $po_id (@$po_ids) {
         $message->purchase_order($po_id);
         $message->message_type('ORDERS');
         $message->isnew(1);
+
+        my $po = $e->retrieve_acq_purchase_order([$po_id, {
+            flesh => 2,
+            flesh_fields => {
+                acqpo  => ['provider'],
+                acqpro => ['edi_default'],
+            }
+        }]);
+
+        if (!$po->provider->edi_default) {
+            announce('error', "Provider for PO $po_id has no default EDI ".
+                "account, EDI message will not be sent.");
+            next;
+        }
+
+        $message->account($po->provider->edi_default->id);
     }
 
     $message->edi($edi);
