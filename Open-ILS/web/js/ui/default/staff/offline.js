@@ -393,7 +393,9 @@ function($routeProvider , $locationProvider , $compileProvider) {
             } 
         });
 
+        $scope.buildingBlockList = false;
         $scope.downloadBlockList = function () {
+            $scope.buildingBlockList = true;
             egProgressDialog.open();
             egLovefield.populateBlockList().then(
                 function(){
@@ -403,7 +405,10 @@ function($routeProvider , $locationProvider , $compileProvider) {
                     ngToast.warning(egCore.strings.OFFLINE_BLOCKLIST_FAIL);
                     egCore.audio.play('warning.offline.blocklist_fail');
                 }
-            )['finally'](egProgressDialog.close);
+            )['finally'](function() {
+                $scope.buildingBlockList = false;
+                egProgressDialog.close();
+            });
         }
 
         $scope.createOfflineXactBlob = function () {
