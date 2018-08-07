@@ -690,13 +690,20 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
         angular.forEach(items, function(i) {
             patron_ids.push(i.id());
         });
-        egPatronMerge.do_merge(patron_ids).then(function() {
-            // ensure that we're not drawing from cached
-            // resuts, as a successful merge just deleted a
-            // record
-            delete patronSvc.lastSearch;
-            $scope.gridControls.refresh();
-        });
+        egPatronMerge.do_merge(patron_ids).then(
+            function() {
+                // ensure that we're not drawing from cached
+                // resuts, as a successful merge just deleted a
+                // record
+                delete patronSvc.lastSearch;
+                $scope.gridControls.refresh();
+            },
+            function(evt) {
+                if (evt && evt.textcode == 'MERGE_SELF_NOT_ALLOWED') {
+                    ngToast.warning(egCore.strings.MERGE_SELF_NOT_ALLOWED);
+                }
+            }
+        );
     }
    
 }])
