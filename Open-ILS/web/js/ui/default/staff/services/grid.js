@@ -643,23 +643,18 @@ angular.module('egGridMod',
                 if (!$scope.menu_dom) $scope.menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
                 if (!$scope.action_context_parent) $scope.action_context_parent = $($scope.menu_dom).parent();
 
-                // we need the index of the row that got right-clicked...
+                // we need the the row that got right-clicked...
                 var e = $event.target; // the DOM element
                 var s = undefined;     // the angular scope for that element
-                while(e){ // searching for the row so we can get its index from s.$index
+                while(e){ // searching for the row
                     // abort & use the browser default context menu for links (lp1669856):
                     if(e.tagName.toLowerCase() === 'a' && e.href){ return true; }
                     s = angular.element(e).scope();
                     if(s.hasOwnProperty('item')){ break; }
                     e = e.parentElement;
                 }
-                /* $scope.items and $scope.selected indexes are "backwards" to each other.
-                $scope.items counts down from the top of the list (most recent item first)
-                $scope.selected counts forward as items are scanned (most recent item last)
-                s.$index is for $scope.items. we need the index for $scope.selected: */
-                var selectable_index = ($scope.items.length-1) - s.$index;
                 // select the right-clicked row if it is not already selected (lp1776557):
-                if(!$scope.selected[selectable_index]){ $event.target.click(); }
+                if(!$scope.selected[grid.indexValue(s.item)]){ $event.target.click(); }
 
                 if (!$scope.action_context_showing) {
                     $scope.action_context_width = $($scope.menu_dom).css('width');
