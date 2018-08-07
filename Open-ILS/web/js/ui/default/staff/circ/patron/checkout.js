@@ -213,7 +213,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                     row_item[key] = val;
                 });
                
-                row_item['copy_barcode'] = row_item.acp.barcode();
+                if (row_item.acp) { // unset for non-cat items.
+                    row_item['copy_barcode'] = row_item.acp.barcode();
+                }
 
                 munge_checkout_resp(co_resp, row_item);
             },
