@@ -73,7 +73,7 @@
         [% l('Total hits: [_1]', '{{total_hits}}') %]
     </div>
     <div class="col-md-6 text-right" ng-if="local_overlay_target">
-        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]"
+        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]
     </div>
     <div class="col-md-6 text-right" ng-if="!local_overlay_target">
         [% l('No record marked for overlay.') %]
