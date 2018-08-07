@@ -3378,7 +3378,13 @@ sub merge_users {
     my $colls = $e->search_money_collections_tracker({usr => $user_ids}, {idlist => 1});
     return OpenILS::Event->new('MERGED_USER_IN_COLLECTIONS', payload => $user_ids) if @$colls;
 
+    return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+        if $master_id == $e->requestor->id;
+
     my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
+    my $evt = group_perm_failed($e, $e->requestor, $master_user);
+    return $evt if $evt;
+
     my $del_addrs = ($U->ou_ancestor_setting_value(
         $master_user->home_ou, 'circ.user_merge.delete_addresses', $e)) ? 't' : 'f';
     my $del_cards = ($U->ou_ancestor_setting_value(
@@ -3387,7 +3393,13 @@ sub merge_users {
         $master_user->home_ou, 'circ.user_merge.deactivate_cards', $e)) ? 't' : 'f';
 
     for my $src_id (@$user_ids) {
+
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
+        my $evt = group_perm_failed($e, $e->requestor, $src_user);
+        return $evt if $evt;
+
+        return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+            if $src_id == $e->requestor->id;
 
         return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
         if($src_user->home_ou ne $master_user->home_ou) {
