@@ -424,6 +424,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 $scope.selectFieldStripGroups()
             ).then(
                 function(result) {
+                    $scope.local_overlay_target = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
                     console.debug('overlay complete, target removed');
                 }
