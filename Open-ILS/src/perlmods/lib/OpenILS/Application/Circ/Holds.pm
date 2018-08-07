@@ -4270,8 +4270,17 @@ sub rec_hold_count {
         } if ($pld != $top_ou->id);
     }
 
+    # To avoid Internal Server Errors, we get an editor, then run the
+    # query and check the result.  If anything fails, we'll return 0.
+    my $result = 0;
+    if (my $e = new_editor()) {
+        my $query_result = $e->json_query($query);
+        if ($query_result && @{$query_result}) {
+            $result = $query_result->[0]->{count}
+        }
+    }
 
-    return new_editor()->json_query($query)->[0]->{count};
+    return $result;
 }
 
 # A helper function to calculate a hold's expiration time at a given
