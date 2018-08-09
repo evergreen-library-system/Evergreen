@@ -33,7 +33,10 @@ angular.module('egCoreMod')
         }
 
         service.worker.onerror = function(err) {
-            console.error('Error loading shared worker', err);
+            // avoid spamming unit test runner on failure to connect.
+            if (!navigator.userAgent.match(/PhantomJS/)) {
+                console.error('Error loading shared worker', err);
+            }
             service.cannotConnect = true;
         }
 
@@ -108,7 +111,7 @@ angular.module('egCoreMod')
     // Create and connect to the give schema
     service.connectToSchema = function(schema) {
 
-        if (service.connectedSchemas.includes(schema)) {
+        if (service.connectedSchemas.indexOf(schema) >= 0) {
             // already connected
             return $q.when();
         }
