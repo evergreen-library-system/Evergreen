@@ -51,6 +51,12 @@ DECLARE
 	folder_row RECORD;
 BEGIN
 
+    -- Bail if src_usr equals dest_usr because the result of merging a
+    -- user with itself is not what you want.
+    IF src_usr = dest_usr THEN
+        RETURN;
+    END IF;
+
     -- do some initial cleanup 
     UPDATE actor.usr SET card = NULL WHERE id = src_usr;
     UPDATE actor.usr SET mailing_address = NULL WHERE id = src_usr;
