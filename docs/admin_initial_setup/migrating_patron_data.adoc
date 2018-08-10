@@ -152,12 +152,15 @@ steps to create an import script:
 ----------------------------------
     BEGIN;
 
+    -- Remove any old staging table.
+    DROP TABLE IF EXISTS students;
+
     -- Create staging table.
     CREATE TABLE students (
-    	student_id int, barcode text, last_name text, first_name text, email text, address_type text, 
+    	student_id text, barcode text, last_name text, first_name text, email text, address_type text, 
 		street1 text, street2 text, city text, province text, country text, postal_code text, phone 
 		text, profile int, ident_type int, home_ou int, claims_returned_count int DEFAULT 0, usrname text, 
-    	net_access_level int DEFAULT 2, password text
+    	net_access_level int DEFAULT 2, password text, already_exists boolean DEFAULT FALSE
     ); 
 
     --Copy records from your import text file
@@ -165,20 +168,51 @@ steps to create an import script:
 	country, postal_code, phone, password) 
     	FROM '/home/opensrf/patrons.csv' WITH CSV HEADER;  
 
+    --Determine which records are new, and which are merely updates of existing patrons
+    --You may with to also add a check on the home_ou column here, so that you don't
+    --accidentaly overwrite the data of another library in your consortium.
+    --You may also use a different matchpoint than actor.usr.ident_value.
+    UPDATE students
+        SET already_exists = TRUE
+        FROM actor.usr
+        WHERE students.student_id = actor.usr.ident_value;
+
+    --Update the names of existing patrons, in case they have changed their name
+    UPDATE actor.usr
+        SET first_given_name = students.first_name, family_name=students.last_name
+        FROM students
+        WHERE actor.usr.ident_value=students.student_id
+        AND (first_given_name != students.first_name OR family_name != students.last_name)
+        AND students.already_exists;
+        
+    --Update email addresses of existing patrons
+    --You may wish to update other fields as well, while preserving others
+    --actor.usr.passwd is an example of a field you may not wish to update,
+    --since patrons may have set the password to something other than the
+    --default.
+    UPDATE actor.usr
+        SET email=students.email
+        FROM students
+        WHERE actor.usr.ident_value=students.student_id
+        AND students.email != ''
+        AND actor.usr.email != students.email
+        AND students.already_exists;
 
     --Insert records from the staging table into the actor.usr table.
     INSERT INTO actor.usr (
     	profile, usrname, email, passwd, ident_type, ident_value, first_given_name, family_name, 
     	day_phone, home_ou, claims_returned_count, net_access_level) 
     	SELECT profile, students.usrname, email, password, ident_type, student_id, first_name, 
-    	last_name, phone, home_ou, claims_returned_count, net_access_level FROM students;
+    	last_name, phone, home_ou, claims_returned_count, net_access_level
+        FROM students WHERE NOT already_exists;
 
-    --Insert records from the staging table into the actor.usr table.
+    --Insert records from the staging table into the actor.card table.
     INSERT INTO actor.card (usr, barcode) 
     	SELECT actor.usr.id, students.barcode 
     	FROM students 
     		INNER JOIN actor.usr 
-    			ON students.usrname = actor.usr.usrname;
+    			ON students.usrname = actor.usr.usrname
+        WHERE NOT students.already_exists;
 
     --Update actor.usr.card field with actor.card.id to associate active card with the user:
     UPDATE actor.usr 
@@ -191,7 +225,8 @@ steps to create an import script:
     	SELECT actor.usr.id, students.street1, students.street2, students.city, students.province, 
     	students.country, students.postal_code 
     	FROM students 
-    	INNER JOIN actor.usr ON students.usrname = actor.usr.usrname;
+    	INNER JOIN actor.usr ON students.usrname = actor.usr.usrname
+        WHERE NOT students.already_exists;
 
 
    --Update actor.usr mailing address with id from actor.usr_address table.:
