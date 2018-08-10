@@ -1323,16 +1323,8 @@ __PACKAGE__->register_method(
     method   => "patron_adv_search",
     api_name => "open-ils.actor.patron.search.advanced.fleshed",
     stream => 1,
-    # TODO: change when opensrf 'bundling' is merged.
-    # set a relatively small bundle size so the caller can start
-    # seeing results fairly quickly
-    max_chunk_size => 4096, # bundling
-
-    # api_level => 2,
-    # pending opensrf work -- also, not sure if needed since we're not
-    # actaully creating an alternate vesrion, only offering to return a
-    # different format.
-    #
+    # Flush the response stream at most 5 patrons in for UI responsiveness.
+    max_bundle_count => 5,
     signature => {
         desc => q/Returns a stream of fleshed user objects instead of
             a pile of identifiers/
