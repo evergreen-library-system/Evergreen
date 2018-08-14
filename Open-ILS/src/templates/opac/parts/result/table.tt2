@@ -45,7 +45,7 @@
                         </a>
                         <span id="hit_selected_record_limit" class="hidden">Reached limit!</span>
                     <span>
-                    <a id="clear_basket" href="#">[% l('Clear cart') %]</a>
+                    <a id="clear_basket" href="#">[% l('Clear basket') %]</a>
                 </div>
                 [% END %]
                 <table id="result_table_table" title="[% l('Search Results') %]"

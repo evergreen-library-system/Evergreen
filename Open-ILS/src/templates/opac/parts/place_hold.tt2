@@ -279,7 +279,7 @@ function maybeToggleNumCopies(obj) {
             </blockquote>
         </p>
         [% IF CGI.param('from_basket') %]
-          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket?') %]</input></blockquote>
+          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket after holds are requested?') %]</input></blockquote>
         [% END %]
         <input id="place_hold_submit" type="submit" name="submit" 
             value="[% l('Submit') %]" title="[% l('Submit') %]"
