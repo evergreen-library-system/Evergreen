@@ -3,7 +3,7 @@
         <p class="big-strong">[% l('Basket') %]</p>
         <div class="sort">
             <form method="get">
-                <label for="anonsort">[% l("Sort cart items by: ") %]</label>
+                <label for="anonsort">[% l("Sort basket items by: ") %]</label>
                 [% INCLUDE "opac/parts/filtersort.tt2" mode='bookbag'
                     id="anonsort" name="anonsort" value=CGI.param("anonsort") %]
                 <input type="hidden" name="id"

@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1118', :eg_version);
+
 UPDATE action_trigger.event_definition
 SET template =
 $$
@@ -84,3 +86,5 @@ $$
 WHERE hook = 'biblio.format.record_entry.print'
 -- from previous stock definition
 AND MD5(template) = '9ada7ea8417cb23f89d0dc8f15ec68d0';
+
+COMMIT;
