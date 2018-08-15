@@ -1,3 +1,5 @@
+SELECT evergreen.upgrade_deps_block_check('1119', :eg_version);
+
 CREATE OR REPLACE FUNCTION asset.staff_ou_record_copy_count(org integer, rid bigint)
  RETURNS TABLE(depth integer, org_unit integer, visible bigint, available bigint, unshadow bigint, transcendant integer)
  LANGUAGE plpgsql
