@@ -570,7 +570,7 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-2">'+
-                    '<button style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
+                    '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
                     '<select ng-disabled="record == 0" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
@@ -770,7 +770,8 @@ function(egCore , $q) {
 
                     // manually decrease cn_count numeric input
                     var cn_spinner = $("input[name='cn_count_lib"+ cn.owning_lib() +"']");
-                    cn_spinner.val(parseInt(cn_spinner.val()) - 1);
+                    if (cn_spinner.val() > 0) cn_spinner.val(parseInt(cn_spinner.val()) - 1);
+                    cn_spinner.trigger("change");
 
                 }
 
@@ -1007,6 +1008,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         // manually increase cn_count numeric input
         var cn_spinner = $("input[name='cn_count_lib"+ newLib.id() +"']");
         cn_spinner.val(parseInt(cn_spinner.val()) + 1);
+        cn_spinner.trigger("change");
 
         if (!$scope.defaults.classification) {
             egCore.org.settings(
