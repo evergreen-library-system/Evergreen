@@ -36,8 +36,8 @@ function($q,   egCore,   egAuth) {
                 this.push(tgt);
             }, service.targets);
             service.targets.sort(function (a, b) {
-                a = a.settings.label;
-                b = b.settings.label;
+                a = a.settings.label.toLowerCase();
+                b = b.settings.label.toLowerCase();
                 return a < b ? -1 : (a > b ? 1 : 0);
             }); 
             service.targets.unshift({
