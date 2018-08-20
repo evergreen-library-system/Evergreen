@@ -535,29 +535,4 @@ and/or processing fee) may be inserted into the last borrower's account.
 3) Following the above procedure, you can check in and renew items by using the 
 *Check in Items* and *Renew Items* on the dropdown menu.
 
-Item alerts
-^^^^^^^^^^^
-
-The *Edit Item Attributes* function on the *Actions for Selected Items* dropdown
- list allows you to edit item records. Here, we will show you how to insert item
- alert messages by this function. See cataloging instructions for more 
-information on item editing.
-1) Retrieve record on *Item Status* screen.
-
-2) Once item is displayed, highlight it and select *Actions for Selected Items* 
--> *Edit Item Attributes*.
-
-3) The item record is displayed in the *Copy Editor*.
-
-image::media/copy_edit_alert.png[]
-
-4) Click *Alert Message* in the *Miscellaneous* column. The background color of 
-the box changes. Type in the message then click *Apply*. 
-
-image::media/copy_alert_message.png[]
-
-5) Click *Modify Copies*, then confirm the action.
-
-
-
 
