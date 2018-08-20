@@ -1507,7 +1507,11 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     );
 
                     angular.forEach(itemSvc.copies, function(c){
-                        c.call_number().not_ephemeral = true;
+                        var cn = c.call_number();
+                        var copy_id = c.id();
+                        if (copy_id > 0){
+                            cn.not_ephemeral = true;
+                        }
                     });
 
                     return itemSvc.copies;
