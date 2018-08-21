@@ -26,4 +26,14 @@ CREATE CONSTRAINT TRIGGER inherit_asset_last_copy_inventory_copy_fkey
         AFTER UPDATE OR INSERT ON asset.last_copy_inventory
         DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_last_copy_inventory_copy_inh_fkey();
 
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.circ.checkin.do_inventory_update', 'circ', 'bool',
+    oils_i18n_gettext (
+             'eg.circ.checkin.do_inventory_update',
+             'Checkin: Update Inventory',
+             'cwst', 'label'
+    )
+);
+
 COMMIT;

@@ -18455,6 +18455,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'eg.circ.checkin.do_inventory_update', 'circ', 'bool',
+    oils_i18n_gettext (
+             'eg.circ.checkin.do_inventory_update',
+             'Checkin: Update Inventory',
+             'cwst', 'label'
+    )
+), (
     'eg.circ.patron.summary.collapse', 'circ', 'bool',
     oils_i18n_gettext(
         'eg.circ.patron.summary.collapse',
