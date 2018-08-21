@@ -1,0 +1,14 @@
+Support for Last Inventory Date
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now provides an option to add an inventory date to items to facilitate
+the process of performing inventory in libraries. Staff can add an inventory
+date to an item in one of the following ways:
+ * From the check in screen, there is now an Update Inventory check in modifier.
+When selected, scanned barcodes will have the current date/time added as the
+inventory date while the item is checked in.
+ * From the Item Status screen, an action is available to add the current 
+date/time as the inventory date to selected items.
+
+This new feature will also store the workstation that was used when the
+inventory date was updated.
+
