@@ -71,7 +71,7 @@ function(egCore , $q) {
 
         var p = egCore.pcrud.search(
             'acn',
-            {record : rid, owning_lib : org_list, deleted : 'f'},
+            {record : rid, owning_lib : org_list, deleted : 'f', label : {'!=' : '##URI##'}},
             svc.flesh
         ).then(
             function() { // finished
