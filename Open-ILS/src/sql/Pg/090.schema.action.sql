@@ -1709,7 +1709,7 @@ UNION ALL
     ancihu.staff AS circ_staff,
     ancihu.use_time AS create_time,
     cnct_ancihu.name AS item_type,
-    'non-cat_circ'::text AS circ_type
+    'non-cat-in-house_use'::text AS circ_type
    FROM action.non_cat_in_house_use ancihu,
     config.non_cataloged_type cnct_ancihu
   WHERE ancihu.item_type = cnct_ancihu.id
