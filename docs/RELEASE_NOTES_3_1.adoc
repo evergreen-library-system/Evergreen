@@ -3,6 +3,64 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.5
+----------------
+This release contains bug fixes improving on Evergreen 3.1.4.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Several strings are now displayed in the correct translation.
+* Right clicking in grids results in more intuitive behavior.
+* Usernames and barcodes containging the _%_ character no longer
+experience problems logging in.
+* Fixes cases in which the web client stops loading after the toolbar.
+* Fixes problems in which using the web client in multiple tabs leads
+to data inconsistency.
+* The patron triggered event screen now respects the
+`circ.staff.max_visible_event_age` library setting.
+* Fixes an issue which caused an exception to be thrown during
+non-cataloged item checkout.
+* Fixes permission issues related to merging users.
+* The bibliographic record summary now displays the call number that
+matches the library's classification system.
+* The copy editor now makes shelving locations visible to catalogers
+from other libraries as needed.
+* Once a record is overlayed in the Z39.50 screen, it is no longer
+marked for overlay.
+* The Item Status "Edited By" column now displays the username of the
+last user to edit the item, rather than their database ID.
+* When adding new copies, the circulation library now defaults to the
+call number's owning library.
+* Fixes display issues with the Print Item Labels page.
+* Fixes an issue in which the staff client and the OPAC displayed
+different counts of available items.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.5 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* John Yorio
+
+
 Evergreen 3.1.4
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.3.  Note that
