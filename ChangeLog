@@ -1,3 +1,757 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d1ec4f928226c02676f511149fba1c18baac2601
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Aug 22 17:09:06 2018 -0400
+
+    Updating upgrade docs for 3.0.11.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+16	32	docs/installation/server_upgrade.adoc
+
+commit 422d10b83952d38cbcf9c2bb0d2e03e5dbdb4b59
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Aug 22 17:05:08 2018 -0400
+
+    Bumping Perl version string for 3.0.11
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6e3b87b969d25a74b3e379c58de1883c2b179e92
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Wed Aug 22 17:05:08 2018 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+39	17	build/i18n/po/webstaff/ar-JO.po
+39	17	build/i18n/po/webstaff/cs-CZ.po
+39	17	build/i18n/po/webstaff/en-GB.po
+39	17	build/i18n/po/webstaff/es-ES.po
+39	17	build/i18n/po/webstaff/hy-AM.po
+39	17	build/i18n/po/webstaff/ru-RU.po
+
+commit 9144b69c03cb0175bae9de13caeb05fb87da7e5a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 22 13:57:32 2018 -0700
+
+    Docs: finalizing 3.0.11 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit 17459ea06f05d865e5e48ee76ff3cc62e241f37e
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Wed Aug 22 09:07:55 2018 -0400
+
+    LP1733590: Only Print Selected Items Out
+    
+    The list of selected items being passed to print_receipt
+    was being ignored and the whole list of items currently
+    checked out used instead. This patch uses the list
+    presented so staff can only print those items that they
+    want to, such as a small number of items renewed today,
+    etc.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit dd6a8750e017db4e62d225237fd40042769632f9
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 22 10:18:29 2018 -0700
+
+    Docs: updating 3.0.11 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	2	docs/RELEASE_NOTES_3_0.adoc
+
+commit 515dc03e054ca063831ad0e6299cce03b7c3f124
+Author: a. bellenir <ab@grpl.org>
+Date:   Wed Aug 22 11:33:55 2018 -0400
+
+    LP#1788417: boolean fields should say 'Yes'/'No' instead of true/false
+    
+    boolean fields on egGrid use tt2-translated strings for "Yes" and "No"
+    instead of letting the browser translate the values 'true' and 'false'
+    (in accordance with the prophecy of XUL)
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+4	5	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 8e3140c9d40d06659faaa1055a1c5cacef006787
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 31 15:12:55 2018 -0400
+
+    LP#1774448 Auth poll spam/timing repairs
+    
+    Avoid spamming the server with authentication session checks on bad poll
+    time values.  Specifically, never poll more often than once per minute
+    and avoid integer overflow on long authentication timeout values
+    (greater than about 24.8 days) resulting in the poll running with an
+    effective timeout of zero and spamming the server with API calls.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+14	3	Open-ILS/web/js/ui/default/staff/services/auth.js
+
+commit 4effe3c63f29332a6b3a29ad568675217c538172
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 10 12:16:57 2018 -0400
+
+    LP#1724029 Patron search API returns correct order
+    
+    Avoid use of max_chunk_size in patron search API as it results in
+    streaming responses in the wrong order.  Use max_bundle_count instead,
+    which does not suffer from the sorting issues.  What's more, its purpose
+    and affect is easier to grasp in the code.
+    
+    Bundle count is set to 5 so the API will begin returning results at most
+    5 patrons into the data fleshing process.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+2	10	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+
+commit e623229de0b8c3c2372ead4b0f722decfcc18c33
+Author: a. bellenir <ab@grpl.org>
+Date:   Mon Jun 4 14:25:00 2018 -0400
+
+    LP#1743801: Item Status List Display Issues
+    
+    Update fm_IDL.xml, establishing circ_as_type as a link to
+    config::item_type_map.  Flesh this field to display desired value on
+    client side.
+    
+    Conflicts:
+        Open-ILS/examples/fm_IDL.xml
+        Open-ILS/web/js/ui/default/staff/circ/services/item.js
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	1	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit e8ff2c0b54708d97e312445327dd049ed7ec63d5
+Author: a. bellenir <ab@grpl.org>
+Date:   Thu May 24 11:44:28 2018 -0400
+
+    LP#1743801: Item Status List View Display Issues
+    
+    Age Protection was missing '.name' field.
+    
+    Loan Duration and Fine Levels are numeric: 1, 2, or 3.
+    Added an Angular filter to show the desired string from numeric index.
+    
+    Conflicts:
+        Open-ILS/src/templates/staff/cat/item/t_list.tt2
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	4	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+1	0	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit e653c36de62be696d8bc0b7e9548cbc291e015f1
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Aug 21 10:10:32 2018 -0700
+
+    Docs: Adding release notes for 3.0.11
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+55	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit 0c891b46c348c9a36a5c2f2b6365a1359995fc24
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 15 18:10:08 2018 -0400
+
+    LP#1775216: Stamping upgrade script for inconsistent copy counts
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	88	Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+90	0	Open-ILS/src/sql/Pg/upgrade/1119.schema.lp1775216_consistent_avail_counts.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1119.schema.lp1775216_consistent_avail_counts.sql
+
+commit cb7107d1495e0b35ebfa1e90f24175c5d289f208
+Author: a. bellenir <ab@grpl.org>
+Date:   Fri Jun 15 15:53:10 2018 -0400
+
+    LP#1587620: inconsistent copy counts between opac and staff client for peer bibs
+    
+    staff copy counts should include peer bib copies, per LP1587620.
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+34	20	Open-ILS/src/sql/Pg/040.schema.asset.sql
+26	15	Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+
+commit d2d075c699143384f3878a2b7eb09806fbab9ff6
+Author: a. bellenir <ab@grpl.org>
+Date:   Fri Jun 8 11:42:53 2018 -0400
+
+    LP#1775216: inconsistent copy counts between opac and staff client
+    
+    opac version of copy counts was including copies under deleted call numbers
+    more discussion here: http://irc.evergreen-ils.org/evergreen/2018-06-08#i_363334
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/sql/Pg/040.schema.asset.sql
+41	0	Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+
+commit 25a25bc748bbdd1fcd8900c078e489e8c4363403
+Author: a. bellenir <ab@grpl.org>
+Date:   Fri Jun 8 10:29:59 2018 -0400
+
+    LP#1775216: adding a pgtap test for inconsistent availability counts
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+35	0	Open-ILS/src/sql/Pg/t/lp1775216-inconsistent-available-counts.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1775216-inconsistent-available-counts.pg
+
+commit 6b2a2db34489fcdf9250461119b333eecc52dff4
+Author: a. bellenir <ab@grpl.org>
+Date:   Tue Jun 5 15:56:24 2018 -0400
+
+    LP#1775216: inconsistent availability counts between staff client and opac
+    
+    update asset.staff_ou_record_copy_count to get an accurate available count.
+    
+    borrow asset.opac_ou_record_copy_count's logic for counting available copies
+    so that statuses with is_available set to 't' in config.copy_status are used
+    instead of using the hardcoded status id list (0,7,12)
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/src/sql/Pg/040.schema.asset.sql
+36	0	Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+
+commit fd6eec4cc0dc07e1c8b2a21e954a466e64b9e79d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 14 15:22:49 2018 -0400
+
+    LP#1770981 Apply OpenSRF locale on webstaff page load
+    
+    Translate the locale from the locale cookie into the global
+    OpenSRF.locale variable so network calls are stamped with the correct
+    locale.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+13	1	Open-ILS/web/js/ui/default/staff/services/startup.js
+
+commit 8becd8f7bd3fb56565743949c6e8e7fa1293f924
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 7 14:27:47 2018 -0400
+
+    LP#1718032 Patron merge honors group perms; no self-merge
+    
+    Ensure the staff performing a patron merge have sufficient permission to
+    edit all users involved in the merge process, in addition the
+    MERGE_USERS permssion.
+    
+    Prevent staff from merging their own logged in account.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+12	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+1	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+14	7	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 7931aaab8602be78ed63156ca9d3b560c0d32925
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sun Jun 10 00:08:53 2018 -0400
+
+    LP#1752891 Crowded text on Print Item Labels page fix.
+    
+    This patch replaces an h4 style used for labels for dropdown lists, removes a blue background, and changes the style of the title of the page. All to make this page look more consistent with other pages in Evergreen.  Also removes some unnecessary extra divs and makes the bootstrap columns for the top form more consistent.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+32	29	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit 273458c51cd9b0ba12085ac0f0062fd5d395de40
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 9 10:20:54 2018 -0400
+
+    LP#1775719 Modify array check for Phantomjs; reduce logging;
+    
+    PhantomJS doesn't support the handy [1,2,3].includes(1) function, so
+    replace it with the tried-and-true indexOf();
+    
+    Avoid logging errors on failure to connect to the shared offline worker
+    when running within phantomjs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	2	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+
+commit 9b0fa1aab258395e70123b4e82c4cedb9895b27f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 7 12:10:17 2018 -0400
+
+    LP#1768947 Disable offline download button, improve logging
+    
+    Once the offline block list download button is clicked, it's disabled to
+    prevent any possibility of double-clicks.  The shared worker also
+    reports a more meaningful error in case a double-click sneaks past.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/staff/offline-interface.tt2
+7	2	Open-ILS/web/js/ui/default/staff/offline-db-worker.js
+6	1	Open-ILS/web/js/ui/default/staff/offline.js
+
+commit 6984e2f724f355dd8a2f09df5d22dcda65ad60cb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jun 22 10:56:02 2018 -0400
+
+    LP#1768947 Offline xact presence is cached; show date
+    
+    Maintain an entry to the object date cache table indicating the time of
+    the most recent offline transaction entry.  This data is used on the
+    login page to determine if offline transactions exist, so the staff
+    logging in can be notified.  We do this in lieu of checking the offline
+    transaction table, since that table only exists in the offline UI.
+    
+    As a bonus, since we know the last transaction add time, display this
+    information in the login page offline xact alert panel.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	3	Open-ILS/src/templates/staff/t_login.tt2
+14	0	Open-ILS/web/js/ui/default/staff/offline-db-worker.js
+38	12	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+
+commit b65a9ca3c52f45e9f386f8bb65e54c960faf8101
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jun 8 13:08:18 2018 -0400
+
+    LP#1768947 Offline DB runs in shared web worker
+    
+    Move the lovefield database access logic into a shared web worker
+    script.  This ensures the only one connection (per schema) can exist,
+    avoiding data integrity problems caused by having multiple tabs writing
+    to the database at the same time.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+394	0	Open-ILS/web/js/ui/default/staff/offline-db-worker.js
+18	24	Open-ILS/web/js/ui/default/staff/offline.js
+265	270	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+ create mode 100644 Open-ILS/web/js/ui/default/staff/offline-db-worker.js
+
+commit 5972999bc79b15333e9c58caf843de3ba55abc0b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 7 15:00:12 2018 -0400
+
+    LP#1747512 Non-cat checkout fix display/print
+    
+    Fixes an issue which caused an exception to be thrown during non-cat
+    item checkout in the browser client, preventing the checkout from being
+    properly displayed in the checkout page, the Items Out list, and on the
+    receipt.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+
+commit 7a1b456496375a850fe982707c768b9160215fa6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jul 7 15:34:57 2017 -0400
+
+    LP#1702978: memcache Remove method used in a variadic way
+    
+    Related to the OpenSRF branch on this same bug, the prevents Evergreen from
+    using a to-be-non-variadic memcache method in that way.  This prevents issues
+    for memcache keys that contain a %.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	1	Open-ILS/src/c-apps/oils_auth.c
+
+commit a34a5909aeadc6d3c131c998c18843df2d96e639
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Jul 6 15:33:05 2018 -0400
+
+    LP#1773417: Use CN owning lib when adding copies
+    
+    This defaults the owner of new copies added to existing call numbers to the
+    owning lib of the call number, rather than the workstation library.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	3	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 8a84d6c1167a0ad6b216754a067945fd8bc970fb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jun 12 14:20:03 2018 -0400
+
+    LP#1773417 Revamp item and call number tranfers
+    
+    This commit attempts to achieve the goals of both simplification and
+    feature completeness/flexibility.  In brief, limit the number of
+    marking and transfer options, then have the code decide the right
+    action to take given the circumstances.
+    
+    There are now just two "marking" actions, one at the record level,
+    one at the holdings level.  The holdings level mark will automatically
+    mark the destination as specifically as possible from the selected row,
+    which means either to the library or call number (vol) level.
+    
+    We are also now down to two transfer options: transfer the selected
+    item, or transfer the selected call number.  Either option will use
+    as much given context as possible, then fill in any blanks with
+    reasonable defaults and actions.
+    
+    As part of the change, a number of functions and variables are also
+    renamed.  This is all done for clarification, and in most cases is
+    due to the variable or function now being used more generally (i.e.
+    it is used in both the item and vol context, so it is confusing to
+    be named 'volume_transfer_target', etc.).
+    
+    Finally, clear up a fair bit of now redundant and unused code.
+    
+    In rel_3_O:
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	4	Open-ILS/src/templates/staff/cat/catalog/index.tt2
+3	3	Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2
+4	23	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+84	110	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+8	11	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 9838c029670630ffd6d1d07199e4027b4e838aeb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed May 30 12:43:08 2018 -0400
+
+    LP#1773417 Improve empty volume handling
+    
+    The crux of this patch is to rethink how we handle the volume-only
+    editing interface.  Previously, we were attempting to distinguish
+    between when the volume was the only thing *showing* and when it
+    was actually the only thing *existing*.
+    
+    We have now removed that distinction, so the volume-only interface
+    only cares about the volume regardless of the possible presence of
+    a copy.  This simplifies the interface logic, and reduces or
+    eliminates the chance of the hidden copy editor interfering with
+    the volume adding/editing functions.
+    
+    Other smaller changes here include:
+    - Teach the edit function to pick up copy-less "empty" call numbers
+    - Reduce and clarify the arguments to spawnHoldingsAdd
+      We had three arguments, but two were simply inversions of one another
+      in every case.  Reduce to two arguments and give them more meaningful
+      labels
+    - Fix typo ("emtpy") preventing proper button disabling for blank call
+      numbers
+    - Move call number emptiness check from updateLabel() function to value
+      watch instead.  This ensure that any updates to that value (even those
+      not using the update function) will flip the flag appropriately.  This
+      fixes a timing bug which prevented call numbers from being saved
+      without further edits in some cases.
+    
+    Ultimately, as J. Boyer suggests, we would be better off not generating
+    the copy editor at all (rather than just hiding it), but we're a few
+    steps off from that yet.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	9	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+10	13	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit a0680431741497a0cd6c26b55da345648f26cd27
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri May 25 22:20:49 2018 -0400
+
+    LP#1773417 Relabel "Add Volumes" button
+    
+    Now that we have an interface for adding empty volumes, we need to be
+    more explicit that this button is for adding complete copies, not just
+    volumes.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2
+
+commit acce04a9d8826491611d0d3a6686a944e5fb781a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed May 23 14:39:49 2018 -0400
+
+    LP#1715697 Refactor empty volume adding
+    
+    The new ability to add empty volumes was causing the existing
+    ability to add new volume/copy combos to not work as expected.
+    More specifically, added volume/copy combos would not generate
+    in the selected org_unit, but always in the ws_ou.
+    
+    To correct this, this change refactors/reverts significant portions of
+    920f585052ef809ea6ca1e447d416ada871b467c.  Reasons include:
+    
+    - Existing code distinguishs 'adds' from 'edits' via two wrappers,
+    spawnHoldingsAdd and spawnHoldingsEdit.  With this commit, empty volume
+    adding now extends the 'add' function rather than the 'edit' one, as
+    this seems more intuitive.
+    
+    - The previous change had extended both the catalog app and another
+    similar directive which is only used in a merging context.  Since the
+    merge context had no ability to add anything, and the new code was not
+    wired up to the interface, this has simply been removed (for now).
+    
+    - The volcopy app is set up around the concept of passed in
+    'prototype' vol/copy objects of varying degrees of completeness.  It
+    then loops over these to generate the interface.  The previous code
+    extended this setup with a loop over a potential 'owners' array to
+    generate empty volumes, but this unrelated loop within a loop seemed
+    counterintuitive (and was the source of the original bug).  This change
+    has been removed, and empty volume creation now hews more closely to
+    the original model.
+    
+    While this commit appears large, when viewed in the context of the
+    pre-920f58505 code, it is quite limited in scope.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+12	31	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+4	18	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+49	51	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e2c10c4895f44ded8312b025c7f25e1ad46ad2d6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Sun Apr 29 18:56:38 2018 -0400
+
+    LP#1737812: Simplify holdings tranfser options
+    
+    Instead of providing direct actions for transfer of library, or record, or
+    both, have just one volume transfer option that Does the Right Thing (tm).
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	1	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+10	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 1e25174f4edf7f990a15445893cc20a7d1fbc25f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Apr 25 12:32:15 2018 -0400
+
+    LP#1715697: Ability to add empty volumes
+    
+    Staff can add volumes to any library that is allowed to have holdings.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+26	5	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+18	4	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+73	50	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e7b47284745afbba8e07ef6deaf8c02be549b522
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 24 15:21:37 2018 -0400
+
+    LP#1715697 & 1738242 & 1753005: Holdings Filtering Checkboxes
+    
+    When the appropriate checkbox is selected, display subordinate libraries of
+    the context library that do not have any holdings or empty volumes.
+    
+    Additionally, the holdings view checkboxes for limiting detail display can
+    cause console alerts, and should be made visually interdependent.  This commit
+    addresses both of those issues.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	2	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+22	6	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+47	2	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit 7af25eeef4e49549955aa8c1289a181bbf6d4351
+Author: a. bellenir <ab@grpl.org>
+Date:   Wed Aug 8 11:49:57 2018 -0400
+
+    LP#1785305: Item Status 'Edited By' shows id instead of username.
+    
+    This commit changes Item Status 'Edited By' field to show the editor's
+    username to match XUL.
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 323ffbc24af107d5b2918b03d360b99e7b0f6f52
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 7 17:41:23 2018 -0400
+
+    LP#621459 Clear Z39 overlay target message after overlay
+    
+    Reset the "Record with TCN XXX marked for overlay." message to show "No
+    record marked for overlay." once the overlay target is cleared after a
+    Z39 overlay.
+    
+    Removed an errant '"' in the overlay message.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/z3950/t_list.tt2
+1	0	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+
+commit 4324c88c6a1c2da8a5e8a4faddb4b65ef279803c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 3 11:00:25 2018 -0400
+
+    LP#621459: Discard overlay target after merge in Z39.50 interface
+    
+    Cataloger concensus is that we should discard the overlay target after a merge
+    is completed in order to help avoid accidental re-overlay.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+
+commit 71e92fe934b7bfd163939a1196d28f798e597266
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jan 10 11:55:08 2018 -0500
+
+    LP#1739460: Be more careful when gathering shelving locations
+    
+    Specifically, make sure we're getting the IDs, and comparing them as numbers.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+5	3	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+3	3	Open-ILS/web/js/ui/default/staff/services/org.js
+
+commit 9e45ce90f9d479f6869956bf56e7ab5fdac784b6
+Author: a. bellenir <ab@grpl.org>
+Date:   Tue Aug 7 18:18:41 2018 -0400
+
+    LP#1785333: Right-click can clear grid selection
+    
+    This commit uses egGrid's indexValue API to identify the clicked row rather
+    than depending on grid row order when checking whether the that row is
+    currently selected.  This is a generalized fix for all grids.
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	8	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit c8be83707d8a7a15d95095dd645bda158a2fc15e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 19 11:27:43 2018 -0400
+
+    LP1739284 Bib summary fetches classification scheme
+    
+    Always fetch the classification scheme org setting (or access the cached
+    value) instead of relying on the value getting stored in advance in
+    egEnv.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+12	8	Open-ILS/web/js/ui/default/staff/cat/services/record.js
+
+commit 29a7f6e3744b0daf3ba0e3c8f1ec8e5d0526c8e9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 18 13:15:57 2018 -0400
+
+    LP#1770973 Webstaff loads locale-specific IDL
+    
+    Fetch the locale-specific version of the /IDL2js data so that IDL-based
+    labels in the UI may be correctly translated.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+
+9	2	Open-ILS/src/templates/staff/base_js.tt2
+
+commit bc754a2c0df22d9f98b406688bfa11ec972539b5
+Author: John Yorio <jyorio@equinoxinitiative.org>
+Date:   Tue May 22 09:05:46 2018 -0400
+
+    LP#1193446: circ.staff.max_visible_event_age setting
+    
+    Signed-off-by: John Yorio <jyorio@equinoxinitiative.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 57b528b929ffe0caa4cd0691c9f08bfbd9fdb935
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jul 26 10:38:02 2018 -0400
+
+    Forward-port 3.0.10 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+214	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.9-3.0.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.9-3.0.10-upgrade-db.sql
