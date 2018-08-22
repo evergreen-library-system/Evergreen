@@ -153,6 +153,8 @@ UpUp.start({
     s.CONFIRM_IN_HOUSE_NUM_USES_COUNT_TITLE = "[% l('Are you sure you want to record {{num_uses}} uses for this?') %]";
     s.PAGE_TITLE_DEFAULT = "[% l('Evergreen Staff Client') %]";
     s.PAGE_TITLE_DYNAMIC_AND_CONTEXT = "[% l('[_1] - [_2]', '{{dynamic}}', '{{context}}') %]";
+    s.YES = "[% l('Yes') %]";
+    s.NO = "[% l('No') %]";
   }]);
 </script>
 
