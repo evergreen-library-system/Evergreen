@@ -18,6 +18,11 @@ experience problems logging in.
 * Fixes cases in which the web client stops loading after the toolbar.
 * Fixes problems in which using the web client in multiple tabs leads
 to data inconsistency.
+* Fixes an issue that caused authentication session checks to spam
+the system and needlessly fill up logs.
+* Boolean fields within grid views now say "Yes"/"No" instead of 
+"true"/"false".
+* Fixes sorting issues in the patron search.
 * The patron triggered event screen now respects the
 `circ.staff.max_visible_event_age` library setting.
 * Fixes an issue which caused an exception to be thrown during
@@ -29,8 +34,7 @@ matches the library's classification system.
 from other libraries as needed.
 * Once a record is overlayed in the Z39.50 screen, it is no longer
 marked for overlay.
-* The Item Status "Edited By" column now displays the username of the
-last user to edit the item, rather than their database ID.
+* Fixes several issues with the item status list view.
 * When adding new copies, the circulation library now defaults to the
 call number's owning library.
 * Fixes display issues with the Print Item Labels page.
@@ -45,6 +49,7 @@ Evergreen:
 
 * John Amundson
 * a. bellenir
+* Jason Boyer
 * Garry Collum
 * Jeff Davis
 * Bill Erickson
