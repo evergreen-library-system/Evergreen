@@ -3,14 +3,14 @@
         <div class="col-md-3">
             <div class="row">
                 <div class="col-xs-12">
-                    <h4>[% l('Volume/Item Detail defaults') %]</h4>
+                    <h4>[% l('Holdings Detail defaults') %]</h4>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <label>
                         <input type="checkbox" ng-change="saveDefaults()" ng-model="defaults.always_volumes"/>
-                        [% l('Always display Volume/Item Detail pane') %]
+                        [% l('Always display Holdings Detail pane') %]
                     </label>
                 </div>
             </div>

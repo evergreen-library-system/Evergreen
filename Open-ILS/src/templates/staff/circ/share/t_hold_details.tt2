@@ -31,7 +31,7 @@
 <div class="flex-row">
   <div class="flex-cell">[% l('Current Shelf Lib') %]</div>
   <div class="flex-cell well">{{hold.current_shelf_lib().shortname()}}</div>
-  <div class="flex-cell">[% l('Current Copy Location') %]</div>
+  <div class="flex-cell">[% l('Current Shelving Location') %]</div>
   <div class="flex-cell well">{{hold.current_copy().location().name()}}</div>
   <div class="flex-cell">[% l('Force Item Quality') %]</div>
   <div class="flex-cell well">{{hold.mint_condition() == 't'}}</div>

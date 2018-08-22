@@ -19,9 +19,9 @@
     ,[ l('Closed Dates Editor'), "./admin/local/actor/closed_dates" ]
     ,[ l('Item Alert Types'), "./admin/local/config/copy_alert_types" ]
     ,[ l('Item Alert Suppression'), "./admin/local/actor/copy_alert_suppress" ]
-    ,[ l('Copy Location Groups'), "./admin/local/asset/copy_location_group" ]
-    ,[ l('Copy Location Order'), "./admin/local/asset/copy_location_order" ]
-    ,[ l('Copy Locations Editor'), "./admin/local/asset/copy_locations" ]
+    ,[ l('Shelving Location Groups'), "./admin/local/asset/copy_location_group" ]
+    ,[ l('Shelving Location Order'), "./admin/local/asset/copy_location_order" ]
+    ,[ l('Shelving Locations Editor'), "./admin/local/asset/copy_locations" ]
     ,[ l('Item Tags'), "./admin/local/asset/copy_tag" ]
     ,[ l('Field Documentation'), "./admin/local/config/idl_field_doc" ]
     ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
@@ -37,7 +37,7 @@
     ,[ l('Statistical Popularity Badges'), "./admin/local/rating/badge" ]
     ,[ l('Surveys'), "./admin/local/action/survey" ]
     ,[ l('Transit List'), "./circ/transits/list" ]
-    ,[ l('Volume/Item Template Editor'), "./cat/volcopy/edit_templates" ]
+    ,[ l('Holdings Template Editor'), "./cat/volcopy/edit_templates" ]
     ,[ l('Work Log'), "./admin/workstation/log" ]
    ];
 

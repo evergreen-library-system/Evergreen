@@ -27,21 +27,21 @@
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_COPIES_VOLUMES =
-      "[% l('Permanently delete selected items and/or volumes from catalog?') %]";
+      "[% l('Permanently delete selected items and/or call numbers from catalog?') %]";
     s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
-      "[% l('Will delete {{copies}} items and {{volumes}} volumes') %]";
+      "[% l('Will delete {{copies}} items and {{volumes}} call numbers') %]";
     s.CONFIRM_DELETE_PEERS =
       "[% l('Unlink selected conjoined items?') %]";
     s.CONFIRM_DELETE_PEERS_MESSAGE =
       "[% l('Will unlink {{peers}} items') %]";
     s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =                                                                                                                  
-      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";                                                                                   
+      "[% l('Are you sure you want to transfer selected items to the marked call number?') %]";                                                                                   
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =                                                                                                           
       "[% l('One or more items could not be transferred. Override?') %]";                                                                                                    
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =                                                                                                            
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";                
     s.VOLS_TRANSFERED =                                                                                                            
-      "[% l('Volume(s) transfered') %]";                
+      "[% l('Call Number(s) transfered') %]";                
     s.ITEMS_TRANSFERED =                                                                                                            
       "[% l('Item(s) transfered') %]";                
     s.HOLD_TRANSFER_DEST_MARKED =                                                                                                            

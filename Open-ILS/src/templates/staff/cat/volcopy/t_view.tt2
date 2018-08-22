@@ -42,7 +42,7 @@ eg-navbar {
 
 <div ng-if="edit_templates">
   <div class="row">
-    <h2>[% l("Edit Volume/Item Templates") %]</h2>
+    <h2>[% l("Edit Holdings Templates") %]</h2>
   </div>
   <div class="row">
     <eg-vol-template edit-templates="edit_templates"></eg-vol-template>

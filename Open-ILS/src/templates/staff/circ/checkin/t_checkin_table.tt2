@@ -50,7 +50,7 @@
 
   <!-- Edit Group -->
   <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes and Items') %]">
+    label="[% l('Holdings') %]">
   </eg-grid-action>
 
   <eg-grid-action handler="printSpineLabels" group="[% l('Print') %]"

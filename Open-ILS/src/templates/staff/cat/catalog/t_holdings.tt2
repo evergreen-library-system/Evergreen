@@ -19,7 +19,7 @@
     persist-key="cat.holdings">
 
     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show empty volumes') %]"
+      label="[% l('Show empty call numbers') %]"
       checkbox="holdings_show_empty"
       checked="holdings_show_empty"/>
 
@@ -29,12 +29,12 @@
       checked="holdings_show_empty_org"/>
 
     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show Item detail') %]"
+      label="[% l('Show item detail') %]"
       checkbox="holdings_show_copies"
       checked="holdings_show_copies"/>
 
     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show volume detail') %]"
+      label="[% l('Show call number detail') %]"
       checkbox="holdings_show_vols"
       checked="holdings_show_vols"/>
 
@@ -65,37 +65,37 @@
     <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
       label="[% l('Item as Missing') %]"></eg-grid-action>
     <eg-grid-action handler="markFromSelectedAsHoldingsTarget" group="[% l('Mark') %]"
-      label="[% l('Library/Volume as Transfer Destination') %]"></eg-grid-action>
+      label="[% l('Library/Call Number as Transfer Destination') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsVolAdd" group="[% l('Add') %]"
-      label="[% l('Volumes') %]"></eg-grid-action>
+      label="[% l('Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]" disabled="vols_not_shown"
       label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
-      label="[% l('Volumes and Items') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]" disabled="vols_not_shown"
       label="[% l('Item Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
-      label="[% l('Volumes') %]"></eg-grid-action>
+      label="[% l('Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyEdit" group="[% l('Edit') %]"
       label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-      label="[% l('Volumes and Items') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
     <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
       label="[% l('Replace Barcodes') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyAlertsManage" group="[% l('Edit') %]"
       label="[% l('Manage Item Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsEmptyVolCopyDelete" group="[% l('Delete') %]" disabled="vols_not_shown"
-      label="[% l('Empty Volumes') %]"></eg-grid-action>
+      label="[% l('Empty Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
       label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
-      label="[% l('Volumes and Items') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
 
     <eg-grid-action handler="transferVolumes" group="[% l('Transfer') %]"
-      label="[% l('Volumes to Previously Marked Destination') %]"></eg-grid-action>
+      label="[% l('Call Numbers to Previously Marked Destination') %]"></eg-grid-action>
 
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
       label="[% l('Items to Previously Marked Destination') %]"></eg-grid-action>

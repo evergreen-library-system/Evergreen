@@ -48,7 +48,7 @@
     <div class="row pad-vert" ng-if="template_controls && defaults.show_vol_template_controls">
         <div class="row">
             <div class="col-xs-12">
-                <h4 class="center-block">[% l('Volume Attributes') %]</h4>
+                <h4 class="center-block">[% l('Call Number Attributes') %]</h4>
             </div>
         </div>
     </div>

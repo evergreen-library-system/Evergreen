@@ -53,7 +53,7 @@
   <eg-grid-action handler="grid_actions.cancel_hold"
     label="[% l('Cancel Hold') %]"></eg-grid-action>
 
-  <!-- Define the column using the sort-able copy location order
+  <!-- Define the column using the sort-able shelving location order
        position, but display the location label in each cell -->
   <eg-grid-field name="copy_location_order_position" required 
     path="current_copy.location.name" label="[% l('Shelving Location') %]">
