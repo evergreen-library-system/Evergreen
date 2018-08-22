@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-06-30 02:21+0000\n"
+"POT-Creation-Date: 2018-07-26 02:22+0000\n"
 "PO-Revision-Date: 2018-03-01 15:23+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-07-02 05:58+0000\n"
-"X-Generator: Launchpad (build 18704)\n"
+"X-Launchpad-Export-Date: 2018-07-27 06:04+0000\n"
+"X-Generator: Launchpad (build 18737)\n"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:50
 msgid ""
@@ -213,11 +213,11 @@ msgstr "%1, %2 %3 : %4"
 msgid "%1."
 msgstr "%1."
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:466
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:467
 msgid "&lt;MULTIPLE&gt;"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:225 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:273 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:403 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:466 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:62 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:70 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:225 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:273 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:343 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:404 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:467 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:62 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:70 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:78
 msgid "&lt;NONE&gt;"
 msgstr "&lt;HODNOTA NEZADÁNA&gt;"
 
@@ -1149,7 +1149,7 @@ msgstr "Bibliografický"
 msgid "Bibliographic record %1"
 msgstr "Bibliografický záznam %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:113 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:87 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:87 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
 msgid "Bill #"
 msgstr "Transakce č."
 
@@ -1805,7 +1805,7 @@ msgstr "Úroveň chronologie %1"
 msgid "Circ History List"
 msgstr "Historie výpůjček"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:77
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:113 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:77
 msgid "Circ ID"
 msgstr "ID výpůjčky"
 
@@ -2215,7 +2215,7 @@ msgstr "Exemplář není dostupný"
 msgid "Copy Not Found"
 msgstr "Exemplář nenalezen"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:385
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:386
 msgid "Copy Notes"
 msgstr "Poznámky o exempláři"
 
@@ -2252,7 +2252,7 @@ msgstr "Kopírovat řadu exemplářů"
 msgid "Copy Tag Types"
 msgstr "Typy tagů exemplářů"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:412
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:413
 msgid "Copy Tags"
 msgstr "Tagy exemplářů"
 
@@ -2493,7 +2493,7 @@ msgstr "Datum narození - rok"
 msgid "Daily"
 msgstr "Denně"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:296 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:356
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:296 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:357
 msgid "Damaged"
 msgstr "Poškozeno"
 
@@ -3568,7 +3568,7 @@ msgstr "Pátý"
 msgid "Filter Value"
 msgstr "Hodnota filtru"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:443
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:444
 msgid "Filter by Library"
 msgstr "Filtrovat podle knihovny"
 
@@ -3584,7 +3584,7 @@ msgstr "Filtry"
 msgid "Find Another Target"
 msgstr "Najít jiný cíl"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:367 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:244
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:368 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:244
 msgid "Fine Level"
 msgstr "Úroveň pokuty"
 
@@ -3636,7 +3636,7 @@ msgstr "První úroven enumerace se mění během roku předplatného"
 msgid "Flat Text Editor"
 msgstr "Textová editace MARCu"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:394 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:303
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:395 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:303
 msgid "Floating"
 msgstr "Pohyblivý exemplář"
 
@@ -3758,7 +3758,7 @@ msgstr "Přejít na importovaný záznam"
 msgid "Go to record"
 msgstr "Přejít na záznam"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:290 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:350
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:290 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:351
 msgid "Good"
 msgstr "Dobrá"
 
@@ -3878,7 +3878,7 @@ msgstr "Skrýt vyhledávací formulář"
 msgid "Hide Volume/Copy Details"
 msgstr "Skrýt detaily signatury/exempláře"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:377
 msgid "High"
 msgstr "Vysoká"
 
@@ -4693,7 +4693,7 @@ msgstr "Dlouhodobě nevrácené"
 msgid "Lost"
 msgstr "Ztraceno"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:374
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
 msgid "Low"
 msgstr "Nízká"
 
@@ -5431,7 +5431,7 @@ msgstr "Hodnota nezadána"
 msgid "None of the above"
 msgstr "Nic z výše uvedeného"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
 msgid "Normal"
 msgstr "Běžná"
 
@@ -5795,6 +5795,14 @@ msgstr "Cíl přepsání"
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:5
 msgid "Overlay record?"
 msgstr "Přepsat záznam?"
+
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:13
+msgid "Overlay target changed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:15
+msgid "Overlay target removed"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:25
 msgid "Owed for Selected:"
@@ -8120,6 +8128,20 @@ msgstr ""
 "Komunita, která rozvíjí a podporuje otevřený software  Evergreen,\n"
 "       se vyznačuje vysokou mírou účasti nejen ze strany vývojářů, ale \n"
 "       také knihovníků, kteří software používají."
+
+#. ("{{id}}")
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:16
+msgid ""
+"The overlay target has been removed.  The previous target was record %1.  "
+"Continue with overlay of record %1?"
+msgstr ""
+
+#. ("{{id}}", "{{live_id}}")
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:14
+msgid ""
+"The overlay target has changed from %1 to %2.  Continue with overlay of "
+"record %2?"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:96
 msgid ""
