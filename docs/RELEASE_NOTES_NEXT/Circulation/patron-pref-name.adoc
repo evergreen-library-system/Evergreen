@@ -1,0 +1,36 @@
+Patron Preferred Name and Name Search Keywords
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Preferred Name
+++++++++++++++
+
+Adds a new set of patron preferred name fields for prefix, first,
+middle, last, and suffix allowing patrons to provide preferred name
+information.  Preferred names are optional and each acts as an overlay
+to the analogous primary name field, making it possible to provide
+preferred name values for individual fields.
+
+For example, a patron named William Erickson may have a preferred first
+name (pref_first_given_name) of Bill, in which case the preferred name
+would be Bill Erickson.  Note a preferred last name is not required in
+this case as the code uses primary name values as defaults when not
+replaced with a preferred version.
+
+* Patrons will see primary names displayed in the catalog when set.
+* Staff will see both primary name and preferred name in the patron
+  summary side bar.
+* Patron searches for any given name field will search both the primary
+  and preferred name data.
+* Preferred name fields are available in Action/Trigger templates and
+  are present in various patron-focused print templates.
+
+Name Keywords
+++++++++++++++
+
+Adds a new field to store miscellaneous patron name search terms.  These
+values are only for searching and do not appear in any interfaces, apart
+from the patron summary side bar and the patron edit UI.
+
+Included is a new search field in the patron search UI which searches
+keyword values and all other name fields.  It's essentially a global patron
+name keyword search.
