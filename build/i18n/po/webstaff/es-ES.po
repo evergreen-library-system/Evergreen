@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-06-29 02:21+0000\n"
+"POT-Creation-Date: 2018-07-26 02:21+0000\n"
 "PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Ben Shum <ben@evergreener.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-06-30 06:17+0000\n"
-"X-Generator: Launchpad (build 18704)\n"
+"X-Launchpad-Export-Date: 2018-07-27 06:06+0000\n"
+"X-Generator: Launchpad (build 18737)\n"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:50
 msgid ""
@@ -214,11 +214,11 @@ msgstr "%1, %2 %3 : %4"
 msgid "%1."
 msgstr "%1."
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:466
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:467
 msgid "&lt;MULTIPLE&gt;"
 msgstr "&lt;MULTIPLE&gt;"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:225 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:273 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:403 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:466 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:62 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:70 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:225 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:273 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:343 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:404 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:467 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:62 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:70 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:78
 msgid "&lt;NONE&gt;"
 msgstr "&lt;NINGUNO&gt;"
 
@@ -400,6 +400,10 @@ msgstr "Añadir 007"
 msgid "Add Billing"
 msgstr "Añadir multa"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:27
+msgid "Add Copies"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/share/t_add_copy_alert_dialog.tt2:5
 msgid "Add Copy Alert"
 msgstr "Añadir alerta de copia"
@@ -479,10 +483,6 @@ msgstr "Añadir a la espera"
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2:18
 msgid "Add To Selected Bucket"
 msgstr "Agregar al Cubo Seleccionada"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:27
-msgid "Add Volumes"
-msgstr "Añadir volúmenes"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:89
 msgid "Add alternative enumeration"
@@ -627,7 +627,7 @@ msgstr "Nota de alerta"
 msgid "Alert..."
 msgstr "Alerta..."
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:134 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:149
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:122 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:134 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:149
 msgid "Alerts"
 msgstr "Alertas"
 
@@ -1204,7 +1204,7 @@ msgstr "Bibliográfico"
 msgid "Bibliographic record %1"
 msgstr "Registro bibliográfico %1"
 
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:113 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:87 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:18 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:52 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:87 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:18
 msgid "Bill #"
 msgstr "Bill #"
 
@@ -1846,10 +1846,6 @@ msgstr "Hijo(a)"
 msgid "Child nullable"
 msgstr "Anulable niño"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:48
-msgid "Choose Library for Volume/Copy Transfer Destination"
-msgstr "Elija la biblioteca de volumen / Copia de destino de transferencia"
-
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:10 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:10
 msgid "Choose merge profile"
 msgstr ""
@@ -1883,7 +1879,7 @@ msgstr ""
 msgid "Circ History List"
 msgstr "Lista del historial de circ"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:77
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:113 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:77
 msgid "Circ ID"
 msgstr "Identificación del Circ"
 
@@ -2234,10 +2230,6 @@ msgstr ""
 msgid "Copies"
 msgstr "Copias"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98
-msgid "Copies to Previously Marked Library"
-msgstr "Copias a la biblioteca de marcado previamente"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:28 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:50 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:52
 msgid "Copy"
 msgstr "Copiar"
@@ -2256,7 +2248,7 @@ msgstr "Copia #"
 msgid "Copy Alert Message for \"%1\""
 msgstr "Copiar mensaje de alerta para \"%1\""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:391
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:392
 msgid "Copy Alerts"
 msgstr ""
 
@@ -2312,7 +2304,7 @@ msgstr "Ninguna copia disponible."
 msgid "Copy Not Found"
 msgstr "Copia no encontrada"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:385
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:386
 msgid "Copy Notes"
 msgstr "Copiar Notas"
 
@@ -2349,7 +2341,7 @@ msgstr ""
 msgid "Copy Tag Types"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:412
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:413
 msgid "Copy Tags"
 msgstr ""
 
@@ -2632,7 +2624,7 @@ msgstr ""
 msgid "Daily"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:296 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:356
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:296 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:357
 msgid "Damaged"
 msgstr "Dañado"
 
@@ -3748,7 +3740,7 @@ msgstr ""
 msgid "Filter Value"
 msgstr "Valor de Filtro"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:443
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:444
 msgid "Filter by Library"
 msgstr "Filtrar por Biblioteca"
 
@@ -3764,7 +3756,7 @@ msgstr "Filtros"
 msgid "Find Another Target"
 msgstr "Encuentra otro destino"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:367 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:244
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:368 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:244
 msgid "Fine Level"
 msgstr "Nivel Fino"
 
@@ -3820,7 +3812,7 @@ msgstr ""
 msgid "Flat Text Editor"
 msgstr "Editor de texto plano"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:394 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:303
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:322 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:163 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:395 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:303
 msgid "Floating"
 msgstr "Flotando"
 
@@ -3955,7 +3947,7 @@ msgstr "Ir a registro importado"
 msgid "Go to record"
 msgstr "Ir a registre"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:290 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:350
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:290 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:351
 msgid "Good"
 msgstr "Bueno/a"
 
@@ -4079,7 +4071,7 @@ msgstr "Esconder formulario de búsqueda"
 msgid "Hide Volume/Copy Details"
 msgstr "Ocultar Volumen / Copia de detalles"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:377
 msgid "High"
 msgstr "Alto(a)"
 
@@ -4193,9 +4185,17 @@ msgstr ""
 msgid "Holdings"
 msgstr "Valores en cartera"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:70
+msgid "Holdings Transfer"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:128
 msgid "Holdings View"
 msgstr "Ver Asimientos"
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:51
+msgid "Holdings transfer target set"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_clone_subscription.tt2:10
 msgid ""
@@ -4576,10 +4576,6 @@ msgstr "Pantalla de estado del artículo"
 msgid "Item Summary"
 msgstr "Resumen de elementos"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:54
-msgid "Item Transfer Target set"
-msgstr "Conjunto de objetos de transferencia de destino"
-
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:38
 msgid "Item Type"
 msgstr "Tipo de artículo"
@@ -4655,6 +4651,10 @@ msgstr "Artículos Prestados"
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:43
 msgid "Items Overdue"
 msgstr "Articulos Vencidos"
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:101
+msgid "Items to Previously Marked Destination"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:60
 msgid "Items to Previously Marked Library"
@@ -4815,9 +4815,9 @@ msgstr "Librería"
 msgid "Library : Distribution/Stream"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:66
-msgid "Library as Volume Transfer Destination"
-msgstr "Biblioteca como transferencia de Volumen de Destino"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:68
+msgid "Library/Volume as Transfer Destination"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:14
 msgid "Library: "
@@ -4936,7 +4936,7 @@ msgstr "desde hace mucho tiempo"
 msgid "Lost"
 msgstr "Perdido"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:374
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
 msgid "Low"
 msgstr "Baja"
 
@@ -5097,7 +5097,7 @@ msgstr ""
 msgid "Make last visible"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:60 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:127 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:136 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:183 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
+#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:60 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:136 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:183 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
 msgid "Manage"
 msgstr ""
 
@@ -5113,7 +5113,7 @@ msgstr ""
 msgid "Manage Columns"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:61 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:40 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:5
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:61 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:40 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:5
 msgid "Manage Copy Alerts"
 msgstr ""
 
@@ -5728,7 +5728,7 @@ msgstr "Ninguno/a"
 msgid "None of the above"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
 msgid "Normal"
 msgstr "Normal"
 
@@ -6104,6 +6104,14 @@ msgstr "Superposición de Destino"
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:5
 msgid "Overlay record?"
 msgstr "Registro de superposición?"
+
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:13
+msgid "Overlay target changed"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:15
+msgid "Overlay target removed"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:25
 msgid "Owed for Selected:"
@@ -8016,6 +8024,10 @@ msgstr "Mostrar Volumen/Copiar Detalles"
 msgid "Show copy detail"
 msgstr "Mostrar Detalle de Copia"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:27
+msgid "Show empty libraries"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:22
 msgid "Show empty volumes"
 msgstr "Mostrar los volúmenes vacíos"
@@ -8528,6 +8540,20 @@ msgid ""
 "The open-source community developing and supporting Evergreen is\n"
 "       marked by a high degree of participation from developers and from\n"
 "       the librarians who use the software."
+msgstr ""
+
+#. ("{{id}}")
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:16
+msgid ""
+"The overlay target has been removed.  The previous target was record %1.  "
+"Continue with overlay of record %1?"
+msgstr ""
+
+#. ("{{id}}", "{{live_id}}")
+#: ../../Open-ILS/src/templates/staff/cat/share/z3950_strings.tt2:14
+msgid ""
+"The overlay target has changed from %1 to %2.  Continue with overlay of "
+"record %2?"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:96
@@ -9330,18 +9356,6 @@ msgstr "Invalidado"
 msgid "Volume Attributes"
 msgstr "Atributos Volumen"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:70
-msgid "Volume Transfer"
-msgstr "Transferir Volumen"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:52
-msgid "Volume Transfer Target set"
-msgstr "Volumen determinado objetivo de transferencia"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:68
-msgid "Volume as Item Transfer Destination"
-msgstr "Volumen como Transferencia de elementos del Destino"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:44
 msgid "Volume(s) transfered"
 msgstr "Volumen(s) transferido"
@@ -9366,17 +9380,9 @@ msgstr "Volúmenes y Copias"
 msgid "Volumes and Items"
 msgstr "Volúmenes y artículos"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:94
-msgid "Volumes to Previously Marked Library"
-msgstr "Volúmenes a la biblioteca marcada previamente"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:92
-msgid "Volumes to Previously Marked Record"
-msgstr "Volúmenes a Registros Marcados Anteriormente"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:96
-msgid "Volumes to Previously Marked Record and Library"
-msgstr "Volúmenes a Anteriormente Registros Marcados y Biblioteca"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98
+msgid "Volumes to Previously Marked Destination"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:7
 msgid "Waiting for Capture"
@@ -9816,3 +9822,36 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2:6 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_info.tt2:6
 msgid "{} items"
 msgstr "{} artículos"
+
+#~ msgid "Choose Library for Volume/Copy Transfer Destination"
+#~ msgstr "Elija la biblioteca de volumen / Copia de destino de transferencia"
+
+#~ msgid "Copies to Previously Marked Library"
+#~ msgstr "Copias a la biblioteca de marcado previamente"
+
+#~ msgid "Library as Volume Transfer Destination"
+#~ msgstr "Biblioteca como transferencia de Volumen de Destino"
+
+#~ msgid "Volume as Item Transfer Destination"
+#~ msgstr "Volumen como Transferencia de elementos del Destino"
+
+#~ msgid "Volume Transfer"
+#~ msgstr "Transferir Volumen"
+
+#~ msgid "Volumes to Previously Marked Record"
+#~ msgstr "Volúmenes a Registros Marcados Anteriormente"
+
+#~ msgid "Volumes to Previously Marked Record and Library"
+#~ msgstr "Volúmenes a Anteriormente Registros Marcados y Biblioteca"
+
+#~ msgid "Volumes to Previously Marked Library"
+#~ msgstr "Volúmenes a la biblioteca marcada previamente"
+
+#~ msgid "Item Transfer Target set"
+#~ msgstr "Conjunto de objetos de transferencia de destino"
+
+#~ msgid "Volume Transfer Target set"
+#~ msgstr "Volumen determinado objetivo de transferencia"
+
+#~ msgid "Add Volumes"
+#~ msgstr "Añadir volúmenes"
