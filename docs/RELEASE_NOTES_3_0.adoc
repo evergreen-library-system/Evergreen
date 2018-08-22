@@ -23,6 +23,8 @@ the system and needlessly fill up logs.
 * Boolean fields within grid views now say "Yes"/"No" instead of 
 "true"/"false".
 * Fixes sorting issues in the patron search.
+* Staff can now choose to print out only a selection of items out,
+instead of having to print them all.
 * The patron triggered event screen now respects the
 `circ.staff.max_visible_event_age` library setting.
 * Fixes an issue which caused an exception to be thrown during
