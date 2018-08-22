@@ -155,6 +155,8 @@ UpUp.start({
     s.PAGE_TITLE_DYNAMIC_AND_CONTEXT = "[% l('[_1] - [_2]', '{{dynamic}}', '{{context}}') %]";
     s.CONFIRM_LONG_RUNNING_ACTION_MSG = "[% l('This action might take a while to complete. Continue?') %]";
     s.CONFIRM_LONG_RUNNING_ACTION_ALL_ROWS_TITLE = "[% l('Are you sure you want to load ALL items?') %]";
+    s.YES = "[% l('Yes') %]";
+    s.NO = "[% l('No') %]";
   }]);
 </script>
 
