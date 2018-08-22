@@ -2050,11 +2050,10 @@ angular.module('egGridMod',
 /**
  * Translates bare IDL object values into display values.
  * 1. Passes dates through the angular date filter
- * 2. Translates bools to Booleans so the browser can display translated 
- *    value.  (Though we could manually translate instead..)
+ * 2. Converts bools to translated Yes/No strings
  * Others likely to follow...
  */
-.filter('egGridValueFilter', ['$filter','egCore', function($filter,egCore) {
+.filter('egGridValueFilter', ['$filter','egCore', 'egStrings', function($filter,egCore,egStrings) {
     function traversePath(obj,path) {
         var list = path.split('.');
         for (var part in path) {
@@ -2072,11 +2071,11 @@ angular.module('egGridMod',
                     case 't' : 
                     case '1' :  // legacy
                     case true:
-                        return ''+true;
+                        return egStrings.YES;
                     case 'f' : 
                     case '0' :  // legacy
                     case false:
-                        return ''+false;
+                        return egStrings.NO;
                     // value may be null,  '', etc.
                     default : return '';
                 }
