@@ -195,7 +195,8 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
 
     }
 
-    service.updateInventory = function(copy_list, all_items, refresh) {
+    //all_items = selected grid rows, to be updated in place
+    service.updateInventory = function(copy_list, all_items) {
         if (copy_list.length == 0) return;
         return egCore.net.request(
             'open-ils.circ',
@@ -210,8 +211,9 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                               {flesh: 1, flesh_fields:
                                 {alci: ['inventory_workstation']}
                             }).then(function(alci) {
-                                item._last_copy_inventory.inventory_date = alci.inventory_date();
-                                item._last_copy_inventory._inventory_workstation_name =
+                                //update existing grid rows
+                                item["last_copy_inventory.inventory_date"] = alci.inventory_date();
+                                item["last_copy_inventory.inventory_workstation.name"] =
                                     alci.inventory_workstation().name();
                             });
                         }
