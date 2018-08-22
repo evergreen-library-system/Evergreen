@@ -364,7 +364,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         var print_data = {circulations : []};
         var cusr = patronSvc.current;
 
-        angular.forEach(patronSvc.items_out, function(circ) {
+        angular.forEach(items, function(circ) {
             print_data.circulations.push({
                 circ : egCore.idl.toHash(circ),
                 copy : egCore.idl.toHash(circ.target_copy()),
