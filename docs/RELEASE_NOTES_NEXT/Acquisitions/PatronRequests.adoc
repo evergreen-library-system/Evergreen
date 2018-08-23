@@ -1,0 +1,6 @@
+
+Patron Acquisitions Requests
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The existing interface for staff-mediated patron acquisition requests has been replaced in the web staff client with a re-implementation written in AngularJS, with some minor bug fixes (including access from the Patron interface) and other improvements.
+
