@@ -49,7 +49,7 @@
 
 <!-- checkin form -->
 <div class="row pad-vert">
-  <div class="col-md-4">
+  <div class="col-md-5">
     <form ng-submit="checkin(checkinArgs)" role="form" class="form-inline">
       <div class="input-group">
 
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <div class="col-md-3" ng-if="!is_capture">
+  <div class="col-md-4" ng-if="!is_capture">
     <div class="flex-row">
       <div class="flex-cell"></div>
       <div class="pad-horiz">[% l('Effective Date') %]</div>
