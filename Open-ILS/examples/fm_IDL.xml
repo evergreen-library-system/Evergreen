@@ -7393,7 +7393,7 @@ SELECT  usr,
 			<field reporter:label="Peer Record Maps" name="peer_record_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Peer Records" name="peer_records" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Last Captured Hold" name="last_captured_hold" oils_persist:virtual="true" reporter:datatype="link"/>
-			<field reporter:label="Last Copy Inventory" name="last_copy_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Latest Inventory" name="last_copy_inventory" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Has Holds" name="holds_count" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Tags" name="tags" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Copy Alerts" name="copy_alerts" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -7443,7 +7443,7 @@ SELECT  usr,
         </permacrud>
 	</class>
 
-	<class id="alci" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::last_copy_inventory" oils_persist:tablename="asset.last_copy_inventory" reporter:core="true" reporter:label="Last Copy Inventory">
+	<class id="alci" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::last_copy_inventory" oils_persist:tablename="asset.last_copy_inventory" reporter:core="true" reporter:label="Latest Inventory">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.last_copy_inventory_id_seq">
             <field reporter:label="Last Inventory ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Last Inventory Date" name="inventory_date" reporter:datatype="timestamp"/>
