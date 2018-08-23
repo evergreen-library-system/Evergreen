@@ -1,0 +1,19 @@
+Asynchronous Vandelay Imports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Vandelay imports are now monitored from the browser client asynchronously,
+meaning the client requests updates from the server instead of waiting for 
+the server to respond to the original import request.  This changes allows 
+for incremental progress updates in the browser client.
+
+New Database Table
+++++++++++++++++++
+
+This adds a new database table vandelay.session_tracker for tracking
+in-progress vandelay upload activity.  A new tracker row is added for
+each of "upload", "enqueue", and "import" actions, linked for a given
+session by the value stored in the "session_key" field.
+
+The table tracks other potentially useful data, like the staff member
+and workstation where the action was performed.
+
