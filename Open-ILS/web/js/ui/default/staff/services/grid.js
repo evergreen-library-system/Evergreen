@@ -814,6 +814,32 @@ angular.module('egGridMod',
                 return grid.modifyColumnPos(col, diff);
             }
 
+            // Returns true of the contents of the cell overflow its container.
+            // parentDepth tells the code how far up the DOM tree to traverse
+            // via parentNode before stopping to inspect the value.
+            // There's no way to pass a reference to a DOM node directly via
+            // a scope function (except ng-click, etc.) so pass the 
+            // DOM id instead and get the node from there.
+            $scope.cellOverflowed = function(id, parentDepth) {
+                var node = document.getElementById(id);
+                if (!node) return;
+                for (var i = 0; i < parentDepth; i++) {
+                    node = node.parentNode;
+                }
+                return node.scrollHeight > node.clientHeight 
+                    || node.scrollWidth > node.clientWidth;
+            }
+
+            // Generates a unique identifier per cell per grid.
+            $scope.cellId = function(col, item) {
+                if (!col || !item) return '';
+                return 'grid-cell-span-' 
+                    // differentiate grids
+                    + ($scope.persistKey || $scope.idlClass || $scope.grid_element.id)
+                    // differentiate rows and columns.
+                    + '-' + col.name + '-' + $scope.indexValue(item);
+
+            }
 
             // handles click, control-click, and shift-click
             $scope.handleRowClick = function($event, item) {
