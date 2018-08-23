@@ -17,7 +17,7 @@
          <ul uib-dropdown-menu>
            <li ng-repeat="option in values_for_step">
              <a href ng-click="change_ptype(option)">
-              {{option.label()}}
+              {{option.ptype_key()}}: {{option.label()}}
              </a>
            </li>
          </ul>
