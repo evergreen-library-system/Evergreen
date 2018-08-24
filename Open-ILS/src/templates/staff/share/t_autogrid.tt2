@@ -327,6 +327,7 @@
             style="padding-left:5px; padding-right:10px;"
             ng-init="html_value=translateCellTemplate(col, item)">
             <span tooltip-class="eg-grid-tooltip"
+              tooltip-placement="top-left"
               uib-tooltip-html="cellOverflowed(cellId(col, item), 1) ? html_value : ''">
               <span ng-bind-html="html_value"></span>
             </span>
@@ -342,6 +343,7 @@
             id="{{cellId(col, item)}}"
             ng-init="text_value = (itemFieldValue(item, col) | egGridValueFilter:col:item)"
             uib-tooltip="{{cellOverflowed(cellId(col, item), 1) ? text_value : ''}}"
+            tooltip-placement="top-left"
             tooltip-class="eg-grid-tooltip"
             style="padding-left:5px; padding-right:10px;">
             {{text_value}}
