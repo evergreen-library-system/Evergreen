@@ -11,7 +11,7 @@ these requests within a patron's record.
 
 . Select Other --> Acquisition Patron Requests. This takes you to the Aquisition Patron Requests Screen.  CTRL+click or scrollwheel click to open this in a new browser tab.
 
-. The AcRequests Screen will show any other requests that this patron has made.  You may sort the requests by clicking on the column headers.
+. The Acquisition Patron Requests Screen will show any other requests that this patron has made.  You may sort the requests by clicking on the column headers.
 
 . To show canceled requests, click the _Show Canceled Requests_ checkbox.
 
