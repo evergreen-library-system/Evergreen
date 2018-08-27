@@ -2,18 +2,13 @@
 <div ng-cloak class="patron-summary-grid-wrapper">
   <div ng-show="patron()" id="patron-summary-grid">
     <div class="row patron-summary-pref-name"
-      ng-if="patron().pref_family_name() || patron().pref_first_given_name() || patron().second_given_name()">
+      ng-if="patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name()">
       <div class="col-md-12">
         [% l('[_1], [_2] [_3] (Preferred)', 
           '{{patron().pref_family_name() || patron().family_name()}}',
           '{{patron().pref_first_given_name() || patron().first_given_name()}}',
           '{{patron().pref_second_given_name() || patron().second_given_name()}}') 
         %]
-      </div>
-    </div>
-    <div ng-if="patron().name_keywords()" class="row patron-summary-pref-name">
-      <div class="col-md-12">
-        <a title="{{patron().name_keywords()}}">[% l('Name Keywords') %]</a>
       </div>
     </div>
     <div class="row" 

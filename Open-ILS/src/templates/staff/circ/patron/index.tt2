@@ -101,6 +101,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
                 '{{patron().family_name()}}',
                 '{{patron().first_given_name()}}',
                 '{{patron().second_given_name()}}') %]
+               <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
           </div>
 
           <p ng-show="patron().notes().length > 0"><a class='patron-summary-has-notes' href="./circ/patron/{{patron().id()}}/notes"><span class="label label-warning">Notes &nbsp;{{patron().notes().length}}</span></a></p>
