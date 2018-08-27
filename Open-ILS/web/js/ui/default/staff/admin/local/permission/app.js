@@ -97,14 +97,7 @@ angular.module('egAdminPermGrpTreeApp',
             service.pgtde_array = [];
             service.disabled_entries = [];
             angular.forEach(entries, function(entry) {
-                if (entry.disabled() == 'f') {
-                    entry.disabled(false);
-                    service.pgtde_array.push(entry);
-                }
-                if (entry.disabled() == 't') {
-                    entry.disabled(true);
-                    service.disabled_entries.push(entry);
-                }
+                service.pgtde_array.push(entry);
             });
         });
     }

@@ -624,7 +624,6 @@ CREATE TABLE permission.grp_tree_display_entry (
             DEFERRABLE INITIALLY DEFERRED,
     grp     INTEGER NOT NULL REFERENCES permission.grp_tree (id)
             DEFERRABLE INITIALLY DEFERRED,
-    disabled BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pgtde_once_per_org UNIQUE (org, grp)
 );
 

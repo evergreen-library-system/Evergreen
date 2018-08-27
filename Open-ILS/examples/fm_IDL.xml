@@ -7651,7 +7651,6 @@ SELECT  usr,
 			<field reporter:label="Parent Group" name="parent" reporter:datatype="link"/>
 			<field reporter:label="Org Unit" name="org" reporter:datatype="link"/>
 			<field reporter:label="Position" name="position" reporter:datatype="int"/>
-			<field reporter:label="Disabled" name="disabled" reporter:datatype="bool"/>
 			<field reporter:label="Child Entries" name="children" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -7662,10 +7661,10 @@ SELECT  usr,
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
-				<create permission="CREATE_PERM" global_required="true"/>
+				<create permission="MANAGE_CUSTOM_PERM_GRP_TREE" global_required="true"/>
 				<retrieve permission="STAFF_LOGIN" global_required="true"/>
-				<update permission="UPDATE_PERM" global_required="true"/>
-				<delete permission="DELETE_PERM" global_required="true"/>
+				<update permission="MANAGE_CUSTOM_PERM_GRP_TREE" global_required="true"/>
+				<delete permission="MANAGE_CUSTOM_PERM_GRP_TREE" global_required="true"/>
 			</actions>
 		</permacrud>
 	</class>

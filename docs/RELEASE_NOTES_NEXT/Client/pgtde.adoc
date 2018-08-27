@@ -33,14 +33,15 @@ Removing an Entry
 +++++++++++++++++
 If you want a particular Org Unit to not have access to specific
 entries, you may remove an entry. Removing an entry will remove it from 
-view. The entry will remain in the database, marked as disabled.
+view. The entry will be removed from the database.
 
 * Select an entry and press the *Remove* button.
 
 Adding an Entry
 +++++++++++++++
-You may "add" entries that have been removed previously. This is useful
-for moving entries to different parents, or making them root entries.
+You may add entries from permission groups that are not currently
+reflected in the permission group tree. This is useful for moving 
+entries to different parents, or making them root entries.
 
 image::media/pgtde_02.png[Add Entry modal]
 

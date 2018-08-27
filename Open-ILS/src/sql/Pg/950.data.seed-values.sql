@@ -1911,7 +1911,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 607, 'EMERGENCY_CLOSING', oils_i18n_gettext( 607,
     'Create and manage Emergency Closings', 'ppl', 'description' )),
  (608, 'APPLY_WORKSTATION_SETTING',
-   oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description'))
+   oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description')),
+ ( 609, 'MANAGE_CUSTOM_PERM_GRP_TREE', oils_i18n_gettext( 609,
+    'Allows a user to manage custom permission group lists.', 'ppl', 'description' ))
 ;
 
 

@@ -8,12 +8,15 @@ CREATE TABLE permission.grp_tree_display_entry (
             DEFERRABLE INITIALLY DEFERRED,
     grp     INTEGER NOT NULL REFERENCES permission.grp_tree (id)
             DEFERRABLE INITIALLY DEFERRED,
-    disabled BOOLEAN NOT NULL DEFAULT FALSE,
     CONSTRAINT pgtde_once_per_org UNIQUE (org, grp)
 );
 
 ALTER TABLE permission.grp_tree_display_entry
     ADD COLUMN parent integer REFERENCES permission.grp_tree_display_entry (id)
             DEFERRABLE INITIALLY DEFERRED;
+
+INSERT INTO permission.perm_list (id, code, description)
+VALUES (609, 'MANAGE_CUSTOM_PERM_GRP_TREE', oils_i18n_gettext( 609,
+    'Allows a user to manage custom permission group lists.', 'ppl', 'description' ));
             
 COMMIT;

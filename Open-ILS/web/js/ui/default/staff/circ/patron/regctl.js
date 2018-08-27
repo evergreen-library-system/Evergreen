@@ -501,11 +501,9 @@ angular.module('egCoreMod')
 
                 var list = [];
                 function squash(node) {
-                    if (node.disabled() == 'f') {
-                        node.children().sort(compare)
-                        list.push(node);
-                        angular.forEach(node.children(), squash);
-                    }
+                    node.children().sort(compare);
+                    list.push(node);
+                    angular.forEach(node.children(), squash);
                 }
 
                 angular.forEach(treeArray, squash);
