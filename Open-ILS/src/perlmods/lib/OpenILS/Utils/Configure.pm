@@ -88,9 +88,12 @@ sub org_tree_js {
     # Get our list of locales
     my $locales = get_locales();
 
+    # Remove the no-locale copy
+    my $cache = OpenSRF::Utils::Cache->new;
+    $cache->delete_cache("orgtree.");
+
     foreach my $locale (@$locales) {
         warn "removing OrgTree from the cache for locale " . $locale->code . "...\n";
-        my $cache = OpenSRF::Utils::Cache->new;
         $cache->delete_cache("orgtree.".$locale->code);
 
         # fetch the org_unit's and org_unit_type's
