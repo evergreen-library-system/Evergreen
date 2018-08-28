@@ -75,6 +75,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
         holds = [];
         var restrictions = {
                 is_staff_request  : 'true',
+                last_captured_hold: 'true',
                 capture_time      : { not : null },
                 cs_id             : 8, // on holds shelf
                 fulfillment_time  : null,

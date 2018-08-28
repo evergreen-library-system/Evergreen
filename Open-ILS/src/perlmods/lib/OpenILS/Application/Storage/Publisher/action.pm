@@ -2131,7 +2131,23 @@ sub wide_hold_data {
     # force this to either 'true' or 'false'
     my $is_staff_request = delete($$restrictions{is_staff_request}) || 'false';
     $is_staff_request = 'false' if (!grep {$is_staff_request eq $_} qw/true false/);
-    $log->info('is_staff_request: '. $is_staff_request);
+
+    # option to filter for the latest captured hold for a given copy
+    my $last_captured_hold = delete($$restrictions{last_captured_hold}) || 'false';
+    $last_captured_hold = $last_captured_hold eq 'true' ? 1 : 0;
+
+    my $initial_condition = 'TRUE';
+    if ($last_captured_hold) {
+        $initial_condition = <<"        SQL";
+            (h.capture_time IS NULL OR (h.id = (
+                SELECT  id
+                  FROM  action.hold_request recheck
+                  WHERE recheck.current_copy = cp.id
+                  ORDER BY capture_time DESC
+                  LIMIT 1
+            )))
+        SQL
+    }
 
     my $select = <<"    SQL";
 WITH
@@ -2353,7 +2369,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
                     LEFT JOIN config.circ_modifier cm ON (cp.circ_modifier = cm.code)
               WHERE m.hold = h.id
         ) AS hold_wait
-  WHERE TRUE
+  WHERE $initial_condition
     SQL
 
     my %field_map = (
