@@ -41,7 +41,6 @@ angular.module('egHoldsApp',
 function($scope , $q , $routeParams , $window , $location , egCore , egHolds , egHoldGridActions , egCirc , egGridDataProvider , egProgressDialog)  {
     $scope.detail_hold_id = $routeParams.hold_id;
 
-    var hold_ids = [];
     var holds = [];
     var clear_mode = false;
     $scope.gridControls = {};
@@ -53,7 +52,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
     function refresh_page() {
         hold_count = 0;
         holds = [];
-        hold_ids = [];
+        all_holds = [];
         provider.refresh();
     }
     // called after any egHoldGridActions action occurs
@@ -61,15 +60,22 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
 
     provider.get = function(offset, count) {
 
+        // if in clear mode...
+        if (clear_mode && holds.length) {
+            if (!all_holds.legnth) all_holds = holds;
+            holds = holds.filter(function(h) { return h.hold.clear_me });
+            hold_count = holds.length;
+            return provider.arrayNotifier(holds, offset, count);
+        } else if (all_holds.length) {
+            holds = all_holds;
+            hold_count = holds.length;
+            all_holds = [];
+        }
+
         // see if we have the requested range cached
         if (holds[offset]) {
             return provider.arrayNotifier(holds, offset, count);
         }
-
-        // if in clear mode...
-        if (clear_mode && holds.length) {
-            holds = holds.filter(function(h) { return h.hold.clear_me == 't' });
-        } 
 
         hold_count = 0;
         holds = [];
@@ -128,7 +134,8 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                         || hold_data.hold_status;
 
                     if (clear_mode) {
-                        if (hold_data.clear_me == 't') holds.push(new_item);
+                        if (hold_data.clear_me) holds.push(new_item);
+                        all_holds.push(new_item);
                     } else {
                         holds.push(new_item);
                     }
@@ -165,8 +172,8 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
     $scope.is_clearing = function() { return clearing };
     $scope.active_mode = function() {return !clear_mode}
     $scope.clear_mode = function() {return clear_mode}
-    $scope.show_clearable = function() { clear_mode = true; refresh_page() }
-    $scope.show_active = function() { clear_mode = false; refresh_page() }
+    $scope.show_clearable = function() { clear_mode = true; provider.refresh() }
+    $scope.show_active = function() { clear_mode = false; provider.refresh() }
     $scope.disable_clear = function() { return clearing || !clear_mode }
 
     // udpate the in-grid hold with the clear-shelf cached response info.
@@ -178,9 +185,15 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                     return item.hold.id == info.hold_details.id
                 })[0];
 
+                var all_hold_item = all_holds.filter(function(item) {
+                    return item.hold.id == info.hold_details.id
+                })[0];
+
                 // there will be no grid item if the hold is off-page
                 if (grid_item) {
                     grid_item.post_clear = 
+                        egCore.strings['CLEAR_SHELF_ACTION_' + info.action];
+                    all_hold_item.post_clear = 
                         egCore.strings['CLEAR_SHELF_ACTION_' + info.action];
                 }
             }
