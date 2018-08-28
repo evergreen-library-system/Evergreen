@@ -17,6 +17,7 @@ to this template includes:
     patron.alias - The patron's alias
     patron.has_email - Whether or not the patron has an email address
     patron.has_phone - Whether or not the patron has a phone number
+    pref_ versions of all name fields (e.g. pref_family_name);
 * transasctions - a list of transactions, each of which contains:
   xact.id - Bill unique id
   xact.copy_barcode - Copy barcode
