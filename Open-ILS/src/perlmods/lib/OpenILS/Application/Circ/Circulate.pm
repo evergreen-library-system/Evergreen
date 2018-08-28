@@ -124,6 +124,11 @@ __PACKAGE__->register_method(
     signature => q/@see open-ils.circ.renew/,
 );
 
+__PACKAGE__->register_method(
+    method    => "run_method",
+    api_name  => "open-ils.circ.renew.auto",
+    signature => q/@see open-ils.circ.renew/,
+);
 
 __PACKAGE__->register_method(
     method  => "run_method",
@@ -239,6 +244,7 @@ sub run_method {
     }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
+    $circulator->is_autorenewal(1) if $api =~ /renew.auto/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->is_checkout(1) if $api =~ /checkout/;
     $circulator->override(1) if $api =~ /override/o;
@@ -282,7 +288,7 @@ sub run_method {
         $circulator->do_checkin();
 
     } elsif( $api =~ /renew/ ) {
-        $circulator->do_renew();
+        $circulator->do_renew($api);
     }
 
     if( $circulator->bail_out ) {
@@ -427,6 +433,7 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
+    is_autorenewal
     is_checkout
     is_res_checkout
     is_precat
@@ -464,6 +471,7 @@ my @AUTOLOAD_FIELDS = qw/
     recurring_fines_rule
     max_fine_rule
     renewal_remaining
+    auto_renewal_remaining
     hard_due_date
     due_date
     fulfilled_holds
@@ -1395,6 +1403,7 @@ sub get_circ_policy {
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurrence_interval,
         renewal_remaining => $duration_rule->max_renewals,
+        auto_renewal_remaining => $duration_rule->max_auto_renewals,
         grace_period => $recurring_fine_rule->grace_period
     };
 
@@ -2118,6 +2127,7 @@ sub build_checkout_circ_object {
         $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurrence_interval);
         $circ->renewal_remaining($duration->max_renewals);
+        $circ->auto_renewal_remaining($duration->max_auto_renewals);
         $circ->grace_period($policy->{grace_period});
 
     } else {
@@ -2147,6 +2157,10 @@ sub build_checkout_circ_object {
       $circ->circ_staff($self->editor->requestor->id);
    }
 
+   if ( $self->is_autorenewal ){
+      $circ->auto_renewal_remaining($self->auto_renewal_remaining);
+      $circ->auto_renewal('t');
+   }
 
     # if the user provided an overiding checkout time,
     # (e.g. the checkout really happened several hours ago), then
@@ -3970,6 +3984,7 @@ sub log_me {
 
 sub do_renew {
     my $self = shift;
+    my $api = shift;
     $self->log_me("do_renew()");
 
     # Make sure there is an open circ to renew
@@ -3992,14 +4007,17 @@ sub do_renew {
     $self->push_events(OpenILS::Event->new('MAX_RENEWALS_REACHED'))
         if $circ->renewal_remaining < 1;
 
+    $self->push_events(OpenILS::Event->new('MAX_AUTO_RENEWALS_REACHED'))
+        if $api =~ /renew.auto/ and $circ->auto_renewal_remaining < 1;
     # -----------------------------------------------------------------
 
     $self->parent_circ($circ->id);
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
+    $self->auto_renewal_remaining( $circ->auto_renewal_remaining - 1 ) if (defined($circ->auto_renewal_remaining));
     $self->circ($circ);
 
     # Opac renewal - re-use circ library from original circ (unless told not to)
-    if($self->opac_renewal) {
+    if($self->opac_renewal or $api =~ /renew.auto/) {
         unless(defined($opac_renewal_use_circ_lib)) {
             my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
             if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {

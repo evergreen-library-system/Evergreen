@@ -7,6 +7,8 @@ use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use Data::Dumper;
+
 sub fourty_two { return 42 }
 sub NOOP_True { return 1 }
 sub NOOP_False { return 0 }
@@ -25,6 +27,7 @@ sub CircIsOpen {
         return 0 if (!$self->MinPassiveTargetAge($env));
     }
 
+    $logger->info("AUTORENEW: CircIsOpen is TRUE!");
     return 1;
 }
 
@@ -188,5 +191,34 @@ sub PatronNotInCollections {
     return @$existing ? 0 : 1;
 }
 
+# core type circ in $env->{target}
+sub CircIsAutoRenewable {
+    my $self = shift;
+    my $env = shift;
+
+    my $circ = $env->{target};
+    my $userId = $env->{target}->usr;
+    # 1. check if circ is open
+    if (!$self->CircIsOpen($env)){
+        return 0;
+    }
+
+    # 2. Check if patron is barred
+
+    my ($user, $res) = $U->fetch_user($userId);
+    if ( $U->is_true($user->barred()) ){
+
+        my %user_data = (
+            is_renewed => 0,
+            reason => 'Please contact your library about your account.',
+        );
+
+        $U->create_events_for_hook('autorenewal', $circ, $user->home_ou(), 'system_autorenewal', \%user_data);
+
+        return 0;
+    }
+
+    return 1;
+}
 
 1;
