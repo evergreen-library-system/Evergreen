@@ -141,6 +141,7 @@ oils_rpt_editor_pivot_data
                 setSelector(DOM.oils_rpt_editor_pivot_label, rpt_data.__pivot_label);
             if (rpt_data.__pivot_data)
                 setSelector(DOM.oils_rpt_editor_pivot_data, rpt_data.__pivot_data);
+            DOM.oils_rpt_editor_do_rollup.checked = rpt_data.__do_rollup == '1';
         }
 
         if (run = this.last_run) {
@@ -353,7 +354,7 @@ oilsRptReportEditor.prototype.save = function(options) {
         data.__pivot_label = getSelectorVal(DOM.oils_rpt_editor_pivot_label);
         data.__pivot_data = getSelectorVal(DOM.oils_rpt_editor_pivot_data);
     }
-
+    data.__do_rollup = DOM.oils_rpt_editor_do_rollup.checked ? '1' : '0';
 
 	data = js2JSON(data);
 	_debug("complete report data = "+data);

@@ -80,6 +80,7 @@
 <!ENTITY reports.oils_rpt_editor.store_report_definition "Choose a folder to store this report definition: ">
 <!ENTITY reports.oils_rpt_editor.selected_folder "Selected Folder: ">
 <!ENTITY reports.oils_rpt_editor.output_options "Output Options">
+<!ENTITY reports.oils_rpt_editor.do_rollup "Calculate grouping subtotals">
 <!ENTITY reports.oils_rpt_editor.excel_output "Excel Output">
 <!ENTITY reports.oils_rpt_editor.csv_output "CSV Output">
 <!ENTITY reports.oils_rpt_editor.html_output "HTML Output">

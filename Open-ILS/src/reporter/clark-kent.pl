@@ -199,6 +199,7 @@ while (my $r = $sth->fetchrow_hashref) {
 	$b->register_params( $report_data );
 
 	$r->{resultset} = $b->parse_report( OpenSRF::Utils::JSON->JSON2perl( $r->{report}->{template}->{data} ) );
+	$r->{resultset}->set_do_rollup($report_data->{__do_rollup}) if $report_data->{__do_rollup};
 	$r->{resultset}->set_pivot_data($report_data->{__pivot_data}) if $report_data->{__pivot_data};
 	$r->{resultset}->set_pivot_label($report_data->{__pivot_label}) if $report_data->{__pivot_label};
 	$r->{resultset}->set_pivot_default($report_data->{__pivot_default}) if $report_data->{__pivot_default};
