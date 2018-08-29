@@ -58,7 +58,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'COPY_NOT_AVAILABLE',
         'COPY_IS_REFERENCE',
         'COPY_ALERT_MESSAGE',
-        'ITEM_ON_HOLDS_SHELF'                 
+        'ITEM_ON_HOLDS_SHELF',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ]
 
     // after the first override of any of these events, 
@@ -87,7 +94,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'COPY_ALERT_MESSAGE',
         'COPY_NEEDED_FOR_HOLD',
         'MAX_RENEWALS_REACHED',
-        'CIRC_CLAIMS_RETURNED'
+        'CIRC_CLAIMS_RETURNED',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ];
 
     // these checkin events do not produce alerts when 
