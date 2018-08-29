@@ -18714,10 +18714,10 @@ VALUES (
         'cwst', 'label'
     )
 ), (
-    'eg.grid.cat.catalog.holds', 'gui', 'object',
+    'eg.grid.cat.catalog.wide_holds', 'gui', 'object',
     oils_i18n_gettext(
-        'eg.grid.cat.catalog.holds',
-        'Grid Config: cat.catalog.holds',
+        'eg.grid.cat.catalog.wide_holds',
+        'Grid Config: cat.catalog.wide_holds',
         'cwst', 'label'
     )
 ), (
@@ -18735,10 +18735,10 @@ VALUES (
         'cwst', 'label'
     )
 ), (
-    'eg.grid.circ.holds.shelf', 'gui', 'object',
+    'eg.grid.circ.wide_holds.shelf', 'gui', 'object',
     oils_i18n_gettext(
-        'eg.grid.circ.holds.shelf',
-        'Grid Config: circ.holds.shelf',
+        'eg.grid.circ.wide_holds.shelf',
+        'Grid Config: circ.wide_holds.shelf',
         'cwst', 'label'
     )
 ), (
