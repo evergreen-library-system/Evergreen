@@ -483,14 +483,23 @@ angular.module('egCoreMod')
         }
     }
 
+    service.searchPermGroupEntries = function(org) {
+        return egCore.pcrud.search('pgtde', {org: org, parent: null},
+            {flesh: -1, flesh_fields: {pgtde: ['grp', 'children']}}, {atomic: true}
+        ).then(function(treeArray) {
+            if (!treeArray.length && egCore.org.get(org).parent_ou()) {
+                return service.searchPermGroupEntries(egCore.org.get(org).parent_ou());
+            }
+            return treeArray;
+        });
+    }
+
     service.get_perm_group_entries = function() {
         if (egCore.env.pgtde) {
             service.profile_entries = egCore.env.pgtde.list;
             return service.set_edit_profile_entries();
         } else {
-            return egCore.pcrud.search('pgtde', {org: egCore.auth.user().ws_ou(), parent: null},
-                {flesh : -1, flesh_fields : {pgtde : ['grp', 'children']}}, {atomic : true}
-            ).then(function(treeArray) {
+            return service.searchPermGroupEntries(egCore.auth.user().ws_ou()).then(function(treeArray) {
                 function compare(a,b) {
                   if (a.position() > b.position())
                     return -1;
