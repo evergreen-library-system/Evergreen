@@ -333,7 +333,8 @@ CREATE TABLE config.rule_circ_duration (
 	extended	INTERVAL	NOT NULL,
 	normal		INTERVAL	NOT NULL,
 	shrt		INTERVAL	NOT NULL,
-	max_renewals	INT		NOT NULL
+	max_renewals	INT		NOT NULL,
+    max_auto_renewals INTEGER
 );
 COMMENT ON TABLE config.rule_circ_duration IS $$
 Circulation Duration rules

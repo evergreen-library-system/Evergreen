@@ -75,7 +75,10 @@ sub handler {
             old_due_date => !$is_renewed ? $_->due_date() : '',
         );
 
-        $ses->request('open-ils.trigger.event.autocreate', 'autorenewal', $_, $_->circ_lib(), 'system_autorenewal', \%user_data);
+        # Create the event from the source circ instead of the
+        # new circ, since the renewal may have failed.
+        $ses->request('open-ils.trigger.event.autocreate', 
+            'autorenewal', $_, $_->circ_lib(), undef, \%user_data);
     }
 
     $ses->disconnect;
