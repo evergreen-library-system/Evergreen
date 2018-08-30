@@ -2173,7 +2173,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
              ELSE 5
         END AS hold_status,
 
-        (h.cancel_time IS NOT NULL OR (h.current_shelf_lib IS NOT NULL AND h.current_shelf_lib <> h.pickup_lib)) AS clear_me,
+        (h.shelf_expire_time < NOW() OR h.cancel_time IS NOT NULL OR (h.current_shelf_lib IS NOT NULL AND h.current_shelf_lib <> h.pickup_lib)) AS clear_me,
 
         (h.usr <> h.requestor) AS is_staff_hold,
 
