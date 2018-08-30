@@ -111,14 +111,16 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         if (!angular.isArray(names)) names = [names];
 
         if (lf.isOffline) {
-            return egLovefield.getSettingsCache(names)
-                .then(function(settings) {
+            return egLovefield.getSettingsCache(names).then(
+                function(settings) {
                     var hash = {};
                     angular.forEach(settings, function (s) {
                         hash[s.name] = s.value;
                     });
                     return $q.when(hash);
-                });
+                },
+                function() {return $q.when({})} // Not Supported
+            );
         }
 
 
@@ -156,11 +158,16 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
                 if (here) service.cachedSettings[key] = settings[key];
             });
 
-            return egLovefield.setSettingsCache(settings).then(function() {
-                // resolve with cached settings if 'here', since 'settings'
-                // will only contain settings we had to retrieve
-                deferred.resolve(here ? service.cachedSettings : settings);
-            });
+            return egLovefield.setSettingsCache(settings).then(
+                function() {
+                    // resolve with cached settings if 'here', since 'settings'
+                    // will only contain settings we had to retrieve
+                    deferred.resolve(here ? service.cachedSettings : settings);
+                },
+                function() {
+                    deferred.resolve(here ? service.cachedSettings : settings);
+                }
+            );
         });
         return deferred.promise;
     }

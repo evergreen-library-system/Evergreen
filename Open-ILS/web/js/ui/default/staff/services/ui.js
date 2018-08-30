@@ -1086,8 +1086,8 @@ function($uibModal , $interpolate , egCore) {
 
         templateUrl : './share/t_org_select',
 
-        controller : ['$scope','$timeout','egCore','egStartup','egLovefield','$q',
-              function($scope , $timeout , egCore , egStartup , egLovefield , $q) {
+        controller : ['$scope','$timeout','egCore','egStartup','$q',
+              function($scope , $timeout , egCore , egStartup , $q) {
 
             // See emptyTypeahead directive below.
             var secretEmptyKey = '_INTERNAL_';

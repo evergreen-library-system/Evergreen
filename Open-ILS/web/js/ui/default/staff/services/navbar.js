@@ -6,9 +6,9 @@ angular.module('egCoreMod')
         transclude : true,
         templateUrl : 'eg-navbar-template',
         controller:['$scope','$window','$location','$timeout','hotkeys','$rootScope',
-                    'egCore','$uibModal','ngToast','egOpChange','$element',
+                    'egCore','$uibModal','ngToast','egOpChange','$element','egLovefield',
             function($scope , $window , $location , $timeout , hotkeys , $rootScope ,
-                     egCore , $uibModal , ngToast , egOpChange , $element) {
+                     egCore , $uibModal , ngToast , egOpChange , $element , egLovefield) {
 
                 $scope.rs = $rootScope;
 
@@ -101,6 +101,10 @@ angular.module('egCoreMod')
                     egCore.auth.logout();
                     return true;
                 };
+
+                $scope.offlineDisabled = function() {
+                    return egLovefield.cannotConnect;
+                }
 
                 egCore.startup.go().then(
                     function() {

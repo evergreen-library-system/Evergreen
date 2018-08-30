@@ -27,7 +27,7 @@ angular.module('egCoreMod')
             // relative path would be better...
             service.worker = new SharedWorker(service.workerUrl);
         } catch (E) {
-            console.error('SharedWorker() not supported', E);
+            console.warn('SharedWorker() not supported', E);
             service.cannotConnect = true;
             return;
         }
@@ -65,12 +65,12 @@ angular.module('egCoreMod')
 
     service.connectToSchemas = function() {
 
+        service.connectToWorker(); // no-op if already connected
+
         if (service.cannotConnect) { 
             // This can happen in certain environments
             return $q.reject();
         }
-        
-        service.connectToWorker(); // no-op if already connected
 
         var promises = [];
 

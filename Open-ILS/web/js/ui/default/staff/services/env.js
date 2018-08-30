@@ -135,9 +135,14 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
                 egLovefield = $injector.get('egLovefield');
             }
             //console.debug('About to cache a list of ' + class_ + ' objects...');
-            egLovefield.isCacheGood(class_).then(function(good) {
-                if (!good) egLovefield.setListInOfflineCache(class_, blob.list);
-            });
+            egLovefield.isCacheGood(class_).then(
+                function(good) {
+                    if (!good) {
+                        egLovefield.setListInOfflineCache(class_, blob.list); 
+                    }
+                },
+                function() {} // Not Supported
+            );
         }
 
         angular.forEach(list, function(item) {blob.map[item[pkey]()] = item});
@@ -198,7 +203,9 @@ function($q,  $window , $injector , egAuth,  egPCRUD,  egIDL) {
                         return $q.when();
                     }
                 );
-            });
+            },
+            function() {return $q.when()} // Not Supported, exit gracefully
+            );
         },
     };
 
