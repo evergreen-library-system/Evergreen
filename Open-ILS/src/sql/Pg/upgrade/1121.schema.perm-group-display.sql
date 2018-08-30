@@ -1,5 +1,5 @@
 BEGIN;
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1121', :eg_version);
 
 CREATE TABLE permission.grp_tree_display_entry (
     id      SERIAL PRIMARY KEY,
