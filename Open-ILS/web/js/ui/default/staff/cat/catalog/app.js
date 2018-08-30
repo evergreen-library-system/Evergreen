@@ -1728,7 +1728,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 pickup_lib       : egCore.org.descendants($scope.pickup_ou.id(), true)
         };
 
-        var order_by = [{ capture_time : null }];
+        var order_by = [{ request_time : null }];
         if (provider.sort && provider.sort.length) {
             order_by = [];
             angular.forEach(provider.sort, function (c) {

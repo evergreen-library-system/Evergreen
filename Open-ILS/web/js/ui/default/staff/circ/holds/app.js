@@ -88,7 +88,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                 current_shelf_lib : $scope.pickup_ou.id()
         };
 
-        var order_by = [{ capture_time : null }];
+        var order_by = [{ shelf_expire_time : null }];
         if (provider.sort && provider.sort.length) {
             order_by = [];
             angular.forEach(provider.sort, function (c) {
