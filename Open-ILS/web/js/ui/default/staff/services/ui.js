@@ -1099,8 +1099,8 @@ function($uibModal , $interpolate , egCore) {
            + '</ul>'
           + '</div>',
 
-        controller : ['$scope','$timeout','egCore','egStartup','egLovefield','$q',
-              function($scope , $timeout , egCore , egStartup , egLovefield , $q) {
+        controller : ['$scope','$timeout','egCore','egStartup','$q',
+              function($scope , $timeout , egCore , egStartup , $q) {
 
             if ($scope.alldisabled) {
                 $scope.disable_button = $scope.alldisabled == 'true' ? true : false;

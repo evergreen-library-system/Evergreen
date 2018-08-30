@@ -48,9 +48,10 @@ function($routeProvider , $locationProvider) {
      * even if the code has been minified */
            ['$scope','$location','$window','egCore','egLovefield',
     function($scope , $location , $window , egCore , egLovefield) {
-        egLovefield.havePendingOfflineXacts() .then(function(eh){
-            $scope.pendingXacts = eh;
-        });
+        egLovefield.havePendingOfflineXacts() .then(
+            function(eh){ $scope.pendingXacts = eh; },
+            function() {} // SharedWorker not supported
+        );
 
         $scope.focusMe = true;
         $scope.args = {};
