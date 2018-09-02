@@ -4,7 +4,7 @@
     <div class="col-md-3">
       <div class="input-group">
         <span class="input-group-addon">[% l('Pickup Library') %]</span>
-        <eg-org-selector selected="pickup_ou" onchange="pickup_ou_changed"></eg-org-selector>
+        <eg-org-selector selected="pickup_ou" onchange="pickup_ou_changed" sticky-setting="cat.holds.pickup_ou"></eg-org-selector>
       </div>
     </div>
   </div>
