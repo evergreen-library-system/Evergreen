@@ -153,9 +153,9 @@ CREATE TABLE action.circulation (
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
 ALTER TABLE action.circulation
-	ADD COLUMN parent_circ BIGINT
-	REFERENCES action.circulation( id )
-	DEFERRABLE INITIALLY DEFERRED;
+       ADD COLUMN parent_circ BIGINT
+       REFERENCES action.circulation( id )
+       DEFERRABLE INITIALLY DEFERRED;
 CREATE INDEX circ_open_xacts_idx ON action.circulation (usr) WHERE xact_finish IS NULL;
 CREATE INDEX circ_outstanding_idx ON action.circulation (usr) WHERE checkin_time IS NULL;
 CREATE INDEX circ_checkin_time ON "action".circulation (checkin_time) WHERE checkin_time IS NOT NULL;
@@ -254,6 +254,7 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         stop_fines_time, checkin_time, create_time, duration, fine_interval, recurring_fine,
         max_fine, phone_renewal, desk_renewal, opac_renewal, duration_rule, recurring_fine_rule,
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ,
+        auto_renewal, auto_renewal_remaining,
         NULL AS usr
       FROM  action.aged_circulation
             UNION ALL
@@ -263,7 +264,7 @@ CREATE OR REPLACE VIEW action.all_circulation AS
         circ.checkin_lib, circ.renewal_remaining, circ.grace_period, circ.due_date, circ.stop_fines_time, circ.checkin_time, circ.create_time, circ.duration,
         circ.fine_interval, circ.recurring_fine, circ.max_fine, circ.phone_renewal, circ.desk_renewal, circ.opac_renewal, circ.duration_rule,
         circ.recurring_fine_rule, circ.max_fine_rule, circ.stop_fines, circ.workstation, circ.checkin_workstation, circ.checkin_scan_time,
-        circ.parent_circ, circ.usr
+        circ.parent_circ, circ.auto_renewal, circ.auto_renewal_remaining, circ.usr
       FROM  action.circulation circ
         JOIN asset.copy cp ON (circ.target_copy = cp.id)
         JOIN asset.call_number cn ON (cp.call_number = cn.id)
@@ -306,6 +307,8 @@ UNION ALL
         checkin_workstation,
         copy_location,
         checkin_scan_time,
+        auto_renewal,
+        auto_renewal_remaining,
         parent_circ
     FROM action.aged_circulation
 ;
