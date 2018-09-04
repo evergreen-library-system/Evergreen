@@ -1,9 +1,6 @@
-
-/**
-update patron merge
-*/
-
 BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('1122', :eg_version);
 
 ALTER TABLE actor.usr 
     ADD COLUMN pref_prefix TEXT,
