@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1127', :eg_version);
 
 ALTER TABLE acq.user_request ADD COLUMN cancel_time TIMESTAMPTZ;
 ALTER TABLE acq.user_request ADD COLUMN upc TEXT;
