@@ -240,8 +240,10 @@ angular.module('egCoreMod')
     }
 
     service.setStatCatsCache = function (statcats) {
-        if (lf.isOffline || !statcats || statcats.length === 0) 
+        if (lf.isOffline || !statcats || 
+            statcats.length === 0 || service.cannotConnect) {
             return $q.when();
+        }
 
         var rows = statcats.map(function(cat) {
             return {id: cat.id(), value: egCore.idl.toHash(cat)}
@@ -290,7 +292,7 @@ angular.module('egCoreMod')
     }
 
     service.setSettingsCache = function (settings) {
-        if (lf.isOffline) return $q.when();
+        if (lf.isOffline || service.cannotConnect) return $q.when();
 
         var rows = [];
         angular.forEach(settings, function (val, key) {
@@ -334,7 +336,7 @@ angular.module('egCoreMod')
     }
 
     service.setListInOfflineCache = function (type, list) {
-        if (lf.isOffline) return $q.when();
+        if (lf.isOffline || service.cannotConnect) return $q.when();
 
         return service.isCacheGood(type).then(function(good) {
             if (good) { return };  // already cached
