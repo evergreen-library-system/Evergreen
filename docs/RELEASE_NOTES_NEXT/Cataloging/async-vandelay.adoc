@@ -17,3 +17,11 @@ session by the value stored in the "session_key" field.
 The table tracks other potentially useful data, like the staff member
 and workstation where the action was performed.
 
+Upgrade notes
++++++++++++++
+Users of NGINX as a reverse proxy may need to set a suitable
+`client_max_body_size` value in the NGINX configuration so that large
+MARC record uploads are not truncated. Note that this would have
+always been necessary, but since this feature allows larger files
+to be more reliably queued and imported, the need to set `client_max_body_size`
+became more apparent.
