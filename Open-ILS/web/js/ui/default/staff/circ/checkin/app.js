@@ -210,8 +210,8 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             
             row_item['copy_barcode'] = row_item.acp.barcode();
 
-            if (row_item.acp.last_copy_inventory() && row_item.acp.last_copy_inventory().inventory_date() == "now")
-                row_item.acp.last_copy_inventory().inventory_date(Date.now());
+            if (row_item.acp.latest_inventory() && row_item.acp.latest_inventory().inventory_date() == "now")
+                row_item.acp.latest_inventory().inventory_date(Date.now());
 
             if (row_item.mbts) {
                 var amt = Number(row_item.mbts.balance_owed());

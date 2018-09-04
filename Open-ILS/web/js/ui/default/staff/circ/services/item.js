@@ -16,7 +16,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         flesh : 4,
         flesh_fields : {
             acp : ['call_number','location','status','location','floating','circ_modifier',
-                'age_protect','circ_lib','copy_alerts', 'editor', 'circ_as_type', 'last_copy_inventory'],
+                'age_protect','circ_lib','copy_alerts', 'editor', 'circ_as_type', 'latest_inventory'],
             acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor'],
             alci : ['inventory_workstation']
@@ -200,7 +200,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         if (copy_list.length == 0) return;
         return egCore.net.request(
             'open-ils.circ',
-            'open-ils.circ.circulation.update_last_copy_inventory',
+            'open-ils.circ.circulation.update_latest_inventory',
             egCore.auth.token(), {copy_list: copy_list}
         ).then(function(res) {
             if (res) {
@@ -212,8 +212,8 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                                 {alci: ['inventory_workstation']}
                             }).then(function(alci) {
                                 //update existing grid rows
-                                item["last_copy_inventory.inventory_date"] = alci.inventory_date();
-                                item["last_copy_inventory.inventory_workstation.name"] =
+                                item["latest_inventory.inventory_date"] = alci.inventory_date();
+                                item["latest_inventory.inventory_workstation.name"] =
                                     alci.inventory_workstation().name();
                             });
                         }

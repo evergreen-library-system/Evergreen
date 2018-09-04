@@ -15,7 +15,7 @@ function(egCore , $q) {
     service.prototype.flesh = {   
         flesh : 3,
         flesh_fields : {
-            acp : ['status','location','circ_lib','parts','age_protect','copy_alerts', 'last_copy_inventory'],
+            acp : ['status','location','circ_lib','parts','age_protect','copy_alerts', 'latest_inventory'],
             acn : ['prefix','suffix','copies'],
             alci : ['inventory_workstation']
         }

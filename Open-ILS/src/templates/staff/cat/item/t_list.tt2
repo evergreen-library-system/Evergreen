@@ -141,8 +141,8 @@
     {{item['copy_alert_count']}}
     <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Inventory Date') %]"        path="last_copy_inventory.inventory_date" datatype="timestamp"></eg-grid-field>
-  <eg-grid-field label="[% l('Inventory Workstation') %]" path="last_copy_inventory.inventory_workstation.name"></eg-grid-field>
+  <eg-grid-field label="[% l('Inventory Date') %]"        path="latest_inventory.inventory_date" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Inventory Workstation') %]" path="latest_inventory.inventory_workstation.name"></eg-grid-field>
   
 </eg-grid>
 

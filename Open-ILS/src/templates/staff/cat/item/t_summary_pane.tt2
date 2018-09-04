@@ -178,10 +178,10 @@
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Inventory Date') %]</div>
-    <div class="flex-cell well">{{copy.last_copy_inventory().inventory_date() | date:egDateAndTimeFormat}}</div>
+    <div class="flex-cell well">{{copy.latest_inventory().inventory_date() | date:egDateAndTimeFormat}}</div>
 
     <div class="flex-cell">[% l('Inventory Workstation') %]</div>
-    <div class="flex-cell well">{{copy.last_copy_inventory().inventory_workstation().name()}}</div>
+    <div class="flex-cell well">{{copy.latest_inventory().inventory_workstation().name()}}</div>
 
     <div class="flex-cell"></div>
     <div class="flex-cell"></div>

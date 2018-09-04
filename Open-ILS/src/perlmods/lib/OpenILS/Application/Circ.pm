@@ -371,10 +371,10 @@ sub new_set_circ_lost {
 }
 
 __PACKAGE__->register_method(
-    method    => "update_last_copy_inventory",
-    api_name  => "open-ils.circ.circulation.update_last_copy_inventory");
+    method    => "update_latest_inventory",
+    api_name  => "open-ils.circ.circulation.update_latest_inventory");
 
-sub update_last_copy_inventory {
+sub update_latest_inventory {
     my( $self, $conn, $auth, $args ) = @_;
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
@@ -382,21 +382,21 @@ sub update_last_copy_inventory {
     my $copies = $$args{copy_list};
     foreach my $copyid (@$copies) {
         my $copy = $e->retrieve_asset_copy($copyid);
-        my $alci = $e->search_asset_last_copy_inventory({copy => $copyid})->[0];
+        my $alci = $e->search_asset_latest_inventory({copy => $copyid})->[0];
 
         if($alci) {
             $alci->inventory_date('now');
             $alci->inventory_workstation($e->requestor->wsid);
-            $e->update_asset_last_copy_inventory($alci) or return $e->die_event;
+            $e->update_asset_latest_inventory($alci) or return $e->die_event;
         } else {
-            my $alci = Fieldmapper::asset::last_copy_inventory->new;
+            my $alci = Fieldmapper::asset::latest_inventory->new;
             $alci->inventory_date('now');
             $alci->inventory_workstation($e->requestor->wsid);
             $alci->copy($copy->id);
-            $e->create_asset_last_copy_inventory($alci) or return $e->die_event;
+            $e->create_asset_latest_inventory($alci) or return $e->die_event;
         }
 
-        $copy->last_copy_inventory($alci);
+        $copy->latest_inventory($alci);
     }
     $e->commit;
     return 1;

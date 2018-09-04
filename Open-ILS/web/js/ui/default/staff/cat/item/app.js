@@ -610,8 +610,8 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
         // regardless of whether it matches the current item.
         if (!barcode && itemSvc.copy && itemSvc.copy.id() == copyId) {
             $scope.copy = itemSvc.copy;
-            if (itemSvc.last_copy_inventory && itemSvc.last_copy_inventory.copy() == copyId) {
-                $scope.last_copy_inventory = itemSvc.last_copy_inventory;
+            if (itemSvc.latest_inventory && itemSvc.latest_inventory.copy() == copyId) {
+                $scope.latest_inventory = itemSvc.latest_inventory;
             }
             $scope.copy_alert_count = itemSvc.copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
@@ -645,11 +645,11 @@ function($scope , $q , $location , $routeParams , $timeout , $window , egCore , 
 
             var copy = res.copy;
             itemSvc.copy = copy;
-            if (res.last_copy_inventory) itemSvc.last_copy_inventory = res.last_copy_inventory;
+            if (res.latest_inventory) itemSvc.latest_inventory = res.latest_inventory;
 
 
             $scope.copy = copy;
-            $scope.last_copy_inventory = res.last_copy_inventory;
+            $scope.latest_inventory = res.latest_inventory;
             $scope.copy_alert_count = copy.copy_alerts().filter(function(aca) {
                 return !aca.ack_time();
             }).length;
