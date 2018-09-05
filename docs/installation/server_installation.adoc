@@ -111,7 +111,7 @@ additional packages may be required.  As the *root* Linux account:
 +
  * To install packages needed for retrieving and managing web dependencies,
    use the <osname>-developer Makefile.install target.  Currently, 
-   this is only needed for building and installing the (preview) browser 
+   this is only needed for building and installing the web
    staff client.
 +
 [source, bash]
@@ -245,9 +245,8 @@ Installation instructions
 -------------------------
 
 1. Once you have configured and compiled Evergreen, issue the following
-   command as the *root* Linux account to install Evergreen, build the server
-   portion of the staff client, and copy example configuration files to
-   `/openils/conf`.
+   command as the *root* Linux account to install Evergreen and copy
+   example configuration files to `/openils/conf`.
 +
 [source, bash]
 ------------------------------------------------------------------------------
@@ -303,7 +302,7 @@ Configure the Apache Web server
 . Use the example configuration files in `Open-ILS/examples/apache/` (for
 Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
 versions 2.4 or greater) to configure your Web server for the Evergreen
-catalog, staff client, Web services, and administration interfaces. Issue the
+catalog, web staff client, Web services, and administration interfaces. Issue the
 following commands as the *root* Linux account:
 +
 .Debian Wheezy
@@ -330,7 +329,7 @@ cd /etc/apache2/ssl
 +
 . The `openssl` command cuts a new SSL key for your Apache server. For a
 production server, you should purchase a signed SSL certificate, but you can
-just use a self-signed certificate and accept the warnings in the staff client
+just use a self-signed certificate and accept the warnings in the
 and browser during testing and development. Create an SSL key for the Apache
 server by issuing the following command as the *root* Linux account:
 +
@@ -621,7 +620,7 @@ osrf_control -l --start-all
 export PATH=$PATH:/openils/bin
 ------------------------------------------------------------------------------
 +
-3. As the *opensrf* Linux account, generate the Web files needed by the staff
+3. As the *opensrf* Linux account, generate the Web files needed by the web staff
    client and catalogue and update the organization unit proximity (you need to do
    this the first time you start Evergreen, and after that each time you change the library org unit configuration.
 ):
@@ -639,7 +638,7 @@ autogen.sh
 ------------------------------------------------------------------------------
 +
 If the Apache Web server was running when you started the OpenSRF services, you
-might not be able to successfully log in to the OPAC or staff client until the
+might not be able to successfully log in to the OPAC or web staff client until the
 Apache Web server is restarted.
 
 Testing connections to Evergreen
