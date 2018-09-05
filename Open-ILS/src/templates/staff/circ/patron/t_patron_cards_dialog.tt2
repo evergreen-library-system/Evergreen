@@ -23,8 +23,9 @@
             ng-disabled="!perms.UPDATE_PATRON_ACTIVE_CARD"/>
         </div>
         <div class="col-md-4">
-          <input type='radio' name='primary' value='on' 
-            ng-model='card._primary'
+          <input type='radio' name='primary'
+            ng-model='args.primary_barcode'
+            ng-value='card.id'
             ng-disabled="!perms.UPDATE_PATRON_PRIMARY_CARD"/>
         </div>
       </div>

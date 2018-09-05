@@ -671,7 +671,7 @@ angular.module('egCoreMod')
             card.active = card.active == 't';
             if (card.id == patron.card.id) {
                 patron.card = card;
-                card._primary = 'on';
+                card._primary = true;
             }
         });
 
@@ -719,7 +719,7 @@ angular.module('egCoreMod')
             id : service.virt_id--,
             isnew : true,
             active : true,
-            _primary : 'on'
+            _primary : true
         };
 
         var user = {
@@ -827,7 +827,7 @@ angular.module('egCoreMod')
                 barcode : cuser.cards[0].barcode(),
                 isnew : true,
                 active : true,
-                _primary : 'on'
+                _primary : true
             };
 
             user.cards.push(user.card);
@@ -1514,10 +1514,15 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $uibModal.open({
             templateUrl: './circ/patron/t_patron_cards_dialog',
             controller: 
-                   ['$scope','$uibModalInstance','cards','perms',
-            function($scope , $uibModalInstance , cards , perms) {
+                   ['$scope','$uibModalInstance','cards','perms','patron',
+            function($scope , $uibModalInstance , cards , perms , patron) {
                 // scope here is the modal-level scope
-                $scope.args = {cards : cards};
+                $scope.args = {cards : cards, primary_barcode : null};
+                angular.forEach(cards, function(card) {
+                    if (card.id == patron.card.id) {
+                        $scope.args.primary_barcode = card.id;
+                    }
+                });
                 $scope.perms = perms;
                 $scope.ok = function() { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
@@ -1529,15 +1534,20 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 },
                 perms : function() {
                     return $scope.perms;
+                },
+                patron : function() {
+                    return $scope.patron;
                 }
             }
         }).result.then(
             function(args) {
                 angular.forEach(args.cards, function(card) {
                     card.ischanged = true; // assume cards need updating, OK?
-                    if (card._primary == 'on' && 
-                        card.id != $scope.patron.card.id) {
+                    if (card.id == args.primary_barcode) {
                         $scope.patron.card = card;
+                        card._primary = true;
+                    } else {
+                        card._primary = false;
                     }
                 });
             }
