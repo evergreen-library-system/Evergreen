@@ -1,0 +1,66 @@
+Angular6 Base Application
+^^^^^^^^^^^^^^^^^^^^^^^^^
+With Evergreen 3.2, we introduce the initial infrastructure for
+migrating to a new version of Angular.  The structure of the new code
+is quite different from the AngularJS code and it runs as a separate
+application which communicates with the AngularJS app via shared storage
+and in-page URLs that link back and fort between the two.
+
+For this release, users will only be directed to the new Angular site
+when navigating to Administration => Acquisitions Administration.  Once
+on this page, some of the admin interfaces will presented as Angular6
+interfaces, while others will direct users back to the AngularJS
+application.  The Angular6 interfaces are the simpler, grid-based
+interfaces.
+
+Acquisitions Admin Angular6 Interfaces
+++++++++++++++++++++++++++++++++++++++
+
+ * Cancel Reasons
+ * Claim Event Types
+ * Claim Policies
+ * Claim Policy Actions
+ * Claim Types
+ * Currency Types
+ * EDI Accounts
+ * EDI Messages
+ * Exchange Rates
+ * Fund Tags
+ * Invoice Item Types
+ * Invoice Payment Method
+ * Line Item Alerts
+ * Line Item MARC Attribute Definitions
+
+System Admin Upgrade Notes
+++++++++++++++++++++++++++
+
+Like the AngularJS application, Evergreen releases will come with all
+web browser staff client code pre-compiled.  Admins only need to add an
+Apache configuration change.
+
+Add the following stanza to /etc/apache2/eg_vhost.conf.
+
+[source,conf]
+--------------------------------------------------------------------------
+<Directory "/openils/var/web/eg2/en-US">                                       
+    FallbackResource /eg2/en-US/index.html                                     
+</Directory>  
+--------------------------------------------------------------------------
+
+For multi-locale sites, see the bottom section of
+Open-ILS/examples/apache[_24]/eg_vhost.conf.in for a sample fr-CA
+configuration.  The section starts with "/eg2/ client setup and locale
+configuration"
+
+Developer Upgrade Notes
++++++++++++++++++++++++
+
+Developers building Angular code on existing installations need to update 
+their version of NodeJS by re-running the -developer prereqs installer.
+
+[source,sh]
+--------------------------------------------------------------------------
+sudo make -f Open-ILS/src/extras/Makefile.install <osname>-developer
+--------------------------------------------------------------------------
+
+
