@@ -1,0 +1,6 @@
+Shared Angular services, components, directives, and associated classes.  
+
+These items are NOT automatically imported to the base module, though some
+may already be imported by intermediate modules (e.g. StaffCommonModule).   
+Import as needed.
+

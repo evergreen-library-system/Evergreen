@@ -1,0 +1,31 @@
+= Evergreen Angular App Cheatsheet
+
+== Basics
+
+[source,sh]
+---------------------------------------------------------------------
+npm update
+npm install
+ng lint             # check code formatting
+npm run test        # unit tests
+ng build --watch    # compile dev mode
+ng build --prod     # compile production mode
+---------------------------------------------------------------------
+
+== OPTIONAL: Adding a Locale 
+
+* Using fr-CA as an example.
+* An fr-CA configuration is supplied by default.  Additional configs
+  must be added where needed.
+* Currently translation builds are only available on --prod build mode.
+* Uncomment the locale lines in eg_vhost.conf and restart apache.
+* TODO: expand docs on package.json file changes required to add locales.
+
+[source,sh]
+---------------------------------------------------------------------
+npm run export-strings
+npm run merge-strings -- fr-CA
+# APPLY TRANSLATIONS TO src/locale/messages.fr-CA.xlf
+npm run build-fr-CA # modify package.json for other locales
+---------------------------------------------------------------------
+

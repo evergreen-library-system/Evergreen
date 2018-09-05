@@ -1,0 +1,142 @@
+
+.eg-grid {
+    width: 100%;
+    color: rgba(0,0,0,.87); 
+}
+    
+.eg-grid-row {
+    display: flex;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.eg-grid-header-row {
+  /* matches bootstrap card-header css */
+  background-color: rgba(0,0,0,.03);
+  border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.eg-grid-body {
+    outline: none; /* for keyboard events */
+}
+
+.eg-grid-body-row {
+}
+
+.eg-grid-body-row.selected, 
+.eg-grid-column-config-dialog .visible {
+  color: #004085;
+  background-color: #cce5ff;
+  border-color: #b8daff;
+}
+
+.eg-grid-header-cell {
+    font-weight: bold;
+}
+
+.eg-grid-header-cell.dragover {
+    background-color: #cce5ff;
+    border-color: #b8daff;
+}
+
+.eg-grid-header-cell-sort-label {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.eg-grid-header-cell-sort-arrow {
+  font-size: 14px;
+}
+
+.eg-grid-cell {
+    flex: 2; /* applied per column */
+    padding: 6px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+/* allow tooltips to be wider than the default 200px */
+.eg-grid-cell .tooltip-inner {
+  max-width: 400px; 
+}
+
+/* in overflow mode, allow white space to wrap so the 
+ * full contents of the cell can be seen inline.  leaving 
+ * text-overflow and overlow as-is means long strings with
+ * no space will still be truncated with ellipses to avoid
+ * inconsistent grid column widths
+ */
+.eg-grid-cell-overflow {
+    white-space: normal;
+}
+
+.eg-grid-body-cell {
+}
+
+.eg-grid-toolbar {
+  display: flex;
+}
+
+.eg-grid-toolbar .material-icons {
+  font-size: 20px;
+}
+
+.eg-grid-toolbar .form-check-label:nth-child(even) {
+  padding-left: 5px;
+  padding-right: 5px;
+  margin-left: 3px;
+  margin-right: 3px;
+  border-radius: 5px;
+  background-color: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+/* Kind of hacky -- only way to get a toolbar button with no 
+ * mat icon to line up horizontally with mat icon buttons */
+.eg-grid-toolbar .text-button {
+  padding-top: 11px;
+  padding-bottom: 11px;
+}
+
+.eg-grid-cell-skinny {
+  width: 2.2em;
+  text-align: center;
+  flex: none;
+}
+
+.eg-grid-flair-cell {
+  /* mat icons currently 22px, unclear why it needs this much space */
+  width: 34px; 
+  text-align: center;
+  flex: none;
+}
+
+/* depends on width of .eg-grid-cell-skinny */
+.eg-grid-column-width-header {
+  width: 4.4em;
+  text-align: center;
+  flex: none;
+  display: inline-flex;
+  vertical-align: middle;
+  align-items: center;
+}
+
+.eg-grid-column-width-config .eg-grid-cell {
+    border-left: 2px dashed grey;
+}
+
+.eg-grid-column-width-icon {
+  cursor: pointer;
+  font-size: 18px;
+  color: #007bff;
+}
+
+.eg-grid-column-config-dialog {
+  height: auto;
+  max-height: 400px;
+  overflow: auto;
+  box-shadow: none;
+}
+

@@ -1,0 +1,59 @@
+<ng-template #successStrTmpl i18n>{{idlClassDef.label}} Update Succeeded</ng-template>
+<eg-string #successString [template]="successStrTmpl"></eg-string>
+
+<ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
+<eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-container *ngIf="orgField">
+  <div class="d-flex">
+    <div>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">{{orgFieldLabel}}</span>
+        </div>
+        <eg-org-select 
+          [limitPerms]="viewPerms"
+          [initialOrg]="contextOrg"
+          (onChange)="orgOnChange($event)">
+        </eg-org-select>
+      </div>
+    </div>
+    <div class="pl-2">
+      <div class="form-check">
+        <input type="checkbox" (click)="grid.reload()" 
+          [disabled]="disableAncestorSelector()"
+          [(ngModel)]="includeOrgAncestors"
+          class="form-check-input" id="include-ancestors">
+        <label class="form-check-label" for="include-ancestors" i18n>+ Ancestors</label>
+      </div>
+      <div class="form-check">
+        <input type="checkbox" (click)="grid.reload()" 
+          [disabled]="disableDescendantSelector()"
+          [(ngModel)]="includeOrgDescendants" 
+          class="form-check-input" id="include-descendants">
+        <label class="form-check-label" for="include-descendants" i18n>+ Descendants</label>
+      </div>
+    </div>
+  </div>
+  <hr/>
+</ng-container>
+
+<!-- idlObject and fieldName applied programmatically -->
+<eg-translate #translator></eg-translate>
+
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
+    [sortable]="true" persistKey="{{persistKey}}">
+  <eg-grid-toolbar-button [disabled]="!canCreate" 
+    label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
+    label="Apply Translations" i18n-label [action]="translate">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
+  </eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog idlClass="{{idlClass}}">
+</eg-fm-record-editor>
+
+

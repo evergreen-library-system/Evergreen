@@ -1,0 +1,244 @@
+<!--
+TODO focus search input
+-->
+<div id='staffcat-search-form' class='pb-2 mb-3'>
+  <div class="row"
+    *ngFor="let q of searchContext.query; let idx = index; trackBy:trackByIdx">
+    <div class="col-lg-9 d-flex">
+      <div class="flex-1">
+        <div *ngIf="idx == 0">
+          <select class="form-control" [(ngModel)]="searchContext.format">
+            <option i18n value=''>All Formats</option>
+            <option *ngFor="let fmt of ccvmMap.search_format"
+              value="{{fmt.code()}}">{{fmt.value()}}</option>
+          </select>
+        </div>
+        <div *ngIf="idx > 0">
+          <select class="form-control"
+            [(ngModel)]="searchContext.joinOp[idx]">
+            <option i18n value='&&'>And</option>
+            <option i18n value='||'>Or</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex-1 pl-1">
+        <select class="form-control" 
+          [(ngModel)]="searchContext.fieldClass[idx]">
+          <option i18n value='keyword'>Keyword</option>
+          <option i18n value='title'>Title</option>
+          <option i18n value='jtitle'>Journal Title</option>
+          <option i18n value='author'>Author</option>
+          <option i18n value='subject'>Subject</option>
+          <option i18n value='series'>Series</option>
+        </select>
+      </div>
+      <div class="flex-1 pl-1">
+        <select class="form-control" 
+          [(ngModel)]="searchContext.matchOp[idx]">
+          <option i18n value='contains'>Contains</option>
+          <option i18n value='nocontains'>Does not contain</option>
+          <option i18n value='phrase'>Contains phrase</option>
+          <option i18n value='exact'>Matches exactly</option>
+          <option i18n value='starts'>Starts with</option>
+        </select>
+      </div>
+      <div class="flex-2 pl-1">
+        <div class="form-group">
+          <div *ngIf="idx == 0">
+            <input type="text" class="form-control"
+              id='first-query-input'
+              [(ngModel)]="searchContext.query[idx]"
+              (keyup.enter)="formEnter('query')"
+              placeholder="Query..."/>
+          </div>
+          <div *ngIf="idx > 0">
+            <input type="text" class="form-control"
+              [(ngModel)]="searchContext.query[idx]"
+              (keyup.enter)="formEnter('query')"
+              placeholder="Query..."/>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 pl-1">
+        <button class="btn btn-sm material-icon-button"
+          (click)="addSearchRow(idx + 1)">
+          <span class="material-icons">add_circle_outline</span>
+        </button>
+        <button class="btn btn-sm material-icon-button"
+          [disabled]="searchContext.query.length < 2"
+          (click)="delSearchRow(idx)">
+          <span class="material-icons">remove_circle_outline</span>
+        </button>
+      </div>
+    </div><!-- col -->
+    <div class="col-lg-3">
+      <div *ngIf="idx == 0" class="float-right">
+        <button class="btn btn-success mr-1" type="button"
+          [disabled]="searchIsActive()"
+          (click)="searchContext.pager.offset=0;searchByForm()">
+          Search
+        </button>
+        <button class="btn btn-warning mr-1" type="button"
+          [disabled]="searchIsActive()"
+          (click)="searchContext.reset()">
+          Clear Form
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+          *ngIf="!showAdvanced()"
+          [disabled]="searchIsActive()"
+          (click)="showAdvancedSearch=true">
+          More Filters
+        </button>
+        <button class="btn btn-outline-secondary" type="button"
+          *ngIf="showAdvanced()"
+          (click)="showAdvancedSearch=false">
+          Hide Filters
+        </button>
+      </div>
+    </div>
+  </div><!-- row -->
+
+  <div class="row">
+    <div class="col-lg-9 d-flex">
+      <div class="flex-1">
+        <eg-org-select 
+          (onChange)="orgOnChange($event)"
+          [initialOrg]="searchContext.searchOrg"
+          [placeholder]="'Library'" >
+        </eg-org-select>
+      </div>
+      <div class="flex-3 pl-1">
+        <select class="form-control" [(ngModel)]="searchContext.sort">
+          <option value='' i18n>Sort by Relevance</option>
+          <optgroup label="Sort by Title" i18n-label>
+            <option value='titlesort' i18n>Title: A to Z</option>
+            <option value='titlesort.descending' i18n>Title: Z to A</option>
+          </optgroup>
+          <optgroup label="Sort by Author" i18n-label>
+            <option value='authorsort' i18n>Author: A to Z</option>
+            <option value='authorsort.descending' i18n>Author: Z to A</option>
+          </optgroup>
+          <optgroup label="Sort by Publication Date" i18n-label>
+            <option value='pubdate' i18n>Date: A to Z</option>
+            <option value='pubdate.descending' i18n>Date: Z to A</option>
+          </optgroup>
+          <optgroup label="Sort by Popularity" i18n-label>
+            <option value='popularity' i18n>Most Popular</option>
+            <option value='poprel' i18n>Popularity Adjusted Relevance</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="flex-2 pl-2 align-self-end">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="searchContext.available"/>
+            <span i18n>Limit to Available</span>
+          </label>
+        </div>
+      </div>
+      <div class="flex-4 pl-2 align-self-end">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="searchContext.global"/>
+            <span i18n>Show Results from All Libraries</span>
+          </label>
+        </div>
+      </div>
+      <div class="flex-2 pl-1">
+        <!-- alignment -->
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div *ngIf="searchIsActive()">
+        <div class="progress">
+          <div class="progress-bar progress-bar-striped active w-100"
+            role="progressbar" aria-valuenow="100" 
+            aria-valuemin="0" aria-valuemax="100">
+            <span class="sr-only" i18n>Searching..</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row pt-2" *ngIf="showAdvanced()">
+    <div class="col-lg-2">
+      <select class="form-control"  multiple="true"
+        [(ngModel)]="searchContext.ccvmFilters.item_type">
+        <option value='' i18n>All Item Types</option>
+        <option *ngFor="let itemType of ccvmMap.item_type"
+          value="{{itemType.code()}}">{{itemType.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control" multiple="true"
+        [(ngModel)]="searchContext.ccvmFilters.item_form">
+        <option value='' i18n>All Item Forms</option>
+        <option *ngFor="let itemForm of ccvmMap.item_form"
+          value="{{itemForm.code()}}">{{itemForm.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control" 
+        [(ngModel)]="searchContext.ccvmFilters.item_lang" multiple="true">
+        <option value='' i18n>All Languages</option>
+        <option *ngFor="let lang of ccvmMap.item_lang"
+          value="{{lang.code()}}">{{lang.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control" 
+        [(ngModel)]="searchContext.ccvmFilters.audience" multiple="true">
+        <option value='' i18n>All Audiences</option>
+        <option *ngFor="let audience of ccvmMap.audience"
+          value="{{audience.code()}}">{{audience.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control"
+        [(ngModel)]="searchContext.identQueryType">
+        <option i18n value="identifier|isbn">ISBN</option>
+        <option i18n value="identifier|issn">ISSN</option>
+        <option i18n disabled value="cnbrowse">Call Number (Shelf Browse)</option>
+        <option i18n value="identifier|lccn">LCCN</option>
+        <option i18n value="identifier|tcn">TCN</option>
+        <option i18n disabled value="item_barcode">Item Barcode</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <input id='ident-query-input' type="text" class="form-control"
+        [(ngModel)]="searchContext.identQuery"
+        (keyup.enter)="formEnter('ident')"
+        placeholder="Numeric Query..."/>
+    </div>
+  </div>
+  <div class="row pt-2" *ngIf="showAdvanced()">
+    <div class="col-lg-2">
+      <select class="form-control" 
+        [(ngModel)]="searchContext.ccvmFilters.vr_format" multiple="true">
+        <option value='' i18n>All Video Formats</option>
+        <option *ngFor="let vrFormat of ccvmMap.vr_format"
+          value="{{vrFormat.code()}}">{{vrFormat.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control" 
+        [(ngModel)]="searchContext.ccvmFilters.bib_level" multiple="true">
+        <option value='' i18n>All Bib Levels</option>
+        <option *ngFor="let bibLevel of ccvmMap.bib_level"
+          value="{{bibLevel.code()}}">{{bibLevel.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <select class="form-control" 
+        [(ngModel)]="searchContext.ccvmFilters.lit_form" multiple="true">
+        <option value='' i18n>All Literary Forms</option>
+        <option *ngFor="let litForm of ccvmMap.lit_form"
+          value="{{litForm.code()}}">{{litForm.value()}}</option>
+      </select>
+    </div>
+    <div class="col-lg-2">
+      <i>Copy location filter goes here...</i>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,8 @@
+
+/* Bootstrap default is 20px */
+.pagination {margin: 0px 0px 0px 0px}
+
+.pagination li:not(.active) a {
+  cursor: pointer;
+}
+

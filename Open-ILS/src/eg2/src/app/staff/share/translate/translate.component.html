@@ -1,0 +1,63 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>
+      {{idlClassDef.label}}
+    </h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" 
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form-common form-validated" *ngIf="idlObj">
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold" 
+        i18n>Field Name</label>
+      <input 
+        type="text" 
+        [disabled]="true"
+        class="form-control col-lg-7"
+        value="{{idlClassDef.field_map[field].label}}">
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold" 
+        i18n>Current Value</label>
+      <input 
+        type="text" 
+        [disabled]="true"
+        class="form-control col-lg-7"
+        value="{{idlObj[field]()}}">
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold" 
+        i18n>Select Locale</label>
+      <select class="form-control col-lg-7" 
+        (change)="localeChanged($event)"
+        [(ngModel)]="selectedLocale">
+        <option value="{{locale.code()}}" *ngFor="let locale of locales">
+          {{locale.name()}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold" i18n>Translation</label>
+      <input 
+        id='translation-input'
+        type="text" 
+        class="form-control col-lg-7"
+        required
+        i18n-placeholder
+        (keyup.enter)="translate()"
+        placeholder="Translation..." 
+        [(ngModel)]="translatedValue"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button *ngIf="prevString" (click)="prevString()" 
+      class="btn btn-info" i18n>Prev String</button>
+    <button *ngIf="nextString" (click)="nextString()" 
+      class="btn btn-info mr-3" i18n>Next String</button>
+    <button (click)="translate()" class="btn btn-info" i18n>Apply</button>
+    <button (click)="dismiss('canceled')" class="btn btn-warning ml-2" i18n>Cancel</button>
+  </div>
+</ng-template>

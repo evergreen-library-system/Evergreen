@@ -1,0 +1,19 @@
+
+<eg-staff-banner bannerText="Search for Patron by Barcode" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="col-lg-4">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text" i18n>Barcode:</span>
+    </div>
+    <input type='text' id='barcode-search-input' class="form-control" 
+      placeholder="Barcode" i18n-placeholder [ngModel]='barcode'/>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" 
+        (click)="findUser()" i18n>Submit</button>
+    </div>
+  </div>
+</div>
+
+

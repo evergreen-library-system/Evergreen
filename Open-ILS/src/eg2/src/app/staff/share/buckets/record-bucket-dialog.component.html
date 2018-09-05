@@ -1,0 +1,56 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Add To Record #{{recId}} to Bucket</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" 
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-3 font-weight-bold" i18n>Name of existing bucket</div>
+      <div class="col-lg-5">
+         <select 
+          class="form-control"
+          placeholder="Existing Bucket..."
+          i18n-placeholder
+          [(ngModel)]="selectedBucket">
+          <option *ngFor="let bkt of buckets" 
+            value="{{bkt.id()}}">{{bkt.name()}}</option>
+        </select>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-info" (click)="addToSelected()" i18n 
+          [disabled]="!selectedBucket">
+          Add To Selected Bucket
+        </button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-lg-3 font-weight-bold" i18n>Name of new bucket</div>
+      <div class="col-lg-5">
+        <input type="text" class="form-control" 
+          placeholder="New Bucket Name..."
+          i18n-placeholder
+          [(ngModel)]="newBucketName"/>
+      </div>
+      <div class="col-lg-4">
+        <button class="btn btn-info" (click)="addToNew()" i18n 
+          [disabled]="!newBucketName">
+          Add To New Bucket
+        </button>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-lg-3 font-weight-bold" i18n>New bucket description</div>
+      <div class="col-lg-5">
+        <textarea size="3" type="text" class="form-control" 
+          placeholder="Optional New Bucket Description..."
+          i18n-placeholder
+          [(ngModel)]="newBucketDesc">
+        </textarea>
+      </div>
+    </div>
+  </div>
+</ng-template>

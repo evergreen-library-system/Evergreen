@@ -1,0 +1,19 @@
+<!-- top navigation bar -->
+<eg-staff-nav-bar></eg-staff-nav-bar>
+
+<div id='staff-content-container'>
+  <!-- page content -->
+  <router-outlet></router-outlet>
+</div>
+
+<!-- EgAccessKey Info Panel -->
+<eg-accesskey-info #egAccessKeyInfo></eg-accesskey-info>
+<a egAccessKey keyCtx="base"
+    keySpec="ctrl+h" i18n-keySpec
+    keyDesc="Display AccessKey Info Dialog" i18n-keyDesc
+    (click)="egAccessKeyInfo.open()">
+</a>
+
+<!-- global toast alerts -->
+<eg-toast></eg-toast>
+

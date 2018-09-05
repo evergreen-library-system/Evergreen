@@ -1,0 +1,20 @@
+
+<span *ngIf="!column.cellTemplate"
+  [ngbTooltip]="tooltipContent"
+  placement="top-left"
+  class="{{context.cellClassCallback(row, column)}}"
+  triggers="mouseenter:mouseleave">
+  {{context.getRowColumnValue(row, column)}}
+</span>
+<span *ngIf="column.cellTemplate" 
+  class="{{context.cellClassCallback(row, column)}}"
+  [ngbTooltip]="tooltipContent"
+  placement="top-left"
+  #tooltip="ngbTooltip" 
+  (mouseenter)="tooltip.open(column.getCellContext(row))"
+  (mouseleave)="tooltip.close()" triggers="manual">
+  <ng-container #templateContainer
+    *ngTemplateOutlet="column.cellTemplate; context: column.getCellContext(row)">
+  </ng-container> 
+</span>
+

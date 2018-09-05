@@ -1,0 +1,19 @@
+
+.eg-tree-node-expandy .material-icons {
+  font-size: 16px;
+}
+
+.eg-tree-node {
+  padding: 2px;
+}
+
+.eg-tree-node.active {
+  background-color: rgba(0,0,0,.03);
+  border: 1px solid rgba(0,0,0,.125);
+  font-style: italic;
+}
+
+.eg-tree-node-nochild {
+  border-left: 2px dashed rgba(0,0,0,.125);
+}
+

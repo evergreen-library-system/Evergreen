@@ -1,0 +1,30 @@
+
+
+<ng-container>
+  <eg-progress-dialog #progressDialog></eg-progress-dialog>
+  <ng-template #printTemplate let-context>
+    <div>
+      <style>
+        .grid-print-table {
+          border-collapse: collapse;
+          margin: 1px;
+        }
+        .grid-print-table td {
+          padding: 2px;
+          border: 1px solid #aaa;
+        }
+      </style>
+      <table class="grid-print-table">
+        <thead>
+          <tr><th *ngFor="let col of context.columns">{{col.label}}</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of context.rows; trackBy: index">
+            <!-- item values have already been filtered, etc. -->
+            <td *ngFor="let col of context.columns"><span>{{row[col.name]}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-template>
+</ng-container>
