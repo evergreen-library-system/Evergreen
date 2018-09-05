@@ -596,7 +596,7 @@ function(egCore , $q) {
         replace: true,
         transclude: true,
         template:
-            '<div class="row">'+
+            '<div class="row" ng-class="{'+"'new-cn'"+':!callNumber.not_ephemeral}">'+
                 '<div class="col-xs-2">'+
                     '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
                     '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"></select>'+

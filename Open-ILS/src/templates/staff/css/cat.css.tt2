@@ -329,3 +329,5 @@ table.custom-label-table td {
   overflow-y: scroll;
   white-space: nowrap;
 }
+
+.new-cn { background-color: lightgreen; }
