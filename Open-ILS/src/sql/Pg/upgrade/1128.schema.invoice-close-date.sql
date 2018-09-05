@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1128', :eg_version);
 
 DROP VIEW auditor.acq_invoice_lifecycle;
 
