@@ -823,3 +823,33 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
 # and you will suffer a performance hit.
 #RewriteCond %{HTTPS} off
 #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [NE,R,L]
+
+# ------------------------------------------------------------------------
+# /eg2/ client setup and locale configuration.
+#
+# If a valid locale cookie is present that does not match the current
+# path, redirect to the requested locale path.
+# Otherwise, if no locale is active, redirect to the default locale.
+
+# fr-CA
+#RewriteCond %{REQUEST_URI} ^/eg2/
+#RewriteCond %{REQUEST_URI} !^/eg2/fr-CA/
+#RewriteCond %{HTTP_COOKIE} eg_locale=fr_ca
+#RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/fr-CA/$1 [R=307,L]
+
+# Default / en-US.
+# No alternate supported cookie provided.
+RewriteCond %{REQUEST_URI}  ^/eg2/
+RewriteCond %{REQUEST_URI}  !^/eg2/([a-z]{2}-[A-Z]{2})/
+RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+# en-US build
+# This is the only required configuration when only using the default locale.
+<Directory "/openils/var/web/eg2/en-US">
+    FallbackResource /eg2/en-US/index.html
+</Directory>
+
+# fr-CA build
+#<Directory "/openils/var/web/eg2/fr-CA">
+#    FallbackResource /eg2/fr-CA/index.html
+#</Directory>
