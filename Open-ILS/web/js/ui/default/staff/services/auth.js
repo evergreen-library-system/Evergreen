@@ -63,6 +63,10 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
      * authtoken is found, otherwise rejected */
     service.testAuthToken = function() {
         var deferred = $q.defer();
+
+        // Move legacy cookies from /eg/staff to / before fetching the token.
+        egHatch.migrateAuthCookies();
+
         var token = service.token();
 
         if (token) {

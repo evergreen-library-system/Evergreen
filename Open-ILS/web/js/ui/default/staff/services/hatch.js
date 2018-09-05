@@ -352,6 +352,24 @@ angular.module('egCoreMod')
         }
     }
 
+    // Force auth cookies to live under path "/" instead of "/eg/staff"
+    // so they may be shared with the Angular app.
+    // There's no way to tell under what path a cookie is stored in
+    // the browser, all we can do is migrate it regardless.
+    service.migrateAuthCookies = function() {
+        [   'eg.auth.token', 
+            'eg.auth.time', 
+            'eg.auth.token.oc', 
+            'eg.auth.time.oc'
+        ].forEach(function(key) {
+            var val = service.getLoginSessionItem(key);
+            if (val) {
+                $cookies.remove(key, {path: '/eg/staff/'});
+                service.setLoginSessionItem(key, val);
+            }
+        });
+    }
+
     service.getLoginSessionItem = function(key) {
         var val = $cookies.get(key);
         if (val == null) return;
@@ -651,7 +669,7 @@ angular.module('egCoreMod')
         service.addLoginSessionKey(key);
         if (jsonified === undefined ) 
             jsonified = JSON.stringify(value);
-        $cookies.put(key, jsonified);
+        $cookies.put(key, jsonified, {path: '/'});
     }
 
     // Set the value for the given key.  
@@ -721,7 +739,7 @@ angular.module('egCoreMod')
 
     service.removeLoginSessionItem = function(key) {
         service.removeLoginSessionKey(key);
-        $cookies.remove(key);
+        $cookies.remove(key, {path: '/'});
     }
 
     service.removeSessionItem = function(key) {

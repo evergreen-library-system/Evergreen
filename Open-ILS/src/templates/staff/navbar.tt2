@@ -251,6 +251,18 @@
               [% l('Search the Catalog') %]
             </a>
           </li>
+          <!--
+            Link to experimental Angular staff catalog.
+            Leaving disabled until more functionality can be fleshed out.
+          -->
+          <!--
+          <li>
+            <a href="/eg2/staff/catalog/search" target="_self">
+              <span class="glyphicon glyphicon-search"></span>
+              <span>[% l('Staff Catalog (Experimental)') %]</span>
+            </a>
+          </li>
+          -->
           <li>
             <a href="./cat/bucket/record/view" target="_self">
               <span class="glyphicon glyphicon-list-alt"></span>
@@ -484,7 +496,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/acq/index" target="_self">
+            <a href="/eg2/staff/admin/acq/splash">
               <span class="glyphicon glyphicon-usd"></span>
               [% l('Acquisitions Administration') %]
             </a>
