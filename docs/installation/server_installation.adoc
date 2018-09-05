@@ -248,24 +248,10 @@ Installation instructions
    command as the *root* Linux account to install Evergreen, build the server
    portion of the staff client, and copy example configuration files to
    `/openils/conf`.
-   Change the value of the `STAFF_CLIENT_STAMP_ID` variable to match the version
-   of the staff client that you will use to connect to the Evergreen server.
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_name install
-------------------------------------------------------------------------------
-+
-2. The server portion of the staff client expects `http://hostname/xul/server`
-   to resolve. Issue the following commands as the *root* Linux account to
-   create a symbolic link pointing to the `server` subdirectory of the server
-   portion of the staff client that we just built using the staff client ID
-   'rel_name':
-+
-[source, bash]
-------------------------------------------------------------------------------
-cd /openils/var/web/xul
-ln -sf rel_name/server server
+make install
 ------------------------------------------------------------------------------
 
 Change ownership of the Evergreen files

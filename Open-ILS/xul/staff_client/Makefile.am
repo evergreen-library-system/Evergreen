@@ -5,7 +5,7 @@
 export WEBDIR=@localstatedir@/web
 export STAFF_CLIENT_BUILD_ID = $$(/bin/cat build/BUILD_ID)
 export STAFF_CLIENT_VERSION = $$(/bin/cat build/VERSION)
-export STAFF_CLIENT_STAMP_ID = $$(/bin/cat build/STAMP_ID)
+export STAFF_CLIENT_STAMP_ID = legacy
 
 # from http://closure-compiler.googlecode.com/files/compiler-latest.zip  FIXME: Autotools this?
 export CLOSURE_COMPILER_JAR = ~/closure-compiler/compiler.jar
@@ -201,6 +201,26 @@ server-xul: needwebdir build
 	@echo "Copying xul into $(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
 	mkdir -p "$(DESTDIR)$(WEBDIR)/xul/$(STAFF_CLIENT_STAMP_ID)"
 	cp -R @top_srcdir@/Open-ILS/xul/staff_client/build/server "$(DESTDIR)${WEBDIR}/xul/${STAFF_CLIENT_STAMP_ID}/"
+	@if [ "${STAFF_CLIENT_STAMP_ID}" == "legacy" ]; then \
+		echo "Installing the legacy parts of the XUL staff client"; \
+		if [ -L "$(DESTDIR)${WEBDIR}/xul/server" ]; then \
+			echo "Updating XUL server symlink to point to legacy code"; \
+			rm $(DESTDIR)${WEBDIR}/xul/server; \
+			( cd "$(DESTDIR)${WEBDIR}/xul"; ln -s legacy/server server; ); \
+		else \
+			if [ ! -f "$(DESTDIR)${WEBDIR}/xul/server" ]; then \
+				echo "Creating XUL server symlink to point to legacy code"; \
+				( cd "$(DESTDIR)${WEBDIR}/xul"; ln -s legacy/server server; ); \
+			else \
+				if [ -d "$(DESTDIR)${WEBDIR}/xul/server" ]; then \
+					echo "WARNING: $(DESTDIR)${WEBDIR}/xul/server is a directory; "; \
+					echo "Not overwriting it, but you should probably do the following: "; \
+					echo "1. Remove or move it, and "; \
+					echo "2. Create a symlink from $(DESTDIR)${WEBDIR}/xul/legacy/server to $(DESTDIR)${WEBDIR}/xul/server "; \
+				fi; \
+			fi; \
+		fi; \
+	fi; # manage the server symlink if installing the 'legacy' staff client
 
 compress-javascript: build
 	@echo "Size of build/ before compression = " `du -sh build/`

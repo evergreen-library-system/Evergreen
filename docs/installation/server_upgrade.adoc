@@ -94,6 +94,17 @@ These instructions assume that you have also installed OpenSRF under /openils/. 
 [source, bash]
 ------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.12.0
+make install
+------------------------------------------------------------
++
+
+**Note** that this version of Evergreen does not use the legacy XUL staff
+client by default, but if you wish to use a versioned XUL staff client, you
+can supply `STAFF_CLIENT_STAMP` during the `make install` step like this:
++
+[source, bash]
+------------------------------------------------------------
+cd /home/opensrf/Evergreen-ILS-2.12.0
 make STAFF_CLIENT_STAMP_ID=rel_2_12_rc install
 ------------------------------------------------------------
 +
@@ -104,7 +115,8 @@ make STAFF_CLIENT_STAMP_ID=rel_2_12_rc install
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------
 +
-. As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
+. (Optional, only if you are using the legacy staff client)
+  As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
 -----------------------------------------------------------
