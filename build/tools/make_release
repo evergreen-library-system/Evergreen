@@ -199,8 +199,6 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     fi
 
     echo "Applying to README:"
-    echo "STAMP_ID with $UNDER_VERSION"
-    sed -i -e "s/STAMP_ID=rel_[^ ]*/STAMP_ID=rel_$UNDER_VERSION/" $GIT_ABS/README
 
     if [ "$PREV_BRANCH" != "TAG" ]; then
         if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
