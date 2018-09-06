@@ -592,8 +592,11 @@ We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
-
+* Eva Cerninakova
+* Francisco J Guel-Mendoza
+* Jennifer Pringle
+* Jane Sandberg
+* Stephan Woidowski
 
 We also thank the following organizations whose employees contributed
 patches:
