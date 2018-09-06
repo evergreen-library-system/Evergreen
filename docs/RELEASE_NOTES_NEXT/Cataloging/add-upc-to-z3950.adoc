@@ -1,4 +1,0 @@
-Add UPC to z39.50 search for OCLC and LOC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Add UPC as a search attribute for both OCLC and LOC targets in
-z39.50 for cataloging.
