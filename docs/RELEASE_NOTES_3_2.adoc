@@ -1,10 +1,12 @@
-Evergreen 3_2 Release Notes
+Evergreen 3.2 Release Notes
 ===========================
 :toc:
 :numbered:
 
 Upgrade notes
 -------------
+
+TODO
 
 New Features
 ------------
@@ -593,15 +595,19 @@ code, translations, documentations patches and tests to this release of
 Evergreen:
 
 * Eva Cerninakova
+* Bill Erickson
+* Jason Etheridge
 * Francisco J Guel-Mendoza
 * Jennifer Pringle
+* Mike Rylander
 * Jane Sandberg
 * Stephan Woidowski
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* Equinox Open Library Initiative
+* King County Library System
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
