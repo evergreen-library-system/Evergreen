@@ -348,7 +348,7 @@ if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
     npm install   # fetch build dependencies
     ng build --prod
     # npm cache is big and unnecessary in the final build. remove it.
-    rm -r node_modules 
+    rm -rf node_modules 
     cd ../../../../ # release dir
 else
     echo "Skipping browser client build"
