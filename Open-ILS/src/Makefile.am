@@ -75,7 +75,8 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/sitemap_generator \
 		 $(srcdir)/extras/eg_config \
 		 $(srcdir)/extras/openurl_map.pl \
-		 $(srcdir)/extras/import/marc_add_ids
+		 $(srcdir)/extras/import/marc_add_ids \
+		 $(supportscr)/pingest.pl
 
 installautojs = $(autojsbinscripts)
 
@@ -118,6 +119,8 @@ if BUILDEGJAVA
 OILSJAVA_DIR = java
 endif
 
+# scripts that are generated from *.in files and can
+# be deleted by a make clean
 gen_scripts = \
 	@srcdir@/extras/fast-extract \
 	@srcdir@/extras/import/marc2are.pl \
@@ -129,9 +132,10 @@ gen_scripts = \
 	$(supportscr)/authority_authority_linker.pl \
 	$(supportscr)/eg_db_config \
 	$(supportscr)/marc_export \
-	$(supportscr)/offline-blocked-list.pl \
-	$(supportscr)/pingest.pl
+	$(supportscr)/offline-blocked-list.pl
 
+# config files that are generated from *.in files and can
+# be deleted by a make clean
 gen_docs = \
 	$(examples)/apache/eg.conf \
 	$(examples)/apache/eg_vhost.conf \
