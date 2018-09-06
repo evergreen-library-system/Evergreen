@@ -5,15 +5,35 @@ use OpenILS::Utils::TestUtils;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Application::Acq::Order;
 
+use constant WORKSTATION_LIB => 4;
+use constant WORKSTATION_NAME => 'BR1-test-22-acq-reqs';
+
 diag("Tests ACQ purchase requests");
 
 my $script = OpenILS::Utils::TestUtils->new();
 $script->bootstrap;
+my $e = new_editor();
+$e->init;
+
+my $workstation = $e->search_actor_workstation(
+    {name => WORKSTATION_NAME, owning_lib => WORKSTATION_LIB})->[0];
+
+if (!$workstation) {
+    $script->authenticate({
+        username => 'admin',
+        password => 'demo123',
+        type => 'staff'
+    });
+
+    my $ws = $script->register_workstation(WORKSTATION_NAME, WORKSTATION_LIB);
+    $script->logout();
+}
 
 $script->authenticate({
     username => 'admin',
     password => 'demo123',
-    type => 'staff'
+    type => 'staff',
+    workstation => WORKSTATION_NAME
 });
 
 my $ses = $script->session('open-ils.storage');
