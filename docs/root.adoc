@@ -503,6 +503,8 @@ include::opac/using_the_public_access_catalog.adoc[]
 
 include::opac/my_lists.adoc[]
 
+include::opac/batch_actions_from_search.adoc[]
+
 include::opac/kids_opac.adoc[]
 
 include::opac/catalog_browse.adoc[]
@@ -522,7 +524,6 @@ include::opac/search_form.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
-
 
 Developer Resources
 ===================
