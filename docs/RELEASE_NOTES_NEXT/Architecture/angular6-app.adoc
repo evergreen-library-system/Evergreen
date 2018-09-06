@@ -42,6 +42,10 @@ Add the following stanza to /etc/apache2/eg_vhost.conf.
 
 [source,conf]
 --------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI}  ^/eg2/
+RewriteCond %{REQUEST_URI}  !^/eg2/([a-z]{2}-[A-Z]{2})/
+RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
 <Directory "/openils/var/web/eg2/en-US">                                       
     FallbackResource /eg2/en-US/index.html                                     
 </Directory>  
