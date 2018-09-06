@@ -53,6 +53,8 @@ include::opac/visibility_on_the_web.adoc[]
 
 :leveloffset: 0
 
+include::opac/batch_actions_from_search.adoc[]
+
 
 include::opac/sitemap.adoc[]
 
