@@ -26,7 +26,6 @@ $invoice->receiver(1);
 $invoice->provider(1);
 $invoice->shipper(1);
 $invoice->inv_ident(rand());
-$invoice->complete('f');
 
 my $entry = Fieldmapper::acq::invoice_entry->new;
 $entry->isnew(1);
@@ -57,7 +56,8 @@ is($inv_debit->encumbrance, 't',
     'Debit is still encumbered after invoice create');
 
 # Close the invoice.  LP#1333254. 
-$invoice->complete('t');
+$invoice->close_date('2018-01-01');
+$invoice->closed_by(1); # admin
 $invoice->ischanged(1);
 
 $req = $acq_ses->request(
@@ -65,7 +65,7 @@ $req = $acq_ses->request(
 
 $invoice = $req->recv->content;
 
-is($invoice->complete, 't', 'Invoice is closed');
+isnt($invoice->close_date, undef, 'Invoice is closed');
 
 $inv_debit = $e->retrieve_acq_fund_debit($inv_debit->id);
 
@@ -73,7 +73,8 @@ is($inv_debit->encumbrance, 'f',
     'Debit is disencumbered after invoice close');
 
 # re-open the invoice
-$invoice->complete('f');
+$invoice->clear_close_date;
+$invoice->clear_closed_by;
 $invoice->ischanged(1);
 
 $req = $acq_ses->request(
