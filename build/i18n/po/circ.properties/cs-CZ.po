@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-15 16:41-0400\n"
-"PO-Revision-Date: 2018-03-17 20:11+0000\n"
+"PO-Revision-Date: 2018-05-22 18:23+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-18 05:17+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2018-05-23 05:19+0000\n"
+"X-Generator: Launchpad (build 18658)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -26,11 +26,11 @@ msgstr "Exemplář %1$s nebyl nikdy vypůjčen."
 
 #: staff.circ.item_no_user
 msgid "Item %1$s circulation is an aged circulation and has no linked user."
-msgstr "Výpůjčka  %1$s je zastaralou výpůjčkou bez připojeného čtenáře."
+msgstr "Výpůjčka  %1$s je archivní výpůjčkou bez připojeného čtenáře."
 
 #: staff.circ.aged_circ
 msgid "<Aged Circulation>"
-msgstr "<Zastaralá výpůjčka>"
+msgstr "<Archivní výpůjčka>"
 
 #: staff.circ.invalid_date
 msgid "Invalid Date"
@@ -838,7 +838,7 @@ msgstr "PRIVÁTNÍ REGÁL S REZERVACEMI"
 
 #: staff.circ.in_house_use.tab_name
 msgid "In-House Use"
-msgstr "Prezenční užití"
+msgstr "Prezenční výpůjčka"
 
 #: staff.circ.in_house_use.barcode
 msgctxt "staff.circ.in_house_use.barcode"
@@ -863,7 +863,7 @@ msgstr "Jste si jisti, že chcete označit %1$s jako využitý %2$s krát?"
 
 #: staff.circ.in_house_use.confirm_multiple.title
 msgid "In-House Use Verification"
-msgstr "Ověření prezenčního užití"
+msgstr "Ověření prezenční výpůjčky"
 
 #: staff.circ.in_house_use.yes
 msgctxt "staff.circ.in_house_use.yes"

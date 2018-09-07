@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 14:12-0400\n"
+"POT-Creation-Date: 2018-09-06 10:57-0400\n"
 "PO-Revision-Date: 2016-11-11 21:44+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:27+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-09-07 06:13+0000\n"
+"X-Generator: Launchpad (build 18767)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
 msgid "The requested container_copy_bucket was not found"
@@ -70,7 +70,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "el metabib_series_field_entry requerido no ha sido encontrado"
 
-#: 11105.PATRON_CREDIT_DISABLED:1040
+#: 11105.PATRON_CREDIT_DISABLED:1043
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
@@ -188,8 +188,8 @@ msgstr "No se encontró la metabib_keyword_field_entry solicitado"
 msgid "The requested config_audience_map was not found"
 msgstr "No se encontró la config_audience_map solicitado"
 
-#: 8004.OFFLINE_CONFIG_ERROR:951 8005.OFFLINE_CHECKSUM_FAILED:954
-#: 8006.OFFLINE_SESSION_NOT_FOUND:957
+#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
+#: 8006.OFFLINE_SESSION_NOT_FOUND:960
 msgid "Offline server is not configured properly"
 msgstr "El servidor fuera de linea no está configurado correctamente"
 
@@ -273,11 +273,11 @@ msgstr "El préstamo ya no tiene renovaciones disponibles"
 msgid "This account is marked as inactive"
 msgstr "Esta cuenta está marcada como inactiva"
 
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
 msgid "The distribution still has dependent objects"
 msgstr ""
 
-#: 8003.OFFLINE_PARAM_ERROR:948
+#: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
 msgstr "Params que faltan en línea de carga"
 
@@ -285,7 +285,7 @@ msgstr "Params que faltan en línea de carga"
 msgid "The requested reporter_report_folder was not found"
 msgstr "No se encontró la reporter_report_folder solicitado"
 
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
 msgid "The prediction pattern still has dependent objects"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "The requested perm_ex was not found"
 msgstr "No se encontró la perm_ex solicitado"
 
-#: 10101.ACQ_ALREADY_CANCELED:1003
+#: 10101.ACQ_ALREADY_CANCELED:1006
 msgid "The object is already canceled."
 msgstr "El objeto ya está cancelado."
 
@@ -331,7 +331,7 @@ msgstr "No se encontró la money_collections_tracker solicitado"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Un registro de autoridad ya existe con el ARN solicitado"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
 msgid "The caption/pattern still has dependent issuances"
 msgstr "La foto/patrón aún tiene emisiones dependientes"
 
@@ -348,7 +348,7 @@ msgstr ""
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "No se encontró el actor_user_standing_penalty solicitado"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:939
+#: 8000.OFFLINE_SESSION_ACTIVE:942
 msgid "An offline session for this location is currently processing"
 msgstr ""
 "Una sesión sin conexión para esta ubicación está procesando actualmente"
@@ -377,7 +377,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "Solicitada nota de facturación no existe"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1024
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -409,7 +409,7 @@ msgstr ""
 "El acq.purchase_order solicitada no se puede dividir, ya que no tiene más de "
 "una línea de pedido"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
+#: 10004.ACQ_LINEITEM_NO_PRICE:999
 msgid "The lineitem has no price"
 msgstr "La línea de pedido no tiene precio"
 
@@ -469,11 +469,11 @@ msgstr "No se encontró la config_metabib_field solicitado"
 msgid "The requested actor_org_address was not found"
 msgstr "No se encontró la actor_org_address solicitado"
 
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
 msgid "The stream still has dependent objects"
 msgstr ""
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "El registro trató sobre el tema durante el intervalo mínimo registro de "
@@ -491,7 +491,7 @@ msgstr "No se encontró el acq.fund_spent_total solicitado"
 msgid "The requested permission_grp_tree was not found"
 msgstr "No se encontró el permission_grp_tree solicitado"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:987
+#: 10001.ACQ_LINEITEM_NO_COPIES:990
 msgid "The lineitem has no attached copies"
 msgstr "La línea de pedido se adjunta copias sin"
 
@@ -541,7 +541,7 @@ msgstr ""
 "La copia seleccionado puede no circula debido a la ubicación de inicio del "
 "destinatario no está dentro del alcance de la circulación de la copia"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:999
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
 msgid "The lineitem has no provider"
 msgstr "La línea de pedido tiene ningún proveedor"
 
@@ -561,7 +561,7 @@ msgstr "No se encontró el money_cash_payment solicitado"
 msgid "The selected location cannot have volumes attached"
 msgstr "La ubicación seleccionada no puede haber volúmenes adjunta"
 
-#: 8002.OFFLINE_FILE_ERROR:945
+#: 8002.OFFLINE_FILE_ERROR:948
 msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 "Un archivo o directorio en línea no pudieron ser creados o se puede acceder"
@@ -616,7 +616,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "No se encontró la acq.fund_spent_balance solicitado"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1012
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
 msgid "The subscription still has dependent objects"
 msgstr "La suscripción todavía tiene objetos dependientes"
 
@@ -632,7 +632,7 @@ msgstr "No se encontró la config_lit_form_map solicitado"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "No se encontró la metabib_record_descriptor solicitado"
 
-#: 10102.ACQ_NOT_CANCELABLE:1006
+#: 10102.ACQ_NOT_CANCELABLE:1009
 msgid "The object is not in a cancelable state."
 msgstr "El objeto no está en un estado cancelable."
 
@@ -680,7 +680,7 @@ msgstr "Parámetros proporcionados describen reserva inaceptable."
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "No se encontró la acq.funding_source_balance solicitado"
 
-#: 10000.ACQ_LINEITEM_APPROVED:984
+#: 10000.ACQ_LINEITEM_APPROVED:987
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr ""
 "La línea de pedido no puede ser alterado debido a que ya ha sido aprobado"
@@ -826,7 +826,7 @@ msgstr "La contraseña facilitada no es la correcta"
 msgid "The requested config_item_type_map was not found"
 msgstr "No se encontró el config_item_type_map solicitado"
 
-#: 8007.OFFLINE_SESSION_EXISTS:960
+#: 8007.OFFLINE_SESSION_EXISTS:963
 msgid "A session with the given name already exists"
 msgstr "Una sesión con el nombre dado ya existe"
 
@@ -834,7 +834,7 @@ msgstr "Una sesión con el nombre dado ya existe"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "No se encontró la config_circ_matrix_ruleset_not_found solicitado"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:990
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
 msgid "The lineitem detail has no associated fund"
 msgstr "El detalle línea de pedido no dispone de fondos asociados"
 
@@ -940,11 +940,15 @@ msgstr "El registro seleccionado se babero volúmenes adjunta"
 msgid "The requested action_hold_request was not found"
 msgstr "No se encontró la action_hold_request solicitado"
 
-#: 8011.SKIP_ASSET_CHANGED:972
+#: 8011.SKIP_ASSET_CHANGED:975
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr ""
 "Estado de los activos fue cambiado desde que se registró la transacción "
 "fuera de línea"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+msgid "Circulation has no more auto-renewals remaining"
+msgstr ""
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -1010,7 +1014,7 @@ msgstr "No se encontró el ex solicitado"
 msgid "Hold capture was delayed for this item"
 msgstr "Retención de captura se retrasó por este concepto"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:976
+#: 9000.REPORT_TEMPLATE_EXISTS:979
 msgid "A report template with the given name and folder already exists"
 msgstr "Una plantilla de informe con el nombre y la carpeta dado ya existe"
 
@@ -1050,7 +1054,7 @@ msgstr "No se encontró la actor_stat_cat solicitado"
 msgid "The user attempted to set their password to a weak value."
 msgstr "El usuario intentó establecer su contraseña a un valor débil."
 
-#: 9001.REPORT_REPORT_EXISTS:980
+#: 9001.REPORT_REPORT_EXISTS:983
 msgid "A report with the given name and folder already exists"
 msgstr "Un informe con el nombre y la carpeta dado ya existe"
 
@@ -1059,7 +1063,7 @@ msgid "A volume with the same label, title and owning library exists"
 msgstr ""
 "Existe un volumen con la misma etiqueta, título y biblioteca propietaria"
 
-#: 8008.OFFLINE_INVALID_SESSION:963
+#: 8008.OFFLINE_INVALID_SESSION:966
 msgid "The session name is invalid"
 msgstr "El nombre de sesión no es válido"
 
@@ -1140,7 +1144,7 @@ msgstr "No se encontró la acq.currency_type solicitado"
 msgid "The requested money_grocery was not found"
 msgstr "No se encontró el money_grocery solicitado"
 
-#: 8009.OFFLINE_NO_ORG:966 8010.OFFLINE_SESSION_COMPLETE:969
+#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
 msgid "No org id was provided"
 msgstr "No se proporcionó Identificación del org"
 
@@ -1148,7 +1152,7 @@ msgstr "No se proporcionó Identificación del org"
 msgid "The patron has too many lost items."
 msgstr "El patrón tiene demasiados objetos perdidos."
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:942
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
 "Un archivo sin conexión para esta estación de trabajo existe dentro de este "
@@ -1194,7 +1198,7 @@ msgstr "No se encontró la metabib_metarecord solicitado"
 msgid "User already has an open hold on the selected item"
 msgstr "El usuario ya tiene una bodega abierta en el elemento seleccionado"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1048
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
@@ -1316,11 +1320,11 @@ msgstr "Se requiere el pago de una cuota de alquiler de artículos."
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "No se encontró el container_call_number_bucket_item solicitado"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
 msgid "The lineitem detail has no owning_lib"
 msgstr "El detalle línea de pedido no tiene owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1356,7 +1360,7 @@ msgstr "No se encontró el authority_record_note solicitado"
 msgid "The requested acq.fund was not found"
 msgstr "No se encontró el acq.fund solicitado"
 
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1368,7 +1372,7 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "No se encontró la action_non_cataloged_circulation solicitado"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."

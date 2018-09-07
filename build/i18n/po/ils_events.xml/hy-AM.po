@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-03-02 14:12-0400\n"
+"POT-Creation-Date: 2018-09-06 10:57-0400\n"
 "PO-Revision-Date: 2017-09-06 11:45+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:27+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-09-07 06:13+0000\n"
+"X-Generator: Launchpad (build 18767)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "Հարցվող metabib_series_field_entry չի գտնված:"
 
-#: 11105.PATRON_CREDIT_DISABLED:1040
+#: 11105.PATRON_CREDIT_DISABLED:1043
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
@@ -179,8 +179,8 @@ msgstr "Հարցվող metabib_keyword_field_entry չի գտնվել"
 msgid "The requested config_audience_map was not found"
 msgstr "Հարցվող config_audience_map չի գտնվել"
 
-#: 8004.OFFLINE_CONFIG_ERROR:951 8005.OFFLINE_CHECKSUM_FAILED:954
-#: 8006.OFFLINE_SESSION_NOT_FOUND:957
+#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
+#: 8006.OFFLINE_SESSION_NOT_FOUND:960
 msgid "Offline server is not configured properly"
 msgstr "Անջատված կայանը ճիշտ չէ կարգաբեռված:"
 
@@ -261,11 +261,11 @@ msgstr "Սպասարկումը էլ չունի մնացող պահումներ"
 msgid "This account is marked as inactive"
 msgstr "Հաշիվը նշված է որպես ոչ ակտիվ"
 
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
 msgid "The distribution still has dependent objects"
 msgstr "Բաշխումը դեռ ունի կախյալ օբյեկտներ։"
 
-#: 8003.OFFLINE_PARAM_ERROR:948
+#: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
 msgstr "Բացակա պարամետրեր ցանցից անջատ բեռնավորման դեպքում"
 
@@ -273,7 +273,7 @@ msgstr "Բացակա պարամետրեր ցանցից անջատ բեռնավո
 msgid "The requested reporter_report_folder was not found"
 msgstr "Հարցվող reporter_report_folder չի գտնված"
 
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
 msgid "The prediction pattern still has dependent objects"
 msgstr "կանխատեսվող օրինակը դեռ ունի կախյալ օբյեկտներ։"
 
@@ -281,7 +281,7 @@ msgstr "կանխատեսվող օրինակը դեռ ունի կախյալ օբ�
 msgid "The requested perm_ex was not found"
 msgstr "Հարցվող perm_ex չի գտնված"
 
-#: 10101.ACQ_ALREADY_CANCELED:1003
+#: 10101.ACQ_ALREADY_CANCELED:1006
 msgid "The object is already canceled."
 msgstr "Օբյեկտը արդեն չեղյալ է արված"
 
@@ -319,7 +319,7 @@ msgstr "Հարցվող money_collections_tracker չի գտնված"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Հեղինակավոր գրառումը արդեն գոյություն ունի պահանջվող ARN-ով"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
 msgid "The caption/pattern still has dependent issuances"
 msgstr "Ձևը դեռ ունի կախված տրումներ"
 
@@ -335,7 +335,7 @@ msgstr "Հարցվող գործողության արդյունքում ընթե�
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Հարցվող actor_user_standing_penalty չի գտնված"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:939
+#: 8000.OFFLINE_SESSION_ACTIVE:942
 msgid "An offline session for this location is currently processing"
 msgstr "Այս տեղաբաշխման համառ ցանցից անջատ սեսիան հիմա կատարվում է"
 
@@ -363,7 +363,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "Պահանջվող վճարման նշումը գոյություն չունի;"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1024
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -395,7 +395,7 @@ msgstr ""
 "Պահանջվող acq.purchase_order չի կարող բաժանվել, քանի որ այն չունի ավելի քան "
 "մեկ գծային նյութ"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
+#: 10004.ACQ_LINEITEM_NO_PRICE:999
 msgid "The lineitem has no price"
 msgstr "Տողի նյութը չունի գին"
 
@@ -455,11 +455,11 @@ msgstr "Հարցվող config_metabib_field չի գտնված"
 msgid "The requested actor_org_address was not found"
 msgstr "Հարցվող actor_org_address չի գտնված"
 
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
 msgid "The stream still has dependent objects"
 msgstr "հոսքը դեռ ունի կախյալ օբյեկտներ։"
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "Նյութի փորձ է արվել հետ ընդունել տրանզիտ հետ ընդունումների նվազագույն "
@@ -477,7 +477,7 @@ msgstr "Պահանջվող acq.fund_spent_total չի գտնվել"
 msgid "The requested permission_grp_tree was not found"
 msgstr "Հարցվող permission_grp_tree չի գտնված"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:987
+#: 10001.ACQ_LINEITEM_NO_COPIES:990
 msgid "The lineitem has no attached copies"
 msgstr "Տողի նյութը չունի կցվածօրինակներ"
 
@@ -526,7 +526,7 @@ msgstr ""
 "Ընտրված պատճեն չի կարող սպասարկվել, քանի որ ստացողի տան գտնվելու վայրը չի "
 "գտնվում սպասարկման տիրույթի սահմանում:"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:999
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
 msgid "The lineitem has no provider"
 msgstr "Գծային  նյութը չունը մատակարար"
 
@@ -546,7 +546,7 @@ msgstr "Հարցվող money_cash_payment չի գնված"
 msgid "The selected location cannot have volumes attached"
 msgstr "Ընտրված տեղաբաշխումը չի կարող ունենալ կցված հատորներ"
 
-#: 8002.OFFLINE_FILE_ERROR:945
+#: 8002.OFFLINE_FILE_ERROR:948
 msgid "An offline file or directory could not be created or accessed"
 msgstr "Օֆլայն ֆայլը կամ գրադարանը հնարավոր չէ ստեղծել կամ հասանելի դարձնել"
 
@@ -600,7 +600,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "Պահանջվող acq.fund_spent_balance չի գտնվել"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1012
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
 msgid "The subscription still has dependent objects"
 msgstr "Բաժանորդագրությունը դեռ ունի կախյալ օբյեկտներ"
 
@@ -616,7 +616,7 @@ msgstr "Հարցվող config_lit_form_map չի գտնված"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Հարցվող metabib_record_descriptor չի գտնված"
 
-#: 10102.ACQ_NOT_CANCELABLE:1006
+#: 10102.ACQ_NOT_CANCELABLE:1009
 msgid "The object is not in a cancelable state."
 msgstr "Օբյեկտը չի գտնվում չեղարկելու վիճակում"
 
@@ -663,7 +663,7 @@ msgstr "Տրված պարամետրերը նկարագրում են անընդո
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "Պահանջվող acq.funding_source_balance չի գտնվել"
 
-#: 10000.ACQ_LINEITEM_APPROVED:984
+#: 10000.ACQ_LINEITEM_APPROVED:987
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "Տողի նյութը հնարավոր չէ փոփոխել, քանի որ այն արդեն հաստատված է։"
 
@@ -807,7 +807,7 @@ msgstr "Տրված գաղտնաբարը սխալ է"
 msgid "The requested config_item_type_map was not found"
 msgstr "Հարցվող config_item_type_map չի գտնված"
 
-#: 8007.OFFLINE_SESSION_EXISTS:960
+#: 8007.OFFLINE_SESSION_EXISTS:963
 msgid "A session with the given name already exists"
 msgstr "Տրված անունով սեսիա արդեն գոյություն ունի"
 
@@ -815,7 +815,7 @@ msgstr "Տրված անունով սեսիա արդեն գոյություն ո�
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Պահանջվող config_circ_matrix_ruleset_not_found չի գտնվել"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:990
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
 msgid "The lineitem detail has no associated fund"
 msgstr "Տողի նյութի մանրամասը չունի իրեն կցված գումար"
 
@@ -918,11 +918,15 @@ msgstr "Ընտրված մատեն գրառումը ունի կցված հատո�
 msgid "The requested action_hold_request was not found"
 msgstr "Հարցվող action_hold_request չի գտնված"
 
-#: 8011.SKIP_ASSET_CHANGED:972
+#: 8011.SKIP_ASSET_CHANGED:975
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr ""
 "Ակտիվների վճակը փոխվել է սկսած այն պահից երբ ցանցից անջատված տրանզակցիա է "
 "գրանցվել"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+msgid "Circulation has no more auto-renewals remaining"
+msgstr ""
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -988,7 +992,7 @@ msgstr "Պատվիրված ex չի գտնված"
 msgid "Hold capture was delayed for this item"
 msgstr "Պահումի որսումը կասեցվել է այս նյութի համար"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:976
+#: 9000.REPORT_TEMPLATE_EXISTS:979
 msgid "A report template with the given name and folder already exists"
 msgstr ""
 "Տրված անունով և թղթապանակով հաշվետվության ձևաչափը արդեն գոյություն ունի"
@@ -1028,7 +1032,7 @@ msgstr "Հարցվող actor_stat_cat չի գտնված"
 msgid "The user attempted to set their password to a weak value."
 msgstr "Օգտվողը փորձ է արել գրել գաղտնաբառ թույլ արժեքով"
 
-#: 9001.REPORT_REPORT_EXISTS:980
+#: 9001.REPORT_REPORT_EXISTS:983
 msgid "A report with the given name and folder already exists"
 msgstr "Տրված անունով և թղթապանակով հաշվետվությունը արդեն գոյություն ունի"
 
@@ -1036,7 +1040,7 @@ msgstr "Տրված անունով և թղթապանակով հաշվետվութ
 msgid "A volume with the same label, title and owning library exists"
 msgstr "Նույն պիտակով, վերնագրովշ և վայրով հտոր արդեն կա"
 
-#: 8008.OFFLINE_INVALID_SESSION:963
+#: 8008.OFFLINE_INVALID_SESSION:966
 msgid "The session name is invalid"
 msgstr "Սեսիայի անունը սխալ է"
 
@@ -1114,7 +1118,7 @@ msgstr "Պահանջվող acq.currency_type չի գտնվել"
 msgid "The requested money_grocery was not found"
 msgstr "Հարցվող money_grocery չի գտնված"
 
-#: 8009.OFFLINE_NO_ORG:966 8010.OFFLINE_SESSION_COMPLETE:969
+#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
 msgid "No org id was provided"
 msgstr "Չկա org id"
 
@@ -1122,7 +1126,7 @@ msgstr "Չկա org id"
 msgid "The patron has too many lost items."
 msgstr "Ընթերցողը ունի չափից շատ կորած նյութեր։"
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:942
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
 msgid "An offline file for this workstation exists within this session"
 msgstr "Այս աշխ կայանի համար կա օֆլայն ֆայլ"
 
@@ -1166,7 +1170,7 @@ msgstr "Հարցվող metabib_metarecord չի գտնված"
 msgid "User already has an open hold on the selected item"
 msgstr "Ընտրված նյութի համար օգտվողը ունի բաց պահում"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1048
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
@@ -1288,11 +1292,11 @@ msgstr "Պահանջվում է նյութի վարձակալության վճա
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Հարցվող container_call_number_bucket_item չի գտնված"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
 msgid "The lineitem detail has no owning_lib"
 msgstr "Տողի նյութի մանրամասը չունի owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1328,7 +1332,7 @@ msgstr "Հարցվող authority_record_note չի գտնված"
 msgid "The requested acq.fund was not found"
 msgstr "Պահանջվող acq.fund չի գտնվել"
 
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1340,7 +1344,7 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Հարցվող action_non_cataloged_circulation չի գտնված"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."
