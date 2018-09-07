@@ -363,7 +363,7 @@ Action/Trigger hooks have been created for circulations and bookings that are ad
 
 Booking start dates are explicitly ignored in this implementation. Because an Emergency Closing is, by its nature, an unexpected event, it will be up to staff to address any bookings which intersect with a new Emergency Closings. Reports can be used to identify booking start dates that overlap with a closing and that may require staff intervention.
 
-Staff requsting and Emergency Closing must have the new EMERGENCY_CLOSING permission.
+Staff requesting and Emergency Closing must have the new EMERGENCY_CLOSING permission.
 Some text describing the feature.
 
 
@@ -489,7 +489,7 @@ level of the tree.
 
 Browser Client Settings & Preferences Stored on the Server
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Browser cilent settings and preferences that should persist over time are
+Browser client settings and preferences that should persist over time are
 now stored as settings on the server.  This allows settings to follow
 users and workstations and reduces problems associated with losing settings 
 as a result of clearing browser data.
@@ -504,7 +504,7 @@ Setting Types
 * No setting can be both a user and workstation setting.  They are mutually
   exclusive.
 * Any setting can be an org unit setting in addition to being a user or
-  workstaion setting.
+  workstation setting.
 
 Read-Only Settings
 ++++++++++++++++++
@@ -605,7 +605,7 @@ Additional information
 ++++++++++++++++++++++
 * The checkboxes do not display on the metarecord results page, as
   metarecords currently cannot be put into carts or lists.
-* The checkboxes are displayed only if Javascript is enabled. However,
+* The checkboxes are displayed only if JavaScript is enabled. However,
   users can still add items to the cart and perform batch actions on
   the cart and on lists.
 * A template `config.tt2` setting, `ctx.max_cart_size`, can be used to
@@ -636,11 +636,11 @@ page using `Template::Toolkit`.
 
 Specifically, if the context as munged by the context loader contains
 a `json_response` key, the contents of that key will to provide a
-JSON reponse. The `json_response_cookie` key, if present, can be used
+JSON response. The `json_response_cookie` key, if present, can be used
 to set a cookie as part of the response.
 
 Template Toolkit processing is bypassed entirely when emitting a JSON
-response, so the context loader would be entirely reponsible for
+response, so the context loader would be entirely responsible for
 localization of strings in the response meant for direct human
 consumption.
 
