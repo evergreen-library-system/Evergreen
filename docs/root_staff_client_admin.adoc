@@ -126,6 +126,8 @@ include::admin/floating_groups.adoc[]
 
 :leveloffset: 0
 
+include::admin/place_multiple_holds.adoc[]
+
 Working with money
 ------------------
 
