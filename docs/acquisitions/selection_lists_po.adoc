@@ -207,6 +207,21 @@ A delayed line item can now be canceled.  You can mark a line item as delayed, a
 
 Cancel/delay reasons now appear on the worksheet and the printable purchase order.
 
+[NOTE]
+========================
+When all the copies of a line item are canceled through the Acquisitions interface,
+the parent lineitem is also canceled. The cancel reason will be calculated based
+on the settings of the 
+  
+. The cancel reason for the last copy to be canceled copy if the cancel reason's
+_Keep Debits_ setting is true.
+. The cancel reason for any other copy on the line item if the cancel reason's
+_Keep Debits_ setting is true.
+. The cancel reason for the last copy to be canceled if no copies on the line
+item have a cancel reason where _Keep Debits_ is true.
+========================
+
+
 Paid PO Line Items
 ++++++++++++++++++
 

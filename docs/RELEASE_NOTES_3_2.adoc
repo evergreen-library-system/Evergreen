@@ -12,27 +12,21 @@ New Features
 ------------
 
 
-
 Acquisitions
 ~~~~~~~~~~~~
 
-
-
-Auto-Cancel Lineitems When All Copies Are Canceled
+Auto-Cancel Line items When All Copies Are Canceled
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-When a copy (lineitem detail) is canceled through the Acquisitions interface, 
-the parent lineitem is also canceled if all copies for that lineitem are also 
+When a copy (line item detail) is canceled through the Acquisitions interface, 
+the parent line item is also canceled if all copies for that line item are also 
 canceled.  The cancel reason given will come from:
 
-1. The cancel reason for the just-canceled copy if it's a Keep Debits true 
-   cancel reason.
-2. The cancel reason from any other copy on the lineitem that has a Keep 
-   Debits true cancel reason.
-3. The cancel reason for the just-canceled copy if no copies have a Keep
-   Debits true cancel reason.
-  
-
-
+. The cancel reason for the just-canceled copy if it's a Keep Debits true 
+cancel reason.
+. The cancel reason from any other copy on the lineitem that has a Keep 
+Debits true cancel reason.
+. The cancel reason for the just-canceled copy if no copies have a Keep
+Debits true cancel reason.
 
 
 Invoice Closed Date and Closed By Fields
@@ -71,9 +65,6 @@ invoices.
 
 
 
-
-
-
 Patron Acquisitions Requests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -89,7 +80,7 @@ With Evergreen 3.2, we introduce the initial infrastructure for
 migrating to a new version of Angular.  The structure of the new code
 is quite different from the AngularJS code and it runs as a separate
 application which communicates with the AngularJS app via shared storage
-and in-page URLs that link back and fort between the two.
+and in-page URLs that link back and forth between the two.
 
 For this release, users will only be directed to the new Angular site
 when navigating to Administration => Acquisitions Administration.  Once
@@ -153,20 +144,13 @@ sudo make -f Open-ILS/src/extras/Makefile.install <osname>-developer
 --------------------------------------------------------------------------
 
 
-
-
-
 Cataloging
 ~~~~~~~~~~
-
-
 
 Add UPC to z39.50 search for OCLC and LOC
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Add UPC as a search attribute for both OCLC and LOC targets in
 z39.50 for cataloging.
-
-
 
 
 Asynchronous Vandelay Imports
@@ -216,11 +200,9 @@ inventory date was updated.
 
 
 
-
-
 Parallel Ingest with pingest.pl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-A program named pingest.pl is now installed to allow faster record
+A program named pingest.pl is now installed to allow faster bibliographic record
 ingest.  It performs ingest in parallel so that multiple batches can
 be done simultaneously.  It operates by splitting the records to be
 ingested up into batches and running all of the ingest methods on each
@@ -290,8 +272,6 @@ pingest.pl accepts the following command line options:
 
 
 
-
-
 View Authority Record by Database ID
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -308,8 +288,6 @@ interested in. Don't include any prefixes, just the ID
 number.
 . Click *Submit*.
 . View or edit the authority record as needed.
-
-
 
 
 
@@ -656,9 +634,6 @@ sites to customize the searchbar differently on the
 homepage than in other places the
 search bar appears (for example, offering a large,
 Google-style search bar on the homepage only).
-
-
-
 
 
 Username Login Hint
