@@ -668,6 +668,8 @@ code, translations, documentations patches and tests to this release of
 Evergreen:
 
 * Felicia Beaudry
+* Jason Boyer
+* British Columbia Libraries Cooperative
 * Andrea Buntz Neiman
 * Eva Cerninakova
 * Galen Charlton
@@ -675,6 +677,7 @@ Evergreen:
 * Jeff Davis
 * Bill Erickson
 * Jason Etheridge
+* Lynn Floyd
 * Jeff Godin
 * Blake Graham-Henderson
 * Francisco J Guel-Mendoza
@@ -682,7 +685,9 @@ Evergreen:
 * Mary Jinglewski
 * Angela Kilsdonk
 * Kathy Lussier
+* Katie G. Martin
 * Jennifer Pringle
+* Morkor Quarshie
 * Mike Rylander
 * Jane Sandberg
 * Chris Sharp
