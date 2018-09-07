@@ -1032,7 +1032,7 @@ function($uibModal , $interpolate , egCore) {
             // onchange handler.
             onchange : '=',
 
-            // optional primary drop-down button label
+            // optional typeahead placeholder text
             label : '@',
 
             // optional name of settings key for persisting
@@ -1040,30 +1040,16 @@ function($uibModal , $interpolate , egCore) {
             stickySetting : '@'
         },
 
-        // any reason to move this into a TT2 template?
-        template : 
-            '<div class="btn-group eg-org-selector" uib-dropdown>'
-            + '<button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disable_button">'
-             + '<span style="padding-right: 5px;">{{getSelectedName()}}</span>'
-             + '<span class="caret"></span>'
-           + '</button>'
-           + '<ul uib-dropdown-menu class="scrollable-menu">'
-             + '<li ng-repeat="org in orgList" ng-hide="hiddenTest(org.id)">'
-               + '<a href ng-click="orgChanged(org)" a-disabled="disableTest(org.id)" '
-                 + 'style="padding-left: {{org.depth * 10 + 5}}px">'
-                 + '{{org.shortname}}'
-               + '</a>'
-             + '</li>'
-           + '</ul>'
-          + '</div>',
+        templateUrl : './share/t_org_select',
 
         controller : ['$scope','$timeout','egCore','egStartup','egLovefield','$q',
               function($scope , $timeout , egCore , egStartup , egLovefield , $q) {
 
-            if ($scope.alldisabled) {
-                $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
-            } else {
-                $scope.disable_button = false;
+            // See emptyTypeahead directive below.
+            var secretEmptyKey = '_INTERNAL_';
+
+            function formatName(org) {
+                return " ".repeat(org.ou_type().depth()) + org.shortname();
             }
 
             // avoid linking the full fleshed tree to the scope by 
@@ -1083,30 +1069,39 @@ function($uibModal , $interpolate , egCore) {
             ).then(
                 function() {
 
-                    $scope.orgList = egCore.org.list().map(function(org) {
-                        return {
-                            id : org.id(),
-                            shortname : org.shortname(), 
-                            depth : org.ou_type().depth()
-                        }
+                    $scope.selecteName = '';
+
+                    $scope.shortNames = egCore.org.list()
+                    .filter(function(org) {
+                        return !(
+                            $scope.hiddenTest && 
+                            $scope.hiddenTest(org.id())
+                        );
+                    }).map(function(org) {
+                        return formatName(org);
                     });
-                    
     
                     // Apply default values
     
                     if ($scope.stickySetting) {
                         var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
                         if (orgId) {
-                            $scope.selected = egCore.org.get(orgId);
+                            var org = egCore.org.get(orgId);
+                            if (org) {
+                                $scope.selected = org;
+                                $scope.selectedName = org.shortname();
+                            }
                         }
                     }
     
                     if (!$scope.selected && !$scope.nodefault && egCore.auth.user()) {
-                        $scope.selected = 
-                            egCore.org.get(egCore.auth.user().ws_ou());
+                        var org = egCore.org.get(egCore.auth.user().ws_ou());
+                        $scope.selected = org;
+                        $scope.selectedName = org.shortname();
                     }
     
                     fire_orgsel_onchange(); // no-op if nothing is selected
+                    watch_external_changes();
                 }
             );
 
@@ -1126,21 +1121,90 @@ function($uibModal , $interpolate , egCore) {
                 });
             }
 
-            $scope.getSelectedName = function() {
-                if ($scope.selected && $scope.selected.shortname)
-                    return $scope.selected.shortname();
-                return $scope.label;
+            // Force the compare filter to run when the input is
+            // clicked.  This allows for displaying all values when
+            // clicking on an empty input.
+            $scope.handleClick = function (e) {
+                $timeout(function () {
+                    var current = $scope.selectedName;
+                    // HACK-CITY
+                    // Force the input value to "" so when the compare 
+                    // function runs it will see the special empty key
+                    // instead of the selected value.
+                    $(e.target).val('');
+                    $(e.target).trigger('input');
+                    // After the compare function runs, reset the the
+                    // selected value.
+                    $scope.selectedName = current;
+                });
             }
 
-            $scope.orgChanged = function(org) {
-                $scope.selected = egCore.org.get(org.id);
-                if ($scope.stickySetting) {
-                    egCore.hatch.setLocalItem($scope.stickySetting, org.id);
+            $scope.compare = function(shortName, inputValue) {
+                return inputValue === secretEmptyKey ||
+                    (shortName || '').toLowerCase().trim()
+                        .indexOf((inputValue || '').toLowerCase().trim()) > -1;
+            }
+
+            // Trim leading tree-spaces before displaying selected value
+            $scope.formatDisplayName = function(shortName) {
+                return ($scope.selectedName || '').trim();
+            }
+
+            $scope.orgIsDisabled = function(shortName) {
+                if ($scope.alldisabled === 'true') return true;
+                if (shortName && $scope.disableTest) {
+                    var org = egCore.org.list().filter(function(org) {
+                        return org.shortname() === shortName.trim();
+                    })[0];
+
+                    return org && $scope.disableTest(org.id());
                 }
-                fire_orgsel_onchange();
+                return false;
             }
 
+            $scope.inputChanged = function(shortName) {
+                // Avoid watching for changes on $scope.selected while
+                // manually applying values below.
+                unwatch_external_changes();
+
+                // Manually prevent selection of disabled orgs
+                if ($scope.selectedName && 
+                    !$scope.orgIsDisabled($scope.selectedName)) {
+                    $scope.selected = egCore.org.list().filter(function(org) {
+                        return org.shortname() === $scope.selectedName.trim()
+                    })[0];
+                } else {
+                    $scope.selected = null;
+                }
+                if ($scope.selected && $scope.stickySetting) {
+                    egCore.hatch.setLocalItem(
+                        $scope.stickySetting, $scope.selected.id());
+                }
+
+                fire_orgsel_onchange();
+                $timeout(watch_external_changes);
+            }
+
+            // Propagate external changes on $scope.selected to the typeahead
+            var dewatcher;
+            function watch_external_changes() {
+                dewatcher = $scope.$watch('selected', function(newVal, oldVal) {
+                    if (newVal) {
+                        $scope.selectedName = newVal.shortname();
+                    } else {
+                        $scope.selectedName = '';
+                    }
+                });
+            }
+
+            function unwatch_external_changes() {
+                if (dewatcher) {
+                    dewatcher();
+                    dewatcher = null;
+                }
+            }
         }],
+
         link : function(scope, element, attrs, egGridCtrl) {
 
             // boolean fields are presented as value-less attributes
@@ -1153,6 +1217,34 @@ function($uibModal , $interpolate , egCore) {
                         scope[field] = false;
                 }
             );
+        }
+    }
+})
+
+/*
+https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-input-and-show-typeahead-dropdown-ui-bootstra
+*/
+.directive('emptyTypeahead', function () {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            var secretEmptyKey = '_INTERNAL_';
+
+            // this parser run before typeahead's parser
+            modelCtrl.$parsers.unshift(function (inputValue) {
+                // replace empty string with secretEmptyKey to bypass typeahead-min-length check
+                var value = (inputValue ? inputValue : secretEmptyKey);
+                // this $viewValue must match the inputValue pass to typehead directive
+                modelCtrl.$viewValue = value;
+                return value;
+            });
+
+            // this parser run after typeahead's parser
+            modelCtrl.$parsers.push(function (inputValue) {
+                // set the secretEmptyKey back to empty string
+                return inputValue === secretEmptyKey ? '' : inputValue;
+            });
         }
     }
 })
