@@ -651,13 +651,24 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
+* British Columbia Library Cooperative 
+* CW MARS
+* Georgia Public Library Service
+* Indiana State Library
+* Lake Agassiz Regrional Library
 * MassLNC
 * North Texas Library Consortium
+* Northwest Regional Library
+* Consortium of Ohio Libraries
+* Pennsylvania Integrated Library System
+* South Carolina State Library
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
+* Felicia Beaudry
+* Andrea Buntz Neiman
 * Eva Cerninakova
 * Galen Charlton
 * Garry Collum
@@ -668,6 +679,8 @@ Evergreen:
 * Blake Graham-Henderson
 * Francisco J Guel-Mendoza
 * Kyle Huckins
+* Mary Jinglewski
+* Angela Kilsdonk
 * Kathy Lussier
 * Jennifer Pringle
 * Mike Rylander
