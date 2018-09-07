@@ -1,0 +1,724 @@
+Evergreen 3.2 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+TODO
+
+New Features
+------------
+
+
+
+Acquisitions
+~~~~~~~~~~~~
+
+
+
+Auto-Cancel Lineitems When All Copies Are Canceled
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When a copy (lineitem detail) is canceled through the Acquisitions interface, 
+the parent lineitem is also canceled if all copies for that lineitem are also 
+canceled.  The cancel reason given will come from:
+
+1. The cancel reason for the just-canceled copy if it's a Keep Debits true 
+   cancel reason.
+2. The cancel reason from any other copy on the lineitem that has a Keep 
+   Debits true cancel reason.
+3. The cancel reason for the just-canceled copy if no copies have a Keep
+   Debits true cancel reason.
+  
+
+
+
+
+Invoice Closed Date and Closed By Fields
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Acquisitions invoices have 2 new fields:
+
+* Close Date -- This is set to the time when the ACQ user clicks the "Close"
+  button in the invoice interface.
+  ** This field 'replaces' the existing 'complete' field.  An invoice is
+     considered complete if a close date value is set.
+* Closed By -- This is set to the logged in staff user who performs the 
+  "Close" action.
+
+As with the now-defunct 'complete' field, but new fields are cleared in the 
+event an invoice is reopened.
+
+These new fields are visible in the invoice interface under the 
+'Show Details' action for closed invoices.
+
+Upgrading Invoice Reports
++++++++++++++++++++++++++
+
+Existing report templates that reference the invoice 'complete' field 
+should be modified to check whether the new close_date field is NOT NULL
+instead.
+
+Other Upgrade Considerations
+++++++++++++++++++++++++++++
+
+At deploy time, all invoices with a 'complete' value of TRUE will have their
+'close_date' field set to NOW.  A value is required, since this field is
+now the source of whether an invoice is open or closed.
+
+However, no values will be applied to the closed_by field for already closed
+invoices.
+
+
+
+
+
+
+Patron Acquisitions Requests
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The existing interface for staff-mediated patron acquisition requests has been replaced in the web staff client with a re-implementation written in AngularJS, with some minor bug fixes (including access from the Patron interface) and other improvements.
+
+
+Architecture
+~~~~~~~~~~~~
+
+Angular6 Base Application
+^^^^^^^^^^^^^^^^^^^^^^^^^
+With Evergreen 3.2, we introduce the initial infrastructure for
+migrating to a new version of Angular.  The structure of the new code
+is quite different from the AngularJS code and it runs as a separate
+application which communicates with the AngularJS app via shared storage
+and in-page URLs that link back and fort between the two.
+
+For this release, users will only be directed to the new Angular site
+when navigating to Administration => Acquisitions Administration.  Once
+on this page, some of the admin interfaces will presented as Angular6
+interfaces, while others will direct users back to the AngularJS
+application.  The Angular6 interfaces are the simpler, grid-based
+interfaces.
+
+Acquisitions Admin Angular6 Interfaces
+++++++++++++++++++++++++++++++++++++++
+
+ * Cancel Reasons
+ * Claim Event Types
+ * Claim Policies
+ * Claim Policy Actions
+ * Claim Types
+ * Currency Types
+ * EDI Accounts
+ * EDI Messages
+ * Exchange Rates
+ * Fund Tags
+ * Invoice Item Types
+ * Invoice Payment Method
+ * Line Item Alerts
+ * Line Item MARC Attribute Definitions
+
+System Admin Upgrade Notes
+++++++++++++++++++++++++++
+
+Like the AngularJS application, Evergreen releases will come with all
+web browser staff client code pre-compiled.  Admins only need to add an
+Apache configuration change.
+
+Add the following stanza to /etc/apache2/eg_vhost.conf.
+
+[source,conf]
+--------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI}  ^/eg2/
+RewriteCond %{REQUEST_URI}  !^/eg2/([a-z]{2}-[A-Z]{2})/
+RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+<Directory "/openils/var/web/eg2/en-US">                                       
+    FallbackResource /eg2/en-US/index.html                                     
+</Directory>  
+--------------------------------------------------------------------------
+
+For multi-locale sites, see the bottom section of
+Open-ILS/examples/apache[_24]/eg_vhost.conf.in for a sample fr-CA
+configuration.  The section starts with "/eg2/ client setup and locale
+configuration"
+
+Developer Upgrade Notes
++++++++++++++++++++++++
+
+Developers building Angular code on existing installations need to update 
+their version of NodeJS by re-running the -developer prereqs installer.
+
+[source,sh]
+--------------------------------------------------------------------------
+sudo make -f Open-ILS/src/extras/Makefile.install <osname>-developer
+--------------------------------------------------------------------------
+
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+
+
+Add UPC to z39.50 search for OCLC and LOC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Add UPC as a search attribute for both OCLC and LOC targets in
+z39.50 for cataloging.
+
+
+
+
+Asynchronous Vandelay Imports
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Vandelay imports are now monitored from the browser client asynchronously,
+meaning the client requests updates from the server instead of waiting for 
+the server to respond to the original import request.  This changes allows 
+for incremental progress updates in the browser client.
+
+New Database Table
+++++++++++++++++++
+
+This adds a new database table vandelay.session_tracker for tracking
+in-progress vandelay upload activity.  A new tracker row is added for
+each of "upload", "enqueue", and "import" actions, linked for a given
+session by the value stored in the "session_key" field.
+
+The table tracks other potentially useful data, like the staff member
+and workstation where the action was performed.
+
+Upgrade notes
++++++++++++++
+Users of NGINX as a reverse proxy may need to set a suitable
+`client_max_body_size` value in the NGINX configuration so that large
+MARC record uploads are not truncated. Note that this would have
+always been necessary, but since this feature allows larger files
+to be more reliably queued and imported, the need to set `client_max_body_size`
+became more apparent.
+
+
+
+
+Support for Last Inventory Date
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now provides an option to add an inventory date to items to facilitate
+the process of performing inventory in libraries. Staff can add an inventory
+date to an item in one of the following ways:
+ * From the check in screen, there is now an Update Inventory check in modifier.
+When selected, scanned barcodes will have the current date/time added as the
+inventory date while the item is checked in.
+ * From the Item Status screen, an action is available to add the current 
+date/time as the inventory date to selected items.
+
+This new feature will also store the workstation that was used when the
+inventory date was updated.
+
+
+
+
+
+Parallel Ingest with pingest.pl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A program named pingest.pl is now installed to allow faster record
+ingest.  It performs ingest in parallel so that multiple batches can
+be done simultaneously.  It operates by splitting the records to be
+ingested up into batches and running all of the ingest methods on each
+batch.  You may pass in options to control how many batches are run at
+the same time, how many records there are per batch, and which ingest
+operations to skip.
+
+NOTE: The browse ingest is presently done in a single process over all
+of the input records as it cannot run in parallel with itself.  It
+does, however, run in parallel with the other ingests.
+
+Command Line Options
+++++++++++++++++++++
+pingest.pl accepts the following command line options:
+
+--host::
+    The server where PostgreSQL runs (either host name or IP address).
+    The default is read from the PGHOST environment variable or
+    "localhost."
+
+--port::
+    The port that PostgreSQL listens to on host.  The default is read
+    from the PGPORT environment variable or 5432.
+
+--db::
+    The database to connect to on the host.  The default is read from
+    the PGDATABASE environment variable or "evergreen."
+
+--user::
+    The username for database connections.  The default is read from
+    the PGUSER environment variable or "evergreen."
+
+--password::
+    The password for database connections.  The default is read from
+    the PGPASSWORD environment variable or "evergreen."
+
+--batch-size::
+    Number of records to process per batch.  The default is 10,000.
+
+--max-child::
+    Max number of worker processes (i.e. the number of batches to
+    process simultaneously).  The default is 8.
+
+--skip-browse::
+--skip-attrs::
+--skip-search::
+--skip-facets::
+--skip-display::
+    Skip the selected reingest component.
+
+--start-id::
+    Start processing at this record ID.
+
+--end-id::
+    Stop processing when this record ID is reached.
+
+--pipe::
+    Read record IDs to reingest from standard input.  This option
+    conflicts with --start-id and/or --end-id.
+
+--max-duration::
+    Stop processing after this many total seconds have passed.  The
+    default is to run until all records have been processed.
+
+--help::
+    Show the help text.
+
+
+
+
+
+View Authority Record by Database ID
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new interface allows catalogers to retrieve a specific
+authority record using its database ID.  Catalogers can
+find those IDs in subfield $0 of matching fields in
+bibliographic records.
+
+To use the new authority record viewer:
+
+. Click *Cataloging -> Retrieve Authority Record by ID*.
+. Type in the ID number of the authority record you are
+interested in. Don't include any prefixes, just the ID
+number.
+. Click *Submit*.
+. View or edit the authority record as needed.
+
+
+
+
+
+Circulation
+~~~~~~~~~~~
+
+
+
+Autorenewal of Loans
+^^^^^^^^^^^^^^^^^^^^
+Circulation policies in Evergreen can now be configured to automatically renew
+certain items checked out on patron accounts. Circulations will be renewed
+automatically up to a custom limit (the `max_auto_renewal` field) and patrons
+will not need to log in to their OPAC accounts or ask library staff to manually
+renew materials.
+
+Two new action triggers have been added to Evergreen that permit the Auto-Renew
+feature. They can be found, configured, and enabled in Administration>Local
+Administration>Notifications/Action Triggers. They are named **Autorenew** and
+**AutorenewNotify**.
+
+The **Autorenew** A/T definition uses the `checkout.due` hook to automatically
+validate and renew (in the reactor) circulations on the day they are due,
+grouped by user. The output events of this definition is is the input used by
+the related **AutorenewNotify** A/T that simply uses a new hook called
+`autorenewal` to notify patrons via email of their currently due or
+auto-renewed items.
+
+In the webstaff's Patron Items Out page, the new column `AutoRenewalsRemaining`
+indicates how many autorenewals are available for a particular circulation.
+
+
+
+
+
+Emergency Closing Handler
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Staff are provided with interfaces and mechanisms to create library closings that, in addition to affecting future circulation and booking due dates, and hold shelf expirations, will automatically move existing circulation and booking due dates and hold shelf expiration times. This new functionality is conceptually described as Emergency Closings and business logic implementing it as the Emergency Closing Handler. It contains additions and adjustments to the user interface, business logic, and database layers. Access to this functionality is available through the Closed Dates Editor interface in the staff client which has been ported to AngularJS.
+
+Overview
+++++++++
+
+This development has created new business logic code to inspect, in real time, existing circulation, booking, and hold records, and modify such date and time stamps so that the circulation, booking, or hold will end in the same state it would have if the closing had existed at the time the circulation or booking occurred, or the hold was placed and captured. Of specific note, hourly loans will have their due date adjusted to be the end of the day following the closing.
+
+When the Emergency Closing is saved, any fines accrued during the closing may be voided, as settings dictate, with the exception of circulations that have been marked as LOST or LONG OVERDUE. That is, even for LOST and LONG OVERDUE circulations with due dates that fall within the Emergency Closing, no fine adjustment will be applied. Emergency Closing processing is permanent, and cannot be rolled back.
+
+This functionality is explicitly initiated by staff action. If staff do not request an Emergency Closing, existing circulations, bookings, and holds will not be processed and adjusted. However, if staff request any Closing that starts nearer in time than the length of the longest circulation duration configured for use in the Evergreen instance they will be prompted with the option to create the closing as an Emergency Closing.
+
+Action/Trigger hooks have been created for circulations and bookings that are adjusted by the Emergency Closing Handler. These will facilitate the creation of notifications to patrons that the due date has changed and to alert them to potential changes in accrued fines.
+
+Booking start dates are explicitly ignored in this implementation. Because an Emergency Closing is, by its nature, an unexpected event, it will be up to staff to address any bookings which intersect with a new Emergency Closings. Reports can be used to identify booking start dates that overlap with a closing and that may require staff intervention.
+
+Staff requsting and Emergency Closing must have the new EMERGENCY_CLOSING permission.
+Some text describing the feature.
+
+
+
+
+
+Patron Preferred Name and Name Search Keywords
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Preferred Name
+++++++++++++++
+
+Adds a new set of patron preferred name fields for prefix, first,
+middle, last, and suffix allowing patrons to provide preferred name
+information.  Preferred names are optional and each acts as an overlay
+to the analogous primary name field, making it possible to provide
+preferred name values for individual fields.
+
+For example, a patron named William Erickson may have a preferred first
+name (pref_first_given_name) of Bill, in which case the preferred name
+would be Bill Erickson.  Note a preferred last name is not required in
+this case as the code uses primary name values as defaults when not
+replaced with a preferred version.
+
+* Patrons will see primary names displayed in the catalog when set.
+* Staff will see both primary name and preferred name in the patron
+  summary side bar.
+* Patron searches for any given name field will search both the primary
+  and preferred name data.
+* Preferred name fields are available in Action/Trigger templates and
+  are present in various patron-focused print templates.
+
+Name Keywords
+++++++++++++++
+
+Adds a new field to store miscellaneous patron name search terms.  These
+values are only for searching and do not appear in any interfaces, apart
+from the patron summary side bar and the patron edit UI.
+
+Included is a new search field in the patron search UI which searches
+keyword values and all other name fields.  It's essentially a global patron
+name keyword search.
+
+
+
+
+Client
+~~~~~~
+
+Disabling of legacy XUL staff client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The legacy XUL staff client is no longer supported in Evergreen
+3.2.x and the server-side installation no longer supports a
+direct connection by a version XUL client by default.  All
+users of Evergreen 3.2.x are strongly urged to complete their
+switch to the web staff client as part of upgrading to 3.2.x.
+
+Evergreen administrators who for some reason continue to wish
+to deploy the XUL staff client can do so at their risk by
+supplying `STAFF_CLIENT_STAMP_ID` during the `make install` step
+and using `make_release` to create installers for the staff client.
+However, no community support will be provided for the XUL client.
+
+
+
+
+Permission Group Display Entries
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In some cases, it is useful to have the ability to reorder permission, or to make
+only specific groups available in the permission group selector for specific
+Org Units. An interface has been made available to allow this.
+
+Group Tree Display Entry Interface
+++++++++++++++++++++++++++++++++++
+
+Permission Group Display Entries can be reordered, added, or removed via
+_Administration -> Local Admin -> Permission Tree Display Entries_.
+Select the Org Unit you wish to edit the entries in.
+
+Entries may be added using the Add functionality, creating entries based
+on permission groups that have not been added to the tree for the Org
+Unit you wish to add them to.
+
+image::media/pgtde_01.png[Group Tree Display Entry Admin UI]
+
+Moving an Entry
++++++++++++++++
+Moving an entry will shift its position up or down in the patron profile
+selector for a given Org Unit.
+
+* Select an entry
+* Press either the *Move Up* or *Move Down* button. The entry will be 
+moved up or down, accordingly.
+* Click *Save* to save your edits.  
+
+NOTE: You may only move up or down entries that have sibling entries.
+
+Removing an Entry
++++++++++++++++++
+If you want a particular Org Unit to not have access to specific
+entries, you may remove an entry. Removing an entry will remove it from 
+view. The entry will be removed from the database.
+
+* Select an entry and press the *Remove* button.
+
+Adding an Entry
++++++++++++++++
+You may add entries from permission groups that are not currently
+reflected in the permission group tree. This is useful for moving 
+entries to different parents, or making them root entries.
+
+image::media/pgtde_02.png[Add Entry modal]
+
+* If desired, select an entry to be used as the parent entry. 
+* Press the *Add* button. 
+* Select a permission group from the dropdown.
+* If you've selected a parent entry, you may check the *Add Root Entry*
+box to override that parent and add the entry on the root level. 
+* If you did not select a parent entry, the entry will be added on the root 
+level of the tree.
+
+
+
+Browser Client Settings & Preferences Stored on the Server
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Browser cilent settings and preferences that should persist over time are
+now stored as settings on the server.  This allows settings to follow
+users and workstations and reduces problems associated with losing settings 
+as a result of clearing browser data.
+
+The browser client honors setting values stored as user settings, workstation
+settings, and org unit settings, depending on which setting types are
+locally configured.
+
+Setting Types
++++++++++++++
+
+* No setting can be both a user and workstation setting.  They are mutually
+  exclusive.
+* Any setting can be an org unit setting in addition to being a user or
+  workstaion setting.
+
+Read-Only Settings
+++++++++++++++++++
+
+Read-only settings are useful for defining values that staff can use but
+not modify.  For example, admins may wish to prevent users from locally
+modifying the grid configuration for a given interface so it remains
+consistent for all users.
+
+A setting is read-only when an org unit setting type exists (regardless of 
+whether a value is applied) and no user or workstation setting type exists.
+
+Server-Stored Workstation Settings Workstation Admin View
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+There's a new "Server Workstation Prefs" tab to the stored preferences
+workstation admin interface.  From here, users can view which
+preferences are stored as server-stored workstation preferences and
+delete select values.
+
+Upgrade Notes
++++++++++++++
+
+A new permission APPLY_WORKSTATION_SETTING has been added to control who
+may apply values to workstation settings.  Use something like the following
+to apply the permission to all staff accounts (mileage may vary):
+
+[source,sh]
+--------------------------------------------------------------------------
+INSERT INTO permission.grp_perm_map (grp, perm, depth) 
+VALUES (
+    (SELECT id FROM permission.grp_tree WHERE name = 'Staff'), -- name may vary
+    (SELECT id FROM permission.perm_list WHERE code = 'APPLY_WORKSTATION_SETTING'),
+    0 -- or 1, 2, etc.
+);
+--------------------------------------------------------------------------
+
+Workstation setting types matching values previously stored in the browser
+(via localStorage or Hatch) are created as part of this feature.  During
+upgrade, admins should consider whether any of these new setting types 
+should be transferred to user and/or org unit settings instead.  Setting
+type changes can be made at any time, but when a setting type is deleted
+all of its data is deleted, so a change in type means re-applying the 
+settings in the browser client.
+
+Values stored in the browser will automatically migrate to server settings
+as each setting is accessed in the browser client.  Once migrated, the
+in-browser copies are deleted.  
+
+If a setting type does not exist where the browser expects one, the 
+value is stored in-browser instead and a warning is issued in the console.
+
+
+
+
+
+
+OPAC
+~~~~
+
+
+
+Batch Actions In the Public Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The public catalog now displays checkboxes on the bibliographic and
+metarecord constituents results pages. Selecting one or more titles
+by using the checkboxes will dynamically add those title to the
+temporary list, which is now renamed the cart.
+
+Above the results lists there is now a bar with a select-all checkbox,
+a link to the cart management page that also indicates the number of
+of titles in the cart, and a link to remove from the cart titles that
+are selected on the currently displayed results page.
+
+The search bar now includes an icon of a cart and displays the number
+of titles currently in the cart. Next to that icon is a menu of cart
+actions.
+
+The cart actions available are Place Hold, Print Title Details,
+Email Title Details, Add Cart to Saved List, and Clear Cart. In the
+web staff client, the cart actions also include Add Cart to Bucket.
+When an action is selected from this menu, the user is given an
+opportunity to confirm the action and to optionally empty the cart
+when the action is complete. The action is applied to all titles
+in the cart.
+
+Clicking on the cart icon brings the user to a page listing the
+titles in the cart. From there, the user can select specific records
+to request, print, email, add to a list, or remove from the cart.
+
+The list of actions on the record details page now provides separate
+links for adding the title to a cart or to a permanent list.
+
+The permanent list management page in the public catalog now also
+includes batch print and email actions.
+
+Additional information
+++++++++++++++++++++++
+* The checkboxes do not display on the metarecord results page, as
+  metarecords currently cannot be put into carts or lists.
+* The checkboxes are displayed only if Javascript is enabled. However,
+  users can still add items to the cart and perform batch actions on
+  the cart and on lists.
+* A template `config.tt2` setting, `ctx.max_cart_size`, can be used to
+  set a soft limit on the number of titles that can be added to the
+  cart. If this limit is reached, checkboxes to add more records to the
+  cart are disabled unless existing titles in the cart are removed
+  first. The default value for this setting is 500.
+
+Developer notes
++++++++++++++++
+
+This patch adds the the public catalog two routes that return JSON
+rather than HTML:
+
+* `GET /eg/opac/api/mylist/add?record=45`
+* `GET /eg/opac/api/mylist/delete?record=45`
+
+The JSON response is a hash containing a mylist key pointing to the list
+of bib IDs of contents of the cart.
+
+The record parameter can be repeated to allow adding or removing
+records as an atomic operation. Note that this change also now available
+to `/eg/opac/mylist/{add,delete}`
+
+More generally, this adds a way for EGWeb context loaders to specify that
+a response should be emitted as JSON rather than rendering an HTML
+page using `Template::Toolkit`.
+
+Specifically, if the context as munged by the context loader contains
+a `json_response` key, the contents of that key will to provide a
+JSON reponse. The `json_response_cookie` key, if present, can be used
+to set a cookie as part of the response.
+
+Template Toolkit processing is bypassed entirely when emitting a JSON
+response, so the context loader would be entirely reponsible for
+localization of strings in the response meant for direct human
+consumption.
+
+
+
+
+New class for searchbar when on the homepage
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This adds the `.searchbar-home` class to the div that
+contains the searchbar when on the homepage.  This allows
+sites to customize the searchbar differently on the
+homepage than in other places the
+search bar appears (for example, offering a large,
+Google-style search bar on the homepage only).
+
+
+
+
+
+Username Login Hint
+^^^^^^^^^^^^^^^^^^^
+To make customization easier, the username hint on the OPAC login page ("Please
+include leading zeros...") has been moved to a separate TT2 template.  If you
+have customized the hint text, you will need to add your modifications to
+username_hint.tt2.
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* MassLNC
+* North Texas Library Consortium
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Eva Cerninakova
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Jeff Godin
+* Blake Graham-Henderson
+* Francisco J Guel-Mendoza
+* Kyle Huckins
+* Kathy Lussier
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+* Stephan Woidowski
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* British Columbia Libraries Cooperative
+* Calvin College
+* Catalyte
+* Equinox Open Library Initiative
+* Kenton County Public Library
+* King County Library System
+* Linn-Benton Community College
+* MassLNC
+* Sigio
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.
+
