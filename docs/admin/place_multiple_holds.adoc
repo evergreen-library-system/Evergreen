@@ -1,0 +1,43 @@
+indexterm:[holds,placing multiple]
+
+Placing Multiple Holds
+~~~~~~~~~~~~~~~~~~~~~~
+
+You can allow some or all of your patrons to place multiple holds at
+once.
+
+.Use case
+****
+This feature is especially beneficial for book clubs and reading groups,
+which need to place holds on multiple copies of a title.
+****
+
+Users with the appropriate permissions now have the ability to place multiple title/metarecords holds at once. 
+
+In order to use the feature:
+
+. Go to *Administration -> Local Administration -> Library Settings Editor*.
+. Set the Maximum number of duplicate holds allowed Library Setting
+(_circ.holds.max_duplicate_holds_) to a number higher than 1.
+. Go to *Administration -> User Permission Editor* to give the _CREATE_DUPLICATE_HOLDS_
+permission to the users that need it.
+
+When placing a title or metarecord hold, a Number of copies field will display for
+these users. This field is not available when placing part, volume or copy holds.
+
+image::media/multiple_holds_number_of_copies.png[Holds screen showing that patrons can select a certain number of copies]
+
+TIP
+You can also add the _CREATE_DUPLICATE_HOLDS_ permission to a permission
+group in *Administration -> Server Administration -> Permission Group*.
+For example, you could create a new patron group called "Book club leaders".
+
+TIP
+If you are only applying this to certain patrons on an ad-hoc basis,
+make sure that all circulation workers who might need to grant this
+permission to a patron have the permission to grant it.
+
+This feature does not change the way in which the system fills holds. The multiple holds will fill in the same way that they would if the user had placed multiple holds separately.
+
+
+include::admin/place_multiple_holds.adoc[]
