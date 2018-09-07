@@ -676,26 +676,47 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* MassLNC
+* North Texas Library Consortium
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
 * Eva Cerninakova
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
 * Bill Erickson
 * Jason Etheridge
+* Jeff Godin
+* Blake Graham-Henderson
 * Francisco J Guel-Mendoza
+* Kyle Huckins
+* Kathy Lussier
 * Jennifer Pringle
 * Mike Rylander
 * Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
 * Stephan Woidowski
 
 We also thank the following organizations whose employees contributed
 patches:
 
+* British Columbia Libraries Cooperative
+* Calvin College
+* Catalyte
 * Equinox Open Library Initiative
+* Kenton County Public Library
 * King County Library System
+* Linn-Benton Community College
+* MassLNC
+* Sigio
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
