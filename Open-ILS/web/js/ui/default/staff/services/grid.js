@@ -256,6 +256,7 @@ angular.module('egGridMod',
                     // link columns to scope after loadConfig(), since it
                     // replaces the columns array.
                     $scope.columns = grid.columnsProvider.columns;
+                    grid.dataProvider.refresh();
                 });
 
                 // NOTE: grid.collect() is first called from link(), not here.
@@ -463,7 +464,7 @@ angular.module('egGridMod',
                     // No need to store col.visible, since that's implicit
                     if (col.align != 'left') c.align = col.align;
                     if (col.flex != 2) c.flex = col.flex;
-                    if (Number(col.sort)) c.sort = Number(c.sort);
+                    if (Number(col.sort)) c.sort = Number(col.sort);
                     return c;
                 });
 

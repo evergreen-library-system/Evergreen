@@ -284,7 +284,7 @@ export class GridColumnSet {
             const c: GridColumnPersistConf = {name : col.name};
             if (col.align !== 'left') { c.align = col.align; }
             if (col.flex !== 2) { c.flex = Number(col.flex); }
-            if (Number(col.sort)) { c.sort = Number(c.sort); }
+            if (Number(col.sort)) { c.sort = Number(col.sort); }
             return c;
         });
     }
