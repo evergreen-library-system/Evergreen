@@ -19,24 +19,27 @@ to this template includes:
     patron.has_phone - Whether or not the patron has a phone number
     pref_ versions of all name fields (e.g. pref_family_name);
 * transasctions - a list of transactions, each of which contains:
-  xact.id - Bill unique id
-  xact.copy_barcode - Item barcode
-  xact.xact_finish - Billing finish date and time
-  xact.xact_start - Billing start date and time
-  xact.summary - Information about the transaction
-    xact.summary.balance_owed - Balance owed
-    xact.summary.last_billing_note - Last billing note
-    xact.summary.last_billing_type - Last billing type
-    xact.summary.last_payment_note - Last payment note
-    xact.summary.last_payment_ts - Last payment date and time 
-    xact.summary.last_payment_type - Last payment type
-    xact.summary.total_owed - Total billed 
-    xact.summary.total_paid - Total paid
-    xact.summary.xact_type - Billing type 
-  xact.title - Item title
+    xact.id - Bill unique id
+    xact.title - Copy title
+    xact.copy_barcode - Copy barcode
+    xact.xact_finish - Billing finish date and time
+    xact.xact_start - Billing start date and time
     xact.summary - information about the transaction
-    xact.title - Item title
-    xact.copy_barcode - Item barcode
+      xact.summary.balance_owed - Balance owed
+      xact.summary.last_billing_note - Last billing note
+      xact.summary.last_billing_type - Last billing type
+      xact.summary.last_payment_note - Last payment note
+      xact.summary.last_payment_ts - Last payment date and time 
+      xact.summary.last_payment_type - Last payment type
+      xact.summary.total_owed - Total billed 
+      xact.summary.total_paid - Total paid
+      xact.summary.xact_type - Billing type 
+    xact.call_number - Information about the copy
+      xact.call_number.label - Copy call number
+      xact.call_number.prefix - Copy call number prefix
+      xact.call_number.suffix - Copy call number suffix
+      xact.call_number.owning_lib.name - The owning library's name
+      xact.call_number.owning_lib.shortname - The owning library's shortname
 
 -->
 Welcome to {{current_location.name}}!<br/>

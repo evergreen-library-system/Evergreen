@@ -458,16 +458,28 @@ function($scope , $q , egCore , ngToast) {
                 simple_record : {
                     'title' : 'Test Title'
                 }
+            },
+            owning_lib : {
+                name : 'Ankers Memorial Library',
+                shortname : 'Ankers'
             }
         },
+        circ_modifier : {
+		name : 'Book'
+                },
         location : {
             name : 'General Collection'
+        },
+        status : {
+            name : 'In Transit'
         },
         // flattened versions for item status template
         // TODO - make this go away
         'call_number.label' : '636.8 JON',
         'call_number.record.simple_record.title' : 'Test Title',
-        'location.name' : 'General Colleciton'
+        'location.name' : 'General Collection',
+        'call_number.owning_lib.name' : 'Ankers Memorial Library',
+        'call_number.owning_lib.shortname' : 'Ankers'
     }
 
     var one_hold = {
@@ -502,6 +514,15 @@ function($scope , $q , egCore , ngToast) {
                 id : 1,
                 xact_start : new Date().toISOString(),
                 xact_finish : new Date().toISOString(),
+		call_number : {
+ 			label : "spindler",
+		        prefix : "biography",
+		        suffix : "Closed Stacks",
+		        owning_lib : {
+			   name : "Mineola Public Library",
+                           shortname : "Mineola"
+                                     }
+                               },
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
@@ -516,6 +537,15 @@ function($scope , $q , egCore , ngToast) {
                 id : 2,
                 xact_start : new Date().toISOString(),
                 xact_finish : new Date().toISOString(),
+		call_number : {
+ 			label : "796.6 WEI",
+		        prefix : "",
+		        suffix : "REF",
+		        owning_lib : {
+			   name : "Rogers Reading Room",
+                           shortname : "Rogers"
+                                     }
+                               },
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
@@ -549,12 +579,13 @@ function($scope , $q , egCore , ngToast) {
                 circ : {
                     due_date : new Date().toISOString(),
                     circ_lib : 1,
-                    duration : '7 days'
+                    duration : '7 days',
+                    renewal_remaining : 2
                 },
                 copy : seed_copy,
                 title : seed_record.title,
                 author : seed_record.author
-            },
+            }
         ],
 
         patron_money : {

@@ -18,13 +18,18 @@ Fields include:
   * has_email - boolean value to show/hide elements on the receipt
   * has_phone - same as has_email
 
-* circulations - list of current loans, including
+* circulations - list of current loans, including for each checkout
 
-  * title
-  * author
-  * call_number.label
-  * copy.barcode
-  * circ.due_date
+  * checkout.title
+  * checkout.author
+  * checkout.circ.due_date
+  * checkout.circ.renewal_remaining
+  * checkout.copy.barcode
+  * checkout.copy.circ_modifier.name
+  * checkout.copy.call_number.label
+  * checkout.copy.call_number.owning_lib.name
+  * checkout.copy.call_number.owning_lib.shortname
+  * checkout.copy.location.name - Shelving location
 
 -->
 <div>

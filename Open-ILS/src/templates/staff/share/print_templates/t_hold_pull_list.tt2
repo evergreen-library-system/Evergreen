@@ -1,14 +1,14 @@
 <!--
 Template for printing a table of holds to pull. Fields include:
 
-* holds - list of holds, each of which includes:
+* holds - list of holds, each hold_data item includes:
 
-  * title
-  * author
-  * hold.hold_type
-  * copy.location_name
-  * volume.label - call number
-  * copy.barcode
+  * hold_data.title
+  * hold_data.author
+  * hold_data.hold.hold_type
+  * hold_data.copy.barcode
+  * hold_data.copy.location_name
+  * hold_data.volume.label - call number
 -->
 <table id='pull-list-template-table'>
   <style>

@@ -10,6 +10,7 @@ Template for printing a transit slip. Fields include:
 * dest_address.post_code
 * dest_courier_code - from lib.courier_code library setting
 * copy.barcode
+* copy.status.name - Copy status
 * title
 * author
 -->
@@ -28,9 +29,9 @@ Template for printing a transit slip. Fields include:
   </div>
   <br/>
 
-  [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
-  [% l('Title: [_1]', '{{title}}') %]</div>
-  [% l('Author: [_1]', '{{author}}') %]</div>
+ [% l('Barcode: [_1]', '{{copy.barcode}}') %]</div>
+ [% l('Title: [_1]', '{{title}}') %]</div>
+ [% l('Author: [_1]', '{{author}}') %]</div>
 
   <br/>
 

@@ -23,12 +23,17 @@ Template for printing checkout receipts; fields available include:
   * has_phone - same as has_email
 
 * circulations - list of loans made during this session. Each
-  includes:
+  checkout includes:
 
-  * title
-  * author
-  * copy.barcode
-  * circ.due_date
+  * checkout.title
+  * checkout.author
+  * checkout.circ.due_date
+  * checkout.circ.renewal_remaining
+  * checkout.copy.barcode
+  * checkout.copy.circ_modifier
+  * checkout.copy.call_number.label
+  * checkout.copy.call_number.owning_lib.name
+  * checkout.copy.call_number.owning_lib.shortname
 
 -->
 <div>
