@@ -252,6 +252,8 @@ include::admin/floating_groups.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
+include::admin/place_multiple_holds.adoc[]
+
 include::admin/MARC_Import_Remove_Fields.adoc[]
 
 include::admin/copy_tags_admin.adoc[]
