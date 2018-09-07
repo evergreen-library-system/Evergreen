@@ -573,7 +573,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 'mbt' : ['summary', 'circulation'],
                 'circ' : ['target_copy'],
                 'acp' : ['call_number'],
-                'acn' : ['record'],
+                'acn' : ['record','owning_lib','prefix','suffix'],
                 'bre' : ['simple_record']
                 }
             },
@@ -624,8 +624,18 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 }
                 if (xact.circulation()) {
                     newXact.copy_barcode = xact.circulation().target_copy().barcode(),
-                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title();
+                    newXact.call_number = {
+                        label : xact.circulation().target_copy().call_number().label(),
+			prefix : xact.circulation().target_copy().call_number().prefix().label(),
+			suffix : xact.circulation().target_copy().call_number().suffix().label(),
+                        owning_lib : {
+                             name : xact.circulation().target_copy().call_number().owning_lib().name(),
+                             shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
+                        }
+                    }
                 }
+
                 xacts.push(newXact);
             }
         );
@@ -1097,7 +1107,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
                 'mbt' : ['summary', 'circulation'],
                 'circ' : ['target_copy'],
                 'acp' : ['call_number'],
-                'acn' : ['record'],
+                'acn' : ['record','owning_lib','prefix','suffix'],
                 'bre' : ['simple_record']
                 }
             },
@@ -1149,6 +1159,15 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
                 if (xact.circulation()) {
                     newXact.copy_barcode = xact.circulation().target_copy().barcode(),
                     newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
+                    newXact.call_number = {
+                        label : xact.circulation().target_copy().call_number().label(),
+			prefix : xact.circulation().target_copy().call_number().prefix().label(),
+			suffix : xact.circulation().target_copy().call_number().suffix().label(),
+                        owning_lib : {
+                             name : xact.circulation().target_copy().call_number().owning_lib().name(),
+                             shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
+                        }
+                    }
                 }
                 xacts.push(newXact);
             }

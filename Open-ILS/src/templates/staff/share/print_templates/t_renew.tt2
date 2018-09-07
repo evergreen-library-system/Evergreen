@@ -2,10 +2,19 @@
 Template for printing a renewal receipt. Fields include:
 
 * circulations - list of renewals made during the session, including
+  for each renewal:
 
-  * title
-  * copy.barcode
-  * circ.due_date
+  * renewal.title
+  * renewal.author
+  * renewal.circ.due_date
+  * renewal.circ.renewal_remaining
+  * renewal.circ.circ_lib
+  * renewal.circ.duration
+  * renewal.copy.barcode
+  * renewal.copy.circ_modifier
+  * renewal.copy.call_number.label
+  * renewal.copy.call_number.owning_lib.name
+  * renewal.copy.call_number.owning_lib.shortname
 
 -->
 <div>

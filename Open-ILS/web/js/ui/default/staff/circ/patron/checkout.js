@@ -315,14 +315,18 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 print_data.circulations.push({
                     circ : egCore.idl.toHash(co.circ),
                     copy : egCore.idl.toHash(co.acp),
-                    call_number : egCore.idl.toHash(co.acn),
                     title : co.title,
                     author : co.author
-                })
+                });
+                // Flesh selected fields of this circulation 
+                print_data.circulations[0].copy.call_number =
+                    egCore.idl.toHash(co.acn);
+                print_data.circulations[0].copy.owning_lib =
+	            egCore.ils.toHash(co.aou);
             };
         });
 
-        // This is repeated in patron.* so everyting is in one place but left here so existing templates don't break.
+        // This is repeated in patron.* so everything is in one place but left here so existing templates don't break.
         print_data.patron_money = patronSvc.patron_stats.fines;
         print_data.patron = {
             prefix : cusr.prefix(),

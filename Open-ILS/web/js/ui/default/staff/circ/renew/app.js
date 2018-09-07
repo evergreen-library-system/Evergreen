@@ -249,6 +249,11 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
                     title : egCore.idl.toHash(renewal.title),
                     author : egCore.idl.toHash(renewal.author)
                 });
+                // Flesh selected fields of this circulation 
+                print_data.circulations[0].copy.call_number =
+                    egCore.idl.toHash(renewal.acn);
+                print_data.circulations[0].copy.owning_lib =
+	            egCore.idl.toHash(renewal.aou);
             }
         });
 

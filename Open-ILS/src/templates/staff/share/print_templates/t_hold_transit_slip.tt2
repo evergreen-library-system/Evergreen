@@ -11,6 +11,7 @@ Template for printing hold transit slips. Fields include:
 * dest_courier_code - from lib.courier_code library setting
 * hold.behind_desk
 * copy.barcode
+* copy.status.name - Copy status
 * title
 * patron.family_name
 * patron.first_given_name

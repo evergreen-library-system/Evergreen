@@ -713,7 +713,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         return egCore.pcrud.retrieveAll('ccs', {}, {atomic : true}).then(
             function(list) {
                 egCore.env.absorbList(list, 'ccs');
-                copy.status(egCore.env.ccs.map[copy.status()]);
             }
         );
     }
@@ -1826,6 +1825,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 }
                 print_context.dest_location =
                     egCore.idl.toHash(egCore.org.get(data.transit.dest()));
+                print_context.copy.status = egCore.idl.toHash(print_context.copy.status);
             }
 
             if (data.patron) {

@@ -3,6 +3,8 @@ Template for printing a list of items on the hold shelf. Fields include:
 
 * holds - list of hold requests, including
 
+  * call_number.label
+  * call
   * patron_alias
   * patron_last
   * patron_first
