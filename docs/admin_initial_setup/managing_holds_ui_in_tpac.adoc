@@ -1,0 +1,22 @@
+Managing how holds options display in the catalog
+-------------------------------------------------
+
+indexterm:[Holds,on monograph parts]
+indexterm:[Holds,user interface]
+indexterm:[Monograph parts]
+Increase visibility of the Monograph Parts selector
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.Use case
+****
+Users often miss the list of parts on the Place Holds screen, leading to
+many title-level holds on records where only one or two libraries may have
+unparted copies. This setting can make the part selection process more
+visible to patrons placing holds.
+****
+
+An alternate display option is available on the place holds screen.  In the
+alternate view, patrons select parts via radio buttons instead of the traditional
+dropdown menu. This display increases the visibility of parts on the Place Holds
+screen and also forces users to make an explicit choice.
+To enable the alternate display, set the `enable.radio.parts` option to true in config.tt2.
