@@ -1,3 +1,3605 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit d4c70a27db91b5ae0e2eb86481577d1155537ed7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Sep 7 12:08:56 2018 -0400
+
+    Bump version numbers in upgrade doc
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	docs/installation/server_upgrade.adoc
+
+commit d1bd1ef1b6afa22dd142102163f3a91f455b6b23
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Sep 7 11:30:02 2018 -0400
+
+    Bumping Perl version string for 3.2
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 8bedbe0f06719418be323fe9c8e7b4e37cf0148d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Sep 7 11:21:00 2018 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	build/i18n/po/cat.properties/ar-JO.po
+3	3	build/i18n/po/cat.properties/cs-CZ.po
+3	3	build/i18n/po/cat.properties/de-DE.po
+3	3	build/i18n/po/cat.properties/en-CA.po
+3	3	build/i18n/po/cat.properties/en-GB.po
+3	3	build/i18n/po/cat.properties/es-ES.po
+3	3	build/i18n/po/cat.properties/fi-FI.po
+3	3	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/he-IL.po
+3	3	build/i18n/po/cat.properties/hu-HU.po
+3	3	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/cat.properties/oc-FR.po
+3	3	build/i18n/po/cat.properties/pt-BR.po
+3	3	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/sv-SE.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+7	7	build/i18n/po/circ.properties/cs-CZ.po
+20	15	build/i18n/po/circ.properties/en-GB.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+3	3	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	3	build/i18n/po/common.properties/en-CA.po
+3	3	build/i18n/po/common.properties/en-GB.po
+3	3	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	3	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/he-IL.po
+3	3	build/i18n/po/common.properties/hu-HU.po
+3	3	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	3	build/i18n/po/common.properties/pt-BR.po
+3	3	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/common.properties/sv-SE.po
+3	3	build/i18n/po/common.properties/tr-TR.po
+12	12	build/i18n/po/conify/cs-CZ.po
+4019	3393	build/i18n/po/db.seed/ar-JO.po
+4124	3478	build/i18n/po/db.seed/cs-CZ.po
+3973	3365	build/i18n/po/db.seed/de-DE.po
+3982	3374	build/i18n/po/db.seed/en-CA.po
+3982	3374	build/i18n/po/db.seed/en-GB.po
+4024	3398	build/i18n/po/db.seed/es-ES.po
+3991	3383	build/i18n/po/db.seed/fi-FI.po
+3990	3382	build/i18n/po/db.seed/fr-CA.po
+3970	3362	build/i18n/po/db.seed/he-IL.po
+3970	3362	build/i18n/po/db.seed/hu-HU.po
+4033	3407	build/i18n/po/db.seed/hy-AM.po
+3974	3366	build/i18n/po/db.seed/oc-FR.po
+3988	3380	build/i18n/po/db.seed/pt-BR.po
+3983	3375	build/i18n/po/db.seed/ru-RU.po
+3970	3362	build/i18n/po/db.seed/sv-SE.po
+3970	3362	build/i18n/po/db.seed/tr-TR.po
+2943	2781	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2945	2783	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2936	2774	build/i18n/po/fm_IDL.dtd/de-DE.po
+2943	2781	build/i18n/po/fm_IDL.dtd/en-CA.po
+2942	2780	build/i18n/po/fm_IDL.dtd/en-GB.po
+2952	2790	build/i18n/po/fm_IDL.dtd/es-ES.po
+2943	2781	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2934	2772	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2934	2772	build/i18n/po/fm_IDL.dtd/he-IL.po
+2934	2772	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2943	2781	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2934	2772	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2942	2780	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2942	2780	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2934	2772	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2934	2772	build/i18n/po/fm_IDL.dtd/tr-TR.po
+39	35	build/i18n/po/ils_events.xml/ar-JO.po
+39	35	build/i18n/po/ils_events.xml/cs-CZ.po
+39	35	build/i18n/po/ils_events.xml/de-DE.po
+39	35	build/i18n/po/ils_events.xml/en-CA.po
+39	35	build/i18n/po/ils_events.xml/en-GB.po
+39	35	build/i18n/po/ils_events.xml/es-ES.po
+39	35	build/i18n/po/ils_events.xml/fi-FI.po
+39	35	build/i18n/po/ils_events.xml/fr-CA.po
+39	35	build/i18n/po/ils_events.xml/he-IL.po
+39	35	build/i18n/po/ils_events.xml/hu-HU.po
+39	35	build/i18n/po/ils_events.xml/hy-AM.po
+39	35	build/i18n/po/ils_events.xml/oc-FR.po
+39	35	build/i18n/po/ils_events.xml/pt-BR.po
+39	35	build/i18n/po/ils_events.xml/ru-RU.po
+39	35	build/i18n/po/ils_events.xml/sv-SE.po
+39	35	build/i18n/po/ils_events.xml/tr-TR.po
+52	36	build/i18n/po/lang.dtd/ar-JO.po
+104	92	build/i18n/po/lang.dtd/cs-CZ.po
+25	26	build/i18n/po/lang.dtd/de-DE.po
+54	38	build/i18n/po/lang.dtd/en-CA.po
+54	38	build/i18n/po/lang.dtd/en-GB.po
+55	39	build/i18n/po/lang.dtd/es-ES.po
+55	39	build/i18n/po/lang.dtd/fi-FI.po
+25	26	build/i18n/po/lang.dtd/fr-CA.po
+25	26	build/i18n/po/lang.dtd/he-IL.po
+25	26	build/i18n/po/lang.dtd/hu-HU.po
+73	89	build/i18n/po/lang.dtd/hy-AM.po
+25	26	build/i18n/po/lang.dtd/oc-FR.po
+25	26	build/i18n/po/lang.dtd/pt-BR.po
+25	26	build/i18n/po/lang.dtd/ru-RU.po
+25	26	build/i18n/po/lang.dtd/sv-SE.po
+25	26	build/i18n/po/lang.dtd/tr-TR.po
+17	15	build/i18n/po/selfcheck.js/fr-CA.po
+461	282	build/i18n/po/tpac/ar-JO.po
+464	285	build/i18n/po/tpac/cs-CZ.po
+419	276	build/i18n/po/tpac/de-DE.po
+435	277	build/i18n/po/tpac/en-CA.po
+1264	1012	build/i18n/po/tpac/en-GB.po
+534	353	build/i18n/po/tpac/es-ES.po
+439	278	build/i18n/po/tpac/fi-FI.po
+447	286	build/i18n/po/tpac/fr-CA.po
+415	275	build/i18n/po/tpac/he-IL.po
+415	275	build/i18n/po/tpac/hu-HU.po
+461	282	build/i18n/po/tpac/hy-AM.po
+416	276	build/i18n/po/tpac/oc-FR.po
+428	276	build/i18n/po/tpac/pt-BR.po
+415	275	build/i18n/po/tpac/ru-RU.po
+415	275	build/i18n/po/tpac/sv-SE.po
+415	275	build/i18n/po/tpac/tr-TR.po
+1729	698	build/i18n/po/webstaff/ar-JO.po
+1778	738	build/i18n/po/webstaff/cs-CZ.po
+1681	695	build/i18n/po/webstaff/en-GB.po
+1855	805	build/i18n/po/webstaff/es-ES.po
+1691	696	build/i18n/po/webstaff/hy-AM.po
+1681	695	build/i18n/po/webstaff/ru-RU.po
+
+commit 40995f7f6b938c72094d4644d9782da563af2cbb
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Sep 7 07:34:36 2018 -0700
+
+    Docs: finalizing acknowledgments section for 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 296b81441b3157fecf2509270e0ff0c638047659
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Sep 7 07:27:02 2018 -0700
+
+    Docs: Adding Equinox Open Library Initiative's acknowledgments
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+13	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit bb466cd966fa3a2677e886d0c12364856b66c46a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 21:01:17 2018 -0700
+
+    Docs: documenting new 3.2 features based on release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+11	36	docs/RELEASE_NOTES_3_2.adoc
+15	0	docs/acquisitions/selection_lists_po.adoc
+18	0	docs/cataloging/authorities.adoc
+61	0	docs/development/support_scripts.adoc
+
+commit 832c606ce9fec181757e8dfdb430819cbdd140c9
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 17:24:06 2018 -0700
+
+    Docs: spellchecking 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1212	1184	docs/.aspell.en.pws
+6	6	docs/RELEASE_NOTES_3_2.adoc
+
+commit b7abce6cbd5e74e2456a3f52424f16031b20740d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 17:09:53 2018 -0700
+
+    Docs: adding more contributor info to 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+22	1	docs/RELEASE_NOTES_3_2.adoc
+
+commit bb8c14f0afdf8660d8f0fc701dadbe60f44f79a6
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 6 18:57:05 2018 -0400
+
+    LP#1791184: ensure that 'make clean' doesn't delete pingest.pl
+    
+    This patch corrects an issue where pingest.pl was treated as if
+    it were generated from a pingest.pl.in source file during the configure
+    step, meaning that it got deleted by 'make clean'.  This patch also
+    adds a couple helpful comments.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] From a git checkout, run the configure and make steps, followed
+        by a 'make clean'. Verify that pingest.pl is not deleted from
+        the source tree.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	3	Open-ILS/src/Makefile.am
+
+commit 43e0db09a9c784619b5adfb6caaf8af21197bfb9
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 15:00:26 2018 -0700
+
+    Docs: Adding two more entries to 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+88	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 0469a1cb06a6adcaf80e04325618be9fca3895c7
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 16:44:08 2018 -0400
+
+    LP#1790923: add release notes
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+13	0	docs/RELEASE_NOTES_NEXT/Client/Disabling_Legacy_Staff_client.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/Disabling_Legacy_Staff_client.adoc
+
+commit 9d2ddf6d75b674cbf905817fa637b28397e1e354
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 16:39:13 2018 -0400
+
+    LP#1790923: adjust or remove references to old staff client in install doc
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+7	8	docs/installation/server_installation.adoc
+
+commit e3032ad3cd1fe2e684c949613b82841efd401867
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 16:36:53 2018 -0400
+
+    LP#1790923: make_release no longer munges STAMP_ID in the README
+    
+    (As that text no longer exists; the installation instructions simply
+     will not mention the old staff client.)
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+0	2	build/tools/make_release
+
+commit 23fd5ef82afefa0732df9f4f386888ccffad8b1a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 16:29:22 2018 -0400
+
+    LP#1790923: disable XUL staff client by default
+    
+    This patch discourages use of the legacy XUL staff client
+    by adjusting the installation process so that a versioned XUL
+    server directory is not created. Instead, by default XUL
+    server files (which is still needed by a few web staff client
+    interfaces) end up in /openils/var/web/xul/legacy. During installation
+    and upgrade, the /openils/var/web/xul/server symbolic link is
+    set to point to /openils/var/web/xul/legacy/server if possible.
+    
+    If for some reason a given installation of Evergreen 3.2.x does not
+    wish to stop using the XUL staff client, STAFF_CLIENT_STAMP_ID
+    can still be provided during the 'make install' step, and the
+    make_release script can still create the XUL client installers
+    if given the -x switch.
+    
+    Note, however, that use of the XUL staff client in 3.2.x is
+    NOT RECOMMENDED and no longer under any guarantee of community
+    support.
+    
+    To test
+    -------
+    [1] Perform a fresh installation and verify that /openils/var/web/xul/legacy
+        is created and that /openils/var/web/xul/server is a symlink
+        pointing to /openils/var/web/xul/legacy/server.
+    [2] Verify that the web staff client works and that the
+        user permissions editor in particular continues to work.
+    [3] Perform an upgrade; verify that /openils/var/web/xul/legacy exists
+        and that if /openils/var/web/xul/server started out as a symlink,
+        it has been repointed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+21	1	Open-ILS/xul/staff_client/Makefile.am
+1	15	docs/installation/server_installation.adoc
+13	1	docs/installation/server_upgrade.adoc
+
+commit 81324a87efcaa46b2d4bf289d04280eacf7be625
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 6 17:07:35 2018 -0400
+
+    LP#1775466 Stamping DB upgrade for Ang6 app
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+106	0	Open-ILS/src/sql/Pg/upgrade/1129.data.acq-grid-settings.sql
+0	106	Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1129.data.acq-grid-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq-grid-settings.sql
+
+commit 03d94e21e5052156efecefb1ac87de11206c9954
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 6 17:03:58 2018 -0400
+
+    LP#1775466: tweak how make_release prunes eg2/node_modules
+    
+    Need the -f since some stuff under eg2/node_modules/.cache
+    ends up as 0444 for some reason, meaning that 'rm -r' doesn't
+    remove those files and complains about it.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	build/tools/make_release
+
+commit 52f83fe0fd7b5765dd541d597def27040eceee35
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 6 16:27:27 2018 -0400
+
+    LP#1775466: add a newly-added entry to the ang6 navbar
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	Open-ILS/src/eg2/src/app/staff/nav.component.html
+
+commit c37f7ba9e3cfbf7ff0feeb9c77710d706d63697d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 6 16:26:45 2018 -0400
+
+    LP#1775466: improve release notes for the Angular6 app
+    
+    More needs to be added to eg_vhost.conf when upgrading an
+    existing installation.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	docs/RELEASE_NOTES_NEXT/Architecture/angular6-app.adoc
+
+commit d28eeddfd5dda73db0b017a94c37573f68057f33
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:53:28 2018 -0400
+
+    LP#1775466 Angular6 base app release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+66	0	docs/RELEASE_NOTES_NEXT/Architecture/angular6-app.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/angular6-app.adoc
+
+commit 48055f0527c77b71fb402d2af15c47b4d8db40e0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:55:11 2018 -0400
+
+    LP#1775466 make_release builds Angular app
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+12	2	build/tools/make_release
+
+commit 060af9b3739033bc276b692b45c118b6eb4ba83b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:57:51 2018 -0400
+
+    LP#1775466 Add Angular building to install docs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+43	2	docs/installation/server_installation.adoc
+
+commit 9a79de4aa33b52f55397bcbcd6cd9f84c3dff149
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:56:41 2018 -0400
+
+    LP#1775466 developer prereqs update Node / add angular/cli
+    
+    NodeJS version updated from v6 to v8.
+    Install angular/cli globally, needed for building the Angular app.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/extras/Makefile.install
+1	1	Open-ILS/src/extras/install/Makefile.common
+
+commit e8cf82d0ddb13dfbcbf96bf7528ce34e9574c0d1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:58:23 2018 -0400
+
+    LP#1775466 Angular Apache configuration updates
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+31	0	Open-ILS/examples/apache/eg_vhost.conf.in
+30	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit a29408d79df4b5240bd206fcd2158cadc9547bae
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 15:54:21 2018 -0400
+
+    LP#1775466 Acq admin grid workstation settings
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+101	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+106	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.acq-grid-settings.sql
+
+commit 038cd40207c5f63001bae2b68defdf44163c352d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 16:04:19 2018 -0400
+
+    LP#1775466 AngularJS updates for Angular integration
+    
+    Changes include:
+    
+    * Navbar links to Angular acquisitions admin page.
+    * Auth cookie migration tool for moving AngularJS cookies from /eg/staff
+      to /.
+    * Store last printed receipt (etc) in its final compiled form so it can
+      be directly reprinted without having to recompile (via AngularJS).
+      This allows the reprint-last action to work in the Angular app.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+13	1	Open-ILS/src/templates/staff/navbar.tt2
+4	0	Open-ILS/web/js/ui/default/staff/services/auth.js
+20	2	Open-ILS/web/js/ui/default/staff/services/hatch.js
+22	15	Open-ILS/web/js/ui/default/staff/services/print.js
+
+commit 6c706f454b2b9cdf2d46df3c60e53a0d3cb531d7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 16:11:41 2018 -0400
+
+    LP#1775466 Angular(6) base application
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	.gitignore
+13	0	Open-ILS/src/eg2/.editorconfig
+49	0	Open-ILS/src/eg2/.gitignore
+31	0	Open-ILS/src/eg2/CHEAT_SHEET.adoc
+155	0	Open-ILS/src/eg2/angular.json
+14	0	Open-ILS/src/eg2/e2e/app.e2e-spec.ts
+11	0	Open-ILS/src/eg2/e2e/app.po.ts
+14	0	Open-ILS/src/eg2/e2e/tsconfig.e2e.json
+43	0	Open-ILS/src/eg2/karma.conf.js
+10689	0	Open-ILS/src/eg2/package-lock.json
+84	0	Open-ILS/src/eg2/package.json
+28	0	Open-ILS/src/eg2/protractor.conf.js
+11	0	Open-ILS/src/eg2/src/app/app.component.ts
+33	0	Open-ILS/src/eg2/src/app/app.module.ts
+71	0	Open-ILS/src/eg2/src/app/common.module.ts
+9	0	Open-ILS/src/eg2/src/app/core/README
+341	0	Open-ILS/src/eg2/src/app/core/auth.service.ts
+55	0	Open-ILS/src/eg2/src/app/core/event.service.ts
+47	0	Open-ILS/src/eg2/src/app/core/event.spec.ts
+103	0	Open-ILS/src/eg2/src/app/core/format.service.ts
+90	0	Open-ILS/src/eg2/src/app/core/format.spec.ts
+137	0	Open-ILS/src/eg2/src/app/core/idl.service.ts
+28	0	Open-ILS/src/eg2/src/app/core/idl.spec.ts
+69	0	Open-ILS/src/eg2/src/app/core/locale.service.ts
+187	0	Open-ILS/src/eg2/src/app/core/net.service.ts
+278	0	Open-ILS/src/eg2/src/app/core/org.service.ts
+66	0	Open-ILS/src/eg2/src/app/core/org.spec.ts
+305	0	Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+59	0	Open-ILS/src/eg2/src/app/core/perm.service.ts
+114	0	Open-ILS/src/eg2/src/app/core/server-store.service.ts
+107	0	Open-ILS/src/eg2/src/app/core/store.service.ts
+22	0	Open-ILS/src/eg2/src/app/core/store.spec.ts
+36	0	Open-ILS/src/eg2/src/app/resolver.service.ts
+29	0	Open-ILS/src/eg2/src/app/routing.module.ts
+6	0	Open-ILS/src/eg2/src/app/share/README
+26	0	Open-ILS/src/eg2/src/app/share/accesskey/accesskey-info.component.html
+25	0	Open-ILS/src/eg2/src/app/share/accesskey/accesskey-info.component.ts
+56	0	Open-ILS/src/eg2/src/app/share/accesskey/accesskey.directive.ts
+67	0	Open-ILS/src/eg2/src/app/share/accesskey/accesskey.service.ts
+249	0	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+28	0	Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+143	0	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+210	0	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+90	0	Open-ILS/src/eg2/src/app/share/catalog/marc-html.component.ts
+266	0	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+54	0	Open-ILS/src/eg2/src/app/share/catalog/unapi.service.ts
+25	0	Open-ILS/src/eg2/src/app/share/combobox/combobox-entry.component.ts
+27	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.html
+241	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+21	0	Open-ILS/src/eg2/src/app/share/date-select/date-select.component.html
+70	0	Open-ILS/src/eg2/src/app/share/date-select/date-select.component.ts
+17	0	Open-ILS/src/eg2/src/app/share/dialog/confirm.component.html
+17	0	Open-ILS/src/eg2/src/app/share/dialog/confirm.component.ts
+80	0	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+5	0	Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.css
+28	0	Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.html
+92	0	Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.ts
+5	0	Open-ILS/src/eg2/src/app/share/dialog/progress.component.css
+33	0	Open-ILS/src/eg2/src/app/share/dialog/progress.component.html
+108	0	Open-ILS/src/eg2/src/app/share/dialog/progress.component.ts
+22	0	Open-ILS/src/eg2/src/app/share/dialog/prompt.component.html
+19	0	Open-ILS/src/eg2/src/app/share/dialog/prompt.component.ts
+146	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+302	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+20	0	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.html
+57	0	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.ts
+39	0	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+77	0	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+69	0	Open-ILS/src/eg2/src/app/share/grid/grid-column-config.component.html
+16	0	Open-ILS/src/eg2/src/app/share/grid/grid-column-config.component.ts
+20	0	Open-ILS/src/eg2/src/app/share/grid/grid-column-width.component.html
+32	0	Open-ILS/src/eg2/src/app/share/grid/grid-column-width.component.ts
+57	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+32	0	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.html
+85	0	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.ts
+30	0	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.html
+45	0	Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+33	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+43	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-button.component.ts
+37	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-checkbox.component.ts
+152	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+86	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+142	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.css
+27	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.html
+149	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+50	0	Open-ILS/src/eg2/src/app/share/grid/grid.module.ts
+972	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+17	0	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.html
+212	0	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+16	0	Open-ILS/src/eg2/src/app/share/print/print.component.html
+133	0	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+41	0	Open-ILS/src/eg2/src/app/share/print/print.service.ts
+74	0	Open-ILS/src/eg2/src/app/share/string/string.component.ts
+78	0	Open-ILS/src/eg2/src/app/share/string/string.service.ts
+11	0	Open-ILS/src/eg2/src/app/share/toast/toast.component.css
+3	0	Open-ILS/src/eg2/src/app/share/toast/toast.component.html
+43	0	Open-ILS/src/eg2/src/app/share/toast/toast.component.ts
+39	0	Open-ILS/src/eg2/src/app/share/toast/toast.service.ts
+19	0	Open-ILS/src/eg2/src/app/share/tree/tree.component.css
+20	0	Open-ILS/src/eg2/src/app/share/tree/tree.component.html
+60	0	Open-ILS/src/eg2/src/app/share/tree/tree.component.ts
+20	0	Open-ILS/src/eg2/src/app/share/tree/tree.module.ts
+133	0	Open-ILS/src/eg2/src/app/share/tree/tree.ts
+78	0	Open-ILS/src/eg2/src/app/share/util/audio.service.ts
+111	0	Open-ILS/src/eg2/src/app/share/util/pager.ts
+57	0	Open-ILS/src/eg2/src/app/staff/about.component.html
+25	0	Open-ILS/src/eg2/src/app/staff/about.component.ts
+60	0	Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.html
+11	0	Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.ts
+24	0	Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq.module.ts
+22	0	Open-ILS/src/eg2/src/app/staff/admin/acq/routing.module.ts
+61	0	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+28	0	Open-ILS/src/eg2/src/app/staff/admin/common.module.ts
+23	0	Open-ILS/src/eg2/src/app/staff/admin/routing.module.ts
+99	0	Open-ILS/src/eg2/src/app/staff/admin/server/admin-server-splash.component.html
+11	0	Open-ILS/src/eg2/src/app/staff/admin/server/admin-server-splash.component.ts
+24	0	Open-ILS/src/eg2/src/app/staff/admin/server/admin-server.module.ts
+19	0	Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+14	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/routing.module.ts
+25	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/routing.module.ts
+92	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.html
+186	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+18	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.module.ts
+6	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.html
+18	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+44	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+87	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+70	0	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+96	0	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+53	0	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+91	0	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+36	0	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.html
+164	0	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+37	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+84	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+59	0	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+43	0	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.html
+48	0	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.ts
+8	0	Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.css
+28	0	Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.html
+51	0	Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.ts
+132	0	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+77	0	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+30	0	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.html
+84	0	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+30	0	Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+16	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.css
+244	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+137	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+19	0	Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.component.html
+36	0	Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.component.ts
+17	0	Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.module.ts
+19	0	Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/routing.module.ts
+15	0	Open-ILS/src/eg2/src/app/staff/circ/patron/routing.module.ts
+15	0	Open-ILS/src/eg2/src/app/staff/circ/routing.module.ts
+84	0	Open-ILS/src/eg2/src/app/staff/common.module.ts
+58	0	Open-ILS/src/eg2/src/app/staff/login.component.html
+96	0	Open-ILS/src/eg2/src/app/staff/login.component.ts
+72	0	Open-ILS/src/eg2/src/app/staff/nav.component.css
+432	0	Open-ILS/src/eg2/src/app/staff/nav.component.html
+72	0	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+143	0	Open-ILS/src/eg2/src/app/staff/resolver.service.ts
+52	0	Open-ILS/src/eg2/src/app/staff/routing.module.ts
+1	0	Open-ILS/src/eg2/src/app/staff/sandbox/README
+16	0	Open-ILS/src/eg2/src/app/staff/sandbox/routing.module.ts
+133	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+188	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+20	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.module.ts
+1	0	Open-ILS/src/eg2/src/app/staff/share/README
+59	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+311	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+70	0	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+67	0	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.ts
+56	0	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+109	0	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+57	0	Open-ILS/src/eg2/src/app/staff/share/holdings.service.ts
+22	0	Open-ILS/src/eg2/src/app/staff/share/link-table/link-table.component.html
+73	0	Open-ILS/src/eg2/src/app/staff/share/link-table/link-table.component.ts
+65	0	Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.html
+77	0	Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.ts
+15	0	Open-ILS/src/eg2/src/app/staff/share/staff-banner.component.ts
+63	0	Open-ILS/src/eg2/src/app/staff/share/translate/translate.component.html
+145	0	Open-ILS/src/eg2/src/app/staff/share/translate/translate.component.ts
+128	0	Open-ILS/src/eg2/src/app/staff/splash.component.html
+40	0	Open-ILS/src/eg2/src/app/staff/splash.component.ts
+8	0	Open-ILS/src/eg2/src/app/staff/staff.component.css
+19	0	Open-ILS/src/eg2/src/app/staff/staff.component.html
+118	0	Open-ILS/src/eg2/src/app/staff/staff.component.ts
+26	0	Open-ILS/src/eg2/src/app/staff/staff.module.ts
+11	0	Open-ILS/src/eg2/src/app/welcome.component.html
+13	0	Open-ILS/src/eg2/src/app/welcome.component.ts
+0	0	Open-ILS/src/eg2/src/assets/.gitkeep
+4	0	Open-ILS/src/eg2/src/environments/environment.prod.ts
+10	0	Open-ILS/src/eg2/src/environments/environment.ts
+-	-	Open-ILS/src/eg2/src/favicon.ico
+19	0	Open-ILS/src/eg2/src/index.html
+0	0	Open-ILS/src/eg2/src/locale/.gitkeep
+12	0	Open-ILS/src/eg2/src/main.ts
+80	0	Open-ILS/src/eg2/src/polyfills.ts
+161	0	Open-ILS/src/eg2/src/styles.css
+32	0	Open-ILS/src/eg2/src/test.ts
+52	0	Open-ILS/src/eg2/src/test_data/eg_mock.js
+36	0	Open-ILS/src/eg2/src/test_data/idl2js.pl
+13	0	Open-ILS/src/eg2/src/tsconfig.app.json
+21	0	Open-ILS/src/eg2/src/tsconfig.spec.json
+5	0	Open-ILS/src/eg2/src/typings.d.ts
+24	0	Open-ILS/src/eg2/tsconfig.json
+136	0	Open-ILS/src/eg2/tslint.json
+ create mode 100644 Open-ILS/src/eg2/.editorconfig
+ create mode 100644 Open-ILS/src/eg2/.gitignore
+ create mode 100644 Open-ILS/src/eg2/CHEAT_SHEET.adoc
+ create mode 100644 Open-ILS/src/eg2/angular.json
+ create mode 100644 Open-ILS/src/eg2/e2e/app.e2e-spec.ts
+ create mode 100644 Open-ILS/src/eg2/e2e/app.po.ts
+ create mode 100644 Open-ILS/src/eg2/e2e/tsconfig.e2e.json
+ create mode 100644 Open-ILS/src/eg2/karma.conf.js
+ create mode 100644 Open-ILS/src/eg2/package-lock.json
+ create mode 100644 Open-ILS/src/eg2/package.json
+ create mode 100644 Open-ILS/src/eg2/protractor.conf.js
+ create mode 100644 Open-ILS/src/eg2/src/app/app.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/app.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/common.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/README
+ create mode 100644 Open-ILS/src/eg2/src/app/core/auth.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/event.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/event.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/format.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/format.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/idl.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/idl.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/locale.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/net.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/org.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/org.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/perm.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/server-store.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/store.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/core/store.spec.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/resolver.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/README
+ create mode 100644 Open-ILS/src/eg2/src/app/share/accesskey/accesskey-info.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/accesskey/accesskey-info.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/accesskey/accesskey.directive.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/accesskey/accesskey.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/marc-html.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/unapi.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/combobox/combobox-entry.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/combobox/combobox.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/date-select/date-select.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/date-select/date-select.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/confirm.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/confirm.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress-inline.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/progress.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/prompt.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/prompt.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-column-config.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-column-config.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-column-width.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-column-width.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-header.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-header.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-print.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-print.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-button.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-checkbox.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/org-select/org-select.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/print/print.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/print/print.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/print/print.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/string/string.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/string/string.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/toast/toast.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/toast/toast.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/toast/toast.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/toast/toast.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/tree/tree.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/share/tree/tree.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/tree/tree.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/tree/tree.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/tree/tree.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/audio.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/pager.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/about.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/about.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/acq/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/common.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/admin-server-splash.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/admin-server-splash.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/admin-server.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/server/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/workstation/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/pagination.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/bcsearch.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/patron/bcsearch/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/patron/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/circ/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/common.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/login.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/login.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/nav.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/nav.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/nav.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/resolver.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/sandbox/README
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/sandbox/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/README
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/link-table/link-table.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/link-table/link-table.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/staff-banner.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/translate/translate.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/translate/translate.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/splash.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/splash.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/staff.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/staff.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/staff.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/staff.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/welcome.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/welcome.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/assets/.gitkeep
+ create mode 100644 Open-ILS/src/eg2/src/environments/environment.prod.ts
+ create mode 100644 Open-ILS/src/eg2/src/environments/environment.ts
+ create mode 100644 Open-ILS/src/eg2/src/favicon.ico
+ create mode 100644 Open-ILS/src/eg2/src/index.html
+ create mode 100644 Open-ILS/src/eg2/src/locale/.gitkeep
+ create mode 100644 Open-ILS/src/eg2/src/main.ts
+ create mode 100644 Open-ILS/src/eg2/src/polyfills.ts
+ create mode 100644 Open-ILS/src/eg2/src/styles.css
+ create mode 100644 Open-ILS/src/eg2/src/test.ts
+ create mode 100644 Open-ILS/src/eg2/src/test_data/eg_mock.js
+ create mode 100644 Open-ILS/src/eg2/src/test_data/idl2js.pl
+ create mode 100644 Open-ILS/src/eg2/src/tsconfig.app.json
+ create mode 100644 Open-ILS/src/eg2/src/tsconfig.spec.json
+ create mode 100644 Open-ILS/src/eg2/src/typings.d.ts
+ create mode 100644 Open-ILS/src/eg2/tsconfig.json
+ create mode 100644 Open-ILS/src/eg2/tslint.json
+
+commit 6bcefced08f07d783b1d46bb4ee441ecde70df02
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 16:02:56 2018 -0400
+
+    LP#1775466 Public API wrapper for mk_copy_query
+    
+    Adds 2 new APIs:
+    
+    open-ils.search.bib.copies
+    open-ils.search.bib.copies.staff
+    
+    Used by the in-progress Angular staff catalog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+80	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Biblio.pm
+
+commit b0f99db6c9cf141fe10addccce075b95a26e6595
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Sep 5 16:00:51 2018 -0400
+
+    LP#1775466 Record entry flat display attrs link repair
+    
+    Fleshing 'mattrs' on a bib record should return an array (i.e. replace
+    might_have with has_many).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+
+commit 0f68495b9fcabb3b7cd85af697f08afabf8a6657
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 12:45:46 2018 -0700
+
+    More additions to the 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+8	2	docs/RELEASE_NOTES_3_2.adoc
+
+commit 689e9af8cfe5bfa7dbfd7475a8033054a23a0de8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 12:05:17 2018 -0700
+
+    Docs: adding translators to 3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+5	2	docs/RELEASE_NOTES_3_2.adoc
+
+commit 26d975edb233bed65801703c7c9747ff825aca9d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 6 11:47:21 2018 -0700
+
+    Docs: creating basic release notes for 3.2
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+606	0	docs/RELEASE_NOTES_3_2.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Acquisitions/PatronRequests.adoc
+0	13	docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+0	34	docs/RELEASE_NOTES_NEXT/Acquisitions/invoice-close-date.adoc
+0	4	docs/RELEASE_NOTES_NEXT/Cataloging/add-upc-to-z3950.adoc
+0	27	docs/RELEASE_NOTES_NEXT/Cataloging/async-vandelay.adoc
+0	14	docs/RELEASE_NOTES_NEXT/Cataloging/inventory_date_support.adoc
+0	70	docs/RELEASE_NOTES_NEXT/Cataloging/pingest.adoc
+0	17	docs/RELEASE_NOTES_NEXT/Cataloging/view-authority-record-by-id.adoc
+0	22	docs/RELEASE_NOTES_NEXT/Circulation/Autorenewal_Feature.adoc
+0	22	docs/RELEASE_NOTES_NEXT/Circulation/EmergencyClosingHandler.adoc
+0	36	docs/RELEASE_NOTES_NEXT/Circulation/patron-pref-name.adoc
+0	54	docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+0	71	docs/RELEASE_NOTES_NEXT/Client/workstation-server-settings.adoc
+0	76	docs/RELEASE_NOTES_NEXT/OPAC/Batch_Actions.adoc
+0	10	docs/RELEASE_NOTES_NEXT/OPAC/different_styles_for_searchbar.adoc
+0	6	docs/RELEASE_NOTES_NEXT/OPAC/username-hint.adoc
+ create mode 100644 docs/RELEASE_NOTES_3_2.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/PatronRequests.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/invoice-close-date.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/add-upc-to-z3950.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/async-vandelay.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/inventory_date_support.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/pingest.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/view-authority-record-by-id.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/Autorenewal_Feature.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/EmergencyClosingHandler.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron-pref-name.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/workstation-server-settings.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/Batch_Actions.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/different_styles_for_searchbar.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/username-hint.adoc
+
+commit 46543fa2fb9dd628131887ea4bdd35c39366fd6a
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Sep 6 10:57:54 2018 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+3531	3512	build/i18n/po/db.seed/db.seed.pot
+2911	2781	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+37	33	build/i18n/po/ils_events.xml/ils_events.xml.pot
+409	269	build/i18n/po/tpac/tpac.pot
+950	311	build/i18n/po/webstaff/webstaff.pot
+
+commit 30a064631af68e2b715c5ab3b65e30dab403703f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 6 10:24:14 2018 -0400
+
+    LP#1774277 Acq requests live test vandelay repair
+    
+    Acq requests test now logs in with a workstation since under the covers
+    vandelay (used for acq imports) requires a workstation on the new
+    tracker tables.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+21	1	Open-ILS/src/perlmods/live_t/22-acq-requests.t
+
+commit 505e46bd6d843629fbcb822abd2d6eac6036d6e0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Sep 6 10:03:46 2018 -0400
+
+    LP#1635354 Invoice close date perl live test
+    
+    Update Perl live test script to inspect invoice close dates instead of
+    the now-defunct 'complete' field.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+5	4	Open-ILS/src/perlmods/live_t/16-acq-invoicing.t
+
+commit 19e5d9750d5132cefdd78122fd5b7f8e58d50612
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 12 12:02:02 2018 -0400
+
+    LP#1755258 Browser client auth proxy login support
+    
+    Check if the auth_proxy service is enabled during login and use the
+    proxy login API when it's available, otherwise fall back to standard
+    Evergreen open-ils.auth login.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+28	2	Open-ILS/web/js/ui/default/staff/services/auth.js
+
+commit 9266a76a9f11fcc419e38d99a114216b9266aef6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jun 12 12:01:15 2018 -0400
+
+    LP#1755258 Improve network error handling
+    
+    Improve promise handling and logging in browser client network request
+    failure handling.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	5	Open-ILS/web/js/ui/default/staff/services/net.js
+
+commit 90c716e3bd4be9c449a9e5d71849abd8d4f07e4f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 10:56:43 2018 -0400
+
+    LP#1781235: fix changing primary user barcode in web client
+    
+    This patch fixes a bug where the patron card dialog would
+    not allow the user to change the primary barcode under certain
+    circumstances. The fix is to ensure that the radio buttons
+    controlling the selection of the primary card are bound to
+    exactly one scope variable; otherwise, the /last/ barcode in the
+    list that had a primary value set after user interaction would
+    be the winner.
+    
+    To test
+    -------
+    [1] Use the 'replace barcode' feature in the patron editor to
+        create a test patron with 3 barcodes:
+    
+        - barcode A
+        - barcode B
+        - barcode C (which as last created, would be primary)
+    
+    [2] Attempt to make barcode A the primary barcode again using
+        the 'See All' patron card dialog in the patron editor.
+    [3] Note that the change of primary barcode doesn't stick
+        upon saving the patron record.
+    [4] Apply the patch and repeat steps 1-3. This time, the
+        primary barcode should be changed as expected.
+    [5] Verify that other patron edit actions and registering a
+        new patron record continue to work as expected.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2
+18	8	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 55f5d3cd9e7bffbad8856b7328280b23eae0a0b8
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Aug 29 11:51:24 2018 -0700
+
+    LP#1781641: make staff-applied patron blocks overridable on web client checkout/renew
+    
+    To test
+    -------
+    [1] Apply a blocking penalty such as STAFF_CHR to a patron record.
+    [2] Attempt to check out an item; note that there is no option to
+        force the action.
+    [3] Apply the patch and repeat #2. This time, the staff user
+        should be given an option to force the action.
+    [4] Verify that forcing the checkout respects whether or not
+        the operator has (e.g.) the STAFF_CHR.override permission.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Joan Kranich <jkranich@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	2	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 11d9725b548c609b4610de55195b40f41e1c42ee
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Sep 4 23:55:08 2018 -0400
+
+    LP#1635354: Stamping upgrade script for acqusitions invoice timestamp
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+696	0	Open-ILS/src/sql/Pg/upgrade/1128.schema.invoice-close-date.sql
+0	696	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.invoice-close-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1128.schema.invoice-close-date.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.invoice-close-date.sql
+
+commit ba94b6d35c97dd289bf7f33b957085a563ed34e1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 19 16:15:51 2018 -0400
+
+    LP#1635354 Support date is/not NULL ACQ searches
+    
+    Adds support for searching on 'date is NULL' in the ACQ unified search
+    interface.  To use, chose the 'is' or 'is not'  matcher and leave the
+    text input value empty.
+    
+    Update the canned completed invoices search to filter on 'close_date IS
+    NOT NULL' instead of the now-removed 'complete' field.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Search.pm
+8	4	Open-ILS/web/js/ui/default/acq/search/unified.js
+
+commit 52c11b2770af4bfe617845f9544273228fbbf371
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 14 12:56:07 2018 -0400
+
+    LP#1635354 Invoice close date/by release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+34	0	docs/RELEASE_NOTES_NEXT/Acquisitions/invoice-close-date.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/invoice-close-date.adoc
+
+commit c69f50f29a01f652bd4068e58ec5e2ac2e10d785
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 13 16:02:41 2018 -0400
+
+    LP#1635354 Invoice close date/by fields
+    
+    Acquisitions invoices have 2 new fields:
+    
+    * Close Date -- This is set to the time when the ACQ user clicks the
+      "Close" button in the invoice interface.
+    
+    This field replaces the existing "Complete" field.  An invoice is now
+    considered complete if a close date value is set.
+    
+    * Closed By -- This is set to the logged in staff user who performs the
+      "Close" action.
+    
+    As with the now-defunct 'complete' field, but new fields are cleared in the
+    event an invoice is reopened.
+    
+    These new fields are visible in the invoice interface under the 'Show
+    Details' action for closed invoices.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	1	Open-ILS/examples/fm_IDL.xml
+15	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Invoice.pm
+4	1	Open-ILS/src/sql/Pg/200.schema.acq.sql
+2	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+696	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.invoice-close-date.sql
+18	9	Open-ILS/web/js/ui/default/acq/invoice/view.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.invoice-close-date.sql
+
+commit 0020384a8daffa4225a22899be89e1cf7f60fb05
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Feb 22 17:01:39 2018 -0500
+
+    LP#1746824 - WebStaff egGrid styling
+    
+    This allows egGrid to receive CSS selector strings via egGridField
+    declarations in templates, or else auto-generates them based on the
+    path of the field. Also, sets the DOM id of the grid to its declared
+    persistKey, unless an id is explicitly given.
+    
+    For example, due dates could be displayed in purple
+    as follows by adding the following CSS:
+    
+    grid-due_date {
+       color: purple;
+    }
+    
+    The above example uses the autog-enerated class name. One could also
+    set an explicit one in the eg-grid-field element, e.g.,
+    
+    <eg-grid-field label="[% l('Due Date') %]" path='due_date' css-selector="purple" ...
+    
+    In this case, the grid-due_date class would /not/ be generated, and the
+    developer would be expected to supply CSS for the purple class. (But
+    with semantic class names :) )
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+22	2	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit cb8a47c99b93ff479b40eeba6ac24af4e2c4157e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 4 17:37:32 2018 -0400
+
+    LP#1774277 Stamping upgrade for patron acq reqs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+88	0	Open-ILS/src/sql/Pg/upgrade/1127.data.schema.acq.patron_requests.sql
+0	88	Open-ILS/src/sql/Pg/upgrade/XXXX.data.schema.acq.patron_requests.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1127.data.schema.acq.patron_requests.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.schema.acq.patron_requests.sql
+
+commit df507ca0fef135133221499c6c338621be16418f
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Thu Aug 23 15:18:05 2018 -0400
+
+    lp1774277 release notes for patron acq requests
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	0	docs/RELEASE_NOTES_NEXT/Acquisitions/PatronRequests.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/PatronRequests.adoc
+
+commit e9a9875da27e85e8437c082b6e40ad39ff9a1ba6
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Mon Mar 12 18:02:47 2018 -0400
+
+    lp1774277 Improvements to Patron Acquisition Request
+    
+    Squashed and rebased against master, this is an Angular reimplementation of the
+    Patron Acquisition Request user interface with some improvements.  It still
+    reaches into the Dojo-based Acquisition interfaces.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    toward acq requests
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    4-status-not-updating-to-recieved-unless-all-items-in-order-are-recieved
+    
+    Change to acq patron request status logic, which now looks like this:
+    
+    If a cancel_reason is set on the patron request, then status = "Canceled"
+    
+    If there is an associated hold request that has fulfillment_time set,
+    then status = 'Fulfilled"
+    
+    If there is an associated lineitem has a state of "received", then status =
+    "Received"
+    
+    If there is an associated purchase order with a state of "on-order" and an
+    associated hold request, then status = "Ordered, Hold Placed"
+    
+    If there is an associated purchase order with a state of "on-order" but no
+    associated hold request (created through the automated process), then status =
+    "Ordered, Hold Not Placed"
+    
+    If there is an associated lineitem (selection list), then status = "Pending"
+    
+    If there is no associated lineitem, then status = "New"
+    
+    Any other condition, which should be impossible (I should never say that), will
+    give a status of "Error"
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    6-upc-not-on-patron-request-form
+    
+    Adds a UPC column to the patron acq request table
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    2-hold-request-fields-that-make-use-of-user-preferences
+    
+    For new requests (or edited requests when a user barcode is scanned), the user's
+    preferences (if any) for hold notifications and pickup library will be used to
+    set various fields in the request dialog.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    5-pick-up-library-not-defaulting-to-patrons-home-library
+    
+    when creating new requests, given a user, default to the user's pickup library
+    preference setting, or absent a preference, default to their home library.
+    
+    Absent a user, default to the pickup library selector value from the request
+    list, if it's of an org type that can have volumes.  Otherwise, default to the
+    workstation library.  Technically, the without-a-user behavior is going to be
+    mooted whenever a user is chosen.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    5-pick-up-library-not-defaulting-to-patrons-home-library
+    
+    Fix defaulting to patron home library in absense of user setting when creating
+    acq patron request from user context
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    misc fixes
+    
+    to the IDL and for the email_notify checkbox.
+    
+    some refactoring to avoid using foreign fields in the request object
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    7-retrieve-patron-fails-to-load-patron-record
+    
+    give the user_request.view permission some parity with VIEW_USER
+    
+    And some defensive programming if trying to create a request in
+    the user already known context without adequate permission
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    handle undefined values for email/hold checkboxes
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    remove acq.holds.allow_holds_from_purchase_request
+    
+    This was added a long time ago but never actually used by the code.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    match pcrud perm for aur with aurs
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    
+    live_t/ test
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+100	3	Open-ILS/examples/fm_IDL.xml
+135	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+340	0	Open-ILS/src/perlmods/live_t/22-acq-requests.t
+22	1	Open-ILS/src/sql/Pg/200.schema.acq.sql
+13	16	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+88	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.schema.acq.patron_requests.sql
+26	0	Open-ILS/src/templates/staff/acq/requests/index.tt2
+31	0	Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2
+25	0	Open-ILS/src/templates/staff/acq/requests/t_clear.tt2
+240	0	Open-ILS/src/templates/staff/acq/requests/t_edit.tt2
+82	0	Open-ILS/src/templates/staff/acq/requests/t_list.tt2
+25	0	Open-ILS/src/templates/staff/acq/requests/t_set_no_hold.tt2
+25	0	Open-ILS/src/templates/staff/acq/requests/t_set_yes_hold.tt2
+5	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+9	3	Open-ILS/web/js/ui/default/acq/common/li_table.js
+5	1	Open-ILS/web/js/ui/default/acq/picklist/brief_record.js
+239	0	Open-ILS/web/js/ui/default/staff/acq/requests/list.js
+582	0	Open-ILS/web/js/ui/default/staff/acq/services/requests.js
+ create mode 100644 Open-ILS/src/perlmods/live_t/22-acq-requests.t
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.schema.acq.patron_requests.sql
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_clear.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_edit.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_list.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_set_no_hold.tt2
+ create mode 100644 Open-ILS/src/templates/staff/acq/requests/t_set_yes_hold.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/acq/requests/list.js
+ create mode 100644 Open-ILS/web/js/ui/default/staff/acq/services/requests.js
+
+commit c68550260497e050307b49b0743e339f96417b53
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 18:35:28 2018 -0400
+
+    LP#1514085: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+737	0	Open-ILS/src/sql/Pg/upgrade/1126.schema.vandelay-state-tracking.sql
+0	738	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-state-tracking.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1126.schema.vandelay-state-tracking.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-state-tracking.sql
+
+commit 32f9b0303588a571a29efb000d49b132e8bc0f7a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 18:33:09 2018 -0400
+
+    LP#1514085: add to release notes with a server configuration note
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	0	docs/RELEASE_NOTES_NEXT/Cataloging/async-vandelay.adoc
+
+commit 889898936925335c545091721b6db008148625b3
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 17:46:49 2018 -0400
+
+    LP#1514085: sync schema update script to reflect changes in master
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+31	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-state-tracking.sql
+
+commit 96bd60b86409c53da3238df335e1a9ad299cc29e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 23 14:17:11 2018 -0400
+
+    LP#1514085 Release notes for vandelay session tracking
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+19	0	docs/RELEASE_NOTES_NEXT/Cataloging/async-vandelay.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/async-vandelay.adoc
+
+commit 5da0ea080077816154cb5d3d9d7bb32932e996dd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jun 28 12:38:57 2018 -0400
+
+    LP#1514085 Vandelay in-database session tracking
+    
+    Adds a new DB table vandelay.session_tracker for monitoring progress on
+    Vandelay enqueue and import sessions.
+    
+    Enqueue and import APIs get a new option to exit early, returning the
+    newly created tracker object, so the caller can monitor the tracker
+    instead of listening to streamed responses, which are not supported in
+    browser client Dojo interfaces.
+    
+    Teach the existing Dojo Vandelay UI to exit early on enqueu & export and
+    to poll for tracker data in lieu of waiting for streamed progress data.
+    
+    On user merge / purge, trackers are migrated to the destination user.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+44	0	Open-ILS/examples/fm_IDL.xml
+161	20	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+52	0	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+4	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+707	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-state-tracking.sql
+81	21	Open-ILS/web/js/ui/default/vandelay/vandelay.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-state-tracking.sql
+
+commit 1e6cbaca69712d708bf4e720e14ac78e1dc24ab6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Sep 4 16:36:09 2018 -0400
+
+    LP#1777675 Stamping upgrade script for latest inventory date support
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+39	0	Open-ILS/src/sql/Pg/upgrade/1125.schema.lp1777675_latest_inventory_date_support.sql
+0	39	Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1125.schema.lp1777675_latest_inventory_date_support.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+
+commit ba4dcdd56abd51eda35aa51fe731cb3d362d014b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Sep 4 14:38:33 2018 -0400
+
+    LP#1777675: Change table names to Latest Inventory
+    
+    Makes the backend code consistent with the new labels that have been added for
+    the latest inventory date.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	7	Open-ILS/examples/fm_IDL.xml
+8	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+17	17	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+2	2	Open-ILS/src/sql/Pg/040.schema.asset.sql
+4	4	Open-ILS/src/sql/Pg/800.fkeys.sql
+6	6	Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+2	2	Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2
+2	2	Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+2	2	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+2	2	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+2	2	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+2	2	Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2
+4	4	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+2	2	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+6	6	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+4	4	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit f4c274de501f7e0c08838151b19f8ac36e5f2063
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 23 14:38:50 2018 -0400
+
+    LP#1777675 Tweak IDL label for copy inventory
+    
+    "Last Copy Inventory" can be misunderstood at first reading as
+    inventory of the "last copy".  "Latest Inventory" seems easier to
+    understand, and also still goes well with a potential future "All
+    Inventories" entry in the IDL.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 1781f399b5458ac08783ba0c8e70f71abea90c6b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 23 14:34:57 2018 -0400
+
+    LP#1777675 Re-add missing columns to checkin interface
+    
+    During one iteration of the inventory code, a box was added to the
+    interface, and some room was made for it by shrinking these other
+    interface components.
+    
+    Since the box is now gone, let's get this row back up to the expected
+    twelve units of width.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	2	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+
+commit cfdb4b998b8c751ea8ce60aaf47ddecae0ab4797
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Aug 22 14:19:19 2018 -0400
+
+    LP#1777675: Fix code to update Item Status grid
+    
+    Testing revealed that the grid rows use a different data structure, and
+    the object member names include dots (periods). Thus, bracket notation
+    is required to access those members.
+    
+    This commit also makes a few smaller changes:
+      - Prevents an error in the Check-in app when a last_copy_inventory
+        doesn't exist yet.
+      - Removes the "refresh" parameter from the updateInventory() function,
+        which is never supplied when called, nor used by the function.
+      - Adds some brief code comments.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+5	3	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit b7ce408d424141a5bc34d699c5bdf52274648117
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 21 13:31:59 2018 -0400
+
+    LP#1777675: Release notes entry for inventory date
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	docs/RELEASE_NOTES_NEXT/Cataloging/inventory_date_support.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/inventory_date_support.adoc
+
+commit 4b6552d74cf790b6c272a80edaa7cfe5a5538d29
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 21 13:04:13 2018 -0400
+
+    LP#1777675: Add inventory checkin modifier setting to server storage
+    
+    Allows the inventory checkin modifier value to be stored on the server instead
+    of the browser as is done with other checkin modifier settings.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+11	1	Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+
+commit b3609ca4768322f735358d596eddb4135ea6e44d
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Mon Jul 9 18:11:05 2018 +0000
+
+    lp1777675 inventory date support
+    
+    - Add toggle for updating inventory date and workstation on checkin
+    - Create new table asset.last_copy_inventory containing inventory date and inventory workstation columns.
+    - Add code to do_checkin subroutine to update last_copy_inventory table on checkin.
+    - Update Holdings view, Checkins table, copy buckets, and item detail grid and lists to display new
+    inventory date and workstation information.
+    - Add Update Inventory action to Item Status detail and list views.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+23	0	Open-ILS/examples/fm_IDL.xml
+31	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ.pm
+35	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+8	0	Open-ILS/src/sql/Pg/040.schema.asset.sql
+16	0	Open-ILS/src/sql/Pg/800.fkeys.sql
+29	0	Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+2	0	Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2
+2	0	Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+2	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+5	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+4	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+13	0	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+15	2	Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2
+2	0	Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2
+10	0	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+26	2	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+4	3	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+8	2	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+11	1	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+31	4	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX-create-inventory-workstation-and-date.sql
+
+commit 4dbdd7bba989fe9826a2f28d07dfd5823c4e5e2d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 4 13:37:33 2018 -0400
+
+    LP#1712854 Stamping DB upgrade for hold UIs sort/speed
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/1124.data.wide_holds-workstation-settings.sql
+0	25	Open-ILS/src/sql/Pg/upgrade/XXXX.data.wide_holds-workstation-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1124.data.wide_holds-workstation-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.wide_holds-workstation-settings.sql
+
+commit b63e80d18dc87f30d66fdd4914ea77bd24d6a75e
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 29 17:00:39 2018 -0400
+
+    LP#1712854: Add wide_hold grid settings to server storage
+    
+    Adds the new wide_hold grid settings used in the holds shelf and record holds
+    interfaces to server storage, as is done with other grid settings. Also removes
+    the legacy eg.grid.circ.holds.shelf and eg.grid.cat.catalog.holds settings.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	6	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+25	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.wide_holds-workstation-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.wide_holds-workstation-settings.sql
+
+commit 5ef57330c9a49db91f5794e53874a47ce6432ff7
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 30 16:48:23 2018 -0400
+
+    LP#1712854: Provide context-relevant default sort orders
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 0c4238dfce4cf2375ff02099b6dab55b692ec8a4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Aug 30 16:37:21 2018 -0400
+
+    LP#1712854: Include shelf-expired holds in the "clearable" set
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 5cbc171516a9ed68bbbfa1d6058c97255e907f25
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 28 12:23:50 2018 -0400
+
+    LP#1712854: Make use of local cache when moving to All Holds list
+    
+    Clearing holds takes care of local updates to the hold data, so there is no
+    need to refetch the hold list when moving from Clearable to All.  Actions
+    that change hold state otherwise do cause a refetch, however.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+23	10	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 3af031b4a1449d5e28bbaa15e5bdcf7a451c2c5f
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 28 11:45:11 2018 -0400
+
+    LP#1712854: Provide a "only last captured copy" option to filter holds shelf
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+18	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+1	0	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit 4b4e283e30c332f6dca9dea997e58d0e935f0808
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Aug 28 11:09:06 2018 -0400
+
+    LP#1712854: Fix typo in function names for cancel and uncancel of wide holds
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2
+
+commit 14af809466039334348ba38b8417fb462d57f55b
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 18 20:52:25 2018 -0400
+
+    LP#1712854: Speed improvements for two hold interfaces
+    
+    The Hold Shelf and Record -> View Holds interfaces are painfully slow when
+    faced with a large set of holds.  The main reason is the 2-stage process used
+    to gather the data: 1) find hold IDs for the context 2) for each hold, fetch
+    all the requisite data using a relatively slow API.
+    
+    Here we create a new API that provides a streaming response of pre-inflated
+    hold data.  The full result set is loaded immediately, and once loaded, the
+    grid makes use of the "clientsort" feature to provide fast sorting without
+    the need to go back to the server when only changing the sort columns and
+    direction, and when paging through results.  The Hold Shelf UI now has a
+    progress indicator that appears whenever the hold list is retrieved from the
+    server, and the progress indicator for the Record -> View Holds UI is enhanced
+    to provide more granular updates.
+    
+    It is expected that other hold interfaces will be able to make use of this new
+    API for performance and functionality improvements.
+    
+    NOTE: This includes an additional change required to protect localStorage from
+    overlarge values when attempting to save the "last printed value" for future
+    reprinting.  Previously, when attempting to print a 2000+ hold list,
+    localStorage throws an error and the print fails.  Now the print will succeed,
+    but the value is not stored for reprinting and a message is logged to the JS
+    console.
+    
+    NOTE: The original development plan was base this a new API on a native
+    Postgres materialized view, and provide a LISTEN/NOTIFY daemon to monitor for
+    events that should trigger a refresh of that view.  As it happens, the use of
+    other new Postgres features (primarily the LATERAL join type) allows us to
+    avoid that maintenance and run-time complication.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/services/hatch.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+43	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+310	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+154	45	Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+141	44	Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2
+92	63	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+106	79	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+111	0	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+10	2	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit c4d1f82da6bb1f3cf73974153fa60644bbfa5e18
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 14:07:38 2018 -0400
+
+    LP#1779920: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+261	0	Open-ILS/src/sql/Pg/upgrade/1123.schema.autorenewals.sql
+0	260	Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1123.schema.autorenewals.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+
+commit ab88fed1ef564fa0398c3a883ac1f51b0d1d5796
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 13:55:18 2018 -0400
+
+    LP#1779920: adjust release notes
+    
+    Wrap text and change the order of the paragraphs to put the
+    intent of the feature first.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+19	6	docs/RELEASE_NOTES_NEXT/Circulation/Autorenewal_Feature.adoc
+
+commit 12294ccda64e0792b43a0970217d1658e4e36824
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 4 10:31:00 2018 -0400
+
+    LP#1779920 Auto-renew modify related tables/views
+    
+    Add new columns to these tables/views:
+    
+    * action.all_circulation
+    * action.all_circulation_slim
+    * action.aged_circulation
+    * action.all_circ_chain
+    * action.summarize_all_circ_chain
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	4	Open-ILS/src/sql/Pg/090.schema.action.sql
+201	0	Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+
+commit 0c19fd9d220a92702bf3a0ef51a1a6c78672f5de
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Aug 21 18:23:14 2018 -0400
+
+    LP#1779920 - Autorenewal Feature-Release Docs
+    
+    Summary release notes for Autorenewal
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	0	docs/RELEASE_NOTES_NEXT/Circulation/Autorenewal_Feature.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/Autorenewal_Feature.adoc
+
+commit 7a120c31eac808708fdf58d09f1917ab915b4658
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 29 17:19:07 2018 -0400
+
+    LP#1779920 Circ auto-renewal repairs
+    
+    * Remove hard-coded granularity for auto-renewal notification event
+      generation
+    * Moved schema update changes from 950 seed file into schema files.
+    * Added CircIsOpen validator to auto-renewal reactor on the off chance
+      a circ is renewed by the patron in the middle of event processing.
+    * Notification template formatting and language updates, and removed
+      debugging content.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+2	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+3	1	Open-ILS/src/sql/Pg/090.schema.action.sql
+29	32	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+31	25	Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+
+commit a9c3660f2b7a61069b445b06a4805121d3cf2cda
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Aug 28 16:13:51 2018 -0400
+
+    LP#1779920 - Autorenew Feature
+    
+    This branch adds the necessary changes to allow Evergreen via the
+    Action/Trigger system to generate daily automatic renewals of
+    outstanding loans. Implemented as pair of A/T definitions: Autorenew and
+    AutorenewNotify.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/examples/fm_IDL.xml
+3	0	Open-ILS/src/extras/ils_events.xml
+20	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI/config.pm
+86	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+32	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Validator.pm
+52	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+53	0	Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+1	1	Open-ILS/src/templates/conify/global/config/rule_circ_duration.tt2
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.autorenewals_acp_and_circ_duration.sql
+
+commit 647710dbdbd153b7d06ecfcc36ddcf97a933851a
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 4 13:32:46 2018 -0400
+
+    LP#1776020: stamp database update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+431	0	Open-ILS/src/sql/Pg/upgrade/1122.schema.patron-alt-name.sql
+0	434	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-alt-name.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1122.schema.patron-alt-name.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-alt-name.sql
+
+commit 5ccc7d919ac3317d14cca34efc65cbe17c77c50e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 27 22:49:12 2018 -0400
+
+    LP#1776020 Deduplicate name keywords in patron merge
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	4	Open-ILS/src/sql/Pg/999.functions.global.sql
+16	4	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-alt-name.sql
+
+commit 7908f3c3eca891bd4d6319447f3a94c71ee7be49
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 27 22:00:52 2018 -0400
+
+    LP#1776020 Add pref names to bills and items-out receipt templates
+    
+    Add support (with inline docs) for pref_.* name fields in Bills
+    Current/Historical/Payment templates and the patron Items Out template.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2
+1	0	Open-ILS/src/templates/staff/share/print_templates/t_bills_current.tt2
+1	0	Open-ILS/src/templates/staff/share/print_templates/t_bills_historical.tt2
+1	0	Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2
+15	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+5	0	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit ab3d64d4a611e0a4674e02e304cf633dc6c3855f
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Aug 27 16:15:31 2018 -0400
+
+    LP#1776020: Tweaks to display of name keywords
+    
+    Add an icon next to the primary name to indicate the presence of name keywords,
+    which can be seen via hovering. The name keywords continue to display at the
+    bottom of the patron summary sidebar.
+    
+    Also fixes a minor bug where preferred name would display for anyone with
+    a middle name.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+1	6	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+7	0	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit f8789b3767b4eabfa68b8336804c583c8ade5f50
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 21 21:31:15 2018 -0400
+
+    LP#1776020 Release notes for pref name / keywords
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+36	0	docs/RELEASE_NOTES_NEXT/Circulation/patron-pref-name.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron-pref-name.adoc
+
+commit 8d0f5b6f4e65a6c77f2f943b29fc2642ac85dcab
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sun May 20 22:15:23 2018 -0400
+
+    LP#1776020 Patron preferred name & name keywords
+    
+    Preferred Name
+    
+    Adds a new set of patron preferred name fields for prefix, first,
+    middle, last, and suffix allowing patrons to provide preferred name
+    information.  Preferred names are optional and each acts as an overlay
+    to the analogous primary name field, making it possible to provide
+    preferred name values for individual fields.
+    
+    For example, a patron named William Erickson may have a preferred first
+    name (pref_first_given_name) of Bill, in which case the preferred name
+    would be Bill Erickson.  Note a preferred last name is not required in
+    this case as the code uses primary name values as defaults when not
+    replaced with a preferred version.
+    
+    * Patrons will see primary names displayed in the catalog when set.
+    * Staff will see both primary name and preferred name in the patron
+      summary side bar.
+    * Patron searches for any given name field will search both the primary
+      and preferred name data.
+    * Preferred name fields are available in Action/Trigger templates and
+      are present in various patron-focused print templates.
+    
+    Name Keywords
+    
+    Adds a new field to store miscellaneous patron name search terms.  These
+    values are only for searching and do not appear in any interfaces, apart
+    from the patron summary side bar and the patron edit UI.
+    
+    Included is a new search field in the patron search UI which searches
+    keyword values and all other name fields.  It's essentially a global patron
+    name keyword search.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	0	Open-ILS/examples/fm_IDL.xml
+50	16	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/actor.pm
+45	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+3	0	Open-ILS/src/sql/Pg/015.schema.staging.sql
+21	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+422	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-alt-name.sql
+5	3	Open-ILS/src/templates/opac/myopac/prefs.tt2
+4	1	Open-ILS/src/templates/opac/parts/topnav.tt2
+16	0	Open-ILS/src/templates/opac/register.tt2
+123	33	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+19	0	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+14	0	Open-ILS/src/templates/staff/css/circ.css.tt2
+6	0	Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2
+14	8	Open-ILS/src/templates/staff/share/t_patron_search_form.tt2
+3	0	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+5	0	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+24	5	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+2	0	Open-ILS/web/js/ui/default/staff/services/patron_search.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-alt-name.sql
+
+commit 8dfe18454b87addd05a9cc867e7712b9f32bfbe3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Jun 3 21:09:20 2018 -0700
+
+    LP1752370: Add weight column to metabib fields grid
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	0	Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2
+
+commit 349d7e394ad943ddf1d09d1aef3c4870b29cfb70
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 29 14:05:09 2018 -0400
+
+    LP#1740412 Double grid tooltip max width
+    
+    Bump the max-width of the grid tooltip from 200 to 400px to accommodate
+    longer messages.  Shorter messages will continue using narrower
+    tooltips.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	0	Open-ILS/src/templates/staff/css/style.css.tt2
+2	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 764725a28c25adafc4a1673cd3c7c42723bfa6b8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 24 10:30:34 2018 -0400
+
+    LP#1740412 Grid cell tooltips moved to top-left
+    
+    Avoid rendering the tooltip in the middle of a section of overflowed
+    text, since it can lead to tooltips being pushed far to the right.
+    Render at top left of cell instead.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 1e9c0ab388a0697a1f099970240f2da21bfb5e1f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 23 13:52:38 2018 -0400
+
+    LP#1740412 Grid cell tooltips limited to long content
+    
+    Only display grid cell tooltips when the content of the cell overflows
+    its container.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	2	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+26	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 8f44a224943e85e168d8224524ad669ee68a0aa0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 25 12:19:36 2018 -0400
+
+    LP#1740412 Grid cell content tooltips
+    
+    Display a tooltip (popover), containing the full grid contents, when
+    mousing over a grid cell.  This allows users to see the full contents of
+    a cell without having to resize the grid column.
+    
+    This applies to text contents and pre-compiled HTML contents.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	Open-ILS/src/templates/staff/css/style.css.tt2
+12	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 03317dc6af32e23339f693592ead3e5993691277
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Aug 30 12:37:45 2018 -0400
+
+    LP#1744756: Stamping upgrade script for custom perm group display
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+22	0	Open-ILS/src/sql/Pg/upgrade/1121.schema.perm-group-display.sql
+0	22	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1121.schema.perm-group-display.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+
+commit dab2a9b8b9f9092202ba53707bccb1ad6a2b68ed
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Wed Aug 29 15:20:17 2018 +0000
+
+    lp1744756 Utilize Parent Trees
+    
+    - Allow Patron Edit interface to make use of Parent OU trees when
+    expect tree doesn't exist.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+12	3	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit afaa47a266f72117d754c767317c4e159eb21142
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Mon Aug 27 20:21:45 2018 +0000
+
+    lp1744756 Docs fix and Permission change
+    
+    - Introduce MANAGE_CUSTOM_PERM_GRP_TREE permission.
+    
+    - Remove unnecessary references to unused "disabled"
+    field for pgtdes.
+    
+    - Update documentation to correctly explain how removing
+    and adding display entries works.
+    
+     Changes to be committed:
+    	modified:   Open-ILS/examples/fm_IDL.xml
+    	modified:   Open-ILS/src/sql/Pg/006.schema.permissions.sql
+    	modified:   Open-ILS/src/sql/Pg/950.data.seed-values.sql
+    	modified:   Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+    	modified:   Open-ILS/web/js/ui/default/staff/admin/local/permission/app.js
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+    	modified:   docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+3	4	Open-ILS/examples/fm_IDL.xml
+0	1	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+4	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+1	8	Open-ILS/web/js/ui/default/staff/admin/local/permission/app.js
+3	5	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+4	3	docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+
+commit c5e8a84e54af6fd925fe047c40e53559f6ae8d6e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 6 11:35:44 2018 -0400
+
+    LP#1744756 Grp display tree minor fixes.
+    
+    1. Fix group tree display entry IDL sequence copy/paste issue:
+    
+    permission.grp_tree_id_seq => permission.grp_tree_display_entry_id_seq
+    
+    2. Apply consistent use of tabs in the IDL.
+    
+    3. Fix thinko use of grp as a function in the no-entries-exist scenario
+       in the patron editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+11	11	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 9e3e576bcd6ff3c215bd14cac26bc3ce568955f3
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Jun 14 16:11:34 2018 +0000
+
+    lp1744756 Release Notes for PGTDEs
+    
+    - Include release notes for Permission Group Tree Display
+    Entry UI and usage.
+    - Include pictures of interface for documentation.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+53	0	docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+-	-	docs/media/pgtde_01.png
+-	-	docs/media/pgtde_02.png
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/pgtde.adoc
+ create mode 100644 docs/media/pgtde_01.png
+ create mode 100644 docs/media/pgtde_02.png
+
+commit 0f43da13c5c602e0bf62b9a3154db1f5f59fbc53
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Mar 15 18:54:13 2018 +0000
+
+    lp1744756 Profile Tree Display Entry Admin UI
+    
+    - Flesh out permission.group_tree_display_entries table.
+    - Create pgtde IDL class corresponding to new permission.group_tree_display_entries
+    table.
+    - Admin UI for Permission Group Tree Entries capable of viewing, adding, removing,
+    or changing position of entries within tree based on OU.
+    - Save functionality to persist any changes made.
+    - Persist changes in positions of permission group display
+    entries in Admin UI with the Profile Selector in the patron
+    edit interface.
+    - Make profile selector use original functionality if there are no
+    display entries.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+25	0	Open-ILS/examples/fm_IDL.xml
+14	0	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+26	0	Open-ILS/src/templates/staff/admin/local/permission/index.tt2
+60	0	Open-ILS/src/templates/staff/admin/local/permission/t_grp_tree_display_entry.tt2
+36	0	Open-ILS/src/templates/staff/admin/local/permission/t_pgtde_add_dialog.tt2
+1	0	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+8	2	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+443	0	Open-ILS/web/js/ui/default/staff/admin/local/permission/app.js
+85	1	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.perm-group-display.sql
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/permission/index.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/permission/t_grp_tree_display_entry.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/permission/t_pgtde_add_dialog.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/local/permission/app.js
+
+commit 05968579768d066280a16350cc8abb01d013265b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Aug 29 18:18:54 2018 -0400
+
+    Forward-port 3.1.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+95	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.4-3.1.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.4-3.1.5-upgrade-db.sql
+
+commit 79bb4ecdc65aa423a8f834bfefab88a04c6ba8d4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Aug 29 18:18:25 2018 -0400
+
+    Forward-port 3.0.11 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+95	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.10-3.0.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.10-3.0.11-upgrade-db.sql
+
+commit c8fc43ed2e4009df7291c598e96a40ab957e3b1b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jul 27 14:30:07 2018 -0400
+
+    LP#978095 ACQ use last-canceled copy reason if best
+    
+    Only use an alternate keep-debits cancel reason if the currently
+    canceled copy is not using a keep-debits reason.
+    
+    Also clarify in the docs that if another keep-debits reason is selected,
+    it's essentially chosen at random, not necessarily the "last" copy.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+11	1	docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+
+commit 848484c3171a53a173b86af404de1658e69153a3
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Fri Feb 2 11:30:36 2018 -0500
+
+    lp978095 auto-canceling lineitems
+    
+    "Acq: lineitems display as "on order" even after all copies have been cancelled"
+    
+    When a copy (lineitem detail) on a lineitem is canceled through the UI, all of
+    the sibling copies are examined, and if they also happen to be canceled, then a
+    cancel attempt is made on the parent lineitem.
+    
+    The cancel reason fed to the lineitem cancelation attempt will be the last
+    cancel reason on an examined sibling lineitem where Keep Debits is True, or
+    failing that, the cancel reason used wih the copy just canceled.
+    
+    The UI will refresh to the lineitem view when such an auto-cancelation happens.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+36	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+3	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+3	0	docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+
+commit f1c3c905d3c5efded57616f67d630c801e713073
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 24 16:05:09 2018 -0400
+
+    LP#1768902 Stamping DB upgrade for Z39 UPC
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1120.data.add-upc-to-z3950.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-upc-to-z3950.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1120.data.add-upc-to-z3950.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-upc-to-z3950.sql
+
+commit 4b4b69d03eb5521b0ba16183db6fb7c94831c7f9
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu May 3 12:36:31 2018 -0500
+
+    LP#1768902: quick release note entry
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	docs/RELEASE_NOTES_NEXT/Cataloging/add-upc-to-z3950.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/add-upc-to-z3950.adoc
+
+commit 0e9ae4e247923ee56bb038c4380d928b70f75014
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu May 3 12:24:44 2018 -0500
+
+    LP#1768902: Add UPC to z3950 search for OCLC and LOC
+    
+    Based on settings provided by Jane Sandberg, add the UPC as a search
+    attribute definition for OCLC and LOC z3950 targets.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-upc-to-z3950.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.add-upc-to-z3950.sql
+
+commit 26d52958c2103cb81914c17bf0d6734a42c2ff03
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue May 1 03:22:15 2018 -0500
+
+    Docs: adding release notes and docs for LP1760160
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	docs/RELEASE_NOTES_NEXT/OPAC/different_styles_for_searchbar.adoc
+24	0	docs/admin_initial_setup/different_styles_for_searchbar.adoc
+2	0	docs/root.adoc
+2	0	docs/root_command_line_admin.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/different_styles_for_searchbar.adoc
+ create mode 100644 docs/admin_initial_setup/different_styles_for_searchbar.adoc
+
+commit ecee476ede872cc671c8fe4887eb6194d6b9ef85
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Mar 31 06:48:49 2018 -0700
+
+    LP1760160: Search bar has a different CSS class when on the home page
+    
+    To test:
+    1. In templates/opac/css/style.css, add some highly noticeable CSS that
+    applies to .searchbar-home or an element within .searchbar-home, e.g.
+      .searchbar-home .search-box {
+        background-color: purple;
+        height: 4em;
+      }
+    2. Go to the home page of your public catalog.  The .searchbar-home .search-box CSS
+    should have taken effect.
+    3. Go to another page of your public catalog, such as a search results
+    or login page.  The CSS should not have taken effect here.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/home.tt2
+2	1	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 6afaf84691f593c8a48e528c4f54ef7f991a8a22
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 23 12:26:11 2018 -0400
+
+    LP 1768715: pingest.pl merge conflict typo fix: skip_dispaly
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/support-scripts/pingest.pl
+
+commit 4118424b8d80dfb34f3e32c12e1f538a20f8aa92
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat Jun 2 20:33:23 2018 -0400
+
+    LP 1768715: pingest.pl Release Notes and Installation
+    
+    Add pingest.pl to Open-ILS/src/Makefile.am so it will be installed by
+    default.
+    
+    Add release notes for pingest.pl.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/Makefile.am
+70	0	docs/RELEASE_NOTES_NEXT/Cataloging/pingest.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/pingest.adoc
+
+commit 41e6fe45422e24c1b2af4f638d7113c109d7aff2
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat Jun 2 19:18:40 2018 -0400
+
+    LP 1768715: Fix pingest.pl bug discovered by Dan Scott of Laurentian U.
+    
+    Reingest was not happening if all ingests were skipped, except for the
+    display field reingest.  This came down to a matter of two conditional
+    statements not including checks for the $skip_display variable being
+    true.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/support-scripts/pingest.pl
+
+commit ddfa6af287dc9c7fc69f558ab8e7b99ab9df4f15
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Fri Nov 24 10:23:56 2017 -0500
+
+    LP 1768715: Use older named notation in pingest.pl
+    
+    Use older style param := 'value' named notation for PostgreSQL
+    function calls in pingest.pl to support PostgreSQL versions < 9.5.
+    
+    NOTE: This commit was modified to fit with the flow of the surrounding
+    commits from the master branch of the source repository.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit 55093af49ba1d0bd5f63a1206972703ae31d273c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Nov 21 21:23:03 2017 -0500
+
+    LP 1768715: Whitespace cleanup in Blake's commit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/support-scripts/pingest.pl
+
+commit 7e007cc03694799d2b5a49f6c6791df706b51d4d
+Author: Blake GH <blake@mobiusconsortium.org>
+Date:   Tue Nov 21 10:41:48 2017 -0600
+
+    LP 1768715: Missing semi colon
+    
+    Add missing semi-colon in pingest.pl.
+    
+    Signed-off-by: Blake GH <blake@mobiusconsortium.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/support-scripts/pingest.pl
+
+commit d81eb554d9cc40b2b4339fe0ae68847587c8a12f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 4 16:43:37 2017 -0400
+
+    LP 1768715: Handle the skip_display option of metabib.reingest_metabib_field_entries.
+    
+    pingest.pl gets a --skip-display option of its own that disables the
+    display ingest.  The display ingest is also skipped in the browse
+    ingest.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	2	Open-ILS/src/support-scripts/pingest.pl
+
+commit 3fc6f07190a31ff9c2c52caac10374fc5fe9b9bb
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 4 13:25:19 2017 -0400
+
+    LP 1768715: Add skip_browse where it was missed in pingest.pl.
+    
+    I missed the named parameter for skip_browse in reingest_field_entries
+    in pingest.pl in the earlier commit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/support-scripts/pingest.pl
+
+commit fa3af4113a3f8cff1bc2fb43dfc62af2977db78f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 4 12:55:05 2017 -0400
+
+    LP 1768715: Use named arguments in function calls in pingest.pl.
+    
+    This makes it work, more or less, with Evergreen 3.0 and the changes
+    to metabib.reingest_field_entries.  Note that the new skip_display
+    parameter is not set, so you might get collisions between the browse
+    ingest and one of the other ingest processes if they both work on the
+    same record at once.
+    
+    I will make a branch for use with Evergreen 3.0 until I upgrade to
+    Evergreen 3.0 and merge that branch into master.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit bee32963d1be36b22ea1984a90262149f6330faf
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 4 11:18:35 2017 -0400
+
+    LP 1768715: Add database connection parameters to pingest.pl command line.
+    
+    This will serve as the model for future Perl scripts that need to
+    connect to the PostgreSQL database with DBI.  I may go back and alter
+    the existing scripts to use this method.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+18	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit fe5ba7746f7ec5a1d33195160c00654a7bd869dc
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Mon Apr 11 12:25:57 2016 -0400
+
+    LP 1768715: Make the pingest.pl --pipe option be greedy.
+    
+    The --pipe option is used with pingest.pl now assumes that that any
+    string of digits in the input is a record id.  Instead of using just
+    the first string of digits on a line, as it did before, it now uses
+    each string of digits on a line.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit 1f2f392b42c5e1e10488d2034a0686c7e8768ad4
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Mon Apr 11 10:39:02 2016 -0400
+
+    LP 1768715: Simplify Open-ILS/src/support-scripts/pingest.pl with selectcol_arrayref.
+    
+    By switching to DBI->selectcol_arrayref in pingest.pl, we can avoid
+    having to check for references in the main loop.  This eliminates an
+    extra variable and an extra line of code that are no longer needed.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit 2da2f10b1e9f744cd57da8ced8fdb8779f1b5511
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Apr 1 10:02:45 2016 -0400
+
+    LP 1768715: Only connect to the database when needed in pingest.pl.
+    
+    We chagne where we connect and disconnect the database in the parent
+    process in pingest.pl.  There's no point connecting at all if the
+    --pipe option is used.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/support-scripts/pingest.pl
+
+commit d762c9eb243eeb66f827873e602919598a1cf88d
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Fri Apr 1 10:00:20 2016 -0400
+
+    LP 1768715: Fix bug in pingest.pl after --pipe option was added.
+    
+    Apparently, the results of DBI->selectall_arrayref need to be cast to
+    an array and not just returned as a list.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/support-scripts/pingest.pl
+
+commit 844a1fbea2b94dc34802099c5b13376f0fbfab1d
+Author: Jason Stephenson <jstephenson@mvlcstaff.org>
+Date:   Thu Mar 31 11:39:49 2016 -0400
+
+    LP 1768715: Add --pipe option to pingest.pl
+    
+    With this option, pingest.pl reads a list of record IDs from standard
+    input, instead of running a query.  This is useful if you have a
+    custom query to output only certain records to reingest and you can
+    pipe the output into pingest.pl.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlcstaff.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+27	3	Open-ILS/src/support-scripts/pingest.pl
+
+commit 28d87c24928344307fc68338aa01ca2c1d97173a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 16 12:59:55 2016 -0500
+
+    LP 1768715: pingest supports max/min ID, duration, more ops
+    
+    From the new help text:
+    
+        --batch-size
+            Number of records to process per batch
+    
+        --max-child
+            Max number of worker processes
+    
+        --skip-browse
+        --skip-attrs
+        --skip-search
+        --skip-facets
+            Skip the selected reingest component
+    
+        --start-id
+            Start processing at this record ID.
+    
+        --end-id
+            Stop processing when this record ID is reached
+    
+        --max-duration
+            Stop processing after this many total seconds have passed.
+    
+        --help
+            Show this help text.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+
+104	43	Open-ILS/src/support-scripts/pingest.pl
+
+commit 1ceab5e76d05e507da85302be22137f13d4a8635
+Author: Jason Stephenson <jstephenson@mvlc.org>
+Date:   Mon Oct 26 10:32:19 2015 -0400
+
+    LP 1768715: Add pingest.pl to Evergreen.
+    
+    Add Open-ILS/src/support-script/pingest.pl to do ingests in parallel.
+    See release notes for details.
+    
+    NOTE: This and subsequent commits were added from a branch that
+    preserves the history of the repository from which pingest.pl was
+    copied.  The dates on these commits represent when the code was added
+    or modified in the source repository.  They do not reflect when the
+    code was added to Evergreen.
+    
+    Also, pingest.pl predates this commit.  The date on this commit was
+    when the source repository was split into separate directories for SQL
+    and Perl scripts.
+    
+    Signed-off-by: Jason Stephenson <jstephenson@mvlc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+214	0	Open-ILS/src/support-scripts/pingest.pl
+ create mode 100755 Open-ILS/src/support-scripts/pingest.pl
+
+commit bd8912ee2d1016619ee208d513815072071fc6be
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Nov 15 14:36:21 2017 -0800
+
+    LP#1732552: Move OPAC login username hint to separate template
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	2	Open-ILS/src/templates/opac/parts/login/form.tt2
+6	0	Open-ILS/src/templates/opac/parts/login/username_hint.tt2
+6	0	docs/RELEASE_NOTES_NEXT/OPAC/username-hint.adoc
+ create mode 100644 Open-ILS/src/templates/opac/parts/login/username_hint.tt2
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/username-hint.adoc
+
+commit 3100c328934dcc2b83ea90039294048d4b26c09b
+Author: a. bellenir <ab@grpl.org>
+Date:   Wed Aug 22 11:33:55 2018 -0400
+
+    LP#1788417: boolean fields should say 'Yes'/'No' instead of true/false
+    
+    boolean fields on egGrid use tt2-translated strings for "Yes" and "No"
+    instead of letting the browser translate the values 'true' and 'false'
+    (in accordance with the prophecy of XUL)
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+4	5	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit d967aac09b076d5782047357b5dfcad4b7f1fe9a
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 15 18:10:08 2018 -0400
+
+    LP#1775216: Stamping upgrade script for inconsistent copy counts
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	88	Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+90	0	Open-ILS/src/sql/Pg/upgrade/1119.schema.lp1775216_consistent_avail_counts.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1112.schema.lp1775216_consistent_avail_counts.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1119.schema.lp1775216_consistent_avail_counts.sql
+
+commit 4e0528b11a244734b0d2835dd8ce6c96fb28a5fd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 15 14:08:41 2018 -0400
+
+    LP#1721575 Stamping DB upgrade: batch catalog actions
+    
+    Also replaced a remaining reference to "cart" with "basket"
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+90	0	Open-ILS/src/sql/Pg/upgrade/1118.data.bre_format_title_fix.sql
+0	86	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format_title_fix.sql
+1	1	Open-ILS/src/templates/opac/parts/anon_list.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1118.data.bre_format_title_fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format_title_fix.sql
+
+commit ba5f74d896b52b8e64093324220ceba4f5100862
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Aug 14 16:28:35 2018 -0400
+
+    LP#1721575: Changes to some strings
+    
+    We missed one instance of cart when changing everything over to baskets. Also,
+    I updated language for clearing a basket after placing a hold to make it a
+    little clearer.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+1	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit deab49ceef1b036c7918c3103282e0be13710980
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon May 14 15:24:59 2018 -0400
+
+    LP#1721575: Batch Actions In the Public Catalog
+    
+    The public catalog now displays checkboxes on the bibliographic and
+    metarecord constituents results pages. Selecting one or more titles
+    by using the checkboxes will dynamically add those title to the
+    temporary list, which is now renamed the basket.
+    
+    Above the results lists there is now a bar with a select-all checkbox,
+    a link to the basket management page that also indicates the number of
+    of titles in the basket, and a link to remove from the basket titles that
+    are selected on the currently displayed results page.
+    
+    The search bar now includes an icon of a basket and displays the number
+    of titles currently in the basket. Next to that icon is a menu of basket
+    actions.
+    
+    The basket actions available are Place Hold, Print Title Details,
+    Email Title Details, Add Cart to Saved List, and Clear Cart. In the
+    web staff client, the basket actions also include Add Cart to Bucket.
+    When an action is selected from this menu, the user is given an
+    opportunity to confirm the action and to optionally empty the basket
+    when the action is complete. The action is applied to all titles
+    in the basket.
+    
+    Clicking on the basket icon brings the user to a page listing the
+    titles in the basket. From there, the user can select specific records
+    to request, print, email, add to a list, or remove from the basket.
+    
+    The list of actions on the record details page now provides separate
+    links for adding the title to a basket or to a permanent list.
+    
+    The permanent list management page in the public catalog now also
+    includes batch print and email actions.
+    
+    Additional information
+    ++++++++++++++++++++++
+    * The checkboxes do not display on the metarecord results page, as
+      metarecords currently cannot be put into baskets or lists.
+    * The checkboxes are displayed only if Javascript is enabled. However,
+      users can still add items to the basket and perform batch actions on
+      the basket and on lists.
+    * A template `config.tt2` setting, `ctx.max_basket_size`, can be used to
+      set a soft limit on the number of titles that can be added to the
+      basket. If this limit is reached, checkboxes to add more records to the
+      basket are disabled unless existing titles in the basket are removed
+      first. The default value for this setting is 500.
+    
+    Developer notes
+    +++++++++++++++
+    
+    This patch adds the the public catalog two routes that return JSON
+    rather than HTML:
+    
+    * `GET /eg/opac/api/mylist/add?record=45`
+    * `GET /eg/opac/api/mylist/delete?record=45`
+    
+    The JSON response is a hash containing a mylist key pointing to the list
+    of bib IDs of contents of the basket.
+    
+    The record parameter can be repeated to allow adding or removing
+    records as an atomic operation. Note that this change also now available
+    to `/eg/opac/mylist/{add,delete}`
+    
+    More generally, this adds a way for EGWeb context loaders to specify that
+    a response should be emitted as JSON rather than rendering an HTML
+    page using `Template::Toolkit`.
+    
+    Specifically, if the context as munged by the context loader contains
+    a `json_response` key, the contents of that key will to provide a
+    JSON reponse. The `json_response_cookie` key, if present, can be used
+    to set a cookie as part of the response.
+    
+    Template Toolkit processing is bypassed entirely when emitting a JSON
+    response, so the context loader would be entirely reponsible for
+    localization of strings in the response meant for direct human
+    consumption.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+16	3	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+55	14	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+211	26	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Container.pm
+60	6	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Record.pm
+13	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGWeb.pm
+4	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+86	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format_title_fix.sql
+1	0	Open-ILS/src/templates/opac/advanced.tt2
+1	0	Open-ILS/src/templates/opac/browse.tt2
+56	5	Open-ILS/src/templates/opac/css/style.css.tt2
+3	2	Open-ILS/src/templates/opac/mylist.tt2
+21	0	Open-ILS/src/templates/opac/mylist/clear.tt2
+29	0	Open-ILS/src/templates/opac/mylist/email.tt2
+29	0	Open-ILS/src/templates/opac/mylist/print.tt2
+25	1	Open-ILS/src/templates/opac/myopac/lists.tt2
+15	6	Open-ILS/src/templates/opac/parts/anon_list.tt2
+0	3	Open-ILS/src/templates/opac/parts/bookbag_actions.tt2
+30	0	Open-ILS/src/templates/opac/parts/cart.tt2
+5	0	Open-ILS/src/templates/opac/parts/config.tt2
+1	0	Open-ILS/src/templates/opac/parts/css/colors.tt2
+7	1	Open-ILS/src/templates/opac/parts/header.tt2
+10	0	Open-ILS/src/templates/opac/parts/js.tt2
+7	2	Open-ILS/src/templates/opac/parts/place_hold.tt2
+29	14	Open-ILS/src/templates/opac/parts/record/summary.tt2
+50	19	Open-ILS/src/templates/opac/parts/result/table.tt2
+1	0	Open-ILS/src/templates/opac/parts/searchbar.tt2
+1	1	Open-ILS/src/templates/opac/parts/topnav.tt2
+4	0	Open-ILS/src/templates/opac/record/email.tt2
+4	0	Open-ILS/src/templates/opac/record/print.tt2
+2	2	Open-ILS/src/templates/opac/results.tt2
+3	3	Open-ILS/src/templates/opac/temp_warn.tt2
+-	-	Open-ILS/web/images/add-to-cart.png
+-	-	Open-ILS/web/images/cart-md.png
+-	-	Open-ILS/web/images/cart-sm.png
+284	0	Open-ILS/web/js/ui/default/opac/record_selectors.js
+38	11	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+76	0	docs/RELEASE_NOTES_NEXT/OPAC/Batch_Actions.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.bre_format_title_fix.sql
+ create mode 100644 Open-ILS/src/templates/opac/mylist/clear.tt2
+ create mode 100644 Open-ILS/src/templates/opac/mylist/email.tt2
+ create mode 100644 Open-ILS/src/templates/opac/mylist/print.tt2
+ create mode 100644 Open-ILS/src/templates/opac/parts/cart.tt2
+ create mode 100644 Open-ILS/web/images/add-to-cart.png
+ create mode 100644 Open-ILS/web/images/cart-md.png
+ create mode 100644 Open-ILS/web/images/cart-sm.png
+ create mode 100644 Open-ILS/web/js/ui/default/opac/record_selectors.js
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/Batch_Actions.adoc
+
+commit 65baf6b58639ed883960c9b88efed54b1bc61a3b
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed Aug 15 11:31:01 2018 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+3	3	build/i18n/po/cat.properties/cat.properties.pot
+3	3	build/i18n/po/common.properties/common.properties.pot
+3448	2723	build/i18n/po/db.seed/db.seed.pot
+2253	2221	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+24	25	build/i18n/po/lang.dtd/lang.dtd.pot
+40	40	build/i18n/po/tpac/tpac.pot
+828	523	build/i18n/po/webstaff/webstaff.pot
+
+commit e8e766724270ee2b5cac7ef193a4e5647d5d2ad7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jul 5 14:33:24 2018 -0700
+
+    LP1164061: Edit authority record by database ID
+    
+    Allow users to jump directly to the authority record MARC edit interface
+    by entering the authority record ID.
+    
+    Includes release notes.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+17	0	Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_authority_id.tt2
+6	0	Open-ILS/src/templates/staff/navbar.tt2
+20	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+17	0	docs/RELEASE_NOTES_NEXT/Cataloging/view-authority-record-by-id.adoc
+ create mode 100644 Open-ILS/src/templates/staff/cat/catalog/t_retrieve_by_authority_id.tt2
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/view-authority-record-by-id.adoc
+
+commit 913237b92bcd9278cd3608ad4d6d1048bda1d1d0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sun Jul 8 14:19:10 2018 -0400
+
+    LP 1780660: Add more workstation functions to OpenILS::Utils::TestUtils.
+    
+    Add methods find_or_register_workstation($name, $lib) and
+    find_workstation($name, $lib) to OpenILS::Utils::TestUtils.  These can
+    be used when writing tests or other scripts to find or create
+    workstations.
+    
+    The following Perl live tests were updated to use the new methods
+    rather than their hand-rolled versions:
+    
+    * 14-lp1499123_csp_ignore_proximity.t
+    * 18-lp1592891_sip_standing_penalties.t
+    * 19-lp1306666-abort-transit-copy-status.t
+    * 25-lp1694058-multiple-hold-placement.t
+    
+    Testing this is very simple:
+    
+    1. Install Evergreen from this branch.
+    2. Load the Concerto dataset.
+    3. Start Evergreen services with osrf_control.
+    4. cd to the perlmods source directory.
+    5. Do 'make livecheck' and see that all tests pass, particularly the 4
+       mentioned above.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+23	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/TestUtils.pm
+1	16	Open-ILS/src/perlmods/live_t/14-lp1499123_csp_ignore_proximity.t
+1	16	Open-ILS/src/perlmods/live_t/18-lp1592891_sip_standing_penalties.t
+2	19	Open-ILS/src/perlmods/live_t/19-lp1306666-abort-transit-copy-status.t
+1	23	Open-ILS/src/perlmods/live_t/25-lp1694058-multiple-hold-placement.t
+
+commit beee20c5b0a63bf8248a630686f2fb262d4789ac
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Aug 3 13:29:14 2018 -0400
+
+    LP#1750894: Stamping upgrade script for workstation settings on server
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+227	0	Open-ILS/src/sql/Pg/upgrade/1116.schema.workstation-settings.sql
+930	0	Open-ILS/src/sql/Pg/upgrade/1117.data.workstation-settings.sql
+0	227	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.workstation-settings.sql
+0	928	Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1116.schema.workstation-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1117.data.workstation-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.workstation-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+
+commit d423090e2277daa2e69f49cef91f37235184db95
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 3 11:39:15 2018 -0400
+
+    LP#1750894 Remove errant phantomjs-killing comma
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit 73b7ace22996370f5bc8e338f115a3d9dd03b349
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 31 16:52:18 2018 -0400
+
+    LP#1750894 Additional workstation setting types + repairs
+    
+    Added new workstation setting types:
+    
+    circ.checkout.strict_barcode
+    cat.holdings_show_empty_org
+    cat.copy.defaults
+    cat.printlabels.default_template
+    cat.printlabels.templates
+    
+    Bump perm ID in seed data, take 2.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+37	2	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+35	0	Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+
+commit 29f35dcc1862db26f486e9e0c6a2c0174281019b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jul 31 16:30:17 2018 -0400
+
+    LP#1750894 Batch settings lookup handles migration
+    
+    As with a single getItem() call, the batch version of the call, when
+    making server requests, will migrate any settings necessary from
+    localStorage to server settings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+25	11	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit a61fc24476f6c24bceea2a4b0b9cc900ac0fe735
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jul 27 17:52:24 2018 -0400
+
+    LP#1750894 Hatch set local storage item thinko
+    
+    Ensure hatch.setItem() returns a promise for both server- and browser-
+    stored values.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/services/hatch.js
+
+commit edd1e288917ddde1cebedf3df57732af5fc86d8a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jul 27 17:26:08 2018 -0400
+
+    LP#1750894 Bump perm ID; apply consistently
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	5	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+2	2	Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+
+commit 14803bb75f6129d59c3dc74e9c2df5909348969e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 4 17:14:24 2018 -0400
+
+    LP#1750894 Store grid limits in grid config
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+38	8	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit f06c3c2110e164b01a46014972258ba41423aa7a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 4 12:10:20 2018 -0400
+
+    LP#1750894 Server-stored workstaion prefs admin view
+    
+    Adds a new "Server Workstation Prefs" tab to the stored preferences
+    workstation admin interface.  From here, users can view which
+    preferences are stored as server-stored workstation preferences and
+    delete select values.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+13	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Settings.pm
+5	2	Open-ILS/src/templates/staff/admin/workstation/t_stored_prefs.tt2
+13	3	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+2	2	Open-ILS/web/js/ui/default/staff/services/hatch.js
+8	0	docs/RELEASE_NOTES_NEXT/Client/workstation-server-settings.adoc
+
+commit ff6aa2ab53271740a0b2fd73859af785f7765f32
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 30 16:38:56 2018 -0400
+
+    LP#1750894 Workstation/Cascade setting pgtap tests
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+84	0	Open-ILS/src/sql/Pg/t/lp1750894-workststation-settings.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1750894-workststation-settings.pg
+
+commit 7790968d6410a3de13ed606150b61f148f96b2bc
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue May 29 11:47:16 2018 -0400
+
+    LP#1750894 Workstation/Cascade settings Release Notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+63	0	docs/RELEASE_NOTES_NEXT/Client/workstation-server-settings.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/workstation-server-settings.adoc
+
+commit 7891c0241e9b5273f122f8d77cb20ebbf2d5cf6b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 13 14:06:23 2018 -0400
+
+    LP#1750894 Workstation & Cascade settings
+    
+    Adds a new config.workstation_setting_type table for managing
+    workstation-specific settings.
+    
+    Adds new PG and perl API functionality for determining values for
+    settings which may be represnted as workstation, user, and/or org unit
+    settings.
+    
+    Teaches the AngularJS browser client to load and apply most settings at
+    the server.  Values for settings stored in localStorage/Hatch are migrated
+    to server settings at time of next use.
+    
+    Stock workstation setting types added to accommodate most browser client
+    settings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+45	1	Open-ILS/examples/fm_IDL.xml
+1	0	Open-ILS/src/perlmods/MANIFEST
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+306	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Settings.pm
+58	0	Open-ILS/src/sql/Pg/002.schema.config.sql
+164	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+893	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+227	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.workstation-settings.sql
+893	0	Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+2	0	Open-ILS/src/templates/staff/admin/workstation/index.tt2
+3	1	Open-ILS/web/js/ui/default/staff/admin/workstation/app.js
+10	3	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+351	35	Open-ILS/web/js/ui/default/staff/services/hatch.js
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Settings.pm
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.workstation-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.data.workstation-settings.sql
+
+commit 26581c762f386104c5002b68b9dd99fb0a68116e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 30 10:23:37 2018 -0400
+
+    LP#1766716 Closed dates Perl live test API repair
+    
+    Update the org unit close date Perl live test to match API changes for
+    emergecy org unit close dates handling.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	1	Open-ILS/src/perlmods/live_t/04-overdue_with_closed_dates.t
+
+commit 15c4db3b46d7c279ce5552ad55b08d3fe861bfb0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jul 26 14:40:00 2018 -0400
+
+    LP#1766716 Stamping emergency closing DB upgrade
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+449	0	Open-ILS/src/sql/Pg/upgrade/1115.schema.emergency_closing.sql
+0	449	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.emergency_closing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1115.schema.emergency_closing.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.emergency_closing.sql
+
+commit 76ff2328fdb1ec5ef1ff19056fb5a610bdda70d8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 11 16:51:59 2018 -0400
+
+    LP#1766716: Adjust date display logic
+    
+    We were using the wrong date formating filter, egDueDate, and additionly the
+    egOrgDateInContext filter was defaulting to the useless 'shortDate' format in
+    cases where a format was not passed (such as when $root.egDateAndTimeFormat
+    can't be found).  Both of these are addressed here.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/templates/staff/admin/local/actor/closed_dates.tt2
+1	0	Open-ILS/web/js/ui/default/staff/admin/local/actor/closed_dates.js
+1	1	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 3f249b1cc43dd59da8ac640767b74a151bed7cb5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 9 11:55:07 2018 -0400
+
+    LP#1766716 Closed dates API emergency filter fix
+    
+    Fix closed dates emergency => emergency_closing DB column name thinko.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/ClosedDates.pm
+
+commit a440cb0787455a97363eb045d4bd19a865ad19d2
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 9 12:28:00 2018 -0400
+
+    LP#1766716: (follow-up) expand CSS imports for now
+    
+    The patches for bug 1739803 ended up removing the minification
+    of the CSS and constructing evergreen-staff-client-deps.0.0.1.min.css,
+    so consequently setting EXPAND_WEB_IMPORTS to 0 currently does not
+    work as expected. Unless that regression (if it is one) gets
+    fixed, stick with EXPAND_WEB_IMPORTS = 1 for now.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/config.tt2
+
+commit 71c46499d080f38c53bd3b8ee34852e973a2daf1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Apr 24 16:45:31 2018 -0400
+
+    LP#1766716: Release notes
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+22	0	docs/RELEASE_NOTES_NEXT/Circulation/EmergencyClosingHandler.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/EmergencyClosingHandler.adoc
+
+commit 5caa4344f460f8496589b641854634cf799a6dca
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Feb 27 16:49:57 2018 -0500
+
+    LP#1766716: Emergency Closing handler
+    
+    New Feature Summary
+    
+    Staff are provided with interfaces and mechanisms to create library closings
+    that, in addition to affecting future circulation and booking due dates, and
+    hold shelf expirations, will automatically move existing circulation and
+    booking due dates and hold shelf expiration times.  This new functionality is
+    conceptually described as Emergency Closings and business logic implementing it
+    as the Emergency Closing Handler. It contains additions and adjustments to the
+    user interface, business logic, and database layers.  Access to this
+    functionality is available through the Closed Dates Editor interface in the
+    staff client which has been ported to AngularJS.
+    
+    Overview
+    
+    This development has created new business logic code to inspect, in real time,
+    existing circulation, booking, and hold records, and modify such date and time
+    stamps so that the circulation, booking, or hold will end in the same state it
+    would have if the closing had existed at the time the circulation or booking
+    occurred, or the hold was placed and captured.  Of specific note, hourly loans
+    will have their due date adjusted to be the end of the day following the
+    closing.
+    
+    When the Emergency Closing is saved, any fines accrued during the closing may
+    be voided, as settings dictate, with the exception of circulations that have
+    been marked as LOST or LONG OVERDUE.  That is, even for LOST and LONG OVERDUE
+    circulations with due dates that fall within the Emergency Closing, no fine
+    adjustment will be applied.  Emergency Closing processing is permanent, and
+    cannot be rolled back.
+    
+    This functionality is explicitly initiated by staff action.  If staff do not
+    request an Emergency Closing, existing circulations, bookings, and holds will
+    not be processed and adjusted.  However, if staff request any Closing that
+    starts nearer in time than the length of the longest circulation duration
+    configured for use in the Evergreen instance they will be prompted with the
+    option to create the closing as an Emergency Closing.
+    
+    Action/Trigger hooks have been created for circulations and bookings that are
+    adjusted by the Emergency Closing Handler.  These will facilitate the creation
+    of notifications to patrons that the due date has changed and to alert them to
+    potential changes in accrued fines.
+    
+    Booking start dates are explicitly ignored in this implementation.  Because an
+    Emergency Closing is, by its nature, an unexpected event, it will be up to
+    staff to address any bookings which intersect with a new Emergency Closings.
+    Reports can be used to identify booking start dates that overlap with a closing
+    and that may require staff intervention.
+    
+    Staff requsting and Emergency Closing must have the new EMERGENCY_CLOSING
+    permission.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+141	0	Open-ILS/examples/fm_IDL.xml
+201	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/ClosedDates.pm
+457	0	Open-ILS/src/sql/Pg/096.schema.emergency_closing.sql
+3	0	Open-ILS/src/sql/Pg/400.schema.action_trigger.sql
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+2	0	Open-ILS/src/sql/Pg/sql_file_manifest
+449	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.emergency_closing.sql
+87	0	Open-ILS/src/templates/staff/admin/local/actor/closed_dates.tt2
+116	0	Open-ILS/src/templates/staff/admin/local/actor/edit_closed_dates.tt2
+1	1	Open-ILS/src/templates/staff/config.tt2
+3	3	Open-ILS/src/templates/staff/share/t_datetime.tt2
+352	0	Open-ILS/web/js/ui/default/staff/admin/local/actor/closed_dates.js
+3	0	Open-ILS/web/js/ui/default/staff/services/org.js
+1	1	Open-ILS/web/js/ui/default/staff/services/ui.js
+ create mode 100644 Open-ILS/src/sql/Pg/096.schema.emergency_closing.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.emergency_closing.sql
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/actor/closed_dates.tt2
+ create mode 100644 Open-ILS/src/templates/staff/admin/local/actor/edit_closed_dates.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/admin/local/actor/closed_dates.js
+
+commit b46d4eaac2a6b023c2cde2a1642ef61cb8206548
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Mar 16 09:52:50 2018 -0400
+
+    LP#1766716 Supporting functionality added to date/time picker and progress dialog
+    
+    Here the date/time picker is given the ability to dynamically hide the time
+    picking component when show-time-picker is in effect.  This allows an
+    interface to use the time picker based on ephemeral state information and to
+    hide it when not useful.
+    
+    Additionally, the progress dialog now takes an optional label property that
+    can be passed to both open() and update(), so that textual information can
+    be provided along with the numeric and visual progress data.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/templates/staff/share/t_datetime.tt2
+6	0	Open-ILS/src/templates/staff/share/t_progress_dialog.tt2
+3	0	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 827d0277af4405a5df1ddbbf5414c35e7250d3f2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jul 26 10:38:02 2018 -0400
+
+    Forward-port 3.0.10 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+214	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.9-3.0.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.9-3.0.10-upgrade-db.sql
+
+commit c1fac20422420e8a11cb950741f32b2f39fa4918
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Jul 12 09:24:48 2018 -0400
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+211	0	Open-ILS/src/sql/Pg/upgrade/1113.function.acq.rollover-by-org-tree.sql
+0	211	Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1113.function.acq.rollover-by-org-tree.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.acq.rollover-by-org-tree.sql
+
+commit 60eec432440657a51e8fd0fb6622e5620750ab9f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Mar 27 14:56:23 2018 -0400
+
+    LP#1746566: Enable 500, 1K, and all rows in more patron grids
+    
+    This enables the allowAll option in the Patron Items Checked Out
+    and Other/Special Circulations grids.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Verify that the Patron Items Checked Out, Other/Special Circulations,
+        Non-Catalogued Circulations, and Holds grids now include row
+        count options 500, 100, and All.
+    [3] Verify that the Item Status grid now includes the additional
+        row count options.
+    [4] Verify that when choosing the "All" row count that you are prompted
+        to confirm loading all of the rows.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+
+commit 6c511a7d53eefa0b543c2212f8064f60cd74dd7a
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Feb 7 12:05:10 2018 -0500
+
+    LP#1746566: Enable 500, 1K, and ALL-the-Rows in patron grids
+    
+    This adds to the Patron (non-catalogued) Items Out, Patron Holds, and
+    Item Status grids an 'allowAll' grid feature which will enable the 500,
+    1K, and ALL (really 10K) rows/pagesize. For the ALL option a modal has
+    been wired to that the action can be confirmed, since it might be a
+    very slow operation.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+1	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+6	1	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+14	2	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit dfc9a81480c8c5f792b5e63cd6f84c77de88eeb7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 29 12:41:26 2018 -0400
+
+    Forward port 3.0.9 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.8-3.0.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.8-3.0.9-upgrade-db.sql
+
+commit a4856e5c20a5206bc0526ab24fae17addded1920
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Jun 4 09:06:55 2018 -0400
+
+    Forward port 3.0.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+131	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.7-3.0.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.7-3.0.8-upgrade-db.sql
+
+commit 0de55610cb544e58e7e7c4fc8286e24177a12ae8
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 25 14:12:25 2018 -0400
+
+    Moving upgrade script into place
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+35	0	Open-ILS/src/sql/Pg/upgrade/1111.data.copy_alert_perms.sql
+0	35	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_alert_perms.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1111.data.copy_alert_perms.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_alert_perms.sql
+
+commit 6f1ab733b8828d7a18260846e14d5a008c0c931d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri May 25 14:11:02 2018 -0400
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.data.copy_alert_perms.sql
+
+commit 532a09a1bd800ef3325847c8fc9d4b51d50dfac7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun May 13 17:01:10 2018 -0700
+
+    Docs: starting 3.0.8 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+78	1	docs/RELEASE_NOTES_3_0.adoc
+
+commit d8e092ac014beee99ca75224a7524d3c0f41690b
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed May 2 00:45:14 2018 -0500
+
+    Revert "LP#1387722: Update MARC leader when deleting a record"
+    
+    This reverts commit 7dfcdd814f60a20c1b8b4522e69c0a27c23123b5.
+
+0	32	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+0	39	Open-ILS/src/sql/Pg/t/lp1387722_record_leader_updates.pg
+0	37	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+0	7	docs/RELEASE_NOTES_NEXT/Cataloging/leader_updated_on_delete_creation_update.adoc
+ delete mode 100644 Open-ILS/src/sql/Pg/t/lp1387722_record_leader_updates.pg
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/leader_updated_on_delete_creation_update.adoc
+
+commit 159cf3c2dd9bd465f7cab8cd44e0841bf8006343
+Author: Ben Shum <ben@evergreener.net>
+Date:   Wed May 2 00:45:12 2018 -0500
+
+    Revert "LP#1387722: Stamping upgrade script"
+    
+    This reverts commit f9a4f76fc4ea4cac75687eabf4208cce234b3f05.
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	37	Open-ILS/src/sql/Pg/upgrade/1110.schema.set_record_status_in_leader_trigger.sql
+37	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1110.schema.set_record_status_in_leader_trigger.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+
+commit f9a4f76fc4ea4cac75687eabf4208cce234b3f05
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue May 1 22:08:13 2018 -0500
+
+    LP#1387722: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+37	0	Open-ILS/src/sql/Pg/upgrade/1110.schema.set_record_status_in_leader_trigger.sql
+0	37	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1110.schema.set_record_status_in_leader_trigger.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+
+commit 7dfcdd814f60a20c1b8b4522e69c0a27c23123b5
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Mar 23 09:51:59 2018 -0400
+
+    LP#1387722: Update MARC leader when deleting a record
+    
+    When merging bib records, in the Leader, position 05 - Record Status
+    of the deleted record, the code should be changed to "d," for deleted,
+    as it is when a record is simply deleted within the client.
+    
+    Rogan's squashed branch for updating record status in leader, along with
+    pgtap test and release notes.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+32	0	Open-ILS/src/sql/Pg/010.schema.biblio.sql
+39	0	Open-ILS/src/sql/Pg/t/lp1387722_record_leader_updates.pg
+37	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+7	0	docs/RELEASE_NOTES_NEXT/Cataloging/leader_updated_on_delete_creation_update.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1387722_record_leader_updates.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.set_record_status_in_leader_trigger.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/leader_updated_on_delete_creation_update.adoc
+
+commit 3a3cbc988c5431a1875397e9470ecf8025fa9e6b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Apr 19 09:49:54 2018 -0400
+
+    Forward-port 3.0.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.6-3.0.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.6-3.0.7-upgrade-db.sql
+
+commit dc62e8f18d0ea74a8a8a507a69ae287c290cd1c8
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 18 16:25:34 2018 -0400
+
+    Touch up release notes for 3.0.7
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	docs/RELEASE_NOTES_3_0.adoc
