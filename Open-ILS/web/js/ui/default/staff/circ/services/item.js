@@ -16,7 +16,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         flesh : 4,
         flesh_fields : {
             acp : ['call_number','location','status','location','floating','circ_modifier',
-                'age_protect','circ_lib','copy_alerts', 'editor', 'circ_as_type', 'latest_inventory'],
+                'age_protect','circ_lib','copy_alerts', 'creator', 'editor', 'circ_as_type', 'latest_inventory'],
             acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor'],
             alci : ['inventory_workstation']
