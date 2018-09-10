@@ -15,7 +15,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     service.flesh = {   
         flesh : 4,
         flesh_fields : {
-            acp : ['call_number','location','status','location','floating','circ_modifier',
+            acp : ['call_number','location','status','floating','circ_modifier',
                 'age_protect','circ_lib','copy_alerts', 'creator', 'editor', 'circ_as_type', 'latest_inventory'],
             acn : ['record','prefix','suffix','label_class'],
             bre : ['simple_record','creator','editor'],
