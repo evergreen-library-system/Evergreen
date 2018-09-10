@@ -623,19 +623,18 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                     xact_start : xact.xact_start(),
                 }
                 if (xact.circulation()) {
-                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode();
                     newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title();
                     newXact.call_number = {
                         label : xact.circulation().target_copy().call_number().label(),
-			prefix : xact.circulation().target_copy().call_number().prefix().label(),
-			suffix : xact.circulation().target_copy().call_number().suffix().label(),
+			            prefix : xact.circulation().target_copy().call_number().prefix().label(),
+			            suffix : xact.circulation().target_copy().call_number().suffix().label(),
                         owning_lib : {
-                             name : xact.circulation().target_copy().call_number().owning_lib().name(),
-                             shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
+                            name : xact.circulation().target_copy().call_number().owning_lib().name(),
+                            shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
                         }
                     }
                 }
-
                 xacts.push(newXact);
             }
         );
@@ -1157,15 +1156,15 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
                     xact_start : xact.xact_start(),
                 }
                 if (xact.circulation()) {
-                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
-                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode();
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title();
                     newXact.call_number = {
                         label : xact.circulation().target_copy().call_number().label(),
-			prefix : xact.circulation().target_copy().call_number().prefix().label(),
-			suffix : xact.circulation().target_copy().call_number().suffix().label(),
+			            prefix : xact.circulation().target_copy().call_number().prefix().label(),
+			            suffix : xact.circulation().target_copy().call_number().suffix().label(),
                         owning_lib : {
-                             name : xact.circulation().target_copy().call_number().owning_lib().name(),
-                             shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
+                            name : xact.circulation().target_copy().call_number().owning_lib().name(),
+                            shortname : xact.circulation().target_copy().call_number().owning_lib().shortname()
                         }
                     }
                 }
