@@ -713,6 +713,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         return egCore.pcrud.retrieveAll('ccs', {}, {atomic : true}).then(
             function(list) {
                 egCore.env.absorbList(list, 'ccs');
+                copy.status(egCore.env.ccs.map[copy.status()]);
             }
         );
     }

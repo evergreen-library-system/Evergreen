@@ -514,15 +514,15 @@ function($scope , $q , egCore , ngToast) {
                 id : 1,
                 xact_start : new Date().toISOString(),
                 xact_finish : new Date().toISOString(),
-		call_number : {
- 			label : "spindler",
-		        prefix : "biography",
-		        suffix : "Closed Stacks",
-		        owning_lib : {
-			   name : "Mineola Public Library",
-                           shortname : "Mineola"
-                                     }
-                               },
+                call_number : {
+                    label : "spindler",
+                    prefix : "biography",
+                    suffix : "Closed Stacks",
+                    owning_lib : {
+                        name : "Mineola Public Library",
+                        shortname : "Mineola"
+                    }
+                },
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',

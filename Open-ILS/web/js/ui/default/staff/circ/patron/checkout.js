@@ -315,14 +315,11 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 print_data.circulations.push({
                     circ : egCore.idl.toHash(co.circ),
                     copy : egCore.idl.toHash(co.acp),
+                    call_number : egCore.idl.toHash(co.acn), // Wrong?
+                    owning_lib : egCore.idl.toHash(co.aou), // Wrong?
                     title : co.title,
                     author : co.author
                 });
-                // Flesh selected fields of this circulation 
-                print_data.circulations[0].copy.call_number =
-                    egCore.idl.toHash(co.acn);
-                print_data.circulations[0].copy.owning_lib =
-	            egCore.ils.toHash(co.aou);
             };
         });
 
