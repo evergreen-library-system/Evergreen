@@ -112,6 +112,8 @@
     <eg-grid-field label="[% l('Copy ID') %]"                path="id"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate As MARC Type') %]" path="circ_as_type"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate') %]"              datatype="bool" path="circulate"></eg-grid-field>
+    <eg-grid-field label="[% l('Deposit?') %]"               datatype="bool" path="deposit"></eg-grid-field>
+    <eg-grid-field label="[% l('Deposit amount') %]"         path="deposit_amount"></eg-grid-field>
     <eg-grid-field label="[% l('Holdable') %]"               datatype="bool" path="holdable"></eg-grid-field>
     <eg-grid-field label="[% l('Age-based Hold Protection') %]" path="age_protect.name"></eg-grid-field>
     <eg-grid-field label="[% l('Reference') %]"              datatype="bool" path="ref"></eg-grid-field>
