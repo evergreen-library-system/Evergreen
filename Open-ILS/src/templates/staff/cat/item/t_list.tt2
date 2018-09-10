@@ -100,7 +100,14 @@
   <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy ID') %]"               path="id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy Number') %]"           path="copy_number" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Created By') %]"            path="creator" hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Created By') %]"
+    path="creator" hidden>
+    <a target="_blank" href="[% ctx.base_path %]/staff/circ/patron/{{item['creator.id']}}/checkout">
+      {{item['creator.usrname']}} <span ng-show="item['creator.id']" class="glyphicon glyphicon-new-window"/>
+    </a>
+  </eg-grid-field>
+
   <eg-grid-field label="[% l('Date Created') %]"          path="create_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Last Edited') %]"      path="edit_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Record Created') %]"   path="call_number.record.create_date" datatype="timestamp" hidden></eg-grid-field>
