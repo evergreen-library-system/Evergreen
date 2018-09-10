@@ -108,6 +108,8 @@
   <eg-grid-field label="[% l('Date Record Created') %]"   path="call_number.record.create_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Record Last Edited') %]"    path="call_number.record.edit_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Deleted?') %]"              path="deleted" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Deposit?') %]"              path="deposit" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Deposit amount') %]"        path="deposit_amount" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Document ID') %]"           path="call_number.record.id" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Edited By') %]"             path="editor.usrname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden>
