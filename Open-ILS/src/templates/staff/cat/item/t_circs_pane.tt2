@@ -193,7 +193,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Workstation') %]</div>
     <div class="flex-cell well">
-      {{circ.checkin_workstation.name()}}
+      {{circ.checkin_workstation().name()}}
     </div>
   </div>
 </div>
