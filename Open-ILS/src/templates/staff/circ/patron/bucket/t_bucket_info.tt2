@@ -6,7 +6,7 @@
       when="{'one': '[% l("1 item") %]', 'other': '[% l("{} items") %]'}">
     </ng-pluralize>
   </span> 
-  <span> / [% l('Created {{bucket().create_time() | date}}') %]</span>
+  <span> / [% l('Created {{bucket().create_time() | date:egDateAndTimeFormat}}') %]</span>
   <span ng-show="bucket().description()"> / {{bucket().description()}}</span>
 </div>
 
