@@ -8,9 +8,10 @@
   <div class="form-group">
     <div class="row">
       <span ng-hide="context_user || context_lineitem">
-        <label for="select-request-ou">[% l('Patron Home Library: ' ) %]</label>
-        <eg-org-selector id="select-request-ou" selected="context_ou"></eg-org-selector>
-        <span>&nbsp;</span>
+        <div class="col-md-3 input-group">
+          <span class="input-group-addon">[% l('Patron Home Library: ' ) %]</span>
+          <eg-org-selector id="select-request-ou" selected="context_ou"></eg-org-selector>
+        </div>
       </span>
       <span ng-show="context_user">[% l('User ID: [_1]','{{context_user}}') %]</span>
       <span ng-show="context_lineitem">[% l('PO Line Item ID: [_1]','{{context_lineitem}}') %]</span>
