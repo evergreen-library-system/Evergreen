@@ -243,4 +243,18 @@ Modifying the 'atom' portion of the URL to 'html-full' will produce an HTML page
 
 Example: http://gapines.org/opac/extras/browse/html-full/item-age/ARL-BOG/1/10
 
+Additional Filters
+^^^^^^^^^^^^^^^^^^
+
+If you'd like to limit to a particular status, you can append `?status=0`
+where `0` is the ID number of the status you'd like to limit to.  If a 
+number of statuses, you can append multiple status parameters (for example,
+`?status=0&status=1` will limit to items with a status of either 0 or 1).
+
+[TIP]
+Limiting to status is a good way to weed out on-order items from your
+feeds.
+
+You can also limit by item location (`?copyLocation=227` where 227 is the
+ID of your item location).
 
