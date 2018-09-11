@@ -2379,6 +2379,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
     my %field_map = (
         record_id => 'r.bib_record',
         usr_id => 'u.id',
+        usr_alias => 'u.alias',
         cs_id => 'cs.id',
         cp_id => 'cp.id',
         cp_deleted => 'cp.deleted',
