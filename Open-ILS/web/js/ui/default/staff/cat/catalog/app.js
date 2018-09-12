@@ -1795,7 +1795,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         };
 
         var order_by = [{ request_time : null }];
-        if (provider.sort && provider.sort.length) {
+        // NOTE: Server sort is disabled for now.  See the comment on
+        // similar code in circ/holds/app.js for details.
+        if (false && provider.sort && provider.sort.length) {
             order_by = [];
             angular.forEach(provider.sort, function (c) {
                 if (!angular.isObject(c)) {

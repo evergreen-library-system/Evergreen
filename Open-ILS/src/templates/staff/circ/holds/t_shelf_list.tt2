@@ -138,7 +138,7 @@
   <eg-grid-field label="[% l('Hold Note Count') %]" path='hold.note_count' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Display Name') %]" path='hold.usr_display_name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Alias') %]" path='hold.usr_alias' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('User Alias or Display Name') %]" path='hold.usr_alias_or_display_name' nonsortable hidden></eg-grid-field>
+  <eg-grid-field label="[% l('User Alias or Display Name') %]" path='hold.usr_alias_or_display_name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('User Barcode') %]" path='hold.ucard_barcode' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Requestor Username') %]" path='hold.rusr_usrname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Copy ID') %]" path='hold.cp_id' hidden></eg-grid-field>
