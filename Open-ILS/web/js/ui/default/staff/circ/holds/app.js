@@ -90,12 +90,44 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
         };
 
         var order_by = [{ shelf_expire_time : null }];
-        if (provider.sort && provider.sort.length) {
+
+        // NOTE: Server sorting is currently disabled entirely by the 
+        // first clause in this 'if'.   This is perfectly fine because
+        // clientsort always runs inside the arrayNotifier implementation
+        // in the egGrid code.   However, in order to retain the memory
+        // of sorting constraints placed on us by the current server-side
+        // code, an initial "cannot sort these" array and test is added
+        // here.  An alternate implementation might be to map fields to
+        // query positions, thus allowing positional ORDER BY clauses.
+        // With as many fields as the wide hold object has, this is
+        // non-trivial at the moment.
+        if (false && provider.sort && provider.sort.length) {
+            // A list of fields we can't sort on the server side.  That's ok, because
+            // the grid is marked clientsort, so it always re-sorts in the browser.
+            var cannot_sort = [
+                'relative_queue_position',
+                'default_estimated_wait',
+                'min_estimated_wait',
+                'potentials',
+                'other_holds',
+                'total_wait_time',
+                'notification_count',
+                'last_notification_time',
+                'is_staff_hold',
+                'copy_location_order_position',
+                'hold_status',
+                'clear_me',
+                'usr_alias_or_display_name',
+                'usr_display_name',
+                'usr_alias_or_first_given_name'
+            ];
+
             order_by = [];
             angular.forEach(provider.sort, function (c) {
                 if (!angular.isObject(c)) {
                     if (c.match(/^hold\./)) {
                         var i = c.replace('hold.','');
+                        if (cannot_sort.includes(i)) return;
                         var ob = {};
                         ob[i] = null;
                         order_by.push(ob);
@@ -105,6 +137,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                     var direction = c[i];
                     if (i.match(/^hold\./)) {
                         i = i.replace('hold.','');
+                        if (cannot_sort.includes(i)) return;
                         var ob = {}
                         ob[i] = {dir:direction};
                         order_by.push(ob);
