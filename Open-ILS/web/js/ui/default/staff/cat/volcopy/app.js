@@ -585,17 +585,17 @@ function(egCore , $q) {
             '<div class="row">'+
                 '<div class="col-xs-2">'+
                     '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
-                    '<select ng-disabled="record == 0" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
+                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-disabled="record == 0" class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
+                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
                 '</div>'+
                 '<div class="col-xs-2">'+
-                    '<input ng-disabled="record == 0" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
+                    '<input ng-disabled="record == 0 && !onlyVols" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
                     '<div class="label label-danger" ng-if="empty_label">{{empty_label_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-disabled="record == 0" class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
+                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
                 '</div>'+
                 '<div ng-hide="onlyVols" class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div ng-hide="onlyVols" class="col-xs-5">'+
@@ -831,7 +831,8 @@ function(egCore , $q) {
         template:
             '<div class="row">'+
                 '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><input name="cn_count_lib{{lib}}" ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
+                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0 && !onlyVols}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
+                '<div class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
                     '<eg-vol-row only-vols="onlyVols" record="{{record}}"'+
                         'ng-repeat="(cn,copies) in struct" '+
