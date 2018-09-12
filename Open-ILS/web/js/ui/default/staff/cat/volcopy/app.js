@@ -486,7 +486,7 @@ function(egCore , $q) {
         restrict: 'E',
         replace: true,
         template:
-            '<div class="row">'+
+            '<div class="row" ng-class="{'+"'new-cp'"+':is_new}">'+
                 '<div class="col-xs-5" ng-class="{'+"'has-error'"+':barcode_has_error}">'+
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
@@ -506,11 +506,13 @@ function(egCore , $q) {
                 $scope.barcode_has_error = false;
                 $scope.duplicate_barcode = false;
                 $scope.empty_barcode = false;
+                $scope.is_new = false;
                 $scope.duplicate_barcode_string = window.duplicate_barcode_string;
                 $scope.empty_barcode_string = window.empty_barcode_string;
                 var duplicate_check_count = 0;
 
                 if (!$scope.copy.barcode()) $scope.copy.empty_barcode = true;
+                if ($scope.copy.isnew() || $scope.copy.id() < 0) $scope.copy.is_new = $scope.is_new = true;
 
                 $scope.selectOnFocus = function($event) {
                     if (!$scope.copy.empty_barcode)

@@ -331,3 +331,4 @@ table.custom-label-table td {
 }
 
 .new-cn { background-color: lightgreen; }
+.new-cp { background-color: lightgreen; }
