@@ -284,11 +284,9 @@ cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 Configure the Apache Web server
 -------------------------------
 
-. Use the example configuration files in `Open-ILS/examples/apache/` (for
-Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
-versions 2.4 or greater) to configure your Web server for the Evergreen
-catalog, web staff client, Web services, and administration interfaces. Issue the
-following commands as the *root* Linux account:
+. Use the example configuration files to configure your Web server for 
+the Evergreen catalog, web staff client, Web services, and administration
+interfaces. Issue the following commands as the *root* Linux account:
 +
 [source,bash]
 ------------------------------------------------------------------------------------
