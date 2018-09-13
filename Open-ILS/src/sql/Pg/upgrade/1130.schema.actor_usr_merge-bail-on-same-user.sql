@@ -161,8 +161,6 @@ BEGIN
 		END LOOP;
 	END LOOP;
 
-    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
-
     -- money.*
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'usr', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'collector', src_usr, dest_usr);
@@ -190,7 +188,6 @@ BEGIN
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
-    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -320,37 +317,6 @@ BEGIN
     EXCEPTION WHEN undefined_table THEN
         -- do nothing
     END;
-
-    -- propagate preferred name values from the source user to the
-    -- destination user, but only when values are not being replaced.
-    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr)
-    UPDATE actor.usr SET 
-        pref_prefix = 
-            COALESCE(pref_prefix, (SELECT pref_prefix FROM susr)),
-        pref_first_given_name = 
-            COALESCE(pref_first_given_name, (SELECT pref_first_given_name FROM susr)),
-        pref_second_given_name = 
-            COALESCE(pref_second_given_name, (SELECT pref_second_given_name FROM susr)),
-        pref_family_name = 
-            COALESCE(pref_family_name, (SELECT pref_family_name FROM susr)),
-        pref_suffix = 
-            COALESCE(pref_suffix, (SELECT pref_suffix FROM susr))
-    WHERE id = dest_usr;
-
-    -- Copy and deduplicate name keywords
-    -- String -> array -> rows -> DISTINCT -> array -> string
-    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr),
-         dusr AS (SELECT * FROM actor.usr WHERE id = dest_usr)
-    UPDATE actor.usr SET name_keywords = (
-        WITH keywords AS (
-            SELECT DISTINCT UNNEST(
-                REGEXP_SPLIT_TO_ARRAY(
-                    COALESCE((SELECT name_keywords FROM susr), '') || ' ' ||
-                    COALESCE((SELECT name_keywords FROM dusr), ''),  E'\\s+'
-                )
-            ) AS parts
-        ) SELECT ARRAY_TO_STRING(ARRAY_AGG(kw.parts), ' ') FROM keywords kw
-    ) WHERE id = dest_usr;
 
     -- Finally, delete the source user
     DELETE FROM actor.usr WHERE id = src_usr;
