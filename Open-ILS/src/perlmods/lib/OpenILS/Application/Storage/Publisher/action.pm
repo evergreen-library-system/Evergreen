@@ -2302,7 +2302,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
 
         ROW_NUMBER() OVER (
             PARTITION BY r.bib_record
-            ORDER BY h.cut_in_line DESC NULLS LAST, h.request_time DESC
+            ORDER BY h.cut_in_line DESC NULLS LAST, h.request_time ASC
         ) AS relative_queue_position,
 
         EXTRACT(EPOCH FROM COALESCE(
