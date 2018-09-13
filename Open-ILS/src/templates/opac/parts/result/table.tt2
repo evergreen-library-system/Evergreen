@@ -348,7 +348,7 @@ END;
                                                                 <td valign='top'>
                                                                     <strong>[% l('Electronic resource') %]</strong>
                                                                 </td>
-                                                                <td><a href="[% uri.href %]" class="uri_link" target="_blank">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
+                                                                <td><a href="[% uri.href %]" class="uri_link" target="_blank" rel="noopener">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
                                                             </tr>
                                                             [% END %]
                                                          [% END %]
@@ -513,7 +513,7 @@ END;
                                                                [% html_text_attr('title', l('Reviews and More for [_1]', attrs.title)) %]
                                                                 href="[% ctx.ext_proto %]://contentcafe2.btol.com/ContentCafeClient/ContentCafe.aspx?UserID=[%- 
                                                                     ENV.OILS_CONTENT_CAFE_USER %]&amp;Password=[%-
-                                                                    ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="nofollow" vocab="">
+                                                                    ENV.OILS_CONTENT_CAFE_PASS %]&amp;ItemKey=[% ident | uri %]&amp;Options=Y" rel="noopener nofollow" vocab="">
                                                                 <img src='[% ctx.media_prefix %]/images/starz.png[% ctx.cache_key %]' alt="[% l('Ratings Icon') %]"/>
                                                                 <span class="results_reviews">[% l('Reviews &amp; More') %]</span>
                                                             </a>
