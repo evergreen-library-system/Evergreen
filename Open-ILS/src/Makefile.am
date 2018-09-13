@@ -60,7 +60,7 @@ core_data = @srcdir@/extras/ils_events.xml \
 core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/fine_generator.pl \
 		 $(supportscr)/hold_targeter.pl \
-		 $(supportscr)/hold_targeter_v2.pl \
+		 $(supportscr)/hold_targeter_legacy.pl \
 		 $(supportscr)/reshelving_complete.srfsh \
 		 $(supportscr)/clear_expired_circ_history.srfsh \
 		 $(supportscr)/update_hard_due_dates.srfsh \
