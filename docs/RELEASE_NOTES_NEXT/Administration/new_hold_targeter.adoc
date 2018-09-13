@@ -1,0 +1,22 @@
+Hold Targeter Script has been Replaced
+======================================
+
+The original hold_targeter.pl script has been renamed to
+"hold_targeter_legacy.pl", and the new-style hold targeting
+script has been renamed to "hold_targeter.pl".  Administrators
+will want to change their crontab files to reflect this.
+
+.Previous Syntax
+[source,bash]
+---------------------------------------------------------------------
+-*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl $SRF_CORE
+---------------------------------------------------------------------
+
+.New Syntax
+[source,bash]
+-----------------------------------------------------------------------------------
+-*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl --osrf-config $SRF_CORE
+-----------------------------------------------------------------------------------
+
+The sample crontab file at Open-ILS/examples/crontab.example reflects
+this change.
