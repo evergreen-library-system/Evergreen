@@ -199,13 +199,18 @@
     if (rec_selector_block) rec_selector_block.classList.remove("hidden");
 
     function deselectSelectedOnPage() {
+        var to_del = [];
         [].forEach.call(rec_selectors, function(el) {
             if (el.checked) {
                 el.checked = false;
                 adjustLegacyControlsVis('delete', el.value);
                 toggleRowHighlighting(el);
+                to_del.push(el.value);
             }
         });
+        if (to_del.length > 0) {
+            mungeList('delete', to_del);
+        }
     }
 
     if (select_all_records_el) {
