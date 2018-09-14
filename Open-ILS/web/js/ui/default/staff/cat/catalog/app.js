@@ -1034,6 +1034,34 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    var holdings_bChannel = null;
+    // subscribe to BroadcastChannel for any child VolCopy tabs
+    // refresh grid if needed to show new updates
+    // if ($scope.record_tab === 'holdings'){
+    $scope.$watch('record_tab', function(n){
+    
+        if (n === 'holdings'){
+            if (typeof BroadcastChannel != 'undefined') {
+                // we're in holdings tab, connect 2 bChannel
+                holdings_bChannel = new BroadcastChannel('eg.holdings.update');
+                holdings_bChannel.onmessage = function(e){
+                    if (e.data
+                        && e.data.records
+                        && e.data.records.length
+                        && e.data.records.includes($scope.record_id)
+                    ){ // it's for us, refresh grid!
+                        console.log("Got broadcast from channel eg.holdings.update for records " + e.data.records);
+                        $scope.holdings_record_id_changed($scope.record_id);
+                    }
+                }
+            };
+
+        } else if (holdings_bChannel){ // we're leaving holding tab, close bChannel
+            holdings_bChannel.close();
+        }
+    
+    });
+
     // refresh the list of holdings when the record_id is changed.
     $scope.holdings_record_id_changed = function(id) {
         if ($scope.record_id != id) $scope.record_id = id;
