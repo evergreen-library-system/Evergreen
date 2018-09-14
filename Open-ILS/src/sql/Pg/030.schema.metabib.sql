@@ -1470,7 +1470,7 @@ BEGIN
                 FOR j IN 1 .. ARRAY_UPPER(uri_owner_list, 1) LOOP
                     uri_owner := uri_owner_list[j];
 
-                    SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = uri_owner;
+                    SELECT id INTO uri_owner_id FROM actor.org_unit WHERE shortname = BTRIM(REPLACE(uri_owner,chr(160),''));
                     CONTINUE WHEN NOT FOUND;
 
                     -- we need a call number to link through
