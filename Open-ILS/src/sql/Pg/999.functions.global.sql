@@ -393,7 +393,7 @@ BEGIN
     ) WHERE id = dest_usr;
 
     -- Finally, delete the source user
-    DELETE FROM actor.usr WHERE id = src_usr;
+    PERFORM actor.usr_delete(src_usr,dest_usr);
 
 END;
 $$ LANGUAGE plpgsql;
