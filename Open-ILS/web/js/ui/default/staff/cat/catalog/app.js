@@ -591,6 +591,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                 $scope.conjoinedGridDataProvider.refresh();
             });
             init_parts_url();
+            $scope.grid_actions.refresh();
             $location.update_path('/cat/catalog/record/' + $scope.record_id);
             // update_path() bypasses the controller for path 
             // /cat/catalog/record/:record_id. Manually set title here too.
@@ -1734,13 +1735,14 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
     // ------------------------------------------------------------------
     // Holds 
     var provider = egGridDataProvider.instance({});
+    var holds = []; // current list of holds
+    var hold_count = 0;
+
     $scope.hold_grid_data_provider = provider;
     $scope.grid_actions = egHoldGridActions;
     $scope.grid_actions.refresh = function () { holds = []; hold_count = 0; provider.refresh() };
     $scope.hold_grid_controls = {};
 
-    var holds = []; // current list of holds
-    var hold_count = 0;
     provider.get = function(offset, count) {
         if ($scope.record_tab != 'holds') return $q.when();
 
