@@ -187,6 +187,7 @@ function($q,   egCore,   egAuth) {
                 scope.save = function(v) {
                     egZ3950TargetSvc.saveDefaultField(v);
                     scope.default_field = v;
+                    angular.forEach(scope.infocus, function (v,k,o) { o[k]=false });
                     scope.infocus[scope.default_field] = true;
                 }
             }
