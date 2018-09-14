@@ -1,0 +1,35 @@
+BEGIN;
+
+SELECT plan(4);
+
+SELECT is(
+	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND label = '##URI##')::INTEGER,
+	0::INTEGER,
+	'no URI added to bib yet so count should be 0'
+);
+
+UPDATE biblio.record_entry SET marc = REPLACE(marc,'</record>','<datafield tag="856" ind1="4" ind2="0"><subfield code="u">http://evergreen-ils.org</subfield><subfield code="9">CONS</subfield></datafield></record>') WHERE id = 248;
+
+SELECT is(
+	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND deleted = FALSE AND label = '##URI##')::INTEGER,
+	1::INTEGER,
+	'normally valid URI added without spaces should have 1'
+);
+
+UPDATE biblio.record_entry SET marc = REPLACE(marc,'<subfield code="9">CONS</subfield>','<subfield code="9">' || chr(160) || 'CONS </subfield>') WHERE id = 248;
+
+SELECT is (
+	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND deleted = FALSE AND label = '##URI##')::INTEGER,
+	1::INTEGER,
+	'part 1/2 test for URI creation with spaces, new one should exist despite spaces being added'
+);
+
+SELECT is (
+	(SELECT COUNT(id) FROM asset.call_number WHERE record = 248 AND deleted = TRUE AND label = '##URI##')::INTEGER,
+	1::INTEGER,
+	'part 2/2 test for URI creation with spaces, old URI tag should be deleted now'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
