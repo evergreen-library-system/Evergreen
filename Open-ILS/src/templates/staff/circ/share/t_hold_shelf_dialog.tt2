@@ -45,6 +45,15 @@
       {{patron.first_given_name}} {{patron.second_given_name}}
       [% END %]
     </div>
+    <div ng-hide="patron.alias">
+      <div ng-if="patron.pref_family_name || patron.pref_first_given_name || patron.pref_second_given_name">
+        [% l('Preferred name: [_1], [_2] [_3]', 
+          '{{patron.pref_family_name || patron.family_name}}',
+          '{{patron.pref_first_given_name || patron.first_given_name}}',
+          '{{patron.pref_second_given_name}}') 
+        %]
+      </div>
+    </div>
     <div>
       <span>[% l('Patron Barcode:') %]</span>
       <span>{{patron.card.barcode}}</span>
