@@ -7,7 +7,7 @@
         [% l('[_1], [_2] [_3] (Preferred)', 
           '{{patron().pref_family_name() || patron().family_name()}}',
           '{{patron().pref_first_given_name() || patron().first_given_name()}}',
-          '{{patron().pref_second_given_name() || patron().second_given_name()}}') 
+          '{{patron().pref_second_given_name()}}') 
         %]
       </div>
     </div>
