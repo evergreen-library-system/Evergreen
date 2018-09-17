@@ -19,7 +19,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             hold_shelf_slip : false,
             hold_transit_slip : false,
             transit_slip : false
-        }
+        },
+        in_flight_checkins: {}
     };
 
     egCore.startup.go().finally(function() {
@@ -266,10 +267,20 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 var method = 'open-ils.circ.checkin';
                 if (options.override) method += '.override';
 
+                // Multiple checkin API calls should never be active
+                // for a single barcode.
+                if (service.in_flight_checkins[barcode]) {
+                    console.error('Barcode ' + barcode 
+                        + ' is already in flight for checkin, skipping');
+                    return $q.reject();
+                }
+                service.in_flight_checkins[barcode] = true;
+
                 return egCore.net.request(
                     'open-ils.circ', method, egCore.auth.token(), params
 
                 ).then(function(evt) {
+                    delete service.in_flight_checkins[barcode];
 
                     if (!angular.isArray(evt)) evt = [evt];
                     return service.flesh_response_data(
@@ -280,7 +291,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     .then(function(final_resp) {
                         return service.munge_resp_data(final_resp,'checkin',method)
                     })
-                });
+                }, function() {delete service.in_flight_checkins[barcode]});
             });
         });
     }
