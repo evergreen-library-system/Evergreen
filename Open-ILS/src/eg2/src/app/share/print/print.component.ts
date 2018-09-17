@@ -1,6 +1,8 @@
 import {Component, OnInit, TemplateRef, ElementRef, Renderer2} from '@angular/core';
 import {PrintService, PrintRequest} from './print.service';
 import {StoreService} from '@eg/core/store.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
+import {HatchService, HatchMessage} from './hatch.service';
 
 @Component({
     selector: 'eg-print',
@@ -26,6 +28,8 @@ export class PrintComponent implements OnInit {
         private renderer: Renderer2,
         private elm: ElementRef,
         private store: StoreService,
+        private serverStore: ServerStoreService,
+        private hatch: HatchService,
         private printer: PrintService) {
         this.isPrinting = false;
         this.printQueue = [];
@@ -67,7 +71,7 @@ export class PrintComponent implements OnInit {
             return;
         }
 
-        if (printReq.text && true /* !this.hatch.isActive */) {
+        if (printReq.text && !this.useHatch()) {
             // Insert HTML into the browser DOM for in-browser printing only.
 
             if (printReq.contentType === 'text/plain') {
@@ -109,7 +113,7 @@ export class PrintComponent implements OnInit {
             show_dialog: printReq.showDialog
         });
 
-        if (0 /* this.hatch.isActive */) {
+        if (this.useHatch()) {
             this.printViaHatch(printReq);
         } else {
             // Here the needed HTML is already in the page.
@@ -117,17 +121,32 @@ export class PrintComponent implements OnInit {
         }
     }
 
+    useHatch(): boolean {
+        return this.store.getLocalItem('eg.hatch.enable.printing')
+            && this.hatch.connect();
+    }
+
     printViaHatch(printReq: PrintRequest) {
 
         // Send a full HTML document to Hatch
         const html = `<html><body>${printReq.text}</body></html>`;
 
-        /*
-        this.hatch.print({
-            printContext: printReq.printContext,
-            content: html
+        this.serverStore.getItem(`eg.print.config.${printReq.printContext}`)
+        .then(config => {
+
+            const msg = new HatchMessage({
+                action: 'print',
+                content: html,
+                settings: config || {},
+                contentType: 'text/html',
+                showDialog: printReq.showDialog
+            });
+
+            this.hatch.sendRequest(msg).then(
+                ok  => console.debug('Print request succeeded'),
+                err => console.warn('Print request failed', err)
+            );
         });
-        */
     }
 }
 
