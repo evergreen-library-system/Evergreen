@@ -84,6 +84,7 @@ function($scope , $q , $routeParams , $window , $location , egCore , egHolds , e
                 last_captured_hold: 'true',
                 capture_time      : { not : null },
                 cs_id             : 8, // on holds shelf
+                cp_deleted        : 'f',
                 fulfillment_time  : null,
                 current_shelf_lib : $scope.pickup_ou.id()
         };

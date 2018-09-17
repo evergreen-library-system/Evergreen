@@ -2170,7 +2170,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
              WHEN cp.status = 6 THEN 3
              WHEN EXTRACT(EPOCH FROM COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL) = 0 THEN 4
              WHEN NOW() + COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL > NOW() THEN 5
-             ELSE 5
+             ELSE 4
         END AS hold_status,
 
         (h.shelf_expire_time < NOW() OR h.cancel_time IS NOT NULL OR (h.current_shelf_lib IS NOT NULL AND h.current_shelf_lib <> h.pickup_lib)) AS clear_me,
@@ -2377,6 +2377,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         usr_id => 'u.id',
         cs_id => 'cs.id',
         cp_id => 'cp.id',
+        cp_deleted => 'cp.deleted',
         cancel_time => 'h.cancel_time',
         tr_cancel_time => 'tr.cancel_time',
     );
