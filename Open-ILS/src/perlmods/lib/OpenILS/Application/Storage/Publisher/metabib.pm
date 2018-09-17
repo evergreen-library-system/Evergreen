@@ -446,7 +446,9 @@ sub biblio_multi_search_full_rec {
     my $cl_table = asset::copy_location->table;
     my $br_table = biblio::record_entry->table;
 
-    my $cj = 'HAVING COUNT(x.record) = ' . scalar(@selects) if ($class_join eq 'AND');
+    my $cj = undef;
+    $cj = 'HAVING COUNT(x.record) = ' . scalar(@selects) if ($class_join eq 'AND');
+
     my $search_table =
         '(SELECT x.record, sum(x.sum) FROM (('.
             join(') UNION ALL (', @selects).
@@ -3052,7 +3054,8 @@ sub query_parser_fts {
 
     # gather location_groups
     if (my ($filter) = $query->parse_tree->find_filter('location_groups')) {
-        my @loc_groups = @{$filter->args} if (@{$filter->args});
+        my @loc_groups = ();
+        @loc_groups = @{$filter->args} if (@{$filter->args});
         
         # collect the mapped locations and add them to the locations() filter
         if (@loc_groups) {
@@ -3222,7 +3225,11 @@ sub query_parser_fts_wrapper {
         # explicitly supplied one
         my $site = undef;
 
-        my @lg_id_list = @{$args{location_groups}} if (ref $args{location_groups});
+        my @lg_id_list = (); # We must define the variable with a static value
+                             # because an idomatic my+set causes the previous
+                             # value is remembered via closure.  
+
+        @lg_id_list = @{$args{location_groups}} if (ref $args{location_groups});
 
         my ($lg_filter) = $base_plan->parse_tree->find_filter('location_groups');
         @lg_id_list = @{$lg_filter->args} if ($lg_filter && @{$lg_filter->args});
