@@ -557,7 +557,28 @@ CREATE TABLE action.transit_copy (
 CREATE INDEX active_transit_dest_idx ON "action".transit_copy (dest); 
 CREATE INDEX active_transit_source_idx ON "action".transit_copy (source);
 CREATE INDEX active_transit_cp_idx ON "action".transit_copy (target_copy);
+CREATE INDEX active_transit_for_copy ON action.transit_copy (target_copy)
+    WHERE dest_recv_time IS NULL AND cancel_time IS NULL;
 
+-- Check for duplicate transits across all transit types
+CREATE OR REPLACE FUNCTION action.copy_transit_is_unique() 
+    RETURNS TRIGGER AS $func$
+BEGIN
+    PERFORM * FROM action.transit_copy 
+        WHERE target_copy = NEW.target_copy 
+              AND dest_recv_time IS NULL 
+              AND cancel_time IS NULL;
+
+    IF FOUND THEN
+        RAISE EXCEPTION 'Copy id=% is already in transit', NEW.target_copy;
+    END IF;
+    RETURN NULL;
+END;
+$func$ LANGUAGE PLPGSQL STABLE;
+
+CREATE CONSTRAINT TRIGGER transit_copy_is_unique_check
+    AFTER INSERT ON action.transit_copy
+    FOR EACH ROW EXECUTE PROCEDURE action.copy_transit_is_unique();
 
 CREATE TABLE action.hold_transit_copy (
 	hold	INT	REFERENCES action.hold_request (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED
@@ -568,6 +589,10 @@ CREATE INDEX active_hold_transit_dest_idx ON "action".hold_transit_copy (dest);
 CREATE INDEX active_hold_transit_source_idx ON "action".hold_transit_copy (source);
 CREATE INDEX active_hold_transit_cp_idx ON "action".hold_transit_copy (target_copy);
 CREATE INDEX hold_transit_copy_hold_idx on action.hold_transit_copy (hold);
+
+CREATE CONSTRAINT TRIGGER hold_transit_copy_is_unique_check
+    AFTER INSERT ON action.hold_transit_copy
+    FOR EACH ROW EXECUTE PROCEDURE action.copy_transit_is_unique();
 
 
 CREATE TABLE action.unfulfilled_hold_list (
