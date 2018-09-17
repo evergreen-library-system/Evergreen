@@ -200,11 +200,11 @@ angular.module('egCoreMod')
     }
 
     service.getPrintConfig = function(context) {
-        return service.getRemoteItem('eg.print.config.' + context);
+        return service.getItem('eg.print.config.' + context);
     }
 
     service.setPrintConfig = function(context, config) {
-        return service.setRemoteItem('eg.print.config.' + context, config);
+        return service.setItem('eg.print.config.' + context, config);
     }
 
     service.getPrinterOptions = function(name) {

@@ -187,7 +187,15 @@ export class SandboxComponent implements OnInit {
             text: '<b>hello</b>',
             printContext: 'default'
         });
+    }
 
+    printWithDialog() {
+        this.printer.print({
+            template: this.printTemplate,
+            contextData: {world : this.world},
+            printContext: 'default',
+            showDialog: true
+        });
     }
 
     changeDate(date) {
