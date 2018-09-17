@@ -4133,7 +4133,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</links>
 	</class>
 	<class id="mfe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::field_entry" reporter:label="Combined Field Entry View" oils_persist:readonly="true">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 			SELECT * FROM metabib.author_field_entry
 						UNION ALL
 			SELECT * FROM metabib.keyword_field_entry
@@ -4145,7 +4145,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			SELECT * FROM metabib.subject_field_entry
 						UNION ALL
 			SELECT * FROM metabib.series_field_entry
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields>
 			<field name="field" reporter:datatype="link"/>
 			<field name="id" reporter:datatype="id" />
@@ -4489,12 +4489,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
         </permacrud>
 	</class>
 	<class id="ocirccount" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circ_count" reporter:label="Open Circulation Count" oils_persist:readonly="true">
-        <oils_persist:source_definition>
+        <oils_persist:source_definition><![CDATA[
 SELECT  usr,
         SUM(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval &lt; '1 day'  AND due_date > 'now'))
+                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval < '1 day'  AND due_date > 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN 1
                 ELSE 0
@@ -4504,7 +4504,7 @@ SELECT  usr,
         SUM(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date &lt; 'today') OR (fine_interval &lt; '1 day'  AND due_date &lt; 'now'))
+                    ((fine_interval >= '1 day' AND due_date < 'today') OR (fine_interval < '1 day'  AND due_date < 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN 1
                 ELSE 0
@@ -4517,7 +4517,7 @@ SELECT  usr,
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
-        </oils_persist:source_definition>
+        ]]></oils_persist:source_definition>
         <fields oils_persist:primary="usr">
             <field reporter:label="User ID" name="usr" reporter:datatype="link"/>
             <field reporter:label="Out" name="out" reporter:datatype="text"/>
@@ -4531,12 +4531,12 @@ SELECT  usr,
         </links>
 	</class>
 	<class id="ocirclist" controller="open-ils.cstore" oils_obj:fieldmapper="action::open_circ_list" reporter:label="Open Circulation List" oils_persist:readonly="true">
-        <oils_persist:source_definition>
+        <oils_persist:source_definition><![CDATA[
 SELECT  usr,
         STRING_AGG(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval &lt; '1 day'  AND due_date > 'now'))
+                    ((fine_interval >= '1 day' AND due_date >= 'today') OR (fine_interval < '1 day'  AND due_date > 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN id::TEXT
                 ELSE '0'
@@ -4546,7 +4546,7 @@ SELECT  usr,
         STRING_AGG(
             CASE
                 WHEN (
-                    ((fine_interval >= '1 day' AND due_date &lt; 'today') OR (fine_interval &lt; '1 day'  AND due_date &lt; 'now'))
+                    ((fine_interval >= '1 day' AND due_date < 'today') OR (fine_interval < '1 day'  AND due_date < 'now'))
                     AND (stop_fines IS NULL OR stop_fines NOT IN ('LOST','CLAIMSRETURNED','LONGOVERDUE'))
                 ) THEN id::TEXT
                 ELSE '0'
@@ -4559,7 +4559,7 @@ SELECT  usr,
   FROM  action.circulation
   WHERE checkin_time IS NULL
   GROUP BY 1
-        </oils_persist:source_definition>
+        ]]></oils_persist:source_definition>
         <fields oils_persist:primary="usr">
             <field reporter:label="User ID" name="usr" reporter:datatype="link"/>
             <field reporter:label="Out" name="out" reporter:datatype="text"/>
@@ -6478,9 +6478,9 @@ SELECT  usr,
 		</permacrud>
 	</class>
 	<class id="alhr" controller="open-ils.cstore" oils_obj:fieldmapper="action::last_hold_request" reporter:label="Last Captured Hold Request" oils_persist:readonly="true">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 			SELECT ahr.* FROM action.hold_request ahr JOIN (SELECT current_copy, MAX(capture_time) AS capture_time FROM action.hold_request WHERE capture_time IS NOT NULL AND current_copy IS NOT NULL AND fulfillment_time IS NULL GROUP BY current_copy)x USING (current_copy, capture_time)
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id">
 			<field reporter:label="Status" name="status" oils_persist:virtual="true" />
 			<field reporter:label="Transit" name="transit" oils_persist:virtual="true" />
@@ -10763,14 +10763,14 @@ SELECT  usr,
     </class>
 
     <class id="aufhol" controller="open-ils.cstore" oils_obj:fieldmapper="action::unfulfilled_hold_outermost_loop" oils_persist:readonly="true">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
 	    SELECT  DISTINCT l.*
 	      FROM  action.unfulfilled_hold_loops l
 	            JOIN action.unfulfilled_hold_max_loop m USING (hold)
 	      WHERE l.count = m.max
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
         <fields>
             <field reporter:label="Hold ID" name="hold" reporter:datatype="link"/>
             <field reporter:label="Circulating Library" name="circ_lib" reporter:datatype="link"/>
@@ -11344,7 +11344,7 @@ SELECT  usr,
     </class>
 
     <class id="uvsbrem" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="url_verify::session_biblio_record_entry_map" oils_persist:readonly="true" reporter:label="URL Verify Session Biblio Record Entry Map">
-        <oils_persist:source_definition>
+        <oils_persist:source_definition><![CDATA[
             SELECT
                 cbrebi.id AS id,  -- so we can have a pkey in our view
                 uvs.id AS session,
@@ -11355,7 +11355,7 @@ SELECT  usr,
                 ON (uvs.container = cbreb.id)
             JOIN container.biblio_record_entry_bucket_item cbrebi
                 ON (cbrebi.bucket = cbreb.id)
-        </oils_persist:source_definition>
+        ]]></oils_persist:source_definition>
         <fields oils_persist:primary="id" oils_persist:sequence="container.biblio_record_entry_bucket_item_id_seq">
             <field reporter:label="Bucket Item ID" name="id" reporter:datatype="id" />
             <field reporter:label="Session" name="session" reporter:datatype="link" />
@@ -11615,7 +11615,7 @@ SELECT  usr,
 	</class>
 
 	<class id="rlcd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::last_copy_deleted" oils_persist:readonly="true" reporter:core="true" reporter:label="Last Copy Delete Time">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
             SELECT  b.id,
                     MAX(dcp.edit_date) AS last_delete_date
@@ -11626,7 +11626,7 @@ SELECT  usr,
              GROUP BY b.id
              HAVING SUM( CASE WHEN NOT dcp.deleted THEN 1 ELSE 0 END) = 0 
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Delete Date/Time" name="last_delete_date" reporter:datatype="timestamp"/>
@@ -11642,7 +11642,7 @@ SELECT  usr,
 	</class>
 
 	<class id="rhcrpb" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib" oils_persist:readonly="true" reporter:core="true" reporter:label="Hold/Copy Ratio per Bib">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
             -- -- If we uncomment the RIGHT JOIN against biblio.record_entry, then we'll get a row for every non-deleted bib, whether it has active holds or not.
             -- -- If we expect to use pcrud to query against specific bibs, we probably want to do this.  However, if we're using this to populate a report, we
@@ -11689,7 +11689,7 @@ SELECT  usr,
                 -- )bre ON (z.bib_id = bre.id)
                 
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="id"/>
 			<field reporter:label="Holdable Copy Count" name="copy_count" reporter:datatype="int"/>
@@ -11707,7 +11707,7 @@ SELECT  usr,
 	</class>
 
 	<class id="rhcrpbap" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
             SELECT *,
                 CASE WHEN copy_count_at_pickup_library = 0 THEN 'Infinity'::FLOAT ELSE holds_at_pickup_library::FLOAT/copy_count_at_pickup_library END AS pickup_library_ratio,
                 CASE WHEN copy_count_everywhere = 0 THEN 'Infinity'::FLOAT ELSE holds_everywhere::FLOAT/copy_count_everywhere END AS everywhere_ratio
@@ -11735,7 +11735,7 @@ SELECT  usr,
                     GROUP BY bib_record
                 )y
                 USING (id)
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="org_unit"/>
@@ -11758,7 +11758,7 @@ SELECT  usr,
 	</class>
 
 	<class id="rhcrpbapd" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::hold_copy_ratio_per_bib_and_pickup_desc" oils_persist:readonly="true" reporter:label="Hold/Copy Ratio per Bib and Pickup Library (and Descendants) ">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
             WITH counts_at_ou AS (
                 SELECT  rhrr.bib_record AS id,
                         aou.id AS pickup_lib_or_desc,
@@ -11791,7 +11791,7 @@ SELECT  usr,
                     GROUP BY bib_record
                 )y
                 USING (id)
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Record ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Pickup Library" name="pickup_lib_or_desc" reporter:datatype="org_unit"/>
@@ -11814,7 +11814,7 @@ SELECT  usr,
 	</class>
 
 	<class id="rlc" controller="open-ils.cstore open-ils.pcrud open-ils.reporter-store" oils_obj:fieldmapper="reporter::last_circ_date" oils_persist:readonly="true" reporter:label="Last Circulation or Creation Date">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
             SELECT
                 ac.id,
                 COALESCE(MAX(actac.xact_start), ac.create_date) AS last_circ_or_create,
@@ -11832,7 +11832,7 @@ SELECT  usr,
             --     LEFT JOIN action.all_circulation actac ON ac.id = actac.target_copy
             --     LEFT JOIN extend_reporter.legacy_circ_timestamp erlct ON ac.id = erlct.id
             --GROUP BY ac.id, ac.create_date, erlct.last_cko_ts
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="biblio.record_entry">
 			<field reporter:label="Copy ID" name="id" reporter:datatype="link"/>
 			<field reporter:label="Last Circulation or Creation Date" name="last_circ_or_create" reporter:datatype="timestamp"/>
@@ -12030,7 +12030,7 @@ SELECT  usr,
 	</class>
 
 	<class id="acrlid" controller="open-ils.cstore" oils_obj:fieldmapper="acq::claim_ready_lineitem_detail" oils_persist:readonly="true" reporter:label="Claim Ready Lineitem Details">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
             SELECT
                 po.ordering_agency AS ordering_agency,
@@ -12048,7 +12048,7 @@ SELECT  usr,
 
                     -- we only care about claim policy actions whose claim
                     -- interval we'd reached or exceeded
-                    AND (NOW() - cpa.action_interval) &gt; po.order_date
+                    AND (NOW() - cpa.action_interval) > po.order_date
 
                     -- filter out all claim policy actions where claim events
                     -- have occurred on or after the action's action_interval
@@ -12061,7 +12061,7 @@ SELECT  usr,
                                 AND claim.lineitem_detail = lid.id
                             )
                         WHERE
-                            evt.event_date &gt;= (po.order_date + cpa.action_interval)
+                            evt.event_date >= (po.order_date + cpa.action_interval)
                     )
                 )
             WHERE
@@ -12072,7 +12072,7 @@ SELECT  usr,
                 AND po.state = 'on-order'
             ORDER BY 1, 2, 3, 4, 5
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields>
 			<field reporter:label="Ordering Agency" name="ordering_agency" reporter:datatype="link"/>
 			<field reporter:label="Purchase Order" name="purchase_order" reporter:datatype="link"/>
@@ -12106,10 +12106,10 @@ SELECT  usr,
 		</links>
     </class>
 	<class id="acqlisumi" controller="open-ils.cstore" oils_obj:fieldmapper="acq::lineitem_summary_invoiceable" oils_persist:readonly="true" reporter:label="Invoiceable Lineitem Summary">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
             SELECT * FROM acq.lineitem_summary 
 				WHERE item_count > (invoice_count + cancel_count)
-        </oils_persist:source_definition>
+        ]]></oils_persist:source_definition>
 		<fields oils_persist:primary="lineitem" oils_persist:sequence="acq.lineitem_id_seq">
 			<field reporter:label="Lineitem" name="lineitem" reporter:datatype="link"/>
 			<field reporter:label="Item Count" name="item_count" reporter:datatype="int"/>
@@ -12127,15 +12127,15 @@ SELECT  usr,
 		</links>
     </class>
 	<class id="iatc" controller="open-ils.reporter-store" oils_obj:fieldmapper="action::intersystem_transit_copy" oils_persist:readonly="true" reporter:core="true" reporter:label="Inter-system Copy Transit">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
 			SELECT	t.*
 			  FROM	action.transit_copy t
 				JOIN actor.org_unit AS s ON (t.source = s.id)
 				JOIN actor.org_unit AS d ON (t.dest = d.id)
-			  WHERE	s.parent_ou &lt;&gt; d.parent_ou
+			  WHERE	s.parent_ou <> d.parent_ou
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
 		<fields oils_persist:primary="id" oils_persist:sequence="action.transit_copy_id_seq">
 			<field reporter:label="Pretransit Copy Status" name="copy_status" reporter:datatype="link"/>
 			<field reporter:label="Destination" name="dest" reporter:datatype="link"/>
@@ -12160,7 +12160,7 @@ SELECT  usr,
 	</class>
 
     <class id="circbyyr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::circ_counts_by_year" oils_persist:readonly="true">
-		<oils_persist:source_definition>
+		<oils_persist:source_definition><![CDATA[
 
 	SELECT copy, SUM(count) AS count, year, is_renewal FROM (
 		SELECT
@@ -12192,7 +12192,7 @@ SELECT  usr,
 			extend_reporter.legacy_circ_count
 	)x GROUP BY 1, 3, 4
 
-		</oils_persist:source_definition>
+		]]></oils_persist:source_definition>
         <fields>
             <field reporter:label="Copy ID" name="copy" reporter:datatype="link"/>
             <field reporter:label="Count" name="count" reporter:datatype="int"/>
@@ -12679,7 +12679,7 @@ SELECT  usr,
 		</permacrud>
 	</class>
 	<class id="hasholdscount" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::has_holds_count" reporter:label="Copy Has Holds Count" oils_persist:readonly="true">
-        <oils_persist:source_definition>
+        <oils_persist:source_definition><![CDATA[
 	SELECT ahcm.target_copy AS id,count(*) AS count
 	 FROM
 	 action.hold_request ahr,
@@ -12690,7 +12690,7 @@ SELECT  usr,
 	 ahr.capture_time IS NULL AND
 	 ahr.id = ahcm.hold
 	 GROUP BY ahcm.target_copy
-        </oils_persist:source_definition>
+        ]]></oils_persist:source_definition>
         <fields oils_persist:primary="id">
             <field reporter:label="Copy ID" name="id" reporter:datatype="id"/>
             <field reporter:label="Holds Count" name="count" reporter:datatype="text"/>
