@@ -404,22 +404,6 @@ msgstr ""
 msgid "Copy Location"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:2
-msgid "Copy Location Group"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:57
-msgid "Copy Location Groups"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:7
-msgid "Copy Location Order"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:98
-msgid "Copy Locations"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:7
 msgid "Copy Templates"
 msgstr ""
@@ -1328,6 +1312,22 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/z3950_source.tt2:71
 msgid "Select a source to clone"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:2
+msgid "Shelving Location Group"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:57
+msgid "Shelving Location Groups"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:7
+msgid "Shelving Location Order"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:98
+msgid "Shelving Locations"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:46

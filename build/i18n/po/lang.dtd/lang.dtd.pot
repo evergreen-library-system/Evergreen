@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-15 11:28-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8388,11 +8388,11 @@ msgid "Evergreen: Copy Locations Editor"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor
-msgid " Copy Locations Editor "
+msgid " Shelving Locations Editor "
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.create
-msgid "Create a new copy location"
+msgid "Create a new shelving location"
 msgstr ""
 
 #: staff.server.admin.copy_locations.editor.name
