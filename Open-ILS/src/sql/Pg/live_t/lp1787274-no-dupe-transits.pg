@@ -1,0 +1,39 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(6);
+
+-- Run the tests.
+
+PREPARE insert_transit AS    
+    INSERT INTO action.transit_copy
+    (target_copy, source, dest, copy_status) VALUES (4003, 4, 7, 0);
+
+PREPARE insert_hold_transit AS
+    INSERT INTO action.hold_transit_copy
+    (target_copy, source, dest, copy_status) VALUES (4003, 4, 7, 8);
+
+PREPARE insert_reservation_transit AS
+    INSERT INTO action.reservation_transit_copy
+    (target_copy, source, dest, copy_status) VALUES (4003, 4, 7, 8);
+
+SELECT lives_ok('insert_transit', 'First transit inserts OK');
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.transit_copy WHERE target_copy = 4003)::INT, 
+    1, 'Confirm a single transit exists'); 
+
+SELECT throws_ok('insert_transit');
+
+SELECT throws_ok('insert_hold_transit');
+
+SELECT throws_ok('insert_reservation_transit');
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.transit_copy WHERE target_copy = 4003)::INT, 
+    1, 'Confirm a single transit exists'); 
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
