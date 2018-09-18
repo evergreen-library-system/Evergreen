@@ -1,7 +1,7 @@
 
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1133', :eg_version);
 
 \qecho Applying a unique constraint to action.transit_copy.  This will
 \qecho only effect newly created transits.  Admins are encouraged to manually 
