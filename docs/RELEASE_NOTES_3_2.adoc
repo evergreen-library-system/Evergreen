@@ -651,7 +651,7 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-* British Columbia Library Cooperative 
+* BC Library Cooperative 
 * CW MARS
 * Georgia Public Library Service
 * Indiana State Library
@@ -669,7 +669,7 @@ Evergreen:
 
 * Felicia Beaudry
 * Jason Boyer
-* British Columbia Libraries Cooperative
+* BC Libraries Cooperative
 * Andrea Buntz Neiman
 * Eva Cerninakova
 * Galen Charlton
@@ -679,6 +679,7 @@ Evergreen:
 * Jason Etheridge
 * Lynn Floyd
 * Jeff Godin
+* Government of Manitoba
 * Blake Graham-Henderson
 * Francisco J Guel-Mendoza
 * Kyle Huckins
