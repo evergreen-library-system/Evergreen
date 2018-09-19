@@ -858,7 +858,7 @@ sub transfer_copies_to_volume {
             { id => $copy_id , deleted => 'f' },
             {
                 flesh => 1,
-                flesh_fields => { acp => ['parts'] }
+                flesh_fields => { acp => ['parts', 'stat_cat_entries'] }
             }
         ])->[0];
         return OpenILS::Event->new('ASSET_COPY_NOT_FOUND') if !$copy;
