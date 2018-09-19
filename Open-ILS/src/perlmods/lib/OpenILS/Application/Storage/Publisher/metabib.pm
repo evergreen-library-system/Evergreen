@@ -8,6 +8,7 @@ use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::JSON;
+use List::MoreUtils qw(uniq);
 use Data::Dumper;
 use Digest::MD5 qw/md5_hex/;
 
@@ -3240,9 +3241,9 @@ sub query_parser_fts_wrapper {
                 my $lg_obj = asset::copy_location_group->retrieve($lg);
                 next unless $lg_obj;
     
-                push(@borg_list, ''.$lg_obj->owner);
+                push(@borg_list, @{$U->get_org_ancestors(''.$lg_obj->owner)});
             }
-            $borgs = join(',', @borg_list) if @borg_list;
+            $borgs = join(',', uniq @borg_list) if @borg_list;
         }
     
         if (!$borgs) {
@@ -3260,16 +3261,8 @@ sub query_parser_fts_wrapper {
             }
 
             if ($site) {
-                $borgs = OpenSRF::AppSession->create( 'open-ils.cstore' )->request(
-                    'open-ils.cstore.json_query.atomic',
-                    { from => [ 'actor.org_unit_ancestors', $site->id ] }
-                )->gather(1);
-
-                if (ref $borgs && @$borgs) {
-                    $borgs = join(',', map { $_->{'id'} } @$borgs);
-                } else {
-                    $borgs = undef;
-                }
+                $borgs = $U->get_org_ancestors($site->id);
+                $borgs = @$borgs ?  join(',', @$borgs) : undef;
             }
         }
     }
