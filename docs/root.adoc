@@ -262,6 +262,8 @@ include::admin/multilingual_search.adoc[]
 
 include::admin/infrastructure_auth_browse.adoc[]
 
+include::admin/virtual_index_defs.adoc[]
+
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
 
 :leveloffset: -1
