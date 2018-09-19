@@ -232,6 +232,8 @@ include::admin/age_hold_protection.adoc[]
 
 include::admin/authorities.adoc[]
 
+include::admin/infrastructure_auth_browse.adoc
+
 include::admin/Best_Hold_Selection_Sort_Order.adoc[]
 
 include::admin/booking-admin.adoc[]
