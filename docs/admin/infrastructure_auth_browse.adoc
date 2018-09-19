@@ -1,0 +1,39 @@
+Infrastructure Changes to Authority Browse
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As part of a larger development and consulting project to improve how authority records are used in public catalog browse, improvements have been made to how authority records are indexed in Evergreen.  This will not result in any direct changes to the public catalog, but will create infrastructure for improvements to the browse list.  Specifically, a configuration table will be used to specify how browse entries from authority records should be generated.  This new tables will supplement the existing authority control set configuration tables but will not replace them.
+
+Backend functionality
+^^^^^^^^^^^^^^^^^^^^^
+
+The new configuration table, authority.heading_field, specifies how headings can be extracted from MARC21 authority records. The general mechanism is similar to how config.metabib_field specifies how bibliographic records should be indexed: the XML representation of the MARC21 authority record is first passed through a stylesheet specified by the authority.heading_field definition, then XPath expressions are used to extract the heading for generating browse entries for the authority.simple_heading and metabib.browse_entry tables.
+
+The initial set of definitions supplied for authority.heading_field use the MARCXML to MADS 2.1 stylesheet; this helps ensure that heading strings extracted from authority records will match headings extracted from bibliographic records using the MODS stylesheet.
+
+Staff User Interface
+^^^^^^^^^^^^^^^^^^^^
+
+An interface for configuring authority headings is available in Server Administration in the web-based staff client, under the name "Authority Headings Fields".
+
+When navigated to, the interface looks like this:
+
+images::media/auth_browse_infra1.png[]
+
+Individual heading field definitions can be edited like this:
+
+images::media/auth_browse_infra2.png[]
+
+The available fields are:
+
+* Heading type: this can be personal_name, corporate_name, meeting_name, uniform_title, named_event, chronology_term, topical_term, geographic_name, genre_form_term, or medium_of_performance_term.
+* Heading purpose: this can be main, related, or variant, corresponding to authority record 1XX, 5XX, or 4XX fields respectively.
+* Heading field label: Label for use by administrators
+* Heading XSLT Format: This core
+* Heading XPath: Main XPath expression for selecting a part of the authority record to extract a heading from.
+* Heading Component XPath: XPath express for selecting parts of a heading string from the elements selected by Heading XPath.
+* Related/Variant Type XPath: Expression used, for variant and related headings, for identifying the specific purpose of the heading (e.g., broader term, narrower term, etc.).
+* Thesaurus XPath: Expression used for extracting the thesaurus that controls the heading
+* Thesaurus Override XPath: Expression used for identifying the thesaurus that controls a related heading.
+* Joiner string: String used to stitch together components of the heading into a single display string. If not set, " -- " is used.
+
+It should be noted that unless one has non-standard authority records, it is recommended that changes to the authority heading field definitions be minimized.

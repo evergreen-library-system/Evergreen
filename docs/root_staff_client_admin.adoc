@@ -212,6 +212,8 @@ include::admin/popularity_badges_web_client.adoc[]
 
 include::admin/multilingual_search.adoc[]
 
+include::admin/infrastructure_auth_browse.adoc[]
+
 :leveloffset: 0
 
 
