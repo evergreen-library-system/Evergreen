@@ -14,7 +14,7 @@
     </div>
 
     <div class="container-fluid pad-vert" ng-show="show_vols">
-        <div ng-show="record_id" class="row bg-info">
+        <div class="row bg-info">
             <div class="col-xs-2"><h4 class="center-block">[% l('Batch Apply') %]</h4></div>
             <div class="col-xs-10">
                 <div class="row">
