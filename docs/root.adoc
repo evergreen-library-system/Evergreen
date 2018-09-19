@@ -258,6 +258,8 @@ include::admin/copy_tags_admin.adoc[]
 
 include::admin/MARC_RAD_MVF_CRA.adoc[]
 
+include::admin/virtual_index_defs.adoc[]
+
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
 
 :leveloffset: -1
