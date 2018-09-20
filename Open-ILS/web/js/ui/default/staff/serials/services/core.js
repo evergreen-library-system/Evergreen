@@ -316,6 +316,7 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
         if (!sub) return args;
 
         var scap;
+        var pattern_changed = false;
         if (prev_iss && prev_iss.holding_code()) { // we're predicting
             var old_link_parts = JSON.parse(prev_iss.holding_code())[3].split('.');
             var olink = old_link_parts[0];
@@ -327,9 +328,14 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
 
             if (prev_iss.caption_and_pattern()) {
                 var tmp = sub.scaps().filter(function (s) {
-                    return (s.id() == prev_iss.caption_and_pattern());
+                    return (s.id() == prev_iss.caption_and_pattern() && s.active() == 't');
                 });
-                if (angular.isArray(tmp) && tmp[0]) scap = tmp[0];
+                if (angular.isArray(tmp) && tmp[0]) {
+                    scap = tmp[0];
+                } else {
+                    // pattern associated with last issue must no longer be active
+                    pattern_changed = true;
+                }
             }
 
             date = new Date(prev_iss.date_published());
@@ -379,7 +385,7 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
         var freq_index = pat.indexOf('w');
         if (freq_index > -1) {
             freq = pat[freq_index + 1];
-            if (prev_iss) {
+            if (prev_iss && !args.pattern_changed) {
                 date = new Date(
                     date.getTime() + service.freq_offset[freq]
                 );
@@ -448,7 +454,8 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
             chrons       : chrons,
             others       : others,
             freq         : freq,
-            adhoc        : adhoc
+            adhoc        : adhoc,
+            pattern_changed : pattern_changed
         };
     }
 
@@ -1172,7 +1179,9 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
             }).then(function(hc) {
     
                 var base_iss;
-                if (!lastItem) {
+                var include_base_iss = 0;
+                if (!lastItem || hc.pattern_changed) {
+                    include_base_iss = 1;
                     base_iss = new egCore.idl.siss();
                     base_iss.creator( egCore.auth.user().id() );
                     base_iss.editor( egCore.auth.user().id() );
@@ -1182,7 +1191,7 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
                     base_iss.holding_code( JSON.stringify(hc.holding_code) );
                     base_iss.holding_type( hc.type );
                 }
-    
+
                 // if we're predicting without a preexisting holding, reduce the count
                 if (!lastItem) hc.count--;
     
@@ -1191,7 +1200,7 @@ function(egCore , orderByFilter , $q , $filter , $uibModal , ngToast , egConfirm
                     'open-ils.serial.make_predictions',
                     egCore.auth.token(),
                     { ssub_id : mySsubId,
-                      include_base_issuance : lastItem ? 0 : 1,
+                      include_base_issuance : include_base_iss,
                       num_to_predict : hc.count,
                       base_issuance : base_iss || lastItem
                     }
