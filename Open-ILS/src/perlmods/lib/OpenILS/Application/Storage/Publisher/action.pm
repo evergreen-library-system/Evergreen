@@ -2169,7 +2169,7 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
              WHEN h.capture_time IS NULL THEN 2
              WHEN cp.status = 6 THEN 3
              WHEN EXTRACT(EPOCH FROM COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL) = 0 THEN 4
-             WHEN NOW() + COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL > NOW() THEN 5
+             WHEN h.shelf_time + COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL > NOW() THEN 5
              ELSE 4
         END AS hold_status,
 
