@@ -55,9 +55,12 @@ Installing prerequisites
 ------------------------
 
   * **PostgreSQL**: The minimum supported version is 9.4.
-  * **Linux**: Evergreen has been tested on Debian Stretch (9), 
-    Debian Jessie (8), Ubuntu Xenial Xerus (16.04), and Ubuntu
-    Trusty Tahr (14.04).
+  * **Linux**: Evergreen has been tested on 
+    Debian Stretch (9), 
+    Debian Jessie (8), 
+    Ubuntu Bionic Beaver (18.04), 
+    Ubuntu Xenial Xerus (16.04), 
+    and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -72,8 +75,9 @@ before you can successfully configure, compile, and install Evergreen.
 2. On some distributions, it is necessary to install PostgreSQL 9.4+ from external
    repositories.
 +
-  * Ubuntu (Trusty) comes with an older version of PostgreSQL, so
-    steps are taken to automatically utilize the PostgreSQL
+  * Ubuntu (Trusty) comes with an older version of PostgreSQL
+    and Ubuntu (Bionic) comes with a newer version of PostgreSQL, 
+    so steps are taken to automatically utilize the PostgreSQL
     community's apt sources.
     (For complete details, see: https://wiki.postgresql.org/wiki/Apt)
   * Debian (Jessie/Stretch) and Ubuntu (Xenial) comes with PostgreSQL 9.4+,
@@ -81,7 +85,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 3. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-stretch`, `debian-jessie`,`ubuntu-xenial`,
+   substituting `debian-stretch`,`debian-jessie`,`ubuntu-bionic`,`ubuntu-xenial`,
    or `ubuntu-trusty` for <osname> below:
 +
 [source, bash]
@@ -434,6 +438,7 @@ make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules for your
