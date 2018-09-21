@@ -91,6 +91,8 @@ include::cataloging/link_checker.adoc[]
 
 include::cataloging/record_buckets.adoc[]
 
+include::cataloging/merge_overlay_bibs.adoc[]
+
 :leveloffset: -1
 
 include::cataloging/MARC_batch_edit.adoc[]
