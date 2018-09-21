@@ -16,7 +16,7 @@ my $script = OpenILS::Utils::TestUtils->new();
 
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/cleanse_ISO8601/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 
 our $apputils   = "OpenILS::Application::AppUtils";
 
@@ -194,8 +194,8 @@ if (my $bill_resp = $bill_req->recv) {
     }
 }
 
-my $xact_start = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start));
-my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date));
+my $xact_start = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start));
+my $due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date));
 
 # Rewrite history; technically we should rewrite status_changed_item on the copy as well, but, meh...
 $circ->xact_start( $xact_start->subtract( days => 20 )->iso8601() );

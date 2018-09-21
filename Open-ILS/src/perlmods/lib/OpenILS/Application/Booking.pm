@@ -7,7 +7,7 @@ use POSIX qw/strftime/;
 use OpenILS::Application;
 use base qw/OpenILS::Application/;
 
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Application::AppUtils;

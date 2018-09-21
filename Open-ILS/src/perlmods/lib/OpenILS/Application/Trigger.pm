@@ -10,7 +10,7 @@ use OpenSRF::AppSession;
 use OpenSRF::MultiSession;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 
 use DateTime;
 use DateTime::Format::ISO8601;
@@ -93,7 +93,7 @@ sub create_active_events_for_object {
 
             if (my $dfield = $def->delay_field) {
                 if ($target->$dfield()) {
-                    $date = DateTime::Format::ISO8601->new->parse_datetime( cleanse_ISO8601($target->$dfield) );
+                    $date = DateTime::Format::ISO8601->new->parse_datetime( clean_ISO8601($target->$dfield) );
                 } else {
                     next;
                 }
@@ -187,7 +187,7 @@ sub create_event_for_object_and_def {
 
             if (my $dfield = $def->delay_field) {
                 if ($target->$dfield()) {
-                    $date = DateTime::Format::ISO8601->new->parse_datetime( cleanse_ISO8601($target->$dfield) );
+                    $date = DateTime::Format::ISO8601->new->parse_datetime( clean_ISO8601($target->$dfield) );
                 } else {
                     next;
                 }

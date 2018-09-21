@@ -32,7 +32,7 @@ use OpenILS::Utils::Penalty;
 use Business::Stripe;
 $Data::Dumper::Indent = 0;
 use OpenILS::Const qw/:const/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 my $parser = DateTime::Format::ISO8601->new;
 
@@ -1290,7 +1290,7 @@ __PACKAGE__->register_method(
 sub _to_epoch {
     my $ts = shift @_;
 
-    return $parser->parse_datetime(cleanse_ISO8601($ts))->epoch;
+    return $parser->parse_datetime(clean_ISO8601($ts))->epoch;
 }
 
 my %_statement_sort = (

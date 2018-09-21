@@ -5,7 +5,7 @@ use OpenSRF::EX qw(:try);
 use Data::Dumper;
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
@@ -186,7 +186,7 @@ sub noncat_due_date {
     my $otype = $e->retrieve_config_non_cataloged_type($circ->item_type) 
         or return $e->die_event;
 
-    my $duedate = $_dt_parser->parse_datetime( cleanse_ISO8601($circ->circ_time) );
+    my $duedate = $_dt_parser->parse_datetime( clean_ISO8601($circ->circ_time) );
     $duedate = $duedate
         ->add( seconds => interval_to_seconds($otype->circ_duration) )
         ->strftime('%FT%T%z');

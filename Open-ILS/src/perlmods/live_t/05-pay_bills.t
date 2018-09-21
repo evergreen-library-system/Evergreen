@@ -16,7 +16,7 @@ my $script = OpenILS::Utils::TestUtils->new();
 
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/cleanse_ISO8601/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 
 our $apputils   = "OpenILS::Application::AppUtils";
 

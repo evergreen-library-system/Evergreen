@@ -16,7 +16,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::SettingsClient;
 
 use OpenSRF::Utils::Cache;
