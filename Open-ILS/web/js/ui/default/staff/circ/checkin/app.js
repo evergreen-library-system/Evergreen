@@ -130,13 +130,13 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     function compile_checkin_args(args) {
         var params = angular.copy(args);
 
+        // a backdate of 'today' is not really a backdate
+        if (!$scope.is_backdate())
+            delete params.backdate;
+
         if (params.backdate) {
             params.backdate = 
                 params.backdate.toISOString().replace(/T.*/,'');
-
-            // a backdate of 'today' is not really a backdate
-            if (params.backdate == $scope.max_backdate)
-                delete params.backdate;
         }
 
         angular.forEach(['noop','void_overdues',
