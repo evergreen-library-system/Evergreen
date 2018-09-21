@@ -350,6 +350,17 @@ BEGIN
         max_fine_rule, stop_fines, workstation, checkin_workstation, checkin_scan_time, parent_circ
         FROM action.all_circulation WHERE id = OLD.id;
 
+    -- Migrate billings and payments to aged tables
+
+    INSERT INTO money.aged_billing
+        SELECT * FROM money.billing WHERE xact = OLD.id;
+
+    INSERT INTO money.aged_payment 
+        SELECT * FROM money.payment_view WHERE xact = OLD.id;
+
+    DELETE FROM money.billing WHERE xact = OLD.id;
+    DELETE FROM money.payment WHERE xact = OLD.id;
+
     RETURN OLD;
 END;
 $$ LANGUAGE 'plpgsql';

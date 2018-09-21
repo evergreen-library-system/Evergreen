@@ -77,7 +77,6 @@ END;
 $$ LANGUAGE PLPGSQL;
 CREATE TRIGGER maintain_billing_ts_tgr BEFORE INSERT OR UPDATE ON money.billing FOR EACH ROW EXECUTE PROCEDURE money.maintain_billing_ts();
 
-
 CREATE TABLE money.payment (
 	id		BIGSERIAL			PRIMARY KEY,
 	xact		BIGINT				NOT NULL, -- money.billable_xact.id
@@ -688,6 +687,11 @@ CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 		LEFT JOIN money.bnm_desk_payment p ON (ws.id = p.cash_drawer)
 		LEFT JOIN money.payment_view t ON (p.id = t.id);
 
+
+-- Create 'aged' clones of billing and payment_view tables
+CREATE TABLE money.aged_payment (LIKE money.payment INCLUDING INDEXES);
+ALTER TABLE money.aged_payment ADD COLUMN payment_type TEXT NOT NULL;
+CREATE TABLE money.aged_billing (LIKE money.billing INCLUDING INDEXES);
 
 COMMIT;
 
