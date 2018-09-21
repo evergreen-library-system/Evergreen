@@ -654,6 +654,11 @@ sub set_circ_due_date {
     if (!(interval_to_seconds($circ->duration) % 86400)) { # duration is divisible by days
         my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
+
+        # since the new date may be coming in as UTC, convert it
+        # to the same time zone as the original due date so that
+        # ->ymd is more likely to yield the expected results
+        $new_date->set_time_zone($original_date->time_zone());
         $date = clean_ISO8601( $new_date->ymd . 'T' . $original_date->strftime('%T%z') );
     }
 
