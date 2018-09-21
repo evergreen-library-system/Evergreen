@@ -131,6 +131,10 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         var params = angular.copy(args);
 
         // a backdate of 'today' is not really a backdate
+        // (and this particularly matters when checking in hourly
+        // loans, as backdated checkins currently get the time
+        // portion of the checkin time from the due date; this will
+        // stop mattering when FIXME bug 1793817 is dealt with)
         if (!$scope.is_backdate())
             delete params.backdate;
 
