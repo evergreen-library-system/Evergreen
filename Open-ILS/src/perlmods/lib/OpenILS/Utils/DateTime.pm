@@ -253,6 +253,8 @@ sub clean_ISO8601 {
 			my $z;
 			if ($date =~ /([-+]{1})([0-9]{1,2})(?::?([0-9]{1,2}))*\s*$/o) {
 				$z = sprintf('%s%0.2d%0.2d',$1,$2,$3)
+			} elsif ($date =~ /Z\s*$/) {
+				$z = "+00:00";
 			} else {
 				$z =  DateTime::TimeZone::offset_as_string(
 					DateTime::TimeZone
