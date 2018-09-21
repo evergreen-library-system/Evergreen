@@ -93,6 +93,8 @@ include::cataloging/record_buckets.adoc[]
 
 :leveloffset: -1
 
+include::cataloging/merge_overlay_bibs.adoc[]
+
 include::cataloging/MARC_batch_edit.adoc[]
 
 :leveloffset: 0
