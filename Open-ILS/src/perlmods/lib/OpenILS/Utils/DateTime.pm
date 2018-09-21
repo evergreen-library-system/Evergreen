@@ -206,6 +206,41 @@ sub gmtime_ISO8601 {
 	return sprintf('%d-%0.2d-%0.2dT%0.2d:%0.2d:%0.2d+00:00', $y, $M, $d, $h, $m, $s);
 }
 
+=head2 clean_ISO8601($date_string)
+
+Given a date string or a date/time string in a variety of ad-hoc
+formats, returns an ISO8601-formatted date/time string.
+
+The date portion of the input is expected to consist of a four-digit
+year, followed by a two-digit month, followed by a two-digit year,
+with each part optionally separated by a hyphen.  If there is
+only a date portion, it will be normalized to use hyphens.
+
+If there is no time portion in the input, "T00:00:00" is appended
+before the results are returned.
+
+For example, "20180917" would become "2018-09-17T00:00:00".
+
+If the input does not have a recognizable date, it is simply
+returned as is.
+
+If there is a time portion, it is expected to consist of two-digit
+hour, minutes, and seconds delimited by colons.  That time is
+appended to the return with "T" separting the date and time
+portions.
+
+If there is an ISO8601-style numeric timezone offset, it is
+normalized and appended to the return. If there is no timezone
+offset supplied in the input, the offset of the server's
+time zone is append to the return. Note that as implied above,
+if only a date is supplied, the return value does not include a
+timezone offset.
+
+For example, for a server running in U.S. Eastern Daylight
+Savings time, "20180917 08:31:15" would become "2018-09-17T08:31:15-04:00".
+
+=cut
+
 sub clean_ISO8601 {
 	my $self = shift;
 	my $date = shift || $self;
