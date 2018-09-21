@@ -1,7 +1,7 @@
 <!-- item checkout form / list -->
 
 <div class="row pad-vert">
-  <div class="col-md-6">
+  <div class="col-md-5">
     <form ng-submit="checkout(checkoutArgs)" role="form" class="form-inline">
       <div class="input-group">
 
@@ -39,8 +39,8 @@
     <div class="flex-row">
       <div class="flex-cell"></div>
 
-<div class="input-group">
-<div class="input-group-btn" uib-dropdown>
+<div class="form-group row">
+<div class="col-md-3" uib-dropdown>
       <button type="button" ng-class="{'btn-success' : date_options.has_sticky_date}" class="btn btn-default" uib-dropdown-toggle>
         [% l('Date Options') %]
         <span class="caret"></span>
@@ -75,10 +75,8 @@
           [% l('Specific Due Date') %]
         </label>
       </div> -->
-      <!-- FIXME: This needs a time component as well, but type="datetime" 
-            is not yet supported by any browsers -->
-      <div>
-        <eg-date-input ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date"></eg-date-input>
+      <div class="col-md-4">
+        <eg-date-input ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date" show-time-picker></eg-date-input>
       </div>
 </div>
     </div>
