@@ -3,7 +3,7 @@ use parent qw/OpenILS::Application::Storage::Publisher/;
 use strict;
 use warnings;
 use OpenSRF::Utils::Logger qw/:level :logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
@@ -1218,7 +1218,7 @@ sub new_hold_copy_targeter {
             $_->delete for (@oldmaps);
 
             if ($hold->expire_time) {
-                my $ex_time = $parser->parse_datetime( cleanse_ISO8601( $hold->expire_time ) );
+                my $ex_time = $parser->parse_datetime( clean_ISO8601( $hold->expire_time ) );
                 if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
 
                     # cancel cause = un-targeted expiration
@@ -1677,7 +1677,7 @@ sub process_recall {
 
         # Give the user a new due date of either a full recall threshold,
         # or the return interval, whichever is further in the future
-        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold))->iso8601();
+        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold))->iso8601();
         if (DateTime->compare(DateTime::Format::ISO8601->parse_datetime($threshold_date), DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
             $return_date = $threshold_date;
         }
@@ -1756,7 +1756,7 @@ sub reservation_targeter {
 
             die "OK\n" if (!$bresv or $bresv->capture_time or $bresv->cancel_time);
 
-            my $end_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->end_time ) );
+            my $end_time = $parser->parse_datetime( clean_ISO8601( $bresv->end_time ) );
             if (DateTime->compare($end_time, DateTime->now) < 0) {
 
                 # cancel cause = un-targeted expiration
@@ -1831,8 +1831,8 @@ sub reservation_targeter {
 
                     if (@$circs) {
                         my $due_date = $circs->[0]->due_date;
-                        $due_date = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
-                        my $start_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->start_time ) );
+                        $due_date = $parser->parse_datetime( clean_ISO8601( $due_date ) );
+                        my $start_time = $parser->parse_datetime( clean_ISO8601( $bresv->start_time ) );
                         if (DateTime->compare($start_time, $due_date) < 0) {
                             $conflicts{$res->id} = $circs->[0]->to_fieldmapper;
                             next;

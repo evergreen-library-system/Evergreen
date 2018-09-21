@@ -267,7 +267,7 @@ sub init_ro_object_cache {
             $date = '000' . $date;
         }
 
-        my $cleansed_date = cleanse_ISO8601($date);
+        my $cleansed_date = clean_ISO8601($date);
 
         $date = DateTime::Format::ISO8601->new->parse_datetime($cleansed_date);
         if ($context_org) {

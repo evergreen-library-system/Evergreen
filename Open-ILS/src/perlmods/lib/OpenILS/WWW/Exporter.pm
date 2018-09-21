@@ -16,7 +16,7 @@ use Data::Dumper;
 use Text::CSV;
 
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::AppSession;

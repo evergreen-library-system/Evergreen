@@ -2,7 +2,7 @@ package OpenILS::Application::Trigger::Validator;
 use strict; use warnings;
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Const qw/:const/;
 use OpenILS::Application::AppUtils;
@@ -47,7 +47,7 @@ sub MinPassiveTargetAge {
         return 0; # no-op false
     }
 
-    my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($target->$delay_field()));
+    my $delay_field_ts = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($target->$delay_field()));
 
     # to get the minimum time that the target must have aged to, add the min age to the delay field
     $delay_field_ts->add( seconds => interval_to_seconds( $env->{params}->{min_target_age} ) );
@@ -69,7 +69,7 @@ sub CircIsOverdue {
         return 0 if (!$self->MinPassiveTargetAge($env));
     }
 
-    my $due_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+    my $due_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($circ->due_date));
     return 0 if $due_date > DateTime->now;
 
     return 1;

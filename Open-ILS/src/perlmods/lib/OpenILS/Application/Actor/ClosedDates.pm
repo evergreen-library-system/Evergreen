@@ -2,7 +2,7 @@ package OpenILS::Application::Actor::ClosedDates;
 use base 'OpenILS::Application';
 use strict; use warnings;
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils qw(:datetime);
+use OpenILS::Utils::DateTime qw(:datetime);
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -302,7 +302,7 @@ sub is_probably_emergency_closing {
 
     # First, when is it?
     my $start_seconds = DateTime::Format::ISO8601->parse_datetime(
-        cleanse_ISO8601($date->close_start)
+        clean_ISO8601($date->close_start)
     )->epoch;
 
     # Is it in the past?

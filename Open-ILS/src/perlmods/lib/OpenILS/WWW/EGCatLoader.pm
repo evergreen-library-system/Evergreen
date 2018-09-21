@@ -6,7 +6,7 @@ use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;

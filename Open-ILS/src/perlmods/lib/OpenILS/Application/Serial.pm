@@ -43,7 +43,7 @@ use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::AppSession;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -1060,7 +1060,7 @@ sub make_prediction_values {
         $logger->debug('make_prediction_values reviving holdings: ' . OpenSRF::Utils::JSON->perl2JSON($predict_from_siss));
         $options->{predict_from} = _revive_holding($predict_from_siss->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
         if ($fake_chron_needed) {
-            $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($predict_from_siss->date_published));
+            $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($predict_from_siss->date_published));
         }
         $logger->debug('make_prediction_values predicting with options: ' . OpenSRF::Utils::JSON->perl2JSON($options));
         push( @predictions, _generate_issuance_values($mfhd, $options) );

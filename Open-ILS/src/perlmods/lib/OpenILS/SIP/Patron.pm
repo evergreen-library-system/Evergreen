@@ -18,7 +18,7 @@ use OpenILS::SIP;
 use OpenILS::Application::AppUtils;
 use OpenILS::Application::Actor;
 use OpenILS::Const qw/:const/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -337,7 +337,7 @@ sub charge_ok {
     my $circ_is_blocked = 0;
 
     # compute expiration date for borrowing privileges
-    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($u->expire_date));
 
     $circ_is_blocked =
         (($u->barred eq 't') or
@@ -356,7 +356,7 @@ sub renew_ok {
     my $renew_is_blocked = 0;
 
     # compute expiration date for borrowing privileges
-    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($u->expire_date));
 
     $renew_is_blocked =
         (($u->barred eq 't') or
@@ -382,7 +382,7 @@ sub hold_ok {
     my $hold_is_blocked = 0;
 
     # compute expiration date for borrowing privileges
-    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($u->expire_date));
 
     $hold_is_blocked =
         (($u->barred eq 't') or
@@ -450,7 +450,7 @@ sub screen_msg {
     return $b if $u->standing_penalties and @{$u->standing_penalties};
 
     # has the patron account expired?
-    my $expire = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($u->expire_date));
+    my $expire = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($u->expire_date));
     return $b if CORE::time > $expire->epoch;
 
     return '';

@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 30;
+use Test::More tests => 39;
 use Test::Warn;
 use utf8;
 
@@ -21,6 +21,7 @@ use_ok( 'OpenILS::Utils::RemoteAccount' );
 use_ok( 'OpenILS::Utils::ZClient' );
 use_ok( 'OpenILS::Utils::EDIReader' );
 use_ok( 'OpenILS::Utils::HTTPClient' );
+use_ok( 'OpenILS::Utils::DateTime' );
 
 # LP 800269 - Test MFHD holdings for records that only contain a caption field
 my $co_marc = MARC::Record->new();
@@ -98,3 +99,11 @@ is($edi_msgs->[0]->{purchase_order}, '24', 'edi reader: PO number');
 is($edi_msgs->[1]->{invoice_ident}, '5TST084027', 'edi reader: invoice ident');
 is(scalar(@{$edi_msgs->[1]->{lineitems}}), '2', 'edi reader: lineitem count');
 
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 second'), 1);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 minute'), 60);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 hour'), 3600);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 day'), 86400);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 week'), 604800);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month'), 2628000);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 year'), 31536000);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 year 1 second'), 31536001);

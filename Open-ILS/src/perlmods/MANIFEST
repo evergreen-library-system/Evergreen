@@ -136,6 +136,7 @@ lib/OpenILS/Utils/Configure.pm
 lib/OpenILS/Utils/Cronscript.pm
 lib/OpenILS/Utils/Cronscript.pm.in
 lib/OpenILS/Utils/CStoreEditor.pm
+lib/OpenILS/Utils/DateTime.pm
 lib/OpenILS/Utils/Fieldmapper.pm
 lib/OpenILS/Utils/HTTPClient.pm
 lib/OpenILS/Utils/ISBN.pm
