@@ -365,6 +365,8 @@ include::cataloging/record_buckets.adoc[]
 // Return titles to correct level.
 :leveloffset: 0
 
+include::cataloging/merge_overlay_bibs.adoc[]
+
 include::cataloging/physical_char_wizard.adoc[]
 
 include::admin/staff_client-return_to_results_from_marc.adoc[]
