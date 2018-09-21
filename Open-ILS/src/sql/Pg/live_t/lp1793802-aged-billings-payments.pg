@@ -1,0 +1,47 @@
+-- Load the TAP functions.
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(8);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.billing WHERE xact = 9),
+    1::BIGINT, 'Confirm billing for xact exists'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.payment WHERE xact = 9),
+    1::BIGINT, 'Confirm payment for xact exists'
+);
+
+PREPARE age_circ AS DELETE FROM action.circulation WHERE id = 9;
+SELECT lives_ok('age_circ', 'Age circulation without errors');
+
+SELECT is(
+    (SELECT COUNT(*) FROM action.aged_circulation WHERE id = 9),
+    1::BIGINT, 'Confirm circ aged'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.aged_billing WHERE xact = 9),
+    1::BIGINT, 'Confirm aged billing created'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.aged_payment WHERE xact = 9),
+    1::BIGINT, 'Confirm aged payment created'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.billing WHERE xact = 9),
+    0::BIGINT, 'Confirm source billing deleted'
+);
+
+SELECT is(
+    (SELECT COUNT(*) FROM money.payment WHERE xact = 9),
+    0::BIGINT, 'Confirm source payment deleted'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
