@@ -654,6 +654,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             dirtyFlag : '=',
             recordId : '=',
             marcXml : '=',
+            bibSource : '=?',
             onSave : '=',
             // in-place mode means that the editor is being
             // used just to munge some MARCXML client-side, rather
@@ -719,8 +720,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     if (newVal != oldVal) egCore.hatch.setItem('cat.marcedit.flateditor', newVal);
                 });
 
+                // necessary to prevent ng-model scope hiding ugliness in egMarcEditBibSource:
+                $scope.bib_source = {
+                    id : $scope.bibSource ? $scope.bibSource : null
+                };
                 $scope.brandNewRecord = false;
-                $scope.bib_source = null;
                 $scope.record_type = $scope.recordType || 'bre';
                 $scope.max_undo = $scope.maxUndo || 100;
                 $scope.record_undo_stack = [];
@@ -1189,8 +1193,8 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.dirtyFlag = false;
                         $scope.flat_text_marc = $scope.record.toBreaker();
 
-                        if ($scope.record_type == 'bre') {
-                            $scope.bib_source = $scope.Record().source();
+                        if ($scope.record_type == 'bre' && !$scope.brandNewRecord) {
+                            $scope.bib_source.id = $scope.bibSource = rec.source(); //$scope.Record().source();
                         }
 
                     }).then(function(){
@@ -1368,10 +1372,17 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 };
 
                 $scope.saveRecord = function () {
+                    
                     if ($scope.inPlaceMode) {
                         $scope.marcXml = $scope.record.toXmlString();
+                        
+                        if ($scope.record_type == 'bre'){
+                            $scope.bibSource = $scope.bib_source.id;
+                        }
+
                         return $timeout(processOnSaveCallbacks);
                     }
+
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());
                     $scope.Record().edit_date('now');
@@ -1519,7 +1530,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         replace: true,
         template: '<span class="nullable">'+
-                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources | orderBy: \'source()\'">'+
+                    '<select class="form-control" ng-model="bib_source.id" ng-options="s.id() as s.source() for s in bib_sources | orderBy: \'source()\'">'+
                       '<option value="">Select a Source</option>'+
                     '</select>'+
                   '</span>',
@@ -1527,9 +1538,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             function ($scope , egCore) {
 
                 egCore.pcrud.retrieveAll('cbs', {}, {atomic : true})
-                    .then(function(list) { $scope.bib_sources = list; });
+                    .then(function(list) {
+                        $scope.bib_sources = list;
+                    });
 
-                $scope.$watch('bib_source',
+                $scope.$watch('bib_source.id',
                     function(newVal, oldVal) {
                         if (newVal !== oldVal) {
                             $scope.bre.source(newVal);
