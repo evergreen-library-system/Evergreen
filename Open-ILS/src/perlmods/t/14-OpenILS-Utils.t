@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 42;
+use Test::More tests => 43;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
@@ -110,14 +110,23 @@ is (OpenILS::Utils::DateTime::interval_to_seconds('1 month'), 2628000);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year'), 31536000);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year 1 second'), 31536001);
 
-# get current timezone offset for future use
-my $offset = DateTime::TimeZone::offset_as_string(
-                DateTime::TimeZone->new( name => 'local' )->offset_for_datetime(
-                    DateTime::Format::ISO8601->new()->parse_datetime('2018-09-17')
-                )
-            );
-$offset =~ s/^(.\d\d)(\d\d)+/$1:$2/;
+sub get_offset {
+    # get current timezone offset for future use
+    my $offset = DateTime::TimeZone::offset_as_string(
+                    DateTime::TimeZone->new( name => 'local' )->offset_for_datetime(
+                        DateTime::Format::ISO8601->new()->parse_datetime('2018-09-17')
+                    )
+                );
+    $offset =~ s/^(.\d\d)(\d\d)+/$1:$2/;
+    return $offset;
+}
 
 is (OpenILS::Utils::DateTime::clean_ISO8601('20180917'), '2018-09-17T00:00:00', 'plain date converted to ISO8601 timestamp');
 is (OpenILS::Utils::DateTime::clean_ISO8601('I am not a date'), 'I am not a date', 'non-date simply returned as is');
+my $offset = get_offset();
 is (OpenILS::Utils::DateTime::clean_ISO8601('20180917 08:31:15'), "2018-09-17T08:31:15$offset", 'time zone added to date/time');
+
+# force timezone to specific value to avoid a spurious
+# pass if this test happens to be run in UTC
+$ENV{TZ} = 'EST';
+is (OpenILS::Utils::DateTime::clean_ISO8601('2018-09-17T17:31:15Z'), "2018-09-17T17:31:15+00:00", 'interpret Z in timestamp correctly');
