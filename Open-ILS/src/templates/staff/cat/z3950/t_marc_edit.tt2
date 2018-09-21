@@ -5,8 +5,8 @@
     <h4 class="modal-title">[% l('Import Record') %]</h4>
   </div>
   <div class="modal-body">
-    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="marc_xml"
-                         record-type="bre" save-label="{{save_label}}"
+    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="args.marc_xml"
+                         record-type="bre" save-label="{{save_label}}" bib-source="args.bib_source"
                          on-save="import_record_callback" fast-add="true" in-place-mode="in_place_mode"
     />
   </div>
