@@ -8070,7 +8070,7 @@ SELECT  usr,
 		oils_obj:fieldmapper="money::aged_payment" 
 		oils_persist:tablename="money.aged_payment" 
 		reporter:label="Payments: Aged">
-		<fields oils_persist:primary="id" oils_persist:sequence="">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
 			<field reporter:label="Note" name="note" reporter:datatype="text"/>
@@ -8090,6 +8090,26 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="mallp" controller="open-ils.cstore" 
+		oils_obj:fieldmapper="money::all_payments" 
+		oils_persist:tablename="money.all_payments" 
+		oils_persist="readonly" reporter:label="All Payments">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
+			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Payment Date/Time" name="payment_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Payment Type" name="payment_type" reporter:datatype="text"/>
+			<field reporter:label="Aged Circulation" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<!-- 
+				'xact' may link to a money.billabl_xact or to a money.aged_circulation.
+			 -->
+		</links>
+	</class>
+
 	<class id="mbp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::bnm_payment" oils_persist:tablename="money.bnm_payment_view" reporter:core="true" reporter:label="Payments: Brick-and-mortar">
 		<fields oils_persist:primary="id" oils_persist:sequence="">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
@@ -8366,7 +8386,7 @@ SELECT  usr,
 		oils_obj:fieldmapper="money::aged_billing" 
 		oils_persist:tablename="money.aged_billing" 
 		reporter:label="Aged Billing Line Item">
-		<fields oils_persist:primary="id" oils_persist:sequence="">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.billing_id_seq">
 			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
 			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
 			<field reporter:label="Billing Period Start" name="period_start" reporter:datatype="timestamp"/>
@@ -8393,6 +8413,33 @@ SELECT  usr,
 				</retrieve>
 			</actions>
 		</permacrud>
+	</class>
+	<class id="mallb" controller="open-ils.cstore" 
+		oils_obj:fieldmapper="money::all_billings" 
+		oils_persist:tablename="money.all_billings" 
+		oils_persist="readonly" reporter:label="All Billing Line Items">
+		<fields oils_persist:primary="id" oils_persist:sequence="">
+			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
+			<field reporter:label="Create Date" name="create_date" reporter:datatype="timestamp"/>
+			<field reporter:label="Billing Period Start" name="period_start" reporter:datatype="timestamp"/>
+			<field reporter:label="Billing Period End" name="period_end" reporter:datatype="timestamp"/>
+			<field reporter:label="Legacy Billing Timestamp" name="billing_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Legacy Billing Type" name="billing_type" reporter:datatype="text"/>
+			<field reporter:label="Billing ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Void Timestamp" name="void_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Voided?" name="voided" reporter:datatype="bool"/>
+			<field reporter:label="Voiding Staff Member" name="voider" reporter:datatype="link"/>
+			<field reporter:label="Transaction" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Type" name="btype" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="voider" reltype="has_a" key="id" map="" class="au"/>
+			<link field="btype" reltype="has_a" key="id" map="" class="cbt"/>
+			<!-- 
+				'xact' may link to a money.billabl_xact or to a money.aged_circulation.
+			 -->
+		</links>
 	</class>
 	<class id="pugm" controller="open-ils.cstore" oils_obj:fieldmapper="permission::usr_grp_map" oils_persist:tablename="permission.usr_grp_map" reporter:label="User Group Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="permission.usr_grp_map_id_seq">

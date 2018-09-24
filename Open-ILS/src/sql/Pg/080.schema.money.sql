@@ -691,7 +691,18 @@ CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 -- Create 'aged' clones of billing and payment_view tables
 CREATE TABLE money.aged_payment (LIKE money.payment INCLUDING INDEXES);
 ALTER TABLE money.aged_payment ADD COLUMN payment_type TEXT NOT NULL;
+
 CREATE TABLE money.aged_billing (LIKE money.billing INCLUDING INDEXES);
+
+CREATE OR REPLACE VIEW money.all_payments AS
+    SELECT * FROM money.payment_view 
+    UNION ALL
+    SELECT * FROM money.aged_payment;
+
+CREATE OR REPLACE VIEW money.all_billings AS
+    SELECT * FROM money.billing
+    UNION ALL
+    SELECT * FROM money.aged_billing;
 
 COMMIT;
 
