@@ -16,7 +16,7 @@ Acquisitions
 ~~~~~~~~~~~~
 
 Auto-Cancel Line items When All Copies Are Canceled
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 When a copy (line item detail) is canceled through the Acquisitions interface, 
 the parent line item is also canceled if all copies for that line item are also 
 canceled.  The cancel reason given will come from:

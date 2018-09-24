@@ -211,7 +211,7 @@ Cancel/delay reasons now appear on the worksheet and the printable purchase orde
 ========================
 When all the copies of a line item are canceled through the Acquisitions interface,
 the parent lineitem is also canceled. The cancel reason will be calculated based
-on the settings of the 
+on the settings of:
   
 . The cancel reason for the last copy to be canceled copy if the cancel reason's
 _Keep Debits_ setting is true.
