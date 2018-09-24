@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-08-15 11:28-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: 2012-05-25 22:59+0000\n"
 "Last-Translator: Tomas Abril <Unknown>\n"
 "Language-Team: Português do Brasil <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-08-16 05:46+0000\n"
-"X-Generator: Launchpad (build 18747)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:35+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -8198,12 +8198,12 @@ msgid "Evergreen: Copy Locations Editor"
 msgstr "Evergreen: Editor de Localizações de Exemplar"
 
 #: staff.server.admin.copy_locations.editor
-msgid " Copy Locations Editor "
-msgstr " Editor de Localizações de Exemplares "
+msgid " Shelving Locations Editor "
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.create
-msgid "Create a new copy location"
-msgstr "Cria uma nova localização de exemplar"
+msgid "Create a new shelving location"
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.name
 msgid "Name: "
@@ -15076,6 +15076,12 @@ msgstr ""
 #~ msgctxt "staff.server.admin.cash.date.select"
 #~ msgid "Date selector"
 #~ msgstr "Seletor de datas"
+
+#~ msgid " Copy Locations Editor "
+#~ msgstr " Editor de Localizações de Exemplares "
+
+#~ msgid "Create a new copy location"
+#~ msgstr "Cria uma nova localização de exemplar"
 
 #~ msgid "Copy Hold"
 #~ msgstr "Reserva de Exemplar"

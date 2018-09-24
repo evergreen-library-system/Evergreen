@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-06 10:56-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: 2018-06-05 17:20+0000\n"
 "Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:12+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: class.stgu.label:10542
 msgid "User Stage"
@@ -746,9 +746,9 @@ msgstr "Captura de Fecha/Hora"
 msgid "Selection List ID"
 msgstr "Lista de selección ID"
 
-#: class.pupm.label:7937
-msgid "User Permission Map"
-msgstr "El permiso de usuario Mapa"
+#: field.siss.holding_link_id.label:5668
+msgid "Holding Link ID"
+msgstr "La celebración de acoplamiento de la identificación"
 
 #: class.auricnm.label:3122
 msgid "Electronic Access URI to Call Number Map"
@@ -811,9 +811,9 @@ msgstr "Retener"
 msgid "Event ID"
 msgstr "ID del evento"
 
-#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
-msgid "Transaction"
-msgstr "Transacción"
+#: class.cubin.label:7222
+msgid "User Bucket Item Note"
+msgstr "Nota usuario Cubo de artículos"
 
 #: field.acqafsb.amount.label:9176
 msgid "Total Spent Balance"
@@ -892,6 +892,10 @@ msgstr "Identificación del Circ"
 #: field.cmcts.active.label:11868 field.cmfts.active.label:11893
 msgid "Active?"
 msgstr "¿Activo?"
+
+#: class.qfpd.label:10855
+msgid "Function Parameter Definition"
+msgstr "La función del parámetro Definición"
 
 #: class.ascecm.label:5970
 msgid "Statistical Category Entry Copy Map"
@@ -1619,9 +1623,9 @@ msgstr "Enumeración 6"
 msgid "Record ID"
 msgstr "ID de Registro"
 
-#: field.siss.holding_link_id.label:5668
-msgid "Holding Link ID"
-msgstr "La celebración de acoplamiento de la identificación"
+#: class.cam.label:2983
+msgid "Audience Map"
+msgstr "Mapa de audiencia"
 
 #: field.sdist.index_summary.label:5536 class.sisum.label:5922
 msgid "Index Issue Summary"
@@ -3492,9 +3496,9 @@ msgstr "Ubicación"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr "MARC21 Física Característica Valor Mapa"
 
-#: class.cam.label:2983
-msgid "Audience Map"
-msgstr "Mapa de audiencia"
+#: field.rsr.topic_subject.label:10190
+msgid "Topic Subjects (normalized)"
+msgstr "Asuntos de temas (normalizado)"
 
 #: field.acqpro.prepayment_required.label:8565
 #: field.acqpo.prepayment_required.label:9405
@@ -4298,10 +4302,9 @@ msgstr "El personal satisfactorias"
 msgid "Invoice Entries"
 msgstr "Elementos de factura"
 
-#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
-#: field.mndp.work_payment.label:8049
-msgid "Work Payment Detail"
-msgstr "Detalle del pago de trabajo"
+#: class.pupm.label:7937
+msgid "User Permission Map"
+msgstr "El permiso de usuario Mapa"
 
 #: class.acqfsb.label:9223
 msgid "Fund Spent Balance"
@@ -4760,9 +4763,9 @@ msgstr "Descartar el Recuento de Valores"
 msgid "Department"
 msgstr "Departamento"
 
-#: class.cubin.label:7222
-msgid "User Bucket Item Note"
-msgstr "Nota usuario Cubo de artículos"
+#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
+msgid "Transaction"
+msgstr "Transacción"
 
 #: field.acqliat.id.label:9647
 msgid "Alert Text ID"
@@ -5541,11 +5544,9 @@ msgstr "Atributo ID"
 msgid "Resource Attribute Value"
 msgstr "Recursos característica Valor"
 
-#: field.ahr.target.label:6270 field.ahopl.target.label:6420
-#: field.alhr.target.label:6505 field.combahr.target.label:6594
-#: field.aahr.target.label:6653
-msgid "Target Object ID"
-msgstr "ID del objeto de destino"
+#: field.vie.code.label:488
+msgid "Error Code"
+msgstr "Código del error"
 
 #: field.acqlisum.claim_count.label:12099
 #: field.acqlisumi.claim_count.label:12120
@@ -6720,10 +6721,6 @@ msgstr "Entrada principal"
 msgid "Call Number Bucket Item"
 msgstr "Numero de llamada Cubo de artículos"
 
-#: field.rsr.topic_subject.label:10190
-msgid "Topic Subjects (normalized)"
-msgstr "Asuntos de temas (normalizado)"
-
 #: class.aahr.label:6627
 msgid "Aged Hold Request"
 msgstr "Solicitud de reserva envejecido"
@@ -7054,9 +7051,11 @@ msgstr "Emisiones"
 msgid "Item Count"
 msgstr "Cuenta de Items"
 
-#: field.vie.code.label:488
-msgid "Error Code"
-msgstr "Código del error"
+#: field.ahr.target.label:6270 field.ahopl.target.label:6420
+#: field.alhr.target.label:6505 field.combahr.target.label:6594
+#: field.aahr.target.label:6653
+msgid "Target Object ID"
+msgstr "ID del objeto de destino"
 
 #: field.vst.state.label:825 field.atev.state.label:1486
 #: field.aua.state.label:4371 field.aal.state.label:4404
@@ -7470,9 +7469,9 @@ msgstr "Código Audiencia"
 msgid "Rule Name"
 msgstr "Nombre de la regla"
 
-#: field.crad.composite.label:1004
-msgid "Composite attribute?"
-msgstr "Atributo compuesto?"
+#: field.atevdef.env.label:1451
+msgid "Environment Entries"
+msgstr "Entradas de entorno"
 
 #: field.rlcd.last_delete_date.label:11632
 msgid "Delete Date/Time"
@@ -8844,9 +8843,10 @@ msgstr "Cuerpo del mensaje EDI"
 msgid "Assoc ID"
 msgstr "Assoc ID"
 
-#: class.qfpd.label:10855
-msgid "Function Parameter Definition"
-msgstr "La función del parámetro Definición"
+#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
+#: field.mndp.work_payment.label:8049
+msgid "Work Payment Detail"
+msgstr "Detalle del pago de trabajo"
 
 #: field.acqpron.create_time.label:8597 field.acqpl.create_time.label:9349
 #: field.acqpo.create_time.label:9395 field.acqpon.create_time.label:9476
@@ -8906,9 +8906,9 @@ msgstr "Dotación total"
 msgid "Questions"
 msgstr "Preguntas"
 
-#: field.atevdef.env.label:1451
-msgid "Environment Entries"
-msgstr "Entradas de entorno"
+#: field.crad.composite.label:1004
+msgid "Composite attribute?"
+msgstr "Atributo compuesto?"
 
 #: field.acqftr.dest_fund.label:8848
 msgid "Destination Fund"

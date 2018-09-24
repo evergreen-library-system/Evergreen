@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-15 11:28-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: 2017-08-20 08:14+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-08-16 05:44+0000\n"
-"X-Generator: Launchpad (build 18747)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:33+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 "X-Accelerator-Marker: &\n"
 
 #: common.logout
@@ -8233,12 +8233,12 @@ msgid "Evergreen: Copy Locations Editor"
 msgstr "Evergreen: պատճեների տեղաբաշխման խմբագիր"
 
 #: staff.server.admin.copy_locations.editor
-msgid " Copy Locations Editor "
-msgstr " Պատճերի տեղաբաշխման խմբագիր "
+msgid " Shelving Locations Editor "
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.create
-msgid "Create a new copy location"
-msgstr "Ստեղծիր նոր պատճեի տեղաբաշխում"
+msgid "Create a new shelving location"
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.name
 msgid "Name: "
@@ -15123,6 +15123,12 @@ msgstr "Բացել հերթը"
 #~ msgctxt "staff.server.admin.cash.date.select"
 #~ msgid "Date selector"
 #~ msgstr "Ամսաթվի ընտրիչ"
+
+#~ msgid " Copy Locations Editor "
+#~ msgstr " Պատճերի տեղաբաշխման խմբագիր "
+
+#~ msgid "Create a new copy location"
+#~ msgstr "Ստեղծիր նոր պատճեի տեղաբաշխում"
 
 #~ msgid "Copy Hold"
 #~ msgstr "Օրինակի պահում"

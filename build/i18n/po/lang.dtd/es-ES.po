@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-08-15 11:28-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: 2017-06-19 02:27+0000\n"
 "Last-Translator: Ben Shum <ben@evergreener.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-08-16 05:46+0000\n"
-"X-Generator: Launchpad (build 18747)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:35+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: lang.version
 msgid "remote v1"
@@ -8221,12 +8221,12 @@ msgid "Evergreen: Copy Locations Editor"
 msgstr "Evergreen: Copiar Ubicaciones Editor"
 
 #: staff.server.admin.copy_locations.editor
-msgid " Copy Locations Editor "
-msgstr " Editor de ubicaciones de copias "
+msgid " Shelving Locations Editor "
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.create
-msgid "Create a new copy location"
-msgstr "Crear una nueva ubicación para la copia"
+msgid "Create a new shelving location"
+msgstr ""
 
 #: staff.server.admin.copy_locations.editor.name
 msgid "Name: "
@@ -15108,6 +15108,12 @@ msgstr "Cola Abierta"
 #~ "staff.hold_list.cancel_hold_dialog.apply_btn.accesskey"
 #~ msgid "&Apply"
 #~ msgstr "&Aplicar"
+
+#~ msgid " Copy Locations Editor "
+#~ msgstr " Editor de ubicaciones de copias "
+
+#~ msgid "Create a new copy location"
+#~ msgstr "Crear una nueva ubicación para la copia"
 
 #~ msgid "Edit Phone Notification"
 #~ msgstr "Editar notificación electrónica"

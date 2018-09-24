@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-09-06 10:57-0400\n"
+"POT-Creation-Date: 2018-09-18 16:06-0400\n"
 "PO-Revision-Date: 2017-09-06 11:43+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:06+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:28+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: 950.data.seed-values.sql:564
 msgid "American English"
@@ -394,10 +394,6 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 
-#: 950.data.seed-values.sql:18876
-msgid "Grid Config: circ.patron.search"
-msgstr ""
-
 #: 950.data.seed-values.sql:681 950.data.seed-values.sql:3670
 #: 950.data.seed-values.sql:3673
 msgid "Lost Materials Processing Fee"
@@ -503,6 +499,10 @@ msgstr "Oriya"
 msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr ""
 "Թույլ է տալիս օգտվողին ավելացնելու/հեռացնելու օգտվողներին \"User\" խմբից"
+
+#: 950.data.seed-values.sql:8548
+msgid "Turkey "
+msgstr "Թուրքիա "
 
 #: 950.data.seed-values.sql:121
 msgid "Abbreviated Title"
@@ -1985,6 +1985,10 @@ msgstr "Ֆոնոդիսկ, ֆոնոգրված և այլն։"
 msgid "Simple Mobile"
 msgstr "Պարզ մոբայլ"
 
+#: 950.data.seed-values.sql:13846
+msgid "Bell Mobility & Solo Mobile (Alternate)"
+msgstr "Bell Mobility & Solo Mobile (Այլընտրանք)"
+
 #: 950.data.seed-values.sql:1104
 msgid "Allows staff to edit the note for a payment on a transaction"
 msgstr ""
@@ -2237,6 +2241,12 @@ msgstr "OneClickdigital հիմնական կտրոն"
 #: 950.data.seed-values.sql:7289
 msgid "Walloon"
 msgstr "Walloon"
+
+#: 950.data.seed-values.sql:16151
+msgid ""
+"Leave transaction open when long-overdue balance equals zero.  This leaves "
+"the long-overdue copy on the patron record when it is paid"
+msgstr ""
 
 #: 950.data.seed-values.sql:8466
 msgid "Norway "
@@ -2564,16 +2574,6 @@ msgid ""
 msgstr ""
 "Թույլ տուր օգտվողին հեռացնելու առկա աշխատանքային կայանը և նորը կկարողանա "
 "փոխարինել դրան։"
-
-#: 950.data.seed-values.sql:13335
-msgid ""
-"Facilitates producing a CSV file representing a book list by introducing an "
-"\"items\" variable into the TT environment, sorted as dictated according to "
-"user params"
-msgstr ""
-"Հնարավորություններ թողարկելու CSV ֆայլեր, որոնք ներկայացնում են գրքերի "
-"ցուցակը ըստ \"նյութեր\" փոփոխականի TT ենթակառուցվածքում, տեսակավորված ինչպես "
-"թելադրված է համաձայն օգտվողի պարամետրերի։"
 
 #: 950.data.seed-values.sql:8375
 msgid "Gabon "
@@ -3678,6 +3678,10 @@ msgstr "Արմադիլլո"
 msgid "Florida "
 msgstr "Ֆլորիդա "
 
+#: 950.data.seed-values.sql:17193
+msgid "Item Print Label - Call Number Wrap Filter Width"
+msgstr "Նյութի տպելու պիտակ -- Դասիչը անցնում է զտիչի  երկարությունը։"
+
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
 #: 950.data.seed-values.sql:8899 950.data.seed-values.sql:8912
 #: 950.data.seed-values.sql:8925
@@ -4263,6 +4267,11 @@ msgstr ""
 #: 950.data.seed-values.sql:14547
 msgid "Straight Talk / PagePlus Cellular"
 msgstr "Straight Talk / PagePlus Cellular"
+
+#: 950.data.seed-values.sql:15445
+msgid "Number of seconds to wait between URL test attempts."
+msgstr ""
+"Տևողությունը վայրկյաններով որ հարկավոր է սպասել URL-ի թեստի փորձերի միջև"
 
 #: 950.data.seed-values.sql:4174 950.data.seed-values.sql:4177
 msgid "PayPal login"
@@ -5338,6 +5347,10 @@ msgstr "Pioneer բջջային"
 msgid "ADMIN_SERIAL_DISTRIBUTION"
 msgstr "ADMIN_SERIAL_DISTRIBUTION"
 
+#: 950.data.seed-values.sql:16744
+msgid "OPAC Metarecord Hold Formats Attribute"
+msgstr "ՀՕԱՔ մետատվյալի պահման ձևաչափերի հատկորոշիչ։"
+
 #: 950.data.seed-values.sql:3877
 msgid "Patron Login Timeout (in seconds)"
 msgstr "Հաճախորդի մուտքի ժամանակի դադար (վայրկյաններ)"
@@ -6176,10 +6189,9 @@ msgstr "8 պտ/րոպ"
 msgid "Qatar "
 msgstr "Կատար "
 
-#: 950.data.seed-values.sql:15445
-msgid "Number of seconds to wait between URL test attempts."
-msgstr ""
-"Տևողությունը վայրկյաններով որ հարկավոր է սպասել URL-ի թեստի փորձերի միջև"
+#: 950.data.seed-values.sql:13323
+msgid "Produce a CSV file representing a book list"
+msgstr "Թողարկիր գրքի ցուցակը ներկայացնող CSV ֆայլը։"
 
 #: 950.data.seed-values.sql:1318
 msgid "UPDATE_TRANSLATION"
@@ -7299,14 +7311,6 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard"
 msgid "Guinea"
 msgstr "Գվինեա"
 
-#: 950.data.seed-values.sql:16151
-msgid ""
-"Leave transaction open when long-overdue balance equals zero.  This leaves "
-"the lost copy on the patron record when it is paid"
-msgstr ""
-"Գործարքը թող բաց երբ երկարաժամկետ ուշացման հաշվեկշիռը դառնում է զրո։ Սա "
-"թողնում է կորած օրինակը հաճախորդի քարտին, երբ այն վճարված է։"
-
 #: 950.data.seed-values.sql:7716
 msgid "cartographic tactile image"
 msgstr "քարտեզագիտական չափելի պատկեր"
@@ -8184,10 +8188,6 @@ msgstr "Գաուս-Կրյուգեր"
 msgid "Microform"
 msgstr "Միկրոձև"
 
-#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
-msgid "Saint"
-msgstr "Սուրբ"
-
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
 msgstr "Զգուշացման բլոկ Պահման համար"
@@ -8645,6 +8645,10 @@ msgstr ""
 "Ընթերցողները այս գրադարանում կարող են միայն ընտրվել կազմ միավորներում որոնք "
 "կազմ ծառի գրադարանի բաժնի ներսում են։"
 
+#: 950.data.seed-values.sql:18876
+msgid "Grid Config: circ.patron.search"
+msgstr ""
+
 #: 950.data.seed-values.sql:3781
 msgid ""
 "Prevent the creation of new self-serve password reset requests until the "
@@ -8760,9 +8764,15 @@ msgstr ""
 msgid "ADMIN_FIELD_DOC"
 msgstr "ADMIN_FIELD_DOC"
 
-#: 950.data.seed-values.sql:8548
-msgid "Turkey "
-msgstr "Թուրքիա "
+#: 950.data.seed-values.sql:13335
+msgid ""
+"Facilitates producing a CSV file representing a book list by introducing an "
+"\"items\" variable into the TT environment, sorted as dictated according to "
+"user params"
+msgstr ""
+"Հնարավորություններ թողարկելու CSV ֆայլեր, որոնք ներկայացնում են գրքերի "
+"ցուցակը ըստ \"նյութեր\" փոփոխականի TT ենթակառուցվածքում, տեսակավորված ինչպես "
+"թելադրված է համաձայն օգտվողի պարամետրերի։"
 
 #: 950.data.seed-values.sql:7387
 msgid "Unspecified"
@@ -9612,10 +9622,6 @@ msgstr "Նյութի տպելու պիտակ - Աջ պիտակի բարձրու�
 msgid "Pennsylvania "
 msgstr "Փենսիլվանիա "
 
-#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
-msgid "Import failed due to system id collision"
-msgstr "Ներմուծումը ձախողվեց համկարգային id-ի կոլլիզիայի պատճառով"
-
 #: 950.data.seed-values.sql:7744
 msgid "projected"
 msgstr "պրոյեկտված"
@@ -9796,7 +9802,7 @@ msgstr "Երբ ավելացվում է ցուցակին, օգտագործման 
 msgid "Allow a user to view and purchase from a provider"
 msgstr "Թույլ տուր օգտվողին դիտելու և պատվիրելու մատակարարից։"
 
-#: 950.data.seed-values.sql:17585 950.data.seed-values.sql:17600
+#: 950.data.seed-values.sql:17585
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as lost, and the corresponding copy alert has been "
@@ -10470,9 +10476,17 @@ msgstr "համակարգչային ժապավենի կոճ"
 msgid "Serbian"
 msgstr "Սերբերեն"
 
-#: 950.data.seed-values.sql:1436
-msgid "Allow a user to update trigger reactors"
-msgstr "Թույլ տուր օգտվողին թարմացնելու կապակցված ռեակտորները։"
+#: 950.data.seed-values.sql:5374
+msgid ""
+"When an item has been marked lost and all fines/fees have been completely "
+"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
+"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
+"enabled"
+msgstr ""
+"Երբ նյութը նշվել է որպես կորած և գործարքի բոլոր տուգանքները/գանձումները "
+"ամբողջովին վճարվել են, մի արգելիր կամ վերահաստատի որևէ տուգանքներ/գանձումներ "
+",ԵԹԵ ՆՈՒՅՆԻՍԿ circ.void_lost_on_checkin և/կամ "
+"circ.void_lost_proc_fee_on_checkin թույլատրված են։"
 
 #: 950.data.seed-values.sql:5267
 msgid ""
@@ -10785,9 +10799,9 @@ msgstr ""
 msgid "Login via Apache module"
 msgstr "Գրանցման մուտք Apache մոդուլից"
 
-#: 950.data.seed-values.sql:1298
-msgid "DELETE_MARC_CODE"
-msgstr "DELETE_MARC_CODE"
+#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
+msgid "Void lost item billing when returned"
+msgstr "Դատարկիր կորած նյութի հաշիվը երբ վերադարձվում է"
 
 # id::clm.value__arg
 # id::arg
@@ -10993,10 +11007,6 @@ msgstr ""
 "Ընթերցող գրանցելիս claims_returned_count դաշտը ցույց կտրվի։ Դաշտի երևալը "
 "ստիպում է որ այն հայտնվի պահանջվող դաշտերի հետ, եթե նույնիսկ պահանջված չէ։ "
 "Եթե դաշտը պահանջված է, այս կարգաբերումը անտեսվում է։"
-
-#: 950.data.seed-values.sql:13846
-msgid "Bell Mobility & Solo Mobile (Alternate)"
-msgstr "Bell Mobility & Solo Mobile (Այլընտրանք)"
 
 # id::clm.value__iba
 # id::iba
@@ -11990,10 +12000,6 @@ msgstr "Երկրագունդ։"
 #: 950.data.seed-values.sql:768
 msgid "* no longer applicable"
 msgstr "* այլևս կիրառելի չէ։"
-
-#: 950.data.seed-values.sql:17193
-msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr "Նյութի տպելու պիտակ -- Դասիչը անցնում է զտիչի  երկարությունը։"
 
 # id::clm.value__cop
 # id::cop
@@ -13049,6 +13055,13 @@ msgstr "Մասնագիտացված այս գրադարանը"
 msgid "Allow a user to mark an item status as 'cataloging'"
 msgstr "Թույլ տուր օգտվողին նշելու նյութի վիճակը որպես ՛քարտագրված՛։"
 
+#: 950.data.seed-values.sql:17600
+msgid ""
+"Controls whether fines are automatically forgiven when checking out an item "
+"that has been marked as long-overdue, and the corresponding copy alert has "
+"been suppressed."
+msgstr ""
+
 # id::aou.name__1
 # id::1
 #: 950.data.seed-values.sql:671
@@ -13445,17 +13458,9 @@ msgstr "Հաճախորդի ինքնագրանցման լրանալու տիրո�
 msgid "microfilm cartridge"
 msgstr "միկրոժապավենի թմբուկ։"
 
-#: 950.data.seed-values.sql:5374
-msgid ""
-"When an item has been marked lost and all fines/fees have been completely "
-"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
-"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
-"enabled"
-msgstr ""
-"Երբ նյութը նշվել է որպես կորած և գործարքի բոլոր տուգանքները/գանձումները "
-"ամբողջովին վճարվել են, մի արգելիր կամ վերահաստատի որևէ տուգանքներ/գանձումներ "
-",ԵԹԵ ՆՈՒՅՆԻՍԿ circ.void_lost_on_checkin և/կամ "
-"circ.void_lost_proc_fee_on_checkin թույլատրված են։"
+#: 950.data.seed-values.sql:1436
+msgid "Allow a user to update trigger reactors"
+msgstr "Թույլ տուր օգտվողին թարմացնելու կապակցված ռեակտորները։"
 
 #: 950.data.seed-values.sql:14105
 msgid "i wireless (T-Mobile)"
@@ -13502,10 +13507,6 @@ msgstr ""
 #: 950.data.seed-values.sql:6986
 msgid "Gwich'in"
 msgstr "Gwich'in"
-
-#: 950.data.seed-values.sql:16744
-msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr "ՀՕԱՔ մետատվյալի պահման ձևաչափերի հատկորոշիչ։"
 
 #: 950.data.seed-values.sql:334
 msgid "Main Title"
@@ -14588,9 +14589,9 @@ msgstr "Ամսաթվի ձևաչափ+այս ձևանմուշի հետ ժաման�
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 
-#: 950.data.seed-values.sql:18554
-msgid "Patron Search Show Extra Search Options"
-msgstr ""
+#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
+msgid "Import failed due to system id collision"
+msgstr "Ներմուծումը ձախողվեց համկարգային id-ի կոլլիզիայի պատճառով"
 
 #: 950.data.seed-values.sql:677
 msgid "Long Overdue Collection Fee"
@@ -14707,6 +14708,10 @@ msgstr "ADMIN_USER_REQUEST_TYPE"
 #: 950.data.seed-values.sql:820
 msgid "User may link another user to an entry in a statistical category"
 msgstr "Վիճակագրական դասում օգտվողը կարող է մուտքին կապել մեկ այլ օգտվողի։"
+
+#: 950.data.seed-values.sql:18554
+msgid "Patron Search Show Extra Search Options"
+msgstr ""
 
 #: 950.data.seed-values.sql:11951
 msgid "Delayed: Accepted without amendment"
@@ -15226,9 +15231,9 @@ msgstr ""
 msgid "Choctaw"
 msgstr "Choctaw"
 
-#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
-msgid "Void lost item billing when returned"
-msgstr "Դատարկիր կորած նյութի հաշիվը երբ վերադարձվում է"
+#: 950.data.seed-values.sql:1298
+msgid "DELETE_MARC_CODE"
+msgstr "DELETE_MARC_CODE"
 
 # id::clm.value__aym
 # id::aym
@@ -16386,9 +16391,9 @@ msgstr ""
 "ստիպում է, որ այն հայտնվի պահանջվող դաշտերով, եթե նույնիսկ պահանջված չէ։ եթե "
 "դաշտը պահանջված է, այս կարգաբերումը կանտեսվի։"
 
-#: 950.data.seed-values.sql:13323
-msgid "Produce a CSV file representing a book list"
-msgstr "Թողարկիր գրքի ցուցակը ներկայացնող CSV ֆայլը։"
+#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
+msgid "Saint"
+msgstr "Սուրբ"
 
 #: 950.data.seed-values.sql:790
 msgid "Allow a user to delete another user's container"
@@ -16632,6 +16637,13 @@ msgstr "Ֆլամենգո"
 
 #~ msgid "Canceled holds display age"
 #~ msgstr "Չեղյալ արված պահումների արտածման տարիք"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "Գործարքը թող բաց երբ երկարաժամկետ ուշացման հաշվեկշիռը դառնում է զրո։ Սա "
+#~ "թողնում է կորած օրինակը հաճախորդի քարտին, երբ այն վճարված է։"
 
 #~ msgid "Allows patrons to create automatic holds from purchase requests."
 #~ msgstr "Թույլ տուր ընթերցողին գնման պատվերից ստեղծելու ավտոմատ պահումներ։"

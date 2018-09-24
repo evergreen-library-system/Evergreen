@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-06 17:58+0000\n"
-"PO-Revision-Date: 2018-03-10 14:20+0000\n"
+"POT-Creation-Date: 2018-09-19 00:24+0000\n"
+"PO-Revision-Date: 2018-09-16 04:35+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:16+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:37+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 "Language: arabic\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -25,6 +25,14 @@ msgid ""
 "                  Unprocessed offline transactions waiting for upload.  \n"
 "                  Last transaction added at %1.\n"
 "                  "
+msgstr ""
+
+#. ("{{addr._replaces.street1}}", "{{addr._replaces.street2}}", "<br/>", "{{addr._replaces.city}}", "{{addr._replaces.state}}", "{{addr._replaces.post_code}}")
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:847
+msgid ""
+"\n"
+"            Replaces: %1 %2 %3 %4, %5 %6\n"
+"          "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:50
@@ -40,19 +48,6 @@ msgstr ""
 "          "
 
 #. ("{{circDate | date:$root.egDateFormat}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:17
-msgid ""
-"\n"
-"          There is an open circulation on the requested item.  \n"
-"          This copy was checked out by another patron on %1.\n"
-"          "
-msgstr ""
-"\n"
-"          هناك إعارة مفتوحة على النُسخة المطلوبة \n"
-"        تم إعارة هذه النسخة بوساطة مستفيد آخر في %1\n"
-"          "
-
-#. ("{{circDate | date:$root.egDateFormat}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:11
 msgid ""
 "\n"
@@ -64,6 +59,15 @@ msgstr ""
 "          هناك إعارة مفتوحة على النُسخة المطلوبة \n"
 "        تم إعارة هذه النسخة بوساطة هذا المستخدم في %1\n"
 "          "
+
+#. ("{{circDate | date:$root.egDateFormat}}")
+#: ../../Open-ILS/src/templates/staff/circ/share/t_circ_exists_dialog.tt2:17
+msgid ""
+"\n"
+"          There is an open circulation on the requested item.  \n"
+"          This item was checked out by another patron on %1.\n"
+"          "
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:43
 msgid ""
@@ -124,8 +128,8 @@ msgid "#"
 msgstr "#"
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:13 ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:124
-msgid "# Copies"
-msgstr "# نُسخ"
+msgid "# Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:76
 msgid "# of Uses"
@@ -202,23 +206,23 @@ msgstr "تم إرجاع %1 للتو"
 msgid "%1, %2"
 msgstr "%1، %2"
 
-#. ("{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}")
 #. ("{{lname}}", "{{fname}}", "{{mname}}")
+#. ("{{patron().family_name()}}", "{{patron().first_given_name()}}", "{{patron().second_given_name()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:100 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:70 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:49
 msgid "%1, %2 %3"
 msgstr "%1, %2 %3"
 
-#. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name() || patron().second_given_name()}}")
+#. ("{{patron().pref_family_name() || patron().family_name()}}", "{{patron().pref_first_given_name() || patron().first_given_name()}}", "{{patron().pref_second_given_name()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:7
 msgid "%1, %2 %3 (Preferred)"
 msgstr ""
 
-#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
-#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
-#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
+#. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
+#. ("{{extra.user_obj.family_name}}", "{{extra.user_obj.first_given_name}}", "{{extra.user_obj.second_given_name}}", "{{extra.user_obj.home_ou.shortname}}")
+#. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:15
 msgid "%1, %2 %3 : %4"
 msgstr "%1, %2 %3 : %4"
@@ -312,7 +316,7 @@ msgstr "<مُدة الإعارة>"
 msgid "<NONE>"
 msgstr "<لا يوجد>"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:518
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:530
 msgid "<no workstation>"
 msgstr "< لا يوجد محطة عمل>"
 
@@ -341,7 +345,7 @@ msgstr ""
 msgid "Abort Update"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:569
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:581
 msgid "About"
 msgstr "حَول"
 
@@ -361,7 +365,7 @@ msgstr "قبول الباركود"
 msgid "Accept only \"Good Quality\" copies?"
 msgstr "قبول فقط النُسخ ذات \"جودة عالية\"؟"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:41 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:239 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:204
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:41 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:239 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:204
 msgid "Acquisition Cost"
 msgstr "تكلفة التزويد"
 
@@ -369,11 +373,11 @@ msgstr "تكلفة التزويد"
 msgid "Acquisition Patron Requests"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:339
+#: ../../Open-ILS/src/templates/staff/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:351
 msgid "Acquisitions"
 msgstr "التزويد"
 
-#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:489
+#: ../../Open-ILS/src/templates/staff/admin/acq/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/acq/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:501
 msgid "Acquisitions Administration"
 msgstr "إدارة التزويد"
 
@@ -418,7 +422,7 @@ msgstr "حقول رشفة تمثيل حالة الفهرسة"
 msgid "Ad hoc issue?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:70 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:72 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:74 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:76 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:47 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:195 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:70 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:72 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:74 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:76 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:49 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:53 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:195 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:50
 msgid "Add"
 msgstr "إضافة"
 
@@ -434,25 +438,25 @@ msgstr "إضافة 007"
 msgid "Add Billing"
 msgstr "إضافة فاتورة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:27
-msgid "Add Copies"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/share/t_add_copy_alert_dialog.tt2:5
-msgid "Add Copy Alert"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:36 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:99 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:72
-msgid "Add Copy Alerts"
-msgstr ""
-
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:170 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:219
 msgid "Add Fields"
 msgstr "إضافة حقول"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:27
+msgid "Add Holdings"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:4
 msgid "Add Item"
 msgstr "إضافة نُسخة"
+
+#: ../../Open-ILS/src/templates/staff/share/t_add_copy_alert_dialog.tt2:5
+msgid "Add Item Alert"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:36 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:99 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:72
+msgid "Add Item Alerts"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:42 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:82 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:12 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:12 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:37
 msgid "Add Items to Bucket"
@@ -482,7 +486,7 @@ msgstr "إضافة إشعار التسجيلة"
 msgid "Add Regularity"
 msgstr "إضافة انتظام"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:49
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:50
 msgid "Add Request to Selection List"
 msgstr ""
 
@@ -526,9 +530,9 @@ msgstr "إضافة إلى السلة المحددة"
 msgid "Add alternative enumeration"
 msgstr "إضافة تعداد بديل"
 
-#: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:80
-msgid "Add copy stream"
-msgstr "إضافة تيار نسخة"
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:79
+msgid "Add call number"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:45
 msgid "Add distribution"
@@ -538,6 +542,10 @@ msgstr "إضافة توزيع"
 msgid "Add following issue"
 msgstr "إضافة العدد التالي"
 
+#: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:80
+msgid "Add item stream"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:167
 msgid "Add more"
 msgstr "إضافة المزيد"
@@ -546,21 +554,17 @@ msgstr "إضافة المزيد"
 msgid "Add special issue"
 msgstr "إضافة عدد خاص"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:79
-msgid "Add volume"
-msgstr "إضافة مجلد"
-
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:106
-msgid "Add/Edit Copy Alerts"
+msgid "Add/Edit Item Alerts"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:234
-msgid "Add/Edit Copy Notes"
-msgstr "ملاحظات إضافة/تحرير نسخة"
+msgid "Add/Edit Item Notes"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:308
-msgid "Add/Edit Copy Tags"
-msgstr "إضافة / تعديل تيجان النسخة"
+msgid "Add/Edit Item Tags"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:9
 msgid "Add/Replace 008"
@@ -588,9 +592,9 @@ msgstr "ضبط لـِ صفر"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_statement.tt2:18
 msgid "Adjustment"
-msgstr ""
+msgstr "الضَبط"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:460 ../../Open-ILS/src/templates/staff/t_splash.tt2:66
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:472 ../../Open-ILS/src/templates/staff/t_splash.tt2:66
 msgid "Administration"
 msgstr "الإدارة"
 
@@ -635,11 +639,11 @@ msgstr "قواعد حماية حجز العمر"
 msgid "Age Protect"
 msgstr "حماية العمر"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:85
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:87
 msgid "Age-Based Hold Protection"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:271 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:120 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:169 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:330 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:287
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:271 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:122 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:169 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:330 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:287
 msgid "Age-based Hold Protection"
 msgstr "حماية الحجز حسب العمر"
 
@@ -651,7 +655,7 @@ msgstr "الإجمالي"
 msgid "Alert"
 msgstr "تنبيه"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:70 ../../Open-ILS/src/templates/staff/circ/patron/t_alerts.tt2:38
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/patron/t_alerts.tt2:38
 msgid "Alert Message"
 msgstr "رسالة التنبيه"
 
@@ -661,9 +665,9 @@ msgstr "ملاحظة التنبيه"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:26 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:81 ../../Open-ILS/src/templates/staff/share/t_add_copy_alert_dialog.tt2:26 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:35
 msgid "Alert..."
-msgstr ""
+msgstr "تنبيـــه"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:122 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:140 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:149
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:151 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:149
 msgid "Alerts"
 msgstr "تنبيهات"
 
@@ -683,7 +687,7 @@ msgstr "كل المصادر المتاحة"
 msgid "All Fields"
 msgstr "كل الحقول"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:7
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:17
 msgid "All Formats"
 msgstr "كل الصيغ"
 
@@ -700,8 +704,8 @@ msgid "Allow"
 msgstr "السَماح"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:21
-msgid "Allow Call Number attributes in Copy Templates"
-msgstr "السماح لـِ خصائص رمز الاستدعاء في تركيبات النسخة"
+msgid "Allow Call Number attributes in Item Templates"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:83
 msgid "Alph"
@@ -720,8 +724,8 @@ msgid "Always Retarget Local Holds"
 msgstr "إعادة استهداف الحجوزات المحلية دائماً"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:13
-msgid "Always display Volume/Copy Detail pane"
-msgstr "إظهار لوحة تفاصيل المجلد/النسخة دائماً"
+msgid "Always display Holdings Detail pane"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:174 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:21
 msgid "Amnesty Mode"
@@ -795,8 +799,8 @@ msgid "Apply Changes"
 msgstr "تطبيق التغييرات"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:5
-msgid "Apply Copy Tags"
-msgstr "تطبيق تيجان النُسخ"
+msgid "Apply Item Tags"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills.tt2:91
 msgid "Apply Payment"
@@ -821,6 +825,10 @@ msgstr "تطبيق التعديلات"
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_cc_payment_dialog.tt2:46
 msgid "Approval Code"
 msgstr "رمز التأكيد"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:836
+msgid "Approve"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_month_selector.tt2:5
 msgid "April"
@@ -870,8 +878,8 @@ msgstr "هل تريد بالتأكيد تسجيل الاستخدامات {{num_u
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:38 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:30
 msgid ""
-"Are you sure you want to transfer selected items to the marked volume?"
-msgstr "هل تُؤكّد نقل النُسخ المحددة إلى المجلد المحدد؟"
+"Are you sure you want to transfer selected items to the marked call number?"
+msgstr ""
 
 #. ("{{xactIds}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:41
@@ -956,7 +964,7 @@ msgstr ""
 msgid "August"
 msgstr "آب"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:169 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:31 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:81 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:86 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:126 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:103 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:143 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:123 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:25 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:31
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:169 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:31 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:81 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:88 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:126 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:103 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:143 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:123 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:19 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:25 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:31
 msgid "Author"
 msgstr "المؤلف"
 
@@ -1078,7 +1086,7 @@ msgstr ""
 msgid "Balance Owed"
 msgstr "الرصيد المستحق"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:45 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:30 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:71 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:8 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:10 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:122 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:160 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:52 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:57 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:62 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:63 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:40 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:46 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:48 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:32 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:65 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:109 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:47 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:15 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:83 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:50 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:57 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:96 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:56
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:45 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:30 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:73 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:8 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:10 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:122 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:160 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:52 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:57 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:62 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:63 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:40 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:46 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:77 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:48 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:32 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:65 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:72 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:109 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:11 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:17 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:21 ../../Open-ILS/src/templates/staff/circ/patron/t_credentials.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:47 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:15 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:83 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:50 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:57 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:96 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:56
 msgid "Barcode"
 msgstr "الباركود"
 
@@ -1151,9 +1159,9 @@ msgstr "الباركود: %1"
 msgid "Barcode: %1 Checkin date: %2"
 msgstr "الباركود: %1 تاريخ الإرجاع: %2"
 
-#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
 #. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
+#. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:41 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:37 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_checkout.tt2:18 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:18
 msgid "Barcode: %1 Due: %2"
 msgstr "الباركود: %1  مستحق: %2"
@@ -1402,15 +1410,15 @@ msgstr ""
 msgid "Block"
 msgstr "حظر"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:47 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:17
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:47 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:84 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:19
 msgid "Book Item Now"
 msgstr "حجز النسخة الآن"
 
-#: ../../Open-ILS/src/templates/staff/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:422
+#: ../../Open-ILS/src/templates/staff/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:434
 msgid "Booking"
 msgstr "الحجز"
 
-#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:501
+#: ../../Open-ILS/src/templates/staff/admin/booking/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/booking/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:513
 msgid "Booking Administration"
 msgstr "إدارة الحجز"
 
@@ -1426,7 +1434,7 @@ msgstr "الحجز: التقاط الحجوزات"
 msgid "Booking: Return Reservations"
 msgstr "الحجز: إرجاع الحجوزات"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:9
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:19
 msgid "Books"
 msgstr "يحجز"
 
@@ -1491,7 +1499,7 @@ msgstr ""
 msgid "CN Label Class"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:50 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:36 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:96 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:97 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:117 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:157 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:102 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:96 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:55
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:50 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:36 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:96 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:99 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:117 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:78 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:50 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:157 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:102 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:96 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:55
 msgid "CN Prefix"
 msgstr "CN البادئة"
 
@@ -1499,7 +1507,7 @@ msgstr "CN البادئة"
 msgid "CN Sort Key"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:52 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:98 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:127 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:118 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:51 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:158 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:102 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:57
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:52 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:37 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:100 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:127 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:118 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:80 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:51 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:158 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:102 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:57
 msgid "CN Suffix"
 msgstr "CN اللاحقة"
 
@@ -1515,15 +1523,19 @@ msgstr "استدعاء # بادئة"
 msgid "Call # Suffix"
 msgstr "استدعاء # لاحقة"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:51 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:35 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:104 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:72 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:7 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:12 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:130 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:126 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:163 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:47 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:106 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:68 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:122 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:58 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:99 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:27 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:32
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:51 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:35 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:104 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:74 ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:7 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:12 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:130 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:126 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:163 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:106 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:68 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:79 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:122 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:58 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:99 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:20 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:27 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:32
 msgid "Call Number"
 msgstr "رمز الاستدعاء"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:51
+msgid "Call Number Attributes"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:182 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:170
 msgid "Call Number ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:47 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:78
 msgid "Call Number Label"
 msgstr "تسمية رمز الاستدعاء"
 
@@ -1551,6 +1563,10 @@ msgstr "لواحق رمز الاستدعاء"
 msgid "Call Number Template"
 msgstr "تركيبة رمز الاستدعاء"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:44
+msgid "Call Number(s) transfered"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:33 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:45
 msgid "Call Number:"
 msgstr "رمز الاستدعاء:"
@@ -1564,9 +1580,17 @@ msgstr "رمز الاستدعاء: "
 msgid "Call Number: %1 %2 %3"
 msgstr "رمز الاستدعاء: %1 %2 %3"
 
-#: ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:81
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:71 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:80 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:102 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:57 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:81 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:42
 msgid "Call Numbers"
 msgstr "رموز الاستدعاء"
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:104 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:99 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:61
+msgid "Call Numbers and Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98
+msgid "Call Numbers to Previously Marked Destination"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:51
 msgid "Call number"
@@ -1614,7 +1638,7 @@ msgstr "إلغاء الحجز"
 msgid "Cancel Note"
 msgstr "إلغاء الملاحظة"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2:18 ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:46 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:79
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2:18 ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:46 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:80
 msgid "Cancel Reason"
 msgstr ""
 
@@ -1626,7 +1650,7 @@ msgstr "سبب الإلغاء:"
 msgid "Cancel Reasons"
 msgstr "إلغاء الأسباب"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2:26 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:57
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_cancel.tt2:26 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:58
 msgid "Cancel Requests"
 msgstr ""
 
@@ -1638,7 +1662,7 @@ msgstr ""
 msgid "Cancel Time"
 msgstr "إلغاء الوقت"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:29 ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:42
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:31 ../../Open-ILS/src/templates/staff/circ/share/t_abort_transit_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:42
 msgid "Cancel Transit"
 msgstr "إلغاء النقل"
 
@@ -1718,7 +1742,7 @@ msgstr "التقاط الحجوزات"
 msgid "Capture Local Holds As Transits"
 msgstr "التقاط الحجوزات المحلية كمنقولات"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:440
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:452
 msgid "Capture Resources"
 msgstr "التقاط المصادر"
 
@@ -1782,7 +1806,7 @@ msgstr "تغيير المجلدات"
 msgid "Change Given:"
 msgstr "التغيير المعطى:"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:551 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:563 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:200
 msgid "Change Operator"
 msgstr "تغيير العامل"
 
@@ -1827,7 +1851,7 @@ msgstr "تحقق من كل عمليات استرداد المال"
 msgid "Check In"
 msgstr "إرجاع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:88 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:25 ../../Open-ILS/src/templates/staff/t_splash.tt2:22
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:88 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:27 ../../Open-ILS/src/templates/staff/t_splash.tt2:22
 msgid "Check In Items"
 msgstr "إرجاع النُسخ"
 
@@ -1879,7 +1903,7 @@ msgstr "إعارة"
 msgid "Checkin"
 msgstr "الإرجاع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:87 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:76 ../../Open-ILS/src/templates/staff/offline-interface.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:209
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:89 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:76 ../../Open-ILS/src/templates/staff/offline-interface.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:209
 msgid "Checkin Date"
 msgstr "تاريخ الإرجاع"
 
@@ -1895,7 +1919,7 @@ msgstr "إرجاع النُسخ"
 msgid "Checkin Modifiers"
 msgstr "مُعدلات الإرجاع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:88
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:90
 msgid "Checkin Scan Date"
 msgstr "تاريخ مسح الإرجاع ضوئياً"
 
@@ -1907,7 +1931,7 @@ msgstr "وقت المسح الضوئي للإرجاع"
 msgid "Checkin Time"
 msgstr "وقت الإرجاع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:194 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:89 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:172 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:85
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:194 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:91 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:172 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:85
 msgid "Checkin Workstation"
 msgstr "محطة عمل الإرجاع"
 
@@ -1919,7 +1943,7 @@ msgstr "إعارة"
 msgid "Checkout / Renewal Library"
 msgstr "إعارة / مكتبة التمديد"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:138 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:38 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:90 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:40 ../../Open-ILS/src/templates/staff/offline-interface.tt2:103 ../../Open-ILS/src/templates/staff/offline-interface.tt2:207
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:138 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:38 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:40 ../../Open-ILS/src/templates/staff/offline-interface.tt2:103 ../../Open-ILS/src/templates/staff/offline-interface.tt2:207
 msgid "Checkout Date"
 msgstr "تاريخ الإعارة"
 
@@ -1931,11 +1955,11 @@ msgstr "مكتبة الإعارة"
 msgid "Checkout Staff"
 msgstr "طاقم الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:145 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:45 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:91 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:79
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:145 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:45 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:93 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:79
 msgid "Checkout Workstation"
 msgstr "محطة عمل الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:92
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:94
 msgid "Checkout/Renewal Library"
 msgstr "الإعارة / تجديد المكتبة"
 
@@ -1947,13 +1971,13 @@ msgstr "الفرعي"
 msgid "Child nullable"
 msgstr "قيم فارغة للفرعي"
 
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:5
+msgid "Choose call number transfer target"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:10 ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:10
 msgid "Choose merge profile"
 msgstr "اختيار بروفايل الدمج"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_choose_vol_target_lib.tt2:5
-msgid "Choose volume transfer target"
-msgstr "اختيار هدف نقل المجلد"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:68
 msgid "Chronological"
@@ -1992,7 +2016,7 @@ msgstr "مكتبة الإعارة"
 msgid "Circ Modifier"
 msgstr "مُعدّل الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:94
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:96
 msgid "Circ or Renewal Workstation"
 msgstr "إعارة أو تجديد محطات العمل"
 
@@ -2008,11 +2032,11 @@ msgstr "إعارة كنوع مارك"
 msgid "Circulate as MARC Type"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:201 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:99 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:260 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:213
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:201 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:101 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:260 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:213
 msgid "Circulate as Type"
 msgstr "إعارة كنوع"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:48 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:100 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:95 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:168 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:167
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:48 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:102 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:95 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:168 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:167
 msgid "Circulate?"
 msgstr "إعارة"
 
@@ -2032,7 +2056,7 @@ msgstr "قواعد مدة الإعارة"
 msgid "Circulation History not available for display."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:93
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:95
 msgid "Circulation ID"
 msgstr "مُعرف الإعارة"
 
@@ -2041,7 +2065,7 @@ msgstr "مُعرف الإعارة"
 msgid "Circulation ID: %1"
 msgstr "مُعرف الإعارة:  %1"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:101 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:136 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:183 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:110 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:88 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:146 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:103 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:136 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:183 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:110 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:88 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:146 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:87
 msgid "Circulation Library"
 msgstr "مكتبة الإعارة"
 
@@ -2057,11 +2081,7 @@ msgstr "أوزان تطابق الإعارة"
 msgid "Circulation Max Fine Rules"
 msgstr "قواعد حد غرامة الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:161 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:211
-msgid "Circulation Modifer"
-msgstr "مُعدّل الإعارة"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:115 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:162 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:102 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:198 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:109 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:150 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:56 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:30
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:161 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:115 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:162 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:104 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:211 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:198 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:109 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:150 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:145 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:56 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:30
 msgid "Circulation Modifier"
 msgstr "مُعدّل الإعارة"
 
@@ -2081,7 +2101,7 @@ msgstr "الإعارة والمستفيدين"
 msgid "Circulation modifier"
 msgstr "مُعدل الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:29 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:96
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:32 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:96
 msgid "City"
 msgstr "المدينة"
 
@@ -2105,7 +2125,7 @@ msgstr "إجراءات سياسة المُطالبة"
 msgid "Claim Types"
 msgstr "أنواع المُطالبة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:402
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:414
 msgid "Claim-Ready Items"
 msgstr "نُسخ المُطالبة الجاهزة"
 
@@ -2121,7 +2141,7 @@ msgstr "المُطالبة المُسترجعة"
 msgid "Class"
 msgstr "كلاس"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:96 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:58 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:98 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:58 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:45
 msgid "Classification"
 msgstr "التصنيف"
 
@@ -2133,7 +2153,7 @@ msgstr "مَسح"
 msgid "Clear Completed Patron Requests"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:40
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:41
 msgid "Clear Completed Requests"
 msgstr ""
 
@@ -2251,8 +2271,8 @@ msgid "Completed"
 msgstr "مُكتمل"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:93
-msgid "Completed Copies"
-msgstr "النُسخ المكتملة"
+msgid "Completed Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:59
 msgid ""
@@ -2284,7 +2304,7 @@ msgstr ""
 msgid "Compression Display Options"
 msgstr "خيارات عرض الطي"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:10
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:20
 msgid "Computer files"
 msgstr "ملفات حاسوب"
 
@@ -2349,23 +2369,6 @@ msgstr "مستمر التحديث"
 msgid "Convert Change to Patron Credit"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:73 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:82 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:93 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:49
-msgid "Copies"
-msgstr "النُسخ"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:28 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:50 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:52
-msgid "Copy"
-msgstr "نسخة"
-
-#. ("{{copy_barcode}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:20
-msgid "Copy \"%1\" was mis-scanned or is not cataloged"
-msgstr "النُسخة \"%1\" مفقودة المسح الضوئي أو غير مُفهرسة"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:106 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:53
-msgid "Copy #"
-msgstr "نسخة #"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:172 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:160
 msgid "Copy Active Date"
 msgstr ""
@@ -2374,38 +2377,9 @@ msgstr ""
 msgid "Copy Alert Message (deprecated)"
 msgstr ""
 
-#. ("{{copy_barcode}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:18
-msgid "Copy Alert Message for \"%1\""
-msgstr "رسالة تنبيه النسخة لِ \"%1\""
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:52 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:193 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:392
-msgid "Copy Alerts"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:86
-msgid "Copy Attributes"
-msgstr "سمات النسخة"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:161 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:149
 msgid "Copy Barcode"
 msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:263 ../../Open-ILS/src/templates/staff/t_splash.tt2:57
-msgid "Copy Buckets"
-msgstr "سلال النسخ"
-
-#: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:115
-msgid "Copy Circ Lib ID"
-msgstr "معرف نسخة إعارة المكتبة"
-
-#: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:164
-msgid "Copy Current Row Above: CTRL+Up"
-msgstr "صف النسخة الحالية أعلاه: CTRL+Up"
-
-#: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:165
-msgid "Copy Current Row Below: CTRL+Down"
-msgstr "صف النسخة الحالية أدناه: CTRL+Down"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:168 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:156
 msgid "Copy Deleted"
@@ -2419,13 +2393,9 @@ msgstr "نسخ إعدادات الهاتش من أجل التخزين المحل
 msgid "Copy Hold"
 msgstr "حجز النسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:116 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:152 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:129 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:128 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:172 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:140 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:80
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:152 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:140
 msgid "Copy ID"
 msgstr "مُعرف النسخة"
-
-#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:5
-msgid "Copy In Transit"
-msgstr "النسخة في النقل"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:173 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:161
 msgid "Copy Is Mint Condition"
@@ -2435,7 +2405,7 @@ msgstr ""
 msgid "Copy Local Storage Settings To Hatch"
 msgstr "نسخ إعدادات التخزين المحلي من أجل الهاتش"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:193 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:44 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:181 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:54
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:193 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:181
 msgid "Copy Location"
 msgstr "موقع النسخة"
 
@@ -2483,26 +2453,6 @@ msgstr ""
 msgid "Copy Location URL"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:6
-msgid "Copy Not Available."
-msgstr "النسخة غير متاحة"
-
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:66
-msgid "Copy Not Found"
-msgstr "تعذر العثور على النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:385
-msgid "Copy Notes"
-msgstr "ملاحظات النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:249
-msgid "Copy Notes are Public"
-msgstr "ملاحظات النسخة علناً"
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:104
-msgid "Copy Number"
-msgstr "رقم النُسخة"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:153 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:141
 msgid "Copy Number on Volume"
 msgstr ""
@@ -2511,85 +2461,12 @@ msgstr ""
 msgid "Copy OPAC Visible"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:100 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:175 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:94 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:113 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:163 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:87 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:98
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:100 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:175 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:163
 msgid "Copy Status"
 msgstr "حالة النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:171 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:156 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:159
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:171 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:159
 msgid "Copy Status Change Time"
-msgstr ""
-
-#. ("{{copyStatus.name()}}")
-#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:11
-msgid "Copy Status: %1"
-msgstr "حالة النسخة: %1"
-
-#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Copy Statuses"
-msgstr "حالات النسخة"
-
-#: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:139
-msgid "Copy Stream"
-msgstr "تيار النسخة"
-
-#: ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:18 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
-msgid "Copy Tag Types"
-msgstr "أنواع تيجان النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:419
-msgid "Copy Tags"
-msgstr "تيجان النسخ"
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:21
-msgid "Copy Templates"
-msgstr "تركيبات النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:37
-msgid "Copy Updated"
-msgstr "تم تحديث النسخة"
-
-#: ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:6
-msgid "Copy alerts"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:89
-msgid "Copy display"
-msgstr "إظهار النسخة"
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:33
-msgid "Copy is In-Transit"
-msgstr "النسخة في حالة النقل"
-
-#: ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:48
-msgid "Copy location"
-msgstr "موقع النُسخة"
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:47 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:57
-msgid "Copy was marked claims never checked out"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:45 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:55
-msgid "Copy was marked claims returned"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:44 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:54
-msgid "Copy was marked damaged"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:46 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:56
-msgid "Copy was marked long overdue"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:41 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:51
-msgid "Copy was marked lost"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:42 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:52
-msgid "Copy was marked lost and paid for"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:53
-msgid "Copy was marked missing"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:41
@@ -2639,11 +2516,11 @@ msgstr "إنشاء"
 msgid "Create Bucket"
 msgstr "إنشاء سلة"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:78
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:78
 msgid "Create Date"
 msgstr "إنشاء تاريخ"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:414
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:426
 msgid "Create Invoice"
 msgstr "إِنشاء فاتورة"
 
@@ -2651,7 +2528,7 @@ msgstr "إِنشاء فاتورة"
 msgid "Create MFHD"
 msgstr "إنشاء مارك المُنسَق لـِ حيازة البيانات"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:293
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:305
 msgid "Create New MARC Record"
 msgstr "إنشاء تسجيلة مارك جديدة"
 
@@ -2663,7 +2540,7 @@ msgstr ""
 msgid "Create Pattern"
 msgstr "إنشاء نمط"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:395
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:407
 msgid "Create Purchase Order"
 msgstr "إنشاء طلب شراء"
 
@@ -2671,11 +2548,11 @@ msgstr "إنشاء طلب شراء"
 msgid "Create Record of Hold Notification"
 msgstr "إنشاء تسجيلة لإشعار الحجز"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:32
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:33
 msgid "Create Request"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:428
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:440
 msgid "Create Reservations"
 msgstr "إنشاء حجوزات"
 
@@ -2727,7 +2604,7 @@ msgstr "تم الإنشاء"
 msgid "Created Acquisition Patron Request"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:150
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108 ../../Open-ILS/src/templates/staff/offline-interface.tt2:150
 msgid "Created By"
 msgstr "إنشاء مِن قِبل"
 
@@ -2739,8 +2616,8 @@ msgstr "تم الإنشاء بوساطة:"
 msgid "Created On"
 msgstr "تمّ الإنشاء في"
 
-#. ("{{note.creator().usrname()}}")
 #. ("{{notify.notify_staff().usrname()}}")
+#. ("{{note.creator().usrname()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:129
 msgid "Created by %1"
 msgstr "تم الإنشاء بوساطة %1"
@@ -2802,13 +2679,13 @@ msgstr ""
 msgid "Currency Types"
 msgstr "الأنواع الحالية"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:110 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:60 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:105 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:62 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:97 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:49 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:25
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:110 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:97
 msgid "Current Copy"
 msgstr "النُسخة الحالية"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:34
-msgid "Current Copy Location"
-msgstr "موقع النُسخة الحالية"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:60 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:105 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:62 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:49 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:14 ../../Open-ILS/src/templates/staff/share/print_templates/t_holds_for_bib.tt2:25
+msgid "Current Item"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:45 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:32
 msgid "Current Shelf Lib"
@@ -2816,6 +2693,10 @@ msgstr "مكتبة الرف الحالي"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:128 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:115
 msgid "Current Shelf Library"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:34
+msgid "Current Shelving Location"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:123 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:110
@@ -2879,7 +2760,7 @@ msgstr "تاريخ التفعيل"
 msgid "Date Completed"
 msgstr "تاريخ الإكمال"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:106 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:84 ../../Open-ILS/src/templates/staff/offline-interface.tt2:152
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:115 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:84 ../../Open-ILS/src/templates/staff/offline-interface.tt2:152
 msgid "Date Created"
 msgstr "تاريخ الإنشاء"
 
@@ -2887,7 +2768,7 @@ msgstr "تاريخ الإنشاء"
 msgid "Date Expected"
 msgstr "التاريخ المُتَوقع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:107
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:116
 msgid "Date Last Edited"
 msgstr "تاريخ آخر تعديل"
 
@@ -2899,11 +2780,11 @@ msgstr "خيارات التاريخ"
 msgid "Date Received"
 msgstr "تاريخ الاستلام"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:108
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:117
 msgid "Date Record Created"
 msgstr "تاريخ التسجيلة تمّ إنشاؤه"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:109
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:118
 msgid "Date Record Last Edited"
 msgstr "تاريخ آخر تعديل لـِ التسجيلة"
 
@@ -2959,7 +2840,7 @@ msgstr "تصحيح الأخطاء"
 msgid "December"
 msgstr "كانون الأول"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:37 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:44 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:60 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:10 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:69 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:83
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:37 ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:44 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:60 ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:3 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:10 ../../Open-ILS/src/templates/staff/reporter/t_edit_template.tt2:69 ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:83
 msgid "Default"
 msgstr "الافتراضي"
 
@@ -3020,7 +2901,7 @@ msgstr "حذف السلة"
 msgid "Delete Distribution"
 msgstr "حذف التوزيع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:87 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:23
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:87 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:25
 msgid "Delete Items"
 msgstr "حذف النسخة"
 
@@ -3041,8 +2922,8 @@ msgid "Delete Selected"
 msgstr "حذف المحدد"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:23
-msgid "Delete Selected Copies from Catalog"
-msgstr "حذف النُسخ المحددة من الفهرس"
+msgid "Delete Selected Items from Catalog"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_mfhd_manager.tt2:16
 msgid "Delete Selected MFHDs"
@@ -3126,6 +3007,10 @@ msgstr "حذف هذه التسجيلات؟"
 msgid "Delete {{count}} template(s)?"
 msgstr "حذف {{count}} تركيبة؟"
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:17
+msgid "Deleted holdings template"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/serials/share/serials_strings.tt2:23
 msgid "Deleted prediction pattern template(s)"
 msgstr "تمّ حذف تركيبات نمط التنبؤ"
@@ -3154,11 +3039,7 @@ msgstr "حذف اشتراك الدورية"
 msgid "Deleted serial template"
 msgstr "حذف تركيبة الدورية"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:17
-msgid "Deleted volume/copy template"
-msgstr "حذف تركيبة المجلد/النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:110 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:71 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:81
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:119 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:81
 msgid "Deleted?"
 msgstr "محذوف؟"
 
@@ -3170,7 +3051,11 @@ msgstr "القسم:"
 msgid "Deposit Amount"
 msgstr "مبلغ الإيداع"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:204 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:263 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:121
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:120 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:121
+msgid "Deposit amount"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:204 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:119 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:120 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:263 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:121
 msgid "Deposit?"
 msgstr "إيداع؟"
 
@@ -3231,12 +3116,12 @@ msgid "Display Grouping"
 msgstr "عرض المجموعات"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:318
-msgid "Display defaults for Completed Copies tab"
-msgstr "عرض الافتراضي لتبويب النُسخة المكتملة"
+msgid "Display defaults for Completed Items tab"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:83
-msgid "Display defaults for Working Copy tab"
-msgstr "عرض الافتراضي لتبويب النُسخة الحالية"
+msgid "Display defaults for Working Item tab"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:188
 msgid ""
@@ -3283,7 +3168,7 @@ msgstr "عدم الطباعة"
 msgid "DoB"
 msgstr "تاريخ الميلاد"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:111
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:122
 msgid "Document ID"
 msgstr "مُعرف الوثيقة"
 
@@ -3326,7 +3211,7 @@ msgstr "إسقاط الكسور العشرية الزائدة"
 msgid "DtSt"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:46 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:73 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:36 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:100 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:125 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:27 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:104 ../../Open-ILS/src/templates/staff/offline-interface.tt2:208
+#: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:46 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:75 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:36 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:100 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:125 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:27 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:105 ../../Open-ILS/src/templates/staff/offline-interface.tt2:104 ../../Open-ILS/src/templates/staff/offline-interface.tt2:208
 msgid "Due Date"
 msgstr "تاريخ الاستحقاق"
 
@@ -3370,7 +3255,7 @@ msgstr ""
 msgid "ELvl_tbmfhd"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:83 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:85 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:87 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:101 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:54 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:56 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:58 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:60 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:62 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:158 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:79 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:81 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:83 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:85 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:87 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:101 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:56 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:58 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:60 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:62 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:64 ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:18 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:52 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:158 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:78
 msgid "Edit"
 msgstr "تعديل"
 
@@ -3394,6 +3279,10 @@ msgstr "تعديل تاريخ الاستحقاق لـِ %1 من النُسخ"
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:39 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:35 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:38 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:25
 msgid "Edit Hold Dates"
 msgstr "تعديل تاريخ الحجز"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:45
+msgid "Edit Holdings Templates"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:39
 msgid "Edit Item Attributes"
@@ -3460,7 +3349,7 @@ msgstr "تعديل نمط التنبؤ"
 msgid "Edit Record"
 msgstr "تعديل التسجيلة"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:43
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:44
 msgid "Edit Request"
 msgstr ""
 
@@ -3469,8 +3358,8 @@ msgid "Edit Selected"
 msgstr "تعديل المُحدد"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:17
-msgid "Edit Selected Copies"
-msgstr "تعديل النُسخ المحددة"
+msgid "Edit Selected Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:293
 msgid "Edit Statistical Data"
@@ -3480,13 +3369,17 @@ msgstr "تعديل البيانات الإحصائية"
 msgid "Edit Template"
 msgstr "تعديل تركيبة"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:45
-msgid "Edit Volume/Copy Templates"
-msgstr "تعديل تركيبات المجلد/النسخة"
-
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_overlay.tt2:13
 msgid "Edit Z39.50 Record"
 msgstr "تعديل تسجيلة Z39.50"
+
+#: ../../Open-ILS/src/templates/staff/cat/share/t_embedded_volcopy.tt2:5 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:8
+msgid "Edit call numbers"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:9
+msgid "Edit call numbers and items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_edit_pickup_lib.tt2:6
 msgid "Edit hold pickup library"
@@ -3508,14 +3401,6 @@ msgstr "تعديل ثم استيراد"
 msgid "Edit using full editor"
 msgstr "تعديل باستخدام المحرر الكامل"
 
-#: ../../Open-ILS/src/templates/staff/cat/share/t_embedded_volcopy.tt2:5 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:8
-msgid "Edit volumes"
-msgstr "تعديل المجلدات"
-
-#: ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:9
-msgid "Edit volumes and copies"
-msgstr "تعديل المجلدات والنُسخ"
-
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:93
 msgid "Edited"
 msgstr "مُعدّل"
@@ -3524,7 +3409,7 @@ msgstr "مُعدّل"
 msgid "Edited Acquisition Patron Request"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:112
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:123
 msgid "Edited By"
 msgstr "مُعدلة مِن قبل"
 
@@ -3556,7 +3441,7 @@ msgstr "تاريخ الفعال"
 msgid "Effective Date:"
 msgstr "التاريخ الفعال:"
 
-#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:748 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:164 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:68
+#: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:748 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:29 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:164 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:68
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
@@ -3573,8 +3458,8 @@ msgid "Emailed checkout receipt"
 msgstr "نم إرسال إيصال الإعارة عبر البريد الإلكتروني"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:91
-msgid "Empty Volumes"
-msgstr "مجلدات فارغة"
+msgid "Empty Call Numbers"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:26
 msgid "Enable Hatch Printing."
@@ -3773,19 +3658,15 @@ msgstr "حصلت استثناءات أثناء الإعارة"
 msgid "Exchange Rates"
 msgstr "معدلات الاستبدال"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:48
-msgid "Existing Copy Alerts"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:49
-msgid "Existing Copy Notes"
-msgstr "ملاحظات النُسخة الموجودة"
-
 #: ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:54
 msgid "Existing Distribution Notes"
 msgstr "ملاحظات التوزيع الحالية"
 
-#: ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:55
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:48
+msgid "Existing Item Alerts"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:49 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:55
 msgid "Existing Item Notes"
 msgstr "ملاحظات النسخة الحالية"
 
@@ -3853,7 +3734,7 @@ msgstr "تسجيلات التصدير"
 msgid "Export Transactions"
 msgstr "تصدير الحركة أو العمليات"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:20 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:124 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:20 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:135 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:248
 msgid "Extended"
 msgstr "تمّ المد"
 
@@ -3958,7 +3839,7 @@ msgstr "الرسوم"
 msgid "Fest"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:55
+#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:55 ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:4
 msgid "Field"
 msgstr ""
 
@@ -4022,7 +3903,7 @@ msgstr "فرز"
 msgid "Find Another Target"
 msgstr "إيجاد هدف آخر"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:154 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:113 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:367 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:243 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:142
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:307 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:154 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:86 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:367 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:243 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:142
 msgid "Fine Level"
 msgstr "مستوى الغرامة"
 
@@ -4034,11 +3915,11 @@ msgstr "إحصاء الغرامة:"
 msgid "Fines Owed"
 msgstr "الغرامات المستحقة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:116 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:90
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:127 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:90
 msgid "Fines Stopped"
 msgstr "تم إيقاف الغرامة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:117
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:128
 msgid "Fines Stopped Time"
 msgstr "وقت إيقاف الغرامات"
 
@@ -4054,7 +3935,7 @@ msgstr "الأَول"
 msgid "First 5 characters (for US ZIP code)"
 msgstr "أول 5 محارف (للرمز البريدي في أمريكا)"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:89 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:42 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:23 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:32 ../../Open-ILS/src/templates/staff/offline-interface.tt2:106 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:21 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:89 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:42 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:32 ../../Open-ILS/src/templates/staff/offline-interface.tt2:106 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:21 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:15
 msgid "First Name"
 msgstr "الاسم الأول"
 
@@ -4082,7 +3963,7 @@ msgstr "المُحرر النصي المُسطح"
 msgid "Floating"
 msgstr "عائم"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:169 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:118 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:157
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:169 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:129 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:157
 msgid "Floating Group"
 msgstr ""
 
@@ -4102,13 +3983,13 @@ msgstr ""
 msgid "Force Action?"
 msgstr "فرض الإجراء؟"
 
-#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:36
-msgid "Force Copy Quality"
-msgstr "فرض جودة النُسخة"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:25
 msgid "Force Hold"
 msgstr "فرض الحجز"
+
+#: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:36
+msgid "Force Item Quality"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:42
 msgid "Force Printer Context"
@@ -4195,7 +4076,7 @@ msgstr "التمويل"
 msgid "GPub"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:345
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:357
 msgid "General Search"
 msgstr "بحث عام"
 
@@ -4279,7 +4160,7 @@ msgstr "HTML"
 msgid "Hard Due Date Changes"
 msgstr "تغييرات تاريخ الاستحقاق الصارم"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:580
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:592
 msgid "Hatch"
 msgstr "باب"
 
@@ -4287,7 +4168,7 @@ msgstr "باب"
 msgid "Hatch Administration"
 msgstr "إدارة الهاتش"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:576
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:588
 msgid "Hatch Connection Status"
 msgstr ""
 
@@ -4343,9 +4224,13 @@ msgstr "المساعدة"
 msgid "Hide All Columns"
 msgstr "إخفاء كل الأعمدة"
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:7
+msgid "Hide Holdings Details"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:11
-msgid "Hide Copy Attributes"
-msgstr "إخفاء سمات النُسخة"
+msgid "Hide Item Attributes"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:425
 msgid "Hide Raw Pattern Code"
@@ -4355,11 +4240,7 @@ msgstr ""
 msgid "Hide Search Form"
 msgstr "إخفاء نموذج البحث"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:7
-msgid "Hide Volume/Copy Details"
-msgstr "إخفاء المجلد / تفاصيل النُسخة"
-
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:114 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:90 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:376
 msgid "High"
 msgstr "مرتفع"
 
@@ -4469,7 +4350,7 @@ msgstr "حجز للمستفيد  {{patron.alias}}"
 msgid "Hold for patron: %1, %2 %3"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:119 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:132 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:47 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:78
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:121 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:132 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:47 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:78
 msgid "Holdable"
 msgstr "قابل للحجز"
 
@@ -4477,7 +4358,7 @@ msgstr "قابل للحجز"
 msgid "Holdable Formats (for M-type hold)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:119 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:297 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:270 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:168
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:238 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:130 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:297 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:270 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:168
 msgid "Holdable?"
 msgstr "قابل للحجز؟"
 
@@ -4485,9 +4366,17 @@ msgstr "قابل للحجز؟"
 msgid "Holding Type"
 msgstr "نوع الحجز"
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:29
+#: ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:29 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:53
 msgid "Holdings"
 msgstr "الحجوزات"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:6
+msgid "Holdings Detail defaults"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:1
+msgid "Holdings Editor"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:70
 msgid "Holdings Transfer"
@@ -4515,7 +4404,7 @@ msgstr "الحجوزات"
 msgid "Holds / Transit"
 msgstr "الحجوزات/ المنقولات"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:120
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:131
 msgid "Holds Count"
 msgstr "تعداد الحجوزات"
 
@@ -4553,11 +4442,11 @@ msgstr "الحجوزات للتسجيلة: %1"
 msgid "Home"
 msgstr "الرئيسية"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:58 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:45 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:27 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:56 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:136 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:18
+#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:58 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:37 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:45 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:35 ../../Open-ILS/src/templates/staff/circ/patron/t_summary.tt2:56 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:136 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:18
 msgid "Home Library"
 msgstr "المكتبة الرئيسية"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:7
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:8
 msgid "Home Library: "
 msgstr "المكتبة الرئيسية: "
 
@@ -4589,7 +4478,7 @@ msgstr "مُعرف2"
 msgid "ID2"
 msgstr "مُعرف1"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:122 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:60 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:128 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:160 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:24
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:133 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:60 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:128 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:160 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:24
 msgid "ISBN"
 msgstr "ردمك"
 
@@ -4655,7 +4544,7 @@ msgstr "مجموعات تطابق الاستيراد"
 msgid "Import Record"
 msgstr "استيراد تسجيلة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:299
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:311
 msgid "Import Record from Z39.50"
 msgstr "استيراد تسجيلة من  Z39.50"
 
@@ -4695,7 +4584,7 @@ msgstr "استخدام داخل المكتبة"
 msgid "In-House Use List"
 msgstr "قائمة الاستخدام داخل المكتبة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:121 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:135
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:132 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:135
 msgid "In-House Uses"
 msgstr "استخدامات داخل المكتبة"
 
@@ -4767,7 +4656,7 @@ msgstr "إدراج حقل قبل"
 msgid "Internet Access Level"
 msgstr "مستوى الوصول للإنترنت"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:16
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:26
 msgid "Internet Resources"
 msgstr "مصادر إنترنت"
 
@@ -4775,11 +4664,11 @@ msgstr "مصادر إنترنت"
 msgid "Invalidate"
 msgstr "إلغاء التحقيق"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:61 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:46 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:126 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:144 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:124
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:61 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:46 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:128 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:155 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:180 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:124
 msgid "Inventory Date"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:62 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:127 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:145 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:183 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:125
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:62 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:47 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:129 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:156 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:183 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:125
 msgid "Inventory Workstation"
 msgstr ""
 
@@ -4839,7 +4728,7 @@ msgstr "تسمية العدد"
 msgid "Issuance saved"
 msgstr "تم حفظ العدد"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:29 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:55 ../../Open-ILS/src/templates/staff/offline-interface.tt2:229
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:29 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:55 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:28 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:50 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:52 ../../Open-ILS/src/templates/staff/offline-interface.tt2:229
 msgid "Item"
 msgstr "النُسخة"
 
@@ -4847,6 +4736,15 @@ msgstr "النُسخة"
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:12
 msgid "Item \"%1\" is marked as Claims Returned"
 msgstr "تم تعيين النُسخة \"%1\" كمطالبة بالإرجاع"
+
+#. ("{{copy_barcode}}")
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:20
+msgid "Item \"%1\" was mis-scanned or is not cataloged"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:106 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:53
+msgid "Item #"
+msgstr ""
 
 #. ("{{alert.item_never_circed}}")
 #: ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:76
@@ -4863,6 +4761,19 @@ msgstr "يجب توجيه النُسخة %1 إلى %2"
 msgid "Item %1 will be marked damaged. "
 msgstr "النسخة %1 سيتم تمييزها كـَ تالفة. "
 
+#. ("{{copy_barcode}}")
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:18
+msgid "Item Alert Message for \"%1\""
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:77 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:54 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:193 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:392
+msgid "Item Alerts"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:86
+msgid "Item Attributes"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:34 ../../Open-ILS/src/templates/staff/cat/item/missing_pieces.tt2:41 ../../Open-ILS/src/templates/staff/offline-interface.tt2:101 ../../Open-ILS/src/templates/staff/offline-interface.tt2:205
 msgid "Item Barcode"
 msgstr "باركود النُسخة"
@@ -4876,25 +4787,57 @@ msgstr "باركود النُسخة:"
 msgid "Item Barcode: %1"
 msgstr "باركود النسخة: %1"
 
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:275 ../../Open-ILS/src/templates/staff/t_splash.tt2:57
+msgid "Item Buckets"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:115
+msgid "Item Circ Lib ID"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:164
+msgid "Item Current Row Above: CTRL+Up"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2:165
+msgid "Item Current Row Below: CTRL+Down"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:49
 msgid "Item Details"
 msgstr "تفاصيل النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:59 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:36
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:59 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:38
 msgid "Item Holds"
 msgstr "حجوزات النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:114
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:116 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:129 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:128 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:172 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:80 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:114
 msgid "Item ID"
 msgstr "مُعرف النسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:16 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:125
+#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:5
+msgid "Item In Transit"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:6
+msgid "Item Not Available."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:16 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:125 ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:34 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:66
 msgid "Item Not Found"
 msgstr "تعذر العثور على النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:86
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:385 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:86
 msgid "Item Notes"
 msgstr "ملاحظات النُسخة"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:249
+msgid "Item Notes are Public"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:106
+msgid "Item Number"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/t_splash.tt2:35
 msgid "Item Search and Cataloging"
@@ -4904,7 +4847,7 @@ msgstr "فهرسة وبحث عن النُسخة"
 msgid "Item Selection Depth"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:1 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:215 ../../Open-ILS/src/templates/staff/navbar.tt2:48
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:29 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:94 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:1 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:78 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:113 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:87 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:98 ../../Open-ILS/src/templates/staff/navbar.tt2:215 ../../Open-ILS/src/templates/staff/navbar.tt2:48
 msgid "Item Status"
 msgstr "حالة النُسخة"
 
@@ -4916,27 +4859,60 @@ msgstr "حالة النُسخة (التفاصيل)"
 msgid "Item Status (list)"
 msgstr "حالة النُسخة (قائمة)"
 
+#: ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:156
+msgid "Item Status Change Time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:51
 msgid "Item Status Display"
 msgstr "عرض حالة النُسخة"
+
+#. ("{{copyStatus.name()}}")
+#: ../../Open-ILS/src/templates/staff/circ/share/t_copy_not_avail_dialog.tt2:11
+msgid "Item Status: %1"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
+msgid "Item Statuses"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:139
+msgid "Item Stream"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:45
 msgid "Item Summary"
 msgstr "ملخص النُسخة"
 
+#: ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:18 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:10
+msgid "Item Tag Types"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:419
+msgid "Item Tags"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_view.tt2:21
+msgid "Item Templates"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:38
 msgid "Item Type"
 msgstr "نوع النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/serials/t_receive_alerts.tt2:37 ../../Open-ILS/src/templates/staff/serials/t_receive_alerts.tt2:53
+#: ../../Open-ILS/src/templates/staff/cat/share/t_replace_barcode.tt2:37
+msgid "Item Updated"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/serials/t_receive_alerts.tt2:37 ../../Open-ILS/src/templates/staff/serials/t_receive_alerts.tt2:53 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:6
 msgid "Item alerts"
 msgstr "تنبيه النسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:64 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:94 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:43
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:64 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:94 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:45
 msgid "Item as Damaged"
 msgstr "النُسخة كـَ تالفة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:66 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:95 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:66 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:95 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:47
 msgid "Item as Missing"
 msgstr "النُسخة كـَ مفقودة"
 
@@ -4948,6 +4924,10 @@ msgstr "باركود النسخة"
 msgid "Item barcode does not have a correct check digit."
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:89
+msgid "Item display"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:3
 msgid "Item has not circulated."
 msgstr "لم تُعار النُسخة"
@@ -4955,6 +4935,10 @@ msgstr "لم تُعار النُسخة"
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:90
 msgid "Item has not transited"
 msgstr "لم تنقل النُسخة"
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:33
+msgid "Item is In-Transit"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:3
 msgid "Item is not captured for a hold"
@@ -4972,6 +4956,34 @@ msgstr "تم حفظ ملاحظات النسخة"
 msgid "Item permission check"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:47 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:57
+msgid "Item was marked claims never checked out"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:45 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:55
+msgid "Item was marked claims returned"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:44 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:54
+msgid "Item was marked damaged"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:46 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:56
+msgid "Item was marked long overdue"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:41 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:51
+msgid "Item was marked lost"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:42 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:52
+msgid "Item was marked lost and paid for"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:43 ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:53
+msgid "Item was marked missing"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:46
 msgid "Item(s) transfered"
 msgstr "النُسخ المنقولة"
@@ -4980,7 +4992,7 @@ msgstr "النُسخ المنقولة"
 msgid "Item_tbmfhd"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:15 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:17 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:23 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:98 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:48 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:57
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:15 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:17 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:21 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:23 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:73 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:82 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:93 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:98 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:59 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:49
 msgid "Items"
 msgstr "النُسخ"
 
@@ -5000,17 +5012,17 @@ msgstr "النُسخ المُعارة"
 msgid "Items Overdue"
 msgstr "النُسخ المتأخرة"
 
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:70
+msgid "Items to Previously Marked Call Number"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:101
 msgid "Items to Previously Marked Destination"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:66
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:108 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:68
 msgid "Items to Previously Marked Library"
 msgstr "النُسخ لـِ المكتبة المعينة مسبقاً"
-
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:109 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:68
-msgid "Items to Previously Marked Volume"
-msgstr "النُسخ لـِ المجلد المعينة سابقاً"
 
 #: ../../Open-ILS/src/templates/staff/serials/t_month_selector.tt2:2
 msgid "January"
@@ -5094,7 +5106,7 @@ msgstr "أحدث تعديل في:"
 msgid "Last Few Circs"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:90 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:31 ../../Open-ILS/src/templates/staff/offline-interface.tt2:107 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:16 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:14
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:90 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:44 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:84 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:28 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:31 ../../Open-ILS/src/templates/staff/offline-interface.tt2:107 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:16 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:14
 msgid "Last Name"
 msgstr "الاسم الأخير"
 
@@ -5110,7 +5122,7 @@ msgstr ""
 msgid "Last Payment"
 msgstr "أحدث دفع"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:95
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:97
 msgid "Last Renewal Workstation"
 msgstr ""
 
@@ -5172,7 +5184,7 @@ msgid "Library : Distribution/Stream"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:68
-msgid "Library/Volume as Transfer Destination"
+msgid "Library/Call Number as Transfer Destination"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:14
@@ -5187,11 +5199,11 @@ msgstr "تنبيهات القيد"
 msgid "Line Item MARC Attribute Definitions"
 msgstr "تعريفات خصائص قيود مارك"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:73
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:74
 msgid "Lineitem ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:318
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:330
 msgid "Link Checker"
 msgstr "اختبار الرابط"
 
@@ -5199,7 +5211,7 @@ msgstr "اختبار الرابط"
 msgid "Link MFHD"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:21
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:51 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:23
 msgid "Link as Conjoined to Previously Marked Bib Record"
 msgstr "ربط كموصول للتسجيلة البيبلوغرافية المحددة مسبقاً"
 
@@ -5219,15 +5231,15 @@ msgstr "تحميل"
 msgid "Load Bucket"
 msgstr "تحميل السلة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:376
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:388
 msgid "Load Catalog Record IDs"
 msgstr "مُعرفات تسجيلات تحميل الفهرس"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:383
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:395
 msgid "Load MARC Order Records"
 msgstr "تحميل تسجيلات مارك"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:20
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:23
 msgid "Load Patron"
 msgstr "تحميل المستفيد"
 
@@ -5243,11 +5255,11 @@ msgstr "تحميل السلة المشتركة حسب المُعرف"
 msgid "Loading..."
 msgstr "تحميل"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:186 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:123 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:65 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:236 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:228
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:186 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:134 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:65 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:236 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:228
 msgid "Loan Duration"
 msgstr "مدة الإعارة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:483
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:495
 msgid "Local Administration"
 msgstr "الإدارة المحلية"
 
@@ -5255,7 +5267,7 @@ msgstr "الإدارة المحلية"
 msgid "Local Catalog"
 msgstr "الفهرس المحلي"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:46 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:53 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:38 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:75 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:85 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:81 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:131 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:111
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:46 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:53 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:38 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:77 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:85 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:81 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:131 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:54 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:111
 msgid "Location"
 msgstr "الموقع"
 
@@ -5263,7 +5275,7 @@ msgstr "الموقع"
 msgid "Location:"
 msgstr "الموقع:"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:563
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:575
 msgid "Log Out"
 msgstr "تسجيل الخروج"
 
@@ -5291,7 +5303,7 @@ msgstr "متأخر جداً"
 msgid "Lost"
 msgstr "ضائع"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:114 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:374
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:21 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:88 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:374
 msgid "Low"
 msgstr "منخفض"
 
@@ -5299,11 +5311,11 @@ msgstr "منخفض"
 msgid "Lower case"
 msgstr "حروف صغيرة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:311
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:323
 msgid "MARC Batch Edit"
 msgstr "تعديل دفعة مارك"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:305
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:317
 msgid "MARC Batch Import/Export"
 msgstr "استيراد/تصدير دفعة مارك"
 
@@ -5319,7 +5331,7 @@ msgstr "تعديل مارك"
 msgid "MARC Expert"
 msgstr "مارك الخبير"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:370
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:382
 msgid "MARC Federated Search"
 msgstr "البحث الاتحادي في مارك"
 
@@ -5432,7 +5444,7 @@ msgstr ""
 msgid "Main Settings"
 msgstr "الإعدادات الأساسية"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:44 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:83 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:14
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:44 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:83 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:16
 msgid "Make Items Bookable"
 msgstr "جعل النسخ قابلة للحجز"
 
@@ -5452,11 +5464,11 @@ msgstr ""
 msgid "Make last visible"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:61 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:142 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:196 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
+#: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:61 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:126 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:153 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:196 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:151
 msgid "Manage"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:325
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:337
 msgid "Manage Authorities"
 msgstr "إدارة الملفات الاستنادية"
 
@@ -5468,16 +5480,16 @@ msgstr ""
 msgid "Manage Columns"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:40 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:5
-msgid "Manage Copy Alerts"
+#: ../../Open-ILS/src/templates/staff/serials/t_manage.tt2:20
+msgid "Manage Issues"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:88 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:65 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:40 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:103 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:76 ../../Open-ILS/src/templates/staff/share/t_copy_alert_editor_dialog.tt2:5
+msgid "Manage Item Alerts"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:5
-msgid "Manage Copy Tags"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/serials/t_manage.tt2:20
-msgid "Manage Issues"
+msgid "Manage Item Tags"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:41 ../../Open-ILS/src/templates/staff/serials/t_manage.tt2:25
@@ -5514,7 +5526,7 @@ msgid ""
 "Manual adjustments may be made here. These do not get saved with templates."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:11
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:21
 msgid "Maps"
 msgstr "خرائط"
 
@@ -5522,7 +5534,7 @@ msgstr "خرائط"
 msgid "March"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:63 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:65 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:93 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:42 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:44
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:63 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:65 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:93 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:44 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:46
 msgid "Mark"
 msgstr "تعيين"
 
@@ -5667,7 +5679,7 @@ msgstr "رسائل"
 msgid "Metabib Fields"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:24 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:33 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:26 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:16
+#: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_view.tt2:43 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:27 ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:33 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:26 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:16
 msgid "Middle Name"
 msgstr "الاسم الأوسط"
 
@@ -5695,7 +5707,7 @@ msgstr "باركود ضائع"
 msgid "Missing Call Number"
 msgstr "رمز استدعاء ضائع"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:12
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:22
 msgid "Mixed material"
 msgstr "مادة مختلطة"
 
@@ -5837,11 +5849,11 @@ msgstr "نقل المستخدمين المحددين إلى مجموعة الم�
 msgid "Move user into this group?"
 msgstr "نقل المستخدم لهذه المجموعة؟"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:14
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:24
 msgid "Musical scores"
 msgstr "النوتات الموسيقية"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:352
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:364
 msgid "My Selection Lists"
 msgstr "قوائم اختياراتي"
 
@@ -5905,7 +5917,7 @@ msgstr "الاسم..."
 msgid "NameUse"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:60 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:64
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:60 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:65
 msgid "Need Before Date/Time"
 msgstr ""
 
@@ -5921,7 +5933,7 @@ msgstr "يجب النقل"
 msgid "Net Access"
 msgstr "وصول الشبكة"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:955
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:984
 msgid "New Address"
 msgstr "عنوان جديد"
 
@@ -5937,7 +5949,7 @@ msgstr "رصيد جديد:"
 msgid "New Barcode..."
 msgstr "باركود جديد..."
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:358
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:370
 msgid "New Brief Record"
 msgstr "موجز تسجيلة جديد"
 
@@ -5949,19 +5961,15 @@ msgstr "سلة جديدة"
 msgid "New Child"
 msgstr "فرع جديد"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:5
-msgid "New Copy Alert"
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:5
-msgid "New Copy Note"
-msgstr "ملاحظة نُسخة جديدة"
-
 #: ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:6
 msgid "New Distribution Note"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:7
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_alerts.tt2:5
+msgid "New Item Alert"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:5 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:7
 msgid "New Item Note"
 msgstr ""
 
@@ -5990,11 +5998,11 @@ msgid "Next Page"
 msgstr "الصفحة التالية"
 
 #: ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:31
-msgid "Next copy status"
+msgid "Next item status"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:26
-msgid "Next copy status: "
+msgid "Next item status: "
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_week_in_month_selector.tt2:3
@@ -6106,7 +6114,7 @@ msgstr "لا"
 msgid "None of the above"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:114 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:247 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:19 ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:22 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:135 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:68 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:89 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:247 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:375
 msgid "Normal"
 msgstr "اعتيادي"
 
@@ -6158,7 +6166,7 @@ msgstr "ملاحظة المتن"
 msgid "Note Body..."
 msgstr "ملاحظة المتن..."
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:23 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:78 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:80 ../../Open-ILS/src/templates/staff/circ/share/t_cancel_hold_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2:39 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:36 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:29 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:88
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:23 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:75 ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:80 ../../Open-ILS/src/templates/staff/circ/share/t_cancel_hold_dialog.tt2:27 ../../Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2:39 ../../Open-ILS/src/templates/staff/circ/share/t_new_message_dialog.tt2:36 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:29 ../../Open-ILS/src/templates/staff/serials/t_notes.tt2:88
 msgid "Note..."
 msgstr "ملاحظة..."
 
@@ -6235,8 +6243,8 @@ msgid "Number"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:233
-msgid "Number of Copies"
-msgstr "عدد النّسخ"
+msgid "Number of Items"
+msgstr ""
 
 #. ("{{dialog.num_circs}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_backdate_dialog.tt2:9
@@ -6275,7 +6283,7 @@ msgstr "عرض الأوباك"
 msgid "OPAC Visible"
 msgstr "إظهار الأوباك"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:128 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:126 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:178 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:147
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:128 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:137 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:178 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:147
 msgid "OPAC Visible?"
 msgstr "إظهار الأوباك؟"
 
@@ -6387,7 +6395,7 @@ msgstr "إعارة مفتوحة"
 msgid "Open Hold Requests"
 msgstr "طلبات الحجوزات المفتوحة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:408
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:420
 msgid "Open Invoices"
 msgstr "الفواتير المفتوحة"
 
@@ -6527,7 +6535,7 @@ msgstr ""
 msgid "Owed for Selected:"
 msgstr "مستحق للمحدد:"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:127 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:138 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:15
 msgid "Owned By"
 msgstr "مملوكة مِن قبل"
 
@@ -6540,7 +6548,7 @@ msgstr "مستحق من قبل %1"
 msgid "Owner"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:38 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:34 ../../Open-ILS/src/templates/staff/admin/serials/t_templates.tt2:10 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:128 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:30 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:147 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:88 ../../Open-ILS/src/templates/staff/serials/t_mfhd_manager.tt2:19 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:136
+#: ../../Open-ILS/src/templates/staff/admin/serials/pattern_template.tt2:38 ../../Open-ILS/src/templates/staff/admin/serials/t_template_list.tt2:34 ../../Open-ILS/src/templates/staff/admin/serials/t_templates.tt2:10 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:103 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:139 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:30 ../../Open-ILS/src/templates/staff/cat/share/t_volume_list.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:147 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:88 ../../Open-ILS/src/templates/staff/serials/t_mfhd_manager.tt2:19 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:136
 msgid "Owning Library"
 msgstr "المكتبة الأساسية"
 
@@ -6549,7 +6557,7 @@ msgid "PO Line Item"
 msgstr ""
 
 #. ("{{context_lineitem}}")
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:16
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:17
 msgid "PO Line Item ID: %1"
 msgstr ""
 
@@ -6582,7 +6590,7 @@ msgstr "مَصدر الورق"
 msgid "Paper Type"
 msgstr "نَوع الورق"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:8
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:18
 msgid "Papers or Articles"
 msgstr "أوراق أو مقالات"
 
@@ -6614,7 +6622,7 @@ msgstr ""
 msgid "Part Sort Key"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:112 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:129 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:111
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:112 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:140 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:111
 msgid "Parts"
 msgstr "الأجزاء"
 
@@ -6679,7 +6687,7 @@ msgstr "تعديل المستفيد"
 msgid "Patron First Name"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:11
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:12
 msgid "Patron Home Library: "
 msgstr ""
 
@@ -6699,7 +6707,7 @@ msgstr "ملاحظة المستفيد"
 msgid "Patron Registration"
 msgstr "تسجيل المستفيد"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:364
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:376
 msgid "Patron Requests"
 msgstr "طلبات المستفيد"
 
@@ -6871,8 +6879,8 @@ msgid "Pending Change:"
 msgstr "تغيير مُعلق:"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/index.tt2:41
-msgid "Pending Copies"
-msgstr "النُسخ المُعلّقة"
+msgid "Pending Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/pending.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:3 ../../Open-ILS/src/templates/staff/navbar.tt2:167
 msgid "Pending Patrons"
@@ -6895,8 +6903,8 @@ msgid "Pending Users"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:30 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:22
-msgid "Permanently delete selected copies and/or volumes from catalog?"
-msgstr "حذف النُسخ و/أو المجلدات المحددة من الفهرس بشكل دائم؟"
+msgid "Permanently delete selected items and/or call numbers from catalog?"
+msgstr ""
 
 #. ("{{permission}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:22
@@ -6948,11 +6956,11 @@ msgstr "مادية"
 msgid "Physical Characteristics Wizard"
 msgstr "معالج الخصائص المادية"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:446
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:458
 msgid "Pick Up Reservations"
 msgstr "إلتقاط الحجوزات"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:68 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:31 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:39 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:24
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:69 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:31 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:39 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:24
 msgid "Pickup Lib"
 msgstr "مكتبة الاستلام"
 
@@ -7028,7 +7036,7 @@ msgstr "الرجاء اختيار التسجيلة القائدة من اليم�
 msgid "Please select an item from the list"
 msgstr "الرجاء تحديد نُسخة من القائمة"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:30 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:108
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:33 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:108
 msgid "Post Code"
 msgstr "الرمز البريدي"
 
@@ -7037,8 +7045,8 @@ msgid "Post-Clear"
 msgstr "بعد المسح"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:82 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:148 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:83 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:73
-msgid "Potential Copies"
-msgstr "نُسخ محتملة"
+msgid "Potential Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:273
 msgid "Pre-selected"
@@ -7109,7 +7117,7 @@ msgstr "مجموعة الإعارة السابقة"
 msgid "Previous Page"
 msgstr "الصفحة السابقة"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:164 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:114 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:160 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:130 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:214 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:159 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:148
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:164 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:114 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:160 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:141 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:214 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:159 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:148
 msgid "Price"
 msgstr "السعر"
 
@@ -7121,7 +7129,7 @@ msgstr "الأساسي"
 msgid "Primary Name"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:381 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:218 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:153 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:65 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:27 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:97 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:71 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:80
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_config.tt2:381 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:218 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:164 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:65 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:27 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:97 ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:32 ../../Open-ILS/src/templates/staff/circ/share/t_hold_shelf_dialog.tt2:71 ../../Open-ILS/src/templates/staff/circ/share/t_transit_dialog.tt2:80
 msgid "Print"
 msgstr "طباعة"
 
@@ -7161,7 +7169,7 @@ msgstr ""
 msgid "Print Item Receipt"
 msgstr "طباعة إيصال النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:61 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:40
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:20 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:61 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:42
 msgid "Print Labels"
 msgstr ""
 
@@ -7284,7 +7292,7 @@ msgstr "تاريخ النشر:"
 msgid "Public Note"
 msgstr "ملاحظة عامة"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:191 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:131 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:129 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:97
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:191 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:142 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:129 ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:97
 msgid "Publication Date"
 msgstr "تاريخ النشر"
 
@@ -7312,7 +7320,7 @@ msgstr "مرئي علنياً؟"
 msgid "Published"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:175 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:132 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:130
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:175 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:143 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:130
 msgid "Publisher"
 msgstr "الناشر"
 
@@ -7320,7 +7328,7 @@ msgstr "الناشر"
 msgid "Publisher..."
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:434
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:446
 msgid "Pull List"
 msgstr "قائمة السحب"
 
@@ -7328,11 +7336,11 @@ msgstr "قائمة السحب"
 msgid "Pull List for Hold Requests"
 msgstr "قائمة السحب لطلبات الحجز"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:389
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:401
 msgid "Purchase Orders"
 msgstr "طلبات الشراء"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:274 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:133 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:333 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:174
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:274 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:144 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:333 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:174
 msgid "Quality"
 msgstr "الجودة"
 
@@ -7486,7 +7494,7 @@ msgstr "أرشيف الإعارة الحديث"
 msgid "Recently Canceled Holds"
 msgstr "حجوزات ملغية حديثاً"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:257 ../../Open-ILS/src/templates/staff/t_splash.tt2:53
+#: ../../Open-ILS/src/templates/staff/cat/bucket/record/index.tt2:1 ../../Open-ILS/src/templates/staff/navbar.tt2:269 ../../Open-ILS/src/templates/staff/t_splash.tt2:53
 msgid "Record Buckets"
 msgstr "سلال التسجيلات"
 
@@ -7494,7 +7502,7 @@ msgstr "سلال التسجيلات"
 msgid "Record Format"
 msgstr "صيغة التسجيلة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:38 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:40 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:45
 msgid "Record Holds"
 msgstr "حجوزات التسجيلة"
 
@@ -7578,11 +7586,11 @@ msgstr "تراجع:  CTRL-y"
 msgid "RefStatus"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:121 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:104 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:72
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:123 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:104 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:72
 msgid "Reference"
 msgstr "مرجع"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:89 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:134 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:139 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:189 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:169
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:89 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:145 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:139 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:189 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:169
 msgid "Reference?"
 msgstr "مرجع؟"
 
@@ -7638,7 +7646,7 @@ msgstr "التاريخ النسبي"
 msgid "Relf"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:135 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:152 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:134 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:114
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:146 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:152 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:134 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:114
 msgid "Remaining Renewals"
 msgstr "عمليات التمديد المتبقية"
 
@@ -7646,7 +7654,7 @@ msgstr "عمليات التمديد المتبقية"
 msgid "Remote Accounts"
 msgstr "حسابات عن بعد"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:69 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_workstations.tt2:69 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2:11 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2:69 ../../Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2:11 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:53 ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:89 ../../Open-ILS/src/templates/staff/share/t_copy_alert_manager_dialog.tt2:19
 msgid "Remove"
 msgstr "إزالة"
 
@@ -7686,13 +7694,13 @@ msgstr ""
 msgid "Remove Row: CTRL+Del"
 msgstr "حذف صف:  CTRL+Del"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:13
-msgid "Remove Selected Copies from Bucket"
-msgstr "حذف النُسخ المحددة من السلة"
-
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_group.tt2:25
 msgid "Remove Selected From Group"
 msgstr "حذف المحدد من المجموعة"
+
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:13
+msgid "Remove Selected Items from Bucket"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:16
 msgid "Remove Selected Records from Bucket"
@@ -7726,7 +7734,7 @@ msgstr "تمديد الكل"
 msgid "Renew All Items?"
 msgstr "تمديد إعارة كل النُسخ؟"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:89 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:27 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:122 ../../Open-ILS/src/templates/staff/navbar.tt2:130
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:89 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:29 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:5 ../../Open-ILS/src/templates/staff/navbar.tt2:122 ../../Open-ILS/src/templates/staff/navbar.tt2:130
 msgid "Renew Items"
 msgstr "تمديد إعارة النُسخ"
 
@@ -7766,7 +7774,7 @@ msgstr "عمليات التمديد المتبقية"
 msgid "Replace Barcode"
 msgstr "استبدال باركود"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:61
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:86 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:105 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:63
 msgid "Replace Barcodes"
 msgstr "استبدال الباركودات"
 
@@ -7791,7 +7799,7 @@ msgstr "مجلدات التقارير"
 msgid "Reporter"
 msgstr "كاتب التقرير"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:507 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:84
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:519 ../../Open-ILS/src/templates/staff/reporter/share/report_strings.tt2:39 ../../Open-ILS/src/templates/staff/t_splash.tt2:84
 msgid "Reports"
 msgstr "التقارير"
 
@@ -7803,7 +7811,7 @@ msgstr "إعادة طباعة الفاتورة الأخيرة"
 msgid "Request Date"
 msgstr "تاريخ الطلب"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:53 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:62
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:53 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:63
 msgid "Request Date/Time"
 msgstr ""
 
@@ -7824,7 +7832,7 @@ msgstr ""
 msgid "Request IDs"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:85 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:19
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:5 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:85 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:21
 msgid "Request Items"
 msgstr "طلب النُسخ"
 
@@ -7841,22 +7849,22 @@ msgid "Request Notes:"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:15
-msgid "Request Selected Copies"
-msgstr "طلب النُسخ المحددة"
+msgid "Request Selected Items"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:132 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:60
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:132 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:61
 msgid "Request Status"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:61
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:62
 msgid "Request Status ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:138 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:66
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:138 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:67
 msgid "Request Type"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:31
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:34
 msgid "Requested Username"
 msgstr "اسم المستخدم لصاحب الطلب"
 
@@ -7950,7 +7958,7 @@ msgstr "المصادر"
 msgid "Restarts at unit completion"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:557
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:569
 msgid "Restore Operator"
 msgstr "إعادة تخزين المُشغل"
 
@@ -7970,15 +7978,15 @@ msgstr "استدعاء بيانات"
 msgid "Retrieve All These Patrons"
 msgstr "استدعاء بيانات كل هؤلاء المستفيدين"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:331
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:343
 msgid "Retrieve Authority Record by ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:270
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:282
 msgid "Retrieve Bib Record by ID"
 msgstr "استدعاء التسجيلة البيبلوغرافية حسب المُعرف"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:278
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:290
 msgid "Retrieve Bib Record by TCN"
 msgstr "استدعاء التسجيلة البيبلوغرافية من خلال رقم التحكم في النقل"
 
@@ -7986,7 +7994,7 @@ msgstr "استدعاء التسجيلة البيبلوغرافية من خلال
 msgid "Retrieve Item"
 msgstr "استدعاء نُسخة"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:276 ../../Open-ILS/src/templates/staff/navbar.tt2:284 ../../Open-ILS/src/templates/staff/navbar.tt2:286
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:288 ../../Open-ILS/src/templates/staff/navbar.tt2:296 ../../Open-ILS/src/templates/staff/navbar.tt2:298
 msgid "Retrieve Last Bib Record"
 msgstr "استدعاء بيانات أحدث تسجيلة ببيلوغرافية"
 
@@ -7998,7 +8006,7 @@ msgstr "استدعاء بيانات آخر مستفيد"
 msgid "Retrieve Last Patron Who Circulated Item"
 msgstr "استدعاء بيانات آخر مستفيد قام باستعارة هذه النُسخة"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:47 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:23 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:31 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:29
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:48 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:23 ../../Open-ILS/src/templates/staff/admin/workstation/t_log.tt2:49 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:31 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:26 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:29
 msgid "Retrieve Patron"
 msgstr "استدعاء بيانات المستفيد"
 
@@ -8010,7 +8018,7 @@ msgstr ""
 msgid "Retrieve Selected Patrons"
 msgstr "استدعاء بيانات المستفيدين المحددين"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:452
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:464
 msgid "Return Reservations"
 msgstr "إرجاع الحجوزات"
 
@@ -8151,6 +8159,10 @@ msgstr "حفظ التغييرات"
 msgid "Save... "
 msgstr "حفظ... "
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:16
+msgid "Saved holdings template(s)"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/cat/printlabels/index.tt2:17
 msgid "Saved print label template(s)"
 msgstr ""
@@ -8158,10 +8170,6 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:14
 msgid "Saved serial template"
 msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:16
-msgid "Saved volume/copy template(s)"
-msgstr "تركيبات المجلد/النسخة المحفوظة"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_pending.tt2:5
 msgid "Scan Card"
@@ -8196,8 +8204,8 @@ msgid "Search catalog for..."
 msgstr "البحث في الفهرس عن..."
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:50
-msgid "Search for Copies by Barcode"
-msgstr "البحث عن نُسخ حسب الباركود"
+msgid "Search for Items by Barcode"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/navbar.tt2:42
 msgid "Search for Patrons"
@@ -8325,7 +8333,7 @@ msgstr "الدفع المحدد:"
 msgid "Selection Library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:74
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:75
 msgid "Selection List ID"
 msgstr ""
 
@@ -8358,14 +8366,14 @@ msgid "SerUse"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:10
-msgid "Serial Copy Templates"
+msgid "Serial Item Templates"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:31 ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:15
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_catalog.tt2:31 ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:25
 msgid "Serials"
 msgstr "الدوريات"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:495
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/serials/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:507
 msgid "Serials Administration"
 msgstr ""
 
@@ -8381,7 +8389,7 @@ msgstr ""
 msgid "Series"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:477
+#: ../../Open-ILS/src/templates/staff/admin/server/index.tt2:1 ../../Open-ILS/src/templates/staff/admin/server/t_splash.tt2:4 ../../Open-ILS/src/templates/staff/navbar.tt2:489
 msgid "Server Administration"
 msgstr "إدارة الخادم"
 
@@ -8430,14 +8438,14 @@ msgid "Set Date Start:"
 msgstr "ضبط تاريخ البداية:"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:33 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:29 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:32 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:19
-msgid "Set Desired Copy Quality"
-msgstr "ضبط جودة النُسخة المرغوبة"
+msgid "Set Desired Item Quality"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:53
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:54
 msgid "Set Hold on Requests"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:55
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:56
 msgid "Set No Hold on Requests"
 msgstr ""
 
@@ -8497,11 +8505,15 @@ msgstr "موقع الرف"
 msgid "Shelf Time"
 msgstr "وقت الرف"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:125 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:175 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:258 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:165 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:59
+#: ../../Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2:125 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:44 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:175 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:258 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:165 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:59 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:54
 msgid "Shelving Location"
 msgstr "موقع الرف"
 
-#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:124 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:67 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:246
+#: ../../Open-ILS/src/templates/staff/serials/t_batch_receive.tt2:48
+msgid "Shelving location"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/serials/index.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:135 ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:67 ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:246
 msgid "Short"
 msgstr "مختصر"
 
@@ -8509,7 +8521,7 @@ msgstr "مختصر"
 msgid "Short Name"
 msgstr "الاسم المختصر"
 
-#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:19 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:56 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:58 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:60 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:33 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:35 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:44 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:47
+#: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:19 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:52 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:54 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:56 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:58 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:60 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:35 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:37 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:39 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:41 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:44 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:47
 msgid "Show"
 msgstr "عرض"
 
@@ -8521,7 +8533,7 @@ msgstr "عرض كل الأعمدة"
 msgid "Show All Holds"
 msgstr "عرض كل الحجوزات"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:35
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:36
 msgid "Show Canceled Requests"
 msgstr ""
 
@@ -8529,17 +8541,21 @@ msgstr ""
 msgid "Show Clearable Holds"
 msgstr "عرض الحجوزات القابلة للمسح"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:12
-msgid "Show Copy Attributes"
-msgstr "عرض سمات النُسخة"
-
 #: ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:47
 msgid "Show Fewer Fields"
 msgstr "عرض حقول أقل"
 
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:8
+msgid "Show Holdings Details"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:16
 msgid "Show Holds for Title"
 msgstr "عرض حجوزات هذا العنوان"
+
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:12
+msgid "Show Item Attributes"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:34
 msgid "Show Item Details"
@@ -8577,33 +8593,29 @@ msgstr "عرض القيود المحددة في الفهرس"
 msgid "Show Triggered Events"
 msgstr "عرض العمليات الجارية"
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:8
-msgid "Show Volume/Copy Details"
-msgstr "عرض تفاصيل المجلد/النُسخة"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:37
+msgid "Show call number detail"
+msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:32
-msgid "Show copy detail"
-msgstr "عرض تفاصيل النُسخة"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:22
+msgid "Show empty call numbers"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:27
 msgid "Show empty libraries"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:22
-msgid "Show empty volumes"
-msgstr "عرض المجلدات الفارغة"
-
 #: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:6
 msgid "Show holdings at or below"
 msgstr "عرض الحجوزات في أو أدناه"
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:107 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:94 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:31
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:14 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:107 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:94 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:31
 msgid "Show in Catalog"
 msgstr "عرض في الفهرس"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:37
-msgid "Show volume detail"
-msgstr "عرض تفاصيل المجلد"
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:32
+msgid "Show item detail"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2:5
 msgid "Show:"
@@ -8642,7 +8654,7 @@ msgstr "فرز حسب الأولوية/الاتجاه"
 msgid "Sort Visible Columns To Top"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:13
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:23
 msgid "Sound recordings"
 msgstr "تسجيلات صوتية"
 
@@ -8700,6 +8712,10 @@ msgstr "طاقم المكتبة"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2:52
 msgid "Staff Barcode"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:262
+msgid "Staff Catalog (Experimental)"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:88
@@ -8770,7 +8786,7 @@ msgstr ""
 msgid "Statement"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:101 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:188 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:961
+#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:101 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:188 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:990
 msgid "Statistical Categories"
 msgstr "الفئات الإحصائية"
 
@@ -8790,7 +8806,7 @@ msgstr "الحالة"
 msgid "Status Changed"
 msgstr "تم تغيير الحالة"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:136
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:147
 msgid "Status Changed Time"
 msgstr "وقت الحالة المُغيّرة"
 
@@ -8858,7 +8874,7 @@ msgstr "تفضيلات المستخدم المحفوظة"
 msgid "Stream ID"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:28 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:88
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:31 ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:88
 msgid "Street 1"
 msgstr "شارع 1"
 
@@ -8968,7 +8984,7 @@ msgstr "منع الحجز والنقل"
 msgid "Survey"
 msgstr "المسح الاستقصائي"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:193 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1011 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1
+#: ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:193 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:1040 ../../Open-ILS/src/templates/staff/circ/patron/t_surveys.tt2:1
 msgid "Surveys"
 msgstr "المسح الاستقصائي"
 
@@ -8985,11 +9001,11 @@ msgstr "تعليق %1 من الحجوزات؟"
 msgid "Suspended"
 msgstr "مُعلّق"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:137 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:132
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:148 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:132
 msgid "TCN"
 msgstr "رقم التحكم بالنقل"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:138
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:149
 msgid "TCN Source"
 msgstr "مصدر رقم التحكم بالنقل"
 
@@ -9113,7 +9129,7 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:40
 msgid ""
 "The difference between the nominal publishing date of an issue and the date "
-"that you expect to receive your copy."
+"that you expect to receive your item."
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_item_status.tt2:15
@@ -9177,8 +9193,8 @@ msgstr "هناك 1 حجز مرتبط"
 
 #. ("{{transit.target_copy().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/t_copy_in_transit_dialog.tt2:9
-msgid "There is an open transit on copy %1"
-msgstr "هناك نقل مفتوح للنُسخة %1"
+msgid "There is an open transit on item %1"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:127
 msgid ""
@@ -9211,6 +9227,10 @@ msgid ""
 "This feature will clone the selected subscriptions and all of their "
 "subscription notes, distributions, distribution notes, captions and "
 "patterns, streams, and routing list users."
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:832
+msgid "This is a pending address"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/z3950/t_raw_search.tt2:9
@@ -9295,7 +9315,7 @@ msgstr ""
 msgid "Timestamp"
 msgstr "الطَابع الزمني"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:157 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:30 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:75 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:77 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:94 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:94 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:137 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:8 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:117 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:14 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:58 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:30
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:157 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:30 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_pending.tt2:55 ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:40 ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:33 ../../Open-ILS/src/templates/staff/cat/catalog/t_conjoined_items.tt2:25 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:75 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:79 ../../Open-ILS/src/templates/staff/cat/z3950/t_list.tt2:125 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:94 ../../Open-ILS/src/templates/staff/circ/holds/t_pull_list.tt2:94 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:76 ../../Open-ILS/src/templates/staff/circ/in_house_use/index.tt2:82 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:22 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2:56 ../../Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2:25 ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:63 ../../Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2:137 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:66 ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:91 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:10 ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:8 ../../Open-ILS/src/templates/staff/circ/renew/t_renew.tt2:117 ../../Open-ILS/src/templates/staff/circ/share/t_hold_note_dialog.tt2:28 ../../Open-ILS/src/templates/staff/circ/share/t_precat_dialog.tt2:14 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:58 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2:24 ../../Open-ILS/src/templates/staff/share/print_templates/t_hold_shelf_list.tt2:30
 msgid "Title"
 msgstr "العنوان"
 
@@ -9453,7 +9473,7 @@ msgstr ""
 msgid "Transaction #%1"
 msgstr "العملية #%1"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:139
+#: ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:150
 msgid "Transaction Complete"
 msgstr "اكتملت المعاملة"
 
@@ -9474,7 +9494,7 @@ msgstr "العمليات"
 msgid "Transactions Processed"
 msgstr "المُعاملات المُعالجَة"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:100 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:65 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:100 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:97 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:107 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:67 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:69
 msgid "Transfer"
 msgstr "نقل"
 
@@ -9489,8 +9509,8 @@ msgid "Transfer All Title Holds"
 msgstr "نقل عناوين الحجز"
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2:21
-msgid "Transfer Selected Copies to Marked Volume"
-msgstr "نقل النُسخ المحددة إلى المجلد المحدد"
+msgid "Transfer Selected Items to Marked Call Number"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2:23
 msgid "Transfer Title Holds"
@@ -9509,7 +9529,7 @@ msgstr "نقل الحجوزات البيبلوغرافية %1 إلى مُعرف 
 msgid "Transform"
 msgstr "تحويل"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:148 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:135
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:148 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:125 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:135
 msgid "Transit Cancel Time"
 msgstr ""
 
@@ -9577,7 +9597,7 @@ msgstr "نقل إلى"
 msgid "Transits:"
 msgstr "النقل:"
 
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:57 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:34 ../../Open-ILS/src/templates/staff/cat/item/t_view.tt2:24
+#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:57 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:36 ../../Open-ILS/src/templates/staff/cat/item/t_view.tt2:24
 msgid "Triggered Events"
 msgstr "العمليات الجارية"
 
@@ -9635,8 +9655,8 @@ msgstr "إلغاء ضبط بداية صف الانتظار"
 
 #. ("{{barcode}}", "{{textcode}}")
 #: ../../Open-ILS/src/templates/staff/circ/share/circ_strings.tt2:14
-msgid "Unable to checkout copy \"%1\" : %2"
-msgstr "لا يمكن إعارة النسخة \"%1\": %2"
+msgid "Unable to checkout item \"%1\" : %2"
+msgstr ""
 
 #. ("{{print.template_name}}")
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_print_templates.tt2:83 ../../Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2:142
@@ -9685,8 +9705,8 @@ msgid "Unlink"
 msgstr "إلغاء ربط"
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:34 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:26
-msgid "Unlink selected conjoined copies?"
-msgstr "إلغاء ربط النسخ الموحدة"
+msgid "Unlink selected conjoined items?"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:41 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:57 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:73
 msgid "Unset"
@@ -9717,7 +9737,7 @@ msgstr "تحديث تاريخ انتهاء الصلاحية"
 msgid "Update Expire Time"
 msgstr "تحديث وقت انتهاء الصلاحية"
 
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:91 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:31 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:244 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:45
+#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:91 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:33 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:244 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin.tt2:45
 msgid "Update Inventory"
 msgstr ""
 
@@ -9860,7 +9880,7 @@ msgstr ""
 msgid "User Activity Types"
 msgstr "نوع نشاطات المستخدم"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:20 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:76 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:11 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:13 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:138
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:20 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:77 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:11 ../../Open-ILS/src/templates/staff/cat/catalog/t_request_items.tt2:13 ../../Open-ILS/src/templates/staff/circ/holds/t_shelf_list.tt2:138
 msgid "User Barcode"
 msgstr "باركود المستخدم"
 
@@ -9872,24 +9892,24 @@ msgstr "سلال المستخدم"
 msgid "User Display Name"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:77
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:78
 msgid "User Family Name"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:78
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:79
 msgid "User Home Library"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:35 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:81
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:35 ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:76 ../../Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2:87 ../../Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2:81
 msgid "User ID"
 msgstr ""
 
 #. ("{{context_user}}")
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:15
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:16
 msgid "User ID: %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:203 ../../Open-ILS/src/templates/staff/navbar.tt2:471
+#: ../../Open-ILS/src/templates/staff/admin/user_perms.tt2:1 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:203 ../../Open-ILS/src/templates/staff/navbar.tt2:483
 msgid "User Permission Editor"
 msgstr "محرر صلاحية المستخدم"
 
@@ -9917,7 +9937,7 @@ msgstr "اِسم المُستخدم:"
 msgid "Validate"
 msgstr "التحقيق"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:28
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:5 ../../Open-ILS/src/templates/staff/circ/patron/t_new_note_dialog.tt2:28
 msgid "Value"
 msgstr "القيمة"
 
@@ -9969,11 +9989,11 @@ msgstr ""
 msgid "View Pattern"
 msgstr "عرض النمط"
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:45
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:46
 msgid "View Request"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:51
+#: ../../Open-ILS/src/templates/staff/acq/requests/t_list.tt2:52
 msgid "View Selection List"
 msgstr ""
 
@@ -10001,7 +10021,7 @@ msgstr ""
 msgid "Visible"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:17
+#: ../../Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2:27
 msgid "Visual materials"
 msgstr "مواد مرئية"
 
@@ -10025,40 +10045,8 @@ msgstr "ملغي"
 msgid "Volume"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:51
-msgid "Volume Attributes"
-msgstr "سمات المجلد"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:44
-msgid "Volume(s) transfered"
-msgstr "مجلد/مجلدات منقولة"
-
 #: ../../Open-ILS/src/templates/staff/acq/requests/t_edit.tt2:166
 msgid "Volume..."
-msgstr ""
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:6
-msgid "Volume/Copy Detail defaults"
-msgstr "المجلد/ افتراضي تفاصيل النسخة"
-
-#: ../../Open-ILS/src/templates/staff/cat/volcopy/index.tt2:1
-msgid "Volume/Copy Editor"
-msgstr "المجلدات /محرر النُسخ"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:71 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:80 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:102 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:55 ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:42
-msgid "Volumes"
-msgstr "المجلدات"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:75 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:84 ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:95
-msgid "Volumes and Copies"
-msgstr "المجلدات والنُسخ"
-
-#: ../../Open-ILS/src/templates/staff/cat/item/index.tt2:104 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:99 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:50 ../../Open-ILS/src/templates/staff/cat/item/t_list.tt2:59 ../../Open-ILS/src/templates/staff/circ/checkin/t_checkin_table.tt2:53
-msgid "Volumes and Items"
-msgstr "المجلدات والنُسخ"
-
-#: ../../Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2:98
-msgid "Volumes to Previously Marked Destination"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:7
@@ -10066,8 +10054,8 @@ msgid "Waiting for Capture"
 msgstr "انتظار الالتقاط"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/hold_strings.tt2:6
-msgid "Waiting for Copy"
-msgstr "انتظار النَسخ"
+msgid "Waiting for Item"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_splash.tt2:79 ../../Open-ILS/src/templates/staff/offline-interface.tt2:58
 msgid "Warning"
@@ -10164,8 +10152,8 @@ msgid ""
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:32 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:24
-msgid "Will delete {{copies}} copies and {{volumes}} volumes"
-msgstr "سيتم حذف {{copies}}  من النُسخ و {{volumes}} من المجلدات"
+msgid "Will delete {{copies}} items and {{volumes}} call numbers"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/index.tt2:54
 msgid "Will delete {{count}} distribution(s)"
@@ -10208,8 +10196,8 @@ msgid "Will reset {{items}} items(s)"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/cat/catalog/index.tt2:36 ../../Open-ILS/src/templates/staff/cat/item/index.tt2:28
-msgid "Will unlink {{peers}} copies"
-msgstr "سيقوم بإلغاء رابط النُسخ {{peers}}"
+msgid "Will unlink {{peers}} items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_season_selector.tt2:5
 msgid "Winter"
@@ -10232,14 +10220,14 @@ msgid "Work Payment"
 msgstr "الدفع"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:90
-msgid "Working Copies"
-msgstr "نُسخ تحت العمل"
+msgid "Working Items"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/offline-interface.tt2:19
 msgid "Working location"
 msgstr "موقع العمل"
 
-#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:84 ../../Open-ILS/src/templates/staff/navbar.tt2:465 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:34
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2:84 ../../Open-ILS/src/templates/staff/navbar.tt2:477 ../../Open-ILS/src/templates/staff/offline-interface.tt2:13 ../../Open-ILS/src/templates/staff/offline-interface.tt2:200 ../../Open-ILS/src/templates/staff/t_login.tt2:34
 msgid "Workstation"
 msgstr "محطة العمل"
 
@@ -10475,11 +10463,11 @@ msgstr "shift+f2"
 msgid "shift+f2"
 msgstr "shift+f2"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:275
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:287
 msgid "shift+f3"
 msgstr "shift+f3"
 
-#: ../../Open-ILS/src/templates/staff/navbar.tt2:283
+#: ../../Open-ILS/src/templates/staff/navbar.tt2:295
 msgid "shift+f8"
 msgstr "shift+f8"
 
@@ -10498,6 +10486,9 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2:6 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_info.tt2:6
 msgid "{} items"
 msgstr "{}  النُسخ"
+
+#~ msgid "# Copies"
+#~ msgstr "# نُسخ"
 
 #~ msgid "Abort %1 transits?"
 #~ msgstr "إحباط %1 من المنقولات؟"
@@ -10520,8 +10511,15 @@ msgstr "{}  النُسخ"
 #~ msgid "Alert Msg"
 #~ msgstr "رسالة التنبيه"
 
+#~ msgid ""
+#~ "Are you sure you want to transfer selected items to the marked volume?"
+#~ msgstr "هل تُؤكّد نقل النُسخ المحددة إلى المجلد المحدد؟"
+
 #~ msgid "Paid for Selected:"
 #~ msgstr "دفع المحدد"
+
+#~ msgid "Pending Copies"
+#~ msgstr "النُسخ المُعلّقة"
 
 #~ msgid "Print CSV"
 #~ msgstr "طباعة CSV"
@@ -10535,8 +10533,89 @@ msgstr "{}  النُسخ"
 #~ msgid "Actions for Catalogers"
 #~ msgstr "إجراءات للمفهرسين"
 
+#~ msgid "Add/Edit Copy Notes"
+#~ msgstr "ملاحظات إضافة/تحرير نسخة"
+
+#~ msgid "Always display Volume/Copy Detail pane"
+#~ msgstr "إظهار لوحة تفاصيل المجلد/النسخة دائماً"
+
+#~ msgid "Choose volume transfer target"
+#~ msgstr "اختيار هدف نقل المجلد"
+
+#~ msgid "Circulation Modifer"
+#~ msgstr "مُعدّل الإعارة"
+
+#~ msgid "Copies"
+#~ msgstr "النُسخ"
+
+#~ msgid "Copy"
+#~ msgstr "نسخة"
+
+#~ msgid "Copy #"
+#~ msgstr "نسخة #"
+
+#~ msgid "Copy Alert Message for \"%1\""
+#~ msgstr "رسالة تنبيه النسخة لِ \"%1\""
+
+#~ msgid "Copy Attributes"
+#~ msgstr "سمات النسخة"
+
+#~ msgid "Copy Current Row Above: CTRL+Up"
+#~ msgstr "صف النسخة الحالية أعلاه: CTRL+Up"
+
+#~ msgid "Copy Current Row Below: CTRL+Down"
+#~ msgstr "صف النسخة الحالية أدناه: CTRL+Down"
+
+#~ msgid "Copy In Transit"
+#~ msgstr "النسخة في النقل"
+
+#~ msgid "Copy Not Available."
+#~ msgstr "النسخة غير متاحة"
+
+#~ msgid "Copy Not Found"
+#~ msgstr "تعذر العثور على النسخة"
+
+#~ msgid "Copy Notes"
+#~ msgstr "ملاحظات النسخة"
+
+#~ msgid "Copy Notes are Public"
+#~ msgstr "ملاحظات النسخة علناً"
+
+#~ msgid "Copy Status: %1"
+#~ msgstr "حالة النسخة: %1"
+
+#~ msgid "Copy Statuses"
+#~ msgstr "حالات النسخة"
+
+#~ msgid "Copy Updated"
+#~ msgstr "تم تحديث النسخة"
+
+#~ msgid "Copy display"
+#~ msgstr "إظهار النسخة"
+
+#~ msgid "Copy is In-Transit"
+#~ msgstr "النسخة في حالة النقل"
+
 #~ msgid "Download CSV"
 #~ msgstr "تحميل CSV"
+
+#~ msgid "Edit Selected Copies"
+#~ msgstr "تعديل النُسخ المحددة"
+
+#~ msgid "Request Selected Copies"
+#~ msgstr "طلب النُسخ المحددة"
+
+#~ msgid "Transfer Selected Copies to Marked Volume"
+#~ msgstr "نقل النُسخ المحددة إلى المجلد المحدد"
+
+#~ msgid "Unable to checkout copy \"%1\" : %2"
+#~ msgstr "لا يمكن إعارة النسخة \"%1\": %2"
+
+#~ msgid "Unlink selected conjoined copies?"
+#~ msgstr "إلغاء ربط النسخ الموحدة"
+
+#~ msgid "Volume Attributes"
+#~ msgstr "سمات المجلد"
 
 #~ msgid "Volume Transfer"
 #~ msgstr "نقل المجلد"
@@ -10547,11 +10626,47 @@ msgstr "{}  النُسخ"
 #~ msgid "Volume as Item Transfer Destination"
 #~ msgstr "المجلد كوجهة نقل النُسخة"
 
+#~ msgid "Volume(s) transfered"
+#~ msgstr "مجلد/مجلدات منقولة"
+
+#~ msgid "Volume/Copy Detail defaults"
+#~ msgstr "المجلد/ افتراضي تفاصيل النسخة"
+
+#~ msgid "Volume/Copy Editor"
+#~ msgstr "المجلدات /محرر النُسخ"
+
+#~ msgid "Volumes"
+#~ msgstr "المجلدات"
+
+#~ msgid "Volumes and Copies"
+#~ msgstr "المجلدات والنُسخ"
+
+#~ msgid "Volumes and Items"
+#~ msgstr "المجلدات والنُسخ"
+
 #~ msgid "Volumes to Previously Marked Library"
 #~ msgstr "المجلدات إلى المكتبة المحددة مسبقاً"
 
+#~ msgid "Waiting for Copy"
+#~ msgstr "انتظار النَسخ"
+
+#~ msgid "Will delete {{copies}} copies and {{volumes}} volumes"
+#~ msgstr "سيتم حذف {{copies}}  من النُسخ و {{volumes}} من المجلدات"
+
+#~ msgid "Working Copies"
+#~ msgstr "نُسخ تحت العمل"
+
 #~ msgid "Abort Transits and Reset Associated Holds"
 #~ msgstr "إحباط المنقولات وإعادة ضبط الحجوزات"
+
+#~ msgid "Empty Volumes"
+#~ msgstr "مجلدات فارغة"
+
+#~ msgid "Existing Copy Notes"
+#~ msgstr "ملاحظات النُسخة الموجودة"
+
+#~ msgid "Force Copy Quality"
+#~ msgstr "فرض جودة النُسخة"
 
 #~ msgid "Loading... %1"
 #~ msgstr "تحميل ....%1"
@@ -10562,17 +10677,67 @@ msgstr "{}  النُسخ"
 #~ msgid "Network Connection Status"
 #~ msgstr "حالة اتصال الشبكة"
 
+#~ msgid "New Copy Note"
+#~ msgstr "ملاحظة نُسخة جديدة"
+
+#~ msgid "Permanently delete selected copies and/or volumes from catalog?"
+#~ msgstr "حذف النُسخ و/أو المجلدات المحددة من الفهرس بشكل دائم؟"
+
+#~ msgid "Potential Copies"
+#~ msgstr "نُسخ محتملة"
+
 #~ msgid "Print/Store Connection Status"
 #~ msgstr "طباعة/حفظ حالة الاتصال"
 
 #~ msgid "Remote Prefs"
 #~ msgstr "بادئات عن بعد"
 
+#~ msgid "Remove Selected Copies from Bucket"
+#~ msgstr "حذف النُسخ المحددة من السلة"
+
+#~ msgid "Search for Copies by Barcode"
+#~ msgstr "البحث عن نُسخ حسب الباركود"
+
+#~ msgid "Set Desired Copy Quality"
+#~ msgstr "ضبط جودة النُسخة المرغوبة"
+
+#~ msgid "Show Copy Attributes"
+#~ msgstr "عرض سمات النُسخة"
+
+#~ msgid "Show Volume/Copy Details"
+#~ msgstr "عرض تفاصيل المجلد/النُسخة"
+
+#~ msgid "Show copy detail"
+#~ msgstr "عرض تفاصيل النُسخة"
+
+#~ msgid "Show empty volumes"
+#~ msgstr "عرض المجلدات الفارغة"
+
+#~ msgid "Show volume detail"
+#~ msgstr "عرض تفاصيل المجلد"
+
 #~ msgid "Sort"
 #~ msgstr "فرز"
 
+#~ msgid "There is an open transit on copy %1"
+#~ msgstr "هناك نقل مفتوح للنُسخة %1"
+
+#~ msgid "Will unlink {{peers}} copies"
+#~ msgstr "سيقوم بإلغاء رابط النُسخ {{peers}}"
+
 #~ msgid "{{username}} @ {{workstation}}"
 #~ msgstr "{{username}} @ {{workstation}}"
+
+#~ msgid ""
+#~ "\n"
+#~ "          There is an open circulation on the requested item.  \n"
+#~ "          This copy was checked out by another patron on %1.\n"
+#~ "          "
+#~ msgstr ""
+#~ "\n"
+#~ "          هناك إعارة مفتوحة على النُسخة المطلوبة \n"
+#~ "        تم إعارة هذه النسخة بوساطة مستفيد آخر في %1\n"
+#~ "          "
 
 #~ msgid "Choose Library for Volume/Copy Transfer Destination"
 #~ msgstr "اختيار مكتبة كوجهة نقل المجلد/النُسخة"
@@ -10580,14 +10745,47 @@ msgstr "{}  النُسخ"
 #~ msgid "Collapse ... Reload to restore"
 #~ msgstr "طي...تحديث لإعادة التخزين"
 
+#~ msgid "Completed Copies"
+#~ msgstr "النُسخ المكتملة"
+
 #~ msgid "Configure Columns"
 #~ msgstr "ضبط الأعمدة"
+
+#~ msgid "Current Copy Location"
+#~ msgstr "موقع النُسخة الحالية"
+
+#~ msgid "Delete Selected Copies from Catalog"
+#~ msgstr "حذف النُسخ المحددة من الفهرس"
+
+#~ msgid "Display defaults for Completed Copies tab"
+#~ msgstr "عرض الافتراضي لتبويب النُسخة المكتملة"
+
+#~ msgid "Display defaults for Working Copy tab"
+#~ msgstr "عرض الافتراضي لتبويب النُسخة الحالية"
+
+#~ msgid "Edit volumes"
+#~ msgstr "تعديل المجلدات"
+
+#~ msgid "Edit volumes and copies"
+#~ msgstr "تعديل المجلدات والنُسخ"
+
+#~ msgid "Hide Copy Attributes"
+#~ msgstr "إخفاء سمات النُسخة"
+
+#~ msgid "Hide Volume/Copy Details"
+#~ msgstr "إخفاء المجلد / تفاصيل النُسخة"
 
 #~ msgid "Item Transfer Target set"
 #~ msgstr "مجموعة استهداف نقل النُسخة"
 
 #~ msgid "Library as Volume Transfer Destination"
 #~ msgstr "المكتبة كوجهة لنقل المجلد"
+
+#~ msgid "Allow Call Number attributes in Copy Templates"
+#~ msgstr "السماح لـِ خصائص رمز الاستدعاء في تركيبات النسخة"
+
+#~ msgid "Copy \"%1\" was mis-scanned or is not cataloged"
+#~ msgstr "النُسخة \"%1\" مفقودة المسح الضوئي أو غير مُفهرسة"
 
 #~ msgid "Volumes to Previously Marked Record"
 #~ msgstr "المجلدات إلى التسجيلة المحددة مسبقاً"
@@ -10598,23 +10796,77 @@ msgstr "{}  النُسخ"
 #~ msgid "Copies to Previously Marked Library"
 #~ msgstr "النُسخ لـِ المكتبة المعينة سابقاً"
 
+#~ msgid "Copy Buckets"
+#~ msgstr "سلال النسخ"
+
+#~ msgid "Copy Templates"
+#~ msgstr "تركيبات النسخة"
+
+#~ msgid "Items to Previously Marked Volume"
+#~ msgstr "النُسخ لـِ المجلد المعينة سابقاً"
+
 #~ msgid "Print Spine Labels"
 #~ msgstr "طباعة التسميات أسفل الكتاب"
 
 #~ msgid "Add Volumes"
 #~ msgstr "إضافة مجلدات"
 
+#~ msgid "Deleted volume/copy template"
+#~ msgstr "حذف تركيبة المجلد/النسخة"
+
+#~ msgid "Edit Volume/Copy Templates"
+#~ msgstr "تعديل تركيبات المجلد/النسخة"
+
+#~ msgid "Number of Copies"
+#~ msgstr "عدد النّسخ"
+
+#~ msgid "Saved volume/copy template(s)"
+#~ msgstr "تركيبات المجلد/النسخة المحفوظة"
+
 #~ msgid "Shelving Location Label"
 #~ msgstr "تسمية موقع الترفيف"
+
+#~ msgid "Copy Circ Lib ID"
+#~ msgstr "معرف نسخة إعارة المكتبة"
+
+#~ msgid "Copy Number"
+#~ msgstr "رقم النُسخة"
+
+#~ msgid "Add volume"
+#~ msgstr "إضافة مجلد"
+
+#~ msgid "Apply Copy Tags"
+#~ msgstr "تطبيق تيجان النُسخ"
 
 #~ msgid "Evergreen Staff %1"
 #~ msgstr "طاقم إِفرغرين %1"
 
+#~ msgid "Add copy stream"
+#~ msgstr "إضافة تيار نسخة"
+
+#~ msgid "Add/Edit Copy Tags"
+#~ msgstr "إضافة / تعديل تيجان النسخة"
+
+#~ msgid "Copy Tags"
+#~ msgstr "تيجان النسخ"
+
+#~ msgid "Copy Tag Types"
+#~ msgstr "أنواع تيجان النسخة"
+
+#~ msgid "Copy location"
+#~ msgstr "موقع النُسخة"
+
 #~ msgid "Copy Alert"
 #~ msgstr "تنبيه النسخة"
+
+#~ msgid "Copy Stream"
+#~ msgstr "تيار النسخة"
 
 #~ msgid "Far Right"
 #~ msgstr "أقصى اليمين"
 
 #~ msgid "Far Left"
 #~ msgstr "أقصى اليسار"
+
+#~ msgid "Add/Edit Copy Alerts"
+#~ msgstr "إضافة/ تعديل تنبيهات النسخة"

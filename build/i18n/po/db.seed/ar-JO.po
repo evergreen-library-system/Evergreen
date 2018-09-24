@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-06 10:57-0400\n"
-"PO-Revision-Date: 2017-11-05 07:34+0000\n"
+"POT-Creation-Date: 2018-09-18 16:06-0400\n"
+"PO-Revision-Date: 2018-09-16 04:39+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:06+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:28+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 "Language: ar\n"
 
 #: 950.data.seed-values.sql:8354
@@ -361,10 +361,6 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 
-#: 950.data.seed-values.sql:18876
-msgid "Grid Config: circ.patron.search"
-msgstr ""
-
 #: 950.data.seed-values.sql:681 950.data.seed-values.sql:3670
 #: 950.data.seed-values.sql:3673
 msgid "Lost Materials Processing Fee"
@@ -460,6 +456,10 @@ msgstr "الأوريا"
 #: 950.data.seed-values.sql:942
 msgid "Allow a user to add/remove users to/from the \"User\" group"
 msgstr "السماح للمستخدم بإضافة/حذف المستخدمين من/إلى مجموعة \"المستخدم\""
+
+#: 950.data.seed-values.sql:8548
+msgid "Turkey "
+msgstr "تركيا "
 
 #: 950.data.seed-values.sql:121
 msgid "Abbreviated Title"
@@ -1808,6 +1808,10 @@ msgstr "قرص صوتي أو سلك صوتي ـ فونو ديسك ـ إلخ"
 msgid "Simple Mobile"
 msgstr "موبايل بسيط"
 
+#: 950.data.seed-values.sql:13846
+msgid "Bell Mobility & Solo Mobile (Alternate)"
+msgstr "بيل موبيليتي و سولو موبيل"
+
 #: 950.data.seed-values.sql:1104
 msgid "Allows staff to edit the note for a payment on a transaction"
 msgstr "السماح للطاقم بتعديل ملاحظة الدفع أثناء إجراء العملية"
@@ -2040,6 +2044,12 @@ msgstr "الرمز الأساسي لـِ ـ نقرة واحدة رقمية ـ"
 #: 950.data.seed-values.sql:7289
 msgid "Walloon"
 msgstr "والون"
+
+#: 950.data.seed-values.sql:16151
+msgid ""
+"Leave transaction open when long-overdue balance equals zero.  This leaves "
+"the long-overdue copy on the patron record when it is paid"
+msgstr ""
 
 #: 950.data.seed-values.sql:8466
 msgid "Norway "
@@ -2337,15 +2347,6 @@ msgstr "السونينكي"
 msgid ""
 "Allow a user to remove an existing workstation so a new one can replace it"
 msgstr "السماح للمستخدم بحذف محطة عمل حالية وبالتالي يمكن لآخر باستبدالها"
-
-#: 950.data.seed-values.sql:13335
-msgid ""
-"Facilitates producing a CSV file representing a book list by introducing an "
-"\"items\" variable into the TT environment, sorted as dictated according to "
-"user params"
-msgstr ""
-"تسهيل إنتاج ملف CSV وهو ما يمثل قائمة الكتب من خلال إدخال \"العناصر\" "
-"المتغيرة في  بيئة تي تي مرتبة وفقاً لما تمليه بارامترات المستخدم"
 
 #: 950.data.seed-values.sql:8375
 msgid "Gabon "
@@ -3284,7 +3285,7 @@ msgstr "قيمة مُعدل الإعارة الإفتراضية لـِ النُ�
 
 #: 950.data.seed-values.sql:245
 msgid "Abstract"
-msgstr ""
+msgstr "المُلخص"
 
 #: 950.data.seed-values.sql:15329
 msgid "Kid's OPAC Search Filter"
@@ -3330,6 +3331,10 @@ msgstr "شكل المدرع"
 #: 950.data.seed-values.sql:8362
 msgid "Florida "
 msgstr "فلوريدا "
+
+#: 950.data.seed-values.sql:17193
+msgid "Item Print Label - Call Number Wrap Filter Width"
+msgstr ""
 
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
 #: 950.data.seed-values.sql:8899 950.data.seed-values.sql:8912
@@ -3867,6 +3872,10 @@ msgstr ""
 #: 950.data.seed-values.sql:14547
 msgid "Straight Talk / PagePlus Cellular"
 msgstr "نقاش صريح/ صفحة خلوية زائدة"
+
+#: 950.data.seed-values.sql:15445
+msgid "Number of seconds to wait between URL test attempts."
+msgstr "عدد الثواني لـِ الانتظار ما بين محاولات اختبار الرابط"
 
 #: 950.data.seed-values.sql:4174 950.data.seed-values.sql:4177
 msgid "PayPal login"
@@ -4839,6 +4848,10 @@ msgstr "بايونير سيلليولار للاتصالات"
 msgid "ADMIN_SERIAL_DISTRIBUTION"
 msgstr "ADMIN_SERIAL_DISTRIBUTION"
 
+#: 950.data.seed-values.sql:16744
+msgid "OPAC Metarecord Hold Formats Attribute"
+msgstr "خاصية تنسيقات الحجز لـِ ميتاداتا التسجيلة في الأوباك"
+
 #: 950.data.seed-values.sql:3877
 msgid "Patron Login Timeout (in seconds)"
 msgstr "مهلة تسجيل الدخول لـِ المستفيد (بالثواني)"
@@ -5616,9 +5629,9 @@ msgstr "8 دورة في الدقيقة"
 msgid "Qatar "
 msgstr "قطر "
 
-#: 950.data.seed-values.sql:15445
-msgid "Number of seconds to wait between URL test attempts."
-msgstr "عدد الثواني لـِ الانتظار ما بين محاولات اختبار الرابط"
+#: 950.data.seed-values.sql:13323
+msgid "Produce a CSV file representing a book list"
+msgstr "توليد ملف CSV يمثل قائمة الحجز"
 
 #: 950.data.seed-values.sql:1318
 msgid "UPDATE_TRANSLATION"
@@ -6642,14 +6655,6 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_boundary.hard"
 msgid "Guinea"
 msgstr "غينيَا"
 
-#: 950.data.seed-values.sql:16151
-msgid ""
-"Leave transaction open when long-overdue balance equals zero.  This leaves "
-"the lost copy on the patron record when it is paid"
-msgstr ""
-"ترك العملية مفتوحة عندما رصيد الاستقاق الطويل يساوي صفر. هذا يترك النسخة "
-"المفقودة في تسجيلة المستفيد عند دفعها"
-
 #: 950.data.seed-values.sql:7716
 msgid "cartographic tactile image"
 msgstr "صورة كارتوغرافيك لمسية"
@@ -7450,10 +7455,6 @@ msgstr "إسقاط جوس-كروجر"
 msgid "Microform"
 msgstr "مصغرات مايكروفورم"
 
-#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
-msgid "Saint"
-msgstr "قديس"
-
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
 msgstr "تحذير المنع في الحجز"
@@ -7873,6 +7874,10 @@ msgstr ""
 "المكتبة لـِ الشجرة التنظيمية، عند أو تحت العمق المُحدد من قبل هذا الإعداد. "
 "لا يمكن الاختيار في أي مكتبات أخرى."
 
+#: 950.data.seed-values.sql:18876
+msgid "Grid Config: circ.patron.search"
+msgstr ""
+
 #: 950.data.seed-values.sql:3781
 msgid ""
 "Prevent the creation of new self-serve password reset requests until the "
@@ -7976,9 +7981,14 @@ msgstr ""
 msgid "ADMIN_FIELD_DOC"
 msgstr "ADMIN_FIELD_DOC"
 
-#: 950.data.seed-values.sql:8548
-msgid "Turkey "
-msgstr "تركيا "
+#: 950.data.seed-values.sql:13335
+msgid ""
+"Facilitates producing a CSV file representing a book list by introducing an "
+"\"items\" variable into the TT environment, sorted as dictated according to "
+"user params"
+msgstr ""
+"تسهيل إنتاج ملف CSV وهو ما يمثل قائمة الكتب من خلال إدخال \"العناصر\" "
+"المتغيرة في  بيئة تي تي مرتبة وفقاً لما تمليه بارامترات المستخدم"
 
 #: 950.data.seed-values.sql:7387
 msgid "Unspecified"
@@ -8751,10 +8761,6 @@ msgstr "تسمية الطباعة - الارتفاع لـِ التسمية من 
 msgid "Pennsylvania "
 msgstr "بنسلفانيا "
 
-#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
-msgid "Import failed due to system id collision"
-msgstr "فشل الاستيراد بسبب تضارب رمز تعريف النظام"
-
 #: 950.data.seed-values.sql:7744
 msgid "projected"
 msgstr "إسقاطي"
@@ -8921,7 +8927,7 @@ msgstr "القائمة الافتراضية مِن أجل الاستخدام ع�
 msgid "Allow a user to view and purchase from a provider"
 msgstr "السماح للمستخدم بعرض وطلب شراء من مزود"
 
-#: 950.data.seed-values.sql:17585 950.data.seed-values.sql:17600
+#: 950.data.seed-values.sql:17585
 msgid ""
 "Controls whether fines are automatically forgiven when checking out an item "
 "that has been marked as lost, and the corresponding copy alert has been "
@@ -9561,9 +9567,16 @@ msgstr "بكرة شريط حاسوب"
 msgid "Serbian"
 msgstr "صربي"
 
-#: 950.data.seed-values.sql:1436
-msgid "Allow a user to update trigger reactors"
-msgstr "السماح لـِ المستخدم بتحديث إطلاق ردات الفعل"
+#: 950.data.seed-values.sql:5374
+msgid ""
+"When an item has been marked lost and all fines/fees have been completely "
+"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
+"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
+"enabled"
+msgstr ""
+"عندما يتم تمييز النسخة كـَ مفقود، والدفع الكامل لكل الغرامات / الرسوم في هذه "
+"العملية، ينبغي أن لا تُلغي أو تُعيد أي غرامات / رسوم حتى لو تمّ تمكين "
+"circ.void_lost_on_checkin و / أو circ.void_lost_proc_fee_on_checkin"
 
 #: 950.data.seed-values.sql:5267
 msgid ""
@@ -9841,9 +9854,9 @@ msgstr ""
 msgid "Login via Apache module"
 msgstr "تسجيل الدخول عن طريق وحدة الأباتشي"
 
-#: 950.data.seed-values.sql:1298
-msgid "DELETE_MARC_CODE"
-msgstr "DELETE_MARC_CODE"
+#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
+msgid "Void lost item billing when returned"
+msgstr "إحباط إصدار فواتير النُسخ الضائعة في حال إرجاعها"
 
 #: 950.data.seed-values.sql:6838
 msgid "Aragonese Spanish"
@@ -10032,10 +10045,6 @@ msgstr ""
 "سيظهر حقل claims_returned_count في تسجيل المستفيد. إظهار الحقل سيجعله يظهر "
 "مع الحقول المطلوبة وحتى لو لم تكن مطلوبة. سيتم تجاهل هذا الإعداد إذا كان "
 "الحقل مطلوب"
-
-#: 950.data.seed-values.sql:13846
-msgid "Bell Mobility & Solo Mobile (Alternate)"
-msgstr "بيل موبيليتي و سولو موبيل"
 
 #: 950.data.seed-values.sql:7001
 msgid "Iban"
@@ -10951,10 +10960,6 @@ msgstr "نموذج كرة أرضية"
 #: 950.data.seed-values.sql:768
 msgid "* no longer applicable"
 msgstr "* لم يعد قابلاً للتطبيق"
-
-#: 950.data.seed-values.sql:17193
-msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr ""
 
 #: 950.data.seed-values.sql:6905
 msgid "Coptic"
@@ -11911,6 +11916,13 @@ msgstr "المكتبة المتخصصة"
 msgid "Allow a user to mark an item status as 'cataloging'"
 msgstr "السماح للمستخدم بـِ تمييز حالة النسخة كـَ 'مفهرسة'"
 
+#: 950.data.seed-values.sql:17600
+msgid ""
+"Controls whether fines are automatically forgiven when checking out an item "
+"that has been marked as long-overdue, and the corresponding copy alert has "
+"been suppressed."
+msgstr ""
+
 #: 950.data.seed-values.sql:671
 msgid "Example Consortium"
 msgstr "تعاون/جمعية كـَ مثال"
@@ -12269,16 +12281,9 @@ msgstr "انتهاء مُدة مهلة المستفيد لـِ التسجيل ا
 msgid "microfilm cartridge"
 msgstr "خرطوشة مايكروفيلم ـ فلم مُصغرـ"
 
-#: 950.data.seed-values.sql:5374
-msgid ""
-"When an item has been marked lost and all fines/fees have been completely "
-"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
-"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
-"enabled"
-msgstr ""
-"عندما يتم تمييز النسخة كـَ مفقود، والدفع الكامل لكل الغرامات / الرسوم في هذه "
-"العملية، ينبغي أن لا تُلغي أو تُعيد أي غرامات / رسوم حتى لو تمّ تمكين "
-"circ.void_lost_on_checkin و / أو circ.void_lost_proc_fee_on_checkin"
+#: 950.data.seed-values.sql:1436
+msgid "Allow a user to update trigger reactors"
+msgstr "السماح لـِ المستخدم بتحديث إطلاق ردات الفعل"
 
 #: 950.data.seed-values.sql:14105
 msgid "i wireless (T-Mobile)"
@@ -12320,10 +12325,6 @@ msgstr "السماح لـِ المستخدم بوضع الحجوزات لـِ أ
 #: 950.data.seed-values.sql:6986
 msgid "Gwich'in"
 msgstr "لغة جوايشن"
-
-#: 950.data.seed-values.sql:16744
-msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr "خاصية تنسيقات الحجز لـِ ميتاداتا التسجيلة في الأوباك"
 
 #: 950.data.seed-values.sql:334
 msgid "Main Title"
@@ -13307,9 +13308,9 @@ msgstr "تنسيق التاريخ والوقت لهذا النمط"
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 
-#: 950.data.seed-values.sql:18554
-msgid "Patron Search Show Extra Search Options"
-msgstr ""
+#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
+msgid "Import failed due to system id collision"
+msgstr "فشل الاستيراد بسبب تضارب رمز تعريف النظام"
 
 #: 950.data.seed-values.sql:677
 msgid "Long Overdue Collection Fee"
@@ -13412,6 +13413,10 @@ msgstr "ADMIN_USER_REQUEST_TYPE"
 #: 950.data.seed-values.sql:820
 msgid "User may link another user to an entry in a statistical category"
 msgstr "يمكن للمستخدم ربط مستخدم آخر مع مُدخل في الفئة الإحصائية"
+
+#: 950.data.seed-values.sql:18554
+msgid "Patron Search Show Extra Search Options"
+msgstr ""
 
 #: 950.data.seed-values.sql:11951
 msgid "Delayed: Accepted without amendment"
@@ -13882,9 +13887,9 @@ msgstr ""
 msgid "Choctaw"
 msgstr "تشوك تاو"
 
-#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
-msgid "Void lost item billing when returned"
-msgstr "إحباط إصدار فواتير النُسخ الضائعة في حال إرجاعها"
+#: 950.data.seed-values.sql:1298
+msgid "DELETE_MARC_CODE"
+msgstr "DELETE_MARC_CODE"
 
 #: 950.data.seed-values.sql:6851
 msgid "Aymara"
@@ -14937,9 +14942,9 @@ msgstr ""
 "الحقول المطلوبة وحتى لو لم تكن مطلوبة. سيتم تجاهل هذا الإعداد إذا كان الحقل "
 "مطلوب."
 
-#: 950.data.seed-values.sql:13323
-msgid "Produce a CSV file representing a book list"
-msgstr "توليد ملف CSV يمثل قائمة الحجز"
+#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
+msgid "Saint"
+msgstr "قديس"
 
 #: 950.data.seed-values.sql:790
 msgid "Allow a user to delete another user's container"
@@ -15044,6 +15049,13 @@ msgstr "موسيقا فلامينكو"
 
 #~ msgid "Medical Subject Headings"
 #~ msgstr "قائمة رؤوس الموضوعات الطبية"
+
+#~ msgid ""
+#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
+#~ "the lost copy on the patron record when it is paid"
+#~ msgstr ""
+#~ "ترك العملية مفتوحة عندما رصيد الاستقاق الطويل يساوي صفر. هذا يترك النسخة "
+#~ "المفقودة في تسجيلة المستفيد عند دفعها"
 
 #~ msgid "Sears List of Subject Headings"
 #~ msgstr "قائمة سيرز لرؤوس الموضوعات"

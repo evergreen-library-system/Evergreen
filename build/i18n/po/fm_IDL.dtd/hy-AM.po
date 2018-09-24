@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-06 10:56-0400\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
 "PO-Revision-Date: 2017-09-06 11:57+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:11+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:31+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: field.aou.settings.label:6705
 msgid "Settings"
@@ -782,9 +782,9 @@ msgstr "Որսալու ամսաթիվ/ժամ"
 msgid "Selection List ID"
 msgstr "Ընտրացուցակի ID"
 
-#: class.pupm.label:7937
-msgid "User Permission Map"
-msgstr "Օգտվողի թույլատրությունների քարտեզ"
+#: field.siss.holding_link_id.label:5668
+msgid "Holding Link ID"
+msgstr "Պահման կապի ID"
 
 #: class.auricnm.label:3122
 msgid "Electronic Access URI to Call Number Map"
@@ -847,9 +847,9 @@ msgstr "Պահում"
 msgid "Event ID"
 msgstr "Միջոցառման ID"
 
-#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
-msgid "Transaction"
-msgstr "Տրանզակցիա"
+#: class.cubin.label:7222
+msgid "User Bucket Item Note"
+msgstr "Օգտվողի փնջի նյութի նշում"
 
 #: field.acqafsb.amount.label:9176
 msgid "Total Spent Balance"
@@ -928,6 +928,10 @@ msgstr "Տացքի ID"
 #: field.cmcts.active.label:11868 field.cmfts.active.label:11893
 msgid "Active?"
 msgstr "Ակտի՞վ"
+
+#: class.qfpd.label:10855
+msgid "Function Parameter Definition"
+msgstr "Պարամետրի ֆունկցիայի սահմանում"
 
 #: class.ascecm.label:5970
 msgid "Statistical Category Entry Copy Map"
@@ -1642,9 +1646,9 @@ msgstr "Enum 6"
 msgid "Record ID"
 msgstr "Գրառման ID"
 
-#: field.siss.holding_link_id.label:5668
-msgid "Holding Link ID"
-msgstr "Պահման կապի ID"
+#: class.cam.label:2983
+msgid "Audience Map"
+msgstr "Լսարանի քարտեզ"
 
 #: field.sdist.index_summary.label:5536 class.sisum.label:5922
 msgid "Index Issue Summary"
@@ -3502,9 +3506,9 @@ msgstr "TCN արժեք"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr "MARC21 ֆիզիկական բնութագրիչների արժեքի քարտեզ"
 
-#: class.cam.label:2983
-msgid "Audience Map"
-msgstr "Լսարանի քարտեզ"
+#: field.rsr.topic_subject.label:10190
+msgid "Topic Subjects (normalized)"
+msgstr "Թեմատիկ խորագրեր (նորմալացված)"
 
 #: field.acqpro.prepayment_required.label:8565
 #: field.acqpo.prepayment_required.label:9405
@@ -4308,10 +4312,9 @@ msgstr "Իրականացնող աշխատակազմ"
 msgid "Invoice Entries"
 msgstr "Հաշվի մուտքեր"
 
-#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
-#: field.mndp.work_payment.label:8049
-msgid "Work Payment Detail"
-msgstr "Աշխատանքի վճարի մանրամասներ"
+#: class.pupm.label:7937
+msgid "User Permission Map"
+msgstr "Օգտվողի թույլատրությունների քարտեզ"
 
 #: class.acqfsb.label:9223
 msgid "Fund Spent Balance"
@@ -4769,9 +4772,9 @@ msgstr "Չեղյալ արա արժեքի հաշվարկը։"
 msgid "Department"
 msgstr "Բաժանմունք"
 
-#: class.cubin.label:7222
-msgid "User Bucket Item Note"
-msgstr "Օգտվողի փնջի նյութի նշում"
+#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
+msgid "Transaction"
+msgstr "Տրանզակցիա"
 
 #: field.acqliat.id.label:9647
 msgid "Alert Text ID"
@@ -5550,11 +5553,9 @@ msgstr "Բաղկացուցիչի ID"
 msgid "Resource Attribute Value"
 msgstr "Պաշարի նկարագրիչի արժեք"
 
-#: field.ahr.target.label:6270 field.ahopl.target.label:6420
-#: field.alhr.target.label:6505 field.combahr.target.label:6594
-#: field.aahr.target.label:6653
-msgid "Target Object ID"
-msgstr "Թիրախ օբյեկտի ID"
+#: field.vie.code.label:488
+msgid "Error Code"
+msgstr "Սխալի կոդ"
 
 #: field.acqlisum.claim_count.label:12099
 #: field.acqlisumi.claim_count.label:12120
@@ -6723,10 +6724,6 @@ msgstr "Հիմնական մուտք"
 msgid "Call Number Bucket Item"
 msgstr "Փնջի նյութի դասիչ"
 
-#: field.rsr.topic_subject.label:10190
-msgid "Topic Subjects (normalized)"
-msgstr "Թեմատիկ խորագրեր (նորմալացված)"
-
 #: class.aahr.label:6627
 msgid "Aged Hold Request"
 msgstr "Տարիքային հարցման պահանջ"
@@ -7057,9 +7054,11 @@ msgstr "տրումներ"
 msgid "Item Count"
 msgstr "Նյութի հաշվիչ"
 
-#: field.vie.code.label:488
-msgid "Error Code"
-msgstr "Սխալի կոդ"
+#: field.ahr.target.label:6270 field.ahopl.target.label:6420
+#: field.alhr.target.label:6505 field.combahr.target.label:6594
+#: field.aahr.target.label:6653
+msgid "Target Object ID"
+msgstr "Թիրախ օբյեկտի ID"
 
 #: field.vst.state.label:825 field.atev.state.label:1486
 #: field.aua.state.label:4371 field.aal.state.label:4404
@@ -7467,9 +7466,9 @@ msgstr "Լսարանի կոդ"
 msgid "Rule Name"
 msgstr "Օրենքի անուն"
 
-#: field.crad.composite.label:1004
-msgid "Composite attribute?"
-msgstr "Կոմպոզիտ բաղկացուցի՞չ։"
+#: field.atevdef.env.label:1451
+msgid "Environment Entries"
+msgstr "Միջավայրի մուտքեր"
 
 #: field.rlcd.last_delete_date.label:11632
 msgid "Delete Date/Time"
@@ -8834,9 +8833,10 @@ msgstr "EDI հաղորդագրության մարմին"
 msgid "Assoc ID"
 msgstr "Կապված ID"
 
-#: class.qfpd.label:10855
-msgid "Function Parameter Definition"
-msgstr "Պարամետրի ֆունկցիայի սահմանում"
+#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
+#: field.mndp.work_payment.label:8049
+msgid "Work Payment Detail"
+msgstr "Աշխատանքի վճարի մանրամասներ"
 
 #: field.acqpron.create_time.label:8597 field.acqpl.create_time.label:9349
 #: field.acqpo.create_time.label:9395 field.acqpon.create_time.label:9476
@@ -8896,9 +8896,9 @@ msgstr "Բաշխման ընդհանուր"
 msgid "Questions"
 msgstr "Հարցեր"
 
-#: field.atevdef.env.label:1451
-msgid "Environment Entries"
-msgstr "Միջավայրի մուտքեր"
+#: field.crad.composite.label:1004
+msgid "Composite attribute?"
+msgstr "Կոմպոզիտ բաղկացուցի՞չ։"
 
 #: field.acqftr.dest_fund.label:8848
 msgid "Destination Fund"

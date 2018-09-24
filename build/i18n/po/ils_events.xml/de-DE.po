@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-06 10:57-0400\n"
+"POT-Creation-Date: 2018-09-18 16:06-0400\n"
 "PO-Revision-Date: 2012-01-11 15:59+0000\n"
 "Last-Translator: Daniel Winzen <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:13+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:33+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -102,6 +102,10 @@ msgstr ""
 
 #: 1589.ACTOR_CARD_NOT_FOUND:418
 msgid "The requested actor_card was not found"
+msgstr ""
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
@@ -192,6 +196,10 @@ msgstr ""
 
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
+msgstr ""
+
+#: 8002.OFFLINE_FILE_ERROR:948
+msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
@@ -310,10 +318,6 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:604
 msgid "An authority record already exists with the requested ARN"
-msgstr ""
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
-msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:822
@@ -525,10 +529,6 @@ msgstr ""
 
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
-msgstr ""
-
-#: 8002.OFFLINE_FILE_ERROR:948
-msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1704.TCN_EXISTS:728
@@ -990,6 +990,12 @@ msgstr ""
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -1058,6 +1064,10 @@ msgstr ""
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
 msgstr "Die Benutzeranmeldung ist gescheitert"
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+msgid "The caption/pattern still has dependent issuances"
+msgstr ""
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
@@ -1237,10 +1247,6 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
-msgid "The lineitem detail has no owning_lib"
-msgstr ""
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1283,12 +1289,6 @@ msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
-msgstr ""
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
 msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463

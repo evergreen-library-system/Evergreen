@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-09-06 10:56-0400\n"
-"PO-Revision-Date: 2018-04-09 18:32+0000\n"
+"POT-Creation-Date: 2018-09-18 16:05-0400\n"
+"PO-Revision-Date: 2018-09-23 10:54+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-07 06:11+0000\n"
-"X-Generator: Launchpad (build 18767)\n"
+"X-Launchpad-Export-Date: 2018-09-24 05:30+0000\n"
+"X-Generator: Launchpad (build 18783)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:10542
@@ -568,7 +568,7 @@ msgstr "Autoritní záhlaví"
 #: field.ahr.acq_request.label:6289 field.ahopl.acq_request.label:6438
 #: field.alhr.acq_request.label:6524
 msgid "Acquisition Request"
-msgstr ""
+msgstr "Akviziční požadavek"
 
 #: field.auri.call_number_maps.label:3114
 msgid "Call Number Maps"
@@ -603,7 +603,7 @@ msgstr "Typ události"
 
 #: class.aurst.label:8503
 msgid "Acquisition Patron Request Status Type"
-msgstr ""
+msgstr "Typ statusu akviziční žádosti čtenáře"
 
 #: class.chmm.label:1892
 msgid "Hold Matrix Matchpoint"
@@ -631,7 +631,7 @@ msgstr "ID platby"
 
 #: field.alci.inventory_workstation.label:7507
 msgid "Latest Inventory Workstation"
-msgstr ""
+msgstr "Pracovní stanice poslední revize"
 
 #: class.aus.label:2335
 msgid "User Setting"
@@ -743,9 +743,9 @@ msgstr "Čas / datum zachycení"
 msgid "Selection List ID"
 msgstr "ID  akvizičního seznamu"
 
-#: class.pupm.label:7937
-msgid "User Permission Map"
-msgstr "Seznamy uživatelských oprávnění"
+#: field.siss.holding_link_id.label:5668
+msgid "Holding Link ID"
+msgstr "ID odkazu vlastnictví"
 
 #: class.auricnm.label:3122
 msgid "Electronic Access URI to Call Number Map"
@@ -808,9 +808,9 @@ msgstr "Rezervace"
 msgid "Event ID"
 msgstr "ID události"
 
-#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
-msgid "Transaction"
-msgstr "Transakce"
+#: class.cubin.label:7222
+msgid "User Bucket Item Note"
+msgstr "Poznámka k položce  skupiny uživatelů"
 
 #: field.acqafsb.amount.label:9176
 msgid "Total Spent Balance"
@@ -890,6 +890,10 @@ msgstr "ID výpůjčky"
 #: field.cmcts.active.label:11868 field.cmfts.active.label:11893
 msgid "Active?"
 msgstr "Aktivní?"
+
+#: class.qfpd.label:10855
+msgid "Function Parameter Definition"
+msgstr "Definice parametru funkce"
 
 #: class.ascecm.label:5970
 msgid "Statistical Category Entry Copy Map"
@@ -1168,7 +1172,7 @@ msgstr "PSČ čtenáře"
 
 #: class.pgtde.label:7736
 msgid "Permission Group Tree Display Entry"
-msgstr ""
+msgstr "Položka zobrazení stromu skupin oprávnění"
 
 #: field.circ.billable_transaction.label:4609
 #: field.aacs.billable_transaction.label:4703
@@ -1343,7 +1347,7 @@ msgstr "Typ adresy"
 
 #: class.aecc.label:3329
 msgid "Emergency Closing Circulation Entry"
-msgstr ""
+msgstr "Položka mimořádného uzavření výpůjčky"
 
 #: field.ahr.cut_in_line.label:6283 field.ahopl.cut_in_line.label:6433
 #: field.alhr.cut_in_line.label:6518 field.combahr.cut_in_line.label:6602
@@ -1555,7 +1559,7 @@ msgstr "Číslo faxu"
 
 #: class.aecs.label:3401
 msgid "Emergency Closing Status"
-msgstr ""
+msgstr "Status mimořádného uzavření"
 
 #: field.mwde.type_of_resource.label:4054
 msgid "Type of Resource"
@@ -1617,9 +1621,9 @@ msgstr "Číslování 6"
 msgid "Record ID"
 msgstr "ID záznamu"
 
-#: field.siss.holding_link_id.label:5668
-msgid "Holding Link ID"
-msgstr "ID odkazu vlastnictví"
+#: class.cam.label:2983
+msgid "Audience Map"
+msgstr "Čtenářské určení"
 
 #: field.sdist.index_summary.label:5536 class.sisum.label:5922
 msgid "Index Issue Summary"
@@ -1900,7 +1904,7 @@ msgstr "Stav kontaktní adresy"
 
 #: class.aecr.label:3353
 msgid "Emergency Closing Reservation Entry"
-msgstr ""
+msgstr "Položka mimořádného uzavření rezervace"
 
 #: field.bra.id.label:4998
 msgid "Resource Attribute ID"
@@ -2551,7 +2555,7 @@ msgstr "Uživatel rezervace"
 
 #: field.vst.total_actions.label:827
 msgid "Total Actions"
-msgstr ""
+msgstr "Celkem akcí"
 
 #: field.vii.circulate.label:376 field.viiad.circulate.label:428
 msgid "Circulate"
@@ -2618,7 +2622,7 @@ msgstr "Výraz"
 
 #: field.circ.auto_renewal.label:4617
 msgid "Auto Renewal"
-msgstr ""
+msgstr "Automatické prodloužení"
 
 #: class.acqedi.label:9862 field.acqedim.account.label:9965
 msgid "EDI Account"
@@ -2753,7 +2757,7 @@ msgstr "Lokalizace"
 
 #: class.mwde.label:4028
 msgid "Wide Display Entry"
-msgstr ""
+msgstr "Položka plného zobrazení"
 
 #: field.rb.recalc_interval.label:312
 msgid "Recalculation Interval"
@@ -2784,7 +2788,7 @@ msgstr "Literární žánr"
 #: field.combahr.prev_check_time.label:6584
 #: field.aahr.prev_check_time.label:6643
 msgid "Last Targeting Date/Time"
-msgstr "Datum / čas posledního půjčení"
+msgstr "Datum/čas posledního přidělení cílů rezervací"
 
 #: field.ssr.rel.label:6117
 msgid "Relevance"
@@ -2962,7 +2966,7 @@ msgstr "Klávesa"
 
 #: field.vst.session_key.label:813
 msgid "Session Key"
-msgstr ""
+msgstr "Klíč relace"
 
 #: field.clfm.code.label:7245
 msgid "LitF Code"
@@ -3331,7 +3335,7 @@ msgstr "Čas posledního půjčení"
 
 #: field.vst.queue.label:822
 msgid "Source Queue"
-msgstr ""
+msgstr "Fronta zdroje"
 
 #: field.uvuv.res_text.label:11523
 msgid "Result Text"
@@ -3388,11 +3392,11 @@ msgstr "Telefon během dne"
 #: field.ahopl.email_notify.label:6402 field.alhr.email_notify.label:6489
 #: field.combahr.email_notify.label:6573 field.aahr.email_notify.label:6632
 msgid "Notify by Email?"
-msgstr "Upozornění e-mailem?"
+msgstr "Upozornit e-mailem?"
 
 #: class.aech.label:3377
 msgid "Emergency Closing Hold Entry"
-msgstr ""
+msgstr "Položky mimořádného uzavření rezervace"
 
 #: field.acqlisum.invoice_count.label:12098
 #: field.acqlisumi.invoice_count.label:12119
@@ -3495,9 +3499,9 @@ msgstr "Umístění"
 msgid "MARC21 Physical Characteristic Value Map"
 msgstr "Hodnot MARC21 pro fyzické vlastnosti"
 
-#: class.cam.label:2983
-msgid "Audience Map"
-msgstr "Čtenářské určení"
+#: field.rsr.topic_subject.label:10190
+msgid "Topic Subjects (normalized)"
+msgstr "Předmětové téma (normalizováno)"
 
 #: field.acqpro.prepayment_required.label:8565
 #: field.acqpo.prepayment_required.label:9405
@@ -3682,7 +3686,7 @@ msgstr "Autoritní záznam ve frontě"
 #: field.au.pref_family_name.label:3649
 #: field.stgu.pref_family_name.label:10562
 msgid "Preferred Last Name"
-msgstr ""
+msgstr "Preferované příjmení"
 
 #: field.circ.aaasc_entries.label:4616 field.aacs.aaasc_entries.label:4709
 #: field.combcirc.aaasc_entries.label:4792
@@ -3878,7 +3882,7 @@ msgstr "Vyčištění po neúspěšné akci"
 
 #: field.bre.wide_display_entry.label:3217
 msgid "Wide Display Entries"
-msgstr ""
+msgstr "Položky plného zobrazení"
 
 #: field.chmw.usr_grp.label:1814 field.chmm.usr_grp.label:1902
 msgid "User Permission Group"
@@ -3894,7 +3898,7 @@ msgstr "Přehled hodnot atributů"
 
 #: field.vst.actions_performed.label:828
 msgid "Actions Performed"
-msgstr ""
+msgstr "Provedené akce"
 
 #: field.scap.start_date.label:5420 field.ssub.start_date.label:5459
 msgid "Start Date"
@@ -4028,7 +4032,7 @@ msgstr "Půjčovat jako typ"
 
 #: field.acqinv.close_date.label:8637
 msgid "Close Date"
-msgstr ""
+msgstr "Datum uzavření"
 
 #: field.acqedim.message_type.label:9976
 msgid "Message Type"
@@ -4088,7 +4092,7 @@ msgstr "Přehled skupin umístění exemplářů/regálů"
 
 #: class.vst.label:807
 msgid "Vandelay Session Tracker"
-msgstr ""
+msgstr "Sledování relací Vandelay"
 
 #: class.ctcl.label:11851
 msgid "Text Search Configs"
@@ -4238,7 +4242,7 @@ msgstr "Rovnocenný záznam"
 
 #: field.aurs.request_status.label:8481
 msgid "Request Status"
-msgstr ""
+msgstr "Status požadavku"
 
 #: field.aum.message.label:2255 field.auml.message.label:2278
 msgid "Message"
@@ -4301,10 +4305,9 @@ msgstr "Pracovník splňující rezervaci"
 msgid "Invoice Entries"
 msgstr "Položky účtu"
 
-#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
-#: field.mndp.work_payment.label:8049
-msgid "Work Payment Detail"
-msgstr "Detaily platby prací"
+#: class.pupm.label:7937
+msgid "User Permission Map"
+msgstr "Seznamy uživatelských oprávnění"
 
 #: class.acqfsb.label:9223
 msgid "Fund Spent Balance"
@@ -4423,7 +4426,7 @@ msgstr "ID pravidla"
 
 #: field.cmfvm.real.label:2921
 msgid "Real"
-msgstr ""
+msgstr "Skutečný"
 
 #: field.acqinv.inv_ident.label:8633
 msgid "Vendor Invoice ID"
@@ -4505,7 +4508,7 @@ msgstr "Země"
 #: field.au.pref_first_given_name.label:3647
 #: field.stgu.pref_first_given_name.label:10560
 msgid "Preferred First Name"
-msgstr ""
+msgstr "Preferované jméno"
 
 #: field.ccmm.total_copy_hold_ratio.label:1974
 msgid "Minimum Total Copy/Hold Ratio"
@@ -4644,7 +4647,7 @@ msgstr "ID uživatele"
 
 #: class.awss.label:12733
 msgid "Workstation Setting"
-msgstr ""
+msgstr "Nastavení pracovní stanice"
 
 #: field.asc.entries.label:6833 field.actsc.entries.label:6890
 #: field.acqpl.entries.label:9351 field.acqdf.entries.label:10298
@@ -4763,9 +4766,9 @@ msgstr "Zrušit počet hodnot"
 msgid "Department"
 msgstr "Oddělení"
 
-#: class.cubin.label:7222
-msgid "User Bucket Item Note"
-msgstr "Poznámka k položce  skupiny uživatelů"
+#: field.mcrp.xact.label:6974 field.mb.xact.label:8255
+msgid "Transaction"
+msgstr "Transakce"
 
 #: field.acqliat.id.label:9647
 msgid "Alert Text ID"
@@ -5544,11 +5547,9 @@ msgstr "ID atributu"
 msgid "Resource Attribute Value"
 msgstr "Hodnota atributu zdroje"
 
-#: field.ahr.target.label:6270 field.ahopl.target.label:6420
-#: field.alhr.target.label:6505 field.combahr.target.label:6594
-#: field.aahr.target.label:6653
-msgid "Target Object ID"
-msgstr "ID cílového objektu"
+#: field.vie.code.label:488
+msgid "Error Code"
+msgstr "Kód chyby"
 
 #: field.acqlisum.claim_count.label:12099
 #: field.acqlisumi.claim_count.label:12120
@@ -5664,7 +5665,7 @@ msgstr "Výpůjční knihovna"
 
 #: field.cust.fm_class.label:3800
 msgid "Fieldmapper Class"
-msgstr ""
+msgstr "Třída fieldmaperu"
 
 #: field.chmw.marc_type.label:1817 field.ccmw.marc_type.label:1848
 #: field.chmm.marc_type.label:1905 field.ccmm.marc_type.label:1957
@@ -5678,7 +5679,7 @@ msgstr "Datum / čas poslední editace"
 
 #: field.au.name_keywords.label:3651
 msgid "Name Keywords"
-msgstr ""
+msgstr "Klíčová slova jména"
 
 #: field.ahr.shelf_time.label:6280 field.ahopl.shelf_time.label:6430
 #: field.alhr.shelf_time.label:6515 field.combahr.shelf_time.label:6599
@@ -5763,7 +5764,7 @@ msgstr "ID fiskálního roku"
 
 #: class.aec.label:3431
 msgid "Emergency Closing"
-msgstr ""
+msgstr "Mimořádné uzavření"
 
 #: field.ccmw.usr_age_lower_bound.label:1854
 #: field.ccmm.usr_age_lower_bound.label:1963
@@ -6091,7 +6092,7 @@ msgstr "Stav statistické kategorie"
 
 #: class.aurs.label:8434
 msgid "User Purchase Request with Status"
-msgstr ""
+msgstr "Požadavek uživatele na nákup se statusem"
 
 #: field.mrd.vr_format.label:4260
 msgid "Video Recording Format"
@@ -6251,7 +6252,7 @@ msgstr "Zdroje pro cíle rezervace"
 
 #: field.sunit.dummy_author.label:5713 field.acp.dummy_author.label:7423
 msgid "Precat Dummy Author"
-msgstr "Předkatalogizovaný  zástupný autor"
+msgstr "Provizorní předkatalogizovaný autor"
 
 #: field.qbv.default_value.label:10874 field.cmfpm.default_val.label:11252
 msgid "Default Value"
@@ -6418,7 +6419,7 @@ msgstr "Číslo bibliografického záznamu"
 
 #: field.au.pref_prefix.label:3646
 msgid "Preferred Prefix"
-msgstr ""
+msgstr "Preferovaný prefix"
 
 #: field.rhcrpbap.holds_everywhere.label:11744
 #: field.rhcrpbapd.holds_everywhere.label:11800
@@ -6514,7 +6515,7 @@ msgstr "Poznámka ke skupině uživatelů"
 #: field.mwde.upc.label:4041 field.aur.upc.label:8394
 #: field.aurs.upc.label:8468
 msgid "UPC"
-msgstr "Univerzální kód výrobků (UPC)"
+msgstr "UPC (Univerzální kód výrobků)"
 
 #: field.rccc.owning_lib_name.label:11925
 msgid "Owning Library Short (Policy) Name"
@@ -6688,7 +6689,7 @@ msgstr "Kontaktní adresa"
 
 #: class.cwst.label:12705
 msgid "Workstation Setting Type"
-msgstr ""
+msgstr "Typy nastavení pracovní stanice"
 
 #: field.murav.attr.label:1071 field.mrs.attr.label:1089
 #: field.mraf.attr.label:1122 field.aeasm.attr.label:9945
@@ -6722,10 +6723,6 @@ msgstr "Hlavní položka"
 #: class.ccnbi.label:5154
 msgid "Call Number Bucket Item"
 msgstr "Položka skupiny signatur"
-
-#: field.rsr.topic_subject.label:10190
-msgid "Topic Subjects (normalized)"
-msgstr "Předmětové téma (normalizováno)"
 
 #: class.aahr.label:6627
 msgid "Aged Hold Request"
@@ -6861,7 +6858,7 @@ msgstr "Je chyba"
 
 #: field.pgtde.children.label:7743
 msgid "Child Entries"
-msgstr ""
+msgstr "Údaje potomků"
 
 #: class.uvsbrem.label:11346
 msgid "URL Verify Session Biblio Record Entry Map"
@@ -6879,7 +6876,7 @@ msgstr "Jméno dodavatele"
 
 #: field.circ.auto_renewal_remaining.label:4618
 msgid "Remaining Auto Renewals"
-msgstr ""
+msgstr "Zbývající počet automatických prodloužení"
 
 #: field.crahp.age.label:7679
 msgid "Item Age"
@@ -7059,9 +7056,11 @@ msgstr "Číslování / chronologie"
 msgid "Item Count"
 msgstr "Počet exemplářů"
 
-#: field.vie.code.label:488
-msgid "Error Code"
-msgstr "Kód chyby"
+#: field.ahr.target.label:6270 field.ahopl.target.label:6420
+#: field.alhr.target.label:6505 field.combahr.target.label:6594
+#: field.aahr.target.label:6653
+msgid "Target Object ID"
+msgstr "ID cílového objektu"
 
 #: field.vst.state.label:825 field.atev.state.label:1486
 #: field.aua.state.label:4371 field.aal.state.label:4404
@@ -7087,7 +7086,7 @@ msgstr "Pole pevné délky"
 
 #: field.acqinv.closed_by.label:8638
 msgid "Closed By"
-msgstr ""
+msgstr "Uzavřeno"
 
 #: field.uvu.verifications.label:11440
 msgid "Verifications"
@@ -7166,7 +7165,7 @@ msgstr "Všechny kombinované typy výpůjček"
 
 #: field.vst.action_type.label:826
 msgid "Action Type"
-msgstr ""
+msgstr "Typ akce"
 
 #: field.sdist.receive_call_number.label:5525
 msgid "Receive Call Number"
@@ -7226,7 +7225,7 @@ msgstr ""
 
 #: field.alci.id.label:7505
 msgid "Latest Inventory ID"
-msgstr ""
+msgstr "ID poslední revize"
 
 #: field.asvr.answer.label:2440
 msgid "Answer"
@@ -7262,7 +7261,7 @@ msgstr "Pole metabib."
 
 #: field.au.pref_suffix.label:3650
 msgid "Preferred Suffix"
-msgstr ""
+msgstr "Preferovaný suffix"
 
 #: field.uvs.search.label:11325
 msgid "Search Constraints"
@@ -7373,7 +7372,7 @@ msgstr "počet LIMIT"
 
 #: class.cmfvm.label:2918
 msgid "Metabib Field Virtual Map"
-msgstr ""
+msgstr "Virtuální mapa polí metabib"
 
 #: field.aou.ill_address.label:6692
 msgid "ILL Receiving Address"
@@ -7475,9 +7474,9 @@ msgstr "Kód čtenářského určení"
 msgid "Rule Name"
 msgstr "Název pravidla"
 
-#: field.crad.composite.label:1004
-msgid "Composite attribute?"
-msgstr "Složený atribut?"
+#: field.atevdef.env.label:1451
+msgid "Environment Entries"
+msgstr "Položky prostředí"
 
 #: field.rlcd.last_delete_date.label:11632
 msgid "Delete Date/Time"
@@ -7538,7 +7537,7 @@ msgstr "Poznámka k dodavateli"
 
 #: field.alci.inventory_date.label:7506
 msgid "Latest Inventory Date"
-msgstr ""
+msgstr "Datum poslední revize"
 
 #: field.auoi.org_unit.label:857
 msgid "Allowed Org Unit"
@@ -7687,7 +7686,7 @@ msgstr "Datum účinnosti"
 #: field.au.pref_second_given_name.label:3648
 #: field.stgu.pref_second_given_name.label:10561
 msgid "Preferred Middle Name"
-msgstr ""
+msgstr "Preferované prostřední jméno"
 
 #: field.qfs.function_name.label:10846
 msgid "Function Name"
@@ -8361,7 +8360,7 @@ msgstr "ID připsání dluhu"
 #: field.aahr.request_time.label:6645 field.aur.request_date.label:8390
 #: field.aurs.request_date.label:8464
 msgid "Request Date/Time"
-msgstr "Datum / čas požadavku"
+msgstr "Datum/čas požadavku"
 
 #: class.acqliuad.label:9779
 msgid "Line Item User Attribute Definition"
@@ -8514,7 +8513,7 @@ msgstr "Alternativní název sloupce"
 
 #: field.acp.latest_inventory.label:7453 class.alci.label:7503
 msgid "Latest Inventory"
-msgstr ""
+msgstr "Poslední revize"
 
 #: class.czifm.label:1274
 msgid "Z39.50 Index Field Map"
@@ -8596,7 +8595,7 @@ msgstr "Zdrojový záznam"
 
 #: field.aurst.id.label:8505
 msgid "Status ID"
-msgstr ""
+msgstr "ID statusu"
 
 #: field.cmrcfld.mandatory.label:951 field.cmrcsubfld.mandatory.label:978
 msgid "Mandatory?"
@@ -8848,9 +8847,10 @@ msgstr "Tělo zprávy EDI"
 msgid "Assoc ID"
 msgstr "Asoc. ID"
 
-#: class.qfpd.label:10855
-msgid "Function Parameter Definition"
-msgstr "Definice parametru funkce"
+#: field.mp.work_payment.label:7977 field.mbp.work_payment.label:8015
+#: field.mndp.work_payment.label:8049
+msgid "Work Payment Detail"
+msgstr "Detaily platby prací"
 
 #: field.acqpron.create_time.label:8597 field.acqpl.create_time.label:9349
 #: field.acqpo.create_time.label:9395 field.acqpon.create_time.label:9476
@@ -8910,9 +8910,9 @@ msgstr "Přiděleno celkem"
 msgid "Questions"
 msgstr "Otázky"
 
-#: field.atevdef.env.label:1451
-msgid "Environment Entries"
-msgstr "Položky prostředí"
+#: field.crad.composite.label:1004
+msgid "Composite attribute?"
+msgstr "Složený atribut?"
 
 #: field.acqftr.dest_fund.label:8848
 msgid "Destination Fund"
@@ -9080,7 +9080,7 @@ msgstr "Vyloučit"
 
 #: field.mwde.subject_name.label:4048
 msgid "Name Subject"
-msgstr ""
+msgstr "Jmenné téma"
 
 #: field.rsr.summary.label:10187
 msgid "Summary (normalized)"
@@ -9113,7 +9113,7 @@ msgstr "Viditelné pro OPAC / čtenáře"
 
 #: field.aca.temp.label:7576 field.aaca.temp.label:7604
 msgid "Temporary"
-msgstr ""
+msgstr "Dočasné"
 
 #: field.erccpo.has_only_deleted_copies.label:10281
 msgid "Has Only Deleted Copies 0/1"
