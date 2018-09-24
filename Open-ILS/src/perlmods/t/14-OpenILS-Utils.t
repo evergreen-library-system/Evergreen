@@ -1,4 +1,18 @@
-#!perl -T
+#!perl
+
+# FIXME: unlike the rest of the test cases here, we're /not/ enabling
+# taint checks. The version of DateTime::TimeZone that ships with
+# Ubuntu 14.04 LTS (Trusty) has a bug where attempting to get the
+# local time zone can fail (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=737265).
+#
+# It's arguable whether taint checking should be enabled at all in
+# the test suite. On the one hand, it is recommended practice for
+# all code that accepts external input; on the other hand, a typical
+# Evergreen installation doesn't run anything setuid/setgid that
+# would automatically trigger taint-checking. Ideally we would
+# eat our Wheaties, but we may be looking at consuming an entire
+# truckload to verify that everything would continue to work if
+# we turn it on across the board.
 
 use Test::More tests => 43;
 use Test::Warn;
