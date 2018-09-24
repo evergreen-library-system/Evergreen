@@ -71,6 +71,36 @@ Patron Acquisitions Requests
 The existing interface for staff-mediated patron acquisition requests has been replaced in the web staff client with a re-implementation written in AngularJS, with some minor bug fixes (including access from the Patron interface) and other improvements.
 
 
+
+Administration
+~~~~~~~~~~~~~~
+
+Hold Targeter Script has been Replaced
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The original hold_targeter.pl script has been renamed to
+"hold_targeter_legacy.pl", and the new-style hold targeting
+script has been renamed to "hold_targeter.pl".  Administrators
+will want to change their crontab files to reflect this.
+
+.Previous Syntax
+[source,bash]
+---------------------------------------------------------------------
+-*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl $SRF_CORE
+---------------------------------------------------------------------
+
+.New Syntax
+[source,bash]
+-----------------------------------------------------------------------------------
+-*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl --osrf-config
+$SRF_CORE
+-----------------------------------------------------------------------------------
+
+The sample crontab file at `Open-ILS/examples/crontab.example` reflects
+this change.
+
+
+
 Architecture
 ~~~~~~~~~~~~
 
@@ -536,6 +566,21 @@ If a setting type does not exist where the browser expects one, the
 value is stored in-browser instead and a warning is issued in the console.
 
 
+More consistent terminology in the client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Terminology has been updated in the staff client so that we consistently use
+the same name to describe the same thing. The following updates have been made:
+
+  * The term 'item' is now consistently used to describe the barcoded entity
+that had been previously been called both an 'item' and a 'copy'. As a result,
+we now use the terms 'item buckets', 'item tags', and 'item alerts'.
+  * The term 'volume' is no longer used in the client, with the exception of
+serials, where the term is used to describe serial volumes. The term 'call
+number' will replace volume in most other places.
+  *'Holdings' is a more general term used to describe a combination of items
+and call numbers.
+  * The term 'Shelving Location' is used consistently in favor of 'Copy
+Location.'
 
 
 
@@ -651,7 +696,8 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-* BC Library Cooperative 
+* BC Libraries Cooperative
+* Consortium Of Ohio Libraries
 * CW MARS
 * Georgia Public Library Service
 * Indiana State Library
@@ -659,7 +705,6 @@ Evergreen:
 * MassLNC
 * North Texas Library Consortium
 * Northwest Regional Library
-* Consortium of Ohio Libraries
 * Pennsylvania Integrated Library System
 * South Carolina State Library
 
@@ -669,7 +714,6 @@ Evergreen:
 
 * Felicia Beaudry
 * Jason Boyer
-* BC Libraries Cooperative
 * Andrea Buntz Neiman
 * Eva Cerninakova
 * Galen Charlton
@@ -679,7 +723,6 @@ Evergreen:
 * Jason Etheridge
 * Lynn Floyd
 * Jeff Godin
-* Government of Manitoba
 * Blake Graham-Henderson
 * Francisco J Guel-Mendoza
 * Kyle Huckins
@@ -702,10 +745,11 @@ Evergreen:
 We also thank the following organizations whose employees contributed
 patches:
 
-* British Columbia Libraries Cooperative
+* BC Libraries Cooperative
 * Calvin College
 * Catalyte
 * Equinox Open Library Initiative
+* Government of Manitoba
 * Kenton County Public Library
 * King County Library System
 * Linn-Benton Community College
