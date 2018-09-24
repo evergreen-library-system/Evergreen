@@ -6,7 +6,123 @@ Evergreen 3.2 Release Notes
 Upgrade notes
 -------------
 
-TODO
+Disabling of Legacy XUL Staff Client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The legacy XUL staff client is no longer supported in Evergreen
+3.2.x and the server-side installation no longer supports a
+direct connection by a version XUL client by default.  *All
+users of Evergreen 3.2.x are strongly urged to complete their
+switch to the web staff client as part of upgrading to 3.2.x.*
+
+Evergreen administrators who for some reason continue to wish
+to deploy the XUL staff client can do so at their risk by
+supplying `STAFF_CLIENT_STAMP_ID` during the `make install` step
+and using `make_release` to create installers for the staff client.
+However, no community support will be provided for the XUL client.
+
+
+
+Acq Invoice Reports
+~~~~~~~~~~~~~~~~~~~
+
+Existing Acquisitions report templates that reference the invoice 'complete'
+field should be modified to check whether the new close_date field is NOT NULL
+instead.
+
+At deploy time, all invoices with a 'complete' value of TRUE will have their
+'close_date' field set to NOW.  A value is required, since this field is
+now the source of whether an invoice is open or closed.
+
+However, no values will be applied to the closed_by field for already closed
+invoices.
+
+
+Angular6 Base Application
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+System Admin Upgrade Notes
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Like the AngularJS application, Evergreen releases will come with all
+web browser staff client code pre-compiled.  Admins only need to add an
+Apache configuration change.
+
+Add the following stanza to /etc/apache2/eg_vhost.conf.
+
+[source,conf]
+--------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI}  ^/eg2/
+RewriteCond %{REQUEST_URI}  !^/eg2/([a-z]{2}-[A-Z]{2})/
+RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
+
+<Directory "/openils/var/web/eg2/en-US">
+    FallbackResource /eg2/en-US/index.html
+</Directory>
+--------------------------------------------------------------------------
+
+For multi-locale sites, see the bottom section of
+Open-ILS/examples/apache[_24]/eg_vhost.conf.in for a sample fr-CA
+configuration.  The section starts with "/eg2/ client setup and locale
+configuration"
+
+Developer Upgrade Notes
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Developers building Angular code on existing installations need to update
+their version of NodeJS by re-running the -developer prereqs installer.
+
+[source,sh]
+--------------------------------------------------------------------------
+sudo make -f Open-ILS/src/extras/Makefile.install <osname>-developer
+--------------------------------------------------------------------------
+
+
+Asynchronous Vandelay Imports
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Users of NGINX as a reverse proxy may need to set a suitable
+`client_max_body_size` value in the NGINX configuration so that large
+MARC record uploads are not truncated. Note that this would have
+always been necessary, but since this feature allows larger files
+to be more reliably queued and imported, the need to set `client_max_body_size`
+became more apparent.
+
+
+Browser Client Settings & Preferences Stored on the Server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A new permission APPLY_WORKSTATION_SETTING has been added to control who
+may apply values to workstation settings.  Use something like the following
+to apply the permission to all staff accounts (mileage may vary):
+
+[source,sh]
+--------------------------------------------------------------------------
+INSERT INTO permission.grp_perm_map (grp, perm, depth)
+VALUES (
+    (SELECT id FROM permission.grp_tree WHERE name = 'Staff'), -- name may vary
+    (SELECT id FROM permission.perm_list WHERE code =
+'APPLY_WORKSTATION_SETTING'),
+    0 -- or 1, 2, etc.
+);
+--------------------------------------------------------------------------
+
+Workstation setting types matching values previously stored in the browser
+(via localStorage or Hatch) are created as part of this feature.  During
+upgrade, admins should consider whether any of these new setting types
+should be transferred to user and/or org unit settings instead.  Setting
+type changes can be made at any time, but when a setting type is deleted
+all of its data is deleted, so a change in type means re-applying the
+settings in the browser client.
+
+Values stored in the browser will automatically migrate to server settings
+as each setting is accessed in the browser client.  Once migrated, the
+in-browser copies are deleted.
+
+If a setting type does not exist where the browser expects one, the
+value is stored in-browser instead and a warning is issued in the console.
+
+
+
 
 New Features
 ------------
@@ -356,23 +472,54 @@ indicates how many autorenewals are available for a particular circulation.
 Emergency Closing Handler
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Staff are provided with interfaces and mechanisms to create library closings that, in addition to affecting future circulation and booking due dates, and hold shelf expirations, will automatically move existing circulation and booking due dates and hold shelf expiration times. This new functionality is conceptually described as Emergency Closings and business logic implementing it as the Emergency Closing Handler. It contains additions and adjustments to the user interface, business logic, and database layers. Access to this functionality is available through the Closed Dates Editor interface in the staff client which has been ported to AngularJS.
+Staff are provided with interfaces and mechanisms to create library closings
+that, in addition to affecting future circulation and booking due dates, and
+hold shelf expirations, will automatically move existing circulation and booking
+due dates and hold shelf expiration times. This new functionality is
+conceptually described as Emergency Closings and business logic implementing it
+as the Emergency Closing Handler. It contains additions and adjustments to the
+user interface, business logic, and database layers. Access to this
+functionality is available through the Closed Dates Editor interface in the
+staff client which has been ported to AngularJS.
 
 Overview
 ++++++++
 
-This development has created new business logic code to inspect, in real time, existing circulation, booking, and hold records, and modify such date and time stamps so that the circulation, booking, or hold will end in the same state it would have if the closing had existed at the time the circulation or booking occurred, or the hold was placed and captured. Of specific note, hourly loans will have their due date adjusted to be the end of the day following the closing.
+This development has created new business logic code to inspect, in real time,
+existing circulation, booking, and hold records, and modify such date and time
+stamps so that the circulation, booking, or hold will end in the same state it
+would have if the closing had existed at the time the circulation or booking
+occurred, or the hold was placed and captured. Of specific note, hourly loans
+will have their due date adjusted to be the end of the day following the
+closing.
 
-When the Emergency Closing is saved, any fines accrued during the closing may be voided, as settings dictate, with the exception of circulations that have been marked as LOST or LONG OVERDUE. That is, even for LOST and LONG OVERDUE circulations with due dates that fall within the Emergency Closing, no fine adjustment will be applied. Emergency Closing processing is permanent, and cannot be rolled back.
+When the Emergency Closing is saved, any fines accrued during the closing may be
+voided, as settings dictate, with the exception of circulations that have been
+marked as LOST or LONG OVERDUE. That is, even for LOST and LONG OVERDUE
+circulations with due dates that fall within the Emergency Closing, no fine
+adjustment will be applied. Emergency Closing processing is permanent, and
+cannot be rolled back.
 
-This functionality is explicitly initiated by staff action. If staff do not request an Emergency Closing, existing circulations, bookings, and holds will not be processed and adjusted. However, if staff request any Closing that starts nearer in time than the length of the longest circulation duration configured for use in the Evergreen instance they will be prompted with the option to create the closing as an Emergency Closing.
+This functionality is explicitly initiated by staff action. If staff do not
+request an Emergency Closing, existing circulations, bookings, and holds will
+not be processed and adjusted. However, if staff request any Closing that starts
+nearer in time than the length of the longest circulation duration configured
+for use in the Evergreen instance they will be prompted with the option to
+create the closing as an Emergency Closing.
 
-Action/Trigger hooks have been created for circulations and bookings that are adjusted by the Emergency Closing Handler. These will facilitate the creation of notifications to patrons that the due date has changed and to alert them to potential changes in accrued fines.
+Action/Trigger hooks have been created for circulations and bookings that are
+adjusted by the Emergency Closing Handler. These will facilitate the creation of
+notifications to patrons that the due date has changed and to alert them to
+potential changes in accrued fines.
 
-Booking start dates are explicitly ignored in this implementation. Because an Emergency Closing is, by its nature, an unexpected event, it will be up to staff to address any bookings which intersect with a new Emergency Closings. Reports can be used to identify booking start dates that overlap with a closing and that may require staff intervention.
+Booking start dates are explicitly ignored in this implementation. Because an
+Emergency Closing is, by its nature, an unexpected event, it will be up to staff
+to address any bookings which intersect with a new Emergency Closings. Reports
+can be used to identify booking start dates that overlap with a closing and that
+may require staff intervention.
 
-Staff requesting and Emergency Closing must have the new EMERGENCY_CLOSING permission.
-Some text describing the feature.
+Staff requesting and Emergency Closing must have the new EMERGENCY_CLOSING
+permission.  Some text describing the feature.
 
 
 
@@ -640,7 +787,7 @@ Additional information
 Developer notes
 +++++++++++++++
 
-This patch adds the the public catalog two routes that return JSON
+This patch adds to the public catalog two routes that return JSON
 rather than HTML:
 
 * `GET /eg/opac/api/mylist/add?record=45`
@@ -673,12 +820,10 @@ consumption.
 New class for searchbar when on the homepage
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This adds the `.searchbar-home` class to the div that
-contains the searchbar when on the homepage.  This allows
-sites to customize the searchbar differently on the
-homepage than in other places the
-search bar appears (for example, offering a large,
-Google-style search bar on the homepage only).
+This adds the `.searchbar-home` class to the div that contains the searchbar
+when on the homepage.  This allows sites to customize the searchbar differently
+on the homepage than in other places the search bar appears (for example,
+offering a large, Google-style search bar on the homepage only).
 
 
 Username Login Hint
