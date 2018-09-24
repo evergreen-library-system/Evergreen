@@ -1,7 +1,7 @@
 <!-- item checkout form / list -->
 
 <div class="row pad-vert">
-  <div class="col-md-5">
+  <div class="col-md-6">
     <form ng-submit="checkout(checkoutArgs)" role="form" class="form-inline">
       <div class="input-group">
 
