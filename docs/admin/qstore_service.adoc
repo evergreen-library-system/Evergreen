@@ -1,0 +1,6 @@
+QStore service
+--------------
+
+The QStore service is used by the user buckets feature
+in the Web client.
+

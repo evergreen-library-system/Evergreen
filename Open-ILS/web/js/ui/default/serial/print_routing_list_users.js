@@ -169,16 +169,14 @@ function ListRenderer() {
     this._init.apply(this, arguments);
 }
 
+function page_init() {
+    list_renderer = new ListRenderer(xulG.routing_list_data);
+    list_renderer.render().print();
+}
+
 openils.Util.addOnLoad(
     function() {
-        if (!xulG) {
-            alert(
-                "This interface is not designed for use outside " +
-                "the staff client." /* XXX i18n */
-            );
-        } else {
-            list_renderer = new ListRenderer(xulG.routing_list_data);
-            list_renderer.render().print();
-        }
+        // assume we're NOT in the web staff client if we have xulG
+        if (typeof xulG !== 'undefined') return page_init();
     }
 );

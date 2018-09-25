@@ -47,6 +47,8 @@
     <eg-grid-field path="summary.*" hidden></eg-grid-field>
     <eg-grid-field path="circulation.target_copy.*" hidden></eg-grid-field>
     <eg-grid-field path="circulation.target_copy.call_number.*" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.prefix.label" label="[% l('CN Prefix') %]" hidden></eg-grid-field>
+    <eg-grid-field path="circulation.target_copy.call_number.suffix.label" label="[% l('CN Suffix') %]" hidden></eg-grid-field>
   </eg-grid>
 </div>
 

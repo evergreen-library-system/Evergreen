@@ -8,7 +8,7 @@ link to a library information page. This page is located at
 `http://hostname/eg/opac/library/<ID>`.
 
 Evergreen automatically generates this page based on information entered in
-*Admin* -> *Server Administration* -> *Organizational Units* (actor.org_unit).
+*Administration* -> *Server Administration* ->  *Organizational Units* (actor.org_unit).
 
 The library information page displays:
 
@@ -24,7 +24,7 @@ information page.
 
 To display a link:
 
-. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*.
+. Go to *Administration* -> *Local Administration* ->  *Library Settings Editor*.
 . Edit the *Library Information URL* setting for the branch.
 [NOTE]
 If you set the URL at the system level, that URL will be used as the link for
@@ -37,7 +37,7 @@ library information page. To do so:
 
 . Add the library's URL to the *Library Information URL* setting as described
 above.
-. Go to *Admin* -> *Local Administration* -> *Library Settings Editor*.
+. Go to *Administration* -> *Local Administration* ->  *Library Settings Editor*.
 . Set the *Use external "library information URL" in copy table, if available*
 setting to true.
 

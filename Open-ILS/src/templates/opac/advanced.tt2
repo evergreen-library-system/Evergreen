@@ -16,6 +16,7 @@
 
             <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse') %]">[%
                     l('Browse the Catalog')%]</a></span>
+            [% INCLUDE 'opac/parts/cart.tt2' %]
         </div>
         <div id="adv_search_parent">
             <div id="adv_search_tabs">

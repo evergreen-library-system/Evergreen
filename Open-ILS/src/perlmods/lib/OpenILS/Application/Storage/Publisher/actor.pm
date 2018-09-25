@@ -2,7 +2,7 @@ package OpenILS::Application::Storage::Publisher::actor;
 use base qw/OpenILS::Application::Storage/;
 use OpenILS::Application::Storage::CDBI::actor;
 use OpenSRF::Utils::Logger qw/:level/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
@@ -263,8 +263,8 @@ sub make_closure_spanset {
 
         $spanset = $spanset->union(
             DateTime::Span->new(
-                start => $_dt_parser->parse_datetime(cleanse_ISO8601($c->{close_start})),
-                end   => $_dt_parser->parse_datetime(cleanse_ISO8601($c->{close_end}))
+                start => $_dt_parser->parse_datetime(clean_ISO8601($c->{close_start})),
+                end   => $_dt_parser->parse_datetime(clean_ISO8601($c->{close_end}))
             )
         );
     }
@@ -293,7 +293,7 @@ sub new_org_closed_overlap {
           LIMIT 1
     SQL
 
-    $date = cleanse_ISO8601($date);
+    $date = clean_ISO8601($date);
 
     my $target_date = $_dt_parser->parse_datetime( $date );
     my ($begin, $end) = ($target_date, $target_date);
@@ -312,7 +312,7 @@ sub new_org_closed_overlap {
             $begin->subtract( minutes => 1 );
 
             while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1, 1 ) ) {
-                $begin = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
+                $begin = $_dt_parser->parse_datetime( clean_ISO8601($_b->{start}) );
             }
         }
 
@@ -320,7 +320,7 @@ sub new_org_closed_overlap {
             $end->add( minutes => 1 );
 
             while ( my $_a = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), 1, 1 ) ) {
-                $end = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
+                $end = $_dt_parser->parse_datetime( clean_ISO8601($_a->{end}) );
             }
         }
     }
@@ -337,7 +337,7 @@ sub new_org_closed_overlap {
             $begin->subtract( minutes => 1 );
 
             while ( my $_b = new_org_closed_overlap($self, $client, $ou, $begin->strftime('%FT%T%z'), -1 ) ) {
-                $begin = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
+                $begin = $_dt_parser->parse_datetime( clean_ISO8601($_b->{start}) );
             }
         }
     
@@ -348,7 +348,7 @@ sub new_org_closed_overlap {
 
 
             while ( my $_b = new_org_closed_overlap($self, $client, $ou, $end->strftime('%FT%T%z'), -1 ) ) {
-                $end = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{end}) );
+                $end = $_dt_parser->parse_datetime( clean_ISO8601($_b->{end}) );
             }
         }
     }
@@ -385,23 +385,23 @@ sub org_closed_overlap {
           LIMIT 1
     SQL
 
-    $date = cleanse_ISO8601($date);
+    $date = clean_ISO8601($date);
     my ($begin, $end) = ($date,$date);
 
     my $hoo = actor::org_unit::hours_of_operation->retrieve($ou);
 
     if (my $closure = actor::org_unit::closed_date->db_Main->selectrow_hashref( $sql, {}, $date, $ou )) {
-        $begin = cleanse_ISO8601($closure->{close_start});
-        $end = cleanse_ISO8601($closure->{close_end});
+        $begin = clean_ISO8601($closure->{close_start});
+        $end = clean_ISO8601($closure->{close_end});
 
         if ( $direction <= 0 ) {
             $before = $_dt_parser->parse_datetime( $begin );
             $before->subtract( minutes => 1 );
 
             while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1, 1 ) ) {
-                $before = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
+                $before = $_dt_parser->parse_datetime( clean_ISO8601($_b->{start}) );
             }
-            $begin = cleanse_ISO8601($before->strftime('%FT%T%z'));
+            $begin = clean_ISO8601($before->strftime('%FT%T%z'));
         }
 
         if ( $direction >= 0 ) {
@@ -409,9 +409,9 @@ sub org_closed_overlap {
             $after->add( minutes => 1 );
 
             while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1, 1 ) ) {
-                $after = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
+                $after = $_dt_parser->parse_datetime( clean_ISO8601($_a->{end}) );
             }
-            $end = cleanse_ISO8601($after->strftime('%FT%T%z'));
+            $end = clean_ISO8601($after->strftime('%FT%T%z'));
         }
     }
 
@@ -425,7 +425,7 @@ sub org_closed_overlap {
 
                 my $count = 1;
                 while ($hoo->$begin_open_meth eq '00:00:00' and $hoo->$begin_close_meth eq '00:00:00') {
-                    $begin = cleanse_ISO8601($_dt_parser->parse_datetime( $begin )->subtract( days => 1)->strftime('%FT%T%z'));
+                    $begin = clean_ISO8601($_dt_parser->parse_datetime( $begin )->subtract( days => 1)->strftime('%FT%T%z'));
                     $begin_dow++;
                     $begin_dow %= 7;
                     $count++;
@@ -438,7 +438,7 @@ sub org_closed_overlap {
                     $before = $_dt_parser->parse_datetime( $begin );
                     $before->subtract( minutes => 1 );
                     while ( my $_b = org_closed_overlap($self, $client, $ou, $before->strftime('%FT%T%z'), -1 ) ) {
-                        $before = $_dt_parser->parse_datetime( cleanse_ISO8601($_b->{start}) );
+                        $before = $_dt_parser->parse_datetime( clean_ISO8601($_b->{start}) );
                     }
                 }
             }
@@ -450,7 +450,7 @@ sub org_closed_overlap {
     
                 $count = 1;
                 while ($hoo->$end_open_meth eq '00:00:00' and $hoo->$end_close_meth eq '00:00:00') {
-                    $end = cleanse_ISO8601($_dt_parser->parse_datetime( $end )->add( days => 1)->strftime('%FT%T%z'));
+                    $end = clean_ISO8601($_dt_parser->parse_datetime( $end )->add( days => 1)->strftime('%FT%T%z'));
                     $end_dow++;
                     $end_dow %= 7;
                     $count++;
@@ -464,9 +464,9 @@ sub org_closed_overlap {
                     $after->add( minutes => 1 );
 
                     while ( my $_a = org_closed_overlap($self, $client, $ou, $after->strftime('%FT%T%z'), 1 ) ) {
-                        $after = $_dt_parser->parse_datetime( cleanse_ISO8601($_a->{end}) );
+                        $after = $_dt_parser->parse_datetime( clean_ISO8601($_a->{end}) );
                     }
-                    $end = cleanse_ISO8601($after->strftime('%FT%T%z'));
+                    $end = clean_ISO8601($after->strftime('%FT%T%z'));
                 }
             }
 
@@ -676,6 +676,8 @@ sub patron_search {
     # group 1 = address
     # group 2 = phone, ident
     # group 3 = barcode
+    # group 4 = dob
+    # group 5 = profile
 
     # Treatment of name fields depends on whether the org has 
     # diacritic_insensitivity turned on or off.
@@ -685,18 +687,71 @@ sub patron_search {
     $diacritic_insensitive = ($diacritic_insensitive) ? $JSON->JSON2perl($diacritic_insensitive) : 0;
     my $usr;
     my @usrv;
+    my $dob;
+    my @dobv;
 
-    if ($diacritic_insensitive) {
-       $usr = join ' AND ', map { "evergreen.unaccent_and_squash(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-       @usrv = map { "^" . _prepare_name_argument($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    # Compile the WHERE component of the actor.usr fields.
+    # When a name field is encountered, search both the name field and
+    # the alternate version of the name field.
+    my @name_fields = qw/prefix first_given_name second_given_name family_name suffix/;
+    my @usr_where_parts;
 
-    } else {
-       $usr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
-       @usrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    my @usr_fields = grep { ''.$$search{$_}{group} eq '0' } keys %$search;
+    for my $usr_field (@usr_fields) {
+
+        # sprintf template
+        my $where_func = $diacritic_insensitive ?
+            "evergreen.unaccent_and_squash(CAST(%s AS text)) ~ ?" :
+            "evergreen.lowercase(CAST(%s AS text)) ~ ?";
+
+        my $val = $diacritic_insensitive ?
+            "^" . _prepare_name_argument($$search{$usr_field}{value}) :
+            "^" . _clean_regex_chars($$search{$usr_field}{value});
+
+        if (grep {$_ eq $usr_field} @name_fields) {
+            # When searching a name field include an OR search
+            # on the alternate version of the same field.
+
+            push(@usr_where_parts, sprintf(
+                "($where_func OR $where_func)", $usr_field, "pref_$usr_field")
+            );
+
+            # search main field and alt name field with same value.
+            push(@usrv, $val);
+            push(@usrv, $val);
+
+        } else {
+
+            push(@usr_where_parts, sprintf($where_func, $usr_field));
+            push(@usrv, $val);
+        }
     }
+
+    $usr = join ' AND ', @usr_where_parts;
+
+    while (($key, $value) = each (%$search)) {
+        if($$search{$key}{group} eq '4') {
+            my $tval = $key;
+            $tval =~ s/dob_//g;
+            my $right = "RIGHT('0'|| ";
+            my $end = ", 2)";
+            $end = $right = '' if lc $tval eq 'year';
+            $dob .= $right."CAST(DATE_PART('$tval', dob) AS text)$end ~ ? AND ";
+        }
+    }
+    # Trim the last " AND "
+    $dob = substr($dob,0,-4);
+    @dobv = map { _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '4' } keys %$search;
+    $usr .= ' AND ' if ( $usr && $dob );
+    $usr .= $dob if $dob; # $dob not in-line above in case $usr doesn't have any search vals (only searched for dob)
+    push(@usrv, @dobv) if @dobv;
 
     my $addr = join ' AND ', map { "evergreen.lowercase(CAST($_ AS text)) ~ ?" } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
     my @addrv = map { "^" . _clean_regex_chars($$search{$_}{value}) } grep { ''.$$search{$_}{group} eq '1' } keys %$search;
+
+    # should only be 1 profile sent but this construction makes dealing with the lists simpler.
+    my ($prof) = map { $$search{$_}{value} } grep {''.$$search{$_}{group} eq '5' } keys %$search;
+    $prof = int($prof) if $prof; # int or out
 
     my $pv = _clean_regex_chars($$search{phone}{value});
     my $iv = _clean_regex_chars($$search{ident}{value});
@@ -735,22 +790,32 @@ sub patron_search {
         $ident = '(' . join(' OR ', @is) . ')';
     }
 
+    # name keywords search
     my $name = '';
     my @ns;
     my @namev;
-    if (0 && $nv) {
-        for my $n ( qw/first_given_name second_given_name family_name/ ) {
-            if ($diacritic_insensitive) {
-                push @ns, "evergreen.unaccent_and_squash($n) ~ ?";
-            } else {
-                push @ns, "evergreen.lowercase($n) ~ ?";
-            }
-            push @namev, "^$nv";
-        }
-        $name = '(' . join(' OR ', @ns) . ')';
+    if ($nv) {
+        $name = "name_kw_tsvector @@ to_tsquery(?)";
+
+        # Remove characters that to_tsquery might treat as operators.
+        # Note using plainto_tsquery to ignore operators won't let us
+        # also do prefix matching.
+        $nv =~ s/[^\w\s\.\-']//g;
+
+        my @parts = split(' ', $nv);
+
+        # tsquery on multiple names joined w/ '&'
+        # Adding :* gives us prefix matching
+        push @namev, join(' & ', map { "$_:*" } @parts);
     }
 
-    my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name);
+    my $profile = '';
+    my @profv = ();
+    if ($prof) {
+        $profile = '(profile IN (SELECT id FROM permission.grp_descendants(?)))';
+        push @profv, $prof;
+    }
+    my $usr_where = join ' AND ', grep { $_ } ($usr,$phone,$ident,$name,$profile);
     my $addr_where = $addr;
 
 
@@ -835,7 +900,7 @@ sub patron_search {
           OFFSET $offset
     SQL
 
-    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@addrv));
+    return actor::user->db_Main->selectcol_arrayref($select, {Columns=>[scalar(@$sort)]}, map {lc($_)} (@usrv,@phonev,@identv,@namev,@profv,@addrv));
 }
 __PACKAGE__->register_method(
     api_name    => 'open-ils.storage.actor.user.crazy_search',

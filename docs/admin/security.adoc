@@ -1,0 +1,35 @@
+Keeping Evergreen Current and Secure
+====================================
+
+Introduction
+------------
+
+When it comes to running an Evergreen system, there are two special areas of concern:
+
+* How and when you decide to upgrade Evergreen software or apply fixes
+* How to take care of the actual server(s) that your Evergreen system uses
+
+The following hints to help you cope with these challenges.
+
+Upgrading the Evergreen software
+--------------------------------
+
+The Evergreen community at large have agreed upon an upgrade cycle that produces new major releases twice a year, in Spring and Fall. Major releases can contain new features. The community supports each major release with 12 subsequent monthly minor releases that contain only bug fixes, and continues to provide security fixes if necessary for an additional three months after the end of the regular minor bug fix support, for a total of 15 months of support for each major release. 
+
+As a general rule, as the Evergreen community releases each new version of the Evergreen software, they also provide a guideline on how to upgrade from the previous release as part of the official Evergreen documentation at http://docs.evergreen-ils.org. Follow the instructions exactly and in the order that they are given--and if you run into a problem, report it to the community with as much detail about the error message or symptoms of the problem as you can.
+
+Keep the Evergreen release schedule in mind when planning  your own testing and upgrade schedules. If you participate in testing new Evergreen releases during the release candidate stages, you will prepare your own library for the upgrade process and help flush out any remaining bugs before the major release of the software. This also gives you time to prepare the members of your library for the upcoming changes by giving them the chance, when possible, to familiarize themselves with new features on your test system. You also have the chance to prepare supporting materials, like handouts and other kinds of documentation, to help your users before, during and after each upgrade cycle. 
+
+Securing the server(s) on which your Evergreen installation runs
+----------------------------------------------------------------
+
+An Evergreen installation requires interaction between many different components and, depending on the size of your consortium and how many servers you have, it can range from quite complex to extremely. That said, there are a number of standard guidelines that you can follow to secure your server.
+
+* Keep your server up-to-date. Apply security updates as soon as possible when they come out to prevent your system from being exposed to a known vulnerability.
+* Pay close attention to account administration on the server. Do not give any user on the server more power than they need.
+* Disable services that you do not need.
+* Pay attention to your system's log files to see what kind of activity is happening and notice anything unusual.
+* A central idea to server security is to make it unreasonably difficult for anyone who tries to compromise your system. Let them choose targets more vulnerable than yours.
+
+This topic is very rich and there are many resources available, both in print and on the web. It is worth your time to learn more.
+

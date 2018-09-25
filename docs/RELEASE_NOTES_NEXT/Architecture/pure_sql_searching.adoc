@@ -1,4 +1,0 @@
-Pure-SQL catalog searching
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Public and staff catalog search is now both more accurate and faster
-by redesigning how the visibility of records is calculated.

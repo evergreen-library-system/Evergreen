@@ -1,0 +1,115 @@
+Administering copy locations
+----------------------------
+
+Creating new copy locations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Click _Administration_.
+. Click _Local Administration_.
+. Click _Copy Locations Editor_.
+. Type the name of the copy location.
+. In _OPAC Visible_, choose whether you would like items in this copy location
+  to appear in the catalog.
+. In _Hold Verify_, 
+. In _Checkin Alert_, choose whether you would like a routing alert to appear
+  when a copy in this location is checked in. This is intended for special
+  locations, such as 'Display', that may require special handling, or that
+  temporarily contain items that are not normally in that location.
++
+NOTE: By default, these alerts will only display when a copy is checked in, _not_
+when it is used to record an in-house use.
++
+To also display these alerts when a copy in your location is scanned for in-house
+use, go to Administration > Local Administration > Library Settings Editor and
+set _Display copy location check in alert for in-house-use_ to True.
++
+. If you would like a prefix or suffix to be added to the call numbers of every
+  volume in this location, enter it.
+. If you would like, add a URL to the _URL_ field.  When a URL is entered in
+  this field, the associated copy location will display as a link in the Public
+  Catalog summary display. This link can be useful for retrieving maps or other
+  directions to the copy location to aid users in finding material.
+. If you would like to override any copy-level circulation/hold policies to
+  make sure that copies in your new location can't circulate or be holdable,
+  choose _No_ in the appropriate field.  If you choose _Yes_, Evergreen will
+  use the typical circulation and hold policies to determine circulation
+  abilities.
+
+Deleting copy locations
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You may only delete a copy location if:
+. it doesn't contain any copies, or
+. it only contains deleted copies.
+
+Evergreen preserves copy locations in the database, so no statistical information
+is lost when a copy location is deleted.
+
+Modifying copy location order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Go to _Administration_.
+. Go to _Local Administration_.
+. Click _Copy Location Order_.
+. Drag and drop the locations until you are satisfied with their order.
+. Click _Apply changes_.
+
+
+Copy location groups
+~~~~~~~~~~~~~~~~~~~~
+
+.Use case
+****
+Mayberry Public Library provides a scope allowing users to search for all
+children's materials in their library. The library's children's scope
+incorporates several copy locations used at the library, including Picture
+Books, Children's Fiction, Children's Non-Fiction, Easy Readers, and Children's
+DVDs. The library also builds a similar scope for YA materials that incorporates
+several copy locations.
+****
+
+This feature allows staff to create and name sets of copy locations to use as
+a search filter in the catalog.  OPAC-visible groups will display within the
+library selector in the Public Catalog.  When a user selects a group
+and performs a search, the set of results will be limited to records that have
+copies in one of the copy locations within the group.  Groups can live at any
+level of the library hierarchy and may include copy locations from any parent
+org unit or child org unit.
+
+NOTE: To work with Copy Location Groups, you will need the ADMIN_COPY_LOCATION_GROUP
+permission.
+
+Create a Copy Location Group
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Click Administration ->  Local Administration -> Copy Location Groups.
+. At the top of the screen is a drop down menu that displays the org unit tree.
+  Select the unit within the org tree to which you want to add a copy location group.
+  The copy locations associated with the org unit appear in the Copy Locations column.
+. In the column called _Location Groups_, click _New_.
+. Choose how you want the copy location group to display to patrons in the catalog's
+  org unit tree in the OPAC. By default, when you add a new copy location group, the
+  group displays in the org unit tree beneath any branches or sub-libraries of its
+  parental org unit.  If you check the box adjacent to Display above orgs, then the
+  group will appear above the branches or sub-libraries of its parental org unit.
+. To make the copy location group visible to users searching the public catalog, check
+  the box adjacent to Is OPAC visible?
+. Enter a _Name_ for the copy location group.
+. Click Save. The name of the Copy Location Group appears in the Location Groups.
+. Select the copy locations that you want to add to the group, and click Add. The copy
+  locations will populate the middle column, Group Entries.
+. The copy location group is now visible in the org unit tree in the catalog. Search
+  the catalog to retrieve results from any of the copy locations that you added to
+  the copy location group.
+
+Order Copy Location Groups
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you create more than one copy location group, then you can order the groups in the
+org unit tree.
+
+. Click Administration -> Local Administration -> Copy Location Groups.
+. Three icons appear next to each location group. Click on the icons to drag the copy
+  location groups into the order in which you would like them to appear in the catalog.
+. Search the catalog to view the reorder of the copy location groups.
+

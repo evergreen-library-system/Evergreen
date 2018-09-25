@@ -7,8 +7,9 @@ angular.module('egRenewApp',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-    var resolver = {delay : function(egStartup) {return egStartup.go()}};
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export    
+	
+	var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/circ/renew/renew', {
         templateUrl: './circ/renew/t_renew',
@@ -93,7 +94,7 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         // immediate reaction to their barcode input action.
         var row_item = {
             index : $scope.renewals.length,
-            copy_barcode : params.copy_barcode,
+            input_barcode : params.copy_barcode,
             noncat_type : params.noncat_type
         };
 
@@ -110,6 +111,8 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
                 angular.forEach(final_resp.data, function(val, key) {
                     row_item[key] = val;
                 });
+
+                row_item['copy_barcode'] = row_item.acp.barcode();
 
                 if (row_item.mbts) {
                     var amt = Number(row_item.mbts.balance_owed());
@@ -194,6 +197,26 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         });
 
         egCirc.abort_transits(transit_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.addCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.manageCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
             // update grid items?
         });
     }

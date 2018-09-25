@@ -1,6 +1,9 @@
 SIP Server
 ----------
 
+About the SIP Protocol
+~~~~~~~~~~~~~~~~~~~~~~
+
 indexterm:[Automated Circulation System]
 indexterm:[SelfCheck]
 indexterm:[Automated Material Handling]
@@ -56,6 +59,32 @@ indexterm:[configuration files, oils_sip.xml]
 . max_servers will directly correspond to the number of allowed +SIP+ clients. Set the number accordingly, but 
 bear in mind that too many connections can exhaust memory. On a 4G RAM/4 CPU server (that is also running 
 evergreen), it is not recommended to exceed 100 +SIP+ client connections. 
+
+Setting the encoding
+++++++++++++++++++++
+
+SIPServer looks for the encoding in the following
+places:
+
+1. An +encoding+ attribute on the +account+ element for the currently active SIP account.
+2. The +encoding+ element that is a child of the +institution+ element of the currently active SIP account.
+3. The +encoding+ element that is a child of the +implementation_config+ element that is itself a child of the +institution+ element of the currently active SIP account.
+4. If none of the above exist, then the default encoding (ASCII) is used.
+
+Option 3 is a legacy option.  It is recommended that you alter your configuration to
+move this element out of the +implementation_config+ element and into
+its parent +institution+ element.  Ideally, SIPServer should *not* look into
+the implementation config, and this check may be removed at some time
+in the future.
+
+Datatypes
++++++++++
+
+The `msg64_hold_datatype` setting is similar to `msg64_summary_datatype`, but affects holds instead of circulations.
+When set to `barcode`, holds information will be delivered as a set of copy barcodes instead of title strings for
+patron info requests. With barcodes, SIP clients can both find the title strings for display (via item info requests)
+and make subsequent hold-related action requests, like holds cancellation. 
+
 
 Adding SIP Users
 ^^^^^^^^^^^^^^^^
@@ -258,7 +287,7 @@ We are using 6001 here which is associated with +SIP2+ as per our configuration.
 +
 If successful, the SIP server returns a +941+ result. A result of +940+,
 however, indicates an unsuccessful login attempt. Check the +<accounts>+
-section of your SIP configuration and try agin.
+section of your SIP configuration and try again.
 
 . Once you have logged in successfully, replace the variables in the following
 line and paste it into the telnet session:
@@ -418,8 +447,8 @@ indexterm:[magnetic media]
 
 [NOTE]
 ===============
-The logic for Evergreen to determine whether the content is magnetic_media comes from either legacy circ 
-scripts or search_config_circ_modifier. The default is non-magnetic. The same is true for media_type (default 
+The logic for Evergreen to determine whether the content is magnetic_media comes from  
+or search_config_circ_modifier. The default is non-magnetic. The same is true for media_type (default 
 001). Evergreen does not populate the collection_code because it does not really have any, but it will provide 
 the call_number where available.
 
@@ -538,7 +567,8 @@ anchor:sip_29-30_renew[]
 29/30 Renew
 ^^^^^^^^^^^
 
-Evergreen supports the Renew message.
+Evergreen supports the Renew message. Evergreen checks whether a penalty is specifically configured to block
+renewals before blocking any SIP renewal.
 
 
 anchor:sip_35-36_end_session[]
@@ -613,6 +643,8 @@ Example:
    941 
 
 _941_ means successful terminal login. _940_ or getting dropped means failure.
+
+When using a version of SIPServer that supports the feature, the Location (CP) field of the Login (93) message will be used as the workstation name if supplied. Blank or missing location fields will be ignored. This allows users or reports to determine which selfcheck performed a circulation.
 
 
 anchor:sip_97-96_resend[]

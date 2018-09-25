@@ -6,15 +6,13 @@ All of the steps in this chapter are to be completed from the command line.
 Software Prerequisites
 ~~~~~~~~~~~~~~~~~~~~~~
 
-  * **PostgreSQL**: Version 9.4 is recommended.
-    The minimum supported version is 9.3.
-  * **Linux**: Evergreen 2.12.0 has been tested on Debian Jessie (8.0),
-    Debian Wheezy (7.0), Ubuntu Xenial Xerus (16.04),
-    and Ubuntu Trusty Tahr (14.04).
+  * **PostgreSQL**: The minimum supported version is 9.4.
+  * **Linux**: Evergreen 2.12.0 has been tested on Debian Stretch (9.0),
+    Debian Jessie (8.0), Ubuntu Xenial Xerus (16.04),and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 2.5.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 3.0.0.
 
 
 In the following instructions, you are asked to perform certain steps as either the *root* or *opensrf* user.
@@ -68,8 +66,8 @@ distribution of Debian or Ubuntu:
 indexterm:[Linux, Debian]
 indexterm:[Linux, Ubuntu]
 +
+  * `debian-stretch` for Debian Stretch (9.0) (EDI compatibility in progress)
   * `debian-jessie` for Debian Jessie (8.0) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
-  * `debian-wheezy` for Debian Wheezy (7.0)
   * `ubuntu-xenial` for Ubuntu Xenial Xerus (16.04) (EDI compatibility in progress)
   * `ubuntu-trusty` for Ubuntu Trusty Tahr (14.04) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
 
@@ -95,6 +93,17 @@ These instructions assume that you have also installed OpenSRF under /openils/. 
 [source, bash]
 ------------------------------------------------------------
 cd /home/opensrf/Evergreen-ILS-2.12.0
+make install
+------------------------------------------------------------
++
+
+**Note** that this version of Evergreen does not use the legacy XUL staff
+client by default, but if you wish to use a versioned XUL staff client, you
+can supply `STAFF_CLIENT_STAMP` during the `make install` step like this:
++
+[source, bash]
+------------------------------------------------------------
+cd /home/opensrf/Evergreen-ILS-2.12.0
 make STAFF_CLIENT_STAMP_ID=rel_2_12_rc install
 ------------------------------------------------------------
 +
@@ -105,7 +114,8 @@ make STAFF_CLIENT_STAMP_ID=rel_2_12_rc install
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------
 +
-. As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
+. (Optional, only if you are using the legacy staff client)
+  As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
 -----------------------------------------------------------

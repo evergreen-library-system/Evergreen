@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
 "PO-Revision-Date: 2013-10-15 09:03+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:17+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:37+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -1276,8 +1276,8 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr "Tietue on ensin merkittävä nimekkeen varaussiirron kohteeksi."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Varaukset siirretty."
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1721,6 +1721,12 @@ msgstr "Vahvista toiminto valitsemalla tämä"
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr "Nide %1$s on lainassa asiakkaalle %2$s, ja sen eräpäivä on %3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -2420,3 +2426,6 @@ msgstr "%1$s saatavilla"
 #~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 #~ msgid "No"
 #~ msgstr "Ei"
+
+#~ msgid "Holds transferred."
+#~ msgstr "Varaukset siirretty."

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-03-16 00:13+0000\n"
-"PO-Revision-Date: 2017-03-19 17:41+0000\n"
+"POT-Creation-Date: 2018-03-02 19:43+0000\n"
+"PO-Revision-Date: 2018-03-19 21:26+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-20 05:56+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
+"X-Generator: Launchpad (build 18571)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -163,7 +163,7 @@ msgstr "Přidat vybrané položky na fakturu"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:236
 msgid "Add Tag"
-msgstr "Přidat štítek"
+msgstr "Přidat tag"
 
 #: ../../Open-ILS/src/templates/acq/picklist/brief_record.tt2:10
 msgid "Add To Selection List"
@@ -372,7 +372,7 @@ msgstr "Reklamovat vybrané"
 
 #: ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:16 ../../Open-ILS/src/templates/acq/financial/claim_eligible.tt2:46
 msgid "Claim selected items"
-msgstr "REklamovat vybrané položky"
+msgstr "Reklamovat vybrané položky"
 
 #: ../../Open-ILS/src/templates/acq/common/final_claim_dialog.tt2:2
 msgid "Claim type:"
@@ -580,7 +580,7 @@ msgstr "Odhadované náklady"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:68 ../../Open-ILS/src/templates/acq/common/li_table.tt2:132
 msgid "Estimated Price"
-msgstr "Odhadované cena"
+msgstr "Odhadovaná cena"
 
 #: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:21
 msgid "Evergreen Catalog"
@@ -797,7 +797,7 @@ msgstr "Atribut atributu položky"
 
 #: ../../Open-ILS/src/templates/acq/lineitem/history.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/history.tt2:3
 msgid "Lineitem History"
-msgstr "Hostorie položky"
+msgstr "Historie položky"
 
 #: ../../Open-ILS/src/templates/acq/lineitem/search.tt2:2 ../../Open-ILS/src/templates/acq/lineitem/search.tt2:5
 msgid "Lineitem Search"
@@ -1078,7 +1078,7 @@ msgstr "Vlastnící knihovna"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:80
 msgid "PO"
-msgstr "Obj."
+msgstr "OBJ"
 
 #: ../../Open-ILS/src/templates/acq/po/history.tt2:2
 msgid "PO History"
@@ -1106,7 +1106,7 @@ msgstr "Objednávající agentura"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:191 ../../Open-ILS/src/templates/acq/invoice/view.tt2:127 ../../Open-ILS/src/templates/acq/invoice/view.tt2:93
 msgid "Paid"
-msgstr "Placeno"
+msgstr "Zaplaceno"
 
 #: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:65
 msgid "Patron Request"
@@ -1122,7 +1122,7 @@ msgstr "Čeká na zpracování"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:219
 msgid "Pending-Order"
-msgstr "Objednávky čekající na zpracování"
+msgstr "OBJ-nevyřízená"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:92
 msgid "Per Copy"
@@ -1134,7 +1134,7 @@ msgstr "Procent: "
 
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:59
 msgid "Perform Fiscal Year Close-out Operation: "
-msgstr "Provést operace uzavírající fiskál rok: "
+msgstr "Provést operace uzavírající fiskální rok: "
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:46 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:58
 msgid "Please enter an amount between 0 and 100"
@@ -1154,7 +1154,7 @@ msgstr "Předchozí"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:271
 msgid "Previous"
-msgstr "Předchozí"
+msgstr "Předchozí"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:33
 msgid "Print Purchase Order"
@@ -1176,9 +1176,8 @@ msgid ""
 "process."
 msgstr ""
 "Přenesení vytvoří nový fond pro následující fiskální rok založený na fondu "
-"zvoleného fiskálního roku. Ovlivněny budou pouze fondy, které mají "
-"aktivováno \"prenesení\". Během procesu přenesení nebudou změněny peníze ani "
-"zatížení."
+"zvoleného fiskálního roku. Ovlivněny budou pouze fondy, které mají Přenesení "
+"aktivováno. Během procesu přenesení nebudou změněny peníze ani zatížení."
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:173
 msgid "Prorate"
@@ -1236,7 +1235,7 @@ msgstr "Důvod:"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:8
 msgid "Receive Items"
-msgstr "Přijmout exempláře"
+msgstr "Přijmout jednotky"
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:32 ../../Open-ILS/src/templates/acq/invoice/receive.tt2:54
 msgid "Receive Selected Copies"
@@ -1304,7 +1303,7 @@ msgstr "Přehled výsledků"
 
 #: ../../Open-ILS/src/templates/acq/picklist/from_bib.tt2:12
 msgid "Retrieve records"
-msgstr "Získat záznamy"
+msgstr "Načíst záznamy"
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:61
 msgid "Return to Invoice"
@@ -1431,11 +1430,11 @@ msgstr "Vybírající:  %1"
 
 #: ../../Open-ILS/src/templates/acq/picklist/user_request.tt2:69
 msgid "Set No Hold"
-msgstr ""
+msgstr "Nastavena žádná rezervace"
 
 #: ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:103 ../../Open-ILS/src/templates/acq/common/jubgrid.tt2:124
 msgid "Shelving Location"
-msgstr "Umístění regálu"
+msgstr "Umístění"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:41
 msgid "Show Details"
@@ -1463,7 +1462,7 @@ msgstr "Zobrazit výsledky, pro které:"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:279
 msgid "Sort by title"
-msgstr "Seřadit podle názvu"
+msgstr "Podle názvu"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:81
 msgid "Source amount"
@@ -1508,19 +1507,19 @@ msgstr "Potvrdit"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:153 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:83
 msgid "Summary"
-msgstr "Přehled"
+msgstr "Souhrn"
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:52
 msgid "Tag"
-msgstr "Štítek"
+msgstr "Tag"
 
 #: ../../Open-ILS/src/templates/acq/settings/li_attr.tt2:18
 msgid "Tag: "
-msgstr "Štítek: "
+msgstr "Tag: "
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:229
 msgid "Tags"
-msgstr "Štítky"
+msgstr "Tagy"
 
 #: ../../Open-ILS/src/templates/acq/invoice/receive.tt2:26
 msgid "The remaining are listed below."
@@ -1618,11 +1617,11 @@ msgstr "Celkový počet exemplářů: %1"
 
 #: ../../Open-ILS/src/templates/acq/funding_source/view.tt2:95
 msgid "Total Credits"
-msgstr "Příspěvky celkem"
+msgstr "Získáno celkem"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:168 ../../Open-ILS/src/templates/acq/funding_source/view.tt2:96
 msgid "Total Debits"
-msgstr "Dlužné částky celkem"
+msgstr "Zaúčtováno celkem"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:170 ../../Open-ILS/src/templates/acq/po/view.tt2:73
 msgid "Total Encumbered"
@@ -1673,7 +1672,7 @@ msgstr "Celkem utraceno: $%1"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:138
 msgid "Transfer"
-msgstr "Přesun"
+msgstr "Přesunout"
 
 #: ../../Open-ILS/src/templates/acq/fund/view.tt2:68
 msgid "Transfer Money"
@@ -1768,6 +1767,10 @@ msgstr "Zobrazit objednávku"
 msgid "View Selection List"
 msgstr "Zobrazit akviziční seznam"
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr "Zobrazit informace o exempláři"
+
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
 msgid ""
 "When Dry Run is selected, the system will generate a summary of the changes "
@@ -1790,7 +1793,7 @@ msgstr "Rok"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:212 ../../Open-ILS/src/templates/acq/search/unified.tt2:37
 msgid "all"
-msgstr "všem"
+msgstr "vše"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:213 ../../Open-ILS/src/templates/acq/search/unified.tt2:38
 msgid "any"
@@ -1830,7 +1833,7 @@ msgstr "je v/ nebo před"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:208 ../../Open-ILS/src/templates/acq/search/unified.tt2:27
 msgid "line items"
-msgstr "Položky akvizice"
+msgstr "Položky"
 
 #: ../../Open-ILS/src/templates/acq/search/unified.tt2:29
 msgid "line items &amp; catalog records"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-08-26 13:12-0400\n"
-"PO-Revision-Date: 2013-12-27 09:53+0000\n"
+"PO-Revision-Date: 2017-07-26 10:55+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-27 05:22+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2017-07-27 05:33+0000\n"
+"X-Generator: Launchpad (build 18439)\n"
 
 #: acq.js:PRINT
 msgid "Print"
@@ -27,7 +27,7 @@ msgstr "Չեղարկված է"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
-msgstr ""
+msgstr "LID"
 
 #: acq.js:ADD_LI_TO_PO_BAD_LI_STATE
 msgid ""
@@ -45,6 +45,8 @@ msgid ""
 "<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: "
 "$${4}"
 msgstr ""
+"<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Ընդհանուր գնահատված "
+"արժեք: $${4}"
 
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
 msgid ""
@@ -88,7 +90,7 @@ msgstr ""
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlia
 msgid "LIA"
-msgstr ""
+msgstr "LIA"
 
 #: acq.js:LI_ATTR_SEARCH_CHOOSE_FILE
 msgid "Select file with search terms"
@@ -115,6 +117,20 @@ msgid ""
 "href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; "
 "${15}</a></div>"
 msgstr ""
+"<div class='acq-lineitem-summary'><a "
+"href='${19}?focus_li=${10}&source=${22}'>${0}</a>, by ${1} (${2})</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"${3} Պատվիրված, ${4} Ստացված, ${7} Հաշիվ ներկայացված, ${8} Պիտակավորված, "
+"${9} Չեղարկված, ${23} Ուշացված</div>\n"
+"<div class='acq-lineitem-summary-extra'>Գնահատվգած $${6}, Արգելված $${16}, "
+"Վճարված $${17}</div>\n"
+"<div class='acq-lineitem-summary-extra'>\n"
+"# ${10} <a style='padding-right: 10px;' class='hidden${20}'  "
+"href='${11}/acq/po/view/${12}?focus_li=${10}&source=${22}'>&#x2318; ${13} "
+"${18}</a>\n"
+"<a style='padding-right: 10px;' class='hidden${21}' "
+"href='${11}/acq/picklist/view/${14}?focus_li=${10}&source=${22}'>&#x2756; "
+"${15}</a></div>"
 
 #: acq.js:INVOICE_CONFIRM_PRORATE
 msgid ""
@@ -130,7 +146,7 @@ msgstr ""
 
 #: acq.js:LI_CREATING_ASSETS
 msgid "Creating bib, call number, and copy records..."
-msgstr ""
+msgstr "Ստեղծվում են մատեն, դասիչ և գրառումների պատճեններ․․․"
 
 #: acq.js:CONFIRM_FUNDS_AT_STOP
 msgid ""
@@ -165,15 +181,15 @@ msgstr ""
 
 #: acq.js:DUPE_PO_NAME_LINK
 msgid "View PO"
-msgstr ""
+msgstr "Դիտիր PO"
 
 #: acq.js:ACTIVATE_LI_PROCESSED
 msgid "Lineitems Processed: ${0}"
-msgstr ""
+msgstr "Գծային նյութերը իրականցված են: ${0}"
 
 #: acq.js:ACTIVATE_DEBITS_ACCRUED_PROCESSED
 msgid "Debits Encumbered: ${0}"
-msgstr ""
+msgstr "Դեբիտնեռը հաշվարկված են: ${0}"
 
 #: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
 msgid ""
@@ -193,7 +209,7 @@ msgstr "Այո, բյուջեն ${0} (${1}) կհավաքվի զգուշացման
 
 #: acq.js:ACTIVATE_BIBS_PROCESSED
 msgid "Bib Records Merged/Imported: ${0}"
-msgstr ""
+msgstr "Մատեն գրառումները միացված են/Ներմուծված են: ${0}"
 
 #: acq.js:ROLLBACK_LI_RECEIVE_CONFIRM
 msgid ""
@@ -245,7 +261,7 @@ msgstr "Դու վստա՞հ ես որ ցանկանում ես չեղյալ ան�
 
 #: acq.js:PO_ACTIVATING
 msgid "Activating purchase order..."
-msgstr ""
+msgstr "Գնման պատվերը ակտիվացվում է․․․"
 
 #: acq.js:INVOICE_ITEM_PO_DETAILS
 msgid ""
@@ -273,7 +289,7 @@ msgstr "Անանուն"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpo
 msgid "PO"
-msgstr ""
+msgstr "PO"
 
 #: acq.js:DEL_LI_FROM_PO
 msgid ""
@@ -331,7 +347,7 @@ msgstr "<b>$${1}</b> չծախսված գումար ընթացիկ տարվա հ�
 
 #: acq.js:ACTIVATE_VQBR_PROCESSED
 msgid "Vandelay Records Processed: ${0}"
-msgstr ""
+msgstr "Vandelay գրառումները կատարված են: ${0}"
 
 #: acq.js:INVOICES
 msgid "Invoices"
@@ -350,6 +366,8 @@ msgid ""
 "Finalize this blanket PO?\n"
 "This will disencumber all blanket charges and mark the PO as received"
 msgstr ""
+"Ավարտե՞լ այս ծածկոցային PO-ն։\n"
+"Սա չեղյալ կհամարի բոլոր ծածկոցային ծախսերը և կնշի PO-ն որպես սըտցված։"
 
 #: acq.js:NEW_INVOICE
 msgid "New Invoice"
@@ -450,7 +468,7 @@ msgstr "Գնման պատվերը պետք է ունենա պատվերի գոր
 
 #: acq.js:ACTIVATE_LID_PROCESSED
 msgid "ACQ Copies Processed: ${0}"
-msgstr ""
+msgstr "ACQ պատճենները կատարված են: ${0}"
 
 #: acq.js:LI_ATTR_SEARCH_TOO_LARGE
 msgid "That file is too large for this operation."
@@ -466,7 +484,7 @@ msgstr "Չնախատեսված սխալ վիրտուալ կոմբինացված 
 
 #: acq.js:PO_NAME_OPTIONAL
 msgid "${0} (optional)"
-msgstr ""
+msgstr "${0} (ոչ պարտադիր)"
 
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
@@ -483,7 +501,7 @@ msgstr ""
 
 #: acq.js:ACTIVATE_COPIES_PROCESSED
 msgid "Real Copies Processed: ${0}"
-msgstr ""
+msgstr "Կատարված իրական պատճեններ: ${0}"
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -497,7 +515,7 @@ msgstr "հենց հիմա"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpl
 msgid "SL"
-msgstr ""
+msgstr "SL"
 
 #: acq.js:CANCEL
 msgid "Cancel"
@@ -525,6 +543,7 @@ msgstr "Ընտրված PO-ն արդեն ակտիվացված է"
 msgid ""
 "There are ${0} existing copies for this bibliographic record at this location"
 msgstr ""
+"Առկա են ${0} պատճեններ այս տեղաբշխման այս մատենագիտական գրառման համար"
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
@@ -556,11 +575,11 @@ msgstr "Դու վստա՞հ ես որ ցանկանում ես նշել այս գ
 
 #: acq.js:DUPE_PO_NAME_MSG
 msgid "This name is already in use by another PO"
-msgstr ""
+msgstr "Այս անունը արդեն օգտագործվում է մեկ այլ PO-ի կողմից"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"
-msgstr ""
+msgstr "LI"
 
 #: acq.js:COULD_NOT_CREATE_MAPPING
 msgid "Error tagging fund."
@@ -584,7 +603,7 @@ msgstr "Անարդյունք"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqinv
 msgid "I"
-msgstr ""
+msgstr "I"
 
 #: acq.js:FUND_NOT_YET_LOADED
 msgid "Fund not yet loaded. Try coming back to this display later."

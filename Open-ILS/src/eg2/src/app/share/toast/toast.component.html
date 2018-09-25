@@ -1,0 +1,3 @@
+<div id="eg-toast-container" *ngIf="message">
+  <ngb-alert [type]="message.style" (close)="dismiss(message)">{{message.text}}</ngb-alert>
+</div>

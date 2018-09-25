@@ -1,0 +1,40 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Authority Heading Fields");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'AuthorityHeadingField';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/server/authority/heading_field.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Authority Heading Fields') %]
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    idl-class="ahf"
+    grid-controls="gridControls"
+    features="-multiselect"
+    persist-key="admin.server.config.marc_field">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_record" label="[% l('Delete Record') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Heading Type') %]"    path="heading_type"></eg-grid-field>
+    <eg-grid-field label="[% l('Heading Purpose') %]" path="heading_purpose"></eg-grid-field>
+    <eg-grid-field label="[% l('Label') %]"           path="label"></eg-grid-field>
+    <eg-grid-field label="[% l('ID') %]" path='id' required hidden></eg-grid-field>
+    <eg-grid-field path='*' hidden></eg-grid-field>
+</eg-grid>
+
+[% END %]

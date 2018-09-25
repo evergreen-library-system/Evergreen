@@ -109,14 +109,25 @@ function staff_hold_usr_barcode_changed2(
         return;
     }
     cur_hold_barcode = load_info.barcode;
-    if(!only_settings || (isload && isload !== true)) document.getElementById('hold_usr_input').value = load_info.barcode; // Safe at this point as we already set cur_hold_barcode
-    if(!only_settings || (isload && isload !== true) && load_info.pickup_lib) document.getElementById('pickup_lib').value = load_info.pickup_lib; // Safe at this point as we already set cur_hold_barcode
-    if(load_info.settings['opac.default_pickup_location'])
-        document.getElementById('pickup_lib').value = load_info.settings['opac.default_pickup_location'];
-    if(!load_info.settings['opac.default_phone']) load_info.settings['opac.default_phone'] = '';
-    if(!load_info.settings['opac.default_sms_notify']) load_info.settings['opac.default_sms_notify'] = '';
-    if(!load_info.settings['opac.default_sms_carrier']) load_info.settings['opac.default_sms_carrier'] = '';
-    if(load_info.settings['opac.hold_notify'] || load_info.settings['opac.hold_notify'] === '') {
+    if (!only_settings || (isload && isload !== true)) {
+        // Safe at this point as we already set cur_hold_barcode
+        document.getElementById('hold_usr_input').value = load_info.barcode;
+
+        // Patron preferred pickup loc always overrides the default pickup lib
+        document.getElementById('pickup_lib').value = 
+            load_info.settings['opac.default_pickup_location'] ?
+            load_info.settings['opac.default_pickup_location'] : load_info.pickup_lib;
+    }
+
+    if (!load_info.settings['opac.default_sms_notify']){
+        load_info.settings['opac.default_sms_notify'] = '';
+    }
+
+    if (!load_info.settings['opac.default_sms_carrier']){
+        load_info.settings['opac.default_sms_carrier'] = '';
+    }
+
+    if (load_info.settings['opac.hold_notify'] || load_info.settings['opac.hold_notify'] === '') {
         var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
         var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;
         var sms = load_info.settings['opac.hold_notify'].indexOf('sms') > -1;
@@ -127,8 +138,10 @@ function staff_hold_usr_barcode_changed2(
         update_elements = document.getElementsByName('sms_notify_checkbox');
         for(var i in update_elements) update_elements[i].checked = (sms ? 'checked' : '');
     }
+
     update_elements = document.getElementsByName('phone_notify');
-    for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_phone'];
+    for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_phone']
+        ? load_info.settings['opac.default_phone'] : '';
     update_elements = document.getElementsByName('sms_notify');
     for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_notify'];
     update_elements = document.getElementsByName('sms_carrier');

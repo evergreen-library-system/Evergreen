@@ -12,7 +12,7 @@ indexterm:[copy editor, shelving location]
 
 By default, when editing item records, library code is displayed in front of
 shelving location in _Shelving Location_ field. You may reverse the order by going
-to *Admin -> Workstation Administration -> Copy Editor: Copy Location Name
+to *Administration -> Workstation Administration ->  Copy Editor: Copy Location Name
 First*.
 Simply click it to make copy location name displayed first. The setting is saved
 on the workstation. 
@@ -30,7 +30,7 @@ You may change the size of displayed text or turn staff client sounds on
 and off. These settings are specific to each workstation and stored on
 local hard disk. They do not affect OPAC font sizes.
 
-. Select *Admin -> Workstation Administration ->  Global Font and Sound
+. Select *Administration -> Workstation Administration ->   Global Font and Sound
 Settings*.
 . To turn off the system sounds, like the noise that happens when a patron
 with a block is retrieved, check the _disable sound_ box and click _Save
@@ -60,7 +60,7 @@ indexterm:[staff client, hotkeys]
 All or partial hotkeys can be turned on or off. It can be done for a particular 
 workstation: 
 
-. Navigate to *Admin -> Workstation Administration ->  Hotkeys -> Current*. 
+. Navigate to *Administration -> Workstation Administration ->   Hotkeys -> Current*. 
 . Select _Default_, _Minimal_, and _None_.
 +
 image::media/workstation_admin-3.png[select hotkeys]
@@ -91,7 +91,7 @@ the workstation's operating system (Windows, OSX, Ubuntu, etc).
 Evergreen printing works best if you are using recent, hardware-specific printer
 drivers.
 
-. Select *Admin -> Workstation Administration -> Printer Settings Editor*.
+. Select *Administration -> Workstation Administration ->  Printer Settings Editor*.
 . Select the _Printer Context_. At a minimum set the _Default_ context on each
 Evergreen workstation. Repeat the procedure for other contexts if they differ
 from the default (e.g. if spine labels should output to a different printer.

@@ -240,7 +240,7 @@ marks are escaped within a JSON string.  In this document, at least,
 it's line-wrapped so that it fits on the page.  In a proper GUI it
 should look much nicer.
 
-At the end of the SQL, the query refers to the bind variablee as “:ou”,
+At the end of the SQL, the query refers to the bind variable as “:ou”,
 the variable preceded by a colon.  The colon indicates that “ou” is a
 variable name rather than a column name.  It also makes the SQL invalid
 until we replace the variable with a real value.  Let's do that now, and

@@ -3,6 +3,23 @@ Evergreen 2.11 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.11.9
+----------------
+This release contains a bug fix improving on Evergreen 2.11.8.
+
+* The option to add a title to My List is removed from Group Formats and
+Editions searches where the option never worked correctly due to a bad id.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.11.9 point release of
+Evergreen:
+
+* Jane Sandberg
+* Cesar Velez
+
+
 Evergreen 2.11.8
 ----------------
 This release contains several bug fixes improving on Evergreen 2.11.7.

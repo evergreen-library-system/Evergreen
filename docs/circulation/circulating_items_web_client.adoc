@@ -39,6 +39,12 @@ image::media/precat_web_client.png[]
 [TIP]
 On check-in, Evergreen will prompt staff to re-route the item to cataloging.
 
+[NOTE]
+This screen does not respond to the enter key or carriage return provided
+by a barcode scanner when the cursor is in the ISBN field.  This behavior
+prevents pre-cataloged items from being checked out before you are done
+entering all the desired information.
+
 Due Dates
 ^^^^^^^^^
 
@@ -157,7 +163,7 @@ At the right bottom corner there is a *Checkin Modifiers* pop-up list. The optio
 
 -Ignore Pre-cat Items: no prompt when checking in a pre-cat item. Item will be routed to Cataloguing with Cataloguing status.
 
--Supress Holds and Transit: item will not be used to fill holds or sent in transit. Item has Reshelving status.
+-Suppress Holds and Transit: item will not be used to fill holds or sent in transit. Item has Reshelving status.
 
 -Amnesty Mode/Forgive Fines: overdue fines will be voided if already created or not be inserted if not yet created (e.g. hourly loans).
 
@@ -292,12 +298,12 @@ In-house Use (F6)
 ~~~~~~~~~~~~~~~~~
 1) To record in-house use, select *Circulation* -> *Record-In House Use*, click *Check Out* -> *Record In-House Use* on the circulation toolbar , or press *F6*. 
  
-image::media/record_in_house_action.png[]
+image::media/record_in_house_action_web_client.png[]
  
 2) To record in-house use for cataloged items, enter number of uses, scan 
  barcode or type barcode and click *Submit*.
  
-image::media/in_house_use.png[]
+image::media/in_house_use_web_client.png[]
  
 [NOTE]
 ====================================
@@ -396,29 +402,32 @@ The *Edit Item Attributes* function on the *Actions for Selected Items* dropdown
 5) Click *Modify Copies*, then confirm the action.
 
 
-Mark an Item Long Overdue
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Long Overdue Items
+~~~~~~~~~~~~~~~~~~
 
-*Marking an item Long Overdue*
+*Items Marked Long Overdue*
 
 Once an item has been overdue for a configurable amount of time, Evergreen will mark the item long overdue in the borrowing patron’s account.  This will be done automatically through a Notification/Action Trigger.   When the item is marked long overdue, several actions will take place:
 
 . The item will go into the status of “Long Overdue” 
 
-. The item will be moved to the “Lost, Claimed Returned, Long Overdue, Has Unpaid Billings” section of the Items Out screen in the patron’s account
-
 . The accrual of overdue fines will be stopped
 
-Optionally the patron can be billed for the item price, a long overdue processing fee, and any overdue fines can be voided from the account.  Patrons can also be sent a notification that the item was marked long overdue.
+Optionally the patron can be billed for the item price, a long overdue
+processing fee, and any overdue fines can be voided from the account.  Patrons
+can also be sent a notification that the item was marked long overdue. And
+long-overdue items can be included on the "Items Checked Out" or "Other/Special
+Circulations" tabs of the "Items Out" view of a patron's record. These are all
+controlled by <<longoverdue_library_settings,library settings>>.
  
-image::media/long_overdue1.jpg[Patron Account-Long Overdue]
+image::media/long_overdue1.png[Patron Account-Long Overdue]
 
 
 *Checking in a Long Overdue item*
 
 If an item that has been marked long overdue is checked in, an alert will appear on the screen informing the staff member that the item was long overdue.  Once checked in, the item will go into the status of “In process”.  Optionally, the item price and long overdue processing fee can be voided and overdue fines can be reinstated on the patron’s account.  If the item is checked in at a library other than its home library, a library setting controls whether the item can immediately fill a hold or circulate, or if it needs to be sent to its home library for processing.
  
-image::media/long_overdue2.jpg[Long Overdue Checkin]
+image::media/long_overdue2.png[Long Overdue Checkin]
  
 *Notification/Action Triggers*
 
@@ -430,11 +439,17 @@ Evergreen has two sample Notification/Action Triggers that are related to markin
 
 ** 6 Month Long Overdue Notice—will send patron notification that an item has been marked long overdue on their account
 
+[[longoverdue_library_settings]]
 *Library Settings* 
 
 The following Library Settings enable you to set preferences related to long overdue items:
 
-* *Circulation: Long-Overdue Check-In Interval Uses Last Activity Date* —Use the long-overdue last-activity date instead of the due_date to determine whether the item has been checked out too long to perform long-overdue check-in processing. If set, the system will first check the last payment time, followed by the last billing time, followed by the due date. See also circ.max_accept_return_of_longoverdue 
+* *Circulation: Long-Overdue Check-In Interval Uses Last Activity Date* —Use the
+  long-overdue last-activity date instead of the due_date to determine whether
+  the item has been checked out too long to perform long-overdue check-in
+  processing. If set, the system will first check the last payment time,
+  followed by the last billing time, followed by the due date. See also the
+  "Long-Overdue Max Return Interval" setting.
 
 * *Circulation: Long-Overdue Items Usable on Checkin* —Long-overdue items are usable on checkin instead of going "home" first
 
@@ -451,6 +466,12 @@ The following Library Settings enable you to set preferences related to long ove
 * *Finances: Long-Overdue Materials Processing Fee*
 
 * *Finances: Void Overdue Fines When Items are Marked Long-Overdue*
+
+* *GUI: Items Out Long-Overdue display setting*
+
+[TIP]
+Learn more about these settings in the chapter about the
+<<_library_settings_editor,Library Settings Editor>>.
 
 *Permissions to use this Feature*
 

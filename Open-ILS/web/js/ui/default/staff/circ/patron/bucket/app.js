@@ -17,8 +17,8 @@ angular.module('egCatUserBuckets',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/circ/patron/bucket/add/:id', {
@@ -110,6 +110,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_create',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -134,6 +135,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openEditBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_edit',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -160,6 +162,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openDeleteBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_delete',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -179,6 +182,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openSharedBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_load_shared',
+            backdrop: 'static',
             controller :
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -216,24 +220,28 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore , ngTo
 
     $scope.$watch('barcodesFromFile', function(newVal, oldVal) {
         if (newVal && newVal != oldVal) {
-            var promises = [];
+            var barcodes = [];
             // $scope.resetPendingList(); // ??? Add instead of replace
             angular.forEach(newVal.split(/\n/), function(line) {
                 if (!line) return;
                 // scrub any trailing spaces or commas from the barcode
                 line = line.replace(/(.*?)($|\s.*|,.*)/,'$1');
-                promises.push(egCore.pcrud.search(
-                    'ac',
-                    {barcode : line},
-                    {}
-                ).then(null, null, function(card) {
-                    bucketSvc.pendingList.push(card.usr());
-                }));
-            });
+                barcodes.push(line);
 
-            $q.all(promises).then(function () {
-                $scope.gridControls.setQuery({id : bucketSvc.pendingList});
             });
+            egCore.pcrud.search(
+                'ac',
+                {barcode : barcodes},
+                {}
+            ).then(
+                function() {
+                    $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+                },
+                null, 
+                function(card) {
+                    bucketSvc.pendingList.push(card.usr());
+                }
+            );
         }
     });
 
@@ -292,6 +300,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_update_statcats',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -434,6 +443,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_changesets',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -559,6 +569,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_update_all',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;
@@ -703,6 +714,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_delete_all',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.running = false;

@@ -1,0 +1,19 @@
+<span>
+  <script type="text/ng-template" id="org-select-entry.html">
+    <a ng-class="{disabled : $parent.$parent.$parent.orgIsDisabled(match.label)}">
+      <span ng-bind-html="match.label | uibTypeaheadHighlight:query"></span>
+    </a>
+  </script>
+
+  <input type="text" class="form-control" ng-model="selectedName"
+    placeholder="{{label}}"
+    ng-click="handleClick($event)"
+    ng-trim="false"
+    empty-typeahead
+    typeahead-min-length="0"
+    typeahead-template-url="org-select-entry.html"
+    typeahead-editable="false"
+    typeahead-on-select="inputChanged($event)"
+    typeahead-input-formatter="formatDisplayName($event)"
+    uib-typeahead="shortName for shortName in shortNames | filter:$viewValue:compare"/>
+</span>

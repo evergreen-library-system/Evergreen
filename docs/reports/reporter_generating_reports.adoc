@@ -91,7 +91,7 @@ Viewing and Editing Report Parameters
 
 New options to view or edit report parameters are available from the reports folder.
 
-To view the parameters of a report, select the report that you want to view from the *Reports* folder, and click *View*.  This will enable you to view the report, inlcuding links to external documentation and field hints.  However, you cannot make any changes to the report.
+To view the parameters of a report, select the report that you want to view from the *Reports* folder, and click *View*.  This will enable you to view the report, including links to external documentation and field hints.  However, you cannot make any changes to the report.
 
 image::media/2_7_Enhancements_to_Reports4.jpg[Reports4]
 
@@ -104,6 +104,6 @@ In addition, whenever there is a pending (scheduled, but not yet started) report
 image::media/2_7_Enhancements_to_Reports6.jpg[Reports6]
 
 
-If, after making changes, you select, *Save as New*, then you have created a new report by cloning and ammending a previously existing report. Note that if you create a new report, you will be prompted to rename the new report. Evergreen does not allow two reports with the same name to exist. To view or edit your new report,  select the reports folder to which you saved it.
+If, after making changes, you select, *Save as New*, then you have created a new report by cloning and amending a previously existing report. Note that if you create a new report, you will be prompted to rename the new report. Evergreen does not allow two reports with the same name to exist. To view or edit your new report,  select the reports folder to which you saved it.
 
 image::media/2_7_Enhancements_to_Reports5.jpg[Reports5]

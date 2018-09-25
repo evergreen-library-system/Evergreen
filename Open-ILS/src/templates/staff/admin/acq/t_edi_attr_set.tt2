@@ -1,0 +1,71 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('EDI Attribute Sets') %]</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="input-group">
+      <div class="input-group-btn" uib-dropdown>
+        <button type="button" class="btn btn-default" uib-dropdown-toggle>
+          [% l('Attribute Sets') %]
+          <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu>
+          <li>
+            <a href='' ng-click="new_set()">
+              [% l('New Attribute Set...') %]</a>
+          </li>
+          <li ng-if="!cur_attr_set.isnew()">
+            <a href='' ng-click="clone_set(cur_attr_set)">
+              [% l('Clone "[_1]"', '{{cur_attr_set.label()}}') %]</a>
+          </li>
+          <li class="divider"></li>
+          <li ng-repeat="set in attr_sets">
+            <a href='' ng-click="select_set(set)">{{set.label()}}</a>
+          </li>
+        </ul>
+      </div><!-- /btn-group -->
+      <input type="text" ng-if="!cur_attr_set"
+        class="form-control" disabled="disabled"
+        value="[% l('No Attribute Set Selected') %]"/>
+      <input type="text" ng-if="cur_attr_set"
+        class="form-control"
+        placeholder="[% l('Attribute Set Name...') %]"
+        ng-model-options="{ getterSetter: true }"
+        ng-model="cur_attr_set.label"/>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <span class="pad-right">
+      <button class="btn btn-success" 
+        ng-disabled="save_in_progress"
+        ng-click="apply()">[% l('Apply Changes') %]</button>
+    </span>
+    <span class="pad-right">
+      <button class="btn btn-warning" 
+        ng-disabled="cur_attr_set_uses || save_in_progress"
+        ng-click="remove()">[% l('Delete Attribute Set') %]</button>
+    </span>
+    <span class="pad-right" style="font-style:italic">
+      [% l('Currently used by [_1] EDI account(s).', '{{cur_attr_set_uses}}') %]
+    </span>
+  </div>
+</div>
+
+<div class="pad-vert">
+  <div class="row" ng-repeat="attr in attrs | orderBy:'key()'"
+    ng-class="cur_attr_set._local_map[attr.key()] ? 'selected-row' : ''">
+    <div class="col-md-3">
+      <span class="pad-right-min">
+        <input type="checkbox" 
+          ng-model="cur_attr_set._local_map[attr.key()]"/>
+      </span>
+      <span>{{attr.key()}}</span>
+    </div>
+    <div class="col-md-9">{{attr.label()}}</div>
+  </div>
+</div>
+
+

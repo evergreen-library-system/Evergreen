@@ -1,0 +1,48 @@
+<div class="container prediction_pattern_summary">
+  <div class="row" ng-if="pattern.use_enum">
+    [% l('Enumeration captions:') %]
+    {{pattern.display_enum_captions()}}
+  </div>
+  <div class="row" ng-if="pattern.use_alt_enum">
+    [% l('Alternative enumeration captions:') %]
+    {{pattern.display_alt_enum_captions()}}
+  </div>
+  <div class="row" ng-if="pattern.use_chron">
+    [% l('Chronology captions:') %]
+    {{pattern.display_chron_captions()}}
+  </div>
+  <div class="row" ng-if="pattern.use_alt_chron">
+    [% l('Alternative chronology captions:') %]
+    {{pattern.display_alt_chron_captions()}}
+  </div>
+  <div class="row">
+    [% l('Frequency:') %]
+    <span ng-if="pattern.frequency_type == 'preset'">
+      <span ng-switch="pattern.frequency_preset">
+        <span ng-switch-when="d">[% l('Daily') %]</span>
+        <span ng-switch-when="w">[% l('Weekly (Weekly)') %]</span>
+        <span ng-switch-when="c">[% l('2 x per week (Semiweekly)') %]</span>
+        <span ng-switch-when="i">[% l('3 x per week (Three times a week)') %]</span>
+        <span ng-switch-when="e">[% l('Every two weeks (Biweekly)') %]</span>
+        <span ng-switch-when="m">[% l('Monthly') %]</span>
+        <span ng-switch-when="s">[% l('2 x per month (Semimonthly)') %]</span>
+        <span ng-switch-when="j">[% l('3 x per month (Three times a month)') %]</span>
+        <span ng-switch-when="b">[% l('Every other month (Bimonthly)') %]</span>
+        <span ng-switch-when="q">[% l('Quarterly') %]</span>
+        <span ng-switch-when="f">[% l('2 x per year (Semiannual)') %]</span>
+        <span ng-switch-when="t">[% l('3 x per year (Three times a year)') %]</span>
+        <span ng-switch-when="a">[% l('Yearly (Annual)') %]</span>
+        <span ng-switch-when="g">[% l('Every other year (Biennial)') %]</span>
+        <span ng-switch-when="h">[% l('Every three years (Triennial)') %]</span>
+        <span ng-switch-when="x">[% l('Completely irregular') %]</span>
+        <span ng-switch-when="k">[% l('Continuously updated') %]</span>
+      </span>
+    </span>
+    <span ng-if="pattern.frequency_type == 'numeric'">
+      [% l('[_1] issues per year', '{{pattern.frequency_numeric}}') %]
+    </span>
+  </div>
+  <div class="row" ng-if="pattern.use_regularity">
+    [% l('Specifies regularity adjustments') %]
+  </div>
+</div>

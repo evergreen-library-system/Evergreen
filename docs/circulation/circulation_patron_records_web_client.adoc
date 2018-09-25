@@ -35,8 +35,11 @@ Next to the _Clear Form_ button there is a button with an arrow pointing down th
 * Postal Code
 * Profile Group
 * Home Library 
+* DOB (date of birth) year
+* DOB month
+* DOB day
 
-You patrons searches may also include patrons marked ``inactive'' if you click on the _Include Inactive?_ checkbox.
+To include patrons marked ``inactive'', click on the _Include Inactive?_ checkbox.
 
 
 image::media/circulation_patron_records-1b_web_client.png[circulation_patron_records 1b]
@@ -46,6 +49,11 @@ image::media/circulation_patron_records-1b_web_client.png[circulation_patron_rec
 =================== 
 * Search one field or combine fields for more precise results.  
 * Truncate search terms for more search results.
+* Search ignores punctuation such as diacritics, apostrophes, hyphens and commas.
+* Searching by Date of Birth: Year searches are "contains" searches. E.g. year
+  "15" matches 2015, 1915, 1599, etc. For exact matches use the full 4-digit
+  year. Day and month values are exact matches. E.g. month "1" (or "01") matches
+  January, "12" matches December.
 ===================
 
 Once you have located the desired patron, click on the entry row for this patron in
@@ -55,6 +63,37 @@ image::media/circulation_patron_records-2_web_client.png[circulation_patron_reco
 
 The _Patron Search_ button on the upper right may be used to resume searching for patrons.
 
+Retrieve Recent Patrons
+~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[patrons, retrieving recent]
+
+Setting up Retrieve Recent Patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* This feature must be configured in the _Library Settings Editor_
+(_Administration -> Local Administration -> Library Settings Editor_). The
+library setting is called "Number of Retrievable Recent Patrons" and is located
+in the Circulation settings group.
+** A value of zero (0) means no recent patrons can be retrieved.
+** A value greater than 1 means staff will be able to retrieve multiple recent
+patrons via a new _Circulation -> Retrieve Recent Patrons_ menu entry.
+** The default value is 1 for backwards compatibility. (The _Circulation ->
+Retrieve Last Patron_ menu entry will be available.)
+
+Retrieving Recent Patrons
+^^^^^^^^^^^^^^^^^^^^^^^^^
+* Once the library setting has been configured to a number greater than 1, the
+option Retrieve Recent Patrons will appear below the Retrieve Last patron
+option in the Circulation drop-down from the Menu Bar (_Circulation ->
+Retrieve Recent Patrons_).
+
+* When selected, a grid will appear listing patrons accessed by that workstation
+in the current session. The length of the list will be limited by the value
+configured in the _Library Settings Editor_. If no patrons have been accessed,
+the grid will display "No Items To Display."
+
+
 Registering New Patrons 
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -63,21 +102,16 @@ indexterm:[patrons, registering]
 To register a new patron, select _Circulation -> Register Patron_ from the menu bar. The Patron
 Registration form will display. 
 
-image::media/circulation_patron_records-4.png[Patron registration form]
+image::media/circulation_patron_records-4.JPG[Patron registration form]
 
 Mandatory fields display in yellow.
 
-image::media/circulation_patron_records-5.png[circulation_patron_records 5]
+image::media/circulation_patron_records-5.JPG[circulation_patron_records 5]
 
-The _Show Only Required Fields_ and _Show Suggested Fields_ may be used to limit
+The _Show: Required Fields_ and _Show: Suggested Fields_ links may be used to limit
 the options on this page.
 
-image::media/circulation_patron_records-6.png[circulation_patron_records 6]
-
-When one of these options is selected, it is possible switch to the other
-limited view or to revert to the original view by selecting _Show All Fields_. 
-
-image::media/circulation_patron_records-7.png[circulation_patron_records 7]
+image::media/circulation_patron_records-6.JPG[circulation_patron_records 6]
 
 When finished entering the necessary information, select _Save_ to save the new
 patron record or _Save & Clone_ to register a patron with the same address.
@@ -85,16 +119,16 @@ When _Save & Clone_ is selected, the address information is copied into the
 resulting patron registration screen.  It is linked to the original patron.
 Address information may only be edited through the original record.
 
-image::media/circulation_patron_records-8.png[circulation_patron_records 8]
+image::media/circulation_patron_records-8.JPG[circulation_patron_records 8]
 
 [TIP]
 ============================================================================
-* Requested fields may be configured in the _Library Settings Editor_ (_Admin ->
- Local Admin -> Library Settings Editor_).  
+* Requested fields may be configured in the _Library Settings Editor_
+(_Administration -> Local Administration -> Library Settings Editor_).
 * Statistical categories may be created for information tracked by your library 
-that is not in the default patron record.  
-* These may be configured in the _Statistical Categories Editor_ (_Admin -> 
-Local Admin -> Statistical Categories Editor_).  
+that is not in the default patron record.
+* These may be configured in the _Statistical Categories Editor_
+(_Administration -> Local Administration -> Statistical Categories Editor_).
 * Staff accounts may also function as patron accounts.
 * You must select a _Main (Profile) Permission Group_ before the _Update Expire
 Date_ button will work, since the permission group determines the expiration date.
@@ -168,11 +202,10 @@ Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
 Navigate to the information field labeled _Privilege Expiration Date_.  Enter a
-new date in this box.  When you place your cursor in the _Patron Expiration Date
-box_, a calendar widget will display to help you easily navigate to the desired
-date. 
+new date in this box.  Or click the calendar icon, and a calendar widget
+will display to help you easily navigate to the desired date.
 
-image::media/circulation_patron_records-12.png[circulation_patron_records 12]
+image::media/circulation_patron_records-12.JPG[circulation_patron_records 12]
 
 Select the date using the calendar widget or key the date in manually.  Click
 the _Save_ button.  The screen will refresh and the ``expired'' alerts on the
@@ -192,7 +225,7 @@ Open the patron record in edit mode as described in the section
  
 Next to the _Barcode_ field, select the _Replace Barcode_ button.
 
-image::media/circulation_patron_records-13.png[circulation_patron_records 13]
+image::media/circulation_patron_records_13.JPG[circulation_patron_records 13]
 
 This will clear the barcode field.  Enter a new barcode and _Save_ the record.
 The screen will refresh and the new barcode will display in the patron summary
@@ -206,7 +239,7 @@ edit mode as described in the section <<updating_patron_information,Updating Pat
 Select the _See All_ button next to the _Replace Barcode_ button.  This will
 display the current and past barcodes associated with this account. 
 
-image::media/circulation_patron_records-14.png[circulation_patron_records 14]
+image::media/circulation_patron_records_14.JPG[circulation_patron_records 14]
 
 Check the box(es) for all barcodes that should be ``active'' for the patron.  An
 ``active'' barcode may be used for circulation transactions.  A patron may have
@@ -230,41 +263,16 @@ described in the section <<searching_patrons,Searching Patrons>>.
 Open the patron record in edit mode as described in the section
 <<updating_patron_information,Updating Patron Information>>.
 
-Select the _Reset Password_ button next to the _Password_ field.  
+Select the _Generate Password_ button next to the _Password_ field.
 
-image::media/circulation_patron_records-15.png[circulation_patron_records 15]
+image::media/circulation_patron_records_15.JPG[circulation_patron_records 15]
 
 NOTE: The existing password is not displayed in patron records for security
 reasons.
 
-A new number will populate the _Password_ and _Verify Password_ text boxes.
+A new number will populate the _Password_ text box.
 Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
-
-
-[TIP]
-=======================
-If you need to change a patron or staff account password without using the staff client, here is how you can reset it with SQL.
-
-Connect to your Evergreen database using _psql_ or similar tool, and retreive and verify your admin username:
-
-[source, sql]
-------------------------------------------------------------------------------
-psql -U <user-name> -h <hostname> -d <database>
-
-SELECT id, usrname, passwd from actor.usr where usrname = 'admin';
-------------------------------------------------------------------------------
-
-If you do not remember the username that you set, search for it in the _actor.usr_ table, and then reset the password.
-
-[source, sql]
-------------------------------------------------------------------------------
-UPDATE actor.usr SET passwd = <password> WHERE id=<id of row to be updated>;
-------------------------------------------------------------------------------
-
-The new password will automatically be hashed. 
-
-=======================
 
 
 Barring a Patron 
@@ -281,7 +289,7 @@ Open the patron record in edit mode as described in the section
 
 Check the box for _Barred_ in the patron account. 
 
-image::media/circulation_patron_records-16.png[circulation_patron_records 16]
+image::media/circulation_patron_records-16.JPG[circulation_patron_records 16]
 
 _Save_ the user.  The screen will refresh.  
 
@@ -407,9 +415,9 @@ Select the _Add New Note_ button. A _Create a new note_ window displays.
 
 [TIP] 
 ================================================ 
-To add a box in the _Add Note_ window for staff initials and require their
-entry, see the "Require staff initials..." settings in the
-<<_library_settings_editor,Library Settings Editor>> section.
+Your system administrator can add a box in the _Add Note_ window for staff initials and
+require those initials to be entered.  They can do so using the "Require staff initials..."
+settings in the Library Settings Editor.
 ================================================ 
 
 Enter note information. 
@@ -491,4 +499,158 @@ image::media/staff-penalties-4_web_client.png[[Actions menu]
 
 Click to select the message to be removed, then click _Actions_ -> _Remove Penalty/Message_. This menu can also be accessed by right-clicking in the message area.
 
+
+User Buckets
+~~~~~~~~~~~~
+
+User Buckets allow staff to batch delete and make batch modifications to user accounts in Evergreen. Batch modifications can be made to selected fields in the patron account:
+
+* Home Library
+* Profile Group
+* Network Access Level
+* Barred flag
+* Active flag
+* Juvenile flag
+* Privilege Expiration Date
+* Statistical Categories
+
+Batch modifications and deletions can be rolled back or reversed, with the exception of batch changes to statistical categories.  Batch changes made in User Buckets will not activate any Action/Trigger event definitions that would normally be activated when editing an individual account.
+
+User accounts can be added to User Buckets by scanning individual user barcodes or by uploading a file of user barcodes directly in the User Bucket interface.  They can also be added to a User Bucket from the Patron Search screen.  Batch changes and batch edit sets are tied to the User Bucket itself, not to the login of the bucket owner.
+
+Create a User Bucket
+^^^^^^^^^^^^^^^^^^^^
+*To add users to a bucket via the Patron Search screen:*
+
+. Go to *Search->Search for Patrons*.
+. Enter your search and select the users you want to add to the user bucket by checking the box next to each user row.  You can also hold down the CTRL or SHIFT on your keyboard and select multiple users.
+. Click *Add to Bucket* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+. After adding users to a bucket, an update will appear at the bottom-right hand corner of the screen that says _"Successfully added # users to bucket [Name]"_.
+
+image::media/userbucket1.PNG[]
+
+image::media/userbucket2.PNG[]
+
+*To add users to a bucket by scanning user barcodes in the User Bucket interface:*
+
+. Go to *Circulation->User Buckets* and select the *Pending Users* tab at the top of the screen.
+. Click on *Buckets* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+.. After selecting or creating a bucket, the Name, Description, number of items, and creation date of the bucket will appear above the _Scan Card_ field.
+. Scan in the barcodes of the users that you want to add to the selected bucket into the _Scan Card_ field.  Each user account will be added to the Pending Users tab.  Hit ENTER on your keyboard after manually typing in a barcode to add it to the list of Pending Users.
+. Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
+. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
+
+image::media/userbucket3.PNG[]
+
+*To add users to a bucket by uploading a file of user barcodes:*
+
+. Go to *Circulation->User Buckets* and select the *Pending Users* tab at the top of the screen.
+. Click on *Buckets* and select an existing bucket from the drop down menu or click *New Bucket* to create a new user bucket.
+.. If creating a new user bucket, a dialog box called _Create Bucket_ will appear where you can enter a bucket _Name_ and _Description_ and indicate if the bucket is _Staff Shareable?_.  Click *Create Bucket*.
+.. After selecting or creating a bucket, the Name, Description, number of items, and creation date of the bucket will appear above the Scan Card field.
+. In the Pending Users tab, click *Choose File* and select the file of barcodes to be uploaded.
+.. The file that is uploaded must be a .txt file that contains a single barcode per row.
+. The user accounts will automatically appear in the list of Pending Users.
+. Select the user accounts that you want to add to the bucket by checking the box next to each user row or by using the CTRL or SHIFT key on your keyboard to select multiple users.
+. Go to *Actions->Add To Bucket* or right-click on a selected user account to view the _Actions_ menu and select *Add To Bucket*.  The user accounts will move to the Bucket View tab and are now in the selected User Bucket.
+
+Batch Edit All Users
+^^^^^^^^^^^^^^^^^^^^
+To batch edit all users in a user bucket:
+
+. Go to *Circulation->User Buckets* and select the *Bucket View* tab.
+. Click *Buckets* and select the bucket you want to modify from the list of existing buckets.
+.. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
+. Verify the list of users in the bucket and click *Batch edit all users*. A dialog box called _Update all users_ will appear where you can select the batch modifications to be made to the user accounts.
+. Assign a _Name for edit set_.  This name will allow staff to identify the batch edit for future verification or rollbacks.
+. Set the values that you want to modify.  The following fields can be modified in batch:
+
+* Home Library
+* Profile Group
+* Network Access Level
+* Barred flag
+* Active flag
+* Juvenile flag
+* Privilege Expiration Date
+
+. Click *Apply Changes*.  The modification(s) will be applied in batch.
+
+image::media/userbucket4.PNG[]
+
+Batch Modify Statistical Categories
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+To batch modify statistical categories for all users in a bucket:
+
+. Go to *Circulation->User Buckets* and select the *Bucket View* tab.
+. Click *Buckets* and select the bucket you want to modify from the list of existing buckets.
+.. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
+. Verify the list of users in the bucket and click *Batch modify statistical categories*. A dialog box called _Update statistical categories_ will appear where you can select the batch modifications to be made to the user accounts.  The existing patron statistical categories will be listed and staff can choose:
+.. To leave the stat cat value unchanged in the patron accounts.
+.. To select a new stat cat value for the patron accounts.
+.. Check the box next to Remove to delete the current stat cat value from the patron accounts.
+. Click *Apply Changes*.  The stat cat modification(s) will be applied in batch.
+
+image::media/userbucket12.PNG[]
+
+Batch Delete Users
+^^^^^^^^^^^^^^^^^^
+To batch delete users in a bucket:
+. Go to *Circulation->User Buckets* and select the *Bucket View* tab.
+. Click on *Buckets* and select the bucket you want to modify from the list of existing buckets.
+.. After selecting a bucket, the Name, Description, number of items, and creation date of the bucket will appear at the top of the screen.
+. Verify the list of users in the bucket and click *Delete all users*. A dialog box called _Delete all users_ will appear.
+. Assign a _Name for delete set_.  This name will allow staff to identify the batch deletion for future verification or rollbacks.
+. Click *Apply Changes*.  All users in the bucket will be marked as deleted.
+
+NOTE: Batch deleting patrons from a user bucket does not use the Purge User functionality, but instead marks the users as deleted.
+
+image::media/userbucket7.PNG[]
+
+View Batch Changes
+^^^^^^^^^^^^^^^^^^
+
+. The batch changes that have been made to User Buckets can be viewed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
+. Click *Buckets* to select an existing bucket.
+. Click *View batch changes*.  A dialog box will appear that lists the _Name_, date _Completed_, and date _Rolled back_ of any batch changes made to the bucket.  There is also an option to _Delete_ a batch change.  This will remove this batch change from the list of actions that can be rolled back.  It will not delete or reverse the batch change.
+. Click *OK* to close the dialog box.
+
+image::media/userbucket8.PNG[]
+
+Roll Back Batch Changes
+^^^^^^^^^^^^^^^^^^^^^^^
+
+. Batch Changes and Batch Deletions can be rolled back or reversed by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.
+. Click *Buckets* to select an existing bucket.
+. Click *Roll back batch edit*.  A dialog box will appear that contains a drop down menu that lists all batch edits that can be rolled back.  Select the batch edit to roll back and click *Roll Back Changes*.  The batch change will be reversed and the roll back is recorded under _View batch changes_.
+
+NOTE: Batch statistical category changes cannot be rolled back.
+
+image::media/userbucket10.png[]
+
+image::media/userbucket9.PNG[]
+
+Sharing Buckets
+^^^^^^^^^^^^^^^
+If a User Bucket has been made Staff Shareable, it can be retrieved via bucket ID by another staff account.  The ID for each bucket can be found at the end of the URL for the bucket.  For example, in the screenshot below, the bucket ID is 32.
+
+image::media/userbucket11.PNG[]
+
+A shared bucket can be retrieved by going to *Circulation->User Buckets* and selecting the *Bucket View* tab.  Next, click *Buckets* and select *Shared Bucket*.  A dialog box called _Load Shared Bucket by Bucket ID_ will appear.  Enter the ID of the bucket you wish to retrieve and click *Load Bucket*.  The shared bucket will load in the Bucket View tab.
+
+Permissions
+^^^^^^^^^^^
+All permissions must be granted at the organizational unit that the workstation is registered to or higher and are checked against the users' Home Library at when a batch modification or deletion is executed.
+
+Permissions for Batch Edits:
+
+* To batch edit a user bucket, staff accounts must have the VIEW_USER, UPDATE_USER, and CONTAINER_BATCH_UPDATE permissions for all users in the bucket.
+* To make a batch changes to Profile Group, staff accounts must have the appropriate group application permissions for the profile groups.
+* To make batch changes to the Home Library, staff accounts must have the UPDATE_USER permission at both the old and new Home Library.
+* To make batch changes to the Barred Flag, staff accounts must have the appropriate BAR_PATRON or UNBAR_PATRON permission.
+
+Permissions for Batch Deletion:
+
+* To batch delete users in a user bucket, staff accounts must have the UPDATE_USER and DELETE_USER permissions for all users in the bucket.
 

@@ -1,0 +1,26 @@
+<!--
+  Autogrid HTML print template.
+-->
+<div>
+  <style>
+    .grid-table {
+      border-collapse: collapse;
+      margin: 1px;
+    }
+    .grid-table td {
+      padding: 2px;
+      border: 1px solid #aaa;
+    }
+  </style>
+  <table class="grid-table">
+    <thead>
+      <tr><th ng-repeat="col in columns">{{col.label}}</th></tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in items track by $index">
+        <td ng-repeat="col in columns"><span>{{item[col.name]}}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

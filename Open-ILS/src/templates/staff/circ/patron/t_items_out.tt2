@@ -29,7 +29,7 @@
   ng-if="items_out_display == 'noncat'"
   idl-class="ancc"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out.noncat"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -46,7 +46,7 @@
   ng-if="items_out_display != 'noncat'"
   idl-class="circ"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -90,17 +90,21 @@
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.simple_record.title" name="title">
     <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().id()}}">
-      {{item.target_copy().call_number().record().simple_record().title()}}
+      {{item.target_copy().call_number().record().wide_display_entry().title()}}
     </a>
   </eg-grid-field>
   <eg-grid-field path="*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.holds_count.count" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]" path="target_copy.status.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="target_copy.status.name" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.circ_modifier" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.prefix.label" label="[% l('CN Prefix') %]" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.suffix.label" label="[% l('CN Suffix') %]" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.record.*" hidden></eg-grid-field>
-  <eg-grid-field path="target_copy.call_number.record.simple_record.*" hidden></eg-grid-field>
+  <eg-grid-field path="target_copy.call_number.record.wide_display_entry.*" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Total Notices') %]" path='action_trigger_event_count'></eg-grid-field>
+  <eg-grid-field label="[% l('Last Notice') %]" path='action_trigger_latest_event_date' dateformat="short" datatype="timestamp"></eg-grid-field>
 </eg-grid>
 </div>
 

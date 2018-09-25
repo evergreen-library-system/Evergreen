@@ -1,6 +1,6 @@
 <eg-grid
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.holds"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -16,7 +16,7 @@
     label="[% l('Show Holds for Title') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.set_copy_quality"
-    label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+    label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_pickup_lib"
     label="[% l('Edit Pickup Library') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_notify_prefs"
@@ -46,7 +46,7 @@
     label="[% l('Uncancel Hold') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
-  <eg-grid-field label="[% l('Current Copy') %]" 
+  <eg-grid-field label="[% l('Current Item') %]" 
     path='hold.current_copy.barcode'>
     <a href="./cat/item/{{item.hold.current_copy().id()}}/summary" target="_self">
       {{item.hold.current_copy().barcode()}}
@@ -70,19 +70,22 @@
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Author') %]" path='mvr.author'></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Copies') %]" path='potential_copies'></eg-grid-field>
+  <eg-grid-field label="[% l('Potential Items') %]" path='potential_copies'></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='status_string'></eg-grid-field>
 
   <eg-grid-field label="[% l('Queue Position') %]" path='queue_position' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Cancel Cause') %]" path='hold.cancel_cause.label' hidden></eg-grid-field>
   <eg-grid-field path='hold.*' parent-idl-class="ahr" ignore="current_copy" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]" path="hold.current_copy.status.name" hidden>
-  </eg-grid-field>
   <eg-grid-field path='copy.*' parent-idl-class="acp" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.usr.card.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.*' parent-idl-class="ahr" hidden></eg-grid-field>
-  <eg-grid-field path='hold.requestor.card.*' parent-idl-class="ahr" hidden></eg-grid-field>
+
+  <eg-grid-field path='hold.usr.id' parent-idl-class="ahr" label="[% l('User ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.usrname' parent-idl-class="ahr" label="[% l('Username') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.first_given_name' parent-idl-class="ahr" label="[% l('First Name') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.usr.family_name' parent-idl-class="ahr" label="[% l('Last Name') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.requestor.id' parent-idl-class="ahr" label="[% l('Requestor ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.requestor.usrname' parent-idl-class="ahr" label="[% l('Requestor Username') %]" hidden></eg-grid-field>
+
+  <eg-grid-field path='part.label' parent-idl-class="bmp" label="[% l('Part') %]" hidden></eg-grid-field>
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>
   <eg-grid-field path='mvr.*' parent-idl-class="mvr" hidden></eg-grid-field>
 </eg-grid>

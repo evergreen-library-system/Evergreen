@@ -1,8 +1,8 @@
 Copy Status
 -----------
 
-To navigate to the copy status editor from the staff client menu, select *Admin*
--> *Server Administration* -> *Copy Statuses*.
+To navigate to the copy status editor from the staff client menu, select
+*Administration* -> *Server Administration* -> *Copy Statuses*.
 
 The Copy Status Editor is used to add, edit and delete statuses of copies in
 your system.
@@ -65,6 +65,8 @@ wish for this status to set the active date for new items.
 . Click _Save Changes_ at the bottom of the screen to save changes to the new
 status.
 
+image::media/copy_status_add.png[Adding copy statuses]
+
 Deleting Copy Statuses
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -72,6 +74,8 @@ Deleting Copy Statuses
 status.
 . Click _Delete Selected_.
 . Click _OK_ to verify.
+
+image::media/copy_status_delete.png[Deleting copy statuses]
 
 [NOTE]
 You will not be able to delete statuses if copies currently exist with that
@@ -85,3 +89,5 @@ Editing Copy Statuses
 copy's active date, check or uncheck the relevant checkbox.
 
 . Once you have finished editing the statuses, remember to click Save Changes.
+
+image::media/copy_status_edit.png[Editing copy statuses]

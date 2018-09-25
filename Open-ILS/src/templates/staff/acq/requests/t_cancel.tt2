@@ -1,0 +1,31 @@
+[% ctx.page_title = l("Cancel Selected Patron Requests"); %]
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(cancel_reason)">
+    <div> <!-- modal-content -->
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"
+                aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+                [% l('Cancel Selected Patron Requests') %]</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="ids">[% l('Request IDs') %]</label>
+                <input type="text" class="form-control"
+                    id="ids" ng-model="ids" ng-disabled="true"/>
+            </div>
+            <div class="form-group">
+                <label for="cancel-reason-selector">[% l('Cancel Reason') %]</label>
+                <select id="cancel-reason-selector" class="form-control" required
+                    ng-model="cancel_reason"
+                    ng-options="rt.label() for rt in cancel_reasons"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" ng-disabled="form.$invalid"
+                class="btn btn-primary" value="[% l('Cancel Requests') %]"/>
+            <button class="btn btn-warning"
+                ng-click="cancel()">[% l('Abort Cancellation') %]</button>
+        </div>
+    </div> <!-- modal-content -->
+</form>

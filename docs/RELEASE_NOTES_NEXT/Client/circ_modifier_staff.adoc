@@ -1,6 +1,0 @@
-Add Circ Modifier to Record Detail Page in Staff TPAC
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The circ_modifier field is added to the copy table to make
-more information available to staff without having to open
-the Holdings Maintenance view.
-

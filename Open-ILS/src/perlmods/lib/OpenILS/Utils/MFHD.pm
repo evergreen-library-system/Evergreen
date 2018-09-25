@@ -273,6 +273,7 @@ sub _holding_date {
 # generate_predictions()
 # Accepts a hash ref of options initially defined as:
 # base_holding : reference to the holding field to predict from
+# include_base_issuance : whether to "predict" the startting holding, so as to generate a label for it
 # num_to_predict : the number of issues you wish to predict
 # OR
 # end_holding : holding field ref, keep predicting until you meet or exceed it
@@ -293,6 +294,7 @@ sub generate_predictions {
     my $end_holding    = $options->{end_holding};
     my $end_date       = $options->{end_date};
     my $max_to_predict = $options->{max_to_predict} || 10000; # fail-safe
+    my $include_base_issuance   = $options->{include_base_issuance};
 
     if (!defined($base_holding)) {
         carp("Base holding not defined in generate_predictions, returning empty set");
@@ -305,7 +307,8 @@ sub generate_predictions {
     my $curr_holding = $base_holding->clone; # prevent side-effects
     
     my @predictions;
-        
+    push(@predictions, $curr_holding->clone) if ($include_base_issuance);
+
     if ($num_to_predict) {
         for (my $i = 0; $i < $num_to_predict; $i++) {
             push(@predictions, $curr_holding->increment->clone);

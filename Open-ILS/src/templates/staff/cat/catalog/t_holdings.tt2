@@ -18,18 +18,23 @@
     grid-controls="holdingsGridControls"
     persist-key="cat.holdings">
 
-     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show empty volumes') %]"
+    <eg-grid-menu-item handler="holdings_checkbox_handler"
+      label="[% l('Show empty call numbers') %]"
       checkbox="holdings_show_empty"
       checked="holdings_show_empty"/>
- 
+
     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show copy detail') %]"
+      label="[% l('Show empty libraries') %]"
+      checkbox="holdings_show_empty_org"
+      checked="holdings_show_empty_org"/>
+
+    <eg-grid-menu-item handler="holdings_checkbox_handler"
+      label="[% l('Show item detail') %]"
       checkbox="holdings_show_copies"
       checked="holdings_show_copies"/>
 
     <eg-grid-menu-item handler="holdings_checkbox_handler"
-      label="[% l('Show volume detail') %]"
+      label="[% l('Show call number detail') %]"
       checkbox="holdings_show_vols"
       checked="holdings_show_vols"/>
 
@@ -44,9 +49,6 @@
       label="[% l('Request Items') %]"></eg-grid-action>
     <eg-grid-action handler="attach_to_peer_bib"
       label="[% l('Link as Conjoined to Previously Marked Bib Record') %]"></eg-grid-action>
-    <eg-grid-action handler="markLibAsVolTarget"
-      label="[% l('Choose Library for Volume/Copy Transfer Destination') %]"></eg-grid-action>
-
     <eg-grid-action handler="selectedHoldingsItemStatus" group="[% l('Show') %]"
       label="[% l('Item Status (list)') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsItemStatusDetail" group="[% l('Show') %]"
@@ -62,47 +64,46 @@
       label="[% l('Item as Damaged') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
       label="[% l('Item as Missing') %]"></eg-grid-action>
-    <eg-grid-action handler="markLibFromSelectedAsVolTarget" group="[% l('Mark') %]"
-      label="[% l('Library as Volume Transfer Destination') %]"></eg-grid-action>
-    <eg-grid-action handler="markVolAsItemTarget" group="[% l('Mark') %]" disabled="vols_not_shown"
-      label="[% l('Volume as Item Transfer Destination') %]"></eg-grid-action>
+    <eg-grid-action handler="markFromSelectedAsHoldingsTarget" group="[% l('Mark') %]"
+      label="[% l('Library/Call Number as Transfer Destination') %]"></eg-grid-action>
 
+    <eg-grid-action handler="selectedHoldingsVolAdd" group="[% l('Add') %]"
+      label="[% l('Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]" disabled="vols_not_shown"
-      label="[% l('Copies') %]"></eg-grid-action>
+      label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
-      label="[% l('Volumes and Copies') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]" disabled="vols_not_shown"
+      label="[% l('Item Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
-      label="[% l('Volumes') %]"></eg-grid-action>
+      label="[% l('Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyEdit" group="[% l('Edit') %]"
-      label="[% l('Copies') %]"></eg-grid-action>
+      label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-      label="[% l('Volumes and Copies') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
     <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
       label="[% l('Replace Barcodes') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsCopyAlertsManage" group="[% l('Edit') %]"
+      label="[% l('Manage Item Alerts') %]"></eg-grid-action>
 
     <eg-grid-action handler="selectedHoldingsEmptyVolCopyDelete" group="[% l('Delete') %]" disabled="vols_not_shown"
-      label="[% l('Empty Volumes') %]"></eg-grid-action>
+      label="[% l('Empty Call Numbers') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
-      label="[% l('Copies') %]"></eg-grid-action>
+      label="[% l('Items') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsVolCopyDelete" group="[% l('Delete') %]" disabled="copies_not_shown"
-      label="[% l('Volumes and Copies') %]"></eg-grid-action>
+      label="[% l('Call Numbers and Items') %]"></eg-grid-action>
 
-    <eg-grid-action handler="transferVolumesToRecord" group="[% l('Transfer') %]"
-      label="[% l('Volumes to Previously Marked Record') %]"></eg-grid-action>
-    <eg-grid-action handler="transferVolumesToLibrary" group="[% l('Transfer') %]"
-      label="[% l('Volumes to Previously Marked Library') %]"></eg-grid-action>
-    <eg-grid-action handler="transferVolumesToRecordAndLibrary" group="[% l('Transfer') %]"
-      label="[% l('Volumes to Previously Marked Record and Library') %]"></eg-grid-action>
-    <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
-      label="[% l('Copies to Previously Marked Library') %]"></eg-grid-action>
+    <eg-grid-action handler="transferVolumes" group="[% l('Transfer') %]"
+      label="[% l('Call Numbers to Previously Marked Destination') %]"></eg-grid-action>
+
     <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
-      label="[% l('Items to Previously Marked Volume') %]"></eg-grid-action>
+      label="[% l('Items to Previously Marked Destination') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Owning Library') %]"  path="owner_label" flex="4" align="right" visible></eg-grid-field>
     <eg-grid-field label="[% l('Call Number') %]"     path="call_number.label" visible></eg-grid-field>
     <eg-grid-field label="[% l('Location') %]"        path="location.name" visible></eg-grid-field>
-    <eg-grid-field label="[% l('Copy #') %]"          path="copy_number" flex="1" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Item #') %]"          path="copy_number" flex="1" visible></eg-grid-field>
     <eg-grid-field label="[% l('Barcode') %]"         path="barcode" visible></eg-grid-field>
     <eg-grid-field label="[% l('Status') %]"          path="status.name" flex="1" visible></eg-grid-field>
 
@@ -112,12 +113,20 @@
     <eg-grid-field label="[% l('Circulating Library') %]"    path="circ_lib.name"></eg-grid-field>
     <eg-grid-field label="[% l('Price') %]"                  path="price"></eg-grid-field>
     <eg-grid-field label="[% l('Circulation Modifier') %]"   path="circ_modifier"></eg-grid-field>
-    <eg-grid-field label="[% l('Copy ID') %]"                path="id"></eg-grid-field>
+    <eg-grid-field label="[% l('Item ID') %]"                path="id"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate As MARC Type') %]" path="circ_as_type"></eg-grid-field>
     <eg-grid-field label="[% l('Circulate') %]"              datatype="bool" path="circulate"></eg-grid-field>
+    <eg-grid-field label="[% l('Deposit?') %]"               datatype="bool" path="deposit"></eg-grid-field>
+    <eg-grid-field label="[% l('Deposit amount') %]"         path="deposit_amount"></eg-grid-field>
     <eg-grid-field label="[% l('Holdable') %]"               datatype="bool" path="holdable"></eg-grid-field>
     <eg-grid-field label="[% l('Age-based Hold Protection') %]" path="age_protect.name"></eg-grid-field>
     <eg-grid-field label="[% l('Reference') %]"              datatype="bool" path="ref"></eg-grid-field>
+    <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
+      {{item['copy_alert_count']}}
+      <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Inventory Date') %]"          datatype="timestamp" path="latest_inventory.inventory_date"></eg-grid-field>
+    <eg-grid-field label="[% l('Inventory Workstation') %]"   path="latest_inventory.inventory_workstation.name"></eg-grid-field>
   
   </eg-grid>
 </div>

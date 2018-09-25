@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
 "PO-Revision-Date: 2015-11-20 20:25+0000\n"
 "Last-Translator: jplemoine <untoutseul05@free.fr>\n"
 "Language-Team: NRCan Library\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:17+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:37+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Poedit-Country: Canada\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: French\n"
@@ -1284,8 +1284,8 @@ msgstr ""
 "transfert de destination."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Articles mis en réserve transférés"
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1733,6 +1733,12 @@ msgstr "Cochez ici pour confirmer cette action"
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr ""
 "L’article %1$s est emprunté par l’usager %2$s et doit être rapporté le %3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -2487,6 +2493,9 @@ msgstr ""
 #~ msgctxt "staff.cat.copy_editor.field.floating.no_or_false"
 #~ msgid "No"
 #~ msgstr "Non"
+
+#~ msgid "Holds transferred."
+#~ msgstr "Articles mis en réserve transférés"
 
 #~ msgid "Cancel "
 #~ msgstr "Annuler "

@@ -1,0 +1,59 @@
+BEGIN;
+
+SELECT plan(2);
+
+----------------------------------
+--
+-- Setup Test environment and data
+--
+----------------------------------
+
+-- test records to dedupe and containers:
+-- bib 60500 (source)
+-- bib 60501 (target)
+--  
+
+-- create bib 60,500
+INSERT into biblio.record_entry (id, marc, last_xact_id)
+  VALUES (60500, 
+  $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01938cam a2200337Ii 4500</leader><controlfield tag="001">8274393</controlfield><controlfield tag="005">20170831142031.0</controlfield><controlfield tag="008">170522s2017    mauaf  e      000 1 eng d</controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">9781328791825</subfield><subfield code="q">(hardcover)</subfield></datafield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">1328791823</subfield><subfield code="q">(hardcover)</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(OCoLC)987617974</subfield></datafield><datafield tag="082" ind1="0" ind2="4"><subfield code="a">823/.912</subfield><subfield code="2">23</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Tolkien, J. R. R.</subfield><subfield code="q">(John Ronald Reuel),</subfield><subfield code="d">1892-1973,</subfield><subfield code="e">author.</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Beren and L&#xFA;thien /</subfield><subfield code="c">by J.R.R. Tolkien ; edited by Christopher Tolkien ; with illustrations by Alan Lee.</subfield></datafield><datafield tag="250" ind1=" " ind2=" "><subfield code="a">First U.S. edition.</subfield></datafield><datafield tag="264" ind1=" " ind2="1"><subfield code="a">Boston :</subfield><subfield code="b">Houghton Mifflin Harcourt,</subfield><subfield code="c">2017.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">288 pages, 9 unnumbered leaves of plates :</subfield><subfield code="b">illustrations (some color) ;</subfield><subfield code="c">22 cm.</subfield></datafield></record>
+  $$,
+  'PGTAP'
+  );
+
+
+-- create bib 60,501
+INSERT into biblio.record_entry (id, marc, last_xact_id)
+  VALUES (60501,
+  $$
+<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>01938cam a2200337Ii 4500</leader><controlfield tag="001">8274392</controlfield><controlfield tag="005">20170831142031.0</controlfield><controlfield tag="008">170522s2017    mauaf  e      000 1 eng d</controlfield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">9781328791825</subfield><subfield code="q">(hardcover)</subfield></datafield><datafield tag="020" ind1=" " ind2=" "><subfield code="a">1328791823</subfield><subfield code="q">(hardcover)</subfield></datafield><datafield tag="035" ind1=" " ind2=" "><subfield code="a">(OCoLC)987617974</subfield></datafield><datafield tag="082" ind1="0" ind2="4"><subfield code="a">823/.912</subfield><subfield code="2">23</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Tolkien, J. R. R.</subfield><subfield code="q">(John Ronald Reuel),</subfield><subfield code="d">1892-1973,</subfield><subfield code="e">author.</subfield></datafield><datafield tag="245" ind1="1" ind2="0"><subfield code="a">Beren and L&#xFA;thien /</subfield><subfield code="c">by J.R.R. Tolkien ; edited by Christopher Tolkien ; with illustrations by Alan Lee.</subfield></datafield><datafield tag="250" ind1=" " ind2=" "><subfield code="a">First U.S. edition.</subfield></datafield><datafield tag="264" ind1=" " ind2="1"><subfield code="a">Boston :</subfield><subfield code="b">Houghton Mifflin Harcourt,</subfield><subfield code="c">2017.</subfield></datafield><datafield tag="300" ind1=" " ind2=" "><subfield code="a">288 pages, 9 unnumbered leaves of plates :</subfield><subfield code="b">illustrations (some color) ;</subfield><subfield code="c">22 cm.</subfield></datafield><datafield tag="336" ind1=" " ind2=" "><subfield code="a">text</subfield><subfield code="b">txt</subfield><subfield code="2">rdacontent</subfield></datafield><datafield tag="337" ind1=" " ind2=" "><subfield code="a">unmediated</subfield><subfield code="b">n</subfield><subfield code="2">rdamedia</subfield></datafield><datafield tag="338" ind1=" " ind2=" "><subfield code="a">volume</subfield><subfield code="2">rdacarrier</subfield></datafield><datafield tag="520" ind1=" " ind2=" "><subfield code="a">Beren was a mortal man, but L&#xFA;thien was an immortal elf. Her father, a great elvish lord, in deep opposition to Beren, imposed on him an impossible task that he must perform before he might wed L&#xFA;thien. To show something of the process whereby this legend of Middle-earth evolved over the years, Christopher Tolkien has told the story in his father's own words by giving, first, its original form, and then passages in prose and verse from later texts that illustrate the narrative as it changed. Presented together for the first time, they reveal aspects of the story, both in event and in narrative immediacy, that were afterwards lost.--</subfield><subfield code="c">From publisher's description.</subfield></datafield><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Middle Earth (Imaginary place)</subfield><subfield code="v">Fiction.</subfield></datafield><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Elves</subfield><subfield code="v">Fiction.</subfield></datafield><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Quests (Expeditions)</subfield><subfield code="v">Fiction.</subfield></datafield><datafield tag="650" ind1=" " ind2="0"><subfield code="a">Good and evil</subfield><subfield code="v">Fiction.</subfield></datafield><datafield tag="655" ind1=" " ind2="7"><subfield code="a">Fantasy fiction.</subfield><subfield code="2">lcgft</subfield></datafield><datafield tag="700" ind1="1" ind2=" "><subfield code="a">Tolkien, Christopher,</subfield><subfield code="e">editor.</subfield></datafield><datafield tag="700" ind1="1" ind2=" "><subfield code="a">Lee, Alan,</subfield><subfield code="e">illustrator.</subfield></datafield><datafield tag="700" ind1="1" ind2=" "><subfield code="a">Tolkien, J. R. R.</subfield><subfield code="q">(John Ronald Reuel),</subfield><subfield code="d">1892-1973.</subfield><subfield code="t">Silmarillion.</subfield></datafield></record>
+  $$,
+  'PGTAP'
+  );
+
+INSERT INTO container.biblio_record_entry_bucket (id, owner, name, btype) 
+    VALUES 
+    (101, 1, 'Bookbag Bucket', 'bookbag'); 
+
+INSERT INTO container.biblio_record_entry_bucket_item (id, bucket, target_biblio_record_entry) 
+    VALUES 
+    (101, 101, 60500);
+
+-----------------------------------
+-- Test asset.merge_record_assets() 
+-----------------------------------
+
+SELECT is(asset.merge_record_assets(60501, 60500), 0, 'Record assets merged!');
+
+-- check if bucket 101's entry 101 was updated to 60501
+SELECT is(
+  (SELECT target_biblio_record_entry from container.biblio_record_entry_bucket_item where id=101)::BIGINT,
+  60501::BIGINT,
+  'LP 1731960 asset.merge_record_assets() preserve book bag entries, bib bucket item 101 should be 60501'
+);
+
+SELECT * FROM finish();
+
+ROLLBACK;
+

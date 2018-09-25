@@ -45,6 +45,53 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         }
     }
 
+    $scope.date_options = {
+        due_date : egCore.hatch.getSessionItem('eg.circ.checkout.due_date'),
+        has_sticky_date : egCore.hatch.getSessionItem('eg.circ.checkout.is_until_logout'),
+        is_until_logout : egCore.hatch.getSessionItem('eg.circ.checkout.is_until_logout')
+    };
+
+    if ($scope.date_options.is_until_logout) { // If until_logout is set there should also be a date set.
+        $scope.checkoutArgs.due_date = new Date($scope.date_options.due_date);
+        $scope.checkoutArgs.sticky_date = true;
+    }
+
+    $scope.toggle_opt = function(opt) {
+        if ($scope.date_options[opt]) {
+            $scope.date_options[opt] = false;
+        } else {
+            $scope.date_options[opt] = true;
+        }
+    };
+
+    // The interactions between these options are complicated enough that $watch'ing them all is the only safe way to keep things sane.
+    $scope.$watch('date_options.has_sticky_date', function(newval) {
+        if ( newval ) { // was false, is true
+            // $scope.date_options.due_date = checkoutArgs.due_date;
+        } else {
+            $scope.date_options.is_until_logout = false;
+        }
+        $scope.checkoutArgs.sticky_date = newval;
+    });
+
+    $scope.$watch('date_options.is_until_logout', function(newval) {
+        if ( newval ) { // was false, is true
+            $scope.date_options.has_sticky_date = true;
+            $scope.date_options.due_date = $scope.checkoutArgs.due_date;
+            egCore.hatch.setSessionItem('eg.circ.checkout.is_until_logout', true);
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', $scope.checkoutArgs.due_date);
+        } else {
+            egCore.hatch.removeSessionItem('eg.circ.checkout.is_until_logout');
+            egCore.hatch.removeSessionItem('eg.circ.checkout.due_date');
+        }
+    });
+
+    $scope.$watch('checkoutArgs.due_date', function(newval) {
+        if ( $scope.date_options.is_until_logout ) {
+            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', newval);
+        }
+    });
+
     $scope.has_email_address = function() {
         return (
             patronSvc.current &&
@@ -137,7 +184,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         // immediate reaction to their barcode input action.
         var row_item = {
             index : $scope.checkouts.length,
-            copy_barcode : params.copy_barcode,
+            input_barcode : params.copy_barcode,
             noncat_type : params.noncat_type
         };
 
@@ -165,6 +212,11 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 angular.forEach(co_resp.data, function(val, key) {
                     row_item[key] = val;
                 });
+               
+                if (row_item.acp) { // unset for non-cat items.
+                    row_item['copy_barcode'] = row_item.acp.barcode();
+                }
+
                 munge_checkout_resp(co_resp, row_item);
             },
             function() {
@@ -202,11 +254,50 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             // Non-cat circs don't return the full list of circs.
             // Refresh the list of non-cat circs from the server.
             patronSvc.getUserNonCats(patronSvc.current.id());
+            row_item.copy_alert_count = 0;
+        } else {
+            row_item.copy_alert_count = 0;
+            egCore.pcrud.search(
+                'aca',
+                { copy : co_resp.data.acp.id(), ack_time : null },
+                null,
+                { atomic : true }
+            ).then(function(list) {
+                row_item.copy_alert_count = list.length;
+            });
         }
     }
 
+    $scope.addCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.add_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.manageCopyAlerts = function(items) {
+        var copy_ids = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copy_ids.push(item.acp.id());
+        });
+        egCirc.manage_copy_alerts(copy_ids).then(function() {
+            // update grid items?
+        });
+    }
+
+    $scope.gridCellHandlers = {};
+    $scope.gridCellHandlers.copyAlertsEdit = function(id) {
+        egCirc.manage_copy_alerts([id]).then(function() {
+            // update grid items?
+        });
+    };
+
     $scope.print_receipt = function() {
-        var print_data = {circulations : []}
+        var print_data = {circulations : []};
+        var cusr = patronSvc.current;
 
         if ($scope.checkouts.length == 0) return $q.when();
 
@@ -221,6 +312,27 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                 })
             };
         });
+
+        // This is repeated in patron.* so everyting is in one place but left here so existing templates don't break.
+        print_data.patron_money = patronSvc.patron_stats.fines;
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_secondg_given_name : cusr.second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
+            suffix : cusr.suffix(),
+            card : { barcode : cusr.card().barcode() },
+            money_summary : patronSvc.patron_stats.fines,
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean($scope.has_email_address()),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         return egCore.print.print({
             context : 'default', 

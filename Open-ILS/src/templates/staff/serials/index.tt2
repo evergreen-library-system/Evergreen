@@ -1,0 +1,82 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Serials Management"); 
+  ctx.page_app = "egSerialsApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/mfhd.js"></script>
+[% INCLUDE 'staff/serials/share/serials_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/services/core.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/marcrecord.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/tagtable.js"></script>
+[% INCLUDE 'staff/cat/share/marcedit_strings.tt2' %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/marcedit.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/subscription_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/sub_selector.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/mfhd_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/prediction_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/prediction_wizard.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/item_manager.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/serials/directives/view-items-grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.SERIALS_SUBSCRIPTION_SUCCESS_CLONE = "[% l('Cloned serial subscription') %]";
+    s.SERIALS_SUBSCRIPTION_FAIL_CLONE = "[% l('Failed to clone serial subscription') %]";
+    s.SERIALS_SUBSCRIPTION_SUCCESS_DELETE = "[% l('Deleted serial subscription') %]";
+    s.SERIALS_SUBSCRIPTION_FAIL_DELETE = "[% l('Failed to delete serial subscription') %]";
+    s.SERIALS_DISTRIBUTION_SUCCESS_DELETE = "[% l('Deleted serial distribution') %]";
+    s.SERIALS_DISTRIBUTION_FAIL_DELETE = "[% l('Failed to delete serial distribution') %]";
+    s.SERIALS_STREAM_SUCCESS_DELETE = "[% l('Deleted serial stream') %]";
+    s.SERIALS_STREAM_FAIL_DELETE = "[% l('Failed to delete serial stream') %]";
+    s.SERIALS_SCAP_SUCCESS_DELETE = "[% l('Deleted serial prediction pattern') %]";
+    s.SERIALS_SCAP_FAIL_DELETE = "[% l('Failed to delete serial prediction pattern') %]";
+    s.SERIALS_ISSUANCE_FAIL_SAVE = "[% l('Failed to save issuance') %]";
+    s.SERIALS_ISSUANCE_SUCCESS_SAVE = "[% l('Issuance saved') %]";
+    s.SERIALS_ITEM_NOTE_FAIL_SAVE = "[% l('Failed to save item notes') %]";
+    s.SERIALS_ITEM_NOTE_SUCCESS_SAVE = "[% l('Item notes saved') %]";
+    s.SERIALS_DISTRIBUTION_SUCCESS_LINK_MFHD = "[% l('Distribution linked to MFHD') %]";
+    s.SERIALS_DISTRIBUTION_FAIL_LINK_MFHD = "[% l('Failed to link distribution to MFHD') %]";
+    s.SERIALS_DISTRIBUTION_SUCCESS_BINDING_TEMPLATE = "[% l('Binding unit template applied to Distribution') %]";
+    s.SERIALS_DISTRIBUTION_FAIL_BINDING_TEMPLATE = "[% l('Failed to apply binding unit template to distribution') %]";
+    s.SERIALS_EDIT_SISS_HC = "[% l('Edit issue information') %]";
+    s.SERIALS_ISSUANCE_PREDICT = "[% l('Predict New Issues: Initial Values') %]";
+    s.SERIALS_ISSUANCE_ADD = "[% l('Add following issue') %]";
+    s.SERIALS_SPECIAL_ISSUANCE_ADD = "[% l('Add special issue') %]";
+
+    s.CONFIRM_DELETE_SUBSCRIPTION = "[% l('Delete selected subscription(s)?') %]";
+    s.CONFIRM_DELETE_SUBSCRIPTION_MESSAGE = "[% l('Will delete {{count}} subscription(s)') %]";
+    s.CONFIRM_DELETE_DISTRIBUTION = "[% l('Delete selected distribution(s)?') %]";
+    s.CONFIRM_DELETE_DISTRIBUTION_MESSAGE = "[% l('Will delete {{count}} distribution(s)') %]";
+    s.CONFIRM_DELETE_STREAM = "[% l('Delete selected stream(s)?') %]";
+    s.CONFIRM_DELETE_STREAM_MESSAGE = "[% l('Will delete {{count}} stream(s)') %]";
+    s.CONFIRM_DELETE_SCAP = "[% l('Delete prediction pattern?') %]";
+    s.CONFIRM_DELETE_SCAP_MESSAGE = "[% l('Will delete the prediction pattern if there are no attached issuances.') %]";
+
+    s.CONFIRM_CHANGE_ITEMS = {};
+    s.CONFIRM_CHANGE_ITEMS.delete = "[% l('Delete selected item(s)?') %]";
+    s.CONFIRM_CHANGE_ITEMS.reset = "[% l('Reset selected items?') %]"
+    s.CONFIRM_CHANGE_ITEMS.receive = "[% l('Receive selected items?') %]"
+    s.CONFIRM_CHANGE_ITEMS.status = "[% l('Change status selected items?') %]"
+
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE = {};
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.delete = "[% l('Will delete {{items}} items(s)') %]";
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.reset = "[% l('Will reset {{items}} items(s)') %]"
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.receive = "[% l('Will receive {{items}} items(s)') %]"
+    s.CONFIRM_CHANGE_ITEMS_MESSAGE.status = "[% l('Will change the status of {{items}} items(s)') %]"
+
+    s.CONFIRM_DELETE_MFHDS = "[% l('Delete selected MFHD(s)?') %]";
+    s.CONFIRM_DELETE_MFHDS_MESSAGE = "[% l('Will delete {{items}} MFHD(s).') %]";
+
+}]);
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]
+

@@ -1,5 +1,8 @@
 Library Settings Editor
 -----------------------
+
+Introduction
+~~~~~~~~~~~~
 (((Library Settings Editor)))
 
 With the *Library Settings Editor* one can optionally customize
@@ -79,7 +82,7 @@ values.
 |Default copy location|Sets the default copy location(shelving location) for use in acquisitions.|Selection list|
 |Fund Spending Limit for Block|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.|Number|
 |Fund Spending Limit for Warning|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.|Number|
-|Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formalae to use new funds|True/False|
+|Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formulae to use new funds|True/False|
 |Set copy creator as receiver|When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy|True/False|
 |Temporary barcode prefix|Temporary barcode prefix added to temporary item records.|Text|
 |Temporary call number prefix|Temporary call number prefix|Text|
@@ -156,6 +159,7 @@ values.
 |Max patron claims returned count|When this count is exceeded, a staff override is required to mark the item as claims returned.|Number|
 |Maximum visible age of User Trigger Events in Staff Interfaces|If this is unset, staff can view User Trigger Events regardless of age. When this is set to an interval, it represents the age of the oldest possible User Trigger Event that can be viewed.|Duration|
 |Minimum transit checkin interval|In-Transit items checked in this close to the transit start time will be prevented from checking in|Duration|
+|Number of Retrievable Recent Patrons|Number of most recently accessed patrons that can be re-retrieved in the staff client. A value of 0 or less disables the feature. Defaults to 1.|Number|
 |Patron merge address delete|Delete address(es) of subordinate user(s) in a patron merge.|True/False|
 |Patron merge barcode delete|Delete barcode(s) of subordinate user(s) in a patron merge|True/False|
 |Patron merge deactivate card|Mark barcode(s) of subordinate user(s) in a patron merge as inactive.|True/False|
@@ -197,7 +201,7 @@ values.
 |AuthorizeNet test mode|Places Authorize.Net transactions in Test Mode|True/False|
 |Enable AuthorizeNet payments|This actually enables use of Authorize.Net|True/False|
 |Enable PayPal payments|This will enable use of PayPal payments through the staff client.|True/False|
-|Enable PayflowPro payments|This will enable the use of PayPal's Payflow Pro. This is not the same is PayPal.|True/False|
+|Enable PayflowPro payments|This will enable the use of PayPal's Payflow Pro. This is not the same as PayPal.|True/False|
 |Enable Stripe payments|This will enable the use of the stripe credit card processing.|True/False|https://stripe.com
 |Name default credit processor|This might be "AuthorizeNet", "PayPal", "PayflowPro", or "Stripe".|Text|This sets the company that you will use to process the credit cards.
 |PayPal login|Enter the PayPal login Username|Text|Obtain from PayPal
@@ -226,7 +230,7 @@ values.
 |Charge processing fee for damaged items|Optional processing fee billed to last patron who checked out the damaged item. Staff receive an alert with patron information and must confirm the billing.|Number(Dollar)| Disabled when set to 0
 |Default item price|Replacement charge for lost items if price is unset in the *Copy Editor*. Does not apply if item price is set to $0|Number(dollars)|
 |Disable Patron Credit|Do not allow patrons to accrue credit or pay fines/fees with accrued credit|True/False|
-|Leave transaction open when long overdue balance equals zero|Leave transaction open when long-overdue balance equals zero. This leaves the lost copy on the patron record when it is paid|True/False|
+|Leave transaction open when long overdue balance equals zero|Leave transaction open when long-overdue balance equals zero. This leaves the long-overdue copy on the patron record when it is paid|True/False|
 |Leave transaction open when lost balance equals zero|Leave transaction open when lost balance equals zero. This leaves the lost copy on the patron record when it is paid|True/False|
 |Long-Overdue Materials Processing Fee|The amount charged in addition to item price when an item is marked Long-Overdue|Number|Currency
 |Lost materials processing fee|The amount charged in addition to item price when an item is marked lost.| Number|Currency

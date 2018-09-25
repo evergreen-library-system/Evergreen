@@ -48,6 +48,28 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
     }
     service.resetPatronLists();  // initialize
 
+    egCore.startup.go().then(
+        function() {
+            // Max recents setting is loaded and scrubbed during egStartup.
+            // Copy it to a local variable here for ease of local access
+            // after startup has run.
+            egCore.org.settings('ui.staff.max_recent_patrons')
+            .then(function(s) {
+                service.maxRecentPatrons = s['ui.staff.max_recent_patrons'];
+            });
+
+            // This call requires orgs to be loaded, because it
+            // calls egCore.org.ancestors(), so call it after startup
+            egCore.pcrud.search('actsc',
+                {owner : egCore.org.ancestors(
+                    egCore.auth.user().ws_ou(), true)},
+                {}, {atomic : true}
+            ).then(function(cats) {
+                egCore.env.absorbList(cats, 'actsc');
+            });
+        }
+    );
+
     // Returns true if the last alerted patron matches the current
     // patron.  Otherwise, the last alerted patron is set to the 
     // current patron and false is returned.
@@ -74,6 +96,60 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
         return $q.when();
     }
 
+    service.getRecentPatrons = function() {
+        // avoid getting stuck in a show-recent loop
+        service.showRecent = false;
+
+        if (service.maxRecentPatrons < 1) return $q.when();
+        var patrons = 
+            egCore.hatch.getLoginSessionItem('eg.circ.recent_patrons') || [];
+
+        // Ensure the cached list is no bigger than the current config.
+        // This can happen if the setting changes while logged in.
+        patrons = patrons.slice(0, service.maxRecentPatrons);
+
+        // add home_ou to the list of fleshed fields for recent patrons
+        var fleshFields = egUser.defaultFleshFields.slice(0);
+        fleshFields.push('home_ou');
+
+        var deferred = $q.defer();
+        function getNext() {
+            if (patrons.length == 0) {
+                deferred.resolve();
+                return;
+            }
+            egUser.get(patrons[0], {useFields : fleshFields}).then(
+                function(usr) { // fetch first user
+                    deferred.notify(usr);
+                    patrons.splice(0, 1); // remove first user from list
+                    getNext();
+                }
+            );
+        }
+
+        getNext();
+        return deferred.promise;
+    }
+
+    service.addRecentPatron = function(user_id) {
+        if (service.maxRecentPatrons < 1) return;
+
+        // no need to re-track same user
+        if (service.current && service.current.id() == user_id) return;
+
+        var patrons = 
+            egCore.hatch.getLoginSessionItem('eg.circ.recent_patrons') || [];
+        patrons.splice(0, 0, user_id);  // put this user at front
+        patrons.splice(service.maxRecentPatrons, 1); // remove excess
+
+        // remove any other occurrences of this user, which may have been
+        // added before the most recent user.
+        var idx = patrons.indexOf(user_id, 1);
+        if (idx > 0) patrons.splice(idx, 1);
+
+        egCore.hatch.setLoginSessionItem('eg.circ.recent_patrons', patrons);
+    }
+
     // sets the primary display user, fetching data as necessary.
     service.setPrimary = function(id, user, force) {
         var user_id = id ? id : (user ? user.id() : null);
@@ -82,9 +158,7 @@ function($q , $timeout , $location , egCore,  egUser , egConfirmDialog , $locale
 
         if (!user_id) return $q.reject();
 
-        // when loading a new patron, update the last patron setting
-        if (!service.current || service.current.id() != user_id)
-            egCore.hatch.setLoginSessionItem('eg.circ.last_patron', user_id);
+        service.addRecentPatron(user_id);
 
         // avoid running multiple retrievals for the same patron, which
         // can happen during dbl-click by maintaining a single running
@@ -457,6 +531,16 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         selectedItems : function() {return []}
     }
 
+    // The first time we encounter the show-recent CGI param, put the
+    // service into show-recent mode.  The first time recents are shown,
+    // the service is taken out of show-recent mode so the page does not
+    // get stuck in a show-recent loop.
+    if (patronSvc.showRecent === undefined 
+        && Boolean($location.path().match(/search/))
+        && Boolean($location.search().show_recent)) {
+        patronSvc.showRecent = true;
+    }
+
     // Handle URL-encoded searches
     if ($location.search().search) {
         console.log('URL search = ' + $location.search().search);
@@ -479,7 +563,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
 
     var propagate;
     var propagate_inactive;
-    if (patronSvc.lastSearch) {
+    if (patronSvc.lastSearch && !patronSvc.showRecent) {
         propagate = patronSvc.lastSearch.search;
         // home_ou needs to be treated specially
         propagate.home_ou = {
@@ -524,6 +608,11 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
 
     provider.get = function(offset, count) {
         var deferred = $q.defer();
+
+        if (patronSvc.showRecent) {
+            // avoid getting stuck in show-recent mode
+            return patronSvc.getRecentPatrons();
+        }
 
         var fullSearch;
         if (patronSvc.urlSearch) {
@@ -596,6 +685,10 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             return $q.when();
         }
 
+        var fleshFields = egUser.defaultFleshFields.slice(0);
+        if (fleshFields.indexOf('profile') == -1)
+            fleshFields.push('profile');
+
         egProgressDialog.open(); // Indeterminate
 
         patronSvc.patrons = [];
@@ -609,7 +702,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
             fullSearch.sort,
             fullSearch.inactive,
             fullSearch.home_ou,
-            egUser.defaultFleshFields,
+            fleshFields,
             fullSearch.offset
 
         ).then(
@@ -666,17 +759,29 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
     egCore.hatch.getItem('eg.circ.patron.search.show_extras')
     .then(function(val) {$scope.showExtras = val});
 
+    // check searchArgs.inactive setting
+    egCore.hatch.getItem('eg.circ.patron.search.include_inactive')
+                .then(function(searchInactive){
+                    if (searchInactive) $scope.searchArgs.inactive = searchInactive;
+                });
+
+     $scope.onSearchInactiveChanged = function() {
+        egCore.hatch.setItem('eg.circ.patron.search.include_inactive', $scope.searchArgs.inactive);
+    }
+
     // map form arguments into search params
     function compileSearch(args) {
         var search = {};
         angular.forEach(args, function(val, key) {
             if (!val) return;
             if (key == 'profile' && args.profile) {
-                search.profile = {value : args.profile.id(), group : 0};
+                search.profile = {value : args.profile.id(), group : 5};
             } else if (key == 'home_ou' && args.home_ou) {
                 search.home_ou = args.home_ou.id(); // passed separately
             } else if (key == 'inactive') {
                 search.inactive = val;
+            } else if (key == 'name') { // name keywords search
+                search.name = {value: val};
             } else {
                 search[key] = {value : val, group : 0};
             }
@@ -687,6 +792,18 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
                     search[key].group = 1;
                 } else if (key == 'card') {
                     search[key].group = 3
+                } else if (key.match(/dob_/)) {
+                    // DOB should always be numeric
+                    search[key].value = search[key].value.replace(/\D/g,'');
+                    if (search[key].value.length == 0) {
+                        delete search[key];
+                    }
+                    else {
+                        if (!key.match(/year/)) {
+                            search[key].value = ('0'+search[key].value).slice(-2);
+                        }
+                        search[key].group = 4;
+                    }
                 }
             }
         });

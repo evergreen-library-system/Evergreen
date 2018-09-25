@@ -17,7 +17,13 @@
             autoHeight='true'
             editOnEnter='true'>
         <thead>
-            <tr><th field='xpath' width='25%'/></tr>
+            <tr><th field='xpath' width='25%'/>
+                <th field='vdata_suppliers' get='getCmfvm' formatter='formatCmfvmLink'>
+                        [% l('Data Suppliers') %]
+                </th>
+            </tr>
+      </thead>
+
         </thead>
     </table>
 </div>
@@ -25,6 +31,22 @@
 <script type="text/javascript">
     dojo.require('openils.Util');
     dojo.require('openils.widget.AutoGrid');
+
+    function getCmfvm(rowId, item) {
+      if (!item) return '';
+      return this.grid.store.getValue(item, 'id');
+    }
+
+    function formatCmfvmLink(id) {
+      if (id) {
+        return "<a href='" + oilsBasePath +
+          "/conify/global/config/metabib_field_virtual_map/"
+          + id + "'>[% l('Manage') %]</a>";
+        } else {
+          return "";
+      }
+    }
+
     openils.Util.addOnLoad( function() { mbFieldGrid.loadAll(); } );
 </script>
 [% END %]

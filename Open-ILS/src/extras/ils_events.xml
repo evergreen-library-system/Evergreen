@@ -892,7 +892,7 @@
 		<desc xml:lang="en-US">This requested action would result in a negative patron balance</desc>
 	</event>
 	<event code='7016' textcode='ITEM_ON_HOLDS_SHELF'>
-		<desc xml:lang="en-US">This item is currently on the holds shelf for another patron</desc>
+		<desc xml:lang="en-US">This item is currently on the holds shelf for another patron:</desc>
 	</event>
 	<event code='7017' textcode='ROUTE_TO_COPY_LOCATION'>
 		<desc xml:lang="en-US"> 
@@ -929,6 +929,9 @@
 	</event>
 	<event code='7028' textcode='PATRON_CIRC_MISMATCH'>
 	        <desc xml:lang="en-US">Potentially notified patron does not own the circulation.</desc>
+	</event>
+	<event code='7029' textcode='MAX_AUTO_RENEWALS_REACHED'>
+		<desc xml:lang="en-US">Circulation has no more auto-renewals remaining</desc>
 	</event>
 
 
@@ -1048,6 +1051,15 @@
         <desc xml:lang="en-US">Renewal attempt failed because the "hold / available copies" ratio exceeds the configured limit</desc>
     </event>
 
+    <event code='11008' textcode='SERIAL_DISTRIBUTION_NOT_EMPTY'>
+        <desc xml:lang="en-US">The distribution still has dependent objects</desc>
+    </event>
+    <event code='11009' textcode='SERIAL_STREAM_NOT_EMPTY'>
+        <desc xml:lang="en-US">The stream still has dependent objects</desc>
+    </event>
+    <event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
+        <desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
+    </event>
 </ils_events>
 
 

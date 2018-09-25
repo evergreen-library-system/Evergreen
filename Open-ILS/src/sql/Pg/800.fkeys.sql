@@ -108,10 +108,91 @@ ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_call_number_fkey FOREIGN KEY 
 ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 ALTER TABLE serial.unit ADD CONSTRAINT serial_unit_editor_fkey FOREIGN KEY (editor) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE vandelay.import_item ADD CONSTRAINT imported_as_fkey FOREIGN KEY (imported_as) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
+CREATE OR REPLACE FUNCTION evergreen.vandelay_import_item_imported_as_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        IF NEW.imported_as IS NULL THEN
+                RETURN NEW;
+        END IF;
+        PERFORM 1 FROM asset.copy WHERE id = NEW.imported_as;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, imported_as:%s$$, NEW.imported_as
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_import_item_imported_as_fkey
+        AFTER UPDATE OR INSERT ON vandelay.import_item
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.vandelay_import_item_imported_as_inh_fkey();
+
 ALTER TABLE vandelay.bib_queue ADD CONSTRAINT match_bucket_fkey FOREIGN KEY (match_bucket) REFERENCES container.biblio_record_entry_bucket(id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
-ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_copy_fkey FOREIGN KEY (owning_copy) REFERENCES asset.copy (id) DEFERRABLE INITIALLY DEFERRED;
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_note_owning_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.owning_copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, owning_copy:%s$$, NEW.owning_copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_note_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_note
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_note_owning_copy_inh_fkey();
+
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_tag_copy_map_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE OR REPLACE FUNCTION evergreen.asset_copy_alert_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE OR REPLACE FUNCTION evergreen.asset_latest_inventory_copy_inh_fkey() RETURNS TRIGGER AS $f$
+BEGIN
+        PERFORM 1 FROM asset.copy WHERE id = NEW.copy;
+        IF NOT FOUND THEN
+                RAISE foreign_key_violation USING MESSAGE = FORMAT(
+                        $$Referenced asset.copy id not found, copy:%s$$, NEW.copy
+                );
+        END IF;
+        RETURN NEW;
+END;
+$f$ LANGUAGE PLPGSQL VOLATILE COST 50;
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_alert_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_alert
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_alert_copy_inh_fkey();
+
+CREATE CONSTRAINT TRIGGER inherit_asset_copy_tag_copy_map_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.copy_tag_copy_map
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_copy_tag_copy_map_copy_inh_fkey();
+
+CREATE CONSTRAINT TRIGGER inherit_asset_latest_inventory_copy_fkey
+        AFTER UPDATE OR INSERT ON asset.latest_inventory
+        DEFERRABLE FOR EACH ROW EXECUTE PROCEDURE evergreen.asset_latest_inventory_copy_inh_fkey();
+
 ALTER TABLE asset.copy_note ADD CONSTRAINT asset_copy_note_creator_fkey FOREIGN KEY (creator) REFERENCES actor.usr (id) ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 ALTER TABLE asset.call_number ADD CONSTRAINT asset_call_number_owning_lib_fkey FOREIGN KEY (owning_lib) REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED;

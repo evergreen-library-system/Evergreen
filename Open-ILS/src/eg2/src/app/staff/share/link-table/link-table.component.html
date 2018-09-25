@@ -1,0 +1,22 @@
+
+<div class="d-flex border-top border-light" 
+    *ngFor="let row of rowBuckets; let rowIdx = index">
+  <div class="flex-1 p-2" *ngFor="let col of colList">
+    <ng-container *ngIf="row[col]">
+      <!-- avoid mixing [href] and [routerLink] in one link, 
+          because routerLink will take precedence, even if it's empty -->
+      <ng-container *ngIf="row[col].url">
+        <a [href]="row[col].url" class="with-material-icon">
+          <span class="material-icons">edit</span>
+          <span>{{row[col].label}}</span>
+        </a>
+      </ng-container>
+      <ng-container *ngIf="row[col].routerLink">
+        <a [routerLink]="row[col].routerLink" class="with-material-icon">
+          <span class="material-icons">edit</span>
+          <span>{{row[col].label}}</span>
+        </a>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

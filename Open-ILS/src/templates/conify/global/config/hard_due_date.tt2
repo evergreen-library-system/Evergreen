@@ -4,6 +4,9 @@
     dojo.require("openils.CGI");
     dojo.require("openils.Util");
     dojo.require("openils.widget.AutoGrid");
+    dojo.require("dojo.date.locale");
+    dojo.require("dojo.date.stamp");
+
 
     function get_chdd_name(rowIndex, item) {
         if (!item) return null;
@@ -37,6 +40,24 @@
                 openils.Util.show("one_only");
             }
             chddGrid.loadAll({"order_by": {"chdd": "name"}}, filter);
+
+            function munge_ceiling(chdd) {
+                var cd = dojo.date.stamp.fromISOString(chdd.ceiling_date());
+                // set to end of day in client time zone; if we were using
+                // moment, we could do moment().endOf('day') instead
+                cd.setHours(23, 59, 59);
+                chdd.ceiling_date(dojo.date.stamp.toISOString(cd));
+            }
+            chddGrid.onEditPane = function(pane) {
+                pane.onSubmit = function(chdd, ops) {
+                    munge_ceiling(chdd);
+                    (new openils.PermaCrud())[pane.mode](chdd, ops);
+               }
+            }
+            chddGrid.createPaneOnSubmit = function(chdd, ops, pane) {
+                munge_ceiling(chdd);
+                (new openils.PermaCrud())[pane.mode](chdd, ops);
+            }
         }
     );
 </script>

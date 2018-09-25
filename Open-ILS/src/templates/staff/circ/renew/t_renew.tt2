@@ -66,10 +66,16 @@
     handler="abortTransit"
     label="[% l('Cancel Transits') %]">
   </eg-grid-action>
+  <eg-grid-action divider="true"></eg-grid-action>
+  <eg-grid-action
+    handler="addCopyAlerts"
+    label="[% l('Add Item Alerts') %]">
+  </eg-grid-action>
+  <eg-grid-action
+    handler="manageCopyAlerts"
+    label="[% l('Manage Item Alerts') %]">
+  </eg-grid-action>
 
-
-  <eg-grid-field label="[% l('Alert Msg') %]"   
-    path="acp.alert_message"></eg-grid-field>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
     path='mbts.balance_owed' comparator="sort_money"></eg-grid-field>
@@ -87,8 +93,14 @@
   <eg-grid-field label="[% l('Bill #') %]"     
     path='circ.id'></eg-grid-field>
 
-  <eg-grid-field label="[% l('Call Number') %]" 
+  <eg-grid-field label="[% l('CN Prefix') %]" 
+    path="acn.prefix.label"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Call Number') %]"
     path="acn.label"></eg-grid-field>
+
+  <eg-grid-field label="[% l('CN Suffix') %]"
+    path="acn.suffix.label"></eg-grid-field>
 
   <eg-grid-field label="[% l('Due Date') %]"    
     path='circ.due_date' datecontext="circ_lib" dateonlyinterval="duration" datatype="timestamp"></eg-grid-field>

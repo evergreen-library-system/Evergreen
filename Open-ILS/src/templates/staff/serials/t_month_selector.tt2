@@ -1,0 +1,14 @@
+<select ng-model="ngModel">
+  <option value="01">[% l('January') %]</option>
+  <option value="02">[% l('February') %]</option>
+  <option value="03">[% l('March') %]</option>
+  <option value="04">[% l('April') %]</option>
+  <option value="05">[% l('May') %]</option>
+  <option value="06">[% l('June') %]</option>
+  <option value="07">[% l('July') %]</option>
+  <option value="08">[% l('August') %]</option>
+  <option value="09">[% l('September') %]</option>
+  <option value="10">[% l('October') %]</option>
+  <option value="11">[% l('November') %]</option>
+  <option value="12">[% l('December') %]</option>
+</select>

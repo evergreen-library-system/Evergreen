@@ -5,7 +5,7 @@ angular.module('egAcquisitions',
  function($routeProvider , $locationProvider , $compileProvider) {
 
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); 
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); 
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 
@@ -74,12 +74,13 @@ function($scope , $routeParams , $location , $window , $timeout , egCore , $uibM
         $uibModal.open({
             templateUrl: './acq/t_edit_marc_order_record',
             size: 'lg',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
                 $scope.args = args;
                 $scope.dirty_flag = false;
-                $scope.ok = function(args) { $uibModalInstance.close(args) }
+                $scope.ok = function() { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
             }]
         }).result.then(function (args) {

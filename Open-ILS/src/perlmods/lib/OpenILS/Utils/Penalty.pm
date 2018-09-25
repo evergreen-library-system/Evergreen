@@ -4,7 +4,7 @@ use DateTime;
 use Data::Dumper;
 use OpenSRF::EX qw(:try);
 use OpenSRF::Utils::Cache;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;

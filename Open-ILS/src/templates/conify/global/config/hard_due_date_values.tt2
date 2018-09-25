@@ -6,6 +6,8 @@
     dojo.require("openils.Util");
     dojo.require("openils.widget.AutoGrid");
     dojo.require("dijit.form.TextBox");
+    dojo.require("dojo.date.locale");
+    dojo.require("dojo.date.stamp");
 
     openils.Util.addOnLoad(
         function() {
@@ -32,6 +34,24 @@
             chddvGrid.overrideEditWidgets.hard_due_date.shove = {
                 "create": chdd_id
             };
+
+            function munge_ceiling(chddv) {
+                var cd = dojo.date.stamp.fromISOString(chddv.ceiling_date());
+                // set to end of day in client time zone; if we were using
+                // moment, we could do moment().endOf('day') instead
+                cd.setHours(23, 59, 59);
+                chddv.ceiling_date(dojo.date.stamp.toISOString(cd));
+            }
+            chddvGrid.onEditPane = function(pane) {
+                pane.onSubmit = function(chddv, ops) {
+                    munge_ceiling(chddv);
+                    (new openils.PermaCrud())[pane.mode](chddv, ops);
+               }
+            }
+            chddvGrid.createPaneOnSubmit = function(chddv, ops, pane) {
+                munge_ceiling(chddv);
+                (new openils.PermaCrud())[pane.mode](chddv, ops);
+            }
 
             chddvGrid.loadAll({"order_by": {"chddv": "active_date"}}, filter);
         }

@@ -1,0 +1,19 @@
+Troubleshooting TPAC errors
+---------------------------
+
+If there is a problem such as a TT syntax error, it generally shows up as an
+ugly server failure page. If you check the Apache error logs, you will probably
+find some solid clues about the reason for the failure. For example, in the
+following example, the error message identifies the file in which the problem
+occurred as well as the relevant line numbers.
+
+Example error message in Apache error logs:
+
+----
+bash# grep "template error" /var/log/apache2/error_log
+[Tue Dec 06 02:12:09 2011] [warn] [client 127.0.0.1] egweb: template error:
+ file error - parse error - opac/parts/record/summary.tt2 line 112-121:
+  unexpected token (!=)\n  [% last_cn = 0;\n        FOR copy_info IN
+  ctx.copies;\n            callnum = copy_info.call_number_label;\n
+----
+

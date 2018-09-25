@@ -42,6 +42,7 @@
 #   - do_client_auth: authenticate client with external API (e.g. get client
 #     token if needed)
 #   - do_patron_auth: get a patron-specific bearer token, or just the patron ID
+#   - get_title_info: get basic title details (title, author, optional cover image)
 #   - do_holdings_lookup: how many total/available "copies" are there for this
 #     title? (n/a for OneClickdigital)
 #   - do_availability_lookup: does this title have available "copies"? y/n
@@ -164,6 +165,43 @@ sub do_patron_auth {
     return undef;
 }
 
+# get basic info (title, author, eventually a thumbnail URL) for a title
+sub get_title_info {
+    my $self = shift;
+
+    # External ID for title.  Depending on the API, this could be an ISBN
+    # or an identifier unique to that vendor.
+    my $title_id = shift;
+
+    # Prepare data structure to be used as return value.
+    my $title_info = {
+        title  => '',
+        author => ''
+    };
+
+    # If title lookup fails or title is not found, our return value
+    # is somewhat different.
+    my $title_not_found = {
+        error => 'Title not found.'
+    };
+
+    # For testing purposes, we have only three valid titles (001, 002, 003).
+    # All other title IDs return an error message.
+    if ($title_id eq '001') {
+        $title_info->{title} = 'The Fellowship of the Ring';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } elsif ($title_id eq '002') {
+        $title_info->{title} = 'The Two Towers';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } elsif ($title_id eq '003') {
+        $title_info->{title} = 'The Return of the King';
+        $title_info->{author} = 'J.R.R. Tolkien';
+    } else {
+        return $title_not_found;
+    }
+    return $title_info;
+}
+
 # get detailed holdings information (copy counts and formats), OR basic
 # availability if detailed info is not provided by the API
 sub do_holdings_lookup {
@@ -233,6 +271,9 @@ sub checkout {
 
     # Patron ID or patron auth token, as returned by do_patron_auth().
     my $user_token = shift;
+
+    # Ebook format to be checked out (optional, not used here).
+    my $format = shift;
 
     # If checkout succeeds, the response is a hashref with the following fields:
     # - due_date
@@ -329,6 +370,9 @@ sub place_hold {
 
     # Patron ID or patron auth token, as returned by do_patron_auth().
     my $user_token = shift;
+
+    # Email address of patron (optional, not used here).
+    my $email = shift;
 
     # If hold is successfully placed, return a hashref with the following
     # fields:
@@ -462,3 +506,23 @@ sub get_patron_holds {
     return $self->{holds};
 }
 
+sub do_get_download_link {
+    my $self = shift;
+    my $request_link = shift;
+
+    # For some vendors (e.g. OverDrive), the workflow is as follows:
+    #
+    # 1. Perform a checkout.
+    # 2. Checkout response contains a URL which we use to request a
+    #    format-specific download link for the checked-out title.
+    # 3. Submit a request to the request link.
+    # 4. Response contains a (temporary/dynamic) URL which the user
+    #    clicks on to download the ebook in the desired format.
+    #    
+    # For other vendors, the download link for a title is static and not
+    # format-dependent.  In that case, we just return the original request link
+    # (but ideally the UI will skip the download link request altogether, since
+    # it's superfluous in that case).
+
+    return $request_link;
+}

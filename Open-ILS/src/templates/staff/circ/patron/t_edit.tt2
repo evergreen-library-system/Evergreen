@@ -1,7 +1,7 @@
 [% DOC_IMG = '/images/question-mark.png' %]
 
 <!-- register banner -->
-<div ng-if="!patron_id" class='patron-reg-fixed-bar'>
+<div ng-if="!patron_id" ng-class='{"patron-reg-fixed-bar":!offline}'>
 
   <div class="container-fluid" style="text-align:center">
     <div class="alert alert-info alert-less-pad strong-text-2">
@@ -25,31 +25,43 @@
     [%# dupe_search_encoded is uri escaped in the JS %]
     <div class="alert alert-danger" ng-show="dupe_counts.name">
       <a target="_blank"
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}&inactive=1">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.name}}&inactive=1">
       [% l('[_1] patron(s) with same name', '{{dupe_counts.name}}') %]
       </a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.email">
       <a target="_blank"
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.email}}">
         [% l('[_1] patron(s) with same email', 
         '{{dupe_counts.email}}') %]</a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.ident">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.ident}}">
         [% l('[_1] patron(s) with same identification', 
         '{{dupe_counts.ident}}') %]</a>
     </div>
-    <div class="alert alert-danger" ng-show="dupe_counts.phone">
+    <div class="alert alert-danger" ng-show="dupe_counts.day_phone">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}">
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.day_phone}}">
         [% l('[_1] patron(s) with same phone', 
-        '{{dupe_counts.phone}}') %]</a>
+        '{{dupe_counts.day_phone}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.evening_phone">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.evening_phone}}">
+        [% l('[_1] patron(s) with same phone', 
+        '{{dupe_counts.evening_phone}}') %]</a>
+    </div>
+    <div class="alert alert-danger" ng-show="dupe_counts.other_phone">
+      <a target="_blank" 
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.other_phone}}">
+        [% l('[_1] patron(s) with same phone', 
+        '{{dupe_counts.other_phone}}') %]</a>
     </div>
     <div class="alert alert-danger" ng-show="dupe_counts.address">
       <a target="_blank" 
-        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded}}" >
+        href="/eg/staff/circ/patron/search?search={{dupe_search_encoded.address}}" >
         [% l('[_1] patron(s) with same address', 
         '{{dupe_counts.address}}') %]</a>
     </div>
@@ -161,7 +173,7 @@ within the "form" by name for validation.
   <div class="col-md-6 patron-reg-example">
       <button class="btn btn-default" ng-show="!patron.isnew"
         ng-click="replace_card()">[% l('Replace Barcode') %]</button>
-      <button class="btn btn-default" 
+      <button class="btn btn-default" ng-if="!patron.isnew" 
         ng-click="cards_dialog()">[% l('See All') %]</button>
       <div ng-show="dupe_barcode" class="patron-reg-validation-alert">
         <span>[% l('Barcode is already in use') %]</span>
@@ -202,53 +214,143 @@ within the "form" by name for validation.
   </div>
 </div>
 
-<!-- PREFIX -->
-
-<div class="row reg-field-row" ng-show="show_field('au.prefix')">
-  [% draw_field_label('au', 'prefix') %]
-  [% draw_form_input('au', 'prefix'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'prefix') %]
+<div class="row reg-field-row">
+  <div class="col-md-6">
+    <ul class="nav nav-pills nav-pills-like-tabs">
+      <li ng-class="{active : name_tab == 'primary'}">
+        <a ng-click="name_tab='primary'">[% l('Primary Name') %]</a>
+      </li>
+      <li ng-class="{active : name_tab == 'preferred'}">
+        <a ng-click="name_tab='preferred'">[% l('Preferred Name') %]</a>
+      </li>
+    </ul>
   </div>
 </div>
 
-<!-- FIRST_GIVEN_NAME -->
+<div ng-show="name_tab == 'primary'">
 
-<div class="row reg-field-row" ng-show="show_field('au.first_given_name')">
-  [% draw_field_label('au', 'first_given_name') %]
-  [% draw_form_input('au', 'first_given_name'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'first_given_name') %]
+  <!-- PREFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.prefix')">
+    [% draw_field_label('au', 'prefix') %]
+    [% draw_form_input('au', 'prefix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'prefix') %]
+    </div>
   </div>
+
+  <!-- FIRST_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.first_given_name')">
+    [% draw_field_label('au', 'first_given_name') %]
+    [% draw_form_input('au', 'first_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'first_given_name') %]
+    </div>
+  </div>
+
+  <!-- SECOND_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.second_given_name')">
+    [% draw_field_label('au', 'second_given_name') %]
+    [% draw_form_input('au', 'second_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'second_given_name') %]
+    </div>
+  </div>
+
+  <!-- FAMILY_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.family_name')">
+    [% draw_field_label('au', 'family_name') %]
+    [% draw_form_input('au', 'family_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'family_name') %]
+    </div>
+  </div>
+
+  <!-- SUFFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.suffix')">
+    [% draw_field_label('au', 'suffix') %]
+    [% draw_form_input('au', 'suffix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'suffix') %]
+    </div>
+  </div>
+</div> <!-- ng-show == primary -->
+
+<div ng-show="name_tab == 'preferred'" class="patron-reg-pref-names">
+
+  <!-- PREFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_prefix')">
+    [% draw_field_label('au', 'pref_prefix') %]
+    [% draw_form_input('au', 'pref_prefix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_prefix') %]
+    </div>
+  </div>
+
+  <!-- FIRST_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_first_given_name')">
+    [% draw_field_label('au', 'pref_first_given_name') %]
+    [% draw_form_input('au', 'pref_first_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_first_given_name') %]
+    </div>
+  </div>
+
+  <!-- SECOND_GIVEN_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_second_given_name')">
+    [% draw_field_label('au', 'pref_second_given_name') %]
+    [% draw_form_input('au', 'pref_second_given_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_second_given_name') %]
+    </div>
+  </div>
+
+  <!-- FAMILY_NAME -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_family_name')">
+    [% draw_field_label('au', 'pref_family_name') %]
+    [% draw_form_input('au', 'pref_family_name'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_family_name') %]
+    </div>
+  </div>
+
+  <!-- SUFFIX -->
+
+  <div class="row reg-field-row" ng-show="show_field('au.pref_suffix')">
+    [% draw_field_label('au', 'pref_suffix') %]
+    [% draw_form_input('au', 'pref_suffix'); %]
+    <div class="col-md-6 patron-reg-example">
+      [% draw_example_text('au', 'pref_suffix') %]
+    </div>
+  </div>
+</div> <!-- ng-show == preferred -->
+
+<!-- indicate bottom of name tabs -->
+<div class="row reg-field-row">
+  <div class="col-md-6"><hr class="patron-reg-names-separator"/></div>
 </div>
 
-<!-- SECOND_GIVEN_NAME -->
-
-<div class="row reg-field-row" ng-show="show_field('au.second_given_name')">
-  [% draw_field_label('au', 'second_given_name') %]
-  [% draw_form_input('au', 'second_given_name'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'second_given_name') %]
+<div class="row reg-field-row" ng-show="show_field('au.name_keywords')">
+  [% draw_field_label('au', 'name_keywords') %]
+  <div class="col-md-3 reg-field-input">
+    <textarea 
+      class="form-control" 
+      ng-model="patron.name_keywords"
+      ng-pattern="field_pattern('au', 'name_keywords')"
+      ng-change="field_modified()" 
+      ng-blur="handle_field_changed(patron, 'name_keywords')">
+    </textarea>
   </div>
-</div>
-
-<!-- FAMILY_NAME -->
-
-<div class="row reg-field-row" ng-show="show_field('au.family_name')">
-  [% draw_field_label('au', 'family_name') %]
-  [% draw_form_input('au', 'family_name'); %]
   <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'family_name') %]
-  </div>
-</div>
-
-<!-- SUFFIX -->
-
-<div class="row reg-field-row" ng-show="show_field('au.suffix')">
-  [% draw_field_label('au', 'suffix') %]
-  [% draw_form_input('au', 'suffix'); %]
-  <div class="col-md-6 patron-reg-example">
-    [% draw_example_text('au', 'suffix') %]
+    [% draw_example_text('au', 'name_keywords') %]
   </div>
 </div>
 
@@ -267,9 +369,9 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.dob')">
   [% draw_field_label('au', 'dob') %]
   <div class="col-md-3 reg-field-input">
-    <eg-date-input 
-      ng-model="patron.dob"
-      ng-blur="handle_field_changed(patron, 'dob')">
+    <eg-date-input
+      ng-required="field_required('au', 'dob')" 
+      ng-model="patron.dob">
     </eg-date-input>
   </div>
   <div class="col-md-6 patron-reg-example">
@@ -282,12 +384,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.juvenile')">
   [% draw_field_label('au', 'juvenile') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'juvenile')"
         type='checkbox' ng-model="patron.juvenile"/>
-    </div>
   </div>
 </div>
 
@@ -313,6 +413,21 @@ within the "form" by name for validation.
   [% draw_form_input('au', 'ident_value') %]
   <div class="col-md-6 patron-reg-example">
     [% draw_example_text('au', 'ident_value') %]
+  </div>
+</div>
+
+<!-- ident_type2 -->
+
+<div class="row reg-field-row" ng-show="show_field('au.ident_type2')">
+  [% draw_field_label('au', 'ident_type2') %]
+  <div class="col-md-3 reg-field-input">
+    <select 
+      class="form-control" 
+      ng-model="patron.ident_type2"
+      ng-required="field_required('au', 'ident_type2')"
+      ng-blur="handle_field_changed(patron, 'ident_type2')"
+      ng-options="type.name() for type in ident_types track by type.id()">
+    </select>
   </div>
 </div>
 
@@ -432,8 +547,14 @@ within the "form" by name for validation.
         </span>
         <span class="caret"></span>
       </button>
-      <ul uib-dropdown-menu>
-        <li ng-repeat="grp in edit_profiles" 
+      <ul class="scrollable-menu" uib-dropdown-menu>
+        <li ng-repeat="entry in edit_profile_entries" ng-if="edit_profile_entries.length"
+          ng-class="{disabled : entry.grp().usergroup() == 'f'}">
+          <a href 
+            style="padding-left: {{pgtde_depth(entry) * 10 + 5}}px"
+            ng-click="set_profile(entry.grp())">{{entry.grp().name()}}</a>
+        </li>
+        <li ng-repeat="grp in edit_profiles" ng-if="!edit_profile_entries.length"
           ng-class="{disabled : grp.usergroup() == 'f'}">
           <a href 
             style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
@@ -443,7 +564,7 @@ within the "form" by name for validation.
     </div>
   </div>
   <div class="col-md-3">
-    <button class="btn btn-default" ng-disabled="!perms.CREATE_USER_GROUP_LINK"
+    <button class="btn btn-default" ng-if="!offline" ng-disabled="!perms.CREATE_USER_GROUP_LINK"
       ng-click="secondary_groups_dialog()">[% l('Secondary Groups') %]</button>
   </div> 
 </div>
@@ -452,7 +573,6 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'expire_date') %]
   <div class="col-md-3 reg-field-input">
     <eg-date-input 
-      ng-blur="handle_field_changed(patron, 'expire_date')"
       ng-model="patron.expire_date">
     </eg-date-input>
   </div>
@@ -482,12 +602,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.active')">
   [% draw_field_label('au', 'active') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'active')"
         type='checkbox' ng-model="patron.active"/>
-    </div>
   </div>
 </div>
 
@@ -496,12 +614,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.barred')">
   [% draw_field_label('au', 'barred') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'barred')"
         type='checkbox' ng-model="patron.barred"/>
-    </div>
   </div>
 </div>
 
@@ -510,12 +626,10 @@ within the "form" by name for validation.
 <div class="row reg-field-row" ng-show="show_field('au.master_account')">
   [% draw_field_label('au', 'master_account') %]
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         ng-blur="handle_field_changed(patron, 'master_account')"
         type='checkbox' ng-model="patron.master_account"/>
-    </div>
   </div>
 </div>
 
@@ -559,6 +673,8 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<div ng-if="!offline">
+
 <div class="alert alert-success row" role="alert">
   <div class="col-md-6">[% l('User Settings') %]</div>
 </div>
@@ -579,9 +695,11 @@ within the "form" by name for validation.
     <label>{{user_setting_types['opac.default_pickup_location'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <eg-org-selector 
-      xonchange="field_modified" 
-      selected="patron.home_ou"></eg-org-selector>
+    <eg-org-selector nodefault
+      disable-test="disable_pulib" 
+      selected="patron._pickup_lib"
+      onchange="handle_pulib_changed">
+    </eg-org-selector>
   </div>
 </div>
 
@@ -591,11 +709,9 @@ within the "form" by name for validation.
     <label>{{user_setting_types['circ.holds_behind_desk'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         ng-change="field_modified()" 
         type='checkbox' ng-model="user_settings['circ.holds_behind_desk']"/>
-    </div>
   </div>
 </div>
 
@@ -606,13 +722,11 @@ within the "form" by name for validation.
     <label>{{user_setting_types['circ.collections.exempt'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <div class='checkbox'>
       <input 
         type='checkbox' 
         ng-change="field_modified()" 
         ng-disabled="!perms.UPDATE_PATRON_COLLECTIONS_EXEMPT"
         ng-model="user_settings['circ.collections.exempt']"/>
-    </div>
   </div>
 </div>
 
@@ -659,7 +773,7 @@ within the "form" by name for validation.
   </div>
   <div class="col-md-3 reg-field-input">
     <span class="nullable">
-      <select class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers">
+      <select str-to-int class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers">
         <option value="">Select a Carrier</option>
       </select>
     </span>
@@ -676,6 +790,8 @@ within the "form" by name for validation.
       type='checkbox' ng-model="user_settings[type.name()]"/>
   </div>
 </div>
+
+</div> <!-- end offline test -->
 
 <!-- addresses -->
 
@@ -707,6 +823,35 @@ within the "form" by name for validation.
               class="btn btn-danger">[% l('X') %]</button>
           </span>
       </div>
+  </div>
+
+  <div ng-if="addr.pending" class="row">
+    <div class="col-md-6 patron-reg-pending-address">
+      <div class="row">
+        <div class="col-md-6">
+          [% l('This is a pending address') %]
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-success" 
+            ng-click="approve_pending_address(addr)">[% l('Approve') %]</button>
+        </div>
+      </div>
+      <div class="row" ng-if="addr._replaces">
+        <div class="col-md-6">
+          [% | l(
+            '{{addr._replaces.street1}}',
+            '{{addr._replaces.street2}}',
+            '<br/>'
+            '{{addr._replaces.city}}',
+            '{{addr._replaces.state}}',
+            '{{addr._replaces.post_code}}') %]
+            Replaces: [_1] [_2] [_3] [_4], [_5] [_6]
+          [% END %]
+        </div>
+      </div>
+    </div>
+    <!-- make sure we occupy the entire row -->
+    <div class="col-md-6"> </div>
   </div>
 
   <!-- ADDRESS_TYPE -->
@@ -801,14 +946,12 @@ within the "form" by name for validation.
   <div class="row reg-field-row" ng-show="show_field('aua.valid')">
     [% draw_field_label('aua', 'valid') %]
     <div class="col-md-3 reg-field-input">
-      <div class='checkbox'>
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'valid')"
           ng-model="patron.addresses[$index].valid"/>
-      </div>
     </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'valid') %]
@@ -820,14 +963,12 @@ within the "form" by name for validation.
   <div class="row reg-field-row" ng-show="show_field('aua.within_city_limits')">
     [% draw_field_label('aua', 'within_city_limits') %]
     <div class="col-md-3 reg-field-input">
-      <div class='checkbox'>
         <input 
           type='checkbox' 
           ng-change="field_modified()" 
           ng-disabled='addr._linked_owner'
           ng-blur="handle_field_changed(patron.addresses[$index], 'within_city_limits')"
           ng-model="patron.addresses[$index].within_city_limits"/>
-      </div>
     </div>
     <div class="col-md-6 patron-reg-example">
       [% draw_example_text('aua', 'within_city_limits') %]
@@ -843,7 +984,8 @@ within the "form" by name for validation.
     class="btn btn-success">[% l('New Address') %]</button>
 </div>
 
-<div class="alert alert-success row" role="alert" 
+<div ng-if="!offline">
+<div class="alert alert-success row" role="alert"
     ng-show="show_field('stat_cats') || hasRequiredStatCat" ng-if="stat_cats.length > 0">
     <div class="col-md-6">[% l('Statistical Categories') %]</div>
 </div>
@@ -888,6 +1030,7 @@ within the "form" by name for validation.
     </div>
 
   </div><!-- show/hide wrapper -->
+</div>
 </div>
 
 <!-- surveys -->

@@ -1,16 +1,16 @@
-#. extracted from ../../Open-ILS/web/opac/locale/en-US/reports.dtd
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-07 02:02-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"PO-Revision-Date: 2017-06-22 10:05+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"X-Launchpad-Export-Date: 2017-09-05 04:42+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Accelerator-Marker: &\n"
 
 #. Common Entities
@@ -262,6 +262,10 @@ msgstr ""
 msgid "Template Creator:"
 msgstr ""
 
+#: reports.oils_rpt_editor.doc_url
+msgid "Template Documentation URL:"
+msgstr ""
+
 #: reports.oils_rpt_editor.template_description
 msgid "Template Description:"
 msgstr ""
@@ -367,6 +371,29 @@ msgstr ""
 
 #: reports.oils_rpt_editor.save_report
 msgid "Save Report"
+msgstr ""
+
+#: reports.oils_rpt_editor.apply_changes
+msgid "Apply Changes"
+msgstr ""
+
+#: reports.oils_rpt_editor.save_report_new
+msgid "Save As New"
+msgstr ""
+
+#: reports.oils_rpt_editor.confirm_sched
+msgid ""
+"Changes will be applied to pending reports that have not yet run. Do you "
+"want to continue with modifying those pending reports?"
+msgstr ""
+
+#: reports.oils_rpt_editor.cancel
+msgctxt "reports.oils_rpt_editor.cancel"
+msgid "Cancel"
+msgstr ""
+
+#: reports.oils_rpt_editor.exit_report
+msgid "Return"
 msgstr ""
 
 #: reports.oils_rpt_editor.empty_parameter
@@ -486,6 +513,14 @@ msgstr ""
 msgid "Schedule report"
 msgstr ""
 
+#: reports.oils_rpt_folder_window.view_report
+msgid "View"
+msgstr ""
+
+#: reports.oils_rpt_folder_window.edit_report
+msgid "Edit"
+msgstr ""
+
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
 msgstr ""
@@ -549,6 +584,7 @@ msgid "Select Folder"
 msgstr ""
 
 #: reports.oils_rpt_folder_window.cancel
+msgctxt "reports.oils_rpt_folder_window.cancel"
 msgid "Cancel"
 msgstr ""
 
@@ -558,14 +594,14 @@ msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
-"One or more of the selected templates could not be deleted because there are "
-"reports that depend on them."
+"        One or more of the selected templates could not be deleted because \n"
+"there are reports or outputs that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
-"One or more of The selected reports could not be deleted because there are "
-"outputs that depend on them."
+"        One or more of the selected reports could not be deleted because \n"
+"there are outputs that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
@@ -640,6 +676,46 @@ msgstr ""
 msgid " ago"
 msgstr ""
 
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr ""
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr ""
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr ""
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr ""
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr ""
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr ""
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr ""
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr ""
+
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"
 msgstr ""
@@ -702,6 +778,10 @@ msgstr ""
 
 #: reports.xul.template_builder.description.label
 msgid "Description:"
+msgstr ""
+
+#: reports.xul.template_builder.doc_url.label
+msgid "Documentation URL:"
 msgstr ""
 
 #: reports.xul.template_builder.save.label
@@ -771,6 +851,10 @@ msgstr ""
 msgid "Change value"
 msgstr ""
 
+#: reports.xul.template_builder.change_field_doc.label
+msgid "Change Field Hint"
+msgstr ""
+
 #: reports.xul.template_builder.remove_value.label
 msgid "Remove value"
 msgstr ""
@@ -789,4 +873,8 @@ msgstr ""
 
 #: reports.xul.template_builder.relationship.label
 msgid "Relationship"
+msgstr ""
+
+#: reports.xul.template_builder.field_doc.label
+msgid "Field Hint"
 msgstr ""

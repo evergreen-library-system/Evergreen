@@ -54,6 +54,14 @@ angular.module('egGridMod',
             //                 column
             features : '@',
 
+            // optional: object containing function to conditionally apply
+            //    class to each row.
+            rowClass : '=',
+
+            // optional: object that enables status icon field and contains
+            //    function to handle what status icons should exist and why.
+            statusColumn : '=',
+
             // optional primary grid label
             mainLabel : '@',
 
@@ -111,6 +119,11 @@ angular.module('egGridMod',
             scope.collect();
 
             scope.grid_element = element;
+
+            if(!attrs.id){
+                $(element).attr('id', attrs.persistKey);
+            }
+
             $(element)
                 .find('.eg-grid-content-body')
                 .bind('contextmenu', scope.showActionContextMenu);
@@ -119,8 +132,10 @@ angular.module('egGridMod',
         controller : [
                     '$scope','$q','egCore','egGridFlatDataProvider','$location',
                     'egGridColumnsProvider','$filter','$window','$sce','$timeout',
+                    'egProgressDialog','$uibModal','egConfirmDialog','egStrings',
             function($scope,  $q , egCore,  egGridFlatDataProvider , $location,
-                     egGridColumnsProvider , $filter , $window , $sce , $timeout) {
+                     egGridColumnsProvider , $filter , $window , $sce , $timeout,
+                     egProgressDialog,  $uibModal , egConfirmDialog , egStrings) {
 
             var grid = this;
 
@@ -161,6 +176,10 @@ angular.module('egGridMod',
 
                 var stored_limit = 0;
                 if ($scope.showPagination) {
+                    // localStorage of grid limits is deprecated. Limits 
+                    // are now stored along with the columns configuration.  
+                    // Values found in localStorage will be migrated upon 
+                    // config save.
                     if (grid.persistKey) {
                         var stored_limit = Number(
                             egCore.hatch.getLocalItem('eg.grid.' + grid.persistKey + '.limit')
@@ -217,6 +236,10 @@ angular.module('egGridMod',
                     });
                 }
 
+                // make grid ref available in get() to set totalCount, if known.
+                // this allows us disable the 'next' paging button correctly
+                grid.dataProvider.grid = grid;
+
                 grid.dataProvider.columnsProvider = grid.columnsProvider;
 
                 $scope.itemFieldValue = grid.dataProvider.itemFieldValue;
@@ -258,6 +281,10 @@ angular.module('egGridMod',
                 // link in the control functions
                 controls.selectedItems = function() {
                     return grid.getSelectedItems()
+                }
+
+                controls.selectItemsByValue = function(c,v) {
+                    return grid.selectItemsByValue(c,v)
                 }
 
                 controls.allItems = function() {
@@ -310,9 +337,10 @@ angular.module('egGridMod',
                 }
 
                 controls.setLimit = function(limit,forget) {
-                    if (!forget && grid.persistKey)
-                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', limit);
                     grid.limit = limit;
+                    if (!forget && grid.persistKey) {
+                        $scope.saveConfig();
+                    }
                 }
                 controls.getLimit = function() {
                     return grid.limit;
@@ -417,11 +445,11 @@ angular.module('egGridMod',
                 }
 
                 // only store information about visible columns.
-                var conf = grid.columnsProvider.columns.filter(
+                var cols = grid.columnsProvider.columns.filter(
                     function(col) {return Boolean(col.visible) });
 
                 // now scrunch the data down to just the needed info
-                conf = conf.map(function(col) {
+                cols = cols.map(function(col) {
                     var c = {name : col.name}
                     // Apart from the name, only store non-default values.
                     // No need to store col.visible, since that's implicit
@@ -431,12 +459,23 @@ angular.module('egGridMod',
                     return c;
                 });
 
+                var conf = {
+                    version: 2,
+                    limit: grid.limit,
+                    columns: cols
+                };
+
                 egCore.hatch.setItem('eg.grid.' + grid.persistKey, conf)
                 .then(function() { 
                     // Save operation performed from the grid configuration UI.
                     // Hide the configuration UI and re-draw w/ sort applied
                     if ($scope.showGridConf) 
                         $scope.toggleConfDisplay();
+
+                    // Once a version-2 grid config is saved (with limit
+                    // included) we can remove the local limit pref.
+                    egCore.hatch.removeLocalItem(
+                        'eg.grid.' + grid.persistKey + '.limit');
                 });
             }
 
@@ -454,7 +493,20 @@ angular.module('egGridMod',
                     var columns = grid.columnsProvider.columns;
                     var new_cols = [];
 
-                    angular.forEach(conf, function(col) {
+                    if (Array.isArray(conf)) {
+                        console.debug(  
+                            'upgrading version 1 grid config to version 2');
+                        conf = {
+                            version : 2,
+                            columns : conf
+                        };
+                    }
+
+                    if (conf.limit) {
+                        grid.limit = Number(conf.limit);
+                    }
+
+                    angular.forEach(conf.columns, function(col) {
                         var grid_col = columns.filter(
                             function(c) {return c.name == col.name})[0];
 
@@ -481,7 +533,7 @@ angular.module('egGridMod',
                     // configuration are marked as non-visible and 
                     // appended to the end of the new list of columns.
                     angular.forEach(columns, function(col) {
-                        var found = conf.filter(
+                        var found = conf.columns.filter(
                             function(c) {return (c.name == col.name)})[0];
                         if (!found) {
                             col.visible = false;
@@ -520,9 +572,10 @@ angular.module('egGridMod',
 
             $scope.limit = function(l) { 
                 if (angular.isNumber(l)) {
-                    if (grid.persistKey)
-                        egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', l);
                     grid.limit = l;
+                    if (grid.persistKey) {
+                        $scope.saveConfig();
+                    }
                 }
                 return grid.limit 
             }
@@ -637,8 +690,18 @@ angular.module('egGridMod',
                 if (!$scope.menu_dom) $scope.menu_dom = $($scope.grid_element).find('.grid-action-dropdown')[0];
                 if (!$scope.action_context_parent) $scope.action_context_parent = $($scope.menu_dom).parent();
 
-                if (!grid.getSelectedItems().length) // Nothing selected, fire the click event
-                    $event.target.click();
+                // we need the the row that got right-clicked...
+                var e = $event.target; // the DOM element
+                var s = undefined;     // the angular scope for that element
+                while(e){ // searching for the row
+                    // abort & use the browser default context menu for links (lp1669856):
+                    if(e.tagName.toLowerCase() === 'a' && e.href){ return true; }
+                    s = angular.element(e).scope();
+                    if(s.hasOwnProperty('item')){ break; }
+                    e = e.parentElement;
+                }
+                // select the right-clicked row if it is not already selected (lp1776557):
+                if(!$scope.selected[grid.indexValue(s.item)]){ $event.target.click(); }
 
                 if (!$scope.action_context_showing) {
                     $scope.action_context_width = $($scope.menu_dom).css('width');
@@ -682,6 +745,21 @@ angular.module('egGridMod',
             grid.selectOneItem = function(index) {
                 $scope.selected = {};
                 $scope.selected[index] = true;
+            }
+
+            // selects items by a column value, first clearing selected list.
+            // we overwrite the object so that we can watch $scope.selected
+            grid.selectItemsByValue = function(column, value) {
+                $scope.selected = {};
+                angular.forEach($scope.items, function(item) {
+                    var col_value;
+                    if (angular.isFunction(item[column]))
+                        col_value = item[column]();
+                    else
+                        col_value = item[column];
+
+                    if (value == col_value) $scope.selected[grid.indexValue(item)] = true
+                }); 
             }
 
             // selects or deselects an item, without affecting the others.
@@ -759,8 +837,14 @@ angular.module('egGridMod',
                     column.flex = 1;
             }
             $scope.modifyColumnFlex = function(col, val) {
-                $scope.lastModColumn = col.name;
+                $scope.lastModColumn = col;
                 grid.modifyColumnFlex(col, val);
+            }
+
+            $scope.isLastModifiedColumn = function(col) {
+                if ($scope.lastModColumn)
+                    return $scope.lastModColumn === col;
+                return false;
             }
 
             grid.modifyColumnPos = function(col, diff) {
@@ -779,7 +863,14 @@ angular.module('egGridMod',
                             if (column.visible) lastVisible = idx;
                         }
                     );
-                    targetIdx = lastVisible + 1;
+
+                    // When moving a column (down) causes one or more
+                    // visible columns to shuffle forward, our column
+                    // moves into the slot of the last visible column.
+                    // Otherwise, put it into the slot directly following 
+                    // the last visible column.
+                    targetIdx = 
+                        srcIdx <= lastVisible ? lastVisible : lastVisible + 1;
                 }
 
                 // Splice column out of old position, insert at new position.
@@ -788,10 +879,36 @@ angular.module('egGridMod',
             }
 
             $scope.modifyColumnPos = function(col, diff) {
-                $scope.lastModColumn = col.name;
+                $scope.lastModColumn = col;
                 return grid.modifyColumnPos(col, diff);
             }
 
+            // Returns true of the contents of the cell overflow its container.
+            // parentDepth tells the code how far up the DOM tree to traverse
+            // via parentNode before stopping to inspect the value.
+            // There's no way to pass a reference to a DOM node directly via
+            // a scope function (except ng-click, etc.) so pass the 
+            // DOM id instead and get the node from there.
+            $scope.cellOverflowed = function(id, parentDepth) {
+                var node = document.getElementById(id);
+                if (!node) return;
+                for (var i = 0; i < parentDepth; i++) {
+                    node = node.parentNode;
+                }
+                return node.scrollHeight > node.clientHeight 
+                    || node.scrollWidth > node.clientWidth;
+            }
+
+            // Generates a unique identifier per cell per grid.
+            $scope.cellId = function(col, item) {
+                if (!col || !item) return '';
+                return 'grid-cell-span-' 
+                    // differentiate grids
+                    + ($scope.persistKey || $scope.idlClass || $scope.grid_element.id)
+                    // differentiate rows and columns.
+                    + '-' + col.name + '-' + $scope.indexValue(item);
+
+            }
 
             // handles click, control-click, and shift-click
             $scope.handleRowClick = function($event, item) {
@@ -945,9 +1062,35 @@ angular.module('egGridMod',
                 return str;
             }
 
-            // sets the download file name and inserts the current CSV
-            // into a Blob URL for browser download.
-            $scope.generateCSVExportURL = function() {
+            /** Export the full data set as CSV.
+             *  Flow of events:
+             *  1. User clicks the 'download csv' link
+             *  2. All grid data is retrieved asychronously
+             *  3. Once all data is all present and CSV-ized, the download 
+             *     attributes are linked to the href.
+             *  4. The href .click() action is prgrammatically fired again,
+             *     telling the browser to download the data, now that the
+             *     data is available for download.
+             *  5 Once downloaded, the href attributes are reset.
+             */
+            grid.csvExportInProgress = false;
+            $scope.generateCSVExportURL = function($event) {
+
+                if (grid.csvExportInProgress) {
+                    // This is secondary href click handler.  Give the
+                    // browser a moment to start the download, then reset
+                    // the CSV download attributes / state.
+                    $timeout(
+                        function() {
+                            $scope.csvExportURL = '';
+                            $scope.csvExportFileName = ''; 
+                            grid.csvExportInProgress = false;
+                        }, 500
+                    );
+                    return;
+                } 
+
+                grid.csvExportInProgress = true;
                 $scope.gridColumnPickerIsOpen = false;
 
                 // let the file name describe the grid
@@ -956,12 +1099,21 @@ angular.module('egGridMod',
                     .replace(/\s+/g, '_') + '_' + $scope.page();
 
                 // toss the CSV into a Blob and update the export URL
-                var csv = grid.generateCSV();
-                var blob = new Blob([csv], {type : 'text/plain'});
-                $scope.csvExportURL = 
-                    ($window.URL || $window.webkitURL).createObjectURL(blob);
+                grid.generateCSV().then(function(csv) {
+                    var blob = new Blob([csv], {type : 'text/plain'});
+                    $scope.csvExportURL = 
+                        ($window.URL || $window.webkitURL).createObjectURL(blob);
+
+                    // Fire the 2nd click event now that the browser has
+                    // information on how to download the CSV file.
+                    $timeout(function() {$event.target.click()});
+                });
             }
 
+            /*
+             * TODO: does this serve any purpose given we can 
+             * print formatted HTML?  If so, generateCSV() now
+             * returns a promise, needs light refactoring...
             $scope.printCSV = function() {
                 $scope.gridColumnPickerIsOpen = false;
                 egCore.print.print({
@@ -970,40 +1122,149 @@ angular.module('egGridMod',
                     content_type : 'text/plain'
                 });
             }
+            */
+
+            // Given a row item and column definition, extract the
+            // text content for printing.  Templated columns must be
+            // processed and parsed as HTML, then boiled down to their 
+            // text content.
+            grid.getItemTextContent = function(item, col) {
+                var val;
+                if (col.template) {
+                    val = $scope.translateCellTemplate(col, item);
+                    if (val) {
+                        var node = new DOMParser()
+                            .parseFromString(val, 'text/html');
+                        val = $(node).text();
+                    }
+                } else {
+                    val = grid.dataProvider.itemFieldValue(item, col);
+                    val = $filter('egGridValueFilter')(val, col, item);
+                }
+                return val;
+            }
+
+            $scope.getHtmlTooltip = function(col, item) {
+                if ($scope.cellOverflowed($scope.cellId(col, item), 1)) {
+                    return grid.getItemTextContent(item, col);
+                }
+                return "";
+            }
+
+            /**
+             * Fetches all grid data and transates each item into a simple
+             * key-value pair of column name => text-value.
+             * Included in the response for convenience is the list of 
+             * currently visible column definitions.
+             * TODO: currently fetches a maximum of 10k rows.  Does this
+             * need to be configurable?
+             */
+            grid.getAllItemsAsText = function() {
+                var text_items = [];
+
+                // we don't know the total number of rows we're about
+                // to retrieve, but we can indicate the number retrieved
+                // so far as each item arrives.
+                egProgressDialog.open({value : 0});
+
+                var visible_cols = grid.columnsProvider.columns.filter(
+                    function(c) { return c.visible });
+
+                return grid.dataProvider.get(0, 10000).then(
+                    function() { 
+                        return {items : text_items, columns : visible_cols};
+                    }, 
+                    null,
+                    function(item) { 
+                        egProgressDialog.increment();
+                        var text_item = {};
+                        angular.forEach(visible_cols, function(col) {
+                            text_item[col.name] = 
+                                grid.getItemTextContent(item, col);
+                        });
+                        text_items.push(text_item);
+                    }
+                ).finally(egProgressDialog.close);
+            }
+
+            // Fetch "all" of the grid data, translate it into print-friendly 
+            // text, and send it to the printer service.
+            $scope.printHTML = function() {
+                $scope.gridColumnPickerIsOpen = false;
+                return grid.getAllItemsAsText().then(function(text_items) {
+                    return egCore.print.print({
+                        template : 'grid_html',
+                        scope : text_items
+                    });
+                });
+            }
+
+            $scope.showColumnDialog = function() {
+                return $uibModal.open({
+                    templateUrl: './share/t_grid_columns',
+                    backdrop: 'static',
+                    size : 'lg',
+                    controller: ['$scope', '$uibModalInstance',
+                        function($dialogScope, $uibModalInstance) {
+                            $dialogScope.modifyColumnPos = $scope.modifyColumnPos;
+                            $dialogScope.disableMultiSort = $scope.disableMultiSort;
+                            $dialogScope.columns = $scope.columns;
+
+                            // Push visible columns to the top of the list
+                            $dialogScope.elevateVisible = function() {
+                                var new_cols = [];
+                                angular.forEach($dialogScope.columns, function(col) {
+                                    if (col.visible) new_cols.push(col);
+                                });
+                                angular.forEach($dialogScope.columns, function(col) {
+                                    if (!col.visible) new_cols.push(col);
+                                });
+
+                                // Update all references to the list of columns
+                                $dialogScope.columns = 
+                                    $scope.columns = 
+                                    grid.columnsProvider.columns = 
+                                    new_cols;
+                            }
+
+                            $dialogScope.toggle = function(col) {
+                                col.visible = !Boolean(col.visible);
+                            }
+                            $dialogScope.ok = $dialogScope.cancel = function() {
+                                delete $scope.lastModColumn;
+                                $uibModalInstance.close()
+                            }
+                        }
+                    ]
+                });
+            },
 
             // generates CSV for the currently visible grid contents
             grid.generateCSV = function() {
-                var csvStr = '';
-                var colCount = grid.columnsProvider.columns.length;
+                return grid.getAllItemsAsText().then(function(text_items) {
+                    var columns = text_items.columns;
+                    var items = text_items.items;
+                    var csvStr = '';
 
-                // columns
-                angular.forEach(grid.columnsProvider.columns,
-                    function(col) {
-                        if (!col.visible) return;
+                    // column headers
+                    angular.forEach(columns, function(col) {
                         csvStr += grid.csvDatum(col.label);
                         csvStr += ',';
-                    }
-                );
+                    });
 
-                csvStr = csvStr.replace(/,$/,'\n');
-
-                // items
-                angular.forEach($scope.items, function(item) {
-                    angular.forEach(grid.columnsProvider.columns, 
-                        function(col) {
-                            if (!col.visible) return;
-                            // bare value
-                            var val = grid.dataProvider.itemFieldValue(item, col);
-                            // filtered value (dates, etc.)
-                            val = $filter('egGridValueFilter')(val, col, item);
-                            csvStr += grid.csvDatum(val);
-                            csvStr += ',';
-                        }
-                    );
                     csvStr = csvStr.replace(/,$/,'\n');
-                });
 
-                return csvStr;
+                    // items
+                    angular.forEach(items, function(item) {
+                        angular.forEach(columns, function(col) {
+                            csvStr += grid.csvDatum(item[col.name]);
+                            csvStr += ',';
+                        });
+                        csvStr = csvStr.replace(/,$/,'\n');
+                    });
+
+                    return csvStr;
+                });
             }
 
             // Interpolate the value for column.linkpath within the context
@@ -1023,6 +1284,18 @@ angular.module('egGridMod',
             }
 
             $scope.collect = function() { grid.collect() }
+
+
+            $scope.confirmAllowAllAndCollect = function(){
+                egConfirmDialog.open(egStrings.CONFIRM_LONG_RUNNING_ACTION_ALL_ROWS_TITLE,
+                    egStrings.CONFIRM_LONG_RUNNING_ACTION_MSG)
+                    .result
+                    .then(function(){
+                        $scope.offset(0);
+                        $scope.limit(10000);
+                        grid.collect();
+                });
+            }
 
             // asks the dataProvider for a page of data
             grid.collect = function() {
@@ -1113,7 +1386,16 @@ angular.module('egGridMod',
             // optional: for non-IDL columns, specifying a datatype
             // lets the caller control which display filter is used.
             // datatype should match the standard IDL datatypes.
-            datatype : '@'
+            datatype : '@',
+
+            // optional hash of functions that can be imported into
+            // the directive's scope; meant for cases where the "compiled"
+            // attribute is set
+            handlers : '=',
+
+            // optional: CSS class name that we want to have for this field.
+            // Auto generated from path if nothing is passed in via eg-grid-field declaration
+            cssSelector : "@"
         },
         link : function(scope, element, attrs, egGridCtrl) {
 
@@ -1121,6 +1403,7 @@ angular.module('egGridMod',
             angular.forEach(
                 [
                     'visible', 
+                    'compiled', 
                     'hidden', 
                     'sortable', 
                     'nonsortable',
@@ -1133,6 +1416,16 @@ angular.module('egGridMod',
                         scope[field] = true;
                 }
             );
+
+            scope.cssSelector = attrs['cssSelector'] ? attrs['cssSelector'] : "";
+
+            // auto-generate CSS selector name for field if none declared in tt2 and there's a path
+            if (scope.path && !scope.cssSelector){
+                var cssClass = 'grid' + "." + scope.path;
+                cssClass = cssClass.replace(/\./g,'-');
+                element.addClass(cssClass);
+                scope.cssSelector = cssClass;
+            }
 
             // any HTML content within the field is its custom template
             var tmpl = element.html();
@@ -1287,7 +1580,7 @@ angular.module('egGridMod',
 
             if (!class_obj) return;
 
-            console.debug('egGrid: auto dotpath is: ' + dotpath);
+            //console.debug('egGrid: auto dotpath is: ' + dotpath);
             var path_parts = dotpath.split(/\./);
 
             // find the IDL class definition for the last element in the
@@ -1388,6 +1681,8 @@ angular.module('egGridMod',
                 linkpath : colSpec.linkpath,
                 template : colSpec.template,
                 visible  : colSpec.visible,
+                compiled : colSpec.compiled,
+                handlers : colSpec.handlers,
                 hidden   : colSpec.hidden,
                 datatype : colSpec.datatype,
                 sortable : colSpec.sortable,
@@ -1398,7 +1693,8 @@ angular.module('egGridMod',
                 datecontext      : colSpec.datecontext,
                 datefilter      : colSpec.datefilter,
                 dateonlyinterval : colSpec.dateonlyinterval,
-                parentIdlClass   : colSpec.parentIdlClass
+                parentIdlClass   : colSpec.parentIdlClass,
+                cssSelector      : colSpec.cssSelector
             };
         }
 
@@ -1492,6 +1788,8 @@ angular.module('egGridMod',
         // idlClass as the base.
         cols.idlFieldFromPath = function(dotpath) {
             var class_obj = egCore.idl.classes[cols.idlClass];
+            if (!dotpath) return null;
+
             var path_parts = dotpath.split(/\./);
 
             var idl_parent;
@@ -1755,7 +2053,7 @@ angular.module('egGridMod',
                     angular.forEach(provider.columnsProvider.columns, 
                         function(col) {
                             // only query IDL-tracked columns
-                            if (!col.adhoc && (col.required || col.visible))
+                            if (!col.adhoc && col.name && col.path && (col.required || col.visible))
                                 queryFields[col.name] = col.path;
                         }
                     );
@@ -1926,16 +2224,40 @@ angular.module('egGridMod',
     };
 })
 
+/* https://stackoverflow.com/questions/17343696/adding-an-ng-click-event-inside-a-filter/17344875#17344875 */
+.directive('compile', ['$compile', function ($compile) {
+    return function(scope, element, attrs) {
+      // pass through column defs from grid cell's scope
+      scope.col = scope.$parent.col;
+      scope.$watch(
+        function(scope) {
+          // watch the 'compile' expression for changes
+          return scope.$eval(attrs.compile);
+        },
+        function(value) {
+          // when the 'compile' expression changes
+          // assign it into the current DOM
+          element.html(value);
+
+          // compile the new DOM and link it to the current
+          // scope.
+          // NOTE: we only compile .childNodes so that
+          // we don't get into infinite loop compiling ourselves
+          $compile(element.contents())(scope);
+        }
+    );
+  };
+}])
+
 
 
 /**
  * Translates bare IDL object values into display values.
  * 1. Passes dates through the angular date filter
- * 2. Translates bools to Booleans so the browser can display translated 
- *    value.  (Though we could manually translate instead..)
+ * 2. Converts bools to translated Yes/No strings
  * Others likely to follow...
  */
-.filter('egGridValueFilter', ['$filter','egCore', function($filter,egCore) {
+.filter('egGridValueFilter', ['$filter','egCore', 'egStrings', function($filter,egCore,egStrings) {
     function traversePath(obj,path) {
         var list = path.split('.');
         for (var part in path) {
@@ -1953,11 +2275,11 @@ angular.module('egGridMod',
                     case 't' : 
                     case '1' :  // legacy
                     case true:
-                        return ''+true;
+                        return egStrings.YES;
                     case 'f' : 
                     case '0' :  // legacy
                     case false:
-                        return ''+false;
+                        return egStrings.NO;
                     // value may be null,  '', etc.
                     default : return '';
                 }

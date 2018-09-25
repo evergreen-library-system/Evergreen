@@ -11,6 +11,20 @@
 
     depart_list = ['blimit', 'bterm', 'bpivot'];
     ctx.metalinks.push('<meta name="robots" content="noindex,follow">');
+    MACRO heading_use_label BLOCK;
+        SWITCH use;
+            CASE 'variant';
+               l('See');
+            CASE 'broader';
+               l('Broader term');
+            CASE 'narrower';
+               l('Narrower term');
+            CASE 'other';
+               l('Related term');
+            CASE;
+               l('See');
+        END;
+    END;
 %]
 
     <h2 class="sr-only">[% l('Catalog Browse') %]</h2>
@@ -23,6 +37,7 @@
                     id="home_adv_search_link">[%l('Advanced Search')%]</a></span>
         
             <span class="browse_the_catalog_lbl mobile_hide">[% l('Browse the Catalog') %]</span>
+            [% INCLUDE 'opac/parts/cart.tt2' %]
         </div>
     </div>
     <div id="content-wrapper">
@@ -99,7 +114,6 @@
                             </p>
                     </div>
                     [% END %]
-
                     <ul class="browse-result-list">
                     [% FOR result IN ctx.browse_results %]
                         <li class="browse-result">
@@ -119,14 +133,13 @@
                                 [% END %]
                             </span>
 
+                            [% FOR a IN result.authorities;
+                                    PROCESS authority_notes authority=a IF !sees.grep(a.id);
+                               END %]
                             [% auth_headings_ul_added = 0; %]
                                 [% seenit = {}; # for headings we've rendered
                                    FOR a IN result.sees;
-                                    PROCESS authority_notes authority=a;
-
-                                    # Other than displaying public general
-                                    # notes, we can go no further sans
-                                    # control_set.
+                                    # We can go no further sans control_set.
                                     NEXT UNLESS a.control_set;
 
                                     # get_authority_fields is fast and cache-y.
@@ -142,7 +155,7 @@
                                             # that h.target_count is only
                                             # defined when h.target is.
 
-                                            IF h.target AND h.target_count AND result.list_authorities.grep('^' _ h.target _ '$').size == 0;
+                                            IF h.target AND h.target_count AND result.list_authorities.grep('^' _ h.target _ '$').size == 0 AND h.main_entry;
                                                 id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
                                                 IF !auth_headings_ul_added;
                                                     # only add a <ul> if we have at least one <li> (WCAG 2.0)
@@ -150,7 +163,7 @@
                                                 <ul class="browse-result-authority-headings"> 
                                                 [% END %]
 
-                                                <li><span class="browse-result-authority-field-name">[% field.name %]</span>
+                                                <li><span class="browse-result-authority-field-name">[% heading_use_label(use=h.type) %]</span>
                                                 <a href="[% mkurl(ctx.opac_root _ '/browse', {bterm => h.heading}, ['bpivot']) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
                                                 </li>
@@ -158,12 +171,8 @@
                                         [% END %]
                                     [% END %]
                                 [% END %]
-                                [% FOR a IN result.authorities; # I don't think we'll ever get here...
-                                    PROCESS authority_notes authority=a IF !sees.grep(a.id);
-
-                                    # Other than displaying public general
-                                    # notes, we can go no further sans
-                                    # control_set.
+                                [% FOR a IN result.authorities;
+                                    # We can go no further sans control_set.
                                     NEXT UNLESS a.control_set;
 
                                     # get_authority_fields is fast and cache-y.
@@ -179,14 +188,14 @@
                                             # that h.target_count is only
                                             # defined when h.target is.
 
-                                            IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry;
+                                            IF h.target AND h.target_count AND result.list_sees.grep('^' _ h.target _ '$').size == 0 AND !h.main_entry AND ctx.get_cgf('opac.show_related_headings_in_browse').enabled == 't';
                                                 id = h.target; NEXT IF seenit.$id; seenit.$id = 1; 
                                                 IF !auth_headings_ul_added;
                                                     # only add a <ul> if we have at least one <li> (WCAG 2.0)
                                                     auth_headings_ul_added = 1; %]
                                                 <ul class="browse-result-authority-headings"> 
                                                 [% END %]
-                                                <li><span class="browse-result-authority-field-name">[% field.name %]</span>
+                                                <li><span class="browse-result-authority-field-name">[% heading_use_label(use=h.type) %]</span>
                                                 <a href="[% mkurl(ctx.opac_root _ '/results', {query => 'identifier|authority_id[' _ h.target _ ']'}) %]">[% h.heading | html %]</a>
                                                 <span class="browse-result-authority-bib-links">([% h.target_count %])</span>
                                                 </li>

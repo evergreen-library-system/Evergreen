@@ -1,5 +1,9 @@
 Managing Authorities
 --------------------
+
+Introduction
+~~~~~~~~~~~~
+
 This section describes how you can create, import, view, modify, merge, and delete authority records in Evergreen.
 
 Creating Authorities
@@ -71,6 +75,24 @@ Evergreen's database stores normalized authority headings in a format that inclu
 Evergreen's internal identifier is in the 901c field. If you have previously exported authority record -- perhaps for an external vendor to do authority cleanup work -- and you want to import them back into your catalog, you may wish to include the 901c field in your match set.
 =================
 
+Viewing and Editing Authority Records by Database ID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The authority record retriever allows catalogers to retrieve a specific
+authority record using its database ID.  Catalogers can
+find those IDs in subfield $0 of matching fields in
+bibliographic records.
+
+To use the authority record retriever:
+
+. Click *Cataloging -> Retrieve Authority Record by ID*.
+. Type in the ID number of the authority record you are
+interested in. Don't include any prefixes, just the ID
+number. 
+. Click *Submit*.
+. View or edit the authority record as needed.
+
+
 Manage Authorities Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -127,7 +149,7 @@ will also be updated to reflect the correct spelling.
 [TIP]
 =================
 When a bib record is automatically updated as a result of the modification of a linked authority record, the bib record's "Last Edit Date/
-Time" and "Last Editing User" fields will be updated to match the time of the update and the editory of the authority record.  If you'd
+Time" and "Last Editing User" fields will be updated to match the time of the update and the editor of the authority record.  If you'd
 prefer that these fields not be automatically updated, you can set the _ingest.disable_authority_auto_update_bib_meta_ setting to true in the
 Library Settings Editor.
 =================

@@ -18,6 +18,7 @@ function($uibModal, $interpolate, $rootScope, $q, egAuth, egStrings, egNet, ngTo
     service.changeOperator = function(permEvt) {
         return $uibModal.open({
             templateUrl: './share/t_opchange',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.args = {username : '', password : '', type : 'temp'};

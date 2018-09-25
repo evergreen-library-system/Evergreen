@@ -1,0 +1,38 @@
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Serials Administration') %]</span>
+  </div>
+</div>
+
+<div class="container admin-splash-container">
+
+[%
+    interfaces = [
+     [ l('Serial Item Templates'), "./admin/serials/templates" ]
+     [ l('Prediction Pattern Templates'), "./admin/serials/pattern_template" ]
+   ];
+
+   USE table(interfaces, cols=3);
+%]
+
+<div class="row">
+    [% FOREACH col = table.cols %]
+        <div class="col-md-4">
+        [% FOREACH item = col %][% IF item.1 %]
+        <div class="row new-entry">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-pencil"></span>
+                <a target="_self" href="[% item.1 %]">
+                    [% item.0 %]
+                </a>
+            </div>
+        </div>
+        [% END %]
+    [% END %]
+        </div>
+    [% END %]
+</div>
+
+</div>
+

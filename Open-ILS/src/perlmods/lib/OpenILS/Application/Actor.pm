@@ -16,7 +16,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::SettingsClient;
 
 use OpenSRF::Utils::Cache;
@@ -31,6 +31,7 @@ use OpenILS::Application::Actor::ClosedDates;
 use OpenILS::Application::Actor::UserGroups;
 use OpenILS::Application::Actor::Friends;
 use OpenILS::Application::Actor::Stage;
+use OpenILS::Application::Actor::Settings;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
@@ -591,7 +592,7 @@ sub _add_patron {
     # do a dance to get the password hashed securely
     my $saved_password = $patron->passwd;
     $patron->passwd('');
-    $e->create_actor_user($patron) or return $e->die_event;
+    $e->create_actor_user($patron) or return (undef, $e->die_event);
     modify_migrated_user_password($e, $patron->id, $saved_password);
 
     my $id = $patron->id; # added by CStoreEditor
@@ -1322,16 +1323,8 @@ __PACKAGE__->register_method(
     method   => "patron_adv_search",
     api_name => "open-ils.actor.patron.search.advanced.fleshed",
     stream => 1,
-    # TODO: change when opensrf 'bundling' is merged.
-    # set a relatively small bundle size so the caller can start
-    # seeing results fairly quickly
-    max_chunk_size => 4096, # bundling
-
-    # api_level => 2,
-    # pending opensrf work -- also, not sure if needed since we're not
-    # actaully creating an alternate vesrion, only offering to return a
-    # different format.
-    #
+    # Flush the response stream at most 5 patrons in for UI responsiveness.
+    max_bundle_count => 5,
     signature => {
         desc => q/Returns a stream of fleshed user objects instead of
             a pile of identifiers/
@@ -3377,7 +3370,13 @@ sub merge_users {
     my $colls = $e->search_money_collections_tracker({usr => $user_ids}, {idlist => 1});
     return OpenILS::Event->new('MERGED_USER_IN_COLLECTIONS', payload => $user_ids) if @$colls;
 
+    return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+        if $master_id == $e->requestor->id;
+
     my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
+    my $evt = group_perm_failed($e, $e->requestor, $master_user);
+    return $evt if $evt;
+
     my $del_addrs = ($U->ou_ancestor_setting_value(
         $master_user->home_ou, 'circ.user_merge.delete_addresses', $e)) ? 't' : 'f';
     my $del_cards = ($U->ou_ancestor_setting_value(
@@ -3386,7 +3385,13 @@ sub merge_users {
         $master_user->home_ou, 'circ.user_merge.deactivate_cards', $e)) ? 't' : 'f';
 
     for my $src_id (@$user_ids) {
+
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
+        my $evt = group_perm_failed($e, $e->requestor, $src_user);
+        return $evt if $evt;
+
+        return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+            if $src_id == $e->requestor->id;
 
         return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
         if($src_user->home_ou ne $master_user->home_ou) {
@@ -3632,7 +3637,72 @@ sub copy_events {
 }
 
 
+__PACKAGE__->register_method (
+    method      => 'get_itemsout_notices',
+    api_name    => 'open-ils.actor.user.itemsout.notices',
+    stream      => 1,
+    argc        => 3
+);
 
+sub get_itemsout_notices{
+    my( $self, $conn, $auth, $circId, $patronId) = @_;
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    my $requestorId = $e->requestor->id;
+
+    if( $patronId ne $requestorId ){
+        my $user = $e->retrieve_actor_user($requestorId) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_CIRCULATIONS', $user->home_ou);
+    }
+
+    #my $ses = OpenSRF::AppSession->create('open-ils.trigger');
+    #my $req = $ses->request('open-ils.trigger.events_by_target',
+    #	'circ', {target => [$circId], event=> {state=>'complete'}});
+    # ^ Above removed in favor of faster json_query.
+    #
+    # SQL:
+    # select complete_time
+    # from action_trigger.event atev
+    #     JOIN action_trigger.event_definition def ON (def.id = atev.event_def)
+    #     JOIN action_trigger.hook athook ON (athook.key = def.hook)
+    # where hook = 'checkout.due' AND state = 'complete' and target = <circId>;
+    #
+
+    my $ctx_loc = $e->requestor->ws_ou;
+    my $exclude_courtesy_notices = $U->ou_ancestor_setting_value($ctx_loc, 'webstaff.circ.itemsout_notice_count_excludes_courtesies');
+    my $query = {
+	    select => { atev => ["complete_time"] },
+	    from => {
+		    atev => {
+			    atevdef => { field => "id",fkey => "event_def", join => { ath => { field => "key", fkey => "hook" }} }
+		    }
+	    },
+	    where => {"+ath" => { key => "checkout.due" },"+atevdef" => { active => 't' },"+atev" => { target => $circId, state => 'complete' }}
+    };
+
+    if ($exclude_courtesy_notices){
+        $query->{"where"}->{"+atevdef"}->{validator} = { "<>" => "CircIsOpen"};
+    }
+
+    my %resblob = ( numNotices => 0, lastDt => undef );
+
+    my $res = $e->json_query($query);
+    for my $ndate (@$res) {
+	$resblob{numNotices}++;
+	if( !defined $resblob{lastDt}){
+	    $resblob{lastDt} = $$ndate{complete_time};
+        }
+
+	if ($resblob{lastDt} lt $$ndate{complete_time}){
+	   $resblob{lastDt} = $$ndate{complete_time};
+	}
+   }
+
+    $conn->respond(\%resblob);
+    return undef;
+}
 
 __PACKAGE__->register_method (
     method      => 'update_events',

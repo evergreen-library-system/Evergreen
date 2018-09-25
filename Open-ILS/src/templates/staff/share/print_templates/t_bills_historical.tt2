@@ -2,10 +2,41 @@
 Template for printing a list of past bills. Data specific
 to this template includes:
 
-* transasctions - a list of transactions, each of which
-  contains:
-
-  summary - information about the transaction
+* today - Today's date and time
+* current_location - the current library
+    current_location.name - Current location's name
+    current_location.shortname - Current location's shortname
+* patron - the patron who was billed, which contains:
+    patron.prefix - Prefix of the patron
+    patron.first_given_name - First given name of the patron
+    patron.second_given_name - Second given name of the patron
+    patron.family_name - Family name of the patron            
+    patron.suffix - Suffix of the patron
+    patron.card - The patron's barcode number
+    patron.expire_date - The patron's expiration date
+    patron.alias - The patron's alias
+    patron.has_email - Whether or not the patron has an email address
+    patron.has_phone - Whether or not the patron has a phone number
+    pref_ versions of all name fields (e.g. pref_family_name);
+* transasctions - a list of transactions, each of which contains:
+  xact.id - Bill unique id
+  xact.copy_barcode - Item barcode
+  xact.xact_finish - Billing finish date and time
+  xact.xact_start - Billing start date and time
+  xact.summary - Information about the transaction
+    xact.summary.balance_owed - Balance owed
+    xact.summary.last_billing_note - Last billing note
+    xact.summary.last_billing_type - Last billing type
+    xact.summary.last_payment_note - Last payment note
+    xact.summary.last_payment_ts - Last payment date and time 
+    xact.summary.last_payment_type - Last payment type
+    xact.summary.total_owed - Total billed 
+    xact.summary.total_paid - Total paid
+    xact.summary.xact_type - Billing type 
+  xact.title - Item title
+    xact.summary - information about the transaction
+    xact.title - Item title
+    xact.copy_barcode - Item barcode
 
 -->
 Welcome to {{current_location.name}}!<br/>
@@ -17,7 +48,7 @@ You had the following bills:
     <dd>
     <table> 
       <tr valign="top">
-        <td>[% l('Date:') %]</td>
+        <td>[% l('Billing Date:') %]</td>
         <td>{{xact.xact_start | date:$root.egDateAndTimeFormat}}</td>
       </tr> 
       <tr valign="top">
@@ -37,7 +68,8 @@ You had the following bills:
       <tr valign="top">
         <td>[% l('Last Payment') %]:</td>
         <td>{{xact.summary.last_payment_type}}<br/>
-            {{xact.summary.last_payment_note}}
+            {{xact.summary.last_payment_note}}<br/>
+            {{xact.summary.last_payment_ts | date:$root.egDateAndTimeFormat}}
         </td>
       </tr> 
       <tr valign="top">

@@ -1,0 +1,18 @@
+Sitemap generator
+-----------------
+
+A http://www.sitemaps.org[sitemap] directs search engines to the pages of
+interest in a web site so that the search engines can intelligently crawl
+your site. In the case of Evergreen, the primary pages of interest are the
+bibliographic record detail pages.
+
+The sitemap generator script creates sitemaps that adhere to the
+http://sitemaps.org specification, including:
+
+* limiting the number of URLs per sitemap file to no more than 50,000 URLs;
+* providing the date that the bibliographic record was last edited, so
+  that once a search engine has crawled all of your sites' record detail pages,
+  it only has to reindex those pages that are new or have changed since the last
+  crawl;
+* generating a sitemap index file that points to each of the sitemap files.
+

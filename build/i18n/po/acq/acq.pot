@@ -1738,6 +1738,10 @@ msgstr ""
 msgid "View Selection List"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
 msgid "When Dry Run is selected, the system will generate a summary of the changes that would occur during the selected operation(s). No data will be changed."
 msgstr ""

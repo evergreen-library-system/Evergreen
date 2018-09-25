@@ -11,7 +11,7 @@ Call number prefixes are codes that precede a call number.
 
 To configure call number prefixes:
 
-1. Select *Admin -> Server Administration -> Call Number Prefixes*.
+1. Select *Administration -> Server Administration ->  Call Number Prefixes*.
 2. Click *New Prefix*.
 3. Enter the *call number label* that will appear on the item.
 4. Select the *owning library* from the drop down menu. Staff at this library, and its descendant org units, with the appropriate permissions, will be able to apply this call number prefix.
@@ -30,7 +30,7 @@ Call number suffixes are codes that succeed a call number.
 
 To configure call number suffixes:
 
-1. Select *Admin -> Server Administration -> Call Number Suffixes*.
+1. Select *Administration -> Server Administration ->  Call Number Suffixes*.
 2. Click *New Suffix*.
 3. Enter the *call number label* that will appear on the item.
 4. Select the *owning library* from the drop down menu. Staff at this library, and its descendant org units, with the appropriate permissions, will be able to apply this call number suffix.

@@ -16,6 +16,14 @@ angular.module('egFmRecordEditorMod',
             // record ID to update
             recordId : '=',
 
+            // fields with custom templates
+            // hash keyed on field name; may contain
+            //   template - Angular template; should access
+            //              field value using rec_flat[field.name]
+            //   handlers - any functions you want to pass
+            //              in to the custom template
+            customFieldTemplates : '=?',
+
             // comma-separated list of fields that should not be
             // displayed
             hiddenFields : '@',
@@ -27,6 +35,10 @@ angular.module('egFmRecordEditorMod',
             // comma-separated list of required fields; this
             // supplements what the IDL considers required
             requiredFields : '@',
+
+            // comma-separated list of org_unit fields where
+            // the selector should default to the workstation OU
+            orgDefaultAllowed : '@',
 
             // hash, keyed by field name, of functions to invoke
             // to check whether a field is required.  Each
@@ -71,9 +83,11 @@ angular.module('egFmRecordEditorMod',
             $scope.required = list_to_hash($scope.requiredFields);
             $scope.readonly = list_to_hash($scope.readonlyFields);
             $scope.hidden = list_to_hash($scope.hiddenFields);
+            $scope.org_default_allowed = list_to_hash($scope.orgDefaultAllowed);
 
             $scope.record_label = egCore.idl.classes[$scope.idlClass].label;
             $scope.rec_orgs = {};
+            $scope.rec_flat = {};
             $scope.rec_org_values = {};
             $scope.id_is_editable = false;
 
@@ -114,26 +128,23 @@ angular.module('egFmRecordEditorMod',
                             rec[field.name]('f');
                         }
                     }
+                    // retrieve values from any fields controlled
+                    // by custom templates, which for the moment all
+                    // expect to be passed an ordinary flat value
+                    if (field.name in $scope.rec_flat) {
+                        rec[field.name]($scope.rec_flat[field.name]);
+                    }
                 });
             }
 
             function flatten_linked_values(cls, list) {
                 var results = [];
-                var fields = egCore.idl.classes[cls].fields;
-                var id_field;
-                var selector;
-                angular.forEach(fields, function(fld) {
-                    if (fld.datatype == 'id') {
-                        id_field = fld.name;
-                        selector = fld.selector ? fld.selector : id_field;
-                        return;
-                    }
-                });
+                var id_field = egCore.idl.classes[cls].pkey;
+                var selector = egCore.idl.classes[cls].field_map[id_field].selector || id_field;
                 angular.forEach(list, function(item) {
-                    var rec = egCore.idl.toHash(item);
                     results.push({
-                        id : rec[id_field],
-                        name : rec[selector]
+                        id : item[id_field](),
+                        name : item[selector]()
                     });
                 });
                 return results;
@@ -155,7 +166,7 @@ angular.module('egFmRecordEditorMod',
                         }
                     }
                     if (field.datatype == 'link') {
-                    egCore.pcrud.retrieveAll(
+                        egCore.pcrud.retrieveAll(
                             field.class, {}, {atomic : true}
                         ).then(function(list) {
                             field.linked_values = flatten_linked_values(field.class, list);
@@ -169,6 +180,13 @@ angular.module('egFmRecordEditorMod',
                         if ($scope.rec[field.name]()) {
                             $scope.rec_org_values[field.name] = $scope.rec_orgs[field.name]();
                         }
+                        field.org_default_allowed = (field.name in $scope.org_default_allowed);
+                    }
+                    if (angular.isObject($scope.customFieldTemplates) && (field.name in $scope.customFieldTemplates)) {
+                        field.use_custom_template = true;
+                        field.custom_template = $scope.customFieldTemplates[field.name].template;
+                        field.handlers = $scope.customFieldTemplates[field.name].handlers;
+                        $scope.rec_flat[field.name] = $scope.rec[field.name]();
                     }
                 });
                 return fields.filter(function(field) { return !(field.name in $scope.hidden) });
@@ -191,5 +209,19 @@ angular.module('egFmRecordEditorMod',
                 $scope.onCancel($event);
             }
         }]
+    };
+})
+
+.directive('egFmCustomFieldInput', function($compile) {
+    return {
+        restrict : 'E',
+        scope : {
+            template : '=',
+            handlers : '='
+        },
+        link : function(scope, element, attrs) {
+            element.html(scope.template);
+            $compile(element.contents())(scope.$parent);
+        }
     };
 })

@@ -1,6 +1,6 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Copy Buckets"); 
+  ctx.page_title = l("Item Buckets"); 
   ctx.page_app = "egCatCopyBuckets";
   ctx.page_ctrl = "CopyBucketCtrl";
 %]
@@ -18,7 +18,7 @@
     s.OVERRIDE_DELETE_COPY_BUCKET_ITEMS_FROM_CATALOG_BODY =
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
     s.CONFIRM_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME =
-      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";
+      "[% l('Are you sure you want to transfer selected items to the marked call number?') %]";
     s.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_TITLE =
       "[% l('One or more items could not be transferred. Override?') %]";
     s.OVERRIDE_TRANSFER_COPY_BUCKET_ITEMS_TO_MARKED_VOLUME_BODY =
@@ -38,7 +38,7 @@ changing routes with each tab selection anyway.
 <ul class="nav nav-tabs">
   <li ng-class="{active : tab == 'pending'}">
     <a href="./cat/bucket/copy/pending/{{bucketSvc.currentBucket.id()}}">
-        [% l('Pending Copies') %]
+        [% l('Pending Items') %]
         <span ng-cloak>({{bucketSvc.pendingList.length}})</span>
     </a>
   </li>

@@ -1,7 +1,0 @@
-Include Call Number Prefixes and Suffixes in Export and Z39.50 output
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The call number prefix and suffix, when present, are now included in
-subfields $k and $m of the 852 field when running `marc_export` with
-the `--items` switch. Similarly, when using Evergreen as a Z39.50
-server configured to embed item data in 852 fields, the affixes are now
-included in subfields $k and $m.

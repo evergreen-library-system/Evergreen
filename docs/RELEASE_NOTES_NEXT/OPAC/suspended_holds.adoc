@@ -1,9 +1,0 @@
-Option to Suspend Holds at the Time They are Placed
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Users now have the option to suspend a hold at the same time they place the
-hold. The _Place Hold_ screen has a checkbox that can be enabled for users
-who want to suspend a hold at the time it is placed. There is also an option
-to set the activation date at the same time. This option is also available
-when placing holds on a batch of titles from _My List_ and will apply to
-all the titles in the batch.
-

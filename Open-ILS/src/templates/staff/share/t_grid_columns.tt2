@@ -1,0 +1,69 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title alert alert-info">
+      [% l('Grid Columns Configuration') %]
+    </h4> 
+  </div>
+  <div class="modal-body eg-grid-columns-modal-body">
+    <div class="row eg-grid-header-row">
+      <div class="col-md-1">[% l('Visible') %]</div>
+      <div class="col-md-3">[% l('Column Name') %]</div>
+      <div class="col-md-1">[% l('Move Up') %]</div>
+      <div class="col-md-1">[% l('Move Down') %]</div>
+      <div class="col-md-1">[% l('First Visible') %]</div>
+      <div class="col-md-1">[% l('Last Visible') %]</div>
+      <div class="col-md-1" ng-if="!disableMultiSort">
+        [% l('Sort Priority') %]
+      </div>
+      <div class="col-md-3">
+        <button class="btn btn-default" ng-click="elevateVisible()">
+          [% l('Sort Visible Columns To Top') %]
+        </button>
+      </div>
+    </div>
+    <div class="row" ng-repeat="col in columns" 
+      ng-class="{visible : col.visible}">
+      <div class="col-md-1" ng-click="toggle(col)">
+        <span ng-if="col.visible" class="label label-success">&#x2713;</span>
+        <span ng-if="!col.visible" class="label label-warning">&#x2717;</span>
+      </div>
+      <div class="col-md-3" ng-click="toggle(col)">{{col.label}}</div>
+      <div class="col-md-1">
+        <a href title="[% l('Move column up') %]"
+          ng-click="modifyColumnPos(col, -1)">
+          <span class="glyphicon glyphicon-arrow-up"></span>
+        </a>
+      </div>
+      <div class="col-md-1">
+        <a href title="[% l('Move column down') %]"
+          ng-click="modifyColumnPos(col, 1)">
+          <span class="glyphicon glyphicon-arrow-down"></span>
+        </a>
+      </div>
+      <div class="col-md-1">
+        <a href title="[% l('Make first visible') %]"
+          ng-click="modifyColumnPos(col, -10000)">
+          <span class="glyphicon glyphicon-open"></span>
+        </a>
+      </div>
+      <div class="col-md-1">
+        <a href title="[% l('Make last visible') %]"
+          ng-click="modifyColumnPos(col, 10000)">
+          <span class="glyphicon glyphicon-save"></span>
+        </a>
+      </div>
+      <div class="col-md-1" ng-if="!disableMultiSort">
+        <div ng-if="col.multisortable">
+          <input type='number' ng-model="col.sort"
+            title="[% l('Sort Priority / Direction') %]" style='width:2.3em'/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="[% l('Close') %]"/>
+  </div>
+</div>

@@ -1,0 +1,240 @@
+[% ctx.page_title = l("Create/Edit/View patron Request"); %]
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form"
+      ng-submit="ok(request,extra)">
+    <div> <!-- modal-content -->
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="cancel()"
+                aria-hidden="true">&times;</button>
+            <h4 ng-if="mode=='create'" class="modal-title">
+                [% l('Create Patron Request') %]</h4>
+            <h4 ng-if="mode=='edit'" class="modal-title">
+                [% l('Edit Patron Request') %]</h4>
+            <h4 ng-if="mode=='view'" class="modal-title">
+                [% l('View Patron Request') %]</h4>
+        </div>
+        <div class="modal-header">
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-usr">
+                        [% l('User Barcode') %]</label>
+                    <input type="text" ng-model="extra.barcode" id="barcode"
+                        class="form-control" focus-me="focusMe"
+                        ng-model-options="{ debounce: 1000 }"
+                        ng-disabled="mode=='view'"
+                        placeholder="[% l('Barcode...') %]"/>
+                    <span ng-show="extra.barcode && request.usr">
+                        [% l('[_1], [_2] [_3] : [_4]',
+                          '{{extra.user_obj.family_name}}'
+                          '{{extra.user_obj.first_given_name}}'
+                          '{{extra.user_obj.second_given_name}}'
+                          '{{extra.user_obj.home_ou.shortname}}') %]
+                    </span>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-usr">[% l('User ID') %]</label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-usr" ng-model="request.usr"
+                        required ng-disabled="true"/>
+                    <span class="alert-info pull-right"
+                        ng-show="extra.barcode && !request.usr">
+                        [% l('Not Found') %]
+                    </span>
+                </div>
+            </div>
+            <div class="form-group" ng-show="request.cancel_reason">
+                <label for="edit-request-id">[% l('Cancel Reason') %]</label>
+                <div class="form-control" ng-disabled="true">
+                    {{request.cancel_reason.label()}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label>[% l('Request Date/Time') %]</label>
+                    <div class="form-control" ng-disabled="true">
+                        {{request.request_date | date:$root.egDateAndTimeFormat}}
+                    </div>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-need-before">
+                        [% l('Need Before Date/Time') %]</label>
+                    <eg-date-input id="edit-request-need-before"
+                        show-time-picker ng-disabled="mode=='view'"
+                        ng-model="request.need_before" min-date="minDate"/>
+                </div>
+            </div>
+            <div class="row" ng-show="mode=='view'">
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-bib-record">
+                        [% l('Bib Record') %]</label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-bib-record" ng-disabled="true"
+                        ng-model="request.eg_bib"/>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-lineitem">
+                        [% l('PO Line Item') %]</label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-lineitem" ng-disabled="true"
+                        ng-model="request.lineitem.id"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-place-hold">
+                        <input type="checkbox" id="edit-request-place-hold"
+                            ng-disabled="mode=='view'" ng-model="request.hold"/>
+                        [% l('Place Hold?') %]
+                    </label>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-pickup-lib">
+                        [% l('Pickup Library') %]</label>
+                    <eg-org-selector id="edit-request-pickup-lib"
+                        ng-hide="mode=='view'" selected="request.pickup_lib"
+                        disable-test="cant_have_vols"/>
+                    <span ng-show="mode=='view'">
+                        {{request.pickup_lib.shortname()}}
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-sm-6">
+                    <label for="edit-request-email-notify">
+                        <input type="checkbox" id="edit-request-email-notify"
+                            ng-disabled="mode=='view'"
+                            ng-model="request.email_notify"/>
+                        [% l('Notify By Email When Hold Ready?') %]
+                    </label>
+                </div>
+                <div class="form-group col-sm-6">
+                    <label for="edit-extra-phone-notify">
+                        <input type="checkbox" id="edit-extra-phone-notify"
+                            ng-disabled="mode=='view'"
+                            ng-model="extra.phone_notify"/>
+                        [% l('Notify By Phone When Hold Ready?') %]
+                    </label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-phone-notify"
+                        ng-disabled="mode=='view'"
+                        ng-model="request.phone_notify"/>
+                </div>
+            </div>
+        </div>
+        <div class="modal-body">
+            <div class="row" ng-if="mode!='create'">
+                <div class="form-group col-sm-6"">
+                    <label for="edit-request-id">[% l('Request ID') %]</label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-id" ng-model="request.id" ng-disabled="true"/>
+                </div>
+                <div class="form-group col-sm-6"">
+                    <label for="edit-request-status">[% l('Request Status') %]</label>
+                    <input type="text" class="form-control" focus-me='focusMe'
+                        id="edit-request-status" ng-model="request.request_status.label" ng-disabled="true"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="request-type-selector">[% l('Request Type') %]</label>
+                <select id="request-type-selector" class="form-control" required
+                    ng-model="extra.selected_request_type"
+                    ng-disabled="mode=='view'"
+                    ng-options="rt.label() for rt in request_types"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-isxn">[% l('ISxN') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-isxn" ng-model="request.isxn"
+                    ng-disabled="mode=='view'" placeholder="[% l('ISxN...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-upc">[% l('UPC') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-upc" ng-model="request.upc"
+                    ng-disabled="mode=='view'" placeholder="[% l('UPC...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-title">[% l('Title') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-title" ng-model="request.title"
+                    ng-disabled="mode=='view'" placeholder="[% l('Title...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-volume">[% l('Volume') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-volume" ng-model="request.volume"
+                    ng-disabled="mode=='view'" placeholder="[% l('Volume...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-author">[% l('Author') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-author" ng-model="request.author"
+                    ng-disabled="mode=='view'" placeholder="[% l('Author...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-publisher">[% l('Publisher') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-publisher" ng-model="request.publisher"
+                    ng-disabled="mode=='view'" placeholder="[% l('Publisher...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-publication-location">
+                    [% l('Publication Location') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-publication-location"
+                    ng-model="request.location"
+                    ng-disabled="mode=='view'"
+                    placeholder="[% l('Publication Location...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-publication-date">
+                    [% l('Publication Date') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-publication-date"
+                    ng-model="request.pubdate"
+                    ng-disabled="mode=='view'"
+                    placeholder="[% l('Publication Date...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-article-title">
+                    [% l('Article Title') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    ng-disabled="mode=='view' || request.request_type != '2'"
+                    id="edit-request-article-title" ng-model="request.article_title"
+                    placeholder="[% l('Article Title...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-article-pages">
+                    [% l('Article Pages') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    ng-disabled="mode=='view' || request.request_type != '2'"
+                    id="edit-request-article-pages" ng-model="request.article_pages"
+                    placeholder="[% l('Article Pages...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-mentioned-in">
+                    [% l('Mentioned In') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-mentioned-in"
+                    ng-model="request.mentioned"
+                    ng-disabled="mode=='view'"
+                    placeholder="[% l('Mentioned In...') %]"/>
+            </div>
+            <div class="form-group">
+                <label for="edit-request-other-info">
+                    [% l('Other Info') %]</label>
+                <input type="text" class="form-control" focus-me='focusMe'
+                    id="edit-request-other-info"
+                    ng-model="request.other_info"
+                    ng-disabled="mode=='view'"
+                    placeholder="[% l('Other Info...') %]"/>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="submit" ng-hide="mode=='view'" ng-disabled="form.$invalid"
+                class="btn btn-primary" value="[% l('Save') %]"/>
+            <button class="btn btn-warning"
+                ng-click="cancel()">[% l('Cancel') %]</button>
+        </div>
+    </div> <!-- modal-content -->
+</form>

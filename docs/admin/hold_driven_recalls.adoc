@@ -4,8 +4,6 @@ Hold-driven recalls
 indexterm:[hold-driven recalls]
 indexterm:[circulation, recalls, hold-driven]
 
-_Added in Evergreen 2.1_
-
 In academic libraries, it is common for groups like faculty and graduate
 students to have extended loan periods (for example, 120 days), while
 others have more common loan periods such as 3 weeks. In these environments,
@@ -25,7 +23,7 @@ Enabling hold-driven recalls
 By default, holds do not trigger recalls. To enable hold-driven recalls
 of circulating items, library settings must be changed as follows:
 
-  . Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
+  . Click *Administration* -> *Local Administration* ->  *Library Settings Editor.*
   . Set the *Recalls: Circulation duration that triggers a recall
     (recall threshold)* setting. The recall threshold is specified as an
     interval (for example, "21 days"); any items with a loan duration of
@@ -49,5 +47,5 @@ current date is recalled.
 Editing the item recall notification email template
 ---------------------------------------------------
 The template for the item recall notification email is contained in the
-'Item Recall Email Notice' template, found under *Admin* -> *Local
+'Item Recall Email Notice' template, found under *Administration* -> *Local
 Administration* -> *Notifications / Action Triggers*.

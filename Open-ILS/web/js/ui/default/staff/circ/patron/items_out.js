@@ -5,10 +5,12 @@
 angular.module('egPatronApp')
 
 .controller('PatronItemsOutCtrl',
-       ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc','$location',
-        'egGridDataProvider','$uibModal','egCirc','egConfirmDialog','egBilling','$window',
-function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $location, 
-         egGridDataProvider , $uibModal , egCirc , egConfirmDialog , egBilling , $window) {
+       ['$scope','$q','$routeParams','$timeout','egCore','egUser','patronSvc',
+        '$location','egGridDataProvider','$uibModal','egCirc','egConfirmDialog',
+        'egBilling','$window','egBibDisplay',
+function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc , 
+         $location , egGridDataProvider , $uibModal , egCirc , egConfirmDialog , 
+         egBilling , $window , egBibDisplay) {
 
     // list of noncatatloged circulations. Define before initTab to 
     // avoid any possibility of race condition, since they are loaded
@@ -96,7 +98,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
     $scope.gridDataProvider = provider;
 
     function fetch_circs(id_list, offset, count) {
-        if (!id_list.length) return $q.when();
+        if (!id_list.length || id_list.length < offset + 1) return $q.when();
 
         var deferred = $q.defer();
         var rendered = 0;
@@ -107,8 +109,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
                     acp : ['call_number', 'holds_count', 'status', 'circ_lib'],
-                    acn : ['record', 'owning_lib'],
-                    bre : ['simple_record']
+                    acn : ['record', 'owning_lib', 'prefix', 'suffix'],
+                    bre : ['wide_display_entry']
                 },
                 // avoid fetching the MARC blob by specifying which 
                 // fields on the bre to select.  More may be needed.
@@ -125,21 +127,35 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         }).then(deferred.resolve, null, function(circ) {
             circ.circ_lib(egCore.org.get(circ.circ_lib())); // local fleshing
 
+            // Translate bib display field JSON blobs to JS.
+            // Collapse multi/array fields down to comma-separated strings.
+            egBibDisplay.mwdeJSONToJS(
+                circ.target_copy().call_number().record().wide_display_entry(), true);
+
             if (circ.target_copy().call_number().id() == -1) {
                 // dummy-up a record for precat items
-                circ.target_copy().call_number().record().simple_record({
+                circ.target_copy().call_number().record().wide_display_entry({
                     title : function() {return circ.target_copy().dummy_title()},
                     author : function() {return circ.target_copy().dummy_author()},
                     isbn : function() {return circ.target_copy().dummy_isbn()}
                 })
             }
 
-            patronSvc.items_out.push(circ); // toss it into the cache
+	    // call open-ils to get overdue notice count and  Last notice date
+	    
+           egCore.net.request(
+               'open-ils.actor',
+               'open-ils.actor.user.itemsout.notices',
+               egCore.auth.token(), circ.id(), $scope.patron_id)
+           .then(function(notice){
+               if (notice.numNotices){
+                   circ.action_trigger_event_count = notice.numNotices;
+                   circ.action_trigger_latest_event_date = notice.lastDt;
+	       }
+               patronSvc.items_out.push(circ);
+           });
 
-            // We fetch all circs for client-side sorting, but only
-            // notify the caller for the page of requested circs.  
-            if (rendered++ >= offset && rendered <= count)
-                deferred.notify(circ);
+	       if (rendered++ >= offset && rendered <= count){ deferred.notify(circ) };
         });
 
         return deferred.promise;
@@ -261,7 +277,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
         get_circ_ids().then(function() {
 
             id_list = $scope[$scope.items_out_display + '_list'];
-
+            $scope.gridDataProvider.grid.totalCount = id_list.length;
             // relay the notified circs back to the grid through our promise
             fetch_circs(id_list, offset, count).then(
                 deferred.resolve, null, deferred.notify);
@@ -286,6 +302,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
         $uibModal.open({
             templateUrl : './circ/patron/t_edit_due_date_dialog',
+            backdrop: 'static',
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -303,13 +320,7 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
                     // Fire off the due-date updater for each circ.
                     // When all is done, close the dialog
                     $scope.ok = function(args) {
-                        // toISOString gives us Zulu time, so
-                        // adjust for that before truncating to date
-                        var adjust_date = new Date( $scope.args.due_date );
-                        adjust_date.setMinutes(
-                            $scope.args.due_date.getMinutes() - adjust_date.getTimezoneOffset()
-                        );
-                        var due = adjust_date.toISOString().replace(/T.*/,'');
+                        var due = $scope.args.due_date.toISOString();
                         console.debug("applying due date of " + due);
 
                         var promises = [];
@@ -344,17 +355,37 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
     $scope.print_receipt = function(items) {
         if (items.length == 0) return $q.when();
-        var print_data = {circulations : []}
+        var print_data = {circulations : []};
+        var cusr = patronSvc.current;
 
-        angular.forEach(patronSvc.items_out, function(circ) {
+        angular.forEach(items, function(circ) {
             print_data.circulations.push({
                 circ : egCore.idl.toHash(circ),
                 copy : egCore.idl.toHash(circ.target_copy()),
                 call_number : egCore.idl.toHash(circ.target_copy().call_number()),
-                title : circ.target_copy().call_number().record().simple_record().title(),
-                author : circ.target_copy().call_number().record().simple_record().author(),
+                title : circ.target_copy().call_number().record().wide_display_entry().title(),
+                author : circ.target_copy().call_number().record().wide_display_entry().author()
             })
         });
+
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_second_given_name : cusr.pref_second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
+            pref_suffix : cusr.pref_suffix(),
+            card : { barcode : cusr.card().barcode() },
+            money_summary : patronSvc.patron_stats.fines,
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/).length),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         return egCore.print.print({
             context : 'default', 
@@ -437,8 +468,8 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
             { return circ.target_copy().barcode() });
 
         return $uibModal.open({
-            templateUrl : './circ/patron/t_edit_due_date_dialog',
             templateUrl : './circ/patron/t_renew_with_date_dialog',
+            backdrop: 'static',
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -472,16 +503,21 @@ function($scope,  $q,  $routeParams,  $timeout,  egCore , egUser,  patronSvc , $
 
     $scope.checkin = function(items) {
         if (!items.length) return;
-        var barcodes = items.map(function(circ) 
-            { return circ.target_copy().barcode() });
+        var copies = items.map(function(circ) { return circ.target_copy() });
+        var barcodes = copies.map(function(copy) { return copy.barcode() });
 
         return egConfirmDialog.open(
             egCore.strings.CHECK_IN_CONFIRM, barcodes.join(' '), {
 
         }).result.then(function() {
+            var copy;
             function do_one() {
-                if (bc = barcodes.pop()) {
-                    egCirc.checkin({copy_barcode : bc})
+                if (copy = copies.pop()) {
+                    // Checkin expects a barcode, but will pass other
+                    // parameters too.  Passing the copy ID allows
+                    // for the checkin of deleted copies on the server.
+                    egCirc.checkin(
+                        {copy_barcode: copy.barcode(), copy_id: copy.id()})
                     .finally(do_one);
                 } else {
                     reset_page();

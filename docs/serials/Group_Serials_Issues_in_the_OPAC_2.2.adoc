@@ -11,7 +11,7 @@ Administration
 
 Enable the following organizational unit settings to use this feature:
  
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor*.
+. Click *Administration* -> *Local Administration* ->  *Library Settings Editor*.
 . Search or scroll to find *Serials: Default display grouping for serials distributions presented in the OPAC*.
 . Click *Edit*.
 . Enter *enum* to display issues by enumeration, or enter *chron* to display issues in chronological order. This value will become your default setting for display issues in the OPAC.

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2014-09-16 05:28+0000\n"
+"PO-Revision-Date: 2018-02-15 18:39+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2018-02-16 05:16+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 
 #: staff.serial.editor_base.handle_update.error
 msgid "serial update error:"
@@ -28,7 +28,7 @@ msgstr "Úspěšně uloženo"
 #: staff.serial.sbsum_editor.count
 msgctxt "staff.serial.sbsum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sbsum_editor.count.plural
 msgctxt "staff.serial.sbsum_editor.count.plural"
@@ -47,7 +47,7 @@ msgstr "M"
 #: staff.serial.sisum_editor.count
 msgctxt "staff.serial.sisum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sisum_editor.count.plural
 msgctxt "staff.serial.sisum_editor.count.plural"
@@ -66,7 +66,7 @@ msgstr "M"
 #: staff.serial.sssum_editor.count
 msgctxt "staff.serial.sssum_editor.count"
 msgid "1 summary"
-msgstr "1 přehled"
+msgstr "1 souhrn"
 
 #: staff.serial.sssum_editor.count.plural
 msgctxt "staff.serial.sssum_editor.count.plural"
@@ -75,7 +75,7 @@ msgstr "%1$s přehledy"
 
 #: staff.serial.sssum_editor.modify.label
 msgid "Modify Supplement Summary"
-msgstr "Upravit dodatky"
+msgstr "Upravit doplňky"
 
 #: staff.serial.sssum_editor.modify.accesskey
 msgctxt "staff.serial.sssum_editor.modify.accesskey"
@@ -144,7 +144,7 @@ msgstr "Poznámky k distribuci"
 
 #: staff.serial.sdist_editor.add_to_sre.label
 msgid "Add to record entry"
-msgstr "Přidat k záhlaví záznamu"
+msgstr "Přidat k  záznamu"
 
 #: staff.serial.sdist_editor.merge_with_sre.label
 msgid "Merge with record entry"
@@ -194,7 +194,7 @@ msgstr "Poznámky k číslování /chronologii"
 
 #: staff.serial.sitem_editor.count
 msgid "1 item"
-msgstr "1 exemplář"
+msgstr "1 položka"
 
 #: staff.serial.sitem_editor.count.plural
 msgid "%1$s items"
@@ -220,7 +220,7 @@ msgstr "M"
 
 #: staff.serial.sitem_editor.notes
 msgid "Item Notes"
-msgstr "Poznámky k exempláři"
+msgstr "Poznámky k jednotce"
 
 #: staff.serial.sstr_editor.count
 msgid "1 stream"
@@ -323,11 +323,11 @@ msgstr "Reklamace proběhla. Počet úspěšně reklamovaných položek:  %1$s"
 
 #: staff.serial.manage_items.set_not_held_success
 msgid "Successfully set %1$s item(s) to 'Not Held'"
-msgstr "%1$s položek bylo úspěšně nastaveno na \"Není vlastněno\""
+msgstr "Successfully set %1$s item(s) to 'Není vlastněno'"
 
 #: staff.serial.manage_items.set_not_published_success
 msgid "Successfully set %1$s item(s) to 'Not Published'"
-msgstr "%1$s položek bylo úspěšně nastaveno na \"Nebylo vydáno\""
+msgstr "%1$s položek bylo úspěšně nastaveno na  'Nevydáno'"
 
 #: staff.serial.manage_items.alert_notes.title
 msgid "Serial Alerts"
@@ -384,7 +384,7 @@ msgstr "Smazat distribuce?"
 
 #: staff.serial.manage_subs.delete_sdist.override
 msgid "Override Delete Failure?"
-msgstr "Obejít chybu při mazání?"
+msgstr "Obejít chybu při smazání?"
 
 #: staff.serial.manage_subs.delete_siss.confirm
 msgid "Are you sure you would like to delete this issuance?"
@@ -429,7 +429,7 @@ msgstr "Editace této poznámky"
 
 #: staff.serial.notes.edit_note.label
 msgid "Edit Note"
-msgstr "Editace poznámky"
+msgstr "Upravit poznámku"
 
 #: staff.serial.notes.edit_note.accesskey
 msgid "E"
@@ -487,7 +487,7 @@ msgstr "Smazat čárové kódy, které již byly automaticky vygenerovány?"
 
 #: batch_receive.none
 msgid "[None]"
-msgstr "[Žádný]"
+msgstr "[Hodnota nezadána]"
 
 #: batch_receive.apply
 msgid "Apply"
@@ -652,7 +652,7 @@ msgstr "Základní jednotky"
 
 #: serial.manage_dists.sssum
 msgid "Supplement Summary"
-msgstr "Dodatky"
+msgstr "Doplňky"
 
 #: serial.manage_dists.sisum
 msgid "Index Summary"
@@ -669,7 +669,7 @@ msgstr "Distribuce"
 
 #: serial.common.default
 msgid "Default"
-msgstr "Výchozí nastavení"
+msgstr "Výchozí"
 
 #: serial.manage_subs.predict.alert
 msgid "You must select a subscription before predicting issuances."

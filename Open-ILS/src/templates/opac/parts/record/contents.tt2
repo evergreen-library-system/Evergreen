@@ -1,18 +1,22 @@
 [%-
 contents =  [
     {
+        display_field => 'general_note',
         label => l('General Note: '),
         xpath => '//*[@tag="500"]'
     }, {
         label => l('With Note: '),
         xpath => '//*[@tag="501"]'
     }, {
+        display_field => 'thesis',
         label => l('Dissertation Note: '),
         xpath => '//*[@tag="502"]'
     }, {
+        display_field => 'bibliography',
         label => l('Bibliography, etc. Note: '),
         xpath => '//*[@tag="504"]'
     }, {
+        display_field => 'toc',
         label => l('Formatted Contents Note: '),
         xpath => '//*[@tag="505"]'
     }, {
@@ -22,12 +26,14 @@ contents =  [
         label => l('Scale Note for Graphic Material: '),
         xpath => '//*[@tag="507"]'
     }, {
+        display_field => 'production_credits',
         label => l('Creation/Production Credits Note: '),
         xpath => '//*[@tag="508"]'
     }, {
         label => l('Citation/References Note: '),
         xpath => '//*[@tag="510"]'
     }, {
+        display_field => 'performers',
         label => l('Participant or Performer Note: '),
         xpath => '//*[@tag="511"]'
     }, {
@@ -46,6 +52,7 @@ contents =  [
         label => l('Date/Time and Place of an Event Note: '),
         xpath => '//*[@tag="518"]'
     }, {
+        display_field => 'abstract',
         label => l('Summary, etc.: '),
         xpath => '//*[@tag="520"]'
     }, {
@@ -170,19 +177,24 @@ BLOCK render_contents;
             all_content.push(subfield.textContent);
         END;
         total_contents = all_content.join(" ").replace('\s+$', '');
-        %] [% total_contents;
-        IF total_contents.size; "<br/>"; END;
+        %] [% "<div class='content_field'>"; total_contents | html ; "</div>";
         FOREACH link880 IN graphics;
             '<div class="graphic880"' _ link880.dir _ '>';
             link880.value | html;
             '</div>';
         END;
     END;
-END 
-%]
-[%  BLOCK render_all_contents;
+END;
+
+BLOCK render_all_contents;
     FOREACH cont IN contents;
-        content = PROCESS render_contents(xpath=cont.xpath);
+        content = '';
+        df = cont.display_field;
+        IF df AND attrs.hl.$df.size;
+            content = '<!-- highlighted -->' _ attrs.hl.$df.join('<br/>');
+        ELSE;
+            content = PROCESS render_contents(xpath=cont.xpath);
+        END;
         IF content.match('\S');
 -%]
 <tr>

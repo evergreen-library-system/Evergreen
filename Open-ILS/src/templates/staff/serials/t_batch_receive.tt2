@@ -1,0 +1,183 @@
+<form name="batch_receive_form" ng-submit="ok(items)" role="form">
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+    <h4 ng-show="force_bind && items.length >  1" class="modal-title">{{ title || "[% l('Bind items') %]" }}</h4>
+    <h4 ng-show="force_bind && items.length <= 1" class="modal-title">{{ title || "[% l('Barcode item') %]" }}</h4>
+    <h4 ng-show="!force_bind" class="modal-title">{{ title || "[% l('Receive items') %]" }}</h4>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-2">
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-model="barcode_items">[% l('Barcode Items') %]
+      </label>
+    </div>
+    <div class="col-md-2">
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-disabled="!barcode_items" ng-model="auto_barcodes">[% l('Auto-Barcode') %]
+      </label>
+    </div>
+    <div class="col-md-2">
+      <label class="checkbox-inline">
+        <input type="checkbox" ng-disabled="" ng-model="print_routing_lists">[% l('Print routing lists') %]
+      </label>
+    </div>
+    <div class="col-md-2">
+      <label class="checkbox-inline" ng-show="items.length > 1">
+        <input type="checkbox" ng-disabled="force_bind" ng-model="bind">[% l('Bind') %]
+      </label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"><hr/></div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+      <b>[% l('Library : Distribution/Stream') %]</b>
+      <br/>
+      <dl class="dl-horizontal"><dt>[% l('Notes') %]</dt></dl>
+    </div>
+    <div class="col-md-1">
+      <b>[% l('Issuance') %]</b>
+    </div>
+    <div class="col-md-1">
+      <b>[% l('Shelving location') %]</b>
+    </div>
+    <div class="col-md-1">
+      <b>[% l('Call number') %]</b>
+    </div>
+    <div class="col-md-2">
+      <b>[% l('Circulation modifier') %]</b>
+    </div>
+    <div class="col-md-1">
+      <b>[% l('Barcode') %]</b>
+    </div>
+    <div class="col-md-1">
+      <b ng-show="!bind">[% l('Receive') %]</b>
+      <b ng-show="bind">[% l('Include') %]</b>
+    </div>
+    <div class="col-md-1">
+      <b>[% l('Routing List') %]</b>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-1">
+      <select
+        class="form-control"
+        ng-model="selected_copy_location"
+        ng-options="l.id as l.name for l in acpl_list | orderBy:'name'">
+        <option value="">[% l('Template default') %]</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <select
+        class="form-control"
+        ng-model="selected_call_number"
+        ng-options="l as fullCNLabel(l) for l in acn_list | orderBy:'label_sortkey'">
+        <option value="">[% l('Default') %]</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <select
+        class="form-control"
+        ng-model="selected_circ_mod"
+        ng-options="l.code as l.name for l in ccm_list | orderBy:'name'">
+        <option value="">[% l('Template default') %]</option>
+      </select>
+    </div>
+    <div class="col-md-4"></div>
+    <div class="col-md-1">
+      <div class="btn btn-primary" ng-click="apply_template_overrides()">[% l('Apply') %]</div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12"><hr/></div>
+  </div>
+
+  <div class="row" ng-repeat="item in items">
+    <div class="col-md-3">
+      {{item.stream().distribution().holding_lib().name()}}: {{item.stream().distribution().label()}}/{{item.stream().routing_label()}}
+      <dl class="dl-horizontal">
+        <div ng-repeat="note in item.stream().distribution().subscription().notes()">
+          <div ng-show="note.alert() == 't'">
+            <dt>{{note.title()}}</dt>
+            <dd>{{note.value()}}</dd>
+          </div>
+        </div>
+        <div ng-repeat="note in item.stream().distribution().notes()">
+          <div ng-show="note.alert() == 't'">
+            <dt>{{note.title()}}</dt>
+            <dd>{{note.value()}}</dd>
+          </div>
+        </div>
+        <div ng-repeat="note in item.notes()">
+          <div ng-show="note.alert() == 't'">
+            <dt>{{note.title()}}</dt>
+            <dd>{{note.value()}}</dd>
+          </div>
+        </div>
+      <dl>
+    </div>
+    <div class="col-md-1">
+      {{item.issuance().label()}}
+    </div>
+    <div class="col-md-1">
+      <select
+        ng-disabled="!item._receive || bind_or_none($index)"
+        class="form-control"
+        ng-model="item._copy_location"
+        ng-options="l.id as l.name for l in acpl_list | orderBy:'name'">
+        <option value="">[% l('Template default') %]</option>
+      </select>
+    </div>
+    <div class="col-md-1">
+      <eg-basic-combo-box eg-disabled="!item._receive || bind_or_none($index)" list="acnp_labels" selected="item._cn_prefix" placeholder="[% l('Prefix') %]"></eg-basic-combo-box>
+      <input ng-disabled="!item._receive || bind_or_none($index)" class="form-control" placeholder="[% l('Label') %]"
+             ng-required="item._receive && !bind_or_none($index)" ng-model="item._call_number" type="text"/>
+      <eg-basic-combo-box eg-disabled="!item._receive || bind_or_none($index)" list="acns_labels" selected="item._cn_suffix" placeholder="[% l('Suffix') %]"></eg-basic-combo-box>
+      <br/>
+    </div>
+    <div class="col-md-1">
+      <select
+        ng-disabled="!item._receive || bind_or_none($index)"
+        class="form-control"
+        ng-model="item._circ_mod"
+        ng-options="l.code as l.name for l in ccm_list | orderBy:'name'">
+        <option value="">[% l('Template default') %]</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input ng-disabled="!item._receive || bind_or_none($index) || (barcode_items && !item.stream().distribution().receive_unit_template())" class="form-control" focus-me="$first"
+             ng-model="item._barcode" type="text" id="item_barcode_{{$index}}"
+             ng-required="item._receive && !bind_or_none($index)" eg-enter="focus_next_barcode($index)"/>
+      <div class="alert alert-warning" ng-show="barcode_items && !item.stream().distribution().receive_unit_template()">
+        [% l('Receiving template not set; needed to barcode while receiving') %]
+      </div>
+    </div>
+    <div class="col-md-1">
+      <input type="checkbox" ng-model="item._receive"/>
+    </div>
+    <div class="col-md-1">
+      <input type="checkbox" ng-disabled="!item._receive || cannot_print($index)" ng-model="item._print_routing_list"/>
+    </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+      <input type="submit" class="btn btn-primary" ng-disabled="batch_receive_form.$error.required.length" value='{{ save_label || "[% l('Save') %]" }}'></input>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div>
+</div>
+</form>

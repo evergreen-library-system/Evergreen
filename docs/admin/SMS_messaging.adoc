@@ -2,7 +2,7 @@ SMS Text Messaging
 ------------------
 
 The SMS Text Messaging feature enables users to receive hold notices via text message.  Users can opt-in to this hold notification as their default setting for all holds, or they 
-can receive specific hold notifications via text message.    Users can also send call numbers and copy locations via text message.
+can receive specific hold notifications via text message. Users can also send call numbers and copy locations via text message.
 
 Administrative Setup
 ~~~~~~~~~~~~~~~~~~~~
@@ -12,25 +12,26 @@ You cannot receive text messages from Evergreen by default.  You must enable thi
 Enable Text Messages
 ^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Local Admin* -> *Library Settings Editor.*
+. Click *Administration* -> *Local Administration* -> *Library Settings Editor.*
 . Select the setting, *Enable features that send SMS text messages.*
 . Set the value to *True,* and click *Update Setting.*
 
-image::media/SMS_Text_Messaging1.jpg[SMS_Text_Messaging1]
+image::media/SMS_Text_Messaging1.png[Library Setting to enable SMS]
 
 Authenticate Patrons
 ^^^^^^^^^^^^^^^^^^^^
 
-By default, you must be logged into your OPAC account to send a text message from Evergreen.  However, if you disable this setting, you can text message copy information without having 
-to login to your OPAC account.
+By default, you must be logged into your OPAC account to send a text message
+from Evergreen.  However, if you turn on this setting, you can text message copy
+information without having to login to your OPAC account.
 
 To disable the patron login requirement:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor.*
+. Click *Administration* -> *Local Administration* ->  *Library Settings Editor.*
 . Select the setting, *Disable auth requirement for texting call numbers*.
 . Set the value to *True,* and click *Update Setting.*
 
-image::media/SMS_Text_Messaging2.jpg[SMS_Text_Messaging2]
+image::media/SMS_Text_Messaging2.png[Library Setting to disable SMS auth/login requirement]
 
 Configure SMS Carriers
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -39,7 +40,7 @@ A list of SMS carriers that can transmit text messages to users is available in 
 
 To add or edit SMS carriers:
 
-. Click *Admin* -> *Server Administration* -> *SMS Carriers*.
+. Click *Administration* -> *Server Administration* ->  *SMS Carriers*.
 . To add a new carrier, click the *New Carrier* button in the top right corner of the screen.  To edit an existing carrier, double click in any white space in the carrier's row.
 +
 image::media/SMS_Text_Messaging3.jpg[SMS_Text_Messaging3] 
@@ -58,14 +59,17 @@ Library staff control the content and format of text messages through the templa
 
 To configure the text of the SMS text message:
 
-. Click *Admin* -> *Local Administration* -> *Notifications/Action Triggers.*
+. Click *Administration* -> *Local Administration* ->  *Notifications/Action Triggers.*
 . Create a new A/T and template, or use or modify an existing template.  For example, a default template, "Hold Ready for Pickup SMS Notification," notifies users that the hold is ready for pickup.  
 +
-image::media/SMS_Text_Messaging5.jpg[SMS_Text_Messaging5]
+image::media/SMS_Text_Messaging5.png[SMS Notification Triggers list]
 +
-. You can use the  default template, or you can edit the template and add content specific to your library.  Click the hyperlinked name to view and/or edit the hold notice.
-
-image::media/SMS_Text_Messaging6.jpg[SMS_Text_Messaging6]
+. You can use the  default template, or you can edit the template and add
+content specific to your library.  Click the hyperlinked name to edit the
+Event Environment and Event Parameters.  Or double-click the row to edit the
+hold notice.
++
+image::media/SMS_Text_Messaging6.png[Hold Ready SMS Trigger Event Definition]
 
 Receiving Holds Notices via Text Message
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

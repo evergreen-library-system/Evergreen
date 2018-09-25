@@ -7,7 +7,7 @@ Authority Control Sets
 
 The tags and subfields that display in authority records in Evergreen are
 proscribed by control sets.  The Library of Congress control set is the default
-control set in Evergreen.  In Evergreen release 2.2, you can create customized
+control set in Evergreen.  You can create customized
 control sets for authority records.  Also, you can define thesauri and authority
 fields for these control sets.
 
@@ -20,18 +20,18 @@ contain.  The Library of Congress control set exists in the staff client by
 default.  The control sets feature enables librarians to add or customize new
 control sets.
 
-To access existing control sets, click *Admin* -> *Server Administration* ->
-*Authorities* -> *Control Sets*.
+To access existing control sets, click *Administration* -> *Server Administration* -> 
+*Authority Control Sets*.
+
+image::media/Authority_Server_Admin_Menu.png[Server administration authority actions]
 
 Add a Control Set
 ^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
 . Click *New Control Set*.  
-. Add a *Name* to the control set. Enter any number
-of characters.  
-. Add a *Description* of the control set.  Enter any number of
-characters.  
+. Add a *Name* to the control set. Enter any number of characters.
+. Add a *Description* of the control set.  Enter any number of characters.
 . Click *Save*.
 
 image::media/Authority_Control_Sets1.jpg[Authority_Control_Sets1]
@@ -45,18 +45,17 @@ should control a MARC record, is encoded in a fixed field using the mnemonic
 Subj in the authority record.  Eleven thesauri associated with the Library of
 Congress control set exist by default in the staff client.  
 
-To access an existing thesaurus, click *Admin* -> *Server Administration* ->
-*Authorities* -> *Control Sets*, and choose the hyperlinked thesaurus that you
-want to access, or click *Admin* -> *Server Administration* -> *Authorities* ->
-*Thesauri*.
+To access an existing thesaurus, click *Administration* -> *Server Administration* -> 
+*Authority Control Sets*, and choose the hyperlinked thesaurus that you
+want to access, or click *Administration* -> *Server Administration* ->  *Authority Thesauri*.
 
 
 Add a Thesaurus
 ^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*,
+. Click *Administration* -> *Server Administration* ->  *Authority Control Sets*,
 and choose the hyperlinked thesaurus that you want to access, or click *Admin*
--> *Server Administration* -> *Authorities* -> *Thesauri*.  
+-> *Server Administration* -> *Authority Thesauri*.
 . Click *New Thesaurus*.  
 . Add a *Thesaurus Code*.  Enter any single, upper case character.
 This character will be entered in the fixed fields of the MARC record.  
@@ -79,7 +78,7 @@ tag in the bibliographic record that would contain the same data.
 Create an Authority Field
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Control Sets*.
+. Click *Administration* -> *Server Administration* ->  *Authority Control Sets*.
 . Click *Authority Fields*.  The number in parentheses indicates the number of
 authority fields that have been created for the control set.
 . Click *New Authority Field*.
@@ -87,14 +86,15 @@ authority fields that have been created for the control set.
 . Add a *Description* to describe the type of data that should be entered in
 this tag.  Enter any number of characters.
 . Select a *Main Entry* if you are linking the tag(s) to another entry.
-. Add a *tag* in the authority record.
+. Add a *Tag* in the authority record.
 . Add a subfield in the authority record.  Multiple subfields should be entered
 without commas or spaces.
-. Add either a value of 1, 2, or leave empty if not applicable for the *Non-filing 
-indicator* field to denote the which will be the non-filing indicator.
+. Add a *Non-filing indicator* (either 1 or 2) to denote which indicator
+contains non-filing information. Leave empty if not applicable.
+
 . Click *Save*.
 +
-image::media/Authority_Control_Sets3.jpg[Authority_Control_Sets3]
+image::media/Authority_Control_Sets_Fields_Edit.png[Authority Fields edit form]
 +
 . Create the corresponding tag in the bibliographic record that should contain
 this information.  Click the *None* link in the *Controlled Bib Fields* column.
@@ -117,7 +117,7 @@ axes.
 Create a new Browse Axis
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click *Admin* -> *Server Administration* -> *Authorities* -> *Browse Axes*
+. Click *Administration* -> *Server Administration* ->  *Authority Browse Axes*
 . Click *New Browse Axis*.
 . Add a *code*.  Do not enter any spaces.
 . Add a *name* to the axis that will appear in the OPAC.  Enter any number of
@@ -128,10 +128,13 @@ the results will be displayed.
 +
 image::media/Authority_Control_Sets5.jpg[Authority_Control_Sets5]
 . Assign the axis to an authority so that users can find the authority record
-when browsing authorities. Click *Admin* -> *Server Administration* ->
-*Authorities* -> *Control Sets*. 
+when browsing authorities. Click *Administration* -> *Server Administration* -> 
+*Authority Control Sets*.
 . Choose the control set to which you will add the axis.  Click *Authority
-Fields*
+Fields*.
++
+image::media/Authority_Control_Sets_Fields.png[Authority fields link]
+
 . Click the link in the *Axes* column of the tag of your choice.
 . Click *New Browse Axis-Authority Field Map*.
 . Select an *Axis* from the drop down menu.

@@ -294,7 +294,7 @@ sub mk_copy_query {
 
     if($org != $self->ctx->{aou_tree}->()->id) { 
         # no need to add the org join filter if we're not actually filtering
-        $query->{from}->{acp}->{aou} = {
+        $query->{from}->{acp}->[1] = { aou => {
             fkey => 'circ_lib',
             field => 'id',
             filter => {
@@ -311,7 +311,7 @@ sub mk_copy_query {
                     }
                 }
             }
-        };
+        }};
     };
 
     # Unsure if we want these in the shared function, leaving here for now
@@ -509,13 +509,40 @@ sub get_hold_copy_summary {
 sub load_print_record {
     my $self = shift;
 
-    my $rec_id = $self->ctx->{page_args}->[0] 
+    my $rec_or_list_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
-    $self->{ctx}->{bre_id} = $rec_id;
+    my $is_list = $self->cgi->param('is_list');
+    my $list;
+    if ($is_list) {
+
+        $list = $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.get_value',
+            $rec_or_list_id, (ref $self)->CART_CACHE_MYLIST);
+
+        if(!$list) {
+            $list = [];
+        }
+
+        {   # sanitize
+            no warnings qw/numeric/;
+            $list = [map { int $_ } @$list];
+            $list = [grep { $_ > 0} @$list];
+        };
+    } else {
+        $list = $rec_or_list_id;
+        $self->{ctx}->{bre_id} = $rec_or_list_id;
+    }
+
     $self->{ctx}->{printable_record} = $U->simplereq(
         'open-ils.search',
-        'open-ils.search.biblio.record.print', $rec_id);
+        'open-ils.search.biblio.record.print', $list);
+
+    if ($self->cgi->param('clear_cart')) {
+        $self->clear_anon_cache;
+    }
+    $self->ctx->{'redirect_to'} = $self->cgi->param('redirect_to');
 
     return Apache2::Const::OK;
 }
@@ -523,14 +550,41 @@ sub load_print_record {
 sub load_email_record {
     my $self = shift;
 
-    my $rec_id = $self->ctx->{page_args}->[0] 
+    my $rec_or_list_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
-    $self->{ctx}->{bre_id} = $rec_id;
+    my $is_list = $self->cgi->param('is_list');
+    my $list;
+    if ($is_list) {
+
+        $list = $U->simplereq(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.get_value',
+            $rec_or_list_id, (ref $self)->CART_CACHE_MYLIST);
+
+        if(!$list) {
+            $list = [];
+        }
+
+        {   # sanitize
+            no warnings qw/numeric/;
+            $list = [map { int $_ } @$list];
+            $list = [grep { $_ > 0} @$list];
+        };
+    } else {
+        $list = $rec_or_list_id;
+        $self->{ctx}->{bre_id} = $rec_or_list_id;
+    }
+
     $U->simplereq(
         'open-ils.search',
         'open-ils.search.biblio.record.email', 
-        $self->ctx->{authtoken}, $rec_id);
+        $self->ctx->{authtoken}, $list);
+
+    if ($self->cgi->param('clear_cart')) {
+        $self->clear_anon_cache;
+    }
+    $self->ctx->{'redirect_to'} = $self->cgi->param('redirect_to');
 
     return Apache2::Const::OK;
 }

@@ -11,7 +11,7 @@ angular.module('egWorkstationAdmin',
  function($routeProvider , $locationProvider , $compileProvider) {
 
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); 
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); 
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/admin/workstation/workstations', {
@@ -44,6 +44,12 @@ angular.module('egWorkstationAdmin',
         resolve : resolver
     });
 
+    $routeProvider.when('/admin/workstation/tests', {
+        templateUrl: './admin/workstation/t_tests',
+        controller: 'testsCtrl',
+        resolve : resolver
+    });
+    
     // default page 
     $routeProvider.otherwise({
         templateUrl : './admin/workstation/t_splash',
@@ -108,7 +114,9 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
                                 service.register_ws_api(
                                     base_name, name, org_id, true, deferred)
                             },
-                            cancel : function() {deferred.reject()} 
+                            cancel : function() {
+                                deferred.reject();
+                            }
                         }
                     );
 
@@ -347,21 +355,72 @@ function($scope , $q , egCore , ngToast) {
     // alongside the templates.
     // NOTE: A lot of this data can be shared across templates.
     var seed_user = {
-        first_given_name : 'Slow',
-        second_given_name : 'Joe',
+        prefix : 'Mr',
+        first_given_name : 'Joseph',
+        second_given_name : 'Martin',
         family_name : 'Jones',
+        suffix : 'III',
+        pref_first_given_name : 'Martin',
+        pref_second_given_name : 'Joe',
+        pref_family_name : 'Smith',
         card : {
             barcode : '30393830393'
-        }
+        },
+        money_summary : {
+            balance_owed : 4, // This is currently how these values are returned to the client
+            total_billed : '5.00',
+            total_paid : '1.00'
+        },
+        expire_date : '2020-12-31',
+        alias : 'Joey J.',
+        has_email : true,
+        has_phone : false,
+        dob : '1980-01-01T00:00:00-8:00',
+        juvenile : 'f',
+        usrname : '30393830393',
+        day_phone : '111-222-3333',
+        evening_phone : '222-333-1111',
+        other_phone : '333-111-2222',
+        email : 'user@example.com',
+        home_ou : {name: function() {return 'BR1'}},
+        profile : {name: function() {return 'Patrons'}},
+        net_access_level : {name: function() {return 'Filtered'}},
+        active : 't',
+        barred : 'f',
+        master_account : 'f',
+        claims_returned_count : '0',
+        claims_never_checked_out_count : '0',
+        alert_message : 'Coat is in the lost-and-found behind the circ desk',
+        ident_type: {name: function() {return 'Drivers License'}},
+        ident_value: '11332445',
+        ident_type2: {name: function() {return 'Other'}},
+        ident_value2 : '55442211',
+        addresses : [],
+        stat_cat_entries : [
+            {
+                stat_cat : {'name' : 'Favorite Donut'},
+                'stat_cat_entry' : 'Maple'
+            }, {
+                stat_cat : {'name' : 'Favorite Book'},
+                'stat_cat_entry' : 'Beasts Made of Night'
+            }
+        ]
     }
+
     var seed_addr = {
+        address_type : 'MAILING',
         street1 : '123 Apple Rd',
         street2 : 'Suite B',
         city : 'Anywhere',
+        county : 'Great County',
         state : 'XX',
         country : 'US',
-        post_code : '12345'
+        post_code : '12345',
+        valid : 't',
+        within_city_limits: 't'
     }
+
+    seed_user.addresses.push(seed_addr);
 
     var seed_record = {
         title : 'Traveling Pants!!',
@@ -395,7 +454,8 @@ function($scope , $q , egCore , ngToast) {
         sms_notify : '111-222-3333',
         email_notify : 'user@example.org',
         request_time : new Date().toISOString(),
-        hold_type : 'T'
+        hold_type : 'T',
+        shelf_expire_time : new Date().toISOString()
     }
 
     var seed_transit = {
@@ -419,24 +479,28 @@ function($scope , $q , egCore , ngToast) {
             {
                 id : 1,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 1.50,
                     last_payment_note : 'Test Note 1',
                     last_payment_type : 'cash_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 1.00
                 }
             }, {
                 id : 2,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 2.50,
                     last_payment_note : 'Test Note 2',
                     last_payment_type : 'credit_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 2.00
                 }
@@ -471,6 +535,12 @@ function($scope , $q , egCore , ngToast) {
             },
         ],
 
+        patron_money : {
+            balance_owed : 5.01,
+            total_owed : 10.12,
+            total_paid : 5.11
+        },
+
         in_house_uses : [
             {
                 num_uses : 3,
@@ -501,6 +571,7 @@ function($scope , $q , egCore , ngToast) {
         patron : seed_user,
         address : seed_addr,
         dest_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
+        dest_courier_code : 'ABC 123',
         dest_address : seed_addr,
         hold : one_hold,
         holds : [
@@ -509,21 +580,24 @@ function($scope , $q , egCore , ngToast) {
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'Ready for Pickup'
             },
             {
                 hold : one_hold, title : 'Some Title 2', author : 'Some Author 2',
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'Ready for Pickup'
             },
             {
                 hold : one_hold, title : 'Some Title 3', author : 'Some Author 3',
                 volume : { label : '646.4 SOM' }, copy : seed_copy,
                 part : { label : 'v. 1' },
                 patron_barcode : 'S52802662',
-                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane'
+                patron_alias : 'XYZ', patron_last : 'Smith', patron_first : 'Jane',
+                status_string : 'Canceled'
             }
         ]
     }
@@ -675,7 +749,7 @@ function($scope , $q , egCore , egConfirmDialog) {
     // fetch the keys
 
     function refreshKeys() {
-        $scope.keys = {local : [], remote : []};
+        $scope.keys = {local : [], remote : [], server_workstation: []};
 
         if (egCore.hatch.hatchAvailable) {
             egCore.hatch.getRemoteKeys().then(
@@ -684,6 +758,9 @@ function($scope , $q , egCore , egConfirmDialog) {
     
         // local calls are non-async
         $scope.keys.local = egCore.hatch.getLocalKeys();
+
+        egCore.hatch.getServerKeys(null, {workstation_only: true}).then(
+            function(keys) {$scope.keys.server_workstation = keys});
     }
     refreshKeys();
 
@@ -693,10 +770,14 @@ function($scope , $q , egCore , egConfirmDialog) {
 
         if ($scope.context == 'local') {
             $scope.currentKeyContent = egCore.hatch.getLocalItem(key);
-        } else {
+        } else if ($scope.context == 'remote') {
             egCore.hatch.getRemoteItem(key)
             .then(function(content) {
                 $scope.currentKeyContent = content
+            });
+        } else if ($scope.context == 'server_workstation') {
+            egCore.hatch.getServerItem(key).then(function(content) {
+                $scope.currentKeyContent = content;
             });
         }
     }
@@ -713,8 +794,13 @@ function($scope , $q , egCore , egConfirmDialog) {
                     if ($scope.context == 'local') {
                         egCore.hatch.removeLocalItem(key);
                         refreshKeys();
-                    } else {
-                        egCore.hatch.removeItem(key)
+                    } else if ($scope.context == 'remote') {
+                        // Honor requests to remove items from Hatch even
+                        // when Hatch is configured for data storage.
+                        egCore.hatch.removeRemoteItem(key)
+                        .then(function() { refreshKeys() });
+                    } else if ($scope.context == 'server_workstation') {
+                        egCore.hatch.removeServerItem(key)
                         .then(function() { refreshKeys() });
                     }
                 },
@@ -861,6 +947,8 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
                 return $scope.set_default_ws(new_ws.name);
             }
             $scope.newWSName = '';
+        }, function(err) {
+            $scope.is_registering = false;
         });
     }
 }])
@@ -908,6 +996,86 @@ function($scope , egCore , ngToast) {
             function() {
                 ngToast.warning(egCore.strings.HATCH_SETTINGS_MIGRATION_FAILURE)}
         );
+    }
+
+}])
+
+/*
+ * Home of the Latency tester
+ * */
+.controller('testsCtrl', ['$scope', '$location', 'egCore', function($scope, $location, egCore) {
+    $scope.hostname = $location.host();
+
+    $scope.tests = [];
+    $scope.clearTestData = function(){
+        $scope.tests = [];
+        numPings = 0;
+    }
+
+    $scope.isTesting = false;
+    $scope.avrg = 0; // avrg latency
+    $scope.canCopyCommand = document.queryCommandSupported('copy');
+    var numPings = 0;
+    // initially fetch first 10 (gets a decent average)
+
+    function calcAverage(){
+
+        if ($scope.tests.length == 0) return 0;
+
+        if ($scope.tests.length == 1) return $scope.tests[0].l;
+
+        var sum = 0;
+        angular.forEach($scope.tests, function(t){
+            sum += t.l;
+        });
+
+        return sum / $scope.tests.length;
+    }
+
+    function ping(){
+        $scope.isTesting = true;
+        var t = Date.now();
+        return egCore.net.request(
+            "open-ils.pcrud", "opensrf.system.echo", "ping"
+        ).then(function(resp){
+            var t2 = Date.now();
+            var latency = t2 - t;
+            $scope.tests.push({t: new Date(t), l: latency});
+            console.log("Start: " + t + " and end: " + t2);
+            console.log("Latency: " + latency);
+            console.log(resp);
+        }).then(function(){
+            $scope.avrg = calcAverage();
+            numPings++;
+            $scope.isTesting = false;
+        });
+    }
+
+    $scope.testLatency = function(){
+
+        if (numPings >= 10){
+            ping(); // just ping once after the initial ten
+        } else {
+            ping()
+                .then($scope.testLatency)
+                .then(function(){
+                    if (numPings == 9){
+                        $scope.tests.shift(); // toss first result
+                        $scope.avrg = calcAverage();
+                    }
+                });
+        }
+    }
+
+    $scope.copyTests = function(){
+
+        var lNode = document.querySelector('#pingData');
+        var r = document.createRange();
+        r.selectNode(lNode);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(r);
+        document.execCommand('copy');
     }
 
 }])

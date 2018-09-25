@@ -1,6 +1,6 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Volume/Copy Editor"); 
+  ctx.page_title = l("Holdings Editor"); 
   ctx.page_app = "egVolCopy";
 %]
 
@@ -13,8 +13,19 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
-    s.VOL_COPY_TEMPLATE_SUCCESS_SAVE = "[% l('Saved volume/copy template(s)') %]";
-    s.VOL_COPY_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted volume/copy template') %]";
+    s.VOL_COPY_TEMPLATE_SUCCESS_SAVE = "[% l('Saved holdings template(s)') %]";
+    s.VOL_COPY_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted holdings template') %]";
+    s.SHORT = "[% l('Short') %]";
+    s.LOW = "[% l('Low') %]";
+    s.NORMAL = "[% l('Normal') %]";
+    s.EXTENDED = "[% l('Extended') %]";
+    s.HIGH = "[% l('High') %]";
+    s.UNSET = "[% l('UNSET') %]";
+    s.YES = "[% l('Yes') %]";
+    s.NO = "[% l('No') %]";
+    [%# Note the "~" characters escape the gettext brackets %]
+    s.COPY_NOTE_INITIALS = 
+      "[% l('[_1] ~[ [_2] @ [_3] ~]', '{{value}}', '{{initials}}', '{{ws_ou}}') %]"
 }]);
 </script>
 [% END %]

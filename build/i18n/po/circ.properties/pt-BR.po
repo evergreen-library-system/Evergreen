@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
 "PO-Revision-Date: 2013-03-15 14:10+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-23 05:37+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-08-16 04:37+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -312,8 +312,8 @@ msgid "Forgiving Checkin then Checkout"
 msgstr "Perdoando Devolução e então dar Saída"
 
 #: staff.circ.checkout.abort_transit_then_checkout
-msgid "Abort Transit then Checkout"
-msgstr "Abortar Transito e então Verificar Saí­da"
+msgid "Cancel Transit then Checkout"
+msgstr ""
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
@@ -402,6 +402,10 @@ msgstr "Este item já esta em circulação."
 msgid "This item is not in transit."
 msgstr "Este item não esta em transito."
 
+#: staff.circ.copy_details.transit_caption
+msgid "In Transit"
+msgstr ""
+
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
 msgstr "Balcão"
@@ -418,6 +422,10 @@ msgstr "Fone"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
 msgstr "%1$s, %2$s : %3$s"
+
+#: staff.circ.copy_details.hold_caption
+msgid "Captured for Hold"
+msgstr ""
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
@@ -958,12 +966,12 @@ msgid "Receipt Template Editor"
 msgstr "Editor de Modelos de Recepção."
 
 #: staff.circ.utils.abort_transits.confirm
-msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr "Tem certeza que deseja abortar trânsitos para os exemplares: %1$s?"
+msgid "Are you sure you would like to cancel transits for copies: %1$s?"
+msgstr ""
 
 #: staff.circ.utils.abort_transits.title
-msgid "Aborting Transits"
-msgstr "Cancelando Trânsitos"
+msgid "Canceling Transits"
+msgstr ""
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
@@ -981,15 +989,13 @@ msgstr "ID do Exemplar  = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
+"This item was no longer in transit at the time of the cancellation.  Perhaps "
+"this happened from a stale display?"
 msgstr ""
-"Este item não estava mais em transito no momento do cancelamento. Talvez "
-"isso aconteceu a partir de tela travada?"
 
 #: staff.circ.utils.abort_transits.unexpected_error
-msgid "Transit not likely aborted."
-msgstr "O Transito provavelmente não foi abortado."
+msgid "Transit not likely canceled."
+msgstr ""
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
@@ -2108,6 +2114,9 @@ msgstr ""
 #~ msgid "Mis-scan or non-cataloged item.  Checkout as a pre-cataloged item?"
 #~ msgstr "Mal-escaneado ou item não-catalogado. Sair como item pré-catalogado?"
 
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "Abortar Transito e então Verificar Saí­da"
+
 #~ msgid "Are you sure sure you want to delete these items? %1$s"
 #~ msgstr "Tem certeza que deseja  excluir estes Itens?  %1$s"
 
@@ -2120,6 +2129,22 @@ msgstr ""
 
 #~ msgid "Volumes deleted."
 #~ msgstr "Volumes excluídos."
+
+#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
+#~ msgstr "Tem certeza que deseja abortar trânsitos para os exemplares: %1$s?"
+
+#~ msgid "Aborting Transits"
+#~ msgstr "Cancelando Trânsitos"
+
+#~ msgid ""
+#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
+#~ "happened from a stale display?"
+#~ msgstr ""
+#~ "Este item não estava mais em transito no momento do cancelamento. Talvez "
+#~ "isso aconteceu a partir de tela travada?"
+
+#~ msgid "Transit not likely aborted."
+#~ msgstr "O Transito provavelmente não foi abortado."
 
 #~ msgid "Hold Note(s)"
 #~ msgstr "Nota(s) de Reservas"

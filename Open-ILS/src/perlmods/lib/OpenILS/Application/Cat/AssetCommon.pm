@@ -250,7 +250,7 @@ sub update_copy_notes {
         } elsif ($incoming_note->ischanged) {
             $incoming_note = $editor->update_asset_copy_note($incoming_note)
         } elsif ($incoming_note->isdeleted) {
-            $incoming_note = $editor->delete_asset_copy_note($incoming_note->id)
+            $incoming_note = $editor->delete_asset_copy_note($incoming_note)
         }
     
     }
@@ -258,6 +258,39 @@ sub update_copy_notes {
     return undef;
 }
 
+sub update_copy_alerts {
+    my($class, $editor, $copy) = @_;
+
+    return undef if $copy->isdeleted;
+
+    my $evt;
+    my $incoming_copy_alerts = $copy->copy_alerts;
+
+    for my $incoming_copy_alert (@$incoming_copy_alerts) { 
+        next unless $incoming_copy_alert;
+
+        if ($incoming_copy_alert->isnew) {
+            next if ($incoming_copy_alert->isdeleted); # if it was added and deleted in the same session
+
+            my $new_copy_alert = Fieldmapper::asset::copy_alert->new();
+            $new_copy_alert->copy( $copy->id );
+            $new_copy_alert->temp( $incoming_copy_alert->temp );
+            $new_copy_alert->ack_time( $incoming_copy_alert->ack_time );
+            $new_copy_alert->note( $incoming_copy_alert->note );
+            $new_copy_alert->alert_type( $incoming_copy_alert->alert_type );
+            $new_copy_alert->create_staff( $incoming_copy_alert->create_staff || $editor->requestor->id );
+            $incoming_copy_alert = $editor->create_asset_copy_alert($new_copy_alert)
+                or return $editor->event;
+        } elsif ($incoming_copy_alert->ischanged) {
+            $incoming_copy_alert = $editor->update_asset_copy_alert($incoming_copy_alert)
+        } elsif ($incoming_copy_alert->isdeleted) {
+            $incoming_copy_alert = $editor->delete_asset_copy_alert($incoming_copy_alert->id)
+        }
+    
+    }
+
+    return undef;
+}
 
 sub update_copy_tags {
     my($class, $editor, $copy) = @_;
@@ -302,8 +335,6 @@ sub update_copy_tags {
 
     return undef;
 }
-
-
 
 sub update_copy {
     my($class, $editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib) = @_;
@@ -415,8 +446,12 @@ sub update_fleshed_copies {
 
         my $notes = $copy->notes;
         $copy->clear_notes;
+
         my $tags = $copy->tags;
         $copy->clear_tags;
+
+        my $copy_alerts = $copy->copy_alerts;
+        $copy->clear_copy_alerts;
 
         if( $copy->isdeleted ) {
             $evt = $class->delete_copy($editor, $override, $vol, $copy, $retarget_holds, $force_delete_empty_bib);
@@ -444,6 +479,9 @@ sub update_fleshed_copies {
 
         $copy->tags( $tags );
         $evt = $class->update_copy_tags($editor, $copy);
+
+        $copy->copy_alerts( $copy_alerts );
+        $evt = $class->update_copy_alerts($editor, $copy);
 
         return $evt if $evt;
     }

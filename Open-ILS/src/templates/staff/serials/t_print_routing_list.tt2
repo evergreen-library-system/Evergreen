@@ -1,0 +1,15 @@
+<form ng-submit="ok()" role="form">
+<div class="modal-body">
+  <eg-embed-frame handlers="xulg" url="url" afterload="page_init"/>
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-2">
+      <input type="submit" ng-show="last" class="btn btn-primary" value='[% l('Done') %]'></input>
+      <input type="submit" ng-show="!last" class="btn btn-primary" value='[% l('Next') %]'></input>
+    </div>
+  </div>
+</div>
+</form>

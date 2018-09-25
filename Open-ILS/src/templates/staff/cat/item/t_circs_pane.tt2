@@ -94,12 +94,17 @@
   </div>
 </div>
 
-<div class="col-md-6" ng-show="!circ">
+<div class="col-md-6" ng-show="!isMaxCircHistoryZero && !circ">
   <div class="alert alert-info">
     [% l('No Recent Circ Group') %]
   </div>
 </div>
-<div class="col-md-6" ng-show="circ">
+<div class="col-md-6" ng-show="isMaxCircHistoryZero">
+  <div class="alert alert-info">
+    [% l('Most Recent Circ Group not available for display.') %]
+  </div>
+</div>
+<div class="col-md-6" ng-show="!isMaxCircHistoryZero && circ">
   <div class="flex-row">
     <div class="flex-cell flex-2 strong-text-2">
       [% l('Most Recent Circ Group') %]
@@ -188,7 +193,7 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkin Workstation') %]</div>
     <div class="flex-cell well">
-      {{circ.checkin_workstation.name()}}
+      {{circ.checkin_workstation().name()}}
     </div>
   </div>
 </div>

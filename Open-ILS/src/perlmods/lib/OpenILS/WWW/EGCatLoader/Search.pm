@@ -372,6 +372,7 @@ sub load_rresults {
     $ctx->{records} = [];
     $ctx->{search_facets} = {};
     $ctx->{hit_count} = 0;
+    $ctx->{is_meta} = $is_meta;
 
     # Special alternative searches here.  This could all stand to be cleaner.
     if ($cgi->param("_special")) {
@@ -524,33 +525,43 @@ sub load_rresults {
     # load temporary_list settings for user and ou:
     $self->_load_lists_and_settings if ($ctx->{user});
 
+    my %mr_contents;
     # shove recs into context in search results order
     for my $rec_id (@$rec_ids) {
         my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
         push(@{$ctx->{records}}, $rec);
 
         if ($is_meta) {
-            my $meta_results;
             try {
                 my $method = 'open-ils.search.biblio.multiclass.query';
                 $method .= '.staff' if $ctx->{is_staff};
                 my $ses = OpenSRF::AppSession->create('open-ils.search');
-                $self->timelog("Firing off the multiclass query");
+                $self->timelog("Firing off the multiclass query: ". $rec_id);
                 $args->{from_metarecord} = $rec_id;
                 # offset of main search does not apply to the MR
                 # constituents query
                 my $save_offset = $args->{offset};
                 $args->{offset} = 0;
-                my $req = $ses->request($method, $args, $query, 1);
+                $mr_contents{$rec_id} = $ses->request($method, $args, $query, 1);
                 $args->{offset} = $save_offset;
-                $meta_results = $req->gather(1);
-                $self->timelog("Returned from the multiclass query");
-
             } catch Error with {
                 my $err = shift;
                 $logger->error("multiclass search error: $err");
-                $meta_results = {count => 0, ids => []};
             };
+        }
+    }
+
+    # above we fire all searches in parallel, now we collect the results
+    if ($is_meta) {
+        for my $rec_id (@$rec_ids) {
+            my ($rec) = grep { $_->{$id_key} == $rec_id } @data;
+            my $meta_results;
+            if ($mr_contents{$rec_id}) {
+                $meta_results = $mr_contents{$rec_id}->gather(1);
+                $self->timelog("Returned from the multiclass query: ". $rec_id);
+            } else {
+                $meta_results = {count => 0, ids => []};
+            }
             my $meta_rec_ids = [map { $_->[0] } @{$meta_results->{ids}}];
             $rec->{mr_constituent_count} = $meta_results->{count};
             $rec->{mr_constituent_ids} = $meta_rec_ids;

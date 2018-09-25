@@ -1,0 +1,24 @@
+<!--
+Template for printing offline in-house use receipts; fields available include:
+
+* transactions - list of loans made during this session. Each
+  includes:
+
+  * barcode
+  * count
+
+-->
+<div>
+  <div>[% l('You recorded use for the following [_1] items:', '{{transactions.length}}') %]</div>
+  <hr/>
+  <ol>
+    <li ng-repeat="checkout in transactions">
+      <div>[% l('Barcode [_1] used [_2] times', 
+        '{{checkout.barcode}}',
+        '{{checkout.count}}') %]</div>
+    </li>
+  </ol>
+  <hr/>
+  <div>{{today | date:'short'}}</div>
+<br/>
+

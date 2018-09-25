@@ -44,9 +44,6 @@
           [% l("Add to my list") %]
         </a>
     <ul>
-    <li class="[% tclass %]">
-    <a href="[% href %]">[% l('Temporary List') %]</a>
-    </li>
     [% IF default_list;
        label = (ctx.default_bookbag) ? ctx.default_bookbag : l('Default List');
        class = (ctx.bookbags.size) ? "default divider" : "default";

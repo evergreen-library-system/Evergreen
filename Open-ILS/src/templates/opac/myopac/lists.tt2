@@ -59,6 +59,19 @@
                     </a>
                 </td>
             </tr>
+            [% IF ctx.mylist.size %]
+            <tr>
+                <td class="list_create_table_label">
+                    <label for="list_move_cart">[% l('Move contents of basket to this list?') %]</label>
+                </td>
+                <td>
+                    <select name="move_cart" id="list_move_cart">
+                        <option value="0">[% l('No') %]
+                        <option value="1" [% IF CGI.param('move_cart_by_default') %]selected="selected"[% END%]>[% l('Yes') %]
+                    </select>
+                </td>
+            </tr>
+            [% END %]
             <tr>
                 <td>&nbsp;</td>
                 <td class="list-create-table-buttons">
@@ -76,7 +89,11 @@
         </table>
     </form>
 
-    <h1>[% l("My Existing Lists") %]</h1>
+    [% IF CGI.param('from_basket'); %]
+    <h1>[% l("... from basket") %]</h1>
+    [% INCLUDE "opac/parts/anon_list.tt2" %]
+    [% ELSE %]
+    <h1>[% l("My Existing Basket and Lists") %]</h1>
     [% INCLUDE "opac/parts/anon_list.tt2" %]
     [% IF ctx.bookbags.size %]
     <div class="header_middle">
@@ -287,16 +304,22 @@
         <form action="[% mkurl(ctx.opac_root _ '/myopac/list/update') %]" method="post">
         <input type="hidden" name="list" value="[% bbag.id %]" />
         <input type="hidden" name="sort" value="[% CGI.param('sort') | uri %]" />
+        <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
         <div class="bbag-content">
         [% IF bbag.items.size %]
             <div class="bbag-action">
                 <select name="action" class="bbag-action-field">
                     <option disabled="disabled" selected="selected">[% l('-- Actions for these items --') %]</option>
                     <option value="place_hold">[% l('Place hold') %]</option>
+                    <option value="print">[% l('Print title details') %]</option>
+                    <option value="email">[% l('Email title details') %]</option>
                     <option value="del_item">[% l('Remove from list') %]</option>
                 </select>
                 [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
                 <input class="opac-button" type="submit" value="[% l('Go') %]" />
+                [% IF CGI.param('list_none_selected') %]
+                    <span class="error">[% l('No items were selected') %]</span>
+                [% END %]
             </div>
         [% END %]
         <table class="bookbag-specific table_no_cell_pad table_no_border_space table_no_border">
@@ -465,6 +488,7 @@
         [% END %]
         [% END %]
     </div>
+    [% END %]
     [% END %]
 </div>
 [% END %]

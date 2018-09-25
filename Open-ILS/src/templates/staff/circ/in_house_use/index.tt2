@@ -8,6 +8,7 @@
 [% BLOCK APP_JS %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 [% INCLUDE 'staff/circ/share/circ_strings.tt2' %]
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/in_house_use/app.js"></script>
 [% END %]
@@ -28,7 +29,7 @@
         </label>
         <input type="number" min="1" max="{{countMax}}"
           class="form-control" focus-me="useFocus"
-           id="in-house-num-uses" ng-model="args.num_uses"/>
+           id="in-house-num-uses" ng-model="args.num_uses" ng-change="onNumUsesChanged()" />
       </div>
     </div>
 
@@ -62,7 +63,7 @@
 </form>
 
 <div clas="row" ng-if="copyNotFound">
-  <div class="col-md-6 alert alert-danger">[% l('Copy Not Found') %]</div>
+  <div class="col-md-6 alert alert-danger">[% l('Item Not Found') %]</div>
 </div>
 
 <eg-grid
@@ -74,9 +75,12 @@
 
   <eg-grid-field label="[% l('# of Uses') %]"   path='num_uses' visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"     path='copy.barcode' visible></eg-grid-field>
+  <eg-grid-field label="[% l('CN Prefix') %]" path="copy.call_number.prefix.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Call Number') %]" path="copy.call_number.label" visible></eg-grid-field>
+  <eg-grid-field label="[% l('CN Suffix') %]" path="copy.call_number.suffix.label" visible></eg-grid-field>
   <eg-grid-field label="[% l('Location') %]"    path="copy.location.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       path="title" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="copy.status.name" visible></eg-grid-field>
 </eg-grid>
 
 <div class="flex-row pad-vert">

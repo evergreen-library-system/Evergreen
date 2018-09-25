@@ -8,6 +8,7 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/billing.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/circ.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/circ/services/item.js"></script>
 <script>

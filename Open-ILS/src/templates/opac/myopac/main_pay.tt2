@@ -25,9 +25,9 @@
                 retry_url =  mkurl(ctx.opac_root _ '/myopac/main_payment_form', url_args, 1);
             %]
             <br/>
-            <a href="[% retry_url %]">[%
-                l('Go back to try again or to cancel this payment attempt.')
-            %]</a>
+            
+             <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, 1) %]" class="opac-button">[% l('Account Home') %]</a> 
+             <a href="[% retry_url %]" class="opac-button">[% l('Try Payment Again') %]</a>
         </p>
     [% ELSE %]
         <p><big>[% l('Your payment has been approved.') %]</big></p>
@@ -38,9 +38,11 @@
             END %]
         <p>[ <a href="[% ctx.opac_root %]/myopac/receipt_print?[% print_args.join('&amp;') %]"
             target="_egrecpt"
+            class="opac-button"
             onclick="try { print_node('printable-receipt'); } catch (e) { window.print(); } return false;">[% l('Print receipt') %]</a> ]</p>
         <tt id="printable-receipt">
             [% ctx.printable_receipt.template_output.data %]
+            <br />
         </tt>
         [% ELSE %]
         <div class="payment-error">
@@ -52,7 +54,7 @@
                 ) | html %]
         </div>
         [% END %]
-        <p>[ <a href="[% ctx.opac_root %]/myopac/main">[%
+        <p>[ <a href="[% ctx.opac_root %]/myopac/main" class="opac-button">[%
             l("Back to Account Summary") %]</a> ]</p>
     [% END %]
 </div>

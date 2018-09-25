@@ -523,7 +523,7 @@ CREATE OR REPLACE FUNCTION asset.calculate_copy_visibility_attribute_set ( copy_
 DECLARE
     copy_row    asset.copy%ROWTYPE;
     lgroup_map  asset.copy_location_group_map%ROWTYPE;
-    attr_set    INT[];
+    attr_set    INT[] := '{}'::INT[];
 BEGIN
     SELECT * INTO copy_row FROM asset.copy WHERE id = copy_id;
 
@@ -547,26 +547,28 @@ BEGIN
 END;
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION biblio.calculate_bib_visibility_attribute_set ( bib_id BIGINT ) RETURNS INT[] AS $f$
+CREATE OR REPLACE FUNCTION biblio.calculate_bib_visibility_attribute_set ( bib_id BIGINT, new_source INT DEFAULT NULL, force_source BOOL DEFAULT FALSE ) RETURNS INT[] AS $f$
 DECLARE
     bib_row     biblio.record_entry%ROWTYPE;
     cn_row      asset.call_number%ROWTYPE;
-    attr_set    INT[];
+    attr_set    INT[] := '{}'::INT[];
 BEGIN
     SELECT * INTO bib_row FROM biblio.record_entry WHERE id = bib_id;
 
-    IF bib_row.source IS NOT NULL THEN
+    IF force_source THEN
+        IF new_source IS NOT NULL THEN
+            attr_set := attr_set || search.calculate_visibility_attribute(new_source, 'bib_source');
+        END IF;
+    ELSIF bib_row.source IS NOT NULL THEN
         attr_set := attr_set || search.calculate_visibility_attribute(bib_row.source, 'bib_source');
     END IF;
 
     FOR cn_row IN
-        SELECT  cn.*
-          FROM  asset.call_number cn
-                JOIN asset.uri_call_number_map m ON (cn.id = m.call_number)
-                JOIN asset.uri u ON (u.id = m.uri)
-          WHERE cn.record = bib_id
-                AND cn.label = '##URI##'
-                AND u.active
+        SELECT  *
+          FROM  asset.call_number
+          WHERE record = bib_id
+                AND label = '##URI##'
+                AND NOT deleted
     LOOP
         attr_set := attr_set || search.calculate_visibility_attribute(cn_row.owning_lib, 'luri_org');
     END LOOP;
@@ -580,7 +582,10 @@ DECLARE
     ocn     asset.call_number%ROWTYPE;
     ncn     asset.call_number%ROWTYPE;
     cid     BIGINT;
+    dobib   BOOL;
 BEGIN
+
+    SELECT enabled = FALSE INTO dobib FROM config.internal_flag WHERE name = 'ingest.reingest.force_on_same_marc';
 
     IF TG_TABLE_NAME = 'peer_bib_copy_map' THEN -- Only needs ON INSERT OR DELETE, so handle separately
         IF TG_OP = 'INSERT' THEN
@@ -593,7 +598,7 @@ BEGIN
             RETURN NEW;
         ELSIF TG_OP = 'DELETE' THEN
             DELETE FROM asset.copy_vis_attr_cache
-              WHERE record = NEW.peer_record AND target_copy = NEW.target_copy;
+              WHERE record = OLD.peer_record AND target_copy = OLD.target_copy;
 
             RETURN OLD;
         END IF;
@@ -608,7 +613,12 @@ BEGIN
                 asset.calculate_copy_visibility_attribute_set(NEW.id)
             );
         ELSIF TG_TABLE_NAME = 'record_entry' THEN
-            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id);
+            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id, NEW.source, TRUE);
+        ELSIF TG_TABLE_NAME = 'call_number' AND NEW.label = '##URI##' AND dobib THEN -- New located URI
+            UPDATE  biblio.record_entry
+              SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(NEW.record)
+              WHERE id = NEW.record;
+
         END IF;
 
         RETURN NEW;
@@ -637,72 +647,70 @@ BEGIN
             END IF;
 
             RETURN NEW;
-        ELSIF OLD.call_number  <> NEW.call_number THEN
-            SELECT * INTO ocn FROM asset.call_number cn WHERE id = OLD.call_number;
+        ELSIF OLD.location   <> NEW.location OR
+            OLD.status       <> NEW.status OR
+            OLD.opac_visible <> NEW.opac_visible OR
+            OLD.circ_lib     <> NEW.circ_lib OR
+            OLD.call_number  <> NEW.call_number
+        THEN
+            IF OLD.call_number  <> NEW.call_number THEN -- Special check since it's more expensive than the next branch
+                SELECT * INTO ocn FROM asset.call_number cn WHERE id = OLD.call_number;
 
-            IF ncn.record <> ocn.record THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(ncn.record)
-                  WHERE id = ocn.record;
+                IF ncn.record <> ocn.record THEN
+                    -- We have to use a record-specific WHERE clause
+                    -- to avoid modifying the entries for peer-bib copies.
+                    UPDATE  asset.copy_vis_attr_cache
+                      SET   target_copy = NEW.id,
+                            record = ncn.record
+                      WHERE target_copy = OLD.id
+                            AND record = ocn.record;
+
+                END IF;
+            ELSE
+                -- Any of these could change visibility, but
+                -- we'll save some queries and not try to calculate
+                -- the change directly.  We want to update peer-bib
+                -- entries in this case, unlike above.
+                UPDATE  asset.copy_vis_attr_cache
+                  SET   target_copy = NEW.id,
+                        vis_attr_vector = asset.calculate_copy_visibility_attribute_set(NEW.id)
+                  WHERE target_copy = OLD.id;
             END IF;
         END IF;
 
-        IF OLD.location     <> NEW.location OR
-           OLD.status       <> NEW.status OR
-           OLD.opac_visible <> NEW.opac_visible OR
-           OLD.circ_lib     <> NEW.circ_lib
-        THEN
-            -- any of these could change visibility, but
-            -- we'll save some queries and not try to calculate
-            -- the change directly
-            UPDATE  asset.copy_vis_attr_cache
-              SET   target_copy = NEW.id,
-                    vis_attr_vector = asset.calculate_copy_visibility_attribute_set(NEW.id)
-              WHERE target_copy = OLD.id;
+    ELSIF TG_TABLE_NAME = 'call_number' THEN
 
+        IF TG_OP = 'DELETE' AND OLD.label = '##URI##' AND dobib THEN -- really deleted located URI, if the delete protection rule is disabled...
+            UPDATE  biblio.record_entry
+              SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
+              WHERE id = OLD.record;
+            RETURN OLD;
         END IF;
 
-    ELSIF TG_TABLE_NAME = 'call_number' THEN -- Only ON UPDATE. Copy handler will deal with ON INSERT OR DELETE.
-
-        IF OLD.record <> NEW.record THEN
-            IF NEW.label = '##URI##' THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
-                  WHERE id = OLD.record;
-
+        IF OLD.label = '##URI##' AND dobib THEN -- Located URI
+            IF OLD.deleted <> NEW.deleted OR OLD.record <> NEW.record OR OLD.owning_lib <> NEW.owning_lib THEN
                 UPDATE  biblio.record_entry
                   SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(NEW.record)
                   WHERE id = NEW.record;
+
+                IF OLD.record <> NEW.record THEN -- maybe on merge?
+                    UPDATE  biblio.record_entry
+                      SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
+                      WHERE id = OLD.record;
+                END IF;
             END IF;
 
+        ELSIF OLD.record <> NEW.record OR OLD.owning_lib <> NEW.owning_lib THEN
             UPDATE  asset.copy_vis_attr_cache
               SET   record = NEW.record,
                     vis_attr_vector = asset.calculate_copy_visibility_attribute_set(target_copy)
               WHERE target_copy IN (SELECT id FROM asset.copy WHERE call_number = NEW.id)
                     AND record = OLD.record;
 
-        ELSIF OLD.owning_lib <> NEW.owning_lib THEN
-            UPDATE  asset.copy_vis_attr_cache
-              SET   vis_attr_vector = asset.calculate_copy_visibility_attribute_set(target_copy)
-              WHERE target_copy IN (SELECT id FROM asset.copy WHERE call_number = NEW.id)
-                    AND record = NEW.record;
-
-            IF NEW.label = '##URI##' THEN
-                UPDATE  biblio.record_entry
-                  SET   vis_attr_vector = biblio.calculate_bib_visibility_attribute_set(OLD.record)
-                  WHERE id = OLD.record;
-            END IF;
         END IF;
 
-    ELSIF TG_TABLE_NAME = 'record_entry' THEN -- Only handles ON UPDATE OR DELETE
-
-        IF TG_OP = 'DELETE' THEN -- Shouldn't get here, normally
-            DELETE FROM asset.copy_vis_attr_cache WHERE record = OLD.id;
-            RETURN OLD;
-        ELSIF OLD.source <> NEW.source THEN
-            NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id);
-        END IF;
-
+    ELSIF TG_TABLE_NAME = 'record_entry' AND OLD.source IS DISTINCT FROM NEW.source THEN -- Only handles ON UPDATE, INSERT above
+        NEW.vis_attr_vector := biblio.calculate_bib_visibility_attribute_set(NEW.id, NEW.source, TRUE);
     END IF;
 
     RETURN NEW;
@@ -711,7 +719,7 @@ $func$ LANGUAGE PLPGSQL;
 
 CREATE TRIGGER z_opac_vis_mat_view_tgr BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR DELETE ON biblio.peer_bib_copy_map FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
-CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER UPDATE ON asset.call_number FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
+CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE OR DELETE ON asset.call_number FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_del_tgr BEFORE DELETE ON asset.copy FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_del_tgr BEFORE DELETE ON serial.unit FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
 CREATE TRIGGER z_opac_vis_mat_view_tgr AFTER INSERT OR UPDATE ON asset.copy FOR EACH ROW EXECUTE PROCEDURE asset.cache_copy_visibility();
@@ -747,10 +755,13 @@ $f$ LANGUAGE SQL STABLE;
 
 -- Copy-oriented defaults for search
 CREATE OR REPLACE FUNCTION asset.location_group_default () RETURNS TEXT AS $f$
+    SELECT '!()'::TEXT; -- For now, as there's no way to cause a location group to hide all copies.
+/*
     SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'location_group')),'|') || ')'
       FROM  asset.copy_location_group
       WHERE NOT opac_visible;
-$f$ LANGUAGE SQL STABLE;
+*/
+$f$ LANGUAGE SQL IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION asset.location_default () RETURNS TEXT AS $f$
     SELECT  '!(' || ARRAY_TO_STRING(ARRAY_AGG(search.calculate_visibility_attribute(id, 'location')),'|') || ')'
@@ -784,6 +795,8 @@ DECLARE
 
     luri_org        TEXT; -- "b" attr
     bib_sources     TEXT; -- "b" attr
+
+    bib_tests       TEXT := '';
 BEGIN
     copy_flags      := asset.all_visible_flags(); -- Will always have at least one
 
@@ -794,14 +807,20 @@ BEGIN
     location        := NULLIF(asset.location_default(),'!()');
     location_group  := NULLIF(asset.location_group_default(),'!()');
 
-    luri_org        := NULLIF(asset.luri_org_default(),'!()');
+    -- LURIs will be handled at the perl layer directly
+    -- luri_org        := NULLIF(asset.luri_org_default(),'!()');
     bib_sources     := NULLIF(asset.bib_source_default(),'()');
 
-    RETURN QUERY SELECT
-        '('||ARRAY_TO_STRING(
-            ARRAY[luri_org,bib_sources],
-            '|'
-        )||')',
+
+    IF luri_org IS NOT NULL AND bib_sources IS NOT NULL THEN
+        bib_tests := '('||ARRAY_TO_STRING( ARRAY[luri_org,bib_sources], '|')||')&('||luri_org||')&';
+    ELSIF luri_org IS NOT NULL THEN
+        bib_tests := luri_org || '&';
+    ELSIF bib_sources IS NOT NULL THEN
+        bib_tests := bib_sources || '|';
+    END IF;
+
+    RETURN QUERY SELECT bib_tests,
         '('||ARRAY_TO_STRING(
             ARRAY[copy_flags,owning_lib,circ_lib,status,location,location_group]::TEXT[],
             '&'
@@ -961,6 +980,7 @@ DECLARE
     c_tests                 TEXT := '';
     b_tests                 TEXT := '';
     c_orgs                  INT[];
+    unauthorized_entry      RECORD;
 BEGIN
     IF count_up_from_zero THEN
         row_number := 0;
@@ -972,8 +992,8 @@ BEGIN
         SELECT x.c_attrs, x.b_attrs INTO c_tests, b_tests FROM asset.patron_default_visibility_mask() x;
     END IF;
 
+    -- b_tests supplies its own query_int operator, c_tests does not
     IF c_tests <> '' THEN c_tests := c_tests || '&'; END IF;
-    IF b_tests <> '' THEN b_tests := b_tests || '&'; END IF;
 
     SELECT ARRAY_AGG(id) INTO c_orgs FROM actor.org_unit_descendants(context_org);
 
@@ -1009,21 +1029,51 @@ BEGIN
             RETURN;
         END IF;
 
-        -- Gather aggregate data based on the MBE row we're looking at now, authority axis
-        SELECT INTO all_arecords, result_row.sees, afields
-                ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
-                STRING_AGG(DISTINCT aal.source::TEXT, $$,$$), -- authority record ids
-                ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
+        --Is unauthorized?
+        SELECT INTO unauthorized_entry *
+        FROM metabib.browse_entry_simple_heading_map mbeshm
+        INNER JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+        INNER JOIN authority.control_set_authority_field acsaf ON ( acsaf.id = ash.atag )
+        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+        WHERE mbeshm.entry = rec.id
+        AND   ahf.heading_purpose = 'variant';
 
-          FROM  metabib.browse_entry_simple_heading_map mbeshm
-                JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
-                JOIN authority.authority_linking aal ON ( ash.record = aal.source )
-                JOIN authority.bib_linking abl ON ( aal.target = abl.authority )
-                JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
-                    ash.atag = map.authority_field
+        -- Gather aggregate data based on the MBE row we're looking at now, authority axis
+        IF (unauthorized_entry.record IS NOT NULL) THEN
+            --unauthorized term belongs to an auth linked to a bib?
+            SELECT INTO all_arecords, result_row.sees, afields
+                    ARRAY_AGG(DISTINCT abl.bib),
+                    STRING_AGG(DISTINCT abl.authority::TEXT, $$,$$),
+                    ARRAY_AGG(DISTINCT map.metabib_field)
+            FROM authority.bib_linking abl
+            INNER JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                    map.authority_field = unauthorized_entry.atag
                     AND map.metabib_field = ANY(fields)
-                )
-          WHERE mbeshm.entry = rec.id;
+            )
+            WHERE abl.authority = unauthorized_entry.record;
+        ELSE
+            --do usual procedure
+            SELECT INTO all_arecords, result_row.sees, afields
+                    ARRAY_AGG(DISTINCT abl.bib), -- bibs to check for visibility
+                    STRING_AGG(DISTINCT aal.source::TEXT, $$,$$), -- authority record ids
+                    ARRAY_AGG(DISTINCT map.metabib_field) -- authority-tag-linked CMF rows
+
+            FROM  metabib.browse_entry_simple_heading_map mbeshm
+                    JOIN authority.simple_heading ash ON ( mbeshm.simple_heading = ash.id )
+                    JOIN authority.authority_linking aal ON ( ash.record = aal.source )
+                    JOIN authority.bib_linking abl ON ( aal.target = abl.authority )
+                    JOIN authority.control_set_auth_field_metabib_field_map_refs map ON (
+                        ash.atag = map.authority_field
+                        AND map.metabib_field = ANY(fields)
+                    )
+                    JOIN authority.control_set_authority_field acsaf ON (
+                        map.authority_field = acsaf.id
+                    )
+                    JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
+              WHERE mbeshm.entry = rec.id
+              AND   ahf.heading_purpose = 'variant';
+
+        END IF;
 
         -- Gather aggregate data based on the MBE row we're looking at now, bib axis
         SELECT INTO all_brecords, result_row.authorities, bfields
@@ -1200,7 +1250,19 @@ SELECT  mbe.id,
                             ash.atag = map.authority_field
                             AND map.metabib_field = ANY(' || quote_literal(search_field) || ')
                         )
+                        JOIN authority.control_set_authority_field acsaf ON (
+                            map.authority_field = acsaf.id
+                        )
+                        JOIN authority.heading_field ahf ON (ahf.id = acsaf.heading_field)
                   WHERE mbeshm.entry = mbe.id
+                    AND ahf.heading_purpose IN (' || $$'variant'$$ || ')
+                    -- and authority that variant is coming from is linked to a bib
+                    AND EXISTS (
+                        SELECT  1
+                        FROM  metabib.browse_entry_def_map mbedm2
+                        WHERE mbedm2.authority = ash.record AND mbedm2.def = ANY(' || quote_literal(search_field) || ')
+                    )
+
             )
         ) AND ';
 
@@ -1253,5 +1315,146 @@ BEGIN
 END;
 $p$ LANGUAGE PLPGSQL ROWS 10;
 
+CREATE OR REPLACE VIEW search.best_tsconfig AS
+    SELECT  m.id AS id,
+            COALESCE(f.ts_config, c.ts_config, 'simple') AS ts_config
+      FROM  config.metabib_field m
+            LEFT JOIN config.metabib_class_ts_map c ON (c.field_class = m.field_class AND c.index_weight = 'C')
+            LEFT JOIN config.metabib_field_ts_map f ON (f.metabib_field = m.id AND f.index_weight = 'C');
+
+CREATE TYPE search.highlight_result AS ( id BIGINT, source BIGINT, field INT, value TEXT, highlight TEXT );
+
+CREATE OR REPLACE FUNCTION search.highlight_display_fields_impl(
+    rid         BIGINT,
+    tsq         TEXT,
+    field_list  INT[] DEFAULT '{}'::INT[],
+    css_class   TEXT DEFAULT 'oils_SH',
+    hl_all      BOOL DEFAULT TRUE,
+    minwords    INT DEFAULT 5,
+    maxwords    INT DEFAULT 25,
+    shortwords  INT DEFAULT 0,
+    maxfrags    INT DEFAULT 0,
+    delimiter   TEXT DEFAULT ' ... '
+) RETURNS SETOF search.highlight_result AS $f$
+DECLARE
+    opts            TEXT := '';
+    v_css_class     TEXT := css_class;
+    v_delimiter     TEXT := delimiter;
+    v_field_list    INT[] := field_list;
+    hl_query        TEXT;
+BEGIN
+    IF v_delimiter LIKE $$%'%$$ OR v_delimiter LIKE '%"%' THEN --"
+        v_delimiter := ' ... ';
+    END IF;
+
+    IF NOT hl_all THEN
+        opts := opts || 'MinWords=' || minwords;
+        opts := opts || ', MaxWords=' || maxwords;
+        opts := opts || ', ShortWords=' || shortwords;
+        opts := opts || ', MaxFragments=' || maxfrags;
+        opts := opts || ', FragmentDelimiter="' || delimiter || '"';
+    ELSE
+        opts := opts || 'HighlightAll=TRUE';
+    END IF;
+
+    IF v_css_class LIKE $$%'%$$ OR v_css_class LIKE '%"%' THEN -- "
+        v_css_class := 'oils_SH';
+    END IF;
+
+    opts := opts || $$, StopSel=</b>, StartSel="<b class='$$ || v_css_class; -- "
+
+    IF v_field_list = '{}'::INT[] THEN
+        SELECT ARRAY_AGG(id) INTO v_field_list FROM config.metabib_field WHERE display_field;
+    END IF;
+
+    hl_query := $$
+        SELECT  de.id,
+                de.source,
+                de.field,
+                de.value AS value,
+                ts_headline(
+                    ts_config::REGCONFIG,
+                    evergreen.escape_for_html(de.value),
+                    $$ || quote_literal(tsq) || $$,
+                    $1 || ' ' || mf.field_class || ' ' || mf.name || $xx$'>"$xx$ -- "'
+                ) AS highlight
+          FROM  metabib.display_entry de
+                JOIN config.metabib_field mf ON (mf.id = de.field)
+                JOIN search.best_tsconfig t ON (t.id = de.field)
+          WHERE de.source = $2
+                AND field = ANY ($3)
+          ORDER BY de.id;$$;
+
+    RETURN QUERY EXECUTE hl_query USING opts, rid, v_field_list;
+END;
+$f$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION evergreen.escape_for_html (TEXT) RETURNS TEXT AS $$
+    SELECT  regexp_replace(
+                regexp_replace(
+                    regexp_replace(
+                        $1,
+                        '&',
+                        '&amp;',
+                        'g'
+                    ),
+                    '<',
+                    '&lt;',
+                    'g'
+                ),
+                '>',
+                '&gt;',
+                'g'
+            );
+$$ LANGUAGE SQL IMMUTABLE LEAKPROOF STRICT COST 10;
+
+CREATE OR REPLACE FUNCTION search.highlight_display_fields(
+    rid         BIGINT,
+    tsq_map     TEXT, -- { '(a | b) & c' => '1,2,3,4', ...}
+    css_class   TEXT DEFAULT 'oils_SH',
+    hl_all      BOOL DEFAULT TRUE,
+    minwords    INT DEFAULT 5,
+    maxwords    INT DEFAULT 25,
+    shortwords  INT DEFAULT 0,
+    maxfrags    INT DEFAULT 0,
+    delimiter   TEXT DEFAULT ' ... '
+) RETURNS SETOF search.highlight_result AS $f$
+DECLARE
+    tsq_hstore  TEXT;
+    tsq         TEXT;
+    fields      TEXT;
+    afields     INT[];
+    seen        INT[];
+BEGIN
+    IF (tsq_map ILIKE 'hstore%') THEN
+        EXECUTE 'SELECT ' || tsq_map INTO tsq_hstore;
+    ELSE
+        tsq_hstore := tsq_map::HSTORE;
+    END IF;
+
+    FOR tsq, fields IN SELECT key, value FROM each(tsq_hstore::HSTORE) LOOP
+        SELECT  ARRAY_AGG(unnest::INT) INTO afields
+          FROM  unnest(regexp_split_to_array(fields,','));
+        seen := seen || afields;
+
+        RETURN QUERY
+            SELECT * FROM search.highlight_display_fields_impl(
+                rid, tsq, afields, css_class, hl_all,minwords,
+                maxwords, shortwords, maxfrags, delimiter
+            );
+    END LOOP;
+
+    RETURN QUERY
+        SELECT  id,
+                source,
+                field,
+                value,
+                value AS highlight
+          FROM  metabib.display_entry
+          WHERE source = rid
+                AND NOT (field = ANY (seen));
+END;
+$f$ LANGUAGE PLPGSQL ROWS 10;
 
 COMMIT;
+

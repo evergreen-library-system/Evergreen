@@ -10,7 +10,7 @@ By default, ten searches will be saved as you search the staff client.  If you w
 
 To configure the number of recent staff searches:
 
-. Click *Admin -> Local Administration -> Library Settings Editor.*
+. Click *Administration -> Local Administration ->  Library Settings Editor.*
 . Scroll to *OPAC: Number of staff client saved searches to display on left side of results and record details pages*
 . Click *Edit*.
 . Select a *Context* from the drop down menu.

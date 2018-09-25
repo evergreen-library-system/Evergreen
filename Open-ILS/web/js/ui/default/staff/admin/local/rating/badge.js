@@ -97,6 +97,7 @@ function($scope , $q , $timeout , $location , $window , $uibModal ,
         var deferred = $q.defer();
         $uibModal.open({
             templateUrl: './admin/local/rating/edit_badge',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;

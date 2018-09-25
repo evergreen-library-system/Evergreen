@@ -1,6 +1,9 @@
 Adding an Evergreen search form to a web page
 =============================================
 
+Introduction
+------------
+
 To enable users to quickly search your Evergreen catalog, you can add a
 simple search form to any HTML page. The following code demonstrates
 how to create a quick search box suitable for the header of your web

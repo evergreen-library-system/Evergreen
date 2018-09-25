@@ -8,7 +8,15 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/acq/app.js"></script>
 <link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.ATTR_SET_SUCCESS = "[% l('Attribute Set Update Succeeded') %]";
+  s.ATTR_SET_ERROR = "[% l('Attribute Set Update Failed') %]";
+  s.ATTR_SET_DELETE_CONFIRM = "[% l('Delete Attribute Set?') %]";
+}]);
+</script>
 [% END %]
+
 
 <div ng-view></div>
 

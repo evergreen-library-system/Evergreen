@@ -282,6 +282,25 @@ You can add any MARC field to your record details page. Moreover, this approach
 can also be used to display MARC fields in other pages, such as your results
 page.
 
+Using bibliographic source variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+For bibliographic records, there is a "bib source" that can be associated with
+every record. This source and its ID are available as record attributes called
+_bib_source.source_ and _bib_source.id_.  These variables do not present
+themselves in the catalog display by default.
+
+.Example use case
+****
+
+In this example, a library imports e-resource records from a third party and
+uses the bib source to indicate where the records came from. Patrons can place
+holds on these titles, but they must be placed via the vendor website, not in
+Evergreen. By exposing the bib source, the library can alter the Place Hold
+link for these records to point at the vendor website.
+
+****
+
 Setting the default physical location for your library environment
 ------------------------------------------------------------------
 
@@ -340,7 +359,7 @@ Evergreen with an up-to-date PO file downloaded from Launchpad.
 . Visit the Evergreen translation site in https://translations.launchpad.net/evergreen[Launchpad] 
 . Select required language (e.g. _Czech_ or _Spanish_)
 . Open the  _tpac_  template  and  then select option _Download translation_. Note: to be able to download the translation file you need to be logged in to Launchpad.
-. Select _PO format_ and submit the _request for download_ button. You can also request for download of all existitng templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
+. Select _PO format_ and submit the _request for download_ button. You can also request for download of all existing templates and languages at once, see https://translations.launchpad.net/evergreen/master/+export. The download link will be sent You to email address provided. 
 . Download the file and name it according to the language used (e.g., _cs-CZ.po_ for Czech or  _es-ES.po_ for Spanish)  
 . Copy the downloaded file to  _/openils/var/template/data/locale_. It is a good practice to backup the original PO file before.
 . Be sure that the desired language is set as default, using the <<_setting_a_default_language_and_adding_optional_languages,Default language>> procedures.
@@ -353,103 +372,6 @@ Changes require web server reload to take effect. As root run the command
 ----
 service apache2 restart
 ----
-
-
-Editing the formats select box options in the search interface.
----------------------------------------------------------------
-
-You may wish to remove, rename or organize the options in the formats select
-box. This can be accomplished from the staff client.
-
-. From the staff client, navigate to *Admin > Server Administration > Marc Coded
-Value Maps* 
-. Select _Type_ from the *Record Attribute Type* select box.
-. Double click on the format type you wish to edit.
-
-To change the label for the type, enter a value in the *Search Label* field.
-
-To  move the option to a top list separated by a dashed line from the others,
-check the *Is Simple Selector* check box.
-
-To hide the type so that it does not appear in the search interface, uncheck the
-*OPAC Visible* checkbox.
-
-Changes will be immediate.
-
-Adding and removing search fields in advanced search
------------------------------------------------------
-
-It is possible to add and remove search fields on the advanced search page by
-editing the _opac/parts/config.tt2_ file in your template directory. Look for
-this section of the file:
-
-----
-search.adv_config = [
-    {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},
-    {adv_label => l("Item Form"), adv_attr => "item_form"},
-    {adv_label => l("Language"),  adv_attr => "item_lang"},
-    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], adv_break => 1},
-    {adv_label => l("Video Format"), adv_attr => "vr_format"},
-    {adv_label => l("Bib Level"), adv_attr => "bib_level"},
-    {adv_label => l("Literary Form"), adv_attr => "lit_form", adv_break => 1},
-    {adv_label => l("Search Library"), adv_special => "lib_selector"},
-    {adv_label => l("Publication Year"), adv_special => "pub_year"},
-    {adv_label => l("Sort Results"), adv_special => "sort_selector"},
-];
-----
-
-For example, if you delete the line:
-
-----
-{adv_label => l("Language"),  adv_attr => "item_lang"},
-----
-
-the language field will no longer appear on your advanced search page. Changes
-will appear immediately after you save your changes.
-
-You can also add fields based on Search Facet Groups that you create in the
-staff client's Local Administration menu. This can be helpful if you want to
-simplify your patrons' experience by presenting them with only certain
-limiters (e.g. the most commonly used languages in your area).  To do this,
-
-. Click *Admin -> Local Administration -> Search Facet Groups*.
-. Click *New*.
-. Enter descriptive values into the code and label fields.  The owner needs to
-be set to your consortium.
-. Once the Facet Group is created, click on the blue hyperlinked code value.
-. Click the *New* button to create the necessary values for your field.
-. Go to the _opac/parts/config.tt2_ file, and add a line like the following,
-where *Our Library's Field* is the name you'd like to be displayed next to
-your field, and *facet_group_code* is the code you've added using the staff
-client.
-+
-----
- {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
-----
-
-Changing the display of facets and facet groups
------------------------------------------------
-
-Facets can be reordered on the search results page by editing the
-_opac/parts/config.tt2_ file in your template directory.  
-
-Edit the following section of _config.tt2_, changing the order of the facet
-categories according to your needs:
-
-----
-
-facet.display = [
-    {facet_class => 'author',  facet_order => ['personal', 'corporate']},
-    {facet_class => 'subject', facet_order => ['topic']},
-    {facet_class => 'series',  facet_order => ['seriestitle']},
-    {facet_class => 'subject', facet_order => ['name', 'geographic']}
-];
-
-----
-
-You may also change the default number of facets appearing under each category
-by editing the _facet.default_display_count_ value in _config.tt2_. The default 
-value is 5.
 
 Change Date Format in Patron Account View
 -----------------------------------------
@@ -572,11 +494,11 @@ _<ContentCafe>_ Section of _/openils/conf/opensrf.xml_.
 Edit the _userid_ and _password_ elements to match the user id and password for
 your Content Café account.
 
-Change the _return_behavior_on_no_jacket_image_ to set the behavior of your
-service when an image is not available for an item. By default this value is set
-to T which will result in a small image with the text "No Image Available" in
-place of a book cover. If you set this value to 1 a 1X1 blank image will be in
-place of a book cover. 
+This provider retrieves content based on ISBN or UPC, with a default preference
+for ISBNs.  If you wish for UPCs to be preferred, or wish one of the two identifier
+types to not be considered at all, you can change the "identifier_order" option
+in opensrf.xml.  When the option is present, only the identifier(s) listed will
+be sent.
 
 Obalkyknih.cz
 ~~~~~~~~~~~~~
@@ -699,11 +621,18 @@ points to the Syndetic service:
 For changes to be activated for your public interface you will need to restart
 Evergreen and Apache.
 
+The Syndetic Solutions provider retrieves images based on the following identifiers
+found in bibliographic records:
+
+* ISBN
+* UPC
+* ISSN
+
 
 Clear External/Added Content Cache
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-On the catalog’s record summary page, there is a link for staff that will forcibly clear 
+On the catalog's record summary page, there is a link for staff that will forcibly clear 
 the cache of the Added Content for that record. This is helpful for when the Added Content 
 retrieved the wrong cover jacket art, summary, etc. and caches the wrong result.
 
@@ -785,82 +714,11 @@ and move/rename the files to the following locations/name.
 You will need to create directories that are missing.
  
  * Small - Move the file *123-s.jpg* to */openils/var/web/opac/extras/ac/jacket/small/r/123*
- * Medium - Move the file *123-m.jpg* to */openils/var/web/opac/extras/ac/jacket/medum/r/123*.
+ * Medium - Move the file *123-m.jpg* to */openils/var/web/opac/extras/ac/jacket/medium/r/123*.
  * Large - Move the file *123-l.jpg* to */openils/var/web/opac/extras/ac/jacket/large/r/123*.
 
 [NOTE]
 The system doesn't need the file extension to know what kind of file it is.
  
 Reload the bib record summary in the web catalog and your new image will display.
-
-Sitemap generator
------------------
-A http://www.sitemaps.org[sitemap] directs search engines to the pages of
-interest in a web site so that the search engines can intelligently crawl
-your site. In the case of Evergreen, the primary pages of interest are the
-bibliographic record detail pages.
-
-The sitemap generator script creates sitemaps that adhere to the
-http://sitemaps.org specification, including:
-
-* limiting the number of URLs per sitemap file to no more than 50,000 URLs;
-* providing the date that the bibliographic record was last edited, so
-  that once a search engine has crawled all of your sites' record detail pages,
-  it only has to reindex those pages that are new or have changed since the last
-  crawl;
-* generating a sitemap index file that points to each of the sitemap files.
-
-Running the sitemap generator
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-The `sitemap_generator` script must be invoked with the following argument:
-
-* `--lib-hostname`: specifies the hostname for the catalog (for example,
-  `--lib-hostname https://catalog.example.com`); all URLs will be generated
-  appended to this hostname
-
-Therefore, the following arguments are useful for generating multiple sitemaps
-per Evergreen instance:
-
-* `--lib-shortname`: limit the list of record URLs to those which have copies
-  owned by the designated library or any of its children;
-* `--prefix`: provides a prefix for the sitemap index file names
-
-Other options enable you to override the OpenSRF configuration file and the
-database connection credentials, but the default settings are generally fine.
-
-Note that on very large Evergreen instances, sitemaps can consume hundreds of
-megabytes of disk space, so ensure that your Evergreen instance has enough room
-before running the script.
-
-Scheduling
-~~~~~~~~~~
-To enable search engines to maintain a fresh index of your bibliographic
-records, you may want to include the script in your cron jobs on a nightly or
-weekly basis.
-
-Sitemap files are generated in the same directory from which the script is
-invoked, so a cron entry will look something like:
-
-------------------------------------------------------------------------
-12 2 * * * cd /openils/var/web && /openils/bin/sitemap_generator
-------------------------------------------------------------------------
-
-Troubleshooting TPAC errors
----------------------------
-
-If there is a problem such as a TT syntax error, it generally shows up as an
-ugly server failure page. If you check the Apache error logs, you will probably
-find some solid clues about the reason for the failure. For example, in the
-following example, the error message identifies the file in which the problem
-occurred as well as the relevant line numbers.
-
-Example error message in Apache error logs:
-
-----
-bash# grep "template error" /var/log/apache2/error_log
-[Tue Dec 06 02:12:09 2011] [warn] [client 127.0.0.1] egweb: template error:
- file error - parse error - opac/parts/record/summary.tt2 line 112-121:
-  unexpected token (!=)\n  [% last_cn = 0;\n        FOR copy_info IN
-  ctx.copies;\n            callnum = copy_info.call_number_label;\n
-----
 

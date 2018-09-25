@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2011-07-14 08:50+0000\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"PO-Revision-Date: 2017-09-06 11:48+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2017-09-07 04:37+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Accelerator-Marker: &\n"
 
 #: reports.oils_rpt_builder.close_window
@@ -276,7 +276,7 @@ msgstr "Ձևանմուշի ստեղծող։"
 
 #: reports.oils_rpt_editor.doc_url
 msgid "Template Documentation URL:"
-msgstr ""
+msgstr "Ձևանմուշի փաստաթղթի ՀՊՈ /URL/։"
 
 #: reports.oils_rpt_editor.template_description
 msgid "Template Description:"
@@ -387,26 +387,28 @@ msgstr "Հիշիր հաշվետվությունը"
 
 #: reports.oils_rpt_editor.apply_changes
 msgid "Apply Changes"
-msgstr ""
+msgstr "Կիրառել փոփոխությունները"
 
 #: reports.oils_rpt_editor.save_report_new
 msgid "Save As New"
-msgstr ""
+msgstr "Հիշիր որպես նոր"
 
 #: reports.oils_rpt_editor.confirm_sched
 msgid ""
 "Changes will be applied to pending reports that have not yet run. Do you "
 "want to continue with modifying those pending reports?"
 msgstr ""
+"Փոփոխությունները կկիրառվեն դեռևս չկատարված և սպասող հաշվետվությունների վրա։ "
+"Ցանկանու՞մ ես շարունակել, ձևափոխելով այդ սպասող հաշվետվությունները;"
 
 #: reports.oils_rpt_editor.cancel
 msgctxt "reports.oils_rpt_editor.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղարկել"
 
 #: reports.oils_rpt_editor.exit_report
 msgid "Return"
-msgstr ""
+msgstr "Վերադարձ"
 
 #: reports.oils_rpt_editor.empty_parameter
 msgid ""
@@ -529,11 +531,11 @@ msgstr "Պլանավորի հաշվետվություն"
 
 #: reports.oils_rpt_folder_window.view_report
 msgid "View"
-msgstr ""
+msgstr "Դիտել"
 
 #: reports.oils_rpt_folder_window.edit_report
 msgid "Edit"
-msgstr ""
+msgstr "Խմբագրել"
 
 #: reports.oils_rpt_folder_window.delete_reports
 msgid "Delete selected report(s)"
@@ -596,7 +598,7 @@ msgstr "Ընտրված թղթապանակ։ "
 #: reports.oils_rpt_folder_window.cancel
 msgctxt "reports.oils_rpt_folder_window.cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Չեղարկել"
 
 #: reports.oils_rpt_folder_window.confirm_delete
 msgid "Are you sure you wish to delete the selected item(s)?"
@@ -607,12 +609,17 @@ msgid ""
 "        One or more of the selected templates could not be deleted because \n"
 "there are reports or outputs that depend on them."
 msgstr ""
+"        Ընտրված ձևանմուշներից մեկը կամ ավելին հնարավոր չէ ջնջել, քանի որ \n"
+"առկա են հաշվետվություններ կամ ելքային ձևեև որոնք կախված են դրանից։"
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
 "        One or more of the selected reports could not be deleted because \n"
 "there are outputs that depend on them."
 msgstr ""
+"        Ընտրված հաշվետվություններից մեկը կամ մի քանիսը հնարավոր չէ ջնջել, "
+"քանի որ \n"
+"կան ելքային ձևեր, որ կախված են դրանից։"
 
 #: reports.oils_rpt_folder_window.cannot_delete_another_users_data
 msgid "You may not delete another user's items"
@@ -700,6 +707,46 @@ msgstr "Ամիս(ներ)"
 msgid " ago"
 msgstr " առաջ"
 
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr "Կաղապարի որոնման արդյունքներ։"
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr "Կաղապարի հարցում..."
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr "Փնտրիր կաղապարներ։"
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr "Բոլոր դաշտերը։"
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr "Անուն"
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr "Նկարագրություն"
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr "Բոլոր թղթապանակենրը։"
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr "Սկսել"
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr "Նախորդը"
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr "Հաջորդը"
+
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"
 msgstr "Շտեմարանի սկզբնական կոդի դիտակ"
@@ -766,7 +813,7 @@ msgstr "Նկարագրություն"
 
 #: reports.xul.template_builder.doc_url.label
 msgid "Documentation URL:"
-msgstr ""
+msgstr "Փաստաթղթի ՀՊՈ /URL/։"
 
 #: reports.xul.template_builder.save.label
 msgid "Save"
@@ -837,7 +884,7 @@ msgstr "Փոխիր արժեքը"
 
 #: reports.xul.template_builder.change_field_doc.label
 msgid "Change Field Hint"
-msgstr ""
+msgstr "Փոխիր դաշտի հնարքը"
 
 #: reports.xul.template_builder.remove_value.label
 msgid "Remove value"
@@ -861,7 +908,7 @@ msgstr "կապ"
 
 #: reports.xul.template_builder.field_doc.label
 msgid "Field Hint"
-msgstr ""
+msgstr "Դաշտի հնարք"
 
 #~ msgid ""
 #~ "One or more of the selected templates could not be deleted because there are "

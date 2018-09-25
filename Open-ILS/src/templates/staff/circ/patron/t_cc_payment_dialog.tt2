@@ -1,0 +1,116 @@
+<div class="modal-header">
+  <button type="button" class="close" 
+    ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">
+    [% l('Credit Card Information') %]
+  </h4>
+</div>
+<div class="modal-body tight-vert-form" id="patron-pay-by-credit-form">
+  <div class="panel panel-default">
+    <div class="panel-heading">[% l('Credit Card Info') %]</div>
+    <div class="panel-body">
+      <div class="row form-group">
+        <div class="col-md-4"><label>[% l('Process Where?') %]</label></div>
+        <div class="col-md-8">
+          <select class="form-control" ng-model="context.cc.where_process">
+            <option value='1'>
+              [% l('Process payment through Evergreen') %]</option>
+            <option value='0'>
+              [% l('Record externally processed payment') %]</option>
+          </select>
+        </div>
+      </div>
+      <!-- wrapper div for internal CC processing fields -->
+      <div ng-if="context.cc.where_process == '1'">
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('Credit Card Number') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" ng-model="context.cc.number"/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('Expire Month') %]</label></div>
+          <div class="col-md-8">
+            <input type='number' class="form-control" ng-model="context.cc.expire_month"/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('Expire Year') %]</label></div>
+          <div class="col-md-8">
+            <input type='number' class="form-control" ng-model="context.cc.expire_year"/>
+          </div>
+        </div>
+      </div><!--cc-internal-wrapper-->
+      <div ng-if="context.cc.where_process == '0'">
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('Approval Code') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" 
+              required ng-model="context.cc.approval_code"/>
+          </div>
+        </div>
+      </div><!--cc-external-wrapper-->
+    </div><!--panel-body-->
+  </div><!--panel-->
+  <div class="panel panel-default">
+    <div class="panel-heading">[% l('Optional Fields') %]</div>
+    <div class="panel-body">
+      <div class="row form-group">
+        <div class="col-md-4"><label>[% l('Billing Name (first)') %]</label></div>
+        <div class="col-md-8">
+          <input type='text' class="form-control" 
+            ng-model="context.cc.billing_first"/>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-md-4"><label>[% l('Billing Name (last)') %]</label></div>
+        <div class="col-md-8">
+          <input type='text' class="form-control" 
+            ng-model="context.cc.billing_last"/>
+        </div>
+      </div>
+      <div ng-if="context.cc.where_process == '1'">
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('Address') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" 
+              ng-model="context.cc.billing_address"/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('City, town or village') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" 
+              ng-model="context.cc.billing_city"/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('State or province') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" 
+              ng-model="context.cc.billing_state"/>
+          </div>
+        </div>
+        <div class="row form-group">
+          <div class="col-md-4"><label>[% l('ZIP or postal code') %]</label></div>
+          <div class="col-md-8">
+            <input type='text' class="form-control" 
+              ng-model="context.cc.billing_zip"/>
+          </div>
+        </div>
+      </div><!--cc-internal-wrapper-->
+      <div class="row form-group">
+        <div class="col-md-4"><label>[% l('Note') %]</label></div>
+        <div class="col-md-8">
+          <textarea rows="2" type='text' class="form-control" 
+            ng-model="context.cc.note"></textarea>
+        </div>
+      </div>
+    </div><!--panel-body-->
+  </div><!--panel-->
+</div><!--modal-body-->
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok()" ng-disabled="context.cc.where_process == 0 && !context.cc.approval_code">[% l('Submit') %]</button>
+  <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+</div>
+

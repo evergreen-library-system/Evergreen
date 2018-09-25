@@ -467,19 +467,60 @@ function createQueue(
   * out into the vandelay tables
   */
 function processSpool(key, queueId, type, onload) {
+
     fieldmapper.standardRequest(
         ['open-ils.vandelay', 'open-ils.vandelay.'+type+'.process_spool'],
         {   async: true,
-            params: [authtoken, key, queueId],
-            onresponse : function(r) {
-                var resp = r.recv().content();
-                if(e = openils.Event.parse(resp)) 
+            params: [authtoken, key, queueId, null, null, null, null, 1],
+
+            // exit_early mode returns the tracker
+            // watch it until it completes.
+            oncomplete: function(r) {
+                var tracker = r.recv().content();
+                if(e = openils.Event.parse(tracker)) 
                     return alert(e);
-                dojo.byId('vl-upload-status-count').innerHTML = resp;
-            },
-            oncomplete : function(r) {onload();}
+
+                // Then poll for tracker updates.
+                pollSessionTracker(tracker.id(),
+                    function(tracker) {
+                        dojo.byId('vl-upload-status-count').innerHTML = 
+                            tracker.actions_performed();
+                    },
+                    function() { onload(); }
+                );
+            }
         }
     );
+}
+
+function pollSessionTracker(id, onresponse, oncomplete) {
+
+    function pollTrackerOnce() {
+        // Note this is not an authoritative API call.
+        // Thinking is it will complete eventually regardless.
+
+        fieldmapper.standardRequest(
+            ['open-ils.pcrud', 'open-ils.pcrud.retrieve.vst'], {   
+            params: [authtoken, id],
+            async: true,
+            oncomplete: function(r) {
+                var tracker = openils.Util.readResponse(r);
+                if (tracker && tracker.state() === 'active') {
+                    if (onresponse) {
+                        onresponse(tracker);
+                    }
+                    setTimeout(pollTrackerOnce, 2000);
+                } else {
+                    // tracker is no longer active, session is complete.
+                    if (oncomplete) {
+                        oncomplete();
+                    }
+                }
+            }
+        });
+    }
+    
+    setTimeout(pollTrackerOnce, 1000);
 }
 
 function vlExportInit() {
@@ -577,13 +618,24 @@ function vlExportRecordQueue(opts) {
     req.onreadystatechange = function () {
         if (req.readyState == 4) {
             var file_tag = opts.nonimported ? '_nonimported' : '';
-            openils.XUL.contentToFileSaveDialog(req.responseText, null, {
-                defaultString : currentQueueName + file_tag + '.mrc',
-                defaultExtension : '.mrc',
-                filterName : 'MARC21',
-                filterExtension : '*.mrc',
-                filterAll : true
-            } );
+            var filename = currentQueueName + file_tag + '.mrc';
+
+            try {
+                if (window.IAMBROWSER) {
+                    var blob = new Blob([req.responseText], {type: "application/octet-stream"});
+                    saveAs(blob, filename);
+                } else {
+                    openils.XUL.contentToFileSaveDialog(req.responseText, null, {
+                        defaultString : filename,
+                        defaultExtension : '.mrc',
+                        filterName : 'MARC21',
+                        filterExtension : '*.mrc',
+                        filterAll : true
+                    } );
+                }
+            } catch (E) {
+                alert(E);
+            }
         }
     }
 }
@@ -1382,11 +1434,15 @@ function vlImportAllRecords() {
 }
 
 /* if recList has values, import only those records */
-function vlImportRecordQueue(type, queueId, recList, onload) {
+function vlImportRecordQueue(type, queueId, recList, onload, sessionKey) {
     displayGlobalDiv('vl-generic-progress-with-total');
 
     /* set up options */
-    var options = {overlay_map : currentOverlayRecordsMap};
+    var options = {
+        overlay_map : currentOverlayRecordsMap, 
+        session_key: sessionKey, // link to upload session if possible
+        exit_early: true
+    };
 
     if(vlUploadQueueImportNoMatch.checked) {
         options.import_no_match = true;
@@ -1443,18 +1499,30 @@ function vlImportRecordQueue(type, queueId, recList, onload) {
     }
 
     fieldmapper.standardRequest(
-        ['open-ils.vandelay', method],
-        {   async: true,
-            params: params,
-            onresponse: function(r) {
-                var resp = r.recv().content();
-                if(e = openils.Event.parse(resp))
-                    return alert(e);
-                vlControlledProgressBar.update({maximum:resp.total, progress:resp.progress});
-            },
-            oncomplete: function() {onload();}
+        ['open-ils.vandelay', method], {
+        async: true, 
+        params: params,
+
+        // In exit_early mode, the API returns quickly with the
+        // tracker object.  Once received, poll the tracker until
+        // it's no longer active.
+        oncomplete : function(r) {
+            var tracker = r.recv().content();
+            if(e = openils.Event.parse(tracker)) 
+                return alert(e);
+
+            // Then poll for tracker updates.
+            pollSessionTracker(tracker.id(),
+                function(tracker) {
+                    vlControlledProgressBar.update({
+                        maximum: tracker.total_actions(),  
+                        progress: tracker.actions_performed()
+                    });
+                },
+                function() { onload(); }
+            );
         }
-    );
+    });
 }
 
 
@@ -1468,6 +1536,7 @@ function batchUpload() {
     // could be bib-acq, which makes no sense in most places
     if (currentType.match(/bib/)) currentType = 'bib';
 
+    var sessionKey;
     var handleProcessSpool = function() {
         if( 
             vlUploadQueueImportNoMatch.checked || 
@@ -1481,7 +1550,8 @@ function batchUpload() {
                     null,
                     function() {
                         retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
-                    }
+                    },
+                    sessionKey
                 );
         } else {
             retrieveQueuedRecords(currentType, currentQueueId, handleRetrieveRecords);
@@ -1490,6 +1560,7 @@ function batchUpload() {
 
     var handleUploadMARC = function(key) {
         dojo.style(dojo.byId('vl-upload-status-processing'), 'display', 'block');
+        sessionKey = key;
         processSpool(key, currentQueueId, currentType, handleProcessSpool);
     };
 
@@ -1725,6 +1796,11 @@ function vlOpenMarcEditWindow(rec, postReloadHTMLHandler) {
         To run in Firefox directly, must set signed.applets.codebase_principal_support
         to true in about:config
     */
+    if(window.IAMBROWSER){
+        xulG.edit_marc_modal(rec, function(breId){ vlLoadMARCHtml(breId, false, postReloadHTMLHandler); });
+        return;
+    }
+
     win = window.open('/xul/server/cat/marcedit.xul','','chrome'); // XXX version?
 
     var type;

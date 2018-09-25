@@ -40,6 +40,18 @@ my $MK_ENV_FLESH = {
     flesh_fields => {acp => ['call_number','parts','floating'], acn => ['record']}
 };
 
+# table of cases where suppressing a system-generated copy alerts
+# should generate an override of an old-style event
+my %COPY_ALERT_OVERRIDES = (
+    "CLAIMSRETURNED\tCHECKOUT" => ['CIRC_CLAIMS_RETURNED'],
+    "CLAIMSRETURNED\tCHECKIN" => ['CIRC_CLAIMS_RETURNED'],
+    "LOST\tCHECKOUT" => ['OPEN_CIRCULATION_EXISTS'],
+    "LONGOVERDUE\tCHECKOUT" => ['OPEN_CIRCULATION_EXISTS'],
+    "MISSING\tCHECKOUT" => ['COPY_NOT_AVAILABLE'],
+    "DAMAGED\tCHECKOUT" => ['COPY_NOT_AVAILABLE'],
+    "LOST_AND_PAID\tCHECKOUT" => ['COPY_NOT_AVAILABLE', 'OPEN_CIRCULATION_EXISTS']
+);
+
 sub initialize {}
 
 __PACKAGE__->register_method(
@@ -112,6 +124,11 @@ __PACKAGE__->register_method(
     signature => q/@see open-ils.circ.renew/,
 );
 
+__PACKAGE__->register_method(
+    method    => "run_method",
+    api_name  => "open-ils.circ.renew.auto",
+    signature => q/@see open-ils.circ.renew/,
+);
 
 __PACKAGE__->register_method(
     method  => "run_method",
@@ -155,6 +172,7 @@ sub run_method {
     my( $self, $conn, $auth, $args ) = @_;
     translate_legacy_args($args);
     $args->{override_args} = { all => 1 } unless defined $args->{override_args};
+    $args->{new_copy_alerts} ||= $self->api_level > 1 ? 1 : 0;
     my $api = $self->api_name;
 
     my $circulator = 
@@ -226,14 +244,15 @@ sub run_method {
     }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
+    $circulator->is_autorenewal(1) if $api =~ /renew.auto/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
+    $circulator->is_checkout(1) if $api =~ /checkout/;
+    $circulator->override(1) if $api =~ /override/o;
 
     $circulator->mk_env();
     $circulator->noop(1) if $circulator->claims_never_checked_out;
 
     return circ_events($circulator) if $circulator->bail_out;
-    
-    $circulator->override(1) if $api =~ /override/o;
 
     if( $api =~ /checkout\.permit/ ) {
         $circulator->do_permit();
@@ -260,7 +279,6 @@ sub run_method {
         return $data;
 
     } elsif( $api =~ /checkout/ ) {
-        $circulator->is_checkout(1);
         $circulator->do_checkout();
 
     } elsif( $circulator->is_res_checkin ) {
@@ -270,8 +288,7 @@ sub run_method {
         $circulator->do_checkin();
 
     } elsif( $api =~ /renew/ ) {
-        $circulator->is_renewal(1);
-        $circulator->do_renew();
+        $circulator->do_renew($api);
     }
 
     if( $circulator->bail_out ) {
@@ -374,7 +391,7 @@ use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::PermitHold;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Transit;
@@ -401,15 +418,24 @@ my @AUTOLOAD_FIELDS = qw/
     remote_hold
     backdate
     reservation
+    do_inventory_update
+    latest_inventory
     copy
     copy_id
     copy_barcode
+    new_copy_alerts
+    user_copy_alerts
+    system_copy_alerts
+    overrides_per_copy_alerts
+    next_copy_status
+    copy_state
     patron
     patron_id
     patron_barcode
     volume
     title
     is_renewal
+    is_autorenewal
     is_checkout
     is_res_checkout
     is_precat
@@ -447,6 +473,7 @@ my @AUTOLOAD_FIELDS = qw/
     recurring_fines_rule
     max_fine_rule
     renewal_remaining
+    auto_renewal_remaining
     hard_due_date
     due_date
     fulfilled_holds
@@ -640,9 +667,232 @@ sub save_trimmed_copy {
     }
 }
 
+sub collect_user_copy_alerts {
+    my $self = shift;
+    my $e = $self->editor;
+
+    if($self->copy) {
+        my $alerts = $e->search_asset_copy_alert([
+            {copy => $self->copy->id, ack_time => undef},
+            {flesh => 1, flesh_fields => { aca => [ qw/ alert_type / ] }}
+        ]);
+        if (ref $alerts eq "ARRAY") {
+            $logger->info("circulator: found " . scalar(@$alerts) . " alerts for copy " .
+                $self->copy->id);
+            $self->user_copy_alerts($alerts);
+        }
+    }
+}
+
+sub filter_user_copy_alerts {
+    my $self = shift;
+
+    my $e = $self->editor;
+
+    if(my $alerts = $self->user_copy_alerts) {
+
+        my $suppress_orgs = $U->get_org_full_path($self->circ_lib);
+        my $suppressions = $e->search_actor_copy_alert_suppress(
+            {org => $suppress_orgs}
+        );
+
+        my @final_alerts;
+        foreach my $a (@$alerts) {
+            # filter on event type
+            if (defined $a->alert_type) {
+                next if ($a->alert_type->event eq 'CHECKIN' && !$self->is_checkin && !$self->is_renewal);
+                next if ($a->alert_type->event eq 'CHECKOUT' && !$self->is_checkout && !$self->is_renewal);
+                next if (defined $a->alert_type->in_renew && $U->is_true($a->alert_type->in_renew) && !$self->is_renewal);
+                next if (defined $a->alert_type->in_renew && !$U->is_true($a->alert_type->in_renew) && $self->is_renewal);
+            }
+
+            # filter on suppression
+            next if (grep { $a->alert_type->id == $_->alert_type} @$suppressions);
+
+            # filter on "only at circ lib"
+            if (defined $a->alert_type->at_circ) {
+                my $copy_circ_lib = (ref $self->copy->circ_lib) ?
+                    $self->copy->circ_lib->id : $self->copy->circ_lib;
+                my $orgs = $U->get_org_descendants($copy_circ_lib);
+
+                if ($U->is_true($a->alert_type->invert_location)) {
+                    next if (grep {$_ == $self->circ_lib} @$orgs);
+                } else {
+                    next unless (grep {$_ == $self->circ_lib} @$orgs);
+                }
+            }
+
+            # filter on "only at owning lib"
+            if (defined $a->alert_type->at_owning) {
+                my $copy_owning_lib = (ref $self->volume->owning_lib) ?
+                    $self->volume->owning_lib->id : $self->volume->owning_lib;
+                my $orgs = $U->get_org_descendants($copy_owning_lib);
+
+                if ($U->is_true($a->alert_type->invert_location)) {
+                    next if (grep {$_ == $self->circ_lib} @$orgs);
+                } else {
+                    next unless (grep {$_ == $self->circ_lib} @$orgs);
+                }
+            }
+
+            $a->alert_type->next_status([$U->unique_unnested_numbers($a->alert_type->next_status)]);
+
+            push @final_alerts, $a;
+        }
+
+        $self->user_copy_alerts(\@final_alerts);
+    }
+}
+
+sub generate_system_copy_alerts {
+    my $self = shift;
+    return unless($self->copy);
+
+    # don't create system copy alerts if the copy
+    # is in a normal state; we're assuming that there's
+    # never a need to generate a popup for each and every
+    # checkin or checkout of normal items. If this assumption
+    # proves false, then we'll need to add a way to explicitly specify
+    # that a copy alert type should never generate a system copy alert
+    return if $self->copy_state eq 'NORMAL';
+
+    my $e = $self->editor;
+
+    my $suppress_orgs = $U->get_org_full_path($self->circ_lib);
+    my $suppressions = $e->search_actor_copy_alert_suppress(
+        {org => $suppress_orgs}
+    );
+
+    # events we care about ...
+    my $event = [];
+    push(@$event, 'CHECKIN') if $self->is_checkin;
+    push(@$event, 'CHECKOUT') if $self->is_checkout;
+    return unless scalar(@$event);
+
+    my $alert_orgs = $U->get_org_ancestors($self->circ_lib);
+    my $alert_types = $e->search_config_copy_alert_type({
+        active    => 't',
+        scope_org => $alert_orgs,
+        event     => $event,
+        state => $self->copy_state,
+        '-or' => [ { in_renew => $self->is_renewal }, { in_renew => undef } ],
+    });
+
+    my @final_types;
+    foreach my $a (@$alert_types) {
+        # filter on "only at circ lib"
+        if (defined $a->at_circ) {
+            my $copy_circ_lib = (ref $self->copy->circ_lib) ?
+                $self->copy->circ_lib->id : $self->copy->circ_lib;
+            my $orgs = $U->get_org_descendants($copy_circ_lib);
+
+            if ($U->is_true($a->invert_location)) {
+                next if (grep {$_ == $self->circ_lib} @$orgs);
+            } else {
+                next unless (grep {$_ == $self->circ_lib} @$orgs);
+            }
+        }
+
+        # filter on "only at owning lib"
+        if (defined $a->at_owning) {
+            my $copy_owning_lib = (ref $self->volume->owning_lib) ?
+                $self->volume->owning_lib->id : $self->volume->owning_lib;
+            my $orgs = $U->get_org_descendants($copy_owning_lib);
+
+            if ($U->is_true($a->invert_location)) {
+                next if (grep {$_ == $self->circ_lib} @$orgs);
+            } else {
+                next unless (grep {$_ == $self->circ_lib} @$orgs);
+            }
+        }
+
+        push @final_types, $a;
+    }
+
+    if (@final_types) {
+        $logger->info("circulator: found " . scalar(@final_types) . " system alert types for copy" .
+            $self->copy->id);
+    }
+
+    my @alerts;
+    
+    # keep track of conditions corresponding to suppressed
+    # system alerts, as these may be used to overridee
+    # certain old-style-events
+    my %auto_override_conditions = ();
+    foreach my $t (@final_types) {
+        if ($t->next_status) {
+            if (grep { $t->id == $_->alert_type } @$suppressions) {
+                $t->next_status([]);
+            } else {
+                $t->next_status([$U->unique_unnested_numbers($t->next_status)]);
+            }
+        }
+
+        my $alert = new Fieldmapper::asset::copy_alert ();
+        $alert->alert_type($t->id);
+        $alert->copy($self->copy->id);
+        $alert->temp(1);
+        $alert->create_staff($e->requestor->id);
+        $alert->create_time('now');
+        $alert->ack_staff($e->requestor->id);
+        $alert->ack_time('now');
+
+        $alert = $e->create_asset_copy_alert($alert);
+
+        next unless $alert;
+
+        $alert->alert_type($t->clone);
+
+        push(@{$self->next_copy_status}, @{$t->next_status}) if ($t->next_status);
+        if (grep {$_->alert_type == $t->id} @$suppressions) {
+            $auto_override_conditions{join("\t", $t->state, $t->event)} = 1;
+        }
+        push(@alerts, $alert) unless (grep {$_->alert_type == $t->id} @$suppressions);
+    }
+
+    $self->system_copy_alerts(\@alerts);
+    $self->overrides_per_copy_alerts(\%auto_override_conditions);
+}
+
+sub add_overrides_from_system_copy_alerts {
+    my $self = shift;
+    my $e = $self->editor;
+
+    foreach my $condition (keys %{$self->overrides_per_copy_alerts()}) {
+        if (exists $COPY_ALERT_OVERRIDES{$condition}) {
+            $self->override(1);
+            push @{$self->override_args->{events}}, @{ $COPY_ALERT_OVERRIDES{$condition} };
+            # special handling for long-overdue and lost checkouts
+            if (grep { $_ eq 'OPEN_CIRCULATION_EXISTS' } @{ $COPY_ALERT_OVERRIDES{$condition} }) {
+                my $state = (split /\t/, $condition, -1)[0];
+                my $setting;
+                if ($state eq 'LOST' or $state eq 'LOST_AND_PAID') {
+                    $setting = 'circ.copy_alerts.forgive_fines_on_lost_checkin';
+                } elsif ($state eq 'LONGOVERDUE') {
+                    $setting = 'circ.copy_alerts.forgive_fines_on_long_overdue_checkin';
+                } else {
+                    next;
+                }
+                my $forgive = $U->ou_ancestor_setting_value(
+                    $self->circ_lib, $setting, $e
+                );
+                if ($U->is_true($forgive)) {
+                    $self->void_overdues(1);
+                }
+                $self->noop(1); # do not attempt transits, just check it in
+                $self->do_checkin();
+            }
+        }
+    }
+}
+
 sub mk_env {
     my $self = shift;
     my $e = $self->editor;
+
+    $self->next_copy_status([]) unless (defined $self->next_copy_status);
+    $self->overrides_per_copy_alerts({}) unless (defined $self->overrides_per_copy_alerts);
 
     # --------------------------------------------------------------------------
     # Grab the fleshed copy
@@ -676,6 +926,7 @@ sub mk_env {
                         }
                     },
                     "where" => {
+                        deleted => 'f',
                         "+bresv" => {
                             "id" => (ref $self->reservation) ?
                                 $self->reservation->id : $self->reservation
@@ -692,6 +943,19 @@ sub mk_env {
     
         if($copy) {
             $self->save_trimmed_copy($copy);
+
+            # alerts!
+            $self->copy_state(
+                $e->json_query(
+                    {from => ['asset.copy_state', $copy->id]}
+                )->[0]{'asset.copy_state'}
+            );
+
+            $self->generate_system_copy_alerts;
+            $self->add_overrides_from_system_copy_alerts;
+            $self->collect_user_copy_alerts;
+            $self->filter_user_copy_alerts;
+
         } else {
             # We can't renew if there is no copy
             return $self->bail_on_events(OpenILS::Event->new('ASSET_COPY_NOT_FOUND'))
@@ -757,7 +1021,7 @@ sub mk_env {
             unless $U->is_true($patron->card->active);
     
         my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-            cleanse_ISO8601($patron->expire_date));
+            clean_ISO8601($patron->expire_date));
     
         $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
             if( CORE::time > $expire->epoch ) ;
@@ -865,18 +1129,33 @@ sub check_captured_holds {
                 cancel_time         => undef, 
                 fulfillment_time    => undef 
             },
-            { limit => 1 }
+            { limit => 1,
+              flesh => 1,
+              flesh_fields => { ahr => ['usr'] }
+            }
         ]
     )->[0];
 
-    if ($hold and $hold->usr == $patron->id) {
+    if ($hold and $hold->usr->id == $patron->id) {
         $self->checkout_is_for_hold(1);
         return undef;
+    } elsif ($hold) {
+        my $payload;
+        my $holdau = $hold->usr;
+
+        if ($holdau) {
+            $payload->{patron_name} = $holdau->first_given_name . ' ' . $holdau->family_name;
+            $payload->{patron_id} = $holdau->id;
+        } else {
+            $payload->{patron_name} = "???";
+        }
+        $payload->{hold_id}     = $hold->id;
+        $self->push_events(OpenILS::Event->new('ITEM_ON_HOLDS_SHELF',
+                                               payload => $payload));
     }
 
     $logger->info("circulator: this copy is needed by a different patron to fulfill a hold");
 
-    $self->push_events(OpenILS::Event->new('ITEM_ON_HOLDS_SHELF'));
 }
 
 
@@ -921,8 +1200,8 @@ sub do_copy_checks {
                 );
 
                 if($auto_renew_intvl) {
-                    my $intvl_seconds = OpenSRF::Utils->interval_to_seconds($auto_renew_intvl);
-                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( cleanse_ISO8601($old_circ->xact_start) );
+                    my $intvl_seconds = OpenILS::Utils::DateTime->interval_to_seconds($auto_renew_intvl);
+                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( clean_ISO8601($old_circ->xact_start) );
 
                     if(DateTime->now > $checkout_time->add(seconds => $intvl_seconds)) {
                         $payload->{auto_renew} = 1;
@@ -1126,6 +1405,7 @@ sub get_circ_policy {
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurrence_interval,
         renewal_remaining => $duration_rule->max_renewals,
+        auto_renewal_remaining => $duration_rule->max_auto_renewals,
         grace_period => $recurring_fine_rule->grace_period
     };
 
@@ -1207,6 +1487,21 @@ sub run_copy_permit_scripts {
 
 sub check_copy_alert {
     my $self = shift;
+
+    if ($self->new_copy_alerts) {
+        my @alerts;
+        push @alerts, @{$self->user_copy_alerts} # we have preexisting alerts 
+            if ($self->user_copy_alerts && @{$self->user_copy_alerts});
+
+        push @alerts, @{$self->system_copy_alerts} # we have new dynamic alerts 
+            if ($self->system_copy_alerts && @{$self->system_copy_alerts});
+
+        if (@alerts) {
+            $self->bail_out(1) if (!$self->override);
+            return OpenILS::Event->new( 'COPY_ALERT_MESSAGE', payload => \@alerts);
+        }
+    }
+
     return undef if $self->is_renewal;
     return OpenILS::Event->new(
         'COPY_ALERT_MESSAGE', payload => $self->copy->alert_message)
@@ -1834,6 +2129,7 @@ sub build_checkout_circ_object {
         $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurrence_interval);
         $circ->renewal_remaining($duration->max_renewals);
+        $circ->auto_renewal_remaining($duration->max_auto_renewals);
         $circ->grace_period($policy->{grace_period});
 
     } else {
@@ -1863,11 +2159,15 @@ sub build_checkout_circ_object {
       $circ->circ_staff($self->editor->requestor->id);
    }
 
+   if ( $self->is_autorenewal ){
+      $circ->auto_renewal_remaining($self->auto_renewal_remaining);
+      $circ->auto_renewal('t');
+   }
 
     # if the user provided an overiding checkout time,
     # (e.g. the checkout really happened several hours ago), then
     # we apply that here.  Does this need a perm??
-    $circ->xact_start(cleanse_ISO8601($self->checkout_time))
+    $circ->xact_start(clean_ISO8601($self->checkout_time))
         if $self->checkout_time;
 
     # if a patron is renewing, 'requestor' will be the patron
@@ -1967,7 +2267,7 @@ sub booking_adjusted_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-       $circ->due_date(cleanse_ISO8601($self->due_date));
+       $circ->due_date(clean_ISO8601($self->due_date));
 
     } else {
 
@@ -1997,14 +2297,14 @@ sub booking_adjusted_due_date {
         return $self->bail_on_events($bookings) if ref($bookings) eq 'HASH';
         
         my $dt_parser = DateTime::Format::ISO8601->new;
-        my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($circ->due_date) );
+        my $due_date = $dt_parser->parse_datetime( clean_ISO8601($circ->due_date) );
 
         for my $bid (@$bookings) {
 
             my $booking = $self->editor->retrieve_booking_reservation( $bid );
 
-            my $booking_start = $dt_parser->parse_datetime( cleanse_ISO8601($booking->start_time) );
-            my $booking_end = $dt_parser->parse_datetime( cleanse_ISO8601($booking->end_time) );
+            my $booking_start = $dt_parser->parse_datetime( clean_ISO8601($booking->start_time) );
+            my $booking_end = $dt_parser->parse_datetime( clean_ISO8601($booking->end_time) );
 
             return $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') )
                 if ($booking_start < DateTime->now);
@@ -2025,7 +2325,7 @@ sub booking_adjusted_due_date {
             $new_circ_duration++ if $new_circ_duration % 86400 == 0;
             $circ->duration("$new_circ_duration seconds");
 
-            $circ->due_date(cleanse_ISO8601($due_date->strftime('%FT%T%z')));
+            $circ->due_date(clean_ISO8601($due_date->strftime('%FT%T%z')));
             $changed = 1;
         }
 
@@ -2047,7 +2347,7 @@ sub apply_modified_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-      $circ->due_date(cleanse_ISO8601($self->due_date));
+      $circ->due_date(clean_ISO8601($self->due_date));
 
    } else {
 
@@ -2093,13 +2393,13 @@ sub create_due_date {
 
     # for now, use the server timezone.  TODO: use workstation org timezone
     my $due_date = DateTime->now(time_zone => 'local');
-    $due_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) if $start_time;
+    $due_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($start_time)) if $start_time;
 
     # add the circ duration
-    $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($duration));
+    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration));
 
     if($date_ceiling) {
-        my $cdate = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date_ceiling));
+        my $cdate = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($date_ceiling));
         if ($cdate > DateTime->now and ($cdate < $due_date or $U->is_true( $force_date ))) {
             $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
             $due_date = $cdate;
@@ -2180,7 +2480,7 @@ sub checkout_noncat {
 
    my $lib      = $self->noncat_circ_lib || $self->circ_lib;
    my $count    = $self->noncat_count || 1;
-   my $cotime   = cleanse_ISO8601($self->checkout_time) || "";
+   my $cotime   = clean_ISO8601($self->checkout_time) || "";
 
    $logger->info("circulator: circ creating $count noncat circs with checkout time $cotime");
 
@@ -2225,8 +2525,8 @@ sub check_transit_checkin_interval {
     # transit from X to X for whatever reason has no min interval
     return if $self->transit->source == $self->transit->dest;
 
-    my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
-    my $t_start = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->transit->source_send_time));
+    my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($interval);
+    my $t_start = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($self->transit->source_send_time));
     my $horizon = $t_start->add(seconds => $seconds);
 
     # See if we are still within the transit checkin forbidden range
@@ -2374,6 +2674,20 @@ sub do_checkin {
 
         $self->dont_change_lost_zero($dont_change_lost_zero);
     }
+
+    my $latest_inventory = Fieldmapper::asset::latest_inventory->new;
+
+    if ($self->do_inventory_update) {
+        $latest_inventory->inventory_date('now');
+        $latest_inventory->inventory_workstation($self->editor->requestor->wsid);
+        $latest_inventory->copy($self->copy->id());
+    } else {
+        my $alci = $self->editor->search_asset_latest_inventory(
+            {copy => $self->copy->id}
+        );
+        $latest_inventory = $alci->[0]
+    }
+    $self->latest_inventory($latest_inventory);
 
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
@@ -2640,7 +2954,8 @@ sub do_checkin {
             $U->ou_ancestor_setting_value($self->circ->circ_lib, 'circ.claim_never_checked_out.mark_missing')) {
 
         # the item was not supposed to be checked out to the user and should now be marked as missing
-        $self->copy->status(OILS_COPY_STATUS_MISSING);
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_MISSING;
+        $self->copy->status($next_status);
         $self->update_copy;
 
     } else {
@@ -2716,13 +3031,15 @@ sub reshelve_copy {
 
    my $stat = $U->copy_status($copy->status)->id;
 
+   my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+
    if($force || (
       $stat != OILS_COPY_STATUS_ON_HOLDS_SHELF and
       $stat != OILS_COPY_STATUS_CATALOGING and
       $stat != OILS_COPY_STATUS_IN_TRANSIT and
-      $stat != OILS_COPY_STATUS_RESHELVING  )) {
+      $stat != $next_status  )) {
 
-        $copy->status( OILS_COPY_STATUS_RESHELVING );
+        $copy->status( $next_status );
             $self->update_copy;
             $self->checkin_changed(1);
     }
@@ -3251,9 +3568,9 @@ sub handle_fines {
         # If we have a grace period
         if($obj->can('grace_period')) {
             # Parse out the due date
-            my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($obj->due_date) );
+            my $due_date = $dt_parser->parse_datetime( clean_ISO8601($obj->due_date) );
             # Add the grace period to the due date
-            $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($obj->grace_period));
+            $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($obj->grace_period));
             # Don't generate fines on circs still in grace period
             $skip_for_grace = $due_date > DateTime->now;
         }
@@ -3333,7 +3650,8 @@ sub checkin_handle_circ_start {
     } elsif ($circ_lib != $self->circ_lib and $stat == OILS_COPY_STATUS_MISSING) {
         $logger->info("circulator: not updating copy status on checkin because copy is missing");
     } else {
-        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+        $self->copy->status($U->copy_status($next_status));
         $self->update_copy;
     }
 
@@ -3482,7 +3800,7 @@ sub checkin_handle_lost_or_longoverdue {
             int($tm[3]), int($tm[4]), int($tm[5]), int($tm[6]));
 
         my $last_chance = 
-            OpenSRF::Utils->interval_to_seconds($max_return) + int($due);
+            OpenILS::Utils::DateTime->interval_to_seconds($max_return) + int($due);
 
         $logger->info("MAX OD: $max_return LAST ACTIVITY: ".
             "$last_activity DUEDATE: ".$circ->due_date." TODAY: $today ".
@@ -3521,7 +3839,8 @@ sub checkin_handle_lost_or_longoverdue {
         if ($immediately_available) {
             # item status does not need to be retained, so give it a
             # reshelving status as if it were a normal checkin
-            $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+            my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+            $self->copy->status($U->copy_status($next_status));
             $self->update_copy;
         } else {
             $logger->info("circulator: leaving lost/longoverdue copy".
@@ -3530,7 +3849,8 @@ sub checkin_handle_lost_or_longoverdue {
     } else {
         # lost/longoverdue item is home and processed, treat like a normal 
         # checkin from this point on
-        $self->copy->status($U->copy_status(OILS_COPY_STATUS_RESHELVING));
+        my $next_status = $self->next_copy_status->[0] || OILS_COPY_STATUS_RESHELVING;
+        $self->copy->status($U->copy_status($next_status));
         $self->update_copy;
     }
 }
@@ -3545,8 +3865,8 @@ sub checkin_handle_backdate {
     # not the input.  Do we need to do this?  This certainly interferes with
     # backdating of hourly checkouts, but that is likely a very rare case.
     # ------------------------------------------------------------------
-    my $bd = cleanse_ISO8601($self->backdate);
-    my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->circ->due_date));
+    my $bd = clean_ISO8601($self->backdate);
+    my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($self->circ->due_date));
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
     $new_date->set_hour($original_date->hour());
     $new_date->set_minute($original_date->minute());
@@ -3557,7 +3877,7 @@ sub checkin_handle_backdate {
         $logger->info("circulator: ignoring future backdate: $new_date");
         delete $self->{backdate};
     } else {
-        $self->backdate(cleanse_ISO8601($new_date->datetime()));
+        $self->backdate(clean_ISO8601($new_date->datetime()));
     }
 
     return undef;
@@ -3571,7 +3891,8 @@ sub check_checkin_copy_status {
    my $status = $U->copy_status($copy->status)->id;
 
    return undef
-      if(   $status == OILS_COPY_STATUS_AVAILABLE   ||
+      if(   $self->new_copy_alerts ||
+            $status == OILS_COPY_STATUS_AVAILABLE   ||
             $status == OILS_COPY_STATUS_CHECKED_OUT ||
             $status == OILS_COPY_STATUS_IN_PROCESS  ||
             $status == OILS_COPY_STATUS_ON_HOLDS_SHELF  ||
@@ -3648,6 +3969,23 @@ sub checkin_flesh_events {
         );
     }
 
+    if ($self->latest_inventory) {
+        # flesh some workstation fields before returning
+        $self->latest_inventory->inventory_workstation(
+            $self->editor->retrieve_actor_workstation([$self->latest_inventory->inventory_workstation])
+        );
+    }
+
+    if($self->latest_inventory && !$self->latest_inventory->id) {
+        my $alci = $self->editor->search_asset_latest_inventory(
+            {copy => $self->latest_inventory->copy}
+        );
+        if($alci->[0]) {
+            $self->latest_inventory->id($alci->[0]->id);
+        }
+    }
+    $self->copy->latest_inventory($self->latest_inventory);
+
     for my $evt (@{$self->events}) {
 
         my $payload         = {};
@@ -3661,6 +3999,8 @@ sub checkin_flesh_events {
         $payload->{patron}  = $self->patron;
         $payload->{reservation} = $self->reservation
             unless (not $self->reservation or $self->reservation->cancel_time);
+        $payload->{latest_inventory} = $self->latest_inventory;
+        if ($self->do_inventory_update) { $payload->{do_inventory_update} = 1; }
 
         $evt->{payload}     = $payload;
     }
@@ -3679,6 +4019,7 @@ sub log_me {
 
 sub do_renew {
     my $self = shift;
+    my $api = shift;
     $self->log_me("do_renew()");
 
     # Make sure there is an open circ to renew
@@ -3701,14 +4042,17 @@ sub do_renew {
     $self->push_events(OpenILS::Event->new('MAX_RENEWALS_REACHED'))
         if $circ->renewal_remaining < 1;
 
+    $self->push_events(OpenILS::Event->new('MAX_AUTO_RENEWALS_REACHED'))
+        if $api =~ /renew.auto/ and $circ->auto_renewal_remaining < 1;
     # -----------------------------------------------------------------
 
     $self->parent_circ($circ->id);
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
+    $self->auto_renewal_remaining( $circ->auto_renewal_remaining - 1 ) if (defined($circ->auto_renewal_remaining));
     $self->circ($circ);
 
     # Opac renewal - re-use circ library from original circ (unless told not to)
-    if($self->opac_renewal) {
+    if($self->opac_renewal or $api =~ /renew.auto/) {
         unless(defined($opac_renewal_use_circ_lib)) {
             my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
             if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
@@ -3931,7 +4275,8 @@ sub checkin_handle_lost_or_lo_now_found_restore_od {
             $ods->[0]->billing_type(),
             $self->circ->id(),
             "System: $tag RETURNED - OVERDUES REINSTATED",
-            $ods->[0]->billing_ts() # date this restoration the same as the last overdue (for possible subsequent fine generation)
+            $ods->[-1]->period_start(),
+            $ods->[0]->period_end() # date this restoration the same as the last overdue (for possible subsequent fine generation)
         );
     }
 }

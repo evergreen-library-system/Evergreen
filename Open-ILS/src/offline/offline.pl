@@ -10,7 +10,8 @@ use OpenSRF::EX qw/:try/;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use OpenSRF::Utils qw/:daemon cleanse_ISO8601/;
+use OpenSRF::Utils qw/:daemon/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 use OpenILS::Utils::OfflineStore;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils;
@@ -40,6 +41,7 @@ do '##CONFIG##/offline-config.pl';
 my $cgi			= new CGI;
 my $basedir		= $config{base_dir} || die "Offline config error: no base_dir defined\n";
 my $bootstrap	= $config{bootstrap} || die "Offline config error: no bootstrap defined\n";
+my $webclient	= $cgi->param('wc');
 my $wsname		= $cgi->param('ws');
 my $org			= $cgi->param('org');
 my $authtoken	= $cgi->param('ses') || "";
@@ -722,7 +724,7 @@ sub ol_handle_checkout {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_checkout: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -785,7 +787,7 @@ sub ol_handle_renew {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_renew: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -842,7 +844,7 @@ sub ol_handle_checkin {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_checkin: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -877,6 +879,7 @@ sub ol_handle_register {
 
 	my $barcode = $command->{user}->{card}->{barcode};
 	delete $command->{user}->{card}; 
+	delete $command->{user}->{cards} if $command->{user}->{cards}; 
 
 	$logger->info("offline: creating new user with barcode $barcode");
 
@@ -914,8 +917,10 @@ sub ol_handle_register {
 	delete $command->{user}->{survey_responses};
 	$actor->survey_responses(\@sresp) if @sresp;
 
+    my $bid = undef;
 	# extract the billing address
 	if( my $addr = $command->{user}->{billing_address} ) {
+        $bid = $command->{user}->{billing_address}->{id};
 		$billing_address = Fieldmapper::actor::user_address->new;
 		$billing_address->$_($addr->{$_}) for keys %$addr;
 		$billing_address->isnew(1);
@@ -925,15 +930,26 @@ sub ol_handle_register {
 		$logger->debug("offline: read billing address ".$billing_address->street1);
 	}
 
+    my $mid = undef;
 	# extract the mailing address
 	if( my $addr = $command->{user}->{mailing_address} ) {
-		$mailing_address = Fieldmapper::actor::user_address->new;
-		$mailing_address->$_($addr->{$_}) for keys %$addr;
-		$mailing_address->isnew(1);
-		$mailing_address->id(-2);
-		$mailing_address->usr(-1);
+        $mid = $command->{user}->{mailing_address}->{id};
+        if ($webclient && $mid != $bid) {
+		    $mailing_address = Fieldmapper::actor::user_address->new;
+		    $mailing_address->$_($addr->{$_}) for keys %$addr;
+		    $mailing_address->isnew(1);
+		    $mailing_address->id(-2);
+		    $mailing_address->usr(-1);
+		    $logger->debug("offline: read mailing address ".$mailing_address->street1);
+        } elsif (!$webclient) {
+		    $mailing_address = Fieldmapper::actor::user_address->new;
+		    $mailing_address->$_($addr->{$_}) for keys %$addr;
+		    $mailing_address->isnew(1);
+		    $mailing_address->id(-2);
+		    $mailing_address->usr(-1);
+		    $logger->debug("offline: read mailing address ".$mailing_address->street1);
+        }
 		delete $command->{user}->{mailing_address};
-		$logger->debug("offline: read mailing address ".$mailing_address->street1);
 	}
 
 	# make sure we have values for both
@@ -946,14 +962,28 @@ sub ol_handle_register {
 
 	push( @{$actor->addresses}, $billing_address ) 
 		unless $billing_address->id eq $mailing_address->id;
+
+    my $aid = -3;
+    for my $a ( @{$command->{user}->{addresses}} ) {
+        next if ($a->{id} == $bid || $a->{id} == $mid);
+    	# extract all other addresses
+        my $addr = Fieldmapper::actor::user_address->new;
+	    $addr->$_($a->{$_}) for keys %$a;
+		$addr->isnew(1);
+    	$addr->id($aid);
+	    $addr->usr(-1);
+    	$logger->debug("offline: read other address ".$addr->street1);
+        $aid--;
+        push( @{$actor->addresses}, $addr );
+    }
 	
 	# pull all of the rest of the data from the command blob
-	$actor->$_( $command->{user}->{$_} ) for keys %{$command->{user}};
+	$actor->$_( $command->{user}->{$_} ) for grep { $_ ne 'addresses' } keys %{$command->{user}};
 
     # calculate the expire date for the patron based on the profile group
     my ($grp) = grep {$_->id == $actor->profile} @$user_groups;
     if($grp) {
-        my $seconds = OpenSRF::Utils->interval_to_seconds($grp->perm_interval);
+        my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($grp->perm_interval);
         my $expire_date = DateTime->from_epoch(epoch => DateTime->now->epoch + $seconds)->epoch;
 		$logger->debug("offline: setting expire date to $expire_date");
         $actor->expire_date($U->epoch2ISO8601($expire_date));

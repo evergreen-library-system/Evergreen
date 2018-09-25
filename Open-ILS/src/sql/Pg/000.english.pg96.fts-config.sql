@@ -1,1 +1,1 @@
-000.english.pg91.fts-config.sql
+000.english.pg94.fts-config.sql

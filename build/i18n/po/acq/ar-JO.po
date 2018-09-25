@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-03-16 00:13+0000\n"
-"PO-Revision-Date: 2017-03-19 11:06+0000\n"
+"POT-Creation-Date: 2018-03-02 19:43+0000\n"
+"PO-Revision-Date: 2017-11-05 09:45+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-20 05:56+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2018-03-03 05:33+0000\n"
+"X-Generator: Launchpad (build 18566)\n"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:6
 msgid " Invoice "
@@ -280,7 +280,7 @@ msgstr "بدء بحث جديد"
 
 #: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:39
 msgid "Best/Single Match Minimum Quality Ratio"
-msgstr "أفضل مطابفة للحد الأدنى من نسبة الجودة"
+msgstr "أفضل مطابقة للحد الأدنى من نسبة الجودة"
 
 #: ../../Open-ILS/src/templates/acq/common/vlagent.tt2:78
 msgid "Bib Records Merged/Imported"
@@ -584,7 +584,7 @@ msgstr "السعر المقدر"
 
 #: ../../Open-ILS/src/templates/acq/picklist/bib_search.tt2:21
 msgid "Evergreen Catalog"
-msgstr "فهرس إيفر غرين"
+msgstr "فهرس إِفرغرين"
 
 #: ../../Open-ILS/src/templates/acq/common/li_table.tt2:199
 msgid "Expand"
@@ -1191,7 +1191,9 @@ msgstr "تزويد ملف مصطلحات البحث"
 msgid ""
 "Provide one or more CSV files whose first columns contain Evergreen "
 "bibliographic record IDs."
-msgstr "تزويد/تقديم ملف مصطلحات البحث"
+msgstr ""
+"تزويد ملف \"سي إس في\" أو أكثر والتي أعمدتها الأولى تحتوي على مُعرفات "
+"التسجيلات الببليوغرافية"
 
 #: ../../Open-ILS/src/templates/acq/common/inv_dialog.tt2:18 ../../Open-ILS/src/templates/acq/common/li_table.tt2:189 ../../Open-ILS/src/templates/acq/common/li_table.tt2:476 ../../Open-ILS/src/templates/acq/picklist/upload.tt2:22 ../../Open-ILS/src/templates/acq/po/search.tt2:42 ../../Open-ILS/src/templates/acq/po/view.tt2:46
 msgid "Provider"
@@ -1765,6 +1767,10 @@ msgstr "عرض طلب الشراء"
 msgid "View Selection List"
 msgstr "عرض قائمة الاختيار"
 
+#: ../../Open-ILS/src/templates/acq/common/li_table.tt2:201
+msgid "View copy information"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/acq/fund/list.tt2:107
 msgid ""
 "When Dry Run is selected, the system will generate a summary of the changes "
@@ -1835,7 +1841,7 @@ msgstr "القيود وتسجيلات الفهرس"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:249 ../../Open-ILS/src/templates/acq/search/unified.tt2:70
 msgid "matches a term from a file"
-msgstr "مطابقة المصطلح مِن الملف"
+msgstr "مطابقة المصطلح من الملف"
 
 #: ../../Open-ILS/src/templates/acq/invoice/view.tt2:210 ../../Open-ILS/src/templates/acq/search/unified.tt2:35
 msgid "matching"

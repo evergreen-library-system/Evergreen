@@ -8,7 +8,7 @@ Catalog Browse enables you to browse bibliographic headings available in your ca
 
 *Use Catalog Browse*
 
-. To access this feature, navigate to the catalog search page, and click the link, *Browse the Catalog*.  By default, you can browse by title, author, subject, or series.  System administrators can revise this list by editing the file at the location 'opac/parts/qtype_selector.tt2', and they can even make use of custom indices based on defintions in the database's 'config.metabib_field' table.
+. To access this feature, navigate to the catalog search page, and click the link, *Browse the Catalog*.  By default, you can browse by title, author, subject, or series.  System administrators can revise this list by editing the file at the location 'opac/parts/qtype_selector.tt2', and they can even make use of custom indices based on definitions in the database's 'config.metabib_field' table.
 
 
 . Enter a term or part of a term to browse.  Evergreen will retrieve a list of bibliographic headings that match your query.  Click the *Back* and *Forward* buttons to page through you results.  To limit your browse results to a specific branch or copy location group, select the appropriate unit from the drop down menu, and click *Go*.   
@@ -23,7 +23,7 @@ Catalog Browse enables you to browse bibliographic headings available in your ca
 
 A new global flag warns users when they are entering a browse term that begins with an article.  Systems administrators can create a regular expression to configure articles matched with specific indices that would prompt a warning for the user. By default, this setting is not enabled.
 
-. To enable this feature, click *Admin* -> *Server Administration* -> *Global Flags*.  
+. To enable this feature, click *Administration* -> *Server Administration* ->  *Global Flags*.  
 
 . Double click *Map of search classes to regular expressions to warn user about leading articles.*
 

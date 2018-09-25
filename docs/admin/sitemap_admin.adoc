@@ -1,0 +1,42 @@
+Running the sitemap generator
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The `sitemap_generator` script must be invoked with the following argument:
+
+* `--lib-hostname`: specifies the hostname for the catalog (for example,
+  `--lib-hostname https://catalog.example.com`); all URLs will be generated
+  appended to this hostname
+
+Therefore, the following arguments are useful for generating multiple sitemaps
+per Evergreen instance:
+
+* `--lib-shortname`: limit the list of record URLs to those which have copies
+  owned by the designated library or any of its children;
+* `--prefix`: provides a prefix for the sitemap index file names
+
+Other options enable you to override the OpenSRF configuration file and the
+database connection credentials, but the default settings are generally fine.
+
+Note that on very large Evergreen instances, sitemaps can consume hundreds of
+megabytes of disk space, so ensure that your Evergreen instance has enough room
+before running the script.
+
+Sitemap details
+~~~~~~~~~~~~~~~
+
+The sitemap generator script includes located URIs as well as copies
+   listed in the `asset.opac_visible_copies` materialized view, and checks
+   the children or ancestors of the requested libraries for holdings as well.
+
+Scheduling
+~~~~~~~~~~
+To enable search engines to maintain a fresh index of your bibliographic
+records, you may want to include the script in your cron jobs on a nightly or
+weekly basis.
+
+Sitemap files are generated in the same directory from which the script is
+invoked, so a cron entry will look something like:
+
+------------------------------------------------------------------------
+12 2 * * * cd /openils/var/web && /openils/bin/sitemap_generator
+------------------------------------------------------------------------
+

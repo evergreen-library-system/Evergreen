@@ -24,8 +24,24 @@
   <div class="col-md-6">
     <div class="pull-right">
     <button type="button" class="btn btn-default" ng-click="selectedHoldingsVolCopyAdd()">
-        [% l('Add Volumes') %]
+        [% l('Add Holdings') %]
     </button>
+    <div class="btn-group" uib-dropdown dropdown-append-to-body>
+        <button id="serials-button" type="button" class="btn btn-default" uib-dropdown-toggle>
+            [% l('Serials') %] <span class="caret"></span>
+        </button>
+        <ul uib-dropdown-menu role="menu" aria-labelledby="serials-button">
+             <li role="menuitem">
+                <a ng-click="quickReceive()">[% l('Quick Receive') %]</a>
+            </li>
+             <li role="menuitem">
+                <a target="_self" href="./serials/{{record_id}}">[% l('Manage Subscriptions') %]</a>
+            </li>
+             <li role="menuitem">
+                <a target="_self" href="./serials/{{record_id}}/manage-mfhds">[% l('Manage MFHDs') %]</a>
+            </li>
+        </ul>
+    </div>
     <div class="btn-group" uib-dropdown dropdown-append-to-body>
         <button id="mark-for-button" type="button" class="btn btn-default" uib-dropdown-toggle>
             [% l('Mark for:') %] <span class="caret"></span>
@@ -50,9 +66,9 @@
                 </a>
             </li>
             <li role="menuitem">
-                <a ng-click="markVolTransfer()" href="">
-                    [% l('Volume Transfer') %]
-                    <span class="target-record-aside" ng-if="current_voltransfer_target">[% l('(Currently [_1])', '{{current_voltransfer_target}}') %]</span>
+                <a ng-click="markHoldingsTransfer()" href="">
+                    [% l('Holdings Transfer') %]
+                    <span class="target-record-aside" ng-if="current_transfer_target">[% l('(Currently [_1])', '{{current_transfer_target}}') %]</span>
                 </a>
             </li>
             <li role="menuitem">

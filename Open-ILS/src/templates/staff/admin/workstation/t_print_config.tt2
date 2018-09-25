@@ -230,7 +230,7 @@
               <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
-                  <label>[% l('Number of Copies') %]</label>
+                  <label>[% l('Number of Items') %]</label>
                 </div>
                 <div class="col-md-4">
                   <input type="text" size="4" class="form-control"

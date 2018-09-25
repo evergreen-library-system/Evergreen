@@ -1,6 +1,6 @@
 
 <div ng-show="bucket()">
-  <strong>[% l('Bucket: {{bucket().name()}}') %]</strong> 
+  <strong>[% l('Bucket #[_1]: [_2]', '{{bucket().id()}}', '{{bucket().name()}}') %]</strong>
   <span>
     <ng-pluralize count="bucketSvc.currentBucket.items().length"
       when="{'one': '[% l("1 item") %]', 'other': '[% l("{} items") %]'}">

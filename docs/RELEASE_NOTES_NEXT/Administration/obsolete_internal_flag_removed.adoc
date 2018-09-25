@@ -1,7 +1,0 @@
-Obsolete Internal Flag Removed
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-An obsolete, and unused, ingest.disable_metabib_field_entry internal
-flag was removed from the config.internal_flags table.  It was
-rendered obsolete by the addition of the 3 flags to control the
-browse, search, and facet indexing.

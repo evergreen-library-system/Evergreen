@@ -107,6 +107,7 @@ var api = {
     'FM_ACP_UNFLESHED_BATCH_RETRIEVE' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.batch.retrieve', 'secure' : false },
     'FM_ACP_FLESHED_BATCH_RETRIEVE.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.asset.copy.fleshed.batch.retrieve.authoritative', 'secure' : false },
     'FM_ACP_FLESHED_BATCH_UPDATE' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.asset.copy.fleshed.batch.update' },
+    'FM_ACP_TRANSFER_COPIES_BATCH' : { 'app' : 'open-ils.cat', 'method' : 'open-ils.cat.transfer_copies_to_volume' },
     'FM_ACP_COUNT' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.copy_count.staff', 'secure' : false },
     'FM_ACP_COUNT.authoritative' : { 'app' : 'open-ils.search', 'method' : 'open-ils.search.biblio.record.copy_count.staff.authoritative', 'secure' : false },
     'FM_ACPL_RETRIEVE' : { 'app' : 'open-ils.circ', 'method' : 'open-ils.circ.copy_location.retrieve.all', 'secure' : false },

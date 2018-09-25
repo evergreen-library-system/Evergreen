@@ -1,0 +1,49 @@
+<!--
+  Item alert manager dialog
+-->
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title alert alert-info">[% l('Item alerts') %]</h4> 
+  </div>
+  <div class="modal-body">
+    <div>
+      <div class="row" ng-repeat="alert in alerts" style="border-bottom: 1px solid grey; margin-top: 3px;">
+        <div class="col-md-2">{{alert.evt}}</div>
+        <div class="col-md-8" ng-class="{ acknowledged: isAcknowledged(alert) }">{{alert.message}}</div>
+        <div class="col-md-2">
+          <button ng-if="canBeAcknowledged(alert)"
+                  class="btn btn-xs btn-default"
+                  ng-click="alert.acked = !alert.acked" >[% l('Clear') %]</button>
+          <button ng-if="canBeRemoved(alert) && mode == 'manage'"
+                  class="btn btn-xs btn-default"
+                  ng-click="alert.acked = !alert.acked" >[% l('Remove') %]</button>
+        </div>
+      </div>
+    </div>
+    <div ng-if="mode == 'checkin' && next_statuses.length > 0">
+        <div ng-if="next_statuses.length == 1" class="row">
+            <div class="col-md-8">
+                <b>[% l('Next item status: ') %]</b> {{next_statuses[0].name()}}
+            </div>
+        </div>
+        <div ng-if="next_statuses.length > 1" class="row">
+          <div class="col-md-4">
+            <label for="select-next-status"><b>[% l('Next item status') %]<b></label>
+          </div>
+          <div class="col-md-4">
+            <select id="select-next-status" class="form-control"
+                    ng-model="params.the_next_status" focus-me="true"
+                    ng-options="st.id() as st.name() for st in next_statuses">
+            </select>
+          </select>
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    [% dialog_footer %]
+    <input type="submit" class="btn btn-primary" 
+      ng-click="ok()" value="[% l('OK/Continue') %]"/>
+    <button class="btn btn-warning" 
+      ng-click="cancel()">[% l('Cancel') %]</button>
+  </div>
+</div>

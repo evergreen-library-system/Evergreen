@@ -119,6 +119,21 @@ sub find_authority_headings_and_notes {
 
     $self->extract_public_general_notes($record, $row);
 
+    # extract headings from the main authority record along with their
+    # types
+    my $parsed_headings = $self->editor->json_query({
+        from => [ "authority.extract_headings", $row->{marc} ]
+    });
+    my %heading_type_map = ();
+    if ($parsed_headings) {
+        foreach my $h (@$parsed_headings) {
+            $heading_type_map{$h->{normalized_heading}} =
+                $h->{purpose} eq 'variant' ? 'variant' :
+                $h->{purpose} eq 'related' ? $h->{related_type} :
+                '';
+        }
+    }
+
     # By applying grep in this way, we get acsaf objects that *have* and
     # therefore *aren't* main entries, which is what we want.
     foreach my $acsaf (values(%$acsaf_table)) {
@@ -128,8 +143,12 @@ sub find_authority_headings_and_notes {
 
         foreach my $field (@fields) {
             my $h = { main_entry => ( $acsaf->main_entry ? 0 : 1 ),
-                      heading => _get_authority_heading($field, \%sf_lookup), $acsaf->joiner };
+                      heading => _get_authority_heading($field, \%sf_lookup, $acsaf->joiner) };
 
+            my $norm = search_normalize($h->{heading});
+            if (exists $heading_type_map{$norm}) {
+                $h->{type} = $heading_type_map{$norm};
+            }
             # XXX I was getting "target" from authority.authority_linking, but
             # that makes no sense: that table can only tell you that one
             # authority record as a whole points at another record.  It does

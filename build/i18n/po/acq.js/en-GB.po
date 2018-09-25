@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-08-26 13:12-0400\n"
-"PO-Revision-Date: 2015-03-25 16:23+0000\n"
+"PO-Revision-Date: 2018-03-07 20:39+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-27 05:22+0000\n"
-"X-Generator: Launchpad (build 17690)\n"
+"X-Launchpad-Export-Date: 2018-03-08 05:16+0000\n"
+"X-Generator: Launchpad (build 18566)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -36,6 +36,8 @@ msgid ""
 "<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: "
 "$${4}"
 msgstr ""
+"<a href='${0}/acq/po/view/${1}'>PO #${2} ${3}</a><br/>Total Estimated Cost: "
+"$${4}"
 
 #: acq.js:CONFIRM_FUNDS_AT_WARNING
 msgid ""
@@ -133,7 +135,7 @@ msgstr ""
 
 #: acq.js:LI_CREATING_ASSETS
 msgid "Creating bib, call number, and copy records..."
-msgstr ""
+msgstr "Creating bib, call number, and copy records..."
 
 #: acq.js:CONFIRM_FUNDS_AT_STOP
 msgid ""
@@ -167,15 +169,15 @@ msgstr ""
 
 #: acq.js:DUPE_PO_NAME_LINK
 msgid "View PO"
-msgstr ""
+msgstr "View PO"
 
 #: acq.js:ACTIVATE_LI_PROCESSED
 msgid "Lineitems Processed: ${0}"
-msgstr ""
+msgstr "Lineitems Processed: ${0}"
 
 #: acq.js:ACTIVATE_DEBITS_ACCRUED_PROCESSED
 msgid "Debits Encumbered: ${0}"
-msgstr ""
+msgstr "Debits Encumbered: ${0}"
 
 #: acq.js:VENDOR_SAYS_PREPAY_NOT_NEEDED
 msgid ""
@@ -195,7 +197,7 @@ msgstr "Yes; fund ${0} (${1}) would be encumbered beyond its warning level."
 
 #: acq.js:ACTIVATE_BIBS_PROCESSED
 msgid "Bib Records Merged/Imported: ${0}"
-msgstr ""
+msgstr "Bib Records Merged/Imported: ${0}"
 
 #: acq.js:ROLLBACK_LI_RECEIVE_CONFIRM
 msgid ""
@@ -251,7 +253,7 @@ msgstr "Print"
 
 #: acq.js:PO_ACTIVATING
 msgid "Activating purchase order..."
-msgstr ""
+msgstr "Activating purchase order..."
 
 #: acq.js:INVOICE_ITEM_PO_DETAILS
 msgid ""
@@ -339,7 +341,7 @@ msgstr ""
 
 #: acq.js:ACTIVATE_VQBR_PROCESSED
 msgid "Vandelay Records Processed: ${0}"
-msgstr ""
+msgstr "Vandelay Records Processed: ${0}"
 
 #: acq.js:INVOICES
 msgid "Invoices"
@@ -362,6 +364,8 @@ msgid ""
 "Finalize this blanket PO?\n"
 "This will disencumber all blanket charges and mark the PO as received"
 msgstr ""
+"Finalise this blanket PO?\n"
+"This will disencumber all blanket charges and mark the PO as received"
 
 #: acq.js:NEW_INVOICE
 msgid "New Invoice"
@@ -460,7 +464,7 @@ msgstr "A purchase order must have an ordering agency and a provider."
 
 #: acq.js:ACTIVATE_LID_PROCESSED
 msgid "ACQ Copies Processed: ${0}"
-msgstr ""
+msgstr "ACQ Copies Processed: ${0}"
 
 #: acq.js:LI_ATTR_SEARCH_TOO_LARGE
 msgid "That file is too large for this operation."
@@ -476,7 +480,7 @@ msgstr "Unexpected problem building virtual combined PO"
 
 #: acq.js:PO_NAME_OPTIONAL
 msgid "${0} (optional)"
-msgstr ""
+msgstr "${0} (optional)"
 
 #: acq.js:DELETE_LI_COPIES_CONFIRM
 msgid "This will delete the last ${0} copies in the table.  Proceed?"
@@ -492,7 +496,7 @@ msgstr "Are you sure? Did you see the warning about over-encumbering a fund?"
 
 #: acq.js:ACTIVATE_COPIES_PROCESSED
 msgid "Real Copies Processed: ${0}"
-msgstr ""
+msgstr "Real Copies Processed: ${0}"
 
 #: acq.js:UR_FILTER_LINEITEM
 msgid "Enter id for lineitem (or leave blank to unset the filter):"
@@ -530,6 +534,7 @@ msgstr "The selected PO has already been activated"
 msgid ""
 "There are ${0} existing copies for this bibliographic record at this location"
 msgstr ""
+"There are ${0} existing copies for this bibliographic record at this location"
 
 #: acq.js:EXPORT_SAVE_DIALOG_TITLE
 msgid "Save field values to a file"
@@ -561,7 +566,7 @@ msgstr "Are you sure you want to mark this lineitem as UN-received?"
 
 #: acq.js:DUPE_PO_NAME_MSG
 msgid "This name is already in use by another PO"
-msgstr ""
+msgstr "This name is already in use by another PO"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_jub
 msgid "LI"

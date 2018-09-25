@@ -2,7 +2,7 @@
     <div class="modal-header">
       <button type="button" class="close" ng-click="cancel()" 
         aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('New Copy Note') %]</h4>
+      <h4 class="modal-title">[% l('New Item Note') %]</h4>
     </div>
     <div class="modal-body">
       <div class="row">
@@ -46,18 +46,18 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <h4 class="pull-left">[% l('Existing Copy Notes') %]</h4>
+              <h4 class="pull-left">[% l('Existing Item Notes') %]</h4>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub() == 't'; title = n.title(); value = n.value(); deleted = n.isdeleted()">
-        <div class="col-md-12">
+      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub() == 't'; title = n.title(); value = n.value()">
+        <div class="col-md-12" ng-show="!n.isdeleted()">
           <div class="row">
             <div class="col-md-6">
               <input class="form-control" type="text" ng-change="n.title(title) && n.ischanged(1)"
-                ng-model="title" placeholder="[% l('Title...') %]" ng-disabled="deleted"/>
+                ng-model="title" placeholder="[% l('Title...') %]""/>
             </div>
             <div class="col-md-3">
               <label>
@@ -66,17 +66,17 @@
               </label>
             </div>
             <div class="col-md-3">
-              <label>
-                <input type="checkbox" ng-model="deleted" ng-change="n.isdeleted(deleted)"/>
-                [% l('Deleted?') %]
-              </label>
+              <button type="button" ng-click="n.isdeleted(1)" class="btn btn-warning">[% l('Remove') %]</button>
             </div>
           </div>
           <div class="row pad-vert">
-            <div class="col-md-12">
+            <div class="col-md-10">
               <textarea class="form-control" ng-change="n.value(value) && n.ischanged(1)"
-                ng-model="value" placeholder="[% l('Note...') %]" ng-disabled="deleted">
+                ng-model="value" placeholder="[% l('Note...') %]">
               </textarea>
+            </div>
+            <div class="col-md-2">
+              {{n.create_date() | date:$root.egDateFormat}} 
             </div>
           </div>
           <div class="row">

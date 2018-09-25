@@ -1,6 +1,9 @@
 Ordering materials
 ==================
 
+Introduction
+------------
+
 Acquisitions allows you to order materials, track the expenditure of your
 collections funds, track invoices and set up policies for manual claiming. In
 this chapter, we're going to be describing how to use the most essential
@@ -45,8 +48,8 @@ Funding. Alternatively, you can name funding sources by year, e.g. County
 Funding 2010 and County Funding 2011, and apply credits each year to the
 matching source.
 
-. To create a funding source, select *Admin > Server Administration >
-  Acquisitions > Funding Source*. Click the *New Funding Source* button. Give
+. To create a funding source, select *Administration -> Acquisitions Administration ->
+  Funding Sources*. Click the *New Funding Source* button. Give
   the funding source a name, an owning library, and code. You should also
   identify the type of currency that is used for the fund.
 . You must add money to the funding source before you can use it. Click the
@@ -64,7 +67,7 @@ specific funds (e.g. adult non-fiction DVDs for BR1).
 If your library does not wish to track fund accounting, you can create one
 large generic fund and use that fund for all of your purchases.
 
-. To create a fund, select *Admin > Server Administration > Acquisitions >
+. To create a fund, select *Administration -> Acquisitions Administration ->
   Funds*. Click the *New Fund* button. Give the fund a name and code.
 . The *Year* can either be the fiscal or calendar year for the fund.
 . If you are a multi-branch library that will be ordering titles for multiple
@@ -93,7 +96,7 @@ large generic fund and use that fund for all of your purchases.
 . Check the *Rollover* box if you want to roll over remaining encumbrances and
   funds into the same fund next year. If you need the ability to roll over
   encumbrances without rolling over funds, go to the *Library Settings Editor*
-  (*Admin > Local Administration > Library Settings Editor*) and set *Allow
+  (*Administration -> Local Administration ->  Library Settings Editor*) and set *Allow
   funds to be rolled over without bringing the money along* to *True*.
 . You must add money to the fund before you can begin using it. Click the
   hyperlinked name of the fund. Click the *Create Allocation button*. Select a
@@ -110,13 +113,16 @@ children's materials, you can run a report on the fund tag to find total
 expenditures on children's materials rather than reporting on each individual
 fund.
 
-. To create a fund tag, select *Admin > Server Administration > Acquisitions >
+. To create a fund tag, select *Administration -> Acquisitions Administration ->
   Fund Tags*. Click the *New Fund Tag* button. Select a owning library and
   add the name for the fund tag.
-. To apply a fund tag to a fund, select *Admin > Server Administration >
-  Acquisitions > Funds*. Click on the hyperlinked name for the fund. Click the
+. To apply a fund tag to a fund, select *Administration -> Acquisitions Administration ->
+  Funds*. Click on the hyperlinked name for the fund. Click the
   *Tags* tab and then click the *Add Tag* button. Select the tag from the
   dropdown menu.
+
+For convenience when propagating or rolling over a fund for a new fiscal year,
+fund tags will be copied from the current fund to the new year's fund.
 
 Ordering
 --------
@@ -125,8 +131,8 @@ Providers (Required)
 ~~~~~~~~~~~~~~~~~~~~
 Providers are the vendors from whom you order titles.
 
-. To add a provider record,  select *Admin > Server Administration >
-  Acquisitions > Providers*.
+. To add a provider record,  select *Administration -> Acquisitions Administration ->
+  Providers*.
 . Enter information about the provider. At a minimum, you need to add a
   *Provider Name*, *Code*, *Owner*, and *Currency*. You also need to select the
   *Active* checkbox to use the provider.
@@ -137,8 +143,8 @@ If you are ordering for a multi-branch library system, distribution formulas
 are a useful way to specify the number of copies that should be distributed to
 specific branches and copy locations.
 
-. To create a distribution formula, select *Admin > Server Administration >
-  Acquisitions > Distribution Formulas*. Click the *New Formula* button. Enter
+. To create a distribution formula, select *Administration -> Acquisitions
+  Administration -> Distribution Formulas*. Click the *New Formula* button. Enter
   the formula name and select the owning library. Ignore the *Skip Count* field.
 . Click *New Entry*. Select an Owning Library from the drop down menu. This
   indicates the branch that will receive the items.
@@ -151,8 +157,8 @@ specific branches and copy locations.
 Helpful acquisitions Library Settings
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 There are several acquisitions Library Settings available that will help with
-acquisitions workflow. These settings can be found at *Admin > Local
-Administration > Library Settings Editor*.
+acquisitions workflow. These settings can be found at *Administration -> Local
+Administration -> Library Settings Editor*.
 
 * Default circulation modifier - Automatically applies a default circulation
   modifier to all of your acquisitions copies. Useful if you use a specific
@@ -171,7 +177,7 @@ some information to your provider records so that Evergreen knows how to map
 the copy data contained in the order record.
 
 . Retrieve the record for the provider that has supplied the order records by
-  selecting *Admin > Server Administration > Acquisitions > Providers*. Click on
+  selecting *Administration -> Acquisitions Administration -> Providers*. Click on
   the hyperlinked Provider name.
 . In the top frame, add the MARC tag that contains your holdings data in the
   *Holdings Tag* field (this tag can also be entered at the time you create the
@@ -201,12 +207,11 @@ Preparing to send electronic orders from Evergreen
 If your library wants to transmit electronic order information to a vendor, you
 will need to configure your server to use EDI. You need to install the EDI
 translator and EDI scripts on your server by following the instructions in the
-Evergreen 2.3 documentation.
-(http://docs.evergreen-ils.org/2.3/_installation.html)
+command line system administration manual.
 
-Configure your provider's EDI information by selecting *Admin > Server
-Administration > Acquisitions > EDI Accounts*. Give the account a name in the
-*Label* box.
+Configure your provider's EDI information by selecting *Administration -> 
+Acquisitions Administration -> EDI Accounts*. Click *New Account* Button. Give the
+account a name in the *Label* box.
 
 . *Host* is the vendor-assigned FTP/SFTP/SSH hostname.
 . *Username* is the vendor-assigned FTP/SFTP/SSH username.
@@ -227,13 +232,13 @@ Administration > Acquisitions > EDI Accounts*. Give the account a name in the
 
 You now need to add this *EDI Account* and the *SAN* code to the provider's record.
 
-. Select *Admin > Server Administration > Acquisitions > Providers*.
+. Select *Administration -> Acquisitions Administration -> Providers*.
 . Click the hyperlinked Provider name.
 . Select the account you just created in the *EDI Default* field.
 . Add the vendor-provided SAN code to the *SAN* field.
 
 The last step is to add your library's SAN code to Evergreen.
 
-. Select *Admin > Server Administration > Organizational Units*.
+. Select *Administration -> Server Administration ->  Organizational Units*.
 . Select your library from the organizational hierarchy in the left pane.
 . Click the *Addresses* tab and add your library's SAN code to the *SAN* field.

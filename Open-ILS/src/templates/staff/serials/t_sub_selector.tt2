@@ -1,0 +1,17 @@
+<div class="form-inline">
+<label for="choose-subscription-ou-filter">[% l('At') %]</label>
+<eg-org-selector selected="owning_ou" onchange="owning_ou_changed"
+                 sticky-setting="serials.sub_selector.owning_ou_selector"
+>
+</eg-org-selector>
+<label for="choose-subscription">[% l('select subscription to work on') %]</label>
+<select class="form-control" id="choose-subscription" ng-model="ssubId">
+  <option ng-repeat="ssub in subscriptions | orderBy: 'id' as filtered track by ssub.id"
+          value="{{ssub.id}}">
+    [% l('Subscription [_1] at [_2] ([_3] - [_4])',
+        '{{ssub.id}}', '{{ssub.owning_lib.shortname()}}',
+        '{{ssub.start_date | date:"shortDate"}}',
+        '{{ssub.end_date | date:"shortDate"}}') %]
+  </option>
+</select>
+</div>

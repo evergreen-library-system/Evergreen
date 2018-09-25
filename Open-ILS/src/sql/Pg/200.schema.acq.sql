@@ -154,7 +154,8 @@ CREATE TABLE acq.funding_source (
 	name		TEXT	NOT NULL,
 	owner		INT	NOT NULL REFERENCES actor.org_unit (id) DEFERRABLE INITIALLY DEFERRED,
 	currency_type	TEXT	NOT NULL REFERENCES acq.currency_type (code) DEFERRABLE INITIALLY DEFERRED,
-	code		TEXT	UNIQUE,
+	code		TEXT	NOT NULL,
+	CONSTRAINT funding_source_code_once_per_owner UNIQUE (code,owner),
 	CONSTRAINT funding_source_name_once_per_owner UNIQUE (name,owner)
 );
 
@@ -739,11 +740,32 @@ CREATE TABLE acq.fiscal_year (
     CONSTRAINT acq_fy_physical_key UNIQUE ( calendar, year_begin )
 );
 
+CREATE TABLE acq.edi_attr (
+    key     TEXT PRIMARY KEY,
+    label   TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE acq.edi_attr_set (
+    id      SERIAL  PRIMARY KEY,
+    label   TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE acq.edi_attr_set_map (
+    id          SERIAL  PRIMARY KEY,
+    attr_set    INTEGER NOT NULL REFERENCES acq.edi_attr_set(id) 
+                ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    attr        TEXT NOT NULL REFERENCES acq.edi_attr(key) 
+                ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    CONSTRAINT edi_attr_set_map_attr_once UNIQUE (attr_set, attr)
+);
+
 CREATE TABLE acq.edi_account (      -- similar tables can extend remote_account for other parts of EG
     provider    INT     NOT NULL REFERENCES acq.provider          (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     in_dir      TEXT,   -- incoming messages dir (probably different than config.remote_account.path, the outgoing dir)
     vendcode    TEXT,
-    vendacct    TEXT
+    vendacct    TEXT,
+    attr_set    INTEGER REFERENCES acq.edi_attr_set(id), -- NULL OK
+    use_attrs   BOOLEAN NOT NULL DEFAULT FALSE
 ) INHERITS (config.remote_account);
 
 -- We need a UNIQUE constraint here also, to support the FK from acq.provider.edi_default
@@ -832,7 +854,10 @@ CREATE TABLE acq.invoice (
 	payment_method TEXT     REFERENCES acq.invoice_payment_method (code)
 	                        DEFERRABLE INITIALLY DEFERRED,
 	note        TEXT,
-    complete    BOOL        NOT NULL DEFAULT FALSE,
+    close_date  TIMESTAMPTZ,
+    closed_by   INTEGER     REFERENCES actor.usr (id) 
+                            DEFERRABLE INITIALLY DEFERRED,
+
     CONSTRAINT  inv_ident_once_per_provider UNIQUE(provider, inv_ident)
 );
 
@@ -920,6 +945,24 @@ CREATE TABLE acq.user_request_type (
     label   TEXT    NOT NULL UNIQUE -- i18n-ize
 );
 
+CREATE TABLE acq.user_request_status_type (
+     id  SERIAL  PRIMARY KEY
+    ,label TEXT
+);
+
+INSERT INTO acq.user_request_status_type (id,label) VALUES
+     (0,oils_i18n_gettext(0,'Error','aurst','label'))
+    ,(1,oils_i18n_gettext(1,'New','aurst','label'))
+    ,(2,oils_i18n_gettext(2,'Pending','aurst','label'))
+    ,(3,oils_i18n_gettext(3,'Ordered, Hold Not Placed','aurst','label'))
+    ,(4,oils_i18n_gettext(4,'Ordered, Hold Placed','aurst','label'))
+    ,(5,oils_i18n_gettext(5,'Received','aurst','label'))
+    ,(6,oils_i18n_gettext(6,'Fulfilled','aurst','label'))
+    ,(7,oils_i18n_gettext(7,'Canceled','aurst','label'))
+;
+
+SELECT SETVAL('acq.user_request_status_type_id_seq'::TEXT, 100);
+
 CREATE TABLE acq.user_request (
     id                  SERIAL  PRIMARY KEY,
     usr                 INT     NOT NULL REFERENCES actor.usr (id), -- requesting user
@@ -937,6 +980,7 @@ CREATE TABLE acq.user_request (
   
     request_type        INT     NOT NULL REFERENCES acq.user_request_type (id),
     isxn                TEXT,
+    upc                 TEXT,
     title               TEXT,
     volume              TEXT,
     author              TEXT,
@@ -948,9 +992,11 @@ CREATE TABLE acq.user_request (
     mentioned           TEXT,
     other_info          TEXT,
 	cancel_reason       INT    REFERENCES acq.cancel_reason( id )
-	                           DEFERRABLE INITIALLY DEFERRED
+	                           DEFERRABLE INITIALLY DEFERRED,
+    cancel_time         TIMESTAMPTZ
 );
 
+ALTER TABLE action.hold_request ADD COLUMN acq_request INT REFERENCES acq.user_request (id);
 
 -- Functions
 
@@ -2132,7 +2178,7 @@ BEGIN
 	FROM
     	acq.fund AS oldf
     	LEFT JOIN acq.fund AS newf
-        	ON ( oldf.code = newf.code )
+        	ON ( oldf.code = newf.code AND oldf.org = newf.org )
 	WHERE
  		    oldf.year = old_year
 		AND oldf.propagate

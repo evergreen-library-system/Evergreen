@@ -120,6 +120,14 @@ CREATE TABLE asset.copy_part_map (
 );
 CREATE UNIQUE INDEX copy_part_map_cp_part_idx ON asset.copy_part_map (target_copy, part);
 
+CREATE TABLE asset.latest_inventory (
+    id                          SERIAL                      PRIMARY KEY,
+    inventory_workstation       INTEGER                     REFERENCES actor.workstation (id) DEFERRABLE INITIALLY DEFERRED,
+    inventory_date              TIMESTAMP WITH TIME ZONE    DEFAULT NOW(),
+    copy                        BIGINT				        NOT NULL
+);
+CREATE INDEX latest_inventory_copy_idx ON asset.latest_inventory (copy);
+
 CREATE TABLE asset.opac_visible_copies (
   id        BIGSERIAL primary key,
   copy_id   BIGINT, -- copy id
@@ -568,6 +576,7 @@ BEGIN
                 org_list,
                 asset.copy_vis_attr_cache av
                 JOIN asset.copy cp ON (cp.id = av.target_copy AND av.record = rid)
+                JOIN asset.call_number cn ON (cp.call_number = cn.id AND not cn.deleted)
           WHERE cp.circ_lib = ANY (org_list.orgs) AND av.vis_attr_vector @@ mask.c_attrs::query_int
           GROUP BY 1,2,6;
 
@@ -616,37 +625,53 @@ BEGIN
 END;            
 $f$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION asset.staff_ou_record_copy_count (org INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
-DECLARE         
-    ans RECORD; 
+CREATE OR REPLACE FUNCTION asset.staff_ou_record_copy_count(org integer, rid bigint)
+ RETURNS TABLE(depth integer, org_unit integer, visible bigint, available bigint, unshadow bigint, transcendant integer)
+ LANGUAGE plpgsql
+AS $function$
+DECLARE
+    ans RECORD;
     trans INT;
-BEGIN           
+BEGIN
     SELECT 1 INTO trans FROM biblio.record_entry b JOIN config.bib_source src ON (b.source = src.id) WHERE src.transcendant AND b.id = rid;
 
     FOR ans IN SELECT u.id, t.depth FROM actor.org_unit_ancestors(org) AS u JOIN actor.org_unit_type t ON (u.ou_type = t.id) LOOP
         RETURN QUERY
-        SELECT  ans.depth,
-                ans.id,
-                COUNT( cp.id ),
-                SUM( CASE WHEN cp.status IN (0,7,12) THEN 1 ELSE 0 END ),
-                SUM( CASE WHEN cl.opac_visible AND cp.opac_visible THEN 1 ELSE 0 END),
-                trans
-          FROM
-                actor.org_unit_descendants(ans.id) d
-                JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
-                JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
-                JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
-          GROUP BY 1,2,6;
+        WITH available_statuses AS (SELECT ARRAY_AGG(id) AS ids FROM config.copy_status WHERE is_available),
+            cp AS(
+                SELECT  cp.id,
+                        (cp.status = ANY (available_statuses.ids))::INT as available,
+                        (cl.opac_visible AND cp.opac_visible)::INT as opac_visible
+                  FROM
+                        available_statuses,
+                        actor.org_unit_descendants(ans.id) d
+                        JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                        JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+                        JOIN asset.call_number cn ON (cn.record = rid AND cn.id = cp.call_number AND NOT cn.deleted)
+            ),
+            peer AS (
+                select  cp.id,
+                        (cp.status = ANY  (available_statuses.ids))::INT as available,
+                        (cl.opac_visible AND cp.opac_visible)::INT as opac_visible
+                FROM
+                        available_statuses,
+                        actor.org_unit_descendants(ans.id) d
+                        JOIN asset.copy cp ON (cp.circ_lib = d.id AND NOT cp.deleted)
+                        JOIN asset.copy_location cl ON (cp.location = cl.id AND NOT cl.deleted)
+                        JOIN biblio.peer_bib_copy_map bp ON (bp.peer_record = rid AND bp.target_copy = cp.id)
+            )
+        select ans.depth, ans.id, count(id), sum(x.available::int), sum(x.opac_visible::int), trans
+        from ((select * from cp) union (select * from peer)) x
+        group by 1,2,6;
 
         IF NOT FOUND THEN
             RETURN QUERY SELECT ans.depth, ans.id, 0::BIGINT, 0::BIGINT, 0::BIGINT, trans;
         END IF;
 
     END LOOP;
-
     RETURN;
 END;
-$f$ LANGUAGE PLPGSQL;
+$function$;
 
 CREATE OR REPLACE FUNCTION asset.staff_lasso_record_copy_count (i_lasso INT, rid BIGINT) RETURNS TABLE (depth INT, org_unit INT, visible BIGINT, available BIGINT, unshadow BIGINT, transcendant INT) AS $f$
 DECLARE
@@ -977,8 +1002,7 @@ CREATE TRIGGER asset_copy_tag_fti_trigger
 
 CREATE TABLE asset.copy_tag_copy_map (
     id              BIGSERIAL PRIMARY KEY,
-    copy            BIGINT REFERENCES asset.copy (id)
-                    ON UPDATE CASCADE ON DELETE CASCADE,
+    copy            BIGINT,
     tag             INTEGER REFERENCES asset.copy_tag (id)
                     ON UPDATE CASCADE ON DELETE CASCADE
 );
@@ -987,6 +1011,98 @@ CREATE INDEX asset_copy_tag_copy_map_copy_idx
     ON asset.copy_tag_copy_map (copy);
 CREATE INDEX asset_copy_tag_copy_map_tag_idx
     ON asset.copy_tag_copy_map (tag);
+
+CREATE OR REPLACE FUNCTION asset.copy_state (cid BIGINT) RETURNS TEXT AS $$
+DECLARE
+    last_circ_stop	TEXT;
+    the_copy	    asset.copy%ROWTYPE;
+BEGIN
+
+    SELECT * INTO the_copy FROM asset.copy WHERE id = cid;
+    IF NOT FOUND THEN RETURN NULL; END IF;
+
+    IF the_copy.status = 3 THEN -- Lost
+        RETURN 'LOST';
+    ELSIF the_copy.status = 4 THEN -- Missing
+        RETURN 'MISSING';
+    ELSIF the_copy.status = 14 THEN -- Damaged
+        RETURN 'DAMAGED';
+    ELSIF the_copy.status = 17 THEN -- Lost and paid
+        RETURN 'LOST_AND_PAID';
+    END IF;
+
+    SELECT stop_fines INTO last_circ_stop
+      FROM  action.circulation
+      WHERE target_copy = cid AND checkin_time IS NULL
+      ORDER BY xact_start DESC LIMIT 1;
+
+    IF FOUND THEN
+        IF last_circ_stop IN (
+            'CLAIMSNEVERCHECKEDOUT',
+            'CLAIMSRETURNED',
+            'LONGOVERDUE'
+        ) THEN
+            RETURN last_circ_stop;
+        END IF;
+    END IF;
+
+    RETURN 'NORMAL';
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TYPE config.copy_alert_type_state AS ENUM (
+    'NORMAL',
+    'LOST',
+    'LOST_AND_PAID',
+    'MISSING',
+    'DAMAGED',
+    'CLAIMSRETURNED',
+    'LONGOVERDUE',
+    'CLAIMSNEVERCHECKEDOUT'
+);
+
+CREATE TYPE config.copy_alert_type_event AS ENUM (
+    'CHECKIN',
+    'CHECKOUT'
+);
+
+CREATE TABLE config.copy_alert_type (
+    id      serial  primary key, -- reserve 1-100 for system
+    scope_org   int not null references actor.org_unit (id) on delete cascade,
+    active      bool    not null default true,
+    name        text    not null unique,
+    state       config.copy_alert_type_state,
+    event       config.copy_alert_type_event,
+    in_renew    bool,
+    invert_location bool    not null default false,
+    at_circ     bool,
+    at_owning   bool,
+    next_status int[]
+);
+SELECT SETVAL('config.copy_alert_type_id_seq'::TEXT, 100);
+
+CREATE TABLE actor.copy_alert_suppress (
+    id          serial primary key,
+    org         int not null references actor.org_unit (id) on delete cascade,
+    alert_type  int not null references config.copy_alert_type (id) on delete cascade
+);
+
+CREATE TABLE asset.copy_alert (
+    id      bigserial   primary key,
+    alert_type  int     not null references config.copy_alert_type (id) on delete cascade,
+    copy        bigint  not null,
+    temp        bool    not null default false,
+    create_time timestamptz not null default now(),
+    create_staff    bigint  not null references actor.usr (id) on delete set null,
+    note        text,
+    ack_time    timestamptz,
+    ack_staff   bigint references actor.usr (id) on delete set null
+);
+
+CREATE VIEW asset.active_copy_alert AS
+    SELECT  *
+      FROM  asset.copy_alert
+      WHERE ack_time IS NULL;
 
 COMMIT;
 

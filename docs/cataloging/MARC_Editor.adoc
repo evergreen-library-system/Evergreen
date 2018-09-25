@@ -1,17 +1,26 @@
 ﻿Working with the MARC Editor 
 ----------------------------
 
-You can use the MARC Editor to edit MARC fields, sub-fields, and indicators.
-
 Editing MARC Records 
 ~~~~~~~~~~~~~~~~~~~~
 
 . Retrieve the record. 
-. MARC Edit.
++
+[TIP]
+======
+You can retrieve records in many ways, including:
+
+* If you know its database ID, enter it into Cataloging > Retrieve Bib Record by ID.
+* If you know its control number, enter it into Cataloging > Retrieve Bib Record by TCN.
+* Searching in the catalog.
+* Clicking on a link from the Acquisitions or Serials modules.
+======
++
+. Click on the MARC Edit tab.
 . The MARC record will display. 
 . Select viewing and editing options, if desired.
 * Stack subfields to display each subfield on its own line.
-* Flat-Text Editor switches to a plain-text (menmonic) MARC format. This format can be useful when copying and pasting multiple lines. It also allows the use of tools like MarcEdit (http://marcedit.reeset.net/ ). Unclick the box to switch back. 
+* Flat-Text Editor switches to a plain-text (mnemonic) MARC format. This format can be useful when copying and pasting multiple lines. It also allows the use of tools like MarcEdit (http://marcedit.reeset.net/ ). Uncheck the box to switch back. 
   * Note that you can use a backslash character as a placeholder in the flat text editor's indicators and fixed-length fields.
 * Add Item allows attaching items quickly with call number and barcode. When _Save_ is clicked, the copy editor will open. NOTE: Browser pop-up blockers will prevent this, please allow pop-ups.
 . Make changes as desired. 
@@ -55,7 +64,7 @@ MARC Fixed Field Editor Right-Click Context Menu Options
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 The MARC Fixed Field Editor provides suggested values for select fixed fields based on the record type being edited. Users can right-click on the value control for a fixed field and choose the appropriate value from the menu options.
-The Evergreen database contains information from the Library of Congress’s MARC 21 format standards that includes possible values for select fixed fields. The right-click context menu options are available for fixed fields whose values are already stored in the database. Fixed fields that do not contain possible values in the database, the user will recieve the default web browser menu (such as cut, copy, paste, etc.).
+The Evergreen database contains information from the Library of Congress’s MARC 21 format standards that includes possible values for select fixed fields. The right-click context menu options are available for fixed fields whose values are already stored in the database. Fixed fields that do not contain possible values in the database, the user will receive the default web browser menu (such as cut, copy, paste, etc.).
 
 *To Access the MARC Fixed Field Editor Right-Click Context Menu Options:*
 

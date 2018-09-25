@@ -14,7 +14,7 @@ Once you've set up overdue notices, you should get the general idea of how to se
 
 Hardware
 --------
-Get a dedicated computer running Linux and make sure it meets any system requirements for Asterisk. 1 modernish CPU, 1 GB memory is plenty for most
+Get a dedicated computer running Linux and make sure it meets any system requirements for Asterisk. 1 modern CPU, 1 GB memory is plenty for most
 applications.  More is always better.
 
 Make sure that the system running Evergreen (specifically, the utility box if you're dealing with a multi-server environment that has a utility box specifically for Action/Trigger stuff) has network connectivity to the box running Asterisk.  At minimum it needs to be able to reach that Asterisk machine via TCP port 10080.  Do not let the whole Internet talk to your Asterisk box via TCP port 10080.  iptables is your friend.
@@ -68,7 +68,7 @@ Configure asterisk for full logging.  When running asterisk, you should get matt
 Be sure you also installed DAHDI if you're using analog hardware to place phone calls (there are even cases when you want to install it for digital calling; grep Asterisk documentation for "timing source").
 When in doubt, just install it.  Maybe your package manager already did for you.
 
-If using analog telephony, get your hardware configured and make sure you can see the things that you're supposed to see with +/usr/sbin/dahdi_tool+ (typical install location, but look around if needed) and the command "dahdi show channels" in the Asterisk interactive console.  I'm handwaving over the specifics here.  There's a wealth of information available online about how to do this.
+If using analog telephony, get your hardware configured and make sure you can see the things that you're supposed to see with +/usr/sbin/dahdi_tool+ (typical install location, but look around if needed) and the command "dahdi show channels" in the Asterisk interactive console.  I'm glossing over the specifics here.  There's a wealth of information available online about how to do this.
 
 If using digital telephony, preferably with the SIP protocol, get that configured in asterisk and make sure your SIP channel(s) is/are up.  Again, more specifics on this are available online.
 
@@ -275,7 +275,7 @@ Make sure your can play the product by running:
 play outfile.gsm
 -------------------------------------------------------
 
-It'll sound relatively lo-fi, but as long as you can hear yourself, that'll do.  It'll probably sound more natural through a phone handset than it does through your workstation's speakers.
+It will sound relatively lo-fi, but as long as you can hear yourself, that will do.  It will probably sound more natural through a phone handset than it does through your workstation's speakers.
 
 Ideally you will have given your GSM files names that easily map to the strings of text that you have spoken in each file.  Place these files in +/var/lib/asterisk/sounds+ on the Asterisk server.  Then replace all of the static Festival calls in your dialplans with lines that look like this:
 
@@ -443,7 +443,7 @@ Remember the event definition you made for telephone notices a few steps ago?  C
 Init scripts for the Asterisk box
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you installed Asterisk from source instead of from a distro package, look in the source tarball for sample init scripts.  Choose the one appropriate for your distro, put it in place, run 'chkconfig' or 'update-rc.d' or whatever's appropriate for your distro, and make sure you can start and stop Asterisk with that init script now.
+If you installed Asterisk from source instead of from a distro package, look in the source tarball for sample init scripts.  Choose the one appropriate for your distro, put it in place, run 'chkconfig' or 'update-rc.d' or whatever is appropriate for your distro, and make sure you can start and stop Asterisk with that init script now.
 
 For festival, I think on Debianesque distros you will have installed this from a package, but if you're on something Redhat-ish and you need an init script, the following will probably work.
 

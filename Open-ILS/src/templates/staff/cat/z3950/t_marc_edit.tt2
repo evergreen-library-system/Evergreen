@@ -7,7 +7,7 @@
   <div class="modal-body">
     <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="marc_xml"
                          record-type="bre" save-label="{{save_label}}"
-                         on-save="import_record_callback" fast-add="true"
+                         on-save="import_record_callback" fast-add="true" in-place-mode="in_place_mode"
     />
   </div>
   <div class="modal-footer">

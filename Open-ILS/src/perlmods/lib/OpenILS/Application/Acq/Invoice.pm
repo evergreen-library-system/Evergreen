@@ -56,7 +56,10 @@ sub build_invoice_impl {
     if ($invoice->isnew) {
         $invoice->recv_method('PPR') unless $invoice->recv_method;
         $invoice->recv_date('now') unless $invoice->recv_date;
-        $inv_closing = $U->is_true($invoice->complete);
+        if ($invoice->close_date) {
+            $inv_closing = 1;
+            $invoice->closed_by($e->requestor->id);
+        }
         $e->create_acq_invoice($invoice) or return $e->die_event;
     } elsif ($invoice->isdeleted) {
         $e->delete_acq_invoice($invoice) or return $e->die_event;
@@ -64,13 +67,14 @@ sub build_invoice_impl {
         my $orig_inv = $e->retrieve_acq_invoice($invoice->id)
             or return $e->die_event;
 
-        $inv_closing = (
-            !$U->is_true($orig_inv->complete) && 
-            $U->is_true($invoice->complete));
+        if (!$orig_inv->close_date && $invoice->close_date) {
+            $inv_closing = 1;
+            $invoice->closed_by($e->requestor->id);
 
-        $inv_reopening = (
-            $U->is_true($orig_inv->complete) && 
-            !$U->is_true($invoice->complete));
+        } elsif ($orig_inv->close_date && !$invoice->close_date) {
+            $inv_reopening = 1;
+            $invoice->clear_closed_by;
+        }
 
         $e->update_acq_invoice($invoice) or return $e->die_event;
     }
@@ -140,8 +144,7 @@ sub build_invoice_impl {
                 #       being.
 
                 if (not $U->is_true($item_type->prorate) and
-                    ($item->po_item or $item->fund or
-                        $U->is_true($invoice->complete))) {
+                    ($item->po_item or $item->fund or $invoice->close_date)) {
 
                     my $debit;
                     if ($item->po_item) {
@@ -381,8 +384,8 @@ sub rollback_entry_debits {
 }
 
 # invoiced -- debits already linked to this invoice
-# inv_closing -- invoice is going from complete=f to t.
-# inv_reopening -- invoice is going from complete=t to f.
+# inv_closing -- invoice is going from close_date=null to now
+# inv_reopening -- invoice is going from close_date=date to null
 sub update_entry_debits {
     my($e, $entry, $link_state, $inv_closing, $inv_reopening) = @_;
 
@@ -709,7 +712,7 @@ sub fetch_invoice_impl {
         {
             "flesh" => 6,
             "flesh_fields" => {
-                "acqinv" => ["entries", "items"],
+                "acqinv" => ["entries", "items", "closed_by"],
                 "acqii" => ["fund_debit", "purchase_order", "po_item"]
             }
         }

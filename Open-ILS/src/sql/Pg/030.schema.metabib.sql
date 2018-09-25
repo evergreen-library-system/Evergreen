@@ -173,6 +173,19 @@ CREATE UNIQUE INDEX metabib_combined_series_field_entry_fakepk_idx ON metabib.co
 CREATE INDEX metabib_combined_series_field_entry_index_vector_idx ON metabib.combined_series_field_entry USING GIST (index_vector);
 CREATE INDEX metabib_combined_series_field_source_idx ON metabib.combined_series_field_entry (metabib_field);
 
+CREATE VIEW metabib.combined_all_field_entry AS
+    SELECT * FROM metabib.combined_title_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_author_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_subject_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_keyword_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_identifier_field_entry
+        UNION ALL
+    SELECT * FROM metabib.combined_series_field_entry;
+
 CREATE TABLE metabib.facet_entry (
 	id		BIGSERIAL	PRIMARY KEY,
 	source		BIGINT		NOT NULL,
@@ -182,6 +195,123 @@ CREATE TABLE metabib.facet_entry (
 CREATE INDEX metabib_facet_entry_field_idx ON metabib.facet_entry (field);
 CREATE INDEX metabib_facet_entry_value_idx ON metabib.facet_entry (SUBSTRING(value,1,1024));
 CREATE INDEX metabib_facet_entry_source_idx ON metabib.facet_entry (source);
+
+CREATE TABLE metabib.display_entry (
+    id      BIGSERIAL  PRIMARY KEY,
+    source  BIGINT     NOT NULL,
+    field   INT        NOT NULL,
+    value   TEXT       NOT NULL
+);
+
+CREATE INDEX metabib_display_entry_field_idx 
+    ON metabib.display_entry (field);
+CREATE INDEX metabib_display_entry_source_idx 
+    ON metabib.display_entry (source);
+
+CREATE VIEW metabib.flat_display_entry AS
+    /* One row per display entry fleshed with field info */
+    SELECT
+        mde.source,
+        cdfm.name,
+        cdfm.multi,
+        cmf.label,
+        cmf.id AS field,
+        mde.value
+    FROM metabib.display_entry mde
+    JOIN config.metabib_field cmf ON (cmf.id = mde.field)
+    JOIN config.display_field_map cdfm ON (cdfm.field = mde.field)
+;
+
+CREATE VIEW metabib.compressed_display_entry AS
+/* Like flat_display_entry except values are compressed into 
+   one row per display_field_map and JSON-ified.  */
+    SELECT 
+        source,
+        name,
+        multi,
+        label,
+        field,
+        CASE WHEN multi THEN
+            TO_JSON(ARRAY_AGG(value))
+        ELSE
+            TO_JSON(MIN(value))
+        END AS value
+    FROM metabib.flat_display_entry
+    GROUP BY 1, 2, 3, 4, 5
+;
+
+CREATE VIEW metabib.wide_display_entry AS
+/* Table-like view of well-known display fields.   
+   This VIEW expands as well-known display fields are added. */
+    SELECT
+        bre.id AS source,
+        COALESCE(mcde_title.value, 'null')::TEXT AS title,
+        COALESCE(mcde_author.value, 'null')::TEXT AS author,
+        COALESCE(mcde_subject_geographic.value, 'null')::TEXT AS subject_geographic,
+        COALESCE(mcde_subject_name.value, 'null')::TEXT AS subject_name,
+        COALESCE(mcde_subject_temporal.value, 'null')::TEXT AS subject_temporal,
+        COALESCE(mcde_subject_topic.value, 'null')::TEXT AS subject_topic,
+        COALESCE(mcde_creators.value, 'null')::TEXT AS creators,
+        COALESCE(mcde_isbn.value, 'null')::TEXT AS isbn,
+        COALESCE(mcde_issn.value, 'null')::TEXT AS issn,
+        COALESCE(mcde_upc.value, 'null')::TEXT AS upc,
+        COALESCE(mcde_tcn.value, 'null')::TEXT AS tcn,
+        COALESCE(mcde_edition.value, 'null')::TEXT AS edition,
+        COALESCE(mcde_physical_description.value, 'null')::TEXT AS physical_description,
+        COALESCE(mcde_publisher.value, 'null')::TEXT AS publisher,
+        COALESCE(mcde_series_title.value, 'null')::TEXT AS series_title,
+        COALESCE(mcde_abstract.value, 'null')::TEXT AS abstract,
+        COALESCE(mcde_toc.value, 'null')::TEXT AS toc,
+        COALESCE(mcde_pubdate.value, 'null')::TEXT AS pubdate,
+        COALESCE(mcde_type_of_resource.value, 'null')::TEXT AS type_of_resource
+    FROM biblio.record_entry bre
+    LEFT JOIN metabib.compressed_display_entry mcde_title
+        ON (bre.id = mcde_title.source AND mcde_title.name = 'title')
+    LEFT JOIN metabib.compressed_display_entry mcde_author
+        ON (bre.id = mcde_author.source AND mcde_author.name = 'author')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject
+        ON (bre.id = mcde_subject.source AND mcde_subject.name = 'subject')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_geographic
+        ON (bre.id = mcde_subject_geographic.source
+            AND mcde_subject_geographic.name = 'subject_geographic')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_name
+        ON (bre.id = mcde_subject_name.source
+            AND mcde_subject_name.name = 'subject_name')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_temporal
+        ON (bre.id = mcde_subject_temporal.source
+            AND mcde_subject_temporal.name = 'subject_temporal')
+    LEFT JOIN metabib.compressed_display_entry mcde_subject_topic
+        ON (bre.id = mcde_subject_topic.source
+            AND mcde_subject_topic.name = 'subject_topic')
+    LEFT JOIN metabib.compressed_display_entry mcde_creators
+        ON (bre.id = mcde_creators.source AND mcde_creators.name = 'creators')
+    LEFT JOIN metabib.compressed_display_entry mcde_isbn
+        ON (bre.id = mcde_isbn.source AND mcde_isbn.name = 'isbn')
+    LEFT JOIN metabib.compressed_display_entry mcde_issn
+        ON (bre.id = mcde_issn.source AND mcde_issn.name = 'issn')
+    LEFT JOIN metabib.compressed_display_entry mcde_upc
+        ON (bre.id = mcde_upc.source AND mcde_upc.name = 'upc')
+    LEFT JOIN metabib.compressed_display_entry mcde_tcn
+        ON (bre.id = mcde_tcn.source AND mcde_tcn.name = 'tcn')
+    LEFT JOIN metabib.compressed_display_entry mcde_edition
+        ON (bre.id = mcde_edition.source AND mcde_edition.name = 'edition')
+    LEFT JOIN metabib.compressed_display_entry mcde_physical_description
+        ON (bre.id = mcde_physical_description.source
+            AND mcde_physical_description.name = 'physical_description')
+    LEFT JOIN metabib.compressed_display_entry mcde_publisher
+        ON (bre.id = mcde_publisher.source AND mcde_publisher.name = 'publisher')
+    LEFT JOIN metabib.compressed_display_entry mcde_series_title
+        ON (bre.id = mcde_series_title.source AND mcde_series_title.name = 'series_title')
+    LEFT JOIN metabib.compressed_display_entry mcde_abstract
+        ON (bre.id = mcde_abstract.source AND mcde_abstract.name = 'abstract')
+    LEFT JOIN metabib.compressed_display_entry mcde_toc
+        ON (bre.id = mcde_toc.source AND mcde_toc.name = 'toc')
+    LEFT JOIN metabib.compressed_display_entry mcde_pubdate
+        ON (bre.id = mcde_pubdate.source AND mcde_pubdate.name = 'pubdate')
+    LEFT JOIN metabib.compressed_display_entry mcde_type_of_resource
+        ON (bre.id = mcde_type_of_resource.source
+            AND mcde_type_of_resource.name = 'type_of_resource')
+;
 
 CREATE TABLE metabib.browse_entry (
     id BIGSERIAL PRIMARY KEY,
@@ -219,6 +349,58 @@ CREATE TABLE metabib.browse_entry_simple_heading_map (
 );
 CREATE INDEX browse_entry_sh_map_entry_idx ON metabib.browse_entry_simple_heading_map (entry);
 CREATE INDEX browse_entry_sh_map_sh_idx ON metabib.browse_entry_simple_heading_map (simple_heading);
+
+CREATE OR REPLACE FUNCTION metabib.display_field_normalize_trigger () 
+    RETURNS TRIGGER AS $$
+DECLARE
+    normalizer  RECORD;
+    display_field_text  TEXT;
+BEGIN
+    display_field_text := NEW.value;
+
+    FOR normalizer IN
+        SELECT  n.func AS func,
+                n.param_count AS param_count,
+                m.params AS params
+          FROM  config.index_normalizer n
+                JOIN config.metabib_field_index_norm_map m ON (m.norm = n.id)
+          WHERE m.field = NEW.field AND m.pos < 0
+          ORDER BY m.pos LOOP
+
+            EXECUTE 'SELECT ' || normalizer.func || '(' ||
+                quote_literal( display_field_text ) ||
+                CASE
+                    WHEN normalizer.param_count > 0
+                        THEN ',' || REPLACE(REPLACE(BTRIM(
+                            normalizer.params,'[]'),E'\'',E'\\\''),E'"',E'\'')
+                        ELSE ''
+                    END ||
+                ')' INTO display_field_text;
+
+    END LOOP;
+
+    NEW.value = display_field_text;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER display_field_normalize_tgr
+	BEFORE UPDATE OR INSERT ON metabib.display_entry
+	FOR EACH ROW EXECUTE PROCEDURE metabib.display_field_normalize_trigger();
+
+CREATE OR REPLACE FUNCTION evergreen.display_field_force_nfc() 
+    RETURNS TRIGGER AS $$
+BEGIN
+    NEW.value := force_unicode_normal_form(NEW.value,'NFC');
+    RETURN NEW;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE TRIGGER display_field_force_nfc_tgr
+	BEFORE UPDATE OR INSERT ON metabib.display_entry
+	FOR EACH ROW EXECUTE PROCEDURE evergreen.display_field_force_nfc();
+
 
 CREATE OR REPLACE FUNCTION metabib.facet_normalize_trigger () RETURNS TRIGGER AS $$
 DECLARE
@@ -551,6 +733,7 @@ CREATE TYPE metabib.field_entry_template AS (
     field_class         TEXT,
     field               INT,
     facet_field         BOOL,
+    display_field       BOOL,
     search_field        BOOL,
     browse_field        BOOL,
     source              BIGINT,
@@ -559,8 +742,12 @@ CREATE TYPE metabib.field_entry_template AS (
     sort_value          TEXT
 );
 
-
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( rid BIGINT, default_joiner TEXT ) RETURNS SETOF metabib.field_entry_template AS $func$
+CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry (
+    rid BIGINT,
+    default_joiner TEXT,
+    field_types TEXT[],
+    only_fields INT[]
+) RETURNS SETOF metabib.field_entry_template AS $func$
 DECLARE
     bib     biblio.record_entry%ROWTYPE;
     idx     config.metabib_field%ROWTYPE;
@@ -570,6 +757,7 @@ DECLARE
     xml_node    TEXT;
     xml_node_list   TEXT[];
     facet_text  TEXT;
+    display_text TEXT;
     browse_text TEXT;
     sort_value  TEXT;
     raw_text    TEXT;
@@ -578,18 +766,28 @@ DECLARE
     authority_text TEXT;
     authority_link BIGINT;
     output_row  metabib.field_entry_template%ROWTYPE;
+    process_idx BOOL;
 BEGIN
 
     -- Start out with no field-use bools set
     output_row.browse_field = FALSE;
     output_row.facet_field = FALSE;
+    output_row.display_field = FALSE;
     output_row.search_field = FALSE;
 
     -- Get the record
     SELECT INTO bib * FROM biblio.record_entry WHERE id = rid;
 
     -- Loop over the indexing entries
-    FOR idx IN SELECT * FROM config.metabib_field ORDER BY format LOOP
+    FOR idx IN SELECT * FROM config.metabib_field WHERE id = ANY (only_fields) ORDER BY format LOOP
+        CONTINUE WHEN idx.xpath IS NULL OR idx.xpath = ''; -- pure virtual field
+
+        process_idx := FALSE;
+        IF idx.display_field AND 'display' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.browse_field AND 'browse' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.search_field AND 'search' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        IF idx.facet_field AND 'facet' = ANY (field_types) THEN process_idx = TRUE; END IF;
+        CONTINUE WHEN process_idx = FALSE; -- disabled for all types
 
         joiner := COALESCE(idx.joiner, default_joiner);
 
@@ -710,6 +908,25 @@ BEGIN
                 output_row.facet_field = FALSE;
             END IF;
 
+            -- insert raw node text for display
+            IF idx.display_field THEN
+
+                IF idx.display_xpath IS NOT NULL AND idx.display_xpath <> '' THEN
+                    display_text := oils_xpath_string( idx.display_xpath, xml_node, joiner, ARRAY[ARRAY[xfrm.prefix, xfrm.namespace_uri]] );
+                ELSE
+                    display_text := curr_text;
+                END IF;
+
+                output_row.field_class = idx.field_class;
+                output_row.field = -1 * idx.id;
+                output_row.source = rid;
+                output_row.value = BTRIM(REGEXP_REPLACE(display_text, E'\\s+', ' ', 'g'));
+
+                output_row.display_field = TRUE;
+                RETURN NEXT output_row;
+                output_row.display_field = FALSE;
+            END IF;
+
         END LOOP;
 
         CONTINUE WHEN raw_text IS NULL OR raw_text = '';
@@ -729,10 +946,14 @@ BEGIN
     END LOOP;
 
 END;
-
 $func$ LANGUAGE PLPGSQL;
 
 CREATE OR REPLACE FUNCTION metabib.update_combined_index_vectors(bib_id BIGINT) RETURNS VOID AS $func$
+DECLARE
+    rdata       TSVECTOR;
+    vclass      TEXT;
+    vfield      INT;
+    rfields     INT[];
 BEGIN
     DELETE FROM metabib.combined_keyword_field_entry WHERE record = bib_id;
     INSERT INTO metabib.combined_keyword_field_entry(record, metabib_field, index_vector)
@@ -782,24 +1003,72 @@ BEGIN
         SELECT bib_id, NULL, strip(COALESCE(string_agg(index_vector::TEXT,' '),'')::tsvector)
         FROM metabib.identifier_field_entry WHERE source = bib_id;
 
+    -- For each virtual def, gather the data from the combined real field
+    -- entries and append it to the virtual combined entry.
+    FOR vfield, rfields IN SELECT virtual, ARRAY_AGG(real)  FROM config.metabib_field_virtual_map GROUP BY virtual LOOP
+        SELECT  field_class INTO vclass
+          FROM  config.metabib_field
+          WHERE id = vfield;
+
+        SELECT  string_agg(index_vector::TEXT,' ')::tsvector INTO rdata
+          FROM  metabib.combined_all_field_entry
+          WHERE record = bib_id
+                AND metabib_field = ANY (rfields);
+
+        BEGIN -- I cannot wait for INSERT ON CONFLICT ... 9.5, though
+            EXECUTE $$
+                INSERT INTO metabib.combined_$$ || vclass || $$_field_entry
+                    (record, metabib_field, index_vector) VALUES ($1, $2, $3)
+            $$ USING bib_id, vfield, rdata;
+        EXCEPTION WHEN unique_violation THEN
+            EXECUTE $$
+                UPDATE  metabib.combined_$$ || vclass || $$_field_entry
+                  SET   index_vector = index_vector || $3
+                  WHERE record = $1
+                        AND metabib_field = $2
+            $$ USING bib_id, vfield, rdata;
+        WHEN OTHERS THEN
+            -- ignore and move on
+        END;
+    END LOOP;
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( bib_id BIGINT, skip_facet BOOL DEFAULT FALSE, skip_browse BOOL DEFAULT FALSE, skip_search BOOL DEFAULT FALSE ) RETURNS VOID AS $func$
+CREATE OR REPLACE FUNCTION metabib.reingest_metabib_field_entries( 
+    bib_id BIGINT,
+    skip_facet BOOL DEFAULT FALSE, 
+    skip_display BOOL DEFAULT FALSE,
+    skip_browse BOOL DEFAULT FALSE, 
+    skip_search BOOL DEFAULT FALSE,
+    only_fields INT[] DEFAULT '{}'::INT[]
+) RETURNS VOID AS $func$
 DECLARE
     fclass          RECORD;
     ind_data        metabib.field_entry_template%ROWTYPE;
     mbe_row         metabib.browse_entry%ROWTYPE;
     mbe_id          BIGINT;
     b_skip_facet    BOOL;
+    b_skip_display    BOOL;
     b_skip_browse   BOOL;
     b_skip_search   BOOL;
     value_prepped   TEXT;
+    field_list      INT[] := only_fields;
+    field_types     TEXT[] := '{}'::TEXT[];
 BEGIN
 
+    IF field_list = '{}'::INT[] THEN
+        SELECT ARRAY_AGG(id) INTO field_list FROM config.metabib_field;
+    END IF;
+
     SELECT COALESCE(NULLIF(skip_facet, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_facet_indexing' AND enabled)) INTO b_skip_facet;
+    SELECT COALESCE(NULLIF(skip_display, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_display_indexing' AND enabled)) INTO b_skip_display;
     SELECT COALESCE(NULLIF(skip_browse, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_browse_indexing' AND enabled)) INTO b_skip_browse;
     SELECT COALESCE(NULLIF(skip_search, FALSE), EXISTS (SELECT enabled FROM config.internal_flag WHERE name =  'ingest.skip_search_indexing' AND enabled)) INTO b_skip_search;
+
+    IF NOT b_skip_facet THEN field_types := field_types || '{facet}'; END IF;
+    IF NOT b_skip_display THEN field_types := field_types || '{display}'; END IF;
+    IF NOT b_skip_browse THEN field_types := field_types || '{browse}'; END IF;
+    IF NOT b_skip_search THEN field_types := field_types || '{search}'; END IF;
 
     PERFORM * FROM config.internal_flag WHERE name = 'ingest.assume_inserts_only' AND enabled;
     IF NOT FOUND THEN
@@ -812,12 +1081,15 @@ BEGIN
         IF NOT b_skip_facet THEN
             DELETE FROM metabib.facet_entry WHERE source = bib_id;
         END IF;
+        IF NOT b_skip_display THEN
+            DELETE FROM metabib.display_entry WHERE source = bib_id;
+        END IF;
         IF NOT b_skip_browse THEN
             DELETE FROM metabib.browse_entry_def_map WHERE source = bib_id;
         END IF;
     END IF;
 
-    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id ) LOOP
+    FOR ind_data IN SELECT * FROM biblio.extract_metabib_field_entry( bib_id, ' ', field_types, field_list ) LOOP
 
 	-- don't store what has been normalized away
         CONTINUE WHEN ind_data.value IS NULL;
@@ -830,6 +1102,12 @@ BEGIN
             INSERT INTO metabib.facet_entry (field, source, value)
                 VALUES (ind_data.field, ind_data.source, ind_data.value);
         END IF;
+
+        IF ind_data.display_field AND NOT b_skip_display THEN
+            INSERT INTO metabib.display_entry (field, source, value)
+                VALUES (ind_data.field, ind_data.source, ind_data.value);
+        END IF;
+
 
         IF ind_data.browse_field AND NOT b_skip_browse THEN
             -- A caveat about this SELECT: this should take care of replacing
@@ -885,11 +1163,6 @@ BEGIN
     RETURN;
 END;
 $func$ LANGUAGE PLPGSQL;
-
--- default to a space joiner
-CREATE OR REPLACE FUNCTION biblio.extract_metabib_field_entry ( BIGINT ) RETURNS SETOF metabib.field_entry_template AS $func$
-	SELECT * FROM biblio.extract_metabib_field_entry($1, ' ');
-$func$ LANGUAGE SQL;
 
 CREATE OR REPLACE FUNCTION authority.flatten_marc ( rid BIGINT ) RETURNS SETOF authority.full_rec AS $func$
 DECLARE
@@ -1225,7 +1498,12 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
-CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib( bib_id BIGINT, fp TEXT, bib_is_deleted BOOL DEFAULT FALSE, retain_deleted BOOL DEFAULT FALSE ) RETURNS BIGINT AS $func$
+CREATE OR REPLACE FUNCTION metabib.remap_metarecord_for_bib(
+    bib_id bigint,
+    fp text,
+    bib_is_deleted boolean DEFAULT false,
+    retain_deleted boolean DEFAULT false
+) RETURNS bigint AS $function$
 DECLARE
     new_mapping     BOOL := TRUE;
     source_count    INT;
@@ -1236,11 +1514,11 @@ BEGIN
 
     -- We need to make sure we're not a deleted master record of an MR
     IF bib_is_deleted THEN
-        FOR old_mr IN SELECT id FROM metabib.metarecord WHERE master_record = bib_id LOOP
+        IF NOT retain_deleted THEN -- Go away for any MR that we're master of, unless retained
+            DELETE FROM metabib.metarecord_source_map WHERE source = bib_id;
+        END IF;
 
-            IF NOT retain_deleted THEN -- Go away for any MR that we're master of, unless retained
-                DELETE FROM metabib.metarecord_source_map WHERE source = bib_id;
-            END IF;
+        FOR old_mr IN SELECT id FROM metabib.metarecord WHERE master_record = bib_id LOOP
 
             -- Now, are there any more sources on this MR?
             SELECT COUNT(*) INTO source_count FROM metabib.metarecord_source_map WHERE metarecord = old_mr;
@@ -1312,8 +1590,7 @@ BEGIN
     RETURN old_mr;
 
 END;
-$func$ LANGUAGE PLPGSQL;
-
+$function$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION biblio.map_authority_linking (bibid BIGINT, marc TEXT) RETURNS BIGINT AS $func$
     DELETE FROM authority.bib_linking WHERE bib = $1;
@@ -1342,8 +1619,10 @@ DECLARE
     attr_value      TEXT[];
     norm_attr_value TEXT[];
     tmp_xml         TEXT;
+    tmp_array       TEXT[];
     attr_def        config.record_attr_definition%ROWTYPE;
     ccvm_row        config.coded_value_map%ROWTYPE;
+    jump_past       BOOL;
 BEGIN
 
     IF attr_list IS NULL OR rdeleted THEN -- need to do the full dance on INSERT or undelete
@@ -1365,15 +1644,15 @@ BEGIN
 
     FOR attr_def IN SELECT * FROM config.record_attr_definition WHERE NOT composite AND name = ANY( attr_list ) ORDER BY format LOOP
 
+        jump_past := FALSE; -- This gets set when we are non-multi and have found something
         attr_value := '{}'::TEXT[];
         norm_attr_value := '{}'::TEXT[];
         attr_vector_tmp := '{}'::INT[];
 
         SELECT * INTO ccvm_row FROM config.coded_value_map c WHERE c.ctype = attr_def.name LIMIT 1; 
 
-        -- tag+sf attrs only support SVF
         IF attr_def.tag IS NOT NULL THEN -- tag (and optional subfield list) selection
-            SELECT  ARRAY[ARRAY_TO_STRING(ARRAY_AGG(value), COALESCE(attr_def.joiner,' '))] INTO attr_value
+            SELECT  ARRAY_AGG(value) INTO attr_value
               FROM  (SELECT * FROM metabib.full_rec ORDER BY tag, subfield) AS x
               WHERE record = rid
                     AND tag LIKE attr_def.tag
@@ -1383,17 +1662,24 @@ BEGIN
                         ELSE TRUE
                     END
               GROUP BY tag
-              ORDER BY tag
-              LIMIT 1;
+              ORDER BY tag;
 
-        ELSIF attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
-            attr_value := vandelay.marc21_extract_fixed_field_list(rmarc, attr_def.fixed_field);
+            IF NOT attr_def.multi THEN
+                attr_value := ARRAY[ARRAY_TO_STRING(attr_value, COALESCE(attr_def.joiner,' '))];
+                jump_past := TRUE;
+            END IF;
+        END IF;
+
+        IF NOT jump_past AND attr_def.fixed_field IS NOT NULL THEN -- a named fixed field, see config.marc21_ff_pos_map.fixed_field
+            attr_value := attr_value || vandelay.marc21_extract_fixed_field_list(rmarc, attr_def.fixed_field);
 
             IF NOT attr_def.multi THEN
                 attr_value := ARRAY[attr_value[1]];
+                jump_past := TRUE;
             END IF;
+        END IF;
 
-        ELSIF attr_def.xpath IS NOT NULL THEN -- and xpath expression
+        IF NOT jump_past AND attr_def.xpath IS NOT NULL THEN -- and xpath expression
 
             SELECT INTO xfrm * FROM config.xml_transform WHERE name = attr_def.format;
         
@@ -1427,13 +1713,16 @@ BEGIN
                     EXIT WHEN NOT attr_def.multi;
                 END IF;
             END LOOP;
+        END IF;
 
-        ELSIF attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
-            SELECT  ARRAY_AGG(m.value) INTO attr_value
+        IF NOT jump_past AND attr_def.phys_char_sf IS NOT NULL THEN -- a named Physical Characteristic, see config.marc21_physical_characteristic_*_map
+            SELECT  ARRAY_AGG(m.value) INTO tmp_array
               FROM  vandelay.marc21_physical_characteristics(rmarc) v
                     LEFT JOIN config.marc21_physical_characteristic_value_map m ON (m.id = v.value)
               WHERE v.subfield = attr_def.phys_char_sf AND (m.value IS NOT NULL AND BTRIM(m.value) <> '')
                     AND ( ccvm_row.id IS NULL OR ( ccvm_row.id IS NOT NULL AND v.id IS NOT NULL) );
+
+            attr_value := attr_value || tmp_array;
 
             IF NOT attr_def.multi THEN
                 attr_value := ARRAY[attr_value[1]];
@@ -1611,17 +1900,8 @@ BEGIN
     PERFORM metabib.reingest_metabib_field_entries(NEW.id);
 
     -- Located URI magic
-    IF TG_OP = 'INSERT' THEN
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    ELSE
-        PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
-        IF NOT FOUND THEN
-            PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor );
-        END IF;
-    END IF;
+    PERFORM * FROM config.internal_flag WHERE name = 'ingest.disable_located_uri' AND enabled;
+    IF NOT FOUND THEN PERFORM biblio.extract_located_uris( NEW.id, NEW.marc, NEW.editor ); END IF;
 
     -- (re)map metarecord-bib linking
     IF TG_OP = 'INSERT' THEN -- if not deleted and performing an insert, check for the flag

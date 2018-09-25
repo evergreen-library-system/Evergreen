@@ -4,6 +4,7 @@
       <button type="button" class="close" 
         ng-click="ok()" aria-hidden="true">&times;</button>
       <h4 class="modal-title">[% l('Transit Slip') %]</h4>
+      <img src="/images/transit.png" alt="transit van icon" style="padding:5px;">
     </div>
     <div class="modal-body">
       <div>
@@ -40,6 +41,10 @@
         <span>[% l('Author:') %]</span>
         <span>{{author}}</span>
       </div>
+      <div>
+        <span>[% l('Call Number:') %]</span>
+        <span>{{call_number.prefix}}&nbsp;{{call_number.label}}&nbsp;{{call_number.suffix}}</span>
+      </div>
       <div ng-if="patron">
         <br/>
         <div>[% |l %]
@@ -55,6 +60,12 @@
         <div>
           <span>[% l('Request Date:') %]</span>
           <span>{{hold.request_time | date:$root.egDateFormat}}</span>
+        </div>
+        <div ng-if="hold_notes">
+          <span>[% l('Request Notes:') %]</span>
+          <ul>
+              <li ng-repeat="n in hold_notes"><strong>{{n.title}}</strong> - {{n.body}}&nbsp;<span ng-if="n.slip == 't' || n.pub == 't'">[Patron-visible]</span></li>
+          </ul>
         </div>
       </div>
       <div>

@@ -267,13 +267,19 @@ sub init_ro_object_cache {
             $date = '000' . $date;
         }
 
-        my $cleansed_date = cleanse_ISO8601($date);
+        my $cleansed_date = clean_ISO8601($date);
 
         $date = DateTime::Format::ISO8601->new->parse_datetime($cleansed_date);
         if ($context_org) {
             $context_org = $context_org->id if ref($context_org);
             my $tz = $locale_subs->{get_org_setting}->($context_org,'lib.timezone');
-            $date->set_time_zone($tz) if ($tz);
+            if ($tz) {
+                try {
+                    $date->set_time_zone($tz);
+                } catch Error with {
+                    $logger->warn("Invalid timezone: $tz");
+                };
+            }
         }
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
@@ -374,6 +380,7 @@ sub get_records_and_facets {
     );
 
     my %tmp_data;
+    my %hl_tmp_data;
     my $outer_self = $self;
 
     my $sdepth = $unapi_args->{flesh_depth};
@@ -385,6 +392,7 @@ sub get_records_and_facets {
     $flesh =~ s/}$/,mmr.unapi}/g if $is_meta;
 
     my $ses = OpenSRF::AppSession->create('open-ils.cstore');
+    my $hl_ses = OpenSRF::AppSession->create('open-ils.search');
 
     my @loop_recs;
     for my $bid (@$rec_ids) {
@@ -396,19 +404,91 @@ sub get_records_and_facets {
         } else {
             $unapi_data->{marc_xml} = XML::LibXML->new->parse_string($unapi_data->{marc_xml})->documentElement;
             $tmp_data{$unapi_data->{id}} = $unapi_data;
+            $unapi_cache->put_cache($unapi_cache_key, { running => $$ }, 5);
         }
     }
 
-    my $unapi_req = $ses->request(
-        'open-ils.cstore.json_query',
-         {from => [
-            $unapi_type, '{'.join(',',@loop_recs).'}', 'marcxml', $flesh,
-            $unapi_args->{site}, 
-            $unapi_args->{depth}, 
-            $slimit,
-            undef, undef, $unapi_args->{pref_lib}
-        ]}
-    );
+    my $hl_req = $hl_ses->request(
+        'open-ils.search.fetch.metabib.display_field.highlight.atomic',
+        $self->ctx->{query_struct}{additional_data}{highlight_map},
+        @$rec_ids
+    ) if (!$is_meta);
+
+    if (@loop_recs) {
+        my $unapi_req = $ses->request(
+            'open-ils.cstore.json_query',
+             {from => [
+                $unapi_type, '{'.join(',',@loop_recs).'}', 'marcxml', $flesh,
+                $unapi_args->{site}, 
+                $unapi_args->{depth}, 
+                $slimit,
+                undef, undef, undef, undef, undef, undef, undef, undef,
+                $unapi_args->{pref_lib}
+            ]}
+        );
+    
+        my $data = $unapi_req->gather(1);
+    
+        $outer_self->timelog("get_records_and_facets(): got feed content");
+    
+        # Protect against requests for non-existent records
+        return unless ($data->{$unapi_type});
+    
+        my $doc = XML::LibXML->new->parse_string($data->{$unapi_type})->documentElement;
+    
+        $outer_self->timelog("get_records_and_facets(): parsed xml");
+        for my $xml ($doc->getElementsByTagName('record')) {
+            $xml = XML::LibXML->new->parse_string($xml->toString)->documentElement;
+    
+            # Protect against legacy invalid MARCXML that might not have a 901c
+            my $bre_id;
+            my $mmr_id;
+            my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
+            if ($bre_id_nodes) {
+                $bre_id =  $bre_id_nodes->[0]->textContent;
+            } else {
+                $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
+            }
+        
+            if ($is_meta) {
+                # extract metarecord ID from mmr.unapi tag
+                for my $node ($xml->getElementsByTagName('abbr')) {
+                    my $title = $node->getAttribute('title');
+                    ($mmr_id = $title) =~ 
+                        s/tag:open-ils.org:U2\@mmr\/(\d+)\/.*/$1/g;
+                    last if $mmr_id;
+                }
+            }
+        
+            my $rec_id = $mmr_id ? $mmr_id : $bre_id;
+            $tmp_data{$rec_id} = {
+                id => $rec_id, 
+                bre_id => $bre_id, 
+                mmr_id => $mmr_id,
+                marc_xml => $xml
+            };
+        
+            if ($rec_id) {
+                # Let other backends grab our data now that we're done.
+                my $key = 'TPAC_unapi_cache_'.$rec_id.'_'.$unapi_cache_key_suffix;
+                my $cache_data = $unapi_cache->get_cache($key);
+                if (!$cache_data || $$cache_data{running} == $$) {
+                    $unapi_cache->put_cache($key, {
+                        bre_id => $bre_id,
+                        mmr_id => $mmr_id,
+                        id => $rec_id, 
+                        marc_xml => $xml->toString
+                    }, 10);
+                }
+            }
+        }
+    }
+
+    if (!$is_meta) {
+        my $hl_data = $hl_req->gather(1); # list of arrayref of hashrefs
+        $self->ctx->{_hl_data} = { map { ''.$$_[0]{source} => $_ } @$hl_data };
+        $outer_self->timelog("get_records_and_facets(): got highlighting content (". keys(%{$self->ctx->{_hl_data}}).")");
+    }
 
     my $facets = {};
     if ($facet_req) {
@@ -442,61 +522,6 @@ sub get_records_and_facets {
     }
     $search->kill_me;
 
-    my $data = $unapi_req->gather(1);
-
-    $outer_self->timelog("get_records_and_facets(): got response content");
-
-    # Protect against requests for non-existent records
-    return unless $data->{$unapi_type};
-
-    my $doc = XML::LibXML->new->parse_string($data->{$unapi_type})->documentElement;
-
-    $outer_self->timelog("get_records_and_facets(): parsed xml");
-    for my $xml ($doc->getElementsByTagName('record')) {
-        $xml = XML::LibXML->new->parse_string($xml->toString)->documentElement;
-
-        # Protect against legacy invalid MARCXML that might not have a 901c
-        my $bre_id;
-        my $mmr_id;
-        my $bre_id_nodes =  $xml->find('*[@tag="901"]/*[@code="c"]');
-        if ($bre_id_nodes) {
-            $bre_id =  $bre_id_nodes->[0]->textContent;
-        } else {
-            $logger->warn("Missing 901 subfield 'c' in " . $xml->toString());
-        }
-    
-        if ($is_meta) {
-            # extract metarecord ID from mmr.unapi tag
-            for my $node ($xml->getElementsByTagName('abbr')) {
-                my $title = $node->getAttribute('title');
-                ($mmr_id = $title) =~ 
-                    s/tag:open-ils.org:U2\@mmr\/(\d+)\/.*/$1/g;
-                last if $mmr_id;
-            }
-        }
-    
-        my $rec_id = $mmr_id ? $mmr_id : $bre_id;
-        $tmp_data{$rec_id} = {
-            id => $rec_id, 
-            bre_id => $bre_id, 
-            mmr_id => $mmr_id,
-            marc_xml => $xml
-        };
-    
-        if ($rec_id) {
-            # Let other backends grab our data now that we're done.
-            my $key = 'TPAC_unapi_cache_'.$rec_id.'_'.$unapi_cache_key_suffix;
-            my $cache_data = $unapi_cache->get_cache($key);
-            if ($$cache_data{running}) {
-                $unapi_cache->put_cache($key, {
-                    bre_id => $bre_id,
-                    mmr_id => $mmr_id,
-                    id => $rec_id, 
-                    marc_xml => $xml->toString
-                }, 10);
-            }
-        }
-    }
 
     return ($facets, map { $tmp_data{$_} } @$rec_ids);
 }

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-02-23 20:31+0000\n"
+"POT-Creation-Date: 2018-09-18 16:06-0400\n"
+"PO-Revision-Date: 2017-11-01 06:22+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-25 05:35+0000\n"
-"X-Generator: Launchpad (build 18328)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -68,7 +68,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "تعذر العثور على metabib_series_field_entry"
 
-#: 11105.PATRON_CREDIT_DISABLED:1040
+#: 11105.PATRON_CREDIT_DISABLED:1043
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
@@ -109,6 +109,10 @@ msgstr "لم يتم العثور على action_open_circ_count_by_circ_mod ال�
 #: 1589.ACTOR_CARD_NOT_FOUND:418
 msgid "The requested actor_card was not found"
 msgstr "لم يتم العثور على actor_card المطلوب"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+msgid "The lineitem detail has no owning_lib"
+msgstr "تفاصيل القيد ليس لديه owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
@@ -184,8 +188,8 @@ msgstr "لم يتم العثور على metabib_keyword_field_entry المطلو
 msgid "The requested config_audience_map was not found"
 msgstr "لم يتم العثور على config_audience_map المطلوب"
 
-#: 8004.OFFLINE_CONFIG_ERROR:951 8005.OFFLINE_CHECKSUM_FAILED:954
-#: 8006.OFFLINE_SESSION_NOT_FOUND:957
+#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
+#: 8006.OFFLINE_SESSION_NOT_FOUND:960
 msgid "Offline server is not configured properly"
 msgstr "لم يتم تكوين/تهيئة برنامج الخادم ـ بدون اتصال ـ بشكل صحيح"
 
@@ -204,6 +208,10 @@ msgstr "لم يتم العثور على config_billing_type المطلوب"
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "لم يتم العثور على acq.fund_encumbrance_total المطلوب"
+
+#: 8002.OFFLINE_FILE_ERROR:948
+msgid "An offline file or directory could not be created or accessed"
+msgstr "ملف ـ دون اتصال ـ أو المسار لا يمكن إنشاؤه أو الوصول إليه"
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
 msgid "The requested actor_workstation was not found"
@@ -267,7 +275,11 @@ msgstr "الإعارة ليس لديها المزيد من التجديدات ا
 msgid "This account is marked as inactive"
 msgstr "تمّ تمييز هذا الحساب كـَ غير فعال"
 
-#: 8003.OFFLINE_PARAM_ERROR:948
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
+msgid "The distribution still has dependent objects"
+msgstr "لا يزال للتوزيع كائنات تابعة"
+
+#: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
 msgstr "بارمترات مفقودة في التحميل ـ بدون اتصال ـ"
 
@@ -275,11 +287,15 @@ msgstr "بارمترات مفقودة في التحميل ـ بدون اتصال
 msgid "The requested reporter_report_folder was not found"
 msgstr "لم يتم العثور على reporter_report_folder المطلوب"
 
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
+msgid "The prediction pattern still has dependent objects"
+msgstr "نموذج التنبؤ لا يزال لديه كائنات تابعة"
+
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
 msgstr "لم يتم العثور على perm_ex المطلوب"
 
-#: 10101.ACQ_ALREADY_CANCELED:1003
+#: 10101.ACQ_ALREADY_CANCELED:1006
 msgid "The object is already canceled."
 msgstr "تمّ إلغاء هذا الكائن مُسبقاً."
 
@@ -317,10 +333,6 @@ msgstr "لم يتم العثورعلى money_collections_tracker المطلوب"
 msgid "An authority record already exists with the requested ARN"
 msgstr "تسجيلة الإسناد موجودة مُسبقاً مع ARN المطلوب"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
-msgid "The caption/pattern still has dependent issuances"
-msgstr "التسمية التوضيحية/النمط لا يزال لديها إصدارات تابعة"
-
 #: 5000.PERM_FAILURE:822
 msgid "Permission Denied"
 msgstr "غير مسموح"
@@ -333,7 +345,7 @@ msgstr "الإجراء المطلوب سيتحقق في رصيد/حساب الم
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "لم يتم العثورعلى actor_user_standing_penalty المطلوب"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:939
+#: 8000.OFFLINE_SESSION_ACTIVE:942
 msgid "An offline session for this location is currently processing"
 msgstr "الجلسة ـ دون اتصال ـ لهذا الموقع قَيد المُعالجة حالياً"
 
@@ -360,7 +372,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "ملاحظة الفاتورة المطلوبة غير موجودة"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1024
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -391,9 +403,9 @@ msgid ""
 msgstr ""
 "لا يمكن التقسيم لأنه لايوجد أكثر مِن قيد واحد acq.purchase_order المطلوبة"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This item is currently on the holds shelf for another patron"
-msgstr "هذه النسخة حالياً موجودة في رف الحجز من أجل مستفيد آخر"
+#: 10004.ACQ_LINEITEM_NO_PRICE:999
+msgid "The lineitem has no price"
+msgstr "لايتضمن القيد سعراً"
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
 msgid ""
@@ -451,7 +463,11 @@ msgstr "لم يتم العثور على config_metabib_field المطلوبة"
 msgid "The requested actor_org_address was not found"
 msgstr "لم يتم العثور على actor_org_address المطلوبة"
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
+msgid "The stream still has dependent objects"
+msgstr "لا يزال التيار يحتوي على كائنات تابعة"
+
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "محاولة الإرجاع للنُسخة خلال الحد الأدنى لـِ مهلة/مدة نقل/عبور الإرجاع"
@@ -468,7 +484,7 @@ msgstr "لم يتم العثور على acq.fund_spent_total المطلوب"
 msgid "The requested permission_grp_tree was not found"
 msgstr "لم يتم العثور على permission_grp_tree المطلوب"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:987
+#: 10001.ACQ_LINEITEM_NO_COPIES:990
 msgid "The lineitem has no attached copies"
 msgstr "ليس لدى القيد نُسخ مُرفقة"
 
@@ -519,7 +535,7 @@ msgstr ""
 "النسخة المُحددة مِن المحتمل أنها لا تُعار لأن موقع المُستلم الرئيسي ليس ضمن "
 "مجال إعارة النُسخ"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:999
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
 msgid "The lineitem has no provider"
 msgstr "ليس لدى القيد أي مُزود"
 
@@ -539,13 +555,14 @@ msgstr "لم يتم العثور على money_cash_payment المطلوب"
 msgid "The selected location cannot have volumes attached"
 msgstr "الموقع المُحدد ليس لديه مجلدات مُرفقة"
 
-#: 8002.OFFLINE_FILE_ERROR:945
-msgid "An offline file or directory could not be created or accessed"
-msgstr "ملف ـ دون اتصال ـ أو المسار لا يمكن إنشاؤه أو الوصول إليه"
-
 #: 1704.TCN_EXISTS:728
 msgid "A record already exists with the requested TCN value"
 msgstr "التسجيلة موجودة مُسبقاً مع قيمة رقم التحكم بالنقل المطلوبة"
+
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr "النقل لهذا البند ربما لم يتم إلغاؤه بسبب حالة البند في"
 
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
@@ -586,7 +603,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "لم يتم العثور على acq.fund_spent_balance المطلوب"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1012
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
 msgid "The subscription still has dependent objects"
 msgstr "الاشتراك لا يزال لديه كائنات تابعة"
 
@@ -602,7 +619,7 @@ msgstr "لم يتم العثور على config_lit_form_map المطلوب"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "لم يتم العثور على metabib_record_descriptor المطلوب"
 
-#: 10102.ACQ_NOT_CANCELABLE:1006
+#: 10102.ACQ_NOT_CANCELABLE:1009
 msgid "The object is not in a cancelable state."
 msgstr "الكائن ليس في حالة قابلية الإلغاء."
 
@@ -649,7 +666,7 @@ msgstr "البارمترات المُقدمة تصف حجز غير مقبول/م
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "لم يتم العثور على acq.funding_source_balance المطلوب"
 
-#: 10000.ACQ_LINEITEM_APPROVED:984
+#: 10000.ACQ_LINEITEM_APPROVED:987
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "لا يمكن تعديل القيد لأنه تمّ الموافقة عليه مُسبقاً"
 
@@ -677,11 +694,9 @@ msgstr "لم يتم العثور على asset_stat_cat_entry المطلوب"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "لم يتم العثور على config_non_cataloged_type المطلوب"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr ""
-"مِن المحتمل أنه لم يتم إجهاض/إلغاء النقل في هذه النُسخة بسبب حالة النُسخة في"
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr "موقع النُسخة ليس فارغاً"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -763,10 +778,6 @@ msgstr "كائن محطة العمل المطلوبة غير موجودة"
 msgid "The requested money_billing was not found"
 msgstr "لم يتم العثور على money_billing المطلوب"
 
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr "موقع النُسخة ليس فارغاً"
-
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
 "Someone attempted to retrieve a container item object from the system and "
@@ -798,7 +809,7 @@ msgstr "كلمة المرور المُقدمة غير صحيحة"
 msgid "The requested config_item_type_map was not found"
 msgstr "لم يتم العثور على config_item_type_map المطلوب"
 
-#: 8007.OFFLINE_SESSION_EXISTS:960
+#: 8007.OFFLINE_SESSION_EXISTS:963
 msgid "A session with the given name already exists"
 msgstr "الجلسة بالاسم المعطى موجودة مُسبقاً"
 
@@ -806,7 +817,7 @@ msgstr "الجلسة بالاسم المعطى موجودة مُسبقاً"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "لم يتم العثور على config_circ_matrix_ruleset_not_found المطلوب"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:990
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
 msgid "The lineitem detail has no associated fund"
 msgstr "تفاصيل القيد ليس لديه اعتماد مالي/تمويل مُرتبط"
 
@@ -908,9 +919,13 @@ msgstr "تسجيلة المكتبة المحددة لديها مجلدات مُ�
 msgid "The requested action_hold_request was not found"
 msgstr "لم يتم العثور على action_hold_request المطلوب"
 
-#: 8011.SKIP_ASSET_CHANGED:972
+#: 8011.SKIP_ASSET_CHANGED:975
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr "تم تغيير وضع الأصول منذ أن تم تسجيلها في عملية ــ دون اتصال ــ"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+msgid "Circulation has no more auto-renewals remaining"
+msgstr ""
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -976,7 +991,7 @@ msgstr "لم يتم العثور على ex المطلوب"
 msgid "Hold capture was delayed for this item"
 msgstr "الحجز المُستلم متأخر لهذه النُسخة"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:976
+#: 9000.REPORT_TEMPLATE_EXISTS:979
 msgid "A report template with the given name and folder already exists"
 msgstr "تركيبة التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
 
@@ -1014,15 +1029,23 @@ msgstr "لم يتم العثور على actor_stat_cat المطلوب"
 msgid "The user attempted to set their password to a weak value."
 msgstr "محاولة ضبط المستخدم كلمة المرور الخاصة به قيمة ضعيفة."
 
-#: 9001.REPORT_REPORT_EXISTS:980
+#: 9001.REPORT_REPORT_EXISTS:983
 msgid "A report with the given name and folder already exists"
 msgstr "التقرير مع الاسم المُعطى والمجلد موجودة مُسبقاً"
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"تم تكوين/تهيئة كود نمط السلسلة الذي فشل في التوافق مع معايير ـ إم إف أتش دي "
+"ـ لـِ الحقول 853-855."
 
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr "المجلد مع نفس التسمية، العنوان والمكتبة المالكة موجود"
 
-#: 8008.OFFLINE_INVALID_SESSION:963
+#: 8008.OFFLINE_INVALID_SESSION:966
 msgid "The session name is invalid"
 msgstr "اسم الجلسة غير صحيح"
 
@@ -1091,6 +1114,10 @@ msgstr "لم يتم العثور على container_biblio_record_entry_bucket_ite
 msgid "User login failed"
 msgstr "فشل تسجيل دخول المستخدم"
 
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+msgid "The caption/pattern still has dependent issuances"
+msgstr "التسمية التوضيحية/النمط لا يزال لديها إصدارات تابعة"
+
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
 msgstr "لم يتم العثور على acq.currency_type المطلوب"
@@ -1099,7 +1126,7 @@ msgstr "لم يتم العثور على acq.currency_type المطلوب"
 msgid "The requested money_grocery was not found"
 msgstr "لم يتم العثور على money_grocery المطلوب"
 
-#: 8009.OFFLINE_NO_ORG:966 8010.OFFLINE_SESSION_COMPLETE:969
+#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
 msgid "No org id was provided"
 msgstr "لم يتم تقديم/تزويد أي معرف للمنطمة"
 
@@ -1107,7 +1134,7 @@ msgstr "لم يتم تقديم/تزويد أي معرف للمنطمة"
 msgid "The patron has too many lost items."
 msgstr "المستفيد لديه الكثير مِن النسخ المفقودة."
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:942
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
 msgid "An offline file for this workstation exists within this session"
 msgstr "ملف ـ بدون اتصال ـ لـِ محطة العمل موجود داخل هذه الجلسة."
 
@@ -1151,7 +1178,7 @@ msgstr "لم يتم العثور على metabib_metarecord المطلوب"
 msgid "User already has an open hold on the selected item"
 msgstr "المستخدم لديه مُسبقاُ حجز مفتوح على لـِ النسخة المحددة"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1048
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
@@ -1233,6 +1260,10 @@ msgstr "لم يتم العثور على acq.picklist المطلوب"
 msgid "The requested item is already marked as lost"
 msgstr "تمّ مُسبقاً تمييز النُسخة المطلوبة كـَ مفقودة"
 
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron:"
+msgstr ""
+
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
 msgstr "لم يتم العثور على config_circ_modifier المطلوب"
@@ -1269,11 +1300,7 @@ msgstr "رسوم الدفع لـِ تأجير/استعارة النسخة مطل
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "لم يتم العثور على container_call_number_bucket_item المطلوب"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
-msgid "The lineitem detail has no owning_lib"
-msgstr "تفاصيل القيد ليس لديه owning_lib"
-
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1309,11 +1336,7 @@ msgstr "لم يتم العثور على authority_record_note المطلوب"
 msgid "The requested acq.fund was not found"
 msgstr "لم يتم العثور على acq.fund المطلوب"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
-msgstr "لايتضمن القيد سعراً"
-
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1325,17 +1348,17 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "لم يتم العثور على action_non_cataloged_circulation المطلوب"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"تم تكوين/تهيئة كود نمط السلسلة الذي فشل في التوافق مع معايير ـ إم إف أتش دي "
-"ـ لـِ الحقول 853-855."
-
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "لم يتم العثور على money_user_summary المطلوب"
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "هذه النسخة المطلوبة حالياً في رف الحجوزات"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr ""
+#~ "مِن المحتمل أنه لم يتم إجهاض/إلغاء النقل في هذه النُسخة بسبب حالة النُسخة في"
+
+#~ msgid "This item is currently on the holds shelf for another patron"
+#~ msgstr "هذه النسخة حالياً موجودة في رف الحجز من أجل مستفيد آخر"

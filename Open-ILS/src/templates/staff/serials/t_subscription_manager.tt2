@@ -1,0 +1,157 @@
+<div>
+  <label>[% l('Subscriptions owned by or below') %]</label>
+  <eg-org-selector selected="owning_ou" onchange="owning_ou_changed"
+                   sticky-setting="serials.ssub_owning_lib_filter">
+  </eg-org-selector>
+  <span class="alert alert-warning" ng-show="subscriptions.length == 0">
+    [% l('No subscriptions are owned by this library') %]
+  </span>
+</div>
+<form name="ssubform" class="pad-vert">
+  <div class="form-inline" ng-repeat="ssub in subscriptions">
+    <div class="row form-inline">
+      <div class="form-group col-sm-2">
+        [% l('#[_1]', '{{ssub.id}}') %]
+        <label>[% l('Owned By') %]</label>
+        <eg-org-selector selected="ssub.owning_lib"></eg-org-selector>
+      </div>
+      <div class="form-group col-sm-3">
+        <div class="row">
+          <div class="form-group col-lg-6">
+            <label class="pull-right">[% l('Start Date') %]</label>
+          </div>
+          <div class="form-group col-lg-6">
+            <div class="pull-left"><eg-date-input ng-model="ssub.start_date" focus-me="ssub._focus_me"></eg-date-input></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <div class="row">
+          <div class="form-group col-lg-6">
+            <label class="pull-right">[% l('End Date') %]</label>
+          </div>
+          <div class="form-group col-lg-6">
+            <div class="pull-left"><eg-date-input ng-model="ssub.end_date"></eg-date-input></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-sm-3">
+        <label>[% l('Expected Offset') %]
+          <eg-help-popover help-text="[% l('The difference between the nominal publishing date of an issue and the date that you expect to receive your item.') %]">
+        </label>
+        <input class="form-control" type="text" ng-model="ssub.expected_date_offset"></input>
+      </div>
+      <div class="form-group col-sm-1">
+        <button class="btn btn-sm btn-warning" ng-click="add_distribution(ssub, true)">[% l('Add distribution') %]</button>
+      </div>
+    </div>
+    <div class="row form-inline pad-vert" ng-repeat="sdist in ssub.distributions">
+      <div class="row">
+        <div class="col-sm-1">
+            <button class="btn btn-xs btn-danger" ng-if="sdist._isnew && ssub.distributions.length > 1"
+                    ng-click="remove_pending_distribution(ssub, sdist)"
+            >[% l('Remove') %]</button>
+        </div>
+        <div class="col-sm-2">
+          <label>[% l('Distributed At') %]</label>
+          <eg-org-selector selected="sdist.holding_lib"></eg-org-selector>
+        </div>
+        <div class="col-sm-3">
+          <label>[% l('Label') %]</label>
+          <input class="form-control" type="text" required ng-model="sdist.label" focus-me="sdist._focus_me"></input>
+        </div>
+        <div class="col-sm-2">
+          <label>[% l('OPAC Display') %]
+            <eg-help-popover help-text="[% l('Whether the public catalog display of issues should be grouped by chronology (e.g., years) or enumeration (e.g., volume and number).') %]">
+          </label>
+          <select class="form-control" required ng-model="sdist.display_grouping">
+            <option value="chron">[% l('Chronological') %]</option>
+            <option value="enum" >[% l('Enumeration') %]</option>
+          </select>
+        </div>
+        <div class="col-sm-3">
+          <label>[% l('Receiving Template') %]</label>
+          <select class="form-control" ng-model="sdist.receive_unit_template"
+              ng-options="t.id as t.name for t in receiving_templates[sdist.holding_lib.id()]">
+              <option value=""></option>
+          </select>
+        </div>
+        <div class="col-sm-1" style="padding-left:0"><!-- Yes, it's terrible. But, nested grid alignment... -->
+          <button class="btn btn-sm btn-info" ng-click="add_stream(sdist, true)">[% l('Add item stream') %]</button>
+        </div>
+      </div>
+      <div class="row form-inline pad-vert">
+        <div class="row form-inline" ng-repeat="sstr in sdist.streams">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-1">
+            <button class="btn btn-xs btn-danger" ng-if="sstr._isnew && sdist.streams.length > 1"
+                    ng-click="remove_pending_stream(sdist, sstr)"
+            >[% l('Remove') %]</button>
+          </div>
+          <div class="col-sm-8">
+            <label>[% l('Send to') %]</label>
+            <eg-basic-combo-box list="localStreamNames" on-select="dirtyForm" selected="sstr.routing_label" focus-me="sstr._focus_me"></eg-basic-combo-box>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row form-inline pad-vert"></div>
+  </div>
+  <div class="row form-inline">
+    <button class="btn btn-warning pull-left" ng-click="add_subscription()">[% l('New Subscription') %]</button>
+    <div class="btn-group pull-right">
+      <button class="btn btn-default" ng-disabled="!ssubform.$dirty" ng-click="abort_changes(ssubform)">[% l('Cancel') %]</button>
+      <button class="btn btn-primary" ng-disabled="!ssubform.$dirty" ng-click="save_subscriptions(ssubform)">[% l('Save') %]</button>
+    </div>
+  </div>
+  <div class="row pad-vert"></div>
+</form>
+<div>
+  <eg-grid
+    id-field="index"
+    features="-display,-sort,-multisort"
+    items-provider="distStreamGridDataProvider"
+    grid-controls="distStreamGridControls"
+    persist-key="serials.dist_stream_grid">
+
+    <eg-grid-action handler="apply_binding_template"
+      label="[% l('Apply Binding Template') %]"></eg-grid-action>
+    <eg-grid-action handler="additional_routing" disabled="need_one_selected"
+      label="[% l('Additional Routing') %]"></eg-grid-action>
+    <eg-grid-action handler="subscription_notes" disabled="need_one_selected"
+      label="[% l('Subscription Notes') %]"></eg-grid-action>
+    <eg-grid-action handler="distribution_notes" disabled="need_one_selected"
+      label="[% l('Distribution Notes') %]"></eg-grid-action>
+    <eg-grid-action handler="link_mfhd" disabled="need_one_selected"
+      label="[% l('Link MFHD') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_subscription"
+      label="[% l('Delete Subscription') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_distribution"
+      label="[% l('Delete Distribution') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_stream"
+      label="[% l('Delete Stream') %]"></eg-grid-action>
+    <eg-grid-action handler="clone_subscription"
+      label="[% l('Clone Subscription') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('Owning Library') %]" path="owning_lib.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Distribution Library') %]" path="sdist.holding_lib.name" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Distribution Label') %]" path="sdist.label" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Item Stream') %]" path="sstr.id" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Offset') %]" path="expected_date_offset" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Start Date') %]" path="start_date" datatype="timestamp" visible></eg-grid-field>
+    <eg-grid-field label="[% l('End Date') %]" path="end_date" datatype="timestamp" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Route To') %]" path="sstr.routing_label" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Additional Routing') %]" path="sstr.additional_routing" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Receiving Template') %]" path="sdist.receive_unit_template.name"></eg-grid-field>
+    <eg-grid-field label="[% l('MFHD ID') %]" path="sdist.record_entry" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Summary Display') %]" path="sdist.summary_method" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Receiving Call Number') %]" path="sdist.receive_call_number.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Binding Call Number') %]" path="sdist.bind_call_number.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Binding Template') %]" path="sdist.bind_unit_template.name"></eg-grid-field>
+    <eg-grid-field label="[% l('Unit Label Prefix') %]" path="sdist.unit_label_prefix"></eg-grid-field>
+    <eg-grid-field label="[% l('Unit Label Suffix') %]" path="sdist.unit_label_suffix"></eg-grid-field>
+    <eg-grid-field label="[% l('Display Grouping') %]" path="sdist.display_grouping"></eg-grid-field>
+    <eg-grid-field label="[% l('Subscription ID') %]" path="id"></eg-grid-field>
+    <eg-grid-field label="[% l('Distribution ID') %]" path="sdist.id"></eg-grid-field>
+  </eg-grid>
+</div>

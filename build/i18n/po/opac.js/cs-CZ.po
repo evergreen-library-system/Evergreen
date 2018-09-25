@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2012-04-30 12:59+0000\n"
+"PO-Revision-Date: 2018-02-18 14:31+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2018-02-19 05:17+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 
 #: opac.js:PWD_RESET_SUBMIT_PROMPT
 msgid ""
@@ -46,7 +46,7 @@ msgstr "Zapomněli jste heslo?"
 
 #: opac.js:SUPPLEMENT_HOLDINGS_ADD
 msgid "Additional Supplement Information"
-msgstr "Další informace o přílohách"
+msgstr "Další informace o doplňcích"
 
 #: opac.js:DELETED_MFHD_RECORD
 msgid "Deleted MFHD record ${0}"
@@ -115,11 +115,11 @@ msgstr "Editovat fond"
 
 #: opac.js:SUPPLEMENT_HOLDINGS
 msgid "Supplements"
-msgstr "Přílohy"
+msgstr "Doplňky"
 
 #: opac.js:BASIC_HOLDINGS
 msgid "Volumes"
-msgstr "Svazky"
+msgstr "Signatury"
 
 #: opac.js:HOLDINGS_TABLE_CAPTION
 msgid "Holdings summary (${0})"
@@ -135,7 +135,7 @@ msgstr "Rejstříky"
 
 #: opac.js:CURRENT_SUPPLEMENTS
 msgid "Current supplements"
-msgstr "Aktuální dodatky"
+msgstr "Aktuální doplňky"
 
 #: opac.js:SOURCE_CANNOT_HAVE_COPIES
 msgid "Records from ${0} cannot have copies."
@@ -177,7 +177,7 @@ msgstr ""
 
 #: opac.js:CANCEL_BUTTON_LABEL
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: opac.js:PWD_RESET_SUBMIT_STATUS
 msgid "Sending request..."

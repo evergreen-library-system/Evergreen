@@ -24,7 +24,7 @@ circulation of an item.
 * *Circulation modifier* - Circulation modifiers are fields used to control
 circulation policies on specific groups of items. They can be added to copies
 during the cataloging process. New circulation modifiers can be created in the
-staff client by navigating to *Admin > Server Administration > Circulation
+staff client by navigating to *Administration -> Server Administration ->  Circulation
 Modifiers*.
 * *Circulate?* flag - The circulate? flag in the copy editor can be set to False
 to disallow an item from circulating.
@@ -34,8 +34,8 @@ a data element in circulation policies.
 Copy location data
 ~~~~~~~~~~~~~~~~~~
 
-* To get to the Copy Locations Editor, navigate to *Admin > Local Administration
-  > Copy Locations Editor*. 
+* To get to the Copy Locations Editor, navigate to *Administration ->
+Local Administration -> Copy Locations Editor*. 
 * Set _OPAC Visible_ to "No" to hide all copies in a copy location from the
 public catalog. (You can also hide individual copies using the Copy Editor.)
 * Set _Hold Verify_ to "Yes" if when a copy checks in you want to always ask for
@@ -56,11 +56,12 @@ image::media/copy_locations_editor.png[screenshot of Copy Location Editor]
 * Copy locations can also be used as a data element in circulation policies. 
 
 User data
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~
 
 Finally, several characteristics of specific patrons can affect circulation
-policies.  You may modify these characteristics in Search -> Search for Patrons
-or Circulation -> Register Patron.
+policies.  You can modify these characteristics in a patron's record (*Search ->
+Search for Patrons*, select a patron, choose *Edit* tab) or when registering a
+new patron (*Circulation -> Register Patron*).
 
 * The user permission group is also commonly used as a data element in
 circulation policies. 
@@ -73,8 +74,8 @@ Circulation Rules
 *Loan duration* describes the length of time for a checkout. You can also
 identify the maximum renewals that can be placed on an item.
 
-You can find Circulation Duration Rules by navigating to *Admin > Server
-Administration > Circulation Duration Rules*. 
+You can find Circulation Duration Rules by navigating to *Administration
+-> Server Administration -> Circulation Duration Rules*. 
 
 image::media/circ_duration_rules.jpg[]
 
@@ -82,17 +83,17 @@ image::media/circ_duration_rules.jpg[]
 well as fines set for other regular intervals. You can also identify any grace
 periods that should be applied before the fine starts accruing.
 
-You can find Recurring Fine Rules by navigating to *Admin > Server
-Administration > Circulation Recurring Fine Rules*.
+You can find Recurring Fine Rules by navigating to *Administration -> Server
+Administration -> Circulation Recurring Fine Rules*.
 
 image::media/circ_recurring_fine_rules.jpg[]
 
 *Max fine* describes the maximum amount of fines that will be assessed for a
-specific circulation. Set the *Use Percent* field to True if the maximum fine
+specific circulation. Set the *Is Percent* field to True if the maximum fine
 should be a percentage of the item's price.
 
-You can find Circ Max Fine Rules by navigating to *Admin > Server
-Administration > Circulation Max Fine Rules*.
+You can find Circ Max Fine Rules by navigating to *Administration -> Server
+Administration -> Circulation Max Fine Rules*.
 
 image::media/circ_max_fine_rules.jpg[]
 
@@ -116,21 +117,21 @@ or circ limit groups, which allow you to create limits based on MARC data.
 The below instructions will allow you to create limits based on circulation
 modifiers.
 
-* Configure the circulation limit sets by selecting *Admin > Local
-Administration > Circulation Limit Sets*.
-* *Items Out* -  the maximum number of items circulated to a patron at the same
+* Configure the circulation limit sets by selecting *Administration -> Local
+Administration -> Circ Limit Sets*.
+* *Items Out* -  The maximum number of items circulated to a patron at the same
 time.
-* *Depth* - Enter the Min Depth, or the minimum depth, in the org tree that
+* *Min Depth* - Enter the minimum depth in the org tree that
 Evergreen will consider as valid circulation libraries for counting items out.
 The min depth is based on org unit type depths. For example, if you want the
 items in all of the circulating libraries in your consortium to be eligible for
 restriction by this limit set when it is applied to a circulation policy, then
 enter a zero (0) in this field. 
-* *Global* - Check the box adjacent to Global Flag if you want all of the org
+* *Global* - Check the box adjacent to Global if you want all of the org
 units in your consortium to be restricted by this limit set when it is applied
 to a circulation policy. Otherwise, Evergreen will only apply the limit to the
 direct ancestors and descendants of the owning library.
-* *Linked Limit Groups* - add any circulation modifiers, copy locations, or circ
+* *Linked Limit Groups* - Add any circulation modifiers, copy locations, or circ
 limit groups that should be part of this limit set.
 
 *Example*
@@ -140,7 +141,7 @@ library in the consortium. Items with DVD, BLURAY, and VHS circ modifiers should
 be included in this maximum checkout count. 
 
 To create this limit set, you would add 5 to the *Items Out* field, 0 to the
-*Depth* field and select the *Global Flag*. Add the DVD, BLURAY and VHS circ
+*Min Depth* field and select the *Global* flag. Add the DVD, BLURAY and VHS circ
 modifiers to the limit set.
 
 Creating Circulation Policies
@@ -151,7 +152,7 @@ and have created your circulation rules, you are ready to begin creating your
 circulation policies. 
 
 If you are managing a small number of rules, you can create and manage
-circulation policies in the staff client via *Admin > Local Administration >
+circulation policies in the staff client via *Administration -> Local Administration -> 
 Circulation Policies*. However, if you are managing a large number of policies,
 it is easier to create and locate rules directly in the database by updating
 *config.circ_matrix_matchpoint*.
@@ -165,7 +166,7 @@ return the various parameters that are applied to the matching transaction.
 
 * Circulation policies by checkout library or owning library?
    - If your policies should follow the rules of the library that checks out the
-item, select the checkout library as the *Org Unit(org_unit)*.
+item, select the checkout library as the *Org Unit (org_unit)*.
    - If your policies should follow the rules of the library that owns the item,
 select the consortium as the *Org Unit (org_unit)* and select the owning library
 as the *Copy Circ Lib (copy_circ_lib)*.
@@ -224,9 +225,9 @@ patrons of "SYS1" can circulate "dvd" items.
 Settings Relevant to Circulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following circulation settings, available via *Admin > Local Administration
-> Library Settings Editor*, can also affect your circulation duration, renewals
-and fine policy.
+The following circulation settings, available via *Administration
+-> Local Administration -> Library Settings Editor*, can
+also affect your circulation duration, renewals and fine policy.
 
 * *Auto-Extend Grace Periods* - When enabled, grace periods will auto-extend.
 By default this will be only when they are a full day or more and end on a

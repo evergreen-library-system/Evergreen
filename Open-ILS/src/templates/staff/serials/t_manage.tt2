@@ -1,0 +1,32 @@
+<div ng-show="bib_id" class="row col-md-12">
+  <eg-record-summary record-id="bib_id" no-marc-link="true" record="summary_record"></eg-record-summary>
+</div>
+
+<div class="row col-md-12 pad-vert">
+  <div class="col-md-12">
+    <uib-tabset active="active_tab"> 
+      <!-- note that non-numeric index values must be enclosed in single-quotes,
+           otherwise selecting the active table won't work cleanly -->
+      <uib-tab index="'manage-subscriptions'" heading="[% l('Manage Subscriptions') %]">
+        <div class="container-fluid">
+        <eg-subscription-manager ng-if="active_tab == 'manage-subscriptions'" bib-id="bib_id"></eg-subscription-manager>
+        </div>
+      </uib-tab>
+      <uib-tab index="'prediction'" heading="[% l('Manage Predictions') %]">
+        <eg-prediction-manager ng-if="active_tab == 'prediction'"
+            bib-id="bib_id" ssub-id="ssub.id">
+        </eg-prediction-manager>
+      </uib-tab>
+      <uib-tab index="'issues'" heading="[% l('Manage Issues') %]">
+        <eg-item-manager ng-if="active_tab == 'issues'"
+            bib-id="bib_id" ssub-id="ssub.id">
+        </eg-item-manager>
+      </uib-tab>
+      <uib-tab index="'manage-mfhds'" heading="[% l('Manage MFHDs') %]">
+        <eg-mfhd-manager ng-if="active_tab == 'manage-mfhds'"
+            bib-id="bib_id">
+        </eg-mfhd-manager>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+</div>

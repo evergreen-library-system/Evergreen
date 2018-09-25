@@ -50,34 +50,54 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         // For ws_ou or wsid(), see egAuth.user().ws_ou(), etc.
         workstation : function() {
             return this.ws;
-        }
+        },
+
+        // Listen for logout events in other tabs
+        // Current version of phantomjs (unit tests, etc.) does not 
+        // support BroadcastChannel, so just dummy it up.
+        authChannel : (typeof BroadcastChannel == 'undefined') ? 
+            {} : new BroadcastChannel('eg.auth')
     };
 
     /* Returns a promise, which is resolved if valid
      * authtoken is found, otherwise rejected */
     service.testAuthToken = function() {
         var deferred = $q.defer();
+
+        // Move legacy cookies from /eg/staff to / before fetching the token.
+        egHatch.migrateAuthCookies();
+
         var token = service.token();
 
         if (token) {
 
-            egNet.request(
-                'open-ils.auth',
-                'open-ils.auth.session.retrieve', token)
-
-            .then(function(user) {
-                if (user && user.classname) {
-                    // authtoken test succeeded
-                    service.user(user);
-                    service.poll();
-                    service.check_workstation(deferred);
-
-                } else {
-                    // authtoken test failed
-                    egHatch.clearLoginSessionItems();
-                    deferred.reject(); 
-                }
-            });
+            if (lf.isOffline && !$location.path().match(/\/session/) ) {
+                // Just stop here if we're in the offline interface but not on the session tab
+                $timeout(function(){deferred.resolve()});
+            } else if (lf.isOffline && $location.path().match(/\/session/) && !$window.navigator.onLine) {
+                // Likewise, if we're in the offline interface on the session tab and the network is down.
+                // The session tab itself will redirect appropriately due to no network.
+                $timeout(function(){deferred.resolve()});
+            } else {
+                // Otherwise, check the token.  This will freeze all other interfaces, which is what we want.
+                egNet.request(
+                    'open-ils.auth',
+                    'open-ils.auth.session.retrieve', token)
+    
+                .then(function(user) {
+                    if (user && user.classname) {
+                        // authtoken test succeeded
+                        service.user(user);
+                        service.poll();
+                        service.check_workstation(deferred);
+    
+                    } else {
+                        // authtoken test failed
+                        egHatch.clearLoginSessionItems();
+                        deferred.reject(); 
+                    }
+                });
+            }
 
         } else {
             // no authtoken to test
@@ -153,7 +173,6 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         }
 
         service.login_api(args).then(function(evt) {
-
             if (evt.textcode == 'SUCCESS') {
                 service.handle_login_ok(args, evt);
                 ops.deferred.resolve({
@@ -224,7 +243,13 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         return service.testAuthToken();
     }
 
-    service.login_api = function(args) {
+    service.login_via_auth_proxy = function(args) {
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.login', args);
+    }
+
+    service.login_via_auth = function(args) {
         return egNet.request(
             'open-ils.auth',
             'open-ils.auth.authenticate.init', args.username)
@@ -237,6 +262,27 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
                 return egNet.request(
                     'open-ils.auth',
                     'open-ils.auth.authenticate.complete', login_args)
+            }
+        );
+    }
+
+    service.login_api = function(args) {
+
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.enabled')
+        .then(
+            function(enabled) {
+                console.log('proxy check returned ' + enabled);
+                if (Number(enabled) === 1) {
+                    return service.login_via_auth_proxy(args);
+                } else {
+                    return service.login_via_auth(args);
+                }
+            },
+            function() {
+                // request failed, likely a result of auth_proxy not running.
+               return service.login_via_auth(args);
             }
         );
     }
@@ -258,29 +304,60 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
      * Does that setting serve a purpose in a browser environment?
      */
     service.poll = function() {
-        if (!service.authtime()) return;
+
+        if (!service.authChannel.onmessage) {
+            // Now that we have an authtoken, listen for logout events 
+            // initiated by other tabs.
+            service.authChannel.onmessage = function(e) {
+                if (e.data.action == 'logout') {
+                    $rootScope.$broadcast(
+                        'egAuthExpired', {startedElsewhere : true});
+                }
+            }
+        }
+
+        // add a 5 second delay to give the token plenty of time
+        // to expire on the server.
+        var pollTime = service.authtime() * 1000 + 5000;
+
+        if (pollTime < 60000) {
+            // Never poll more often than once per minute.
+            pollTime = 60000;
+        } else if (pollTime > 2147483647) {
+            // Avoid integer overflow resulting in $timeout() effectively
+            // running with timeout=0 in a loop.
+            pollTime = 2147483647;
+        }
 
         $timeout(
             function() {
-                if (!service.authtime()) return;
                 egNet.request(                                                     
                     'open-ils.auth',                                               
-                    'open-ils.auth.session.retrieve', service.token())   
-                .then(function(user) {
+                    'open-ils.auth.session.retrieve', 
+                    service.token(),
+                    0, // return extra auth details, unneeded here.
+                    1  // avoid extending the auth timeout
+                ).then(function(user) {
                     if (user && user.classname) { // all good
                         service.poll();
                     } else {
-                        $rootScope.$broadcast('egAuthExpired') 
+                        // NOTE: we should never get here, since egNet
+                        // filters responses for NO_SESSION events.
+                        $rootScope.$broadcast('egAuthExpired');
                     }
                 })
             },
-            // add a 5 second delay to give the token plenty of time
-            // to expire on the server.
-            service.authtime() * 1000 + 5000
+            pollTime
         );
     }
 
-    service.logout = function() {
+    service.logout = function(broadcast) {
+
+        if (broadcast && service.authChannel.postMessage) {
+            // Tell the other tabs to shut it all down.
+            service.authChannel.postMessage({action : 'logout'});
+        }
+
         if (service.token()) {
             egNet.request(
                 'open-ils.auth', 

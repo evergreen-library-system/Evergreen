@@ -6,7 +6,7 @@ use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
@@ -36,7 +36,8 @@ use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
 use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
 use constant COOKIE_ANON_CACHE => 'anoncache';
-use constant ANON_CACHE_MYLIST => 'mylist';
+use constant COOKIE_CART_CACHE => 'cartcache';
+use constant CART_CACHE_MYLIST => 'mylist';
 use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
 
 use constant DEBUG_TIMING => 0;
@@ -50,6 +51,9 @@ sub new {
     $self->ctx($ctx);
     $self->cgi(new CGI);
     $self->timelog("New page");
+
+    # Add a timelog helper to the context
+    $self->ctx->{timelog} = sub { return $self->timelog(@_) };
 
     OpenILS::Utils::CStoreEditor->init; # just in case
     $self->editor(new_editor());
@@ -126,7 +130,13 @@ sub load {
     }
 
     (undef, $self->ctx->{mylist}) = $self->fetch_mylist unless
-        $path =~ /opac\/my(opac\/lists|list)/;
+        $path =~ /opac\/my(opac\/lists|list)/ ||
+        $path =~ m!opac/api/mylist!;
+
+    return $self->load_api_mylist_retrieve if $path =~ m|opac/api/mylist/retrieve|;
+    return $self->load_api_mylist_add if $path =~ m|opac/api/mylist/add|;
+    return $self->load_api_mylist_delete if $path =~ m|opac/api/mylist/delete|;
+    return $self->load_api_mylist_clear if $path =~ m|opac/api/mylist/clear|;
 
     return $self->load_simple("home") if $path =~ m|opac/home|;
     return $self->load_simple("css") if $path =~ m|opac/css|;
@@ -143,7 +153,8 @@ sub load {
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
     return $self->load_mylist_delete if $path =~ m|opac/mylist/delete|;
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
-    return $self->load_mylist if $path =~ m|opac/mylist|;
+    return $self->load_mylist_print if $path =~ m|opac/mylist/doprint|;
+    return $self->load_mylist if $path =~ m|opac/mylist| && $path !~ m|opac/mylist/email| && $path !~ m|opac/mylist/doemail|;
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
     return $self->load_temp_warn_post if $path =~ m|opac/temp_warn/post|;
     return $self->load_temp_warn if $path =~ m|opac/temp_warn|;
@@ -187,6 +198,11 @@ sub load {
     $self->apache->headers_out->add("cache-control" => "no-store, no-cache, must-revalidate");
     $self->apache->headers_out->add("expires" => "-1");
 
+    if ($path =~ m|opac/mylist/email|) {
+        (undef, $self->ctx->{mylist}) = $self->fetch_mylist;
+    }
+    $self->load_simple("mylist/email") if $path =~ m|opac/mylist/email|;
+    return $self->load_mylist_email if $path =~ m|opac/mylist/doemail|;
     return $self->load_email_record if $path =~ m|opac/record/email|;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
@@ -340,6 +356,28 @@ sub load_common {
     $self->load_search_filter_groups($ctx->{search_ou});
     $self->load_org_util_funcs;
     $self->load_perm_funcs;
+
+    $ctx->{fetch_display_fields} = sub {
+        my $id = shift;
+
+        if (@$id == 1) {
+            return $ctx->{_hl_data}{''.$$id[0]}
+                if ($ctx->{_hl_data}{''.$$id[0]});
+        }
+
+        $self->timelog("HL data not cached, fetching from server.");
+
+        my $rows = $U->simplereq(
+            'open-ils.search', 
+            'open-ils.search.fetch.metabib.display_field.highlight',
+            $ctx->{query_struct}{additional_data}{highlight_map},
+            map {int($_)} @$id
+        );
+
+        $ctx->{_hl_data}{''.$$id[0]} = $rows if (@$id == 1);
+
+        return $rows;
+    };
 
     return Apache2::Const::OK;
 }

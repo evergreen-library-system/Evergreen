@@ -10,10 +10,10 @@ angular.module('egCoreMod')
 .factory('egCore', 
        ['egIDL','egNet','egEnv','egOrg','egPCRUD','egEvent','egAuth',
         'egPerm','egHatch','egPrint','egStartup','egStrings','egAudio',
-        'egDate',
+        'egDate','egI18N',
 function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth ,
          egPerm , egHatch , egPrint , egStartup , egStrings , egAudio , 
-         egDate) {
+         egDate , egI18N) {
 
     return {
         idl     : egIDL,
@@ -29,7 +29,8 @@ function(egIDL , egNet , egEnv , egOrg , egPCRUD , egEvent , egAuth ,
         startup : egStartup,
         strings : egStrings,
         audio   : egAudio,
-        date    : egDate
+        date    : egDate,
+        i18n    : egI18N
     };
 
 }]);

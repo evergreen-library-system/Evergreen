@@ -1,0 +1,128 @@
+
+
+<style>
+    /* TODO change BS color scheme so this isn't necessary */
+    .bg-evergreen {
+      background: -webkit-linear-gradient(#00593d, #007a54);
+      background-color: #007a54;
+      color: #fff;
+    }
+
+    /* Match the ang1 splash page */
+    .card-header {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+</style>
+
+<div class="container">
+
+  <!-- header icon -->
+  <div class="row mb-3">
+    <div class="col-lg-12 text-center">
+      <img src="/images/portal/logo.png"/>
+    </div>
+  </div>
+
+  <div class="row" id="splash-nav">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Circulation and Patrons</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/forward.png"/>
+              <a href="/eg/staff/circ/patron/bcsearch" i18n>Check Out Items</a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/back.png"/>
+              <a href="/eg/staff/circ/checkin/index" i18n>Check In Items</a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/retreivepatron.png"/>
+              <a href="/eg/staff/circ/patron/search" i18n>Search For Patron By Name</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Item Search and Cataloging</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" 
+                  [(ngModel)]="catSearchQuery"
+                  id='catalog-search-input'
+                  (keyup.enter)="searchCatalog()"
+                  i18n-placeholder placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-outline-secondary" 
+                    (click)="searchCatalog()" type="button" i18n>
+                    Search
+                  </button>
+                </span>
+                  <!--
+                  <input focus-me="focus_search" 
+                      class="form-control" ng-model="cat_query" type="text" 
+                      ng-keypress="catalog_search($event)"
+                      placeholder="Search catalog for..."/>
+                  <button class='btn btn-light' ng-click="catalog_search()">
+                      Search
+                  </button>
+                  -->
+              </div>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/bucket.png"/>
+              <a href="/eg/staff/cat/bucket/record/" i18n>Record Buckets</a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/bucket.png"/>
+              <a href="/eg/staff/cat/bucket/copy/" i18n>Copy Buckets</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Administration</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/helpdesk.png"/>
+              <a target="_top" href="http://docs.evergreen-ils.org/" i18n>
+                Evergreen Documentation
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/helpdesk.png"/>
+              <a target="_top" href="/eg/staff/admin/workstation/index" i18n>
+                Workstation Administration
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <img src="/images/portal/reports.png"/>
+              <a target="_top" href="/eg/staff/reporter/legacy/main" i18n>
+                Reports
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

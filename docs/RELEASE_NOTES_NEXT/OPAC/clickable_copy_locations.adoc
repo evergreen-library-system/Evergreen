@@ -1,4 +1,0 @@
-Clickable Copy Locations
-^^^^^^^^^^^^^^^^^^^^^^^^
-Adds a url field to the copy locations editor. When a url is entered in this field, 
-the associated copy location will display as a link in the opac summary display.

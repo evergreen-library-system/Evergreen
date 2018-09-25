@@ -1,0 +1,338 @@
+<style>
+    .app-modal-window .modal-dialog {
+      width: 800px;
+    }
+    .vertical-align {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<form role="form">
+<div class="container-fluid">
+    <div class="row bg-info vertical-align">
+        <div class="col-md-3">
+            <h4>[% l('Template Name') %]</h4>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" ng-model="working.name"></input>
+        </div>
+<!-- FIXME: remove for now; may be nice to have later
+        <div class="col-md-2">
+            <div class="btn-group pull-right">
+                <span class="btn btn-default btn-file">
+                    [% l('Import') %]
+                    <input type="file" eg-file-reader container="imported_template.data">
+                </span>
+                <label class="btn btn-default"
+                    eg-json-exporter container="hashed_template"
+                    default-file-name="'[% l('exported_serials_template.json') %]'">
+                    [% l('Export') %]
+                </label>
+            </div>
+        </div>
+-->
+        <div class="col-md-4">
+            <div class="btn-group pull-right">
+                <button class="btn btn-default" ng-click="clearWorking()" type="button">[% l('Clear') %]</button>
+                <button class="btn btn-primary" ng-disabled="working.name=='' || working.loan_duration == null || working.fine_level == null" ng-click="saveTemplate()" type="button">[% l('Save') %]</label>
+                <button class="btn btn-warning" ng-click="close_modal()" type="button">[% l('Close') %]</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pad-vert"></div>
+
+    <div class="row bg-info">
+        <div class="col-md-4">
+            <b>[% l('Circulate?') %]</b>
+        </div>
+        <div class="col-md-4">
+            <b>[% l('Status') %]</b>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.circulate !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.circulate" ng-model="working.circulate" value="t"/>
+                                [% l('Yes') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.circulate" ng-model="working.circulate" value="f"/>
+                                [% l('No') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.status !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.status" ng-model="working.status"
+                        ng-options="s.id() as s.name() for s in status_list">
+                    </select>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Circulation Library') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('Reference?') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.circ_lib !== undefined}">
+                    <eg-org-selector
+                        alldisabled="{{!defaults.attributes.circ_lib}}"
+                        selected="working.circ_lib"
+                        noDefault
+                        label="[% l('(Unset)') %]"
+                        disable-test="cant_have_vols"
+                    ></eg-org-selector>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.ref !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.ref" ng-model="working.ref" value="t"/>
+                                [% l('Yes') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.ref" ng-model="working.ref" value="f"/>
+                                [% l('No') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Shelving Location') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('OPAC Visible?') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.location !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.location" ng-model="working.location"
+                        ng-options="l.id() as i18n.ou_qualified_location_name(l) for l in location_list"
+                    ></select>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.opac_visible !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.opac_visible" ng-model="working.opac_visible" value="t"/>
+                                [% l('Yes') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.opac_visible" ng-model="working.opac_visible" value="f"/>
+                                [% l('No') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Circulation Modifier') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('Price') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="nullable col-md-6" ng-class="{'bg-success': working.circ_modifier !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.circ_modifier" ng-model="working.circ_modifier"
+                        ng-options="m.code() as m.name() for m in circ_modifier_list"
+                    >
+                        <option value="">[% l('<NONE>') %]</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.price !== undefined}">
+                    <input class="form-control" ng-disabled="!defaults.attributes.price" ng-model="working.price" type="text"/>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Loan Duration') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.loan_duration !== undefined}">
+                    <select class="form-control" ng-disabled="!defaults.attributes.loan_duration" ng-model="working.loan_duration" ng-options="x.v() as x.l() for x in loan_duration_options">
+                    </select>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Circulate as Type') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('Deposit?') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="nullable col-md-6" ng-class="{'bg-success': working.circ_as_type !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.circ_as_type" ng-model="working.circ_as_type"
+                        ng-options="t.code() as t.value() for t in circ_type_list">
+                      <option value="">[% l('<NONE>') %]</option>
+                    </select>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.deposit !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.deposit" ng-model="working.deposit" value="t"/>
+                                [% l('Yes') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.deposit" ng-model="working.deposit" value="f"/>
+                                [% l('No') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Holdable?') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('Deposit Amount') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.holdable !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.holdable" ng-model="working.holdable" value="t"/>
+                                [% l('Yes') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.holdable" ng-model="working.holdable" value="f"/>
+                                [% l('No') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.deposit_amount !== undefined}">
+                    <input class="form-control" ng-disabled="!defaults.attributes.deposit_amount" ng-model="working.deposit_amount" type="text"/>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Age-based Hold Protection') %]</b>
+                </div>
+                <div class="col-md-6">
+                    <b>[% l('Quality') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.age_protect !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.age_protect" ng-model="working.age_protect"
+                        ng-options="a.id() as a.name() for a in age_protect_list"
+                    ></select>
+                </div>
+                <div class="col-md-6" ng-class="{'bg-success': working.mint_condition !== undefined}">
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.mint_condition" ng-model="working.mint_condition" value="t"/>
+                                [% l('Good') %]
+                            </label>
+                        </div>
+                        <div class="col-xs-3">
+                            <label>
+                                <input type="radio" ng-disabled="!defaults.attributes.mint_condition" ng-model="working.mint_condition" value="f"/>
+                                [% l('Damaged') %]
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Fine Level') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.fine_level !== undefined}">
+                    <select class="form-control" ng-disabled="!defaults.attributes.fine_level" ng-model="working.fine_level" ng-options="x.v() as x.l() for x in fine_level_options">
+                    </select>
+                </div>
+            </div>
+
+            <div class="row pad-vert"></div>
+
+            <div class="row bg-info">
+                <div class="col-md-6">
+                    <b>[% l('Floating') %]</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6" ng-class="{'bg-success': working.floating !== undefined}">
+                    <select class="form-control"
+                        ng-disabled="!defaults.attributes.floating" ng-model="working.floating"
+                        ng-options="a.id() as a.name() for a in floating_list"
+                    ></select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</form>

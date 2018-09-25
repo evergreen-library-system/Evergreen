@@ -1,0 +1,55 @@
+<form ng-submit="ok(copy_alert)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Manage Item Alerts') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row" ng-repeat="a in copy_alert_list | orderBy:'id()'" ng-init="temp = (a.temp() == 't'); note = a.note(); acked = (a.ack_time() !== null); alert_type = a.alert_type().id()">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6 form-inline">
+              <label for="copy-alert-type-select-{{a.id()}}">[% l('Type') %]</label>
+              <select id="copy-alert-type-select-{{a.id()}}" class="form-control"
+                      ng-model="alert_type"
+                      ng-change="a.alert_type(alert_type) && a.ischanged(1)"
+                      ng-options="at.id() as at.name() for at in alert_types | orderBy:'name()'">
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="temp" ng-change="a.temp(temp ? 't' : 'f') && a.ischanged(1)" ng-disabled="acked"/>
+                [% l('Temporary') %]
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="acked" ng-change="(acked ? a.ack_time('now') : a.ack_time(null)) && a.ischanged(1)"/>
+                [% l('Clear?') %]
+              </label>
+            </div>
+          </div>
+          <div class="row pad-vert">
+            <div class="col-md-12">
+              <textarea class="form-control" ng-change="a.note(note) && a.ischanged(1)"
+                ng-model="note" placeholder="[% l('Alert...') %]" ng-disabled="acked">
+              </textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <hr/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-10 pull-right">
+          <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+        </div>
+      </div>
+    </div>
+</form>

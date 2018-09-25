@@ -1,0 +1,20 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Serials Templates') %]</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-3">
+    <div class="input-group">
+      <span class="input-group-addon">[% l('Owning Library') %]</span>
+      <eg-org-selector selected="context_ou"></eg-org-selector>
+    </div>
+  </div>
+</div>
+
+<div class="pad-vert"></div>
+
+<div>
+[% INCLUDE 'staff/admin/serials/t_template_list.tt2' %]
+</div>

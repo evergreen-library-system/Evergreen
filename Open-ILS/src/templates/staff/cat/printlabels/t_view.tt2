@@ -10,40 +10,42 @@
   }
 </style>
 
-<h2>[% l('Print Item Labels') %]</h2>
+<div class="container-fluid" style="text-align:center">
+    <div class="alert alert-info alert-less-pad strong-text-2">
+        [% l('Print Item Labels') %]
+    </div>
+</div>
 
-<div class="row bg-info">
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-1">
-                <span class="h4">[% l('Template') %]</span>
-            </div>
-            <div class="col-md-5">
-                <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
-            </div>
-            <div class="col-md-1">
-                <button class="btn btn-default" ng-click="applyTemplate(template_name)">[% l('Apply') %]</button>
-            </div>
-            <div class="col-md-1">
-                <span class="h4">[% l('Printer') %]</span>
-            </div>
-            <div class="col-md-4">
-                <select class="form-control" ng-model="print.template_context">
-                  <option value="default">[% l('Default') %]</option>
-                  <option value="receipt">[% l('Receipt') %]</option>
-                  <option value="label">[% l('Label') %]</option>
-                  <option value="mail">[% l('Mail') %]</option>
-                  <option value="offline">[% l('Offline') %]</option>
-                </select>
-            </div>
+<div class="row">
+    <div class="col-md-3">
+       <div class="input-group">
+            <span class="input-group-addon">[% l('Template') %]</span>
+            <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
+       </div>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-default" ng-click="applyTemplate(template_name)">[% l('Apply') %]</button>
+    </div>
+    <div class="col-md-2">
+       <div class="input-group">
+            <span class="input-group-addon">[% l('Printer') %]</span>
+            <select class="form-control" ng-model="print.template_context">
+                <option value="default">[% l('Default') %]</option>
+                <option value="receipt">[% l('Receipt') %]</option>
+                <option value="label">[% l('Label') %]</option>
+                <option value="mail">[% l('Mail') %]</option>
+                <option value="offline">[% l('Offline') %]</option>
+            </select>
         </div>
     </div>
+
     <div class="col-md-2">
         <div class="btn-group">
             <button class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</button>
             <button class="btn btn-default" ng-click="deleteTemplate(template_name)">[% l('Delete') %]</button>
         </div>
     </div>
+
     <div class="col-md-3">
         <div class="btn-group">
             <span class="btn btn-default btn-file">
@@ -51,13 +53,14 @@
                 <input type="file" eg-file-reader container="imported_templates.data">
             </span>
             <label class="btn btn-default"
-                eg-json-exporter container="templates"
-                default-file-name="'[% l('exported_label_templates.json') %]'">
-                [% l('Export') %]
+               eg-json-exporter container="templates"
+               default-file-name="'[% l('exported_label_templates.json') %]'">
+               [% l('Export') %]
             </label>
-            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</button>
-        </div>
+            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</label>
+         </div>
     </div>
+
     <div class="col-md-1 pull-right">
         <button class="btn btn-default" ng-click="print_labels()">[% l('Print') %]</button>
     </div>

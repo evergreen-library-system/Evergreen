@@ -21,63 +21,31 @@ angular.module('egCoreMod')
     var service = {};
 
     // Clones data structures containing fieldmapper objects
-    service.Clone = function(old) {
+    service.Clone = function(old, depth) {
+        if (depth === undefined) depth = 100;
         var obj;
-        if (typeof old == 'undefined') {
+        if (typeof old == 'undefined' || old === null) {
             return old;
         } else if (old._isfieldmapper) {
             obj = new service[old.classname]()
-
-            for( var i in old.a ) {
-                var thing = old.a[i];
-                if(thing === null) continue;
-
-                if (typeof thing == 'undefined') {
-                    obj.a[i] = thing;
-                } else if (thing._isfieldmapper) {
-                    obj.a[i] = service.Clone(thing);
-                } else {
-
-                    if(angular.isArray(thing)) {
-                        obj.a[i] = [];
-
-                        for( var j in thing ) {
-
-                            if (typeof thing[j] == 'undefined')
-                                obj.a[i][j] = thing[j];
-                            else if( thing[j]._isfieldmapper )
-                                obj.a[i][j] = service.Clone(thing[j]);
-                            else
-                                obj.a[i][j] = angular.copy(thing[j]);
-                        }
-                    } else {
-                        obj.a[i] = angular.copy(thing);
-                    }
-                }
-            }
+            if (old.a) obj.a = service.Clone(old.a, depth); // pass same depth because we're still cloning this same object
         } else {
             if(angular.isArray(old)) {
                 obj = [];
-                for( var j in old ) {
-                    if (typeof old[j] == 'undefined')
-                        obj[j] = old[j];
-                    else if( old[j]._isfieldmapper )
-                        obj[j] = service.Clone(old[j]);
-                    else
-                        obj[j] = angular.copy(old[j]);
-                }
             } else if(angular.isObject(old)) {
                 obj = {};
-                for( var j in old ) {
-                    if (typeof old[j] == 'undefined')
-                        obj[j] = old[j];
-                    else if( old[j]._isfieldmapper )
-                        obj[j] = service.Clone(old[j]);
-                    else
-                        obj[j] = angular.copy(old[j]);
-                }
             } else {
-                obj = angular.copy(old);
+                 return angular.copy(old);
+            }
+
+            for( var j in old ) {
+                if (old[j] === null || typeof old[j] == 'undefined') {
+                    obj[j] = old[j];
+                } else if( old[j]._isfieldmapper ) {
+                    if (depth) obj[j] = service.Clone(old[j], depth - 1);
+                } else {
+                    obj[j] = angular.copy(old[j]);
+                }
             }
         }
         return obj;
@@ -176,6 +144,67 @@ angular.module('egCoreMod')
         return hash;
     }
 
+    service.toTypedHash = function(obj) {
+        if (!angular.isObject(obj)) return obj; // arrays are objects
+
+        if (angular.isArray(obj)) { // NOTE: flatten arrays not supported
+            return obj.map(function(item) {return service.toTypedHash(item)});
+        }
+
+        var field_names = obj.classname ? 
+            Object.keys(service.classes[obj.classname].field_map) :
+            Object.keys(obj);
+
+        var hash = {};
+        if (obj.classname) {
+            angular.extend(hash, {
+                _classname : obj.classname
+            });
+        }
+        angular.forEach(
+            field_names,
+            function(field) { 
+
+                var val = service.toTypedHash(
+                    angular.isFunction(obj[field]) ? 
+                        obj[field]() : obj[field]
+                );
+
+                if (val !== undefined) {
+                    if (obj.classname) {
+                        switch(service.classes[obj.classname].field_map[field].datatype) {
+                            case 'org_unit' :
+                                // aou fieldmapper objects get used as is because
+                                // that's what egOrgSelector expects
+                                // TODO we should probably make egOrgSelector more flexible
+                                //      in what it can bind to
+                                hash[field] = obj[field]();
+                                break;
+                            case 'timestamp':
+                                hash[field] = (val === null) ? val : new Date(val);
+                                break;
+                            case 'bool':
+                                if (val == 't') {
+                                    hash[field] = true;
+                                } else if (val == 'f') {
+                                    hash[field] = false;
+                                } else {
+                                    hash[field] = null;
+                                }
+                                break;
+                            default:
+                                hash[field] = val;
+                        }
+                    } else {
+                        hash[field] = val;
+                    }
+                }
+            }
+        );
+
+        return hash;
+    }
+
     // returns a simple string key=value string of an IDL object.
     service.toString = function(obj) {
         var s = '';
@@ -202,6 +231,46 @@ angular.module('egCoreMod')
             new_obj[key](hash[key]);
         });
 
+        return new_obj;
+    }
+
+    service.fromTypedHash = function(hash) {
+        if (!angular.isObject(hash)) return hash;
+        if (angular.isArray(hash)) {
+            return hash.map(function(item) {return service.fromTypedHash(item)});
+        }
+        if (!hash._classname) return;
+
+        var new_obj = new service[hash._classname];
+        var fields = service.classes[hash._classname].field_map;
+        angular.forEach(fields, function(field) {
+            switch(field.datatype) {
+                case 'org_unit':
+                    if (angular.isFunction(hash[field.name])) {
+                        new_obj[field.name] = hash[field.name];
+                    } else {
+                        new_obj[field.name](hash[field.name]);
+                    }
+                    break;
+                case 'timestamp':
+                    if (hash[field.name] instanceof Date) {
+                        new_obj[field.name](hash[field.name].toISOString());
+                    }
+                    break;
+                case 'bool':
+                    if (hash[field.name] === true) {
+                        new_obj[field.name]('t');
+                    } else if (hash[field.name] === false) {
+                        new_obj[field.name]('f');
+                    }
+                    break;
+                default:
+                    new_obj[field.name](service.fromTypedHash(hash[field.name]));
+            }
+        });
+        new_obj.isnew(hash._isnew);
+        new_obj.ischanged(hash._ischanged);
+        new_obj.isdeleted(hash._isdeleted);
         return new_obj;
     }
 

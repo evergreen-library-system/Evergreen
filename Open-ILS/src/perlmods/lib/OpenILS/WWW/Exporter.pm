@@ -16,7 +16,7 @@ use Data::Dumper;
 use Text::CSV;
 
 use OpenSRF::EX qw(:try);
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Cache;
 use OpenSRF::System;
 use OpenSRF::AppSession;
@@ -180,7 +180,7 @@ sub handler {
     }
 
 
-    $r->headers_out->set("Content-Disposition" => "inline; filename=$filename");
+    $r->headers_out->set("Content-Disposition" => "attachment; filename=$filename");
 
     if (uc($format) eq 'XML') {
         $r->content_type('application/xml');

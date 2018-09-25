@@ -80,6 +80,11 @@ if (!$noconnect) {
                 'open-ils.cstore.direct.config.metabib_field.search.atomic',
                 { id => { "!=" => undef } }
             )->gather(1),
+        config_metabib_field_virtual_map    =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_virtual_map.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
         config_metabib_search_alias         =>
             $cstore->request(
                 'open-ils.cstore.direct.config.metabib_search_alias.search.atomic',
@@ -100,10 +105,11 @@ if (!$noconnect) {
 }
 
 $parser->parse;
-
-print "Parsed query tree:\n" . Dumper($parser->parse_tree) unless $quiet;
-
 my $sql = $parser->toSQL;
 $sql =~ s/^\s*$//gm;
+
+print "Parsed query tree:\n" . Dumper($parser) unless $quiet;
+print "Abstract query:\n" . Dumper($parser->parse_tree->to_abstract_query) unless $quiet;
+
 print "SQL:\n$sql\n\n" unless $quiet;
 

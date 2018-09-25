@@ -1,0 +1,48 @@
+BEGIN;
+
+SELECT plan(6);
+
+INSERT INTO serial.pattern_template(name, pattern_code, owning_lib, share_depth)
+VALUES ('spt-vis-test', '[]', 4, 0);
+
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(4)
+     WHERE name = 'spt-vis-test'),
+    1::BIGINT,
+    'BR1 can see its own pattern at consortial sharing depth'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(7)
+     WHERE name = 'spt-vis-test'),
+    1::BIGINT,
+    'BR4 can see it as well at consortial sharing depth'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(8)
+     WHERE name = 'spt-vis-test'),
+    1::BIGINT,
+    'SL1 can see it as well at consortial sharing depth'
+);
+
+UPDATE serial.pattern_template SET share_depth = 2 WHERE name = 'spt-vis-test';
+
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(4)
+     WHERE name = 'spt-vis-test'),
+    1::BIGINT,
+    'BR1 can still see own pattern at branch sharing depth'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(7)
+     WHERE name = 'spt-vis-test'),
+    0::BIGINT,
+    'BR4 CANNOT see it at branch sharing depth'
+);
+SELECT is(
+    (SELECT COUNT(*) FROM serial.pattern_templates_visible_to(8)
+     WHERE name = 'spt-vis-test'),
+    1::BIGINT,
+    'SL1 can still see it at branch sharing depth'
+);
+
+ROLLBACK;

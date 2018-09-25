@@ -252,7 +252,7 @@
                     [%- END; END; %]
                     </td>
                     <td class="opac-auto-161">
-                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {id => ahr.id}) %]"
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/holds/edit', {hid => ahr.id}) %]"
                             [% html_text_attr('title', l('Edit hold for item [_1]', attrs.title)) %]>
                             [% l('Edit') %]
                         </a>

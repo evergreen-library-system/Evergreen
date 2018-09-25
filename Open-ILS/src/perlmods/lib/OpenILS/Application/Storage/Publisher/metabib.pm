@@ -8,6 +8,7 @@ use OpenSRF::Utils::Logger qw/:level/;
 use OpenILS::Application::AppUtils;
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::JSON;
+use List::MoreUtils qw(uniq);
 use Data::Dumper;
 use Digest::MD5 qw/md5_hex/;
 
@@ -38,6 +39,11 @@ sub _initialize_parser {
         config_metabib_field                =>
             $cstore->request(
                 'open-ils.cstore.direct.config.metabib_field.search.atomic',
+                { id => { "!=" => undef } }
+            )->gather(1),
+        config_metabib_field_virtual_map    =>
+            $cstore->request(
+                'open-ils.cstore.direct.config.metabib_field_virtual_map.search.atomic',
                 { id => { "!=" => undef } }
             )->gather(1),
         config_metabib_search_alias         =>
@@ -95,7 +101,7 @@ sub ordered_records_from_metarecord { # XXX Replace with QP-based search-within-
     my $org = shift;
     my $depth = shift;
 
-    my $copies_visible = 'LEFT JOIN asset.copy_attr_vis_cache vc ON (br.id = vc.record '.
+    my $copies_visible = 'LEFT JOIN asset.copy_vis_attr_cache vc ON (br.id = vc.record '.
                          'AND vc.vis_attr_vector @@ (SELECT c_attrs::query_int FROM asset.patron_default_visibility_mask() LIMIT 1))';
     $copies_visible = '' if ($self->api_name =~ /staff/o);
 
@@ -446,7 +452,9 @@ sub biblio_multi_search_full_rec {
     my $cl_table = asset::copy_location->table;
     my $br_table = biblio::record_entry->table;
 
-    my $cj = 'HAVING COUNT(x.record) = ' . scalar(@selects) if ($class_join eq 'AND');
+    my $cj = undef;
+    $cj = 'HAVING COUNT(x.record) = ' . scalar(@selects) if ($class_join eq 'AND');
+
     my $search_table =
         '(SELECT x.record, sum(x.sum) FROM (('.
             join(') UNION ALL (', @selects).
@@ -3052,7 +3060,8 @@ sub query_parser_fts {
 
     # gather location_groups
     if (my ($filter) = $query->parse_tree->find_filter('location_groups')) {
-        my @loc_groups = @{$filter->args} if (@{$filter->args});
+        my @loc_groups = ();
+        @loc_groups = @{$filter->args} if (@{$filter->args});
         
         # collect the mapped locations and add them to the locations() filter
         if (@loc_groups) {
@@ -3222,7 +3231,11 @@ sub query_parser_fts_wrapper {
         # explicitly supplied one
         my $site = undef;
 
-        my @lg_id_list = @{$args{location_groups}} if (ref $args{location_groups});
+        my @lg_id_list = (); # We must define the variable with a static value
+                             # because an idomatic my+set causes the previous
+                             # value is remembered via closure.  
+
+        @lg_id_list = @{$args{location_groups}} if (ref $args{location_groups});
 
         my ($lg_filter) = $base_plan->parse_tree->find_filter('location_groups');
         @lg_id_list = @{$lg_filter->args} if ($lg_filter && @{$lg_filter->args});
@@ -3233,9 +3246,9 @@ sub query_parser_fts_wrapper {
                 my $lg_obj = asset::copy_location_group->retrieve($lg);
                 next unless $lg_obj;
     
-                push(@borg_list, ''.$lg_obj->owner);
+                push(@borg_list, @{$U->get_org_ancestors(''.$lg_obj->owner)});
             }
-            $borgs = join(',', @borg_list) if @borg_list;
+            $borgs = join(',', uniq @borg_list) if @borg_list;
         }
     
         if (!$borgs) {
@@ -3253,16 +3266,8 @@ sub query_parser_fts_wrapper {
             }
 
             if ($site) {
-                $borgs = OpenSRF::AppSession->create( 'open-ils.cstore' )->request(
-                    'open-ils.cstore.json_query.atomic',
-                    { from => [ 'actor.org_unit_ancestors', $site->id ] }
-                )->gather(1);
-
-                if (ref $borgs && @$borgs) {
-                    $borgs = join(',', map { $_->{'id'} } @$borgs);
-                } else {
-                    $borgs = undef;
-                }
+                $borgs = $U->get_org_ancestors($site->id);
+                $borgs = @$borgs ?  join(',', @$borgs) : undef;
             }
         }
     }

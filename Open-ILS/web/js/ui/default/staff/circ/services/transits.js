@@ -15,6 +15,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
        
         return $uibModal.open({
             templateUrl : './circ/share/t_abort_transit_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {

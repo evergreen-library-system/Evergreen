@@ -3,7 +3,7 @@ use strict; use warnings;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Application::AppUtils;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -50,11 +50,11 @@ sub void_or_zero_overdues {
         # turn it into an interval that interval_to_seconds can parse
         my $duration = $circ->fine_interval;
         $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
-        my $interval = OpenSRF::Utils->interval_to_seconds($duration);
+        my $interval = OpenILS::Utils::DateTime->interval_to_seconds($duration);
 
-        my $date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($backdate));
-        my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->epoch;
-        my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenSRF::Utils->interval_to_seconds($circ->grace_period), $e);
+        my $date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($backdate));
+        my $due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date))->epoch;
+        my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenILS::Utils::DateTime->interval_to_seconds($circ->grace_period), $e);
         if($date->epoch <= $due_date + $grace_period) {
             $logger->info("backdate $backdate is within grace period, voiding all");
         } else {
@@ -199,7 +199,7 @@ sub reopen_xact {
 
 
 sub create_bill {
-    my($class, $e, $amount, $btype, $type, $xactid, $note, $billing_ts) = @_;
+    my($class, $e, $amount, $btype, $type, $xactid, $note, $period_start, $period_end) = @_;
 
     $logger->info("The system is charging $amount [$type] on xact $xactid");
     $note ||= 'SYSTEM GENERATED';
@@ -209,7 +209,8 @@ sub create_bill {
     my $bill = Fieldmapper::money::billing->new;
     $bill->xact($xactid);
     $bill->amount($amount);
-    $bill->billing_ts($billing_ts);
+    $bill->period_start($period_start);
+    $bill->period_end($period_end);
     $bill->billing_type($type); 
     $bill->btype($btype); 
     $bill->note($note);
@@ -222,7 +223,7 @@ sub extend_grace_period {
     my($class, $circ_lib, $due_date, $grace_period, $e, $h) = @_;
     if ($grace_period >= 86400) { # Only extend grace periods greater than or equal to a full day
         my $parser = DateTime::Format::ISO8601->new;
-        my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
+        my $due_dt = $parser->parse_datetime( clean_ISO8601( $due_date ) );
         my $due = $due_dt->epoch;
 
         my $grace_extend = $U->ou_ancestor_setting_value($circ_lib, 'circ.grace.extend');
@@ -292,7 +293,7 @@ sub extend_grace_period {
                         if ($cl and @$cl) {
                             $closed = 1;
                             foreach (@$cl) {
-                                my $cl_dt = $parser->parse_datetime( cleanse_ISO8601( $_->close_end ) );
+                                my $cl_dt = $parser->parse_datetime( clean_ISO8601( $_->close_end ) );
                                 while ($due_dt <= $cl_dt) {
                                     $due_dt->add( seconds => 86400 );
                                     $new_grace_period += 86400;
@@ -492,7 +493,7 @@ sub generate_fines {
             # each (ils) transaction is processed in its own (db) transaction
             $e->xact_begin if $commit;
 
-            my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
+            my $due_dt = $parser->parse_datetime( clean_ISO8601( $c->$due_date_method ) );
     
             my $due = $due_dt->epoch;
             my $now = time;
@@ -540,8 +541,8 @@ sub generate_fines {
     
             my $last_fine;
             if ($fine) {
-                $conn->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".cleanse_ISO8601( $fine->billing_ts ).")") if $conn;
-                $last_fine = $parser->parse_datetime( cleanse_ISO8601( $fine->billing_ts ) )->epoch;
+                $conn->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".clean_ISO8601( $fine->billing_ts ).")") if $conn;
+                $last_fine = $parser->parse_datetime( clean_ISO8601( $fine->billing_ts ) )->epoch;
             } else {
                 $logger->info( "Potential first billing for circ ".$c->id );
                 $last_fine = $due;
@@ -579,7 +580,7 @@ sub generate_fines {
             my $tz = $U->ou_ancestor_setting_value(
                 $c->$circ_lib_method, 'lib.timezone') || 'local';
 
-            my ($latest_billing_ts, $latest_amount) = ('',0);
+            my ($latest_period_end, $latest_amount) = ('',0);
             for (my $bill = 1; $bill <= $pending_fine_count; $bill++) {
     
                 if ($current_fine_total >= $max_fine) {
@@ -596,16 +597,17 @@ sub generate_fines {
                 }
                 
                 # Use org time zone (or default to 'local')
-                my $billing_ts = DateTime->from_epoch( epoch => $last_fine, time_zone => $tz );
+                my $period_end = DateTime->from_epoch( epoch => $last_fine, time_zone => $tz );
                 my $current_bill_count = $bill;
                 while ( $current_bill_count ) {
-                    $billing_ts->add( seconds_to_interval_hash( $fine_interval ) );
+                    $period_end->add( seconds_to_interval_hash( $fine_interval ) );
                     $current_bill_count--;
                 }
+                my $period_start = $period_end->clone->subtract( seconds_to_interval_hash( $fine_interval - 1 ) );
 
-                my $timestamptz = $billing_ts->strftime('%FT%T%z');
+                my $timestamptz = $period_end->strftime('%FT%T%z');
                 if (!$skip_closed_check) {
-                    my $dow = $billing_ts->day_of_week_0();
+                    my $dow = $period_end->day_of_week_0();
                     my $dow_open = "dow_${dow}_open";
                     my $dow_close = "dow_${dow}_close";
 
@@ -630,7 +632,7 @@ sub generate_fines {
                 }
                 $current_fine_total += $this_billing_amount;
                 $latest_amount += $this_billing_amount;
-                $latest_billing_ts = $timestamptz;
+                $latest_period_end = $timestamptz;
 
                 my $bill = Fieldmapper::money::billing->new;
                 $bill->xact($c->id);
@@ -638,13 +640,14 @@ sub generate_fines {
                 $bill->billing_type("Overdue materials");
                 $bill->btype(1);
                 $bill->amount(sprintf('%0.2f', $this_billing_amount/100));
-                $bill->billing_ts($timestamptz);
+                $bill->period_start($period_start->strftime('%FT%T%z'));
+                $bill->period_end($timestamptz);
                 $e->create_money_billing($bill);
 
             }
 
-            $conn->respond( "\t\tAdding fines totaling $latest_amount for overdue up to $latest_billing_ts\n" )
-                if ($conn and $latest_billing_ts and $latest_amount);
+            $conn->respond( "\t\tAdding fines totaling $latest_amount for overdue up to $latest_period_end\n" )
+                if ($conn and $latest_period_end and $latest_amount);
 
 
             # Calculate penalties inline
@@ -1048,7 +1051,7 @@ sub _has_refundable_payments {
 
     if ($last_payment->[0]) {
         my $interval_secs = interval_to_seconds($interval);
-        my $payment_ts = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($last_payment->[0]->payment_ts))->epoch;
+        my $payment_ts = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($last_payment->[0]->payment_ts))->epoch;
         my $now = time;
         return 1 if ($payment_ts + $interval_secs >= $now);
     }

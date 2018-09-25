@@ -1,0 +1,30 @@
+[% ctx.page_title = l("Item Alert Suppression"); %]
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(record)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 ng-if="creating"  class="modal-title">[% l('Create item alert suppression rule') %]</h4>
+      <h4 ng-if="!creating" class="modal-title">[% l('Update item alert suppression rule') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="copy-alert-type-selector">[% l('Alert Type') %]</label>
+        <select id="copy-alert-type-selector" class="form-control"
+          ng-model="record.alert_type"
+          ng-options="at.id() as at.name() for at in ccat | orderBy:'name()'">
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="select-org-unit">[% l('Org Unit') %]</label>
+        <eg-org-selector selected="record.org"></eg-org-selector>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Save') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

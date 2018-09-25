@@ -29,10 +29,15 @@
           <option value="item_status">[% l('Item Status') %]</option>
           <option value="items_out">[% l('Items Out') %]</option>
           <option value="patron_address">[% l('Patron Address') %]</option>
+          <option value="patron_data">[% l('Patron Data') %]</option>
           <option value="patron_note">[% l('Patron Note') %]</option>
           <option value="renew">[% l('Renew') %]</option>
           <option value="transit_list">[% l('Transit List') %]</option>
           <option value="transit_slip">[% l('Transit Slip') %]</option>
+          <option value="offline_checkout">[% l('Offline Checkout') %]</option>
+          <option value="offline_renew">[% l('Offline Renew') %]</option>
+          <option value="offline_checkin">[% l('Offline Checkin') %]</option>
+          <option value="offline_in_house_use">[% l('Offline In-house Use') %]</option>
         </select>
         <label for="print_context">[% l('Force Printer Context') %]</label>
         <select class="form-control" ng-model="print.template_context">

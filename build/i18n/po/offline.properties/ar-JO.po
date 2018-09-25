@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2017-01-19 09:22+0000\n"
+"PO-Revision-Date: 2017-11-07 06:18+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2017-11-08 04:41+0000\n"
+"X-Generator: Launchpad (build 18493)\n"
 
 #: common.exception
 msgid ""
@@ -643,7 +643,7 @@ msgstr "مدير القوالب/الثيمات"
 
 #: menu.cmd_shutdown.prompt
 msgid "Exit Evergreen completely?"
-msgstr "الخروج مِن إيفر غرين تماماً؟"
+msgstr "الخروج مِن إِفرغرين تماماً؟"
 
 #: menu.spawn_search.msg
 msgid "Editor would like to search for: %1$s"
@@ -884,7 +884,7 @@ msgstr ""
 "موظف آخر من طاقم المكتبة لديه الصلاحية الموضحة أعلاه تعطيه الإذن بالقيام "
 "بهذا العمل تحديداً. لطفاً ينبغي إبلاغ مسؤول المكتبة الخاصة بك إذا كنت بحاجة "
 "إلى هذا الإذن أو الصلاحية. إذا كنت تشعر بأنك قد تلقيت هذا الاستثناء عن طريق "
-"الخطأ، ينبغي إبلاغ مطورين إيفرغرين أو مكتب المساعدة من أجل الإذن المذكور "
+"الخطأ، ينبغي إبلاغ مطورين إِفرغرين أو مكتب المساعدة من أجل الإذن المذكور "
 "أعلاه وهذا يصحح الأخطاء في المعلومات: %1$s"
 
 #: network.server_or_method.error
@@ -902,8 +902,8 @@ msgstr ""
 "فشل في الشبكة أو الخادم. لطفاً ينبغي التحقق من اتصال الإنترنت الخاص بك إلى "
 "%1$s واختيار إعادة محاولة الاتصال بالشبكة. إذا كنت بحاجة إلى الدخول إلى وضع "
 "دون الاتصال، اختر تجاهل الأخطاء هنا وفي الحوارات اللاحقة. إذا كنت تعتقد أن "
-"هذا الخطأ هو بسبب وجود خطأ في إيفرغرين وليس مشاكل في الشبكة، ينبغي الاتصال "
-"بمكتب المساعدة الخاص بك أو مديري إيفرغرين، وإعطائهم هذه المعلومات:"
+"هذا الخطأ هو بسبب وجود خطأ في إِفرغرين وليس مشاكل في الشبكة، ينبغي الاتصال "
+"بمكتب المساعدة الخاص بك أو مديري إِفرغرين، وإعطائهم هذه المعلومات:"
 
 #: network.server.method
 msgid "method=%1$s"
@@ -1221,7 +1221,7 @@ msgid ""
 "Printer settings did not load cleanly with this version of Evergreen.  You "
 "should reconfigure your printer under Printer Settings Editor."
 msgstr ""
-"لم يتم تحميل إعدادات الطابعة على نحو نظيف مع هذا الإصدار من إيفرغرين. يجب "
+"لم يتم تحميل إعدادات الطابعة على نحو نظيف مع هذا الإصدار من إِفرغرين. يجب "
 "إعادة تكوين وتهيئة الطابعة الخاصة بك تحت محرر إعدادات الطابعة."
 
 #: load_printer_settings_error_title

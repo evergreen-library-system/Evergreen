@@ -3,14 +3,14 @@ msgstr ""
 "Project-Id-Version: Evergeen 1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2016-12-13 12:57+0000\n"
+"PO-Revision-Date: 2018-03-17 20:42+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <petrkubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-12-14 05:04+0000\n"
-"X-Generator: Launchpad (build 18293)\n"
+"X-Launchpad-Export-Date: 2018-03-18 05:17+0000\n"
+"X-Generator: Launchpad (build 18571)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -54,7 +54,7 @@ msgstr "Zrušit"
 #: common.cancel.accesskey
 msgctxt "common.cancel.accesskey"
 msgid "C"
-msgstr "Z"
+msgstr "C"
 
 #: common.clear
 msgid "Clear"
@@ -78,11 +78,11 @@ msgstr "Varování: Od %1$s, tento čárový kód (%2$s) byl označen %3$s."
 
 #: common.barcode.status.warning.lost
 msgid "Lost"
-msgstr "Ztracený"
+msgstr "Ztraceno"
 
 #: common.barcode.status.warning.expired
 msgid "Expired"
-msgstr "Vypršel"
+msgstr "Platnost vypršela"
 
 #: common.barcode.status.warning.barred
 msgid "Barred"
@@ -90,7 +90,7 @@ msgstr "Omezení transakcí"
 
 #: common.barcode.status.warning.blocked
 msgid "Blocked"
-msgstr "Zablokovaný"
+msgstr "Blokováno"
 
 #: common.barcode.status.warning.unknown
 msgid "with an unknown code: %1$s"
@@ -106,7 +106,7 @@ msgstr "Ne"
 
 #: common.no.accesskey
 msgid "N"
-msgstr "Ž"
+msgstr "N"
 
 #: common.yes
 msgid "Yes"
@@ -114,7 +114,7 @@ msgstr "Ano"
 
 #: common.yes.accesskey
 msgid "Y"
-msgstr "A"
+msgstr "Y"
 
 #: common.unimplemented
 msgid "Not Yet Implemented"
@@ -156,7 +156,7 @@ msgstr "Obnovit"
 #: cat.opac.cancel
 msgctxt "cat.opac.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: cat.opac.record_deleted
 msgid "Record deleted."
@@ -189,7 +189,7 @@ msgstr "Chyba při obnově záznamu #%1$s : %2$s : %3$s"
 #: cat.opac.record_marked_for_overlay.record_id.alert
 msgctxt "cat.opac.record_marked_for_overlay.record_id.alert"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Záznam s ID %1$s označen k přepsání."
+msgstr "Záznam s ID %1$s byl označen k přepsání."
 
 #: cat.opac.record_marked_for_overlay.tcn.alert
 msgctxt "cat.opac.record_marked_for_overlay.tcn.alert"
@@ -433,7 +433,7 @@ msgstr "Skupiny záznamů"
 
 #: menu.cmd_edit_user_buckets.tab
 msgid "User Buckets"
-msgstr "Seznamy uživatelů"
+msgstr "Skupiny uživatelů"
 
 #: menu.cmd_replace_barcode.prompt
 msgid "Enter original barcode for the item:"
@@ -471,11 +471,11 @@ msgstr "Chyba při  testu změny čárového kódu \"%1$s\"."
 
 #: menu.cmd_replace_barcode.permission.error
 msgid "Rename aborted.  Insufficient permission."
-msgstr "Přejmenování přerušeno. Nedostatečné oprávnění."
+msgstr "Nebylo možné změnit název. Nemáte dostatečné oprávnění."
 
 #: menu.cmd_replace_barcode.renaming.error
 msgid "Error renaming item."
-msgstr "Chyba při změně položky."
+msgstr "Chyba při přejmenování položky."
 
 #: menu.cmd_replace_barcode.renaming.failure
 msgid "The rename operation probably failed."
@@ -519,7 +519,7 @@ msgstr "\"%1$s\" je smazán. Přesto zobrazit smazané záznamy?"
 
 #: menu.cmd_patron_register.related.tab
 msgid "Editing Related Patron"
-msgstr "Edituji dotyčného čtenáře"
+msgstr "Editace údajů dotyčného čtenáře"
 
 #: menu.cmd_patron_register.tab
 msgid "Register Patron"
@@ -943,7 +943,7 @@ msgstr "Chyba při nastavení názvů oken aby odpovídaly novému přihlášen�
 
 #: openils.global_util.clear_cache.error
 msgid "Problem clearing the cache: %1$s"
-msgstr "Problém mazání cache: %1$s"
+msgstr "Problém s vyčištěním mezipaměti: %1$s"
 
 #: openils.global_util.clipboard.error
 msgid "Clipboard action failed: %1$s"
@@ -951,7 +951,7 @@ msgstr "Proces kopírování do schránky selhal: %1$s"
 
 #: openils.global_util.clipboard
 msgid "Copied \"%1$s\" to clipboard."
-msgstr "Zkopírováno \"%1$s\" do schránky."
+msgstr "Údaj \"%1$s\" byl zkopírován do schránky."
 
 #: openils.global_util.content_window_jsobject.error
 msgid "Error with get_contentWindow(%1$s) and wrappedJSObject: %2$s"
@@ -1000,11 +1000,11 @@ msgstr "Práce se seznamem"
 #: list.actions.menu.accesskey
 msgctxt "list.actions.menu.accesskey"
 msgid "L"
-msgstr "O"
+msgstr "L"
 
 #: list.actions.field_to_clipboard.label
 msgid "Copy Field from Selected Row to Clipboard"
-msgstr "Kopírovat do schránky pole z vybraného řádku"
+msgstr "Kopírovat pole z vybraného  řadku  do schránky"
 
 #: list.actions.field_to_clipboard.accesskey
 msgctxt "list.actions.field_to_clipboard.accesskey"
@@ -1022,11 +1022,11 @@ msgstr "L"
 
 #: list.actions.csv_to_printer.label
 msgid "Print List CSV"
-msgstr "Tisk seznamu CSV"
+msgstr "Tisk seznamu ve formátu CSV"
 
 #: list.actions.csv_to_printer.accesskey
 msgid "P"
-msgstr "T"
+msgstr "P"
 
 #: list.actions.extended_to_printer.label
 msgid "Print List Expanded Format"
@@ -1034,7 +1034,7 @@ msgstr "Vytisknout seznam v rozšířeném formátu"
 
 #: list.actions.extended_to_printer.accesskey
 msgid "x"
-msgstr "r"
+msgstr "x"
 
 #: list.actions.csv_to_file.label
 msgid "Save List CSV to File"
@@ -1042,7 +1042,7 @@ msgstr "Uložit seznam CSV do souboru"
 
 #: list.actions.csv_to_file.accesskey
 msgid "F"
-msgstr "B"
+msgstr "F"
 
 #: list.actions.save_column_configuration.label
 msgid "Save Column Configuration"
@@ -1050,7 +1050,7 @@ msgstr "Uložit nastavení sloupců"
 
 #: list.actions.save_column_configuration.accesskey
 msgid "S"
-msgstr "U"
+msgstr "S"
 
 #: list.dump_extended_format.record_separator
 msgid "=-=-="
@@ -1067,7 +1067,7 @@ msgstr "Chybí Vám oprávnění  CREATE_SURVEY a/nebo umístění pracovní sta
 
 #: menu.cmd_local_admin_fonts_and_sounds.tab
 msgid "Global Font and Sound Settings"
-msgstr "Celkové nastavení fontů a zvuků"
+msgstr "Obecné nastavení písma a zvuků"
 
 #: menu.cmd_local_admin_printer.tab
 msgid "Printer Settings Editor"
@@ -1079,7 +1079,7 @@ msgstr "Nastavení 'Netisknout automaticky'"
 
 #: menu.cmd_local_admin_closed_dates.tab
 msgid "Closed Dates Editor"
-msgstr "Nastavení zavíracích dnů knihovny"
+msgstr "Nastavení dnů, kdy je knihovny uzavřena"
 
 #: menu.cmd_local_admin_copy_locations.tab
 msgid "Copy Locations Editor"
@@ -1099,7 +1099,7 @@ msgstr "Nastavení statistických kategorií"
 
 #: menu.cmd_local_admin_reports.tab
 msgid "Reports"
-msgstr "Zprávy"
+msgstr "Zprávy a statistiky"
 
 #: menu.cmd_local_admin_age_overdue_circulations_to_lost.tab
 msgid "Age to Lost"
@@ -1135,7 +1135,7 @@ msgstr "Nahrát MARC záznamy pro objednávky"
 
 #: menu.cmd_acq_new_brief_record.tab
 msgid "New Brief Record"
-msgstr "Vytvořit zkrácený záznam"
+msgstr "Vytvořit předběžný  záznam"
 
 #: menu.cmd_acq_po.tab
 msgid "Purchase Orders"
@@ -1151,7 +1151,7 @@ msgstr "Položky k reklamaci"
 
 #: menu.cmd_serial_batch_receive.tab
 msgid "Batch Receive"
-msgstr "Příjem exemplářů"
+msgstr "Dávkový příjem"
 
 #: menu.cmd_url_verify.tab
 msgid "Link Checker"
@@ -1243,7 +1243,7 @@ msgstr "Zobrazení dávky"
 
 #: staff.cat.util.copy_editor.edit
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view
 msgid "View"
@@ -1277,7 +1277,7 @@ msgstr "Záznam s TCN %1$s označen k přepsání."
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
 msgctxt "staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label"
 msgid "Record with ID %1$s marked for overlay."
-msgstr "Záznam s ID %1$s označen k přepsání."
+msgstr "Záznam s ID %1$s byl označen k přepsání."
 
 #: staff.cat.opac.marked_record_for_hold_transfer_indicator.tcn.label
 msgid "Record with TCN %1$s marked for title hold transfer."
@@ -1451,8 +1451,8 @@ msgid ""
 "After auto completion multiple barcodes may match your input. Please choose "
 "the barcode you intended below."
 msgstr ""
-"Po automatickém doplnění odpovídá vašemu vstupu n ěkolik čárových kódů. "
-"Prosím, níže vyberte čárový kód, který jste měli na mysli."
+"Po automatickém doplnění odpovídá vašemu vstupu několik čárových kódů.  "
+"Vyberte prosím čárový kód, který jste měli na mysli."
 
 #: barcode_choice.errors_found
 msgid ""
@@ -1488,7 +1488,7 @@ msgstr "Rezervace zdrojů : %1$s"
 
 #: staff.main.button_bar.none
 msgid "None"
-msgstr "Žádný"
+msgstr "Hodnota nezadána"
 
 #: staff.main.button_bar.default
 msgctxt "staff.main.button_bar.default"

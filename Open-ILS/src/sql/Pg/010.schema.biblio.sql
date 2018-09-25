@@ -54,7 +54,9 @@ CREATE TABLE biblio.record_entry (
 	last_xact_id	TEXT		NOT NULL,
     vis_attr_vector INT[],
     owner       INT,
-    share_depth INT
+    share_depth INT,
+    merge_date  TIMESTAMP WITH TIME ZONE,
+    merged_to   BIGINT REFERENCES biblio.record_entry(id)
 );
 CREATE INDEX biblio_record_entry_creator_idx ON biblio.record_entry ( creator );
 CREATE INDEX biblio_record_entry_create_date_idx ON biblio.record_entry ( create_date );
@@ -64,7 +66,7 @@ CREATE INDEX biblio_record_entry_fp_idx ON biblio.record_entry ( fingerprint );
 CREATE UNIQUE INDEX biblio_record_unique_tcn ON biblio.record_entry (tcn_value) WHERE deleted = FALSE OR deleted IS FALSE;
 CREATE TRIGGER a_marcxml_is_well_formed BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE biblio.check_marcxml_well_formed();
 CREATE TRIGGER b_maintain_901 BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_901();
-CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE maintain_control_numbers();
+CREATE TRIGGER c_maintain_control_numbers BEFORE INSERT OR UPDATE ON biblio.record_entry FOR EACH ROW EXECUTE PROCEDURE evergreen.maintain_control_numbers();
 
 CREATE TABLE biblio.record_note (
 	id		BIGSERIAL	PRIMARY KEY,

@@ -48,8 +48,10 @@ INSERT INTO config.internal_flag (name) VALUES ('ingest.assume_inserts_only');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_browse_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_search_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_facet_indexing');
+INSERT INTO config.internal_flag (name) VALUES ('ingest.skip_display_indexing');
 INSERT INTO config.internal_flag (name) VALUES ('serial.rematerialize_on_same_holding_code');
 INSERT INTO config.internal_flag (name) VALUES ('ingest.metarecord_mapping.preserve_on_delete');
+
 
 CREATE TABLE config.global_flag (
     label   TEXT    NOT NULL
@@ -90,7 +92,7 @@ CREATE TRIGGER no_overlapping_deps
     BEFORE INSERT OR UPDATE ON config.db_patch_dependencies
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1059', :eg_version); -- Stompro/DPearl/kmlussier
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1133', :eg_version); -- berick/kmlussier
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
@@ -200,7 +202,7 @@ CREATE TABLE config.metabib_field (
 	field_class	TEXT	NOT NULL REFERENCES config.metabib_class (name),
 	name		TEXT	NOT NULL,
 	label		TEXT	NOT NULL,
-	xpath		TEXT	NOT NULL,
+	xpath		TEXT,
 	weight		INT	NOT NULL DEFAULT 1,
 	format		TEXT	NOT NULL REFERENCES config.xml_transform (name) DEFAULT 'mods33',
 	search_field	BOOL	NOT NULL DEFAULT TRUE,
@@ -209,9 +211,11 @@ CREATE TABLE config.metabib_field (
 	browse_xpath   TEXT,
 	browse_sort_xpath TEXT,
 	facet_xpath	TEXT,
+	display_xpath	TEXT,
 	authority_xpath TEXT,
 	joiner      TEXT,
-	restrict	BOOL    DEFAULT FALSE NOT NULL
+	restrict	BOOL    DEFAULT FALSE NOT NULL,
+    display_field BOOL NOT NULL DEFAULT TRUE
 );
 COMMENT ON TABLE config.metabib_field IS $$
 XPath used for record indexing ingest
@@ -222,7 +226,34 @@ a "class" of either title, subject, author, keyword, series
 or identifier.
 $$;
 
+CREATE TABLE config.metabib_field_virtual_map (
+    id      SERIAL  PRIMARY KEY,
+    real    INT NOT NULL REFERENCES config.metabib_field (id),
+    virtual INT NOT NULL REFERENCES config.metabib_field (id),
+    weight  INT NOT NULL DEFAULT 1
+);
+COMMENT ON TABLE config.metabib_field_virtual_map IS $$
+Maps between real (physically extracted) index definitions
+and virtual (target sync, no required extraction of its own)
+index definitions.
+
+The virtual side may not extract any data of its own, but
+will collect data from all of the real fields.  This reduces
+extraction (ingest) overhead by eliminating duplcated extraction,
+and allows for searching across novel combinations of fields, such
+as names used as either subjects or authors.  By preserving this
+mapping rather than defining duplicate extractions, information
+about the originating, "real" index definitions can be used
+in interesting ways, such as highlighting in search results.
+$$;
+
 CREATE UNIQUE INDEX config_metabib_field_class_name_idx ON config.metabib_field (field_class, name);
+
+CREATE TABLE config.display_field_map (
+    name    TEXT   PRIMARY KEY,
+    field   INTEGER REFERENCES config.metabib_field (id),
+    multi   BOOLEAN DEFAULT FALSE
+);
 
 CREATE TABLE config.ts_config_list (
 	id			TEXT PRIMARY KEY,
@@ -302,7 +333,8 @@ CREATE TABLE config.rule_circ_duration (
 	extended	INTERVAL	NOT NULL,
 	normal		INTERVAL	NOT NULL,
 	shrt		INTERVAL	NOT NULL,
-	max_renewals	INT		NOT NULL
+	max_renewals	INT		NOT NULL,
+    max_auto_renewals INTEGER
 );
 COMMENT ON TABLE config.rule_circ_duration IS $$
 Circulation Duration rules
@@ -651,6 +683,64 @@ CREATE TABLE config.usr_setting_type (
         ( datatype <> 'link' AND fm_class IS NULL ) )
 
 );
+
+CREATE TABLE config.workstation_setting_type (
+    name            TEXT    PRIMARY KEY,
+    label           TEXT    UNIQUE NOT NULL,
+    grp             TEXT    REFERENCES config.settings_group (name),
+    description     TEXT,
+    datatype        TEXT    NOT NULL DEFAULT 'string',
+    fm_class        TEXT,
+    --
+    -- define valid datatypes
+    --
+    CONSTRAINT cwst_valid_datatype CHECK ( datatype IN
+    ( 'bool', 'integer', 'float', 'currency', 'interval',
+      'date', 'string', 'object', 'array', 'link' ) ),
+    --
+    -- fm_class is meaningful only for 'link' datatype
+    --
+    CONSTRAINT cwst_no_empty_link CHECK
+    ( ( datatype =  'link' AND fm_class IS NOT NULL ) OR
+      ( datatype <> 'link' AND fm_class IS NULL ) )
+);
+
+-- Prevent setting types from being both user and workstation settings.
+CREATE OR REPLACE FUNCTION config.setting_is_user_or_ws()
+RETURNS TRIGGER AS $FUNC$
+BEGIN
+
+    IF TG_TABLE_NAME = 'usr_setting_type' THEN
+        PERFORM TRUE FROM config.workstation_setting_type cwst
+            WHERE cwst.name = NEW.name;
+        IF NOT FOUND THEN
+            RETURN NULL;
+        END IF;
+    END IF;
+
+    IF TG_TABLE_NAME = 'workstation_setting_type' THEN
+        PERFORM TRUE FROM config.usr_setting_type cust
+            WHERE cust.name = NEW.name;
+        IF NOT FOUND THEN
+            RETURN NULL;
+        END IF;
+    END IF;
+
+    RAISE EXCEPTION 
+        '% Cannot be used as both a user setting and a workstation setting.', 
+        NEW.name;
+END;
+$FUNC$ LANGUAGE PLPGSQL STABLE;
+
+CREATE CONSTRAINT TRIGGER check_setting_is_usr_or_ws
+  AFTER INSERT OR UPDATE ON config.usr_setting_type
+  FOR EACH ROW EXECUTE PROCEDURE config.setting_is_user_or_ws();
+
+CREATE CONSTRAINT TRIGGER check_setting_is_usr_or_ws
+  AFTER INSERT OR UPDATE ON config.workstation_setting_type
+  FOR EACH ROW EXECUTE PROCEDURE config.setting_is_user_or_ws();
+
+
 
 -- Some handy functions, based on existing ones, to provide optional ingest normalization
 

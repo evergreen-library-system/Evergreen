@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-02-23 20:29+0000\n"
+"POT-Creation-Date: 2017-08-15 16:41-0400\n"
+"PO-Revision-Date: 2017-11-01 06:14+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-25 05:35+0000\n"
-"X-Generator: Launchpad (build 18328)\n"
+"X-Launchpad-Export-Date: 2017-11-02 04:38+0000\n"
+"X-Generator: Launchpad (build 18493)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -313,8 +313,8 @@ msgid "Forgiving Checkin then Checkout"
 msgstr "تسامح مع الإرجاع ثم قم بالإعارة"
 
 #: staff.circ.checkout.abort_transit_then_checkout
-msgid "Abort Transit then Checkout"
-msgstr "إحباط النقل ثم الإعارة"
+msgid "Cancel Transit then Checkout"
+msgstr "إلغاء النقل ثم الإعارة"
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
@@ -403,6 +403,10 @@ msgstr "هذه النسخة لا يزال لديها حتى الآن إعارة"
 msgid "This item is not in transit."
 msgstr "هذه النُسخة ليست في النقل."
 
+#: staff.circ.copy_details.transit_caption
+msgid "In Transit"
+msgstr "في حالة النقل"
+
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
 msgstr "المكتب"
@@ -419,6 +423,10 @@ msgstr "الهَاتف"
 #: staff.circ.copy_details.user_details
 msgid "%1$s, %2$s : %3$s"
 msgstr "%1$s، %2$s : %3$s"
+
+#: staff.circ.copy_details.hold_caption
+msgid "Captured for Hold"
+msgstr "المُستلم لأجل الحجز"
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
@@ -950,12 +958,12 @@ msgid "Receipt Template Editor"
 msgstr "مُحرر تركيبة الاستلام"
 
 #: staff.circ.utils.abort_transits.confirm
-msgid "Are you sure you would like to abort transits for copies: %1$s?"
-msgstr "هل انت متأكد مِن أنك تريد إلغاء نقل هذه النسخ: %1$s؟"
+msgid "Are you sure you would like to cancel transits for copies: %1$s?"
+msgstr "هل تريد بالتأكيد إلغاء عمليات النقل لهذه النسخ: %1$s؟"
 
 #: staff.circ.utils.abort_transits.title
-msgid "Aborting Transits"
-msgstr "إلغاء النقل"
+msgid "Canceling Transits"
+msgstr "جار إلغاء عمليات النقل"
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
@@ -973,14 +981,13 @@ msgstr "مُعرف النُسخة = %1$s"
 
 #: staff.circ.utils.abort_transits.not_found
 msgid ""
-"This item was no longer in transit at the time of the abort.  Perhaps this "
-"happened from a stale display?"
-msgstr ""
-"لم تعد هذه النُسخة في النقل خلال وقت الإحباط. ربما حدث هذا من العرض القديم؟"
+"This item was no longer in transit at the time of the cancellation.  Perhaps "
+"this happened from a stale display?"
+msgstr "لم يعد هذا البند قيد النقل وقت الإلغاء. ربما حدث هذا من عرض قديم؟"
 
 #: staff.circ.utils.abort_transits.unexpected_error
-msgid "Transit not likely aborted."
-msgstr "مِن المحتمل تمّ إلغاء النقل."
+msgid "Transit not likely canceled."
+msgstr "من غير المحتمل إلغاء النقل."
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
@@ -2090,3 +2097,21 @@ msgstr "رسالة حالة نسخة النقل"
 #: staff.circ.utils.transit.copy_status_message
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr "هذه النسخة في حالة %1$s, ربما إجراء الطاقم الإضافي قد يكون مطلوباً."
+
+#~ msgid "Abort Transit then Checkout"
+#~ msgstr "إحباط النقل ثم الإعارة"
+
+#~ msgid "Are you sure you would like to abort transits for copies: %1$s?"
+#~ msgstr "هل انت متأكد مِن أنك تريد إلغاء نقل هذه النسخ: %1$s؟"
+
+#~ msgid "Aborting Transits"
+#~ msgstr "إلغاء النقل"
+
+#~ msgid ""
+#~ "This item was no longer in transit at the time of the abort.  Perhaps this "
+#~ "happened from a stale display?"
+#~ msgstr ""
+#~ "لم تعد هذه النُسخة في النقل خلال وقت الإحباط. ربما حدث هذا من العرض القديم؟"
+
+#~ msgid "Transit not likely aborted."
+#~ msgstr "مِن المحتمل تمّ إلغاء النقل."

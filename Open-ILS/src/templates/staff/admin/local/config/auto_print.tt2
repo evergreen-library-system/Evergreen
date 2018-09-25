@@ -45,34 +45,34 @@ dialog (the ones that offer Print and Do Not Print as options).[% END %]
   <div class="row"></div><!-- add some padding -->
 
   <div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('Checkout Receipt') %]</label>
-      <input type="checkbox" ng-model="co_recpt"/>
+      <div class="col-md-2"><input type="checkbox" ng-model="co_recpt"/></div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('Bill Pay Receipt') %]</label>
-      <input type="checkbox" ng-model="bill_recpt"/>
+      <div class="col-md-2"><input type="checkbox" ng-model="bill_recpt"/></div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('Hold Slip') %]</label>
-      <input type="checkbox" ng-model="hold_slip"/>
+      <div class="col-md-2"><input type="checkbox" ng-model="hold_slip"/></div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('Transit Slip') %]</label>
-      <input type="checkbox" ng-model="transit_slip"/>
+      <div class="col-md-2"><input type="checkbox" ng-model="transit_slip"/></div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('Hold/Transit Slip') %]</label>
-      <input type="checkbox" ng-model="hold_transit_slip"/>
+      <div class="col-md-2"><input type="checkbox" ng-model="hold_transit_slip"/></div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
       <label class="col-md-2">[% l('For This Library and Descendants') %]</label>
-      <eg-org-selector selected="context_org" 
-        onchange="show_org_values" disable-test="cant_use_org"></eg-org-selector>
+      <div class="col-md-2"><eg-org-selector selected="context_org" 
+        onchange="show_org_values" disable-test="cant_use_org"></eg-org-selector></div>
     </div>
   </div>
   </div>
-    <div class="form-group">
+    <div class="form-group row">
       <button class="btn btn-default" 
         ng-class="{disabled : in_flight}"
         ng-click="update_auto_print()">

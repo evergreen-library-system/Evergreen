@@ -58,7 +58,7 @@ type â€“ public, academic, special, school, and even tribal and home libraries â
 in over a dozen countries worldwide.
 
 
-include::RELEASE_NOTES_2_12.adoc[]
+include::RELEASE_NOTES_3_1.adoc[]
 
 
 Software Installation
@@ -81,8 +81,6 @@ include::installation/server_installation.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
-
-include::installation/staff_client_installation.adoc[]
 
 include::installation/server_upgrade.adoc[]
 
@@ -116,6 +114,10 @@ include::admin_initial_setup/ordering_materials.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::admin_initial_setup/different_styles_for_searchbar.adoc[]
+
+include::admin/search_interface.adoc[]
+
 include::admin_initial_setup/borrowing_items.adoc[]
 
 // Return to normal title levels.
@@ -147,8 +149,6 @@ include::TechRef/KidsOPAC.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
-include::admin/customize_staff_client.adoc[]
-
 include::admin/patron_address_by_zip_code.adoc[]
 
 // Push titles down one level.
@@ -161,9 +161,28 @@ include::admin/phonelist.adoc[]
 
 include::admin/sip_server.adoc[]
 
+:leveloffset: 1
+
+include::admin/sip_privacy.adoc[]
+
+:leveloffset: 0
+
 include::admin/apache_rewrite_tricks.adoc[]
 
 include::admin/apache_access_handler.adoc[]
+
+include::admin/ebook_api_service.adoc[]
+
+include::admin/hold_targeter_service.adoc[]
+
+// Push titles down one level.
+:leveloffset: 1
+
+include::admin/backups.adoc[]
+
+// Return to normal title levels.
+:leveloffset: 0
+
 
 
 Using the Browser Staff Client
@@ -180,20 +199,18 @@ For information about the XUL client, consult the http://docs.evergreen-ils.org/
 
 include::admin/web_client-login.adoc[]
 
-include::admin/web_client-browser-tab-shortcuts.adoc[]
+include::admin/web-client-browser-best-practices.adoc[]
 
 include::admin/staff_client-column_picker.adoc[]
 
 include::admin/staff_client-recent_searches.adoc[]
-
-include::admin/staff_client-return_to_results_from_marc.adoc[]
 
 include::admin/workstation_admin.adoc[]
 
 // Push titles down one level.
 :leveloffset: 1
 
-include::admin/workstation_admin_receipt_template_editor.adoc[]
+include::admin/receipt_template_editor.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
@@ -237,9 +254,17 @@ include::admin/floating_groups.adoc[]
 
 include::admin/MARC_Import_Remove_Fields.adoc[]
 
+include::admin/copy_tags_admin.adoc[]
+
 include::admin/MARC_RAD_MVF_CRA.adoc[]
 
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
+
+:leveloffset: -1
+
+include::admin/physical_char_wizard_db.adoc[]
+
+:leveloffset: 0
 
 include::admin/permissions.adoc[]
 
@@ -279,7 +304,9 @@ include::admin/hold_driven_recalls.adoc[]
 
 include::admin/actiontriggers.adoc[]
 
-include::admin/recent_staff_searches.adoc[]
+include::admin/actiontriggers_process.adoc[]
+
+include::admin/staff_client-recent_searches.adoc[]
 
 include::admin/lsa-standing_penalties.adoc[]
 
@@ -312,20 +339,29 @@ include::acquisitions/blanket.adoc[]
 Cataloging
 ==========
 
-include::cataloging/cataloging_web_client.adoc[]
+Introduction
+------------
+
+This part describes cataloging in Evergreen.
+
+include::cataloging/marc_tag_table.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
+include::cataloging/copy_tags_cataloging.adoc[]
 
 include::cataloging/MARC_Editor.adoc[]
 
-// Push titles down one level.
-:leveloffset: 2
+:leveloffset: 1
 
-include::cataloging/physical_char_wizard.adoc[]
+include::cataloging/record_buckets.adoc[]
 
 // Return titles to correct level.
 :leveloffset: 0
+
+include::cataloging/physical_char_wizard.adoc[]
+
+include::admin/staff_client-return_to_results_from_marc.adoc[]
 
 include::cataloging/batch_importing_MARC.adoc[]
 
@@ -333,13 +369,23 @@ include::cataloging/overlay_record_3950_import.adoc[]
 
 include::cataloging/z39.50_search_enhancements.adoc[]
 
+
 include::cataloging/monograph_parts.adoc[]
+
 
 include::cataloging/conjoined_items.adoc[]
 
 include::cataloging/cataloging_electronic_resources.adoc[]
 
+include::cataloging/item_status.adoc[]
+
+include::cataloging/volcopy_editor.adoc[]
+
+:leveloffset: 1
+
 include::cataloging/tpac_copy_edit_links.adoc[]
+
+:leveloffset: 0
 
 include::cataloging/MARC_batch_edit.adoc[]
 
@@ -347,23 +393,27 @@ include::cataloging/authorities.adoc[]
 
 include::cataloging/link_checker.adoc[]
 
+include::admin/schema_bibliographic.adoc[]
+
+include::admin/marc_templates.adoc[]
+
 
 Serials
 =======
 
 include::serials/A-intro.adoc[]
 
-include::serials/B-copy_template.adoc[]
+include::serials/B-serials_admin.adoc[]
 
-include::serials/C-subscription-SCV.adoc[]
+include::serials/C-serials_workflow.adoc[]
 
-include::serials/D-subscription-ASCV.adoc[]
+include::serials/D-Receiving.adoc[]
 
-include::serials/E-edit_subscriptions.adoc[]
+include::serials/E-routing_lists.adoc[]
 
-include::serials/F-Receiving.adoc[]
+include::serials/F-Special_issue.adoc[]
 
-include::serials/G-Special_issue.adoc[]
+include::serials/G-binding.adoc[]
 
 include::serials/H-holdings_statements.adoc[]
 
@@ -380,22 +430,27 @@ system.
 
 include::circulation/circulating_items_web_client.adoc[]
 
-include::circulation/holds.adoc[]
+Holds Management
+----------------
+
+include::circulation/basic_holds.adoc[]
+
+include::circulation/advanced_holds.adoc[]
 
 include::circulation/booking.adoc[]
 
 include::circulation/circulation_patron_records_web_client.adoc[]
+
+include::admin/patron_self_registration.adoc[]
 
 include::circulation/triggered_events.adoc[]
 
 // Push titles down one level.
 :leveloffset: 1
 
-include::circulation/offline_mode.adoc[]
+include::circulation/offline_circ_webclient.adoc[]
 
 include::circulation/self_check.adoc[]
-
-include::circulation/rfid_product_integration.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
@@ -502,10 +557,12 @@ include::development/data_supercat.adoc[]
 
 include::development/data_unapi.adoc[]
 
+include::development/data_opensearch.adoc[]
+
 // Return to normal title levels.
 :leveloffset: 0
 
-include::attributions.adoc[]
+include::shared/attributions.adoc[]
 
 include::licensing.adoc[]
 

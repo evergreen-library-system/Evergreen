@@ -89,7 +89,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION evergreen.unaccent_and_squash ( IN arg text) RETURNS text
     IMMUTABLE STRICT AS $$
 	BEGIN
-	RETURN evergreen.lowercase(unaccent(regexp_replace(arg, '[\s[:punct:]]','','g')));
+	RETURN evergreen.lowercase(public.unaccent('public.unaccent', regexp_replace(arg, '[\s[:punct:]]','','g')));
 	END;
 $$ LANGUAGE PLPGSQL;
 

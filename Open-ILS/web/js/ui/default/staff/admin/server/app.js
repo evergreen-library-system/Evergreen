@@ -5,7 +5,7 @@ angular.module('egServerAdmin',
  function($routeProvider , $locationProvider , $compileProvider) {
 
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); 
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); 
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     var eframe_template = 

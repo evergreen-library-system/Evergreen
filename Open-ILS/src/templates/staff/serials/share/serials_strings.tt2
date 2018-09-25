@@ -1,0 +1,27 @@
+[%# Shared serial strings %]
+
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.SERIALS_ITEM_STATUS = {};
+    s.SERIALS_ITEM_STATUS.Expected = "[% l('Expected') %]";
+    s.SERIALS_ITEM_STATUS.Received = "[% l('Received') %]";
+    s.SERIALS_ITEM_STATUS.Claimed = "[% l('Claimed') %]";
+    s.SERIALS_ITEM_STATUS.Bindery = "[% l('Bindery') %]";
+    s.SERIALS_ITEM_STATUS.Bound = "[% l('Bound') %]";
+    s.SERIALS_ITEM_STATUS.Discarded = "[% l('Discarded') %]";
+    s.SERIALS_ITEM_STATUS['Not Held'] = "[% l('Not Held' ) %]";
+    s.SERIALS_ITEM_STATUS['Not Published'] = "[% l('Not Published') %]";
+
+    s.CHRON_LABEL_YEAR   = "[% l('Year') %]";
+    s.CHRON_LABEL_SEASON = "[% l('Season') %]";
+    s.CHRON_LABEL_MONTH  = "[% l('Month') %]";
+    s.CHRON_LABEL_WEEK   = "[% l('Week') %]";
+    s.CHRON_LABEL_DAY    = "[% l('Day') %]";
+    s.CHRON_LABEL_HOUR   = "[% l('Hour') %]";
+    s.EG_CONFIRM_DELETE_PATTERN_TEMPLATE_TITLE = "[% l('Confirm Prediction Pattern Template Deletion') %]";
+    s.EG_CONFIRM_DELETE_PATTERN_TEMPLATE_BODY = "[% l('Delete {{count}} template(s)?') %]";
+    s.PATTERN_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted prediction pattern template(s)') %]";
+    s.PATTERN_TEMPLATE_FAIL_DELETE = "[% l('Failed to delete prediction template(s)') %]";
+}]);
+</script>
+

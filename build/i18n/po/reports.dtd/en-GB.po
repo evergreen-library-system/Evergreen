@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2015-03-25 16:24+0000\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"PO-Revision-Date: 2018-02-06 22:48+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2018-02-07 05:15+0000\n"
+"X-Generator: Launchpad (build 18544)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -705,6 +705,46 @@ msgstr "Months(s)"
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
 msgstr " ago"
+
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr "Template Search Results"
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr "Template query..."
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr "Search Templates"
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr "All Fields"
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr "Name"
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr "Description"
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr "All Folders"
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr "Start"
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr "Prev"
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr "Next"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"

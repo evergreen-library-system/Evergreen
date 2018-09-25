@@ -13,6 +13,14 @@
         <div class="panel-body">
           <div ng-if="copy_barcode" class="strong-text-2">{{copy_barcode}}</div>
           {{evt.desc}}
+          <div ng-if="evt.textcode == 'ITEM_ON_HOLDS_SHELF'"> 
+	       <a target="_blank" href="[% ctx.base_path %]/staff/circ/patron/{{patronID}}/checkout">{{patronName}}</a>.
+            <div>
+		<label><input type="checkbox" ng-model="formdata.clearHold"/> 
+		[% l('Cancel this hold upon checkout?') %]</label>
+	    </div>
+
+	  </div>
         </div>
       </div>
     </div>

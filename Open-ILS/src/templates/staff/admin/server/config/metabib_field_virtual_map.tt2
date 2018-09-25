@@ -1,0 +1,41 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Virtual Field Data Providers");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'MetabibFieldVirtualMap';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/server/config/metabib_field_virtual_map.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Virtual Field Data Providers') %]
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    idl-class="cmfvm"
+    grid-controls="gridControls"
+    features="-multiselect"
+    main-label="{{cmf.label()}}"
+    persist-key="admin.server.config.metabib_field_virtual_map.grid"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_record" label="[% l('Delete Record') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('ID') %]"    path='id' required hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Virtual') %]" path="virtual.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Real') %]" path="real.label"></eg-grid-field>
+    <eg-grid-field label="[% l('Weight') %]" path="weight"></eg-grid-field>
+</eg-grid>
+
+[% END %]

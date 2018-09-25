@@ -3,6 +3,7 @@
     <button type="button" class="close" 
       ng-click="ok()" aria-hidden="true">&times;</button>
     <h4 class="modal-title">[% l('Hold Slip') %]</h4>
+    <img src="/images/portal/holds.png" alt="holds icon" style="padding:5px;">
   </div>
   <div class="modal-body">
     <div ng-switch on="hold.behind_desk">
@@ -28,9 +29,13 @@
       <span>[% l('Author:') %]</span>
       <span>{{author}}</span>
     </div>
+    <div>
+      <span>[% l('Call Number:') %]</span>
+      <span>{{call_number.prefix}}&nbsp;{{call_number.label}}&nbsp;{{call_number.suffix}}</span>
+    </div>
     <br/>
     <div>
-    
+
     <div ng-show="patron.alias">
       [% l('Hold for patron {{patron.alias}}') %]
     </div>
@@ -40,14 +45,30 @@
       {{patron.first_given_name}} {{patron.second_given_name}}
       [% END %]
     </div>
+    <div ng-hide="patron.alias">
+      <div ng-if="patron.pref_family_name || patron.pref_first_given_name || patron.pref_second_given_name">
+        [% l('Preferred name: [_1], [_2] [_3]', 
+          '{{patron.pref_family_name || patron.family_name}}',
+          '{{patron.pref_first_given_name || patron.first_given_name}}',
+          '{{patron.pref_second_given_name}}') 
+        %]
+      </div>
+    </div>
     <div>
       <span>[% l('Patron Barcode:') %]</span>
       <span>{{patron.card.barcode}}</span>
     </div>
+    <div ng-if="hold.phone_notify">Notify by phone: {{hold.phone_notify}}</div>
+    <div ng-if="hold.sms_notify">Notify by text: {{hold.sms_notify}}</div>
+    <div ng-if="hold.email_notify == 't'">Notify by email: {{patron.email}}</div>
     <br/>
     <div>
       <span>[% l('Request Date:') %]</span>
       <span>{{hold.request_time | date:$root.egDateFormat}}</span>
+    </div>
+    <div>
+      <span>[% l('Request Notes:') %]</span>
+      <ul><li ng-repeat="n in hold_notes"><strong>{{n.title}}</strong>: {{n.body}} &nbsp;<span ng-if="n.slip =='t' || n.pub == 't'">[Patron-visible]</span></li></ul>
     </div>
     <div>
       <span>[% l('Slip Date:') %]</span>

@@ -110,15 +110,13 @@ Profile* button to map this information.
   information.
 . Add the subfields that contain specific copy information to the appropriate
   copy field.
-. Select the *Keep* box if Evergreen should keep this holdings tag in the
-  record after it is imported. Otherwise, Evergreen will remove this holdings
-  tag.
 . At a minimum, you should add the subfields that identify the *Circulating
 Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
-. For more details, see the <<_import_item_attributes_2,full list of import fields>>
+. For more details, see the full list of import fields.
 
-NOTE: All fields (except for Name, Tag and Keep) can contain static
-values, a MARC subfield code (such as "a"), or an XPATH query.
+NOTE: All fields (except for Name and Tag) can contain a MARC subfield code
+(such as "a") or an XPATH query. You can also use the
+<<lse-vandelay,related library settings>> to set defaults for some of these fields.
 
 image::media/batch_import_profile.png[Partial Screenshot of a Holdings Import Profile]
 

@@ -1,0 +1,13 @@
+BEGIN;
+
+SELECT plan(1);
+
+-- Check that config.org_unit_setting_type of circ.holds.max_duplicate_holds exists.
+SELECT isnt_empty(
+    'SELECT * FROM config.org_unit_setting_type WHERE name = $$circ.holds.max_duplicate_holds$$',
+    'config.org_unit_setting_type circ.holds.max_duplicate_holds exists'
+);
+
+SELECT * FROM finish();
+
+ROLLBACK;

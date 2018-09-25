@@ -1,6 +1,9 @@
 Triggered Events and Notices
 ----------------------------
 
+Introduction
+~~~~~~~~~~~~
+
 Improvements to the Triggered Events interface enables you to easily filter,
 sort, and print triggered events from the patron's account or an item's details.
 This feature is especially useful when tracking notice completion from a
@@ -13,11 +16,10 @@ You can access *Triggered Events* from two Evergreen interfaces: a patron's
 account or an item's details.  
 
 To access this interface in the patron's account, open the patron's record and
-click *Other* -> *Triggered Events*.
+click *Other* -> *Triggered Events / Notifications*.
 
 To access this interface from the item's details, enter the item barcode into
-the *Item Status* screen, and click *Actions for Selected Items* -> *Triggered
-Events*.
+the *Item Status* screen, and click *Actions* -> *Show* -> *Triggered Events*.
 
 Information about the patron, the item, and the triggered event appear in the
 center of the screen.  Add or delete columns to the display by right clicking on

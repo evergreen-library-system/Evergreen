@@ -1,0 +1,16 @@
+
+/* filter checkbox labels move to bottom */
+.checkbox label {
+  margin-bottom: .1rem;
+}
+
+/* BS default height is 2.25rem + 2px which is quite chunky.
+ * This better matches the text input heights */
+select.form-control:not([size]):not([multiple]) {
+  padding: .355rem .55rem;
+  height: 2.2rem;
+}
+
+#staffcat-search-form {
+  border-bottom: 2px dashed rgba(0,0,0,.225);
+}

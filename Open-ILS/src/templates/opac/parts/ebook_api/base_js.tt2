@@ -12,6 +12,9 @@ var l_strings = {};
 l_strings.download = '[% l('Download') %]';
 l_strings.ready_for_checkout = '[% l('Ready for Checkout') %]';
 l_strings.suspended = '[% l('Suspended') %]';
+l_strings.checkout = '[% l('Checkout') %]';
+l_strings.place_hold = '[% l('Place Hold') %]';
+l_strings.cancel_hold = '[% l('Cancel Hold') %]';
 
 // give us cookies!
 dojo.require("dojo.cookie");
@@ -39,10 +42,27 @@ dojo.forEach(vendor_list, function(v) {
     cookie_registry.push(v);
 });
 
+// essential info for performing a transaction
+var ebook_action = {};
+[%- IF CGI.param("action").defined %]
+ebook_action.type = '[% CGI.param("action") %]';
+[%- END -%]
+[%- IF CGI.param("title").defined %]
+ebook_action.title_id = '[% CGI.param("title") %]';
+[%- END -%]
+[%- IF CGI.param("vendor").defined %]
+ebook_action.vendor = '[% CGI.param("vendor") %]';
+[%- END -%]
+
 [% IF ctx.user %]
 // user- or login-specific vars
 var authtoken = '[% ctx.authtoken %]';
 var patron_id = '[% ctx.active_card %]'; // using barcode of active card as patron ID
+[%- IF ctx.user.email %]
+var patron_email = '[% ctx.user.email | html %]';
+[%- ELSE %]
+var patron_email = null;
+[%- END %]
 
 var myopac_page;
 [% IF myopac_page %]
@@ -67,5 +87,9 @@ dojo.addOnLoad(function() {
 [%- IF ctx.user %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/relation.js[% ctx.cache_key %]"></script>
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/loggedin.js[% ctx.cache_key %]"></script>
+[%- END %]
+
+[%- IF (ctx.page == 'rresult' OR ctx.page == 'record') %]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/ebook_api/avail.js[% ctx.cache_key %]"></script>
 [%- END %]
 

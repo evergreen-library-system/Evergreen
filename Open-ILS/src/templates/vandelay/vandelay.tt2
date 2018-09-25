@@ -2,6 +2,7 @@
 [% ctx.page_title = l('MARC Import/Export') %]
 
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/vandelay/vandelay.js'> </script>
+<script type="text/javascript" src='[% ctx.media_prefix %]/js/file-saver/FileSaver.min.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/skin/[% ctx.skin %]/vandelay.css'/>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/css/theme/[% ctx.skin %]/vandelay.css'/>
 

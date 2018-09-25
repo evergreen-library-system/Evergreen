@@ -787,9 +787,15 @@ function AcqLiTable() {
             oilsBasePath + "/acq/lineitem/worksheet/" + li.id() + 
             '?source=' + encodeURIComponent(location.pathname + location.search)
 
-        nodeByName("show_requests_link", row).href =
-            oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id() + 
-            '?source=' + encodeURIComponent(location.pathname + location.search)
+        if (!IAMBROWSER) {
+            nodeByName("show_requests_link", row).href =
+                oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id() +
+                '?source=' + encodeURIComponent(location.pathname + location.search);
+        } else {
+            nodeByName("show_requests_link", row).href =
+                "/eg/staff/acq/requests/lineitem/" + li.id();
+            nodeByName("show_requests_link", row).setAttribute('target','_top');
+        }
 
         dojo.query('[attr=title]', row)[0].onclick = function() {self.drawInfo(li.id())};
         dojo.query('[name=copieslink]', row)[0].onclick = function() {self.drawCopies(li.id())};
@@ -2663,6 +2669,9 @@ function AcqLiTable() {
                                     r.lid[id].cancel_reason
                                 );
                                 self.updateLidState(self.copyCache[id]);
+                                if (r.li_update_needed) {
+                                    location.href = location.href; // sledgehammer
+                                }
                             }
                         }
                     }

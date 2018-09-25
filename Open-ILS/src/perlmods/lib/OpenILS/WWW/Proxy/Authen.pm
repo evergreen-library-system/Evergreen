@@ -39,8 +39,8 @@ sub handler {
     return Apache2::Const::NOT_FOUND unless (@$perms);
 
     my $cgi = new CGI;
-    my $auth_ses = $cgi->cookie('ses') || $cgi->param('ses');
-    my $ws_ou = $apache->dir_config('OILSProxyLoginOU') || $cgi->cookie('ws_ou') || $cgi->param('ws_ou');
+    my $auth_ses = $cgi->param('ses') || $cgi->cookie('ses');
+    my $ws_ou = $apache->dir_config('OILSProxyLoginOU') || $cgi->param('ws_ou') || $cgi->cookie('ws_ou');
 
     my $url = $cgi->url;
     my $bad_auth = 1; # Assume failure until proven otherwise ;)

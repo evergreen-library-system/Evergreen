@@ -1,0 +1,50 @@
+migfg	http://id.loc.gov/vocabulary/genreFormSchemes/migfg	Moving image genre-form guide	
+reveal	http://id.loc.gov/vocabulary/genreFormSchemes/reveal	REVEAL: fiction indexing and genre headings	
+dct	http://id.loc.gov/vocabulary/genreFormSchemes/dct	Dublin Core list of resource types	
+gmgpc	http://id.loc.gov/vocabulary/genreFormSchemes/gmgpc	Thesaurus for graphic materials: TGM II, Genre and physical characteristic terms	
+rbgenr	http://id.loc.gov/vocabulary/genreFormSchemes/rbgenr	Genre terms: a thesaurus for use in rare book and special collections cataloguing	
+sgp	http://id.loc.gov/vocabulary/genreFormSchemes/sgp	Svenska genrebeteckningar fr periodika	"sv"=>"Svenska genrebeteckningar fr periodika"
+estc	http://id.loc.gov/vocabulary/genreFormSchemes/estc	Eighteenth century short title catalogue, the cataloguing rules. New ed.	
+ftamc	http://id.loc.gov/vocabulary/genreFormSchemes/ftamc	Form terms for archival and manuscripts control	
+alett	http://id.loc.gov/vocabulary/genreFormSchemes/alett	An alphabetical list of English text types	
+gtlm	http://id.loc.gov/vocabulary/genreFormSchemes/gtlm	Genre terms for law materials: a thesaurus	
+rbprov	http://id.loc.gov/vocabulary/genreFormSchemes/rbprov	Provenance evidence: a thesaurus for use in rare book and special collections cataloging	
+rbbin	http://id.loc.gov/vocabulary/genreFormSchemes/rbbin	Binding terms: a thesaurus for use in rare book and special collections cataloguing	
+fbg	http://id.loc.gov/vocabulary/genreFormSchemes/fbg	Films by genre /dd>	
+isbdmedia	http://id.loc.gov/vocabulary/genreFormSchemes/isbdmedia	ISBD Area 0 [media]	
+marccategory	http://id.loc.gov/vocabulary/genreFormSchemes/marccategory	MARC form category term list	
+gnd-music	http://id.loc.gov/vocabulary/genreFormSchemes/gnd-music	Gemeinsame Normdatei: Musikalische Ausgabeform	
+proysen	http://id.loc.gov/vocabulary/genreFormSchemes/proysen	PrÃ¸ysen: emneord for PrÃ¸ysen-bibliografien	
+rdacarrier	http://id.loc.gov/vocabulary/genreFormSchemes/rdacarrier	Term and code list for RDA carrier types	
+gnd	http://id.loc.gov/vocabulary/genreFormSchemes/gnd	Gemeinsame Normdatei	
+cjh	http://id.loc.gov/vocabulary/genreFormSchemes/cjh	Center for Jewish History thesaurus	
+rbpri	http://id.loc.gov/vocabulary/genreFormSchemes/rbpri	Printing & publishing evidence: a thesaurus for use in rare book and special collections cataloging	
+fgtpcm	http://id.loc.gov/vocabulary/genreFormSchemes/fgtpcm	Form/genre terms for printed cartoon material	
+rbpub	http://id.loc.gov/vocabulary/genreFormSchemes/rbpub	Printing and publishing evidence: a thesaurus for use in rare book and special collections cataloging	
+gmd	http://id.loc.gov/vocabulary/genreFormSchemes/gmd	Anglo-American Cataloguing Rules general material designation	
+rbpap	http://id.loc.gov/vocabulary/genreFormSchemes/rbpap	Paper terms: a thesaurus for use in rare book and special collections cataloging	
+rdamedia	http://id.loc.gov/vocabulary/genreFormSchemes/rdamedia	Term and code list for RDA media types	
+marcsmd	http://id.loc.gov/vocabulary/genreFormSchemes/marcsmd	MARC specific material form term list	
+saogf	http://id.loc.gov/vocabulary/genreFormSchemes/saogf	Svenska Ã¤mnesord - Genre/Form	"sv"=>"Svenska Ã¤mnesord - Genre/Form"
+lcgft	http://id.loc.gov/vocabulary/genreFormSchemes/lcgft	Library of Congress genre/form terms for library and archival materials	
+muzeukv	http://id.loc.gov/vocabulary/genreFormSchemes/muzeukv	MuzeVideo UK DVD and UMD film genre classification	
+mim	http://id.loc.gov/vocabulary/genreFormSchemes/mim	Moving image materials: genre terms	
+nmc	http://id.loc.gov/vocabulary/genreFormSchemes/nmc	Revised nomenclature for museum cataloging: a revised and expanded version of Robert C. Chenhall's system for classifying man-made objects	
+gnd-content	http://id.loc.gov/vocabulary/genreFormSchemes/gnd-content	Gemeinsame Normdatei: Beschreibung des Inhalts	
+bgtchm	http://id.loc.gov/vocabulary/genreFormSchemes/bgtchm	Basic genre terms for cultural heritage materials	
+gsafd	http://id.loc.gov/vocabulary/genreFormSchemes/gsafd	Guidelines on subject access to individual works of fiction, drama, etc	
+marcform	http://id.loc.gov/vocabulary/genreFormSchemes/marcform	MARC form of item term list	
+marcgt	http://id.loc.gov/vocabulary/genreFormSchemes/marcgt	MARC genre terms	
+barngf	http://id.loc.gov/vocabulary/genreFormSchemes/barngf	Svenska Ã¤mnesord fÃ¶r barn - Genre/Form	"sv"=>"Svenska Ã¤mnesord fÃ¶r barn - Genre/Form"
+ngl	http://id.loc.gov/vocabulary/genreFormSchemes/ngl	Newspaper genre list	
+rvmgf	http://id.loc.gov/vocabulary/genreFormSchemes/rvmgf	ThÃ©saurus des descripteurs de genre/forme de l'UniversitÃ© Laval	"fr"=>"ThÃ©saurus des descripteurs de genre/forme de l'UniversitÃ© Laval"
+tgfbne	http://id.loc.gov/vocabulary/genreFormSchemes/tgfbne	TÃ©rminos de gÃ©nero/forma de la Biblioteca Nacional de EspaÃ±a	
+nbdbgf	http://id.loc.gov/vocabulary/genreFormSchemes/nbdbgf	NBD Biblion Genres Fictie	
+rbtyp	http://id.loc.gov/vocabulary/genreFormSchemes/rbtyp	Type evidence: a thesaurus for use in rare book and special collections cataloging	
+radfg	http://id.loc.gov/vocabulary/genreFormSchemes/radfg	Radio form / genre terms guide	
+gnd-carrier	http://id.loc.gov/vocabulary/genreFormSchemes/gnd-carrier	Gemeinsame Normdatei: DatentrÃ¤gertyp	
+gatbeg	http://id.loc.gov/vocabulary/genreFormSchemes/gatbeg	Gattungsbegriffe	"de"=>"Gattungsbegriffe"
+rdacontent	http://id.loc.gov/vocabulary/genreFormSchemes/rdacontent	Term and code list for RDA content types	
+isbdcontent	http://id.loc.gov/vocabulary/genreFormSchemes/isbdcontent	ISBD Area 0 [content]	
+nimafc	http://id.loc.gov/vocabulary/genreFormSchemes/nimafc	NIMA form codes	
+amg	http://id.loc.gov/vocabulary/genreFormSchemes/amg	Audiovisual material glossary	

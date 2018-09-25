@@ -1,0 +1,876 @@
+Evergreen 3.1 Release Notes
+===========================
+:toc:
+:numbered:
+
+Evergreen 3.1.5
+----------------
+This release contains bug fixes improving on Evergreen 3.1.4.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Several strings are now displayed in the correct translation.
+* Right clicking in grids results in more intuitive behavior.
+* Usernames and barcodes containging the _%_ character no longer
+experience problems logging in.
+* Fixes cases in which the web client stops loading after the toolbar.
+* Fixes problems in which using the web client in multiple tabs leads
+to data inconsistency.
+* Fixes an issue that caused authentication session checks to spam
+the system and needlessly fill up logs.
+* Boolean fields within grid views now say "Yes"/"No" instead of 
+"true"/"false".
+* Fixes sorting issues in the patron search.
+* Staff can now choose to print out only a selection of items out,
+instead of having to print them all.
+* The patron triggered event screen now respects the
+`circ.staff.max_visible_event_age` library setting.
+* Fixes an issue which caused an exception to be thrown during
+non-cataloged item checkout.
+* Fixes permission issues related to merging users.
+* The bibliographic record summary now displays the call number that
+matches the library's classification system.
+* The copy editor now makes shelving locations visible to catalogers
+from other libraries as needed.
+* Once a record is overlayed in the Z39.50 screen, it is no longer
+marked for overlay.
+* Fixes several issues with the item status list view.
+* When adding new copies, the circulation library now defaults to the
+call number's owning library.
+* Fixes display issues with the Print Item Labels page.
+* Fixes an issue in which the staff client and the OPAC displayed
+different counts of available items.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.5 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* John Yorio
+
+
+Evergreen 3.1.4
+----------------
+This release contains bug fixes improving on Evergreen 3.1.3.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes right-click issues with the Web client grids
+* Fixes an issue with the Default SMS Carrier in the patron edit form.
+* Fixes an issue that allowed overdue notices to be sent to a patron
+whose long overdue item has been paid for.
+* Checking in precat items now displays the "Route to Cataloging" alert each
+time the item is checked in.
+* Fixes an issue where alerts that had been cleared by a check-in continued
+to display.
+* Fixes an issue in which the Adjust to Zero feature
+does not close a checked-in lost circ.
+* Deleted copies that are still checked out can now be checked in.
+* Fixes a mislabeled column in the patron checkout grid.
+* Grocery bills are no longer styled the same way as overdue bills.
+* Fixes an error with the missing pieces functionality.
+* Courier codes now display in the transit slip receipt preview.
+* Fixes several issues related to adding volumes.
+* Fixes several issues related to empty volumes.
+* Fixes several issues related to item and volume transfers.
+* Fixes several issues with checkboxes in the volume/copy editor.
+* The Item Status grid now displays OU shortnames instead of full names
+for the "Circulation Library" column.
+* The Volume/Copy editor now allows users to remove a value from the Age
+Hold Protection field.
+* Barcode completion now works in copy buckets.
+* The Z39.50 interface now notices when another record has been marked
+for overlay.
+* Fixes a display issue for the Remove MARC Field Groups checkboxes in
+the Z39.50 interface.
+* Fixes a performance issue for the Validate button in the MARC Editor.
+* Fixes an incorrect close tag in the Print Item Labels toolbar.
+* Better scoping of copy tags in search results.
+* Prevents sending invalid search.highlight_display_fields calls.
+* Electronic Resource links now open in a new tab.
+* Fixes an issue with the fiscal year close-out operation.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.4 point release of
+Evergreen:
+
+* A. Bellenir
+* Adam Bowling
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+Evergreen 3.1.3
+---------------
+This release contains bug fixes improving on Evergreen 3.1.2.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes specific cases in which deleted records appear in search results.
+* Fixes a performance issue with deleting patrons.
+* The hold shelf dialog popup now lists the patron's notification
+preferences.
+* Fixes an issue that prevented editing items when a monograph part
+is present.
+* Patron information is now available for use in the bills_current
+and bills_historical receipt templates.
+* The browser's "This page may contain unsaved data" warning now 
+appears when users click the update
+expire date button in a patron account and attempt to navigate away
+without saving.
+* The holds tab of the patron record now includes a monograph part
+column.
+* The barcode box in the checkout screen
+no longer hovers above patron record tabs when
+staff users scroll down.
+* Fixes an issue with the date of birth in the patron edit scren.
+* The patron account bills grid are now color-coded by the item's
+status.
+* Fixes an issue with the dropdown of billing type options.
+* The Item Status screen now includes as a floating group column.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.3 point release of
+Evergreen:
+
+* BC Libraries Cooperative
+* A. Bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Bill Erickson
+* Blake Graham-Henderson
+* Kyle Huckins
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Dan Pearl
+* Mike Rylander
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
+Evergreen 3.1.2
+---------------
+
+This release contains bug fixes improving on Evergreen 3.1.1.   Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Cataloging
+^^^^^^^^^^
+
+* The MARC editor now handles 008 fields better.
+* Adds spaces between subfields when suggesting a call
+number for a new volume.
+* MarcXML exports from the MARC Batch Import/Export ->
+Export Records screen now downloads the file, rather than opening
+it in the browser.
+* The Item Status Circulation Library column now displays a 
+shortname rather than the full library name.
+* The Item Status Remaining Renewals column now displays
+correctly.
+* The Item Status now has a "Last Renewal Workstation" column
+available.
+* Fixes the circulation counts displayed in Item Status Details.
+* Removes an error that got thrown in the Holdings View when a call number
+contains no copy.
+* Fixes an issue where multiple copies with different values for required
+statistical categories could not be edited and saved in batch.
+* Add an option to remove floating in the copy editor.
+* Fixes an issue with the floating dropdown in the copy editor.
+* Fixes a problem in which the copy template didn't properly copy
+certain objects.
+* Reduces the number of API calls that the MARC Editor requires.
+* The order of the Z39.50 servers on the Z39.50 import screen
+no longer relies on capitalization.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue that prevented the offline patron registration
+screen from loading.
+* Fixes an issue with searching patrons by permission group.
+* The barcodes in the patron search are now clickable.
+* Staff members can now manually override the patron juvenile
+flag value, regardless of the patron's date of birth.
+* Checkboxes on patron registration screen are now properly aligned
+with other fields.
+* The user permission group dropdowns in the patron registration,
+edit, and search interfaces now have scrollbars.
+* The date picker on the checkout screen is now hidden unless
+circ staff activates a specific due date option.
+* The check-in screen now includes a copy status column.
+* The Merge Patrons interface now displays the date of birth.
+* The user bucket screen now displays the Bucket ID.
+* The payment button on patron bills screen is now inactive if the
+Payment Received field is blank.
+* The Bill History receipt now includes a Finish date and a Last
+Payment date.
+* When a patron summary contains an image of the patron,
+that image tag now has a null alt attribute to remove it from
+the flow of a screen reader.
+* Corrects an issue that caused the transit dialog to show the
+wrong branch.
+* Corrects an issue with printing transit lists.
+* "Find another target" on transiting hold no longer leaves the 
+copy "in-transit".
+* The images now display to distinguish hold and transit slips.
+* The Clearable Holds list printout now only shows holds that have
+expired.
+* Restores the call number prefix and suffix fields to the holds
+pull list.
+* The documentation at the top of the hold shelf slip template
+adds `patron.alias`.
+* The cursor in the in-house use screen now automatically goes
+to the barcode field.
+* The in-house use screen now shows a copy status column.
+* Add support for converting change to patron credit in the patron bills
+interface, consistent with the XUL feature.
+* Fixes a bug that caused pickup/request library fields to be
+blank sometimes.
+* Fixes a bug in the offline org unit tree.
+
+Command-line system administration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* The novelist entry in `eg_vhost.conf` includes two new
+parameters.
+* Corrects an issue with the `--max-sleep` argument on the
+`action_trigger_runner.pl` support script.
+* Corrects an issue with how the `eg_pbx_allocator.pl` script
+detects an existing lock file.
+* The 3.0.2-3.0.3 upgrade script disables triggers before
+recalculating bib visibility.
+
+Public catalog
+^^^^^^^^^^^^^^
+
+* Fixes an issue that caused records with located URIs to be
+retrieved in Copy Location and Copy Location Group searches.
+* Fixes an error message that appeared in the search box
+in the public catalog while placing hold after an advanced search.
+* Restores the display of copy information for the user's
+preferred library in the public catalog.
+* Author and contributor names are no longer highlighted in 
+search results when the user has turned off highlighting.
+* Fixes regression errors in the search results page.
+* Removes redundant call numbers from the Show More Details
+search results.
+* The cast field in the catalog is now taken from the 511 field
+when first indicator = 1, rather than the 508.
+* Fixes a display issue caused by editing holds.
+* Repairs broken author search links on the catalog record page.
+
+Serials
+^^^^^^^
+
+* Fixes an issue that prevented users from searching for
+receivable issues using Database ID or ISSN in the Serials
+Batch Receive interface.
+
+General
+^^^^^^^
+* Pins AngularJS support to version 1.6, which prevents unsupported
+AngularJS versions (such as 1.7) from breaking the build process.
+* Adds some padding to the bottom of Web Client interfaces.
+* Logins now honor all org unit timeout settings.
+* Evergreen will now identify and handle invalid timezones.
+* Fixes an issue where a column header in some interfaces were automatically
+highlighted in green when retrieving the interface.
+* The parts column in the Item Status screen now displays parts data.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.2 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Lynn Floyd
+* Rogan Hamby
+* Kyle Huckins
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Katie G. Martin
+* Terran McCanna
+* Michele Morgan
+* Dan Pearl
+* Mike Rylander
+* Laura Sachjen
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+* Bob Wicksall
+
+
+
+Evergreen 3.1.1
+---------------
+This release contains bug fixes improving on Evergreen 3.1.0.
+
+* Fixes a performance issue with the Patron Billing History screen and
+other screens that cause Flattener.pm to re-create joins
+unnecessarily.
+* Fixes an issue that prevented patron alerts from showing to staff at
+other libraries.
+* Corrects the "Holdable" attribute display on the Item Status detailed
+view.
+* Fixes the ability to delete multiple copies from Item Status.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.1 point release of
+Evergreen:
+
+* Jason Boyer
+* Bill Erickson
+* Morkor Quarshie
+* Jane Sandberg
+* Remington Steed
+* Jason Stephenson
+* Kevin Tran
+* Dan Wells
+
+
+3.1.0 Upgrade Notes
+-------------------
+Like many major Evergreen upgrades, 3.1 requires a full reingest of your
+bibliographic records before the system is usable again.  While a basic reingest
+is included at the end of the upgrade script, it happens after the main
+COMMIT, so it is safe to cancel that and run the required reingest as you see
+fit (e.g. via pingest.pl).
+
+
+3.1.0 New Features
+------------------
+
+Administration
+~~~~~~~~~~~~~~
+
+New Latency Tester Tool
+^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen Web Staff Client now includes a section called *Tests* linked from
+*Administration -> Workstation*. The *Tests* page houses a simple tool
+that can be used to test the latency of the websocket connection between the
+client and the server (via the `opensrf.echo` service).
+
+This page displays which Evergreen host server is being queried. Upon hitting
+the blue "Start Test" button for the first time, it will issue 10 sequentially
+fired requests in order to get a solid initial average. Clicking the button a
+second time will take one more measurement and recalculate the average
+latency. The results can be copied to clipboard for troubleshooting purposes
+and also cleared from display.
+
+marc_export --uris option
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The marc_export support script now has a `--uris` option (short form:
+`-u`) to export records with located URIs (i.e. electronic resources).  When
+used by itself, it will export only records that have located URIs.  When
+used in conjunction with `--items`, it will add records with located URIs
+but no items/copies to the output.  If combined with a `--library` or
+`--descendants` option, this option will limit its output to those
+records with URIs at the designated libraries.  The best way to use
+this option is in combination with the `--items` and one of the
+`--library` or `--descendants` options to export *all* of a library's
+holdings both physical and electronic.
+
+
+Architecture
+~~~~~~~~~~~~
+
+Sample Data Includes Surveys
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Concerto sample data set now includes patron surveys, questions,
+answers, and responses.
+
+Virtual Index Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^
+The practical purpose of Virtual Index Definitions is to supply an Evergreen
+administrator with the ability to control the weighting and field inclusion of
+values in the general keyword index, commonly referred to as "the blob,"
+without requiring tricky configuration that has subtle semantics, an
+over-abundance of index definitions which can slow search generally, or the
+need to reingest all records on a regular basis as experiments are performed
+and the configuration refined. Significant results of recasting keyword indexes
+as a set of one or more Virtual Index Definitions will be simpler search
+configuration management, faster search speed overall, and more practical
+reconfiguration and adjustment as needed.
+
+Previously, in order to provide field-specific weighting to
+keyword matches against titles or authors, an administrator must duplicate many
+other index definitions and supply overriding weights to those duplicates. This
+not only complicates configuration, but slows down record ingest as well as
+search. It is also fairly ineffective at achieving the goal of weighted keyword
+fields. Virtual Index Definitions will substantially alleviate the need for
+these workarounds and their consequences.
+
+  * A Virtual Index Definition does not require any configuration for
+extracting bibliographic data from records, but instead can become a sink for
+data collected by other index definitions, which is then colocated together to
+supply a search target made up of the separately extracted data. Virtual Index
+Definitions are effectively treated as aggregate definitions, matching across
+all values extracted from constituent non-virtual index definitions.  They can
+further make use of the Combined class functionality to colocate all values in a
+class together for matching even across virtual fields.
+
+  * Configuration allows for weighting of constituent index definitions that
+participate in a Virtual Index Definition. This weighting is separate from the
+weighting supplied when the index definition itself is a search target.
+
+  * The Evergreen QueryParser driver returns the list of fields actually
+searched using every user-supplied term set, including constituent expansion
+when a Virtual Index Definition is searched. In particular, this will facilitate
+Search Term Highlighting described below.
+
+  * Stock configuration changes make use of pre-existing, non-virtual index
+definitions mapped to new a Virtual Index Definition that implements the
+functionality provided by the `keyword|keyword` index definition. The
+`keyword|keyword` definition is left in place for the time being, until more data
+can be gathered about the real-world effect of removing it entirely and
+replacing it with Virtual Index Definition mappings.
+
+  * New system administration functions will be created to facilitate
+modification of Virtual Index Definition mapping, avoiding the need for a full
+reingest when existing index definitions are added or removed from a virtual
+field.
+
+Increased use of Metabib Display Fields
++++++++++++++++++++++++++++++++++++++++
+We use Metabib Display Fields (newly available in 3.0) to render catalog search
+results, intermediate metarecord results, and record detail pages. This requires
+the addition of several new Metabib Display Field definitions, as well as Perl
+services to gather and render the data.
+
+We also use more Metabib Display Fields in the client. As a result,
+bibliographic fields will display in proper case in more client interfaces and
+in Evergreen reports.
+
+Interfaces
+++++++++++
+A new AngularJS "MARC Search/Facet Fields" interface has been created to replace
+the Dojo version, and both have been extended to support Virtual Index
+Definition data supplier mapping and weighting.
+
+Settings & Permissions
+++++++++++++++++++++++
+The new Virtual Index Definition data supplier mapping table,
+`config.metabib_field_virtual_map`, requires the same permissions as the
+MARC Search/Facet Fields interface: CREATE_METABIB_FIELD, UPDATE_METABIB_FIELD,
+DELETE_METABIB_FIELD, or ADMIN_METABIB_FIELD for all actions
+
+Backend
++++++++
+There now exist several new database tables and functions primarily in support
+of search highlighting. Additionally, the QueryParser driver for Evergreen has
+been augmented to be able to return a data structure describing how the search
+was performed, in a way that allows a separate support API to gather a
+highlighted version of the Display Field data for a given record.
+
+Default Weights
++++++++++++++++
+By default, the following fields will be weighted more heavily in keyword
+searches. Administrators can change these defaults by changing the values in the
+ "All searchable fields" virtual index in the "MARC Search/Facet Fields"
+interface.
+
+  * Title proper
+  * Main title (a new index limited to the words in the 245a)
+  * Personal author
+  * All subjects
+
+In addition, note indexes and the physical description index will receive
+less weight in default keyword searches.
+
+Re-ingest or Indexing Dependencies
+++++++++++++++++++++++++++++++++++
+With the addition and modification of many Index Definitions, a full reingest is
+recommended.  However, search will continue to work as it did previously
+for those records that have not yet been reingested. Therefore a slow, rolling
+reingest is recommended.
+
+Performance Implications or Concerns
+++++++++++++++++++++++++++++++++++++
+Because the Metabib Display Fields infrastructure will eventually replace
+functionality that is significantly more CPU-intensive in the various forms of
+XML parsing, XSLT transformation, XPath calculation, and
+Metabib Virtual Record construction, it is expected that the overall CPU load
+will be reduced by this development, and ideally the overall time required to
+perform and render a search will likewise drop. It is unlikely that the speed
+increase will be visible to users on a per-search basis, but that search in
+aggregate will become a smaller consumer of resources.
+
+
+Cataloging
+~~~~~~~~~~
+
+Track Record Merges
+^^^^^^^^^^^^^^^^^^^
+When 2 or more bib records are merged, all records involved are stamped
+with a new `merge_date` value.  For any bib record, this field indicates
+the last time it was involved in a merge.  At the same time, all
+subordinate records (i.e. those deleted as a product of the merge) are
+stamped with a `merged_to` value indicating which bib record the source
+record was merged with.
+
+In the browser client bib record display, a warning alert now appears
+along the top of the page (below the Deleted alert) indicating when a
+record was used in a merge, when it was merged, and which record it was
+merge with, rendered as a link to the target record.
+
+
+Circulation
+~~~~~~~~~~~
+
+Alternate Patron Hold Pickup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This feature adds a bit of convenience to a common task: checking out
+an item on hold to another patron (typically a family member or helper).
+
+When you checkout the item, you will get a pop-up window with warnings associated
+with this item.  The "ITEM_ON_HOLDS_SHELF" message is now expanded to
+
+ * Let you know the name of the person who had placed the hold.
+ * Give you the option (in the form of a checkbox) of cancelling the
+   hold placed by the above-named patron.  (Checked = Cancel the hold;
+   Unchecked = Leave the hold in place)
+
+The initial value of the checkbox is derived from the
+`circ.clear_hold_on_checkout` organizational setting.
+
+If the operator has CANCEL_HOLD privilege, then if the checkbox is checked and
+the checkout is allowed to proceed, the hold will be cancelled with a note that
+the item was checked out to another patron.
+
+This feature is available in the browser-based staff client.
+
+New Patron Billing Statement
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen web staff client now includes a patron billing statement,
+which summarizes a patron's bills, credits and payments in a familiar
+layout.  This can be found on the "Statement" tab of the Patron Bill
+Details page. (From the Patron Bills page, double-click a row to view
+its details, or choose "Full Details" from the Actions menu.)
+
+Enhanced Billing Timestamp Support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Previously, billings had to make do with a single timestamp attempting
+to fill two different roles.  In the case of an overdue fine, the
+timestamp represented the *end* of the fine period for that billing,
+while for all other fines, the timestamp was merely the time the bill
+was created.  This setup generally worked, but not without confusion,
+and limited our ability to understand and process the data.
+
+Billings will now have up to three timestamps: a create date, and when
+applicable, a fine period start and a fine period end.  This clarifies
+and simplifies things like backdating, retrospective fine generation,
+account balancing for negative balance avoidance, and billing timeline
+views.
+
+Copy Alerts and Suppression Matrix
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Copy Alerts feature allows library staff to add customized alert
+messages to copies. The copy alerts will appear when a specific event
+takes place, such as when the copy is checked in, checked out, or
+renewed. Alerts can be temporary or persistent: temporary alerts will be
+disabled after the initial alert and acknowledgement from staff, while
+persistent alerts will display each time the alert event takes place.
+Copy Alerts can be configured to display at the circulating or owning
+library only or, alternatively, when the library at which the alert
+event takes place is not the circulating or owning library.  Copy Alerts
+can also be configured to provide options for the next copy status that
+should be applied to an item.  Library administrators will have the
+ability to create and customize Copy Alert Types and to suppress copy
+alerts at specific org units.
+
+Copy alerts can be added via the volume/creator and the check in,
+check out, and renew pages.  Copy alerts can also be managed at the
+item status page.
+
+Copy alert types can be managed via the Copy Alert Types page in
+Local Administration, and suppression of them can be administered
+via the Copy Alert Suppression page under Local Administration.
+
+Place Multiple Holds At Once
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Users with the appropriate permissions now have the ability to place multiple
+title/metarecords holds at once. This feature is especially beneficial for book
+clubs and reading groups, which need to place holds on multiple copies of a
+title.
+
+In order to use the feature:
+
+  * Set the _Maximum number of duplicate holds allowed_ Library Setting
+    (`circ.holds.max_duplicate_holds`) to a number higher than 1
+  * Log in as a user with the CREATE_DUPLICATE_HOLDS
+
+When placing a title or metarecord hold, a _Number of copies_ field will
+display for these users. This field is not available when placing part, volume
+or copy holds.
+
+This feature does not change the way in which the system fills holds. The
+multiple holds will fill in the same way that they would if the user had placed
+multiple holds separately.
+
+New Notice Columns in Items Out Grid
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The grid in the patron "items out" page in the Evergreen web staff client has two new
+columns indicating the number of notifications generated for a given loan and the date of
+the most recent notification. These columns will allow circulation staff to better respond to
+patron questions about whether they were sent notification about an overdue item.
+
+The columns are based on the number of completed Action Trigger events on the
+loan that have a 'checkout.due' hook. In other words, they would include overdue
+and courtesy notices.
+
+A new library setting, "Exclude Courtesy Notices from Patrons Itemsout Notices Count",
+if set will cause the notice count and date fields to exclude courtesy notices.
+
+Patron Email Addresses Now Clickable In Web Staff Client
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a mailto link to the patron's email in their profile so it can
+be clicked to send and email to the patron. No new settings or
+permissions are included in this feature.
+
+Pickup Library for Staff-placed Holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds a new library setting, _circ.staff_placed_holds_fallback_to_ws_ou_,
+that helps determine the hold pickup library in cases where patrons don't
+have a preferred hold pickup library in their account and a staff member
+is placing the hold on their behalf.
+
+  * When this setting is true and the patron doesn't have a preferred
+  library listed, the hold pickup library will default to the
+  workstation's organizational unit.
+  * When this setting is false and the patron doesn't have a preferred
+  library listed, the hold pickup library will default to the
+  patron's home library.
+
+Public Catalog
+~~~~~~~~~~~~~~
+
+Search Term Highlighting
+^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen now highlights search terms on the public catalog's main search
+results page, the record detail page, and intermediate pages such as metarecord
+grouped results page. Highlighting search terms will help the user determine why
+a particular record (or set of records) was retrieved.
+
+Highlighting of matched terms uses the same stemming used to accomplish the
+search, as configured per field and class.
+
+This feature will help the user more quickly determine the relevance of a
+particular record by calling their attention to search terms in context. Lastly,
+it will help familiarize the user with how records are searched, including which
+fields are searched as well as exposing concepts like stemming.
+
+You can turn off search term highlighting by uncommenting the line
+`search.no_highlight = 1;` in `config.tt2`.
+
+When highlighting is generally enabled, it may be turned on or off on a per-page
+basis through the use of a UI component which will request the page again
+without highlighting.
+
+Highlighting of terms uses Template::Toolkit-driven CSS. A generic CSS class
+identifying a highlighted term, along with CSS classes identifying the search
+class and each search field are available for use for customization of the
+highlighting. A stock CSS template is provided as a baseline upon which sites
+may expand.
+
+
+Copy Location Filter Displays for System Searches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Shelving Location filter now displays on the advanced search page when
+a search is scoped to a library system, not just to an individual branch. If
+a library system is selected as the Search Library, the shelving location
+limiter will display any shelving location that is owned by the selected system
+or by the consortium. It will NOT display shelving locations owned by child
+branches.
+
+Multi-source Attributes
+^^^^^^^^^^^^^^^^^^^^^^^
+We now allow record attribute definitions to extract data using more than
+one strategy (XPath, tag+subfield, fixed field, etc.) as long as the values
+from various sources would, after normalization, have the same shape.
+
+Multilingual Search
++++++++++++++++++++
+This change allows us to configure multilingual search, by extracting values
+from both the 008 controlfield and the 041 datafield.  Because the values
+in each can be normalized to the same controlled list (and, in practice, are
+already from the same normalized value set), catalog searches can now use normal
+boolean search semantics to find records with various combinations of
+language attributes.
+
+E.g., in the concerto test data:
+
+  * `keyword: piano item_lang(eng) item_lang(ita)`
+
+
+Optional Display of Badges in Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new setting controls whether badges (popularity, etc.) are displayed
+in the catalog. If you do not wish badges to be displayed, set the
+`ctx.hide_badge_scores` setting to "true" in `config.tt2`.
+
+
+Miscellaneous
+~~~~~~~~~~~~~
+
+Fixes to patron name/username search indexes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When using pg_restore to restore an Evergreen database, some of the
+indexes used to speed up patron searches on names and usernames
+could be lost.
+
+This release fixes the underlying issue and re-creates the indexes
+in question.
+
+Details
++++++++
+When using pg_restore to restore an affected database, the
+"unaccent" indexes on actor.usr would not be created due to an
+unqualified function reference in `evergreen.unaccent_and_squash`.
+
+The function will be replaced to resolve the search path issue,
+and the following indexes on actor.usr will be dropped and then
+re-created:
+
+  * actor_usr_first_given_name_unaccent_idx;
+  * actor_usr_second_given_name_unaccent_idx;
+  * actor_usr_family_name_unaccent_idx;
+  * actor_usr_usrname_unaccent_idx;
+
+This will be done even if the indexes are already present, and may
+take a few minutes on a database with many patrons.
+
+
+3.1.0 Acknowledgments
+---------------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* Albany Public Library (Oregon)
+* Consortium of Ohio Libraries
+* CW MARS
+* Indiana State Library
+* Georgia Public Library Service
+* Hagerstown - Jefferson Township Library
+* Linn-Benton Community College
+* MassLNC
+* Pennsylvania Integrated Library System
+* Sage Library System
+* Union County Public Library (Indiana)
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Eva Cerninakova
+* Andi Chandler
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jeff Godin
+* Rogan Hamby
+* Angela Kilsdonk
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Fares Othman
+* Dan Pearl
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Kevin Tran
+* Cesar Velez
+* Dan Wells
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* Bibliomation
+* British Columbia Libraries Cooperative
+* Calvin College
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Greater Clarks Hill Regional Library System
+* Jordanian Library and Information Association
+* King County Library System
+* Knihovna Jabok
+* Linn-Benton Community College
+* MassLNC
+* Sigio
+* Traverse Area District Library
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.

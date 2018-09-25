@@ -1,0 +1,17 @@
+
+<div class="col-md-3">
+<form ng-submit="submitAuthorityId(args)" role="form" class="form-inline">
+  <div class="input-group">
+
+    <label class="input-group-addon"
+      for="record-retreive-id" >[% l('Authority Record Id') %]</label>
+
+    <input select-me="selectMe" class="form-control"
+      ng-model="args.record_id" focus-me="focusMe"
+      placeholder="[% l('Authority Record Id') %]"
+      id="record-retreive-id" type="text"/>
+
+  </div>
+  <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+</form>
+</div>

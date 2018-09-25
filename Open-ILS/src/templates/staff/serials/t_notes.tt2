@@ -1,0 +1,101 @@
+<form ng-submit="ok(note)" role="form">
+    <div class="modal-header">
+      <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+      <h4 ng-if="note_type == 'subscription'" class="modal-title">[% l('New Subscription Note') %]</h4>
+      <h4 ng-if="note_type == 'distribution'" class="modal-title">[% l('New Distribution Note') %]</h4>
+      <h4 ng-if="note_type == 'item'"         class="modal-title">[% l('New Item Note') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <input class="form-control" type="text"
+            ng-model="note.title" placeholder="[% l('Title...') %]"/>
+        </div>
+        <div class="col-md-3">
+          <label>
+            <input type="checkbox" ng-model="note.pub"/>
+            [% l('Public Note') %]
+          </label>
+          <label>
+            <input type="checkbox" ng-model="note.alert"/>
+            [% l('Alert Note') %]
+          </label>
+        </div>
+      </div>
+      <div class="row pad-vert">
+        <div class="col-md-12">
+          <textarea class="form-control" 
+            ng-model="note.value" placeholder="[% l('Note...') %]">
+          </textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-10 pull-right">
+          <input type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+          <button class="btn btn-warning" ng-click="cancel($event)">[% l('Cancel') %]</button>
+        </div>
+      </div>
+
+      <div class="row pad-vert" ng-if="note_list.length &gt; 0"> 
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-12">
+              <hr/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <h4 ng-if="note_type == 'subscription'" class="pull-left">[% l('Existing Subscription Notes') %]</h4>
+              <h4 ng-if="note_type == 'distribution'" class="pull-left">[% l('Existing Distribution Notes') %]</h4>
+              <h4 ng-if="note_type == 'item'"         class="pull-left">[% l('Existing Item Notes') %]</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" ng-repeat="n in note_list" ng-init="pub = n.pub() == 't'; alert = n.alert() == 't'; title = n.title(); value = n.value(); deleted = n.isdeleted()">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-6">
+              <input class="form-control" type="text" ng-change="n.title(title) && n.ischanged(1)"
+                ng-model="title" placeholder="[% l('Title...') %]" ng-disabled="deleted"/>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="pub" ng-change="n.pub(pub) && n.ischanged(1)" ng-disabled="deleted"/>
+                [% l('Public Note') %]
+              </label>
+              <label>
+                <input type="checkbox" ng-model="alert" ng-change="n.alert(alert) && n.ischanged(1)" ng-disabled="deleted"/>
+                [% l('Alert Note') %]
+              </label>
+            </div>
+            <div class="col-md-3">
+              <label>
+                <input type="checkbox" ng-model="deleted" ng-change="n.isdeleted(deleted)"/>
+                [% l('Deleted?') %]
+              </label>
+            </div>
+          </div>
+          <div class="row pad-vert">
+            <div class="col-md-12">
+              <textarea class="form-control" ng-change="n.value(value) && n.ischanged(1)"
+                ng-model="value" placeholder="[% l('Note...') %]" ng-disabled="deleted">
+              </textarea>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <hr/>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+</form>

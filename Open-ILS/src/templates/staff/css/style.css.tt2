@@ -1,3 +1,6 @@
+/* Create some padding at bottom of the page for breathing room */
+body { padding-bottom: 50px; }
+
 /* --------------------------------------------------------------------------
  * Simple default navbar style adjustements to apply the Evergreen color.
  * TODO: style other components to match EG color scheme
@@ -30,6 +33,12 @@
 /* Hatch / WebSockets / Etc. connectivity status indicator */
 .connect-status-ok {
   color: rgb(92, 184, 92); /* success */
+}
+
+body {
+    color: #000; /* note: this is not comprehensive; changing Bootstrap's
+                    default text color from #333 to #000 would require
+                    more work */
 }
 
 /* --------------------------------------------------------------------------
@@ -89,6 +98,13 @@
 /* --------------------------------------------------------------------------
  * Local style
  */
+
+/* change default link color to provide adequate contrast */
+
+a {
+   color: #286090;
+}
+
 
 /* no bootstrap way to directly disable a link.  */
 a.disabled {
@@ -179,6 +195,10 @@ table.list tr.selected td { /* deprecated? */
 /* barcode inputs are everywhere.  Let's have a consistent style. */
 .barcode { width: 16em !important; }
 
+/* use strike-through to mark something that has been acknowledged,
+   e.g., a item alert */
+.acknowledged { text-decoration: line-through; }
+
 /* bootstrap alerts are heavily padded.  use this to reduce */
 .alert-less-pad {padding: 5px;}
 
@@ -198,6 +218,20 @@ table.list tr.selected td { /* deprecated? */
   margin: 0px;
   padding: 0px;
 }
+
+/* Useful for grid-like things that aren't proper grids.
+ * Mimics the grids color scheme. */
+.selected-row {
+  background-color: rgb(248, 248, 248);
+}
+
+/* Reduces the vertical space added by form-group's.  Especially useful
+ * for tall modal windows.
+ */
+.tight-vert-form .form-group {
+  margin-bottom: 5px;
+} 
+
 
 /* ----------------------------------------------------------------------
  * Grid
@@ -273,8 +307,19 @@ table.list tr.selected td { /* deprecated? */
   font-weight: bold;
 }
 
+.eg-grid-cell-stock-status {
+  width: 4.4em;
+  text-align: center;
+}
+
+/* the conf header must be 4x the stock width when status is present */
+.eg-grid-cell-conf-header-status {
+  width: 8.8em;
+  font-weight: bold;
+}
+
 .eg-grid-row-selected {
-  color: rgb(51, 51, 51);
+  color: #000;
   background-color: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
@@ -295,14 +340,45 @@ table.list tr.selected td { /* deprecated? */
   -webkit-user-select: text;
 }
 .eg-grid-cell-content::-moz-selection {
-  color: rgb(51, 51, 51);
+  color: #000;
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
+
+/* patron bill row-highlighting */
+.overdue-row {
+  color: #FFF;
+  background-color: #EB0000 !important;
+}
+.overdue-row a:link, .lost-row a:link {
+  color: #B8ECFF;
+}
+.longoverdue-row {
+  color: #000;
+  background-color: #FFE1A8 !important;
+}
+.lost-row {
+  color: #FFF;
+  background-color: #800000 !important;
+
+}
+.eg-grid-row-selected.overdue-row {
+  background-color: #CF0000 !important;
+}
+.eg-grid-row-selected.longoverdue-row {
+  background-color: #FFCF75 !important;
+}
+.eg-grid-row-selected.lost-row {
+  background-color: #5C0000 !important;
+}
+
 .eg-grid-cell-content::selection {
-  color: rgb(51, 51, 51);
+  color: #000;
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
+}
+.eg-grid-cell-content a {
+  text-decoration: underline;
 }
 
 .eg-grid-conf-cell-entry {
@@ -388,6 +464,14 @@ table.list tr.selected td { /* deprecated? */
   box-shadow: none;
 }
 
+.eg-grid-tooltip {
+  font-size: 110%;
+}
+/* avoid visited "blue" links over black background */
+.eg-grid-tooltip a {
+  color: white;
+}
+
 
 /* ----------------------------------------------------------------------
  * /Grid
@@ -457,6 +541,31 @@ table.list tr.selected td { /* deprecated? */
 .eg-modal-progress progress {
   width: 100%;
   height: 25px;
+}
+
+.eg-grid-columns-modal-body {
+  max-height: 400px;
+  overflow: scroll;
+}
+
+.eg-grid-columns-modal-body .row {
+  padding: 2px 0px 2px 0px;
+  border-bottom: 1px solid #aaa;
+}
+
+.eg-grid-columns-modal-body .visible {
+  color: #000;
+  background-color: rgb(201, 221, 225);
+  border-bottom: 1px solid #888;
+}
+
+
+eg-grid-field {
+  display: none;
+}
+
+.eg-grid-tooltip .tooltip-inner {
+  max-width: 400px;
 }
 
 [%# 

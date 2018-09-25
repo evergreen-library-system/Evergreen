@@ -2,7 +2,8 @@
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
-    myopac_page = "ebook_circs"  %]
+    myopac_page = "ebook_circs";
+%]
 <h3 class="sr-only">[% l('E-Items Currently Checked Out') %]</h3>
 <div id='myopac_checked_div'>
 
@@ -11,7 +12,7 @@
             <a href="[% mkurl('circs',{},1) %]">[% l("Current Items Checked Out") %]</a>
         </div>
         <div class="align selected">
-            <a href="#">[% l("E-Items Currently Checked Out") %]</a>
+            <a href="[% mkurl('',{},1) %]">[% l("E-Items Currently Checked Out") %]</a>
         </div>
         <div class="align">
             <a href="[% mkurl('circ_history',{},1) %]">[% l("Check Out History") %]</a>
@@ -23,6 +24,7 @@
     </div>
     <div class="clear-both"></div>
     <div id="no_ebook_circs" class="warning_box hidden">[% l('You have no e-items checked out.') %]</div>
+    <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_circs_main' class="hidden">
         <table id="ebook_circs_main_table"
             title="[% l('E-Items Currently Checked Out') %]"

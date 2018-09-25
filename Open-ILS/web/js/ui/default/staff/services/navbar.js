@@ -5,47 +5,26 @@ angular.module('egCoreMod')
         restrict : 'AE',
         transclude : true,
         templateUrl : 'eg-navbar-template',
-        link : function(scope, element, attrs) {
+        controller:['$scope','$window','$location','$timeout','hotkeys','$rootScope',
+                    'egCore','$uibModal','ngToast','egOpChange','$element',
+            function($scope , $window , $location , $timeout , hotkeys , $rootScope ,
+                     egCore , $uibModal , ngToast , egOpChange , $element) {
 
-            // Find all eg-accesskey entries within the menu and attach
-            // hotkey handlers for each.  
-            // jqlite doesn't support selectors, so we have to 
-            // manually navigate to the elements we're interested in.
-            function inspect(elm) {
-                elm = angular.element(elm);
-                if (elm.attr('eg-accesskey')) {
-                    scope.addHotkey(
-                        elm.attr('eg-accesskey'),
-                        elm.attr('href'),
-                        elm.attr('eg-accesskey-desc'),
-                        elm
-                    );
-                }
-                angular.forEach(elm.children(), inspect);
-            }
-            inspect(element);
-        },
-
-        controller:['$scope','$window','$location','$timeout','hotkeys',
-                    'egCore','$uibModal','ngToast','egOpChange',
-            function($scope , $window , $location , $timeout , hotkeys ,
-                     egCore , $uibModal , ngToast, egOpChange) {
+                $scope.rs = $rootScope;
 
                 $scope.reprintLast = function (e) {
                     egCore.print.reprintLast();
                     return e.preventDefault();
                 }
 
-                function navTo(path) {                                           
-                    // Strip the leading "./" if any.
+                function navTo(path) {
                     path = path.replace(/^\.\//,'');
-                    var reg = new RegExp($location.path());
                     $window.location.href = egCore.env.basePath + path;
                 }       
 
                 // adds a keyboard shortcut
                 // http://chieffancypants.github.io/angular-hotkeys/
-                $scope.addHotkey = function(key, path, desc, elm) {                 
+                $scope.addHotkey = function(key, path, desc, elm) {
                     angular.forEach(key.split(' '), function (k) {
                         hotkeys.add({
                             combo: k,
@@ -59,6 +38,19 @@ angular.module('egCoreMod')
                         });
                     });
                 };
+
+                function find_accesskeys(elm) {
+                    elm = angular.element(elm);
+                    if (elm.attr('eg-accesskey')) {
+                        $scope.addHotkey(
+                            elm.attr('eg-accesskey'),
+                            elm.attr('href'),
+                            elm.attr('eg-accesskey-desc'),
+                            elm
+                        );
+                    }
+                    angular.forEach(elm.children(), find_accesskeys);
+                }
 
                 $scope.retrieveLastRecord = function() {
                     var last_record = egCore.hatch.getLocalItem("eg.cat.last_record_retrieved");
@@ -116,7 +108,18 @@ angular.module('egCoreMod')
                             $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                             $scope.username = egCore.auth.user().usrname();
                             $scope.workstation = egCore.auth.workstation();
+
+                            egCore.org.settings('ui.staff.max_recent_patrons')
+                            .then(function(s) {
+                                var val = s['ui.staff.max_recent_patrons'];
+                                $scope.showRecentPatron = val > 0;
+                                $scope.showRecentPatrons = val > 1;
+                            });
                         }
+                        // need to defer initialization of hotkeys to this point
+                        // as some of them are conditional on whether one is logged in
+                        // or is working in offline circulation mode
+                        $timeout(function(){find_accesskeys($element)});
                     }
                 );
             }

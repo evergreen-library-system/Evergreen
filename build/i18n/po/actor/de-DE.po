@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-26 13:08+0000\n"
-"PO-Revision-Date: 2017-02-14 23:31+0000\n"
+"POT-Creation-Date: 2017-06-22 06:17+0000\n"
+"PO-Revision-Date: 2017-07-10 02:32+0000\n"
 "Last-Translator: vulpecula <Unknown>\n"
 "Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-02-15 05:52+0000\n"
-"X-Generator: Launchpad (build 18326)\n"
+"X-Launchpad-Export-Date: 2017-07-11 05:46+0000\n"
+"X-Generator: Launchpad (build 18419)\n"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:63
 msgid "Active"
@@ -41,15 +41,15 @@ msgstr "Strichcode"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:242
 msgid "Cancel Selected Events"
-msgstr ""
+msgstr "Ausgewählte Ereignisse abbrechen"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:112
 msgid "Circulation"
-msgstr ""
+msgstr "Zirkulation"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:77
 msgid "Close"
-msgstr "Schliessen"
+msgstr "Schließen"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:128
 msgid "Collected"
@@ -113,31 +113,31 @@ msgstr "reagierend"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:240
 msgid "Reset Selected Events"
-msgstr "Ausgewählt Ereignisse zurücksetzen"
+msgstr "Ausgewählte Ereignisse zurücksetzen"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:114
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: ../../Open-ILS/src/templates/actor/user/register_table.tt2:47
 msgid "Secondary Groups"
-msgstr ""
+msgstr "Zweitrangige Gruppen"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:94
 msgid "Secondary Permission Groups"
-msgstr ""
+msgstr "Zweitrangige Berechtigungsgruppen"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:23
 msgid "Show All Fields"
-msgstr ""
+msgstr "Alle Felder anzeigen"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:21
 msgid "Show Only Required Fields"
-msgstr ""
+msgstr "Nur benötigte Felder anzeigen"
 
 #: ../../Open-ILS/src/templates/actor/user/register.tt2:22
 msgid "Show Suggested Fields"
-msgstr ""
+msgstr "Vorgeschlagene Felder anzeigen"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:250
 msgid "Show events at and below"
@@ -145,11 +145,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:291
 msgid "Target Circulation - Author"
-msgstr ""
+msgstr "Zielzirkulation - Autor"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:289
 msgid "Target Circulation - Copy Barcode"
-msgstr ""
+msgstr "Zielzirkulation - Barcode kopieren"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:292
 msgid "Target Circulation - Patron Barcode"
@@ -157,11 +157,11 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:290
 msgid "Target Circulation - Title"
-msgstr ""
+msgstr "Zielzirkulation - Titel"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:294
 msgid "Target Hold - Author"
-msgstr ""
+msgstr "Ziel Halten - Autor"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:295
 msgid "Target Hold - Patron Barcode"
@@ -169,7 +169,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:293
 msgid "Target Hold - Title"
-msgstr ""
+msgstr "Ziel Halten - Titel"
 
 #: ../../Open-ILS/src/templates/actor/user/event_log.tt2:2
 msgid "Triggered Event Log"

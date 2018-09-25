@@ -1,0 +1,57 @@
+<form ng-submit="ok(args)" role="form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+        <h4 ng-show="subs.length==1" class="modal-title">[% l('Clone Subscription') %]</h4>
+        <h4 ng-show="subs.length>1" class="modal-title">[% l('Clone Subscriptions') %]</h4>
+    </div>
+    <div class="modal-body">
+        <p>[% l('This feature will clone the selected subscriptions and all of their subscription notes, distributions, distribution notes, captions and patterns, streams, and routing list users.') %]</p>
+        <p>[% l('Holdings-related objects, like issuances, items, units, and summaries will not be cloned.') %]</p>
+        <p ng-show="subs.length == 1">[% l('To which bibliographic record should the new subscription be attached?') %]</p>
+        <p ng-show="subs.length > 1">[% l('To which bibliographic record should the new subscriptions be attached?') %]</p>
+        <div class="row">
+            <div class="col-md-1">
+                <input type="radio" name="which_radio_button" id="same_bib"
+                    ng-model="args.which_radio_button" value="same_bib">
+                </input>
+            </div>
+            <div class="col-md-11">
+                <label ng-if="subs.length==1" for="same_bib">
+                    [% l('Same record as the selected subscription') %]
+                </label>
+                <label ng-if="subs.length>1" for="same_bib">
+                    [% l('Same record as the selected subscriptions') %]
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <input type="radio" name="which_radio_button"
+                    ng-model="args.which_radio_button" value="different_bib">
+                </input>
+            </div>
+            <div class="col-md-3">
+                <label for="different_bib">
+                    [% l('Record specified by this Bid ID:') %]
+                </label>
+            </div>
+            <div class="col-md-8">
+                <input type="number" class="form-control" min="1"
+                    ng-click="args.which_radio_button='different_bib'"
+                    ng-model-options="{ debounce: 1000 }"
+                    id="different_bib" ng-model="args.bib_id"/>
+                <div ng-show="args.bib_id">{{mvr.title}}</div>
+                <div class="alert alert-warning" ng-show="bibNotFound">
+                    [% l('Not Found') %]
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input
+            ng-disabled="!args.which_radio_button||(args.which_radio_button=='different_bib'&&(!args.bib_id||bibNotFound))"
+            type="submit" class="btn btn-primary" value="[% l('OK') %]"/>
+        <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+</form>

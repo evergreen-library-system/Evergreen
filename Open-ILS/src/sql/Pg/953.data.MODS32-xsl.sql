@@ -98,6 +98,9 @@ Added Log Comment
 						<xsl:with-param name="chopString">
 							<xsl:value-of select="$title"/>
 						</xsl:with-param>
+                        <xsl:with-param name="punctuation">
+                          <xsl:text>,;/ </xsl:text>
+                        </xsl:with-param>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:choose>
@@ -1353,6 +1356,45 @@ Added Log Comment
 		
 		<!--3.2 change tmee additional note fields-->
 		
+        <xsl:for-each select="marc:datafield[@tag=502]">
+            <note type="thesis">
+                <xsl:call-template name="uri"/>
+                <xsl:variable name="str">
+                    <xsl:for-each select="marc:subfield[@code!='6' or @code!='8']">
+                        <xsl:value-of select="."/>
+                        <xsl:text> </xsl:text>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:value-of select="substring($str,1,string-length($str)-1)"/>
+            </note>
+        </xsl:for-each>
+
+        <xsl:for-each select="marc:datafield[@tag=504]">
+            <note type="bibliography">
+                <xsl:call-template name="uri"/>
+                <xsl:variable name="str">
+                    <xsl:for-each select="marc:subfield[@code!='6' or @code!='8']">
+                        <xsl:value-of select="."/>
+                        <xsl:text> </xsl:text>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:value-of select="substring($str,1,string-length($str)-1)"/>
+            </note>
+        </xsl:for-each>
+
+        <xsl:for-each select="marc:datafield[@tag=508]">
+            <note type="creation/production credits">
+                <xsl:call-template name="uri"/>
+                <xsl:variable name="str">
+                    <xsl:for-each select="marc:subfield[@code!='6' or @code!='8']">
+                        <xsl:value-of select="."/>
+                        <xsl:text> </xsl:text>
+                    </xsl:for-each>
+                </xsl:variable>
+                <xsl:value-of select="substring($str,1,string-length($str)-1)"/>
+            </note>
+        </xsl:for-each>
+
 		<xsl:for-each select="marc:datafield[@tag=506]">
 			<note type="restrictions">
 				<xsl:call-template name="uri"></xsl:call-template>
@@ -1460,9 +1502,7 @@ Added Log Comment
 		
 
 		
-		
-		
-		<xsl:for-each select="marc:datafield[@tag=501 or @tag=502 or @tag=504 or @tag=507 or @tag=508 or  @tag=513 or @tag=514 or @tag=515 or @tag=516 or @tag=522 or @tag=524 or @tag=525 or @tag=526 or @tag=535 or @tag=536 or @tag=540 or @tag=541 or @tag=544 or @tag=545 or @tag=546 or @tag=547 or @tag=550 or @tag=552 or @tag=555 or @tag=556 or @tag=561 or @tag=562 or @tag=565 or @tag=567 or @tag=580 or @tag=581 or @tag=584 or @tag=585 or @tag=586]">
+        <xsl:for-each select="marc:datafield[@tag=501 or @tag=507 or @tag=513 or @tag=514 or @tag=515 or @tag=516 or @tag=522 or @tag=524 or @tag=525 or @tag=526 or @tag=535 or @tag=536 or @tag=540 or @tag=541 or @tag=544 or @tag=545 or @tag=546 or @tag=547 or @tag=550 or @tag=552 or @tag=555 or @tag=556 or @tag=561 or @tag=562 or @tag=565 or @tag=567 or @tag=580 or @tag=581 or @tag=584 or @tag=585 or @tag=586]">
 			<note>
 				<xsl:call-template name="uri"></xsl:call-template>
 				<xsl:variable name="str">

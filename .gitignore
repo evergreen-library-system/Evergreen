@@ -359,3 +359,5 @@ Thumbs.db
 Open-ILS/web/js/ui/default/staff/build/
 Open-ILS/web/js/ui/default/staff/node_modules/
 Open-ILS/web/js/ui/default/staff/bower_components/
+Open-ILS/web/js/ui/default/common/build/
+Open-ILS/web/eg2/

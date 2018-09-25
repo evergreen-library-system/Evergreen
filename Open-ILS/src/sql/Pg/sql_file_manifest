@@ -29,6 +29,8 @@ FTS_CONFIG_FILE
 080.schema.money.sql
 090.schema.action.sql
 095.schema.booking.sql
+
+096.schema.emergency_closing.sql
  
 099.matrix_weights.sql 
 100.circ_matrix.sql
@@ -56,6 +58,7 @@ FTS_CONFIG_FILE
 953.data.MODS32-xsl.sql
 954.data.MODS33-xsl.sql
 954.data.marc21expand880.sql
+955.data.MADS21-xsl.sql
 
 960.data.marc21-tag-tables.sql
 

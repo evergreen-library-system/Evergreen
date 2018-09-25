@@ -14,7 +14,7 @@ The following administrative interfaces will enable you to configure Z39.50 sear
 
 *Z39.50 Index Field Maps*
 
-Click *Admin* -> *Server Administration* -> *Z39.50 Index Field Maps* to map bib record indexes (metabib fields and record attributes) in your catalog records to Z39.50 search attributes.  Metabib fields are typically free form fields found in the body of a catalog record while record attributes typically have only one value and are often found in the leader.
+Click *Administration* -> *Server Administration* ->  *Z39.50 Index Field Maps* to map bib record indexes (metabib fields and record attributes) in your catalog records to Z39.50 search attributes.  Metabib fields are typically free form fields found in the body of a catalog record while record attributes typically have only one value and are often found in the leader.
 
 You can map a metabib field or a record attribute to a Z39.50 attribute or a Z39.50 attribute type.  To map a specific field in your catalog record to a specific field in a chosen Z39.50 source, you should map to a Z39.50 attribute.  For example, if you want the Personal Author in your catalog record to map to the Author field when searching the Library of Congress, then you should do the following:
 
@@ -62,7 +62,7 @@ image::media/Locate_Z39_50_Matches4.jpg[Locate_Z39.50_Matches4]
 
 *Org Unit Settings*
 
-Org Unit settings can be set for your local branch, your system, or your consortium.  To access these settings, click  *Admin* -> *Local Administration* -> *Library Settings Editor* -> *Maximum Parallel Z39.50 Batch Searches*.
+Org Unit settings can be set for your local branch, your system, or your consortium.  To access these settings, click  *Administration* -> *Local Administration* ->  *Library Settings Editor* -> *Maximum Parallel Z39.50 Batch Searches*.
 
 Two new settings control the Z39.50 search enhancements.
 

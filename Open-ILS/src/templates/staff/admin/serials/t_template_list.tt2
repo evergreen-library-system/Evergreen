@@ -1,0 +1,54 @@
+<eg-grid
+  id-field="id"
+  idl-class="act"
+  features="-sort,-multisort"
+  grid-controls="grid_controls"
+  persist-key="serials.copy_templates">
+
+  <eg-grid-menu-item handler="grid_actions.create_template" 
+    label="[% l('Create Template') %]"></eg-grid-menu-item>
+
+  <eg-grid-action handler="grid_actions.edit_template"
+    label="[% l('Edit Template') %]"
+    disabled="need_one_selected"></eg-grid-action>
+
+  <eg-grid-action handler="grid_actions.delete_template"
+    label="[% l('Delete Template') %]"></eg-grid-action>
+
+  <eg-grid-field label="[% l('Template ID') %]" path='id' required></eg-grid-field>
+
+  <eg-grid-field label="[% l('Template Name') %]" path='name'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Create Date') %]"
+    path='create_date'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Creator') %]"
+    path='creator.usrname'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Edit Date') %]"
+    path='edit_date'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Editor') %]"
+    path='editor.usrname'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Owning Library') %]"
+    path='owning_lib.shortname'></eg-grid-field>
+
+  <eg-grid-field label="[% l('Circulating Library') %]"
+    path='circ_lib.shortname' hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Status') %]"
+    path='status.name' hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Circ Modifier') %]"
+    path='circ_modifier.code' hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Location') %]"
+    path='location.name' hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Floating') %]"
+    path='floating.name' hidden></eg-grid-field>
+
+  <eg-grid-field path='*' hidden></eg-grid-field>
+</eg-grid>
+

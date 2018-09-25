@@ -1,0 +1,12 @@
+<eg-grid
+  id-field="id"
+  idl-class="{{baseFmClass}}"
+  features="-multisort,-multiselect"
+  grid-controls="gridControls"
+  auto-fields="true"
+  persist-key="admin.local.config.grideditor.{{baseFmClass}}">
+
+  <eg-grid-menu-item label="[% l('Create') %]" handler="createHandler"></eg-grid-menu-item>
+  <eg-grid-action handler="editHandler" label="[% l('Edit') %]"></eg-grid-action>
+  <eg-grid-action handler="deleteHandler" label="[% l('Delete') %]"></eg-grid-action>
+</eg-grid>

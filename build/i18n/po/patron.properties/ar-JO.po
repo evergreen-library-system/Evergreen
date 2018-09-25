@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2017-01-19 07:37+0000\n"
+"POT-Creation-Date: 2017-05-25 00:15-0400\n"
+"PO-Revision-Date: 2017-11-07 07:57+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2017-11-08 04:41+0000\n"
+"X-Generator: Launchpad (build 18493)\n"
 "Language: ar\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
@@ -89,7 +89,7 @@ msgstr "يجب إضافة رقم بطاقة الإئتمان"
 
 #: staff.patron.bill_cc_info.need_approval_code
 msgid "You must provide an approval code or an imprint slip number"
-msgstr "يجب تقديم كود الموافقة أو رقم إنزلاق الدمغة"
+msgstr "يجب تقديم كود الموافقة أو رقم قسيمة الدمغة"
 
 #: staff.patron.bill_details.my_init.error
 msgid "bill_details.xul, my_init:"
@@ -536,6 +536,10 @@ msgstr ""
 #: staff.patron.display.cmd_patron_delete.override_prompt
 msgid "Override patron deletion failure?"
 msgstr "تجاوز/تجاهل فشل حذف المستفيد؟"
+
+#: staff.patron.display.cmd_patron_delete.success_message
+msgid "Patron deleted. Please close tab."
+msgstr "تمّ حذف المستفيد. لطفاً ينبغي إغلاق التبويب."
 
 #: staff.patron.display.spawn_editor.editing_related_patron
 msgctxt "staff.patron.display.spawn_editor.editing_related_patron"

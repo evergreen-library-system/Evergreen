@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-08-26 13:12-0400\n"
-"PO-Revision-Date: 2017-03-19 17:02+0000\n"
+"PO-Revision-Date: 2018-02-18 14:16+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-20 05:55+0000\n"
-"X-Generator: Launchpad (build 18332)\n"
+"X-Launchpad-Export-Date: 2018-02-19 05:17+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqlid
 msgid "LID"
@@ -167,8 +167,8 @@ msgid ""
 "There is already an invoice in the system with the given combination of "
 "'Vendor Invoice ID' and 'Provider,' which is not allowed."
 msgstr ""
-"Faktura obsahující  použitou kombinaci  názvu \"dodavatele\" a \"ID  faktury "
-"dodavatele\"  již v systému existuje. Není povoleno použít stejnou kombinaci "
+"Faktura obsahující  použitou kombinaci  názvu 'dodavatele' a 'ID  faktury "
+"dodavatele'  již v systému existuje. Není povoleno použít stejnou kombinaci "
 "opakovaně."
 
 #: acq.js:DUPE_PO_NAME_LINK
@@ -255,7 +255,7 @@ msgstr "OPRAVDU chcete zrušit tuto objednávku?"
 
 #: acq.js:PRINT
 msgid "Print"
-msgstr "Vytisknout"
+msgstr "Tisk"
 
 #: acq.js:PO_ACTIVATING
 msgid "Activating purchase order..."
@@ -287,7 +287,7 @@ msgstr "Bez názvu"
 
 #: acq.js:ACQ_SEARCH_CLASS_ABBR_acqpo
 msgid "PO"
-msgstr "Obj"
+msgstr "OBJ"
 
 #: acq.js:DEL_LI_FROM_PO
 msgid ""
@@ -327,7 +327,7 @@ msgstr "Vyberte vyhledávací pole"
 
 #: acq.js:VENDOR_PUBLIC
 msgid "VENDOR PUBLIC"
-msgstr "Veřejný dodavatel"
+msgstr "Viditelné pro dodavatele"
 
 #: acq.js:CONFIRM_SPLIT_PO
 msgid ""
@@ -523,7 +523,7 @@ msgstr "ASez"
 
 #: acq.js:CANCEL
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: acq.js:UR_FILTER_USER
 msgid "Enter barcode for user (or leave blank to unset the filter):"

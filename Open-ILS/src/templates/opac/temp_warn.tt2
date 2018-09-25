@@ -2,12 +2,12 @@
     PROCESS "opac/parts/misc_util.tt2";
     WRAPPER "opac/parts/base.tt2";
     INCLUDE "opac/parts/topnav.tt2";
-    ctx.page_title = l("Temporary List Warning") %]
-    <h2 class="sr-only">[% l('Temporary List Warning') %]</h2>
+    ctx.page_title = l("Basket Warning") %]
+    <h2 class="sr-only">[% l('Basket Warning') %]</h2>
     [% INCLUDE "opac/parts/searchbar.tt2" %]
     <div id="content-wrapper">
         <div id="main-content">
-             <p class="big-strong">[% l('You are adding to a temporary list.') %]
+             <p class="big-strong">[% l('You are adding to a basket.') %]
                 [% IF ctx.user ;
                       l('This information will disappear when you logout, unless you save it to a permanent list.');
                    ELSE;

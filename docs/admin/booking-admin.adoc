@@ -19,9 +19,9 @@ You need to create resource types and resource attributes (features of the resou
 Create New Resource Type
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-1) Select Admin --> Server Administration --> Booking --> Resource Types.
+1) Select Administration -> Booking Administration -> Resource Types.
 
-image::media/booking-create-resourcetype-1.png[]
+image::media/booking-create-resourcetype_webclient-1.png[]
 
 2) A list of current resource types will appear. Use Back and Next buttons to browse the whole list.
 
@@ -68,7 +68,7 @@ image::media/booking-create-resourcetype-5.png[]
 Create New Resource Attribute
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1) Select Server Administration --> Booking --> Resource Attributes.
+1) Select Administration -> Booking Administration -> Resource Attributes.
 
 2) Click New Resource Attribute in the top right corner.
 
@@ -91,7 +91,7 @@ One resource type may have multiple attributes. You may repeat the above procedu
 Create New Resource Attribute Value
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1) One resource attribute may have multiple values. To add new attribute value, select Server Administration → Booking → Resource Attribute Values.
+1) One resource attribute may have multiple values. To add new attribute value, select Administration -> Booking Administration -> Resource Attribute Values.
 
 2) Click New Resource Attribute Value in the top right corner.
 
@@ -110,7 +110,7 @@ image::media/booking-create-bookable-3.png[]
 Create New Resource
 ^^^^^^^^^^^^^^^^^^^
 
-1) Add items to a resource type. Click Admin → Server Administration → Booking → Resources.
+1) Add items to a resource type. Click Administration -> Booking Administration -> Resources.
 
 2) Click New Resource in the top right corner.
 
@@ -136,7 +136,7 @@ One resource type may have multiple resources attached.
 Map Resource Attributes and Values to Resources
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1) Use Resource Attribute Maps to bring together the resources and their attributes and values. Select Admin → Server Administration → Booking → Resource Attribute Maps.
+1) Use Resource Attribute Maps to bring together the resources and their attributes and values. Select Administration -> Booking Administration -> Resource Attribute Maps.
 
 2) Click New Resource Attribute Map in the right top corner.
 
@@ -168,7 +168,7 @@ Staff with the required permissions can edit aspects of existing non-bibliograph
 Editing Resource Types
 ^^^^^^^^^^^^^^^^^^^^^^
 
-1) Bring up your list of resource types. Select Admin --> Server Administration --> Booking --> Resource Types.
+1) Bring up your list of resource types. Select Administration -> Booking Administration -> Resource Types.
 
 2) A list of current resource types will appear.
 
@@ -176,7 +176,7 @@ Editing Resource Types
 
 4) The resource type box will appear. Make your changes and click Save.
 
-5) Following the same procedure you may edit Resource Attributes, Attributes Values, Resources and Attribute Map by selecting them on Admin --> Server Administration --> Booking menu.
+5) Following the same procedure you may edit Resource Attributes, Attributes Values, Resources and Attribute Map by selecting them on Administration -> Booking Administration.
 
 
 
@@ -184,7 +184,7 @@ Editing Resource Types
 Deleting Non-bibliographic Resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-1) To delete a booking resource, go to Admin → Server Administration → Booking → Resources.
+1) To delete a booking resource, go to Administration -> Booking Administration -> Resources.
 
 2) Select the checkbox in front the resource you want to delete. Click Delete Selected. The resource will disappear from the list.
 
@@ -192,7 +192,7 @@ Following the same procedure you may delete Resource Attributes Maps.
 
 You may also delete Resource Attribute Values, Resource Attributes and Resource Types. But you have to delete them in the reverse order when you create them to make sure the entry is not in use when you try to delete it.
 
-This is the deletion order: Resource Attribute Map/Resources --> Resource Attribute Values --> Resource Attributes --> Resource Types. 
+This is the deletion order: Resource Attribute Map/Resources -> Resource Attribute Values -> Resource Attributes -> Resource Types. 
 
 
 

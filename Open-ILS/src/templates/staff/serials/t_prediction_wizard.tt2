@@ -1,0 +1,461 @@
+<div>
+   <div class="pull-right">
+      <div>
+        <button class="btn btn-warning" ng-click="tab.active = tab.active - 1"
+                ng-disabled="tab.active <= 0">
+            [% l('Back') %]
+        </button>
+        <button class="btn btn-success" ng-click="tab.active = tab.active + 1"
+                ng-disabled="!viewOnly && ((tab.active == 0 && tab.enum_form.$invalid) || (tab.active == 1 && tab.chron_form.$invalid) || (tab.active == 3 && tab.freq_form.$invalid))"
+                ng-if="tab.active != 4">
+            [% l('Next') %]
+        </button>
+        <button class="btn btn-primary" ng-click="handle_save()"
+                ng-if="!viewOnly && tab.active == 4">
+            [% l('Save') %]
+        </button>
+      </div>
+  </div>
+  <uib-tabset active="tab.active">
+    <uib-tab index="0" disable="tab.active != 0" heading="[% l('Enumeration Labels') %]">
+      <form name="tab.enum_form">
+      <fieldset ng-disabled="viewOnly">
+      <div class="row">
+         <div class="radio">
+           <label>
+             <input type="radio" ng-model="pattern.use_enum" ng-value="True">
+             [% l('Use Enumeration (e.g., v.1, no. 1)') %]
+           </label>
+           <eg-help-popover help-text="[% l('Use this if the serial includes volume or some other form of numbering.') %]">
+         </div>
+         <div class="radio">
+           <label>
+              <input type="radio" ng-model="pattern.use_enum" ng-value="False">
+              [% l('Use Calendar Dates Only (e.g., April 10)') %]
+            </label>
+            <eg-help-popover help-text="[% l('Use this if serial issues are referred to only by publication dates (or months or seasons).') %]">
+         </div>
+         <div class="row" ng-if="pattern.use_enum">
+            <div class="row" ng-repeat="enum_level in pattern.enum_levels">
+                <div class="col-md-1"></div>
+                <div class="col-md-1">[% l('Level [_1]', '{{$index + 1}}')  %]</div>
+                <div class="col-md-2"><input type="text" ng-model="enum_level.caption" required></div>
+                <div ng-if="$index > 0">
+                  <div class="col-md-3">
+                    <select ng-model="enum_level.units_per_next_higher.type">
+                      <option value="number">[% l('Number') %]</option>
+                      <option value="var">[% l('Varies') %]</option>
+                      <option value="und">[% l('Undetermined') %]</option>
+                    </select>
+                    <input type="number" step="1" 
+                           ng-model="enum_level.units_per_next_higher.value"
+                           ng-hide="enum_level.units_per_next_higher.type != 'number'"
+                    >
+                  </div>
+                  <div class="col-md-2">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" ng-model="enum_level.restart" ng-value="True">
+                        [% l('Restarts at unit completion') %]
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" ng-model="enum_level.restart" ng-value="False">
+                        [% l('Increments continuously') %]
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" ng-if="$last">
+                  <button class="btn btn-warning btn-sm"
+                      ng-if="pattern.enum_levels.length > 1"
+                      ng-click="pattern.drop_enum_level()">
+                      [% l('Remove Level') %]
+                  </button>
+                  <button class="btn btn-warning btn-sm"
+                      ng-disabled="pattern.enum_levels.length >= 6"
+                      ng-click="pattern.add_enum_level()">
+                      [% l('Add Level') %]
+                  </button>
+                </div>
+            </div>
+         </div>
+      </div>
+      <div ng-if="pattern.use_enum" class="row">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="pattern.use_alt_enum">
+            [% l('Add alternative enumeration') %]
+          </label>
+          <eg-help-popover help-text="[% l('If a serials is labeled in two different ways, use this to specify the second set of enumeration labels') %]">
+         </div>
+         <div class="row" ng-if="pattern.use_alt_enum">
+            <div class="row" ng-repeat="alt_enum_level in pattern.alt_enum_levels">
+                <div class="col-md-1"></div>
+                <div class="col-md-1">[% l('Level [_1]', '{{$index + 1}}')  %]</div>
+                <div class="col-md-2"><input type="text" required ng-model="alt_enum_level.caption"></div>
+                <div ng-if="$index > 0">
+                  <div class="col-md-3">
+                    <select ng-model="alt_enum_level.units_per_next_higher.type">
+                      <option value="number">[% l('Number') %]</option>
+                      <option value="var">[% l('Varies') %]</option>
+                      <option value="und">[% l('Undetermined') %]</option>
+                    </select>
+                    <input type="number" step="1" 
+                           ng-model="alt_enum_level.units_per_next_higher.value"
+                           ng-hide="alt_enum_level.units_per_next_higher.type != 'number'"
+                    >
+                  </div>
+                  <div class="col-md-2">
+                    <div class="radio">
+                      <label>
+                        <input type="radio" ng-model="alt_enum_level.restart" ng-value="True">
+                        [% l('Restarts at unit completion') %]
+                      </label>
+                    </div>
+                    <div class="radio">
+                      <label>
+                        <input type="radio" ng-model="alt_enum_level.restart" ng-value="False">
+                        [% l('Increments continuously') %]
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3" ng-if="$last">
+                  <button class="btn btn-warning btn-sm"
+                      ng-if="pattern.alt_enum_levels.length > 1"
+                      ng-click="pattern.drop_alt_enum_level()">
+                      [% l('Remove Level') %]
+                  </button>
+                  <button class="btn btn-warning btn-sm" 
+                      ng-disabled="pattern.alt_enum_levels.length >= 2"
+                      ng-click="pattern.add_alt_enum_level()">
+                      [% l('Add Level') %]
+                  </button>
+                </div>
+            </div>
+         </div>
+      </div>
+      <div ng-if="pattern.use_enum" class="row">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="pattern.use_calendar_change">
+            [% l('First level enumeration changes during subscription year') %]
+          </label>
+          <eg-help-popover help-text="[% l('For example, if the title has two volumes a year, use this to specify the month that the next volume starts.') %]">
+         </div>
+         <div ng-if="pattern.use_calendar_change">
+         <div class="row" ng-repeat="chg in pattern.calendar_change">
+           <div class="col-md-1"></div>
+           <div class="col-md-2">
+             <label>[% l('Change occurs') %]
+               <select ng-model="chg.type">
+                 <option value="date">[% l('Specific date') %]</option>
+                 <option value="month">[% l('Start of month') %]</option>
+                 <option value="season">[% l('Start of season') %]</option>
+               </select>
+             </label>
+           </div>
+           <div class="col-md-3">
+             <eg-month-selector     ng-model="chg.month"  ng-if="chg.type == 'month'" ></eg-month-selector>
+             <eg-season-selector    ng-model="chg.season" ng-if="chg.type == 'season'"></eg-season-selector>
+             <eg-month-day-selector day="chg.day" month="chg.month" ng-if="chg.type == 'date'"  ></eg-month-day-selector>
+           </div>
+           <div class="col-md-2">
+              <button ng-click="pattern.remove_calendar_change($index)" class="btn btn-sm btn-warning">[% l('Delete') %]</button>
+              <button ng-click="pattern.add_calendar_change()" ng-hide="!$last" class="btn btn-sm btn-warning">[% l('Add more') %]</button>
+           </div>
+         </div>
+         </div>
+      </div>
+      </fieldset>
+      </form>
+    </uib-tab>
+    <uib-tab index="1" disable="tab.active != 1" heading="[% l('Chronology Display') %]">
+      <form name="tab.chron_form">
+      <fieldset ng-disabled="viewOnly">
+      <div>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="pattern.use_chron">
+            [% l('Use Chronology Captions?') %]
+          </label>
+        </div>
+        <div  ng-if="pattern.use_chron">
+          <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">[% l('Display level descriptor? E.g., "Year: 2017, Month: Feb" (not recommended)') %]</div>
+          </div>
+          <div class="row" ng-repeat="chron in pattern.chron_levels">
+            <div class="col-md-1"></div>
+            <div class="col-md-1">[% l('Level [_1]', '{{$index + 1}}')  %]</div>
+            <div class="col-md-2">
+              <eg-chron-selector ng-model="chron.caption" required chron-level="$index" linked-selector="chron_captions">
+            </div>
+            <div class="col-md-2">
+              <input type="checkbox" ng-model="chron.display_caption"></input>
+            </div>
+            <div class="col-md-4">
+              <button ng-if="$index > 0 && $last" ng-click="pattern.drop_chron_level()" class="btn btn-sm btn-warning">
+                [% l('Remove Level') %]
+              </button>
+              <button ng-if="$last && pattern.chron_levels.length < 4" ng-click="pattern.add_chron_level()" class="btn btn-sm btn-warning">
+                [% l('Add Level') %]
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" ng-model="pattern.use_alt_chron">
+                [% l('Use Alternative Chronology Captions?') %]
+              </label>
+            </div>
+            <div ng-if="pattern.use_alt_chron">
+              <div class="row" ng-repeat="chron in pattern.alt_chron_levels">
+                <div class="col-md-1"></div>
+                <div class="col-md-1">[% l('Level [_1]', '{{$index + 1}}')  %]</div>
+                <div class="col-md-2">
+                  <eg-chron-selector ng-model="chron.caption" required chron-level="$index" linked-selector="alt_chron_captions">
+                </div>
+                <div class="col-md-2">
+                  <input type="checkbox" ng-model="chron.display_caption"></input>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </fieldset>
+      </form>
+    </uib-tab>
+    <uib-tab index="2" disable="tab.active != 2" heading="[% l('MFHD Indicators') %]">
+      <form name="tab.ind_form">
+      <fieldset ng-disabled="viewOnly">
+      <div class="row">
+        <div class="col-md-6">
+          <label for="selectCompressExpand">[% l('Compression Display Options') %]
+            <eg-help-popover help-link="https://www.loc.gov/marc/holdings/hd853855.html"
+               help-text="[% l('Whether the pattern can be used to compress and expand detailed holdings statements.') %]">
+          </label>
+          <select ng-model="pattern.compress_expand">
+            <option value="0">[% l('Cannot compress or expand') %]</option>
+            <option value="1">[% l('Can compress but not expand') %]</option>
+            <option value="2">[% l('Can compress or expand') %]</option>
+            <option value="3">[% l('Unknown') %]</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="selectCompressExpand">[% l('Caption Evaluation') %]
+            <eg-help-popover help-link="https://www.loc.gov/marc/holdings/hd853855.html"
+               help-text="[% l('Completeness of the caption levels and whether the captions used actually appear on the bibliographic item.') %]">
+          </label>
+          <select ng-model="pattern.caption_evaluation">
+            <option value="0">[% l('Captions verified; all levels present') %]</option>
+            <option value="1">[% l('Captions verified; all levels may not be present') %]</option>
+            <option value="2">[% l('Captions unverified; all levels present') %]</option>
+            <option value="3">[% l('Captions unverified; all levels may not be present') %]</option>
+          </select>
+        </div>
+      </div>
+      </fieldset>
+      </form>
+    </uib-tab>
+    <uib-tab index="3" disable="tab.active != 3" heading="[% l('Frequency and Regularity') %]">
+      <form name="tab.freq_form">
+      <fieldset ng-disabled="viewOnly">
+      <div class="row">
+        <div class="col-md-2">
+          <div class="radio">
+            <label>
+              <input type="radio" ng-model="pattern.frequency_type" value="preset">
+              [% l('Pre-selected') %]
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" ng-model="pattern.frequency_type" value="numeric">
+              [% l('Use number of issues per year') %]
+            </label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div ng-if="pattern.frequency_type == 'preset'">
+            <select ng-model="pattern.frequency_preset" required>
+              <option value="d">[% l('Daily') %]</option>
+              <option value="w">[% l('Weekly (Weekly)') %]</option>
+              <option value="c">[% l('2 x per week (Semiweekly)') %]</option>
+              <option value="i">[% l('3 x per week (Three times a week)') %]</option>
+              <option value="e">[% l('Every two weeks (Biweekly)') %]</option>
+              <option value="m">[% l('Monthly') %]</option>
+              <option value="s">[% l('2 x per month (Semimonthly)') %]</option>
+              <option value="j">[% l('3 x per month (Three times a month)') %]</option>
+              <option value="b">[% l('Every other month (Bimonthly)') %]</option>
+              <option value="q">[% l('Quarterly') %]</option>
+              <option value="f">[% l('2 x per year (Semiannual)') %]</option>
+              <option value="t">[% l('3 x per year (Three times a year)') %]</option>
+              <option value="a">[% l('Yearly (Annual)') %]</option>
+              <option value="g">[% l('Every other year (Biennial)') %]</option>
+              <option value="h">[% l('Every three years (Triennial)') %]</option>
+              <option value="x">[% l('Completely irregular') %]</option>
+              <option value="k">[% l('Continuously updated') %]</option>
+            </select>
+          </div>
+          <div ng-if="pattern.frequency_type == 'numeric'">
+            <input ng-model="pattern.frequency_numeric" type="number" step="1" required>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="pattern.use_regularity">
+            [% l('Use specific regularity information?') %]
+          </label>
+            <em>[% l('(combined issues, skipped issues, etc.)') %]</em>
+         </div>
+         <div class="row" ng-if="pattern.use_regularity">
+            <div class="row pad-vert" ng-repeat="reg in pattern.regularity">
+               <div class="col-md-2">
+                 <button ng-click="pattern.remove_regularity($index)"
+                         class="btn btn-sm btn-warning">
+                   [% l('Remove Regularity') %]
+                 </button>
+                 <button ng-if="$last" ng-click="pattern.add_regularity()"
+                         class="btn btn-sm btn-warning">
+                   [% l('Add Regularity') %]
+                 </button>
+               </div>
+               <div class="col-md-1">
+                 <select ng-model="reg.regularity_type">
+                   <option value="p">[% l('Published') %]</option>
+                   <option value="o">[% l('Omitted') %]</option>
+                   <option value="c">[% l('Combined') %]</option>
+                 </select>
+               </div>
+               <div class="col-md-1">
+                 <select ng-model="reg.chron_type">
+                   <option value="d">[% l('Day') %]</option>
+                   <option value="w">[% l('Week') %]</option>
+                   <option value="m">[% l('Month') %]</option>
+                   <option value="s">[% l('Season') %]</option>
+                   <option value="y">[% l('Year') %]</option>
+                 </select>
+               </div>
+               <div class="col-md-6">
+                 <div class="row" ng-repeat="part in reg.parts">
+                   <div class="col-md-8" ng-if="reg.regularity_type == 'c'">
+                     <label>[% l('Combined issue code') %] <input type="text" ng-model="part.combined_code"></label>
+                   </div>
+                   <div class="col-md-8" ng-if="reg.regularity_type != 'c'">
+                     <div ng-if="reg.chron_type == 's'">
+                       <label>[% l('Every') %] <eg-season-selector ng-model="part.season"></eg-season-selector></label>
+                     </div>
+                     <div ng-if="reg.chron_type == 'm'">
+                       <label>[% l('Every') %] <eg-month-selector ng-model="part.month"></eg-month-selector></label>
+                     </div>
+                     <div ng-if="reg.chron_type == 'd'">
+                       <select ng-model="part.sub_type">
+                         <option value="day_of_month">[% l('On day of month') %]</option>
+                         <option value="specific_date">[% l('On specific date') %]</option>
+                         <option value="day_of_week">[% l('On day of week') %]</option>
+                       </select>
+                       <div ng-if="part.sub_type == 'day_of_month'">
+                         <input type="number" step="1" min="1" max="31" ng-model="part.day_of_month">
+                       </div>
+                       <div ng-if="part.sub_type == 'specific_date'">
+                          <eg-month-day-selector day="part.day" month="part.month"></eg-month-day-selector>
+                       </div>
+                       <div ng-if="part.sub_type == 'day_of_week'">
+                          <eg-day-of-week-selector ng-model="part.day_of_week"></eg-day-of-week-selector>
+                       </div>
+                     </div>
+                     <div ng-if="reg.chron_type == 'w'">
+                       <select ng-model="part.sub_type">
+                         <option value="week_in_month">[% l('Week and month') %]</option>
+                         <option value="week_day">[% l('Week and day') %]</option>
+                         <option value="week_day_in_month">[% l('Week, month, and day') %]</option>
+                       </select>
+                       <div ng-if="part.sub_type == 'week_in_month'">
+                         <eg-week-in-month-selector ng-model="part.week"></eg-week-in-month-selector>
+                         [% l('week in') %]
+                         <eg-month-selector ng-model="part.month"></eg-month-selector>
+                       </div>
+                       <div ng-if="part.sub_type == 'week_day'">
+                         <eg-week-in-month-selector ng-model="part.week"></eg-week-in-month-selector>
+                         [% l('week on') %]
+                         <eg-day-of-week-selector ng-model="part.day"></eg-day-of-week-selector>
+                       </div>
+                       <div ng-if="part.sub_type == 'week_day_in_month'">
+                         <eg-week-in-month-selector ng-model="part.week"></eg-week-in-month-selector>
+                         [% l('week on') %]
+                         <eg-day-of-week-selector ng-model="part.day"></eg-day-of-week-selector>
+                         [% l('in') %]
+                         <eg-month-selector ng-model="part.month"></eg-month-selector>
+                       </div>
+                     </div>
+                     <div ng-if="reg.chron_type == 'y'">
+                       <input type="number" min="1" max="9999" ng-model="part.year">
+                     </div>
+                   </div>
+                   <div class="col-md-4">
+                     <button  ng-click="pattern.remove_regularity_part(reg, $index)"
+                             class="btn btn-xs btn-warning">
+                       [% l('Remove Part') %]
+                     </button>
+                     <button ng-if="$last" ng-click="pattern.add_regularity_part(reg)"
+                             class="btn btn-xs btn-warning">
+                       [% l('Add Part') %]
+                     </button>
+                   </div>
+                 </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      </fieldset>
+      </form>
+    </uib-tab>
+    <uib-tab index="4" disable="tab.active != 4" heading="[% l('Review') %]">
+      <div class="row">
+        <div class="col-md-2">
+          <span class="strong-text-2">[% l('Raw Pattern Code') %]</span>
+          <a class="pull-right" href ng-click="show_pattern_code = false"
+              title="[% l('Hide Raw Pattern Code') %]"
+              ng-show="show_pattern_code">
+              <span class="glyphicon glyphicon-resize-small"></span>
+          </a>
+          <a class="pull-right" href ng-click="show_pattern_code = true"
+              title="[% l('Show Raw Pattern Code') %]"
+              ng-hide="show_pattern_code">
+              <span class="glyphicon glyphicon-resize-full"></span>
+          </a>
+        </div>
+        <div class="col-md-6" ng-show="show_pattern_code">
+          <pre>{{pattern.compile_stringify()}}</pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <span class="strong-text-2">[% l('Pattern Summary') %]</span>
+        </div>
+        <div class="col-md-6">
+          <eg-prediction-pattern-summary pattern="pattern"></eg-prediction-pattern-summary>
+        </div>
+      </div>
+      <hr/>
+      <div class="row" ng-if="showShare && !viewOnly">
+        <div class="col-md-6">
+          <label for="pattern_name">[% l('Share this pattern using name') %]</label>
+          <input id="pattern_name" type="text" ng-model="share.pattern_name">
+        </div>
+        <div class="col-md-6">
+          <label for="share_depth">[% l('Share with') %]</label>
+          <eg-share-depth-selector id="share_depth" ng-model="share.depth"></eg-share-depth-selector>
+        </div>
+      </div>
+      <hr/>
+    </uib-tab>
+  </uib-tabset>
+</div>

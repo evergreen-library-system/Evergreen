@@ -2,11 +2,17 @@
 
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.TCN_EXISTS                        = "[% l('A record already exists with the requested TCN value') %]";
+    s.TCN_EXISTS_ERR                    = "[% l('An unexpected error occurred') %]";
     s.IMPORTED_RECORD_FROM_Z3950        = "[% l('Imported record') %]";
     s.IMPORTED_RECORD_FROM_Z3950_AS_ID  = "[% l('Record imported as ID [_1]', '{{id}}') %]";
     s.GO_TO_RECORD                      = "[% l('Go to record') %]";
     s.GO_BACK                           = "[% l('Go back') %]";
     s.IMPORT_BUTTON_LABEL               = "[% l('Import') %]";
     s.SAVE_BUTTON_LABEL                 = "[% l('Save') %]";
+    s.OVERLAY_CHANGED_TITLE             = "[% l('Overlay target changed') %]";
+    s.OVERLAY_CHANGED                   = "[% l('The overlay target has changed from [_1] to [_2].  Continue with overlay of record [_2]?', '{{id}}', '{{live_id}}') %]";
+    s.OVERLAY_REMOVED_TITLE             = "[% l('Overlay target removed') %]";
+    s.OVERLAY_REMOVED                   = "[% l('The overlay target has been removed.  The previous target was record [_1].  Continue with overlay of record [_1]?', '{{id}}') %]";
 }]);
 </script>

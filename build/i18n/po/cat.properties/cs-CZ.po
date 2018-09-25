@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2016-12-13 13:40+0000\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
+"PO-Revision-Date: 2018-03-19 21:25+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-12-14 05:03+0000\n"
-"X-Generator: Launchpad (build 18293)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:37+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: Czech\n"
@@ -169,7 +169,7 @@ msgstr "Smazat"
 #: staff.cat.copy_browser.delete_items.cancel
 msgctxt "staff.cat.copy_browser.delete_items.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.delete_items.override
 msgctxt "staff.cat.copy_browser.delete_items.override"
@@ -255,12 +255,12 @@ msgstr "Smazat"
 #: staff.cat.copy_browser.delete_volume.cancel
 msgctxt "staff.cat.copy_browser.delete_volume.cancel"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.delete_volume.override
 msgctxt "staff.cat.copy_browser.delete_volume.override"
 msgid "Override Delete Failure?"
-msgstr "Obejít chybu při mazání?"
+msgstr "Obejít chybu při smazání?"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain
 msgid ""
@@ -272,7 +272,7 @@ msgstr ""
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.confirm
 msgid "Delete Volume and Items"
-msgstr "Smazat sigantury  a exempláře"
+msgstr "Smazat signatury  a exempláře"
 
 #: staff.cat.copy_browser.delete_volume.copies_remain.cancel
 msgid "Cancel Delete"
@@ -280,7 +280,7 @@ msgstr "Zrušit mazání"
 
 #: staff.cat.copy_browser.delete_volume.exception
 msgid "copy browser -> delete volumes"
-msgstr "prohlížeč exemplářů -> smazat sigantury"
+msgstr "prohlížeč exemplářů -> smazat signatury"
 
 #: staff.cat.copy_browser.mark_library.alert
 msgid "Library + Record marked as Volume Transfer Destination"
@@ -328,7 +328,7 @@ msgstr "Přesunout"
 #: staff.cat.copy_browser.transfer.cancel.label
 msgctxt "staff.cat.copy_browser.transfer.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_browser.transfer.cancel.accesskey
 msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
@@ -350,7 +350,7 @@ msgstr "Obejít chybu v přesunu signatury?"
 
 #: staff.cat.copy_browser.transfer.ineligible_destination
 msgid "That destination cannot have volumes."
-msgstr "Tento cíl nemůže mít signatury"
+msgstr "Tato destinace nemůže mít signatury."
 
 #: staff.cat.copy_browser.transfer.success
 msgid "Volumes transferred."
@@ -744,7 +744,7 @@ msgstr "A"
 #: staff.cat.copy_editor.cancel.label
 msgctxt "staff.cat.copy_editor.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_editor.handle_update.error
 msgid "copy update error:"
@@ -835,7 +835,7 @@ msgstr "Ne"
 
 #: staff.cat.copy_editor.field.holdable.label
 msgid "Holdable?"
-msgstr "Možno rezervovat?"
+msgstr "Lze rezervovat?"
 
 #: staff.cat.copy_editor.field.holdable.yes_or_true
 msgctxt "staff.cat.copy_editor.field.holdable.yes_or_true"
@@ -990,7 +990,7 @@ msgstr "Veřejné"
 
 #: staff.cat.copy_notes.widgets.private
 msgid "Private"
-msgstr "Soukromé"
+msgstr "Neveřejná"
 
 #: staff.cat.copy_notes.delete_note.label
 msgid "Delete This Note"
@@ -998,7 +998,7 @@ msgstr "Smazat tuto poznámku"
 
 #: staff.cat.copy_notes.delete_note.prompt.msg
 msgid "Delete the note titled \"%1$s\" created on %2$s?"
-msgstr "Smazat tuto poznámku \"%1$s\" vytvořenou \"%2$s\"?"
+msgstr "Vymazat poznámku \"%1$s\" vytvořenou %2$s?"
 
 #: staff.cat.copy_notes.delete_note.prompt.title
 msgid "Delete Note"
@@ -1032,7 +1032,7 @@ msgstr "Nová poznámka"
 
 #: staff.cat.copy_notes.new_note.public
 msgid "Public?"
-msgstr "Veřejná?"
+msgstr "Veřejné?"
 
 #: staff.cat.copy_notes.new_note.title
 msgid "Title"
@@ -1049,7 +1049,7 @@ msgstr "Iniciály"
 #: staff.cat.copy_notes.new_note.cancel.label
 msgctxt "staff.cat.copy_notes.new_note.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.copy_notes.new_note.cancel.accesskey
 msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
@@ -1094,7 +1094,7 @@ msgstr "<Nenastaveno>"
 
 #: staff.cat.copy_summary.not_cataloged
 msgid "Not Cataloged"
-msgstr "Nezkatalogizováno"
+msgstr "Nekatalogizováno"
 
 #: staff.cat.marcedit.authority_see_also
 msgid "See also: %1$s"
@@ -1271,8 +1271,8 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr "Nejprve je potřeba označit záznam jako cíl přesunu rezervace"
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Rezervace přesunuty."
+msgid "All holds not available for pickup have been transferred."
+msgstr "Všechny rezervace nedostupné pro vyzvednutí byly přesunuty"
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1332,7 +1332,7 @@ msgstr "Zadejte číslo skupiny:"
 
 #: staff.cat.record_buckets.change_bucket.error
 msgid "Error retrieving bucket.  Did you use a valid bucket ID?"
-msgstr "Chyba při načítání skupiny. Zadali jste platné ID skupiny?"
+msgstr "Při načítání skupiny došlo k chybě. Použili jste platné ID skupiny?"
 
 #: staff.cat.record_buckets.delete_bucket_named
 msgctxt "staff.cat.record_buckets.delete_bucket_named"
@@ -1378,7 +1378,7 @@ msgstr "Smazat"
 #: staff.cat.record_buckets.delete_records.cancel_button.label
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
 msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
@@ -1484,7 +1484,7 @@ msgstr "exempláře"
 
 #: staff.cat.spine_labels.generate.std_unexpeceted_err
 msgid "Generate"
-msgstr "Vygenerovat"
+msgstr "Generovat"
 
 #: staff.cat.spine_labels.preview.title
 msgctxt "staff.cat.spine_labels.preview.title"
@@ -1531,7 +1531,7 @@ msgstr "Nebylo možné změnit název. Nemáte dostatečné oprávnění."
 
 #: staff.cat.util.replace_barcode.item_rename_error
 msgid "Error renaming item."
-msgstr "Chyba při změně položky."
+msgstr "Chyba při přejmenování položky."
 
 #: staff.cat.util.replace_barcode.rename_error
 msgid "Rename did not likely occur."
@@ -1563,7 +1563,7 @@ msgstr "Přesunout"
 #: staff.cat.util.transfer_copies.cancel.label
 msgctxt "staff.cat.util.transfer_copies.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.transfer_copies.cancel.accesskey
 msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
@@ -1603,7 +1603,7 @@ msgstr "Hřbetní štítky"
 
 #: staff.cat.util.show_in_opac.unknown_barcode
 msgid "%1$s is not cataloged"
-msgstr "%1$s nebyl zkatalogizován"
+msgstr "%1$s není zkatalogizováno"
 
 #: staff.cat.util.show_in_opac.catalog_error_for_doc_id
 msgid "Error opening catalog for document ID = %1$s"
@@ -1616,7 +1616,7 @@ msgstr "Dávka "
 #: staff.cat.util.copy_editor.edit_in_title
 msgctxt "staff.cat.util.copy_editor.edit_in_title"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view_in_title
 msgctxt "staff.cat.util.copy_editor.view_in_title"
@@ -1638,7 +1638,7 @@ msgstr "Zobrazení dávky"
 #: staff.cat.util.copy_editor.edit
 msgctxt "staff.cat.util.copy_editor.edit"
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: staff.cat.util.copy_editor.view
 msgctxt "staff.cat.util.copy_editor.view"
@@ -1686,7 +1686,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_damaged.md_cancel_label
 msgctxt "staff.cat.util.mark_item_damaged.md_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_damaged.md_confirm_action
 msgctxt "staff.cat.util.mark_item_damaged.md_confirm_action"
@@ -1704,7 +1704,7 @@ msgstr "Běžné vrácení"
 #: staff.cat.util.mark_item_damaged.checkin.no_checkin
 msgctxt "staff.cat.util.mark_item_damaged.checkin.no_checkin"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_damaged.checkin.forgiving_checkin
 msgid "Forgiving Checkin"
@@ -1718,6 +1718,14 @@ msgstr "Zaškrtnutím potvrďte tuto akci"
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr "Exemplář %1$s byl půjčen čtenáři, %2$s. K vrácení dne %3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
+"Položka %1$s již není připojena k aktivní výpůjčce.  Je nutné manuálně "
+"dořešit poplatky."
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -1767,7 +1775,7 @@ msgid ""
 msgstr ""
 "Akce selhala. Jeden nebo více exemplářů má speciální status, například "
 "\"Vypůjčeno\" nebo \"V přepravě\", a proto není možné změnit status na "
-"\"Nezvěstné\"."
+"Postrádané."
 
 #: staff.cat.util.mark_item_missing.af_title
 msgctxt "staff.cat.util.mark_item_missing.af_title"
@@ -1790,7 +1798,7 @@ msgstr "'Změnit status těchto exemplářů na Nezvěstné? Čárové kódy: %1
 
 #: staff.cat.util.mark_item_missing.ms_title
 msgid "Mark Missing"
-msgstr "Označit jako Nezvěstné"
+msgstr "Označit jako nezvěstné"
 
 #: staff.cat.util.mark_item_missing.ms_ok_label
 msgctxt "staff.cat.util.mark_item_missing.ms_ok_label"
@@ -1800,7 +1808,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_missing.ms_cancel_label
 msgctxt "staff.cat.util.mark_item_missing.ms_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_missing.ms_confirm_action
 msgctxt "staff.cat.util.mark_item_missing.ms_confirm_action"
@@ -1813,11 +1821,11 @@ msgstr "Chyba při označení exempláře %1$s jako Nezvěstného."
 
 #: staff.cat.util.mark_item_missing.one_item_missing
 msgid "Item marked Missing"
-msgstr "Exemplář označen jako Nezvěstný."
+msgstr "Jednotka byla označena jako  postrádaná"
 
 #: staff.cat.util.mark_item_missing.multiple_item_missing
 msgid "%1$s items marked Missing."
-msgstr "%1$s exemplářů označeno jako nezvěstné."
+msgstr "%1$s jednotek bylo  označeno jako postrádané."
 
 #: staff.cat.util.mark_item_missing_pieces.ms_message
 msgid "Mark these items as missing pieces?  Barcodes: %1$s"
@@ -1835,7 +1843,7 @@ msgstr "OK"
 #: staff.cat.util.mark_item_missing_pieces.ms_cancel_label
 msgctxt "staff.cat.util.mark_item_missing_pieces.ms_cancel_label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.util.mark_item_missing_pieces.ms_confirm_action
 msgctxt "staff.cat.util.mark_item_missing_pieces.ms_confirm_action"
@@ -2266,7 +2274,7 @@ msgstr "O"
 #: staff.cat.z3950.confirm_overlay.cancel.label
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
 msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
@@ -2372,7 +2380,7 @@ msgstr "Datum vydání"
 
 #: staff.cat.bib_brief.bib_call_number.label
 msgid "Bib Call #:"
-msgstr "Signatura z bib. záznamu č.:"
+msgstr "Signatura z bib. záznamu:"
 
 #: staff.cat.bib_brief.call_number.label
 msgid "Item Call #:"
@@ -2470,6 +2478,9 @@ msgstr "%1$s volných"
 #~ "volume itself."
 #~ msgstr ""
 #~ "Před smazáním celého svazku musíte smazat všechny exempláře ve svazku."
+
+#~ msgid "Holds transferred."
+#~ msgstr "Rezervace přesunuty."
 
 #~ msgid "Cancel "
 #~ msgstr "Storno "

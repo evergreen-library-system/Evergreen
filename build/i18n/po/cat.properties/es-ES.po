@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
 "PO-Revision-Date: 2016-10-20 13:10+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-10-21 05:49+0000\n"
-"X-Generator: Launchpad (build 18246)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:37+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 
 #: bib.no_marc
 msgid "No MARC Record"
@@ -1297,8 +1297,8 @@ msgstr ""
 "Apartados primero."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Apartados transferidos."
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1748,6 +1748,12 @@ msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr ""
 "El ejemplar %1$s está prestado al usuario, %2$s, la fecha de devolución es "
 "%3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -2468,6 +2474,9 @@ msgstr "% 1 $s disponibles"
 
 #~ msgid "Record: %1$s"
 #~ msgstr "Registro: %1$s"
+
+#~ msgid "Holds transferred."
+#~ msgstr "Apartados transferidos."
 
 #~ msgid "Merge these records? (Select the \"lead\" record first)"
 #~ msgstr ""

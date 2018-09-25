@@ -1,0 +1,30 @@
+
+<div id="staff-catalog-results-container" *ngIf="searchIsDone()">
+  <div class="row">
+    <div class="col-lg-2"><!--match pagination margin-->
+      <h3 i18n>Search Results ({{searchContext.result.count}})</h3>
+    </div>
+    <div class="col-lg-1"></div>
+    <div class="col-lg-9">
+      <div class="float-right">
+				<eg-catalog-result-pagination></eg-catalog-result-pagination>
+      </div>
+    </div>
+  </div>
+	<div class="row mt-2">
+		<div class="col-lg-2">
+      <eg-catalog-result-facets></eg-catalog-result-facets>
+		</div>
+		<div class="col-lg-10">
+			<div *ngIf="searchContext.result">
+				<div *ngFor="let summary of searchContext.result.records; let idx = index">
+          <div *ngIf="summary">
+					  <eg-catalog-result-record [summary]="summary" [index]="idx">
+					  </eg-catalog-result-record>
+          </div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

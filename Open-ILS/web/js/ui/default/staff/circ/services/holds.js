@@ -11,6 +11,15 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
     var service = {};
 
+    service.fetch_wide_holds = function(restrictions, order_by, limit, offset) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.hold.wide_hash.stream',
+            egCore.auth.token(),
+            restrictions, order_by, limit, offset
+        );
+    }
+
     service.fetch_holds = function(hold_ids) {
         var deferred = $q.defer();
 
@@ -61,6 +70,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
        
         return $uibModal.open({
             templateUrl : './circ/share/t_cancel_hold_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', 'cancel_reasons',
                 function($scope, $uibModalInstance, cancel_reasons) {
@@ -115,6 +125,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
        
         return $uibModal.open({
             templateUrl : './circ/share/t_uncancel_hold_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -189,6 +200,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_copy_quality_dialog',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -212,6 +224,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_edit_pickup_lib',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -244,6 +257,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         if (!hold_ids.length) return $q.when();
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_notification_prefs',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', 'sms_carriers',
                 function($scope, $uibModalInstance, sms_carriers) {
@@ -304,6 +318,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
 
         return $uibModal.open({
             templateUrl : './circ/share/t_hold_dates',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
@@ -449,6 +464,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
             || hold_data.status;
 
         var hold = hold_data.hold;
+        var volume = hold_data.volume;
         hold.pickup_lib(egCore.org.get(hold.pickup_lib()));
         hold.current_shelf_lib(egCore.org.get(hold.current_shelf_lib()));
         hold_data.id = hold.id();
@@ -481,6 +497,18 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
                 egCore.pcrud.retrieve('ccs',hold.current_copy().status()
                     ).then(function(c) { hold.current_copy().status(c) });
         }
+
+        if (volume) {
+            //Call number affixes are not always fleshed in the API
+            if (volume.prefix() && typeof volume.prefix() != 'object') {
+                console.debug('fetching call number prefix');
+                egCore.pcrud.retrieve('acnp',volume.prefix()).then(function(p) {volume.prefix(p)});
+            }
+            if (volume.suffix() && typeof volume.suffix() != 'object') {
+                console.debug('fetching call number prefix');
+                egCore.pcrud.retrieve('acns',volume.suffix()).then(function(s) {volume.suffix(s)});
+            }
+        }
     }
 
     return service;
@@ -512,10 +540,26 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         return egHolds.cancel_holds(hold_ids).then(service.refresh);
     }
 
+    service.cancel_wide_hold = function(items) {
+        var hold_ids = items.filter(function(item) {
+            return !item.hold.cancel_time;
+        }).map(function(item) {return item.hold.id});
+
+        return egHolds.cancel_holds(hold_ids).then(service.refresh);
+    }
+
     service.uncancel_hold = function(items) {
         var hold_ids = items.filter(function(item) {
             return item.hold.cancel_time();
         }).map(function(item) {return item.hold.id()});
+
+        return egHolds.uncancel_holds(hold_ids).then(service.refresh);
+    }
+
+    service.uncancel_wide_hold = function(items) {
+        var hold_ids = items.filter(function(item) {
+            return item.hold.cancel_time;
+        }).map(function(item) {return item.hold.id});
 
         return egHolds.uncancel_holds(hold_ids).then(service.refresh);
     }
@@ -535,12 +579,38 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         });
     }
 
+    // jump to circ list for either 1) the targeted copy or
+    // 2) the hold target copy for copy-level holds
+    service.show_recent_circs_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            if (item.hold.cp_id) {
+                var url = egCore.env.basePath +
+                          '/cat/item/' +
+                          item.hold.cp_id +
+                          '/circ_list';
+                $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+            }
+        });
+    }
+
     service.show_patrons = function(items) {
         var focus = items.length == 1;
         angular.forEach(items, function(item) {
             var url = egCore.env.basePath +
                       'circ/patron/' +
                       item.hold.usr().id() +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
+    service.show_patrons_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'circ/patron/' +
+                      item.hold.usr_id +
                       '/holds';
             $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
         });
@@ -557,10 +627,27 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         });
     }
 
+    service.show_holds_for_title_wide = function(items) {
+        var focus = items.length == 1;
+        angular.forEach(items, function(item) {
+            var url = egCore.env.basePath +
+                      'cat/catalog/record/' +
+                      item.hold.record_id +
+                      '/holds';
+            $timeout(function() { var x = $window.open(url, '_blank'); if (focus) x.focus() });
+        });
+    }
+
 
     function generic_update(items, action) {
         if (!items.length) return $q.when();
         var hold_ids = items.map(function(item) {return item.hold.id()});
+        return egHolds[action](hold_ids).then(service.refresh);
+    }
+
+    function generic_update_wide(items, action) {
+        if (!items.length) return $q.when();
+        var hold_ids = items.map(function(item) {return item.hold.id});
         return egHolds[action](hold_ids).then(service.refresh);
     }
 
@@ -583,12 +670,45 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
     service.transfer_to_marked_title = function(items) {
         generic_update(items, 'transfer_to_marked_title'); }
 
+    service.set_copy_quality_wide = function(items) {
+        generic_update_wide(items, 'set_copy_quality'); }
+    service.edit_pickup_lib_wide = function(items) {
+        generic_update_wide(items, 'edit_pickup_lib'); }
+    service.edit_notify_prefs_wide = function(items) {
+        generic_update_wide(items, 'edit_notify_prefs'); }
+    service.edit_dates_wide = function(items) {
+        generic_update_wide(items, 'edit_dates'); }
+    service.suspend_wide = function(items) {
+        generic_update_wide(items, 'suspend_holds'); }
+    service.activate_wide = function(items) {
+        generic_update_wide(items, 'activate_holds'); }
+    service.set_top_of_queue_wide = function(items) {
+        generic_update_wide(items, 'set_top_of_queue'); }
+    service.clear_top_of_queue_wide = function(items) {
+        generic_update_wide(items, 'clear_top_of_queue'); }
+    service.transfer_to_marked_title_wide = function(items) {
+        generic_update_wide(items, 'transfer_to_marked_title'); }
+
     service.mark_damaged = function(items) {
-        var copy_ids = items
-            .filter(function(item) { return Boolean(item.copy) })
-            .map(function(item) { return item.copy.id() });
-        if (copy_ids.length) 
-            egCirc.mark_damaged(copy_ids).then(service.refresh);
+        angular.forEach(items, function(item) {
+            if (item.copy) {
+                egCirc.mark_damaged({
+                    id: item.copy.id(),
+                    barcode: item.copy.barcode()
+                }).then(service.refresh);
+            }
+        });
+    }
+
+    service.mark_damaged_wide = function(items) {
+        angular.forEach(items, function(item) {
+            if (item.copy) {
+                egCirc.mark_damaged({
+                    id: item.hold.cp_id,
+                    barcode: item.hold.cp_barcode
+                }).then(service.refresh);
+            }
+        });
     }
 
     service.mark_missing = function(items) {
@@ -599,8 +719,21 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
             egCirc.mark_missing(copy_ids).then(service.refresh);
     }
 
+    service.mark_missing_wide = function(items) {
+        var copy_ids = items
+            .filter(function(item) { return Boolean(item.hold.cp_id) })
+            .map(function(item) { return item.hold.cp_id });
+        if (copy_ids.length) 
+            egCirc.mark_missing(copy_ids).then(service.refresh);
+    }
+
     service.retarget = function(items) {
         var hold_ids = items.map(function(item) { return item.hold.id() });
+        egHolds.retarget(hold_ids).then(service.refresh);
+    }
+
+    service.retarget_wide = function(items) {
+        var hold_ids = items.map(function(item) { return item.hold.id });
         egHolds.retarget(hold_ids).then(service.refresh);
     }
 
@@ -687,6 +820,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 $scope.new_note = function() {
                     return $uibModal.open({
                         templateUrl : './circ/share/t_hold_note_dialog',
+                        backdrop: 'static',
                         controller : 
                             ['$scope', '$uibModalInstance',
                             function($scope, $uibModalInstance) {
@@ -717,6 +851,7 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
                 $scope.new_notification = function() {
                     return $uibModal.open({
                         templateUrl : './circ/share/t_hold_notification_dialog',
+                        backdrop: 'static',
                         controller : 
                             ['$scope', '$uibModalInstance',
                             function($scope, $uibModalInstance) {

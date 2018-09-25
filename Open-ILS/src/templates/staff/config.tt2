@@ -7,7 +7,7 @@ EVERGREEN_VERSION='0.0.1'
 # compressed build files.  Use this for development and debugging.
 EXPAND_WEB_IMPORTS = 1; 
 
-# path to build files (js, css, fonts)
-WEB_BUILD_PATH = ctx.media_prefix _ '/js/ui/default/staff/build/';
+# path to build files (js, css, fonts). No / at end, because the user supplies it
+WEB_BUILD_PATH = ctx.media_prefix _ '/js/ui/default/staff/build';
 
 %]

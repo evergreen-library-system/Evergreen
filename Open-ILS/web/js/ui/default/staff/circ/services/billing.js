@@ -64,17 +64,20 @@ function($uibModal , $q , egCore) {
     // fetch the org-focused billing types
     // Cache on egEnv
     service.fetchBillingTypes = function() {
-        if (egCore.env.cbt) 
+        if (egCore.env.cbt) {
             return $q.when(egCore.env.cbt.list);
+        }
 
-        return egCore.pcrud.search('cbt', 
-            {   // first 100 are reserved for system-generated bills
-                id : {'>' : 100}, 
-                owner : egCore.org.ancestors(
-                    egCore.auth.user().ws_ou(), true)
-            }, 
-            {}, {atomic : true}
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.billing_type.ranged.retrieve.all',
+            egCore.auth.token(),
+            egCore.auth.user().ws_ou()
         ).then(function(list) {
+            list = list.filter(function(item) {
+                // first 100 are reserved for system-generated bills
+                return item.id() > 100;
+            });
             egCore.env.absorbList(list, 'cbt');
             return list;
         });
@@ -114,6 +117,7 @@ function($uibModal , $q , egCore) {
 
         return $uibModal.open({
             templateUrl: './circ/share/t_bill_patron_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','$timeout','billingTypes','xact','patron',
             function($scope , $uibModalInstance , $timeout , billingTypes , xact , patron) {
@@ -169,7 +173,4 @@ function($uibModal , $q , egCore) {
 
     return service;
 }]);
-
-
-
 

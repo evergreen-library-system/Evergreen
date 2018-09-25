@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2012-04-30 14:10+0000\n"
-"Last-Translator: Eva Cerninakova <Unknown>\n"
+"PO-Revision-Date: 2018-02-08 18:29+0000\n"
+"Last-Translator: Zbyněk Schwarz <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:45+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2018-02-09 05:19+0000\n"
+"X-Generator: Launchpad (build 18544)\n"
 
 #: authority.js:CONFIRM_DELETE_RESULT
 msgid "Deleted authority record # ${0}."
@@ -43,7 +43,7 @@ msgstr "Smazat autoritní záznam: \"${0}\"?"
 
 #: authority.js:MENU_EDIT
 msgid "Edit"
-msgstr "Editovat"
+msgstr "Upravit"
 
 #: authority.js:SAVE_RESULT_SUCCESS
 msgid "Record was saved."
@@ -83,7 +83,7 @@ msgstr "Sloučení záznamů je dokončeno"
 
 #: authority.js:CANCEL
 msgid "Cancel"
-msgstr "Storno"
+msgstr "Zrušit"
 
 #: authority.js:THESAURI
 msgid "Thesauri (${0})"
@@ -91,7 +91,7 @@ msgstr "Tesaurus (${0})"
 
 #: authority.js:NONE_LINK
 msgid "[None]"
-msgstr "[Žádný]"
+msgstr "Hodnota nezadána"
 
 #: authority.js:AUTHORITY_FIELD_METADATA
 msgid "${3} (${1} ‡${2}) ${4}"

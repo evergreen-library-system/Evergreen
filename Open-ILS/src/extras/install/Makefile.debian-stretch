@@ -1,0 +1,160 @@
+# install files for Debian Stretch
+
+DIR = $(dir $(lastword $(MAKEFILE_LIST)))
+
+export DEB_PGSQL_COMMON_MODS = \
+	gcc \
+	libbusiness-isbn-perl \
+	libjson-xs-perl \
+	liblibrary-callnumber-lc-perl \
+	libmarc-record-perl \
+	libmarc-xml-perl \
+	librose-uri-perl \
+	libuuid-tiny-perl \
+	libxml-libxml-perl \
+	libxml-libxslt-perl
+
+export DEBS = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	apache2-dev\
+	aspell\
+	aspell-en\
+	libapache2-mod-perl2\
+	libbusiness-creditcard-perl\
+	libbusiness-isbn-data-perl\
+	libbusiness-issn-perl\
+	libbusiness-onlinepayment-authorizenet-perl\
+	libbusiness-onlinepayment-payflowpro-perl\
+	libbusiness-onlinepayment-perl\
+	libdate-manip-perl\
+	libdatetime-format-builder-perl\
+	libdatetime-format-iso8601-perl\
+	libdatetime-format-mail-perl\
+	libdatetime-perl\
+	libdatetime-set-perl\
+	libdatetime-timezone-perl\
+	libdbd-pg-perl\
+	libdbd-pgsql\
+	libdbi-dev\
+	libdbi1\
+	libemail-simple-perl\
+	libexcel-writer-xlsx-perl\
+	libgd-graph3d-perl\
+	liblocale-maketext-lexicon-perl\
+	liblog-log4perl-perl\
+	libmarc-charset-perl \
+	libncurses5-dev\
+	libnet-ip-perl\
+	libnet-ldap-perl \
+	libnet-server-perl\
+	libnet-ssh2-perl\
+	libnet-z3950-simple2zoom-perl\
+	libnet-z3950-simpleserver-perl\
+	libnet-z3950-zoom-perl \
+	libnspr4-dev\
+	libole-storage-lite-perl\
+	libparent-perl\
+	libpq5\
+	libpq-dev\
+	libpcre3-dev\
+	librpc-xml-perl\
+	libsru-perl\
+	libssh2-1-dev\
+	libtemplate-plugin-posix-perl\
+	libtest-warn-perl\
+	libtest-output-perl\
+	libtext-aspell-perl\
+	libtext-csv-perl\
+	libuniversal-require-perl\
+	libunix-syslog-perl\
+	libyaz-dev\
+	postgresql-client-9.6\
+	libsoap-lite-perl\
+	libbz2-dev\
+	libparse-recdescent-perl\
+	yaz
+
+export DEB_APACHE_MODS = \
+    expires\
+    include\
+    proxy\
+    proxy_http\
+    rewrite\
+    cgi\
+    perl
+
+export DEB_APACHE_DISMODS = \
+    deflate
+
+export DEB_APACHE_DISCONF = \
+    serve-cgi-bin
+
+export CPAN_MODULES = \
+	Business::OnlinePayment::PayPal \
+	Email::Send
+
+export CPAN_MODULES_FORCE = \
+	Business::Stripe \
+	Class::DBI::Frozen::301
+
+PGSQL_SERVER_DEBS_96 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-9.6 \
+	postgresql-contrib-9.6 \
+	postgresql-plperl-9.6 \
+	postgresql-server-dev-9.6
+
+# note: some prereqs are repeated in the developer/packager 
+# sections to support building Evergreen packages on servers
+# where Evergreen and its prereqs are not installed.
+
+DEVELOPER_DEBS = \
+	automake \
+	autoconf \
+	libtool
+
+PACKAGER_DEBS = \
+	asciidoc \
+	source-highlight \
+	zip \
+	unzip \
+	nsis
+
+TRANSLATOR_DEBS = \
+	libtemplate-perl \
+	liblocale-maketext-lexicon-perl \
+	translate-toolkit \
+	python-dev \
+	python-levenshtein \
+	python-polib \
+	python-setuptools \
+	python-simplejson \
+	python-lxml \
+	bzr
+
+all:
+	make -f $(DIR)/Makefile.debian install_debs
+	make -f $(DIR)/Makefile.common install_cpan
+	make -f $(DIR)/Makefile.common install_cpan_force
+	make -f $(DIR)/Makefile.debian debian_sys_config
+
+install_postgres_server:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
+
+# note: if/when grunt-cli is available as a
+# package, use the packaged version instead.
+install_developer:
+	make -f $(DIR)/Makefile.debian DEBS="$(DEVELOPER_DEBS)"
+	make -f $(DIR)/Makefile.common install_nodejs_from_source
+
+install_translator: install_developer
+	make -f $(DIR)/Makefile.debian DEBS="$(TRANSLATOR_DEBS)"
+
+install_packager: install_developer install_translator
+	make -f $(DIR)/Makefile.debian DEBS="$(PACKAGER_DEBS)"
+
+clean:
+	make -f $(DIR)/Makefile.common clean
+	make -f $(DIR)/Makefile.debian clean
+
+# vim:noet:sw=4:ts=4:

@@ -23,7 +23,7 @@ use Email::Send;
 use Getopt::Long;
 use Unicode::Normalize;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::AppSession;
@@ -128,12 +128,12 @@ sub main {
     $predue_notices = [$predue_notices] unless ref $predue_notices eq 'ARRAY'; 
 
     my @overdues = sort { 
-        OpenSRF::Utils->interval_to_seconds($a->{notify_interval}) <=> 
-        OpenSRF::Utils->interval_to_seconds($b->{notify_interval}) } @$overdue_notices;
+        OpenILS::Utils::DateTime->interval_to_seconds($a->{notify_interval}) <=> 
+        OpenILS::Utils::DateTime->interval_to_seconds($b->{notify_interval}) } @$overdue_notices;
 
     my @predues = sort { 
-        OpenSRF::Utils->interval_to_seconds($a->{notify_interval}) <=> 
-        OpenSRF::Utils->interval_to_seconds($b->{notify_interval}) } @$predue_notices;
+        OpenILS::Utils::DateTime->interval_to_seconds($a->{notify_interval}) <=> 
+        OpenILS::Utils::DateTime->interval_to_seconds($b->{notify_interval}) } @$predue_notices;
 
     for my $db (($opt_days_back) ? split(',', $opt_days_back) : 0) {
         if($opt_notice_types =~ /overdue/) {
@@ -174,7 +174,7 @@ sub global_overdue_output {
 sub generate_notice_set {
     my($notice, $type, $days_back) = @_;
 
-    my $notify_interval = OpenSRF::Utils->interval_to_seconds($notice->{notify_interval});
+    my $notify_interval = OpenILS::Utils::DateTime->interval_to_seconds($notice->{notify_interval});
     $notify_interval = -$notify_interval if $type eq 'overdue';
 
     my ($start_date, $end_date) = make_date_range($notify_interval - $days_back * 86400);
@@ -328,7 +328,7 @@ sub get_bib_attr {
 # provides a date that Template::Plugin::Date can parse
 sub parse_due_date {
     my $circ = shift;
-    my $due = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+    my $due = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($circ->due_date));
     return sprintf(
         "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
         $due->hour,

@@ -11,7 +11,7 @@ Setting up hard due dates is a two-step process.  You must first create a hard d
 
 To create a hard due date:
 
-. Click *Admin -> Server Administration -> Hard Due Date Changes*.
+. Click *Administration -> Server Administration -> Hard Due Date Changes*.
 . Click *New Hard Due Date*.
 . In the *Name* field, enter a name for your hard due date.  Note that each hard due date can have multiple values, so it's best to use a generic name here, such as "End of semester."
 . In the *Owner* field, select the appropriate org unit for your new hard due date.

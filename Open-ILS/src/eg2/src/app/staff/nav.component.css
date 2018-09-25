@@ -1,0 +1,72 @@
+/* remove dropdown carret for icon-based entries */
+#staff-navbar .no-caret::after {
+    display:none;
+}
+
+/* move the caret closer to the dropdown text */
+#staff-navbar {
+    padding-left: 0px;
+}
+
+#staff-navbar {
+    background: -webkit-linear-gradient(#00593d, #007a54);
+    background-color: #007a54;
+    color: #fff;
+    font-size: 14px;
+}
+
+#staff-navbar .navbar-nav {
+  padding: 4px;
+}
+
+/* align top of dropdown w/ bottom of nav */
+#staff-navbar .dropdown-menu {
+    margin-top: 7px;
+}
+#staff-navbar .material-icons {
+    padding-right:3px;
+}
+#staff-navbar .dropdown-item {
+    font-size: 14px;
+    font-weight: 400;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    margin: -4px;
+}
+
+#staff-navbar .dropdown-item .material-icons {
+  font-size: 18px;
+}
+
+#staff-navbar .nav-link {
+    color: #fff;
+    padding-top:1px;
+    padding-bottom:1px;
+}
+#staff-navbar .nav-link:hover {
+    color: #ddd;
+    cursor: pointer;
+}
+
+#staff-navbar .navbar-nav > .open > a,
+#staff-navbar .navbar-nav > .open > a:focus,
+#staff-navbar .navbar-nav > .open > a:hover {
+    background-color: #7a7a7a;
+}
+#staff-navbar .navbar-nav>.dropdown>a .caret {
+    border-top-color: #fff;
+    border-bottom-color: #fff;
+}
+#staff-navbar .navbar-nav>.dropdown>a:hover .caret {
+    border-top-color: #ddd;
+    border-bottom-color: #ddd;
+}
+
+/* Align material-icons with sibling text; otherwise they float up */
+#staff-navbar .with-material-icon, #staff-navbar .dropdown-item {
+    display: inline-flex;
+    vertical-align: middle;
+    align-items: center;
+}
+

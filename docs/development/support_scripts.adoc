@@ -1,4 +1,5 @@
-== Support Scripts
+Support Scripts
+---------------
 
 Various scripts are included with Evergreen in the `/openils/bin/` directory
 (and in the source code in `Open-ILS/src/support-scripts` and
@@ -20,7 +21,7 @@ to more thorough documentation, if available.
    -- Links reference headings in authority records to main entry headings
       in other authority records. Should be run at least once a day (only for
 	  changed records).
- * authority_control_fields.pl
+ * <<_authority_control_fields,authority_control_fields.pl>>
    -- Links bibliographic records to the best matching authority record.
       Should be run at least once a day (only for changed records).
       You can accomplish this by running _authority_control_fields.pl --days-back=1_
@@ -53,12 +54,52 @@ to more thorough documentation, if available.
    -- Uses the output of marc2bre.pl (or similar tools) to generate the SQL
       for importing records into Evergreen in a parallel fashion
 
+anchor:_authority_control_fields[]
+
+authority_control_fields: Connecting Bibliographic and Authority records
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[authority control]
+
+This script matches headings in bibliographic records to the appropriate
+authority records. When it finds a match, it will add a subfield 0 to the 
+matching bibliographic field.
+
+Here is how the matching works:
+
+[options="header",cols="1,1,3"]
+|=========================================================
+|Bibliographic field|Authority field it matches|Subfields that it examines
+
+|100|100|a,b,c,d,f,g,j,k,l,n,p,q,t,u
+|110|110|a,b,c,d,f,g,k,l,n,p,t,u
+|111|111|a,c,d,e,f,g,j,k,l,n,p,q,t,u
+|130|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t
+|600|100|a,b,c,d,f,g,h,j,k,l,m,n,o,p,q,r,s,t,v,x,y,z
+|610|110|a,b,c,d,f,g,h,k,l,m,n,o,p,r,s,t,v,w,x,y,z
+|611|111|a,c,d,e,f,g,h,j,k,l,n,p,q,s,t,v,x,y,z
+|630|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t,v,x,y,z
+|648|148|a,v,x,y,z
+|650|150|a,b,v,x,y,z
+|651|151|a,v,x,y,z
+|655|155|a,v,x,y,z
+|700|100|a,b,c,d,f,g,j,k,l,n,p,q,t,u
+|710|110|a,b,c,d,f,g,k,l,n,p,t,u
+|711|111|a,c,d,e,f,g,j,k,l,n,p,q,t,u
+|730|130|a,d,f,g,h,j,k,m,n,o,p,r,s,t
+|751|151|a,v,x,y,z
+|800|100|a,b,c,d,e,f,g,j,k,l,n,p,q,t,u,4
+|830|130|a,d,f,g,h,k,l,m,n,o,p,r,s,t
+|=========================================================
+
 
 anchor:_marc_export[]
 
-=== marc_export: Exporting Bibliographic Records into MARC files
+marc_export: Exporting Bibliographic Records into MARC files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[marc_export]
+indexterm:[MARC records,exporting,using the command line]
 
 The following procedure explains how to export Evergreen bibliographic
 records into MARC files using the *marc_export* support script. All steps
@@ -99,43 +140,158 @@ cat /home/opensrf/records.txt | ./marc_export --store -i -c /openils/conf/opensr
 
 [NOTE]
 ====================
-`marc_export` was updated in Evergreen 2.6 and now does not output progress
-as it executes.
+`marc_export` does not output progress as it executes.
 ====================
 
-[NOTE]
-====================
-You can use the `--since` option to export records modified after a
-certain date and time.
-====================
+Options
+^^^^^^^
 
-[NOTE]
-====================
+The *marc_export* support script includes several options.  You can find a complete list
+by running `./marc_export -h`.  A few key options are also listed below:
+
+--descendants and --library
++++++++++++++++++++++++++++
+
+The `marc_export` script has two related options, `--descendants` and
+`--library`.  Both options take one argument of an organizational unit
+
+The `--library` option will export records with holdings at the specified
+organizational unit only.  By default, this only includes physical holdings,
+not electronic ones (also known as located URIs).
+
+The `descendants` option works much like the `--library` option
+except that it is aware of the org. tree and will export records with
+holdings at the specified organizational unit and all of its descendants.
+This is handy if you want to export the records for all of the branches
+of a system.  You can do that by specifying this option and the system's
+shortname, instead of specifying multiple `--library` options for each branch.
+
+Both the `--library` and `--descendants` options can be repeated.
+All of the specified org. units and their descendants will be included
+in the output.  You can also combine `--library` and `--descendants`
+options when necessary.
+
+--items
++++++++
+
+The `--items` option will add an 852 field for every relevant item to the MARC
+record.  This 852 field includes the following information:
+
+[options="header",cols="2,3"]
+|===================================
+|Subfield          |Contents
+|$b (occurrence 1) |Call number owning library shortname
+|$b (occurrence 2) |Item circulating library shortname
+|$c                |Shelving location
+|$g                |Circulation modifier
+|$j                |Call number
+|$k                |Call number prefix
+|$m                |Call number suffix
+|$p                |Barcode
+|$t                |Copy number
+|$x                |Miscellaneous item information
+|$y                |Price
+|===================================
+
+
+--since
++++++++
+
+You can use the `--since` option to export records modified after a certain date and time.
+
+--store
++++++++
+
 By default, marc_export will use the reporter storage service, which should
 work in most cases. But if you have a separate reporter database and you
 know you want to talk directly to your main production database, then you
 can set the `--store` option to `cstore` or `storage`. 
-====================
 
-[NOTE]
-====================
-For more information, run marc_export with the -h option:
+--uris
+++++++
+The `--uris` option (short form: `-u`) allows you to  export records with
+located URIs (i.e. electronic resources).  When used by itself, it will export
+only records that have located URIs.  When used in conjunction with `--items`,
+it will add records with located URIs but no items/copies to the output. 
+If combined with a `--library` or `--descendants` option, this option will
+limit its output to those records with URIs at the designated libraries.  The
+best way to use this option is in combination with the `--items` and one of the
+`--library` or `--descendants` options to export *all* of a library's
+holdings both physical and electronic.
 
- ./marc_export -h
-====================
+anchor:_pingest_pl[]
+
+Parallel Ingest with pingest.pl
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[pgingest.pl]
+indexterm:[MARC records,importing,using the command line]
+
+A program named pingest.pl allows fast bibliographic record
+ingest.  It performs ingest in parallel so that multiple batches can
+be done simultaneously.  It operates by splitting the records to be
+ingested up into batches and running all of the ingest methods on each
+batch.  You may pass in options to control how many batches are run at
+the same time, how many records there are per batch, and which ingest
+operations to skip.
+
+NOTE: The browse ingest is presently done in a single process over all
+of the input records as it cannot run in parallel with itself.  It
+does, however, run in parallel with the other ingests.
+
+Command Line Options
+^^^^^^^^^^^^^^^^^^^^
+
+pingest.pl accepts the following command line options:
+
+--host::
+    The server where PostgreSQL runs (either host name or IP address).
+    The default is read from the PGHOST environment variable or
+    "localhost."
+
+--port::
+    The port that PostgreSQL listens to on host.  The default is read
+    from the PGPORT environment variable or 5432.
+
+--db::
+    The database to connect to on the host.  The default is read from
+    the PGDATABASE environment variable or "evergreen."
+
+--user::
+    The username for database connections.  The default is read from
+    the PGUSER environment variable or "evergreen."
+
+--password::
+    The password for database connections.  The default is read from
+    the PGPASSWORD environment variable or "evergreen."
+
+--batch-size::
+    Number of records to process per batch.  The default is 10,000.
+
+--max-child::
+    Max number of worker processes (i.e. the number of batches to
+    process simultaneously).  The default is 8.
+
+--skip-browse::
+--skip-attrs::
+--skip-search::
+--skip-facets::
+--skip-display::
+    Skip the selected reingest component.
 
 
 
-=== Importing Authority Records from Command Line
+Importing Authority Records from Command Line
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[marc2are.pl]
 indexterm:[pg_loader.pl]
+indexterm:[MARC records,importing,using the command line]
 
 The major advantages of the command line approach are its speed and its
 convenience for system administrators who can perform bulk loads of
 authority records in a controlled environment. For alternate instructions,
-see <<_importing_authority_records_from_the_staff_client,Importing
-Authority Records from the Staff Client>>.
+see the cataloging manual.
 
  . Run *marc2are.pl* against the authority records, specifying the user
 name, password, MARC type (USMARC or XML). Use `STDOUT` redirection to
@@ -176,4 +332,41 @@ that command looks like:
 psql -U evergreen -h localhost -d evergreen -f pg_loader-output.sql
 ----
 
+Juvenile-to-adult batch script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The batch `juv_to_adult.srfsh` script is responsible for toggling a patron
+from juvenile to adult. It should be set up as a cron job.
+
+This script changes patrons to adult when they reach the age value set in the
+library setting named "Juvenile Age Threshold" (`global.juvenile_age_threshold`).
+When no library setting value is present at a given patron's home library, the
+value passed in to the script will be used as a default.
+
+MARC Stream Importer
+~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[MARC records,importing,using the command line]
+
+The MARC Stream Importer can import authority records or bibliographic records.
+A single running instance of the script can import either type of record, based
+on the record leader.
+
+This support script has its own configuration file, _marc_stream_importer.conf_, 
+which includes settings related to logs, ports, uses, and access control.
+
+The importer is even more flexible than the staff client import, including the
+following options:
+
+ * _--bib-auto-overlay-exact_ and _--auth-auto-overlay-exact_: overlay/merge on
+exact 901c matches
+ * _--bib-auto-overlay-1match_ and _--auth-auto-overlay-1match_: overlay/merge
+when exactly one match is found
+ * _--bib-auto-overlay-best-match_ and _--auth-auto-overlay-best-match_:
+overlay/merge on best match
+ * _--bib-import-no-match_ and _--auth-import-no-match_: import when no match
+is found
+
+One advantage to using this tool instead of the staff client Import interface
+is that the MARC Stream Importer can load a group of files at once.
 

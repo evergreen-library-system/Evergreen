@@ -1,5 +1,0 @@
-Add Description Field to Circulation and Hold Configuration Entries
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The circulation and hold policy configuration rules now each have a
-description field. This allows administrators to add comments to
-describe the purpose of each rule.

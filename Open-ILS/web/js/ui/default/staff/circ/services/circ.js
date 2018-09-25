@@ -5,9 +5,10 @@
 angular.module('egCoreMod')
 
 .factory('egCirc',
-       ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog',
+
+       ['$uibModal','$q','egCore','egAlertDialog','egConfirmDialog','egAddCopyAlertDialog','egCopyAlertManagerDialog','egCopyAlertEditorDialog',
         'egWorkLog',
-function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
+function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAlertDialog , egCopyAlertManagerDialog,  egCopyAlertEditorDialog ,
          egWorkLog) {
 
     var service = {
@@ -18,7 +19,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             hold_shelf_slip : false,
             hold_transit_slip : false,
             transit_slip : false
-        }
+        },
+        in_flight_checkins: {}
     };
 
     egCore.startup.go().finally(function() {
@@ -26,9 +28,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             'ui.staff.require_initials.patron_standing_penalty',
             'ui.admin.work_log.max_entries',
             'ui.admin.patron_log.max_entries',
-            'circ.staff_client.do_not_auto_attempt_print'
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.clear_hold_on_checkout'
         ]).then(function(set) {
             service.require_initials = Boolean(set['ui.staff.require_initials.patron_standing_penalty']);
+            service.clearHold = Boolean(set['circ.clear_hold_on_checkout']);
+
             if (angular.isArray(set['circ.staff_client.do_not_auto_attempt_print'])) {
                 if (set['circ.staff_client.do_not_auto_attempt_print'].indexOf('Hold Slip') > 1)
                     service.never_auto_print['hold_shelf_slip'] = true;
@@ -58,7 +63,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'COPY_NOT_AVAILABLE',
         'COPY_IS_REFERENCE',
         'COPY_ALERT_MESSAGE',
-        'ITEM_ON_HOLDS_SHELF'                 
+        'ITEM_ON_HOLDS_SHELF',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ]
 
     // after the first override of any of these events, 
@@ -87,7 +99,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'COPY_ALERT_MESSAGE',
         'COPY_NEEDED_FOR_HOLD',
         'MAX_RENEWALS_REACHED',
-        'CIRC_CLAIMS_RETURNED'
+        'CIRC_CLAIMS_RETURNED',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ];
 
     // these checkin events do not produce alerts when 
@@ -101,6 +120,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         'CIRC_CLAIMS_RETURNED',
         'COPY_ALERT_MESSAGE',
         'COPY_STATUS_LOST',
+        'COPY_STATUS_LOST_AND_PAID',
         'COPY_STATUS_LONG_OVERDUE',
         'COPY_STATUS_MISSING',
         'PATRON_EXCEEDS_FINES'
@@ -122,6 +142,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // options : non-parameter controls.  e.g. "override", "check_barcode"
     service.checkout = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
+
         console.debug('egCirc.checkout() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
 
@@ -176,6 +198,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // Rejected if the renewal cannot be completed.
     service.renew = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
 
         console.debug('egCirc.renew() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
@@ -223,6 +246,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // Rejected if the checkin cannot be completed.
     service.checkin = function(params, options) {
         if (!options) options = {};
+        params.new_copy_alerts = 1;
 
         console.debug('egCirc.checkin() : ' 
             + js2JSON(params) + ' : ' + js2JSON(options));
@@ -243,10 +267,20 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 var method = 'open-ils.circ.checkin';
                 if (options.override) method += '.override';
 
+                // Multiple checkin API calls should never be active
+                // for a single barcode.
+                if (service.in_flight_checkins[barcode]) {
+                    console.error('Barcode ' + barcode 
+                        + ' is already in flight for checkin, skipping');
+                    return $q.reject();
+                }
+                service.in_flight_checkins[barcode] = true;
+
                 return egCore.net.request(
                     'open-ils.circ', method, egCore.auth.token(), params
 
                 ).then(function(evt) {
+                    delete service.in_flight_checkins[barcode];
 
                     if (!angular.isArray(evt)) evt = [evt];
                     return service.flesh_response_data(
@@ -257,7 +291,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     .then(function(final_resp) {
                         return service.munge_resp_data(final_resp,'checkin',method)
                     })
-                });
+                }, function() {delete service.in_flight_checkins[barcode]});
             });
         });
     }
@@ -277,12 +311,21 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             return;
         }
 
+        // retrieve call number affixes prior to sending payload data to the grid
+        if (payload.volume && typeof payload.volume.prefix() != 'object') {
+            egCore.pcrud.retrieve('acnp',payload.volume.prefix()).then(function(p) {payload.volume.prefix(p)});
+        };
+        if (payload.volume && typeof payload.volume.suffix() != 'object') {
+            egCore.pcrud.retrieve('acns',payload.volume.suffix()).then(function(s) {payload.volume.suffix(s)});
+        };
+
         data.circ = payload.circ;
         data.parent_circ = payload.parent_circ;
         data.hold = payload.hold;
         data.record = payload.record;
         data.acp = payload.copy;
         data.acn = payload.volume ?  payload.volume : payload.copy ? payload.copy.call_number() : null;
+        data.alci = egCore.idl.toHash(payload.latest_inventory, true);
         data.au = payload.patron;
         data.transit = payload.transit;
         data.status = payload.status;
@@ -292,8 +335,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         data.isbn = final_resp.evt[0].isbn;
         data.route_to = final_resp.evt[0].route_to;
 
+
         if (payload.circ) data.duration = payload.circ.duration();
         if (payload.circ) data.circ_lib = payload.circ.circ_lib();
+        if (payload.do_inventory_update) {
+            if (payload.latest_inventory.id()) {
+                egCore.pcrud.update(payload.latest_inventory);
+            } else {
+                egCore.pcrud.create(payload.latest_inventory);
+            }
+        }
 
         // for checkin, the mbts lives on the main circ
         if (payload.circ && payload.circ.billable_transaction())
@@ -351,7 +402,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         switch(evt[0].textcode) {
             case 'COPY_NOT_AVAILABLE':
-                return service.copy_not_avail_dialog(evt[0], params, options);
+                return service.copy_not_avail_dialog(evt, params, options);
             case 'COPY_ALERT_MESSAGE':
                 return service.copy_alert_dialog(evt[0], params, options, 'checkout');
             default: 
@@ -704,18 +755,63 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (!angular.isArray(evt)) evt = [evt];
 
         egCore.audio.play('warning.circ.event_override');
+        var copy_alert = evt.filter(function(e) {
+            return e.textcode == 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt.filter(function(e) {
+            return e.textcode !== 'COPY_ALERT_MESSAGE';
+        });
+
         return $uibModal.open({
             templateUrl: './circ/share/t_event_override_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
                 $scope.events = evt;
+
+                // Find the event, if any, that is for ITEM_ON_HOLDS_SHELF
+                //  and grab the patron name of the owner. 
+                $scope.holdEvent = evt.filter(function(e) {
+                    return e.textcode === 'ITEM_ON_HOLDS_SHELF'
+                });
+
+                if ($scope.holdEvent.length > 0) {
+                    // Ensure we have a scalar here
+                    if (angular.isArray($scope.holdEvent)) {
+                        $scope.holdEvent = $scope.holdEvent[0];
+                    }
+
+                    $scope.patronName = $scope.holdEvent.payload.patron_name;
+                    $scope.holdID = $scope.holdEvent.payload.hold_id;
+                    $scope.patronID = $scope.holdEvent.payload.patron_id;
+                }
+
                 $scope.auto_override =
                     evt.filter(function(e){
                         return service.checkout_auto_override_after_first.indexOf(evt.textcode) > -1;
                     }).length > 0;
                 $scope.copy_barcode = params.copy_barcode; // may be null
-                $scope.ok = function() { $uibModalInstance.close() }
+
+                // Implementation note: Why not use a primitive here? It
+                // doesn't work.  See: 
+                // http://stackoverflow.com/questions/18642371/checkbox-not-binding-to-scope-in-angularjs
+                $scope.formdata = {clearHold : service.clearHold};
+
+                $scope.ok = function() { 
+                    // Handle the cancellation of the assciated hold here
+                    if ($scope.formdata.clearHold && $scope.holdID) {
+                        egCore.net.request(
+                            'open-ils.circ',
+                            'open-ils.circ.hold.cancel',
+                            egCore.auth.token(), $scope.holdID,
+                            5, // staff forced
+                            'Item checked out by other patron' // FIXME I18n
+                        );
+                    }
+                    $uibModalInstance.close();
+                }
+
                 $scope.cancel = function ($event) { 
                     $uibModalInstance.dismiss();
                     $event.preventDefault();
@@ -724,6 +820,10 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         }).result.then(
             function() {
                 options.override = true;
+
+                if (copy_alert.length > 0) {
+                    return service.copy_alert_dialog(copy_alert, params, options, action);
+                }
 
                 if (action == 'checkin') {
                     return service.checkin(params, options);
@@ -741,9 +841,19 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     }
 
     service.copy_not_avail_dialog = function(evt, params, options) {
-        if (angular.isArray(evt)) evt = evt[0];
+        if (!angular.isArray(evt)) evt = [evt];
+
+        var copy_alert = evt.filter(function(e) {
+            return e.textcode == 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt.filter(function(e) {
+            return e.textcode !== 'COPY_ALERT_MESSAGE';
+        });
+        evt = evt[0];
+
         return $uibModal.open({
             templateUrl: './circ/share/t_copy_not_avail_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance','copyStatus',
                 function($scope , $uibModalInstance , copyStatus) {
@@ -760,6 +870,11 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         }).result.then(
             function() {
                 options.override = true;
+
+                if (copy_alert.length > 0) {
+                    return service.copy_alert_dialog(copy_alert, params, options, 'checkout');
+                }
+
                 return service.checkout(params, options);
             }
         );
@@ -784,6 +899,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             return $uibModal.open({
                 templateUrl: './circ/share/t_noncat_dialog',
+                backdrop: 'static',
                 controller: 
                     ['$scope', '$uibModalInstance',
                     function($scope, $uibModalInstance) {
@@ -816,6 +932,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         return $uibModal.open({
             templateUrl: './circ/share/t_precat_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 'circMods',
                 function($scope, $uibModalInstance, circMods) {
@@ -826,6 +943,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 $scope.circModifiers = circMods;
                 $scope.ok = function(args) { $uibModalInstance.close(args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
+
+                // use this function as a keydown handler on form
+                // elements that should not submit the form on enter.
+                $scope.preventSubmit = function($event) {
+                    if ($event.keyCode == 13)
+                        $event.preventDefault();
+                }
             }],
             resolve : {
                 circMods : function() { 
@@ -848,11 +972,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.find_copy_transit = function(evt, params, options) {
         if (angular.isArray(evt)) evt = evt[0];
 
-        if (evt && evt.payload && evt.payload.transit)
-            return $q.when(evt.payload.transit);
+        // NOTE: evt.payload.transit may exist, but it's not necessarily
+        // the transit we want, since a transit close + open in the API
+        // returns the closed transit.
 
          return egCore.pcrud.search('atc',
-            {   dest_recv_time : null},
+            {   dest_recv_time : null, cancel_time : null},
             {   flesh : 1, 
                 flesh_fields : {atc : ['target_copy']},
                 join : {
@@ -865,7 +990,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 },
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'}, 
-            }
+            }, {authoritative : true}
         ).then(function(transit) {
             transit.source(egCore.org.get(transit.source()));
             transit.dest(egCore.org.get(transit.dest()));
@@ -877,6 +1002,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
         return $uibModal.open({
             templateUrl: './circ/share/t_copy_in_transit_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance','transit',
                 function($scope , $uibModalInstance , transit) {
@@ -926,12 +1052,24 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
 
         if (!evt.payload.old_circ) {
-            return egCore.pcrud.search('circ',
-                {target_copy : evt.payload.copy.id(), checkin_time : null},
-                {limit : 1} // should only ever be 1
-            ).then(function(old_circ) {
-                evt.payload.old_circ = old_circ;
-               return service.circ_exists_dialog_impl(evt, params, options);
+            return egCore.net.request(
+                'open-ils.search',
+                'open-ils.search.asset.copy.fleshed2.find_by_barcode',
+                params.copy_barcode
+            ).then(function(resp){
+                console.log(resp);
+                if (egCore.evt.parse(resp)) {
+                    console.error(egCore.evt.parse(resp));
+                } else {
+                    return egCore.net.request(
+                         'open-ils.circ',
+                         'open-ils.circ.copy_checkout_history.retrieve',
+                         egCore.auth.token(), resp.id(), 1
+                    ).then( function (circs) {
+                        evt.payload.old_circ = circs[0];
+                        return service.circ_exists_dialog_impl( evt, params, options );
+                    });
+                }
             });
         } else {
             return service.circ_exists_dialog_impl( evt, params, options );
@@ -945,6 +1083,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         
         return $uibModal.open({
             templateUrl: './circ/share/t_circ_exists_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -961,14 +1100,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             function(args) {
                 if (sameUser) {
                     params.void_overdues = args.forgive_fines;
-                    options.override = true;
                     return service.renew(params, options);
                 }
 
                 return service.checkin({
                     barcode : params.copy_barcode,
                     noop : true,
-                    override : true,
                     void_overdues : args.forgive_fines
                 }).then(function(checkin_resp) {
                     if (checkin_resp.evt[0].textcode == 'SUCCESS') {
@@ -992,6 +1129,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.backdate_dialog = function(circ_ids) {
         return $uibModal.open({
             templateUrl: './circ/share/t_backdate_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -1081,6 +1219,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         return $uibModal.open({
             templateUrl: './circ/share/t_mark_claims_returned_dialog',
+            backdrop: 'static',
             controller: 
                        ['$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
@@ -1159,32 +1298,80 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         return deferred.promise;
     }
 
-    service.mark_damaged = function(copy_ids) {
-        return egConfirmDialog.open(
-            egCore.strings.MARK_DAMAGED_CONFIRM, '',
-            {   num_items : copy_ids.length,
-                ok : function() {},
-                cancel : function() {}
-            }
+    service.mark_damaged = function(params) {
+        if (!params) return $q.when();
+        return $uibModal.open({
+            templateUrl: './circ/share/t_mark_damaged',
+            controller:
+                ['$scope', '$uibModalInstance', 'egCore', 'egBilling', 'egItem',
+                function($scope, $uibModalInstance, egCore, egBilling, egItem) {
+                    var doRefresh = params.refresh;
+                    
+                    $scope.billArgs = {charge: params.charge};
+                    $scope.mode = 'charge';
+                    $scope.barcode = params.barcode;
+                    if (params.charge && params.charge > 0) {
+                        $scope.applyFine = "apply";
+                    }
+                    if (params.circ) {
+                        $scope.circ = params.circ;
+                        $scope.circ_checkin_time = params.circ.checkin_time();
+                        $scope.circ_patron_name = params.circ.usr().family_name() + ", "
+                            + params.circ.usr().first_given_name() + " "
+                            + params.circ.usr().second_given_name();
+                    }
+                    egBilling.fetchBillingTypes().then(function(res) {
+                        $scope.billingTypes = res;
+                    });
 
-        ).result.then(function() {
-            var promises = [];
-            angular.forEach(copy_ids, function(copy_id) {
-                promises.push(
-                    egCore.net.request(
-                        'open-ils.circ',
-                        'open-ils.circ.mark_item_damaged',
-                        egCore.auth.token(), copy_id
-                    ).then(function(resp) {
-                        if (evt = egCore.evt.parse(resp)) {
-                            console.error('mark damaged failed: ' + evt);
-                        }
-                    })
-                );
-            });
+                    $scope.btnChargeFees = function() {
+                        $scope.mode = 'charge';
+                        $scope.billArgs.charge = params.charge;
+                        $scope.applyFine = "apply";
+                    }
+                    $scope.btnWaiveFees = function() {
+                        $scope.mode = 'waive';
+                        $scope.billArgs.charge = 0;
+                        $scope.applyFine = "noapply";
+                    }
 
-            return $q.all(promises);
-        });
+                    $scope.cancel = function ($event) { 
+                        $uibModalInstance.dismiss();
+                    }
+                    $scope.ok = function() {
+                        handle_mark_item_damaged();
+                    }
+
+                    var handle_mark_item_damaged = function() {
+                        egCore.net.request(
+                            'open-ils.circ',
+                            'open-ils.circ.mark_item_damaged',
+                            egCore.auth.token(), params.id, {
+                                apply_fines: $scope.applyFine,
+                                override_amount: $scope.billArgs.charge,
+                                override_btype: $scope.billArgs.type,
+                                override_note: $scope.billArgs.note,
+                                handle_checkin: !$scope.applyFine
+                        }).then(function(resp) {
+                            if (evt = egCore.evt.parse(resp)) {
+                                doRefresh = false;
+                                console.debug("mark damaged more information required. Pushing back.");
+                                service.mark_damaged({
+                                    id: params.id,
+                                    barcode: params.barcode,
+                                    charge: evt.payload.charge,
+                                    circ: evt.payload.circ,
+                                    refresh: params.refresh
+                                });
+                                console.error('mark damaged failed: ' + evt);
+                            }
+                        }).then(function() {
+                            if (doRefresh) egItem.add_barcode_to_list(params.barcode);
+                        });
+                        $uibModalInstance.close();
+                    }
+                }]
+        }).result;
     }
 
     service.mark_missing = function(copy_ids) {
@@ -1272,7 +1459,21 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         });
     }
 
+    service.add_copy_alerts = function(item_ids) {
+        return egAddCopyAlertDialog.open({
+            copy_ids : item_ids,
+            ok : function() { },
+            cancel : function() {}
+        }).result.then(function() { });
+    }
 
+    service.manage_copy_alerts = function(item_ids) {
+        return egCopyAlertEditorDialog.open({
+            copy_id : item_ids[0],
+            ok : function() { },
+            cancel : function() {}
+        }).result.then(function() { });
+    }
 
     // alert when copy location alert_message is set.
     // This does not affect processing, it only produces a click-through
@@ -1296,11 +1497,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
         var final_resp = {evt : evt, params : params, options : options};
 
-        var copy, hold, transit;
+        var copy, hold, transit, latest_inventory;
         if (evt[0].payload) {
             copy = evt[0].payload.copy;
             hold = evt[0].payload.hold;
             transit = evt[0].payload.transit;
+            latest_inventory = evt[0].payload.latest_inventory;
         }
 
         // track the barcode regardless of whether it's valid
@@ -1359,7 +1561,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                     case 11: /* CATALOGING */
                         egCore.audio.play('info.checkin.cataloging');
                         evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
-                        return $q.when(final_resp);
+                        if (options.no_precat_alert)
+                            return $q.when(final_resp);
+                        return egAlertDialog.open(
+                            egCore.strings.PRECAT_CHECKIN_MSG, params)
+                            .result.then(function() {return final_resp});
+
 
                     case 15: /* ON_RESERVATION_SHELF */
                         egCore.audio.play('info.checkin.reservation');
@@ -1367,8 +1574,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                         return $q.when(final_resp);
 
                     default:
-                        egCore.audio.play('error.checkin.unknown');
-                        console.error('Unhandled checkin copy status: ' 
+                        egCore.audio.play('success.checkin');
+                        console.debug('Unusual checkin copy status (may have been set via copy alert): '
                             + copy.status().id() + ' : ' + copy.status().name());
                         return $q.when(final_resp);
                 }
@@ -1467,8 +1674,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             var print_context = {
                 copy : egCore.idl.toHash(evt.payload.copy),
                 title : evt.title,
-                author : evt.author
-            }
+                author : evt.author,
+                call_number : egCore.idl.toHash(evt.payload.volume)
+            };
+
+            var acn = print_context.call_number; // fix up pre/suffixes
+            if (acn.prefix == -1) acn.prefix = "";
+            if (acn.suffix == -1) acn.suffix = "";
 
             if (data.transit) {
                 // route_dialog includes the "route to holds shelf" 
@@ -1484,6 +1696,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             if (data.patron) {
                 print_context.hold = egCore.idl.toHash(evt.payload.hold);
+                var notes = print_context.hold.notes;
+                if(notes.length > 0){
+                    print_context.hold_notes = [];
+                    angular.forEach(notes, function(n){
+                        print_context.hold_notes.push(n);
+                    });
+                }
                 print_context.patron = egCore.idl.toHash(data.patron);
             }
 
@@ -1506,6 +1725,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
 
             return $uibModal.open({
                 templateUrl: tmpl,
+                backdrop: 'static',
                 controller: [
                             '$scope','$uibModalInstance',
                     function($scope , $uibModalInstance) {
@@ -1532,17 +1752,34 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     // action == what action to take if the user confirms the alert
     service.copy_alert_dialog = function(evt, params, options, action) {
         if (angular.isArray(evt)) evt = evt[0];
-        return egConfirmDialog.open(
-            egCore.strings.COPY_ALERT_MSG_DIALOG_TITLE, 
-            evt.payload,  // payload == alert message text
-            {   copy_barcode : params.copy_barcode,
-                ok : function() {},
+        if (!angular.isArray(evt.payload)) {
+            return egConfirmDialog.open(
+                egCore.strings.COPY_ALERT_MSG_DIALOG_TITLE, 
+                evt.payload,  // payload == alert message text
+                {   copy_barcode : params.copy_barcode,
+                    ok : function() {},
+                    cancel : function() {}
+                }
+            ).result.then(function() {
+                options.override = true;
+                return service[action](params, options);
+            });
+        } else { // we got a list of copy alert objects ...
+            return egCopyAlertManagerDialog.open({
+                alerts : evt.payload,
+                mode : action,
+                ok : function(the_next_status) {
+                        if (the_next_status !== null) {
+                            params.next_copy_status = [ the_next_status ];
+                            params.capture = 'nocapture';
+                        }
+                     },
                 cancel : function() {}
-            }
-        ).result.then(function() {
-            options.override = true;
-            return service[action](params, options);
-        });
+            }).result.then(function() {
+                options.override = true;
+                return service[action](params, options);
+            });
+        }
     }
 
     // action == what action to take if the user confirms the alert
@@ -1550,6 +1787,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         if (angular.isArray(evt)) evt = evt[0];
         return $uibModal.open({
             templateUrl: './circ/checkin/t_hold_verify',
+            backdrop: 'static',
             controller:
                        ['$scope','$uibModalInstance','params',
                 function($scope , $uibModalInstance , params) {
@@ -1586,6 +1824,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
         egCore.audio.play('warning.circ.bad_barcode');
         return $uibModal.open({
             templateUrl: './circ/share/t_bad_barcode_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', 
                 function($scope, $uibModalInstance) {
@@ -1681,6 +1920,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
             .then(function() {
                 return $uibModal.open({
                     templateUrl: './circ/share/t_barcode_choice_dialog',
+                    backdrop: 'static',
                     controller:
                         ['$scope', '$uibModalInstance',
                         function($scope, $uibModalInstance) {
@@ -1699,6 +1939,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.create_penalty = function(user_id) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','staffPenalties',
             function($scope , $uibModalInstance , staffPenalties) {
@@ -1730,7 +1971,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
                 }
                 pen.staff(egCore.auth.user().id());
                 pen.set_date('now');
-                return egCore.pcrud.create(pen);
+
+                return egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.penalty.apply',
+                    egCore.auth.token(), pen
+                );
             }
         );
     }
@@ -1739,6 +1985,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,
     service.edit_penalty = function(usr_penalty) {
         return $uibModal.open({
             templateUrl: './circ/share/t_new_message_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','staffPenalties',
             function($scope , $uibModalInstance , staffPenalties) {

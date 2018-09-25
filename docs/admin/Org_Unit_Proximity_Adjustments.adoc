@@ -23,7 +23,7 @@ Relative proximity adjustments allows the proximity between org units to be trea
 Create an Org Unit Proximity Adjustment
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .To create an Org Unit Proximity Adjustment between two libraries:
-. In the Admin menu choose *Server Administration -> Org Unit Proximity Adjustments*.
+. In the Administration menu choose *Server Administration -> Org Unit Proximity Adjustments*.
 . Click *New OU Proximity Adjustment*.
 . Choose an *Item Circ Lib* from the drop down menu.  
 . Choose a *Hold Request Lib* from the drop down menu.

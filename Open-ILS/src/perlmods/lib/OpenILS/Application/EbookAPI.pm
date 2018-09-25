@@ -380,6 +380,37 @@ sub request {
     }
 }
 
+sub get_details {
+    my ($self, $conn, $session_id, $title_id) = @_;
+    my $handler = new_handler($session_id);
+    return $handler->get_title_info($title_id);
+}
+__PACKAGE__->register_method(
+    method => 'get_details',
+    api_name => 'open-ils.ebook_api.title.details',
+    api_level => 1,
+    argc => 2,
+    signature => {
+        desc => "Get basic metadata for an ebook title",
+        params => [
+            {
+                name => 'session_id',
+                desc => 'The session ID (provided by open-ils.ebook_api.start_session)',
+                type => 'string'
+            },
+            {
+                name => 'title_id',
+                desc => 'The title ID (ISBN, unique identifier, etc.)',
+                type => 'string'
+            }
+        ],
+        return => {
+            desc => 'Success: { title => "Title", author => "Author Name" } / Failure: { error => "Title not found" }',
+            type => 'hashref'
+        }
+    }
+);
+
 sub get_availability {
     my ($self, $conn, $session_id, $title_id) = @_;
     my $handler = new_handler($session_id);
@@ -450,7 +481,7 @@ __PACKAGE__->register_method(
 # - barcode: patron barcode
 #
 sub do_xact {
-    my ($self, $conn, $auth, $session_id, $title_id, $barcode) = @_;
+    my ($self, $conn, $auth, $session_id, $title_id, $barcode, $param) = @_;
 
     my $action;
     if ($self->api_name =~ /checkout/) {
@@ -477,7 +508,16 @@ sub do_xact {
     my $user_token = $handler->do_patron_auth($barcode);
 
     # handler method constructs and submits request (and handles any external authentication)
-    my $res = $handler->$action($title_id, $user_token);
+    my $res;
+    if ($action eq 'checkout') {
+        # checkout has format as optional additional param
+        $res = $handler->checkout($title_id, $user_token, $param);
+    } elsif ($action eq 'place_hold') {
+        # place_hold has email as optional additional param
+        $res = $handler->place_hold($title_id, $user_token, $param);
+    } else {
+        $res = $handler->$action($title_id, $user_token);
+    }
     if (defined ($res)) {
         return $res;
     } else {
@@ -803,6 +843,42 @@ __PACKAGE__->register_method(
         ],
         return => {
             desc => 'Returns a hashref of transactions: { checkouts => [], holds => [], failed => [] }',
+            type => 'hashref'
+        }
+    }
+);
+
+sub get_download_link {
+    my ($self, $conn, $auth, $session_id, $request_link) = @_;
+    my $handler = new_handler($session_id);
+    return $handler->do_get_download_link($request_link);
+}
+__PACKAGE__->register_method(
+    method => 'get_download_link',
+    api_name => 'open-ils.ebook_api.title.get_download_link',
+    api_level => 1,
+    argc => 3,
+    signature => {
+        desc => "Get download link for an OverDrive title that has been checked out",
+        params => [
+            {
+                name => 'authtoken',
+                desc => 'Authentication token',
+                type => 'string'
+            },
+            {
+                name => 'session_id',
+                desc => 'The session ID (provided by open-ils.ebook_api.start_session)',
+                type => 'string'
+            },
+            {
+                name => 'request_link',
+                desc => 'The URL used to request a download link',
+                type => 'string'
+            }
+        ],
+        return => {
+            desc => 'Success: { url => "http://example.com/download-link" } / Failure: { error_msg => "Download link request failed." }',
             type => 'hashref'
         }
     }

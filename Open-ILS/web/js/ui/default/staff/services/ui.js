@@ -20,7 +20,8 @@ function($timeout , $parse) {
             });
             element.bind('blur', function() {
                 $timeout(function() {
-                    scope.$apply(model.assign(scope, false));
+                    if (model.assign && typeof model.assign == 'function')
+                        scope.$apply(model.assign(scope, false));
                 });
             })
         }
@@ -73,6 +74,69 @@ function($timeout , $parse) {
     };
 }])
 
+// <select int-to-str ><option value="1">Value</option></select>
+// use integer models for string values
+.directive('intToStr', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return parseInt(value);
+            });
+            ngModel.$formatters.push(function(value) {
+                return '' + value;
+            });
+        }
+    };
+})
+
+// <input str-to-int value="10"/>
+.directive('strToInt', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return '' + value;
+            });
+            ngModel.$formatters.push(function(value) {
+                return parseInt(value);
+            });
+        }
+    };
+})
+
+// <input float-to-str
+.directive('floatToStr', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return parseFloat(value);
+            });
+            ngModel.$formatters.push(function(value) {
+                return '' + value;
+            });
+        }
+    };
+})
+
+.directive('strToFloat', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function(value) {
+                return '' + value;
+            });
+            ngModel.$formatters.push(function(value) {
+                return parseFloat(value);
+            });
+        }
+    };
+})
 
 // 'reverse' filter 
 // <div ng-repeat="item in items | reverse">{{item.name}}</div>
@@ -184,7 +248,7 @@ function($timeout , $parse) {
 
     function eg_context_date_filter (date, format, orgID, interval) {
         var fmt = format;
-        if (!fmt) fmt = 'shortDate';
+        if (!fmt) fmt = 'short';
 
         // if this is a simple, one-word format, and it doesn't say "Date" in it...
         if (['short','medium','long','full'].filter(function(x){return fmt == x}).length > 0 && interval) {
@@ -222,6 +286,18 @@ function($timeout , $parse) {
 
     return eg_context_due_date_filter;
 }])
+
+// 'join' filter
+// TODO: perhaps this should live elsewhere
+.filter('join', function() {
+    return function(arr,sep) {
+        if (typeof arr == 'object' && arr.constructor == Array) {
+            return arr.join(sep || ',');
+        } else {
+            return '';
+        }
+    };
+})
 
 /**
  * Progress Dialog. 
@@ -298,26 +374,33 @@ function($timeout , $parse) {
     var service = {};
 
     service.open = function(args) {
-        service.close(); // force-kill existing instances.
-
-        // Reset to an indeterminate progress bar, 
-        // overlay with caller values.
-        egProgressData.reset();
-        service.update(angular.extend({}, args));
-
         return $uibModal.open({
             templateUrl: './share/t_progress_dialog',
+            /* backdrop: 'static', */ /* allow 'cancelling' of progress dialog */
             controller: ['$scope','$uibModalInstance','egProgressData',
                 function( $scope , $uibModalInstance , egProgressData) {
-                  service.currentInstance = $uibModalInstance;
-                  $scope.data = egProgressData; // tiny service
+                    // Once the new modal instance is available, force-
+                    // kill any other instances
+                    service.close(true); 
+
+                    // Reset to an indeterminate progress bar, 
+                    // overlay with caller values.
+                    egProgressData.reset();
+                    service.update(angular.extend({}, args));
+
+                    service.currentInstance = $uibModalInstance;
+                    $scope.data = egProgressData; // tiny service
                 }
             ]
         });
     };
 
-    service.close = function() {
+    service.close = function(warn) {
         if (service.currentInstance) {
+            if (warn) {
+                console.warn("egProgressDialog replacing existing instance. "
+                    + "Only one may be open at a time.");
+            }
             service.currentInstance.close();
             delete service.currentInstance;
         }
@@ -329,6 +412,8 @@ function($timeout , $parse) {
             egProgressData.max = args.max;
         if (args.value != undefined) 
             egProgressData.value = args.value;
+        if (args.label != undefined) 
+            egProgressData.label = args.label;
     }
 
     // Increment the current value.  If no amount is specified,
@@ -359,6 +444,7 @@ function($uibModal , $interpolate) {
     service.open = function(message, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_alert_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
@@ -386,8 +472,10 @@ function($uibModal, $interpolate) {
     var service = {};
 
     service.open = function(title, message, msg_scope, ok_button_label, cancel_button_label) {
+        msg_scope = msg_scope || {};
         return $uibModal.open({
             templateUrl: './share/t_confirm_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.title = $interpolate(title)(msg_scope);
@@ -430,17 +518,18 @@ function($uibModal, $interpolate) {
     service.open = function(message, promptValue, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_prompt_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
                     $scope.args = {value : promptValue || ''};
                     $scope.focus = true;
                     $scope.ok = function() {
-                        if (msg_scope.ok) msg_scope.ok($scope.args.value);
-                        $uibModalInstance.close()
+                        if (msg_scope && msg_scope.ok) msg_scope.ok($scope.args.value);
+                        $uibModalInstance.close($scope.args);
                     }
                     $scope.cancel = function() {
-                        if (msg_scope.cancel) msg_scope.cancel();
+                        if (msg_scope && msg_scope.cancel) msg_scope.cancel();
                         $uibModalInstance.dismiss();
                     }
                 }
@@ -472,6 +561,7 @@ function($uibModal, $interpolate) {
     service.open = function(message, inputList, selectedValue, msg_scope) {
         return $uibModal.open({
             templateUrl: './share/t_select_dialog',
+            backdrop: 'static',
             controller: ['$scope', '$uibModalInstance',
                 function($scope, $uibModalInstance) {
                     $scope.message = $interpolate(message)(msg_scope);
@@ -547,6 +637,265 @@ function($window , egStrings) {
     return service;
 }])
 
+/**
+ * egAddCopyAlertDialog - manage copy alerts
+ */
+.factory('egAddCopyAlertDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_add_copy_alert_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    $scope.copy_ids = args.copy_ids;
+                    egCore.pcrud.search('ccat',
+                        { active : 't' },
+                        {},
+                        { atomic : true }
+                    ).then(function (ccat) {
+                        $scope.alert_types = ccat;
+                    }); 
+
+                    $scope.copy_alert = {
+                        create_staff : egCore.auth.user().id(),
+                        note         : '',
+                        temp         : false
+                    };
+
+                    $scope.ok = function(copy_alert) {
+                        if (typeof(copy_alert.note) != 'undefined' &&
+                            copy_alert.note != '') {
+                            copy_alerts = [];
+                            angular.forEach($scope.copy_ids, function (cp_id) {
+                                var a = new egCore.idl.aca();
+                                a.isnew(1);
+                                a.create_staff(copy_alert.create_staff);
+                                a.note(copy_alert.note);
+                                a.temp(copy_alert.temp ? 't' : 'f');
+                                a.copy(cp_id);
+                                a.ack_time(null);
+                                a.alert_type(
+                                    $scope.alert_types.filter(function(at) {
+                                        return at.id() == copy_alert.alert_type;
+                                    })[0]
+                                );
+                                copy_alerts.push( a );
+                            });
+                            if (copy_alerts.length > 0) {
+                                egCore.pcrud.apply(copy_alerts).finally(function() {
+                                    if (args.ok) args.ok();
+                                    $uibModalInstance.close()
+                                });
+                            }
+                        } else {
+                            if (args.ok) args.ok();
+                            $uibModalInstance.close()
+                        }
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
+
+/**
+ * egCopyAlertManagerDialog - manage copy alerts
+ */
+.factory('egCopyAlertManagerDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.get_user_copy_alerts = function(copy_id) {
+        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
+            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
+            { atomic : true }
+        );
+    }
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_copy_alert_manager_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    function init(args) {
+                        var defer = $q.defer();
+                        if (args.copy_id) {
+                            service.get_user_copy_alerts(args.copy_id).then(function(aca) {
+                                defer.resolve(aca);
+                            });
+                        } else {
+                            defer.resolve(args.alerts);
+                        }
+                        return defer.promise;
+                    }
+
+                    // returns a promise resolved with the list of circ statuses
+                    $scope.get_copy_statuses = function() {
+                        if (egCore.env.ccs)
+                            return $q.when(egCore.env.ccs.list);
+
+                        return egCore.pcrud.retrieveAll('ccs', null, {atomic : true})
+                        .then(function(list) {
+                            egCore.env.absorbList(list, 'ccs');
+                            return list;
+                        });
+                    };
+
+                    $scope.mode = args.mode || 'checkin';
+
+                    var next_statuses = [];
+                    var seen_statuses = {};
+                    $scope.next_statuses = [];
+                    $scope.params = {
+                        'the_next_status' : null
+                    }
+                    init(args).then(function(copy_alerts) {
+                        $scope.alerts = copy_alerts;
+                        angular.forEach($scope.alerts, function(copy_alert) {
+                            var state = copy_alert.alert_type().state();
+                            copy_alert.evt = copy_alert.alert_type().event();
+
+                            copy_alert.message = copy_alert.note() ||
+                                egCore.strings.ON_DEMAND_COPY_ALERT[copy_alert.evt][state];
+
+                            if (copy_alert.temp() == 't') {
+                                angular.forEach(copy_alert.alert_type().next_status(), function (st) {
+                                    if (!seen_statuses[st]) {
+                                        seen_statuses[st] = true;
+                                        next_statuses.push(st);
+                                    }
+                                });
+                            }
+                        });
+                        if ($scope.mode == 'checkin' && next_statuses.length > 0) {
+                            $scope.get_copy_statuses().then(function() {
+                                angular.forEach(next_statuses, function(st) {
+                                    if (egCore.env.ccs.map[st])
+                                    	$scope.next_statuses.push(egCore.env.ccs.map[st]);
+                                });
+                                $scope.params.the_next_status = $scope.next_statuses[0].id();
+                            });
+                        }
+                    });
+
+                    $scope.isAcknowledged = function(copy_alert) {
+                        return (copy_alert.acked);
+                    };
+                    $scope.canBeAcknowledged = function(copy_alert) {
+                        return (!copy_alert.ack_time() && copy_alert.temp() == 't');
+                    };
+                    $scope.canBeRemoved = function(copy_alert) {
+                        return (!copy_alert.ack_time() && copy_alert.temp() == 'f');
+                    };
+
+                    $scope.ok = function() {
+                        var acks = [];
+                        angular.forEach($scope.alerts, function (copy_alert) {
+                            if (copy_alert.acked) {
+                                copy_alert.ack_time('now');
+                                copy_alert.ack_staff(egCore.auth.user().id());
+                                copy_alert.ischanged(true);
+                                acks.push(copy_alert);
+                            }
+                        });
+                        if (acks.length > 0) {
+                            egCore.pcrud.apply(acks).finally(function() {
+                                if (args.ok) args.ok($scope.params.the_next_status);
+                                $uibModalInstance.close()
+                            });
+                        } else {
+                            if (args.ok) args.ok($scope.params.the_next_status);
+                            $uibModalInstance.close()
+                        }
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
+
+/**
+ * egCopyAlertEditorDialog - manage copy alerts
+ */
+.factory('egCopyAlertEditorDialog', 
+       ['$uibModal','$interpolate','egCore',
+function($uibModal , $interpolate , egCore) {
+    var service = {};
+
+    service.get_user_copy_alerts = function(copy_id) {
+        return egCore.pcrud.search('aca', { copy : copy_id, ack_time : null },
+            { flesh : 1, flesh_fields : { aca : ['alert_type'] } },
+            { atomic : true }
+        );
+    }
+
+    service.get_copy_alert_types = function() {
+        return egCore.pcrud.search('ccat',
+            { active : 't' },
+            {},
+            { atomic : true }
+        );
+    };
+
+    service.open = function(args) {
+        return $uibModal.open({
+            templateUrl: './share/t_copy_alert_editor_dialog',
+            controller: ['$scope','$q','$uibModalInstance',
+                function( $scope , $q , $uibModalInstance) {
+
+                    function init(args) {
+                        var defer = $q.defer();
+                        if (args.copy_id) {
+                            service.get_user_copy_alerts(args.copy_id).then(function(aca) {
+                                defer.resolve(aca);
+                            });
+                        } else {
+                            defer.resolve(args.alerts);
+                        }
+                        return defer.promise;
+                    }
+
+                    init(args).then(function(copy_alerts) {
+                        $scope.copy_alert_list = copy_alerts;
+                    });
+                    service.get_copy_alert_types().then(function(ccat) {
+                        $scope.alert_types = ccat;
+                    });
+
+                    $scope.ok = function() {
+                        egCore.pcrud.apply($scope.copy_alert_list).finally(function() {
+                            $uibModalInstance.close();
+                        });
+                    }
+                    $scope.cancel = function() {
+                        if (args.cancel) args.cancel();
+                        $uibModalInstance.dismiss();
+                    }
+                }
+            ]
+        })
+    }
+
+    return service;
+}])
 .directive('aDisabled', function() {
     return {
         restrict : 'A',
@@ -580,16 +929,19 @@ function($window , egStrings) {
         scope: {
             list: "=", // list of strings
             selected: "=",
+            onSelect: "=",
             egDisabled: "=",
             allowAll: "@",
+            placeholder: "@",
+            focusMe: "=?"
         },
         template:
             '<div class="input-group">'+
-                '<input type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()">'+
-                '<div class="input-group-btn" dropdown ng-class="{open:isopen}">'+
-                    '<button type="button" ng-click="showAll()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>'+
-                    '<ul class="dropdown-menu dropdown-menu-right">'+
-                        '<li ng-repeat="item in list|filter:selected"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
+                '<input placeholder="{{placeholder}}" type="text" ng-disabled="egDisabled" class="form-control" ng-model="selected" ng-change="makeOpen()" focus-me="focusMe">'+
+                '<div class="input-group-btn" uib-dropdown ng-class="{open:isopen}">'+
+                    '<button type="button" ng-click="showAll()" ng-disabled="egDisabled" class="btn btn-default" uib-dropdown-toggle><span class="caret"></span></button>'+
+                    '<ul uib-dropdown-menu class="dropdown-menu-right">'+
+                        '<li ng-repeat="item in list|filter:selected:compare"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                         '<li ng-if="complete_list" class="divider"><span></span></li>'+
                         '<li ng-if="complete_list" ng-repeat="item in list"><a href ng-click="changeValue(item)">{{item}}</a></li>'+
                     '</ul>'+
@@ -603,6 +955,12 @@ function($window , egStrings) {
                 $scope.clickedopen = false;
                 $scope.clickedclosed = null;
 
+                $scope.compare = function (ex, act) {
+                    if (act === null || act === undefined) return true;
+                    if (act.toString) act = act.toString();
+                    return new RegExp(act.toLowerCase()).test(ex)
+                }
+
                 $scope.showAll = function () {
 
                     $scope.clickedopen = !$scope.clickedopen;
@@ -615,8 +973,8 @@ function($window , egStrings) {
                         $scope.clickedclosed = !$scope.clickedopen;
                     }
 
-                    if ($scope.selected.length > 0) $scope.complete_list = true;
-                    if ($scope.selected.length == 0) $scope.complete_list = false;
+                    if ($scope.selected && $scope.selected.length > 0) $scope.complete_list = true;
+                    if (!$scope.selected || $scope.selected.length == 0) $scope.complete_list = false;
                     $scope.makeOpen();
                 }
 
@@ -625,7 +983,10 @@ function($window , egStrings) {
                         $scope.list,
                         $scope.selected
                     ).length > 0 && $scope.selected.length > 0);
-                    if ($scope.clickedclosed) $scope.isopen = false;
+                    if ($scope.clickedclosed) {
+                        $scope.isopen = false;
+                        $scope.clickedclosed = null;
+                    }
                 }
 
                 $scope.changeValue = function (newVal) {
@@ -634,6 +995,51 @@ function($window , egStrings) {
                     $scope.clickedclosed = null;
                     $scope.clickedopen = false;
                     if ($scope.selected.length == 0) $scope.complete_list = false;
+                    if ($scope.onSelect) $scope.onSelect();
+                }
+
+            }
+        ]
+    };
+})
+
+.directive('egListCounts', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            label: "@",
+            list: "=", // list of things
+            render: "=", // function to turn thing into string; default to stringification
+            onSelect: "=" // function to fire when option selected. passed one copy of the selected value
+        },
+        templateUrl: './share/t_listcounts',
+        controller: ['$scope','$timeout',
+            function( $scope , $timeout ) {
+
+                $scope.isopen = false;
+                $scope.count_hash = {};
+
+                $scope.renderer = $scope.render ? $scope.render : function (x) { return ""+x };
+
+                $scope.$watchCollection('list',function() {
+                    $scope.count_hash = {};
+                    angular.forEach($scope.list, function (item) {
+                        var str = $scope.renderer(item);
+                        if (!$scope.count_hash[str]) {
+                            $scope.count_hash[str] = {
+                                count : 1,
+                                value : str,
+                                original : item
+                            };
+                        } else {
+                            $scope.count_hash[str].count++;
+                        }
+                    });
+                });
+
+                $scope.selectValue = function (item) {
+                    if ($scope.onSelect) $scope.onSelect(item);
                 }
 
             }
@@ -670,7 +1076,7 @@ function($window , egStrings) {
             // onchange handler.
             onchange : '=',
 
-            // optional primary drop-down button label
+            // optional typeahead placeholder text
             label : '@',
 
             // optional name of settings key for persisting
@@ -678,30 +1084,16 @@ function($window , egStrings) {
             stickySetting : '@'
         },
 
-        // any reason to move this into a TT2 template?
-        template : 
-            '<div class="btn-group eg-org-selector" uib-dropdown>'
-            + '<button type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disable_button">'
-             + '<span style="padding-right: 5px;">{{getSelectedName()}}</span>'
-             + '<span class="caret"></span>'
-           + '</button>'
-           + '<ul uib-dropdown-menu class="scrollable-menu">'
-             + '<li ng-repeat="org in orgList" ng-hide="hiddenTest(org.id)">'
-               + '<a href ng-click="orgChanged(org)" a-disabled="disableTest(org.id)" '
-                 + 'style="padding-left: {{org.depth * 10 + 5}}px">'
-                 + '{{org.shortname}}'
-               + '</a>'
-             + '</li>'
-           + '</ul>'
-          + '</div>',
+        templateUrl : './share/t_org_select',
 
-        controller : ['$scope','$timeout','egCore','egStartup',
-              function($scope , $timeout , egCore , egStartup) {
+        controller : ['$scope','$timeout','egCore','egStartup','egLovefield','$q',
+              function($scope , $timeout , egCore , egStartup , egLovefield , $q) {
 
-            if ($scope.alldisabled) {
-                $scope.disable_button = $scope.alldisabled == 'true' ? true : false;
-            } else {
-                $scope.disable_button = false;
+            // See emptyTypeahead directive below.
+            var secretEmptyKey = '_INTERNAL_';
+
+            function formatName(org) {
+                return " ".repeat(org.ou_type().depth()) + org.shortname();
             }
 
             // avoid linking the full fleshed tree to the scope by 
@@ -713,32 +1105,49 @@ function($window , egStrings) {
             //
             // controller() runs before link().
             // This post-startup code runs after link().
-            egStartup.go().then(function() {
-
-                $scope.orgList = egCore.org.list().map(function(org) {
-                    return {
-                        id : org.id(),
-                        shortname : org.shortname(), 
-                        depth : org.ou_type().depth()
-                    }
-                });
-
-                // Apply default values
-
-                if ($scope.stickySetting) {
-                    var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
-                    if (orgId) {
-                        $scope.selected = egCore.org.get(orgId);
-                    }
+            egStartup.go(
+            ).then(
+                function() {
+                    return egCore.env.classLoaders.aou();
                 }
+            ).then(
+                function() {
 
-                if (!$scope.selected && !$scope.nodefault) {
-                    $scope.selected = 
-                        egCore.org.get(egCore.auth.user().ws_ou());
+                    $scope.selecteName = '';
+
+                    $scope.shortNames = egCore.org.list()
+                    .filter(function(org) {
+                        return !(
+                            $scope.hiddenTest && 
+                            $scope.hiddenTest(org.id())
+                        );
+                    }).map(function(org) {
+                        return formatName(org);
+                    });
+    
+                    // Apply default values
+    
+                    if ($scope.stickySetting) {
+                        var orgId = egCore.hatch.getLocalItem($scope.stickySetting);
+                        if (orgId) {
+                            var org = egCore.org.get(orgId);
+                            if (org) {
+                                $scope.selected = org;
+                                $scope.selectedName = org.shortname();
+                            }
+                        }
+                    }
+    
+                    if (!$scope.selected && !$scope.nodefault && egCore.auth.user()) {
+                        var org = egCore.org.get(egCore.auth.user().ws_ou());
+                        $scope.selected = org;
+                        $scope.selectedName = org.shortname();
+                    }
+    
+                    fire_orgsel_onchange(); // no-op if nothing is selected
+                    watch_external_changes();
                 }
-
-                fire_orgsel_onchange(); // no-op if nothing is selected
-            });
+            );
 
             /**
              * Fire onchange handler after a timeout, so the
@@ -756,21 +1165,90 @@ function($window , egStrings) {
                 });
             }
 
-            $scope.getSelectedName = function() {
-                if ($scope.selected && $scope.selected.shortname)
-                    return $scope.selected.shortname();
-                return $scope.label;
+            // Force the compare filter to run when the input is
+            // clicked.  This allows for displaying all values when
+            // clicking on an empty input.
+            $scope.handleClick = function (e) {
+                $timeout(function () {
+                    var current = $scope.selectedName;
+                    // HACK-CITY
+                    // Force the input value to "" so when the compare 
+                    // function runs it will see the special empty key
+                    // instead of the selected value.
+                    $(e.target).val('');
+                    $(e.target).trigger('input');
+                    // After the compare function runs, reset the the
+                    // selected value.
+                    $scope.selectedName = current;
+                });
             }
 
-            $scope.orgChanged = function(org) {
-                $scope.selected = egCore.org.get(org.id);
-                if ($scope.stickySetting) {
-                    egCore.hatch.setLocalItem($scope.stickySetting, org.id);
+            $scope.compare = function(shortName, inputValue) {
+                return inputValue === secretEmptyKey ||
+                    (shortName || '').toLowerCase().trim()
+                        .indexOf((inputValue || '').toLowerCase().trim()) > -1;
+            }
+
+            // Trim leading tree-spaces before displaying selected value
+            $scope.formatDisplayName = function(shortName) {
+                return ($scope.selectedName || '').trim();
+            }
+
+            $scope.orgIsDisabled = function(shortName) {
+                if ($scope.alldisabled === 'true') return true;
+                if (shortName && $scope.disableTest) {
+                    var org = egCore.org.list().filter(function(org) {
+                        return org.shortname() === shortName.trim();
+                    })[0];
+
+                    return org && $scope.disableTest(org.id());
                 }
-                fire_orgsel_onchange();
+                return false;
             }
 
+            $scope.inputChanged = function(shortName) {
+                // Avoid watching for changes on $scope.selected while
+                // manually applying values below.
+                unwatch_external_changes();
+
+                // Manually prevent selection of disabled orgs
+                if ($scope.selectedName && 
+                    !$scope.orgIsDisabled($scope.selectedName)) {
+                    $scope.selected = egCore.org.list().filter(function(org) {
+                        return org.shortname() === $scope.selectedName.trim()
+                    })[0];
+                } else {
+                    $scope.selected = null;
+                }
+                if ($scope.selected && $scope.stickySetting) {
+                    egCore.hatch.setLocalItem(
+                        $scope.stickySetting, $scope.selected.id());
+                }
+
+                fire_orgsel_onchange();
+                $timeout(watch_external_changes);
+            }
+
+            // Propagate external changes on $scope.selected to the typeahead
+            var dewatcher;
+            function watch_external_changes() {
+                dewatcher = $scope.$watch('selected', function(newVal, oldVal) {
+                    if (newVal) {
+                        $scope.selectedName = newVal.shortname();
+                    } else {
+                        $scope.selectedName = '';
+                    }
+                });
+            }
+
+            function unwatch_external_changes() {
+                if (dewatcher) {
+                    dewatcher();
+                    dewatcher = null;
+                }
+            }
         }],
+
         link : function(scope, element, attrs, egGridCtrl) {
 
             // boolean fields are presented as value-less attributes
@@ -785,6 +1263,45 @@ function($window , egStrings) {
             );
         }
     }
+})
+
+/*
+https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-input-and-show-typeahead-dropdown-ui-bootstra
+*/
+.directive('emptyTypeahead', function () {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            var secretEmptyKey = '_INTERNAL_';
+
+            // this parser run before typeahead's parser
+            modelCtrl.$parsers.unshift(function (inputValue) {
+                // replace empty string with secretEmptyKey to bypass typeahead-min-length check
+                var value = (inputValue ? inputValue : secretEmptyKey);
+                // this $viewValue must match the inputValue pass to typehead directive
+                modelCtrl.$viewValue = value;
+                return value;
+            });
+
+            // this parser run after typeahead's parser
+            modelCtrl.$parsers.push(function (inputValue) {
+                // set the secretEmptyKey back to empty string
+                return inputValue === secretEmptyKey ? '' : inputValue;
+            });
+        }
+    }
+})
+
+.directive('nextOnEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                $('#'+attrs.nextOnEnter).focus();
+                event.preventDefault();
+            }
+        });
+    };
 })
 
 /* http://eric.sau.pe/angularjs-detect-enter-key-ngenter/ */
@@ -810,18 +1327,45 @@ function($window , egStrings) {
     function(egStrings, egCore) {
         return {
             scope : {
+                id : '@',
                 closeText : '@',
                 ngModel : '=',
                 ngChange : '=',
                 ngBlur : '=',
+                minDate : '=?',
+                maxDate : '=?',
                 ngDisabled : '=',
                 ngRequired : '=',
                 hideDatePicker : '=',
-                dateFormat : '=?'
+                hideTimePicker : '=?',
+                dateFormat : '=?',
+                outOfRange : '=?',
+                focusMe : '=?'
             },
             require: 'ngModel',
             templateUrl: './share/t_datetime',
             replace: true,
+            controller : ['$scope', function($scope) {
+                $scope.options = {
+                    minDate : $scope.minDate,
+                    maxDate : $scope.maxDate
+                };
+
+                var maxDateObj = $scope.maxDate ? new Date($scope.maxDate) : null;
+                var minDateObj = $scope.minDate ? new Date($scope.minDate) : null;
+
+                if ($scope.outOfRange !== undefined && (maxDateObj || minDateObj)) {
+                    $scope.$watch('ngModel', function (n,o) {
+                        if (n && n != o) {
+                            var bad = false;
+                            var newdate = new Date(n);
+                            if (maxDateObj && newdate.getTime() > maxDateObj.getTime()) bad = true;
+                            if (minDateObj && newdate.getTime() < minDateObj.getTime()) bad = true;
+                            $scope.outOfRange = bad;
+                        }
+                    });
+                }
+            }],
             link : function(scope, elm, attrs) {
                 if (!scope.closeText)
                     scope.closeText = egStrings.EG_DATE_INPUT_CLOSE_TEXT;
@@ -831,7 +1375,7 @@ function($window , egStrings) {
 
                 var default_format = 'mediumDate';
                 egCore.org.settings(['format.date']).then(function(set) {
-                    default_format = set['format.date'];
+                    if (set) default_format = set['format.date'];
                     scope.date_format = (scope.dateFormat) ?
                         scope.dateFormat :
                         default_format;
@@ -929,6 +1473,65 @@ function($window , egStrings) {
                 });
             }
         }
+    }
+})
+
+/*
+ *  egShareDepthSelector - widget for selecting a share depth
+ */
+.directive('egShareDepthSelector', function() {
+    return {
+        restrict : 'E',
+        transclude : true,
+        scope : {
+            ngModel : '=',
+        },
+        require: 'ngModel',
+        templateUrl : './share/t_share_depth_selector',
+        controller : ['$scope','egCore', function($scope , egCore) {
+            $scope.values = [];
+            egCore.pcrud.search('aout',
+                { id : {'!=' : null} },
+                { order_by : {aout : ['depth', 'name']} },
+                { atomic : true }
+            ).then(function(list) {
+                var scratch = [];
+                angular.forEach(list, function(aout) {
+                    var depth = parseInt(aout.depth());
+                    if (depth in scratch) {
+                        scratch[depth].push(aout.name());
+                    } else {
+                        scratch[depth] = [ aout.name() ]
+                    }
+                });
+                scratch.forEach(function(val, idx) {
+                    $scope.values.push({ id : idx,  name : scratch[idx].join(' / ') });
+                });
+            });
+        }]
+    }
+})
+
+/*
+ * egHelpPopover - a helpful widget
+ */
+.directive('egHelpPopover', function() {
+    return {
+        restrict : 'E',
+        transclude : true,
+        scope : {
+            helpText : '@',
+            helpLink : '@'
+        },
+        templateUrl : './share/t_help_popover',
+        controller : ['$scope','$sce', function($scope , $sce) {
+            if ($scope.helpLink) {
+                $scope.helpHtml = $sce.trustAsHtml(
+                    '<a target="_new" href="' + $scope.helpLink + '">' +
+                    $scope.helpText + '</a>'
+                );
+            }
+        }]
     }
 })
 

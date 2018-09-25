@@ -2,12 +2,14 @@
 angular.module('egCoreMod')
 // toss tihs onto egCoreMod since the page app may vary
 
-.factory('patronRegSvc', ['$q', 'egCore', function($q, egCore) {
+.factory('patronRegSvc', ['$q', '$filter', 'egCore', 'egLovefield', function($q, $filter, egCore, egLovefield) {
 
     var service = {
         field_doc : {},            // config.idl_field_doc
         profiles : [],             // permission groups
+        profile_entries : [],      // permission gorup display entries
         edit_profiles : [],        // perm groups we can modify
+        edit_profile_entries : [], // perm group display entries we can modify
         sms_carriers : [],
         user_settings : {},        // applied user settings
         user_setting_types : {},   // config.usr_setting_type
@@ -22,29 +24,33 @@ angular.module('egCoreMod')
         init_done : false           // have we loaded our initialization data?
     };
 
-    // launch a series of parallel data retrieval calls
+    // Launch a series of parallel data retrieval calls.
     service.init = function(scope) {
 
-        // Data loaded here only needs to be retrieved the first time this
-        // tab becomes active within the current instance of the patron app.
-        // In other words, navigating between patron tabs will not cause
-        // all of this data to be reloaded.  Navigating to a separate app
-        // and returning will cause the data to be reloaded.
-        if (service.init_done) return $q.when();
-        service.init_done = true;
-
-        return $q.all([
-            service.get_field_doc(),
-            service.get_perm_groups(),
-            service.get_ident_types(),
+        // These are fetched with every instance of the page.
+        var page_data = [
             service.get_user_settings(),
-            service.get_org_settings(),
-            service.get_stat_cats(),
-            service.get_surveys(),
             service.get_clone_user(),
-            service.get_stage_user(),
-            service.get_net_access_levels()
-        ]);
+            service.get_stage_user()
+        ];
+
+        var common_data = [];
+        if (!service.init_done) {
+            // These are fetched with every instance of the app.
+            common_data = [
+                service.get_field_doc(),
+                service.get_perm_groups(),
+                service.get_perm_group_entries(),
+                service.get_ident_types(),
+                service.get_org_settings(),
+                service.get_stat_cats(),
+                service.get_surveys(),
+                service.get_net_access_levels()
+            ];
+            service.init_done = true;
+        }
+
+        return $q.all(common_data.concat(page_data));
     };
 
     service.get_clone_user = function() {
@@ -197,6 +203,44 @@ angular.module('egCoreMod')
         );
     }
 
+    service.set_edit_profile_entries = function() {
+        var all_app_perms = [];
+        var failed_perms = [];
+
+        // extract the application permissions
+        angular.forEach(service.profile_entries, function(entry) {
+            if (entry.grp().application_perm())
+                all_app_perms.push(entry.grp().application_perm());
+        });
+
+        // fill in service.edit_profiles by inspecting failed_perms
+        function traverse_grp_tree(entry, failed) {
+            failed = failed ||
+                failed_perms.indexOf(entry.grp().application_perm()) > -1;
+
+            if (!failed) service.edit_profile_entries.push(entry);
+
+            angular.forEach(
+                service.profile_entries.filter( // children of grp
+                    function(p) { return p.parent() == entry.id() }),
+                function(child) {traverse_grp_tree(child, failed)}
+            );
+        }
+
+        return egCore.perm.hasPermAt(all_app_perms, true).then(
+            function(perm_orgs) {
+                angular.forEach(all_app_perms, function(p) {
+                    if (perm_orgs[p].length == 0)
+                        failed_perms.push(p);
+                });
+
+                angular.forEach(egCore.env.pgtde.tree, function(tree) {
+                    traverse_grp_tree(tree);
+                });
+            }
+        );
+    }
+
     // resolves to a hash of perm-name => boolean value indicating
     // wether the user has the permission at org_id.
     service.has_perms_for_org = function(org_id) {
@@ -251,6 +295,11 @@ angular.module('egCoreMod')
                     });
                 });
             });
+
+            egLovefield.setListInOfflineCache('asv', service.surveys)
+            egLovefield.setListInOfflineCache('asvq', service.survey_questions)
+            egLovefield.setListInOfflineCache('asva', service.survey_answers)
+
         });
     }
 
@@ -270,6 +319,7 @@ angular.module('egCoreMod')
                 );
             });
             service.stat_cats = cats;
+            return egLovefield.setStatCatsCache(cats);
         });
     };
 
@@ -364,7 +414,7 @@ angular.module('egCoreMod')
     // some org settings require the retrieval of additional data
     service.process_org_settings = function(settings) {
 
-        var promises = [];
+        var promises = [egLovefield.setSettingsCache(settings)];
 
         if (settings['sms.enable']) {
             // fetch SMS carriers
@@ -433,18 +483,74 @@ angular.module('egCoreMod')
         }
     }
 
+    service.searchPermGroupEntries = function(org) {
+        return egCore.pcrud.search('pgtde', {org: org, parent: null},
+            {flesh: -1, flesh_fields: {pgtde: ['grp', 'children']}}, {atomic: true}
+        ).then(function(treeArray) {
+            if (!treeArray.length && egCore.org.get(org).parent_ou()) {
+                return service.searchPermGroupEntries(egCore.org.get(org).parent_ou());
+            }
+            return treeArray;
+        });
+    }
+
+    service.get_perm_group_entries = function() {
+        if (egCore.env.pgtde) {
+            service.profile_entries = egCore.env.pgtde.list;
+            return service.set_edit_profile_entries();
+        } else {
+            return service.searchPermGroupEntries(egCore.auth.user().ws_ou()).then(function(treeArray) {
+                function compare(a,b) {
+                  if (a.position() > b.position())
+                    return -1;
+                  if (a.position() < b.position())
+                    return 1;
+                  return 0;
+                }
+
+                var list = [];
+                function squash(node) {
+                    node.children().sort(compare);
+                    list.push(node);
+                    angular.forEach(node.children(), squash);
+                }
+
+                angular.forEach(treeArray, squash);
+                var blob = egCore.env.absorbList(list, 'pgtde');
+                blob.tree = treeArray;
+
+                service.profile_entries = egCore.env.pgtde.list;
+                return service.set_edit_profile_entries();
+            });
+        }
+    }
+
     service.get_field_doc = function() {
+        var to_cache = [];
         return egCore.pcrud.search('fdoc', {
             fm_class: ['au', 'ac', 'aua', 'actsc', 'asv', 'asvq', 'asva']})
-        .then(null, null, function(doc) {
-            if (!service.field_doc[doc.fm_class()]) {
-                service.field_doc[doc.fm_class()] = {};
+        .then(
+            function () {
+                return egLovefield.setListInOfflineCache('fdoc', to_cache)
+            },
+            null,
+            function(doc) {
+                if (!service.field_doc[doc.fm_class()]) {
+                    service.field_doc[doc.fm_class()] = {};
+                }
+                service.field_doc[doc.fm_class()][doc.field()] = doc;
+                to_cache.push(doc);
             }
-            service.field_doc[doc.fm_class()][doc.field()] = doc;
-        });
+        );
+
     };
 
-    service.get_user_settings = function() {
+    service.get_user_setting_types = function() {
+
+        // No need to re-fetch the common setting types.
+        if (Object.keys(service.user_setting_types).length) 
+            return $q.when();
+
         var org_ids = egCore.org.ancestors(egCore.auth.user().ws_ou(), true);
 
         var static_types = [
@@ -471,12 +577,23 @@ angular.module('egCoreMod')
             ]
         }, {}, {atomic : true}).then(function(setting_types) {
 
+            egCore.env.absorbList(setting_types, 'cust'); // why not...
+
             angular.forEach(setting_types, function(stype) {
                 service.user_setting_types[stype.name()] = stype;
                 if (static_types.indexOf(stype.name()) == -1) {
                     service.opt_in_setting_types[stype.name()] = stype;
                 }
             });
+        });
+    };
+
+    service.get_user_settings = function() {
+
+        return service.get_user_setting_types()
+        .then(function() {
+
+            var setting_types = Object.values(service.user_setting_types);
 
             if (service.patron_id) {
                 // retrieve applied values for the current user 
@@ -494,13 +611,20 @@ angular.module('egCoreMod')
                 ).then(function(settings) {
                     service.user_settings = settings;
                 });
+
             } else {
 
                 // apply default user setting values
                 angular.forEach(setting_types, function(stype, index) {
                     if (stype.reg_default() != undefined) {
-                        service.user_settings[setting.name()] = 
-                            setting.reg_default();
+                        var val = stype.reg_default();
+                        if (stype.datatype() == 'bool') {
+                            // A boolean user setting type whose default 
+                            // value starts with t/T is considered 'true',
+                            // false otherwise.
+                            val = Boolean((val+'').match(/^t/i));
+                        }
+                        service.user_settings[stype.name()] = val;
                     }
                 });
             }
@@ -529,6 +653,8 @@ angular.module('egCoreMod')
         var search;
 
         console.log('Dupe search called with "'+ type +'" and value '+ value);
+
+        if (type.match(/phone/)) type = 'phone'; // day_phone, etc.
 
         switch (type) {
 
@@ -594,6 +720,7 @@ angular.module('egCoreMod')
             addr.id == patron.mailing_address.id);
         addr._is_billing = (patron.billing_address && 
             addr.id == patron.billing_address.id);
+        addr.pending = addr.pending === 't';
     }
 
     /*
@@ -616,6 +743,7 @@ angular.module('egCoreMod')
         patron.profile = current.profile(); // pre-hash version
         patron.net_access_level = current.net_access_level();
         patron.ident_type = current.ident_type();
+        patron.ident_type2 = current.ident_type2();
         patron.groups = current.groups(); // pre-hash
 
         angular.forEach(
@@ -627,12 +755,20 @@ angular.module('egCoreMod')
             card.active = card.active == 't';
             if (card.id == patron.card.id) {
                 patron.card = card;
-                card._primary = 'on';
+                card._primary = true;
             }
         });
 
         angular.forEach(patron.addresses, 
             function(addr) { service.ingest_address(patron, addr) });
+
+        // Link replaced address to its pending address.
+        angular.forEach(patron.addresses, function(addr) {
+            if (addr.replaces) {
+                addr._replaces = patron.addresses.filter(
+                    function(a) {return a.id == addr.replaces})[0];
+            }
+        });
 
         service.get_linked_addr_users(patron.addresses);
 
@@ -675,7 +811,7 @@ angular.module('egCoreMod')
             id : service.virt_id--,
             isnew : true,
             active : true,
-            _primary : 'on'
+            _primary : true
         };
 
         var user = {
@@ -708,11 +844,7 @@ angular.module('egCoreMod')
     service.parse_dob = function(dob) {
         if (!dob) return null;
         var parts = dob.split('-');
-        var d = new Date(); // always local time zone, yay.
-        d.setFullYear(parts[0]);
-        d.setMonth(parts[1] - 1);
-        d.setDate(parts[2]);
-        return d;
+        return new Date(parts[0], parts[1] - 1, parts[2])
     }
 
     service.copy_stage_data = function(user) {
@@ -732,6 +864,8 @@ angular.module('egCoreMod')
         if (user.profile) user.profile = egCore.env.pgt.map[user.profile];
         if (user.ident_type) 
             user.ident_type = egCore.env.cit.map[user.ident_type];
+        if (user.ident_type2)
+            user.ident_type2 = egCore.env.cit.map[user.ident_type2];
         user.dob = service.parse_dob(user.dob);
 
         // Clear the usrname if it looks like a UUID
@@ -785,7 +919,7 @@ angular.module('egCoreMod')
                 barcode : cuser.cards[0].barcode(),
                 isnew : true,
                 active : true,
-                _primary : 'on'
+                _primary : true
             };
 
             user.cards.push(user.card);
@@ -946,6 +1080,7 @@ angular.module('egCoreMod')
             patron.addresses().push(addr);
             addr.valid(addr.valid() ? 't' : 'f');
             addr.within_city_limits(addr.within_city_limits() ? 't' : 'f');
+            addr.pending(addr.pending() ? 't' : 'f');
             if (addr_hash._is_mailing) patron.mailing_address(addr);
             if (addr_hash._is_billing) patron.billing_address(addr);
         });
@@ -1018,19 +1153,15 @@ angular.module('egCoreMod')
     }
 
     service.save_user_settings = function(new_user, user_settings) {
-        // user_settings contains the values from the scope/form.
-        // service.user_settings contain the values from page load time.
 
         var settings = {};
         if (service.patron_id) {
-            // only update modified settings for existing patrons
-            angular.forEach(user_settings, function(val, key) {
-                if (val !== service.user_settings[key])
-                    settings[key] = val;
-            });
+            // Update all user editor setting values for existing 
+            // users regardless of whether a value changed.
+            settings = user_settings;
 
         } else {
-            // all non-null setting values are updated for new patrons
+            // Create settings for all non-null setting values for new patrons.
             angular.forEach(user_settings, function(val, key) {
                 if (val !== null) settings[key] = val;
             });
@@ -1056,9 +1187,9 @@ angular.module('egCoreMod')
                 new RegExp(service.org_settings['opac.username_regex']);
         }
 
-        if (service.org_settings['opac.barcode_regex']) {
+        if (service.org_settings['ui.patron.edit.ac.barcode.regex']) {
             patterns.ac.barcode = 
-                new RegExp(service.org_settings['opac.barcode_regex']);
+                new RegExp(service.org_settings['ui.patron.edit.ac.barcode.regex']);
         }
 
         if (service.org_settings['global.password_regex']) {
@@ -1115,6 +1246,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     // has at the currently selected patron home org unit.
     $scope.perms = {};
 
+    $scope.name_tab = 'primary';
+
     if (!$scope.edit_passthru) {
         // in edit more, scope.edit_passthru is delivered to us by
         // the enclosing controller.  In register mode, there is 
@@ -1134,7 +1267,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         }
         $scope.hold_notify_type.phone = true;
         $scope.hold_notify_type.email = true;
-	$scope.hold_notify_type.sms = false;
+        $scope.hold_notify_type.sms = false;
 
         // staged users may be loaded w/ a profile.
         $scope.set_expire_date();
@@ -1189,6 +1322,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.patron = patron;
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
+        $scope.edit_profile_entries = prs.edit_profile_entries;
         $scope.ident_types = prs.ident_types;
         $scope.net_access_levels = prs.net_access_levels;
         $scope.user_setting_types = prs.user_setting_types;
@@ -1204,6 +1338,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         $scope.user_settings = prs.user_settings;
         prs.user_settings = {};
+
+        // If a default pickup lib is applied to the patron, apply it 
+        // to the UI at page load time.  Otherwise, leave the value unset.
+        if ($scope.user_settings['opac.default_pickup_location']) {
+            $scope.patron._pickup_lib = egCore.org.get(
+                $scope.user_settings['opac.default_pickup_location']);
+        }
 
         extract_hold_notify();
         if ($scope.patron.isnew)
@@ -1222,7 +1363,23 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
         prs.set_field_patterns(field_patterns);
         apply_username_regex();
+
+        add_date_watchers();
     });
+
+    function add_date_watchers() {
+
+        $scope.$watch('patron.dob', function(newVal, oldVal) {
+            // Even though this runs after page data load, there
+            // are still times when it fires unnecessarily.
+            if (newVal === oldVal) return;
+
+            console.debug('dob change: ' + newVal + ' : ' + oldVal);
+            maintain_juvenile_flag();
+        });
+
+        // No need to watch expire_date
+    }
 
 
     // update the currently displayed field documentation
@@ -1234,6 +1391,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.pgt_depth = function(grp) {
         var d = 0;
         while (grp = egCore.env.pgt.map[grp.parent()]) d++;
+        return d;
+    }
+
+    // returns the tree depth of the selected profile group tree node.
+    $scope.pgtde_depth = function(entry) {
+        var d = 0;
+        while (entry = egCore.env.pgtde.map[entry.parent()]) d++;
         return d;
     }
 
@@ -1255,7 +1419,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'au.passwd' :  3,
         'au.first_given_name' : 3,
         'au.family_name' : 3,
+        'au.pref_first_given_name' : 2,
+        'au.pref_family_name' : 2,
         'au.ident_type' : 3,
+        'au.ident_type2' : 2,
         'au.home_ou' : 3,
         'au.profile' : 3,
         'au.expire_date' : 3,
@@ -1271,7 +1438,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         'aua.valid' : 2,
         'aua.within_city_limits' : 2,
         'stat_cats' : 1,
-        'surveys' : 1
+        'surveys' : 1,
+        'au.name_keywords': 1
     }; 
 
     // Returns true if the selected field should be visible
@@ -1285,12 +1453,26 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         if (field_visibility[field_key] == undefined) {
             // compile and cache the visibility for the selected field
 
-            var req_set = 'ui.patron.edit.' + field_key + '.require';
-            var sho_set = 'ui.patron.edit.' + field_key + '.show';
-            var sug_set = 'ui.patron.edit.' + field_key + '.suggest';
+            // The preferred name fields use the primary name field settings
+            var org_key = field_key;
+            var alt_name = false;
+            if (field_key.match(/^au.alt_/)) {
+                alt_name = true;
+                org_key = field_key.slice(7);
+            }
+
+            var req_set = 'ui.patron.edit.' + org_key + '.require';
+            var sho_set = 'ui.patron.edit.' + org_key + '.show';
+            var sug_set = 'ui.patron.edit.' + org_key + '.suggest';
 
             if ($scope.org_settings[req_set]) {
-                field_visibility[field_key] = 3;
+                if (alt_name) {
+                    // Avoid requiring alt name fields when primary 
+                    // name fields are required.
+                    field_visibility[field_key] = 2;
+                } else {
+                    field_visibility[field_key] = 3;
+                }
 
             } else if ($scope.org_settings[sho_set]) {
                 field_visibility[field_key] = 2;
@@ -1335,6 +1517,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         var now_epoch = new Date().getTime();
         $scope.patron.expire_date = new Date(
             now_epoch + (seconds * 1000 /* milliseconds */))
+        $scope.field_modified();
     }
 
     // grp is the pgt object
@@ -1390,6 +1573,37 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         $scope.patron.addresses = addresses;
     } 
 
+    $scope.approve_pending_address = function(addr) {
+
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.user.pending_address.approve',
+            egCore.auth.token(), addr.id
+        ).then(function(replaced_id) {
+            var evt = egCore.evt.parse(replaced_id);
+            if (evt) { alert(evt); return; }
+
+            // Remove the pending address and the replaced address
+            // from the local list of patron addresses.
+            var addresses = [];
+            angular.forEach($scope.patron.addresses, function(a) {
+                if (a.id != addr.id && a.id != replaced_id) {
+                    addresses.push(a);
+                }
+            });
+            $scope.patron.addresses = addresses;
+
+            // Fetch a fresh copy of the modified address from the server.
+            // and add it back to the list.
+            egCore.pcrud.retrieve('aua', replaced_id, {}, {authoritative: true})
+            .then(null, null, function(new_addr) {
+                new_addr = egCore.idl.toHash(new_addr);
+                patronRegSvc.ingest_address($scope.patron, new_addr);
+                $scope.patron.addresses.push(new_addr);
+            });
+        });
+    }
+
     $scope.post_code_changed = function(addr) { 
         egCore.net.request(
             'open-ils.search', 'open-ils.search.zip', addr.post_code)
@@ -1413,6 +1627,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         new_card.active = true;
         new_card._primary = 'on';
         $scope.patron.card = new_card;
+
+        // Remove any previous attempts to replace the card, since they
+        // may be incomplete or created by accident.
+        $scope.patron.cards =
+            $scope.patron.cards.filter(function(c) {return !c.isnew})
         $scope.patron.cards.push(new_card);
     }
 
@@ -1445,11 +1664,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.cards_dialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_patron_cards_dialog',
+            backdrop: 'static',
             controller: 
-                   ['$scope','$uibModalInstance','cards','perms',
-            function($scope , $uibModalInstance , cards , perms) {
+                   ['$scope','$uibModalInstance','cards','perms','patron',
+            function($scope , $uibModalInstance , cards , perms , patron) {
                 // scope here is the modal-level scope
-                $scope.args = {cards : cards};
+                $scope.args = {cards : cards, primary_barcode : null};
+                angular.forEach(cards, function(card) {
+                    if (card.id == patron.card.id) {
+                        $scope.args.primary_barcode = card.id;
+                    }
+                });
                 $scope.perms = perms;
                 $scope.ok = function() { $uibModalInstance.close($scope.args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
@@ -1461,15 +1686,20 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 },
                 perms : function() {
                     return $scope.perms;
+                },
+                patron : function() {
+                    return $scope.patron;
                 }
             }
         }).result.then(
             function(args) {
                 angular.forEach(args.cards, function(card) {
                     card.ischanged = true; // assume cards need updating, OK?
-                    if (card._primary == 'on' && 
-                        card.id != $scope.patron.card.id) {
+                    if (card.id == args.primary_barcode) {
                         $scope.patron.card = card;
+                        card._primary = true;
+                    } else {
+                        card._primary = false;
                     }
                 });
             }
@@ -1518,6 +1748,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.secondary_groups_dialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_patron_groups_dialog',
+            backdrop: 'static',
             controller: 
                    ['$scope','$uibModalInstance','linked_groups','pgt_depth',
             function($scope , $uibModalInstance , linked_groups , pgt_depth) {
@@ -1610,15 +1841,19 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     $scope.dupe_value_changed = function(type, value) {
+        if (!$scope.dupe_search_encoded)
+            $scope.dupe_search_encoded = {};
+
         $scope.dupe_counts[type] = 0;
+
         patronRegSvc.dupe_patron_search($scope.patron, type, value)
         .then(function(res) {
             $scope.dupe_counts[type] = res.count;
             if (res.count) {
-                $scope.dupe_search_encoded = 
+                $scope.dupe_search_encoded[type] = 
                     encodeURIComponent(js2JSON(res.search));
             } else {
-                $scope.dupe_search_encoded = '';
+                $scope.dupe_search_encoded[type] = '';
             }
         });
     }
@@ -1628,6 +1863,11 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         patronRegSvc.has_perms_for_org(org_id).then(function(map) {
             angular.forEach(map, function(v, k) { $scope.perms[k] = v });
         });
+    }
+
+    $scope.handle_pulib_changed = function(org) {
+        if (!$scope.user_settings) return; // still rendering
+        $scope.user_settings['opac.default_pickup_location'] = org.id();
     }
 
     // This is called with every character typed in a form field,
@@ -1677,18 +1917,18 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         var cls = obj.classname; // set by egIdl
         var value = obj[field_name];
 
-        console.log('changing field ' + field_name + ' to ' + value);
+        console.debug('changing field ' + field_name + ' to ' + value);
 
         switch (field_name) {
             case 'day_phone' : 
                 if ($scope.patron.day_phone && 
                     $scope.patron.isnew && 
                     $scope.org_settings['patron.password.use_phone']) {
-                    $scope.patron.passwd = phone.substr(-4);
+                    $scope.patron.passwd = $scope.patron.day_phone.substr(-4);
                 }
             case 'evening_phone' : 
             case 'other_phone' : 
-                $scope.dupe_value_changed('phone', value);
+                $scope.dupe_value_changed(field_name, value);
                 break;
 
             case 'ident_value':
@@ -1727,10 +1967,6 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 $scope.barcode_changed(value);
                 apply_username_regex();
                 break;
-
-            case 'dob':
-                maintain_juvenile_flag();
-                break;
         }
     }
 
@@ -1759,6 +1995,12 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             org.ou_type() &&
             org.ou_type().can_have_users() == 'f'
         );
+    }
+
+    // returns true (disable) for orgs that cannot have vols (for holds pickup)
+    $scope.disable_pulib = function(org_id) {
+        if (!org_id) return;
+        return !egCore.org.CanHaveVolumes(org_id);
     }
 
     // Returns true if the Save and Save & Clone buttons should be disabled.
@@ -1871,6 +2113,16 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 // reload the current page
                 $window.location.href = location.href;
             }
+        });
+    }
+
+    $scope.edit_passthru.print = function() {
+        var print_data = {patron : $scope.patron}
+
+        return egCore.print.print({
+            context : 'default',
+            template : 'patron_data',
+            scope : print_data
         });
     }
 }])

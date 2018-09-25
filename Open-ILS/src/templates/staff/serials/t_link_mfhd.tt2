@@ -1,0 +1,35 @@
+<form ng-submit="ok(args)" role="form">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+        <h4 class="modal-title">[% l('Link MFHD') %]</h4>
+    </div>
+    <div class="modal-body">
+        <div ng-repeat="legacy in legacies">
+            <div uib-tooltip="[% l('Record ID [_1]', '{{legacy.mvr.doc_id}}') %]" tooltip-placement="left">
+                <a target="_blank" href="/eg/staff/cat/catalog/record/{{legacy.mvr.doc_id}}">{{legacy.mvr.title}}</a>
+            </div>
+            <div>
+                {{legacy.mvr.physical_description}}
+            </div>
+            <div ng-repeat="svr in legacy.svrs" uib-tooltip-template="'/eg/staff/serials/t_mfhd_tooltip'" tooltip-placement="left">
+                <input type="radio" name="which_mfhd" ng-model="args.which_mfhd" ng-value="svr.sre_id" id="{{svr.sre_id}}">
+                <label for="{{svr.sre_id}}">
+                    {{svr.location}}
+                </label>
+            </div>
+        </div>
+    <div class="modal-footer">
+        <div class="pull-left">
+            <label>[% l('Summary Display') %]</label>
+            <select ng-model="args.summary_method">
+                <option value="add_to_sre" selected>[% l('Both') %]</option>
+                <option value="merge_with_sre">[% l('Merge') %]</option>
+                <option value="use_sre_only">[% l('MFHD Only') %]</option>
+                <option value="use_sdist_only">[% l('None') %]</option>
+            </select>
+        </div>
+        <input type="submit" class="btn btn-primary" value="[% l('OK') %]" ng-disabled="!args.which_mfhd"/>
+        <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+</form>

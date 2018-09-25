@@ -31,7 +31,14 @@ package config::metabib_field;
 use base qw/config/;
 __PACKAGE__->table('config_metabib_field');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/field_class name xpath weight format search_field facet_field/);
+__PACKAGE__->columns(Essential => qw/field_class name xpath weight format search_field facet_field display_xpath display_field/);
+#-------------------------------------------------------------------------------
+
+package config::metabib_field_virtual_map;
+use base qw/config/;
+__PACKAGE__->table('config_metabib_field_virtual_map');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/real virtual/);
 #-------------------------------------------------------------------------------
 
 package config::identification_type;
@@ -45,7 +52,7 @@ package config::rules::circ_duration;
 use base qw/config/;
 __PACKAGE__->table('config_rule_circ_duration');
 __PACKAGE__->columns(Primary => 'id');
-__PACKAGE__->columns(Essential => qw/name extended normal shrt max_renewals/);
+__PACKAGE__->columns(Essential => qw/name extended normal shrt max_renewals max_auto_renewals/);
 #-------------------------------------------------------------------------------
 
 package config::rules::max_fine;

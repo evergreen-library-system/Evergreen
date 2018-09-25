@@ -1,6 +1,9 @@
 Migrating from a legacy system
 ==============================
 
+Introduction
+------------
+
 When you migrate to Evergreen, you generally want to migrate the bibliographic
 records and copy information that existed in your previous library system. For
 anything more than a few thousand records, you should import the data directly

@@ -1,6 +1,8 @@
 Invoices
 --------
 
+Introduction
+~~~~~~~~~~~~
 
 indexterm:[acquisitions,invoices]
 
@@ -22,15 +24,15 @@ Creating a blanket invoice
 
 You can create a blanket invoice for purchases that are not attached to a purchase order.
 
-. Click Acquisitions -> Create invoice.
+. Click _Acquisitions_ -> _Create invoice_.
 . Enter the invoice information in the top half of the screen.
 . To add charges for materials not attached to a purchase order, click _Add
 Charge..._ This functionality may also be used to add shipping, tax, and other fees.
 . Select a charge type from the drop-down menu.
 +
 [NOTE]
-New charge types can be added via _Admin_ -> _Server Administration_ ->
-_Acquisitions_ -> _Invoice Item Type_.
+New charge types can be added via _Administration_ -> _Acquisitions
+Administration_ -> _Invoice Item Types_.
 +
 . Select a fund from the drop-down menu.
 . Enter a _Title/Description_ of the resource.
@@ -72,8 +74,8 @@ as taxes, across funds, if multiple funds have been used to pay the invoice.
 +
 [NOTE]
 Prorating will only be applied to charge types that have the _Prorate?_ flag set
-to true. This setting can be adjusted via _Admin_ -> _Server Administration_
--> _Acquisitions_ -> _Invoice Item Type_.
+to true. This setting can be adjusted via _Administration_ ->
+_Acquisitions Administration_ -> _Invoice Item Types_.
 +
 
 - Click _Close_. Choose this option when you have completed the invoice. This
@@ -201,8 +203,8 @@ as taxes, across funds, if multiple funds have been used to pay the invoice.
 +
 [NOTE]
 Prorating will only be applied to charge types that have the Prorate? flag set
-to true. This setting can be adjusted via _Admin_ -> _Server Administration_
--> _Acquisitions_ -> Invoice Item Type.
+to true. This setting can be adjusted via _Administration_ ->
+_Acquisitions Administration_ -> _Invoice Item Types_.
 +
 
 - Click _Close_. Choose this option when you have completed the invoice. This

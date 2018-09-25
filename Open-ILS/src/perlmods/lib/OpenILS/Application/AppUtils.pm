@@ -2096,18 +2096,8 @@ sub basic_opac_copy_query {
         },
 
         from => {
-            acp => {
-                ($iss_id ? (
-                    sitem => {
-                        fkey => 'id',
-                        field => 'unit',
-                        filter => {issuance => $iss_id},
-                        join => {
-                            sstr => { }
-                        }
-                    }
-                ) : ()),
-                acn => {
+            acp => [
+                {acn => { # 0
                     join => {
                         acnp => { fkey => 'prefix' },
                         acns => { fkey => 'suffix' }
@@ -2116,28 +2106,38 @@ sub basic_opac_copy_query {
                         {deleted => 'f'},
                         ($rec_id ? {record => $rec_id} : ())
                     ],
-                },
-                circ => { # If the copy is circulating, retrieve the open circ
+                }},
+                'aou', # 1
+                {circ => { # 2 If the copy is circulating, retrieve the open circ
                     type => 'left',
                     filter => {checkin_time => undef}
-                },
-                acpl => {
+                }},
+                {acpl => { # 3
                     filter => {
                         deleted => 'f',
                         ($staff ? () : ( opac_visible => 't' )),
                     },
-                },
-                ccs => {
+                }},
+                {ccs => { # 4
                     ($staff ? () : (filter => { opac_visible => 't' }))
-                },
-                aou => {},
-                acpm => {
+                }},
+                {acpm => { # 5
                     type => 'left',
                     join => {
                         bmp => { type => 'left', filter => { deleted => 'f' } }
                     }
-                }
-            }
+                }},
+                ($iss_id ? { # 6 
+                    sitem => {
+                        fkey => 'id',
+                        field => 'unit',
+                        filter => {issuance => $iss_id},
+                        join => {
+                            sstr => { }
+                        }
+                    }
+                } : ())
+            ]
         },
 
         where => {
@@ -2277,6 +2277,14 @@ sub unique_unnested_numbers {
                 map { substr($_, 1, -1) } @_
         )
     );
+}
+
+# Given a list of numbers, turn them into a PG array, skipping undef's
+sub intarray2pgarray {
+    my $class = shift;
+    no warnings 'numeric';
+
+    return '{' . join( ',', map(int, grep { defined && /^\d+$/ } @_) ) . '}';
 }
 
 # Check if a transaction should be left open or closed. Close the

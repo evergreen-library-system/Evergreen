@@ -1,0 +1,82 @@
+Using Evergreen's Circulation Module
+====================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide to Evergreen is intended to meet the needs of library workers
+who provide circulation services.
+It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software.
+
+Copies of this guide can be accessed in PDF and HTML formats from http://docs.evergreen-ils.org/.
+
+include::shared/about_evergreen.adoc[]
+
+:leveloffset: -1
+
+include::admin/web_client-login.adoc[]
+
+include::admin/web-client-browser-best-practices.adoc[]
+
+:leveloffset: 0
+
+include::shared/workstation_settings.adoc[]
+
+:leveloffset: -1
+
+include::circulation/circulation_patron_records_web_client.adoc[]
+
+include::circulation/circulating_items_web_client.adoc[]
+
+:leveloffset: 0
+
+Holds Management
+================
+
+:leveloffset: -1
+
+include::circulation/basic_holds.adoc[]
+
+:leveloffset: 0
+
+include::opac/tpac_meta_record_holds.adoc[]
+
+:leveloffset: -1
+
+include::circulation/advanced_holds.adoc[]
+
+:leveloffset: 0
+
+include::circulation/offline_circ_webclient.adoc[]
+
+:leveloffset: -1
+
+include::circulation/booking.adoc[]
+
+include::circulation/triggered_events.adoc[]
+
+:leveloffset: 0
+
+include::circulation/user_buckets.adoc[]
+
+:leveloffset: -1
+
+include::opac/using_the_public_access_catalog.adoc[]
+
+:leveloffset: 0
+
+include::circulation/self_check.adoc[]
+
+
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+

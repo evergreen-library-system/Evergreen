@@ -1,0 +1,146 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" 
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #fmEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
+      <div class="form-group row" *ngFor="let field of fields">
+        <div class="col-lg-3 offset-lg-1">
+          <label for="rec-{{field.name}}">{{field.label}}</label>
+        </div>
+        <div class="col-lg-7">
+
+          <span *ngIf="field.template">
+            <ng-container
+              *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+            </ng-container> 
+          </span>
+
+          <span *ngIf="!field.template">
+
+            <span *ngIf="field.datatype == 'id' && !pkeyIsEditable">
+              {{record[field.name]()}}
+            </span>
+  
+            <input *ngIf="field.datatype == 'id' && pkeyIsEditable"
+              class="form-control"
+              name="{{field.name}}"
+              placeholder="{{field.label}}..."
+              i18n-placeholder
+              [readonly]="field.readOnly"
+              [required]="field.isRequired()"
+              [ngModel]="record[field.name]()"
+              (ngModelChange)="record[field.name]($event)"/>
+  
+            <input *ngIf="field.datatype == 'text' || field.datatype == 'interval'"
+              class="form-control"
+              name="{{field.name}}"
+              placeholder="{{field.label}}..."
+              i18n-placeholder
+              [readonly]="field.readOnly"
+              [required]="field.isRequired()"
+              [ngModel]="record[field.name]()"
+              (ngModelChange)="record[field.name]($event)"/>
+
+            <span *ngIf="field.datatype == 'timestamp'">
+              <eg-date-select
+                (onChangeAsIso)="record[field.name]($event)"
+                initialIso="{{record[field.name]()}}">
+              </eg-date-select>
+            </span>
+
+            <input *ngIf="field.datatype == 'int'"
+              class="form-control"
+              type="number"
+              name="{{field.name}}"
+              placeholder="{{field.label}}..."
+              i18n-placeholder
+              [readonly]="field.readOnly"
+              [required]="field.isRequired()"
+              [ngModel]="record[field.name]()"
+              (ngModelChange)="record[field.name]($event)"/>
+  
+            <input *ngIf="field.datatype == 'float'"
+              class="form-control"
+              type="number" step="0.1"
+              name="{{field.name}}"
+              placeholder="{{field.label}}..."
+              i18n-placeholder
+              [readonly]="field.readOnly"
+              [required]="field.isRequired()"
+              [ngModel]="record[field.name]()"
+              (ngModelChange)="record[field.name]($event)"/>
+  
+            <span *ngIf="field.datatype == 'money'">
+              <!-- in read-only mode display the local-aware currency -->
+              <input *ngIf="field.readOnly"
+                class="form-control"
+                type="number" step="0.1"
+                name="{{field.name}}"
+                [readonly]="field.readOnly"
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]() | currency"/>
+  
+              <input *ngIf="!field.readOnly"
+                class="form-control"
+                type="number" step="0.1"
+                name="{{field.name}}"
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                [readonly]="field.readOnly"
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </span>
+  
+            <input *ngIf="field.datatype == 'bool'"
+              class="form-check-input"
+              type="checkbox"
+              name="{{field.name}}"
+              [readonly]="field.readOnly"
+              [ngModel]="record[field.name]()"
+              (ngModelChange)="record[field.name]($event)"/>
+  
+            <span *ngIf="field.datatype == 'link'"
+              [ngClass]="{nullable : !field.isRequired()}">
+              <select
+                class="form-control"
+                name="{{field.name}}"
+                [disabled]="field.readOnly"
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)">
+                <option *ngFor="let item of field.linkedValues" 
+                  [value]="item.id">{{item.name}}</option>
+              </select>
+            </span>
+  
+            <eg-org-select *ngIf="field.datatype == 'org_unit'"
+              placeholder="{{field.label}}..."
+              i18n-placeholder
+              [limitPerms]="modePerms[mode]"
+              [applyDefault]="field.orgDefaultAllowed"
+              [initialOrgId]="record[field.name]()"
+              (onChange)="record[field.name]($event)">
+            </eg-org-select>
+
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
+      (click)="close()" i18n>Close</button>
+    <button type="button" class="btn btn-info" 
+      [disabled]="fmEditForm.invalid" *ngIf="mode != 'view'"
+      (click)="save()" i18n>Save</button>
+    <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
+      (click)="cancel()" i18n>Cancel</button>
+  </div>
+</ng-template>

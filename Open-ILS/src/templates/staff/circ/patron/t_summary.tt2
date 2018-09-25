@@ -1,6 +1,16 @@
 
 <div ng-cloak class="patron-summary-grid-wrapper">
   <div ng-show="patron()" id="patron-summary-grid">
+    <div class="row patron-summary-pref-name"
+      ng-if="patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name()">
+      <div class="col-md-12">
+        [% l('[_1], [_2] [_3] (Preferred)', 
+          '{{patron().pref_family_name() || patron().family_name()}}',
+          '{{patron().pref_first_given_name() || patron().first_given_name()}}',
+          '{{patron().pref_second_given_name()}}') 
+        %]
+      </div>
+    </div>
     <div class="row" 
       ng-class="{'patron-summary-divider' : !$index}"
       ng-repeat="penalty in alert_penalties()">
@@ -20,6 +30,9 @@
         ng-if="patron().alert_message()">
         {{patron().alert_message()}}
       </div>
+    </div>
+    <div ng-if="patron().photo_url()" class="row">
+         <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
     </div>
     <div class="row" 
       ng-class="{'patron-summary-divider' : alert_penalties().length || patron().alert_message()}">
@@ -140,20 +153,25 @@
       <div class="col-md-7">{{patron().other_phone()}}</div>
     </div>
     <div class="row">
-      <div class="col-md-5">[% l('ID1') %]</div>
-      <div class="col-md-7">{{patron().ident_type().name()}}</div>
+      <div class="col-md-5">[% l('ID1') %]&nbsp;<span ng-if="hasIdentTypeName" class="ident_type">({{patron().ident_type().name()}})</span></div>
+      <div class="col-md-7">{{patron().ident_value()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('ID2') %]</div>
-      <div class="col-md-7">{{patron().ident_type2().name()}}</div>
+      <div class="col-md-7">{{patron().ident_value2()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Email') %]</div>
-      <div class="col-md-7">{{patron().email()}}</div>
+	  <!-- Bound href="mailto: patron().email()" to an anchor tag to allow the patron's email address to be clicked directly from the summary. -->
+      <div class="col-md-7"><a ng-href="mailto:{{patron().email()}}">{{patron().email()}}</a></div>
     </div>
     <div class="row" ng-repeat="map in summary_stat_cats()">
       <div class="col-md-5">{{map.stat_cat().name()}}</div>
       <div class="col-md-7">{{map.stat_cat_entry()}}</div>
+    </div>
+    <div class="row" ng-if="patron().name_keywords()">
+      <div class="col-md-5">[% l('Name Keywords') %]</div>
+      <div class="col-md-7">{{patron().name_keywords()}}</div>
     </div>
   </div>
 

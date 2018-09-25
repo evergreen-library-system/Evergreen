@@ -2251,5 +2251,57 @@ $$ LANGUAGE PLPGSQL;
 --
 --INSERT INTO vandelay.authority_attr_definition ( code, description, xpath, ident ) VALUES ('rec_identifier','Identifier','//*[@tag="001"]', TRUE);
 
+
+CREATE TABLE vandelay.session_tracker (
+    id          BIGSERIAL PRIMARY KEY,
+
+    -- string of characters (e.g. md5) used for linking trackers
+    -- of different actions into a series.  There can be multiple
+    -- session_keys of each action type, creating the opportunity
+    -- to link multiple action trackers into a single session.
+    session_key TEXT NOT NULL,
+
+    -- optional user-supplied name
+    name        TEXT NOT NULL, 
+
+    usr         INTEGER NOT NULL REFERENCES actor.usr(id)
+                DEFERRABLE INITIALLY DEFERRED,
+
+    -- org unit can be derived from WS
+    workstation INTEGER NOT NULL REFERENCES actor.workstation(id)
+                ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+
+    -- bib/auth
+    record_type vandelay.bib_queue_queue_type NOT NULL DEFAULT 'bib',
+
+    -- Queue defines the source of the data, it does not necessarily
+    -- mean that an action is being performed against an entire queue.
+    -- E.g. some imports are misc. lists of record IDs, but they always 
+    -- come from one queue.
+    -- No foreign key -- could be auth or bib queue.
+    queue       BIGINT NOT NULL,
+
+    create_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    update_time TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+
+    state       TEXT NOT NULL DEFAULT 'active',
+
+    action_type TEXT NOT NULL DEFAULT 'enqueue', -- import
+
+    -- total number of tasks to perform / loosely defined
+    -- could be # of recs to import or # of recs + # of copies 
+    -- depending on the import context
+    total_actions INTEGER NOT NULL DEFAULT 0,
+
+    -- total number of tasked performed so far
+    actions_performed INTEGER NOT NULL DEFAULT 0,
+
+    CONSTRAINT vand_tracker_valid_state 
+        CHECK (state IN ('active','error','complete')),
+
+    CONSTRAINT vand_tracker_valid_action_type
+        CHECK (action_type IN ('upload', 'enqueue', 'import'))
+);
+
 COMMIT;
 

@@ -1,0 +1,53 @@
+<div class="modal-header">
+  <button type="button" class="close" 
+    ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">
+    [% l('Mark Item(s) Damaged') %]
+  </h4>
+</div>
+<div class="modal-body">
+  <div class="pad-vert row">
+    <div class="col-md-12">
+      [% l("Item [_1] will be marked damaged. ", "{{barcode}}") %]
+      <span ng-if="circ && billArgs.charge != null">[% l("Was returned ") %]
+        <span ng-if="circ_checkin_time">[% l("on [_1] ","{{circ_checkin_time | date:'MM/dd/yy H:mm a'}}") %]</span>
+      [% l("for [_1] : [_2]. ",
+      "{{circ_patron_name}}", "{{circ.usr().usrname()}}") %]
+      [% l("Confirmation required to charge this patron [_1] for the damage.", "{{billArgs.charge | currency}}") %]</span>
+    </div>
+  </div>
+  <div class="pad-vert row" ng-if="circ && billArgs.charge != null">
+    <div class="col-md-3">
+      <label>[% l("Fee") %]
+      <input type="number" min="0" step="any" class="form-control" ng-disabled="applyFine == 'noapply'"
+          focus-me='focus' required ng-model="billArgs.charge"></label>
+    </div>
+    <div class="col-md-6">
+      <label>[% l("Type") %]
+      <select class="form-control" ng-model="billArgs.type">
+        <option ng-repeat="type in billingTypes | orderBy:'name()'" value="{{type.id()}}" 
+          ng-disabled="applyFine == 'noapply'">
+          {{type.name()}}
+        </option>
+      </select>
+      </label>
+    </div>
+  </div>
+  <div class="pad-vert row" ng-if="circ && billArgs.charge != null">
+    <div class="col-md-6">
+      <label>[% l("Note") %]
+      <textarea rows="3" class="form-control" placeholder="[% l('Note...') %]"  ng-disabled="applyFine == 'noapply'"
+        ng-model="billArgs.note"></textarea></label>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <div class="btn-group pull-left" ng-if="circ && billArgs.charge != null">
+    <label class="btn btn-primary" ng-model="mode" btn-radio="'charge'"
+      ng-class="{active: mode == 'charge'}" ng-click="btnChargeFees()">Charge Fees</label>
+    <label class="btn btn-primary" ng-model="mode" btn-radio="'waive'"
+      ng-class="{active: mode == 'waive'}" ng-click="btnWaiveFees()">No Charge</label>
+  </div>
+  <button class="btn btn-primary" ng-disabled="applyFine == 'apply' && circ && (billArgs.charge == null || !billArgs.type)" ng-click="ok()">[% l('Submit') %]</button>
+  <button class="btn btn-warning" ng-if="!billArgs.charge && applyFine != 'noapply'" ng-click="cancel()">[% l('Cancel') %]</button>
+</div>

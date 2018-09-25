@@ -93,11 +93,11 @@ entries, but all identifiers for table rows that are used as visibility axes
 fall into a range of between one and one million for all applicable use cases,
 and all identifiers of interest are positive.  Therefore, we can make use of
 the most significant bits in an integer value to create a per-axis namespacing
-mask.  When applied to the idenfitifer for a visibility axis identifier, this
+mask.  When applied to the identifier for a visibility axis identifier, this
 mask allows two values that are identical across axis to be identified as
 unique within a combined set of all values.
 
-Sepcifically, we retain the four most significant bits of the integer space
+Specifically, we retain the four most significant bits of the integer space
 and create from that 16 potential bitmasks for per-axis segregation of
 identifiers.  Further, we separate copy-centered axes and bibliographic
 record-centered attributes into two separate columns for storage purposes,
@@ -149,12 +149,12 @@ improved marginally as each successive Postgres version at and beyond 9.4.
 === Page rendering changes
 Previously, Evergreen would request the record details for a user-visible page
 of results in parallel, and then, serially, request the facet data for the
-result set.  Now, the facet data is requested asyncronously in the background
+result set.  Now, the facet data is requested asynchronously in the background
 and then a single feed containing all records on a result page is requested
-syncronously.  By parallelizing the result and facet metadata, page rendering
+synchronously.  By parallelizing the result and facet metadata, page rendering
 time is cut down significantly.  Concurrent requests of the same bibliographic
 record are shared between apache backends to reduce result request time, and by
-making one request instead of ten simultaineously, database load is reduced.  A
+making one request instead of ten simultaneously, database load is reduced.  A
 performance improvement of up to 20% in post-search page rendering time is seen
 from this change.
 

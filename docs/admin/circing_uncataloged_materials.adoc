@@ -1,0 +1,79 @@
+Circulating uncataloged materials
+---------------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+This section discusses settings for circulating items that are not cataloged.
+Evergreen offers two ways to circulate an item that is not in the catalog:
+
+* Pre-cataloged items (also known as on-the-fly items) have a barcode, as
+well as some basic metadata which staff members enter at the time of checkout.
+These are represented in Evergreen with an item record which has to be manually
+deleted or transferred when it is no longer needed.
+
+* Non-cataloged items (also known as ephemeral items) do not have barcodes,
+have no metadata, and are not represented with an item record.  No fines
+accrue on these materials, but Evergreen does collect statistics on these
+circulations.
+
+Pre-cataloged item settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[on-the-fly circulation]
+indexterm:[pre-cataloged items,routing to a different library]
+
+By default, when a pre-cataloged item is created, Evergreen sets the _Circ Library_
+field to the library where it was checked out.  You may change this so that the
+circ library is set to a different library.  This can be helpful in cases where the
+cataloger who fixes pre-cataloged items is at another library, and you'd like all
+pre-cataloged items to be routed to that cataloger's library when they are returned.
+
+To change this setting:
+
+. Go to Administration > Local Administration > Library Settings Editor.
+. Choose _Pre-cat Item Circ Lib_.
+. Click _Edit_.
+. Select the appropriate context.  For example, if all pre-cataloged items in your
+system should have the same circ library, you should choose your system as the
+context.
+. Type in the shortname of the library that should be in the circ lib field.  Make
+sure to type this correctly, or Evergreen won't be able to create pre-cataloged
+items.
+
+NOTE: Evergreen always sets the owning library of pre-cataloged items to be the
+consortium.
+
+Non-cataloged item settings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[ephemeral items]
+
+In Evergreen, libraries may elect to create their own local non-cataloged item
+types. For example, you may choose to circulate non-cataloged paperbacks or magazine
+back-issues, but not wish to catalog them.
+
+Adding a new non-cataloged type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Go to Administration > Local Administration > Non-Cataloged Types Editor.
+. Under _Create a new non-cataloged type_, start filling out the appropriate
+  information.
+. Choose an appropriate duration.  This period of time will be used to calculate
+  a due date that is displayed to the patron on the patron's receipt and _My Account_
+  view in the public catalog.  The item will be automatically removed from the
+  _My Account_ view the day after the due date.
+. The _Circulate In-House?_ checkbox is only for your records.  This checkbox does
+  not affect how these materials circulate.
+. Click the _Create_ button when you are done.
+
+image::media/noncataloged_type_add.png[]
+
+Deleting a non-cataloged type
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+. Go to Administration > Local Administration > Non-Cataloged Types Editor.
+. Click the _Delete_ button next to the type you wish to delete.  Note that
+  if any non-cataloged items of this type have ever been entered, you will
+  not be able to delete it.
+

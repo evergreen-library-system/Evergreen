@@ -10,6 +10,7 @@ function($uibModal , $q , egCore) {
         var deferred = $q.defer();
         $uibModal.open({
             templateUrl: './circ/share/t_merge_patrons',
+            backdrop: 'static',
             size: 'lg',
             windowClass: 'eg-wide-modal',
             controller:
@@ -75,6 +76,24 @@ function($uibModal , $q , egCore) {
                 }
                 $scope.patron_stats = function() {
                     return user_stats;
+                }
+
+                // show/obscure DOB logic copied from the circ patron app
+                $scope._show_dob = {};
+                $scope.show_dob = function (val) {
+                    if ($scope.patron()) {
+                        if (typeof val != 'undefined') $scope._show_dob[$scope.patron().id()] = val;
+                        return $scope._show_dob[$scope.patron().id()];
+                    }
+                    return !egCore.env.aous['circ.obscure_dob'];
+                }
+
+                $scope.obscure_dob = function() {
+                    return egCore.env.aous && egCore.env.aous['circ.obscure_dob'];
+                }
+                $scope.now_show_dob = function() {
+                    return egCore.env.aous && egCore.env.aous['circ.obscure_dob'] ?
+                        $scope.show_dob() : true;
                 }
 
                 // needed because this directive shares a template with

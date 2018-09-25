@@ -181,6 +181,9 @@ search.basic_config = {
 # Make metarecord search the default.
 #search.metarecord_default = 1;
 
+# Disable search term highlighting
+#search.no_highlight = 1;
+
 ##############################################################################
 # Show Google Book Previews
 # Set to 1 or 'true' to enable
@@ -237,6 +240,13 @@ ctx.exclude_electronic_checkbox = 0;
 ##############################################################################
 # obalkyknih_cz.enabled = 'false';
 
+##############################################################################
+# JQuery support
+##############################################################################
+# Include JQuery in the TPAC?
+# Set to a true value to enable
+##############################################################################
+# ctx.want_jquery = 1;
 
 ##############################################################################
 # Browser cache-busting key
@@ -249,5 +259,15 @@ ctx.exclude_electronic_checkbox = 0;
 # "autogen", which may or may not be when you change styles etc)
 ##############################################################################
 # ctx.cache_key = '001'
+
+##############################################################################
+# Display of badge scores
+##############################################################################
+ctx.hide_badge_scores = 'false';
+
+##############################################################################
+# Maximum number of items allowed to be stored in a basket
+##############################################################################
+ctx.max_cart_size = 500;
 
 %]

@@ -6,7 +6,9 @@
   grid-controls="gridControls"
   revision="gridRevision"
   persist-key="circ.patron.bills"
-  dateformat="{{$root.egDateAndTimeFormat}}">
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  row-class="colorizeBillsList"
+  status-column="statusIconColumn">
 
   <eg-grid-menu-item label="[% l('Bill Patron') %]" 
     handler="showBillDialog"></eg-grid-menu-item>
@@ -22,7 +24,7 @@
 
   <!--
   need to decide if these are necessary here w/ inline links
-  to record and copy details (though they could be hidden).
+  to record and item details (though they could be hidden).
   it's misleading to allow the user to select multiple bills
   but only open the link to one
 
@@ -48,12 +50,12 @@
   <eg-grid-action label="[% l('Full Details') %]" 
     handler="showFullDetails"></eg-grid-action>
 
-  <eg-grid-field label="[% ('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
-  <eg-grid-field label="[% ('Bill #') %]" path='id'></eg-grid-field>
-  <eg-grid-field label="[% ('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
-  <eg-grid-field label="[% ('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
-  <eg-grid-field label="[% ('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
-  <eg-grid-field label="[% ('Type') %]" path='xact_type'></eg-grid-field>
+  <eg-grid-field label="[% l('Balance Owed') %]" path='summary.balance_owed'></eg-grid-field>
+  <eg-grid-field required label="[% l('Bill #') %]" path='id'></eg-grid-field>
+  <eg-grid-field label="[% l('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
+  <eg-grid-field label="[% l('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
+  <eg-grid-field label="[% l('Type') %]" path='xact_type'></eg-grid-field>
 
   <!-- receipt data -->
   <eg-grid-field path='summary.last_billing_type' required></eg-grid-field>
@@ -73,9 +75,9 @@
       {{item.copy_barcode}}
     </a>
   </eg-grid-field>
-  <!-- fetch the copy ID so we can link to it.  hide it by default -->
+  <!-- fetch the item ID so we can link to it.  hide it by default -->
   <eg-grid-field path="circulation.target_copy.id" 
-    label="[% l('Copy ID') %]" name="copy_id" required hidden>
+    label="[% l('Item ID') %]" name="copy_id" required hidden>
   </eg-grid-field>
 
   <eg-grid-field path="circulation.target_copy.circ_modifier" 
@@ -91,7 +93,7 @@
   </eg-grid-field>
 
   <!-- virtual field -->
-  <eg-grid-field datatype="money" label="[% ('Payment Pending') %]" 
+  <eg-grid-field datatype="money" label="[% l('Payment Pending') %]" 
     name="payment_pending"></eg-grid-field>
 
   <!-- import all circ fields, hidden by default -->
@@ -101,6 +103,8 @@
   <eg-grid-field path='circulation.circ_lib' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.duration' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.due_date' dateonlyinterval="circulation.duration" datecontext="circulation.circ_lib" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Stop Fines') %]" path="circulation.stop_fines" required hidden></eg-grid-field>
+  <eg-grid-field path="circulation.checkin_time" required hidden></eg-grid-field>
   <eg-grid-field path='circulation.*' hidden> </eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]"
     path='circulation.circ_lib.shortname' required hidden> </eg-grid-field>

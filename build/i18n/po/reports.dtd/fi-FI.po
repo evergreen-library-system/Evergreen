@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
 "PO-Revision-Date: 2013-10-15 08:37+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:44+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2017-09-05 04:42+0000\n"
+"X-Generator: Launchpad (build 18446)\n"
 "X-Project-Style: mozilla\n"
 "X-Accelerator-Marker: &\n"
 "Language: fi\n"
@@ -699,6 +699,46 @@ msgstr "Kuukautta"
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
 msgstr " sitten"
+
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr ""
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr ""
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr ""
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr ""
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr ""
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr ""
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr ""
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr ""
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr ""
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"

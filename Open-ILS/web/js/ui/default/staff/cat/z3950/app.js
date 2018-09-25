@@ -7,8 +7,8 @@ angular.module('egCatZ3950Search',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     // search page shows the list view by default
@@ -27,9 +27,9 @@ angular.module('egCatZ3950Search',
  */
 .controller('Z3950SearchCtrl',
        ['$scope','$q','$location','$timeout','$window','egCore','egGridDataProvider','egZ3950TargetSvc','$uibModal',
-        'egConfirmDialog',
+        'egConfirmDialog','egAlertDialog',
 function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvider,  egZ3950TargetSvc,  $uibModal,
-         egConfirmDialog) {
+         egConfirmDialog, egAlertDialog) {
 
     // get list of targets
     egZ3950TargetSvc.loadTargets();
@@ -151,6 +151,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.showRawSearchForm = function() {
         $uibModal.open({
             templateUrl: './cat/z3950/t_raw_search',
+            backdrop: 'static',
             size: 'md',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -211,33 +212,50 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         });
         return groups;
     };
+
     $scope.import = function() {
-        var deferred = $q.defer();
         var items = $scope.gridControls.selectedItems();
+        return $scope._import(items[0]['marcxml']);
+    };
+
+    $scope._import = function(marc_xml) {
+        var deferred = $q.defer();
         egCore.net.request(
             'open-ils.cat',
             'open-ils.cat.biblio.record.xml.import',
             egCore.auth.token(),
-            items[0]['marcxml'],
+            marc_xml,
             null, // FIXME bib source
             null,
             null,
             $scope.selectFieldStripGroups()
         ).then(
-            function() { deferred.resolve() },
+            function(result) { deferred.resolve(result) },
             null, // onerror
             function(result) {
-                egConfirmDialog.open(
-                    egCore.strings.IMPORTED_RECORD_FROM_Z3950,
-                    egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
-                    { id : result.id() },
-                    egCore.strings.GO_TO_RECORD,
-                    egCore.strings.GO_BACK
-                ).result.then(function() {
-                    // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
-                    // for some reason
-                    $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
-                });
+                var evt = egCore.evt.parse(result);
+                if (evt) {
+                     if (evt.textcode == 'TCN_EXISTS') {
+                       egAlertDialog.open(
+                            egCore.strings.TCN_EXISTS
+                      );
+                     } else {
+                       // we shouldn't get here
+                       egAlertDialog.open(egCore.strings.TCN_EXISTS_ERR);
+                     }
+                } else {
+                    egConfirmDialog.open(
+                        egCore.strings.IMPORTED_RECORD_FROM_Z3950,
+                        egCore.strings.IMPORTED_RECORD_FROM_Z3950_AS_ID,
+                        { id : result.id() },
+                        egCore.strings.GO_TO_RECORD,
+                        egCore.strings.GO_BACK
+                    ).result.then(function() {
+                        // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
+                        // for some reason
+                        $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
+                    });
+                }
             }
         );
 
@@ -252,8 +270,10 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.spawn_editor = function() {
         var items = $scope.gridControls.selectedItems();
         var recId = 0;
+        var _import = $scope._import;
         $uibModal.open({
             templateUrl: './cat/z3950/t_marc_edit',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -264,9 +284,23 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 $scope.ok = function(args) { $uibModalInstance.close(args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
                 $scope.save_label = egCore.strings.IMPORT_BUTTON_LABEL;
-                $scope.import_record_callback = function (record_id) {
-                    recId = record_id;
-                    $scope.save_label = egCore.strings.SAVE_BUTTON_LABEL;
+                // Wiring up angular inPlaceMode for editing later
+                $scope.in_place_mode = true;
+                $scope.import_record_callback = function () {
+                    if($scope.in_place_mode) {
+                        // This timeout is required to allow angular to finish variable assignments
+                        // in the marcediter app. Allowing marc_xml to propigate here.
+                        $timeout( function() {
+                            _import($scope.marc_xml).then( function(record_obj) {
+                                if( record_obj.id ) {
+                                    $scope.record_id = record_obj.id();
+                                    $scope.save_label = egCore.strings.SAVE_BUTTON_LABEL;
+                                    // Successful import, no longer want this special z39.50 callback to execute.
+                                    $scope.in_place_mode = undefined;
+                                }
+                            });
+                        });
+                    }
                 };
             }]
         }).result.then(function () {
@@ -280,6 +314,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
         var items = $scope.gridControls.selectedItems();
         $uibModal.open({
             templateUrl: './cat/z3950/t_marc_html',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
@@ -297,27 +332,25 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
     $scope.overlay_record = function() {
         var items = $scope.gridControls.selectedItems();
         var overlay_target = $scope.local_overlay_target;
+        var live_overlay_target = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record') || 0;
         var args = {
             'marc_xml' : items[0]['marcxml']
         };
         $uibModal.open({
             templateUrl: './cat/z3950/t_overlay',
+            backdrop: 'static',
             size: 'lg',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
-                $scope.focusMe = true;
-                $scope.merge_profile = null;
-                $scope.overlay_target = {
-                    id : overlay_target,
-                    merged : false
-                };
 
-                $scope.overlay_target.marc_xml = args.marc_xml;
-                egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
-                .then(function(rec) {
-                    $scope.overlay_target.orig_marc_xml = rec.marc();
-                    $scope.merge_marc(); // in case a sticky value was already set
-                });
+                $scope.immediate_merge = function () {
+                    $scope.overlay_target.marc_xml = args.marc_xml;
+                    egCore.pcrud.retrieve('bre', $scope.overlay_target.id)
+                    .then(function(rec) {
+                        $scope.overlay_target.orig_marc_xml = rec.marc();
+                        $scope.merge_marc(); // in case a sticky value was already set
+                    });
+                }
 
                 $scope.merge_marc = function() {
                     if (!$scope.merge_profile) return;
@@ -334,6 +367,35 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                         }
                     });
                 }
+
+                $scope.editOverlayRecord = function() {
+                    $uibModal.open({
+                        templateUrl: './cat/z3950/t_edit_overlay_record',
+                        backdrop: 'static',
+                        size: 'lg',
+                        controller:
+                            ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
+                            $scope.focusMe = true;
+                            $scope.record_id = 0;
+                            $scope.dirty_flag = false;
+                            $scope.args = args;
+                            $scope.ok = function() { $uibModalInstance.close($scope.args) }
+                            $scope.cancel = function () { $uibModalInstance.dismiss() }
+                        }]
+                    }).result.then(function (args) {
+                        $scope.merge_marc();
+                        if (!args || !args.name) return;
+                    });
+                };
+
+                $scope.focusMe = true;
+                $scope.merge_profile = null;
+                $scope.overlay_target = {
+                    id : overlay_target,
+                    live_id : live_overlay_target,
+                    merged : false
+                };
+
                 $scope.$watch('merge_profile', function(newVal, oldVal) {
                     if (newVal && newVal !== oldVal) {
                         $scope.merge_marc();
@@ -344,24 +406,36 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 args.overlay_target = $scope.overlay_target;
                 $scope.ok = function(args) { $uibModalInstance.close(args) };
                 $scope.cancel = function () { $uibModalInstance.dismiss() };
-                $scope.editOverlayRecord = function() {
-                    $uibModal.open({
-                        templateUrl: './cat/z3950/t_edit_overlay_record',
-                        size: 'lg',
-                        controller:
-                            ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
-                            $scope.focusMe = true;
-                            $scope.record_id = 0;
-                            $scope.dirty_flag = false;
-                            $scope.args = args;
-                            $scope.ok = function(args) { $uibModalInstance.close(args) }
-                            $scope.cancel = function () { $uibModalInstance.dismiss() }
-                        }]
-                    }).result.then(function (args) {
-                        $scope.merge_marc();
-                        if (!args || !args.name) return;
-                    });
-                };
+                
+                if (overlay_target != live_overlay_target) {
+                    var confirm_title = egCore.strings.OVERLAY_CHANGED_TITLE;
+                    var confirm_msg = egCore.strings.OVERLAY_CHANGED;
+
+                    if (live_overlay_target == 0) { // someone unset the target...
+                        confirm_title = egCore.strings.OVERLAY_REMOVED_TITLE;
+                        confirm_msg = egCore.strings.OVERLAY_REMOVED;
+                    }
+
+                    egConfirmDialog.open(
+                        confirm_title,
+                        confirm_msg,
+                        { id : overlay_target, live_id : live_overlay_target }
+                    ).result.then(
+                        function () { // proceed -- but check live overlay for unset-ness
+                            if (live_overlay_target != 0) {
+                                $scope.overlay_target.id = $scope.overlay_target.live_id;
+                                overlay_target = live_overlay_target;
+                            }
+                            $scope.immediate_merge();
+                        },
+                        function () {
+                            $scope.cancel();
+                        }
+                    );
+                } else {
+                    $scope.immediate_merge();
+                }
+
             }]
         }).result.then(function (args) {
             egCore.net.request(
@@ -375,7 +449,9 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                 $scope.selectFieldStripGroups()
             ).then(
                 function(result) {
-                    console.debug('overlay complete');
+                    $scope.local_overlay_target = 0;
+                    egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
+                    console.debug('overlay complete, target removed');
                 }
             );            
         });

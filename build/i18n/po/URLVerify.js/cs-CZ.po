@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2013-06-25 13:52+0000\n"
+"PO-Revision-Date: 2018-02-13 13:01+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2015-08-07 05:46+0000\n"
-"X-Generator: Launchpad (build 17656)\n"
+"X-Launchpad-Export-Date: 2018-02-14 05:27+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 
 #: URLVerify.js:XPATH
 msgid "XPath"
@@ -56,9 +56,8 @@ msgid ""
 "only ones you want verified."
 msgstr ""
 "Pro ověření VŠECH URL, které patří k této relaci a odpovídají vašim "
-"vyhledávacím termínům, klikněte na tlačítko \"OK\". Pokud vybraná,  "
-"viditelná URL  jsou jediná, která chcete ověřit, klikněte na  tlačítko "
-"\"Storno\""
+"vyhledávacím termínům, klikněte na tlačítko 'OK'. Pokud vybraná,  viditelná "
+"URL  jsou jediná, která chcete ověřit, klikněte na  tlačítko  'Zrušit'-"
 
 #: URLVerify.js:VERIFICATION_ATTEMPT_ID
 msgid "Verification attempt ID: ${0}"
@@ -74,7 +73,7 @@ msgstr "Musíte zadat kombinaci označení pole a podpole."
 
 #: URLVerify.js:CLONE_SESSION
 msgid "Clone"
-msgstr "Kopírovat"
+msgstr "Klonovat"
 
 #: URLVerify.js:MARC_EDITOR_LINK
 msgid "Click to open MARC Editor for this record"

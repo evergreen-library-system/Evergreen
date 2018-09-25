@@ -1,6 +1,6 @@
 #!perl
 use strict; use warnings;
-use Test::More tests => 21; # XXX
+use Test::More tests => 24; # XXX
 use OpenILS::Utils::TestUtils;
 
 diag("Tests Ebook API");
@@ -56,6 +56,18 @@ ok($new_session_id, 'Initiated new EbookAPI session when valid session ID not pr
 # ------------------------------------------------------------ 
 # 3. Title availability and holdings.
 # ------------------------------------------------------------ 
+
+# Title details for valid title ID.
+my $title_001_details_req = $ebook_api->request(
+    'open-ils.ebook_api.title.details', $session_id, '001');
+my $title_001_details = $title_001_details_req->recv->content;
+ok(ref($title_001_details) && $title_001_details->{title}, 'Title details check 1/2 (valid title)');
+
+# Title details for invalid title ID.
+my $title_004_details_req = $ebook_api->request(
+    'open-ils.ebook_api.title.details', $session_id, '004');
+my $title_004_details = $title_004_details_req->recv->content;
+ok(ref($title_004_details) && $title_004_details->{error}, 'Title details check 1/2 (invalid title returns error message)');
 
 # Title is not available.
 my $title_001_avail_req = $ebook_api->request(
@@ -141,6 +153,14 @@ my $checkout_req = $ebook_api->request(
     'open-ils.ebook_api.checkout', $authtoken, $session_id, '003', EBOOK_API_PATRON_USERNAME);
 my $checkout = $checkout_req->recv->content;
 ok(exists $checkout->{due_date}, 'Ebook checked out');
+
+# open-ils.ebook_api.title.get_download_link
+my $request_link = 'http://example.com/ebookapi/t/003';
+my $download_link_req = $ebook_api->request(
+    'open-ils.ebook_api.title.get_download_link', $authtoken, $session_id, $request_link);
+my $download_link = $download_link_req->recv->content;
+# Test module just returns the original request_link as the response.
+ok($download_link eq $request_link, 'Received download link for ebook');
 
 # open-ils.ebook_api.renew
 my $renew_req = $ebook_api->request(

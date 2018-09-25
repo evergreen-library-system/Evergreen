@@ -16,15 +16,21 @@
     <div id="myopac_sum_fines_placehold"></div>
     [% ELSE %]
     <div id="myopac_sum_fines">
-        [% l('Fines:') %]
+        [% l('Charges:') %]
         <span class='[% ctx.user_stats.fines.balance_owed ? "alert" : ""%]'>
             [% money(ctx.user_stats.fines.balance_owed) %]
         </span><br />
         [% IF (ctx.fines.grocery.size OR ctx.fines.circulation.size) AND ctx.get_org_setting(ctx.user.home_ou, 'credit.payments.allow') == 1 %]
-        <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get"><input
-            type="submit" title="[% l('Pay Fines') %]"
-            value="[% l('Pay Fines') %]" class="pos-rel-top-5 opac-button" /></form>
-        [% END %]
+       <form action="[% ctx.opac_root %]/myopac/main_payment_form" method="get"><input
+            type="submit" title="[% l('Pay All Charges') %]"
+            value="[% l('Pay All Charges') %]" class="pos-rel-top-5 opac-button" /></form>
+        <br />
+          <a href="#selected_fines" class="opac-button">[% l('View Charges') %]</a>
+          <img alt="[% l('Credit Card Logo') %]" src="[% ctx.media_prefix %]/images/credit_card_logo.png" class="cc_logo_img"/>
+         <!--added next two lines to add spacing when not accepting credit card payments -->
+       [% ELSE %]
+          <br />
+       [% END %]
     </div>
     [% END %]
 
@@ -97,10 +103,10 @@
     <div id='fines_payments_wrapper'>
         <div id='acct_fines_tabs'>
             [% IF myopac_main_page == 'main' %]
-            <a href='#' class="acct-tab-on">[% l("Fines") %]</a>
+            <a href='#' class="acct-tab-on">[% l("Charges") %]</a>
             <a href='[% mkurl(ctx.opac_root _ '/myopac/main_payments') %]' class="acct-tab-off">[% l("Payments") %]</a>
             [% ELSE %]
-            <a href='[% mkurl(ctx.opac_root _ '/myopac/main') %]' class="acct-tab-off">[% l("Fines") %]</a>
+            <a href='[% mkurl(ctx.opac_root _ '/myopac/main') %]' class="acct-tab-off">[% l("Charges") %]</a>
             <a href='#' class="acct-tab-on">[% l("Payments") %]</a>
             [% END %]
         </div>

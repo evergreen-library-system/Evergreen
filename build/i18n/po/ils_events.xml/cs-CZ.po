@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2017-02-21 20:30-0400\n"
-"PO-Revision-Date: 2017-03-11 09:14+0000\n"
+"POT-Creation-Date: 2018-09-18 16:06-0400\n"
+"PO-Revision-Date: 2018-09-14 10:39+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <PetrKubiska@seznam.cz>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-03-14 06:19+0000\n"
-"X-Generator: Launchpad (build 18331)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -67,14 +67,14 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "Požadovaný metabib_series_field_entry nebyl nalezen"
 
-#: 11105.PATRON_CREDIT_DISABLED:1040
+#: 11105.PATRON_CREDIT_DISABLED:1043
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr "Na vybrané transakce není povoleno využít platbu ze zálohy čtenáře."
 
 #: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:799
 msgid "The credit card processor you have named is not allowed"
-msgstr "Zpracovatel kreditiní karty, kterého jste uvedli, není povolen"
+msgstr "Zpracovatel kreditní karty, kterého jste zadali, není povolen"
 
 #: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:805
 msgid "No default credit processor is selected"
@@ -107,6 +107,10 @@ msgstr "Požadovaný action_open_circ_count_by_circ_mod nebyl nalezen"
 #: 1589.ACTOR_CARD_NOT_FOUND:418
 msgid "The requested actor_card was not found"
 msgstr "Požadovaný actor_card was nebyl nalezen"
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
+msgid "The lineitem detail has no owning_lib"
+msgstr "Detail položky neobsahuje owning_lib"
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
@@ -150,7 +154,7 @@ msgid ""
 "will be specified by an 'org' key within the event object"
 msgstr ""
 "Exemlář má být směrován do jiné knihovny. Cíl umístění bude určeno klíčem "
-"\"org\" během objektu události."
+"'org' během objektu události."
 
 #: 1554.CONFIG_RULES_CIRC_DURATION_NOT_FOUND:317
 msgid "The requested config_rules_circ_duration was not found"
@@ -180,8 +184,8 @@ msgstr "Požadovaný metabib_keyword_field_entry nebyl nalezen"
 msgid "The requested config_audience_map was not found"
 msgstr "Požadovaný config_audience_map nebyl nalezen"
 
-#: 8004.OFFLINE_CONFIG_ERROR:951 8005.OFFLINE_CHECKSUM_FAILED:954
-#: 8006.OFFLINE_SESSION_NOT_FOUND:957
+#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
+#: 8006.OFFLINE_SESSION_NOT_FOUND:960
 msgid "Offline server is not configured properly"
 msgstr "Offline server není správně nastaven"
 
@@ -200,6 +204,10 @@ msgstr "Požadovaný config_billing_type nebyl nalezen"
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "Požadovaný acq.fund_encumbrance_total nebyl nalezen"
+
+#: 8002.OFFLINE_FILE_ERROR:948
+msgid "An offline file or directory could not be created or accessed"
+msgstr "Nelze vytvořit nebo otevřít offline soubor nebo adresář."
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
 msgid "The requested actor_workstation was not found"
@@ -263,7 +271,11 @@ msgstr "Bylo dosaženo maximálního možného počtu prodloužení"
 msgid "This account is marked as inactive"
 msgstr "Tento účet je označen jako neaktivní"
 
-#: 8003.OFFLINE_PARAM_ERROR:948
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
+msgid "The distribution still has dependent objects"
+msgstr "Distribuce má stále připojené objekty"
+
+#: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
 msgstr "Chybějící parametry při nahrání offline souboru"
 
@@ -271,11 +283,15 @@ msgstr "Chybějící parametry při nahrání offline souboru"
 msgid "The requested reporter_report_folder was not found"
 msgstr "Požadovaný reporter_report_folder nebyl nalezen"
 
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
+msgid "The prediction pattern still has dependent objects"
+msgstr "Schéma predikce má stále připojené objekty"
+
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
 msgstr "Požadovaný perm_ex nebyl nalezen"
 
-#: 10101.ACQ_ALREADY_CANCELED:1003
+#: 10101.ACQ_ALREADY_CANCELED:1006
 msgid "The object is already canceled."
 msgstr "Tento objekt byl již zrušen"
 
@@ -313,13 +329,9 @@ msgstr "Požadovaný money_collections_tracker nebyl nalezen"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Záznam s požadovaným ARN (číslem autoritního záznamu) již existuje"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
-msgid "The caption/pattern still has dependent issuances"
-msgstr "Označení /schéma dosud obsahuje závislé chronologie /číslování"
-
 #: 5000.PERM_FAILURE:822
 msgid "Permission Denied"
-msgstr "Povolení odepřeno"
+msgstr "Oprávnění zamítnuto"
 
 #: 7015.NEGATIVE_PATRON_BALANCE:892
 msgid "This requested action would result in a negative patron balance"
@@ -330,7 +342,7 @@ msgstr ""
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "Požadovaný actor_user_standing_penalty nebyl nalezen"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:939
+#: 8000.OFFLINE_SESSION_ACTIVE:942
 msgid "An offline session for this location is currently processing"
 msgstr "Offline relace pro tuto lokaci se právě zpracovává"
 
@@ -358,7 +370,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "Požadovaná poznámka k poplatku neexistuje"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1024
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -390,9 +402,9 @@ msgstr ""
 "Požadovaná acq.purchase_order nemůže být rozdělena, protože neobsahuje více "
 "než jednu položku."
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
-msgid "This item is currently on the holds shelf for another patron"
-msgstr "Tento exemplář je rezervován pro jiného čtenáře a čeká na vyzvednutí"
+#: 10004.ACQ_LINEITEM_NO_PRICE:999
+msgid "The lineitem has no price"
+msgstr "U položky není uvedena cena"
 
 #: 1226.REFUND_EXCEEDS_DESK_PAYMENTS:140
 msgid ""
@@ -450,7 +462,11 @@ msgstr "Požadovaný config_metabib_field nebyl nalezen"
 msgid "The requested actor_org_address was not found"
 msgstr "Požadovaný actor_org_address nebyl nalezen"
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
+msgid "The stream still has dependent objects"
+msgstr "Řada exemplářů mů stále připojené objekty"
+
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "Došlo k pokusu o výpůjčku během minimálního intervalu pro přesun výpůjčky"
@@ -467,7 +483,7 @@ msgstr "Požadovaný acq.fund_spent_total nebyl nalazen"
 msgid "The requested permission_grp_tree was not found"
 msgstr "Požadovaný permission_grp_tree nebyl nalezen"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:987
+#: 10001.ACQ_LINEITEM_NO_COPIES:990
 msgid "The lineitem has no attached copies"
 msgstr "K položce nejsou připojeny exempláře"
 
@@ -490,7 +506,7 @@ msgstr "Požadovaný metabib_metarecord_source_map nebyl nalezen"
 
 #: 7009.CIRC_CLAIMS_RETURNED:874
 msgid "Requested circulation is marked claims returned"
-msgstr "Požadovaná výpůjčka je označena jako \"údajně vrácená\""
+msgstr "Požadovaná výpůjčka je označena jako Údajně vrácená"
 
 #: 4.CACHE_MISS:24
 msgid "A cached object could not be retrieved by the given reference."
@@ -516,7 +532,7 @@ msgstr ""
 "Požadovaný exemplář nelze půjčit, protože domovská knihovna příjemce leží  "
 "mimo rozsah nastaveného pásma pro půjčování exemplářů."
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:999
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
 msgid "The lineitem has no provider"
 msgstr "U položky není uveden dodavatel"
 
@@ -536,13 +552,15 @@ msgstr "Požadovaný money_cash_payment nebyl nalezen"
 msgid "The selected location cannot have volumes attached"
 msgstr "Označená knihovna nemůže mít připojeny signatury"
 
-#: 8002.OFFLINE_FILE_ERROR:945
-msgid "An offline file or directory could not be created or accessed"
-msgstr "Nelze vytvořit nebo otevřít offline soubor nebo adresář."
-
 #: 1704.TCN_EXISTS:728
 msgid "A record already exists with the requested TCN value"
-msgstr "Záznam s požadovanou hodnotou TCN  již existuje."
+msgstr "Záznam s požadovanou hodnotou TCN  již existuje"
+
+#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
+msgid ""
+"The transit on this item may not be canceled due to the state the item is in"
+msgstr ""
+"Přeprava této jednotky nemusí být zrušena kvůli stavu, ve kterém jednotka je"
 
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
@@ -578,13 +596,13 @@ msgid ""
 "'name' field) that is already in use."
 msgstr ""
 "Pokoušíte  se vytvořit objekt v rámci jedinečného identifikátoru (jako je "
-"např. pole \"Název\"), který je již používán."
+"např. pole 'Název'), který je již používán."
 
 #: 1854.ACQ_FUND_SPENT_BALANCE_NOT_FOUND:645
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "Požadovaný acq.fund_spent_balance nebyl nalezen"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1012
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
 msgid "The subscription still has dependent objects"
 msgstr "Předplatné dosud obsahuje závislé objekty"
 
@@ -600,7 +618,7 @@ msgstr "Požadovaný config_lit_form_map nebyl nalezen"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "Požadovaný metabib_record_descriptor nebyl nalezen"
 
-#: 10102.ACQ_NOT_CANCELABLE:1006
+#: 10102.ACQ_NOT_CANCELABLE:1009
 msgid "The object is not in a cancelable state."
 msgstr "Objekt není ve stavu, aby bylo možné jej zrušit"
 
@@ -647,7 +665,7 @@ msgstr "Poskytnuté parametry charakterizují neakceptovatelnou rezervaci"
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "Požadovaný acq.funding_source_balance nebyl nalezen"
 
-#: 10000.ACQ_LINEITEM_APPROVED:984
+#: 10000.ACQ_LINEITEM_APPROVED:987
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "Požadovaná položka nemůže být změněna, protože již byla potvrzena"
 
@@ -675,11 +693,9 @@ msgstr "Požadovaný asset_stat_cat_entry nebyl nalezen"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "Požadovaný config_non_cataloged_type  nebyl nalezen"
 
-#: 1225.TRANSIT_ABORT_NOT_ALLOWED:133
-msgid ""
-"The transit on this item may not be aborted due to the state the item is in"
-msgstr ""
-"Přesun tohoto exempláře nemůže být zrušen vzhledem ke stavu exmpláře."
+#: 1716.COPY_LOCATION_NOT_EMPTY:716
+msgid "The copy location is not empty"
+msgstr "Toto umístění není prázdné"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -761,10 +777,6 @@ msgstr "Požadovaná pracovní stanice neexistuje"
 msgid "The requested money_billing was not found"
 msgstr "Požadovaný money_billing nebyl nalezen"
 
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
-msgid "The copy location is not empty"
-msgstr "Toto umístění není prázdné"
-
 #: 1507.CONTAINER_ITEM_NOT_FOUND:215
 msgid ""
 "Someone attempted to retrieve a container item object from the system and "
@@ -797,7 +809,7 @@ msgstr "Zadané heslo není správné"
 msgid "The requested config_item_type_map was not found"
 msgstr "Požadovaný config_item_type_map nebyl nalezen"
 
-#: 8007.OFFLINE_SESSION_EXISTS:960
+#: 8007.OFFLINE_SESSION_EXISTS:963
 msgid "A session with the given name already exists"
 msgstr "Relace s uvedeným jméném již existuje"
 
@@ -805,7 +817,7 @@ msgstr "Relace s uvedeným jméném již existuje"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "Požadovaný config_circ_matrix_ruleset_not_found nebyl nalezen"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:990
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
 msgid "The lineitem detail has no associated fund"
 msgstr "K požadované položce není přiřazen fond"
 
@@ -907,9 +919,13 @@ msgstr "Ke zvolenému bibliografickému záznamu jsou připojeny signatury"
 msgid "The requested action_hold_request was not found"
 msgstr "Požadovaný action_hold_reques nebyl nalezen"
 
-#: 8011.SKIP_ASSET_CHANGED:972
+#: 8011.SKIP_ASSET_CHANGED:975
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr "Od nahrání offline transakcí byl aktivní status změněn"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+msgid "Circulation has no more auto-renewals remaining"
+msgstr "Výpůjčku již není možné automaticky prodloužit."
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -949,7 +965,7 @@ msgstr "K požadovanému exempláři je připojeno upozornění"
 
 #: 7006.COPY_IS_REFERENCE:865
 msgid "Copy is reference material"
-msgstr "Exemplář je označen jako \"příruční knihovna\""
+msgstr "Exemplář je označen jako Příruční knihovna"
 
 #: 1547.CONFIG_ITEM_FORM_MAP_NOT_FOUND:299
 msgid "The requested config_item_form_map was not found"
@@ -975,7 +991,7 @@ msgstr "Požadovaný ex nebyl nalezen"
 msgid "Hold capture was delayed for this item"
 msgstr "Zachycení rezervaci pro tento exemplář se zpozdilo"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:976
+#: 9000.REPORT_TEMPLATE_EXISTS:979
 msgid "A report template with the given name and folder already exists"
 msgstr "Šablona zpráv s uvedeným jménem a složka již existují"
 
@@ -1012,18 +1028,25 @@ msgstr "Požadovaný actor_stat_cat was nebyl nalezen"
 
 #: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:831
 msgid "The user attempted to set their password to a weak value."
-msgstr "Uživatel se pokusil o nastavení \"slabého\" hesla."
+msgstr "Uživatel se pokusil o nastavení slabého hesla."
 
-#: 9001.REPORT_REPORT_EXISTS:980
+#: 9001.REPORT_REPORT_EXISTS:983
 msgid "A report with the given name and folder already exists"
 msgstr "Zpráva s uvedeným jménem a složka již existují"
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Nastavené schéma seriálu neodpovídá standardům MFHD pro pole 853-855."
 
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
 "Sigantura  s tímto označením, názvem a vlastnickou knihovnou již existuje"
 
-#: 8008.OFFLINE_INVALID_SESSION:963
+#: 8008.OFFLINE_INVALID_SESSION:966
 msgid "The session name is invalid"
 msgstr "Název relace není platný"
 
@@ -1094,6 +1117,10 @@ msgstr "Požadovaný container_biblio_record_entry_bucket_item nebyl nalezen"
 msgid "User login failed"
 msgstr "Přihlášení se nezdařilo"
 
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
+msgid "The caption/pattern still has dependent issuances"
+msgstr "Označení /schéma dosud obsahuje závislé chronologie /číslování"
+
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
 msgstr "Požadovaný acq.currency_type nebyl nalezen"
@@ -1102,7 +1129,7 @@ msgstr "Požadovaný acq.currency_type nebyl nalezen"
 msgid "The requested money_grocery was not found"
 msgstr "Požadovaný money_grocery nebyl nalezen"
 
-#: 8009.OFFLINE_NO_ORG:966 8010.OFFLINE_SESSION_COMPLETE:969
+#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
 msgid "No org id was provided"
 msgstr "Nebylo poskytnuto ID organizace"
 
@@ -1110,7 +1137,7 @@ msgstr "Nebylo poskytnuto ID organizace"
 msgid "The patron has too many lost items."
 msgstr "Čtenář má příliš mnoho ztracených exemplářů"
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:942
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
 "V rámci této relaci existuje offline soubor pro tuto pracovní stanici"
@@ -1155,7 +1182,7 @@ msgstr "Požadovaný metabib_metarecord nebyl nalezen"
 msgid "User already has an open hold on the selected item"
 msgstr "Uživatel má již vybraný exemplář rezervován"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1048
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
@@ -1238,6 +1265,12 @@ msgstr "requested acq.picklist nebyl nalezen"
 msgid "The requested item is already marked as lost"
 msgstr "Požadovaný exemplář je již označen jako ztracený"
 
+#: 7016.ITEM_ON_HOLDS_SHELF:895
+msgid "This item is currently on the holds shelf for another patron:"
+msgstr ""
+"Tato jednotka je momentálně rezervovaná a připravená pro vyzvednutí jiným "
+"čtenářem:"
+
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
 msgstr "Požadovaný config_circ_modifier nebyl nalezen"
@@ -1274,11 +1307,7 @@ msgstr "Je požadována platba za pronájem této jednotky"
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "Požadovaný container_call_number_bucket_item nebyl nalezen"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
-msgid "The lineitem detail has no owning_lib"
-msgstr "Detail položky neobsahuje owning_lib"
-
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1314,11 +1343,7 @@ msgstr "Požadovaný authority_record_note nebyl nalezen"
 msgid "The requested acq.fund was not found"
 msgstr "Požadovaný acq.fund nebyl nalezen"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
-msgid "The lineitem has no price"
-msgstr "U položky není uvedena cena"
-
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1330,13 +1355,6 @@ msgstr ""
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "Požadovaný action_non_cataloged_circulation nebyl nalezen"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Nastavené schéma seriálu neodpovídá standardům MFHD pro pole 853-855."
-
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Požadovaný money_user_summary nebyl nalezen"
@@ -1346,6 +1364,11 @@ msgstr "Požadovaný money_user_summary nebyl nalezen"
 
 #~ msgid "The requested acq.po_lineitem was not found"
 #~ msgstr "Požadovaný acq.po_lineitem nebyl nalezen"
+
+#~ msgid ""
+#~ "The transit on this item may not be aborted due to the state the item is in"
+#~ msgstr ""
+#~ "Přesun tohoto exempláře nemůže být zrušen vzhledem ke stavu exmpláře."
 
 #~ msgid "This requested item is currently on the holds shelf"
 #~ msgstr "Požadovaný exemplář se nyní nachází na regále s rezervacemi"
@@ -1363,3 +1386,6 @@ msgstr "Požadovaný money_user_summary nebyl nalezen"
 
 #~ msgid "Copy has is marked as missing"
 #~ msgstr "Exemplář byl označen jako nezvěstný"
+
+#~ msgid "This item is currently on the holds shelf for another patron"
+#~ msgstr "Tento exemplář je rezervován pro jiného čtenáře a čeká na vyzvednutí"

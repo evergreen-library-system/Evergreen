@@ -17,8 +17,8 @@ angular.module('egCatCopyBuckets',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/cat/bucket/copy/pending/:id', {
@@ -215,6 +215,16 @@ angular.module('egCatCopyBuckets',
         return deferred.promise;
     }
 
+    // apply last inventory data to fetched bucket items
+    service.fetchRecentInventoryData = function(copy) {
+        return egCore.pcrud.search('alci',
+            {copy: copy.id},
+            {flesh: 2, flesh_fields: {alci: ['inventory_workstation']}}
+        ).then(function(alci) {
+            return alci;
+        });
+    }
+
     return service;
 }])
 
@@ -278,6 +288,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_create',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -302,6 +313,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openEditBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_edit',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -328,6 +340,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openDeleteBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_bucket_delete',
+            backdrop: 'static',
             controller : 
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.bucket = function() { return bucketSvc.currentBucket }
@@ -347,6 +360,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
     $scope.openSharedBucketDialog = function() {
         $uibModal.open({
             templateUrl: './cat/bucket/share/t_load_shared',
+            backdrop: 'static',
             controller :
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -372,6 +386,11 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
 function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
     $scope.setTab('pending');
 
+    $scope.context = {
+        copyNotFound : false,
+        selectPendingBC : true
+    };
+
     var query;
     $scope.gridControls = {
         setQuery : function(q) {
@@ -379,19 +398,101 @@ function($scope,  $routeParams,  bucketSvc , egGridDataProvider,   egCore) {
                 return {id : bucketSvc.pendingList};
             else
             return null;
+        },
+        allItemsRetrieved : function() {
+            $scope.context.selectPendingBC = true;
         }
+    }
+
+    $scope.handle_barcode_completion = function(barcode) {
+        return egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.get_barcodes',
+            egCore.auth.token(), egCore.auth.user().ws_ou(), 
+            'asset', barcode)
+
+        .then(function(resp) {
+            // TODO: handle event during barcode lookup
+            if (evt = egCore.evt.parse(resp)) {
+                console.error(evt.toString());
+                return $q.reject();
+            }
+
+            // no matching barcodes: return the barcode as entered
+            // by the user (so that, e.g., checkout can fall back to
+            // precat/noncat handling)
+            if (!resp || !resp[0]) {
+                return barcode;
+            }
+
+            // exactly one matching barcode: return it
+            if (resp.length == 1) {
+                return resp[0].barcode;
+            }
+
+            // multiple matching barcodes: let the user pick one 
+            console.debug('multiple matching barcodes');
+            var matches = [];
+            var promises = [];
+            var final_barcode;
+            angular.forEach(resp, function(cp) {
+                promises.push(
+                    egCore.net.request(
+                        'open-ils.circ',
+                        'open-ils.circ.copy_details.retrieve',
+                        egCore.auth.token(), cp.id
+                    ).then(function(r) {
+                        matches.push({
+                            barcode: r.copy.barcode(),
+                            title: r.mvr.title(),
+                            org_name: egCore.org.get(r.copy.circ_lib()).name(),
+                            org_shortname: egCore.org.get(r.copy.circ_lib()).shortname()
+                        });
+                    })
+                );
+            });
+            return $q.all(promises)
+            .then(function() {
+                return $uibModal.open({
+                    templateUrl: './circ/share/t_barcode_choice_dialog',
+                    controller:
+                        ['$scope', '$uibModalInstance',
+                        function($scope, $uibModalInstance) {
+                        $scope.matches = matches;
+                        $scope.ok = function(barcode) {
+                            $uibModalInstance.close();
+                            final_barcode = barcode;
+                        }
+                        $scope.cancel = function() {$uibModalInstance.dismiss()}
+                    }],
+                }).result.then(function() { return final_barcode });
+            })
+        });
     }
 
     $scope.search = function() {
         bucketSvc.barcodeRecords = [];
+        $scope.context.itemNotFound = false;
 
-        egCore.pcrud.search(
-            'acp',
-            {barcode : bucketSvc.barcodeString, deleted : 'f'},
-            {}
-        ).then(null, null, function(copy) {
-            bucketSvc.pendingList.push(copy.id());
-            $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+        // clear selection so re-selecting can have an effect
+        $scope.context.selectPendingBC = false;
+
+        return $scope.handle_barcode_completion(bucketSvc.barcodeString)
+        .then(function(actual_barcode) {
+            egCore.pcrud.search(
+                'acp',
+                {barcode : actual_barcode, deleted : 'f'},
+                {}
+            ).then(function(copy) {
+                if (copy) {
+                    bucketSvc.pendingList.push(copy.id());
+                    $scope.gridControls.setQuery({id : bucketSvc.pendingList});
+                    bucketSvc.barcodeString = ''; // clear form on valid copy
+                } else {
+                    $scope.context.itemNotFound = true;
+                    $scope.context.selectPendingBC = true;
+                }
+            });
         });
     }
 
@@ -518,6 +619,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
 
         return $uibModal.open({
             templateUrl: './cat/catalog/t_request_items',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',
@@ -633,7 +735,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     }
 
     $scope.transferCopies = function(copies) {
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_vol');
         var copy_ids = copies.map(
             function(curr,idx,arr) {
                 return curr.id;
@@ -681,6 +783,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     $scope.applyTags = function(copies) {
         return $uibModal.open({
             templateUrl: './cat/bucket/copy/t_apply_tags',
+            backdrop: 'static',
             animation: true,
             controller:
                    ['$scope','$uibModalInstance',

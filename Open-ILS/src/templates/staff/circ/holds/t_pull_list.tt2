@@ -26,7 +26,7 @@
     label="[% l('Retrieve Patron') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action handler="grid_actions.set_copy_quality"
-    label="[% l('Set Desired Copy Quality') %]"></eg-grid-action>
+    label="[% l('Set Desired Item Quality') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_pickup_lib"
     label="[% l('Edit Pickup Library') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.edit_notify_prefs"
@@ -53,32 +53,38 @@
   <eg-grid-action handler="grid_actions.cancel_hold"
     label="[% l('Cancel Hold') %]"></eg-grid-action>
 
-  <!-- Define the column using the sort-able copy location order
+  <!-- Define the column using the sort-able shelving location order
        position, but display the location label in each cell -->
   <eg-grid-field name="copy_location_order_position" required 
-    label="[% l('Shelving Location') %]">
-    <span>{{item.shelving_loc}}</span>
-  </eg-grid-field>
-  <eg-grid-field name="shelving_loc" path="current_copy.location.name" 
-    required hidden label="[% l('Shelving Location Label') %]">
+    path="current_copy.location.name" label="[% l('Shelving Location') %]">
   </eg-grid-field>
 
-  <!-- Render the colum using the sort-able call number sort key, but 
-       display the call number label, complete with prefix and suffix 
+  <!-- Render the colum using the sort-able call number sort key, but
+       display the call number label, complete with prefix and suffix
        in the cell. -->
-  <eg-grid-field name="call_number_sort_key" required
-    path="current_copy.call_number.label_sortkey" 
-    label="[% l('Call Number') %]">
-    <span>{{item.cn_prefix}} {{item.call_number_label}} {{item.cn_suffix}}</span>
-  </eg-grid-field>
-  <eg-grid-field name="call_number_label" 
-    path="call_number_label" required hidden
-    label="[% l('Call Number Label') %]"></eg-grid-field>
-  <eg-grid-field name="cn_prefix" path="current_copy.call_number.prefix.label" 
-    hidden required label="[% l('Call Number Prefix') %]"></eg-grid-field>
-  <eg-grid-field name="cn_suffix" path="current_copy.call_number.suffix.label"
-    hidden required label="[% l('Call Number Suffix') %]"></eg-grid-field>
 
+  <eg-grid-field name="call_number_sort_key" required
+    path="current_copy.call_number.label_sortkey"
+    label="[% l('Call Number') %]">
+    <span>{{item.call_number_label}}</span>
+  </eg-grid-field>
+
+  <!-- need call_number_label here so that the grid query always
+       fetches it; otherwise, the call number field above
+       won't consistently display values -->
+
+  <eg-grid-field name="call_number_label"
+    path="call_number_label" required hidden
+    label="[% l('Call Number Label') %]">
+  </eg-grid-field>
+
+  <eg-grid-field name="cn_prefix" path="current_copy.call_number.prefix.label" hidden required
+    label="[% l('Call Number Prefix') %]">
+  </eg-grid-field>
+
+  <eg-grid-field name="cn_suffix" path="current_copy.call_number.suffix.label" hidden required
+    label="[% l('Call Number Suffix') %]">
+  </eg-grid-field>
 
   <eg-grid-field name="author" 
     path="current_copy.call_number.record.simple_record.author" 
@@ -96,19 +102,19 @@
   <eg-grid-field name="copy_id" 
     path="current_copy.id" hidden required></eg-grid-field>
   <eg-grid-field name="barcode" 
-    path="current_copy.barcode" label="[% l('Current Copy') %]">
+    path="current_copy.barcode" label="[% l('Current Item') %]">
     <a href="./cat/item/{{item.copy_id}}/summary" target="_self">
       {{item.barcode}}
     </a>
   </eg-grid-field>
-  <eg-grid-field name="parts" path="current_copy.parts.label" 
+  <eg-grid-field name="parts" path="part.label"
     label="[% l('Parts') %]"></eg-grid-field>
   <eg-grid-field name="copy_status" path="current_copy.status.name" 
-    label="[% l('Copy Status') %]"></eg-grid-field>
+    label="[% l('Item Status') %]"></eg-grid-field>
   <eg-grid-field name="copy_circ_lib_id" path="current_copy.circ_lib.id" 
-    required hidden label="[% l('Copy Circ Lib ID') %]"></eg-grid-field>
+    required hidden label="[% l('Item Circ Lib ID') %]"></eg-grid-field>
   <eg-grid-field name="notes" path="notes.body" 
-    hidden label="[% l('Hold Notes') %]"></eg-grid-field>
+    hidden required label="[% l('Hold Notes') %]"></eg-grid-field>
   <eg-grid-field name="patron_id" path="usr.id" hidden required></eg-grid-field>
   <eg-grid-field name="patron_barcode" path="usr.card.barcode" 
     hidden label="[% l('Patron Barcode') %]">
@@ -116,25 +122,52 @@
       {{item.patron_barcode}}
     </a>
   </eg-grid-field>
+  <eg-grid-field label="[% l('Patron Alias') %]" path="patron_alias" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron First Name') %]" path="patron_first" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Patron Last Name') %]" path="patron_last" hidden></eg-grid-field>
   <eg-grid-field name="pickup_lib_name" path="pickup_lib.name" 
-    hidden label="[% l('Pickup Library') %]"></eg-grid-field>
+    hidden required label="[% l('Pickup Library') %]"></eg-grid-field>
   <eg-grid-field name="pickup_lib_shortname" path="pickup_lib.shortname" 
-    hidden label="[% l('Pickup Library (Shortname)') %]"></eg-grid-field>
+    hidden required label="[% l('Pickup Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="request_lib_name" path="request_lib.name" 
-    hidden label="[% l('Request Library') %]"></eg-grid-field>
+    hidden required label="[% l('Request Library') %]"></eg-grid-field>
   <eg-grid-field name="request_lib_shortname" path="request_lib.shortname" 
-    hidden label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
+    hidden required label="[% l('Request Library (Shortname)') %]"></eg-grid-field>
   <eg-grid-field name="selection_ou" path="selection_ou.shortname" 
-    hidden label="[% l('Selection Locus') %]"></eg-grid-field>
-  <eg-grid-field name="sms_carrier_name" path="sms_carrier.name" 
-    hidden label="[% l('SMS Carrier') %]"></eg-grid-field>
-  <eg-grid-field label="[% l('Potential Copies') %]" 
+    hidden required label="[% l('Selection Locus') %]"></eg-grid-field>
+  <eg-grid-field name="sms_carrier_name" path="sms_carrier.name"
+    hidden required label="[% l('SMS Carrier') %]"></eg-grid-field>
+  <eg-grid-field name="sms_notify" path="sms_notify"
+    hidden required label="[% l('SMS Notify') %]"></eg-grid-field>
+  <eg-grid-field name="email_notify" path="email_notify"
+    hidden required label="[% l('Email Notify') %]"></eg-grid-field>
+  <eg-grid-field name="phone_notify" path="phone_notify"
+    hidden required label="[% l('Phone Notify') %]"></eg-grid-field>
+  <eg-grid-field name="staff_hold" path="_is_staff_hold" datatype="bool"
+    required hidden label="[% l('Staff Hold') %]"></eg-grid-field>
+  <eg-grid-field label="[% l('Potential Items') %]" 
     path='potential_copies'></eg-grid-field>
   <eg-grid-field label="[% l('Queue Position') %]" 
     path='queue_position' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Hold ID') %]" path='id' required hidden>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" hidden>
+  <eg-grid-field label="[% l('Circ Modifier') %]" path='current_copy.circ_modifier' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Item Status Change Time') %]" path='current_copy.status_changed_time' datatype="timestamp" hidden required>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Hold Type') %]" path='hold_type' hidden required>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('ISBN') %]" path='mvr.isbn' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Edition') %]" path='mvr.edition' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Top of Queue') %]" path='cut_in_line' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Total Holds') %]" path='total_holds' hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Request Date') %]" path='request_time' datatype="timestamp" required hidden>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Expire Date') %]" path='expire_time' datatype="timestamp" required hidden>
   </eg-grid-field>
 </eg-grid>
 

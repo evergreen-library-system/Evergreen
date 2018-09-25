@@ -24,6 +24,28 @@ function toggleActivationDate() {
     // Prevent the href from being followed, thus overriding the CSS.
     return false;
 }
+
+// Maybe enable or disable the num_copies select when the user selects
+// or deselects a part.
+function maybeToggleNumCopies(obj) {
+    var numCopies = document.getElementById("num_copies");
+    // Only if numCopies exists.
+    if (numCopies) {
+        var objValue;
+        if (obj.type == 'radio') {
+            if (obj.checked) objValue = obj.value;
+            else return;
+        } else {
+            objValue = obj.value;
+        }
+        if (objValue && objValue != '') {
+            if (numCopies.value != '1') numCopies.value = '1';
+            if (!numCopies.disabled) numCopies.disabled = true;
+        } else {
+            if (numCopies.disabled) numCopies.disabled = false;
+        }
+    }
+}
 </script>
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
     <h1>[% l('Place Hold') %]</h1>
@@ -44,7 +66,8 @@ function toggleActivationDate() {
                 SET some_holds_allowed = 0 IF some_holds_allowed == -1;
               ELSE; some_holds_allowed = 1; END;
             END %]
-      
+     
+      [% IF loop.first %] 
     <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" >
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
@@ -54,6 +77,12 @@ function toggleActivationDate() {
         %]
         <input type="hidden" name="redirect_to" value="[% redirect | html %]" />
         <input type="hidden" name="hold_source_page" value="[% CGI.param('hold_source_page') | html %]" />
+
+        <!-- Adding hidden fields so that parameters are maintained in
+        searchbar throughout the place hold process. -->
+        <input type="hidden" name="locg" value="[% CGI.param('locg') | html %]" />
+        <input type="hidden" name="qtype" value="[% CGI.param('qtype') | html %]" />
+        <input type="hidden" name="query" value="[% CGI.param('query') | html %]" />
         [%
             usr_barcode = CGI.param('usr_barcode') | html;
             is_requestor = CGI.param('is_requestor');
@@ -101,6 +130,7 @@ function toggleActivationDate() {
             </span>
         </p>
         [% END %]
+      [% END %]
 
         <table id='hold-items-list'>
             <tr>
@@ -126,10 +156,10 @@ function toggleActivationDate() {
                              <div class='radio-parts-selection'>
                              [% IF !hdata.part_required %]
                                 <span class='parts-radio-option'>
-                                 <input type='radio' name='part' value='' required>[% l('All Parts') %]</span>
+                                 <input type='radio' name='part' value='' onchange='maybeToggleNumCopies(this);' required>[% l('All Parts') %]</span>
                               [% END %]
                                [% FOR part IN hdata.parts %]
-                                 <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] required>
+                                 <span class='parts-radio-option'><input type='radio' name='part' id=[% part.id %] value=[% part.id %] onchange='maybeToggleNumCopies(this);' required>
                                   <label for=[% part.id %]>[% part.label | html %]</label></span>
                               [% END %]
                               </div>
@@ -137,7 +167,7 @@ function toggleActivationDate() {
                             <span style='font-weight: bold;'><label for='select_hold_part'>[%
                                 hdata.part_required ? l('Select a Part:') : l('Select a Part (optional):')
                             %]</label></span>
-                            <select id='select_hold_part' name='part'>
+                            <select id='select_hold_part' name='part' onchange='maybeToggleNumCopies(this);'>
                                 [% IF !hdata.part_required %]
                                 <option selected='selected' value=''>[% l('- All Parts -') %]</option>
                                 [% END %]
@@ -151,7 +181,8 @@ function toggleActivationDate() {
                         <input type='hidden' name='part' value=''/>
                         [% END %]
                     [% END %]
-                    [% IF NOT metarecords.disabled %]
+		    [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
+                    [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
                         [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
@@ -247,6 +278,9 @@ function toggleActivationDate() {
                 <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
             </blockquote>
         </p>
+        [% IF CGI.param('from_basket') %]
+          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket after holds are requested?') %]</input></blockquote>
+        [% END %]
         <input id="place_hold_submit" type="submit" name="submit" 
             value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />

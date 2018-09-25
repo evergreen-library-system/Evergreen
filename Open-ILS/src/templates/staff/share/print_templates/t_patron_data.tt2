@@ -1,0 +1,55 @@
+<!--
+Template for printing a patron's data, including addresses and statistical categories.
+-->
+<div>
+  <div>=-=-=-=</div>
+  <div>-------</div>
+  <div>Barcode: {{patron.card.barcode}}</div>
+  <div>-------</div>
+  <div>Patron's Username: {{patron.usrname}}</div>
+  <div>Prefix/Title: {{patron.prefix}}</div>
+  <div>First Name: {{patron.first_given_name}}</div>
+  <div>Middle Name: {{patron.second_given_name}}</div>
+  <div>Last Name: {{patron.family_name}}</div>
+  <div>Suffix: {{patron.suffix}}</div>
+  <div>Holds Alias: {{patron.alias}}</div>
+  <div>Date of Birth: {{patron.dob}}</div>
+  <div>Juvenile: {{patron.juvenile}}</div>
+  <div>Primary Identification Type: {{patron.ident_type.name()}}</div>
+  <div>Primary Identification: {{patron.ident_value}}</div>
+  <div>Secondary Identification Type: {{patron.ident_type2.name()}}</div>
+  <div>Secondary Identification: {{patron.ident_value2}}</div>
+  <div>Email Address: {{patron.email}}</div>
+  <div>Daytime Phone: {{patron.day_phone}}</div>
+  <div>Evening Phone: {{patron.evening_phone}}</div>
+  <div>Other Phone: {{patron.other_phone}}</div>
+  <div>Home Library: {{patron.home_ou.name()}}</div>
+  <div>Main (Profile) Permission Group: {{patron.profile.name()}}</div>
+  <div>Privilege Expiration Date: {{patron.expire_date}}</div>
+  <div>Internet Access Level: {{patron.net_access_level.name()}}</div>
+  <div>Active: {{patron.active}}</div>
+  <div>Barred: {{patron.barred}}</div>
+  <div>Is Group Lead Account: {{patron.master_account}}</div>
+  <div>Claims-Returned Count: {{patron.claims_returned_count}}</div>
+  <div>Claims-Never-Checked-Out Count: {{patron.claims_never_checked_out_count}}</div>
+  <div>Alert Message: {{patron.alert_message}}</div>
+
+  <div>
+    <div ng-repeat="address in patron.addresses">
+      <div>-------</div>
+      <div>Type: {{address.address_type}}</div>
+      <div>Street (1): {{address.street1}}</div>
+      <div>Street (2): {{address.street2}}</div>
+      <div>City: {{address.city}}</div>
+      <div>County: {{address.county}}</div>
+      <div>State: {{address.state}}</div>
+      <div>Postal Code: {{address.post_code}}</div>
+      <div>Country: {{address.country}}</div>
+      <div>Valid Address?: {{address.valid}}</div>
+      <div>Within City Limits?: {{address.within_city_limits}}</div>
+    </div>
+    <div>-------</div>
+    <div ng-repeat="entry in patron.stat_cat_entries">{{entry.stat_cat.name}} : {{entry.stat_cat_entry}}</div>
+    <div>=-=-=-=</div>
+  </div>
+</div>

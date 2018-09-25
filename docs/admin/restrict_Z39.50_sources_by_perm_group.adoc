@@ -17,11 +17,11 @@ Add a new permission:
 
 1) Create a permission at the database level.
 
-2) Click *Admin -> Server Administration -> Permissions* to add a permission to the staff client.
+2) Click *Administration -> Server Administration ->  Permissions* to add a permission to the staff client.
 
 3) In the *New Permission* field, enter the text that describes the new permission.
 
-image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.png[Create new permission to limit use of Z39.50 servers]
 
 4) Click *Add*.
 
@@ -32,13 +32,13 @@ image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
 Restrict Z39.50 Sources by Permission Group
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1) Click *Admin -> Server Administration -> Z39.50 Servers*
+1) Click *Administration -> Server Administration ->  Z39.50 Servers*
 
 2) Click *New Z39.50 Server*, or double click on an existing Z39.50 server to restrict its use.
 
 3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
 
-image::media/Restrict_Z39_50_Sources_by_Permission_Group2.jpg[]
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
 
 4) Click *Save*.
 
@@ -60,7 +60,7 @@ Staff have the option to apply Z39.50 login credentials to each Z39.50 server at
 
 To set up stored credentials for a Z39.50 server:
 
-1) Go to *Admin -> Server Administration -> Z39.50 Servers*.
+1) Go to *Administration -> Server Administration ->  Z39.50 Servers*.
 
 2) Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
 

@@ -10,7 +10,7 @@ MARC Import Remove Fields allows staff to configure MARC tags to be automaticall
 
 Create a MARC Import Remove Fields profile
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-To create a MARC Import Remove Fields profile, go to *Admin -> Server Administration -> MARC Import Remove Fields*.
+To create a MARC Import Remove Fields profile, go to *Administration -> Server Administration ->  MARC Import Remove Fields*.
 
 . Click *New Field Group*.
 . Assign the Field Group a *Label*.  This label will appear in the import interfaces.
@@ -26,7 +26,7 @@ To create a MARC Import Remove Fields profile, go to *Admin -> Server Administra
 . Click *Return to Groups* to go back to the list of Remove Field profiles.
 
 
-image::media/marc_import_remove_fields3.jpg[MARC Remove Fields Profile]
+image::media/marc_import_remove_fields3.png[MARC Remove Fields Profile]
 
 
 Import Options

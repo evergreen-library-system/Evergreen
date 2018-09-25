@@ -1030,6 +1030,56 @@ tr.result_table_row > td.result_table_pic_header {
     width: 78px;
 }
 
+/* styles for selecting records in the results set */
+.result_table_row_selected {
+    background-color: [% css_colors.item_selected %];
+}
+#selected_records_summary, #clear_basket {
+    margin-left: 5em;
+}
+
+/* styles for the basket */
+#record_basket {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 5em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 5em;
+    [% END; %]
+}
+#record_basket_icon {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 2em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 2em;
+    [% END; %]
+    position: relative;
+}
+#record_basket_count_floater {
+    background-color: [% css_colors.accent_lighter %];
+    position: absolute;
+    top: -3px;
+    right: -3px; /* relative to icon, so don't want to adjust for RTL */
+    z-index: 2;
+    border-radius: 50%;
+}
+#record_basket_count_floater a {
+    text-decoration: none;
+}
+#basket_actions {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE; %]
+    float: right;
+    [% END; %]
+}
+#basket_actions select {
+    border-color: rgb(169, 169, 169);
+}
+
 .result_number {
     [% IF rtl == 't' -%]
     padding-right: 1em;
@@ -1214,9 +1264,17 @@ div.result_table_utils_cont {
     float:right;
     padding: 15px 0px 0px 23px;
     [% END -%]
-    background-color: [% css_colors.accent_ultralight %];
     width: 177px;
-    height: 166px;
+}
+
+.cc_logo_img
+{
+   width: 79%;
+    [% IF rtl == 't' -%]
+      padding-right: .5em;
+    [% ELSE -%]
+       padding-left: .5em;
+    [% END -%]
 }
 
 #myopac_sum_fines_placehold {
@@ -1245,8 +1303,76 @@ div.result_table_utils_cont {
     [% END -%]
 }
 
-#acct_checked_main_header, #acct_holds_main_header, #acct_checked_hist_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
+#acct_checked_main_header, #acct_holds_main_header, #acct_fines_main_header, #acct_fees_main_header, #acct_checked_hist_header, #acct_holds_hist_header, #acct_list_header, #acct_list_header_anon, #temp_list_holds, #acct_messages_main_header, #ebook_circs_main_table, #ebook_holds_main_table {
     border-collapse: collapse;
+}
+
+.acct_fines_header
+{
+   width: 100%;
+   padding-bottom:1em;
+   [% IF rtl == 't' -%]
+   float: right;
+   [% ELSE -%]
+   float:left;
+   [% END -%]
+}
+
+/* tables for entering payment information */
+#acct_fines_main_header, 
+#acct_fees_main_header
+{
+   width: 100%;
+}
+
+/* tables for entering payment information */
+#billing_info_table
+{
+    width: auto;
+    [% IF rtl == 't' -%]
+    float: right;
+    [% ELSE -%]
+    float:left;
+    [% END -%]
+    display:inline;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+/* tables for entering payment information */
+#credit_card_info_table
+{
+    width: auto;
+    display: block;
+}
+
+/* tables for entering payment information */
+#billing_info_table td,
+#credit_card_info_table td
+{
+   [% IF rtl == 't' -%]
+    padding-right: .5em;
+    [% ELSE -%]
+    padding-left: .5em;
+    [% END -%]
+   
+}
+
+/* div for the payment buttons with the total */
+#payment_actions
+{
+   width: auto;
+   display: block;
+   padding: 1em 0 0 1em;
+   text-align:center;
+}
+
+/* text to state what is seen on cc statement */
+.cc_disclaimer
+{
+   font-style:italic;
+   font-size: 90%;
+   color:[% css_colors.primary_fade %];
 }
 
 .hold_notes {
@@ -1255,13 +1381,13 @@ div.result_table_utils_cont {
 }
 
 .hold_note_title { font-weight: bold; }
-
-#acct_checked_main_header td, #acct_holds_main_header td, #acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header, #ebook_circs_main_table td, #ebook_holds_main_table td {
-    background-color: [% css_colors.accent_lighter2 %];
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td {
+    background-color: [% css_colors.background %]; 
     padding: 10px;
-}
+	 border: 1px solid #d3d3d3; 
+} 
 
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_checked_hist_header th, acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header, #ebook_circs_main_table th, #ebook_holds_main_table th {
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th {
     [% IF rtl == 't' -%]
     text-align: right;
     [% ELSE -%]
@@ -1323,6 +1449,12 @@ div.result_table_utils_cont {
 .myopac_payments_table tbody tr:nth-child(odd) { background-color: [% css_colors.accent_lighter %]; }
 .myopac_payments_table form { display: inline; }
 .myopac_payments_table input[type="submit"] { padding: 1px; }
+
+.cc_header
+{
+   padding-top:1em;
+   background-color: [% css_colors.accent_lighter %];
+}
 
 .payment-error {
     font-weight: bold; color: [% css_colors.text_alert %];
@@ -2317,19 +2449,20 @@ a.preflib_change {
     border-color: [% css_colors.border_dark %];
     border-width: 1px;
     border-style: solid;
+    z-index: 1;
 }
 .popmenu li:hover li {
     float: none;
 }
 .popmenu li:hover li a {
-    background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultralight %];
+    background-color: [% css_colors.primary %] !important;
+    color: [% css_colors.accent_ultralight %] !important;
 }
 .popmenu li li a:hover {
-    background-color: [% css_colors.accent_ultralight %]; 
-    color: [% css_colors.primary %];
+    background-color: [% css_colors.accent_ultralight %] !important;
+    color: [% css_colors.primary %] !important;
 }
-/* Styles for the temporary list entry. */
+/* Styles for the basket entry. */
 .popmenu li:hover li[class~="temporary"] a {
     background-color: [% css_colors.primary %]; 
     color: [% css_colors.accent_ultralight %];
@@ -3250,4 +3383,14 @@ label[for*=expert_]
 }
 [id^="toggled-inline-"]:target{
     display: inline;
+}
+
+.oils_SH {
+    font-weight: bolder;
+    background-color: #99ff99;
+}
+
+.oils_SH.identifier {
+    font-weight: bolder;
+    background-color: #42b0f4;
 }

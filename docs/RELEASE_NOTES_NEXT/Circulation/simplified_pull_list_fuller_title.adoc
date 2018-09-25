@@ -1,6 +1,0 @@
-Fuller title in XUL client Simplified Pull List
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Simplified Pull List in the XUL client will now display subfields n and
-p in the title field. The addition will make it easier for staff to distinguish
-between different parts or seasons in a series.
-

@@ -98,6 +98,7 @@ sub new {
                'descendants=s@',
                'since=s',
                'store=s',
+               'uris',
                'debug');
 
     if ($opts{help}) {
@@ -143,6 +144,7 @@ Usage: $0 [options]
                     exports records that have attached holdings for the
                     specified org. unit and all of its descendants in
                     the tree.
+ --uris or -u       Include records with located URIs in the output
 
 Examples:
 
@@ -329,6 +331,7 @@ sub new {
     $self->{sreClass} = Fieldmapper::class_for_hint('sre');
     $self->{acnpClass} = Fieldmapper::class_for_hint('acnp');
     $self->{acnsClass} = Fieldmapper::class_for_hint('acns');
+    $self->{auricnmClass} = Fieldmapper::class_for_hint('auricnm');
 
     # Make an arrayref of shortname ids if the library option was
     # specified:
@@ -365,6 +368,11 @@ sub new {
 sub build_query {
     my $self = shift;
 
+    # TODO: There is some unfortunate code repetition in this
+    # subroutine and it is now about 93 lines long with comments and
+    # whitespace.  It should probably be refactored into a series of
+    # smaller subroutines to avoid the repetition.
+
     # Get the field names and tables for our classes. We add the fully
     # qualified table names to the fields so that the joins will work.
     my $breTable = $self->{breClass}->Table();
@@ -373,6 +381,7 @@ sub build_query {
     my $acpTable = $self->{acpClass}->Table();
     my $acnpTable = $self->{acnpClass}->Table();
     my $acnsTable = $self->{acnsClass}->Table();
+    my $auricnmTable = $self->{auricnmClass}->Table();
 
     # Now we build the query in pieces:
 
@@ -423,7 +432,31 @@ ACN_JOIN
         $where .= "$breTable.deleted = 'f'";
     }
 
+    # Support the --uris option.  It is orthogonal to --items, so we
+    # may have to build a second query to use with a UNION DISTINCT.
+    my $uri_union = "";
+    if ($Marque::config->option_value('uris')) {
+        if ($Marque::config->option_value('items')) {
+            # Build UNION DISTINCT for main query.
+            $uri_union = "\nunion distinct\n";
+            $uri_union .= $select;
+            $uri_union .= "\nfrom $breTable";
+            $uri_union .= "\njoin $acnTable on $acnTable.record = $breTable.id";
+            $uri_union .= "\nand $acnTable.owning_lib in (" . join(',', @{$self->{libs}}) . ")" if (@{$self->{libs}});
+            $uri_union .= "\nand $acnTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+            $uri_union .= "\njoin $auricnmTable on $auricnmTable.call_number = $acnTable.id";
+            $uri_union .= "\n$where";
+        } else {
+            unless ($acn_joined) {
+                $from .= "\njoin $acnTable on $acnTable.record = $breTable.id";
+                $from .= "\nand $acnTable.deleted = 'f'" unless ($Marque::config->option_value('since'));
+            }
+            $from .= "\njoin $auricnmTable on $auricnmTable.call_number = $acnTable.id";
+        }
+    }
+
     $self->{query} = $select . "\n" . $from . "\n" . $where;
+    $self->{query} .= $uri_union if ($uri_union);
 }
 
 sub execute_query {

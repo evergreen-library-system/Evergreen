@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
 "PO-Revision-Date: 2013-03-15 13:35+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:38+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Poedit-Country: BRAZIL\n"
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -1282,8 +1282,8 @@ msgstr ""
 "Transferência."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Reservas transferidas."
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1727,6 +1727,12 @@ msgstr "Marque aqui para confirmar esta ação"
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr "Item %1$s emprestado ao usuário, %2$s, até %3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -2479,3 +2485,6 @@ msgstr "%1$s disponíveis"
 
 #~ msgid "Cancel "
 #~ msgstr "Cancelar "
+
+#~ msgid "Holds transferred."
+#~ msgstr "Reservas transferidas."

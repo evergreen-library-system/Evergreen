@@ -4,16 +4,18 @@ Selection Lists and Purchase Orders
 Selection Lists
 ~~~~~~~~~~~~~~~
 
-Selection lists allow you to create, manage, and save lists of items that you may want to purchase. To view your selection list, click Acquisitions -> My Selection Lists. Use the general search to view selection lists created by other users.
+Selection lists allow you to create, manage, and save lists of items
+that you may want to purchase. To view your selection list, click
+*Acquisitions* -> *My Selection Lists*. Use the general search to view selection lists created by other users.
 
 Create a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Selection lists can be created in four areas within the module. Selection lists can be created when you <<_brief_records,Add Brief Records>>, Upload MARC Order Records, or find records through the <<_marc_federated_search_2,MARC Federated Search>>. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
+Selection lists can be created in four areas within the module. Selection lists can be created when you <<_brief_records,Add Brief Records>>, Upload MARC Order Records, or find records through the <<_marc_federated_search,MARC Federated Search>>. In each of these interfaces, you will find the Add to Selection List field. Enter the name of the selection list that you want to create in that field.
 
 Selection lists can also be created through the My Selection Lists interface:
 
-. Click Acquisitions -> My Selection Lists.
+. Click *Acquisitions* -> *My Selection Lists*.
 . Click the New Selection List drop down arrow.
 . Enter the name of the selection list in the box that appears.
 . Click Create.
@@ -23,14 +25,14 @@ image::media/acq_selection_create.png[create selection list]
 Add items to a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can add items to a selection list in one of three ways: <<_brief_records,add a brief record>>; upload MARC order records; add records through a <<_marc_federated_search_2,federated search>>; or use the View/Place Orders menu item in the catalog.
+You can add items to a selection list in one of three ways: <<_brief_records,add a brief record>>; upload MARC order records; add records through a <<_marc_federated_search,federated search>>; or use the View/Place Orders menu item in the catalog.
 
 Clone selection lists
 ^^^^^^^^^^^^^^^^^^^^^
 
 Cloning selection lists enables you to copy one selection list into a new selection list. You can maintain both copies of the list, or you can delete the previous list.
 
-. Click Acquisitions -> My Selection Lists.
+. Click *Acquisitions* -> *My Selection Lists*.
 . Check the box adjacent to the list that you want to clone.
 . Click Clone Selected.
 . Enter a name into the box that appears, and click Clone.
@@ -43,7 +45,7 @@ Merge selection lists
 You can merge two or more selection lists into one selection list.
 
 
-. Click Acquisitions -> My Selection Lists.
+. Click *Acquisitions* -> *My Selection Lists*.
 . Check the boxes adjacent to the selection lists that you want to merge, and click Merge Selected.
 . Choose the Lead Selection List from the drop down menu. This is the list to which the items on the other list(s) will be transferred.
 . Click Merge.
@@ -56,7 +58,7 @@ Delete selection lists
 You can delete selection lists that you do not want to save. You will not be able to retrieve these items through the General Search after you have deleted the list. You must delete all line items from a selection list before you can delete the list.
 
 
-. Click Acquisitions -> My Selection Lists.
+. Click *Acquisitions* -> *My Selection Lists*.
 . Check the box adjacent to the selection list(s) that you want to delete.
 . Click Delete Selected.
 
@@ -67,10 +69,10 @@ After an item has been added to a selection list or purchase order, you can mark
 
 
 . If you want to mark part of a selection list ready for selector, then you can check the box(es) of the line item(s) that you wish to mark ready for selector. If you want to mark the entire list ready for selector, then skip to step 2.
-. Click Actions -> Mark Ready for Selector.
+. Click *Actions* -> *Mark Ready for Selector*.
 . A pop up box will appear. Choose to mark the selected line items or all line items.
 . Click Go.
-. The screen will refresh. The marked line item(s) will be highlighted pink, and the status changes to selector~ready.
+. The screen will refresh. The marked line item(s) will be highlighted pink, and the status changes to selector-ready.
 
 image::media/acq_selection_mark_ready.png[mark ready]
 
@@ -80,7 +82,7 @@ Convert selection list to purchase order
 Use the Actions menu to convert a selection list to a purchase order.
 
 
-. From a selection list, click Actions ~> Create Purchase Order.
+. From a selection list, click *Actions* -> *Create Purchase Order*.
 . A pop up box will appear.
 . Select the ordering agency from the drop down menu.
 . Enter the provider.
@@ -93,8 +95,14 @@ Use the Actions menu to convert a selection list to a purchase order.
 Purchase Orders
 ~~~~~~~~~~~~~~~
 
-Duplicate Purchase Order Name Warning Dialog
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Purchase Orders allow you to keep track of orders and, if EDI is enabled, communicate with your provider.
+To view purchase orders, click
+*Acquisitions* -> *Purchase Orders*.
+
+Naming your purchase order
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can give your purchase order a name.
 
 When creating a purchase order or editing an existing purchase order, the purchase order name must be unique for the ordering agency.  Evergreen will display a warning dialog to users, if they attempt to create or edit purchase order names that match the names of already existing purchase orders at the same ordering agency. The *Duplicate Purchase Order Name Warning Dialog* includes a link that will open the matching purchase order in a new tab.
 
@@ -105,6 +113,7 @@ Purchase Order Names are case sensitive.
 image::media/po_name_detection_1.JPG[PO Name Detection 1]
 
 When a duplicate purchase order name is detected during the creation of a new purchase order, the user may:
+
 * Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 * Click *Cancel* to cancel the creation of the new purchase order.
 * Within the _Name (optional)_ field, enter a different, unique name for the new purchase order.
@@ -116,6 +125,7 @@ If the purchase order name is not unique for the ordering agency, the Save butto
 *Duplicate PO Name Detection When Editing the Name of an Existing Purchase Order*
 
 To change the name of an existing purchase order:
+
 . Within the purchase order, the _Name_ of the purchase order is a link (located at the top left-hand side of the purchase order). Click the PO Name.
 . A new window will open, where users can rename the purchase order.
 . Enter the new purchase order name.
@@ -133,8 +143,14 @@ When a duplicate purchase order name is detected during the renaming of an exist
 * Click *View PO* to view the purchase order with the matching name. The purchase order will open in a new tab.
 * Repeat the steps to change the name of an existing purchase order and make the name unique.
 
-Purchase Order Activation Progress Bar
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Activating your purchase order
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When the appropriate criteria have been met the Activate Order button will appear and you can proceed with the following:
+
+. Click the button Activate Order.
+. When you activate the order the bibliographic records and copies will be imported into the catalogue using the Vandelay interface, if not previously imported. See How to Load Bibliographic Records and Items into the Catalogue for instructions on using the Vandelay interface.
+. The funds associated with the purchases will be encumbered.
 
 After you click *Activate Order*, you will be presented with the record import interface for records that are not already in the catalog. Once you complete entering in the parameters for the record import interface, the progress screen will appear. As of Evergreen 2.9, this progress screen consists of a progress bar in the foreground, and a tally of the following in the background of the bottom-left corner:
 
@@ -145,25 +161,40 @@ After you click *Activate Order*, you will be presented with the record import i
 * Debits Encumbered
 * Real Copies Processed
 
+Activate Purchase Order without loading items
++++++++++++++++++++++++++++++++++++++++++++++
+
+It is possible to activate a purchase order without loading items. Once the purchase order has been activated without loading items, it is not possible to load the items. This feature should only be used in situations where the copies have already been added to the catalogue, such as:
+
+* Cleaning up pre-acquisitions backlog
+* Direct purchases that have already been catalogued
+
+To use this feature, click the Activate Without Loading Items button.
+
 Activate Purchase Order with Zero Copies
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+++++++++++++++++++++++++++++++++++++++++
 
-In previous versions, by default, a purchase order could be activated with or
-without copies attached to line items.
-
-In versions 2.3 and above, by default, a purchase order cannot be activated if a line item
-on the purchase order has zero copies.  A new feature enables you to activate a
-purchase order that lacks copies.
-
-To activate a purchase order with line items that have zero copies, check the
-box *Allow activation with zero-copy lineitems*.  
+By default, a purchase order cannot be activated if a line item on the
+purchase order has zero copies. To activate a purchase order with line
+items that have zero copies, check the box *Allow activation with
+zero-copy lineitems*.
 
 image::media/Zero_Copies1.jpg[Zero_Copies1]
 
-Enhancements to Canceled and Delayed Items
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Line item statuses
+^^^^^^^^^^^^^^^^^^
 
-Cancel/Delay reasons have been modified so that you can easily differentiate between canceled and delayed items.  Each label now begins with *Canceled* or *Delayed*.  To view the list, click *Admin* -> *Server Administration* -> *Acquisitions* -> *Cancel Reasons*.
+The purchase orders interface keeps track of various statuses that your
+line items might be in.  This section lists some of the statuses you might
+see when looking at purchase orders.
+
+Canceled and Delayed Items
+++++++++++++++++++++++++++
+
+In the purchase order interface, you can easily
+differentiate between canceled and delayed items.  Each label begins
+with *Canceled* or *Delayed*.  To view the list, click *Administration*
+-> *Acquisitions Administration* -> *Cancel Reasons*.
 
 The cancel/delay reason label is displayed as the line item status in the list of line items or as the copy status in the list of copies.
 
@@ -176,8 +207,23 @@ A delayed line item can now be canceled.  You can mark a line item as delayed, a
 
 Cancel/delay reasons now appear on the worksheet and the printable purchase order.
 
+[NOTE]
+========================
+When all the copies of a line item are canceled through the Acquisitions interface,
+the parent lineitem is also canceled. The cancel reason will be calculated based
+on the settings of:
+  
+. The cancel reason for the last copy to be canceled copy if the cancel reason's
+_Keep Debits_ setting is true.
+. The cancel reason for any other copy on the line item if the cancel reason's
+_Keep Debits_ setting is true.
+. The cancel reason for the last copy to be canceled if no copies on the line
+item have a cancel reason where _Keep Debits_ is true.
+========================
+
+
 Paid PO Line Items
-^^^^^^^^^^^^^^^^^^
+++++++++++++++++++
 
 Purchase Order line items are marked as "Paid" in red text when all non-cancelled copies on the line item have been invoiced.
 
@@ -187,12 +233,12 @@ image::media/2_10_Lineitem_Paid.png[Paid Lineitem]
 Brief Records
 ~~~~~~~~~~~~~
 
-Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on~order purchase orders.
+Brief records are short bibliographic records with minimal information that are often used as placeholder records until items are received. Brief records can be added to selection lists or purchase orders and can be imported into the catalog. You can add brief records to new or existing selection lists. You can add brief records to new, pending or on-order purchase orders.
 
 Add brief records to a selection list
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-. Click Acquisitions -> New Brief Record. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing Add Brief Record.
+. Click *Acquisitions* -> *New Brief Record*. You can also add brief records to an existing selection list by clicking the Actions menu on the selection list and choosing Add Brief Record.
 . Choose a selection list from the drop down menu, or enter the name of a new selection list.
 . Enter bibliographic information in the desired fields.
 . Click Save Record.
@@ -216,7 +262,7 @@ MARC Federated Search
 
 The MARC Federated Search enables you to import bibliographic records into a selection list or purchase order from a Z39.50 source.
 
-. Click Acquisitions -> MARC Federated Search.
+. Click *Acquisitions* -> *MARC Federated Search*.
 . Check the boxes of Z39.50 services that you want to search. Your local Evergreen Catalog is checked by default. Click Submit.
 +
 image::media/acq_marc_search.png[search form]
@@ -224,7 +270,11 @@ image::media/acq_marc_search.png[search form]
 . A list of results will appear. Click the "Copies" link to add copy information to the line item. See the <<_line_items,section on Line Items>> for more information.
 . Click the Notes link to add notes or line item alerts to the line item. See the <<_line_items,section on Line Items>> for more information.
 . Enter a price in the "Estimated Price" field.
-. You can save the line item(s) to a selection list by checking the box on the line item and clicking Actions -> Save Items to Selection List. You can also create a purchase order from the line item(s) by checking the box on the line item and clicking Actions ~> Create Purchase Order.
+. You can save the line item(s) to a selection list by checking the box
+on the line item and clicking *Actions* -> *Save Items to Selection
+List*. You can also create a purchase order from the line item(s) by
+checking the box on the line item and clicking Actions -> Create
+Purchase Order.
 
 image::media/acq_marc_search-2.png[line item]
 

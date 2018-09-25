@@ -3,8 +3,8 @@ angular.module('egTransitListApp',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     var resolver = {delay : 
         ['egStartup', function(egStartup) {return egStartup.go()}]}
 
@@ -97,6 +97,7 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
         // FIXME what follows ought to be refactored into a factory
         return $uibModal.open({
             templateUrl: './cat/catalog/t_add_to_bucket',
+            backdrop: 'static',
             animation: true,
             size: 'md',
             controller:
@@ -255,7 +256,7 @@ function($scope , $q , $routeParams , $window , egCore , egTransits , egGridData
                 'flesh_fields' : {
                     'atc' : ['target_copy','dest','source','hold_transit_copy'],
                     'acp' : ['call_number','location','circ_lib'],
-                    'acn' : ['record'],
+                    'acn' : ['record', 'prefix', 'suffix'],
                     'bre' : ['simple_record'],
                     'ahtc' : ['hold'],
                     'ahr' : ['usr'],

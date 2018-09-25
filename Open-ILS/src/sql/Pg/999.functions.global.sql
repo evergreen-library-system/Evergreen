@@ -51,6 +51,12 @@ DECLARE
 	folder_row RECORD;
 BEGIN
 
+    -- Bail if src_usr equals dest_usr because the result of merging a
+    -- user with itself is not what you want.
+    IF src_usr = dest_usr THEN
+        RETURN;
+    END IF;
+
     -- do some initial cleanup 
     UPDATE actor.usr SET card = NULL WHERE id = src_usr;
     UPDATE actor.usr SET mailing_address = NULL WHERE id = src_usr;
@@ -195,6 +201,8 @@ BEGIN
 		END LOOP;
 	END LOOP;
 
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
+
     -- money.*
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'usr', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'collector', src_usr, dest_usr);
@@ -222,6 +230,7 @@ BEGIN
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -352,11 +361,44 @@ BEGIN
         -- do nothing
     END;
 
+    -- propagate preferred name values from the source user to the
+    -- destination user, but only when values are not being replaced.
+    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr)
+    UPDATE actor.usr SET 
+        pref_prefix = 
+            COALESCE(pref_prefix, (SELECT pref_prefix FROM susr)),
+        pref_first_given_name = 
+            COALESCE(pref_first_given_name, (SELECT pref_first_given_name FROM susr)),
+        pref_second_given_name = 
+            COALESCE(pref_second_given_name, (SELECT pref_second_given_name FROM susr)),
+        pref_family_name = 
+            COALESCE(pref_family_name, (SELECT pref_family_name FROM susr)),
+        pref_suffix = 
+            COALESCE(pref_suffix, (SELECT pref_suffix FROM susr))
+    WHERE id = dest_usr;
+
+    -- Copy and deduplicate name keywords
+    -- String -> array -> rows -> DISTINCT -> array -> string
+    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr),
+         dusr AS (SELECT * FROM actor.usr WHERE id = dest_usr)
+    UPDATE actor.usr SET name_keywords = (
+        WITH keywords AS (
+            SELECT DISTINCT UNNEST(
+                REGEXP_SPLIT_TO_ARRAY(
+                    COALESCE((SELECT name_keywords FROM susr), '') || ' ' ||
+                    COALESCE((SELECT name_keywords FROM dusr), ''),  E'\\s+'
+                )
+            ) AS parts
+        ) SELECT ARRAY_TO_STRING(ARRAY_AGG(kw.parts), ' ') FROM keywords kw
+    ) WHERE id = dest_usr;
+
     -- Finally, delete the source user
     DELETE FROM actor.usr WHERE id = src_usr;
 
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
 Merges all user date from src_usr to dest_usr.  When collisions occur, 
@@ -387,6 +429,7 @@ BEGIN
 	UPDATE acq.lineitem SET selector = dest_usr WHERE selector = src_usr;
 	UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 	DELETE FROM acq.lineitem_usr_attr_definition WHERE usr = src_usr;
 
 	-- Update with a rename to avoid collisions
@@ -678,6 +721,8 @@ BEGIN
 			EXIT;
 		END LOOP;
 	END LOOP;
+
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
 
     -- NULL-ify addresses last so other cleanup (e.g. circ anonymization)
     -- can access the information before deletion.
@@ -1061,6 +1106,8 @@ BEGIN
 		SELECT	INTO target_cn *
 		  FROM	asset.call_number
 		  WHERE	label = source_cn.label
+            AND prefix = source_cn.prefix
+            AND suffix = source_cn.suffix
 			AND owning_lib = source_cn.owning_lib
 			AND record = target_record
 			AND NOT deleted;
@@ -1082,6 +1129,8 @@ BEGIN
 		
 				moved_objects := moved_objects + 1;
 			END LOOP;
+        
+            UPDATE asset.call_number SET deleted = TRUE WHERE id = source_cn.id;
 
 		-- ... if not ...
 		ELSE
@@ -1208,6 +1257,20 @@ BEGIN
 		FROM asset.copy WHERE id = target_copy
 	);
 
+    -- Apply merge tracking
+    UPDATE biblio.record_entry 
+        SET merge_date = NOW() WHERE id = target_record;
+
+    UPDATE biblio.record_entry
+        SET merge_date = NOW(), merged_to = target_record
+        WHERE id = source_record;
+
+    -- replace book bag entries of source_record with target_record
+    UPDATE container.biblio_record_entry_bucket_item
+        SET target_biblio_record_entry = target_record
+        WHERE bucket IN (SELECT id FROM container.biblio_record_entry_bucket WHERE btype = 'bookbag')
+        AND target_biblio_record_entry = source_record;
+
     -- Finally, "delete" the source record
     DELETE FROM biblio.record_entry WHERE id = source_record;
 
@@ -1266,7 +1329,7 @@ BEGIN
     IF NEW.control_set IS NULL THEN
         SELECT  control_set INTO NEW.control_set
           FROM  authority.thesaurus
-          WHERE vandelay.marc21_extract_fixed_field(NEW.marc,'Subj') = code;
+          WHERE authority.extract_thesaurus(NEW.marc) = code;
     END IF;
 
     RETURN NEW;
@@ -1280,7 +1343,7 @@ BEGIN
         SELECT  auth_id,
                 vandelay.marc21_extract_fixed_field(marc,'RecStat'),
                 vandelay.marc21_extract_fixed_field(marc,'ELvl'),
-                vandelay.marc21_extract_fixed_field(marc,'Subj')
+                authority.extract_thesaurus(marc)
           FROM  authority.record_entry
           WHERE id = auth_id;
     RETURN;
@@ -2166,4 +2229,8 @@ BEGIN
 END;
 $$ LANGUAGE PLPGSQL;
 
+-- Handy function for transforming marc to a variant available on config.xml_transform
+CREATE OR REPLACE FUNCTION evergreen.marc_to (marc text, xfrm text) RETURNS TEXT AS $$
+    SELECT evergreen.xml_pretty_print(xslt_process($1,xslt)::XML)::TEXT FROM config.xml_transform WHERE name = $2;
+$$ LANGUAGE SQL;
 

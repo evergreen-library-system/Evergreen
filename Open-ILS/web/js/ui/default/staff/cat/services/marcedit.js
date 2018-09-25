@@ -44,18 +44,34 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
     }
 }])
 
+.directive("contenteditable", function() {
+    return {
+        restrict: "A",
+        require: "ngModel",
+        link: function(scope,element,attrs,ngModel){
+
+            function read(){
+                // save new text into model
+                var elhtml = element.text();
+                ngModel.$setViewValue(elhtml);
+            }
+
+            ngModel.$render = function(){
+                element.text(ngModel.$viewValue || "");
+            };
+
+            element.bind("blur.c_e keyup.c_e change.c_e", function(){
+                scope.$apply(read);
+            });
+        }
+    };
+})
+
 .directive("egMarcEditEditable", ['$timeout', '$compile', '$document', function ($timeout, $compile, $document) {
     return {
         restrict: 'E',
         replace: true,
-        template: '<input '+
-                      'style="font-family: \'Lucida Console\', Monaco, monospace;" '+
-                      'ng-model="content" '+
-                      'size="{{content.length * 1.1}}" '+
-                      'maxlength="{{max}}" '+
-                      'class="" '+
-                      'type="text" '+
-                  '/>',
+        templateUrl: './cat/share/t_marcedit_editable',
         scope: {
             field: '=',
             onKeydown: '=',
@@ -66,11 +82,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             max: '@',
             itype: '@',
             selectOnFocus: '=',
-            advanceFocusAfterInput: '='
+            advanceFocusAfterInput: '=',
+            isDisabled: "="
         },
         controller : ['$scope',
             function ( $scope ) {
-
+                $scope.isInputDisabled = $scope.isDisabled == 'disabled';
                 if ($scope.contextItemContainer && angular.isArray($scope.$parent[$scope.contextItemContainer]))
                     $scope.item_container = $scope.$parent[$scope.contextItemContainer];
                 else if ($scope.contextItemGenerator)
@@ -146,8 +163,23 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
 
             if (Boolean(scope.selectOnFocus)) {
                 element.addClass('noSelection');
-                element.bind('focus', function () { element.select() });
+                element.bind('focus', function (e) {
+                    var el = $(e.target).children('input').first();
+                    if (el.select) { el.select(); }
+                });
             }
+
+            element.children("div[contenteditable]").each(function() {
+                $(this).focus(function(e) {
+                    var tNode = e.target.firstChild;
+                    var range = document.createRange();
+                    range.setStart(tNode, 0);
+                    range.setEnd(tNode, tNode.length);
+                    var sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                });
+            });
 
             function findCaretTarget(id, itype) {
                 var tgt = null;
@@ -190,15 +222,16 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         transclude: true,
         restrict: 'E',
         template: '<div class="col-md-2">'+
-                    '<div class="col-md-1"><label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedField}}</label></div>'+
+                    '<div class="col-md-1"><label name="{{fixedField}}" for="{{fixedField}}_ff_input">{{fixedFieldLabel}}</label></div>'+
                     '<div class="col-md-1"><input type="text" style="padding-left: 5px; margin-left: 1em" size="4" id="{{fixedField}}_ff_input"/></div>'+
                   '</div>',
-        scope: { record: "=", fixedField: "@" },
+        scope: { record: "=", fixedField: "@", fixedFieldLabel: "@" },
         replace: true,
         controller : ['$scope', '$element', 'egTagTable',
             function ( $scope ,  $element ,  egTagTable) {
                 $($element).removeClass('fixed-field-box');
                 $($element).children().css({ display : 'none' });
+                $scope.fixedFieldLabel = $scope.fixedFieldLabel || $scope.fixedField;
                 $scope.me = null;
                 $scope.content = null; // this is where context menus dump their values
                 $scope.item_container = [];
@@ -349,6 +382,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     '/></span>'+
                     '<span><eg-marc-edit-editable '+
                         'itype="sfv" '+
+                        'select-on-focus="true" '+
                         'class="marcedit marcsf marcsfvalue" '+
                         'field="field" '+
                         'subfield="subfield" '+
@@ -497,6 +531,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     var args = { changed : false };
                     $uibModal.open({
                         templateUrl: './cat/share/t_authority_link_dialog',
+                        backdrop: 'static',
                         size: 'lg',
                         controller: ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                             $scope.controlSet = cs;
@@ -540,7 +575,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'ng-show="showPhysCharLink()"'+
                       'ng-click="spawnPhysCharWizard()"'+
                       '>'+
-                      '<span class="glyphicon glyphicon-link"></span>'+
+                      '<span class="glyphicon glyphicon-edit"></span>'+
                       '</button>'+
                   '</div>',
         scope: { field: "=", onKeydown: '=', contextFunctions: '=' },
@@ -589,7 +624,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                       'content="tag" '+
                       'on-keydown="onKeydown" '+
                       'id="leadertag" '+
-                      'disabled="disabled"'+
+                      'is-disabled="disabled"'+
                       '/></span>'+
                     '<span><eg-marc-edit-editable '+
                       'class="marcedit marcdata" '+
@@ -623,7 +658,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             // in-place mode means that the editor is being
             // used just to munge some MARCXML client-side, rather
             // than to (immediately) update the database
-            inPlaceMode : '@',
+            //
+            // In short, we can use inPlaceMode as a way to skip
+            // "normal" bre saving and then process the MARC ourselves
+            // via a callback
+            //
+            // inPlaceMode is r/w to allow our Z39.50 import editor to be
+            // switched back into a normal editor after the initial import
+            inPlaceMode : '=',
             fastAdd : '@',
             flatOnly : '@',
             embedded : '@',
@@ -698,6 +740,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.$watch('stackSubfields.enabled', function (newVal, oldVal) {
                     if (newVal != oldVal) egCore.hatch.setItem('cat.marcedit.stack_subfields', newVal);
                 });
+                $scope.caretRecId = $scope.recordId;
 
                 egTagTable.loadTagTable({ marcRecordType : $scope.record_type });
 
@@ -736,7 +779,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         new_field_index++;
                     }
 
-                    $scope.current_event_target = 'r' + $scope.recordId +
+                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                   'f' + new_field_index + 'tag';
 
                     $scope.current_event_target_cursor_pos = 0;
@@ -760,7 +803,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     domnode.scope().$destroy();
                     domnode.remove();
 
-                    $scope.current_event_target = 'r' + $scope.recordId +
+                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                   'f' + del_field + 'tag';
 
                     $scope.current_event_target_cursor_pos = 0;
@@ -849,12 +892,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             index_sf = event.data.scope.subfield[2];
                             new_sf = index_sf + 1;
 
-                            var start = event.target.selectionStart;
-                            var end = event.target.selectionEnd - event.target.selectionStart ?
-                                    event.target.selectionEnd :
-                                    event.target.value.length;
+                            var start = event.target.selectionStart || getCaretPosEditableDiv(element);
+                            var end;
+                            if (event.target.value){
+                                end = event.target.selectionEnd - event.target.selectionStart ?
+                                        event.target.selectionEnd :
+                                        event.target.value.length;
+                            } else {
+                                end = element.text().length;
+                            }
 
-                            move_data = event.target.value.substring(start,end);
+                            move_data = element.value ?
+                                element.value.substring(start,end) :
+                                element.text().substring(start, end);
 
                         } else if (element.hasClass('marcsfcode')) {
                             index_sf = event.data.scope.subfield[2];
@@ -864,13 +914,17 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             new_sf = index_sf;
                         }
 
-                        $scope.current_event_target = 'r' + $scope.recordId +
+                        $scope.current_event_target = 'r' + $scope.caretRecId +
                                                       'f' + event.data.scope.field.position + 
                                                       's' + new_sf + 'code';
 
                         event.data.scope.field.subfields.forEach(function(sf) {
                             if (sf[2] >= new_sf) sf[2]++;
-                            if (sf[2] == index_sf) sf[1] = event.target.value.substring(0,start) + event.target.value.substring(end);
+                            if (sf[2] == index_sf) {
+                                sf[1] = event.target.value ?
+                                    event.target.value.substring(0,start) + event.target.value.substring(end) :
+                                    element.text().substring(0, start);
+                            }
                         });
                         event.data.scope.field.subfields.splice(
                             new_sf,
@@ -901,11 +955,18 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         addDatafield(event, event.shiftKey); // shift key inserts before
                         event_return = false;
 
+                    } else if (event.which == 13 &&
+                              ($(event.target).hasClass('marcsf') || $(event.target.parentNode).hasClass('marcsf'))
+                              ) {
+                        // bare return; don't allow it
+                        event_return = false;
+
                     } else if (event.which == 46 && event.ctrlKey) { // ctrl+del, remove field
                         deleteDatafield(event);
                         event_return = false;
 
-                    } else if (event.which == 46 && event.shiftKey && $(event.target).hasClass('marcsf')) { // shift+del, remove subfield
+                    } else if (event.which == 46 && event.shiftKey && ($(event.target).hasClass('marcsf') || $(event.target.parentNode).hasClass('marcsf'))) { 
+                        // shift+del, remove subfield
 
                         var sf = event.data.scope.subfield[2] - 1;
                         if (sf == -1) sf = 0;
@@ -915,11 +976,11 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         );
 
                         if (!event.data.scope.field.subfields[sf]) {
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + event.data.scope.field.position + 
                                                           'tag';
                         } else {
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + event.data.scope.field.position + 
                                                           's' + sf + 'value';
                         }
@@ -961,7 +1022,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 field_obj
                             );
 
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + index_field + 'tag';
 
                             $scope.current_event_target_cursor_pos = 0;
@@ -975,7 +1036,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 $timeout(function(){
                                     $scope.current_event_target_cursor_pos = 0;
                                     $scope.current_event_target_cursor_pos_end = 0;
-                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                                   'f' + (event.data.scope.field.position - 1) +
                                                                   'tag';
                                 }).then(setCaret);
@@ -1014,7 +1075,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 field_obj
                             );
 
-                            $scope.current_event_target = 'r' + $scope.recordId +
+                            $scope.current_event_target = 'r' + $scope.caretRecId +
                                                           'f' + new_field + 'tag';
 
                             $scope.current_event_target_cursor_pos = 0;
@@ -1028,7 +1089,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 $timeout(function(){
                                     $scope.current_event_target_cursor_pos = 0;
                                     $scope.current_event_target_cursor_pos_end = 0;
-                                    $scope.current_event_target = 'r' + $scope.recordId +
+                                    $scope.current_event_target = 'r' + $scope.caretRecId +
                                                                   'f' + (event.data.scope.field.position + 1) +
                                                                   'tag';
                                 }).then(setCaret);
@@ -1038,7 +1099,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         event_return = false;
 
                     } else { // Assumes only marc editor elements have IDs that can trigger this event handler.
-                        $scope.current_event_target = $(event.target).attr('id');
+                        $scope.current_event_target = $(event.target).hasClass('focusable') ? $(event.target) : null;//.attr('id');
                         if ($scope.current_event_target) {
                             $scope.current_event_target_cursor_pos =
                                 event.target.selectionDirection=='backward' ?
@@ -1056,7 +1117,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         if (!$scope.current_event_target_cursor_pos_end)
                             $scope.current_event_target_cursor_pos_end = $scope.current_event_target_cursor_pos
 
-                        var element = $('#'+$scope.current_event_target).get(0);
+                        var element = $('#'+$scope.current_event_target + " .focusable").get(0);
                         if (element) {
                             element.focus();
                             if (element.setSelectionRange) {
@@ -1065,10 +1126,24 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                     $scope.current_event_target_cursor_pos_end
                                 );
                             }
-                            $scope.current_event_cursor_pos_end = null;
-                            $scope.current_event_target = null;
+                        }
+                        $scope.current_event_cursor_pos_end = null;
+                        $scope.current_event_target = null;
+                    }
+                }
+
+                function getCaretPosEditableDiv(editableDiv){
+                    var caretPos = 0, sel, range;
+                    if (window.getSelection) {
+                        sel = window.getSelection();
+                        if (sel.rangeCount) {
+                            range = sel.getRangeAt(0);
+                            if (range.commonAncestorContainer.parentNode == editableDiv[0]) {
+                                caretPos = range.endOffset;
+                            }
                         }
                     }
+                    return caretPos;
                 }
 
                 function loadRecord() {
@@ -1089,6 +1164,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                                 var are = new egCore.idl.are();
                                 are.marc($scope.marcXml);
                                 deferred.resolve(are);
+                            } else if ($scope.recordType == 'sre') {
+                                var sre = new egCore.idl.sre();
+                                sre.marc($scope.marcXml);
+                                deferred.resolve(sre);
                             }
                             $scope.brandNewRecord = true;
                         }
@@ -1097,6 +1176,12 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         $scope.in_redo = true;
                         $scope[$scope.record_type] = rec;
                         $scope.record = new MARC21.Record({ marcxml : $scope.Record().marc() });
+                        if (!$scope.recordId) {
+                            var sf901c = $scope.record.subfield('901', 'c');
+                            if (sf901c !== null) {
+                                $scope.caretRecId = sf901c[1];
+                            }
+                        }
                         $scope.calculated_record_type = $scope.record.recordType();
                         $scope.controlfields = $scope.record.fields.filter(function(f){ return f.isControlfield() });
                         $scope.datafields = $scope.record.fields.filter(function(f){ return !f.isControlfield() });
@@ -1242,6 +1327,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             return;
                         }
                         var auth_match = $scope.controlSet.bibToAuthorities(f);
+                        if (auth_match.length == 0) return;
                         chain = chain.then(function() {
                             var promise = egCore.net.request(
                                 'open-ils.search',
@@ -1284,7 +1370,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.saveRecord = function () {
                     if ($scope.inPlaceMode) {
                         $scope.marcXml = $scope.record.toXmlString();
-                        return processOnSaveCallbacks();
+                        return $timeout(processOnSaveCallbacks);
                     }
                     $scope.mangle_005();
                     $scope.Record().editor(egCore.auth.user().id());
@@ -1330,6 +1416,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                             $scope.Record()
                         ).then(function(bre) {
                             $scope.recordId = bre.id(); 
+                            $scope.caretRecId = $scope.recordId;
                             if ($scope.enable_fast_add) {
                                 egCore.net.request(
                                     'open-ils.actor',
@@ -1432,7 +1519,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
         restrict: 'E',
         replace: true,
         template: '<span class="nullable">'+
-                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources">'+
+                    '<select class="form-control" ng-model="bib_source" ng-options="s.id() as s.source() for s in bib_sources | orderBy: \'source()\'">'+
                       '<option value="">Select a Source</option>'+
                     '</select>'+
                   '</span>',

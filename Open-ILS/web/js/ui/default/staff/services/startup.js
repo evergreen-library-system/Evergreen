@@ -16,23 +16,26 @@ angular.module('egCoreMod')
 .config(['$locationProvider','$compileProvider',
  function($locationProvider , $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/);
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/);
 }])
 
 .factory('egStartup', 
        ['$q','$rootScope','$location','$window','egIDL','egAuth','egEnv','egOrg',
-function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg ) {
+        '$cookies',
+function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg ,
+         $cookies) {
 
     var service = { promise : null }
 
-    // Load date/time format settings on all pages.  Add more .push(...)
-    // calls to add more universal data-loading functions. 
+    // Some org settings affect every page.  Load them during startup.  
+    // Other startup data loaders can be added by appending to egEnv.loaders.
     // egEnv.loaders functions must return a promise.
     egEnv.loaders.push(
         function() {
             return egOrg.settings([
                 'webstaff.format.dates',
                 'webstaff.format.date_and_time',
+                'ui.staff.max_recent_patrons', // affects navbar
                 'lib.timezone'
             ]).then(
                 function(set) {
@@ -40,6 +43,10 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
                         set['webstaff.format.dates'] || 'shortDate';
                     $rootScope.egDateAndTimeFormat = 
                         set['webstaff.format.date_and_time'] || 'short';
+
+                    // default to 1 for backwards compat.
+                    if (set['ui.staff.max_recent_patrons'] === null)
+                        set['ui.staff.max_recent_patrons'] = 1
                 }
             );
         }
@@ -47,9 +54,16 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
 
     // returns true if we are staying on the current page
     // false if we are redirecting to login
-    service.expiredAuthHandler = function() {
+    service.expiredAuthHandler = function(data) {
+        if (lf.isOffline) return true; // Only set by the offline UI
+
         console.debug('egStartup.expiredAuthHandler()');
-        egAuth.logout(); // clean up
+
+        // Only notify other tabs the auth session has expired 
+        // when this tab was the first tab to know it.
+        var broadcast = !(data && data.startedElsewhere);
+
+        egAuth.logout(broadcast); // clean up
 
         // no need to redirect if we're on the /login page
         if ($location.path() == '/login') return true;
@@ -76,6 +90,16 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
             // startup already started, return our existing promise
             return service.promise;
         } 
+
+        // Apply the locale from the cookie before any network 
+        // calls are made.
+        var locale = $cookies.get('eg_locale');
+        if (locale) {
+            // Cookie is stored aa_bb.  OpenSRF wants aa-BB
+            var parts = locale.split(/_/);
+            OpenSRF.locale = parts[0] + '-' + parts[1].toUpperCase();
+            console.debug('Applying locale ' + OpenSRF.locale);
+        }
 
         // create a new promise and fire off startup
         var deferred = $q.defer();

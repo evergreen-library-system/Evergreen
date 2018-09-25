@@ -118,7 +118,13 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Transit Receive Time') %]</div>
     <div class="flex-cell well">
-      {{transit.source_recv_time() | date:egDateAndTimeFormat}}
+      {{transit.dest_recv_time() | date:egDateAndTimeFormat}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell">[% l('Transit Cancel Time') %]</div>
+    <div class="flex-cell well">
+      {{transit.cancel_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 </div>

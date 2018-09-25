@@ -1,0 +1,100 @@
+<form ng-submit="ok(args)" role="form">
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{ title || "[% l('Construct new holding code') %]" }}</h4>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-3">
+      <b>[% l('Publication date') %]</b>
+    </div>
+    <div class="col-md-4">
+      <eg-date-input ng-model="pubdate"></eg-date-input>
+    </div>
+    <div class="col-md-2">
+      <b>[% l('Type') %]</b>
+    </div>
+    <div class="col-md-3">
+      <select
+        class="form-control"
+          ng-model="type"
+          ng-init='types=[{n:"basic",l:"[%l('Basic')%]"},{n:"supplement",l:"[%l('Supplement')%]"},{n:"index",l:"[%l('Index')%]"}]'
+          ng-options='t.n as t.l for t in types'>
+      </select>
+    </div>
+  </div>
+  <div class="row" ng-show="can_change_adhoc">
+    <div class="col-md-3">
+      <b>[% l('Ad hoc issue?') %]</b>
+    </div>
+    <div class="col-md-1">
+      <input type="checkbox" ng-model="args.adhoc">
+    </div>
+  </div>
+
+  <div ng-show="args.adhoc">
+  <div class="pad-vert row">
+    <div class="col-md-3">
+      <b>[% l('Issuance Label') %]</b>
+    </div>
+    <div class="col-md-9">
+      <input class="form-control" type="text" ng-model="label"/>
+    </div>
+  </div>
+  </div>
+
+  <div ng-hide="args.adhoc">
+  <div class="row container" ng-if="args.enums.length">
+    <hr/>
+    <h2>[% l('Enumeration labels') %]</h2>
+  </div>
+
+  <div class="row" ng-repeat="e in args.enums">
+    <div class="col-md-4">
+      [% l('Enumeration level [_1]','{{ $index + 1}}') %]
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" ng-model="e.value" type="text"/>
+    </div>
+    <div class="col-md-4">
+      {{ e.pattern }}
+    </div>
+  </div>
+
+  <div class="row container" ng-if="args.chrons.length">
+    <hr/>
+    <h2>[% l('Chronology labels') %]</h2>
+  </div>
+
+  <div class="row" ng-repeat="c in args.chrons">
+    <div class="col-md-4">
+      [% l('Chronology level [_1]','{{ $index + 1}}') %]
+    </div>
+    <div class="col-md-4">
+      <input class="form-control" ng-model="c.value" type="text"/>
+    </div>
+    <div class="col-md-4">
+      {{ c.pattern }}
+    </div>
+  </div>
+  </div>
+
+</div>
+
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-md-4" ng-show="request_count">
+      <h4>[% l('Prediction count') %]</h4>
+    </div>
+    <div class="col-md-3" ng-show="request_count">
+      <input class="form-control" ng-model="count" type="number"/>
+    </div>
+    <div class="col-md-5">
+      <input type="submit" class="btn btn-primary" value='{{ save_label || "[% l('Save') %]" }}'></input>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div>
+</div>
+</form>

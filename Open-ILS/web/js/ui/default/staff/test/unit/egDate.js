@@ -4,27 +4,31 @@ describe('egDate', function(){
     beforeEach(module('egCoreMod'));
 
     beforeEach(function () {
-        this.addMatchers({
+        jasmine.addMatchers({
 
             // "2 days" may be 47, 48, or 49 hours depending on the 
             // proximity to and direction of a time change event.
             // This does not take leap seconds into account.
             toBe2DaysOfSeconds: function () {
-                var actual = this.actual;
-                var hours_47 = 169200;
-                var hours_48 = 172800;
-                var hours_49 = 176400;
+                return {
+                    compare : function(actual) {
+                        var hours_47 = 169200;
+                        var hours_48 = 172800;
+                        var hours_49 = 176400;
 
-                this.message = function () {
-                    return "Expected " + actual + " to be " + 
-                        hours_47 + ", " + hours_48 + ", or " + hours_49;
+                        var passed = (
+                            actual == hours_47 || 
+                            actual == hours_48 || 
+                            actual == hours_49
+                        );
+
+                        return {
+                            pass: passed,
+                            message: "Expected " + actual + " to be " + 
+                                hours_47 + ", " + hours_48 + ", or " + hours_49
+                        };
+                    }
                 };
-
-                return (
-                    actual == hours_47 || 
-                    actual == hours_48 || 
-                    actual == hours_49
-                );
             }
         });
     });

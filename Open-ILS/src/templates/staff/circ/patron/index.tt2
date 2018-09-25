@@ -66,6 +66,17 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.OPT_IN_DIALOG = "[% l('Does patron [_1], [_2] from [_3] ([_4]) consent to having their personal information shared with your library?', '{{family_name}}', '{{first_given_name}}', '{{org_name}}', '{{org_shortname}}') %]";
   s.BUCKET_ADD_SUCCESS = "[% l('Successfully added [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
   s.BUCKET_ADD_FAIL = "[% l('Failed to add [_1] users to bucket [_2].', '{{count}}', '{{name}}') %]";
+  s.PAGE_TITLE_PATRON_SEARCH = "[% l('Patron Search') %]";
+  s.PAGE_TITLE_PATRON_NAME = "[% l('[_1], [_2] [_3]', '{{lname}}','{{fname}}','{{mname}}') %]";
+  s.PAGE_TITLE_PATRON_CHECKOUT = "[% l('Checkout') %]";
+  s.PAGE_TITLE_PATRON_MESSAGES = "[% l('Messages') %]";
+  /* TODO: The "Other" page title could be smarter.. */
+  s.PAGE_TITLE_PATRON_OTHER = "[% l('Other') %]";
+  s.PAGE_TITLE_PATRON_BILLS = "[% l('Bills') %]";
+  s.PAGE_TITLE_PATRON_HOLDS = "[% l('Holds') %]";
+  s.PAGE_TITLE_PATRON_ITEMS_OUT = "[% l('Items Out') %]";
+  s.PAGE_TITLE_PATRON_EDIT = "[% l('Edit') %]";
+  s.MERGE_SELF_NOT_ALLOWED = "[% l('Logged in account cannot be merged') %]"
 }]);
 </script>
 
@@ -90,6 +101,7 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
                 '{{patron().family_name()}}',
                 '{{patron().first_given_name()}}',
                 '{{patron().second_given_name()}}') %]
+               <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
           </div>
 
           <p ng-show="patron().notes().length > 0"><a class='patron-summary-has-notes' href="./circ/patron/{{patron().id()}}/notes"><span class="label label-warning">Notes &nbsp;{{patron().notes().length}}</span></a></p>
@@ -194,6 +206,11 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
           <li>
             <a href="./circ/patron/{{patron().id()}}/credentials">
               [% l('Test Password') %]
+            </a>
+          </li>
+          <li>
+            <a href="./acq/requests/user/{{patron().id()}}" target="_top">
+              [% l('Acquisition Patron Requests') %]
             </a>
           </li>
           <li>

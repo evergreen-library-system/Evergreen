@@ -57,8 +57,8 @@ sub _flattened_search_single_flesh_wad {
 
 # returns a join clause AND a string representing the deepest join alias
 # generated.
-sub _flattened_search_single_join_clause {
-    my ($column_name, $hint, $path)  = @_;
+sub _flattened_search_add_join_clause {
+    my ($column_name, $hint, $path, $core_join, $path_tracker)  = @_;
 
     my $class = OpenSRF::Utils::JSON->lookup_class($hint);
     my $last_ident = $class->Identity;
@@ -67,16 +67,46 @@ sub _flattened_search_single_join_clause {
 
     pop @$path; # last part is just field
 
-    my $core_join = {};
     my $last_join;
     my $piece;
     my $alias;  # yes, we need it out at this scope.
+
+    my @path_key_parts;
 
     while ($piece = shift @$path) {
         my $link = _fm_link_from_class($class, $piece);
         if ($link) {
             $hint = $link->{class};
             $class = OpenSRF::Utils::JSON->lookup_class($hint);
+
+            push (@path_key_parts, ${piece});
+            my $path_key = "__" . join('__', @path_key_parts);
+            my $path_count;
+            if (!$path_tracker->{$hint}) {
+                # first time finding this IDL hint anywhere in the map,
+                # give it #1
+                $path_tracker->{$hint} = {$path_key => 1};
+                $path_count = 1;
+            } elsif ($path_count = $path_tracker->{$hint}{$path_key}) {
+                # we already have this exact path for this hint,
+                # pass
+            } else {
+                # we found a new path to this class, increment and store
+                # the version number
+                $path_count = keys %{$path_tracker->{$hint}}; # count the keys
+                $path_count++;
+                $path_tracker->{$hint}{$path_key} = $path_count;
+            }
+            $alias = "__${hint}_${path_count}";
+
+            # if we have already joined this segment, climb the tree
+            if ($last_join and $last_join->{join}{$alias}) {
+                $last_join = $last_join->{join}{$alias};
+                next;
+            } elsif ($core_join->{$alias}) {
+                $last_join = $core_join->{$alias};
+                next;
+            }
 
             my $reltype = $link->{reltype};
             my $field = $link->{key};
@@ -89,7 +119,6 @@ sub _flattened_search_single_join_clause {
                 );
             }
 
-            $alias = "__${column_name}_${hint}";
             my $new_join;
             if ($reltype eq "has_a") {
                 $new_join = {
@@ -181,12 +210,6 @@ sub _flattened_search_merge_flesh_wad {
     }
 }
 
-sub _flattened_search_merge_join_clause {
-    my ($old, $new) = @_;
-
-    %$old = ( %$old, %$new );
-}
-
 sub _flattened_search_expand_filter_column {
     my ($o, $key, $map) = @_;
 
@@ -264,6 +287,12 @@ sub process_map {
     # redundant joins.
     my $join_coverage = {};
 
+    # we need to be able to reference specific joined tables, but building
+    # aliases directly from the paths can exceed Postgres alias length limits
+    # (generally 63 characters).  Instead, we'll increment for each unique
+    # path to a given IDL class.
+    my $path_tracker = {};
+
     foreach my $k (keys %$map) {
         my $column = $map->{$k} =
             _flattened_search_normalize_map_column($map->{$k});
@@ -290,14 +319,13 @@ sub process_map {
                 ($clause, $last_join_alias) = @{ $join_coverage->{$joinkey} };
             } else {
                 ($clause, $last_join_alias) =
-                    _flattened_search_single_join_clause(
-                        $k, $hint, $column->{path}
+                    _flattened_search_add_join_clause(
+                        $k, $hint, $column->{path}, $jffolo->{join}, $path_tracker
                     );
                 $join_coverage->{$joinkey} = [$clause, $last_join_alias];
             }
 
             $map->{$k}{last_join_alias} = $last_join_alias;
-            _flattened_search_merge_join_clause($jffolo->{join}, $clause);
         }
     }
 

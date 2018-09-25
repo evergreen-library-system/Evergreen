@@ -12,7 +12,7 @@ policies.
 
 To limit checkouts by copy location:
 
-. Click *Admin -> Local Administration -> Circulation Limit Sets*.
+. Click *Administration -> Local Administration ->  Circ Limit Sets*.
 . Click *New* to create a new circulation limit set.
 . In the *Owning Library* field, select the library that can create and edit
 this limit set.
@@ -36,7 +36,7 @@ image::media/Maximum_Checkout_by_Copy_Location1.jpg[Maximum_Checkout_by_Copy_Loc
 
 To link the circulation limit set to a circulation policy:
  
-. Click *Admin* -> *Local Administration* -> *Circulation Policies*
+. Click *Administration* -> *Local Administration* ->  *Circulation Policies*
 . Select an existing circulation policy, or create a new one.
 . Scroll down to the *Linked Limit Sets*.  
 . Select the *Name* of the limit set that you want to add to the circulation

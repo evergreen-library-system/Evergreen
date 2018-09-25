@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen ILS > cat.properties.po\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
 "PO-Revision-Date: 2017-01-12 18:34+0000\n"
 "Last-Translator: Darrell Rodgers <drodgers@emeralddata.net>\n"
 "Language-Team: <warren.layton@gmail.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-13 05:36+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:38+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Poedit-Country: CANADA\n"
 "X-Accelerator-Marker: &\n"
 "X-Poedit-Language: English\n"
@@ -1268,8 +1268,8 @@ msgid "Need to mark a record as a Title Hold Transfer Destination first."
 msgstr "Need to mark a record as a Title Hold Transfer Destination first."
 
 #: staff.cat.opac.title_for_hold_transfer.success.label
-msgid "Holds transferred."
-msgstr "Holds transferred."
+msgid "All holds not available for pickup have been transferred."
+msgstr ""
 
 #: staff.cat.opac.title_for_hold_transfer.failure.label
 msgid "Holds not transferred."
@@ -1710,6 +1710,12 @@ msgstr "Check here to confirm this action"
 #: staff.cat.util.mark_item_damaged.item_circulating_to_patron
 msgid "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
 msgstr "Item %1$s is checked out to patron, %2$s, and is due on %3$s. "
+
+#: staff.cat.util.mark_item_damaged.item_no_linked_patron
+msgid ""
+"Item %1$s is no longer associated with an active circulation.  Please "
+"resolve charges manually."
+msgstr ""
 
 #: staff.cat.util.mark_item_damaged.charge_patron_prompt.message
 msgid ""
@@ -2423,6 +2429,9 @@ msgstr "%1$s available"
 
 #~ msgid "Record: %1$s"
 #~ msgstr "Record: %1$s"
+
+#~ msgid "Holds transferred."
+#~ msgstr "Holds transferred."
 
 #~ msgid "Cancel "
 #~ msgstr "Cancel "

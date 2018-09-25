@@ -14,7 +14,7 @@
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Type') %]</div>
   <div class="col-md-2">{{xact.summary().xact_type()}}</div>
-  <div class="col-md-2 strong-text">[% l('Total Paid') %]</div>
+  <div class="col-md-2 strong-text">[% l('Total Paid/Credited') %]</div>
   <div class="col-md-2">{{xact.summary().total_paid() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Checked Out') %]</div>
   <div class="col-md-2">{{xact.circulation().xact_start() | date:$root.egDateAndTimeFormat}}</div>
@@ -22,7 +22,7 @@
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Start') %]</div>
   <div class="col-md-2">{{xact.xact_start() | date:$root.egDateAndTimeFormat}}</div>
-  <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
+  <div class="col-md-2 strong-text">[% l('Balance Due') %]</div>
   <div class="col-md-2">{{xact.summary().balance_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Due Date') %]</div>
   <div class="col-md-2">{{xact.circulation().due_date() | egDueDate:$root.egDateAndTimeFormat:xact.circulation().circ_lib():xact.circulation().duration()}}</div>
@@ -105,43 +105,18 @@
   </div>
 </div>
 
-
-<!-- set a lower default page size (limit) to allow for more space -->
 <hr/>
-<eg-grid
-  main-label="[% l('Bills') %]"
-  idl-class="mb"
-  id-field="id"
-  grid-controls="xactGridControls"
-  auto-fields="true"
-  page-size="10"
-  dateformat="{{$root.egDateAndTimeFormat}}">
-
-  <eg-grid-action 
-    label="[% l('Void Billings') %]" handler="voidBillings"></eg-grid-action>
-
-  <eg-grid-action 
-    label="[% l('Edit Note') %]" handler="editBillNotes"></eg-grid-action>
-
-</eg-grid>
-
-<!-- TODO: this grid may contain objects (payments) of different types.. 
-    apply manual columns, see xul -->
-<!-- NOTE: sorting disabled since payments are fetched via non-sortable API -->
-<br/>
-<eg-grid
-  main-label="[% l('Payments') %]"
-  idl-class="mp"
-  id-field="id"
-  auto-fields="true"
-  grid-controls="paymentGridControls"
-  page-size="10"
-  dateformat="{{$root.egDateAndTimeFormat}}">
-  <eg-grid-action 
-    label="[% l('Edit Note') %]" handler="editPaymentNotes"></eg-grid-action>
-
-  <eg-grid-field path="cash_payment.cash_drawer.name" 
-    label="[% l('Cash Drawer') %]"></eg-grid-field>
-
-</eg-grid>
-
+<ul class="nav nav-tabs">
+  <li ng-class="{active : xact_tab == 'statement'}">
+    <a href="./circ/patron/{{patron().id()}}/bill/{{xact.id()}}/statement">
+        [% l('Statement') %]
+    </a>
+  </li>
+  <li ng-class="{active : xact_tab == 'details'}">
+    <a href="./circ/patron/{{patron().id()}}/bill/{{xact.id()}}/details">
+        [% l('Details') %]
+    </a>
+  </li>
+</ul>
+[% INCLUDE 'staff/circ/patron/t_xact_details_statement.tt2' %]
+[% INCLUDE 'staff/circ/patron/t_xact_details_details.tt2' %]

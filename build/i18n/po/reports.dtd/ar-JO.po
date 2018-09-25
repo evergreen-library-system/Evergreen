@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2017-01-19 07:36+0000\n"
+"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"PO-Revision-Date: 2017-11-07 07:57+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-21 06:03+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2017-11-08 04:41+0000\n"
+"X-Generator: Launchpad (build 18493)\n"
 
 #. Common Entities
 #: reports.common.logged_in_as
@@ -28,7 +28,7 @@ msgstr "يتم الآن التحميل..."
 
 #: reports.oils_rpt.title
 msgid "Evergreen: Reports"
-msgstr "إيفر غرين: التقارير"
+msgstr "إِفرغرين: التقارير"
 
 #: reports.oils_rpt.insufficient_permissions
 msgid "You do not have sufficient permissions to run reports"
@@ -94,7 +94,7 @@ msgstr "إنشاء مُجلد فرعي:"
 
 #: reports.oils_rpt_builder.title
 msgid "Evergreen: Report Builder"
-msgstr "إيفر غرين: مُنشي التقرير"
+msgstr "إِفرغرين: مُنشي التقرير"
 
 #: reports.oils_rpt_builder.reports_home
 msgid "Reports Home"
@@ -705,6 +705,46 @@ msgstr "شهر/أشهر"
 #: reports.oils_rpt_param_editor.ago
 msgid " ago"
 msgstr " قبل"
+
+#: reports.oils_rpt_template_search_results
+msgid "Template Search Results"
+msgstr "نتائج بحث التركيبة"
+
+#: reports.oils_rpt_template_search_query
+msgid "Template query..."
+msgstr "استعلام التركيبة"
+
+#: reports.oils_rpt_template_search_label
+msgid "Search Templates"
+msgstr "تركيبات البحث"
+
+#: reports.oils_rpt_template_search_all_fields
+msgid "All Fields"
+msgstr "كافة الحقول"
+
+#: reports.oils_rpt_template_search_name
+msgid "Name"
+msgstr "الاِسم"
+
+#: reports.oils_rpt_template_search_desc
+msgid "Description"
+msgstr "الوَصف"
+
+#: reports.oils_rpt_template_search_all_folders
+msgid "All Folders"
+msgstr "كافة المجلدات"
+
+#: reports.oils_rpt_paging_start
+msgid "Start"
+msgstr "البداية"
+
+#: reports.oils_rpt_paging_prev
+msgid "Prev"
+msgstr "السابق"
+
+#: reports.oils_rpt_paging_next
+msgid "Next"
+msgstr "التَالي"
 
 #: reports.xul.template_builder.db_source_browser.label
 msgid "Database Source Browser"

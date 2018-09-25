@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2016-08-26 13:07+0000\n"
-"PO-Revision-Date: 2016-09-07 13:19+0000\n"
+"POT-Creation-Date: 2017-06-22 06:16+0000\n"
+"PO-Revision-Date: 2018-02-18 14:48+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-09-08 05:55+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2018-02-19 05:17+0000\n"
+"X-Generator: Launchpad (build 18553)\n"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:13
 msgid "American Express"
@@ -55,7 +55,7 @@ msgstr "Sufix signatury"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/circ_page.tt2:23
 msgid "Checkout"
-msgstr "Vypůjčit"
+msgstr "Výpůjčky"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:43
 msgid "Choose a location"
@@ -119,7 +119,7 @@ msgstr "Pokuty"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:54
 msgid "First Name"
-msgstr "Jméno"
+msgstr "Křestní jméno"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:107
 msgid "Hold Notes"
@@ -175,7 +175,7 @@ msgstr "Květen"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:10
 msgid "None"
-msgstr "Žádné"
+msgstr "Hodnota nezadána"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:40
 msgid "Nov"
@@ -199,11 +199,11 @@ msgstr "Zaplatit pokuty"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:109
 msgid "Pickup Library"
-msgstr "Knihovna, v níž bude exemplář připraven k vyzvednutí"
+msgstr "Knihovna pro vyzvednutí rezervace"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:110
 msgid "Pickup Library (Shortname)"
-msgstr "Knihovna, v níž bude exemplář připraven k vyzvednutí (zkratka)"
+msgstr "Knihovna pro vyzvednutí rezervace (zkratka)"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/patron_login.tt2:1
 msgid "Please login using your library barcode"
@@ -211,7 +211,7 @@ msgstr "Prosím přihlašte se svým čárovým kódem"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/summary.tt2:9
 msgid "Print"
-msgstr "Vytisknout"
+msgstr "Tisk"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/main.tt2:15
 msgid "Print List"
@@ -243,7 +243,7 @@ msgstr "Žádající knihovna (Zkratka)"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:114
 msgid "SMS Carrier"
-msgstr "Mobilní operátor"
+msgstr "SMS operátor"
 
 #: ../../Open-ILS/src/templates/circ/hold_pull_list.tt2:113
 msgid "Selection Locus"
@@ -332,4 +332,4 @@ msgstr "Vaše relace brzy vyprší  z důvodu neaktivity"
 
 #: ../../Open-ILS/src/templates/circ/selfcheck/payment.tt2:74
 msgid "ZIP or Postal Code"
-msgstr "PSĆ"
+msgstr "PSČ"

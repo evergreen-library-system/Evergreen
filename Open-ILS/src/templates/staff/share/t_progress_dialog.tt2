@@ -7,6 +7,12 @@
   <div class="modal-body">
     <div class="row eg-modal-progress">
 
+      <div ng-if="data.label">
+        <div class="col-md-12">
+          <h2>{{data.label}}</h2>
+        </div>
+      </div>
+
       <div ng-if="data.hasvalue() && data.hasmax()">
         <!-- determinate progress bar.  shows max/value progress -->
         <div class="col-md-10">

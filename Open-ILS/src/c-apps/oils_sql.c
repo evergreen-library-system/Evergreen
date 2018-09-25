@@ -3278,258 +3278,323 @@ join : {
 	}
 }
 
+  Or, to specify join order:
+
+join : [
+    {mrd:{field:'record', type:'inner'}},
+    {acn:{field:'record', type:'left'}}
+]
+
 */
 
 static char* searchJOIN( const jsonObject* join_hash, const ClassInfo* left_info ) {
 
-	const jsonObject* working_hash;
+	jsonObject* working_hash;
 	jsonObject* freeable_hash = NULL;
 
-	if( join_hash->type == JSON_HASH ) {
-		working_hash = join_hash;
-	} else if( join_hash->type == JSON_STRING ) {
-		// turn it into a JSON_HASH by creating a wrapper
-		// around a copy of the original
-		const char* _tmp = jsonObjectGetString( join_hash );
-		freeable_hash = jsonNewObjectType( JSON_HASH );
-		jsonObjectSetKey( freeable_hash, _tmp, NULL );
-		working_hash = freeable_hash;
+	jsonObject* working_array;
+	jsonObject* freeable_array = NULL;
+
+	if( join_hash->type == JSON_ARRAY ) {
+		working_array = (jsonObject*)join_hash;
 	} else {
-		osrfLogError(
-			OSRF_LOG_MARK,
-			"%s: JOIN failed; expected JSON object type not found",
-			modulename
-		);
-		return NULL;
+		working_array = jsonNewObjectType( JSON_ARRAY );
+
+		if( join_hash->type == JSON_HASH ) {
+			working_hash = (jsonObject*)join_hash;
+		} else if( join_hash->type == JSON_STRING ) {
+		    freeable_array = working_array;
+			// turn it into a JSON_HASH by creating a wrapper
+			// around a copy of the original
+			const char* _tmp = jsonObjectGetString( join_hash );
+			freeable_hash = jsonNewObjectType( JSON_HASH );
+			jsonObjectSetKey( freeable_hash, _tmp, NULL );
+			working_hash = freeable_hash;
+		} else {
+			osrfLogError(
+				OSRF_LOG_MARK,
+				"%s: JOIN failed; expected JSON object type not found",
+				modulename
+			);
+			return NULL;
+		}
+
+		jsonObjectPush( working_array, working_hash );
 	}
 
 	growing_buffer* join_buf = buffer_init( 128 );
 	const char* leftclass = left_info->class_name;
 
-	jsonObject* snode = NULL;
-	jsonIterator* search_itr = jsonNewIterator( working_hash );
+	unsigned long order_idx = 0;
+	while(( working_hash = jsonObjectGetIndex( working_array, order_idx++ ) )) {
 
-	while ( (snode = jsonIteratorNext( search_itr )) ) {
-		const char* right_alias = search_itr->key;
-		const char* class =
-				jsonObjectGetString( jsonObjectGetKeyConst( snode, "class" ) );
-		if( ! class )
-			class = right_alias;
-
-		const ClassInfo* right_info = add_joined_class( right_alias, class );
-		if( !right_info ) {
-			osrfLogError(
-				OSRF_LOG_MARK,
-				"%s: JOIN failed.  Class \"%s\" not resolved in IDL",
-				modulename,
-				search_itr->key
-			);
-			jsonIteratorFree( search_itr );
-			buffer_free( join_buf );
-			if( freeable_hash )
-				jsonObjectFree( freeable_hash );
-			return NULL;
+	    jsonObject* freeable_subhash = NULL;
+		if( working_hash->type == JSON_STRING ) {
+			// turn it into a JSON_HASH by creating a wrapper
+			// around a copy of the original
+			const char* _inner_tmp = jsonObjectGetString( working_hash );
+			freeable_subhash = jsonNewObjectType( JSON_HASH );
+			jsonObjectSetKey( freeable_subhash, _inner_tmp, NULL );
+			working_hash = freeable_subhash;
 		}
-		osrfHash* links    = right_info->links;
-		const char* table  = right_info->source_def;
 
-		const char* fkey  = jsonObjectGetString( jsonObjectGetKeyConst( snode, "fkey" ) );
-		const char* field = jsonObjectGetString( jsonObjectGetKeyConst( snode, "field" ) );
-
-		if( field && !fkey ) {
-			// Look up the corresponding join column in the IDL.
-			// The link must be defined in the child table,
-			// and point to the right parent table.
-			osrfHash* idl_link = (osrfHash*) osrfHashGet( links, field );
-			const char* reltype = NULL;
-			const char* other_class = NULL;
-			reltype = osrfHashGet( idl_link, "reltype" );
-			if( reltype && strcmp( reltype, "has_many" ) )
-				other_class = osrfHashGet( idl_link, "class" );
-			if( other_class && !strcmp( other_class, leftclass ) )
-				fkey = osrfHashGet( idl_link, "key" );
-			if( !fkey ) {
+		jsonObject* snode = NULL;
+		jsonIterator* search_itr = jsonNewIterator( working_hash );
+	
+		while ( (snode = jsonIteratorNext( search_itr )) ) {
+			const char* right_alias = search_itr->key;
+			const char* class =
+					jsonObjectGetString( jsonObjectGetKeyConst( snode, "class" ) );
+			if( ! class )
+				class = right_alias;
+	
+			const ClassInfo* right_info = add_joined_class( right_alias, class );
+			if( !right_info ) {
 				osrfLogError(
 					OSRF_LOG_MARK,
-					"%s: JOIN failed.  No link defined from %s.%s to %s",
+					"%s: JOIN failed.  Class \"%s\" not resolved in IDL",
 					modulename,
-					class,
-					field,
-					leftclass
+					search_itr->key
 				);
+				jsonIteratorFree( search_itr );
 				buffer_free( join_buf );
+				if( freeable_subhash )
+					jsonObjectFree( freeable_subhash );
 				if( freeable_hash )
 					jsonObjectFree( freeable_hash );
-				jsonIteratorFree( search_itr );
+				if( freeable_array )
+					jsonObjectFree( freeable_array );
 				return NULL;
 			}
-
-		} else if( !field && fkey ) {
-			// Look up the corresponding join column in the IDL.
-			// The link must be defined in the child table,
-			// and point to the right parent table.
-			osrfHash* left_links = left_info->links;
-			osrfHash* idl_link = (osrfHash*) osrfHashGet( left_links, fkey );
-			const char* reltype = NULL;
-			const char* other_class = NULL;
-			reltype = osrfHashGet( idl_link, "reltype" );
-			if( reltype && strcmp( reltype, "has_many" ) )
-				other_class = osrfHashGet( idl_link, "class" );
-			if( other_class && !strcmp( other_class, class ) )
-				field = osrfHashGet( idl_link, "key" );
-			if( !field ) {
-				osrfLogError(
-					OSRF_LOG_MARK,
-					"%s: JOIN failed.  No link defined from %s.%s to %s",
-					modulename,
-					leftclass,
-					fkey,
-					class
-				);
-				buffer_free( join_buf );
-				if( freeable_hash )
-					jsonObjectFree( freeable_hash );
-				jsonIteratorFree( search_itr );
-				return NULL;
-			}
-
-		} else if( !field && !fkey ) {
-			osrfHash* left_links = left_info->links;
-
-			// For each link defined for the left class:
-			// see if the link references the joined class
-			osrfHashIterator* itr = osrfNewHashIterator( left_links );
-			osrfHash* curr_link = NULL;
-			while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
-				const char* other_class = osrfHashGet( curr_link, "class" );
-				if( other_class && !strcmp( other_class, class ) ) {
-
-					// In the IDL, the parent class doesn't always know then names of the child
-					// columns that are pointing to it, so don't use that end of the link
-					const char* reltype = osrfHashGet( curr_link, "reltype" );
-					if( reltype && strcmp( reltype, "has_many" ) ) {
-						// Found a link between the classes
-						fkey = osrfHashIteratorKey( itr );
-						field = osrfHashGet( curr_link, "key" );
-						break;
-					}
+			osrfHash* links	= right_info->links;
+			const char* table  = right_info->source_def;
+	
+			const char* fkey  = jsonObjectGetString( jsonObjectGetKeyConst( snode, "fkey" ) );
+			const char* field = jsonObjectGetString( jsonObjectGetKeyConst( snode, "field" ) );
+	
+			if( field && !fkey ) {
+				// Look up the corresponding join column in the IDL.
+				// The link must be defined in the child table,
+				// and point to the right parent table.
+				osrfHash* idl_link = (osrfHash*) osrfHashGet( links, field );
+				const char* reltype = NULL;
+				const char* other_class = NULL;
+				reltype = osrfHashGet( idl_link, "reltype" );
+				if( reltype && strcmp( reltype, "has_many" ) )
+					other_class = osrfHashGet( idl_link, "class" );
+				if( other_class && !strcmp( other_class, leftclass ) )
+					fkey = osrfHashGet( idl_link, "key" );
+				if( !fkey ) {
+					osrfLogError(
+						OSRF_LOG_MARK,
+						"%s: JOIN failed.  No link defined from %s.%s to %s",
+						modulename,
+						class,
+						field,
+						leftclass
+					);
+					buffer_free( join_buf );
+					if( freeable_subhash )
+						jsonObjectFree( freeable_subhash );
+					if( freeable_hash )
+						jsonObjectFree( freeable_hash );
+					if( freeable_array )
+						jsonObjectFree( freeable_array );
+					jsonIteratorFree( search_itr );
+					return NULL;
 				}
-			}
-			osrfHashIteratorFree( itr );
-
-			if( !field || !fkey ) {
-				// Do another such search, with the classes reversed
-
-				// For each link defined for the joined class:
-				// see if the link references the left class
-				osrfHashIterator* itr = osrfNewHashIterator( links );
+	
+			} else if( !field && fkey ) {
+				// Look up the corresponding join column in the IDL.
+				// The link must be defined in the child table,
+				// and point to the right parent table.
+				osrfHash* left_links = left_info->links;
+				osrfHash* idl_link = (osrfHash*) osrfHashGet( left_links, fkey );
+				const char* reltype = NULL;
+				const char* other_class = NULL;
+				reltype = osrfHashGet( idl_link, "reltype" );
+				if( reltype && strcmp( reltype, "has_many" ) )
+					other_class = osrfHashGet( idl_link, "class" );
+				if( other_class && !strcmp( other_class, class ) )
+					field = osrfHashGet( idl_link, "key" );
+				if( !field ) {
+					osrfLogError(
+						OSRF_LOG_MARK,
+						"%s: JOIN failed.  No link defined from %s.%s to %s",
+						modulename,
+						leftclass,
+						fkey,
+						class
+					);
+					buffer_free( join_buf );
+					if( freeable_subhash )
+						jsonObjectFree( freeable_subhash );
+					if( freeable_hash )
+						jsonObjectFree( freeable_hash );
+					if( freeable_array )
+						jsonObjectFree( freeable_array );
+					jsonIteratorFree( search_itr );
+					return NULL;
+				}
+	
+			} else if( !field && !fkey ) {
+				osrfHash* left_links = left_info->links;
+	
+				// For each link defined for the left class:
+				// see if the link references the joined class
+				osrfHashIterator* itr = osrfNewHashIterator( left_links );
 				osrfHash* curr_link = NULL;
 				while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
 					const char* other_class = osrfHashGet( curr_link, "class" );
-					if( other_class && !strcmp( other_class, leftclass ) ) {
-
-						// In the IDL, the parent class doesn't know then names of the child
+					if( other_class && !strcmp( other_class, class ) ) {
+	
+						// In the IDL, the parent class doesn't always know then names of the child
 						// columns that are pointing to it, so don't use that end of the link
 						const char* reltype = osrfHashGet( curr_link, "reltype" );
 						if( reltype && strcmp( reltype, "has_many" ) ) {
 							// Found a link between the classes
-							field = osrfHashIteratorKey( itr );
-							fkey = osrfHashGet( curr_link, "key" );
+							fkey = osrfHashIteratorKey( itr );
+							field = osrfHashGet( curr_link, "key" );
 							break;
 						}
 					}
 				}
 				osrfHashIteratorFree( itr );
+	
+				if( !field || !fkey ) {
+					// Do another such search, with the classes reversed
+	
+					// For each link defined for the joined class:
+					// see if the link references the left class
+					osrfHashIterator* itr = osrfNewHashIterator( links );
+					osrfHash* curr_link = NULL;
+					while( (curr_link = osrfHashIteratorNext( itr ) ) ) {
+						const char* other_class = osrfHashGet( curr_link, "class" );
+						if( other_class && !strcmp( other_class, leftclass ) ) {
+	
+							// In the IDL, the parent class doesn't know then names of the child
+							// columns that are pointing to it, so don't use that end of the link
+							const char* reltype = osrfHashGet( curr_link, "reltype" );
+							if( reltype && strcmp( reltype, "has_many" ) ) {
+								// Found a link between the classes
+								field = osrfHashIteratorKey( itr );
+								fkey = osrfHashGet( curr_link, "key" );
+								break;
+							}
+						}
+					}
+					osrfHashIteratorFree( itr );
+				}
+	
+				if( !field || !fkey ) {
+					osrfLogError(
+						OSRF_LOG_MARK,
+						"%s: JOIN failed.  No link defined between %s and %s",
+						modulename,
+						leftclass,
+						class
+					);
+					buffer_free( join_buf );
+					if( freeable_subhash )
+						jsonObjectFree( freeable_subhash );
+					if( freeable_hash )
+						jsonObjectFree( freeable_hash );
+					if( freeable_array )
+						jsonObjectFree( freeable_array );
+					jsonIteratorFree( search_itr );
+					return NULL;
+				}
 			}
-
-			if( !field || !fkey ) {
-				osrfLogError(
-					OSRF_LOG_MARK,
-					"%s: JOIN failed.  No link defined between %s and %s",
-					modulename,
-					leftclass,
-					class
-				);
-				buffer_free( join_buf );
-				if( freeable_hash )
-					jsonObjectFree( freeable_hash );
-				jsonIteratorFree( search_itr );
-				return NULL;
-			}
-		}
-
-		const char* type = jsonObjectGetString( jsonObjectGetKeyConst( snode, "type" ) );
-		if( type ) {
-			if( !strcasecmp( type,"left" )) {
-				buffer_add( join_buf, " LEFT JOIN" );
-			} else if( !strcasecmp( type,"right" )) {
-				buffer_add( join_buf, " RIGHT JOIN" );
-			} else if( !strcasecmp( type,"full" )) {
-				buffer_add( join_buf, " FULL JOIN" );
+	
+			const char* type = jsonObjectGetString( jsonObjectGetKeyConst( snode, "type" ) );
+			if( type ) {
+				if( !strcasecmp( type,"left" )) {
+					buffer_add( join_buf, " LEFT JOIN" );
+				} else if( !strcasecmp( type,"right" )) {
+					buffer_add( join_buf, " RIGHT JOIN" );
+				} else if( !strcasecmp( type,"full" )) {
+					buffer_add( join_buf, " FULL JOIN" );
+				} else {
+					buffer_add( join_buf, " INNER JOIN" );
+				}
 			} else {
 				buffer_add( join_buf, " INNER JOIN" );
 			}
-		} else {
-			buffer_add( join_buf, " INNER JOIN" );
+	
+			buffer_fadd( join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
+						table, right_alias, right_alias, field, left_info->alias, fkey );
+	
+			// Add any other join conditions as specified by "filter"
+			const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
+			if( filter ) {
+				const char* filter_op = jsonObjectGetString(
+					jsonObjectGetKeyConst( snode, "filter_op" ) );
+				if( filter_op && !strcasecmp( "or",filter_op )) {
+					buffer_add( join_buf, " OR " );
+				} else {
+					buffer_add( join_buf, " AND " );
+				}
+	
+				char* jpred = searchWHERE( filter, right_info, AND_OP_JOIN, NULL );
+				if( jpred ) {
+					OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+					OSRF_BUFFER_ADD( join_buf, jpred );
+					free( jpred );
+				} else {
+					osrfLogError(
+						OSRF_LOG_MARK,
+						"%s: JOIN failed.  Invalid conditional expression.",
+						modulename
+					);
+					jsonIteratorFree( search_itr );
+					buffer_free( join_buf );
+					if( freeable_subhash )
+						jsonObjectFree( freeable_subhash );
+					if( freeable_hash )
+						jsonObjectFree( freeable_hash );
+					if( freeable_array )
+						jsonObjectFree( freeable_array );
+					return NULL;
+				}
+			}
+	
+			buffer_add( join_buf, " ) " );
+	
+			// Recursively add a nested join, if one is present
+			const jsonObject* join_filter = jsonObjectGetKeyConst( snode, "join" );
+			if( join_filter ) {
+				char* jpred = searchJOIN( join_filter, right_info );
+				if( jpred ) {
+					OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
+					OSRF_BUFFER_ADD( join_buf, jpred );
+					free( jpred );
+				} else {
+					osrfLogError( OSRF_LOG_MARK, "%s: Invalid nested join.", modulename );
+					jsonIteratorFree( search_itr );
+					buffer_free( join_buf );
+					if( freeable_subhash )
+						jsonObjectFree( freeable_subhash );
+					if( freeable_hash )
+						jsonObjectFree( freeable_hash );
+					if( freeable_array )
+						jsonObjectFree( freeable_array );
+					return NULL;
+				}
+			}
 		}
 
-		buffer_fadd( join_buf, " %s AS \"%s\" ON ( \"%s\".%s = \"%s\".%s",
-					table, right_alias, right_alias, field, left_info->alias, fkey );
+		if( freeable_subhash )
+			jsonObjectFree( freeable_subhash );
 
-		// Add any other join conditions as specified by "filter"
-		const jsonObject* filter = jsonObjectGetKeyConst( snode, "filter" );
-		if( filter ) {
-			const char* filter_op = jsonObjectGetString(
-				jsonObjectGetKeyConst( snode, "filter_op" ) );
-			if( filter_op && !strcasecmp( "or",filter_op )) {
-				buffer_add( join_buf, " OR " );
-			} else {
-				buffer_add( join_buf, " AND " );
-			}
-
-			char* jpred = searchWHERE( filter, right_info, AND_OP_JOIN, NULL );
-			if( jpred ) {
-				OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
-				OSRF_BUFFER_ADD( join_buf, jpred );
-				free( jpred );
-			} else {
-				osrfLogError(
-					OSRF_LOG_MARK,
-					"%s: JOIN failed.  Invalid conditional expression.",
-					modulename
-				);
-				jsonIteratorFree( search_itr );
-				buffer_free( join_buf );
-				if( freeable_hash )
-					jsonObjectFree( freeable_hash );
-				return NULL;
-			}
-		}
-
-		buffer_add( join_buf, " ) " );
-
-		// Recursively add a nested join, if one is present
-		const jsonObject* join_filter = jsonObjectGetKeyConst( snode, "join" );
-		if( join_filter ) {
-			char* jpred = searchJOIN( join_filter, right_info );
-			if( jpred ) {
-				OSRF_BUFFER_ADD_CHAR( join_buf, ' ' );
-				OSRF_BUFFER_ADD( join_buf, jpred );
-				free( jpred );
-			} else {
-				osrfLogError( OSRF_LOG_MARK, "%s: Invalid nested join.", modulename );
-				jsonIteratorFree( search_itr );
-				buffer_free( join_buf );
-				if( freeable_hash )
-					jsonObjectFree( freeable_hash );
-				return NULL;
-			}
-		}
+		jsonIteratorFree( search_itr );
 	}
 
 	if( freeable_hash )
 		jsonObjectFree( freeable_hash );
-	jsonIteratorFree( search_itr );
+
+	if( freeable_array )
+		jsonObjectFree( freeable_array );
+
 
 	return buffer_release( join_buf );
 }
@@ -5900,7 +5965,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 					"osrfMethodException", ctx->request, "Error setting timezone" );
 				if( !oilsIsDBConnected( writehandle )) {
 					osrfAppSessionPanic( ctx->session );
-					return -1;
+					return NULL;
 				}
 			} else {
 				dbi_result_free( tz_res );
@@ -5913,7 +5978,7 @@ static jsonObject* doFieldmapperSearch( osrfMethodContext* ctx, osrfHash* class_
 				osrfLogError( OSRF_LOG_MARK, "%s: Error resetting timezone", modulename);
 				if( !oilsIsDBConnected( writehandle )) {
 					osrfAppSessionPanic( ctx->session );
-					return -1;
+					return NULL;
 				}
 			} else {
 				dbi_result_free( res );
@@ -6788,7 +6853,6 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	char dt_string[ 256 ];
 	struct tm gmdt;
 
-	int fmIndex;
 	int columnIndex = 1;
 	int attr;
 	unsigned short type;
@@ -6798,8 +6862,6 @@ static jsonObject* oilsMakeJSONFromResult( dbi_result result ) {
 	while(( columnName = dbi_result_get_field_name( result, columnIndex ))) {
 
 		osrfLogInternal( OSRF_LOG_MARK, "Looking for column named [%s]...", (char*) columnName );
-
-		fmIndex = -1; // reset the position
 
 		/* determine the field type and storage attributes */
 		type = dbi_result_get_field_type_idx( result, columnIndex );

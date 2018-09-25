@@ -1,6 +1,9 @@
 Creating a New Skin: the Bare Minimum
 =====================================
 
+Introduction
+------------
+
 When you adopt the TPAC as your catalog, you must create a new skin. This
 involves a combination of overriding template files and setting Apache
 directives to control the look and feel of your customized TPAC.
@@ -99,7 +102,7 @@ is done by setting the search.metarecord_default variable to 1.
   users.
 * `myopac/update_password_msg.tt2`: defines the password format that needs
   to be used when setting a user password. If your Evergreen site has set
-  _Password format_ regex in the <<lse-global, Library Settings Editor>>, you
+  _Password format_ regex in the Library Settings Editor, you
   should update the language to describe the format that should be used.  
 * `password_reset.tt2`: in the msg_map section, you might want to change the
   NOT_STRONG text that appears when the user tries to set a password that

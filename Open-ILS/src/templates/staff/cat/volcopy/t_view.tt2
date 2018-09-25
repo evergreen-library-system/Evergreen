@@ -18,7 +18,7 @@ eg-navbar {
       <a ng-click="tab = 'edit'" >[% l('Edit') %]</a>
     </li>
     <li ng-class="{active : tab == 'templates'}">
-      <a ng-click="tab = 'templates'" >[% l('Copy Templates') %]</a>
+      <a ng-click="tab = 'templates'" >[% l('Item Templates') %]</a>
     </li>
     <li ng-class="{active : tab == 'defaults'}">
       <a ng-click="tab = 'defaults'" >[% l('Defaults') %]</a>
@@ -42,7 +42,7 @@ eg-navbar {
 
 <div ng-if="edit_templates">
   <div class="row">
-    <h2>[% l("Edit Volume/Copy Templates") %]</h2>
+    <h2>[% l("Edit Holdings Templates") %]</h2>
   </div>
   <div class="row">
     <eg-vol-template edit-templates="edit_templates"></eg-vol-template>

@@ -318,30 +318,6 @@ Make note of the new password and _Save_ the patron record.  The screen will
 refresh and the new password will be suppressed from view.   
 
 
-[TIP]
-=======================
-If you need to change a patron or staff account password without using the staff client, here is how you can reset it with SQL.
-
-Connect to your Evergreen database using _psql_ or similar tool, and retreive and verify your admin username:
-
-[source, sql]
-------------------------------------------------------------------------------
-psql -U <user-name> -h <hostname> -d <database>
-
-SELECT id, usrname, passwd from actor.usr where usrname = 'admin';
-------------------------------------------------------------------------------
-
-If you do not remember the username that you set, search for it in the _actor.usr_ table, and then reset the password.
-
-[source, sql]
-------------------------------------------------------------------------------
-UPDATE actor.usr SET passwd = <password> WHERE id=<id of row to be updated>;
-------------------------------------------------------------------------------
-
-The new password will automatically be hashed. 
-
-=======================
-
 Barring a Patron 
 ~~~~~~~~~~~~~~~~
 
@@ -617,7 +593,7 @@ Creating a Patron Message using Action Triggers
 
 Messages can be automatically added to a patron's OPAC account by an Action Trigger event.  For example, when a hold is cancelled by a library staff member, a message can be added to the patron's OPAC account to inform them of the cancellation.
 
-Action Trigger Messages are set up in *Admin -> Local Administration -> Notifications/Action Triggers*.  There are several new fields in the Trigger Event Definition that allow the configuration of Patron Messages:
+Action Trigger Messages are set up in *Administration -> Local Administration ->  Notifications/Action Triggers*.  There are several new fields in the Trigger Event Definition that allow the configuration of Patron Messages:
 
 * Message Library Path: identifies the sending library for the message.  This is the patron's home library (usr.home_ou) in the stock Hold Cancellation message.
 * Message Template: contains the content of the message.
@@ -816,7 +792,7 @@ image::media/circulation_patron_bills-6.png[circulation_patron_bills 6]
 By default, Evergreen checks all bills when the bills screen loads. 
 Evergreen sites can change this default by enabling the _Uncheck bills by
 default in the patron billing interface_ setting in the Library Settings
-Editor (*Admin* -> *Local Administration* -> *Library Settings Editor*). Note
+Editor (*Administration* -> *Local Administration* ->  *Library Settings Editor*). Note
 the presence of the _Uncheck All_ and _Check All_ options below the list of
 bills.
 
@@ -855,7 +831,7 @@ _Annotate Payment_, as a box for the check number and a note displays
 automatically.
 * If a patron pays the entire bill for a lost item and the library has enabled
 the _Use Lost and Paid copy status_ setting in the Library Settings Editor
-(*Admin* -> *Local Administration* -> *Library Settings Editor*), the copy's 
+(*Administration* -> *Local Administration* ->  *Library Settings Editor*), the copy's 
 status will automatically change from _Lost_ to _Lost and Paid_.
 ================================================
 
@@ -888,7 +864,7 @@ image::media/Disabled_Patron_Credit_Patron_Billing_Screen.jpg[Disabled Patron Cr
 
 To set the Library Setting:
 
-. Click *Admin* -> *Local Administration* -> *Library Settings Editor*
+. Click *Administration* -> *Local Administration* ->  *Library Settings Editor*
 
 . Search for *Disable Patron Credit*
 

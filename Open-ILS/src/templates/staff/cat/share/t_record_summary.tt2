@@ -29,23 +29,30 @@
     </div>
   </div>
 </div>
-
+<div ng-if="record.merged_to()" class="row alert alert-warning">
+  <a href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.merged_to()}}">
+    [% l('Record merged to #[_1] on [_2]', 
+         '{{record.merged_to()}}',
+         '{{record.merge_date() | date:$root.egDateAndTimeFormat}}') 
+    %]
+  </a>
+</div>
 <div class="flex-container-striped flex-container-bordered" ng-show="collapse_summary()">
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Title:') %]</div>
     <div class="flex-cell flex-2">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
-        {{mvr.title()}}
+        {{rec_display.title}}
       </a>
     </div>
 
     <div class="flex-cell strong-text">[% l('Author:') %]</div>
-    <div class="flex-cell flex-2">{{mvr.author()}}</div>
+    <div class="flex-cell flex-2">{{rec_display.author}}</div>
 
     <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
     <div class="flex-cell">
-      {{mvr.pubdate()}}
+      {{rec_display.pubdate}}
     </div>
 
     <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
@@ -59,12 +66,12 @@
     <div class="flex-cell flex-2">
       <a target="_self" 
         href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
-        {{mvr.title()}}
+        {{rec_display.title}}
       </a>
     </div>
 
     <div class="flex-cell strong-text">[% l('Edition:') %]</div>
-    <div class="flex-cell">{{mvr.edition()}}</div>
+    <div class="flex-cell">{{rec_display.edition}}</div>
 
     <div class="flex-cell strong-text">[% l('TCN:') %]</div>
     <div class="flex-cell">{{record.tcn_value()}}</div>
@@ -75,11 +82,11 @@
 
   <div class="flex-row">
     <div class="flex-cell strong-text">[% l('Author:') %]</div>
-    <div class="flex-cell flex-2">{{mvr.author()}}</div>
+    <div class="flex-cell flex-2">{{rec_display.author}}</div>
 
     <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
     <div class="flex-cell">
-      {{mvr.pubdate()}}
+      {{rec_display.pubdate}}
     </div>
 
     <div class="flex-cell strong-text">[% l('Database ID:') %]</div>

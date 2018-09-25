@@ -1,0 +1,118 @@
+<form ng-submit="ok(args)" role="form">
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()" 
+        aria-hidden="true">&times;</button>
+    <h4 class="modal-title">
+        [% l('Manage Routing List for [_1]','{{stream_label}}') %]
+    </h4>
+</div>
+<style>
+/* odd/even row styling */
+.modal-header > div:nth-child(odd) {
+  background-color: rgb(248, 248, 248);
+}
+.strike {
+    text-decoration: line-through;
+}
+</style>
+<div class="modal-header">
+    <div ng-repeat="route in routes">
+        <div class="row">
+            <div class="col-md-2">
+                <span>
+                    [% l('[_1].','{{route.pos + 1}}') %]
+                </span>
+            </div>
+            <div class="col-md-8">
+                <span ng-show="route.reader" ng-class="route.delete_me ? 'strike' : ''">
+                {{route.reader.family_name}}, {{route.reader.first_given_name}}
+                ({{route.reader.home_ou.shortname}})
+                </span>
+                <span ng-show="route.department" ng-class="route.delete_me ? 'strike' : ''">
+                {{route.department}}
+                </span>
+            </div>
+            <div class="col-md-2">
+                <span>
+                    <a href ng-click="move_route_up(route)">&uarr;</a>
+                    <a href ng-click="move_route_down(route)">&darr;</a>
+                    <a href ng-click="toggle_delete(route)">&times;</a>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-8" ng-class="route.delete_me ? 'strike' : ''">
+                {{route.note}}
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-body">
+    <div class="row">
+        <div class="col-md-1">
+            <input type="radio" name="which_radio_button"
+                ng-model="args.which_radio_button" value="reader">
+            </input>
+        </div>
+        <div class="col-md-3">
+            <label for="reader">
+                [% l('Reader (barcode):') %]
+            </label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" ng-model="args.reader" id="reader" class="form-control"
+                ng-click="args.which_radio_button='reader'" focus-me="readerInFocus"
+                ng-model-options="{ debounce: 1000 }">
+            </input>
+            <span ng-show="args.reader && !readerNotFound">{{reader_obj.family_name}}, {{reader_obj.first_given_name}}</span>
+            <span class="alert alert-warning" ng-show="readerNotFound">
+                [% l('Not Found') %]
+            </span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+            <input type="radio" name="which_radio_button"
+                ng-model="args.which_radio_button" value="department">
+            </input>
+        </div>
+        <div class="col-md-3">
+            <label for="department">
+                [% l('Department:') %]
+            </label>
+        </div>
+        <div class="col-md-8">
+            <input type="text" ng-model="args.department" id="department" class="form-control"
+                ng-click="args.which_radio_button='department'">
+            </input>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-3">
+            <label for="note">[% l('Note:') %]</label>
+        </div>
+        <div class="col-md-8">
+            <input ng-model="args.note" type="text" id="note" class="form-control"></input>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary pull-left"
+        ng-click="add_route()"
+        ng-disabled="(args[args.which_radio_button] == '')||(args.which_radio_button=='reader'&&readerNotFound)"
+    >
+        [% l('Add Route') %]
+    </button>
+    <input type="submit" class="btn btn-primary" ng-disabled="!model_has_changed"
+        value="[% l('Update') %]"></input>
+    <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+</div>
+</form>

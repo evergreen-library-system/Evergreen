@@ -1,0 +1,93 @@
+[% ctx.page_title = l("Item Alert Types"); %]
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(record)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 ng-if="creating"  class="modal-title">[% l('Create item alert type') %]</h4>
+      <h4 ng-if="!creating" class="modal-title">[% l('Update item alert type') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="edit-alert-name">[% l('Name') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="edit-alert-name" ng-model="record.name" placeholder="[% l('Name...') %]"/>
+      </div>
+      <div class="form-group">
+        <label for="active-selector">[% l('Active') %]</label>
+        <select id="active-selector" class="form-control" ng-model="record.active">
+            <option value="t">[% l('Yes') %]</option>
+            <option value="f">[% l('No') %]</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="state-selector">[% l('State') %]</label>
+        <select id="state-selector" class="form-control" ng-model="record.state">
+            <option value="NORMAL">[% l('Normal') %]</option>
+            <option value="LOST">[% l('Lost') %]</option>
+            <option value="LOST_AND_PAID">[% l('Lost and paid for') %]</option>
+            <option value="LONGOVERDUE">[% l('Long Overdue') %]</option>
+            <option value="MISSING">[% l('Missing') %]</option>
+            <option value="DAMAGED">[% l('Damaged') %]</option>
+            <option value="CLAIMSRETURNED">[% l('Claims returned') %]</option>
+            <option value="CLAIMSNEVERCHECKEDOUT">[% l('Claims never checked out') %]</option>
+        </select>
+      </div>
+      <div class="form-group nullable">
+        <label for="event-selector">[% l('Event') %]</label>
+        <select id="event-selector" class="form-control" ng-model="record.event"
+          ng-init="event_list = [{l:'[% l('Checkin') %]',v:'CHECKIN'},{l:'[% l('Checkout') %]',v:'CHECKOUT'}]"
+          ng-options="e.v as e.l for e in event_list">
+            <option value="">[% l('Any Event') %]</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="select-org-unit">[% l('Scope Org Unit') %]</label>
+        <eg-org-selector selected="record.scope_org"></eg-org-selector>
+      </div>
+      <div class="form-group">
+        <label for="edit-alert-next-statuses">[% l('Next Status') %]</label>
+        <select id="edit-alert-next-statuses" class="form-control" focus-me='focusMe'
+                multiple="multiple" ng-model="record.next_status"
+                ng-disabled="record.event != 'CHECKIN'">
+            <option ng-repeat="s in ccs" value="{{s.id()}}">{{s.name()}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="inrenew-selector">[% l('Renewing?') %]</label>
+        <select id="inrenew-selector" class="form-control" ng-model="record.in_renew">
+            <option value="">[% l('Any') %]</option>
+            <option value="t">[% l('Yes') %]</option>
+            <option value="f">[% l('No') %]</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="invert-location-selector">[% l('Invert location?') %]</label>
+        <select id="invert-location-selector" class="form-control" ng-model="record.invert_location">
+            <option value="t">[% l('Yes') %]</option>
+            <option value="f">[% l('No') %]</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="at-circ-selector">[% l('Allow Only At Circulation Library?') %]</label>
+        <select id="at-circ-selector" class="form-control" ng-model="record.at_circ">
+            <option value="">[% l('No') %]</option>
+            <option value="t">[% l('Yes') %]</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="at-owning-selector">[% l('Allow Only At Owning Library?') %]</label>
+        <select id="at-owning-selector" class="form-control" ng-model="record.at_owning">
+            <option value="">[% l('No') %]</option>
+            <option value="t">[% l('Yes') %]</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Save') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

@@ -43,7 +43,7 @@ use base qw/OpenILS::Application/;
 use OpenILS::Application::AppUtils;
 use OpenILS::Event;
 use OpenSRF::AppSession;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::Logger qw/:logger/;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenILS::Utils::Fieldmapper;
@@ -257,6 +257,8 @@ sub fleshed_item_alter {
 
     my %found_sdist_ids;
     my %found_sstr_ids;
+    my %siss_to_potentially_delete;
+    my @deleted_items;
     for my $item (@$items) {
         my $sstr_id = ref $item->stream ? $item->stream->id : $item->stream;
         if (!exists($found_sstr_ids{$sstr_id})) {
@@ -279,7 +281,11 @@ sub fleshed_item_alter {
         $item->edit_date('now');
 
         if( $item->isdeleted ) {
-            $evt = _delete_sitem( $editor, $override, $item);
+            my $siss_id = ref $item->issuance ? $item->issuance->id : $item->issuance;
+            $siss_to_potentially_delete{$siss_id}++;
+            # We don't want to do a bunch of resetting churn for multiple items
+            # in the same unit/dist, so just gather ids for now
+            push(@deleted_items, $item);
         } elsif( $item->isnew ) {
             # TODO: reconsider this
             # if the item has a new issuance, create the issuance first
@@ -294,10 +300,54 @@ sub fleshed_item_alter {
         }
     }
 
+    if (@deleted_items) {
+        # First, reset as a batch any assigned to units.  This cleans up units
+        # and rebuilds summaries as needed
+        #
+        # XXX: if we ever add a 'deleted' flag to items, we may want to
+        # preserve rather than reset the received information
+        my @unit_items = grep {$_->unit} @deleted_items;
+        my $reset_info = $self->method_lookup('open-ils.serial.reset_items')->run($auth, \@unit_items) if @unit_items;
+
+        # Next, do the actual deletes, unless we got an event
+        if ($U->event_code($reset_info)) {
+            $evt = $reset_info;
+        } else {
+            foreach my $item (@deleted_items) {
+                $evt = _delete_sitem( $editor, $override, $item);
+            }
+        }
+    }
+
     if( $evt ) {
         $logger->info("fleshed item-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
         $editor->rollback;
         return $evt;
+    }
+    if( %siss_to_potentially_delete ) {
+        foreach my $id (keys %siss_to_potentially_delete) {
+            my $issuance = $editor->retrieve_serial_issuance([
+                $id, {
+                    "flesh" => 1, "flesh_fields" => {
+                        "siss" => ["items"],
+                    }
+                }
+            ]);
+            unless ($issuance) {
+                $logger->warn("fleshed item-alter failed to retrieve issuance $id to potenitally delete");
+                $editor->rollback;
+                return $editor->die_event;
+            }
+            unless (@{ $issuance->items }) {
+                $logger->info("fleshed item-alter deleting issuance $id as it has no items left");
+                $evt = _delete_siss( $editor, $override, $issuance);
+                if( $evt ) {
+                    $logger->info("fleshed item-alter failed with event: ".OpenSRF::Utils::JSON->perl2JSON($evt));
+                    $editor->rollback;
+                    return $evt;
+                }
+            }
+        }
     }
     $logger->debug("item-alter: done updating item batch");
     $editor->commit;
@@ -894,13 +944,46 @@ __PACKAGE__->register_method(
 sub make_predictions {
     my ($self, $conn, $authtoken, $args) = @_;
 
-    my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub_id = $args->{ssub_id};
-    my $mfhd = MFHD->new(MARC::Record->new());
 
+    my $editor = OpenILS::Utils::CStoreEditor->new();
     my $ssub = $editor->retrieve_serial_subscription([$ssub_id]);
-    my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
     my $sdists = $editor->search_serial_distribution( [{ subscription => $ssub->id }, { flesh => 1, flesh_fields => {sdist => [ qw/ streams / ]} }] ); #TODO: 'deleted' support?
+
+    return store_predictions(
+        $self, $conn, $authtoken, $args, $ssub, $sdists,
+        make_prediction_values($self, $conn, $authtoken, $args, $ssub, $sdists, $editor)
+    );
+}
+
+__PACKAGE__->register_method(
+    method    => 'make_prediction_values',
+    api_name  => 'open-ils.serial.make_prediction_values',
+    api_level => 1,
+    argc      => 1,
+    signature => {
+        desc     => 'Receives an ssub id and returns objects that can be used to populate the issuance and item tables',
+        'params' => [ {
+                 name => 'ssub_id',
+                 desc => 'Serial Subscription ID',
+                 type => 'int'
+            }
+        ]
+    }
+);
+
+sub make_prediction_values {
+    my ($self, $conn, $authtoken, $args, $ssub, $sdists, $editor) = @_;
+    $logger->debug('make_prediction_values with args: ' . OpenSRF::Utils::JSON->perl2JSON($args));
+
+    my $ssub_id = $args->{ssub_id};
+
+    $editor ||= OpenILS::Utils::CStoreEditor->new();
+    $ssub ||= $editor->retrieve_serial_subscription([$ssub_id]);
+    $sdists ||= $editor->search_serial_distribution( [{ subscription => $ssub->id }, { flesh => 1, flesh_fields => {sdist => [ qw/ streams / ]} }] ); #TODO: 'deleted' support?
+
+    my $scaps = $editor->search_serial_caption_and_pattern({ subscription => $ssub_id, active => 't'});
+    my $mfhd = MFHD->new(MARC::Record->new());
 
     my $total_streams = 0;
     foreach (@$sdists) {
@@ -942,13 +1025,14 @@ sub make_predictions {
         my $options = {
                 'caption' => $caption_field,
                 'scap_id' => $scap->id,
+                'include_base_issuance' => $args->{include_base_issuance},
                 'num_to_predict' => $args->{num_to_predict},
                 'end_date' => defined $args->{end_date} ?
                     $_strp_date->parse_datetime($args->{end_date}) : undef
                 };
         my $predict_from_siss;
         if ($args->{base_issuance}) { # predict from a given issuance
-            $predict_from_siss = $args->{base_issuance}->holding_code;
+            $predict_from_siss = $args->{base_issuance};
         } else { # default to predicting from last published
             my $last_published = $editor->search_serial_issuance([
                     {'caption_and_pattern' => $scap->id,
@@ -973,16 +1057,25 @@ sub make_predictions {
                 );
             }
         }
+        $logger->debug('make_prediction_values reviving holdings: ' . OpenSRF::Utils::JSON->perl2JSON($predict_from_siss));
         $options->{predict_from} = _revive_holding($predict_from_siss->holding_code, $caption_field, 1); # fresh MFHD Record, so we simply default to 1 for seqno
         if ($fake_chron_needed) {
-            $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($predict_from_siss->date_published));
+            $options->{faked_chron_date} = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($predict_from_siss->date_published));
         }
+        $logger->debug('make_prediction_values predicting with options: ' . OpenSRF::Utils::JSON->perl2JSON($options));
         push( @predictions, _generate_issuance_values($mfhd, $options) );
         $link_id++;
     }
 
+    $logger->debug('make_prediction_values predictions: ' . OpenSRF::Utils::JSON->perl2JSON(\@predictions));
+    return \@predictions;
+}
+
+sub store_predictions {
+    my ($self, $conn, $authtoken, $args, $ssub, $sdists, $predictions) = @_;
+
     my @issuances;
-    foreach my $prediction (@predictions) {
+    foreach my $prediction (@$predictions) {
         my $issuance = new Fieldmapper::serial::issuance;
         $issuance->isnew(1);
         $issuance->label($prediction->{label});
@@ -999,7 +1092,7 @@ sub make_predictions {
 
     my @items;
     for (my $i = 0; $i < @issuances; $i++) {
-        my $date_expected = $predictions[$i]->{date_published}->add(seconds => interval_to_seconds($ssub->expected_date_offset))->strftime('%F');
+        my $date_expected = $$predictions[$i]->{date_published}->add(seconds => interval_to_seconds($ssub->expected_date_offset))->strftime('%F');
         my $issuance = $issuances[$i];
         #$issuance->label(interval_to_seconds($ssub->expected_date_offset));
         foreach my $sdist (@$sdists) {
@@ -1038,11 +1131,13 @@ sub _generate_issuance_values {
     my ($mfhd, $options) = @_;
     my $caption = $options->{caption};
     my $scap_id = $options->{scap_id};
+    my $include_base_issuance = $options->{include_base_issuance};
     my $num_to_predict = $options->{num_to_predict};
     my $end_date = $options->{end_date};
     my $predict_from = $options->{predict_from};   # MFHD::Holding to predict from
     my $faked_chron_date = $options->{faked_chron_date};   # serial does not have a (complete) chronology caption, so add one (temporarily) based on this date 
 
+    $logger->debug('_generate_issuance_values predict_from: ' . OpenSRF::Utils::JSON->perl2JSON($predict_from));
 
 # Only needed for 'real' MFHD records, not our temp records
 #    my $link_id = $caption->link_id;
@@ -1082,9 +1177,16 @@ sub _generate_issuance_values {
         # to recreate rather than try to update
         $faked_caption = new MFHD::Caption($faked_caption);
         $predict_from = new MFHD::Holding($predict_from->seqno, new MARC::Field($predict_from->tag, $predict_from->indicator(1), $predict_from->indicator(2), $predict_from->subfields_list), $faked_caption);
+        $logger->debug('_generate_issuance_values fake predict_from: ' . OpenSRF::Utils::JSON->perl2JSON($predict_from));
     }
 
-    my @predictions = $mfhd->generate_predictions({'base_holding' => $predict_from, 'num_to_predict' => $num_to_predict, 'end_date' => $end_date});
+    my @predictions = $mfhd->generate_predictions({
+        'include_base_issuance' => $include_base_issuance,
+        'base_holding' => $predict_from,
+        'num_to_predict' => $num_to_predict,
+        'end_date' => $end_date
+    });
+    $logger->debug('_generate_issuance_values predictions: ' . OpenSRF::Utils::JSON->perl2JSON(\@predictions));
 
     my $pub_date;
     my @issuance_values;
@@ -1169,6 +1271,11 @@ __PACKAGE__->register_method(
                  name => 'donor_unit_ids',
                  desc => 'hash of unit_ids => 1, keyed with ids of any units giving up items',
                  type => 'hash'
+            },
+            {
+                 name => 'extras',
+                 desc => 'hash of hashes, circ_mod code and copy_location id, keyed as above',
+                 type => 'hash'
             }
         ],
         'return' => {
@@ -1204,6 +1311,11 @@ __PACKAGE__->register_method(
                  name => 'donor_unit_ids',
                  desc => 'hash of unit_ids => 1, keyed with ids of any units giving up items',
                  type => 'hash'
+            },
+            {
+                 name => 'extras',
+                 desc => 'hash of hashes, circ_mod code and copy_location id, keyed as above',
+                 type => 'hash'
             }
         ],
         'return' => {
@@ -1236,7 +1348,7 @@ __PACKAGE__->register_method(
 );
 
 sub unitize_items {
-    my ($self, $conn, $auth, $items, $barcodes, $call_numbers, $donor_unit_ids) = @_;
+    my ($self, $conn, $auth, $items, $barcodes, $call_numbers, $donor_unit_ids, $extras) = @_;
 
     my $editor = new_editor("authtoken" => $auth, "xact" => 1);
     return $editor->die_event unless $editor->checkauth;
@@ -1250,6 +1362,7 @@ sub unitize_items {
     }
     my %found_stream_ids;
     my %found_types;
+    my $prev_loc_setting_map = {};
 
     my %stream_ids_by_unit_id;
 
@@ -1295,7 +1408,7 @@ sub unitize_items {
         if (!exists($found_types{$stream_id})) {
             $found_types{$stream_id} = {};
         }
-        $found_types{$stream_id}->{$scap->type} = 1;
+        $found_types{$stream_id}->{$scap->type} = 1 if ($scap);
 
         # create unit if needed
         if ($unit_id == -1 or (!$new_unit_id and $unit_id == -2)) { # create unit per item
@@ -1314,7 +1427,11 @@ sub unitize_items {
                 $unit->{"note"} = "Item ID: " . $item->id;
                 return $unit;
             }
+
             $unit->barcode($barcodes->{$item->id}) if exists($barcodes->{$item->id});
+            $unit->location($extras->{copy_locations}->{$item->id}) if exists($extras->{copy_locations}->{$item->id});
+            $unit->circ_modifier($extras->{circ_mods}->{$item->id}) if exists($extras->{circ_mods}->{$item->id});
+
             my $evt =  _create_sunit($editor, $unit);
             return $evt if $evt;
             if ($unit_id == -2) {
@@ -1349,6 +1466,64 @@ sub unitize_items {
 
         my $evt = _update_sitem($editor, undef, $item);
         return $evt if $evt;
+
+        if ($mode eq 'receive') {
+            my $sdist = $editor->search_serial_distribution([
+                {"+sstr" => {"id" => $stream_id}},
+                {
+                    "join" => {"sstr" => {}},
+                    "flesh" => 1,
+                    "flesh_fields" => {"sdist" => ["subscription"]}
+                }])->[0];
+
+            #-------------------------------------------------------------------------
+            # The following is copied from open-ils.serial.receive_items.one_unit_per
+    
+            # Fetch a list of issuances with received copies already existing
+            # on this distribution (and with the same holding type on the
+            # issuance).  This will be used in up to two places: once when building
+            # a summary, once when changing the copy location of the previous
+            # issuance's copy.
+
+            # manually flesh distribution if not present
+            #
+            # this helps maintain compatiblity with XUL serial control receive
+            if (!ref($item->stream->distribution)) {
+                $item->stream->distribution($sdist);
+            }
+            my $issuances_received = _issuances_received($editor, $item);
+            if ($U->event_code($issuances_received)) {
+                $editor->rollback;
+                return $issuances_received;
+            }
+    
+            # Find out if we need to to deal with previous copy location changing.
+            my $ou = $sdist->holding_lib;
+            unless (exists $prev_loc_setting_map->{$ou}) {
+                $prev_loc_setting_map->{$ou} = $U->ou_ancestor_setting_value(
+                    $ou, "serial.prev_issuance_copy_location", $editor
+                );
+            }
+    
+            # If there is a previous copy location setting, we need the previous
+            # issuance, from which we can in turn look up the item attached to the
+            # same stream we're on now.
+            if ($prev_loc_setting_map->{$ou}) {
+                if (my $prev_iss =
+                    _previous_issuance($issuances_received, $item->issuance)) {
+    
+                    # Now we can change the copy location of the previous unit,
+                    # if needed.
+                    return $editor->event if defined $U->event_code(
+                        move_previous_unit(
+                            $editor, $prev_iss, $item, $prev_loc_setting_map->{$ou}
+                        )
+                    );
+                }
+            }
+            #-------------------------------------------------------------------------
+        }
+
     }
 
     # cleanup 'dead' units (units which are now emptied of their items)
@@ -1464,19 +1639,65 @@ sub unitize_items {
 sub _find_or_create_call_number {
     my ($e, $lib, $cn_string, $record) = @_;
 
-    # FIXME: should suffix and prefix come into play here?
-    my $existing = $e->search_asset_call_number({
-        "owning_lib" => $lib,
-        "label" => $cn_string,
-        "record" => $record,
-        "deleted" => "f"
-    }) or return $e->die_event;
+    my ($prefix,$suffix) = ('','');
+    if (ref($cn_string)) {
+        ($prefix,$cn_string,$suffix) = @$cn_string;
+    }
+
+    my $existing = $e->search_asset_call_number([{
+        owning_lib  => $lib,
+        label       => $cn_string,
+        record      => $record,
+        deleted     => "f",
+        '+acnp'     => { label => $prefix },
+        '+acns'     => { label => $suffix },
+        
+    },{
+        join => { acnp => {}, acns => {} }
+    }]) or return $e->die_event;
 
     if (@$existing) {
         return $existing->[0]->id;
     } else {
         return $e->die_event unless
             $e->allowed("CREATE_VOLUME", $lib);
+
+        $prefix = -1 if (!$prefix);
+        $suffix = -1 if (!$suffix);
+
+        if ($prefix ne '-1') {
+            my $acnp = $e->search_asset_call_number_prefix({
+                owning_lib  => $lib,
+                label       => $prefix,
+            })->[0];
+
+            if (!$acnp) {
+                $acnp = new Fieldmapper::asset::call_number_prefix;
+                $acnp->label($prefix);
+                $acnp->owning_lib($lib);
+                $e->create_asset_call_number_prefix($acnp) or return $e->die_event;
+                $prefix = $e->data->id;
+            } else {
+                $prefix = $acnp->id;
+            }
+        }
+
+        if ($suffix ne '-1') {
+            my $acns = $e->search_asset_call_number_suffix({
+                owning_lib  => $lib,
+                label       => $suffix,
+            })->[0];
+
+            if (!$acns) {
+                $acns = new Fieldmapper::asset::call_number_suffix;
+                $acns->label($suffix);
+                $acns->owning_lib($lib);
+                $e->create_asset_call_number_suffix($acns) or return $e->die_event;
+                $suffix = $e->data->id;
+            } else {
+                $suffix = $acns->id;
+            }
+        }
 
         my $acn = new Fieldmapper::asset::call_number;
 
@@ -1485,6 +1706,8 @@ sub _find_or_create_call_number {
         $acn->record($record);
         $acn->label($cn_string);
         $acn->owning_lib($lib);
+        $acn->prefix($prefix);
+        $acn->suffix($suffix);
 
         $e->create_asset_call_number($acn) or return $e->die_event;
         return $e->data->id;
@@ -2356,6 +2579,213 @@ sub delete_note {
 ##########################################################################
 # subscription methods
 #
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.subscription.safe_delete',
+    signature   => q/
+        Deletes an existing subscription and related records
+        (distributions, streams, etc.), but only if there are no serial
+        items with a status other than Expected, and no non-deleted 
+        serial units.
+        @param authtoken The login session key
+        @param subid The id of the subscription to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.distribution.safe_delete',
+    signature   => q/
+        Deletes an existing distribution and related records
+        (streams, etc.), but only if there are no attached serial items
+        with a status other than Expected, and no non-deleted serial
+        units.
+        @param authtoken The login session key
+        @param subid The id of the distribution to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.stream.safe_delete',
+    signature   => q/
+        Deletes an existing stream and associated routing list, but only
+        if there are no attached serial items with a status other than
+        Expected, and no non-deleted serial units.
+        items and no issuances.
+        @param authtoken The login session key
+        @param strid The id of the stream to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.caption_and_pattern.safe_delete',
+    signature   => q/
+        Deletes an existing caption and pattern object, but only
+        if there are no attached serial issuances. 
+        @param authtoken The login session key
+        @param strid The id of the scap to delete
+        @return 1 on success - Event otherwise.
+        /
+);
+
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.subscription.safe_delete.dry_run',
+);
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.distribution.safe_delete.dry_run',
+);
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.stream.safe_delete.dry_run',
+);
+__PACKAGE__->register_method(
+    method      => 'safe_delete',
+    api_name        =>  'open-ils.serial.caption_and_pattern.safe_delete.dry_run',
+);
+
+sub safe_delete {
+    my( $self, $conn, $authtoken, $id ) = @_;
+
+    $self->api_name =~ /serial\.(\w*)\.safe_delete/;
+    my $type = $1;
+
+    my $e = new_editor(xact=>1, authtoken=>$authtoken);
+    return $e->die_event unless $e->checkauth;
+
+    my $obj;
+
+    if ($type eq 'stream') {
+        my $sstr = $e->retrieve_serial_stream([
+            $id, {
+                "flesh" => 2, "flesh_fields" => {
+                    "sstr" => ["items","distribution"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless $e->allowed(
+            "ADMIN_SERIAL_STREAM", $sstr->distribution->holding_lib
+        );
+
+        foreach my $sitem (@{$sstr->items}) {
+            if ($sitem->status ne 'Expected') {
+                return $e->die_event(OpenILS::Event->new('SERIAL_STREAM_NOT_EMPTY', payload=>$id));
+            }
+            if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                return $e->die_event(OpenILS::Event->new('SERIAL_STREAM_NOT_EMPTY', payload=>$id));
+            }
+        }
+
+        $obj = $sstr;
+
+    } elsif ($type eq 'distribution') {
+        my $sdist = $e->retrieve_serial_distribution([
+            $id, {
+                "flesh" => 3, "flesh_fields" => {
+                    "sstr" => ["items"],
+                    "sdist" => ["streams"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_DISTRIBUTION", $sdist->holding_lib);
+
+        foreach my $sstr (@{$sdist->streams}) {
+            foreach my $sitem (@{$sstr->items}) {
+                if ($sitem->status ne 'Expected') {
+                    return $e->die_event(OpenILS::Event->new('SERIAL_DISTRIBUTION_NOT_EMPTY', payload=>$id));
+                }
+                if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                    return $e->die_event(OpenILS::Event->new('SERIAL_DISTRIBUTION_NOT_EMPTY', payload=>$id));
+                }
+            }
+        }
+
+        $obj = $sdist;
+
+    } elsif ($type eq 'caption_and_pattern') {
+        my $scap = $e->retrieve_serial_caption_and_pattern([
+            $id,
+            { flesh => 1, flesh_fields => { scap => ['subscription'] } }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_CAPTION_PATTERN", $scap->subscription->owning_lib);
+
+        my $issuances = $e->search_serial_issuance([{
+            caption_and_pattern => $id
+        },{
+            flesh => 2,
+            flesh_fields => {
+                siss  => ['items'],
+                sitem => ['unit']
+            }
+        }]);
+
+        foreach my $siss (@$issuances) {
+            foreach my $sitem (@{$siss->items}) {
+                if ($sitem->status ne 'Expected') {
+                    return $e->die_event(OpenILS::Event->new('SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY', payload=>$id));
+                }
+                if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                    return $e->die_event(OpenILS::Event->new('SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY', payload=>$id));
+                }
+            }
+        }
+
+        $obj = $scap;
+
+    } else { # subscription
+        my $sub = $e->retrieve_serial_subscription([
+            $id, {
+                "flesh" => 4, "flesh_fields" => {
+                    "ssub" => [qw/distributions issuances/],
+                    "sdist" => [qw/streams/],
+                    "sstr" => ["items"],
+                    "sitem" => ["unit"]
+                }
+            }
+        ]) or return $e->die_event;
+
+        return $e->die_event unless
+            $e->allowed("ADMIN_SERIAL_SUBSCRIPTION", $sub->owning_lib);
+
+        foreach my $sdist (@{$sub->distributions}) {
+            foreach my $sstr (@{$sdist->streams}) {
+                foreach my $sitem (@{$sstr->items}) {
+                    if ($sitem->status ne 'Expected') {
+                        return $e->die_event(OpenILS::Event->new('SERIAL_SUBSCRIPTION_NOT_EMPTY', payload=>$id));
+                    }
+                    if ($sitem->unit && !$U->is_true($sitem->unit->deleted)) {
+                        return $e->die_event(OpenILS::Event->new('SERIAL_SUBSCRIPTION_NOT_EMPTY', payload=>$id));
+                    }
+                }
+            }
+        }
+
+        $obj = $sub;
+    }
+
+    if (! ($self->api_name =~ /dry_run/)) {
+        my $method = "delete_serial_${type}";
+        $e->$method($obj) or return $e->die_event;
+        $e->commit;
+    }
+
+    return 1;
+}
+
 __PACKAGE__->register_method(
     method    => 'fleshed_ssub_alter',
     api_name  => 'open-ils.serial.subscription.fleshed.batch.update',
@@ -3229,7 +3659,7 @@ sub bre_by_identifier {
         $search->disconnect;
 
         # Un-nest results. They tend to look like [[1],[2],[3]] for some reason.
-        @ids = map { @{$_} } @{$search_result->{"ids"}};
+        @ids = map { @{$_}[0] } @{$search_result->{"ids"}};
 
         unless (@ids) {
             $e->disconnect;
@@ -3892,6 +4322,42 @@ sub summary_test {
     $conn->respond(_summarize_contents($e, \@issuances, $dist));
     $e->rollback;
     return;
+}
+
+__PACKAGE__->register_method(
+    "method" => "fetch_pattern_templates",
+    "api_name" => "open-ils.serial.pattern_template.retrieve.at",
+    "stream" => 1,
+    "signature" => {
+        "desc" => q{Return the set of pattern templates that are
+            visible to the specified library.},
+        "params" => [
+            {"desc" => "Authtoken", "type" => "string"},
+            {"desc" => "OU ID", "type" => "number"},
+        ],
+        return => {
+            desc => "stream of pattern templates",
+            type => "object", class => "spt"
+        }
+    }
+);
+
+sub fetch_pattern_templates {
+    my ($self, $client, $auth, $org_unit)  = @_;
+
+    my $e = new_editor("authtoken" => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    my $patterns = $e->json_query({
+        from => [ 'serial.pattern_templates_visible_to' => $org_unit ]
+    });
+$logger->info(Dumper($patterns)); use Data::Dumper;
+
+    $client->respond($e->retrieve_serial_pattern_template($_->{id}))
+        foreach (@$patterns);
+
+    $e->disconnect;
+    return undef;
 }
 
 1;

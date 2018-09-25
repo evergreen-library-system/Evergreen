@@ -14,6 +14,7 @@ $Data::Dumper::Indent = 0;
 use DateTime;
 use DateTime::Format::ISO8601;
 my $U = 'OpenILS::Application::AppUtils';
+use List::MoreUtils qw/uniq/;
 
 sub prepare_extended_user_info {
     my $self = shift;
@@ -933,7 +934,8 @@ sub handle_hold_update {
         $url = $self->ctx->{proto} . '://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/holds';
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($self->cgi->param($param)) {
-                $url .= ";$param=" . uri_escape_utf8($self->cgi->param($param));
+                my @vals = $self->cgi->param($param);
+                $url .= ";$param=" . uri_escape_utf8($_) foreach @vals;
             }
         }
     }
@@ -950,7 +952,7 @@ sub load_myopac_holds {
     my $limit = $self->cgi->param('limit') || 15;
     my $offset = $self->cgi->param('offset') || 0;
     my $action = $self->cgi->param('action') || '';
-    my $hold_id = $self->cgi->param('id');
+    my $hold_id = $self->cgi->param('hid');
     my $available = int($self->cgi->param('available') || 0);
 
     my $hold_handle_result;
@@ -984,7 +986,7 @@ sub load_place_hold {
     my $cgi = $self->cgi;
 
     $self->ctx->{page} = 'place_hold';
-    my @targets = $cgi->param('hold_target');
+    my @targets = uniq $cgi->param('hold_target');
     my @parts = $cgi->param('part');
 
     $ctx->{hold_type} = $cgi->param('hold_type');
@@ -999,6 +1001,23 @@ sub load_place_hold {
     }
 
     return $self->generic_redirect unless @targets;
+
+    # Check for multiple hold placement via the num_copies widget.
+    my $num_copies = int($cgi->param('num_copies')); # if undefined, we get 0.
+    if ($num_copies > 1) {
+        # Only if we have 1 hold target and no parts.
+        if (scalar(@targets) == 1 && !$parts[0]) {
+            # Also, only for M and T holds.
+            if ($ctx->{hold_type} eq 'M' || $ctx->{hold_type} eq 'T') {
+                # Add the extra holds to @targets. NOTE: We start with
+                # 1 and go to < $num_copies to account for the
+                # existing target.
+                for (my $i = 1; $i < $num_copies; $i++) {
+                    push(@targets, $targets[0]);
+                }
+            }
+        }
+    }
 
     $logger->info("Looking at hold_type: " . $ctx->{hold_type} . " and targets: @targets");
 
@@ -1241,15 +1260,23 @@ sub load_place_hold {
         # like a real P-type hold.
         my (@p_holds, @t_holds);
 
-        for my $idx (0..$#parts) {
-            my $hdata = $hold_data[$idx];
-            if (my $part = $parts[$idx]) {
-                $hdata->{target_id} = $part;
-                $hdata->{selected_part} = $part;
-                push(@p_holds, $hdata);
-            } else {
-                push(@t_holds, $hdata);
+        # Now that we have the num_copies field for mutliple title and
+        # metarecord hold placement, the number of holds and parts
+        # arrays can get out of sync.  We only want to parse out parts
+        # if the numbers are equal.
+        if ($#hold_data == $#parts) {
+            for my $idx (0..$#parts) {
+                my $hdata = $hold_data[$idx];
+                if (my $part = $parts[$idx]) {
+                    $hdata->{target_id} = $part;
+                    $hdata->{selected_part} = $part;
+                    push(@p_holds, $hdata);
+                } else {
+                    push(@t_holds, $hdata);
+                }
             }
+        } else {
+            @t_holds = @hold_data;
         }
 
         $self->apache->log->warn("$#parts : @t_holds");
@@ -1342,7 +1369,8 @@ sub attempt_hold_placement {
                 last;
             }
 
-            my ($hdata) = grep {$_->{target_id} eq $resp->{target}} @hold_data;
+            # Skip those that had the hold_success or hold_failed fields set for duplicate holds placement.
+            my ($hdata) = grep {$_->{target_id} eq $resp->{target} && !($_->{hold_failed} || $_->{hold_success})} @hold_data;
             my $result = $resp->{result};
 
             if ($U->event_code($result)) {
@@ -1393,6 +1421,10 @@ sub attempt_hold_placement {
         }
 
         $bses->kill_me;
+    }
+
+    if ($self->cgi->param('clear_cart')) {
+        $self->clear_anon_cache;
     }
 }
 
@@ -1645,7 +1677,7 @@ sub fetch_user_circ_history {
     my %flesh_ops = (
         flesh => 3,
         flesh_fields => {
-            auch => ['target_copy'],
+            auch => ['target_copy','source_circ'],
             acp => ['call_number'],
             acn => ['record']
         },
@@ -2373,7 +2405,8 @@ sub load_myopac_bookbags {
 
                     foreach my $param (('loc', 'qtype', 'query', 'sort', 'offset', 'limit')) {
                         if ($self->cgi->param($param)) {
-                            $url .= ";$param=" . uri_escape_utf8($self->cgi->param($param));
+                            my @vals = $self->cgi->param($param);
+                            $url .= ";$param=" . uri_escape_utf8($_) foreach @vals;
                         }
                     }
 
@@ -2446,7 +2479,7 @@ sub load_myopac_bookbags {
 }
 
 
-# actions are create, delete, show, hide, rename, add_rec, delete_item, place_hold
+# actions are create, delete, show, hide, rename, add_rec, delete_item, place_hold, print, email
 # CGI is action, list=list_id, add_rec/record=bre_id, del_item=bucket_item_id, name=new_bucket_name
 sub load_myopac_bookbag_update {
     my ($self, $action, $list_id, @hold_recs) = @_;
@@ -2463,10 +2496,21 @@ sub load_myopac_bookbag_update {
     my @add_rec = $cgi->param('add_rec') || $cgi->param('record');
     my @selected_item = $cgi->param('selected_item');
     my $shared = $cgi->param('shared');
+    my $move_cart = $cgi->param('move_cart');
     my $name = $cgi->param('name');
     my $description = $cgi->param('description');
     my $success = 0;
     my $list;
+
+    # bail out if user is attempting an action that requires
+    # that at least one list item be selected
+    if ((scalar(@selected_item) == 0) && (scalar(@hold_recs) == 0) &&
+        ($action eq 'place_hold' || $action eq 'print' ||
+         $action eq 'email' || $action eq 'del_item')) {
+        my $url = $self->ctx->{referer};
+        $url .= ($url =~ /\?/ ? '&' : '?') . 'list_none_selected=1' unless $url =~ /list_none_selected/;
+        return $self->generic_redirect($url);
+    }
 
     # This url intentionally leaves off the edit_notes parameter, but
     # may need to add some back in for paging.
@@ -2476,7 +2520,8 @@ sub load_myopac_bookbag_update {
 
     foreach my $param (('loc', 'qtype', 'query', 'sort')) {
         if ($cgi->param($param)) {
-            $url .= "$param=" . uri_escape_utf8($cgi->param($param)) . ";";
+            my @vals = $cgi->param($param);
+            $url .= ";$param=" . uri_escape_utf8($_) foreach @vals;
         }
     }
 
@@ -2491,15 +2536,29 @@ sub load_myopac_bookbag_update {
             $list->pub($shared ? 't' : 'f');
             $success = $U->simplereq('open-ils.actor',
                 'open-ils.actor.container.create', $e->authtoken, 'biblio', $list);
-            if (ref($success) ne 'HASH' && scalar @add_rec) {
+            if (ref($success) ne 'HASH') {
                 $list_id = (ref($success)) ? $success->id : $success;
-                foreach my $add_rec (@add_rec) {
-                    my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
-                    $item->bucket($list_id);
-                    $item->target_biblio_record_entry($add_rec);
-                    $success = $U->simplereq('open-ils.actor',
-                                            'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
-                    last unless $success;
+                if (scalar @add_rec) {
+                    foreach my $add_rec (@add_rec) {
+                        my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+                        $item->bucket($list_id);
+                        $item->target_biblio_record_entry($add_rec);
+                        $success = $U->simplereq('open-ils.actor',
+                                                'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+                        last unless $success;
+                    }
+                }
+                if ($move_cart) {
+                    my ($cache_key, $list) = $self->fetch_mylist(0, 1);
+                    foreach my $add_rec (@$list) {
+                        my $item = Fieldmapper::container::biblio_record_entry_bucket_item->new;
+                        $item->bucket($list_id);
+                        $item->target_biblio_record_entry($add_rec);
+                        $success = $U->simplereq('open-ils.actor',
+                                                'open-ils.actor.container.item.create', $e->authtoken, 'biblio', $item);
+                        last unless $success;
+                    }
+                    $self->clear_anon_cache;
                 }
             }
             $url = $cgi->param('where_from') if ($success && $cgi->param('where_from'));
@@ -2510,7 +2569,8 @@ sub load_myopac_bookbag_update {
 
     } elsif($action eq 'place_hold') {
 
-        # @hold_recs comes from anon lists redirect; selected_itesm comes from existing buckets
+        # @hold_recs comes from anon lists redirect; selected_items comes from existing buckets
+        my $from_basket = scalar(@hold_recs);
         unless (@hold_recs) {
             if (@selected_item) {
                 my $items = $e->search_container_biblio_record_entry_bucket_item({id => \@selected_item});
@@ -2523,13 +2583,21 @@ sub load_myopac_bookbag_update {
 
         my $url = $self->ctx->{opac_root} . '/place_hold?hold_type=T';
         $url .= ';hold_target=' . $_ for @hold_recs;
+        $url .= ';from_basket=1' if $from_basket;
         foreach my $param (('loc', 'qtype', 'query')) {
             if ($cgi->param($param)) {
-                $url .= ";$param=" . uri_escape_utf8($cgi->param($param));
+                my @vals = $cgi->param($param);
+                $url .= ";$param=" . uri_escape_utf8($_) foreach @vals;
             }
         }
         return $self->generic_redirect($url);
 
+    } elsif ($action eq 'print') {
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@selected_item);
+        return $self->load_mylist_print($temp_cache_key);
+    } elsif ($action eq 'email') {
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@selected_item);
+        return $self->load_mylist_email($temp_cache_key);
     } else {
 
         $list = $e->retrieve_container_biblio_record_entry_bucket($list_id);

@@ -3,6 +3,264 @@ Evergreen 2.12 Release Notes
 :toc:
 :numbered:
 
+Evergreen 2.12.12
+-----------------
+This release is a security release that fixes cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/contents.tt2`
+* `Open-ILS/src/templates/opac/parts/record/copy_counts.tt2`
+* `Open-ILS/src/templates/opac/parts/record/issues-mfhd.tt2`
+
+Note that exploiting the XSS vulnerabilities fixed in this release
+would require either the ability to create maliciously-constructed
+MARC bibliographic or holdings records or the ability to set a
+maliciously constructed organizational unit name.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.12 security release of
+Evergreen:
+
+* Galen Charlton
+* Dan Scott
+* Chris Sharp
+
+Evergreen 2.12.11
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.10:
+
+* The MARC Editor in the Web staff client now wraps long fields.
+* The MARC Editor no longer allows catalogers to enter new lines
+into MARC subfields.
+* Fixes an issue in the Web staff client reports module that caused
+syntax errors in reports that use virtual fields and joins.
+* Fixes an issue that created duplicate copy data when copies or
+volumes with parts were transferred.
+* Fixes an issue with the http -> https redirect on Apache 2.4.
+* Fixes a color contrast accessibility issue in the Web staff
+client and adds underlining to links in grids for added accessibility.
+* Adds automated regression and unit tests for the Web staff client
+reports module.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.11 point release of
+Evergreen:
+
+* Galen Charlton
+* Blake Graham-Henderson
+* Kathy Lussier
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
+
+Evergreen 2.12.10
+-----------------
+This release contains bug fixes improving on Evergreen 2.12.9:
+
+* The patron bills screen now prevents staff members from double-clicking
+on the Apply Payment button (which otherwise would apply two payments).
+* Fixes a performance bug related to patrons logging in by barcode.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.10 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jason Stephenson
+* Dan Wells
+
+Evergreen 2.12.9
+----------------
+This release contains bug fixes improving on Evergreen 2.12.8:
+
+* NodeJs is now installed from source, rather than using a pre-compiled binary.
+* NodeJs is now at version 6.11.3, which is the most recent LTS release.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.9 point release of
+Evergreen:
+
+* Jeanette Lundgren
+* Ben Shum
+* Remington Steed
+
+Evergreen 2.12.8
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.7:
+
+* Many patron fields have been redacted from the web staff client's patron
+and record holds grids, leaving patron name, username, and ID.
+* Fixes two bugs where patron records could fail to be saved upon editing.
+* The patron summary in the web staff client now correctly displays
+primary and secondary ID values.
+* Patron barcode search completion in the web staff client now allows
+the user to select from all of the matching patron records.
+* The web staff print templates for current and historical bills can
+now include copy barcode and title.
+* Fixes a bug that resulted in some catalog searches unexpectedly
+timing out.
+* Fixes a bug where placing a hold request in the public catalog could result
+in "forgetting" the type and library of the user's previous search.
+* Fixes a bug that made using the volume/copy editor to change a copy's
+price problematic.
+* The administration interface for hard due dates now ensures that
+new (or edited) ceiling dates have their time component set to end
+of day, resolving an issue where ceiling dates would not be applied
+during the ceiling date itself.
+* Asset merging during bibliographic record merging now correctly
+recognizes call number prefixes and suffixes and deletes disused
+call number records.
+* The Concerto sample data set now includes data allowing for testing
+placing holds on monographic parts.
+* Fixes a bug where displaying user surveys could result in PCRUD
+drone starvation.
+* Fixes a bug where pg_restore of an Evergreen database could fail
+to create certain indexes on the `actor.usr` table.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.8 point release of
+Evergreen:
+
+* Alex Cautley 
+* Ben Shum 
+* Bill Erickson 
+* Cesar Velez 
+* Chris Sharp 
+* Galen Charlton 
+* Jason Boyer 
+* Jason Stephenson 
+* Jeff Davis 
+* Jeff Godin 
+* Kathy Lussier 
+* Kyle Huckins 
+* Michele Morgan 
+* Mike Rylander 
+* Remington Steed 
+* Rogan Hamby 
+
+Evergreen 2.12.7
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.6
+
+* Fixes a bug in the web staff client that prevented initials from being
+stored with copy notes.
+* Adds billing types that may have been missed by systems that were 
+running Evergreen prior to the 1.4 release.
+* Fixes a web staff client bug with the CSV export option available from
+the Import Queue in the MARC Batch Import/Export interface.
+* Adds the missing copy alert field in the web client's volume/copy
+editor.
+* Fixes a bug where the setting to require date of birth in patron
+registration was not being honored in the web staff client.
+* Fixes a bug in the web staff client patron registration form where the 
+password wasn't generating from the last four digits of the patron's
+phone number.
+* Fixes an issue in the web staff client where the complete barcode did
+not display in some interfaces when partial barcodes were scanned.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.7 point release of
+Evergreen:
+
+* Galen Charlton
+* Bill Erickson
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Cesar Velez
+
+
+Evergreen 2.12.6
+----------------
+This release contains several bug fixes improving on Evergreen 2.12.5.
+
+* Removes the option to add a title to My List from Group Formats and
+Editions searches where the option never worked correctly due to a bad id.
+* Removes deleted shelving locations from the web client's volume/copy editor. Since there is no database constraint that prevents a copy from a deleted shelving location, if there are already copies attached to those shelving locations, the copy location selector will be blank. Evergreen admins can identify those items by running the following query:
+
+----
+select acp.id, acp.barcode, acpl.name
+from asset.copy acp
+join asset.copy_location acpl on (acpl.id = acp.location)
+where not acp.deleted
+and acpl.deleted
+order by acp.id;
+----
+* Adds the patron opt-in check in the web client whenever a patron is retrieved
+by barcode scan, patron search, or item circ history.
+* Fixes a bug where the price and acquisitions cost fields did not display
+their values. 
+* Fixes a bug where a patron's circulation history no longer moved to the lead
+account when merging patron accounts.
+* Now hides the ebook tabs in My Account for sites that have not yet enabled the
+Ebook API service.
+* Trims spaces from patron barcodes in the web client check out interface.
+* Makes a string in the holds validation alert translatable. 
+* Fixes a bug that prevented the web client patron registration screen from
+loading when there is an opt-in action triggers, such as the email checkout
+receipt, t set to be a registration default. 
+* Fixes a bug where barcode validation in the web client patron editor was 
+using the incorrect regular expression.
+* Replaces an empty string in the mobile carrier dropdown menu with a 'Please
+select your mobile carrier' label to improve usability and resolve a problem
+with translations.
+* Restores the ability to display a photo in the web client patron editor for
+accounts that have an actor.usr.photo_url.
+* Fixes a Firefox display issue in the web client that occurred when retrieving
+a bib record by TCN when the MARC Edit tab was set as the default view.
+* Fixes an bug where setting a patron's default pickup location in the web 
+client patron editor inadvertently changed the home library. It also disables
+any locations that are not viable pickup locations.
+* Fixes a bug where a misscan in a copy bucket failed silently.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 2.12.6 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Blake Henderson
+* Skye Howard
+* Kathy Lussier
+* Terran McCanna
+* Jane Sandberg
+* Ben Shum
+* Cesar Velez
+
 Evergreen 2.12.5
 ----------------
 This release contains several bug fixes improving on Evergreen 2.12.4.

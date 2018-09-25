@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-25 17:09-0400\n"
-"PO-Revision-Date: 2013-12-27 09:47+0000\n"
+"POT-Creation-Date: 2018-08-15 11:29-0400\n"
+"PO-Revision-Date: 2017-07-20 12:48+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2016-08-26 05:18+0000\n"
-"X-Generator: Launchpad (build 18179)\n"
+"X-Launchpad-Export-Date: 2018-08-16 05:38+0000\n"
+"X-Generator: Launchpad (build 18747)\n"
 "X-Accelerator-Marker: &\n"
 
 #: staff.z39_50.search_class.item_type.all
@@ -225,7 +225,7 @@ msgstr "Գին"
 
 #: staff.acp_label_cost
 msgid "Acquisition Cost"
-msgstr ""
+msgstr "Համալրման գին"
 
 #: staff.acp_label_status
 msgctxt "staff.acp_label_status"
@@ -234,7 +234,7 @@ msgstr "Վիճակ"
 
 #: staff.acp_label_age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Տարիքի հետ կապված պահման պաշտպանություն"
 
 #: staff.ahr_current_copy_label
 msgid "Current Copy"

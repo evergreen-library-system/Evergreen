@@ -1,5 +1,8 @@
+Adding Evergreen Search to Web Browsers
+---------------------------------------
+
 Adding OpenSearch to Firefox browser
-------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OpenSearch is a collection of simple formats for the sharing of search results.
 More information about OpenSearch can be found on their

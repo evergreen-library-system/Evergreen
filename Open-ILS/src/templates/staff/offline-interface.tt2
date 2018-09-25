@@ -1,0 +1,632 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Offline"); 
+  ctx.page_app = "egOffline";
+%]
+
+
+<script type="text/ng-template" id="offline-template">
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="input-group">
+      <div class="input-group-addon"><b>[% l('Workstation') %]</b></div>
+      <div class="input-group-addon">
+        <select class="form-control" required
+          ng-model="workstation"
+          ng-options="ws.id as ws.name for ws in workstations"></select>
+      </div>
+      <div class="input-group-addon"><b>[% l('Working location') %]</b></div>
+      <div class="input-group-addon">
+        <eg-org-selector sticky-setting="eg.org.offline_location" selected="org"></eg-org-selector>
+      </div>
+      <div class="input-group-addon">
+        <button
+          class="btn btn-primary"
+          ng-disabled="all_xact.length == 0 || active_tab == 'register'"
+          ng-click="save()">
+            [% l('Save Transactions') %]
+        </button>
+        <button
+          class="btn btn-default"
+          ng-disabled="!printed"
+          ng-click="reprintLast()">
+            [% l('Reprint Last Receipt') %]
+        </button>
+        <button
+          class="btn btn-default"
+          ng-disabled="buildingBlockList"
+          ng-if="logged_in"
+          ng-click="downloadBlockList()">
+            [% l('Download block list') %]
+        </button>
+        <button
+          class="btn btn-default"
+          ng-disabled="pending_xacts.length == 0"
+          eg-line-exporter
+          ng-if="!logged_in"
+          default-file-name="pending.xacts"
+          json-array="pending_xacts"
+        >[% l('Export Transactions') %]</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row col-md-offset-3 col-md-6 pad-vert">
+  <div ng-show="logged_in && active_tab != 'session'" class="alert alert-danger">
+    <h2>[% l('Warning') %]</h2>
+    [% l('You are about to enter offline mode. If you proceed, you will be logged out.') %]
+    <br/>
+    <br/>
+    <button class="btn btn-danger" ng-click="logout()">[% l('Proceed') %]</button>
+  </div>
+</div>
+
+<div class="row col-md-12 pad-vert">
+  <div class="col-md-12">
+    <uib-tabset active="active_tab">
+      <!-- note that non-numeric index values must be enclosed in single-quotes,
+           otherwise selecting the active table won't work cleanly -->
+      <uib-tab ng-show="logged_in" index="'session'" heading="[% l('Session Management') %]">
+        <div class="col-md-12" ng-controller="OfflineSessionCtrl">
+          <uib-tabset active="active_session_tab">
+            <uib-tab index="'pending'" heading="[% l('Pending Transactions') %]">
+              <div class="row">
+                <div class="col-md-12 container">
+                  <button
+                    class="btn btn-default"
+                    ng-disabled="pending_xacts.length == 0"
+                    eg-line-exporter
+                    default-file-name="pending.xacts"
+                    json-array="pending_xacts"
+                  >[% l('Export Transactions') %]</button>
+                  <div class="btn-group">
+                    <span class="btn btn-default btn-file">
+                      [% l('Import Transactions') %]
+                      <input type="file" eg-file-reader container="imported_pending_xacts.data">
+                    </span>
+                  </div>
+                <button class="btn btn-warning pull-right" ng-click="clear_pending()">[% l('Clear Transactions') %]</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 container">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>[% l('Type') %]</th>
+                        <th>[% l('Timestamp') %]</th>
+                        <th>[% l('Patron Barcode') %]</th>
+                        <th>[% l('Item Barcode') %]</th>
+                        <th>[% l('Non-cataloged Type') %]</th>
+                        <th>[% l('Checkout Date') %]</th>
+                        <th>[% l('Due Date') %]</th>
+                        <th>[% l('Checkin Date') %]</th>
+                        <th>[% l('First Name') %]</th>
+                        <th>[% l('Last Name') %]</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="xact in pending_xacts track by $index">
+                        <td>{{xact.type}}</td>
+                        <td>{{createDate(xact.timestamp, true) | date:'short'}}</td>
+                        <td>{{xact.patron_barcode || xact.user.card.barcode}}</td>
+                        <td>{{xact.barcode}}</td>
+                        <td>{{lookupNoncatTypeName(xact.noncat_type)}}</td>
+                        <td>{{createDate(xact.checkout_time) | date:'short'}}</td>
+                        <td>{{createDate(xact.due_date) | date:'shortDate'}}</td>
+                        <td>{{createDate(xact.backdate) | date:'shortDate'}}</td>
+                        <td>{{xact.user.first_given_name}}</td>
+                        <td>{{xact.user.family_name}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </uib-tab>
+            <uib-tab index="'offline_sessions'" heading="[% l('Offline Sessions') %]">
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    class="btn btn-primary"
+                    ng-disabled="!logged_in"
+                    ng-click="createSession()">[% l('Create Session') %]</button>
+                  <button
+                    class="btn btn-default pull-right"
+                    ng-disabled="!logged_in"
+                    ng-click="refreshSessions()">[% l('Refresh') %]</button>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12"><h2>[% l('Session List') %]</h2></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table" ts-wrapper>
+                    <thead>
+                      <tr>
+                        <th ts-criteria="org">[% l('Organization') %]</th>
+                        <th ts-criteria="creator">[% l('Created By') %]</th>
+                        <th ts-criteria="description">[% l('Description') %]</th>
+                        <th ts-criteria="create_time|parseInt" ts-default="descending">[% l('Date Created') %]</th>
+                        <th>[% l('Upload Count') %]</th>
+                        <th>[% l('Transactions Processed') %]</th>
+                        <th ts-criteria="end_time|parseInt">[% l('Date Completed') %]</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ts-repeat
+                        ng-repeat="ses in sessions track by $index"
+                        ng-click="setSession(ses, $index)"
+                        ng-class="{'bg-info':current_session_index==$index}"
+                      >
+                        <td>{{ses.org}}</td>
+                        <td>{{ses.creator}}</td>
+                        <td>{{ses.description}}</td>
+                        <td>{{createDate(ses.create_time, true) | date:'short'}}</td>
+                        <td>{{ses.total}}</td>
+                        <td>{{ses.num_complete}}</td>
+                        <td>{{createDate(ses.end_time, true) | date:'short'}}</td>
+                        <td>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || pending_xacts.length == 0 || ses.end_time"
+                            ng-click="uploadPending(ses, $index)"
+                          >[% l('Upload') %]</button>
+                          <button
+                            class="btn btn-warning btn-xs"
+                            ng-disabled="!logged_in || ses.total == 0 || ses.end_time"
+                            ng-click="processSession(ses, $index)"
+                          >[% l('Process') %]</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                    <div class="col-md-12"><hr/></div>
+              </div>
+              <div class="row">
+                    <div class="col-md-12"><h2>[% l('Exception List') %]</h2></div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>[% l('Workstation') %]</th>
+                        <th>[% l('Type') %]</th>
+                        <th>[% l('Timestamp') %]</th>
+                        <th>[% l('Event Name') %]</th>
+                        <th>[% l('Patron Barcode') %]</th>
+                        <th>[% l('Item Barcode') %]</th>
+                        <th>[% l('Non-cataloged Type') %]</th>
+                        <th>[% l('Checkout Date') %]</th>
+                        <th>[% l('Due Date') %]</th>
+                        <th>[% l('Checkin Date') %]</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="xact in current_session.exceptions track by $index">
+                        <td>{{xact.command._workstation}}</td>
+                        <td>{{xact.command.type}}</td>
+                        <td>{{createDate(xact.command.timestamp, true) | date:'short'}}</td>
+                        <td>{{xact.event.textcode}}</td>
+                        <td>{{xact.command.patron_barcode || xact.command.user.card.barcode}}</td>
+                        <td>{{xact.command.barcode}}</td>
+                        <td>{{lookupNoncatTypeName(xact.command.noncat_type)}}</td>
+                        <td>{{createDate(xact.command.checkout_time) | date:'short'}}</td>
+                        <td>{{createDate(xact.command.due_date) | date:'shortDate'}}</td>
+                        <td>{{createDate(xact.command.backdate) | date:'shortDate'}}</td>
+                        <td>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || !xact.command.barcode"
+                            ng-click="retrieveItem(xact.command.barcode)">[% l('Item') %]</button>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in || (!xact.command.patron_barcode && xact.command.user.card.barcode)"
+                            ng-click="retrievePatron(xact.command.patron_barcode)">[% l('Patron') %]</button>
+                          <button
+                            class="btn btn-info btn-xs"
+                            ng-disabled="!logged_in"
+                            ng-click="retrieveDetails(xact)">[% l('Debug') %]</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </uib-tab>
+          </uib-tabset>
+        </div>
+      </uib-tab>
+      <uib-tab index="'checkout'" heading="[% l('Checkout') %]">
+
+        <div class="row">
+
+          <!-- left-hand side -->
+          <div class="col-md-6" style="border-right:solid 1px;">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                [% l('Due Date:') %]
+              </div>
+              <div class="col-md-4">
+                <eg-date-input id="co_duedate" ng-model="shared.due_date" out-of-range="shared.outOfRange" min-date="minDate"></eg-date-input>
+              </div>
+              <div class="col-md-3">
+                <select class="form-control" ng-model="shared.due_date_offset" ng-change="resetDueDate()">
+                  <option value="">[% l('No Offset') %]</option>
+                  <option value="3">[% l('Today + 3 days') %]</option>
+                  <option value="7">[% l('Today + 7 days') %]</option>
+                  <option value="14">[% l('Today + 14 days') %]</option>
+                  <option value="30">[% l('Today + 30 days') %]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                [% l('Patron barcode:') %]
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" type="text" ng-model="checkout.patron_barcode" next-on-enter="co_barcode"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1">
+                <input type="radio" ng-model="barcode_type" value="barcode" id="bc_radio"/>
+              </div>
+              <div class="col-md-4">
+                <label style="font-weight:normal !important;" for="bc_radio">[% l('Item Barcode:') %]</label>
+              </div>
+              <div class="col-md-7">
+                <input id="co_barcode"
+                    class="form-control"
+                    ng-init="barcode_type = 'barcode'"
+                    ng-disabled="barcode_type != 'barcode'"
+                    type="text"
+                    ng-model="checkout.barcode"
+                    eg-enter="!notEnough('checkout') && add('checkout')"
+                />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-1">
+                <input type="radio" ng-model="barcode_type" value="noncat" id="nc_radio"/>
+              </div>
+              <div class="col-md-4">
+                <label style="font-weight:normal !important;" for="nc_radio">[% l('Non-cataloged Type:') %]</label>
+              </div>
+              <div class="col-md-5">
+                <select
+                    class="form-control"
+                    ng-disabled="barcode_type != 'noncat'"
+                    ng-options="nct.id() as nct.name() for nct in noncats"
+                    ng-model="checkout.noncat_type"
+                >
+                  <option value="">[% l('Select Non-cataloged Type') %]</option>
+                </select>
+              </div>
+              <div class="col-md-2">
+                <input
+                    class="form-control"
+                    ng-disabled="barcode_type != 'noncat'"
+                    type="number"
+                    min="1"
+                    max="100"
+                    ng-model="checkout.noncat_count"
+                />
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-2">
+                <button class="btn btn-warning" ng-click="clear('checkout')">[% l('Clear') %]</button>
+              </div>
+              <div class="col-md-4">
+                <input id="do_check_co" type="checkbox" ng-model="strict_barcode" ng-click="changeCheck()"></input>
+                <label for="do_check_co">[% l('Strict Barcode') %]</label>
+              </div>
+              <div class="col-md-6">
+                <input id="do_print_co" type="checkbox" ng-model="do_print" ng-click="changePrint()"></input>
+                <label for="do_print_co">[% l('Print receipt') %]</label>
+                <button class="btn btn-primary pull-right" ng-disabled="notEnough('checkout')" ng-click="add('checkout','co_barcode')">[% l('Checkout') %]</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- right-hand side -->
+          <div class="col-md-6 container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>[% l('Patron barcode') %]</th>
+                  <th>[% l('Item barcode') %]</th>
+                  <th>[% l('Due date') %]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="xact in xact_page.checkout track by $index">
+                  <td>{{xact.patron_barcode}}</td>
+                  <td>{{xact.barcode}}</td>
+                  <td>{{xact.due_date | date:'shortDate'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </uib-tab>
+      <uib-tab index="'renew'" heading="[% l('Renew') %]">
+
+        <div class="row">
+
+          <!-- left-hand side -->
+          <div class="col-md-6" style="border-right:solid 1px;">
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                [% l('Due Date:') %]
+              </div>
+              <div class="col-md-4">
+                <eg-date-input ng-model="shared.due_date" out-of-range="shared.outOfRange" min-date="minDate"></eg-date-input>
+              </div>
+              <div class="col-md-3">
+                <select class="form-control" ng-model="shared.due_date_offset" ng-change="resetDueDate()">
+                  <option value="">[% l('No Offset') %]</option>
+                  <option value="3">[% l('Today + 3 days') %]</option>
+                  <option value="7">[% l('Today + 7 days') %]</option>
+                  <option value="14">[% l('Today + 14 days') %]</option>
+                  <option value="30">[% l('Today + 30 days') %]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                [% l('Patron barcode:') %]
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" type="text" ng-model="renew.patron_barcode" next-on-enter="re_barcode"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1"></div>
+              <div class="col-md-4">
+                [% l('Item Barcode:') %]
+              </div>
+              <div class="col-md-7">
+                <input class="form-control" type="text" ng-model="renew.barcode" id="re_barcode" eg-enter="!notEnough('renew') && add('renew')"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-2">
+                <button class="btn btn-warning" ng-click="clear('renew')">[% l('Clear') %]</button>
+              </div>
+              <div class="col-md-4">
+                <input id="do_check_r" type="checkbox" ng-model="strict_barcode" ng-click="changeCheck()"></input>
+                <label for="do_check_r">[% l('Strict Barcode') %]</label>
+              </div>
+              <div class="col-md-6">
+                <input id="do_print_r" type="checkbox" ng-model="do_print" ng-click="changePrint()"></input>
+                <label for="do_print_r">[% l('Print receipt') %]</label>
+                <button class="btn btn-primary pull-right" ng-disabled="notEnough('renew')" ng-click="add('renew','re_barcode')">[% l('Renew') %]</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- right-hand side -->
+          <div class="col-md-6 container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>[% l('Patron barcode') %]</th>
+                  <th>[% l('Item barcode') %]</th>
+                  <th>[% l('Due date') %]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="xact in xact_page.renew track by $index">
+                  <td>{{xact.patron_barcode}}</td>
+                  <td>{{xact.barcode}}</td>
+                  <td>{{xact.due_date | date:'shortDate'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </uib-tab>
+      <uib-tab index="'in_house_use'" heading="[% l('In-house Use') %]">
+
+        <div class="row">
+
+          <!-- left-hand side -->
+          <div class="col-md-6 container" style="border-right:solid 1px;">
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                [% l('Use count:') %]
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" type="number" min="1" max="100" next-on-enter="ihu_barcode" ng-model="in_house_use.count"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                [% l('Item Barcode:') %]
+              </div>
+              <div class="col-md-6">
+                <input class="form-control" type="text" ng-model="in_house_use.barcode" eg-enter="add('in_house_use')" id="ihu_barcode"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-2">
+                <button class="btn btn-warning" ng-click="clear('in_house_use')">[% l('Clear') %]</button>
+              </div>
+              <div class="col-md-4">
+                <input id="do_check_ihu" type="checkbox" ng-model="strict_barcode" ng-click="changeCheck()"></input>
+                <label for="do_check_ihu">[% l('Strict Barcode') %]</label>
+              </div>
+              <div class="col-md-6">
+                <input id="do_print_ihu" type="checkbox" ng-model="do_print" ng-click="changePrint()"></input>
+                <label for="do_print_ihu">[% l('Print receipt') %]</label>
+                <button class="btn btn-primary pull-right" ng-disabled="notEnough('in_house_use')" ng-click="add('in_house_use','ihu_barcode')">[% l('Record Use') %]</button>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- right-hand side -->
+          <div class="col-md-6 container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>[% l('Item barcode') %]</th>
+                  <th>[% l('Use count') %]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="xact in xact_page.in_house_use track by $index">
+                  <td>{{xact.barcode}}</td>
+                  <td>{{xact.count}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </uib-tab>
+      <uib-tab index="'checkin'" heading="[% l('Checkin') %]">
+
+        <div class="row">
+
+          <!-- left-hand side -->
+          <div class="col-md-6" style="border-right:solid 1px;">
+
+            <div class="row">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                [% l('Checkin Date:') %]
+              </div>
+              <div class="col-md-6">
+                <eg-date-input ng-model="checkin.backdate"></eg-date-input>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-1"></div>
+              <div class="col-md-5">
+                [% l('Item Barcode:') %]
+              </div>
+              <div class="col-md-6">
+                <input id="ci_barcode" class="form-control" type="text" ng-model="checkin.barcode" eg-enter="!notEnough('checkin') && add('checkin')"/>
+              </div>
+            </div>
+
+            <div class="row pad-vert">
+              <div class="col-md-2">
+                <button class="btn btn-warning" ng-click="clear('checkin')">[% l('Clear') %]</button>
+              </div>
+              <div class="col-md-4">
+                <input id="do_check_ci" type="checkbox" ng-model="strict_barcode" ng-click="changeCheck()"></input>
+                <label for="do_check_ci">[% l('Strict Barcode') %]</label>
+              </div>
+              <div class="col-md-6">
+                <input id="do_print_ci" type="checkbox" ng-model="do_print" ng-click="changePrint()"></input>
+                <label for="do_print_ci">[% l('Print receipt') %]</label>
+                <button class="btn btn-primary pull-right" ng-disabled="notEnough('checkin')" ng-click="add('checkin','ci_barcode')">[% l('Checkin') %]</button>
+                    
+              </div>
+            </div>
+
+          </div>
+
+          <!-- right-hand side -->
+          <div class="col-md-6 container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>[% l('Item barcode') %]</th>
+                  <th>[% l('Effective Checkin date') %]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="xact in xact_page.checkin track by $index">
+                  <td>{{xact.barcode}}</td>
+                  <td>{{xact.backdate | date:'shortDate'}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </uib-tab>
+      <uib-tab index="'register'" heading="[% l('Register Patron') %]">
+        <div ng-controller="PatronRegCtrl">
+          <div>[% INCLUDE 'staff/circ/patron/t_edit.tt2' %]</div>
+        </div>
+      </uib-tab>
+    </uib-tabset>
+  </div>
+</div>
+
+</script>
+
+[% BLOCK APP_JS %]
+<!-- offline page app -->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/file.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/offline.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.OFFLINE_BLOCKLIST_SUCCESS = "[% l('Offline blocklist downloaded') %]";
+  s.OFFLINE_BLOCKLIST_FAIL = "[% l('Error downloading offline blocklist') %]";
+  s.DUPLICATE_BARCODE = "[% l('Duplicate item barcode') %]";
+
+  s.ALLOW = "[% l('Allow') %]";
+  s.REJECT = "[% l('Reject') %]";
+
+  s.REG_ADDR_TYPE = "[% l('Mailing') %]";
+  s.REG_INVALID_FIELDS =
+    "[% l('Please enter valid values for all required fields.') %]"
+  s.REG_ADDR_REQUIRED =
+    "[% l('An address is required during registration.') %]"
+
+  s.PATRON_BLOCKED_WHY = {};
+  s.PATRON_BLOCKED_WHY.D = "[% l('Patron has penalties') %]";
+  s.PATRON_BLOCKED_WHY.L = "[% l('Barcode is reported Lost') %]";
+  s.PATRON_BLOCKED_WHY.E = "[% l('Patron account is Expired') %]";
+  s.PATRON_BLOCKED_WHY.B = "[% l('Patron account is Barred') %]";
+
+}]);
+</script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/staff/build/css/tablesort.css" />
+[% END %]
+
+<div ng-view></div> 
+
+[% END %]
+

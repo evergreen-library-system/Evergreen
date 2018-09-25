@@ -11,13 +11,13 @@ s.PATRON_ACCOUNT_EXPIRED =
 s.CIRC_CLAIMS_RETURNED = 
   '[% l('Item "[_1]" is marked as Claims Returned', '{{barcode}}') %]';
 s.CHECKOUT_FAILED_GENERIC =
-  '[% l('Unable to checkout copy "[_1]" : [_2]', '{{barcode}}', '{{textcode}}') %]';
+  '[% l('Unable to checkout item "[_1]" : [_2]', '{{barcode}}', '{{textcode}}') %]';
 s.EMAILED_CHECKOUT_RECEIPT =
   "[% l('Emailed checkout receipt') %]";
 s.COPY_ALERT_MSG_DIALOG_TITLE =
-  '[% l('Copy Alert Message for "[_1]"', '{{copy_barcode}}') %]';
+  '[% l('Item Alert Message for "[_1]"', '{{copy_barcode}}') %]';
 s.UNCAT_ALERT_DIALOG =
-  '[% l('Copy "[_1]" was mis-scanned or is not cataloged', '{{copy_barcode}}') %]';
+  '[% l('Item "[_1]" was mis-scanned or is not cataloged', '{{copy_barcode}}') %]';
 s.PERMISSION_DENIED = 
   '[% l('Permission Denied : [_1]', '{{permission}}') %]';
 s.PRECAT_CHECKIN_MSG = 
@@ -30,11 +30,33 @@ s.MARK_MISSING_CONFIRM = '[% l("Mark {{num_items}} items as MISSING?") %]';
 s.ABORT_TRANSIT_CONFIRM = '[% l("Cancel {{num_transits}} transits?") %]';
 s.ROUTE_TO_HOLDS_SHELF = '[% l("Holds Shelf") %]';
 s.ROUTE_TO_CATALOGING = '[% l("Cataloging") %]';
-s.COPY_IN_TRANSIT = '[% l("Copy is In-Transit") %]';
+s.COPY_IN_TRANSIT = '[% l("Item is In-Transit") %]';
 s.TOO_MANY_CLAIMS_RETURNED = 
   '[% l("Patron exceeds claims returned count.  Force this action?") %]';
 s.MARK_NEVER_CHECKED_OUT = 
-  '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]'
+  '[% l("Mark Never Checked Out: [_1]", "{{barcodes.toString()}}") %]';
+s.ON_DEMAND_COPY_ALERT = {
+    'CHECKIN': {
+        'NORMAL' : '[% l("Normal checkin") %]',
+        'LOST' : '[% l("Item was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Item was marked lost and paid for") %]',
+        'MISSING' : '[% l("Item was marked missing") %]',
+        'DAMAGED' : '[% l("Item was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Item was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Item was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Item was marked claims never checked out") %]'
+    },
+    'CHECKOUT': {
+        'NORMAL' : '[% l("Normal checkout") %]',
+        'LOST' : '[% l("Item was marked lost") %]',
+        'LOST_AND_PAID' : '[% l("Item was marked lost and paid for") %]',
+        'MISSING' : '[% l("Item was marked missing") %]',
+        'DAMAGED' : '[% l("Item was marked damaged") %]',
+        'CLAIMSRETURNED' : '[% l("Item was marked claims returned") %]',
+        'LONGOVERDUE' : '[% l("Item was marked long overdue") %]',
+        'CLAIMSNEVERCHECKEDOUT' : '[% l("Item was marked claims never checked out") %]'
+    }
+};
 }]);
 </script>
 

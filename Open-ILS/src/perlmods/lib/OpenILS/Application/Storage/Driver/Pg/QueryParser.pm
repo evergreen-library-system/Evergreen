@@ -4,10 +4,12 @@ use warnings;
 package OpenILS::Application::Storage::Driver::Pg::QueryParser;
 use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
+use OpenSRF::Utils::Logger qw($logger);
+use Data::Dumper;
 my $U = 'OpenILS::Application::AppUtils';
 
 my ${spc} = ' ' x 2;
@@ -228,6 +230,15 @@ sub search_field_id_map {
     return $self->custom_data->{search_field_id_map};
 }
 
+sub search_field_virtual_map {
+    my $self = shift;
+    my $map = shift;
+
+    $self->custom_data->{search_field_virtual_map} ||= {};
+    $self->custom_data->{search_field_virtual_map} = $map if ($map);
+    return $self->custom_data->{search_field_virtual_map};
+}
+
 sub add_search_field_id_map {
     my $self = shift;
     my $class = shift;
@@ -244,6 +255,19 @@ sub add_search_field_id_map {
         by_id => { $id => { classname => $class, field => $field, weight => $weight } },
         by_class => { $class => { $field => $id } }
     };
+}
+
+sub add_search_field_virtual_map {
+    my $self = shift;
+    my $realid = shift;
+    my $virtid = shift;
+    my $weight = shift;
+
+    $self->search_field_virtual_map->{by_virt}{$virtid} ||= [];
+    push @{$self->search_field_virtual_map->{by_virt}{$virtid}}, { real => $realid, weight => $weight };
+
+    $self->search_field_virtual_map->{by_real}{$realid} ||= [];
+    push @{$self->search_field_virtual_map->{by_real}{$realid}}, { virt => $virtid, weight => $weight };
 }
 
 sub search_field_class_by_id {
@@ -400,6 +424,17 @@ sub initialize_search_field_id_map {
     return $self->search_field_id_map;
 }
 
+sub initialize_search_field_virtual_map {
+    my $self = shift;
+    my $cmfvm_list = shift;
+
+    __PACKAGE__->add_search_field_virtual_map( $_->real, $_->virtual, $_->weight )
+        for (@$cmfvm_list);
+
+    $logger->debug('Virtual field map: ' . Dumper($self->search_field_virtual_map));
+    return $self->search_field_virtual_map;
+}
+
 sub initialize_aliases {
     my $self = shift;
     my $cmsa_list = shift;
@@ -513,6 +548,9 @@ sub initialize {
     $self->initialize_search_field_id_map( $args{config_metabib_field} )
         if ($args{config_metabib_field});
 
+    $self->initialize_search_field_virtual_map( $args{config_metabib_field_virtual_map} )
+        if ($args{config_metabib_field_virtual_map});
+
     $self->initialize_aliases( $args{config_metabib_search_alias} )
         if ($args{config_metabib_search_alias});
 
@@ -598,6 +636,8 @@ sub TEST_SETUP {
     __PACKAGE__->add_relevance_bump( keyword => keyword => first_word => 1 );
     __PACKAGE__->add_relevance_bump( keyword => keyword => full_match => 1 );
     
+    __PACKAGE__->add_search_field_virtual_map( 6 => 15 => 5 );
+
     __PACKAGE__->class_ts_config( 'series', undef, 1, 'english_nostop' );
     __PACKAGE__->class_ts_config( 'title', undef, 1, 'english_nostop' );
     __PACKAGE__->class_ts_config( 'author', undef, 1, 'english_nostop' );
@@ -635,6 +675,8 @@ sub TEST_SETUP {
     
     __PACKAGE__->add_search_field_alias( subject => name => 'bib.subjectName' );
     
+    #__PACKAGE__->search_class_combined( keyword => 1 );
+    __PACKAGE__->search_class_combined( author => 1 );
 }
 
 __PACKAGE__->default_search_class( 'keyword' );
@@ -713,7 +755,7 @@ __PACKAGE__->add_search_modifier( 'metabib' );
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan;
 use base 'QueryParser::query_plan';
 use OpenSRF::Utils::Logger qw($logger);
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use Data::Dumper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Normalize qw/search_normalize/;
@@ -841,8 +883,8 @@ sub toSQL {
         $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted';
         # The above suffices for filters too when the #deleted modifier
         # is in use.
-    } elsif ($$flat_plan{uses_bre} or !$self->find_modifier('staff')) {
-        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+    } else {
+        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
     }
 
     my $desc = 'ASC';
@@ -1013,11 +1055,18 @@ sub toSQL {
         $$flat_plan{with} .= "c_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'&'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
 
         $final_c_attr_test = 'EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source AND vis_attr_vector @@ c_attr.vis_test)';
-        if (!$pc_vis_test) { # staff search
-            $final_c_attr_test = '(' . $final_c_attr_test . ' OR NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source))';
-        }
     }
  
+    if ($self->find_modifier('staff')) { # staff search
+        $final_c_attr_test ||= 'FALSE';
+        $final_c_attr_test = '(' . $final_c_attr_test . " OR (" .
+                "NOT EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = m.source) " .
+                "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
+            "))";
+        # We need bre here, regardless
+        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
+    }
+
     my $final_b_attr_test;
     my $b_attr_join = '';
     my $b_vis_test = '';
@@ -1034,26 +1083,24 @@ sub toSQL {
         $b_vis_test = join("||'&'||",@{$$flat_plan{vis_filter}{b_attr}});
     }
 
+    # bib vis tests are handled a little bit differently, as they're simpler but need special handling
     if ($b_vis_test or $pb_vis_test) {
         my $vis_test = '';
 
-        if ($b_vis_test and $pb_vis_test) {
-            $vis_test = $pb_vis_test . ",". $b_vis_test;
-        } elsif ($pb_vis_test) {
-            $vis_test = $pb_vis_test;
+        if ($b_vis_test and $pb_vis_test) { # $pb_vis_test supplies a query_int operator at its end
+            $vis_test = $pb_vis_test . '||'. $b_vis_test;
+        } elsif ($pb_vis_test) { # here we want to remove it
+            $vis_test = "RTRIM($pb_vis_test,'|&')";
         } else {
             $vis_test = $b_vis_test;
         }
 
         # WITH-clause just generates vis test
         $$flat_plan{with} .= "\n," if $$flat_plan{with};
-        $$flat_plan{with} .= "b_attr AS (SELECT (ARRAY_TO_STRING(ARRAY[$vis_test],'&'))::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
+        $$flat_plan{with} .= "b_attr AS (SELECT ($vis_test)::query_int AS vis_test FROM asset.patron_default_visibility_mask() x)";
 
         # These are magic numbers... see: search.calculate_visibility_attribute() UDF
         $final_b_attr_test = '(b_attr.vis_test IS NULL OR bre.vis_attr_vector @@ b_attr.vis_test)';
-        if (!$pb_vis_test) { # staff search
-            $final_b_attr_test .= " OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) )";
-        }
     }
 
     if ($final_c_attr_test or $final_b_attr_test) { # something...
@@ -1125,6 +1172,20 @@ SQL
 
 }
 
+sub is_org_visible {
+    my $org = shift;
+    return 0 if (!$U->is_true($org->opac_visible));
+
+    my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+    return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
+
+    my $ot = $U->get_org_tree;
+    while ($org = $U->find_org($ot,$org->parent_ou)) {
+        return 0 if (!$U->is_true($org->opac_visible));
+    }
+    return 1;
+}
+
 sub flatten {
     my $self = shift;
 
@@ -1150,17 +1211,6 @@ sub flatten {
                     next;
                 }
 
-                my $table = $node->table;
-                my $ctable = $node->combined_table;
-                my $talias = $node->table_alias;
-
-                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight, 0.0)";
-
-                $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
-                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* search */\n"
-                      . ${spc} x 6 . "FROM  $table AS fe";
-                $from .= "\n" . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
-
                 my @bump_fields;
                 my @field_ids;
                 if (@{$node->fields} > 0) {
@@ -1177,27 +1227,90 @@ sub flatten {
                     @bump_fields = @{$self->QueryParser->search_fields->{$node->classname}};
                 }
 
+                # use search_field_list to handle virtual index defs
+                my $search_field_list = $self->QueryParser->search_field_ids_by_class($node->classname);
+                $search_field_list = [@field_ids] if (@field_ids);
+
+                my $table = $node->table;
+                my $ctable = $node->combined_table;
+                my $talias = $node->table_alias;
+
+                my $node_rank = 'COALESCE(' . $node->rank . " * ${talias}.weight * 1000, 0.0)";
+
+                $from .= "\n" . ${spc} x 4 ."LEFT JOIN (\n"
+                      . ${spc} x 5 . "SELECT fe.*, fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* search */\n"
+                      . ${spc} x 6 . "FROM  $table AS fe\n"
+                      . ${spc} x 7 . "JOIN config.metabib_field AS fe_weight ON (fe_weight.id = fe.field)";
+
                 if ($node->dummy_count < @{$node->only_atoms} ) {
                     $with .= ",\n     " if $with;
                     $with .= "${talias}_xq AS (SELECT ". $node->tsquery ." AS tsq,". $node->tsquery_rank ." AS tsq_rank )";
                     if ($node->combined_search) {
-                        $from .= "\n" . ${spc} x 6 . "JOIN $ctable AS com ON (com.record = fe.source";
+                        $from .= "\n" . ${spc} x 7 . "JOIN $ctable AS com ON (com.record = fe.source";
                         if (@field_ids) {
                             $from .= " AND com.metabib_field IN (" . join(',',@field_ids) . "))";
                         } else {
                             $from .= " AND com.metabib_field IS NULL)";
                         }
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
+                        $from .= "\n" . ${spc} x 7 . "JOIN ${talias}_xq ON (com.index_vector @@ ${talias}_xq.tsq)";
                     } else {
-                        $from .= "\n" . ${spc} x 6 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
+                        $from .= "\n" . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)";
                     }
                 } else {
-                    $from .= "\n" . ${spc} x 6 . ", (SELECT NULL::tsquery AS tsq, NULL:tsquery AS tsq_rank ) AS ${talias}_xq";
+                    $from .= "\n" . ${spc} x 7 . ", (SELECT NULL::tsquery AS tsq, NULL::tsquery AS tsq_rank ) AS ${talias}_xq";
                 }
 
                 if (@field_ids) {
                     $from .= "\n" . ${spc} x 6 . "WHERE fe_weight.id IN  (" .
                         join(',', @field_ids) . ")";
+                }
+
+                # Even though virtual fields have all the real field data in
+                # their combined version, and thus a search against the real
+                # fields is not necessary to match records, we still want to
+                # UNION them in so we can get their virtual weight if they
+                # would match a search directly against them.
+                if ($node->dummy_count < @{$node->only_atoms} ) { # no point in searching real fields with no search terms
+                    for my $possible_vfield (@$search_field_list) {
+                        my $real_fields = $self->QueryParser->search_field_virtual_map->{by_virt}->{$possible_vfield};
+                        if ($real_fields and @$real_fields) { # this is a virt field
+                            my %vtable_field_map;
+
+                            # UNION in the others ... group by class
+                            for my $real_field (@$real_fields) {
+                                my $natural_field = $self->QueryParser->search_field_id_map->{by_id}{$$real_field{real}};
+
+                                $node->add_vfield($$real_field{real});
+                                $logger->debug("Looking up virtual field for real field $$real_field{real}");
+                                my $vtable = $node->table(
+                                    $self->QueryParser
+                                        ->search_field_class_by_id($$real_field{real})
+                                        ->{classname}
+                                );
+                                $vtable_field_map{$vtable} ||= [];
+                                push(@{$vtable_field_map{$vtable}}, $$real_field{real})
+                                    if ($$real_field{weight} != $$natural_field{weight});
+                            }
+
+                            for my $vtable (keys %vtable_field_map) {
+                                my $rfields = $vtable_field_map{$vtable};
+                                next unless (@$rfields);
+
+                                # NOTE: only real fields that match the (component) tsquery will
+                                #       get to contribute to and increased rank for the record.
+                                $from .= "\n" . ${spc} x 8 . "UNION ALL\n"
+                                      . ${spc} x 5 . "SELECT fe.id, fe.source, fe.field, fe.value, fe.index_vector, "
+                                      . "fe_weight.weight, ${talias}_xq.tsq, ${talias}_xq.tsq_rank /* virtual field addition */\n"
+                                      . ${spc} x 6 . "FROM  $vtable AS fe\n"
+                                      . ${spc} x 7 . "JOIN config.metabib_field_virtual_map AS fe_weight ON ("
+                                            ."fe_weight.virtual = $possible_vfield AND "
+                                            ."fe_weight.real IN (".join(',',@$rfields).") AND "
+                                            ."fe_weight.real = fe.field)\n"
+                                      . ${spc} x 7 . "JOIN ${talias}_xq ON (fe.index_vector @@ ${talias}_xq.tsq)"
+                                ;
+                            }
+                        }
+                    }
                 }
 
                 $from .= "\n" . ${spc} x 4 . ") AS $talias ON (m.source = ${talias}.source)";
@@ -1220,9 +1333,9 @@ sub flatten {
 
                 if(scalar @bumps > 0 && scalar @{$node->only_positive_atoms} > 0) {
                     # Note: Previous rank function used search_normalize outright. Duplicating that here.
-                    $node_rank .= "\n" . ${spc} x 5 . "* evergreen.rel_bump(('{' || quote_literal(search_normalize(";
+                    $node_rank .= "\n" . ${spc} x 5 . "* COALESCE(evergreen.rel_bump(('{' || quote_literal(search_normalize(";
                     $node_rank .= join(")) || ',' || quote_literal(search_normalize(",map { $self->QueryParser->quote_phrase_value($_->content) } @{$node->only_positive_atoms});
-                    $node_rank .= ")) || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[])";
+                    $node_rank .= ")) || '}')::TEXT[], " . $node->table_alias . ".value, '{" . join(",",@bumps) . "}'::TEXT[], '{" . join(",",@bumpmults) . "}'::NUMERIC[]),1.0)";
                 }
 
                 my $NOT = '';
@@ -1316,6 +1429,40 @@ sub flatten {
     my ($depth_filter) = grep { $_->name eq 'depth' } @{$self->filters};
     if ($depth_filter and @{$depth_filter->args} == 1) {
         $depth_filter = $depth_filter->args->[0];
+    }
+
+    my $ot = $U->get_org_tree;
+    my $site_org = $ot;
+    my $negate = 'FALSE';
+
+    my ($site_filter) = grep { $_->name eq 'site' } @{$self->filters};
+    if ($site_filter and @{$site_filter->args} == 1) {
+       $negate = $site_filter->negate ? 'TRUE' : 'FALSE';
+
+       my $sitename = $site_filter->args->[0];
+       $site_org = $U->find_org_by_shortname($ot, $sitename) || $ot;
+    }
+
+    my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
+    my $aorgs = $U->get_org_ancestors($site_org->id);
+
+    if (!$self->find_modifier('staff')) {
+        my $non_inherited_vis_gf = $U->get_global_flag('opac.org_unit.non_inherited_visibility');
+        $dorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$dorgs ];
+        $aorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$aorgs ];
+    }
+
+    push @{$vis_filter{'c_attr'}},
+        "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
+
+    if (!$self->find_filter('locations') && !$self->find_filter('location_groups')) {
+        my $lorgs = [@$aorgs];
+        my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
+        push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
+
+        $uses_bre = 1;
+        push @{$vis_filter{'b_attr'}},
+            "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
     }
 
     my @dlist = ();
@@ -1451,6 +1598,7 @@ sub flatten {
                     $with .= "             JOIN asset.copy cp ON (acptcm.copy = cp.id)\n";
                     $with .= "             JOIN asset.call_number cn ON (cp.call_number = cn.id)\n";
                     $with .= "       WHERE 1 = 1 \n";
+                    $with .= "       AND cp.circ_lib IN (" . join(',', @$dorgs) . ")\n";
                     if ($copy_tag_type ne '*') {
                         $with .= "             AND cctt.code = " . $self->QueryParser->quote_value($copy_tag_type) . "\n";
                     }
@@ -1478,49 +1626,20 @@ sub flatten {
                     $where .= "$key ${NOT}IN (" . join(',', map { $self->QueryParser->quote_value($_) } @{$filter->args}) . ')';
                 }
 
-            } elsif ($filter->name eq 'site') {
-                if (@{$filter->args} == 1) {
-                    if (!defined($depth_filter) or $depth_filter > 0) { # no point in filtering by "all"
-                        my $sitename = $filter->args->[0];
-
-                        my $ot = $U->get_org_tree;
-                        my $site_org = $U->find_org_by_shortname($ot, $sitename);
-
-                        if ($site_org and $site_org->id != $ot->id) { # no point in filtering by "all"
-                            my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
-                            my $aorgs = $U->get_org_ancestors($site_org->id);
-
-                            my $negate = $filter->negate ? 'TRUE' : 'FALSE';
-                            push @{$vis_filter{'c_attr'}},
-                                "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
-
-                            my $lorgs = [@$aorgs];
-                            my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
-                            push @$lorgs, @$dorgs if (
-                                $luri_as_copy_gf
-                                and $U->is_true($luri_as_copy_gf->enabled)
-                                and $U->is_true($luri_as_copy_gf->value)
-                            );
-
-                            $uses_bre = 1;
-                            push @{$vis_filter{'b_attr'}},
-                                "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
-                        }
-                    }
-                }
-
             } elsif ($filter->name eq 'locations') {
                 if (@{$filter->args} > 0) {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
+                    my $filter_args = join(",", map(int, @{$filter->args}));
                     push @{$vis_filter{'c_attr'}},
-                        "search.calculate_visibility_attribute_test('location','{".join(',', @{$filter->args})."}',$negate)";
+                        "search.calculate_visibility_attribute_test('location','{$filter_args}',$negate)";
                 }
 
             } elsif ($filter->name eq 'location_groups') {
                 if (@{$filter->args} > 0) {
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
+                    my $filter_args = join(",", map(int, @{$filter->args}));
                     push @{$vis_filter{'c_attr'}},
-                        "search.calculate_visibility_attribute_test('location_group','{".join(',', @{$filter->args})."}',$negate)";
+                        "search.calculate_visibility_attribute_test('location',(SELECT ARRAY_AGG(location) FROM asset.copy_location_group_map WHERE lgroup IN ($filter_args)),$negate)";
                 }
 
             } elsif ($filter->name eq 'statuses') {
@@ -1552,7 +1671,7 @@ sub flatten {
                             # useless use of filter
                         } else {
                             # "before $cend"
-                            $cend = cleanse_ISO8601($cend);
+                            $cend = clean_ISO8601($cend);
                             $where .= $joiner if $where ne '';
                             $where .= "bre.$datefilter <= \$_$$\$$cend\$_$$\$";
                         }
@@ -1561,14 +1680,14 @@ sub flatten {
                         if ($cstart eq '-infinity') {
                             # useless use of filter
                         } else { # "after $cstart"
-                            $cstart = cleanse_ISO8601($cstart);
+                            $cstart = clean_ISO8601($cstart);
                             $where .= $joiner if $where ne '';
                             $where .= "bre.$datefilter >= \$_$$\$$cstart\$_$$\$";
                         }
                     } else { # both supplied
                         # "between $cstart and $cend"
-                        $cstart = cleanse_ISO8601($cstart);
-                        $cend = cleanse_ISO8601($cend);
+                        $cstart = clean_ISO8601($cstart);
+                        $cend = clean_ISO8601($cend);
                         $where .= $joiner if $where ne '';
                         $where .= "bre.$datefilter BETWEEN \$_$$\$$cstart\$_$$\$ AND \$_$$\$$cend\$_$$\$";
                     }
@@ -1577,7 +1696,7 @@ sub flatten {
                 if (@{$filter->args} > 0) {
                     $uses_bre = 1;
                     my $negate = $filter->negate ? 'TRUE' : 'FALSE';
-                    push @{$vis_filter{'c_attr'}},
+                    push @{$vis_filter{'b_attr'}},
                         "search.calculate_visibility_attribute_test('source','{".join(',', @{$filter->args})."}',$negate)";
                 }
             } elsif ($filter->name eq 'from_metarecord') {
@@ -1643,11 +1762,13 @@ sub fields {
 
 sub table_alias {
     my $self = shift;
+    my $suffix = shift;
 
     my $table_alias = "$self";
     $table_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
     $table_alias .= '_' . $self->name;
     $table_alias =~ s/\|/_/go;
+    $table_alias .= "_$suffix" if ($suffix);
 
     return $table_alias;
 }
@@ -1687,19 +1808,14 @@ sub buildSQL {
     $lang ||= $self->node->plan->QueryParser->default_preferred_language;
     my $ts_configs = [];
 
-    if (@{$self->node->phrases}) {
-        # We assume we want 'simple' for phrases. Gives us less to match against later.
-        $ts_configs = ['simple'];
+    if (!@$fields) {
+        $ts_configs = $self->node->plan->QueryParser->class_ts_config($classname, $lang);
     } else {
-        if (!@$fields) {
-            $ts_configs = $self->node->plan->QueryParser->class_ts_config($classname, $lang);
-        } else {
-            for my $field (@$fields) {
-                push @$ts_configs, @{$self->node->plan->QueryParser->field_ts_config($classname, $field, $lang)};
-            }
+        for my $field (@$fields) {
+            push @$ts_configs, @{$self->node->plan->QueryParser->field_ts_config($classname, $field, $lang)};
         }
-        $ts_configs = [keys %{{map { $_ => 1 } @$ts_configs}}];
     }
+    $ts_configs = [keys %{{map { $_ => 1 } @$ts_configs}}];
 
     # Assume we want exact if none otherwise provided.
     # Because we can reasonably expect this to exist
@@ -1755,6 +1871,86 @@ sub buildSQL {
 #-------------------------------
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan::node;
 use base 'QueryParser::query_plan::node';
+use List::MoreUtils qw/uniq/;
+use Data::Dumper;
+
+sub abstract_node_additions {
+    my $self = shift;
+    my $aq = shift;
+
+    my $hm = $self->plan
+                ->QueryParser
+                ->parse_tree
+                ->get_abstract_data('highlight_map') || {};
+
+    my $field_set = $self->fields;
+    $field_set = $self->plan->QueryParser->search_fields->{$self->classname}
+        if (!@$field_set);
+
+    my @field_ids = grep defined, (
+        map {
+            $self->plan->QueryParser->search_field_ids_by_class(
+                $self->classname, $_
+            )->[0]
+        } @$field_set
+    );
+
+    push @field_ids, @{$self->{vfields}} if $self->{vfields};
+
+    my $ts_query = $self->tsquery_rank;
+
+    # We need to rework the hash so fields are only ever pointed at once.
+    # That means if a field is already being looked at elsewhere then we'll
+    # need to separate it out and combine its preexisting tsqueries.  This
+    # will be fairly brute-force, and could be improved later, likely, with
+    # a clever algorithm.
+
+    my %inverted_hm;
+    for my $t (keys %$hm) {
+        for my $f (@{$$hm{$t}}) {
+            $inverted_hm{$f} = $t;
+        }
+    }
+
+    # Then, loop over new fields and put them in the inverted hash.
+    my @existing_fields = keys %inverted_hm;
+
+    for my $f (@field_ids) {
+        if (grep { $f == $_ } @existing_fields) { # We've seen the field, should we combine?
+            my $t = $inverted_hm{$f};
+            if ($t ne $ts_query) { # Different tsquery, do it!
+                $t .= ' || '. $ts_query;
+                $inverted_hm{$f} = $t;
+            }
+        } else { # New field
+            $inverted_hm{$f} = $ts_query;
+        }
+    }
+
+    # Now, flip it back over.
+    $hm = {};
+    for my $f (keys %inverted_hm) {
+        my $t = $inverted_hm{$f};
+        if ($$hm{$t}) {
+            push @{$$hm{$t}}, $f;
+        } else {
+            $$hm{$t} = [$f];
+        }
+    }
+
+    $self->plan
+        ->QueryParser
+        ->parse_tree
+        ->set_abstract_data('highlight_map', $hm);
+}
+
+sub add_vfield {
+    my $self = shift;
+    my $vfield = shift;
+
+    $self->{vfields} ||= [];
+    push @{$self->{vfields}}, $vfield;
+}
 
 sub only_atoms {
     my $self = shift;
@@ -1802,18 +1998,14 @@ sub dummy_count {
 
 sub table {
     my $self = shift;
-    my $table = shift;
-    $self->{table} = $table if ($table);
-    return $self->{table} if $self->{table};
-    return $self->table( 'metabib.' . $self->classname . '_field_entry' );
+    my $classname = shift || $self->classname;
+    return 'metabib.' . $classname . '_field_entry';
 }
 
 sub combined_table {
     my $self = shift;
-    my $ctable = shift;
-    $self->{ctable} = $ctable if ($ctable);
-    return $self->{ctable} if $self->{ctable};
-    return $self->combined_table( 'metabib.combined_' . $self->classname . '_field_entry' );
+    my $classname = shift || $self->classname;
+    return 'metabib.combined_' . $classname . '_field_entry';
 }
 
 sub combined_search {
@@ -1823,16 +2015,15 @@ sub combined_search {
 
 sub table_alias {
     my $self = shift;
-    my $table_alias = shift;
-    $self->{table_alias} = $table_alias if ($table_alias);
-    return $self->{table_alias} if ($self->{table_alias});
+    my $suffix = shift;
 
-    $table_alias = "$self";
+    my $table_alias = "$self";
     $table_alias =~ s/^.*\(0(x[0-9a-fA-F]+)\)$/$1/go;
     $table_alias .= '_' . $self->requested_class;
     $table_alias =~ s/\|/_/go;
+    $table_alias .= "_$suffix" if ($suffix);
 
-    return $self->table_alias( $table_alias );
+    return $table_alias;
 }
 
 sub tsquery {
@@ -1859,7 +2050,7 @@ sub tsquery_rank {
         push @atomlines, "\n" . ${spc} x 3 . $atom->sql;
     }
     $self->{tsquery_rank} = join(' ||', @atomlines);
-    $self->{tsquery_rank} = 'NULL::tsquery' unless $self->{tsquery_rank};
+    $self->{tsquery_rank} = "''::tsquery" unless $self->{tsquery_rank};
     return $self->{tsquery_rank};
 }
 

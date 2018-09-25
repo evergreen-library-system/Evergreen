@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2015-02-27 11:41-0400\n"
-"PO-Revision-Date: 2017-01-21 03:39+0000\n"
+"PO-Revision-Date: 2017-11-05 10:36+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2017-01-22 05:29+0000\n"
-"X-Generator: Launchpad (build 18302)\n"
+"X-Launchpad-Export-Date: 2017-11-06 05:15+0000\n"
+"X-Generator: Launchpad (build 18493)\n"
 
 #: staff.admin.age_overdue_circulations_to_lost.chunks_processed
 msgid "Chunks Processed: %1$s"
@@ -83,59 +83,59 @@ msgstr "ضبط الفونت العالمي إلى الوضع XX-Large"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_5PT
 msgid "Global Font set to 5pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 5pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 5نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_6PT
 msgid "Global Font set to 6pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 6pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 6نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_7PT
 msgid "Global Font set to 7pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 7pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 7نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_8PT
 msgid "Global Font set to 8pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 8pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 8نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_9PT
 msgid "Global Font set to 9pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 9pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 9نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_10PT
 msgid "Global Font set to 10pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 10pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 10نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_11PT
 msgid "Global Font set to 11pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 11pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 11نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_12PT
 msgid "Global Font set to 12pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 12pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 12نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_13PT
 msgid "Global Font set to 13pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 13pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 13نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_14PT
 msgid "Global Font set to 14pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 14pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 14نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_15PT
 msgid "Global Font set to 15pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 15pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 15نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_16PT
 msgid "Global Font set to 16pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 16pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 16نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_17PT
 msgid "Global Font set to 17pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 17pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 17نقطة"
 
 #: staff.admin.font_settings.status_msg.ALL_FONTS_18PT
 msgid "Global Font set to 18pt"
-msgstr "ضبط الفونت العالمي إلى الوضع 18pt"
+msgstr "ضبط الفونت العالمي إلى الوضع 18نقطة"
 
 #: staff.admin.toolbar.unsaved_changes
 msgid ""

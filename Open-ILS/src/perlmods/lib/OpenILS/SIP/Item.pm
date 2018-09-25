@@ -9,7 +9,7 @@ use OpenILS::SIP::Transaction;
 use OpenILS::Application::AppUtils;
 # use Data::Dumper;
 use OpenILS::Const qw/:const/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 use OpenSRF::Utils::SettingsClient;
 my $U = 'OpenILS::Application::AppUtils';
@@ -404,7 +404,7 @@ sub hold_pickup_date {
         $shelf_expire_setting_cache{$hold->pickup_lib->id} = $interval;
 
         if($interval) {
-            my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
+            my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($interval);
             $date = DateTime->now->add(seconds => $seconds);
             $date = $date->strftime('%FT%T%z') if $date;
         }

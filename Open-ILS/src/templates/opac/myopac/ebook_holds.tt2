@@ -31,6 +31,9 @@
     </div>
     <div class="clear-both"></div>
     <div id="no_ebook_holds" class="warning_box hidden">[% l('You have no e-item holds.') %]</div>
+    <div id="ebook_cancel_hold_failed" class="warning_box hidden">[% l('Hold could not be canceled.') %]</div>
+    <div id="ebook_cancel_hold_succeeded" class="success hidden">[% l('Your hold has been canceled.') %]</div>
+    <div id="ebook_spinner"><img src="[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]" alt="[% l("Loading...") %]"/></div>
     <div id='ebook_holds_main' class="hidden">
         <table id="ebook_holds_main_table"
             title="[% l('E-Items on Hold') %]"

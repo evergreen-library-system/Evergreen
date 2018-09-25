@@ -38,20 +38,47 @@
   <div class="col-md-6">
     <div class="flex-row">
       <div class="flex-cell"></div>
-      <div class="checkbox pad-horiz">
+
+<div class="form-group row">
+<div class="col-md-3" uib-dropdown>
+      <button type="button" ng-class="{'btn-success' : date_options.has_sticky_date}" class="btn btn-default" uib-dropdown-toggle>
+        [% l('Date Options') %]
+        <span class="caret"></span>
+      </button>
+      <ul class="pull-right" uib-dropdown-menu>
+        <li>
+          <a href
+            ng-click="toggle_opt('has_sticky_date')">
+            <span ng-if="date_options.has_sticky_date"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!date_options.has_sticky_date"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Specific Due Date') %]</span>
+          </a>
+        </li>
+        <li>
+          <a href
+            ng-click="toggle_opt('is_until_logout')">
+            <span ng-if="date_options.is_until_logout"
+              class="label label-success">&#x2713;</span>
+            <span ng-if="!date_options.is_until_logout"
+              class="label label-warning">&#x2717;</span>
+            <span>[% l('Use Specific Due Date Until Logout') %]</span>
+          </a>
+        </li>
+      </ul>
+</div>
+
+      <!-- <div class="checkbox pad-horiz">
         <label>
           <input type="checkbox" ng-model="checkoutArgs.sticky_date"/>
           [% l('Specific Due Date') %]
         </label>
+      </div> -->
+      <div class="col-md-4">
+        <eg-date-input ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date" show-time-picker></eg-date-input>
       </div>
-      <!--
-      <div><input type="checkbox" class="checkbox" ng-model="checkoutArgs.sticky_date"/></div>
-      <div class="pad-horiz">[% l('Specific Due Date') %]</div>
-      -->
-      <!-- FIXME: This needs a time component as well, but type="datetime" 
-            is not yet supported by any browsers -->
-      <div><eg-date-input ng-model="checkoutArgs.due_date"></eg-date-input>
-      </div>
+</div>
     </div>
   </div>
 </div>
@@ -65,8 +92,14 @@
   persist-key="circ.patron.checkout"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
-  <eg-grid-field label="[% l('Alert Msg') %]"   
-    path="acp.alert_message"></eg-grid-field>
+  <eg-grid-action
+    handler="addCopyAlerts"
+    label="[% l('Add Item Alerts') %]">
+  </eg-grid-action>
+  <eg-grid-action
+    handler="manageCopyAlerts"
+    label="[% l('Manage Item Alerts') %]">
+  </eg-grid-action>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
     path='mbts.balance_owed'></eg-grid-field>
@@ -81,7 +114,7 @@
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Bill #') %]"     
+  <eg-grid-field label="[% l('Circ ID') %]"
     path='circ.id'></eg-grid-field>
 
   <eg-grid-field label="[% l('Call Number') %]" 
@@ -100,7 +133,7 @@
     path='circ.renewal_remaining'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path="title">
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.doc_id()}}">
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.acn.record()}}">
       {{item.title}}
     </a>
   </eg-grid-field>
@@ -110,9 +143,17 @@
   <eg-grid-field path="acp.circ_modifier.name" label="[% l('Circulation Modifier') %]"></eg-grid-field>
   <eg-grid-field path="acp.circ_lib.shortname" label="[% l('Circulation Library') %]"></eg-grid-field>
   <eg-grid-field path="acn.owning_lib.shortname" label="[% l('Owning Library') %]"></eg-grid-field>
+
+  <eg-grid-field label="[% l('Alerts') %]" path="copy_alert_count" handlers="gridCellHandlers" visible compiled>
+    {{item['copy_alert_count']}}
+    <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['acp'].id())">[% l('Manage') %]</button>
+  </eg-grid-field>
+
   <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
   <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
   <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path="acn.prefix.label" label="[% l('CN Prefix') %]" parent-idl-class="acn" hidden></eg-grid-field>
+  <eg-grid-field path="acn.suffix.label" label="[% l('CN Suffix') %]" parent-idl-class="acn" hidden></eg-grid-field>
   <eg-grid-field path="record.*" parent-idl-class="mvr" hidden></eg-grid-field>
   <eg-grid-field path="mbts.*" parent-idl-class="mbts" hidden></eg-grid-field>
   <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>

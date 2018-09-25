@@ -1,0 +1,65 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Metabib Fields");
+  ctx.page_app = "egAdminConfig";
+  ctx.page_ctrl = 'MetabibField';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/fm_record_editor.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/server/config/metabib_field.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Metabib Fields') %]
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-2 form-group">
+      <label class="pull-right">[% l('Search Class') %]</label>
+  </div>
+  <div class="col-md-2 form-group nullable">
+      <select class="form-control" ng-model="search_class">
+        <option value="">[% l('All classes') %]</option>
+        <option value="keyword">[% l('Keyword') %]</option>
+        <option value="title">[% l('Title') %]</option>
+        <option value="author">[% l('Author') %]</option>
+        <option value="subject">[% l('Subject') %]</option>
+        <option value="series">[% l('Series') %]</option>
+        <option value="identifier">[% l('Identifier') %]</option>
+      </select>
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    idl-class="cmf"
+    grid-controls="gridControls"
+    features="-multiselect"
+    persist-key="admin.server.config.metabib_field.grid"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+
+    <eg-grid-menu-item handler="new_record" label="[% l('New Record') %]"></eg-grid-menu-item>
+    <eg-grid-action handler="edit_record" label="[% l('Edit Record') %]"></eg-grid-action>
+    <eg-grid-action handler="delete_record" label="[% l('Delete Record') %]"></eg-grid-action>
+
+    <eg-grid-field label="[% l('ID') %]"    path='id' required hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Label') %]" path="label" required></eg-grid-field>
+    <eg-grid-field label="[% l('Class') %]" path="field_class"></eg-grid-field>
+    <eg-grid-field label="[% l('Weight') %]" path='weight'></eg-grid-field>
+    <eg-grid-field label="[% l('Field') %]" path="name" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Search Field') %]" path='search_field'></eg-grid-field>
+    <eg-grid-field label="[% l('Facet Field') %]" path='facet_field'></eg-grid-field>
+    <eg-grid-field label="[% l('Display Field') %]" path='display_field'></eg-grid-field>
+    <eg-grid-field label="[% l('Browse Field') %]" path='browse_field'></eg-grid-field>
+    <eg-grid-field label="[% l('Data Suppliers') %]">
+        <a href="./admin/server/config/metabib_field_virtual_map?cmf={{item.id}}" target="_blank">[% l('Manage'); %]</a>
+    </eg-grid-field>
+</eg-grid>
+
+[% END %]

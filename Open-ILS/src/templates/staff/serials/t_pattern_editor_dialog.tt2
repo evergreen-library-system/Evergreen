@@ -1,0 +1,15 @@
+<!-- use <form> so we get submit-on-enter for free -->
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" 
+      ng-click="cancel()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">[% l('Edit Prediction Pattern') %]</h4>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <eg-prediction-wizard pattern-code="patternCode" on-save="ok"
+                            show-share="showShare" view-only="viewOnly"
+      ></eg-prediction-wizard pattern-code>
+   </div>
+ </div>
+</div> <!-- modal-content -->

@@ -1,0 +1,65 @@
+Using Evergreen's Public Catalog
+================================
+Documentation Interest Group
+:doctype: book
+:toc:
+:numbered:
+
+Introduction
+============
+
+include::shared/about_this_documentation.adoc[]
+
+This guide to Evergreen is intended to meet the needs of anybody
+who uses Evergreen's Public Catalog, particularly library
+workers in public services roles.
+It is organized into Parts, Chapters, and Sections addressing key
+aspects of the software. 
+
+Copies of this guide can be accessed in PDF and HTML formats from
+http://docs.evergreen-ils.org/.
+
+
+
+include::shared/about_evergreen.adoc[]
+
+:leveloffset: -1
+
+include::opac/using_the_public_access_catalog.adoc[]
+
+include::opac/search_url.adoc[]
+
+include::opac/my_account.adoc[]
+
+:leveloffset: 0
+
+include::opac/my_lists.adoc[]
+
+include::opac/catalog_browse.adoc[]
+
+include::opac/tpac_meta_record_holds.adoc[]
+
+include::opac/advanced_features.adoc[]
+
+include::opac/linked_libraries.adoc[]
+
+:leveloffset: -1
+
+include::opac/kids_opac.adoc[]
+
+include::opac/opensearch.adoc[]
+
+include::opac/visibility_on_the_web.adoc[]
+
+:leveloffset: 0
+
+
+include::opac/sitemap.adoc[]
+
+See the Command Line System Administration Manual for details about
+running this script.
+
+include::shared/attributions.adoc[]
+
+include::shared/end_matter.adoc[]
+

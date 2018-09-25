@@ -1,0 +1,7 @@
+<div>
+<eg-sub-selector bib-id="bibId" ssub-id="ssubId"></eg-sub-selector>
+</div>
+
+<div>
+<eg-item-grid bib-id="bibId" ssub-id="ssubId"></eg-item-grid>
+</div>

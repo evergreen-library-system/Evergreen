@@ -9,7 +9,7 @@
     # Don't wrap in l() here; do that where this format string is actually used.
     SET HUMAN_NAME_FORMAT = '[_1] [_2] [_3] [_4] [_5]';
 
-    is_advanced = CGI.param("_adv").size;
+    is_advanced = CGI.param("_adv").size || CGI.param("query").size;
     is_special = CGI.param("_special").size;
 
     # Check if we want to show the detail record view.  Doing this
@@ -60,6 +60,12 @@
         ELSIF clear_params;
             cgi.delete_all();
         END;
+
+        # some standing, hardcoded parameters to always clear
+        # because they're used for specific, transitory purposes
+        cgi.delete('move_cart_by_default');
+        cgi.delete('cart_none_selected');
+        cgi.delete('list_none_selected');
 
         # x and y are artifacts of using <input type="image" /> tags 
         # instead of true submit buttons, and their values are never used.

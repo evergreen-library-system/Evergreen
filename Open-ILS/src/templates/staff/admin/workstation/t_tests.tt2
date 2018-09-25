@@ -1,0 +1,41 @@
+<div class="container-fluid text-center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Webclient Latency Test') %]</span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">[% l('Server Details') %]</div>
+      <div class="panel-body">
+       <!-- <div class="row pad-vert nav-pills-like-tabs">
+          <div class="col-md-6">[% l('Evergreen Version') %]</div>
+          <div class="col-md-6">{{context.version}}</div>
+        </div> -->
+        <div class="row pad-vert">
+          <div class="col-md-6">[% l('Hostname') %]</div>
+          <div class="col-md-6">{{hostname}}</div>
+        </div>
+      </div>
+    </div><!--panel-->
+   </div>
+</div>
+<div class="row">
+  <div class="col-md-8">
+    <h2>[% l('Latency Test') %]</h2>
+    <p>[% |l %]This will measure the websocket latency between your workstation client and the Evergreen server at the host above.[% END %]
+    </p>
+    <button ng-disable="isTesting" ng-click="testLatency()" type="button" class="btn btn-primary">Start Test</button>
+    <button ng-click='clearTestData()' type="button" class="btn btn-secondary">Clear</button>
+    <ol id="pingData">
+      <p>Latency results for {{hostname}}. Average Latency: <span ng-bind="avrg"></span> ms</p>
+      <li ng-show="tests.length" ng-repeat="t in tests">Time: {{t.t}} Latency: {{t.l}} ms</li>
+    </ol>
+    <button ng-disabled="!canCopyCommand" ng-click="copyTests()" type="button" class="btn btn-light btn-sm">Copy to Clipboard</button>
+  </div>
+</div>
+
+
+
+

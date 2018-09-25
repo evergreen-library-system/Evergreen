@@ -16,7 +16,7 @@
         <div ng-if="!sameUser">
           [% |l('{{circDate | date:$root.egDateFormat}}') %]
           There is an open circulation on the requested item.  
-          This copy was checked out by another patron on [_1].
+          This item was checked out by another patron on [_1].
           [% END %]
         </div>
       </div>

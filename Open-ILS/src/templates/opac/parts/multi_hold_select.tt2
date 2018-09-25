@@ -1,0 +1,15 @@
+[%  # Check if we need to do anything.
+    hold_type = CGI.param('hold_type');
+    max_holds = ctx.get_org_setting(ctx.default_pickup_lib, 'circ.holds.max_duplicate_holds');
+    can_dup = ctx.has_perm('CREATE_DUPLICATE_HOLDS', ctx.default_pickup_lib);
+    IF ctx.hold_data.size == 1 && (hold_type == 'M' || hold_type == 'T') && max_holds && max_holds > 1 && can_dup;
+%]
+<p>
+<label for="num_copies">[% l('Number of copies') %]</label>
+<select id="num_copies" name="num_copies" title="[% l('Number of copies') %]">
+[% FOR num IN [1..max_holds] %]
+<option value="[% num %]">[% num %]</option>
+[% END %]
+</select>
+</p>
+[% END %]

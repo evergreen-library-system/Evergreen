@@ -114,7 +114,7 @@ Configuration
 Configuring Providers
 ^^^^^^^^^^^^^^^^^^^^^
 
-Look in Admin > Server Administration > Acquisitions > Providers
+Look in Administration -> Acquisitions Administration ->  Providers
 
 [options="header"]
 |======================================================================================
@@ -138,7 +138,7 @@ Look in Admin > Server Administration > Acquisitions > Providers
 Configuring EDI Accounts
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Look in Admin > Server Administration > Acquisitions > EDI Accounts
+Look in Administration -> Acquisitions Administration ->  EDI Accounts
 
 [options="header"]
 |===============================================================================================================
@@ -160,7 +160,7 @@ Look in Admin > Server Administration > Acquisitions > EDI Accounts
 Configuring Organizational Unit SAN code
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Look in Admin > Server Settings > Organizational Units
+Look in Administration -> Server Administration -> Organizational Units
 
 This interface allows a library to configure their SAN, alongside 
 their address, phone, etc.

@@ -44,8 +44,9 @@ END;
         <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]"
             id="home_adv_search_link">[% l('Advanced Search') %]</a></span>
         <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]">[% l('Browse the Catalog') %]</a></span>
+        [% INCLUDE 'opac/parts/cart.tt2' %]
     </div>
-    <div class="searchbar">
+    <div class="searchbar [% is_home_page ? 'searchbar-home' : '' %]">
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
@@ -53,6 +54,7 @@ END;
             <input type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
+                class="search-box"
                 [%- IF use_autosuggest.enabled == "t" %]
                 dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
                 submitter="this.textbox.form.submit();"
@@ -94,7 +96,7 @@ END;
               id='search_org_selector' show_loc_groups=1
         -%]
         </label>
-    <span>
+      <span>
         <input id="detail" type="hidden" name="detail_record_view" value="[% show_detail_view %]"/>
         <input id='search-submit-go' type="submit" value="[% l('Search') %]" class="opac-button"
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden";[% IF ctx.depth_sel_button AND NOT took_care_of_form %] $("search-submit-go-depth").className="hidden";[% END %]}, 2000)'/>
@@ -103,7 +105,15 @@ END;
             onclick='setTimeout(function(){$("search-submit-spinner").className=""; $("search-submit-go").className="hidden"; $("search-submit-go-depth").className="hidden";}, 2000)' title="[% ctx.depth_sel_tooltip | html %]">[% ctx.depth_sel_button_label | html %]</button>
         [%- END %]
         <img id='search-submit-spinner' src='[% ctx.media_prefix %]/opac/images/progressbar_green.gif[% ctx.cache_key %]' style='height:16px;width:16px;' class='hidden' alt='[% l("Search In Progress") %]'/>
-    </span>
+        [%- IF took_care_of_form && !search.no_highlight %]
+        <label for="no_highlight">
+          <input type="checkbox" id="no_highlight" name="no_highlight" value="1"
+              onchange="search_modifier_onchange('no_highlight', this, true)"
+              [% CGI.param('no_highlight').size ? ' checked="checked"' : '' %] />
+          [% l('Disable Highlighting') %]
+        </label>
+        [%- END %]
+      </span>
     </div>
     [% IF ctx.bookbag %]
     <div id="search-only-bookbag-container">

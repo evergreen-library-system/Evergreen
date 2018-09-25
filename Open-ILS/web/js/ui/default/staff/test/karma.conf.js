@@ -6,15 +6,12 @@ module.exports = function(config){
     logLevel: config.LOG_INFO,
 
     files : [
-      'build/js/angular.min.js',
-      'build/js/angular-route.min.js',
+      'build/js/vendor.bundle.js',
+      'build/js/core.bundle.js',
       'node_modules/angular-mocks/angular-mocks.js', // testing only
       'node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js',
       'node_modules/ng-toast/dist/ngToast.min.js',
       'node_modules/angular-sanitize/angular-sanitize.min.js',
-      'build/js/ui-bootstrap.js',
-      'build/js/hotkeys.min.js',
-      'build/js/angular-cookies.min.js',
       /* OpenSRF must be installed first */
       '/openils/lib/javascript/md5.js',
       '/openils/lib/javascript/JSON_v1.js',
@@ -26,31 +23,15 @@ module.exports = function(config){
       'test/data/eg_mock.js',
 
       // service/*.js have to be loaded in order
-      'services/core.js',
-      'services/idl.js',
-      'services/strings.js',
-      'services/event.js',
-      'services/net.js',
-      'services/auth.js',
-      'services/pcrud.js',
-      'services/env.js',
-      'services/org.js',
-      'services/hatch.js',
-      'services/print.js',
-      'services/audio.js',
-      'services/coresvc.js',
-      'services/user.js',
-      'services/startup.js',
-      'services/ui.js',
       'services/grid.js',
-      'services/op_change.js',
       'services/patron_search.js',
-      'services/navbar.js', 'services/date.js',
       'services/user-bucket.js',
+
       // load app scripts
       'app.js',
       'circ/**/*.js',
       'cat/**/*.js',
+      'reporter/**/*.js',
       'admin/**/*.js',
       'test/unit/egIDL.js', // order matters for some of these
       'test/unit/egOrg.js', 

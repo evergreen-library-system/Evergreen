@@ -12,9 +12,12 @@ function($q , egCore , egWorkLog , patronSvc) {
     // fetch org unit settings specific to the bills display
     service.fetchBillSettings = function() {
         if (service.settings) return $q.when(service.settings);
-        return egCore.org.settings(
-            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit','circ.staff_client.do_not_auto_attempt_print']
-        ).then(function(s) {return service.settings = s});
+        return egCore.org.settings([
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'ui.circ.billing.amount_warn', 'ui.circ.billing.amount_limit',
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.disable_patron_credit'
+        ]).then(function(s) {return service.settings = s});
     }
 
     // user billing summary
@@ -24,7 +27,9 @@ function($q , egCore , egWorkLog , patronSvc) {
         .then(function(summary) {return service.summary = summary})
     }
 
-    service.applyPayment = function(type, payments, note, check) {
+    service.applyPayment = function(
+        type, payments, note, check, cc_args, patron_credit) {
+
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
@@ -34,11 +39,21 @@ function($q , egCore , egWorkLog , patronSvc) {
                 payment_type : type,
                 check_number : check,
                 payments : payments,
-                patron_credit : 0
+                patron_credit : patron_credit,
+                cc_args : cc_args
             },
             patronSvc.current.last_xact_id()
         ).then(function(resp) {
             console.debug('payments: ' + js2JSON(resp));
+
+            if (evt = egCore.evt.parse(resp)) {
+                // Ideally, all scenarios that lead to this alert appearing
+                // will be avoided by the application logic.  Leave the alert
+                // in place now to root out any that remain to be addressed.
+                alert(evt);
+                return $q.reject(''+evt);
+            }
+
             var total = 0; angular.forEach(payments,function(p) { total += p[1]; });
             var msg;
             switch(type) {
@@ -57,8 +72,6 @@ function($q , egCore , egWorkLog , patronSvc) {
                     'total_amount' : total
                 }
             );
-            if (evt = egCore.evt.parse(resp)) 
-                return alert(evt);
 
             // payment API returns the update xact id so we can track it
             // for future payments without having to refresh the user.
@@ -77,6 +90,17 @@ function($q , egCore , egWorkLog , patronSvc) {
             null,
             function(bill) {bills.push(bill); return bill}
         );
+    }
+
+    service.fetchStatement = function(xact_id) {
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.money.statement.retrieve',
+            egCore.auth.token(), xact_id
+        ).then(function(resp) {
+            if (evt = egCore.evt.parse(resp)) return alert(evt);
+            return resp;
+        });
     }
 
     // TODO: no longer needed?
@@ -143,10 +167,10 @@ function($q , egCore , egWorkLog , patronSvc) {
 .controller('PatronBillsCtrl',
        ['$scope','$q','$routeParams','egCore','egConfirmDialog','$location',
         'egGridDataProvider','billSvc','patronSvc','egPromptDialog', 'egAlertDialog',
-        'egBilling',
+        'egBilling','$uibModal',
 function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
          egGridDataProvider , billSvc , patronSvc , egPromptDialog, egAlertDialog,
-         egBilling) {
+         egBilling , $uibModal) {
 
     $scope.initTab('bills', $routeParams.id);
     billSvc.userId = $routeParams.id;
@@ -160,6 +184,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.annotate_payment = false;
     $scope.receipt_count = 1;
     $scope.receipt_on_pay = { isChecked: false };
+    $scope.convert_to_credit = {isChecked: false};
     $scope.warn_amount = 1000;
     $scope.max_amount = 100000;
     $scope.amount_verified = false;
@@ -192,6 +217,39 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         }, 
         setSort : function() {
             return ['xact_start']; 
+        }
+    }
+    // -------------
+    // Apply coloring to rows based on fines stop reason
+    $scope.colorizeBillsList = {
+        apply: function(item) {
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
+                if (item['circulation.stop_fines'] == 'LOST') {
+                    return 'lost-row';
+                } else if (item['circulation.stop_fines'] == 'LONGOVERDUE') {
+                    return 'longoverdue-row';
+                } else {
+                    return 'overdue-row';
+                }
+            }
+        }
+    }
+
+    // Status Icon Column definition
+    $scope.statusIconColumn = {
+        isEnabled: true,
+        template: function(item) {
+            var icon = '';
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
+                if (item['circulation.stop_fines'] == "LOST") {
+                    icon = 'glyphicon-question-sign';
+                } else if (item['circulation.stop_fines'] == "LONGOVERDUE") {
+                    icon = 'glyphicon-exclamation-sign';
+                } else {
+                    icon = 'glyphicon-time';
+                }
+            }
+            return "<i class='glyphicon " + icon + "'></i>"
         }
     }
 
@@ -316,19 +374,28 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     // generates payments, collects user note if needed, and sends payment
     // to server.
-    function sendPayment(note) {
+    function sendPayment(note, cc_args) {
+        $scope.applyingPayment = true;
         var make_payments = generatePayments();
-        billSvc.applyPayment(
-            $scope.payment_type, make_payments, note, $scope.check_number)
-        .then(function(payment_ids) {
+        var patron_credit = $scope.convert_to_credit.isChecked ?
+            $scope.pending_change() : 0; 
+        billSvc.applyPayment($scope.payment_type, 
+            make_payments, note, $scope.check_number, cc_args, patron_credit)
+        .then(
+            function(payment_ids) {
 
-            if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
-                printReceipt(
-                    $scope.payment_type, payment_ids, make_payments, note);
+                if (!$scope.disable_auto_print && $scope.receipt_on_pay.isChecked) {
+                    printReceipt(
+                        $scope.payment_type, payment_ids, make_payments, note);
+                }
+
+                refreshDisplay();
+            },
+            function(msg) {
+                console.error('Payment was rejected: ' + msg);
             }
-
-            refreshDisplay();
-        })
+        )
+        .finally(function() { $scope.applyingPayment = false; })
     }
 
     $scope.onReceiptOnPayChanged = function(){
@@ -337,6 +404,8 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     function printReceipt(type, payment_ids, payments_made, note) {
         var payment_blobs = [];
+        var cusr = patronSvc.current;
+
         angular.forEach(payments_made, function(payment) {
             var xact_id = payment[0];
 
@@ -364,7 +433,26 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             payments : payment_blobs,
             current_location : egCore.idl.toHash(
                 egCore.org.get(egCore.auth.user().ws_ou()))
-        }
+        };
+
+        // Not a good idea to use patron_stats.fines for this; it's out of date
+        print_data.patron = {
+            prefix : cusr.prefix(),
+            first_given_name : cusr.first_given_name(),
+            second_given_name : cusr.second_given_name(),
+            family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_second_given_name : cusr.pref_second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
+            pref_suffix : cusr.pref_suffix(),
+            card : { barcode : cusr.card().barcode() },
+            expire_date : cusr.expire_date(),
+            alias : cusr.alias(),
+            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/).length),
+            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+        };
 
         print_data.new_balance = (
             print_data.previous_balance * 100 - 
@@ -437,6 +525,9 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 s['circ.staff_client.do_not_auto_attempt_print'].indexOf('Bill Pay') > -1
             );
         }
+        if (s['circ.disable_patron_credit']) {
+            $scope.disablePatronCredit = true;
+        }
     });
 
     $scope.gridControls.allItemsRetrieved = function() {
@@ -463,23 +554,64 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         var xacts = [];
         egCore.pcrud.search('mbt', 
             {id : ids},
-            {flesh : 1, flesh_fields : {'mbt' : ['summary']}},
+            {flesh : 5, flesh_fields : {
+                'mbt' : ['summary', 'circulation'],
+                'circ' : ['target_copy'],
+                'acp' : ['call_number'],
+                'acn' : ['record'],
+                'bre' : ['simple_record']
+                }
+            },
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_current', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            pref_prefix : cusr.pref_prefix(),
+                            pref_first_given_name : cusr.pref_first_given_name(),
+                            pref_second_given_name : cusr.pref_second_given_name(),
+                            pref_family_name : cusr.pref_family_name(),
+                            pref_suffix : cusr.pref_suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 
             null, 
             function(xact) {
-                xacts.push(egCore.idl.toHash(xact));
+                newXact = {
+                    billing_total : xact.billing_total(),
+                    billings : xact.billings(),
+                    grocery : xact.grocery(),
+                    id : xact.id(),
+                    payment_total : xact.payment_total(),
+                    payments : xact.payments(),
+                    summary : egCore.idl.toHash(xact.summary()),
+                    unrecovered : xact.unrecovered(),
+                    xact_finish : xact.xact_finish(),
+                    xact_start : xact.xact_start(),
+                }
+                if (xact.circulation()) {
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                xacts.push(newXact);
             }
         );
     }
@@ -498,32 +630,86 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             return;
         }
 
-        if (($scope.payment_amount > $scope.warn_amount) && ($scope.amount_verified == false)) {
-            egConfirmDialog.open(
-                egCore.strings.PAYMENT_WARN_AMOUNT_TITLE, egCore.strings.PAYMENT_WARN_AMOUNT,
-                {   payment_amount : ''+$scope.payment_amount,
-                    ok : function() {
-                        $scope.amount_verfied = true;
-                        $scope.applyPayment();
-                    },
-                    cancel : function() {
-                        $scope.payment_amount = 0;
+        verify_payment_amount().then(
+            function() { // amount confirmed
+                add_payment_note().then(function(pay_note) {
+                    add_cc_args().then(function(cc_args) {
+                        var note_text = pay_note ? pay_note.value || '' : null;
+                        sendPayment(note_text, cc_args);
+                    })
+                });
+            },
+            function() { // amount rejected
+                console.warn('payment amount rejected');
+                $scope.payment_amount = 0;
+            }
+        );
+    }
+
+    function verify_payment_amount() {
+        if ($scope.payment_amount < $scope.warn_amount)
+            return $q.when();
+
+        return egConfirmDialog.open(
+            egCore.strings.PAYMENT_WARN_AMOUNT_TITLE, 
+            egCore.strings.PAYMENT_WARN_AMOUNT,
+            {payment_amount : ''+$scope.payment_amount}
+        ).result;
+    }
+
+    function add_payment_note() {
+        if (!$scope.annotate_payment) return $q.when();
+        return egPromptDialog.open(
+            egCore.strings.ANNOTATE_PAYMENT_MSG, '').result;
+    }
+
+    function add_cc_args() {
+        if ($scope.payment_type != 'credit_card_payment') 
+            return $q.when();
+
+        return $uibModal.open({
+            templateUrl : './circ/patron/t_cc_payment_dialog',
+            backdrop: 'static',
+            controller : [
+                        '$scope','$uibModalInstance',
+                function($scope , $uibModalInstance) {
+
+                    $scope.context = {
+                        cc : {
+                            where_process : '1', // internal=1 ; external=0
+                            type : 'VISA', // external only
+                            billing_first : patronSvc.current.first_given_name(),
+                            billing_last : patronSvc.current.family_name()
+                        }
+                    }
+
+                    var addr = patronSvc.current.billing_address() ||
+                        patronSvc.current.mailing_address();
+                    if (addr) {
+                        var cc = $scope.context.cc;
+                        cc.billing_address = addr.street1() + 
+                            (addr.street2() ? ' ' + addr.street2() : '');
+                        cc.billing_city = addr.city();
+                        cc.billing_state = addr.state();
+                        cc.billing_zip = addr.post_code();
+                    }
+
+                    $scope.ok = function() {
+                        // CC payment form is not a <form>, 
+                        // so apply validation manually.
+                        if ( $scope.context.cc.where_process == 0 && 
+                            !$scope.context.cc.approval_code)
+                            return;
+
+                        $uibModalInstance.close($scope.context.cc);
+                    }
+
+                    $scope.cancel = function() {
+                        $uibModalInstance.dismiss();
                     }
                 }
-            );
-            return;
-        }
-
-        $scope.amount_verfied = false;
-
-        if ($scope.annotate_payment) {
-            egPromptDialog.open(
-                egCore.strings.ANNOTATE_PAYMENT_MSG, '',
-                {ok : function(value) {sendPayment(value)}}
-            );
-        } else {
-            sendPayment();
-        }
+            ]
+        }).result;
     }
 
     $scope.voidAllBillings = function(items) {
@@ -615,7 +801,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0].id);
+                patronSvc.current.id() + '/bill/' + all[0].id + '/statement');
     }
 
     $scope.activateBill = function(xact) {
@@ -633,6 +819,7 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
 
     $scope.initTab('bills', $routeParams.id);
     var xact_id = $routeParams.xact_id;
+    $scope.xact_tab = $routeParams.xact_tab;
 
     var xactGrid = $scope.xactGridControls = {
         setQuery : function() { return {xact : xact_id} },
@@ -719,6 +906,13 @@ function($scope,  $q , $routeParams , egCore , egGridDataProvider , patronSvc , 
     }
 
     // -- retrieve our data
+    if ($scope.xact_tab == 'statement') {
+        //fetch combined billing statement data
+        billSvc.fetchStatement(xact_id).then(function(statement) {
+            //console.log(statement);
+            $scope.statement_data = statement;
+        });
+    }
     $scope.total_circs = 0; // start with 0 instead of undefined
     egBilling.fetchXact(xact_id).then(function(xact) {
         $scope.xact = xact;
@@ -832,7 +1026,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0].id);
+                patronSvc.current.id() + '/bill/' + all[0].id + '/statement');
     }
 
     // For now, only adds billing to first selected item.
@@ -859,28 +1053,67 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
         var xacts = [];
         egCore.pcrud.search('mbt', 
             {id : ids},
-            {flesh : 1, flesh_fields : {'mbt' : ['summary']}},
+            {flesh : 5, flesh_fields : {
+                'mbt' : ['summary', 'circulation'],
+                'circ' : ['target_copy'],
+                'acp' : ['call_number'],
+                'acn' : ['record'],
+                'bre' : ['simple_record']
+                }
+            },
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_historical', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            pref_prefix : cusr.pref_prefix(),
+                            pref_first_given_name : cusr.pref_first_given_name(),
+                            pref_second_given_name : cusr.pref_second_given_name(),
+                            pref_family_name : cusr.pref_family_name(),
+                            pref_suffix : cusr.pref_suffix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 
             null, 
             function(xact) {
-                xacts.push(egCore.idl.toHash(xact));
+                newXact = {
+                    billing_total : xact.billing_total(),
+                    billings : xact.billings(),
+                    grocery : xact.grocery(),
+                    id : xact.id(),
+                    payment_total : xact.payment_total(),
+                    payments : xact.payments(),
+                    summary : egCore.idl.toHash(xact.summary()),
+                    unrecovered : xact.unrecovered(),
+                    xact_finish : xact.xact_finish(),
+                    xact_start : xact.xact_start(),
+                }
+                if (xact.circulation()) {
+                    newXact.copy_barcode = xact.circulation().target_copy().barcode(),
+                    newXact.title = xact.circulation().target_copy().call_number().record().simple_record().title()
+                }
+                xacts.push(newXact);
             }
         );
     }
-
-
 }])
 
 .controller('BillPaymentHistoryCtrl',
@@ -914,7 +1147,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , $location) {
     $scope.showFullDetails = function(all) {
         if (all[0]) 
             $location.path('/circ/patron/' + 
-                patronSvc.current.id() + '/bill/' + all[0]['xact.id']);
+                patronSvc.current.id() + '/bill/' + all[0]['xact.id'] + '/statement');
     }
 
     $scope.totals.selected_paid = function() {

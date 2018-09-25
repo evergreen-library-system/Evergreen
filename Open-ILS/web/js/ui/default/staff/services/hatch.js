@@ -25,17 +25,23 @@
 angular.module('egCoreMod')
 
 .factory('egHatch',
-           ['$q','$window','$timeout','$interpolate','$http','$cookies',
-    function($q , $window , $timeout , $interpolate , $http , $cookies) {
+           ['$q','$window','$timeout','$interpolate','$cookies','egNet','$injector',
+    function($q , $window , $timeout , $interpolate , $cookies , egNet , $injector ) {
 
     var service = {};
     service.msgId = 1;
     service.messages = {};
     service.hatchAvailable = false;
+    service.auth = null;  // ref to egAuth loaded on-demand to avoid circular ref.
+    service.disableServerSettings = false;
 
     // key/value cache -- avoid unnecessary Hatch extension requests.
     // Only affects *RemoteItem calls.
     service.keyCache = {}; 
+
+    // Keep a local copy of all retrieved setting summaries, which indicate
+    // which setting types exist for each setting.  
+    service.serverSettingSummaries = {};
 
     /**
      * List string prefixes for On-Call storage keys. On-Call keys
@@ -50,7 +56,7 @@ angular.module('egCoreMod')
      * at a time and each maintains its own data separately.
      */
     service.onCallPrefixes = ['eg.workstation'];
-
+    
     // Returns true if the key can be set/get in localStorage even when 
     // Hatch is not available.
     service.keyIsOnCall = function(key) {
@@ -60,6 +66,35 @@ angular.module('egCoreMod')
                 oncall = true;
         });
         return oncall;
+    }
+
+    /**
+     * Settings with these prefixes will always live in the browser.
+     */
+    service.browserOnlyPrefixes = [
+        'eg.workstation', 
+        'eg.hatch',
+        'eg.cache',
+        'current_tag_table_marc21_biblio',
+        'FFPos',
+        'FFValue'
+    ];
+
+    service.keyStoredInBrowser = function(key) {
+
+        if (service.disableServerSettings) {
+            // When server-side storage is disabled, treat every
+            // setting like it's stored locally.
+            return true;
+        }
+
+        var browserOnly = false;
+        service.browserOnlyPrefixes.forEach(function(pfx) {
+            if (key.match(new RegExp('^' + pfx))) 
+                browserOnly = true;
+        });
+
+        return browserOnly;
     }
 
     // write a message to the Hatch port
@@ -125,7 +160,7 @@ angular.module('egCoreMod')
         // When the Hatch extension loads, it tacks an attribute onto
         // the top-level documentElement to indicate it's available.
         if (!$window.document.documentElement.getAttribute('hatch-is-open')) {
-            console.debug("Hatch is not available");
+            //console.debug("Hatch is not available");
             return;
         }
 
@@ -198,6 +233,8 @@ angular.module('egCoreMod')
         );
     }
 
+    // TODO: once Hatch is printing-only, should probably store
+    // this preference on the server.
     service.usePrinting = function() {
         return service.getLocalItem('eg.hatch.enable.printing');
     }
@@ -213,20 +250,79 @@ angular.module('egCoreMod')
     // get the value for a stored item
     service.getItem = function(key) {
 
-        if (!service.useSettings())
-            return $q.when(service.getLocalItem(key));
+        console.debug('getting item: ' + key);
 
-        if (service.hatchAvailable) 
-            return service.getRemoteItem(key);
-
-        if (service.keyIsOnCall(key)) {
-            console.warn("Unable to getItem from Hatch: " + key + 
-                ". Retrieving item from local storage instead");
-
-            return $q.when(service.getLocalItem(key));
+        if (!service.keyStoredInBrowser(key)) {
+            return service.getServerItem(key);
         }
 
-        console.error("Unable to getItem from Hatch: " + key);
+        var deferred = $q.defer();
+
+        service.getBrowserItem(key).then(
+            function(val) { deferred.resolve(val); },
+
+            function() { // Hatch error
+                if (service.keyIsOnCall(key)) {
+                    console.warn("Unable to getItem from Hatch: " + key + 
+                        ". Retrieving item from local storage instead");
+                    deferred.resolve(service.getLocalItem(key));
+                }
+
+                deferred.reject("Unable to getItem from Hatch: " + key);
+            }
+        );
+
+        return deferred.promise;
+    }
+
+    // Collect values in batch.
+    // For server-stored values espeically, this is more efficient 
+    // than a series of one-off calls.
+    service.getItemBatch = function(keys) {
+        var browserKeys = [];
+        var serverKeys = [];
+
+        // To take full advantage of the getServerItemBatch call,
+        // we have to know in advance which keys to send to the server
+        // vs those to handle in the browser.
+        keys.forEach(function(key) {
+            if (service.keyStoredInBrowser(key)) {
+                browserKeys.push(key);
+            } else {
+                serverKeys.push(key);
+            }
+        });
+
+        var settings = {};
+
+        var serverPromise = serverKeys.length === 0 ? $q.when() : 
+            service.getServerItemBatch(serverKeys).then(function(values) {
+                angular.forEach(values, function(val, key) {
+                    settings[key] = val;
+                });
+            });
+
+        var browserPromises = [];
+        browserKeys.forEach(function(key) {
+            browserPromises.push(
+                service.getBrowserItem(key).then(function(val) {
+                    settings[key] = val;
+                })
+            );
+        });
+
+        return $q.all(browserPromises.concat(serverPromise))
+            .then(function() {return settings});
+    }
+
+    service.getBrowserItem = function(key) {
+        if (service.useSettings()) {
+            if (service.hatchAvailable) {
+                return service.getRemoteItem(key);
+            }
+        } else {
+            return $q.when(service.getLocalItem(key));
+        }
         return $q.reject();
     }
 
@@ -245,7 +341,7 @@ angular.module('egCoreMod')
 
     service.getLocalItem = function(key) {
         var val = $window.localStorage.getItem(key);
-        if (val == null) return;
+        if (val === null || val === undefined) return;
         try {
             return JSON.parse(val);
         } catch(E) {
@@ -254,6 +350,24 @@ angular.module('egCoreMod')
             service.removeLocalItem(key);
             return null;
         }
+    }
+
+    // Force auth cookies to live under path "/" instead of "/eg/staff"
+    // so they may be shared with the Angular app.
+    // There's no way to tell under what path a cookie is stored in
+    // the browser, all we can do is migrate it regardless.
+    service.migrateAuthCookies = function() {
+        [   'eg.auth.token', 
+            'eg.auth.time', 
+            'eg.auth.token.oc', 
+            'eg.auth.time.oc'
+        ].forEach(function(key) {
+            var val = service.getLoginSessionItem(key);
+            if (val) {
+                $cookies.remove(key, {path: '/eg/staff/'});
+                service.setLoginSessionItem(key, val);
+            }
+        });
     }
 
     service.getLoginSessionItem = function(key) {
@@ -273,22 +387,211 @@ angular.module('egCoreMod')
      * tmp values are removed during logout or browser close.
      */
     service.setItem = function(key, value) {
-        if (!service.useSettings())
-            return $q.when(service.setLocalItem(key, value));
 
-        if (service.hatchAvailable)
-            return service.setRemoteItem(key, value);
-
-        if (service.keyIsOnCall(key)) {
-            console.warn("Unable to setItem in Hatch: " + 
-                key + ". Setting in local storage instead");
-
-            return $q.when(service.setLocalItem(key, value));
+        if (!service.keyStoredInBrowser(key)) {
+            return service.setServerItem(key, value);
         }
 
-        console.error("Unable to setItem in Hatch: " + key);
-        return $q.reject();
+        var deferred = $q.defer();
+        return service.setBrowserItem(key, value).then(
+            function(val) {deferred.resolve(val);},
+
+            function() { // Hatch error
+
+                if (service.keyIsOnCall(key)) {
+                    console.warn("Unable to setItem in Hatch: " + 
+                        key + ". Setting in local storage instead");
+
+                    deferred.resolve(service.setLocalItem(key, value));
+                }
+                deferred.reject("Unable to setItem in Hatch: " + key);
+            }
+        );
     }
+
+    service.setBrowserItem = function(key, value) {
+        if (service.useSettings()) {
+            if (service.hatchAvailable) {
+                return service.setRemoteItem(key, value);
+            } else {
+                return $q.reject('Unable to get item from hatch');
+            }
+        } else {
+            return $q.when(service.setLocalItem(key, value));
+        }
+    }
+
+    service.setServerItem = function(key, value) {
+        if (!service.auth) service.auth = $injector.get('egAuth');
+        if (!service.auth.token()) return $q.when();
+
+        // If we have already attempted to retrieve a value for this
+        // setting, then we can tell up front whether applying a value
+        // at the server will be an option.  If not, store locally.
+        var summary = service.serverSettingSummaries[key];
+        if (summary && !summary.has_staff_setting) {
+
+            if (summary.has_org_setting === 't') {
+                // When no user/ws setting types exist but an org unit
+                // setting type does, it means the value cannot be
+                // applied by an individual user.  Nothing left to do.
+                return $q.when();
+            }
+
+            // No setting types of any flavor exist.
+            // Fall back to local storage.
+
+            if (value === null) {
+                // a null value means clear the server setting.
+                return service.removeBrowserItem(key);
+            } else {
+                console.warn('No server setting type exists for ' + key);
+                return service.setBrowserItem(key, value); 
+            }
+        }
+
+        var settings = {};
+        settings[key] = value;
+
+        return egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.settings.apply.user_or_ws',
+            service.auth.token(), settings
+        ).then(function(appliedCount) {
+
+            if (appliedCount == 0) {
+                console.warn('No server setting type exists for ' + key);
+                // We were unable to store the setting on the server,
+                // presumably becuase no server-side setting type exists.
+                // Add to local storage instead.
+                service.setLocalItem(key, value);
+            }
+
+            service.keyCache[key] = value;
+            return appliedCount;
+        });
+    }
+
+    service.getServerItem = function(key) {
+        if (key in service.keyCache) {
+            return $q.when(service.keyCache[key])
+        }
+
+        if (!service.auth) service.auth = $injector.get('egAuth');
+        if (!service.auth.token()) return $q.when(null);
+
+        return egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.settings.retrieve.atomic',
+            [key], service.auth.token()
+        ).then(function(settings) {
+            return service.handleServerItemResponse(settings[0]);
+        });
+    }
+
+    service.handleServerItemResponse = function(summary) {
+        var key = summary.name;
+        var val = summary.value;
+
+        // For our purposes, we only care if a setting can be stored
+        // as an org setting or a user-or-workstation setting.
+        summary.has_staff_setting = (
+            summary.has_user_setting === 't' || 
+            summary.has_workstation_setting === 't'
+        );
+
+        summary.value = null; // avoid duplicate value caches
+        service.serverSettingSummaries[key] = summary;
+
+        if (val !== null) {
+            // We have a server setting.  Nothing left to do.
+            return $q.when(service.keyCache[key] = val);
+        }
+
+        if (!summary.has_staff_setting) {
+
+            if (summary.has_org_setting === 't') {
+                // An org unit setting type exists but no value is applied
+                // that this workstation has access to.  The existence of 
+                // an org unit setting type and no user/ws setting type 
+                // means applying a value locally is not allowed.  
+                return $q.when(service.keyCache[key] = undefined);
+            }
+
+            console.warn('No server setting type exists for ' 
+                + key + ', using local value.');
+
+            return service.getBrowserItem(key);
+        }
+
+        // A user/ws setting type exists, but no server value exists.
+        // Migrate the local setting to the server.
+
+        var deferred = $q.defer();
+        service.getBrowserItem(key).then(function(browserVal) {
+
+            if (browserVal === null || browserVal === undefined) {
+                // No local value to migrate.
+                return deferred.resolve(service.keyCache[key] = undefined);
+            }
+
+            // Migrate the local value to the server.
+
+            service.setServerItem(key, browserVal).then(
+                function(appliedCount) {
+                    if (appliedCount == 1) {
+                        console.info('setting ' + key + ' successfully ' +
+                            'migrated to a server setting');
+                        service.removeBrowserItem(key); // fire & forget
+                    } else {
+                        console.error('error migrating setting to server,' 
+                            + ' falling back to local value');
+                    }
+                    deferred.resolve(service.keyCache[key] = browserVal);
+                }
+            );
+        });
+
+        return deferred.promise;
+    }
+
+    service.getServerItemBatch = function(keys) {
+        // no cache checking for now.  assumes batch mode is only
+        // called once on page load.  maybe add cache checking later.
+        if (!service.auth) service.auth = $injector.get('egAuth');
+        if (!service.auth.token()) return $q.when({});
+
+        var foundValues = {};
+        return egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.settings.retrieve.atomic',
+            keys, service.auth.token()
+        ).then(
+            function(settings) { 
+                //return foundValues; 
+
+                var deferred = $q.defer();
+                function checkOne(setting) {
+                    if (!setting) {
+                        deferred.resolve(foundValues);
+                        return;
+                    }
+                    service.handleServerItemResponse(setting)
+                    .then(function(resp) {
+                        if (resp !== undefined) {
+                            foundValues[setting.name] = resp;
+                        }
+                        settings.shift();
+                        checkOne(settings[0]);
+                    });
+                }
+
+                checkOne(settings[0]);
+                return deferred.promise;
+            }
+        );
+    }
+
 
     // set the value for a stored or new item
     service.setRemoteItem = function(key, value) {
@@ -305,9 +608,56 @@ angular.module('egCoreMod')
     // If the value is raw, pass it as 'value'.  If it was
     // externally JSONified, pass it via jsonified.
     service.setLocalItem = function(key, value, jsonified) {
+        if (jsonified === undefined ) {
+            jsonified = JSON.stringify(value);
+        } else if (value === undefined) {
+            return;
+        }
+        try {
+            $window.localStorage.setItem(key, jsonified);
+        } catch (e) {
+            console.log('localStorage.setItem (overwrite) failed for '+key+': ', e);
+        }
+    }
+
+    service.appendItem = function(key, value) {
+        if (!service.useSettings())
+            return $q.when(service.appendLocalItem(key, value));
+
+        if (service.hatchAvailable)
+            return service.appendRemoteItem(key, value);
+
+        if (service.keyIsOnCall(key)) {
+            console.warn("Unable to appendItem in Hatch: " + 
+                key + ". Setting in local storage instead");
+
+            return $q.when(service.appendLocalItem(key, value));
+        }
+
+        console.error("Unable to appendItem in Hatch: " + key);
+        return $q.reject();
+    }
+
+    // append the value to a stored or new item
+    service.appendRemoteItem = function(key, value) {
+        service.keyCache[key] = value;
+        return service.attemptHatchDelivery({
+            key : key, 
+            content : value, 
+            action : 'append',
+        });
+    }
+
+    service.appendLocalItem = function(key, value, jsonified) {
         if (jsonified === undefined ) 
             jsonified = JSON.stringify(value);
-        $window.localStorage.setItem(key, jsonified);
+
+        var old_value = $window.localStorage.getItem(key) || '';
+        try {
+            $window.localStorage.setItem( key, old_value + jsonified );
+        } catch (e) {
+            console.log('localStorage.setItem (append) failed for '+key+': ', e);
+        }
     }
 
     // Set the value for the given key.  
@@ -319,7 +669,7 @@ angular.module('egCoreMod')
         service.addLoginSessionKey(key);
         if (jsonified === undefined ) 
             jsonified = JSON.stringify(value);
-        $cookies.put(key, jsonified);
+        $cookies.put(key, jsonified, {path: '/'});
     }
 
     // Set the value for the given key.  
@@ -335,21 +685,44 @@ angular.module('egCoreMod')
 
     // remove a stored item
     service.removeItem = function(key) {
-        if (!service.useSettings())
-            return $q.when(service.removeLocalItem(key));
 
-        if (service.hatchAvailable) 
-            return service.removeRemoteItem(key);
-
-        if (service.keyIsOnCall(key)) {
-            console.warn("Unable to removeItem from Hatch: " + key + 
-                ". Removing item from local storage instead");
-
-            return $q.when(service.removeLocalItem(key));
+        if (!service.keyStoredInBrowser(key)) {
+            return service.removeServerItem(key);
         }
 
-        console.error("Unable to removeItem from Hatch: " + key);
-        return $q.reject();
+        var deferred = $q.defer();
+        service.removeBrowserItem(key).then(
+            function(response) {deferred.resolve(response);},
+            function() { // Hatch error
+
+                if (service.keyIsOnCall(key)) {
+                    console.warn("Unable to removeItem from Hatch: " + key + 
+                        ". Removing item from local storage instead");
+
+                    deferred.resolve(service.removeLocalItem(key));
+                }
+
+                deferred.reject("Unable to removeItem from Hatch: " + key);
+            }
+        );
+
+        return deferred.promise;
+    }
+
+    service.removeBrowserItem = function(key) {
+        if (service.useSettings()) {
+            if (service.hatchAvailable) {
+                return service.removeRemoteItem(key);
+            } else {
+                return $q.reject('error talking to Hatch');
+            }
+        } else {
+            return $q.when(service.removeLocalItem(key));
+        }
+    }
+
+    service.removeServerItem = function(key) {
+        return service.setServerItem(key, null);
     }
 
     service.removeRemoteItem = function(key) {
@@ -366,7 +739,7 @@ angular.module('egCoreMod')
 
     service.removeLoginSessionItem = function(key) {
         service.removeLoginSessionKey(key);
-        $cookies.remove(key);
+        $cookies.remove(key, {path: '/'});
     }
 
     service.removeSessionItem = function(key) {
@@ -387,9 +760,12 @@ angular.module('egCoreMod')
 
     // if set, prefix limits the return set to keys starting with 'prefix'
     service.getKeys = function(prefix) {
-        if (service.useSettings()) 
-            return service.getRemoteKeys(prefix);
-        return $q.when(service.getLocalKeys(prefix));
+        var promise = service.getServerKeys(prefix);
+        return service.getBrowserKeys(prefix).then(function(browserKeys) {
+            return promise.then(function(serverKeys) {
+                return serverKeys.concat(browserKeys);
+            });
+        });
     }
 
     service.getRemoteKeys = function(prefix) {
@@ -397,6 +773,22 @@ angular.module('egCoreMod')
             key : prefix,
             action : 'keys'
         });
+    }
+
+    service.getBrowserKeys = function(prefix) {
+        if (service.useSettings()) 
+            return service.getRemoteKeys(prefix);
+        return $q.when(service.getLocalKeys(prefix));
+    }
+
+    service.getServerKeys = function(prefix, options) {
+        if (!service.auth) service.auth = $injector.get('egAuth');
+        if (!service.auth.token()) return $q.when({});
+        return egNet.request(
+            'open-ils.actor',
+            'open-ils.actor.settings.staff.applied.names.authoritative.atomic',
+            service.auth.token(), prefix, options
+        );
     }
 
     service.getLocalKeys = function(prefix) {

@@ -17,8 +17,8 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
 
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|blob):/); // grid export
-
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
+	
     // data loaded at startup which only requires an authtoken goes
     // here. this allows the requests to be run in parallel instead of
     // waiting until startup has completed.
@@ -61,18 +61,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
             ]);
         }
 
-        return egCore.startup.go().then(function() {
-
-            // This call requires orgs to be loaded, because it
-            // calls egCore.org.ancestors(), so call it after startup
-            return egCore.pcrud.search('actsc', 
-                {owner : egCore.org.ancestors(
-                    egCore.auth.user().ws_ou(), true)},
-                {}, {atomic : true}
-            ).then(function(cats) {
-                egCore.env.absorbList(cats, 'actsc');
-            });
-        });
+        return egCore.startup.go();
     }]};
 
     $routeProvider.when('/circ/patron/search', {
@@ -149,7 +138,7 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
         resolve : resolver
     });
 
-    $routeProvider.when('/circ/patron/:id/bill/:xact_id', {
+    $routeProvider.when('/circ/patron/:id/bill/:xact_id/:xact_tab', {
         templateUrl: './circ/patron/t_xact_details',
         controller: 'XactDetailsCtrl',
         resolve : resolver
@@ -291,8 +280,27 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         if (patron_id) {
             $scope.patron_id = patron_id;
             return patronSvc.setPrimary($scope.patron_id)
+            .then(function() {
+                // the page title context label comes from the tab.
+                egCore.strings.setPageTitle(
+                    egCore.strings.PAGE_TITLE_PATRON_NAME, 
+                    egCore.strings['PAGE_TITLE_PATRON_' + tab.toUpperCase()],
+                    {   lname : patronSvc.current.family_name(),
+                        fname : patronSvc.current.first_given_name(),
+                        mname : patronSvc.current.second_given_name()
+                    }
+                );
+            })
             .then(function() {return patronSvc.checkAlerts()})
-            .then(redirectToAlertPanel);
+            .then(redirectToAlertPanel)
+            .then(function(){
+                $scope.ident_type_name = $scope.patron().ident_type().name()
+                $scope.hasIdentTypeName = $scope.ident_type_name.length > 0;
+            });
+        } else {
+            // No patron, use the tab name as the page title.
+            egCore.strings.setPageTitle(
+                egCore.strings['PAGE_TITLE_PATRON_' + tab.toUpperCase()]);
         }
         return $q.when();
     }
@@ -417,8 +425,8 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
 }])
 
 .controller('PatronBarcodeSearchCtrl',
-       ['$scope','$location','egCore','egConfirmDialog','egUser','patronSvc',
-function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
+       ['$scope','$location','egCore','egConfirmDialog','egUser','patronSvc','$uibModal','$q',
+function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc , $uibModal , $q) {
     $scope.selectMe = true; // focus text input
     patronSvc.clearPrimary(); // clear the default user
 
@@ -453,72 +461,127 @@ function($scope , $location , egCore , egConfirmDialog , egUser , patronSvc) {
 
         var user_id;
 
-        // lookup barcode
-        egCore.net.request(
-            'open-ils.actor',
-            'open-ils.actor.get_barcodes',
-            egCore.auth.token(), egCore.auth.user().ws_ou(), 
-            'actor', args.barcode)
+        // given a scanned barcode, this function finds any matching users
+        // and handles multiple matches due to barcode completion
+        function handleBarcodeCompletion(scanned_barcode) {
+            var deferred = $q.defer();
 
-        .then(function(resp) { // get_barcodes
+            egCore.net.request(
+                'open-ils.actor',
+                'open-ils.actor.get_barcodes',
+                egCore.auth.token(), egCore.auth.user().ws_ou(), 
+                'actor', scanned_barcode)
 
-            if (evt = egCore.evt.parse(resp)) {
-                alert(evt); // FIXME
-                return;
-            }
+            .then(function(resp) { // get_barcodes
 
-            if (!resp || !resp[0]) {
-                $scope.bcNotFound = args.barcode;
-                $scope.selectMe = true;
-                egCore.audio.play('warning.patron.not_found');
-                return;
-            }
+                if (evt = egCore.evt.parse(resp)) {
+                    alert(evt); // FIXME
+                    deferred.reject();
+                    return;
+                }
+
+                if (!resp || !resp[0]) {
+                    $scope.bcNotFound = args.barcode;
+                    $scope.selectMe = true;
+                    egCore.audio.play('warning.patron.not_found');
+                    deferred.reject();
+                    return;
+                }
+
+                if (resp.length == 1) {
+                    // exactly one matching barcode: return it
+                    deferred.resolve();
+                    user_id = resp[0].id;
+                } else {
+                    // multiple matching barcodes: let the user pick one 
+                    var barcode_map = {};
+                    var matches = [];
+                    var promises = [];
+                    var selected_barcode;
+                    angular.forEach(resp, function(match) {
+                        promises.push(
+                            egUser.get(match.id, {useFields : ['home_ou']}).then(function(user) {
+                                barcode_map[match.barcode] = user.id();
+                                matches.push( {
+                                    barcode: match.barcode,
+                                    title: user.first_given_name() + ' ' + user.family_name(),
+                                    org_name: user.home_ou().name(),
+                                    org_shortname: user.home_ou().shortname()
+                                });
+                            })
+                        );
+                    });
+                    return $q.all(promises)
+                    .then(function() {
+                        $uibModal.open({
+                            templateUrl: './circ/share/t_barcode_choice_dialog',
+                            controller:
+                                ['$scope', '$uibModalInstance',
+                                function($scope, $uibModalInstance) {
+                                $scope.matches = matches;
+                                $scope.ok = function(barcode) {
+                                    $uibModalInstance.close();
+                                    selected_barcode = barcode;
+                                }
+                                $scope.cancel = function() {$uibModalInstance.dismiss()}
+                            }],
+                        }).result.then(function() {
+                            deferred.resolve();
+                            user_id = barcode_map[selected_barcode];
+                        });
+                    });
+                }
+            });
+            return deferred.promise;
+        }
+
+        // call our function to lookup matching users for the scanned barcode
+        handleBarcodeCompletion(args.barcode).then(function() {
 
             // see if an opt-in request is needed
-            user_id = resp[0].id;
             return egCore.net.request(
                 'open-ils.actor',
                 'open-ils.actor.user.org_unit_opt_in.check',
-                egCore.auth.token(), user_id);
+                egCore.auth.token(), user_id
+            ).then(function(optInResp) { // opt_in_check
 
-        }).then(function(optInResp) { // opt_in_check
+                if (evt = egCore.evt.parse(optInResp)) {
+                    alert(evt); // FIXME
+                    return;
+                }
 
-            if (evt = egCore.evt.parse(optInResp)) {
-                alert(evt); // FIXME
-                return;
-            }
+                if (optInResp == 2) {
+                    // opt-in disallowed at this location by patron's home library
+                    $scope.optInRestricted = true;
+                    $scope.selectMe = true;
+                    egCore.audio.play('warning.patron.opt_in_restricted');
+                    return;
+                }
+            
+                if (optInResp == 1) {
+                    // opt-in handled or not needed
+                    return loadPatron(user_id);
+                }
 
-            if (optInResp == 2) {
-                // opt-in disallowed at this location by patron's home library
-                $scope.optInRestricted = true;
-                $scope.selectMe = true;
-                egCore.audio.play('warning.patron.opt_in_restricted');
-                return;
-            }
-           
-            if (optInResp == 1) {
-                // opt-in handled or not needed
-                return loadPatron(user_id);
-            }
+                // opt-in needed, show the opt-in dialog
+                egUser.get(user_id, {useFields : []})
 
-            // opt-in needed, show the opt-in dialog
-            egUser.get(user_id, {useFields : []})
-
-            .then(function(user) { // retrieve user
-                var org = egCore.org.get(user.home_ou());
-                egConfirmDialog.open(
-                    egCore.strings.OPT_IN_DIALOG_TITLE,
-                    egCore.strings.OPT_IN_DIALOG,
-                    {   family_name : user.family_name(),
-                        first_given_name : user.first_given_name(),
-                        org_name : org.name(),
-                        org_shortname : org.shortname(),
-                        ok : function() { createOptIn(user.id()) },
-                        cancel : function() {}
-                    }
-                );
+                .then(function(user) { // retrieve user
+                    var org = egCore.org.get(user.home_ou());
+                    egConfirmDialog.open(
+                        egCore.strings.OPT_IN_DIALOG_TITLE,
+                        egCore.strings.OPT_IN_DIALOG,
+                        {   family_name : user.family_name(),
+                            first_given_name : user.first_given_name(),
+                            org_name : org.name(),
+                            org_shortname : org.shortname(),
+                            ok : function() { createOptIn(user.id()) },
+                            cancel : function() {}
+                        }
+                    );
+                })
             })
-        });
+        })
     }
 }])
 
@@ -577,6 +640,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
     $scope.openCreateBucketDialog = function() {
         $uibModal.open({
             templateUrl: './circ/patron/bucket/t_bucket_create',
+            backdrop: 'static',
             controller:
                 ['$scope', '$uibModalInstance', function($scope, $uibModalInstance) {
                 $scope.focusMe = true;
@@ -627,13 +691,20 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
         angular.forEach(items, function(i) {
             patron_ids.push(i.id());
         });
-        egPatronMerge.do_merge(patron_ids).then(function() {
-            // ensure that we're not drawing from cached
-            // resuts, as a successful merge just deleted a
-            // record
-            delete patronSvc.lastSearch;
-            $scope.gridControls.refresh();
-        });
+        egPatronMerge.do_merge(patron_ids).then(
+            function() {
+                // ensure that we're not drawing from cached
+                // resuts, as a successful merge just deleted a
+                // record
+                delete patronSvc.lastSearch;
+                $scope.gridControls.refresh();
+            },
+            function(evt) {
+                if (evt && evt.textcode == 'MERGE_SELF_NOT_ALLOWED') {
+                    ngToast.warning(egCore.strings.MERGE_SELF_NOT_ALLOWED);
+                }
+            }
+        );
     }
    
 }])
@@ -646,6 +717,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
 function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
     $scope.initTab('messages', $routeParams.id);
     var usr_id = $routeParams.id;
+    var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
 
     // setup date filters
     var start = new Date(); // now - 1 year
@@ -672,6 +744,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
         setQuery : function() {
             return {
                 usr : usr_id,
+                org_unit : org_ids,
                 '-or' : [
                     {stop_date : null},
                     {stop_date : {'>' : 'now'}}
@@ -687,6 +760,7 @@ function($scope , $q , $routeParams,  egCore , $uibModal , patronSvc , egCirc) {
         setQuery : function() {
             return {
                 usr : usr_id, 
+                org_unit : org_ids,
                 stop_date : {'<=' : 'now'},
                 set_date : {between : date_range()}
             };
@@ -891,6 +965,7 @@ function($scope,  $filter , $routeParams , $location , egCore , patronSvc , $uib
     $scope.newNote = function() {
         $uibModal.open({
             templateUrl: './circ/patron/t_new_note_dialog',
+            backdrop: 'static',
             controller: 
                 ['$scope', '$uibModalInstance',
             function($scope, $uibModalInstance) {
@@ -1057,6 +1132,7 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
                 user.card(card);
                 $uibModal.open({
                     templateUrl: './circ/patron/t_move_to_group_dialog',
+                    backdrop: 'static',
                     controller: [
                                 '$scope','$uibModalInstance',
                         function($scope , $uibModalInstance) {
@@ -1150,33 +1226,63 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
     $scope.initTab('other', $routeParams.id);
     var usr_id = $routeParams.id;
     var org_ids = egCore.org.fullPath(egCore.auth.user().ws_ou(), true);
+
     $scope.surveys = [];
-    // fetch the surveys
+    var svr_responses = {};
+
+    // fetch all survey responses for this user.
     egCore.pcrud.search('asvr',
         {usr : usr_id},
-        {flesh : 4, flesh_fields : {
-            asvr : ['question', 'survey', 'answer'],
-            asv : ['responses', 'questions'],
-            asvq : ['responses', 'question']
-    }},
-        {authoritative : true})
-    .then(null, null, function(survey) {
-        var sameSurveyId = false;
-        if (survey.survey().id() && $scope.surveys.length > 0) {
-            for (sid = 0; sid < $scope.surveys.length; sid++) {
-                if (survey.survey().id() == $scope.surveys[sid].id()) sameSurveyId = true; 
+        {flesh : 2, flesh_fields : {asvr : ['survey','question','answer']}}
+    ).then(
+        function() {
+            // All responses collected and deduplicated.
+            // Create one collection of responses per survey.
+
+            angular.forEach(svr_responses, function(questions, survey_id) {
+                var collection = {responses : []};
+                angular.forEach(questions, function(response) {
+                    collection.survey = response.survey(); // same for one.
+                    collection.responses.push(response);
+                });
+                $scope.surveys.push(collection);
+            });
+        },
+        null, 
+        function(response) {
+
+            // Discard responses for out-of-scope surveys.
+            if (org_ids.indexOf(response.survey().owner()) < 0) 
+                return;
+
+            // survey_id => question_id => response
+            var svr_id = response.survey().id();
+            var qst_id = response.question().id();
+
+            if (!svr_responses[svr_id]) 
+                svr_responses[svr_id] = [];
+
+            if (!svr_responses[svr_id][qst_id]) {
+                svr_responses[svr_id][qst_id] = response;
+
+            } else {
+                // We have multiple responses for the same question.
+                // For this UI we only care about the most recent response.
+                if (response.effective_date() > 
+                    svr_responses[svr_id][qst_id].effective_date())
+                    svr_responses[svr_id][qst_id] = response;
             }
         }
-        if (!sameSurveyId) $scope.surveys.push(survey.survey());
-    });
+    );
 }])
 
 .controller('PatronFetchLastCtrl',
        ['$scope','$location','egCore',
 function($scope , $location , egCore) {
 
-    var id = egCore.hatch.getLoginSessionItem('eg.circ.last_patron');
-    if (id) return $location.path('/circ/patron/' + id + '/checkout');
+    var ids = egCore.hatch.getLoginSessionItem('eg.circ.recent_patrons') || [];
+    if (ids.length) 
+        return $location.path('/circ/patron/' + ids[0] + '/checkout');
 
     $scope.no_last = true;
 }])
