@@ -170,7 +170,7 @@ steps to create an import script:
 
     --Determine which records are new, and which are merely updates of existing patrons
     --You may with to also add a check on the home_ou column here, so that you don't
-    --accidentaly overwrite the data of another library in your consortium.
+    --accidentally overwrite the data of another library in your consortium.
     --You may also use a different matchpoint than actor.usr.ident_value.
     UPDATE students
         SET already_exists = TRUE

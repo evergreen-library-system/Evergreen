@@ -127,8 +127,8 @@ Extra steps for web staff client
 Skip this entire section if you are using an official release tarball downloaded
 from http://evergreen-ils.org/downloads
 
-Install dependencies for AngularJS web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install dependencies for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 [NOTE]
 You may skip this section if you have installed the
@@ -140,8 +140,8 @@ https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
 environment variable `PATH`.
 
 [[install_files_for_web_staff_client]]
-Install files for web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install AngularJS files for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Building, Testing, Minification: The remaining steps all take place within
    the staff JS web root:
@@ -168,24 +168,12 @@ npm run build-prod
 npm run test
 ------------------------------------------------------------------------------
 
-Install dependencies for Angular web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-[NOTE]
-You may skip this section if you have installed the
-<<optional_developer_additions,optional developer additions>>.  You will still need to do the following
-steps in <<install_files_for_angular_web_staff_client,Install files for web staff client>>.
-
-1. Install the long-term stability (LTS) release of
-https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
-environment variable `PATH`.
-
 [[install_files_for_angular_web_staff_client]]
-Install files for web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install Angular files for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Building, Testing, Minification: The remaining steps all take place within
-   the Angalar staff root:
+   the Angular staff root:
 +
 [source,sh]
 ------------------------------------------------------------------------------

@@ -66,7 +66,7 @@ distribution of Debian or Ubuntu:
 indexterm:[Linux, Debian]
 indexterm:[Linux, Ubuntu]
 +
-  * `debian-stretch` for Debian Stretch (9.0) (EDI compatibility in progess)
+  * `debian-stretch` for Debian Stretch (9.0) (EDI compatibility in progress)
   * `debian-jessie` for Debian Jessie (8.0) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
   * `ubuntu-xenial` for Ubuntu Xenial Xerus (16.04) (EDI compatibility in progress)
   * `ubuntu-trusty` for Ubuntu Trusty Tahr (14.04) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
