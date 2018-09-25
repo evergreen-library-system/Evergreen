@@ -7,7 +7,7 @@ Software Prerequisites
 ~~~~~~~~~~~~~~~~~~~~~~
 
   * **PostgreSQL**: The minimum supported version is 9.4.
-  * **Linux**: Evergreen 3.2.0 has been tested on Debian Stretch (9.0),
+  * **Linux**: Evergreen 3.2.0 [RC1] has been tested on Debian Stretch (9.0),
     Debian Jessie (8.0), Ubuntu Xenial Xerus (16.04),and Ubuntu Trusty Tahr (14.04).
     If you are running an older version of these distributions, you may want
     to upgrade before upgrading Evergreen. For instructions on upgrading these
@@ -42,12 +42,12 @@ osrf_control --localhost --stop-all
  .. Back up the /openils directory.
 . Upgrade OpenSRF. Download and install the latest version of OpenSRF from
 the https://evergreen-ils.org/opensrf-downloads/[OpenSRF download page].
-. As the *opensrf* user, download and extract Evergreen 3.2.0:
+. As the *opensrf* user, download and extract Evergreen 3.2.0 [RC1]:
 +
 [source, bash]
 -----------------------------------------------
-wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.2.0.tar.gz
-tar xzf Evergreen-ILS-3.2.0.tar.gz
+wget https://evergreen-ils.org/downloads/Evergreen-ILS-3.2-rc1.tar.gz
+tar xzf Evergreen-ILS-3.2-rc1.tar.gz
 -----------------------------------------------
 +
 [NOTE]
