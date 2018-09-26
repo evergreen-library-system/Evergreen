@@ -493,7 +493,7 @@ function(egCore , $q) {
                     '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-3"><input class="form-control" type="number" min="1" ng-model="copy_number" ng-change="updateCopyNo()"/></div>'+
-                '<div class="col-xs-3"><eg-basic-combo-box eg-disabled="record == 0" list="parts" selected="part"></eg-basic-combo-box></div>'+
+                '<div class="col-xs-3"><eg-basic-combo-box list="parts" selected="part"></eg-basic-combo-box></div>'+
             '</div>',
 
         scope: { focusNext: "=", copy: "=", callNumber: "=", index: "@", record: "@" },
@@ -585,19 +585,19 @@ function(egCore , $q) {
             '<div class="row">'+
                 '<div class="col-xs-2">'+
                     '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
-                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
+                    '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"/>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
+                    '<select class="form-control" ng-model="prefix" ng-change="updatePrefix()" ng-options="p.label() for p in prefix_list"/>'+
                 '</div>'+
                 '<div class="col-xs-2">'+
-                    '<input ng-disabled="record == 0 && !onlyVols" class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
+                    '<input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
                     '<div class="label label-danger" ng-if="empty_label">{{empty_label_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
-                    '<select ng-disabled="record == 0 && !onlyVols" class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
+                    '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"/>'+
                 '</div>'+
-                '<div ng-hide="onlyVols" class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
+                '<div ng-hide="onlyVols" class="col-xs-1"><input class="form-control" type="number" ng-model="copy_count" min="{{orig_copy_count}}" ng-change="changeCPCount()"></div>'+
                 '<div ng-hide="onlyVols" class="col-xs-5">'+
                     '<eg-vol-copy-edit record="{{record}}" ng-repeat="cp in copies track by idTracker(cp)" focus-next="focusNextBarcode" copy="cp" call-number="callNumber"></eg-vol-copy-edit>'+
                 '</div>'+
@@ -830,9 +830,8 @@ function(egCore , $q) {
         replace: true,
         template:
             '<div class="row">'+
-                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><eg-org-selector alldisabled="{{record == 0 && !onlyVols}}" selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
-                '<div class="col-xs-1"><input ng-disabled="record == 0" class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
+                '<div class="col-xs-1"><eg-org-selector selected="owning_lib" disable-test="cant_have_vols"></eg-org-selector></div>'+
+                '<div class="col-xs-1"><input class="form-control" type="number" min="{{orig_cn_count}}" ng-model="cn_count" ng-change="changeCNCount()"/></div>'+
                 '<div class="col-xs-10">'+
                     '<eg-vol-row only-vols="onlyVols" record="{{record}}"'+
                         'ng-repeat="(cn,copies) in struct" '+
