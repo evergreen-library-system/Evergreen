@@ -3,6 +3,68 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.6
+----------------
+This release contains bug fixes improving on Evergreen 3.1.5.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* When you mouse over a grid cell in the client, a tooltip will display the full contents of the cell.
+* Fixes issues with columns in the Item Status, Holdings View, Checkout, Patron Bill, Recent Circ History,
+* Fixes various misspellings and capitalization issues in the interface.
+* Circulation staff can now override a patron block that is placed from Messages/Apply Penalty.
+* Fixes an issue with checking in hourly loans.
+* Staff can now approve pending patron addresses in the patron edit interface.
+* Prevents patron records from being merged with themselves.
+* Fixes a bug where the patron card dialog would not allow the user to change the primary barcode under certain circumstances.
+* Fixes issues with duplicate transit records.
+* Adds the transit cancel time to the Most Recent Transits section of the Item Status Holds / Transit tab.
+* Adds the "Show in Catalog" action back to the Item Status grid.
+* Improvements to the Item Attribute Editor.
+* Staff can now set a default search box in the Z39.50 search interface.
+* Staff can now delete copy notes.
+* Fixes an issue in which transferring items and vol/items caused statistical categories to disappear.
+* In the MARC editor, the 007 physical characteristics wizard now has a different icon than the authority linker.
+* Protects backordered acquisitions items from having their catalog items deleted.
+* Fixes a problem where EDI ORDERS message were not visible in the EDI Messages interface.
+* Fixes problems that occur when cloning a report template created in the XUL client.
+* Fixes bugs that caused activity metric data when performing searches.
+* Fixes an issue where the "Predict New Issues" button in the Serials module did not use the correct pattern. 
+* The KPAC now respects the `opac.holds.org_unit_not_pickup_lib` setting.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.6 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Amy Constantino
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Joan Kranich
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Jason Stephenson
+* Dan Wells
+* Beth Willis
+
+
 Evergreen 3.1.5
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.4.
