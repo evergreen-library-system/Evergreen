@@ -74,9 +74,13 @@
             struct="data.tree[lib]">
         </eg-vol-edit>
         <hr/>
-        <div>
-            <eg-org-selector alldisabled="{{record_id == 0}}" selected="new_lib_to_add" onchange="changeNewLib" disable-test="cant_have_vols"></eg-org-selector>
-            <button class="btn btn-default" ng-click="addLibToStruct()" type="button">[% l('Add volume') %]</button>
+        <div class="row">
+            <div class="col-xs-2">
+                <eg-org-selector alldisabled="{{record_id == 0}}" selected="new_lib_to_add" onchange="changeNewLib" disable-test="cant_have_vols"></eg-org-selector>
+            </div>
+            <div class="col-xs-2">
+                <button class="btn btn-default input-group-addon" ng-disabled="record_id == 0" ng-click="addLibToStruct()" type="button">[% l('Add volume') %]</button>
+            </div>
         </div>
     </div>
 
