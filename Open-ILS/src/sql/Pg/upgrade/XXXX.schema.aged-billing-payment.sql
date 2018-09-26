@@ -18,16 +18,6 @@ INSERT INTO money.aged_billing
     SELECT mb.* FROM money.billing mb
     JOIN action.aged_circulation circ ON (circ.id = mb.xact);
 
-DELETE FROM money.payment WHERE id IN (
-    SELECT mp.id FROM money.payment mp
-    JOIN action.aged_circulation circ ON (circ.id = mp.xact)
-);
-
-DELETE FROM money.billing WHERE id IN (
-    SELECT mb.id FROM money.billing mb
-    JOIN action.aged_circulation circ ON (circ.id = mb.xact)
-);
-
 CREATE OR REPLACE VIEW money.all_payments AS
     SELECT * FROM money.payment_view 
     UNION ALL
@@ -88,5 +78,61 @@ BEGIN
 END;
 $$ LANGUAGE 'plpgsql';
 
+-- NOTE you could COMMIT here then start a new TRANSACTION if desired.
+
+\qecho Deleting aged payments and billings from active payment/billing
+\qecho tables.  This may take a while...
+
+ALTER TABLE money.payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.cash_payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.check_payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.credit_card_payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.forgive_payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.credit_payment DISABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.goods_payment DISABLE TRIGGER mat_summary_del_tgr;
+
+DELETE FROM money.payment WHERE id IN (
+    SELECT mp.id FROM money.payment mp
+    JOIN money.aged_payment USING (id)
+);
+
+ALTER TABLE money.payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.cash_payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.check_payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.credit_card_payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.forgive_payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.credit_payment ENABLE TRIGGER mat_summary_del_tgr;
+ALTER TABLE money.goods_payment ENABLE TRIGGER mat_summary_del_tgr;
+
+-- TODO: This approach assumes most of the money.billing rows have been
+-- copied to money.aged_billing.  If that is not the case, which would
+-- happen if circ anonymization is not enabled, it will be faster to
+-- perform a simple delete instead of a truncate/rebuild.
+
+-- Copy all money.billing rows that are not represented in money.aged_billing
+CREATE TEMPORARY TABLE tmp_money_billing ON COMMIT DROP AS
+    SELECT mb.* FROM money.billing mb
+    LEFT JOIN money.aged_billing mab USING (id)
+    WHERE mab.id IS NULL;
+
+ALTER TABLE money.billing DISABLE TRIGGER ALL;
+
+-- temporarily remove the foreign key constraint to money.billing on
+-- account adjusment.  Needed for money.billing truncate.
+ALTER TABLE money.account_adjustment 
+    DROP CONSTRAINT account_adjustment_billing_fkey;
+
+TRUNCATE money.billing;
+
+INSERT INTO money.billing SELECT * FROM tmp_money_billing;
+
+ALTER TABLE money.billing ENABLE TRIGGER ALL;
+ALTER TABLE money.account_adjustment 
+    ADD CONSTRAINT account_adjustment_billing_fkey 
+    FOREIGN KEY (billing) REFERENCES money.billing (id);
+
 COMMIT;
+
+-- Good to run after truncating -- OK to run after COMMIT.
+ANALYZE money.billing;
 
