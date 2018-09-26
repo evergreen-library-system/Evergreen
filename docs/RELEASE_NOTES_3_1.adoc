@@ -11,6 +11,7 @@ All bug fixes refer to the web staff client unless otherwise specified.
 Bug fixes
 ~~~~~~~~~
 
+* Fixes an issue that caused catalog searches to fail after a new library was added to the org tree.
 * When you mouse over a grid cell in the client, a tooltip will display the full contents of the cell.
 * Fixes issues with columns in the Item Status, Holdings View, Checkout, Patron Bill, Recent Circ History,
 * Fixes various misspellings and capitalization issues in the interface.
