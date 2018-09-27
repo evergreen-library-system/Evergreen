@@ -1,3 +1,985 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 3ea17aba54e0e2171f3b2b356b87101addc9931f
+Author: blake <blake@mobiusconsortium.org>
+Date:   Thu Sep 27 09:20:14 2018 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+19	14	docs/installation/server_upgrade.adoc
+
+commit 91003d0e4aca2738af43e2c8f23d95d16cb69522
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Sep 26 16:15:01 2018 -0500
+
+    bumping Perl version string for 3.1.6
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 0717dda148f2d894bf8343bcf8ae91ef79c71f6a
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Sep 26 16:13:35 2018 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+4	4	build/i18n/po/acq/cs-CZ.po
+8	8	build/i18n/po/circ.properties/cs-CZ.po
+1297	1297	build/i18n/po/fm_IDL.dtd/ar-JO.po
+1298	1298	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+1297	1297	build/i18n/po/fm_IDL.dtd/de-DE.po
+1297	1297	build/i18n/po/fm_IDL.dtd/en-CA.po
+1297	1297	build/i18n/po/fm_IDL.dtd/en-GB.po
+1304	1304	build/i18n/po/fm_IDL.dtd/es-ES.po
+1297	1297	build/i18n/po/fm_IDL.dtd/fi-FI.po
+1297	1297	build/i18n/po/fm_IDL.dtd/fr-CA.po
+1297	1297	build/i18n/po/fm_IDL.dtd/he-IL.po
+1297	1297	build/i18n/po/fm_IDL.dtd/hu-HU.po
+1297	1297	build/i18n/po/fm_IDL.dtd/hy-AM.po
+1297	1297	build/i18n/po/fm_IDL.dtd/oc-FR.po
+1297	1297	build/i18n/po/fm_IDL.dtd/pt-BR.po
+1297	1297	build/i18n/po/fm_IDL.dtd/ru-RU.po
+1297	1297	build/i18n/po/fm_IDL.dtd/sv-SE.po
+1297	1297	build/i18n/po/fm_IDL.dtd/tr-TR.po
+4	4	build/i18n/po/reports.dtd/cs-CZ.po
+460	457	build/i18n/po/webstaff/ar-JO.po
+467	461	build/i18n/po/webstaff/cs-CZ.po
+458	449	build/i18n/po/webstaff/en-GB.po
+458	449	build/i18n/po/webstaff/es-ES.po
+459	453	build/i18n/po/webstaff/hy-AM.po
+458	449	build/i18n/po/webstaff/ru-RU.po
+
+commit 70758a7825a41c5a780b195b99b5b63f825d6598
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Sep 26 15:54:49 2018 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+3	3	build/i18n/po/cat.properties/cat.properties.pot
+3	3	build/i18n/po/common.properties/common.properties.pot
+24	25	build/i18n/po/lang.dtd/lang.dtd.pot
+4	4	build/i18n/po/tpac/tpac.pot
+223	155	build/i18n/po/webstaff/webstaff.pot
+
+commit d5c7ed6b54628850841d2b151b4db25c011ced12
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Aug 27 12:08:37 2018 -0400
+
+    LP#1786987: Locale-less org tree cache object becomes stale
+    
+    The autogen.sh script calls a function that flushes all org tree objects
+    cached by locale, but does not flush the one used when the locale is
+    unkown.  This commit forces that flushing to occur.
+    
+    berick: Definition of my $cache pushed up above first use.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	1	Open-ILS/src/perlmods/lib/OpenILS/Utils/Configure.pm
+
+commit 821830b8f4c04ac4c521d67f5813114297525f9c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 09:10:22 2018 -0700
+
+    Docs: Adding 3.1.6 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+62	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit be4745799e828181cc0f5593477a492c2e030f81
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 09:05:54 2018 -0700
+
+    Docs: Adding release notes for 3.0.12
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+59	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit d22a7a07d6060485e0f1d07163b894175ee51668
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 24 16:19:33 2018 -0400
+
+    LP#1794176 Avoid capturing grid cell tooltip/display values
+    
+    Remove the grid-tooltip logic that captured the cell content into a
+    template-level variable so the content only needed to be generated once
+    for both the tooltip and cell display.  This logic fails to handle cases
+    where the cell content is dynamic, typically the result of row
+    attributes being modified via external process.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	7	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+7	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 0bfc17c3bf881650dfd38cce260690b4e0157abe
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 19 11:16:39 2018 -0400
+
+    LP#1791335: Retain stat cats on item transfer
+    
+    For some reason, parts were protected during item transfer, but stat cats were
+    not.  This commit protects them by fleshing stat cat entries in the outer
+    item transfer method.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit 6f03a3a1ad0a6dbba67ca29c7d57a504a1d32c12
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Sep 21 16:46:17 2018 -0400
+
+    LP#1791340: expand on comment about backdated checkin times
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+
+commit b6be7b260ecd5fdaa339e9fd1fd3f08e48be4508
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Sep 21 10:45:59 2018 -0400
+
+    LP#1791340 Webstaff: Don't backdate when we're not
+    
+    There was code in the webstaff checkin interface which attempted to
+    remove the backdate parameter when it wasn't needed, as its mere
+    presence has a negative effect on the checkin process.  This fail-safe
+    was not working, however.
+    
+    Instead, let's build on the same check function used for the display,
+    so we can be more sure that if the user doesn't see that they are
+    backdating, the interface will not treat it as a backdate, and
+    vice-versa.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	4	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+
+commit 355e4d36c115c9f32126dd3985a2802bba4ea2dc
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 20 18:26:47 2018 -0400
+
+    LP#1745427: account for change in prediction patterns
+    
+    This patch fixes a bug in the web staff client where changing
+    the active prediction pattern for a subscription would not
+    reset the base issue when predicting the next run of issues.
+    
+    To test
+    -------
+    1. Set up a subscription in the web staff client with a prediction
+       pattern (e.g., monthly).  Predict some issues.
+    2. Create/select a new prediction pattern for a new publishing schedule,
+       e.g., quarterly.
+    3. Activate the new pattern and deactivate the old pattern.
+    4. Click Predict New Issues.
+    5. Enter in the new publication date/enumerations/chronology as needed.
+    6. Enter a prediction count and select Save. Note that new issues
+       appear to be based on the previous pattern.
+    7. Apply the patch, delete the issues created in step 6, then repeat
+       steps 4-6.  This time, new issues should be created using the new
+       prediction pattern.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+16	7	Open-ILS/web/js/ui/default/staff/serials/services/core.js
+
+commit 9a1c1efc50d34c0bebcb30ce8cd6d13016f3f0bb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 19 10:26:04 2018 -0400
+
+    LP#1781480: Include group owner ancestor badges
+    
+    This commit lightly refactors the badge org logic and includes the ancestors
+    of location group owners in the list of badge orgs, instead of only the direct
+    owners.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+
+commit 4a81d4317e1f1b2491c9fbed82fed5cf9d89af46
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Sep 17 11:33:29 2018 -0400
+
+    LP#1781480: Closures remeber values in subtle ways...
+    
+    ... and we must take care to avoid that.  This commit forces a state variable
+    to be statically assigned an empty list rather than depending on the idiomatic
+    undef to vivicate an empty list.  This is important for all OpenSRF methods,
+    and manifests here as a search "remembering" a previously chosen location
+    group.  A comment to that point is included for our future selves.
+    
+    The core probably arises from the fact that, in the end, OpenSRF methods are
+    generated closures.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+10	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/metabib.pm
+
+commit 20ec0244040090a8ac915a28fae9b9acabbecd68
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Aug 3 17:25:33 2018 -0400
+
+    LP#1732761: Chain the promises to avoid races
+    
+    It looks like there's a race condition gathering locations for larger copy
+    sets.  Here we chain the promises to remove the race by serialization.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+32	32	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit b464321d69646f31334780dfa6e1f0412df8b3bc
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jul 9 16:31:50 2018 -0400
+
+    LP#1732761: Fetch locations immediately for display
+    
+    This commit closes a race condition where location labels cannot be rendered
+    for the "multiple locations" widget because fetching them takes longer than
+    the initial render of the attribute editor.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+25	3	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit b5d3db5888e5edf993e9033fa926c05256dfe972
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Jul 3 16:57:27 2018 -0400
+
+    LP#1732761: Batch item edit and multiple values per field
+    
+    Previous to this commit, the display of multiple different values for a field
+    in the item attribute editor was simply to display no value.  Here we add a UI
+    component that presents the list of unique values, the number of selected
+    copies that use each value, and the ability to select just those copies using
+    a particular value by clicking on the desired value.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/cat/volcopy/index.tt2
+
+8	0	Open-ILS/src/templates/staff/cat/volcopy/index.tt2
+54	0	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+11	0	Open-ILS/src/templates/staff/share/t_listcounts.tt2
+89	0	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+19	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+44	0	Open-ILS/web/js/ui/default/staff/services/ui.js
+ create mode 100644 Open-ILS/src/templates/staff/share/t_listcounts.tt2
+
+commit e857161a2766d6346e1a4c4f7a75e4c1eb48487b
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Thu Sep 20 10:05:28 2018 -0400
+
+    LP#1783345: Make one more change in case
+    
+    One button was missed when normalizing case in the add to bucket modal.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2
+
+commit cf8595efe4dcaaaf3034eb28b69a332313c47fb9
+Author: Sam Link <slink@LIBPC002>
+Date:   Tue Jul 31 10:35:34 2018 -0400
+
+    Bug #1783345 - Normalized add to bucket modal
+    
+    The text cases in the add to bucket modal have been normalized to
+    sentence case.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	4	Open-ILS/src/templates/staff/cat/catalog/t_add_to_bucket.tt2
+
+commit cbe09037cf0829ca2516b8c1730df6099fbeb138
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Sep 18 14:53:47 2018 -0400
+
+    LP#1787274: Stamping upgrade script for no dupe transits
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+73	0	Open-ILS/src/sql/Pg/upgrade/1133.schema.no-dupe-transits.sql
+0	73	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-dupe-transits.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1133.schema.no-dupe-transits.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-dupe-transits.sql
+
+commit 9f9f4227db564d59720a83a62925d857e5ae70c7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 18 11:21:26 2018 -0400
+
+    LP#1787274 One active transit pgtap tests
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+39	0	Open-ILS/src/sql/Pg/live_t/lp1787274-no-dupe-transits.pg
+ create mode 100644 Open-ILS/src/sql/Pg/live_t/lp1787274-no-dupe-transits.pg
+
+commit 4dd0d0cca13f199a1d05ac8e5990e54d287fb1e4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 17 18:16:42 2018 -0400
+
+    LP#1787274 Active copy transit unique constraint
+    
+    Adds constraint triggers to action.*transit_copy tables to prevent
+    creation of new transits for a copies when an existing transit of any
+    type exists for the copy with a NULL dest_recv_time and cancel_time
+    values (i.e. an open transit).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+25	0	Open-ILS/src/sql/Pg/090.schema.action.sql
+4	0	Open-ILS/src/sql/Pg/095.schema.booking.sql
+73	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-dupe-transits.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.no-dupe-transits.sql
+
+commit 35c1958ef4500e7f1d67413a2e1694db7c5ab492
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 17 18:16:28 2018 -0400
+
+    LP#1787274 Prevent multiple active copy checkins
+    
+    In the staff client checkin service, track which copies are currently
+    in-flight to the checkin API call and prevent additional checkin API
+    calls for any copy that is currently in flight.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+13	2	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 8b3656d02ca457639a4b52d42dc142a845fca4e2
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Jun 21 15:57:41 2018 -0400
+
+    LP1735816: Delete Copy Notes in the Web Client
+    
+    A combination of calling convention errors and
+    template picky-ness prevented the deletion of
+    copy notes in the web client. This patch returns
+    that ability.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Amy Constantino <aconstantino@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/AssetCommon.pm
+5	8	Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2
+29	20	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e1e366f377fcaa397682831b0a5702a53f39a342
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Jun 29 14:45:27 2018 -0400
+
+    LP#1642344: XUL report cloning
+    
+    This patch allows report templates of version 4 and earlier
+    (which would have been created by the XUL staff client) to
+    be upgraded to template version 5 (used by the web staff
+    client) when the user clones a report. This closes a limitation
+    introduced in the reporter module for the web staff client.
+    
+    Note that during the conversion, inner joins are used by
+    default when IDL classes have a 'has_a' relation rather than
+    defaulting to left outer joins, improving correctness of the
+    generated SQL query.
+    
+    To test
+    -------
+    [0] Apply the patch.
+    [1] In a test database that has reporter templates created
+        by (or for) the XUL staff client, create clones of
+        those templates.
+    [2] Verify that the output of reports created using the new
+        templates matches output of reports from the original
+        templates.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+114	15	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+24	0	Open-ILS/web/js/ui/default/staff/test/unit/egReporter.js
+2	3	Open-ILS/web/reports/oils_rpt_folder_window.js
+
+commit 4b0084e7d39725e6483d66a0897b2c1d08f9f9b2
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Sep 14 10:06:33 2018 -0400
+
+    LP#1739286: Belt and suspenders on radio button flags
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	0	Open-ILS/web/js/ui/default/staff/cat/services/z3950.js
+
+commit 70b621796f885152b234eb66406d6592262132c5
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Tue Jul 10 19:46:04 2018 -0400
+
+    lp1739286 default search box in Z39.50
+    
+    This change tweaks the layout of search fields in the web client Z39.50
+    interface and adds radio buttons for the default search field to auto-focus.
+    The behavior is "sticky" without the need for an explicit Save action.  If the
+    current default field is not present due to a given combination of selected
+    services, then no field will be focused by default.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+15	5	Open-ILS/src/templates/staff/cat/z3950/t_search_fields.tt2
+20	0	Open-ILS/web/js/ui/default/staff/cat/services/z3950.js
+
+commit 5536cf7e91ddeb4bf818dc634e0faf4c1685ef6f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Sep 10 10:07:54 2018 -0700
+
+    LP1727464: Adding record ID to the title link in the checkout interface
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+
+commit 92769e565277967261b5884a3969205fe02ddd6c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Aug 29 10:58:20 2018 -0400
+
+    LP#1738688: Add cancel time to Most Recent Transits
+    
+    Adds the transit cancel time to the Most Recent Transits section of
+    the Item Status Holds / Transit tab.
+    
+    Test plan:
+    Place an item in transit and then cancel the transit. Retrieve the item in
+    Item Status / Detail View. In the Holds / Transit tab, there is no indication
+    the transit has been canceled before loading the patch. Post-patch, the
+    cancel time will display.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2
+
+commit 360173d1874f155bc02ffd2331a39ee5d34fe435
+Author: a. bellenir <ab@grpl.org>
+Date:   Tue Jun 12 14:54:18 2018 -0400
+
+    LP#1773434: show in catalog
+    
+    open a new staff client tab to the record's opac view, not a new opac tab
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 8d39145b948829aea24563300dddd6a4744cfd54
+Author: a. bellenir <ab@grpl.org>
+Date:   Mon Jun 4 19:41:55 2018 -0400
+
+    LP#1773434 missing option to "Show in Catalog"
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+4	0	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+6	0	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit aac44b2b02f791351d7505221d8929a6ee2362eb
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 13 10:19:36 2018 -0400
+
+    LP#1786534: sync schema update with rel_3_x actor.usr_merge
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	34	Open-ILS/src/sql/Pg/upgrade/1130.schema.actor_usr_merge-bail-on-same-user.sql
+
+commit f40f56588e2c139050e2e1f585f8948a2b168026
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 13 10:16:04 2018 -0400
+
+    LP#1786534: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/1130.schema.actor_usr_merge-bail-on-same-user.sql
+0	361	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_merge-bail-on-same-user.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1130.schema.actor_usr_merge-bail-on-same-user.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_merge-bail-on-same-user.sql
+
+commit 8f005d00f57162ce234e3008d7a10640dcbbe13c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Sep 13 10:12:17 2018 -0400
+
+    LP#1786534: make update script reflect other recent changes in actor.usr_merge
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+35	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_merge-bail-on-same-user.sql
+
+commit c247197ab13386b0a32c4b282440b7d9deec78d7
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Aug 10 15:10:04 2018 -0400
+
+    LP 1786534: Don't merge a user with itself.
+    
+    It's possible to merge a user with itself using the actor.usr_merge
+    database function.  This does not produce a useful result.  One ends
+    up with a user that is flagged deleted, has a null card field, and is
+    likely to have their addresses and other cards deleted from the
+    database.
+    
+    A simple check at the top of the database function to bail if the
+    src_usr and dest_usr are the same prevents this from happening.  That
+    is the change that this commit makes.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+327	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_merge-bail-on-same-user.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor_usr_merge-bail-on-same-user.sql
+
+commit 8b4928a48217462713bb349281484455f84266cb
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Tue Nov 7 16:49:37 2017 -0500
+
+    LP#1269574 - Exclude backordered copies from deletion.
+    
+    When canceling a lineitem with a cancel reason that
+    keep debits = true, make sure we don't delete those copies.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+
+commit 394e5e2f5c041aabc598f8ba310c2e4eeed8d113
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Mon Aug 27 16:07:48 2018 -0400
+
+    LP#1776917 - fix patron bill grid lacking bill ID
+    
+    Without the required attribute in the grid template
+    declaration, the Bill# column *had* to be enabled for
+    bill payments to work. This adds required attribute to
+    the Bill #, so that it's fetched regardless of whether
+    displayed or not, so posting payments work correctly.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2
+
+commit 289037b3d3545453763e20c686e81306b3e81d2a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Sep 10 11:23:12 2018 -0700
+
+    LP 1743654: Removing a duplicate flesh_fields array entry
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 85b229d64dcbacead8e91a2391825abe9c94253e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Sep 10 11:16:51 2018 -0700
+
+    LP1743654: Fleshing out the Created By column in Item Status
+    
+    To test:
+    1) Scan an item into Item Status.
+    2) Turn on the Created By column.
+    3) Note that the Created By column shows the ID of the user
+    that created the record.
+    4) Apply this commit and repeat steps 1-2.
+    5) Note that the Created By column now shows the creator's
+    user name as a link, which opens the creator's record in
+    a new tab.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+8	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit b4868fd445300195d61376144a8c6321545efb88
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Tue Sep 11 15:20:55 2018 -0400
+
+    LP1792014: KPAC fix for opac.holds.org_unit_not_pickup_lib in org_selector.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/kpac/getit.tt2
+
+commit e0cbde4a69c85e989d0d7934a38f5f5b94d9ecf2
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Sep 10 11:42:34 2018 -0700
+
+    LP1775640: Adds deposit columns to Item Status and Holdings View grids
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Beth Willis <willis@noblenet.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+2	0	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+2	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+
+commit ab1f529ee58b5c367bc295265c59c4ecb2198f5f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Sep 10 16:39:45 2018 -0400
+
+    Lp 1746251: Fix Circulation Modifier typos.
+    
+    Change "Circulation Modifer" to "Circulation Modifier" in two files.
+    This commit only addresses the obvious typos.  I leave the Circ
+    Modifier versus Circulation Modifier debate as an open question.  One
+    of my concerns is changing them all to one string may require some
+    reorganization of interfaces to avoid clunkiness.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/staff/admin/serials/t_attr_edit.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 7cbcf9f06fb1d747ef1b2d7eb85d45152fee5374
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Sep 10 09:23:29 2018 -0700
+
+    LP1665052: Fix checkin workstation display on recent circs view
+    
+    To test:
+    1) Go to Item Status > Detail View > Recent Circ History for
+    an item that is currently checked out.
+    2) Note that the Checkin Workstation field says
+    "{{circ.checkin_workstation.name()}}"
+    3) Apply this commit.
+    4) Note that the Checkin Workstation field is empty if an
+    item is an item hasn't been checked in, but is filled with
+    the appropriate workstation name after it has been checked
+    in.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2
+
+commit e5c6e5918a8e9666786cab8be76deba27cb8edcb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Aug 7 16:26:27 2018 -0400
+
+    LP#1785887 edi_order_pusher.pl sets message account
+    
+    Apply the edi_message.account value when sending EDI order messages via
+    edi_order_pusher.pl.  This solves a problem where EDI ORDERS message
+    were not visible in the interface, because there was no way to complete
+    the permission check.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+16	0	Open-ILS/src/support-scripts/edi_order_pusher.pl
+
+commit 964cff660a72a14a2bc261e45b914601ebdb8362
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Jun 3 15:50:40 2018 -0700
+
+    LP1010635: Make bre dates populate in Item Status grid
+    
+    To test:
+    1) Enable the Date Record Created and Date Record Last Edited columns
+    in Item Status.
+    2) Scan an item barcode into Item Status.  Note that the two columns
+    you enabled are empty.
+    3) Apply this commit.
+    4) Reload the Item Status screen, and scan your barcode again.  The
+    dates should now be populated.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit 63f0d0f7ddd18b132d4be4753f9cb3c2158b7f57
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jul 30 17:23:49 2018 -0400
+
+    LP#1724083 Webstaff approve pending patron address
+    
+    Add support for approving pending patron addresses in the webstaff
+    patron edit interface.
+    
+    To test:
+    [1] Enable the pending address org unit setting.
+    [2] Log into the catalog and "edit" an address.
+    [3] Edit same user in staff client and use the Approve action.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+29	0	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+7	0	Open-ILS/src/templates/staff/css/circ.css.tt2
+41	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 97a3d3062ddaac0588911708752d5250a02a90a1
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Sun Jun 3 14:34:04 2018 -0400
+
+    LP#1774886 Distinguish Phys Char Wizard with an edit icon
+    
+    As both authority fields and the Physical Characteristics Wizard for 007 use
+    the same glyphicons-link class, it's not obvious to new users of the MARC
+    editor that the icons result in radically different actions.
+    
+    Change the 007 icon to glyphicons-edit to reflect that it opens an editor
+    interface.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 4050054fd181b0b1a8d5af7bce36284832aaaec4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Sep 11 09:15:19 2018 -0700
+
+    Docs: Adding info about supercat filters
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+14	0	docs/development/data_supercat.adoc
+
+commit 267002b26c7dcf6717cf323b66e9c8162aba82c3
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Sep 5 10:56:43 2018 -0400
+
+    LP#1781235: fix changing primary user barcode in web client
+    
+    This patch fixes a bug where the patron card dialog would
+    not allow the user to change the primary barcode under certain
+    circumstances. The fix is to ensure that the radio buttons
+    controlling the selection of the primary card are bound to
+    exactly one scope variable; otherwise, the /last/ barcode in the
+    list that had a primary value set after user interaction would
+    be the winner.
+    
+    To test
+    -------
+    [1] Use the 'replace barcode' feature in the patron editor to
+        create a test patron with 3 barcodes:
+    
+        - barcode A
+        - barcode B
+        - barcode C (which as last created, would be primary)
+    
+    [2] Attempt to make barcode A the primary barcode again using
+        the 'See All' patron card dialog in the patron editor.
+    [3] Note that the change of primary barcode doesn't stick
+        upon saving the patron record.
+    [4] Apply the patch and repeat steps 1-3. This time, the
+        primary barcode should be changed as expected.
+    [5] Verify that other patron edit actions and registering a
+        new patron record continue to work as expected.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_patron_cards_dialog.tt2
+18	8	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit b1dd97777db5fee5c88872ad02ebf36858c674f0
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Aug 29 11:51:24 2018 -0700
+
+    LP#1781641: make staff-applied patron blocks overridable on web client checkout/renew
+    
+    To test
+    -------
+    [1] Apply a blocking penalty such as STAFF_CHR to a patron record.
+    [2] Attempt to check out an item; note that there is no option to
+        force the action.
+    [3] Apply the patch and repeat #2. This time, the staff user
+        should be given an option to force the action.
+    [4] Verify that forcing the checkout respects whether or not
+        the operator has (e.g.) the STAFF_CHR.override permission.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Joan Kranich <jkranich@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	2	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 307b44187efee7210d353362a7452af7ccfe3bc3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Aug 29 14:05:09 2018 -0400
+
+    LP#1740412 Double grid tooltip max width
+    
+    Bump the max-width of the grid tooltip from 200 to 400px to accommodate
+    longer messages.  Shorter messages will continue using narrower
+    tooltips.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+4	0	Open-ILS/src/templates/staff/css/style.css.tt2
+2	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 5d28cb725b47d3af30a91ca8f4337762ab02788e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Aug 24 10:30:34 2018 -0400
+
+    LP#1740412 Grid cell tooltips moved to top-left
+    
+    Avoid rendering the tooltip in the middle of a section of overflowed
+    text, since it can lead to tooltips being pushed far to the right.
+    Render at top left of cell instead.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+2	0	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 62b9a0d551df315e7d0f5f082e8310110ceb9e94
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 23 13:52:38 2018 -0400
+
+    LP#1740412 Grid cell tooltips limited to long content
+    
+    Only display grid cell tooltips when the content of the cell overflows
+    its container.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+5	2	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+26	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit fc0c383faf3204d4cb6ef942694b859d0ee2e980
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jun 25 12:19:36 2018 -0400
+
+    LP#1740412 Grid cell content tooltips
+    
+    Display a tooltip (popover), containing the full grid contents, when
+    mousing over a grid cell.  This allows users to see the full contents of
+    a cell without having to resize the grid column.
+    
+    This applies to text contents and pre-compiled HTML contents.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+
+8	0	Open-ILS/src/templates/staff/css/style.css.tt2
+12	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 3ea1d7cf2b7f1cc110fc2320aae86cd7837ae659
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Aug 29 18:18:54 2018 -0400
+
+    Forward-port 3.1.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+95	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.4-3.1.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.4-3.1.5-upgrade-db.sql
+
+commit b97395add56ec5d0be5378b75973beb7dbb8a611
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jul 27 14:30:07 2018 -0400
+
+    LP#978095 ACQ use last-canceled copy reason if best
+    
+    Only use an alternate keep-debits cancel reason if the currently
+    canceled copy is not using a keep-debits reason.
+    
+    Also clarify in the docs that if another keep-debits reason is selected,
+    it's essentially chosen at random, not necessarily the "last" copy.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+4	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+11	1	docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+
+commit 95a75e5bd18e2ebd61de8069bda6739899e02698
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Fri Feb 2 11:30:36 2018 -0500
+
+    lp978095 auto-canceling lineitems
+    
+    "Acq: lineitems display as "on order" even after all copies have been cancelled"
+    
+    When a copy (lineitem detail) on a lineitem is canceled through the UI, all of
+    the sibling copies are examined, and if they also happen to be canceled, then a
+    cancel attempt is made on the parent lineitem.
+    
+    The cancel reason fed to the lineitem cancelation attempt will be the last
+    cancel reason on an examined sibling lineitem where Keep Debits is True, or
+    failing that, the cancel reason used wih the copy just canceled.
+    
+    The UI will refresh to the lineitem view when such an auto-cancelation happens.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+36	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Acq/Order.pm
+3	0	Open-ILS/web/js/ui/default/acq/common/li_table.js
+3	0	docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Acquisitions/autocancel_lineitems_when_all_copies_are_canceled.adoc
