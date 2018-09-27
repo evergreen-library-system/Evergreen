@@ -11,14 +11,14 @@
         <div class="col-md-1">
             <h5>[% l('Template') %]</h5>
         </div>
-        <div class="col-md-2">
+        <div ng-class="template_controls ? 'col-md-2' : 'col-md-5'">
             <eg-basic-combo-box list="template_name_list" selected="template_name"></eg-basic-combo-box>
         </div>
         <div class="col-md-1">
             <button class="btn btn-default " ng-click="applyTemplate(template_name)" type="button">[% l('Apply') %]</button>
         </div>
-        <div class="col-md-6">
-            <div class="row" ng-show="template_controls">
+        <div class="col-md-6" ng-show="template_controls">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="btn-group">
                         <label class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</label>
@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2" ng-class="{'col-md-offset-3' : !template_controls}">
             <button class="btn btn-default pull-right" ng-click="clearWorking()" type="button">[% l('Clear') %]</button>
         </div>
     </div>
