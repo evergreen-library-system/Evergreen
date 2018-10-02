@@ -18,6 +18,15 @@ This field is populated with the invoiced cost of the originating acquisition.
 This field will be empty until its originating acquisition is connected to an
 invoice.
 
+Copy Number
+^^^^^^^^^^^
+indexterm:[copy number]
+
+If you have multiple copies of the same item, you may want to
+assign them copy numbers to help distinguish them.  If you do
+not include a copy number in this field, Evergreen will assign your
+item a default copy number of 1.
+
 Accessing the Volume/Copy Editor by barcode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
