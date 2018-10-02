@@ -2031,6 +2031,13 @@ sub sru_search {
                         my $cn = $volume->getAttribute('label');
                         my $owning_lib = $volume->getAttribute('lib');
                         for my $copy ($volume->getElementsByTagName('copy')) {
+                            # skip copies that aren't OPAC-visible
+                            next if (
+                                $copy->getAttribute('opac_visible') eq 'false' ||
+                                $copy->getChildrenByTagName('status')->[0]->getAttribute('opac_visible') eq 'false' ||
+                                $copy->getChildrenByTagName('location')->[0]->getAttribute('opac_visible') eq 'false' ||
+                                $copy->getChildrenByTagName('circ_lib')->[0]->getAttribute('opac_visible') eq 'false'
+                            );
                             push @copies, {
                                 a => $copy->getChildrenByTagName('location')->[0]->textContent,
                                 b => $owning_lib,
