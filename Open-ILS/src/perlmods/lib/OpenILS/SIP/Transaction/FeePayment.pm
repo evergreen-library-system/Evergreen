@@ -189,7 +189,8 @@ sub do_fee_payment {
 sub pay_bills {
     my ($self, $paymentref) = @_;
     my $user = $self->patron->{user};
-    if ($self->sip_payment_type eq '02') {
+    if ($self->sip_payment_type eq '02' || $self->sip_payment_type eq '01') {
+        # '01' is "VISA"
         # '02' is "credit card"
         my $transaction_id = $self->transaction_id ? $self->transaction_id : 'Not provided by SIP client';
         return $U->simplereq('open-ils.circ', 'open-ils.circ.money.payment', $self->{authtoken},
