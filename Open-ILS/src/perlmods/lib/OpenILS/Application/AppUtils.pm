@@ -2153,6 +2153,7 @@ sub basic_opac_copy_query {
         order_by => [
             {class => 'aou', field => 'name'},
             {class => 'acn', field => 'label_sortkey'},
+            {class => 'acns', field => 'label_sortkey'},
             {class => 'bmp', field => 'label_sortkey'},
             {class => 'acp', field => 'copy_number'},
             {class => 'acp', field => 'barcode'}
