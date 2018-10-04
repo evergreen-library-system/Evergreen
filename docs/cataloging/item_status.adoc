@@ -51,3 +51,32 @@ and which are not, statuses like _Available_ and _On holds shelf_
 are typically considered active, and statuses like _In process_ or
 _On order_ are typically not.
 
+Printing spine labels
+~~~~~~~~~~~~~~~~~~~~~
+
+indexterm:[spine labels]
+indexterm:[printing, spine labels]
+indexterm:[item labels]
+indexterm:[printing, item labels]
+indexterm:[pocket labels]
+
+Before printing spine labels, you will want to install Hatch
+or turn off print headers and footers in your browser.
+
+include::../admin/turn-off-print-headers-firefox.adoc[]
+
+include::../admin/turn-off-print-headers-chrome.adoc[]
+
+Creating spine labels
+^^^^^^^^^^^^^^^^^^^^^
+
+To create spine and item labels for an item (or group of items):
+
+. Click *Circulation -> Item Status*.
+. Scan your barcode(s).
+. Select all the items you'd like to print labels for.
+. Right-click on the items, or click the Actions drop-down menu.
+. Under _Show_, click on _Print Labels_.
+. Take a look at the Label Preview area.
+. When you are satisfied with your labels, click the _Print_ button.
+
