@@ -45,7 +45,7 @@
 
   <eg-grid-field label="[% l('Title') %]" path="title">
     <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.id}}">
-    {{item.title}}
+    {{item.title}} <span ng-show="item.id" class="glyphicon glyphicon-new-window"/>
     </a>
   </eg-grid-field>
 </eg-grid>
