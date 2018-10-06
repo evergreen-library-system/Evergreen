@@ -62,7 +62,7 @@ END;
                 store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
                 [%-     END # opac_visible -%]
                 [%- ELSE -%]
-                    [% IF basic_search != "f" %] autofocus [% END %] x-webkit-speech
+                    [% IF basic_search != "f" AND is_home_page %] autofocus [% END %] x-webkit-speech
                 [%- END # autosuggest enabled %] />
             </label>
         </span>
