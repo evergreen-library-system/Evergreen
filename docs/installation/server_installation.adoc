@@ -89,6 +89,7 @@ before you can successfully configure, compile, and install Evergreen.
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
+[[optional_developer_additions]]
 4. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
