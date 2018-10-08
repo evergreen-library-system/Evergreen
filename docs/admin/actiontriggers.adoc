@@ -104,6 +104,7 @@ Creating Action Triggers
 
 . Once you are satisfied with your new event trigger, click the _Save_ button located at the bottom of the form.
 
+
 [TIP]
 =========
 A quick and easy way to create new action triggers is to clone an existing action trigger.
@@ -134,6 +135,15 @@ Deleting Action Triggers
 . Check the check box next to the action trigger you wish to delete
 . Click _Delete Selected_ on the top-right of the page.
 
+Testing Action Triggers
+^^^^^^^^^^^^^^^^^^^^^^^
+
+. Go to the list of action triggers.
+. Click on the blue link text for the action trigger you'd like to test.
+. Go to the Test tab.
+. If there is a test available, fill in the required information.
+. View the output of the test.  If you are testing an email or SMS notification,
+don't worry -- the patron will not receive an email or SMS during your test.
 
 anchor:hooks[]
 
