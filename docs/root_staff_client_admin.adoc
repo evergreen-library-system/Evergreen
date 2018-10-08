@@ -188,6 +188,9 @@ include::admin/receipt_template_editor.adoc[]
 
 include::circulation/self_check_configuration.adoc[]
 
+:leveloffset: -1
+
+include::admin/actiontriggers.adoc[]
 
 :leveloffset: 0
 
