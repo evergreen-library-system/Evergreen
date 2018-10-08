@@ -1,6 +1,9 @@
 Notifications / Action Triggers
 -------------------------------
 
+Introduction
+~~~~~~~~~~~~
+
 indexterm:[action triggers, event definitions, notifications]
 
 Action Triggers give administrators the ability to set up actions for
