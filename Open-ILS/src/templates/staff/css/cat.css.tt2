@@ -330,5 +330,4 @@ table.custom-label-table td {
   white-space: nowrap;
 }
 
-.new-cn { background-color: lightgreen; }
-.new-cp { background-color: lightgreen; }
+.new-cn, .new-cp { background-color: lightgreen; border:1px dashed #000; }
