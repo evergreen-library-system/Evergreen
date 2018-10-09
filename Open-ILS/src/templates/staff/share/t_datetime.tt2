@@ -18,8 +18,9 @@
         close-text="{{closeText}}"/>
       <span class="input-group-btn">
         <button type="button" class="btn btn-default"
-          ng-click="datePickerIsOpen=!datePickerIsOpen">
-          <i class="glyphicon glyphicon-calendar"></i>
+          ng-click="datePickerIsOpen=!datePickerIsOpen"
+          aria-label="Select a date" aria-pressed="{{datePickerIsOpen || false}}">
+          <span class="glyphicon glyphicon-calendar" title="Select a date"></span>
         </button>
       </span>
     </div>
