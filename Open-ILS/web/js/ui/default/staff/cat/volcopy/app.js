@@ -481,12 +481,13 @@ function(egCore , $q) {
     return service;
 }])
 
-.directive("egVolCopyEdit", function () {
+.directive("egVolCopyEdit", ['egCore', function (egCore) {
     return {
         restrict: 'E',
         replace: true,
         template:
             '<div class="row" ng-class="{'+"'new-cp'"+':is_new}">'+
+                '<span ng-if="is_new" class="sr-only">' + egCore.strings.VOL_COPY_NEW_ITEM + '</span>' +
                 '<div class="col-xs-5" ng-class="{'+"'has-error'"+':barcode_has_error}">'+
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
@@ -590,15 +591,16 @@ function(egCore , $q) {
         ]
 
     }
-})
+}])
 
-.directive("egVolRow", function () {
+.directive("egVolRow", ['egCore', function (egCore) {
     return {
         restrict: 'E',
         replace: true,
         transclude: true,
         template:
             '<div class="row" ng-class="{'+"'new-cn'"+':!callNumber.not_ephemeral}">'+
+                '<span ng-if="!callNumber.not_ephemeral()" class="sr-only">' + egCore.strings.VOL_COPY_NEW_CALL_NUMBER + '</span>' +
                 '<div class="col-xs-2">'+
                     '<button aria-label="Delete" style="margin:-5px -15px; float:left;" ng-hide="callNumber.not_ephemeral" type="button" class="close" ng-click="removeCN()">&times;</button>' +
                     '<select class="form-control" ng-model="classification" ng-change="updateClassification()" ng-options="cl.name() for cl in classification_list"></select>'+
@@ -838,7 +840,7 @@ function(egCore , $q) {
         ]
 
     }
-})
+}])
 
 .directive("egVolEdit", function () {
     return {
