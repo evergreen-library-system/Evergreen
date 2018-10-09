@@ -13,6 +13,8 @@
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/services/record.js"></script>
 <script>
 angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.VOL_COPY_NEW_ITEM = "[% l('Newly created item') %]";
+    s.VOL_COPY_NEW_CALL_NUMBER = "[% l('Newly created call number') %]";
     s.VOL_COPY_TEMPLATE_SUCCESS_SAVE = "[% l('Saved holdings template(s)') %]";
     s.VOL_COPY_TEMPLATE_SUCCESS_DELETE = "[% l('Deleted holdings template') %]";
     s.SHORT = "[% l('Short') %]";
