@@ -1808,9 +1808,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             });
                         });
                     }
+                } else {
+                    $scope.workingGridDataProvider.refresh();
                 }
-            } else {
-                $scope.workingGridDataProvider.refresh();
             }
         });
 
