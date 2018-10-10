@@ -344,14 +344,14 @@
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
-          <span ng-if="col.template"
+          <span ng-if="col.template" style="padding-left:5px; padding-right:10px;"
             id="{{cellId(col, item)}}"
-            style="padding-left:5px; padding-right:10px;">
+            ng-init="html_value=translateCellTemplate(col, item)">
             <span tooltip-class="eg-grid-tooltip"
               tooltip-class="eg-grid-tooltip"
               tooltip-placement="top-left"
-              uib-tooltip-html="getHtmlTooltip(col, item)">
-              <span ng-bind-html="translateCellTemplate(col, item)"></span>
+              uib-tooltip-html="cellOverflowed(cellId(col, item), 1) ? html_value : ''">
+              <span ng-bind-html="html_value"></span>
             </span>
           </span>
 
@@ -359,12 +359,13 @@
                pass through datatype-specific filtering. -->
           <span ng-if="!col.template" 
             id="{{cellId(col, item)}}"
-            uib-tooltip="{{cellOverflowed(cellId(col, item), 1) ? (itemFieldValue(item, col) | egGridValueFilter:col:item) : ''}}"
+            ng-init="text_value = (itemFieldValue(item, col) | egGridValueFilter:col:item)"
+            uib-tooltip="{{cellOverflowed(cellId(col, item), 1) ? text_value : ''}}"
             tooltip-class="eg-grid-tooltip"
             tooltip-placement="top-left"
             tooltip-class="eg-grid-tooltip"
             style="padding-left:5px; padding-right:10px;">
-            {{itemFieldValue(item, col) | egGridValueFilter:col:item}}
+            {{text_value}}
           </span>
       </div>
     </div>

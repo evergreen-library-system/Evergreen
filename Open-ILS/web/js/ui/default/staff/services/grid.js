@@ -1094,13 +1094,6 @@ angular.module('egGridMod',
                 return val;
             }
 
-            $scope.getHtmlTooltip = function(col, item) {
-                if ($scope.cellOverflowed($scope.cellId(col, item), 1)) {
-                    return grid.getItemTextContent(item, col);
-                }
-                return "";
-            }
-
             /**
              * Fetches all grid data and transates each item into a simple
              * key-value pair of column name => text-value.
