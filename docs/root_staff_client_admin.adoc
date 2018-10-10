@@ -95,6 +95,8 @@ This section discusses the initial setup and subsequent troubleshooting and refi
 
 include::admin_initial_setup/borrowing_items.adoc[]
 
+include::admin/autorenewals.adoc[]
+
 include::admin/circulation_limit_groups.adoc[]
 
 include::admin/hold_driven_recalls.adoc[]
