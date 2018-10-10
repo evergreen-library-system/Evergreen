@@ -504,10 +504,6 @@ eg-grid-field {
   display: none;
 }
 
-.eg-grid-tooltip .tooltip-inner {
-  max-width: 400px;
-}
-
 [%# 
 vim: ft=css 
 %]
