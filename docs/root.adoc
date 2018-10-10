@@ -123,9 +123,9 @@ include::admin_initial_setup/borrowing_items.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
+include::admin/autorenewals.adoc[]
+
 include::admin_initial_setup/hard_due_dates.adoc[]
-
-
 
 include::admin/template_toolkit.adoc[]
 
