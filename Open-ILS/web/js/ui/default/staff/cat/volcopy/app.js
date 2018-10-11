@@ -1490,12 +1490,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                      * All can be left out and a completely empty vol/copy combo will be vivicated.
                      */
 
+                    var promises = [];
                     angular.forEach(
                         data.raw,
                         function (proto) {
                             if (proto.fast_add) $scope.is_fast_add = true;
                             if (proto.callnumber) {
-                                return egCore.pcrud.retrieve('acn', proto.callnumber)
+                                promises.push(egCore.pcrud.retrieve('acn', proto.callnumber)
                                 .then(function(cn) {
                                     var cp = new itemSvc.generateNewCopy(
                                         cn,
@@ -1510,7 +1511,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                     }
 
                                     itemSvc.addCopy(cp)
-                                });
+                                }));
                             } else {
                                 var cn = new egCore.idl.acn();
                                 cn.id( --itemSvc.new_cn_id );
@@ -1569,7 +1570,15 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         }
                     );
 
-                    return itemSvc.copies;
+                    angular.forEach(itemSvc.copies, function(c){
+                        var cn = c.call_number();
+                        var copy_id = c.id();
+                        if (copy_id > 0){
+                            cn.not_ephemeral = true;
+                        }
+                    });
+
+                    return $q.all(promises);
                 }
 
                 if (data.copies && data.copies.length)
