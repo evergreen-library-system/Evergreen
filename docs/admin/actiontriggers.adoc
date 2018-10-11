@@ -142,8 +142,15 @@ Testing Action Triggers
 . Click on the blue link text for the action trigger you'd like to test.
 . Go to the Test tab.
 . If there is a test available, fill in the required information.
-. View the output of the test.  If you are testing an email or SMS notification,
-don't worry -- the patron will not receive an email or SMS during your test.
+. View the output of the test.
+
+[WARNING]
+============
+If you are testing an email or SMS notification,
+use your own account as an example.  Using the Test
+feature will actually result in the notification
+being sent if configured correctly.
+============
 
 anchor:hooks[]
 
