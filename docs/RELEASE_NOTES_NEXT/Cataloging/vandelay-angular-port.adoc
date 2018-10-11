@@ -1,0 +1,21 @@
+MARC Import/Export Interface Update (Angular Port)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This MARC Import/Export (AKA Vandelay) interface is now built on
+Angular(6) instead of Dojo.  The functionality is consistent with the
+previous version of the interface, with minor UI adjustments to match
+the Angular style, plus one new interface called 'Recent Imports'
+
+Recent Imports Tab
+++++++++++++++++++
+
+This is a new interface which allows users to see active and recent
+Vandelay sesssions originating from the same workstation or logged in
+user account.  Active sessions include real-time progress information so
+the user may track the progress without refreshing the page.
+
+This interface makes it possible to exit the main import tab or the
+Vandelay interface altogether and return at a later time to check on
+import progress.  It also allows users to kick-off multiple imports at
+the same time and follow the status of each in one interace.
+
