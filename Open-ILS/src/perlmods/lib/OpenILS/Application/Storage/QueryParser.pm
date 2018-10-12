@@ -813,6 +813,7 @@ sub parse {
 
     warn "Query tree before pullup:\n" . Dumper($self->parse_tree) if $self->debug;
     $self->parse_tree( $self->parse_tree->pullup );
+    warn "Query tree after pullup:\n" . Dumper($self->parse_tree) if $self->debug;
     $self->parse_tree->plan_level(0);
 
     return $self;
@@ -1076,9 +1077,11 @@ sub decompose {
 
             my $negate = $1;
             my ($substruct, $subremainder) = $self->decompose( $', $current_class, $recursing + 1 );
-            $substruct->negate(1) if ($substruct && $negate);
-            $substruct->explicit(1) if ($substruct);
-            $struct->add_node( $substruct ) if ($substruct);
+            if ($substruct) {
+                $substruct->negate(1) if ($negate);
+                $substruct->explicit(1);
+                $struct->add_node( $substruct );
+            }
             $_ = $subremainder;
             warn '  'x$recursing."Query remainder after bool group: $_\n" if $self->debug;
 
@@ -1129,7 +1132,7 @@ sub decompose {
             my $LHS = $struct;
             #my ($RHS, $subremainder) = $self->decompose( "$group_start $_ $group_end", $current_class, $recursing + 1 );
             my ($RHS, $subremainder) = $self->decompose( $_, $current_class, $recursing + 2 );
-            $_ = $subremainder;
+            $remainder = $subremainder;
 
             warn '  'x$recursing."RHS built\n" if $self->debug;
             warn '  'x$recursing."Post-OR remainder: $subremainder\n" if $self->debug;
@@ -1194,34 +1197,27 @@ sub decompose {
 
                 my $class_node = $struct->classed_node($current_class);
 
-                if ($req_ness eq $pkg->operator('disallowed')) {
+                if (grep { $req_ness eq $_ } ($pkg->operator('disallowed'), $pkg->operator('negated'))) {
                     $class_node->negate(1);
+                    $req_ness = $pkg->operator('negated');
+                } else {
+                    $req_ness = '';
                 }
-                $class_node->add_phrase( $phrase );
-
-                # Save $' before we clean up $phrase
-                my $temp_val = $';
-
-                # Cleanup the phrase to make it so that we don't parse things in it as anything other than atoms
                 $phrase =~ s/$$r{phrase_cleanup_re}/ /g;
+                $class_node->add_phrase( $phrase );
+                $class_node->add_dummy_atom;
 
-                $_ = $phrase . $temp_val;
-
+                last;
             }
 
             $last_type = '';
 
-        } elsif (/^\s*($$r{required_re}|$$r{disallowed_re})($$r{atom_re})/) { # convert require/disallow word to {un}phrase
-            warn '  'x$recursing."Encountered required atom (mini phrase), transforming for phrase parse: $1\n" if $self->debug;
-
-            $_ = $1 . '"' . $2 . '"' . $';
-
-            $last_type = '';
-        } elsif (/^\s*($$r{atom_re})/) { # atom
+        } elsif (/^\s*((?:$$r{required_re}|$$r{disallowed_re}|$$r{negated_re})?)($$r{atom_re})/) { # atoms
             warn '  'x$recursing."Encountered atom: $1\n" if $self->debug;
             warn '  'x$recursing."Remainder: $'\n" if $self->debug;
 
-            my $atom = $1;
+            my $req_ness = $1;
+            my $atom = $2;
             my $after = $';
 
             $_ = $after;
@@ -1229,7 +1225,11 @@ sub decompose {
 
             my $class_node = $struct->classed_node($current_class);
 
-            my $prefix = ($atom =~ s/^$$r{negated_re}//o) ? '!' : '';
+            my $prefix = '';
+            if ($req_ness) {
+                $prefix = ($req_ness =~ /^$$r{required_re}/) ? '' : '!';
+            }
+
             my $truncate = ($atom =~ s/\*$//o) ? '*' : '';
 
             if ($atom ne '' and !grep { $atom =~ /^\Q$_\E+$/ } ('&','|')) { # throw away & and |, not allowed in tsquery, and not really useful anyway
@@ -1463,11 +1463,18 @@ sub abstract_query2str_impl {
             $q .= ":";
             $isnode = 1;
         } elsif ($abstract_query->{type} eq 'atom') {
+            my $add_space = $q ? 1 : 0;
+            if ($abstract_query->{explicit_start}) {
+                $q .= ' ' if $add_space;
+                $q .= $gs;
+                $add_space = 0;
+            }
             my $prefix = $abstract_query->{prefix} || '';
             $prefix = $qpconfig->{operators}{negated} if $prefix eq '!';
-            $q .= ($q ? ' ' : '') . $prefix .
-                ($abstract_query->{content} || '') .
+            $q .= ($add_space ? ' ' : '') . $prefix .
+                ($abstract_query->{content} // '') .
                 ($abstract_query->{suffix} || '');
+            $q .= $ge if ($abstract_query->{explicit_end});
         } elsif ($abstract_query->{type} eq 'facet') {
             my $prefix = $abstract_query->{negate} ? $qpconfig->{operators}{disallowed} : '';
             $q .= ($q ? ' ' : '') . $prefix . $abstract_query->{name} . "[" .
@@ -1510,7 +1517,7 @@ sub abstract_query2str_impl {
     }
 
     $q = "$gs$q$ge" if ($isnode);
-    $q = $negate . $q if ($q);;
+    $q = $negate . $q if ($q);
 
     return $q;
 }
@@ -1551,198 +1558,124 @@ sub _identical {
 
 sub pullup {
     my $self = shift;
-    my $current_joiner = shift;
 
     # burrow down until we our kids have no subqueries
     my $downlink_joiner;
     for my $qnode (@{ $self->query_nodes }) {
-        $downlink_joiner = $qnode if (!ref($qnode));
-        if (ref($qnode) && $qnode->can('pullup')) {
-            $qnode->pullup($downlink_joiner);
-        }
+        $qnode->pullup() if (ref($qnode) && $qnode->can('pullup'));
     }
+    warn "Entering pullup depth ". $self->plan_level . "\n" if $self->QueryParser->debug;
 
-    warn "Entering pullup depth ". $self->plan_level . "\n"
+    my $old_qnodes = $self->query_nodes;
+    warn @$old_qnodes . " query nodes (plans, nodes) at pullup depth ". $self->plan_level . "\n"
         if $self->QueryParser->debug;
 
-    my $old_qnodes = $self->query_nodes; # we will ignore all but ::node objects in this list
-    warn @$old_qnodes . " plans at pullup depth ". $self->plan_level . "\n"
-        if $self->QueryParser->debug;
-
-    # PASS 0: If I only have one child, collapse filters/modifiers into me 
-    if (@$old_qnodes == 1) {
-        my $kid = $$old_qnodes[0];
-        if ($kid->isa('QueryParser::query_plan')) {
+    # Step 1: pull up subplan filter/facet/modifier nodes. These
+    # will bubble up to the top of the plan tree.  Evergreen doesn't
+    # support nested filter/facet/modifier constructs currently.
+    for my $kid (@$old_qnodes) {
+        if (ref($kid) and $kid->isa('QueryParser::query_plan')) {
             $self->add_filter($_) foreach @{$kid->filters};
             $self->add_facet($_) foreach @{$kid->facets};
             $self->add_modifier($_) foreach @{$kid->modifiers};
             $kid->{filters} = [];
             $kid->{facets} = [];
             $kid->{modifiers} = [];
-
-            my $kid_qnodes = $kid->query_nodes;
-            if (@$kid_qnodes == 1) { # And if my kid is a plan with only one node, absorb that
-                my $a = $$kid_qnodes[0];
-                if ($a->isa('QueryParser::query_plan')) {
-                    $self->{query} = [$a];
-                    return $self;
-                }
-            }
         }
     }
 
-    # PASS 1: loop, attempting to pull up simple nodes
+    # Step 2: Pull up ::nodes from subplans that only have nodes (no
+    # nested subplans).  This is in preparation for adjacent node merge,
+    # and because this is a depth-first recursion, we've already decided
+    # if nested plans can be elided.
     my @new_nodes;
-    my $prev_node;
-    my $prev_op;
-
-    my $prev_joiner;
-
-    while (my $p = shift(@$old_qnodes)) {
-
-        # joiners and ::node's get pushed onto the stack of new nodes
-        if (!ref($p) or !$p->isa('QueryParser::query_plan')) {
-            push @new_nodes, $p;
-            next;
-        }
-
-        # keep explicit and floating plans
-        if ($p->explicit or $p->floating) {
-            push @new_nodes, $p;
-            next;
-        }
-
-        if ($p->atoms_only) {
-
-            # 1-node plans get pulled up regardless of the plan's joiner
-            if (@{$p->query_nodes} == 1) {
-                for my $a (@{$p->query_nodes}) {
-                    if (ref($a) and $a->can('plan')) {
-                        $a->plan($self);
-                    }
-                    push @new_nodes, $a;
-                }
+    while (my $kid = shift @$old_qnodes) {
+        if (ref($kid) and $kid->isa('QueryParser::query_plan')) {
+            my $kid_query_nodes = $kid->query_nodes;
+            my @kid_notnodes = grep { ref($_) and !$_->isa('QueryParser::query_plan::node') } @$kid_query_nodes;
+            my @kid_nodes = grep { ref($_) and $_->isa('QueryParser::query_plan::node') } @$kid_query_nodes;
+            if (@kid_nodes and !@kid_notnodes) {
+                warn "pulling up nodes from nested plan at pullup depth ". $self->plan_level . "\n" if $self->QueryParser->debug;
+                push @new_nodes, map { $_->plan($self) if ref; $_ } @$kid_query_nodes;
                 next;
             }
-
-            # gather the joiners
-            my %joiners = ( '&' => 0, '|' => 0 );
-            my @nodelist = @{$p->query_nodes};
-            while (my $n = shift(@nodelist)) {
-                next if ref($n); # only look at joiners
-                $joiners{$n}++;
-            }
-
-            if (!($joiners{'&'} > 0 and $joiners{'|'} > 0)) { # mix of joiners? stop
-                if ($joiners{$self->joiner} > 0) { # needs to be our joiner in use
-                    for my $a (@{$p->query_nodes}) {
-                        if (ref($a) and $a->can('plan')) {
-                            $a->plan($self);
-                        }
-                        push @new_nodes, $a;
-                    }
-                    next;
-                }
-            }
         }
-
-        # default is to keep the whole plan
-        push @new_nodes, $p;
+        push @new_nodes, $kid;
     }
-                
-    warn @new_nodes . " nodes after pullup of simple nodes at depth ". $self->plan_level . "\n"
-        if $self->QueryParser->debug;
 
-    # PASS 2: merge adjacent ::node's
-    my $dangling = 0;
-    my $sync_node = $prev_joiner = undef;
+    # Step 3: Merge our adjacent ::nodes if they have the same requested_class.
+    # This could miss merging aliased classes that are equiv, but that check
+    # is more fiddly, and usually searches just use the class name.
     $old_qnodes = [@new_nodes];
     @new_nodes = ();
-    while ( my $n = shift(@$old_qnodes) ) {
+    while ( my $current_node = shift(@$old_qnodes) ) {
 
-        # joiners
-        if (!ref($n)) {
-            $prev_joiner = $current_joiner;
-            $current_joiner = $n;
-            warn "Joiner, recording it. [$prev_joiner => $current_joiner]\n" if $self->QueryParser->debug;
-            next;
+        unless (@$old_qnodes) { # last node, no compression possible
+            push @new_nodes, $current_node;
+            last;
         }
 
-        # ::plan's etc get pushed onto the stack of new nodes
-        if (!$n->isa('QueryParser::query_plan::node')) {
-            push @new_nodes, $current_joiner if (@new_nodes);
-            push @new_nodes, $n;
-            $sync_node = undef;
-            warn "Not a ::node, pushing onto the stack [$n]\n" if $self->QueryParser->debug;
-            next;
+        my $current_joiner = shift(@$old_qnodes);
+        my $next_node = shift(@$old_qnodes);
+
+        # if they're both nodes, see if we can merge them
+        if ($current_node->isa('QueryParser::query_plan::node')
+            and $next_node->isa('QueryParser::query_plan::node')
+            and $current_node->requested_class eq $next_node->requested_class
+            and $current_node->negate eq $next_node->negate
+        ) {
+            warn "merging RHS atoms into atom list for LHS with joiner $current_joiner\n" if $self->QueryParser->debug;
+            push @{$current_node->query_atoms}, $current_joiner if @{$current_node->query_atoms};
+            push @{$current_node->query_atoms}, map { if (ref($_)) { $_->{node} = $current_node }; $_ } @{$next_node->query_atoms};
+            push @{$current_node->phrases}, @{$next_node->phrases};
+            unshift @$old_qnodes, $current_node;
+        } else {
+            push @new_nodes, $current_node, $current_joiner;
+            unshift @$old_qnodes, $next_node;
         }
-
-        # grab the current target node
-        if (!$sync_node) {
-            warn "No sync_node, picking a new one\n" if $self->QueryParser->debug;
-            $sync_node = $n;
-            push @new_nodes, $current_joiner if (@new_nodes);
-            push @new_nodes, $n;
-            next;
-        }
-
-        if (@{$n->query_atoms} == 0) {
-            warn "weird ... empty node ...skipping\n" if $self->QueryParser->debug;
-            push @new_nodes, $current_joiner if (@new_nodes);
-            shift @$old_qnodes;
-            next;
-        }
-
-        my $sync_joiner = $sync_node->effective_joiner;
-        my $n_joiner = $n->effective_joiner;
-
-        # plans of a different class or field set stay where they are
-        if ($sync_node->classname ne $n->classname or !_identical($sync_node->fields,$n->fields)) {
-            warn "Class/Field change! Need a new sync_node\n" if $self->QueryParser->debug;
-            push @new_nodes, $current_joiner;
-            push @new_nodes, $n;
-            $sync_node = $n;
-            $dangling = 1;
-            next;
-        }
-
-        if (!$sync_joiner or !$n_joiner) { # a node has a mix ... can't merge either
-            warn "Mixed joiners, need a new sync_node\n" if $self->QueryParser->debug;
-            push @new_nodes, $current_joiner;
-            push @new_nodes, $n;
-            $sync_node = $n;
-            $dangling = 1;
-            next;
-        } elsif ($sync_joiner ne $n_joiner) { # different joiners, can't merge
-            warn "Differing joiners, need a new sync_node\n" if $self->QueryParser->debug;
-            push @new_nodes, $current_joiner;
-            push @new_nodes, $n;
-            $sync_node = $n;
-            $dangling = 1;
-            next;
-        }
-
-        # we can push the next ::node's atoms onto our stack
-        push @{$sync_node->query_atoms}, $current_joiner;
-        for my $a (@{$n->query_atoms}) {
-            if (ref($a)) {
-                $a->{node} = $sync_node;
-            }
-            push @{$sync_node->query_atoms}, $a;
-        }
-
-        warn "Merged ".@{$n->query_atoms}." atoms into sync_node\n" if $self->QueryParser->debug;
-        $dangling = 0;
-
     }
 
-    push @new_nodes, $sync_node if ($dangling && $sync_node != $new_nodes[-1]);
-   
-    warn @new_nodes . " nodes at pullup depth ". $self->plan_level . " after compression\n"
-        if $self->QueryParser->debug;
-
     $self->{query} = \@new_nodes;
+
+    # Step 4: As soon as we can, apply the explicit markers directly
+    # to ::atoms so that we retain that for canonicalization while
+    # also clearing away useless explicit groupings.
+    if ($self->explicit) {
+        if (!grep { # we have no non-::node, non-joiner query nodes, we've become a same-class singlton
+                ref($_) and !$_->isa('QueryParser::query_plan::node')
+            } @{$self->query_nodes}
+            and 1 == grep { # and we have exactly one (possibly merged, above) ::node with at least one ::atom
+                ref($_) and $_->isa('QueryParser::query_plan::node')
+            } @{$self->query_nodes}
+        ) {
+            warn "setting explicit flags on atoms that may later be pulled up, at depth". $self->plan_level . "\n"
+                if $self->QueryParser->debug;
+            $self->query_nodes->[0]->query_atoms->[0]->explicit_start(1) if @{$self->query_nodes->[0]->query_atoms};
+            $self->query_nodes->[0]->query_atoms->[-1]->explicit_end(1) if @{$self->query_nodes->[0]->query_atoms};
+        } else { # otherwise, the explicit grouping is meaningless, toss it
+            $self->explicit(0);
+        }
+    }
+
+    warn @new_nodes . " nodes at pullup depth ". $self->plan_level . " after compression\n" if $self->QueryParser->debug;
+
     return $self;
+}
+
+sub joiners {
+    my $self = shift;
+    my %list = map { ($_=>1) } grep {!ref($_)} @{$self->{query}};
+    return keys %list;
+}
+
+sub classes {
+    my $self = shift;
+    my %list = map {
+        ($_->classname . '|' . join('|',sort($_->fields)) => 1)
+    } grep {
+        ref($_) and ref($_) =~ /::node$/
+    } @{$self->{query}};
+    return keys %list;
 }
 
 sub QueryParser {
@@ -2069,22 +2002,29 @@ sub to_abstract_query {
 
     my $kids = [];
 
+    my $prev_was_joiner = 0;
     for my $qnode (@{$self->query_nodes}) {
         # Remember: qnode can be a joiner string, a node, or another query_plan
 
         if (QueryParser::_util::is_joiner($qnode)) {
-            if ($abstract_query->{children}) {
-                my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
-                next if $open_joiner eq $qnode;
+            unless ($prev_was_joiner) {
+                if ($abstract_query->{children}) {
+                    my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+                    next if $open_joiner eq $qnode;
 
-                my $oldroot = $abstract_query->{children};
-                $kids = [$oldroot];
-                $abstract_query->{children} = {$qnode => $kids};
-            } else {
-                $abstract_query->{children} = {$qnode => $kids};
+                    my $oldroot = $abstract_query->{children};
+                    $kids = [$oldroot];
+                    $abstract_query->{children} = {$qnode => $kids};
+                } else {
+                    $abstract_query->{children} = {$qnode => $kids};
+                }
             }
-        } else {
-            push @$kids, $qnode->to_abstract_query(%opts);
+            $prev_was_joiner = 1;
+        } elsif ($qnode) {
+            if (my $next_kid = $qnode->to_abstract_query(%opts)) {
+                push @$kids, $qnode->to_abstract_query(%opts);
+                $prev_was_joiner = 0;
+            }
         }
     }
 
@@ -2251,7 +2191,7 @@ sub add_fts_atom {
         my $content = $atom;
         my @parts = @_;
 
-        $atom = $self->new_atom( content => $content, @parts );
+        $atom = $self->new_atom( content => $content, node => $self, @parts );
     }
 
     push(@{$self->query_atoms}, $self->plan->joiner) if (@{$self->query_atoms});
@@ -2264,7 +2204,7 @@ sub add_dummy_atom {
     my $self = shift;
     my @parts = @_;
 
-    my $atom = $self->new_atom( @parts, dummy => 1 );
+    my $atom = $self->new_atom( node => $self, @parts, dummy => 1 );
 
     push(@{$self->query_atoms}, $self->plan->joiner) if (@{$self->query_atoms});
     push(@{$self->query_atoms}, $atom);
@@ -2322,27 +2262,39 @@ sub to_abstract_query {
 
     my $kids = [];
 
-    for my $qatom (@{$self->query_atoms}) {
+    my $prev_was_joiner = 0;
+    for my $qatom (grep {!ref($_) or !$_->dummy} @{$self->query_atoms}) {
         if (QueryParser::_util::is_joiner($qatom)) {
-            if ($abstract_query->{children}) {
-                my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
-                next if $open_joiner eq $qatom;
+            unless ($prev_was_joiner) {
+                if ($abstract_query->{children}) {
+                    my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+                    next if $open_joiner eq $qatom;
 
-                my $oldroot = $abstract_query->{children};
-                $kids = [$oldroot];
-                $abstract_query->{children} = {$qatom => $kids};
-            } else {
-                $abstract_query->{children} = {$qatom => $kids};
+                    my $oldroot = $abstract_query->{children};
+                    $kids = [$oldroot];
+                    $abstract_query->{children} = {$qatom => $kids};
+                } else {
+                    $abstract_query->{children} = {$qatom => $kids};
+                }
             }
+            $prev_was_joiner = 1;
         } else {
             push @$kids, $qatom->to_abstract_query;
+            $prev_was_joiner = 0;
         }
     }
 
     $abstract_query->{children} ||= { QueryParser::_util::default_joiner() => $kids };
 
-    if ($self->{phrases} and not $opts{no_phrases}) {
-        for my $phrase (@{$self->{phrases}}) {
+    if ($self->phrases and @{$self->phrases} and not $opts{no_phrases}) {
+        my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+        if ($open_joiner ne '&') {
+            my $oldroot = $abstract_query->{children};
+            $kids = [$oldroot];
+            $abstract_query->{children} = {'&' => $kids};
+        }
+
+        for my $phrase (@{$self->phrases}) {
             # Phrases appear duplication in a real QP tree, and we don't want
             # that duplication in our abstract query.  So for all our phrases,
             # break them into atoms as QP would, and remove any matching
@@ -2351,7 +2303,7 @@ sub to_abstract_query {
             my $tmp_prefix = '';
             $tmp_prefix = $QueryParser::parser_config{$pkg}{operators}{disallowed} if ($self->{negate});
 
-            my $tmptree = $self->{plan}->{QueryParser}->new(query => $tmp_prefix.'"'.$phrase.'"')->parse->parse_tree;
+            my $tmptree = $self->{plan}->{QueryParser}->new(query => $phrase)->parse->parse_tree;
             if ($tmptree) {
                 # For a well-behaved phrase, we should now have only one node
                 # in the $tmptree query plan, and that node should have an
@@ -2363,25 +2315,23 @@ sub to_abstract_query {
                     eval {
                         $tmplist = $tmptree->{query}->[0]->to_abstract_query(
                             no_phrases => 1
-                        )->{children}->{'&'}->[0]->{children}->{'&'};
+                        )->{children}->{'&'};
                     };
-                    next if $@;
+                    next if $@ or !ref($tmplist);
 
-                    foreach (
-                        QueryParser::_util::find_arrays_in_abstract($abstract_query->{children})
-                    ) {
-                        last if $self->replace_phrase_in_abstract_query(
-                            $tmplist,
-                            $_,
-                            QueryParser::_util::fake_abstract_atom_from_phrase($phrase, $self->{negate}, $pkg)
-                        );
-                    }
+                    $$tmplist[0]{prefix} = $tmp_prefix.'"';
+                    $$tmplist[-1]{suffix} = '"';
+                    push @{$abstract_query->{children}->{'&'}}, @$tmplist;
                 }
             }
         }
     }
 
     $abstract_query->{children} ||= { QueryParser::_util::default_joiner() => $kids };
+
+    my $open_joiner = (keys(%{$abstract_query->{children}}))[0];
+    return undef unless @{$abstract_query->{children}->{$open_joiner}};
+
     return $abstract_query;
 }
 
@@ -2420,11 +2370,38 @@ sub suffix {
     return $self->{suffix};
 }
 
+sub explicit_start {
+    my $self = shift;
+    my $explicit_start = shift;
+
+    $self->{explicit_start} = $explicit_start if (defined $explicit_start);
+
+    return $self->{explicit_start};
+}
+
+sub dummy {
+    my $self = shift;
+    my $dummy = shift;
+
+    $self->{dummy} = $dummy if (defined $dummy);
+
+    return $self->{dummy};
+}
+
+sub explicit_end {
+    my $self = shift;
+    my $explicit_end = shift;
+
+    $self->{explicit_end} = $explicit_end if (defined $explicit_end);
+
+    return $self->{explicit_end};
+}
+
 sub to_abstract_query {
     my ($self) = @_;
     
     return {
-        (map { $_ => $self->$_ } qw/prefix suffix content/),
+        (map { $_ => $self->$_ } qw/dummy prefix suffix content explicit_start explicit_end/),
         "type" => "atom"
     };
 }
