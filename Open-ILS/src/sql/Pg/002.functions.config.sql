@@ -625,6 +625,10 @@ CREATE OR REPLACE FUNCTION public.naco_normalize( TEXT, TEXT ) RETURNS TEXT AS $
     # remove non-filing strings
     $str =~ s/\x{0098}.*?\x{009C}//g;
 
+    # Replace curly single and double quote-like characters with straight single and double quotes
+    $str =~ s/[\x{2018}\x{2019}\x{201B}\x{FF07}\x{201A}]/\x{0027}/g;
+    $str =~ s/[\x{201C}\x{201D}\x{201F}\x{FF0C}\x{201E}\x{2E42}]/\x{0022}/g;
+
     $str = NFKD($str);
 
     # additional substitutions - 3.6.
@@ -690,6 +694,10 @@ CREATE OR REPLACE FUNCTION public.search_normalize( TEXT, TEXT ) RETURNS TEXT AS
 
     # remove non-filing strings
     $str =~ s/\x{0098}.*?\x{009C}//g;
+
+    # Replace curly single and double quote-like characters with straight single and double quotes
+    $str =~ s/[\x{2018}\x{2019}\x{201B}\x{FF07}\x{201A}]/\x{0027}/g;
+    $str =~ s/[\x{201C}\x{201D}\x{201F}\x{FF0C}\x{201E}\x{2E42}]/\x{0022}/g;
 
     $str = NFKD($str);
 
