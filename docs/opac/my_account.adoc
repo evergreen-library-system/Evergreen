@@ -270,3 +270,24 @@ image::media/message_center12.PNG[Message Center 12]
 
 NOTE: Patron deleted messages will still appear in the patron's account in the 
 staff client under Other -> Message Center.
+
+Reservations
+^^^^^^^^^^^^
+
+When patrons place a reservation for a particular item at a particular time,
+they can check on its status using the *Reservations* tab.
+
+After they initially place a reservation, its status will display as _Reserved_.
+After staff capture the reservation, the status will change to _Ready for Pickup_.
+After the patron picks up the reservation, the status will change to _Checked Out_.
+Finally, after the patron returns the item, the reservation will be removed from
+the list.
+
+[NOTE]
+====================
+This interface pulls its timezone from the Library
+Settings Editor.  Make sure that you have a timezone
+listed for your library in the Library Settings Editor
+before using this feature.
+====================
+

@@ -6,7 +6,8 @@
         {url => "circs", name => l("Items Checked Out")},
         {url => "holds", name => l("Holds")},
         {url => "prefs", name => l("Account Preferences")},
-        {url => "lists", name => l("My Lists")}
+        {url => "lists", name => l("My Lists")},
+        {url => "reservations", name => l("Reservations")}
     ];
     skin_root = "../"
 %]

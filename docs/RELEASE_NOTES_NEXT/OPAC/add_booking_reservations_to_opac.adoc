@@ -1,0 +1,13 @@
+View upcoming booking reservations in the OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new tab in the My Account section of the OPAC shows
+patrons information about reservations on their account.
+Here, patrons can check on upcoming reservations, as 
+well as reservations they currently have checked out.
+
+Note: this interface pulls its timezone from the Library
+Settings Editor.  Make sure that you have a timezone
+listed for your library in the Library Settings Editor
+before using this feature.
+

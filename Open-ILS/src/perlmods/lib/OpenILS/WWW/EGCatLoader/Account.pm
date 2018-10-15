@@ -2886,6 +2886,20 @@ sub load_myopac_circ_history_export {
 
 }
 
+sub load_myopac_reservations {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    my $upcoming = $U->simplereq("open-ils.booking", "open-ils.booking.reservations.upcoming_reservation_list_by_user",
+        $e->authtoken, undef
+    );
+
+    $ctx->{reservations} = $upcoming;
+    return Apache2::Const::OK;
+
+}
+
 sub load_password_reset {
     my $self = shift;
     my $cgi = $self->cgi;
