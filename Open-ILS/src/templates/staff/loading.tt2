@@ -1,0 +1,9 @@
+<html>
+  <body>
+    <div style="width:100%; padding: 20px; text-align:center">
+      [% l('Loading...') %]
+      <img src="[% ctx.media_prefix %]/images/progressbar_green.gif"
+        title="[% l('Page Loading') %]"/>
+    </div>
+  </body>
+</html>

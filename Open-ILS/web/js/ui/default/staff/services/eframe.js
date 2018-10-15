@@ -111,6 +111,26 @@ angular.module('egCoreMod')
                 var page = $scope.iframe.contentWindow.location.href;
                 console.debug('egEmbedFrameLoader(): ' + page);
 
+                if (page.match(/eg\/staff\/loading$/)) { // loading page
+
+                    // If we have a startup-time URL, apply it now.
+                    if ($scope.url) {
+                        console.debug('Applying initial URL: ' + $scope.url);
+                        iframe.contentWindow.location.href = $scope.url;
+                    }
+
+                    // Watch for future URL changes
+                    $scope.$watch('url', function(newVal, oldVal) {
+                        if (newVal && newVal != oldVal) {
+                            iframe.contentWindow.location.href = newVal;
+                        }
+                    });
+
+                    // Nothing more is needed until the iframe is
+                    // loaded once more with a real URL.
+                    return;
+                }
+
                 // reload ifram page w/o reloading the entire UI
                 $scope.reload = function() {
                     $scope.iframe.contentWindow.location.replace(
