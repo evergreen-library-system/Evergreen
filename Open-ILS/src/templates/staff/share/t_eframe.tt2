@@ -1,11 +1,14 @@
 <div class="eg-embed-frame">
   <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape &&  showIframe" ng-click="escapeEmbed()">[% l('Open in New Window') %]</button>
   <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape && !showIframe" ng-click="restoreEmbed()">[% l('Re-embed') %]</button>
-  <!-- height is calculated at render time -->
+  <!--
+    'src' is replaced by the controller, after linking, and as soon as a
+    value is available.  height is calculated at render time.
+  -->
   <iframe 
     ng-show="showIframe"
     ng-attr-style="{{ autoresize ? undefined : 'height:' + height + 'px' }}"
-    src="{{url}}">
+    src="/eg/staff/loading">
   </iframe>
 </div>
 
