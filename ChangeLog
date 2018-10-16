@@ -1,3 +1,168 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit b0bd61cf1b42d4d0ba34a72c6843daa1c4a1ba42
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 16 14:14:40 2018 -0400
+
+    Update Server Upgrade Instructions for 3.0.13.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+23	16	docs/installation/server_upgrade.adoc
+
+commit 992e4baf94a98e8d5409367592bc72b070d573e9
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 16 14:14:26 2018 -0400
+
+    Bumping Perl version number for release 3.0.13.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 60a98af808a6a077032f6f14ab9bbcf31fbd7505
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 16 14:09:05 2018 -0400
+
+    Add Release Notes for 3.0.13.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+21	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit a4dfe5f61ba474f7108d43fb37a680886081d0fb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 10 16:07:24 2018 -0400
+
+    LP#1796978 Realign working copy refresh with proper condition
+    
+    The "working copy" grid needs to update whenever the copy data above
+    updates.  I *believe* this aligns the refresh with its intended
+    condition.
+    
+    This appears to have come about via bug #1732761, so retesting of
+    that fix may be in order.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e9e53187c14390ae2213c22a9d8b8bcd1c4a71ba
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 11 09:21:05 2018 -0400
+
+    LP#1796971 Wait for call number and copy before loading locations
+    
+    In cases where add a copy to a call number, we fetch the original
+    call number via async, then attach the new copy to it.  Before this
+    commit, however, we were not waiting for the call number fetch
+    promise to resolve, so the copy wasn't there to use for limiting the
+    location load.
+    
+    Since the async request is internal to a loop, one way out is to
+    capture that promise, then make sure it resolves before loading the
+    locations.
+    
+    (We previously returned the copies from the internal function, but that
+    value wasn't being used anyway, so we don't worry about unwrapping the
+    $q.all() when it resolves.)
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+12	3	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit bbbafc4936ef4734e05a5e9a701562472140d498
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 10 15:47:46 2018 -0400
+
+    Revert "LP#1740412 Grid cell content tooltips"
+    
+    This reverts commit b1e0da12b30a3a960fe7834f5862c02f5828846f.
+    
+    Remove tooltips functionality that causes performance hit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	8	Open-ILS/src/templates/staff/css/style.css.tt2
+3	10	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 59c21e28aba87a9859670e47f536e40186226f7f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 10 15:47:37 2018 -0400
+
+    Revert "LP#1740412 Grid cell tooltips limited to long content"
+    
+    This reverts commit e8115509bd907248bdb1088e68fcacd5dc15d899.
+    
+    Remove tooltips functionality that causes performance hit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	5	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+0	26	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit ef34ccc8db15beee7d31273b3a8783561549063c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 10 15:47:26 2018 -0400
+
+    Revert "LP#1740412 Grid cell tooltips moved to top-left"
+    
+    This reverts commit d2ab77bc8a2e59d3ad535868525b1a99fbe4ebdd.
+    
+    Remove tooltips functionality that causes performance hit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	2	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit 1acb25976659bae0166bc1d2680217f0581e7d12
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 10 15:47:17 2018 -0400
+
+    Revert "LP#1740412 Double grid tooltip max width"
+    
+    This reverts commit 76fa907a2fd76bbfb3899f302109f9d51c6d756e.
+    
+    Remove tooltips functionality that causes performance hit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+0	4	Open-ILS/src/templates/staff/css/style.css.tt2
+0	2	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit ae9d1c8b527e867512b210274f14b41607d4d719
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Oct 10 15:46:40 2018 -0400
+
+    Revert "LP#1794176 Avoid capturing grid cell tooltip/display values"
+    
+    This reverts commit 4a5521ec38cdef5d47dd76b0b6bf994ba8998995.
+    
+    Remove tooltips functionality that causes performance hit.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	6	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+0	7	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 940446e32e42b45e7e866b0670cd46ad8610666c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Sep 27 17:55:09 2018 -0400
+
+    Forward-port 3.0.12 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+401	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.11-3.0.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.11-3.0.12-upgrade-db.sql
+
+commit 775e6e6ed0d0318cfea11733ab728474eff5c902
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 16:20:05 2018 -0700
+
+    Docs: adding another fix to the 3.0.12 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/RELEASE_NOTES_3_0.adoc
