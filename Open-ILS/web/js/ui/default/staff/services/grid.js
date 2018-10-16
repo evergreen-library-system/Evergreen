@@ -110,23 +110,26 @@ angular.module('egGridMod',
         templateUrl : '/eg/staff/share/t_autogrid', 
 
         link : function(scope, element, attrs) {     
-            // link() is called after page compilation, which means our
-            // eg-grid-field's have been parsed and loaded.  Now it's 
-            // safe to perform our initial page load.
 
-            // load auto fields after eg-grid-field's so they are not clobbered
-            scope.handleAutoFields();
-            scope.collect();
+            // Give the grid config loading steps time to fetch the 
+            // workstation setting and apply columns before loading data.
+            var loadPromise = scope.configLoadPromise || $q.when();
+            loadPromise.then(function() {
 
-            scope.grid_element = element;
+                // load auto fields after eg-grid-field's so they are not clobbered
+                scope.handleAutoFields();
+                scope.collect();
 
-            if(!attrs.id){
-                $(element).attr('id', attrs.persistKey);
-            }
+                scope.grid_element = element;
 
-            $(element)
-                .find('.eg-grid-content-body')
-                .bind('contextmenu', scope.showActionContextMenu);
+                if(!attrs.id){
+                    $(element).attr('id', attrs.persistKey);
+                }
+
+                $(element)
+                    .find('.eg-grid-content-body')
+                    .bind('contextmenu', scope.showActionContextMenu);
+            });
         },
 
         controller : [
@@ -249,7 +252,7 @@ angular.module('egGridMod',
 
                 grid.applyControlFunctions();
 
-                grid.loadConfig().then(function() { 
+                $scope.configLoadPromise = grid.loadConfig().then(function() { 
                     // link columns to scope after loadConfig(), since it
                     // replaces the columns array.
                     $scope.columns = grid.columnsProvider.columns;
