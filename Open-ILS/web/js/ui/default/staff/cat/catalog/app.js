@@ -1094,7 +1094,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
                     if (e.data
                         && e.data.records
                         && e.data.records.length
-                        && e.data.records.includes($scope.record_id)
+                        && e.data.records.includes(Number($scope.record_id))
                     ){ // it's for us, refresh grid!
                         console.log("Got broadcast from channel eg.holdings.update for records " + e.data.records);
                         $scope.holdings_record_id_changed($scope.record_id);
