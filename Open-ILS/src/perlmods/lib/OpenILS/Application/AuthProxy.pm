@@ -176,6 +176,10 @@ sub login {
     return OpenILS::Event->new( 'LOGIN_FAILED' )
       unless (&enabled() and ($args->{'username'} or $args->{'barcode'}));
 
+    # provided username may not be the user's actual EG username;
+    # hang onto the provided value (if any) so we can use it later
+    $args->{'provided_username'} = $args->{'username'};
+
     if ($args->{barcode} and !$args->{username}) {
         # translate barcode logins into username logins by locating
         # the matching card/user and collecting the username.
@@ -232,10 +236,15 @@ sub login {
         if ($code) {
             push @error_events, $event;
         } elsif (defined $code) { # code is '0', i.e. SUCCESS
-            if (exists $event->{'payload'}) { # we have a complete native login
+            if ($authenticator->name eq 'native' and exists $event->{'payload'}) { # we have a complete native login
                 return $event;
             } else { # create an EG session for the successful external login
-                #
+                # if external login returns a payload, that payload is the
+                # user's Evergreen username
+                if ($event->{'payload'}) {
+                    $args->{'username'} = $event->{'payload'};
+                }
+
                 # before we actually create the session, let's first check if
                 # Evergreen thinks this user is allowed to login
                 #
@@ -251,6 +260,10 @@ sub login {
                     $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
                     return OpenILS::Event->new( 'LOGIN_FAILED' );
                 } else {
+                    # TODO: verify that this authenticator is allowed to do auth
+                    # for the specified username (i.e. if the authenticator is for
+                    # Library A only, it shouldn't be able to do auth for
+                    # Library B's users)
                     $args->{user_id} = $user->[0]->id;
                 }
 

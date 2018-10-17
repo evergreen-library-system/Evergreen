@@ -544,6 +544,7 @@ vim:et:ts=4:sw=4:
                             <basedn>ou=people,dc=domain,dc=com</basedn>
                             <authid>cn=username,ou=specials,dc=domain,dc=com</authid>
                             <id_attr>uid</id_attr>
+                            <bind_attr>uid</bind_attr>
                             <password>my_ldap_password_for_authid_user</password>
                             <login_types>
                                 <type>staff</type>
