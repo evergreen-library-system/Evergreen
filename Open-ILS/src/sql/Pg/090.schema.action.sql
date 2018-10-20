@@ -358,8 +358,8 @@ BEGIN
     INSERT INTO money.aged_payment 
         SELECT * FROM money.payment_view WHERE xact = OLD.id;
 
-    DELETE FROM money.billing WHERE xact = OLD.id;
     DELETE FROM money.payment WHERE xact = OLD.id;
+    DELETE FROM money.billing WHERE xact = OLD.id;
 
     RETURN OLD;
 END;

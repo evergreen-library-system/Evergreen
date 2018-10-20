@@ -71,8 +71,8 @@ BEGIN
     INSERT INTO money.aged_payment 
         SELECT * FROM money.payment_view WHERE xact = OLD.id;
 
-    DELETE FROM money.billing WHERE xact = OLD.id;
     DELETE FROM money.payment WHERE xact = OLD.id;
+    DELETE FROM money.billing WHERE xact = OLD.id;
 
     RETURN OLD;
 END;
@@ -91,10 +91,7 @@ ALTER TABLE money.forgive_payment DISABLE TRIGGER mat_summary_del_tgr;
 ALTER TABLE money.credit_payment DISABLE TRIGGER mat_summary_del_tgr;
 ALTER TABLE money.goods_payment DISABLE TRIGGER mat_summary_del_tgr;
 
-DELETE FROM money.payment WHERE id IN (
-    SELECT mp.id FROM money.payment mp
-    JOIN money.aged_payment USING (id)
-);
+DELETE FROM money.payment WHERE id IN (SELECT id FROM money.aged_payment);
 
 ALTER TABLE money.payment ENABLE TRIGGER mat_summary_del_tgr;
 ALTER TABLE money.cash_payment ENABLE TRIGGER mat_summary_del_tgr;
