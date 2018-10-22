@@ -831,6 +831,7 @@ BEGIN
 			family_name = new_name,
 			suffix = NULL,
 			alias = NULL,
+            guardian = NULL,
 			day_phone = NULL,
 			evening_phone = NULL,
 			other_phone = NULL,

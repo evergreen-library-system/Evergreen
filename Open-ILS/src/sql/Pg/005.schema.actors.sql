@@ -42,6 +42,7 @@ CREATE TABLE actor.usr (
 	second_given_name	TEXT,
 	family_name		TEXT				NOT NULL,
 	suffix			TEXT,
+    guardian        TEXT,
     pref_prefix TEXT,
     pref_first_given_name TEXT,
     pref_second_given_name TEXT,
@@ -93,6 +94,8 @@ CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr (evergreen.una
 CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(second_given_name));
 CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(family_name));
 CREATE INDEX actor_usr_usrname_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(usrname));
+CREATE INDEX actor_usr_guardian_idx ON actor.usr (evergreen.lowercase(guardian));
+CREATE INDEX actor_usr_guardian_unaccent_idx ON actor.usr (evergreen.unaccent_and_squash(guardian));
 
 CREATE INDEX actor_usr_pref_first_given_name_idx ON actor.usr (evergreen.lowercase(pref_first_given_name));
 CREATE INDEX actor_usr_pref_second_given_name_idx ON actor.usr (evergreen.lowercase(pref_second_given_name));

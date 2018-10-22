@@ -139,12 +139,8 @@
         </div>
 
         <div class="col-md-2">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
-              [% l('Include Inactive?') %]
-            </label>
-          </div>
+          <input type="text" class="form-control" 
+            ng-model="searchArgs.guardian" placeholder="[% l('Parent/Guardian') %]"/>
         </div>
       </div>
       <div class="form-group" ng-show="showExtras">
@@ -163,6 +159,14 @@
         <div class="col-md-2">
           <input type="text" class="form-control" 
             ng-model="searchArgs.id" placeholder="[% l('Database ID') %]"/>
+        </div>
+        <div class="col-md-2">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
+              [% l('Include Inactive?') %]
+            </label>
+          </div>
         </div>
       </div>
     </form>

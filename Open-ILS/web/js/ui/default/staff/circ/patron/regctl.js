@@ -391,6 +391,9 @@ angular.module('egCoreMod')
             'ui.patron.edit.aua.post_code.regex',
             'ui.patron.edit.aua.post_code.example',
             'ui.patron.edit.aua.county.require',
+            'ui.patron.edit.au.guardian.show',
+            'ui.patron.edit.au.guardian.suggest',
+            'ui.patron.edit.guardian_required_for_juv',
             'format.date',
             'ui.patron.edit.default_suggested',
             'opac.barcode_regex',
@@ -1365,6 +1368,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         apply_username_regex();
 
         add_date_watchers();
+
+        if ($scope.org_settings['ui.patron.edit.guardian_required_for_juv']) {
+            add_juv_watcher();
+        }
     });
 
     function add_date_watchers() {
@@ -1381,6 +1388,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         // No need to watch expire_date
     }
 
+    function add_juv_watcher() {
+        $scope.$watch('patron.juvenile', function(newVal, oldVal) {
+            if (newVal === oldVal) return;
+            if (newVal) {
+                field_visibility['au.guardian'] = 3; // required
+            } else {
+                // Value will be reassessed by show_field()
+                delete field_visibility['au.guardian'];
+            }
+        });
+    }
 
     // update the currently displayed field documentation
     $scope.set_selected_field_doc = function(cls, field) {

@@ -19414,4 +19414,46 @@ VALUES (
 );
 
 
+INSERT into config.org_unit_setting_type (name, label, description, datatype) 
+VALUES ( 
+    'ui.patron.edit.au.guardian.show',
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.show', 
+        'GUI: Show guardian field on patron registration', 
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.show', 
+        'The guardian field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 
+        'coust', 'description'
+    ),
+    'bool'
+), (
+    'ui.patron.edit.au.guardian.suggest',
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.suggest', 
+        'GUI: Suggest guardian field on patron registration', 
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.suggest', 
+        'The guardian field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 
+        'coust', 'description'),
+    'bool'
+), (
+    'ui.patron.edit.guardian_required_for_juv',
+    oils_i18n_gettext(
+        'ui.patron.edit.guardian_required_for_juv',
+        'GUI: Juvenile account requires parent/guardian',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.guardian_required_for_juv',
+        'Require a value for the parent/guardian field in the patron editor for patrons marked as juvenile',
+        'coust', 'description'),
+    'bool'
+);
+
+
+
 

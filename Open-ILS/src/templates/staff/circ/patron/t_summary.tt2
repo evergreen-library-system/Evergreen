@@ -67,6 +67,10 @@
       <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:$root.egDateFormat}}</div>
     </div>
     <div class="row">
+      <div class="col-md-5">[% l('Parent/Guardian') %]</div>
+      <div class="col-md-7">{{patron().guardian()}}</div>
+    </div>
+    <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
       <div class="col-md-7">{{patron().usr_activity()[0].event_time() | date:$root.egDateFormat}}</div>
     </div>
