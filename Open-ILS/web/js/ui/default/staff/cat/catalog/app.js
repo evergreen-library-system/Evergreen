@@ -581,6 +581,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             return;
         }
 
+        var prev_record_id = $scope.record_id;
         var match = url.match(/\/+opac\/+record\/+(\d+)/);
         if (match) {
             $scope.record_id = match[1];
@@ -606,8 +607,10 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // child scope is executing this function, so our digest doesn't fire ... thus,
         $scope.$apply();
 
-        if (!$scope.in_opac_call) {
-            if ($scope.record_id && !$scope.record_tab) {
+        // don't change tabs if we are using the OPAC nav buttons,
+        // or we didn't change records on the OPAC load
+        if (!$scope.in_opac_call && ($scope.record_id != prev_record_id)) {
+            if ($scope.record_id) {
                 $scope.default_tab = egCore.hatch.getLocalItem( 'eg.cat.default_record_tab' );
                 tab = $routeParams.record_tab || $scope.default_tab || 'catalog';
             } else {
