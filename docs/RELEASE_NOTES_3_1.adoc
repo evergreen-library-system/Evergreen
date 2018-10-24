@@ -3,6 +3,40 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.7
+----------------
+This release contains bug fixes improving on Evergreen 3.1.6.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Adds several columns to the items out grid.
+* Adds the ability to copy patron addresses to the clipboard.
+* Fixes several issues with adding new items and call numbers.
+* Adds links to catalog records from the query and pending tabs of the Record Buckets interface.
+* Corrects the date format used in several bucket interfaces.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.7 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
 Evergreen 3.1.6
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.5.
