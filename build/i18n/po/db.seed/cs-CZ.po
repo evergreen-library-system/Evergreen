@@ -3,13 +3,13 @@ msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2018-09-23 13:56+0000\n"
+"PO-Revision-Date: 2018-09-25 18:34+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-24 05:30+0000\n"
+"X-Launchpad-Export-Date: 2018-09-26 05:28+0000\n"
 "X-Generator: Launchpad (build 18783)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
@@ -12532,6 +12532,9 @@ msgid ""
 "that has been marked as long-overdue, and the corresponding copy alert has "
 "been suppressed."
 msgstr ""
+"Řídí automatické prominutí pokut,  když je půjčována jednotka, která byla "
+"označená jako dlouhodobě nevrácená a potlačení odpovídajícího upozornění k "
+"jednotce."
 
 #: 950.data.seed-values.sql:671
 msgid "Example Consortium"
@@ -14673,7 +14676,7 @@ msgstr "Povolit uživateli vytvořit kontejner pro něj samotného"
 
 #: 950.data.seed-values.sql:1893
 msgid "Administer copy alert suppression"
-msgstr ""
+msgstr "Spravovat potlačení upozornění k jednotce"
 
 #: 950.data.seed-values.sql:7198 950.data.seed-values.sql:7213
 msgid "Sinhalese"
@@ -14919,7 +14922,7 @@ msgstr "Povolí uživateli vytvořit/upravit/smazat rezervované zdroje"
 
 #: 950.data.seed-values.sql:18519
 msgid "Holdings View Show Volumes"
-msgstr ""
+msgstr "V zobrazení jednotek jsou zobrazeny svatky"
 
 #: 950.data.seed-values.sql:8156 950.data.seed-values.sql:8252
 msgid "None of the following"
@@ -15295,7 +15298,7 @@ msgstr "Sumerština"
 
 #: 950.data.seed-values.sql:1899
 msgid "Delete copy alert suppression"
-msgstr ""
+msgstr "Smazat potlačení upozornění k exempláři"
 
 #: 950.data.seed-values.sql:16510
 msgid "The county field will be shown on the patron registration screen"
