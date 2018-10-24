@@ -3,8 +3,42 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
-Upgrade notes
--------------
+Evergreen 3.2.1
+----------------
+This release contains bug fixes improving on Evergreen 3.2.0.
+
+Bug fixes
+~~~~~~~~~
+
+* Adds several columns to the items out grid.
+* Adds the ability to copy patron addresses to the clipboard.
+* Fixes several issues with adding new items and call numbers.
+* Adds links to catalog records from the query and pending tabs of the Record Buckets interface.
+* Corrects the date format used in several bucket interfaces.
+* The new Angular 6 interfaces now use the correct favicon.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.2.1 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Bill Erickson
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
+3.2.0 Upgrade notes
+-------------------
 
 Disabling of Legacy XUL Staff Client
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,8 +158,8 @@ value is stored in-browser instead and a warning is issued in the console.
 
 
 
-New Features
-------------
+3.2.0 New Features
+------------------
 
 
 Acquisitions
