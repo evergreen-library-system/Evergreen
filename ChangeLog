@@ -1,3 +1,472 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 4939db669d8d9efe8ca8bdda9d9ea12a90c933a8
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 17:32:39 2018 -0400
+
+    Update Upgrade Docs
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	16	docs/installation/server_upgrade.adoc
+
+commit d86d21dc9b732ea3b70fc5d17283c7b1c1523fc2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 06974bf1c30783ccb935cf7910c07984a05a2aec
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 17:22:03 2018 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+8	5	build/i18n/po/db.seed/cs-CZ.po
+3	3	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+4	4	build/i18n/po/lang.dtd/cs-CZ.po
+156	97	build/i18n/po/webstaff/ar-JO.po
+177	118	build/i18n/po/webstaff/cs-CZ.po
+143	90	build/i18n/po/webstaff/en-GB.po
+156	97	build/i18n/po/webstaff/es-ES.po
+149	96	build/i18n/po/webstaff/hy-AM.po
+143	90	build/i18n/po/webstaff/ru-RU.po
+
+commit df8d10bcaedada490005e76d9c04371193a502ae
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 16:42:01 2018 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+52	39	build/i18n/po/webstaff/webstaff.pot
+
+commit d8386e7c669de9e020c3b5b2bf5547014bc8633b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 24 09:35:50 2018 -0700
+
+    Docs: adding another entry to 3.2.1 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit b31c51d24a6f9fc307d36f258abf8fae4dd58029
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 24 09:33:23 2018 -0700
+
+    Docs: adding another entry to 3.1.7 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit b395739a6adb98b4c8a6f9166666d6066adb422d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 15 11:43:33 2018 -0400
+
+    LP#1797923 Browser client iframe initial loading page
+    
+    Apply a default value to the browser client iframe URL so the iframe
+    does not attempt to load a copy of the current page.  The default value
+    points to a simple loading page, displying "Loading..." plus our
+    standard spinny gif.
+    
+    Progress gif copied from web/opac/images/ to web/images/ to avoid
+    dependence on the old opac directory.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	0	Open-ILS/src/templates/staff/loading.tt2
+5	2	Open-ILS/src/templates/staff/share/t_eframe.tt2
+-	-	Open-ILS/web/images/progressbar_green.gif
+20	0	Open-ILS/web/js/ui/default/staff/services/eframe.js
+ create mode 100644 Open-ILS/src/templates/staff/loading.tt2
+ create mode 100644 Open-ILS/web/images/progressbar_green.gif
+
+commit 5444b765686466d6c64e2c9d60ec041cf6477ac4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 24 09:15:44 2018 -0700
+
+    Docs: Adding release notes for 3.2.1
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+38	4	docs/RELEASE_NOTES_3_2.adoc
+
+commit 03e3591bf090cf76b7778878ae73a64e0719139f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 24 09:02:37 2018 -0700
+
+    Docs: adding release notes for 3.1.7
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+34	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit b14f00f1da0eaedf72d74b2bb623b2033001d32d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Oct 23 16:32:17 2018 -0400
+
+    Forward port 3.1.5-3.2.0-upgrade-db.sql.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4904	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.5-3.2.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.5-3.2.0-upgrade-db.sql
+
+commit 20c9ab2b82187ff2631e778d8b9e503362d1c19c
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Sep 26 14:45:26 2018 -0400
+
+    LP#1746536: Remove input-group-addon class from Add Call Number button
+    
+    The button no longer looks like a button with this class in place.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+
+commit b85f23609861f89a0934facdc85cb3ae06b6e57d
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 26 12:57:04 2018 -0400
+
+    LP#1746536: Restrict CN addition but allow CN edits...
+    
+    ... in the top half of the Vol/Copy editor when there are multiple bib records
+    represented in the UI.
+    
+    Also, restrict the size of the org selector using a bootstrap row.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+    	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	3	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+8	9	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit debbef79a8b33f2805def7a47419151ce911c2b4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 19 10:38:42 2018 -0400
+
+    LP#1746536: Allow batch-apply to volume fields in multi-record context
+    
+    I can't see a reason to restrict Batch Apply for volume fields in a multi-
+    record context, as all the data is gathered based on the volume owners, not
+    record information.  This commit removes that restriction.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+
+commit 255d7e5ad6dbcaf66b6238788e30bc231ee9f81c
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Sep 12 05:37:28 2018 -0400
+
+    LP#1746536 - enable volcopy editor for multi-bib but only volumes
+    
+    This removes the disabling of the volcopy editor caused by
+    passing it a record id of 0. Allowing the Item Status grid's
+    Edit>Volumes to function as a way to batch edit volumes of
+    more than 1 bib record.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	5	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e02f1e84143fb090a0db49eb624ae826a626910f
+Author: a. bellenir <ab@grpl.org>
+Date:   Wed Jun 27 14:48:56 2018 -0400
+
+    LP1746536: cannot edit vol/call number in item status
+    
+    spawnHoldingsEdit was disabling record summary by passing record_id: 0
+    this change will provided the record_id if exactly one record is selected.
+    behavior is unchanged if multiple records are selected.
+    
+    Signed-off-by: a. bellenir <ab@grpl.org>
+    Signed-off-by: cesar velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	12	Open-ILS/web/js/ui/default/staff/circ/services/item.js
+
+commit b1440802e6a0508b6e89020f6bd1e210641208bc
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 10 16:07:24 2018 -0400
+
+    LP#1796978 Realign working copy refresh with proper condition
+    
+    The "working copy" grid needs to update whenever the copy data above
+    updates.  I *believe* this aligns the refresh with its intended
+    condition.
+    
+    This appears to have come about via bug #1732761, so retesting of
+    that fix may be in order.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 75f10d164291a64715e766a112cc7c0502861653
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Oct 11 09:21:05 2018 -0400
+
+    LP#1796971 Wait for call number and copy before loading locations
+    
+    In cases where add a copy to a call number, we fetch the original
+    call number via async, then attach the new copy to it.  Before this
+    commit, however, we were not waiting for the call number fetch
+    promise to resolve, so the copy wasn't there to use for limiting the
+    location load.
+    
+    Since the async request is internal to a loop, one way out is to
+    capture that promise, then make sure it resolves before loading the
+    locations.
+    
+    (We previously returned the copies from the internal function, but that
+    value wasn't being used anyway, so we don't worry about unwrapping the
+    $q.all() when it resolves.)
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+
+4	3	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit ad11c1b6d89e8690caed7ae02a1fc0a0202954c7
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Oct 9 10:36:45 2018 -0400
+
+    Docs: Update release notes version in consolidated manual
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/root.adoc
+
+commit a9329bfd9f874811a7f0c5f1364ba0463fe58703
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 17 10:18:30 2018 -0400
+
+    LP#1792658 Angular Evergreen favicon
+    
+    Use the Evergreen favicon.ico in the Angular(6) application.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+-	-	Open-ILS/src/eg2/src/favicon.ico
+
+commit fa3cd5cc70598a6a749c8b51003088a4b10442c8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Aug 6 15:18:35 2018 -0400
+
+    LP#1785681 Patron address copy to clipboard
+    
+    Support copying formatted addresses to the clipboard in the browser
+    staff client, similar to the XUL client.  Action is performed via a new
+    link in the addresses section (next to "print") in the patron summary
+    sidebar.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	2	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+18	0	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit 22fcbd3497069230a49d339e720b2c882d6dd585
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 11 14:58:29 2018 -0400
+
+    LP#1721139: apply proper date format in certain places
+    
+    This patch ensures that the correct date format is used
+    to display dates in certain contexts in the web staff
+    client:
+    
+    - patron bucket summary
+    - record bucket summary
+    - patron bucket 'View batch edits'
+    
+    This has the side effect of fixing a problem where the batch
+    edit timestamps were not wrapped correctly in Firefox.
+    
+    To test
+    -------
+    1. Using user buckets, make some batch changes on some patrons and roll
+       back some of those changes.
+    2. Using Firefox, click on the 'View Batch Edits' button.
+    3. Note that the times dispayed are formatted as raw
+       database timestamps
+    4. Note that the summary for the user bucket displays the
+       create time as a raw database timestamp.
+    5. Navigate to a record bucket and note that its create
+       time is displayed as a raw timestamp as well.
+    3. Apply patch.
+    4. Repeat steps 2-5; this time, the times should be displayed
+       using the correct date and time format.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_info.tt2
+2	2	Open-ILS/src/templates/staff/circ/patron/bucket/t_changesets.tt2
+
+commit 3ec4a636f7b155583fbe2aa66c45faa0ae2a665e
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Jun 21 19:41:48 2018 -0400
+
+    LP#1778083 Location, Floating, and Age Protect missing from Items Out
+    
+    Adds columns for Location (Copy), Floating Group, and Age-based Hold
+    Protection to the items out grid.
+    
+    To test.
+    1. View an items out screen to see that the Location, Floating Group,
+       and Age-based Hold protection columns are not available as options.
+    2. Apply the patch.
+    3. Edit some items and add definitions for Floating Group, and
+       Age-based hold protection.
+    4. Check out these items and other items that do not have a floating
+       group or age-based protection.
+    5. Display the Location, Floating Group, and Age-based Hold Protection
+       columns.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit c80964875a44831627621cd9c93f656ad35283fb
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Oct 5 16:41:04 2018 -0400
+
+    LP#1770246: (follow-up) display the open-in-new-window/tab icon
+    
+    Since the title links added by the previous patch intentionally open
+    the record in a new tab, display the corresponding icon to be
+    consistent with other interfaces.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2
+1	1	Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2
+
+commit 0ba4beb132af8b111dc60c84601f9fe4ef58df0f
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu May 31 21:22:35 2018 -0400
+
+    LP#1770246 Catalog linked title column in query and pending buckets
+    
+    To mirror the Record Bucket View grid, this patch adds a title column
+    in the query and pending bucket tabs that links to the catalog record
+    of the title displayed. The catalog record is opened in a new tab, so
+    the query and pending data is not lost.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	0	Open-ILS/src/templates/staff/cat/bucket/record/t_pending.tt2
+5	0	Open-ILS/src/templates/staff/cat/bucket/record/t_search.tt2
+
+commit 3fa6a949377be0147a6e36134595b04d39d3dfe4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Oct 4 11:53:59 2018 -0700
+
+    Docs: adding basic info about printing spine labels
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+17	0	docs/admin/turn-off-print-headers-chrome.adoc
+31	0	docs/admin/turn-off-print-headers-firefox.adoc
+4	0	docs/admin/web-client-browser-best-practices.adoc
+29	0	docs/cataloging/item_status.adoc
+ create mode 100644 docs/admin/turn-off-print-headers-chrome.adoc
+ create mode 100644 docs/admin/turn-off-print-headers-firefox.adoc
+
+commit 6196f4f1fa6b5e5f00f0a9330c5e341f53cd5cba
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 1 19:48:32 2018 -0700
+
+    Docs: Adding info about copy number
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	0	docs/cataloging/volcopy_editor.adoc
+
+commit 2a62c27a4b5df529eb4e4a1a266591f8318af0e4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 16:21:07 2018 -0700
+
+    Docs: adding another fix to the 3.1.6 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 4ff8b3c568371504dc738ea21ae4bf1b3526c527
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 16:20:05 2018 -0700
+
+    Docs: adding another fix to the 3.0.12 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit b07a601476a283492d5974c93bf29d641e42c3a0
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 09:10:22 2018 -0700
+
+    Docs: Adding 3.1.6 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+62	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 37b564f29f7c45a001e4bfa6041e1d4b303131d1
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 26 09:05:54 2018 -0700
+
+    Docs: Adding release notes for 3.0.12
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+59	0	docs/RELEASE_NOTES_3_0.adoc
