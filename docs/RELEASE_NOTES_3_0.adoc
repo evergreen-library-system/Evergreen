@@ -3,6 +3,27 @@ Evergreen 3.0 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.0.13
+----------------
+This release contains bug fixes for regressions in Evergreen 3.0.12.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Removes the tooltip feature when you mouse over a grid cell because this feature degraded performance.
+* Fixes an issue with adding two or more copies in cataloging.
+* Fixes the inability to add copies from Item Status and Holdings View.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.0.13 point release of
+Evergreen:
+
+* Jason Stephenson
+* Dan Wells
+
 Evergreen 3.0.12
 ----------------
 This release contains bug fixes improving on Evergreen 3.0.11.
