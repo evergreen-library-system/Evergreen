@@ -2092,7 +2092,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             var n = new egCore.idl.acpn();
                             n.isnew(1);
                             n.creator(note.creator);
-                            n.pub(note.pub);
+                            n.pub(note.pub ? 't' : 'f');
                             n.title(note.title);
                             n.value(note.value);
                             n.owning_copy(cp.id());
