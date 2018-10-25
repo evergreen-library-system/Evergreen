@@ -61,7 +61,7 @@
             </div>
             <div class="col-md-3">
               <label>
-                <input type="checkbox" ng-model="pub" ng-change="n.pub(pub) && n.ischanged(1)" ng-disabled="deleted"/>
+                <input type="checkbox" ng-model="pub" ng-change="n.pub(pub ? 't' : 'f') && n.ischanged(1)" ng-disabled="deleted"/>
                 [% l('Public Note') %]
               </label>
             </div>
