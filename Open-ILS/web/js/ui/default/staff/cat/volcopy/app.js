@@ -1327,8 +1327,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         }
                     });
                 }
+                delete $scope.working.MultiMap[k];
             });
-            delete $scope.working.MultiMap[k];
             egCore.hatch.setItem('cat.copy.last_template', n);
         }
 
