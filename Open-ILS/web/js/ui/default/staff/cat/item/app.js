@@ -189,10 +189,17 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         }]);
     }
 
+    $scope.selectedHoldingsDiscard = function () {
+        itemSvc.selectedHoldingsDiscard([{
+            id : $scope.args.copyId,
+            barcode : $scope.args.barcode
+        }]);
+    }
+
     $scope.selectedHoldingsMissing = function () {
         itemSvc.selectedHoldingsMissing([{
             id : $scope.args.copyId,
-            barcode : $scope.args.copyBarcode
+            barcode : $scope.args.barcode
         }]);
     }
 
@@ -525,6 +532,10 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 
     $scope.selectedHoldingsDamaged = function () {
         itemSvc.selectedHoldingsDamaged(copyGrid.selectedItems());
+    }
+
+    $scope.selectedHoldingsDiscard = function () {
+        itemSvc.selectedHoldingsDiscard(copyGrid.selectedItems());
     }
 
     $scope.selectedHoldingsMissing = function () {

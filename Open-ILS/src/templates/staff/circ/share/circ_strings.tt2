@@ -27,6 +27,15 @@ s.LOCATION_ALERT_MSG =
     "{{copy.barcode()}}","{{copy.location().name()}}") %]';
 s.MARK_DAMAGED_CONFIRM = '[% l("Mark {{num_items}} items as DAMAGED?") %]';
 s.MARK_MISSING_CONFIRM = '[% l("Mark {{num_items}} items as MISSING?") %]';
+s.MARK_DISCARD_CONFIRM = '[% l("Mark {{num_items}} items as DICARD/WEED?") %]';
+s.MARK_ITEM_CHECKED_OUT = '[% l("Item {{barcode}} is checked out.") %]';
+s.MARK_ITEM_IN_TRANSIT = '[% l("Item {{barcode}} is in transit.") %]';
+s.MARK_ITEM_RESTRICT_DELETE = '[% l("Item {{barcode}} is in a status with a copy delete warning.") %]';
+s.MARK_ITEM_LAST_HOLD_COPY = '[% l("Item {{barcode}} is the last item to fill a hold.") %]';
+s.MARK_ITEM_CONTINUE = '[% l("Do you wish to continue marking it {{status}}?") %]';
+s.MARK_ITEM_CHECKIN_CONTINUE = '[% l("Do you wish to check it in and continue marking it {{status}}?") %]';
+s.MARK_ITEM_ABORT_CONTINUE = '[% l("Do you wish to abort the transit and continue marking it {{status}}?") %]';
+s.MARK_ITEM_FAILURE = '[% l("Marking of item {{barcode}} with status {{status}} failed: {{textcode}}") %]'
 s.ABORT_TRANSIT_CONFIRM = '[% l("Cancel {{num_transits}} transits?") %]';
 s.ROUTE_TO_HOLDS_SHELF = '[% l("Holds Shelf") %]';
 s.ROUTE_TO_CATALOGING = '[% l("Cataloging") %]';

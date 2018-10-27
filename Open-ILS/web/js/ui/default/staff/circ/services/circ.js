@@ -1361,16 +1361,26 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                                 handle_checkin: !$scope.applyFine
                         }).then(function(resp) {
                             if (evt = egCore.evt.parse(resp)) {
-                                doRefresh = false;
-                                console.debug("mark damaged more information required. Pushing back.");
-                                service.mark_damaged({
-                                    id: params.id,
-                                    barcode: params.barcode,
-                                    charge: evt.payload.charge,
-                                    circ: evt.payload.circ,
-                                    refresh: params.refresh
-                                });
-                                console.error('mark damaged failed: ' + evt);
+                                egCore.pcrud.retrieve('ccs', 14)
+                                    .then(function(resp) {
+                                        service.handle_mark_item_event(
+                                            {id : params.id, barcode : params.barcode},
+                                            resp,
+                                            {
+                                                apply_fines: $scope.applyFine,
+                                                override_amount: $scope.billArgs.charge,
+                                                override_btype: $scope.billArgs.type,
+                                                override_note: $scope.billArgs.note,
+                                                handle_checkin: !$scope.applyFine
+                                            },
+                                            evt);
+                                    }).then(function(resp) {
+                                        // noop?
+                                        //if (doRefresh) egItem.add_barcode_to_list(params.barcode);
+                                    }, function(resp) {
+                                        doRefresh = false;
+                                        console.error('mark damaged failed: ' + evt);
+                                    });
                             }
                         }).then(function() {
                             if (doRefresh) egItem.add_barcode_to_list(params.barcode);
@@ -1381,30 +1391,146 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         }).result;
     }
 
-    service.mark_missing = function(copy_ids) {
+    service.handle_mark_item_event = function(copy, status, args, event) {
+        var dlogTitle, dlogMessage;
+        switch (event.textcode) {
+        case 'ITEM_TO_MARK_CHECKED_OUT':
+            dlogTitle = egCore.strings.MARK_ITEM_CHECKED_OUT;
+            dlogMessage = egCore.strings.MARK_ITEM_CHECKIN_CONTINUE;
+            args.handle_checkin = 1;
+            break;
+        case 'ITEM_TO_MARK_IN_TRANSIT':
+            dlogTitle = egCore.strings.MARK_ITEM_IN_TRANSIT;
+            dlogMessage = egCore.strings.MARK_ITEM_ABORT_CONTINUE;
+            args.handle_transit = 1;
+            break;
+        case 'ITEM_TO_MARK_LAST_HOLD_COPY':
+            dlogTitle = egCore.strings.MARK_ITEM_LAST_HOLD_COPY;
+            dlogMessage = egCore.strings.MARK_ITEM_CONTINUE;
+            args.handle_last_hold_copy = 1;
+            break;
+        case 'COPY_DELETE_WARNING':
+            dlogTitle = egCore.strings.MARK_ITEM_RESTRICT_DELETE;
+            dlogMessage = egCore.strings.MARK_ITEM_CONTINUE;
+            args.handle_copy_delete_warning = 1;
+            break;
+        case 'PERM_FAILURE':
+            console.error('Mark item ' + status.name() + ' for ' + copy.barcode + ' failed: ' +
+                          event);
+            return service.exit_alert(egCore.strings.PERMISSION_DENIED,
+                                      {permission : event.ilsperm});
+            break;
+        default:
+            console.error('Mark item ' + status.name() + ' for ' + copy.barcode + ' failed: ' +
+                          event);
+            return service.exit_alert(egCore.strings.MARK_ITEM_FAILURE,
+                                      {status : status.name(), barcode : copy.barcode,
+                                       textcode : event.textcode});
+            break;
+        }
         return egConfirmDialog.open(
-            egCore.strings.MARK_MISSING_CONFIRM, '',
-            {   num_items : copy_ids.length,
+            dlogTitle, dlogMessage,
+            {
+                barcode : copy.barcode,
+                status : status.name(),
+                ok : function () {},
+                cancel : function () {}
+            }
+        ).result.then(function() {
+            return service.mark_item(copy, status, args);
+        });
+    }
+
+    service.mark_item = function(copy, markstatus, args) {
+        if (!copy) return $q.when();
+
+        // If any new back end mark_item calls are added, also add
+        // them here to use them from the staff client.
+        // TODO: I didn't find any JS constants for copy status.
+        var req;
+        switch (markstatus.id()) {
+        case 2:
+            // Not implemented in the staff client, yet.
+            // req = "open-ils.circ.mark_item_bindery";
+            break;
+        case 4:
+            req = "open-ils.circ.mark_item_missing";
+            break;
+        case 9:
+            // Not implemented in the staff client, yet.
+            // req = "open-ils.circ.mark_item_on_order";
+            break;
+        case 10:
+            // Not implemented in the staff client, yet.
+            // req = "open-ils.circ.mark_item_ill";
+            break;
+        case 11:
+            // Not implemented in the staff client, yet.
+            // req = "open-ils.circ.mark_item_cataloging";
+            break;
+        case 12:
+            // Not implemented in the staff client, yet.
+            // req = "open-ils.circ.mark_item_reserves";
+            break;
+        case 13:
+            req = "open-ils.circ.mark_item_discard";
+            break;
+        case 14:
+            // Damaged is for handling of events. It's main handler is elsewhere.
+            req = "open-ils.circ.mark_item_damaged";
+            break;
+        }
+
+        return egCore.net.request(
+            'open-ils.circ',
+            req,
+            egCore.auth.token(),
+            copy.id,
+            args
+        ).then(function(resp) {
+            if (evt = egCore.evt.parse(resp)) {
+                return service.handle_mark_item_event(copy, markstatus, args, evt);
+            }
+        });
+    }
+
+    service.mark_discard = function(copies) {
+        return egConfirmDialog.open(
+            egCore.strings.MARK_DISCARD_CONFIRM, '',
+            {
+                num_items : copies.length,
                 ok : function() {},
                 cancel : function() {}
             }
         ).result.then(function() {
-            var promises = [];
-            angular.forEach(copy_ids, function(copy_id) {
-                promises.push(
-                    egCore.net.request(
-                        'open-ils.circ',
-                        'open-ils.circ.mark_item_missing',
-                        egCore.auth.token(), copy_id
-                    ).then(function(resp) {
-                        if (evt = egCore.evt.parse(resp)) {
-                            console.error('mark missing failed: ' + evt);
-                        }
-                    })
-                );
-            });
+            return egCore.pcrud.retrieve('ccs', 13)
+                .then(function(resp) {
+                    var promises = [];
+                    angular.forEach(copies, function(copy) {
+                        promises.push(service.mark_item(copy, resp, {}))
+                    });
+                    return $q.all(promises);
+                });
+        });
+    }
 
-            return $q.all(promises);
+    service.mark_missing = function(copies) {
+        return egConfirmDialog.open(
+            egCore.strings.MARK_MISSING_CONFIRM, '',
+            {
+                num_items : copies.length,
+                ok : function() {},
+                cancel : function() {}
+            }
+        ).result.then(function() {
+            return egCore.pcrud.retrieve('ccs', 4)
+                .then(function(resp) {
+                    var promises = [];
+                    angular.forEach(copies, function(copy) {
+                        promises.push(service.mark_item(copy, resp, {}))
+                    });
+                    return $q.all(promises);
+                });
         });
     }
 

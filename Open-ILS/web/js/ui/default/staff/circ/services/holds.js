@@ -744,20 +744,40 @@ function($window , $location , $timeout , egCore , egHolds , egCirc) {
         });
     }
 
-    service.mark_missing = function(items) {
-        var copy_ids = items
+    service.mark_discard = function(items) {
+        var copies = items
             .filter(function(item) { return Boolean(item.copy) })
-            .map(function(item) { return item.copy.id() });
-        if (copy_ids.length) 
-            egCirc.mark_missing(copy_ids).then(service.refresh);
+            .map(function(item) {
+                return {id: item.copy.id(), barcode: item.copy.barcode()}
+            });
+        if (copies.length)
+            egCirc.mark_discard(copies).then(service.refresh);
+    }
+
+    service.mark_missing = function(items) {
+        var copies = items
+            .filter(function(item) { return Boolean(item.copy) })
+            .map(function(item) {
+                return {id: item.copy.id(), barcode: item.copy.barcode()}
+            });
+        if (copies.length)
+            egCirc.mark_missing(copies).then(service.refresh);
     }
 
     service.mark_missing_wide = function(items) {
-        var copy_ids = items
+        var copies = items
             .filter(function(item) { return Boolean(item.hold.cp_id) })
-            .map(function(item) { return item.hold.cp_id });
-        if (copy_ids.length) 
-            egCirc.mark_missing(copy_ids).then(service.refresh);
+            .map(function(item) { return {id: item.hold.cp_id, barcode: item.hold.cp_barcode}; });
+        if (copies.length)
+            egCirc.mark_missing(copies).then(service.refresh);
+    }
+
+    service.mark_discard_wide = function(items) {
+        var copies = items
+            .filter(function(item) { return Boolean(item.hold.cp_id) })
+            .map(function(item) { return {id: item.hold.cp_id, barcode: item.hold.cp_barcode}; });
+        if (copies.length)
+            egCirc.mark_discard(copies).then(service.refresh);
     }
 
     service.retarget = function(items) {

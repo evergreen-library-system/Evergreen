@@ -337,6 +337,20 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
 
     }
 
+    $scope.showMarkDiscard = function(items) {
+        var copies = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) {
+                copies.push(egCore.idl.toHash(item.acp));
+            }
+        });
+        if (copies.length) {
+            egCirc.mark_discard(copies).then(function() {
+                // update grid items?
+            });
+        }
+    }
+
     $scope.abortTransit = function(items) {
         var transit_ids = [];
         angular.forEach(items, function(item) {

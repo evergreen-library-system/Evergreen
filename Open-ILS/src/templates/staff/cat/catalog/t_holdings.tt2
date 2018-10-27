@@ -62,6 +62,8 @@
 
     <eg-grid-action handler="selectedHoldingsDamaged" group="[% l('Mark') %]"
       label="[% l('Item as Damaged') %]"></eg-grid-action>
+    <eg-grid-action handler="selectedHoldingsDiscard" group="[% l('Mark') %]"
+      label="[% l('Item as Discard/Weed') %]"></eg-grid-action>
     <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
       label="[% l('Item as Missing') %]"></eg-grid-action>
     <eg-grid-action handler="markFromSelectedAsHoldingsTarget" group="[% l('Mark') %]"

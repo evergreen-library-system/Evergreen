@@ -182,6 +182,19 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
         }
     }
 
+    $scope.showMarkDiscard = function(items) {
+        var copyies = [];
+        angular.forEach(items, function(item) {
+            if (item.acp) copies.push(egCore.idl.toHash(item.acp));
+        });
+
+        if (copies.length) {
+            egCirc.mark_discard(copies).then(function() {
+                // update grid items?
+            });
+        }
+    }
+
     $scope.showLastFewCircs = function(items) {
         if (items.length && (copy = items[0].acp)) {
             var url = $location.path(

@@ -48,6 +48,8 @@
     label="[% l('Transfer To Marked Title') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.mark_damaged_wide"
     label="[% l('Mark Item Damaged') %]"></eg-grid-action>
+  <eg-grid-action handler="grid_actions.mark_discard_wide"
+    label="[% l('Mark Item Discard/Weed') %]"></eg-grid-action>
   <eg-grid-action handler="grid_actions.mark_missing_wide"
     label="[% l('Mark Item Missing') %]"></eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>

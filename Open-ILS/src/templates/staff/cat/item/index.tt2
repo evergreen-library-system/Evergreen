@@ -101,6 +101,7 @@
 
         <p><b>[% l('Mark') %]</b></p>    
         <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>
+        <li><a href ng-click="selectedHoldingsDiscard()">[% l('Item as Discard/Weed') %]</a></li>
         <li><a href ng-click="selectedHoldingsMissing()">[% l('Item as Missing') %]</a></li>
     
         <p><b>[% l('Add') %]</b></p>    

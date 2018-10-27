@@ -644,8 +644,14 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
+    service.selectedHoldingsDiscard = function (items) {
+        egCirc.mark_discard(items.map(function(el){return {id : el.id, barcode : el.barcode};})).then(function(){
+            angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+        });
+    }
+
     service.selectedHoldingsMissing = function (items) {
-        egCirc.mark_missing(items.map(function(el){return el.id;})).then(function(){
+        egCirc.mark_missing(items.map(function(el){return {id : el.id, barcode : el.barcode};})).then(function(){
             angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
         });
     }

@@ -1671,8 +1671,22 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.selectedHoldingsDiscard = function () {
+        var copy_list = gatherSelectedRawCopies();
+        if (copy_list.length == 0) return;
+        egCirc.mark_discard(copy_list.map(function(cp) {
+            return {id: cp.id(), barcode: cp.barcode()};}).then(function() {
+            holdinsSvcInst.fetchAgain().then(function() {
+                $scop.holdingsGridDataProvider.refresh();
+            });
+        });
+    }
+
     $scope.selectedHoldingsMissing = function () {
-        egCirc.mark_missing(gatherSelectedHoldingsIds()).then(function() {
+        var copy_list = gatherSelectedRawCopies();
+        if (copy_list.length == 0) return;
+        egCirc.mark_missing(copy_list.map(function(cp) {
+            return {id: cp.id(), barcode: cp.barcode()};}).then(function() {
             holdingsSvcInst.fetchAgain().then(function() {
                 $scope.holdingsGridDataProvider.refresh();
             });

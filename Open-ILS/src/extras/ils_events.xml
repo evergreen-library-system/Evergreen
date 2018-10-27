@@ -1060,6 +1060,18 @@
     <event code='11010' textcode='SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY'>
         <desc xml:lang="en-US">The prediction pattern still has dependent objects</desc>
     </event>
+
+	<!-- ================================================================ -->
+
+    <event code='12000' textcode='ITEM_TO_MARK_CHECKED_OUT'>
+      <desc xml:lang="en-US">The item to be marked is checked out to a patron.</desc>
+    </event>
+    <event code='12001' textcode='ITEM_TO_MARK_IN_TRANSIT'>
+      <desc xml:lang="en-US">The item to be marked is in transit.</desc>
+    </event>
+    <event code='12002' textcode='ITEM_TO_MARK_LAST_HOLD_COPY'>
+      <desc xml:lang="en-US">The item to be marked is the last possible target for a hold.</desc>
+    </event>
 </ils_events>
 
 

@@ -1307,31 +1307,24 @@ sub mark_item {
     my( $self, $conn, $auth, $copy_id, $args ) = @_;
     $args ||= {};
 
-    # Items must be checked in before any attempt is made to mark damaged
-    my $evt = try_checkin($auth, $copy_id) if
-        ($self->api_name=~ /damaged/ && $args->{handle_checkin});
-    return $evt if $evt;
-
-    my $e = new_editor(authtoken=>$auth, xact =>1);
+    my $e = new_editor(authtoken=>$auth);
     return $e->die_event unless $e->checkauth;
     my $copy = $e->retrieve_asset_copy([
         $copy_id,
-        {flesh => 1, flesh_fields => {'acp' => ['call_number']}}])
+        {flesh => 1, flesh_fields => {'acp' => ['call_number','status']}}])
             or return $e->die_event;
 
-    my $owning_lib = 
+    my $owning_lib =
         ($copy->call_number->id == OILS_PRECAT_CALL_NUMBER) ? 
             $copy->circ_lib : $copy->call_number->owning_lib;
 
+    my $evt; # For later.
     my $perm = 'MARK_ITEM_MISSING';
     my $stat = OILS_COPY_STATUS_MISSING;
 
     if( $self->api_name =~ /damaged/ ) {
         $perm = 'MARK_ITEM_DAMAGED';
         $stat = OILS_COPY_STATUS_DAMAGED;
-        my $evt = handle_mark_damaged($e, $copy, $owning_lib, $args);
-        return $evt if $evt;
-
     } elsif ( $self->api_name =~ /bindery/ ) {
         $perm = 'MARK_ITEM_BINDERY';
         $stat = OILS_COPY_STATUS_BINDERY;
@@ -1355,19 +1348,72 @@ sub mark_item {
     # caller may proceed if either perm is allowed
     return $e->die_event unless $e->allowed([$perm, 'UPDATE_COPY'], $owning_lib);
 
+    # Copy status checks.
+    if ($copy->status->id() == OILS_COPY_STATUS_CHECKED_OUT) {
+        # Items must be checked in before any attempt is made to change its status.
+        if ($args->{handle_checkin}) {
+            $evt = try_checkin($auth, $copy_id);
+        } else {
+            $evt = OpenILS::Event->new('ITEM_TO_MARK_CHECKED_OUT');
+        }
+    } elsif ($copy->status->id() == OILS_COPY_STATUS_IN_TRANSIT) {
+        # Items in transit need to have the transit aborted before being marked.
+        if ($args->{handle_transit}) {
+            $evt = try_abort_transit($auth, $copy_id);
+        } else {
+            $evt = OpenILS::Event->new('ITEM_TO_MARK_IN_TRANSIT');
+        }
+    } elsif ($U->is_true($copy->status->restrict_copy_delete()) && $self->api_name =~ /discard/) {
+        # Items with restrict_copy_delete status require the
+        # COPY_DELETE_WARNING.override permission to be marked for
+        # discard.
+        if ($args->{handle_copy_delete_warning}) {
+            $evt = $e->event unless $e->allowed(['COPY_DELETE_WARNING.override'], $owning_lib);
+        } else {
+            $evt = OpenILS::Event->new('COPY_DELETE_WARNING');
+        }
+    }
+    return $evt if $evt;
+
+    # Retrieving holds for later use.
+    my $holds = $e->search_action_hold_request(
+        {
+            current_copy => $copy->id,
+            fulfillment_time => undef,
+            cancel_time => undef,
+        },
+        {flesh=>1, flesh_fields=>{ahr=>['eligible_copies']}}
+    );
+
+    # Throw event if attempting to  mark discard the only copy to fill a hold.
+    if ($self->api_name =~ /discard/) {
+        if (!$args->{handle_last_hold_copy}) {
+            for my $hold (@$holds) {
+                my $eligible = $hold->eligible_copies();
+                if (scalar(@{$eligible}) < 2) {
+                    $evt = OpenILS::Event->new('ITEM_TO_MARK_LAST_HOLD_COPY');
+                    last;
+                }
+            }
+        }
+    }
+    return $evt if $evt;
+
+    # Things below here require a transaction and there is nothing left to interfere with it.
+    $e->xact_begin;
+
+    # Handle extra mark damaged charges, etc.
+    if ($self->api_name =~ /damaged/) {
+        $evt = handle_mark_damaged($e, $copy, $owning_lib, $args);
+        return $evt if $evt;
+    }
+
+    # Mark the copy.
     $copy->status($stat);
     $copy->edit_date('now');
     $copy->editor($e->requestor->id);
 
     $e->update_asset_copy($copy) or return $e->die_event;
-
-    my $holds = $e->search_action_hold_request(
-        { 
-            current_copy => $copy->id,
-            fulfillment_time => undef,
-            cancel_time => undef,
-        }
-    );
 
     $e->commit;
 
@@ -1406,6 +1452,19 @@ sub try_checkin {
         $logger->warn('try_checkin() un-successful checkin');
         return $checkin;
     }
+}
+
+sub try_abort_transit {
+    my ($auth, $copy_id) = @_;
+
+    my $abort = $U->simplereq(
+        'open-ils.circ',
+        'open-ils.circ.transit.abort',
+        $auth, {copyid => $copy_id}
+    );
+    # Above returns 1 or an event.
+    return $abort if (ref $abort);
+    return undef;
 }
 
 sub handle_mark_damaged {

@@ -24,6 +24,10 @@
     label="[% l('Mark Items Damaged') %]">
   </eg-grid-action>
   <eg-grid-action
+    handler="showMarkDiscard"
+    label="[% l('Mark Items Discard/Weed') %]">
+  </eg-grid-action>
+  <eg-grid-action
     handler="show_mark_missing_pieces"
     label="[% l('Mark Missing Pieces') %]">
   </eg-grid-action>

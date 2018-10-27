@@ -61,6 +61,10 @@
     handler="showMarkDamaged"
     label="[% l('Mark Items Damaged') %]">
   </eg-grid-action>
+  <eg-grid-action
+    handler="showMarkDiscard"
+    label="[% l('Mark Items Discard/Weed') %]">
+  </eg-grid-action>
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action 
     handler="abortTransit"
