@@ -6,13 +6,33 @@ import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent, 
+    ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {VandelayService, VandelayImportSelection,
   VANDELAY_UPLOAD_PATH} from './vandelay.service';
 import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {Subject} from 'rxjs/Subject';
+import {ServerStoreService} from '@eg/core/server-store.service';
+
+const TEMPLATE_SETTING_NAME = 'eg.cat.vandelay.import.templates';
+
+const TEMPLATE_ATTRS = [
+    'recordType',
+    'selectedBibSource',
+    'selectedMatchSet',
+    'mergeOnExact',
+    'importNonMatch',
+    'mergeOnBestMatch',
+    'mergeOnSingleMatch',
+    'autoOverlayAcqCopies',
+    'selectedHoldingsProfile',
+    'selectedMergeProfile',
+    'selectedFallThruMergeProfile',
+    'selectedTrashGroups',
+    'minQualityRatio'
+];
 
 interface ImportOptions {
     session_key: string;
@@ -25,6 +45,7 @@ interface ImportOptions {
     merge_profile?: any;
     fall_through_merge_profile?: any;
     strip_field_groups?: number[];
+    match_quality_ratio: number,
     exit_early: boolean;
 }
 
@@ -77,6 +98,10 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     // Optional enqueue/import tracker session name.
     sessionName: string;
 
+    selectedTemplate: string;
+    formTemplates: {[name: string]: any};
+    newTemplateName: string;
+
     @ViewChild('fileSelector') private fileSelector;
     @ViewChild('uploadProgress') 
         private uploadProgress: ProgressInlineComponent;
@@ -85,6 +110,22 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('importProgress') 
         private importProgress: ProgressInlineComponent;
 
+    // Need these refs so values can be applied via external stimuli
+    @ViewChild('formTemplateSelector') 
+        private formTemplateSelector: ComboboxComponent;
+    @ViewChild('recordTypeSelector')
+        private recordTypeSelector: ComboboxComponent;
+    @ViewChild('bibSourceSelector')
+        private bibSourceSelector: ComboboxComponent;
+    @ViewChild('matchSetSelector')
+        private matchSetSelector: ComboboxComponent;
+    @ViewChild('holdingsProfileSelector')
+        private holdingsProfileSelector: ComboboxComponent;
+    @ViewChild('mergeProfileSelector')
+        private mergeProfileSelector: ComboboxComponent;
+    @ViewChild('fallThruMergeProfileSelector')
+        private fallThruMergeProfileSelector: ComboboxComponent;
+
     constructor(
         private http: HttpClient,
         private toast: ToastService,
@@ -92,6 +133,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         private net: NetService,
         private auth: AuthService,
         private org: OrgService,
+        private store: ServerStoreService,
         private vandelay: VandelayService
     ) {
         this.applyDefaults();
@@ -102,6 +144,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         this.selectedBibSource = 1; // default to system local
         this.recordType = 'bib';
         this.bibTrashGroups = [];
+        this.formTemplates = {};
 
         if (this.vandelay.importSelection) {
 
@@ -161,10 +204,34 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             this.vandelay.getBibTrashGroups().then(
                 groups => this.bibTrashGroups = groups),
             this.org.settings(['vandelay.default_match_set']).then(
-                s => this.defaultMatchSet = s['vandelay.default_match_set'])
+                s => this.defaultMatchSet = s['vandelay.default_match_set']),
+            this.loadTemplates()
         ];
 
         return Promise.all(promises);
+    }
+
+    loadTemplates() {
+        this.store.getItem(TEMPLATE_SETTING_NAME).then(
+            templates => {
+                this.formTemplates = templates || {};
+
+                Object.keys(this.formTemplates).forEach(name => {
+                    if (this.formTemplates[name].default) {
+                        this.selectedTemplate = name;
+                    }
+                });
+            }
+        );
+    }
+
+    formatTemplateEntries(): ComboboxEntry[] {
+        const entries = [];
+
+        Object.keys(this.formTemplates || {}).forEach(
+            name => entries.push({id: name, label: name}));
+
+        return entries;
     }
 
     // Format typeahead data sets
@@ -469,6 +536,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             merge_profile: this.selectedMergeProfile,
             fall_through_merge_profile: this.selectedFallThruMergeProfile,
             strip_field_groups: this.selectedTrashGroups,
+            match_quality_ratio: this.minQualityRatio,
             exit_early: true
         };
 
@@ -486,6 +554,68 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
     openQueue() {
         console.log('opening queue ' + this.activeQueueId);
+    }
+
+    saveTemplate() {
+
+        const template = {};
+        TEMPLATE_ATTRS.forEach(key => template[key] = this[key]);
+
+        console.debug("Saving import profile", template);
+
+        this.formTemplates[this.selectedTemplate] = template;
+        return this.store.setItem(TEMPLATE_SETTING_NAME, this.formTemplates);
+    }
+
+    markTemplateDefault() {
+        
+        Object.keys(this.formTemplates).forEach(
+            name => delete this.formTemplates.default
+        );
+
+        this.formTemplates[this.selectedTemplate].default = true;
+
+        return this.store.setItem(TEMPLATE_SETTING_NAME, this.formTemplates);
+    }
+
+    templateSelectorChange(entry: ComboboxEntry) {
+
+        if (!entry) {
+            this.selectedTemplate = '';
+            return;
+        }
+
+        this.selectedTemplate = entry.label; // label == name
+
+        if (entry.freetext) {
+            // User is entering a new template name.
+            // Nothing to apply.
+            return;
+        }
+
+        // User selected an existing template, apply it to the form.
+
+        const template = this.formTemplates[entry.id];
+
+        // Copy the template values into "this"
+        TEMPLATE_ATTRS.forEach(key => this[key] = template[key]);
+
+        // Some values must be manually passed to the combobox'es
+
+        this.recordTypeSelector.applyEntryId(this.recordType);
+        this.bibSourceSelector.applyEntryId(this.selectedBibSource);
+        this.matchSetSelector.applyEntryId(this.selectedMatchSet);
+        this.holdingsProfileSelector
+            .applyEntryId(this.selectedHoldingsProfile);
+        this.mergeProfileSelector.applyEntryId(this.selectedMergeProfile);
+        this.fallThruMergeProfileSelector
+            .applyEntryId(this.selectedFallThruMergeProfile);
+    }
+
+    deleteTemplate() {
+        delete this.formTemplates[this.selectedTemplate];
+        this.formTemplateSelector.selected = null;
+        return this.store.setItem(TEMPLATE_SETTING_NAME, this.formTemplates);
     }
 }
 

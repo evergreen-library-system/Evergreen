@@ -132,6 +132,12 @@ export class ComboboxComponent implements OnInit {
         this.applySelection();
     }
 
+    // Manually set the selected value by ID.
+    // This does NOT fire the onChange handler.
+    applyEntryId(entryId: any) {
+        this.selected = this.entrylist.filter(e => e.id === entryId)[0];
+    }
+
     onBlur() {
         // When the selected value is a string it means we have either
         // no value (user cleared the input) or a free-text value.

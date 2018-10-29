@@ -6,6 +6,13 @@ Angular(6) instead of Dojo.  The functionality is consistent with the
 previous version of the interface, with minor UI adjustments to match
 the Angular style, plus one new interface called 'Recent Imports'
 
+Import Templates
+++++++++++++++++
+
+Users may now saves sets of import attributes from the MARC import form as 
+named templates.  Users may select a default template, applied on page load 
+by default, and users may delete existing templates.
+
 Recent Imports Tab
 ++++++++++++++++++
 

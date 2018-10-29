@@ -12,12 +12,39 @@
 <div class="common-form striped-odd form-validated ml-3 mr-3">
   <div class="row">
     <div class="col-lg-3">
+      <label i18n>Apply/Create Form Template</label>
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox #formTemplateSelector
+        (onChange)="templateSelectorChange($event)"
+        [allowFreeText]="true"
+        [startId]="selectedTemplate"
+        [startIdFiresOnChange]="true"
+        [entries]="formatTemplateEntries()"
+        placeholder="Apply or Create Form Template..." i18n-placeholder>
+      </eg-combobox>
+    </div>
+    <div class="col-lg-6">
+      <button class="btn btn-success"
+        [disabled]="!selectedTemplate"
+        (click)="saveTemplate()" i18n>Save As New Template</button>
+      <button class="btn btn-outline-primary ml-3"
+        [disabled]="!selectedTemplate"
+        (click)="markTemplateDefault()" i18n>Mark Template as Default</button>
+      <button class="btn btn-danger ml-3"
+        [disabled]="!selectedTemplate"
+        (click)="deleteTemplate()" i18n>Delete Template</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-3">
       <label i18n>Record Type</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox (onChange)="selectEntry($event, 'recordType')"
-        [disabled]="importSelection()"
-        [required]="true"
+      <eg-combobox #recordTypeSelector
+        (onChange)="selectEntry($event, 'recordType')"
+        [disabled]="importSelection()" [required]="true"
         [startId]="recordType" placeholder="Record Type..." i18n-placeholder>
         <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records" 
           i18n-entryLabel></eg-combobox-entry>
@@ -31,7 +58,8 @@
       <label i18n>Select a Record Source</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('bibSources')" 
+      <eg-combobox #bibSourceSelector
+        [entries]="formatEntries('bibSources')" 
         (onChange)="selectEntry($event, 'bibSources')"
         [startId]="selectedBibSource"
         placeholder="Record Source..." i18n-placeholder>
@@ -68,7 +96,8 @@
       <label i18n>Record Match Set</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('matchSets')" 
+      <eg-combobox #matchSetSelector
+        [entries]="formatEntries('matchSets')" 
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         [startId]="selectedMatchSet || defaultMatchSet"
         (onChange)="selectEntry($event, 'matchSets')"
@@ -85,7 +114,8 @@
       <label i18n>Holdings Import Profile</label>
     </div>
     <div class="col-lg-3"> <!-- TODO disable for authority -->
-      <eg-combobox [entries]="formatEntries('importItemDefs')"
+      <eg-combobox #holdingsProfileSelector
+        [entries]="formatEntries('importItemDefs')"
         [startId]="selectedHoldingsProfile"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         (onChange)="selectEntry($event, 'importItemDefs')"
@@ -103,7 +133,8 @@
       <label i18n>Merge Profile</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('mergeProfiles')"
+      <eg-combobox #mergeProfileSelector
+        [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'mergeProfiles')"
         placeholder="Merge Profile..." i18n-placeholder>
       </eg-combobox>
@@ -118,7 +149,8 @@
     <div class="col-lg-3">
       <label i18n>Insufficient Quality Fall-Through Profile</label></div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('mergeProfiles')"
+      <eg-combobox #fallThruMergeProfileSelector
+        [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'FallThruMergeProfile')"
         placeholder="Fall-Through Merge Profile..." i18n-placeholder>
       </eg-combobox>
