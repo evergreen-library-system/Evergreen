@@ -4,19 +4,19 @@
 
     <div class="row">
       <div class="col-md-4">[% l('Total Owed:') %]</div>
-      <div class="col-md-2 strong-text">{{summary.balance_owed() | currency}}</div>
+      <div class="col-md-2 strong-text">{{(summary.balance_owed() || 0) | currency}}</div>
       <div class="col-md-4">[% l('Refunds Available:') %]</div>
       <div class="col-md-2">{{refunds_available() | currency}}</div>
     </div>
     <div class="row">
       <div class="col-md-4">[% l('Total Billed:') %]</div>
-      <div class="col-md-2">{{summary.total_owed() | currency}}</div>
+      <div class="col-md-2">{{(summary.total_owed() || 0) | currency}}</div>
       <div class="col-md-4">[% l('Credit Available:') %]</div>
       <div class="col-md-2">{{patron().credit_forward_balance() | currency}}</div>
     </div>
     <div class="row">
       <div class="col-md-4">[% l('Total Paid/Credited:') %]</div>
-      <div class="col-md-2">{{summary.total_paid() | currency}}</div>
+      <div class="col-md-2">{{(summary.total_paid() || 0) | currency}}</div>
       <div class="col-md-4">[% l('Session Voided:') %]</div>
       <div class="col-md-2">{{session_voided | currency}}</div>
     </div>
