@@ -761,7 +761,7 @@ we now use the terms 'item buckets', 'item tags', and 'item alerts'.
   * The term 'volume' is no longer used in the client, with the exception of
 serials, where the term is used to describe serial volumes. The term 'call
 number' will replace volume in most other places.
-  *'Holdings' is a more general term used to describe a combination of items
+  * 'Holdings' is a more general term used to describe a combination of items
 and call numbers.
   * The term 'Shelving Location' is used consistently in favor of 'Copy
 Location.'
