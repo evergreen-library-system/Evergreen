@@ -205,7 +205,7 @@ sub load_mylist_print {
     }
 
     my $url = sprintf(
-        "%s://%s%s/record/print/%s",
+        "%s://%s%s/record/print_preview/%s",
         $self->ctx->{proto},
         $self->ctx->{hostname},
         $self->ctx->{opac_root},
@@ -215,8 +215,12 @@ sub load_mylist_print {
     my $redirect = $self->cgi->param('redirect_to');
     $url .= '?redirect_to=' . uri_escape_utf8($redirect);
     my $clear_cart = $self->cgi->param('clear_cart');
-    $url .= '&is_list=1';
     $url .= '&clear_cart=1' if $clear_cart;
+    my $sort = $self->cgi->param('sort') || $self->cgi->param('anonsort');
+    my $sort_dir = $self->cgi->param('sort_dir');
+    $url .= '&sort='.$sort if $sort;
+    $url .= '&sort_dir='.$sort_dir if $sort_dir;
+    $url .= '&is_list=1';
 
     return $self->generic_redirect($url);
 }
@@ -231,7 +235,7 @@ sub load_mylist_email {
     }
 
     my $url = sprintf(
-        "%s://%s%s/record/email/%s",
+        "%s://%s%s/record/email_preview/%s",
         $self->ctx->{proto},
         $self->ctx->{hostname},
         $self->ctx->{opac_root},
@@ -241,8 +245,12 @@ sub load_mylist_email {
     my $redirect = $self->cgi->param('redirect_to');
     $url .= '?redirect_to=' . uri_escape_utf8($redirect);
     my $clear_cart = $self->cgi->param('clear_cart');
-    $url .= '&is_list=1';
     $url .= '&clear_cart=1' if $clear_cart;
+    my $sort = $self->cgi->param('sort') || $self->cgi->param('anonsort');
+    my $sort_dir = $self->cgi->param('sort_dir');
+    $url .= '&sort='.$sort if $sort;
+    $url .= '&sort_dir='.$sort_dir if $sort_dir;
+    $url .= '&is_list=1';
 
     return $self->generic_redirect($url);
 }
@@ -279,10 +287,16 @@ sub load_mylist_move {
         return $self->load_myopac_bookbag_update('place_hold', undef, @rec_ids);
     }
     if ($action eq 'print') {
+        if ($self->cgi->param('entire_list')) {
+            @rec_ids = @$list;
+        }
         my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@rec_ids);
         return $self->load_mylist_print($temp_cache_key);
     }
     if ($action eq 'email') {
+        if ($self->cgi->param('entire_list')) {
+            @rec_ids = @$list;
+        }
         my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@rec_ids);
         return $self->load_mylist_email($temp_cache_key);
     }

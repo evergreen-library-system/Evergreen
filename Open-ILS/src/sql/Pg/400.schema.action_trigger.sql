@@ -291,6 +291,33 @@ CREATE TABLE action_trigger.event_params (
     CONSTRAINT event_params_event_def_param_once UNIQUE (event_def,param)
 );
 
+CREATE TABLE action_trigger.event_def_group (
+    id      SERIAL  PRIMARY KEY,
+    owner   INT     NOT NULL REFERENCES actor.org_unit (id)
+                        ON DELETE RESTRICT ON UPDATE CASCADE
+                        DEFERRABLE INITIALLY DEFERRED,
+    hook    TEXT    NOT NULL REFERENCES action_trigger.hook (key)
+                        ON DELETE RESTRICT ON UPDATE CASCADE
+                        DEFERRABLE INITIALLY DEFERRED,
+    active  BOOL    NOT NULL DEFAULT TRUE,
+    name    TEXT    NOT NULL
+);
+SELECT SETVAL('action_trigger.event_def_group_id_seq'::TEXT, 100, TRUE);
+
+CREATE TABLE action_trigger.event_def_group_member (
+    id          SERIAL  PRIMARY KEY,
+    grp         INT     NOT NULL REFERENCES action_trigger.event_def_group (id)
+                            ON DELETE CASCADE ON UPDATE CASCADE
+                            DEFERRABLE INITIALLY DEFERRED,
+    event_def   INT     NOT NULL REFERENCES action_trigger.event_definition (id)
+                            ON DELETE RESTRICT ON UPDATE CASCADE
+                            DEFERRABLE INITIALLY DEFERRED,
+    sortable    BOOL    NOT NULL DEFAULT TRUE,
+    holdings    BOOL    NOT NULL DEFAULT FALSE,
+    external    BOOL    NOT NULL DEFAULT FALSE,
+    name        TEXT    NOT NULL
+);
+
 CREATE OR REPLACE FUNCTION action_trigger.purge_events() RETURNS VOID AS $_$
 /**
   * Deleting expired events without simultaneously deleting their outputs

@@ -2907,10 +2907,42 @@ sub load_myopac_bookbag_update {
         return $self->generic_redirect($url);
 
     } elsif ($action eq 'print') {
-        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@selected_item);
+        my ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('sort');
+        $sort_dir = $self->cgi->param('sort_dir') if $self->cgi->param('sort_dir');
+        if (!$incoming_sort) {
+            ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('anonsort');
+        }
+        if (!$incoming_sort) {
+            $incoming_sort = 'author';
+        }
+
+        $incoming_sort =~ s/sort.*$//;
+
+        $self->ctx->{sort} = $incoming_sort;
+        $self->ctx->{sort_dir} = $sort_dir;
+
+        my $items = $self->editor->search_container_biblio_record_entry_bucket_item({id=>\@selected_item});
+        my @bib_ids = map { $_->target_biblio_record_entry } @$items;
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@bib_ids);
         return $self->load_mylist_print($temp_cache_key);
     } elsif ($action eq 'email') {
-        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@selected_item);
+        my ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('sort');
+        $sort_dir = $self->cgi->param('sort_dir') if $self->cgi->param('sort_dir');
+        if (!$incoming_sort) {
+            ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('anonsort');
+        }
+        if (!$incoming_sort) {
+            $incoming_sort = 'author';
+        }
+
+        $incoming_sort =~ s/sort.*$//;
+
+        $self->ctx->{sort} = $incoming_sort;
+        $self->ctx->{sort_dir} = $sort_dir;
+
+        my $items = $self->editor->search_container_biblio_record_entry_bucket_item({id=>\@selected_item});
+        my @bib_ids = map { $_->target_biblio_record_entry } @$items;
+        my $temp_cache_key = $self->_stash_record_list_in_anon_cache(@bib_ids);
         return $self->load_mylist_email($temp_cache_key);
     } else {
 

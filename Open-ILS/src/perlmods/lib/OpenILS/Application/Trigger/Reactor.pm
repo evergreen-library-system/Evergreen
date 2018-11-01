@@ -418,13 +418,106 @@ $_TT_helpers = {
                 $unapi_args->{flesh}, 
                 $unapi_args->{site}, 
                 $unapi_args->{depth}, 
-                $unapi_args->{flesh_depth}, 
+                $unapi_args->{flesh_limit}, 
             ]
         };
 
         my $unapi = new_editor()->json_query($query);
         return undef unless @$unapi;
         return $_TT_helpers->{xml_doc}->($unapi->[0]->{'unapi.bre'});
+    },
+
+    # input: list of bib bucket items; output: sorted list of unapi_bre objects
+    sort_bucket_unapi_bre => sub {
+        my ($list, $unapi_args, $sortby, $sortdir) = @_;
+        #$logger->info("sort_bucket_unapi_bre unapi_bre params: " . join(', ', map { "$_: $$unapi_args{$_}" } keys(%$unapi_args)));
+        my @sorted_list;
+        for my $i (@$list) {
+            my $xml = $_TT_helpers->{unapi_bre}->($i->target_biblio_record_entry, $unapi_args);
+            if ($xml) {
+                my $bib = { xml => $xml, id => $i->target_biblio_record_entry };
+
+                $$bib{title} = '';
+                for my $part ($xml->findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]')) {
+                    $$bib{title} = $$bib{title} . $part->textContent;
+                }
+                $$bib{titlesort} = lc(substr($$bib{title}, $xml->findnodes('//*[@tag="245"]')->get_node(1)->getAttribute('ind2')))
+                    if ($$bib{title});
+
+                $$bib{authorsort} = $$bib{author} = $xml->findnodes('//*[@tag="100"]/*[@code="a"]')->to_literal_delimited(' ');
+                $$bib{authorsort} = lc($$bib{authorsort});
+                $$bib{item_type} = $xml->findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]')->get_node(1)->getAttribute('coded-value');
+                my $p = $xml->findnodes('//*[@tag="260" or @tag="264"]/*[@code="b"]')->get_node(1);
+                $$bib{publisher} = $p ? $p->textContent : '';
+                $$bib{pubdatesort} = $$bib{pubdate} = $xml->findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="date1"]')->get_node(1)->textContent;
+                $$bib{pubdatesort} = lc($$bib{pubdatesort});
+                $$bib{isbn} = $xml->findnodes('//*[@tag="020"]/*[@code="a"]')->to_literal_delimited(', ');
+                $$bib{issn} = $xml->findnodes('//*[@tag="022"]/*[@code="a"]')->to_literal_delimited(', ');
+                $$bib{upc} = $xml->findnodes('//*[@tag="024"]/*[@code="a"]')->to_literal_delimited(', ');
+
+                $$bib{holdings} = [];
+
+                for my $vol ($xml->findnodes('//*[local-name()="volume" and @deleted="false" and @opac_visible="true"]')) {
+                    my $vol_data = {};
+                    $$vol_data{prefix_sort} = $vol->findnodes('.//*[local-name()="call_number_prefix"]')->get_node(1)->getAttribute('label_sortkey');
+                    $$vol_data{prefix} = $vol->findnodes('.//*[local-name()="call_number_prefix"]')->get_node(1)->getAttribute('label');
+                    $$vol_data{callnumber} = $vol->getAttribute('label');
+                    $$vol_data{callnumber_sort} = $vol->getAttribute('label_sortkey');
+                    $$vol_data{suffix_sort} = $vol->findnodes('.//*[local-name()="call_number_suffix"]')->get_node(1)->getAttribute('label_sortkey');
+                    $$vol_data{suffix} = $vol->findnodes('.//*[local-name()="call_number_suffix"]')->get_node(1)->getAttribute('label');
+                    #$logger->info("sort_bucket_unapi_bre found volume: " . join(', ', map { "$_: $$vol_data{$_}" } keys(%$vol_data)));
+
+                    my @copies;
+                    for my $cp ($vol->findnodes('.//*[local-name()="copy" and @deleted="false"]')) {
+                        my $cp_data = {%$vol_data};
+                        my $l = $cp->findnodes('.//*[local-name()="location" and @opac_visible="true"]')->get_node(1);
+                        next unless ($l);
+                        $$cp_data{location} = $l->textContent;
+
+                        my $s = $cp->findnodes('.//*[local-name()="status" and @opac_visible="true"]')->get_node(1);
+                        next unless ($s);
+                        $$cp_data{status_label} = $s->textContent;
+                        $$cp_data{status_id} = $s->getAttribute('ident');
+
+                        my $c = $cp->findnodes('.//*[local-name()="circ_lib" and @opac_visible="true"]')->get_node(1);
+                        next unless ($c);
+                        $$cp_data{circ_lib} = $c->getAttribute('name');
+
+                        $$cp_data{barcode} = $cp->getAttribute('barcode');
+
+                        $$cp_data{parts} = '';
+                        for my $mp ($cp->findnodes('.//*[local-name()="monograph_part"]')) {
+                            $$cp_data{parts} .= ', ' if $$cp_data{parts};
+                            $$cp_data{parts} .= $mp->textContent;
+                        }
+                        push @copies, $cp_data;
+                        #$logger->info("sort_bucket_unapi_bre found copy: " . join(', ', map { "$_: $$cp_data{$_}" } keys(%$cp_data)));
+                    }
+                    if (@copies) {
+                        push @{$$bib{holdings}}, @copies;
+                    }
+                }
+
+                # sort 'em!
+                $$bib{holdings} = [ sort {
+                    $$a{circ_lib}     cmp $$b{circ_lib} ||
+                    $$a{location}     cmp $$b{location} ||
+                    $$a{prefix_sort}  cmp $$b{prefix_sort} ||
+                    $$a{callnumber_sort}   cmp $$b{callnumber_sort} ||
+                    $$a{suffix_sort}  cmp $$b{suffix_sort} ||
+                    ($$a{status_id} == 0 ? -1 : 0) ||
+                    ($$a{status_id} == 7 ? -1 : 0) ||
+                    $$a{status_label} cmp $$b{status_label};
+                } @{$$bib{holdings}} ];
+
+                push @sorted_list, $bib;
+            }
+        }
+
+        if ($sortdir =~ /^d/) {
+            return [ sort { $$b{$sortby.'sort'} cmp $$a{$sortby.'sort'} } @sorted_list ];
+        }
+        return [ sort { $$a{$sortby.'sort'} cmp $$b{$sortby.'sort'} } @sorted_list ];
     },
 
     # escapes quotes in csv string values

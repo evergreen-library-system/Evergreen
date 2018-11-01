@@ -507,13 +507,30 @@ sub get_hold_copy_summary {
     $search->kill_me;
 }
 
-sub load_print_record {
+sub load_print_or_email_preview {
     my $self = shift;
+    my $type = shift;
+    my $captcha_pass = shift;
 
-    my $rec_or_list_id = $self->ctx->{page_args}->[0]
+    my $ctx = $self->ctx;
+    my $e = new_editor(xact => 1);
+    my $old_event = $self->cgi->param('old_event');
+    if ($old_event) {
+        $old_event = $e->retrieve_action_trigger_event([
+            $old_event,
+            {flesh => 1, flesh_fields => { atev => ['template_output'] }}
+        ]);
+        $e->delete_action_trigger_event($old_event) if ($old_event);
+        $e->delete_action_trigger_event_output($old_event->template_output) if ($old_event && $old_event->template_output);
+        $e->commit;
+    }
+
+    my $rec_or_list_id = $ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
-    my $is_list = $self->cgi->param('is_list');
+    $ctx->{bre_id} = $rec_or_list_id;
+
+    my $is_list = $ctx->{is_list} = $self->cgi->param('is_list');
     my $list;
     if ($is_list) {
 
@@ -533,12 +550,88 @@ sub load_print_record {
         };
     } else {
         $list = $rec_or_list_id;
-        $self->{ctx}->{bre_id} = $rec_or_list_id;
+        $ctx->{bre_id} = $rec_or_list_id;
     }
 
-    $self->{ctx}->{printable_record} = $U->simplereq(
-        'open-ils.search',
-        'open-ils.search.biblio.record.print', $list);
+    $ctx->{sortable} = (ref($list) && @$list > 1);
+
+    my $group = $type eq 'print' ? 1 : 2;
+
+    $ctx->{formats} = $self->editor->search_action_trigger_event_def_group_member([{grp => $group},{order_by => { atevdefgm => 'name'}}]);
+    $ctx->{format} = $self->cgi->param('format') || $ctx->{formats}[0]->id;
+    if ($type eq 'email') {
+        $ctx->{email} = $self->cgi->param('email') || ($ctx->{user} ? $ctx->{user}->email : '');
+        $ctx->{subject} = $self->cgi->param('subject');
+    }
+
+    my $context_org = $self->cgi->param('context_org');
+    if ($context_org) {
+        $context_org = $self->ctx->{get_aou}->($context_org);
+    }
+
+    if (!$context_org) {
+        $context_org = $self->ctx->{get_aou}->($self->_get_search_lib()) ||
+            $self->ctx->{aou_tree}->();
+    }
+
+    $ctx->{context_org} = $context_org->id;
+
+    my ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('sort');
+    $sort_dir = $self->cgi->param('sort_dir') if $self->cgi->param('sort_dir');
+    if (!$incoming_sort) {
+        ($incoming_sort,$sort_dir) = $self->_get_bookbag_sort_params('anonsort');
+    }
+    if (!$incoming_sort) {
+        $incoming_sort = 'author';
+    }
+
+    $incoming_sort =~ s/sort.*$//;
+
+    $incoming_sort = 'author'
+        unless (grep {$_ eq $incoming_sort} qw/title author pubdate/);
+
+    $ctx->{sort} = $incoming_sort;
+    $ctx->{sort_dir} = $sort_dir;
+
+    my $method = "open-ils.search.biblio.record.$type.preview";
+    my @args = (
+        $list,
+        $ctx->{context_org},
+        $ctx->{sort},
+        $ctx->{sort_dir},
+        $ctx->{format},
+        $captcha_pass,
+        $ctx->{email},
+        $ctx->{subject}
+    );
+
+    unshift(@args, $ctx->{authtoken}) if ($type eq 'email');
+
+    $ctx->{preview_record} = $U->simplereq(
+        'open-ils.search', $method, @args);
+
+    $ctx->{'redirect_to'} = $self->cgi->param('redirect_to') || $self->cgi->referer;
+
+    return Apache2::Const::OK;
+}
+
+sub load_print_record {
+    my $self = shift;
+
+    my $event_id = $self->ctx->{page_args}->[0]
+        or return Apache2::Const::HTTP_BAD_REQUEST;
+
+    my $event = $self->editor->retrieve_action_trigger_event([
+        $event_id,
+        {flesh => 1, flesh_fields => { atev => ['template_output'] }}
+    ]);
+
+    return Apache2::Const::HTTP_BAD_REQUEST
+        unless ($event and $event->template_output and $event->template_output->data);
+
+    $self->ctx->{bre_id} = $self->cgi->param('bre_id');
+    $self->ctx->{is_list} = $self->cgi->param('is_list');
+    $self->ctx->{print_data} = $event->template_output->data;
 
     if ($self->cgi->param('clear_cart')) {
         $self->clear_anon_cache;
@@ -550,37 +643,40 @@ sub load_print_record {
 
 sub load_email_record {
     my $self = shift;
+    my $captcha_pass = shift;
 
-    my $rec_or_list_id = $self->ctx->{page_args}->[0]
+    my $event_id = $self->ctx->{page_args}->[0]
         or return Apache2::Const::HTTP_BAD_REQUEST;
 
-    my $is_list = $self->cgi->param('is_list');
-    my $list;
-    if ($is_list) {
+    my $e = new_editor(xact => 1, authtoken => $self->ctx->{authtoken});
+    return Apache2::Const::HTTP_BAD_REQUEST
+        unless $captcha_pass || $e->checkauth;
 
-        $list = $U->simplereq(
-            'open-ils.actor',
-            'open-ils.actor.anon_cache.get_value',
-            $rec_or_list_id, (ref $self)->CART_CACHE_MYLIST);
+    my $event = $e->retrieve_action_trigger_event([
+        $event_id,
+        {flesh => 1, flesh_fields => { atev => ['template_output'] }}
+    ]);
 
-        if(!$list) {
-            $list = [];
-        }
+    return Apache2::Const::HTTP_BAD_REQUEST
+        unless ($event and $event->template_output and $event->template_output->data);
 
-        {   # sanitize
-            no warnings qw/numeric/;
-            $list = [map { int $_ } @$list];
-            $list = [grep { $_ > 0} @$list];
-        };
-    } else {
-        $list = $rec_or_list_id;
-        $self->{ctx}->{bre_id} = $rec_or_list_id;
-    }
+    $self->ctx->{email} = $self->cgi->param('email');
+    $self->ctx->{subject} = $self->cgi->param('subject');
+    $self->ctx->{bre_id} = $self->cgi->param('bre_id');
+    $self->ctx->{is_list} = $self->cgi->param('is_list');
+    $self->ctx->{print_data} = $event->template_output->data;
 
     $U->simplereq(
         'open-ils.search',
-        'open-ils.search.biblio.record.email', 
-        $self->ctx->{authtoken}, $list);
+        'open-ils.search.biblio.record.email.send_output',
+        $self->ctx->{authtoken}, $event_id,
+        $self->ctx->{cap}->{key}, $self->ctx->{cap_answer});
+
+    # Move the output to async so it can't be used in a resend attack
+    $event->async_output($event->template_output->id);
+    $event->clear_template_output;
+    $e->update_action_trigger_event($event);
+    $e->commit;
 
     if ($self->cgi->param('clear_cart')) {
         $self->clear_anon_cache;

@@ -1476,6 +1476,62 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		</permacrud>
 	</class>
 
+	<class id="atevdefg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_def_group" oils_persist:tablename="action_trigger.event_def_group" reporter:label="Trigger Event Definition Group" oils_persist:restrict_primary="100">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_def_group_id_seq">
+			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Enabled" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Owning Library" name="owner"  reporter:datatype="org_unit"/>
+			<field reporter:label="Hook" name="hook"  reporter:datatype="link"/>
+			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
+			<field reporter:label="Members" name="members" oils_persist:virtual="true" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="hook" reltype="has_a" key="key" map="" class="ath"/>
+			<link field="members" reltype="has_many" key="grp" map="" class="atevdefgm"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF VIEW_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF" context_field="owner"/>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="atevdefgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action_trigger::event_def_group_member" oils_persist:tablename="action_trigger.event_def_group_member" reporter:label="Trigger Event Definition Group Member">
+		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_def_group_member_id_seq">
+			<field reporter:label="Definition ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Name" name="name"  reporter:datatype="text"/>
+			<field reporter:label="Group" name="grp"  reporter:datatype="link"/>
+			<field reporter:label="Definition" name="event_def"  reporter:datatype="link"/>
+			<field reporter:label="Sortable" name="sortable" reporter:datatype="bool"/>
+			<field reporter:label="Include Holdings" name="holdings" reporter:datatype="bool"/>
+			<field reporter:label="Externally Processed" name="external" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="grp" reltype="has_a" key="id" map="" class="atevdefg"/>
+			<link field="event_def" reltype="has_a" key="id" map="" class="atevdef"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_TRIGGER_EVENT_DEF CREATE_TRIGGER_EVENT_DEF">
+                    <context link="grp" field="owner"/>
+                </create>
+				<retrieve permission="ADMIN_TRIGGER_EVENT_DEF VIEW_TRIGGER_EVENT_DEF">
+                    <context link="grp" field="owner"/>
+                </retrieve>
+				<update permission="ADMIN_TRIGGER_EVENT_DEF UPDATE_TRIGGER_EVENT_DEF">
+                    <context link="grp" field="owner"/>
+                </update>
+				<delete permission="ADMIN_TRIGGER_EVENT_DEF DELETE_TRIGGER_EVENT_DEF">
+                    <context link="grp" field="owner"/>
+                </delete>
+			</actions>
+		</permacrud>
+	</class>
+
 	<class id="atev" controller="open-ils.cstore" oils_obj:fieldmapper="action_trigger::event" oils_persist:tablename="action_trigger.event" reporter:label="Trigger Event Entry">
 		<fields oils_persist:primary="id" oils_persist:sequence="action_trigger.event_id_seq">
 			<field reporter:label="Event ID" name="id" reporter:datatype="id"/>

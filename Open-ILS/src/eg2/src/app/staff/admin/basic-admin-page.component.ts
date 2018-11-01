@@ -56,10 +56,10 @@ export class BasicAdminPageComponent implements OnInit {
         // the prefix because that will cause it to double-up.
         // e.g. eg.grid.acq.acq.cancel_reason
         this.persistKeyPfx = this.route.snapshot.parent.url[0].path;
-        const selfPrefixers = ['acq', 'booking'];
+        const selfPrefixers = ['acq', 'action_trigger', 'booking'];
         if (selfPrefixers.indexOf(this.persistKeyPfx) > -1) {
-            // ACQ is a special case, because unlike 'server', 'local',
-            // 'workstation', the schema ('acq') is the root of the path.
+            // selfPrefixers, unlike 'server', 'local', and
+            // 'workstation', are the root of the path.
             this.persistKeyPfx = '';
         } else {
             this.configLinkBasePath += '/' + this.persistKeyPfx;

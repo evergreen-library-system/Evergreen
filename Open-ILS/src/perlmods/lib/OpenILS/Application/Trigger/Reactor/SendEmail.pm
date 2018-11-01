@@ -49,6 +49,10 @@ sub handler {
 
     my $text = encode_utf8($self->run_TT($env));
     return 0 if (!$text);
+    if ($$env{user_data} && ref($$env{user_data}) =~ /HASH/ && $$env{user_data}{preview}) {
+        $logger->info("SendEmail Reactor: success in preview mode, not sending email");
+        return 1;
+    }
 
     my $sender = Email::Send->new({mailer => 'SMTP'});
     $sender->mailer_args([Host => $smtp]);

@@ -139,8 +139,8 @@
             </div>
                 <div class="rdetail_aux_utils">
                     <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="[% l('Print / Email Actions Image') %]" />
-                    <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Print') %]</a> /
-                    <a href="[% mkurl(ctx.opac_root _ '/record/email/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Email') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/record/print_preview/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Print') %]</a> /
+                    <a href="[% mkurl(ctx.opac_root _ '/record/email_preview/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Email') %]</a>
                 </div>
                 [%- IF ctx.refworks.enabled == 'true' %]
                     [%- INCLUDE 'opac/parts/record/refworks.tt2' %]

@@ -10,6 +10,8 @@ use OpenSRF::Utils::SettingsClient;
 use OpenILS::Utils::CStoreEditor q/:funcs/;
 use OpenSRF::Utils::Cache;
 use Encode;
+use Email::Send;
+use Email::Simple;
 
 use OpenSRF::Utils::Logger qw/:logger/;
 
@@ -1833,12 +1835,77 @@ sub biblio_record_to_marc_html {
 }
 
 __PACKAGE__->register_method(
+    method    => "send_event_email_output",
+    api_name  => "open-ils.search.biblio.record.email.send_output",
+);
+sub send_event_email_output {
+    my($self, $client, $auth, $event_id, $capkey, $capanswer) = @_;
+    return undef unless $event_id;
+
+    my $captcha_pass = 0;
+    my $real_answer;
+    if ($capkey) {
+        $real_answer = $cache->get_cache(md5_hex($capkey));
+        $captcha_pass++ if ($real_answer eq $capanswer);
+    }
+
+    my $e = new_editor(authtoken => $auth);
+    return $e->die_event unless $captcha_pass || $e->checkauth;
+
+    my $event = $e->retrieve_action_trigger_event([$event_id,{flesh => 1, flesh_fields => { atev => ['template_output']}}]);
+    return undef unless ($event and $event->template_output);
+
+    my $smtp = OpenSRF::Utils::SettingsClient
+        ->new
+        ->config_value('email_notify', 'smtp_server');
+
+    my $sender = Email::Send->new({mailer => 'SMTP'});
+    $sender->mailer_args([Host => $smtp]);
+
+    my $stat;
+    my $err;
+
+    my $email = Email::Simple->new($event->template_output->data);
+
+    for my $hfield (qw/From To Subject Bcc Cc Reply-To Sender/) {
+        my @headers = $email->header($hfield);
+        $email->header_set($hfield => map { encode("MIME-Header", $_) } @headers) if ($headers[0]);
+    }
+
+    $email->header_set('MIME-Version' => '1.0');
+    $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
+    $email->header_set('Content-Transfer-Encoding' => '8bit');
+
+    try {
+        $stat = $sender->send($email);
+    } catch Error with {
+        $err = $stat = shift;
+        $logger->error("resend_at_email: Email failed with error: $err");
+    };
+
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    method    => "format_biblio_record_entry",
+    api_name  => "open-ils.search.biblio.record.print.preview",
+);
+
+__PACKAGE__->register_method(
+    method    => "format_biblio_record_entry",
+    api_name  => "open-ils.search.biblio.record.email.preview",
+);
+
+__PACKAGE__->register_method(
     method    => "format_biblio_record_entry",
     api_name  => "open-ils.search.biblio.record.print",
     signature => {
         desc   => 'Returns a printable version of the specified bib record',
         params => [
             { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
+            { desc => 'Context library for holdings, if applicable' => 'number' },
+            { desc => 'Sort order, if applicable' => 'string' },
+            { desc => 'Definition Group Member id' => 'number' },
         ],
         return => {
             desc => q/An action_trigger.event object or error event./,
@@ -1854,6 +1921,13 @@ __PACKAGE__->register_method(
         params => [
             { desc => 'Authentication token',  type => 'string'},
             { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
+            { desc => 'Context library for holdings, if applicable' => 'number' },
+            { desc => 'Sort order, if applicable' => 'string' },
+            { desc => 'Sort direction, if applicable' => 'string' },
+            { desc => 'Definition Group Member id' => 'number' },
+            { desc => 'Whether to bypass auth due to captcha' => 'bool' },
+            { desc => 'Email address, if none for the user' => 'string' },
+            { desc => 'Subject, if customized' => 'string' },
         ],
         return => {
             desc => q/Undefined on success, otherwise an error event./,
@@ -1863,24 +1937,43 @@ __PACKAGE__->register_method(
 );
 
 sub format_biblio_record_entry {
-    my($self, $conn, $arg1, $arg2) = @_;
+    my($self, $conn, $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $captcha_pass, $email, $subject) = @_;
 
     my $for_print = ($self->api_name =~ /print/);
     my $for_email = ($self->api_name =~ /email/);
+    my $preview = ($self->api_name =~ /preview/);
 
-    my $e; my $auth; my $bib_id; my $context_org;
+    my $e; my $auth; my $bib_id; my $context_org; my $holdings_context; my $bib_sort; my $group_member; my $type = 'brief'; my $sort_dir;
 
     if ($for_print) {
         $bib_id = $arg1;
         $context_org = $arg2 || $U->get_org_tree->id;
+        $holdings_context = $context_org;
+        $bib_sort = $arg3 || 'author';
+        $sort_dir = $arg4 || 'ascending';
+        $group_member = $arg5;
         $e = new_editor(xact => 1);
     } elsif ($for_email) {
         $auth = $arg1;
         $bib_id = $arg2;
+        $bib_sort = $arg4 || 'author';
+        $sort_dir = $arg5 || 'ascending';
+        $group_member = $arg6;
         $e = new_editor(authtoken => $auth, xact => 1);
-        return $e->die_event unless $e->checkauth;
-        $context_org = $e->requestor->home_ou;
+        return $e->die_event unless $captcha_pass || $e->checkauth;
+        $holdings_context = $arg3 || $U->get_org_tree->id;
+        $context_org = $e->requestor ? $e->requestor->home_ou : $arg3;
+        $email ||= $e->requestor ? $e->requestor->email : '';
     }
+
+    if ($group_member) {
+        $group_member = $e->retrieve_action_trigger_event_def_group_member($group_member);
+        if ($group_member and $U->is_true($group_member->holdings)) {
+            $type = 'full';
+        }
+    }
+
+    $holdings_context = $e->retrieve_actor_org_unit($holdings_context);
 
     my $bib_ids;
     if (ref $bib_id ne 'ARRAY') {
@@ -1893,7 +1986,7 @@ sub format_biblio_record_entry {
     $bucket->btype('temp');
     $bucket->name('format_biblio_record_entry ' . $U->create_uuid_string);
     if ($for_email) {
-        $bucket->owner($e->requestor) 
+        $bucket->owner($e->requestor || 1) 
     } else {
         $bucket->owner(1);
     }
@@ -1911,13 +2004,26 @@ sub format_biblio_record_entry {
 
     $e->commit;
 
+    my $usr_data = {
+        type        => $type,
+        email       => $email,
+        subject     => $subject,
+        context_org => $holdings_context->shortname,
+        sort_by     => $bib_sort,
+        sort_dir    => $sort_dir,
+        preview     => $preview
+    };
+
     if ($for_print) {
 
-        return $U->fire_object_event(undef, 'biblio.format.record_entry.print', [ $bucket ], $context_org);
+        return $U->fire_object_event(undef, 'biblio.format.record_entry.print', [ $bucket ], $context_org, undef, [ $usr_data ]);
 
     } elsif ($for_email) {
 
-        $U->create_events_for_hook('biblio.format.record_entry.email', $bucket, $context_org, undef, undef, 1);
+        return $U->fire_object_event(undef, 'biblio.format.record_entry.email', [ $bucket ], $context_org, undef, [ $usr_data ])
+            if ($preview);
+
+        $U->create_events_for_hook('biblio.format.record_entry.email', $bucket, $context_org, undef, $usr_data, 1);
     }
 
     return undef;
