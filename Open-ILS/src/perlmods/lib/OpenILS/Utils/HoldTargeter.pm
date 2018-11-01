@@ -1181,6 +1181,8 @@ sub process_recalls {
 
     $self->log_hold("recalling circ ".$circ->id);
 
+    my $old_due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->iso8601();
+
     # Give the user a new due date of either a full recall threshold,
     # or the return interval, whichever is further in the future.
     my $threshold_date = DateTime::Format::ISO8601
@@ -1195,6 +1197,14 @@ sub process_recalls {
         DateTime::Format::ISO8601->parse_datetime($threshold_date),
         DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
         $return_date = $threshold_date;
+    }
+
+    # But if the new due date is later than the old one,
+    # keep the old one.
+    if (DateTime->compare(
+        DateTime::Format::ISO8601->parse_datetime($return_date),
+        DateTime::Format::ISO8601->parse_datetime($old_due_date)) == 1) { 
+        $return_date = $old_due_date;
     }
 
     my %update_fields = (
