@@ -118,6 +118,13 @@
                     <option name='msg64_hold_datatype' value='barcode' />
                     -->
 
+                    <!--
+                        When set, hold items details will return only available holds to the SIP client.
+                    -->
+                    <!--
+                    <option name='msg64_hold_items_available' value='true' />
+                    -->
+
 					<!--
 						If enabled, the PC field in patron-info requests will return the non-translated profile name
 					<option name='patron_type_uses_code' value='true' />
@@ -164,6 +171,4 @@
 	</institutions>
 </acsconfig>
 
-<!--
-    vim:noet:ts=4:sw=4:
--->
+<!-- vim:noet:ts=4:sw=4: -->

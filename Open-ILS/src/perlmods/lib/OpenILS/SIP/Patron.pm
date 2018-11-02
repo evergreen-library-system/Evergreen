@@ -520,13 +520,17 @@ sub hold_items {
     my ($self, $start, $end, $ids_only) = @_;
     syslog('LOG_DEBUG', 'OILS: Patron->hold_items()');
 
-
     # all of my open holds
-    my $holds = $self->{editor}->search_action_hold_request({
-        usr => $self->{user}->id, 
-        fulfillment_time => undef, 
-        cancel_time => undef 
-    });
+    my $holds_query = {
+        usr => $self->{user}->id,
+        fulfillment_time => undef,
+        cancel_time => undef
+    };
+    if (OpenILS::SIP->get_option_value('msg64_hold_items_available')) {
+        # Limit to available holds.
+        $holds_query->{current_shelf_lib} = {'=' => {'+ahr' => 'pickup_lib'}};
+    }
+    my $holds = $self->{editor}->search_action_hold_request($holds_query);
 
     return $holds if $ids_only;
     return $self->__format_holds($holds, $start, $end);
