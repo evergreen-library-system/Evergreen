@@ -60,4 +60,5 @@ Adding MARC Templates
 +
 . Add the template to the to the marctemplates list in the _open-ils.cat_ section of the Evergreen configuration
   file `opensrf.xml`.
-. Restart perl services for changes to take effect with the command `/openils/bin/osrf_ctl.sh -l -a restart_perl`
+. Restart perl services for changes to take effect with the command
+  `/openils/bin/osrf_control -l --restart --service=open-ils.cat`
