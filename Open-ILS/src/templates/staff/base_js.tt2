@@ -40,6 +40,7 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/dojo/opensrf/md5.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js',
     '[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/vendor.bundle.js',
