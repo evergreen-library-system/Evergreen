@@ -1,16 +1,16 @@
 Circulation Limit Sets
 ----------------------
 
-Maximum Checkout by Copy Location
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Maximum Checkout by Shelving Location
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This feature enables you to specify the maximum number of checkouts of items by
-copy location and is an addition to the circulation limit sets.  Circulation
+shelving location and is an addition to the circulation limit sets.  Circulation
 limit sets refine circulation policies by limiting the number of items that
 users can check out.  Circulation limit sets are linked by name to circulation
 policies.
 
-To limit checkouts by copy location:
+To limit checkouts by shelving location:
 
 . Click *Administration -> Local Administration ->  Circ Limit Sets*.
 . Click *New* to create a new circulation limit set.
@@ -18,7 +18,7 @@ To limit checkouts by copy location:
 this limit set.
 . Enter a *Name* for the circulation set.  You will select the *Name* to link
 the circulation limit set to a circulation policy.
-. Enter the number of *Items Out* that a user can take from this copy location.
+. Enter the number of *Items Out* that a user can take from this shelving location.
 . Enter the *Min Depth*, or the minimum depth in the org tree that Evergreen
 will consider as valid circulation libraries for counting items out.  The min
 depth is based on org unit type depths.  For example, if you want the items in
