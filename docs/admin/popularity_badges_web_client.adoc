@@ -66,7 +66,7 @@ NOTE: only Name, Scope, Weight, Recalculation Interval, Importance Interval, and
 
   * *Bib Source Filter:*  Apply the badge only to bibliographic records with a specific source.
 
-  * *Location Group Filter:*  Apply the badge only to items that are part of the specified Copy Location Group.  Applies only to item related badges.
+  * *Location Group Filter:*  Apply the badge only to items that are part of the specified Shelving Location Group.  Applies only to item related badges.
 
   * *Recalculation Interval:* Indicates how often the popularity value of the badge should be recalculated for bibliographic records that have earned the badge.  Recalculation is controlled by a cron job.  Required field with a default value of 1 month.
 
