@@ -183,7 +183,7 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
     }
 
     $scope.showMarkDiscard = function(items) {
-        var copyies = [];
+        var copies = [];
         angular.forEach(items, function(item) {
             if (item.acp) copies.push(egCore.idl.toHash(item.acp));
         });
