@@ -15,7 +15,7 @@ of getting materials into Evergreen:
 
 Staff client batch record imports
 ---------------------------------
-The staff client has a utility for importing batches of bibliographic and copy
+The staff client has a utility for importing batches of bibliographic and item
 records available through *Cataloging > MARC Batch Import/Export*. In addition
 to importing new records, this interface can be used to match incoming records
 to existing records in the database, add or overlay MARC fields in the existing
@@ -33,9 +33,9 @@ When to use the MARC Batch Importer
 * When importing in batches of up to 500 to 1,000 records.
 * When you need the system to match those incoming records to existing records
   and overlay or add fields to the existing record.
-* When you need to add copies to existing records in the system.
+* When you need to add items to existing records in the system.
 
-WARNING: If you are importing copies that do not have barcodes or call numbers, you 
+WARNING: If you are importing items that do not have barcodes or call numbers, you 
 must enable the _Vandelay Generate Default Barcodes_ and _Vandelay Default 
 Barcode Prefix (vandelay.item.barcode.prefix)_ settings.
 
@@ -100,16 +100,16 @@ image::media/record_quality_metrics.png[]
 
 Import Item Attributes
 ~~~~~~~~~~~~~~~~~~~~~~
-If you are importing copies with your records, you will need to map the data in
-your holdings tag to fields in the copy record. Click the *Holdings Import
+If you are importing items with your records, you will need to map the data in
+your holdings tag to fields in the item record. Click the *Holdings Import
 Profile* button to map this information.
 
 . Click the *New Definition* button to create a new mapping for the holdings tag.
 . Add a *Name* for the definition.
 . Use the *Tag* field to identify the MARC tag that contains your holdings
   information.
-. Add the subfields that contain specific copy information to the appropriate
-  copy field.
+. Add the subfields that contain specific item information to the appropriate
+  item field.
 . At a minimum, you should add the subfields that identify the *Circulating
 Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
 . For more details, see the full list of import fields.
@@ -160,7 +160,7 @@ records.
 . Click the *Import Records* button
 . Provide a unique name for the queue where the records will be loaded
 . Identify the match set that should be used for matching
-. If you are importing copies, identify the *Import Item Attributes* definition
+. If you are importing items, identify the *Import Item Attributes* definition
   in the Holdings Import Profile
 . Select a record source
 . Select the overlay/merge profile that defines which fields should be

@@ -1,16 +1,16 @@
 Floating Groups
 ===============
 
-Before floating groups copies could float or not. If they floated then they floated everywhere, with no restrictions.
+Before floating groups items could float or not. If they floated then they floated everywhere, with no restrictions.
 
-After floating groups where a copy will float is defined by what group it has been assigned to.
+After floating groups where an item will float is defined by what group it has been assigned to.
 
 Floating Groups
 ---------------
 
 Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
 
-The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for a copy to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
+The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for an item to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
 
 Floating Group Members
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -25,7 +25,7 @@ The org unit and all descendants are included, unless max depth is set, in which
 Stop Depth
 ~~~~~~~~~~
 
-The stop depth is the highest point from the current copy circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
+The stop depth is the highest point from the current item circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
 
 Max Depth
 ~~~~~~~~~
@@ -55,7 +55,7 @@ One member:
 Float Within System
 ~~~~~~~~~~~~~~~~~~~
 
-This would permit a copy to float anywhere within a system, but would return to the system if it was returned elsewhere.
+This would permit an item to float anywhere within a system, but would return to the system if it was returned elsewhere.
 
 One member:
 
@@ -67,7 +67,7 @@ One member:
 Float To All Branches
 ~~~~~~~~~~~~~~~~~~~~~
 
-This would permit a copy to float to any branch, but not to sublibraries or bookmobiles.
+This would permit an item to float to any branch, but not to sublibraries or bookmobiles.
 
 One member:
 
@@ -79,7 +79,7 @@ One member:
 Float To All Branches Within System
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This would permit a copy to float to any branch in a system, but not to sublibraries or bookmobiles, and returning to the system if returned elsewhere.
+This would permit an item to float to any branch in a system, but not to sublibraries or bookmobiles, and returning to the system if returned elsewhere.
 
 One member:
 
@@ -91,7 +91,7 @@ One member:
 Float Between BR1 and BR3
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-This would permit a copy to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
+This would permit an item to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
 
 It would consist of two members, identical other than the org unit:
 

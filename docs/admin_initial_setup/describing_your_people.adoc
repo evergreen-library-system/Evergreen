@@ -306,7 +306,7 @@ WHERE ppl.code IN ('UPDATE_MARC', 'CREATE_MARC', 'IMPORT_MARC');
 ------------------------------------------------------------------------------
 
 Similarly, we want to give the Student Circulators group the ability to check
-out copies and record in-house uses at the system level, so we assign the
+out items and record in-house uses at the system level, so we assign the
 COPY_CHECKOUT and CREATE_IN_HOUSE_USE permissions at depth 1 (overriding the
 same _Staff_ permissions that were granted only at depth 2):
 

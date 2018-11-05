@@ -23,7 +23,7 @@ before running the script.
 Sitemap details
 ~~~~~~~~~~~~~~~
 
-The sitemap generator script includes located URIs as well as copies
+The sitemap generator script includes located URIs as well as items
    listed in the `asset.opac_visible_copies` materialized view, and checks
    the children or ancestors of the requested libraries for holdings as well.
 
