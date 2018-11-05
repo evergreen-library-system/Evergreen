@@ -329,7 +329,6 @@
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
           <span ng-if="col.template && !col.compiled" 
-            id="{{cellId(col, item)}}"
             style="padding-left:5px; padding-right:10px;">
             <span tooltip-class="eg-grid-tooltip"
               tooltip-class="eg-grid-tooltip"
@@ -346,9 +345,7 @@
           <!-- otherwise, simply display the item value, which may 
                pass through datatype-specific filtering. -->
           <span ng-if="!col.template" 
-            id="{{cellId(col, item)}}"
-            uib-tooltip="{{cellOverflowed(cellId(col, item), 1) ? (itemFieldValue(item, col) | egGridValueFilter:col:item) : ''}}"
-            tooltip-class="eg-grid-tooltip"
+            uib-tooltip="{{itemFieldValue(item, col) | egGridValueFilter:col:item}}"
             tooltip-placement="top-left"
             tooltip-class="eg-grid-tooltip"
             style="padding-left:5px; padding-right:10px;">
