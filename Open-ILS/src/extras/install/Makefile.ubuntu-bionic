@@ -97,7 +97,7 @@ export CPAN_MODULES_FORCE = \
 	Class::DBI::Frozen::301
 
 export CPAN_MODULES_PGSQL = \
-	MARC::XML
+	MARC::File::XML
 
 PGSQL_SERVER_DEBS_96 = \
 	$(DEB_PGSQL_COMMON_MODS) \
