@@ -79,11 +79,11 @@ values.
 |Allow funds to be rolled over without bringing money along|Allow funds to be rolled over without bringing the money along. This makes money left in the old fund disappear, modeling its return to some outside entity.|True/False|
 |Allows patrons to create automatic holds from purchase requests.|Allows patrons to create automatic holds from purchase requests.|True/False|
 |Default circulation modifier|Sets the default circulation modifier for use in acquisitions.|Text|
-|Default copy location|Sets the default copy location(shelving location) for use in acquisitions.|Selection list|
+|Default copy location|Sets the default item location(shelving location) for use in acquisitions.|Selection list|
 |Fund Spending Limit for Block|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.|Number|
 |Fund Spending Limit for Warning|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.|Number|
 |Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formulae to use new funds|True/False|
-|Set copy creator as receiver|When receiving a copy in acquisitions, set the copy "creator" to be the staff that received the copy|True/False|
+|Set copy creator as receiver|When receiving am item in acquisitions, set the item "creator" to be the staff that received the item|True/False|
 |Temporary barcode prefix|Temporary barcode prefix added to temporary item records.|Text|
 |Temporary call number prefix|Temporary call number prefix|Text|
 |Upload Activate PO|Activate the purchase order by default during ACQ file upload|True/False|
@@ -111,11 +111,11 @@ values.
 |Allow email notify|Permit email notification when a reservation is ready for pick-up.|True/false|
 |Elbow room|Elbow room specifies how far in the future you must make a reservation on an item if that item will have to transit to reach its pick-up location. It secondarily defines how soon a reservation on a given item must start before the check-in process will opportunistically capture it for the reservation shelf.|Duration|
 |Default Classification Scheme|Defines the default classification scheme for new call numbers: 1 = Generic; 2 = Dewey; 3 = LC|Number|It has effect on call number sorting.
-|Default copy status (fast add)|Default status when a copy is created using the "Fast Item Add" interface.|Selection list|Default: In process
-|Default copy status (normal)|Default status when a copy is created using the normal volume/copy creator interface.|Selection list|
+|Default copy status (fast add)|Default status when an item is created using the "Fast Item Add" interface.|Selection list|Default: In process
+|Default copy status (normal)|Default status when an item is created using the normal volume/copy creator interface.|Selection list|
 |Defines the control number identifier used in 003 and 035 fields||Text|
-|Delete bib if all copies are deleted via Acquisitions line item cancellation.||True/False|
-|Delete volume with last copy|Automatically delete a volume when the last linked copy is deleted.|True/False|Default TRUE
+|Delete bib if all items are deleted via Acquisitions line item cancellation.||True/False|
+|Delete volume with last copy|Automatically delete a volume when the last linked item is deleted.|True/False|Default TRUE
 |Maximum Parallel Z39.50 Batch Searches|The maximum number of Z39.50 searches that can be in-flight at any given time when performing batch Z39.50 searches|Number|
 |Maximum Z39.50 Batch Search Results|The maximum number of search results to retrieve and queue for each record + Z39 source during batch Z39.50 searches|Number|
 |Spine and pocket label font family|Set the preferred font family for spine and pocket labels. You can specify a list of fonts, separated by commas, in order of preference; the system will use the first font it finds with a matching name. For example, "Arial, Helvetica, serif".|Text|
@@ -173,8 +173,8 @@ values.
 |Suppress hold transits group|To create a group of libraries to suppress Hold Transits among them. All libraries in the group should use the same unique value. Leave it empty if transits should not be suppressed.|Text|
 |Suppress non-hold transits group|To create a group of libraries to suppress Non-Hold Transits among them. All libraries in the group should use the same unique value. Leave it empty if Non-Hold Transits should not be suppressed.|Text|
 |Suppress popup-dialogs during check-in.|When set to True, no pop-up window for exceptions on check-in. But the accompanying sound will be played.|True/False|
-|Target copies for a hold even if copy's circ lib is closed|If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the Org Unit's closed dates.).|True/False|Set the value to True if you want to target copies for holds at closed circulating libraries. Set the value to False, or leave it unset, if you do not want to enable this feature.
-|Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib|If this setting is true at a given org unit or one of its ancestors, the hold targeter will target copies from this org unit even if the org unit is closed (according to the Org Unit's closed dates) IF AND ONLY IF the copy's circ lib is the same as the hold's pickup lib.|True/False| Set the value to True if you want to target copies for holds at closed circulating libraries when the circulating library of the item and the pickup library of the hold are the same. Set the value to False, or leave it unset, if you do not want to enable this feature.
+|Target copies for a hold even if copy's circ lib is closed|If this setting is true at a given org unit or one of its ancestors, the hold targeter will target items from this org unit even if the org unit is closed (according to the Org Unit's closed dates.).|True/False|Set the value to True if you want to target items for holds at closed circulating libraries. Set the value to False, or leave it unset, if you do not want to enable this feature.
+|Target copies for a hold even if copy's circ lib is closed IF the circ lib is the hold's pickup lib|If this setting is true at a given org unit or one of its ancestors, the hold targeter will target items from this org unit even if the org unit is closed (according to the Org Unit's closed dates) IF AND ONLY IF the item's circ lib is the same as the hold's pickup lib.|True/False| Set the value to True if you want to target items for holds at closed circulating libraries when the circulating library of the item and the pickup library of the hold are the same. Set the value to False, or leave it unset, if you do not want to enable this feature.
 |Truncate fines to max fine amount||True/False|Default:TRUE
 |Use Lost and Paid copy status|Use Lost and Paid copy status when lost or long overdue billing is paid|True/False|
 |Void Long-Overdue Item Billing When Returned||True/False|
@@ -232,7 +232,7 @@ values.
 |Default item price|Replacement charge for lost items if price is unset in the *Copy Editor*. Does not apply if item price is set to $0|Number(dollars)|
 |Disable Patron Credit|Do not allow patrons to accrue credit or pay fines/fees with accrued credit|True/False|
 |Leave transaction open when long overdue balance equals zero|Leave transaction open when long-overdue balance equals zero. This leaves the long-overdue copy on the patron record when it is paid|True/False|
-|Leave transaction open when lost balance equals zero|Leave transaction open when lost balance equals zero. This leaves the lost copy on the patron record when it is paid|True/False|
+|Leave transaction open when lost balance equals zero|Leave transaction open when lost balance equals zero. This leaves the lost item on the patron record when it is paid|True/False|
 |Long-Overdue Materials Processing Fee|The amount charged in addition to item price when an item is marked Long-Overdue|Number|Currency
 |Lost materials processing fee|The amount charged in addition to item price when an item is marked lost.| Number|Currency
 |Maximum Item Price|When charging for lost items, limit the charge to this as a maximum.|Number|Currency
@@ -256,7 +256,7 @@ values.
 [options="header",separator="!"]
 !===========================
 !Setting!Description!Data type!Notes
-!Alert on empty bib records!Alert staff when the last copy for a record is being deleted.!True/False!
+!Alert on empty bib records!Alert staff when the last item for a record is being deleted.!True/False!
 !Button bar!If TRUE, the staff client button bar appears by default on all workstations registered to your library; staff can override this setting at each login.!True/False!
 !Cap results in Patron Search at this number.!The maximum number of results returned per search. If 100 is set up here, any search will return 100 records at most.!Number!
 !Default Country for New Addresses in Patron Editor!This is the default Country for new addresses in the patron editor.!Text!
@@ -343,15 +343,15 @@ values.
 |FIFO|Force holds to a more strict First-In, First-Out capture. Default is SAVE-GAS, which gives priority to holds with pickup location the same as checkin library.|True/False|Applies only to multi-branch libraries. Default is SAVE-GAS.
 |Hard boundary||Number|
 |Hard stalling interval||Duration|
-|Has local copy alert|If there is an available copy at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
-|Has local copy block|If there is an available copy at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
-|Max foreign-circulation time|Time a copy can spend circulating away from its circ lib before returning there to fill a hold|Duration|For multi-branch libraries.
-|Maximum library target attempts|When this value is set and greater than 0, the system will only attempt to find a copy at each possible branch the configured number of times|Number|For multi-branch libraries.
+|Has local copy alert|If there is an available item at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
+|Has local copy block|If there is an available item at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
+|Max foreign-circulation time|Time a item can spend circulating away from its circ lib before returning there to fill a hold|Duration|For multi-branch libraries.
+|Maximum library target attempts|When this value is set and greater than 0, the system will only attempt to find a item at each possible branch the configured number of times|Number|For multi-branch libraries.
 |Minimum estimated wait|When predicting the amount of time a patron will be waiting for a hold to be fulfilled, this is the minimum estimated length of time to assume an item will be checked out.|Duration |
-|Org unit target weight|Org Units can be organized into hold target groups based on a weight. Potential copies from org units with the same weight are chosen at random.|Number|
+|Org unit target weight|Org Units can be organized into hold target groups based on a weight. Potential items from org units with the same weight are chosen at random.|Number|
 |Reset request time on un-cancel|When a hold is uncancelled, reset the request time to push it to the end of the queue|True/False|
-|Skip for hold targeting|When true, don't target any copies at this org unit for holds|True/False|
-|Soft boundary|Holds will not be filled by copies outside this boundary if there are holdable copies within it.|Number |
+|Skip for hold targeting|When true, don't target any items at this org unit for holds|True/False|
+|Soft boundary|Holds will not be filled by items outside this boundary if there are holdable items within it.|Number |
 |Soft stalling interval|For this amount of time, holds will not be opportunistically captured at non-pickup branches.|Duration|
 For multiple branch libraries
 |Use Active Date for age protection|When calculating age protection rules use the Active date instead of the Creation Date.|True/False|Default TRUE
@@ -367,7 +367,7 @@ For multiple branch libraries
 |Setting|Description|Data type|Notes
 |Change reshelving status interval|Amount of time to wait before changing an item from “Reshelving” status to “available”|Duration|
 The default is at midnight each night for items with "Reshelving" status for over 24 hours.
-|Claim never checked out: mark copy as missing|When a circ is marked as claims-never-checked-out, mark the copy as missing|True/False|
+|Claim never checked out: mark copy as missing|When a circ is marked as claims-never-checked-out, mark the item as missing|True/False|
 |Claim return copy status|Claims returned copies are put into this status. Default is to leave the copy in the Checked Out status|Selection list|
 |Courier code|Courier Code for the library. Available in transit slip templates as the %courier_code% macro.|Text|
 |Juvenile age threshold|Upper cut-off age for patrons to be considered juvenile, calculated from date of birth in patron accounts|Duration  (years)|

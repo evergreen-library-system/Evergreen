@@ -1,7 +1,7 @@
 Cataloging Electronic Resources -- Finding Them in Catalog Searches
 -------------------------------------------------------------------
 There are two ways to make electronic resources visible in the catalog without
-adding copies to the record:
+adding items to the record:
 
 . Adding a Located URI to the record
 . Attaching the record to a bib source that is transcendent
@@ -12,8 +12,8 @@ is useful if all libraries have access to the same electronic resources.
 
 Another difference between the two approaches is that electronic resources with
 Located URI's never appear in results where the search is limited to a specific
-copy location(s). In contrast, transcendent electronic resources will appear in
-results limited to any copy location.
+shelving location(s). In contrast, transcendent electronic resources will appear in
+results limited to any shelving location.
 
 Adding a Located URI to the Record
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
