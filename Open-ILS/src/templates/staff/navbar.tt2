@@ -232,7 +232,7 @@
           </li>
           <li class="divider"></li>
           <li ng-class="{disabled : offlineDisabled()}">
-            <a href="./offline-interface" target="_self">
+            <a href="./offline-interface" target="_self" ng-class="{disabled : offlineDisabled()}">
               <span class="glyphicon glyphicon-alert"></span>
               <span>[% l('Offline Circulation') %]</span>
             </a>
