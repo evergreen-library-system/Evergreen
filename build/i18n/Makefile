@@ -146,12 +146,12 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
+newpot: fmidl2pot fmidl2fmidlent ils2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-project: prep_output po2dtds po2props po2sql fmidlpo2entity po2ils po2dojo
+project: prep_output po2sql fmidlpo2entity po2ils po2dojo
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
