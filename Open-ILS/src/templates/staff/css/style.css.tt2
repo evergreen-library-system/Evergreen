@@ -112,6 +112,9 @@ a.disabled {
   cursor: default;
   color: #888 !important;
 }
+.disabled {
+  cursor: not-allowed;
+}
 
 #splash-nav .panel-body div {
     padding-bottom: 10px;
