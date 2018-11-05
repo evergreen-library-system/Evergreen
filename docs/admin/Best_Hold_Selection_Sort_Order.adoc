@@ -1,7 +1,7 @@
 Best-Hold Selection Sort Order
 ------------------------------
 
-Best-Hold Selection Sort Order allows libraries to configure customized rules for Evergreen to use to select the best hold to fill at opportunistic capture.  When a copy is captured for a hold upon check-in, Evergreen evaluates the holds in the system that the item could fill.  Evergreen uses a set of rules, or a Best-Hold Selection Sort Order, to determine the best hold to fill with the item.  In previous version of Evergreen, there were two sets of rules for Evergreen to use to determine the best hold to fulfill: Traditional and FIFO (First In, First Out).  Traditional uses Org Unit Proximity to identify the nearest hold to fill.  FIFO follows a strict order of first-in, first-out rules.  This feature allows new, custom Best-Hold Selection Sort Orders to be created.  Existing Best-Hold Selection Sort Orders can also be modified.
+Best-Hold Selection Sort Order allows libraries to configure customized rules for Evergreen to use to select the best hold to fill at opportunistic capture.  When a item is captured for a hold upon check-in, Evergreen evaluates the holds in the system that the item could fill.  Evergreen uses a set of rules, or a Best-Hold Selection Sort Order, to determine the best hold to fill with the item.  In previous version of Evergreen, there were two sets of rules for Evergreen to use to determine the best hold to fulfill: Traditional and FIFO (First In, First Out).  Traditional uses Org Unit Proximity to identify the nearest hold to fill.  FIFO follows a strict order of first-in, first-out rules.  This feature allows new, custom Best-Hold Selection Sort Orders to be created.  Existing Best-Hold Selection Sort Orders can also be modified.
 
 
 Preconfigured Best-Hold Orders
@@ -23,7 +23,7 @@ To create a new Best-Hold Selection Sort Order, go to *Administration -> Server 
 
 . Click *Create New*.
 . Assign your Best-Hold Selection Sort Order a *Name*.
-. Next, use the *Move Up* and *Move Down* buttons to arrange the fields in the order that you would like Evergreen to check when looking for the best hold to fill with a copy at opportunistic capture.
+. Next, use the *Move Up* and *Move Down* buttons to arrange the fields in the order that you would like Evergreen to check when looking for the best hold to fill with an item at opportunistic capture.
 . Click *Save Changes* to create your custom Best-Hold Selection Sort Order.  
 
 image::media/best_hold_sort_order1.jpg[Best-Hold Selection Sort Order]
@@ -35,7 +35,7 @@ To edit an existing Best-Hold Selection Sort Order, go to *Administration -> Ser
 
 . Click *Edit Existing*.
 . Choose the Best-Hold Selection Sort Order that you would like to edit from the drop down menu.
-. Next, use the *Move Up* and *Move Down* buttons to arrange the fields in the new order that you would like Evergreen to check when looking for the best hold to fill with a copy at opportunistic capture.
+. Next, use the *Move Up* and *Move Down* buttons to arrange the fields in the new order that you would like Evergreen to check when looking for the best hold to fill with an item at opportunistic capture.
 . Click *Save Changes* to save your edits.  
 
 Choosing the Best-Hold Selection Sort Order
