@@ -4,10 +4,9 @@ BEGIN;
 CREATE SCHEMA unapi;
 
 CREATE OR REPLACE FUNCTION evergreen.org_top()
-RETURNS SETOF actor.org_unit AS $$
+RETURNS actor.org_unit AS $$
     SELECT * FROM actor.org_unit WHERE parent_ou IS NULL LIMIT 1;
-$$ LANGUAGE SQL STABLE
-ROWS 1;
+$$ LANGUAGE SQL STABLE;
 
 CREATE OR REPLACE FUNCTION evergreen.array_remove_item_by_value(inp ANYARRAY, el ANYELEMENT)
 RETURNS anyarray AS $$
