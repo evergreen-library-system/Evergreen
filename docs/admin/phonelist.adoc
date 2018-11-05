@@ -102,7 +102,7 @@ afternoon and there was no new information to gather.
 The program does indicate that it has already looked at a particular
 hold or overdue and will skip it on later runs. This prevents
 duplicates to the same patron in the same run. It will, however,
-create a `duplicate` for the same patron if a different copy is put
+create a `duplicate` for the same patron if a different item is put
 on hold for that patron in between two runs.
 
 The specific content of the CSV file will vary if you are looking at
@@ -112,7 +112,7 @@ appropriate sections below.
 Holds
 -----
 
-The `phonelist` program will return a list of patrons with copies on
+The `phonelist` program will return a list of patrons with items on
 hold by default, so long as you do not use the `overdue`
 parameter. You may optionally get a number of items that patron
 currently has on hold by adding the `addcount` parameter.
@@ -127,15 +127,15 @@ patrons with email notification of holds>> as described below.
 | Name | Patron's name first and last.
 | Phone | Patron's phone number.
 | Barcode | Patron's barcode.
-| Count | Number of copies on hold, if `addcount` parameter is used, otherwise this column is not present in the file.
+| Count | Number of items on hold, if `addcount` parameter is used, otherwise this column is not present in the file.
 |=====================================
 
 Overdues
 --------
 
 If you add the `overdue` parameter, you can get a list of patrons with
-overdue copies instead of a list of patrons with copies on the hold
-shelf. By default, this will give you a list of patrons with copies
+overdue items instead of a list of patrons with items on the hold
+shelf. By default, this will give you a list of patrons with items
 that are 14 days overdue. If you'd like to specify a different number
 of days you can add the number after the parameter with an equals
 sign:

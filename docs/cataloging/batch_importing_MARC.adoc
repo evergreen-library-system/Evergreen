@@ -219,16 +219,16 @@ You can add multiple tags to the specification options, separating each tag with
 
 Import Item Attributes
 ~~~~~~~~~~~~~~~~~~~~~~
-If you are importing copies with your records, you will need to map the data in
-your holdings tag to fields in the copy record. Click the *Holdings Import
+If you are importing items with your records, you will need to map the data in
+your holdings tag to fields in the item record. Click the *Holdings Import
 Profile* button to map this information.
 
 . Click the *New Definition* button to create a new mapping for the holdings tag.
 . Add a *Name* for the definition.
 . Use the *Tag* field to identify the MARC tag that contains your holdings
   information.
-. Add the subfields that contain specific copy information to the appropriate
-  copy field.
+. Add the subfields that contain specific item information to the appropriate
+  item field.
 . At a minimum, you should add the subfields that identify the *Circulating
 Library*, the *Owning Library*, the *Call Number* and the *Barcode*.
 
@@ -258,7 +258,7 @@ identify the MARC tag that contains your holdings information.
 |Deposit Amount ||
 |Holdable ||
 |OPAC Visible ||
-|Overlay Match ID || The copy ID of an existing copy to overlay
+|Overlay Match ID || The copy ID of an existing item to overlay
 |Parts Data || Of the format `PART LABEL 1\|PART LABEL 2`.
 |Price ||
 |Private Note ||
@@ -266,9 +266,9 @@ identify the MARC tag that contains your holdings information.
 |Reference ||
 |Shelving Location ||
 |Stat Cat Data || Of the format `CATEGORY 1\|VALUE 1\|\|CATEGORY 2\|VALUE 2`.
-If you are overlaying existing copies which already have stat cats
+If you are overlaying existing items which already have stat cats
 attached to them, the overlay process will keep those values unless the
-incoming copies contain updated values for matching categories.
+incoming items contain updated values for matching categories.
 |Status ||
 |==================
 
@@ -389,7 +389,7 @@ image::media/Batch_Importing_MARC_Records14.jpg[Batch_Importing_MARC_Records14]
 Default Values for Item Import 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Evergreen now supports additional functionality for importing items through *Cataloging* -> *MARC Batch Import/Export*.  When items are imported via a *Holdings Import Profile* in *Cataloging* -> *MARC Batch Import/Export*, Evergreen will create an item-level record for each copy.  If an item barcode, call number, copy location, or circulation modifier is not set in the embedded holdings, Evergreen will apply a default value based on the configured Library Settings.  A default prefix can be applied to the auto-generated call numbers and item barcodes.
+Evergreen now supports additional functionality for importing items through *Cataloging* -> *MARC Batch Import/Export*.  When items are imported via a *Holdings Import Profile* in *Cataloging* -> *MARC Batch Import/Export*, Evergreen will create an item-level record for each copy.  If an item barcode, call number, shelving location, or circulation modifier is not set in the embedded holdings, Evergreen will apply a default value based on the configured Library Settings.  A default prefix can be applied to the auto-generated call numbers and item barcodes.
 
 The following *Library Settings* can be configured to apply these default values to imported items:
 

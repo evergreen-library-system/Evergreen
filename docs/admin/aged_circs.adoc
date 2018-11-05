@@ -21,7 +21,7 @@ There are four global flags used for aging circulations.
 
 1. Historical Circulation Retention Age - determines the timeframe for aging circulations based on transaction age (7 days, 14 days, 30 days, etc). 
 
-2. Historical Circulations Per Copy - determines how many circulations to keep (ex. 1, 2, 3). If set to 1, Evergreen will always keep the last (most recent) circulation.
+2. Historical Circulations Per Item - determines how many circulations to keep (ex. 1, 2, 3). If set to 1, Evergreen will always keep the last (most recent) circulation.
 
 3. Historical Circulations use most recent xact_finish date instead of last circ's (true or false)
 
@@ -39,7 +39,7 @@ Data that is not aged includes:
 * open transactions (i.e. checked out)
 * closed transactions with unpaid fines
 * closed transactions with unpaid bills
-* the last X circulation(s) (determined by historical circulations per copy flag)
+* the last X circulation(s) (determined by historical circulations per item flag)
 
 
 [TIP]

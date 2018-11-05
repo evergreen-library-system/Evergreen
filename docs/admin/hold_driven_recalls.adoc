@@ -36,10 +36,10 @@ of circulating items, library settings must be changed as follows:
     and maximum fine* setting. If set, this applies the specified fine rules
     to the current circulation period for the recalled item.
 
-When a hold is placed and no available copies are found by the hold targeter,
+When a hold is placed and no available items are found by the hold targeter,
 the recall logic checks to see if the recall threshold and return interval
 settings are set; if so, then the hold targeter checks the currently
-checked-out copies to determine if any of the currently circulating items at
+checked-out items to determine if any of the currently circulating items at
 the designated pickup library have a loan duration longer than the recall
 threshold. If so, then the eligible item with the due date nearest to the
 current date is recalled.
