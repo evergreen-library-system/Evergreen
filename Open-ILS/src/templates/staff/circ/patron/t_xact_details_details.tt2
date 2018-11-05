@@ -8,6 +8,7 @@
   grid-controls="xactGridControls"
   auto-fields="true"
   page-size="10"
+  persist-key="circ.patron.xact_details_details_bills"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action 
@@ -28,6 +29,7 @@
   id-field="id"
   grid-controls="paymentGridControls"
   page-size="10"
+  persist-key="circ.patron.xact_details_details_payments"
   dateformat="{{$root.egDateAndTimeFormat}}">
   <eg-grid-action
     label="[% l('Edit Note') %]" handler="editPaymentNotes"></eg-grid-action>
