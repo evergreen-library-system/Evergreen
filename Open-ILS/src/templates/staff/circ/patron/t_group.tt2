@@ -13,6 +13,7 @@
   idl-class="au"
   sort="gridSort"
   grid-controls="gridControls"
+  persist-key="circ.patron.group_members"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action handler="moveToGroup"
