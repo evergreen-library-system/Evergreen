@@ -409,6 +409,16 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 # OpenSRF-over-HTTP translator
 # (http://open-ils.org/dokuwiki/doku.php?id=opensrf_over_http)
 # ----------------------------------------------------------------------------------
+
+# OPTIONAL: Running the translator behind a proxy requires accessing
+# the client IP address via mod_remoteip (sudo a2enmod remoteip).
+# Below is a sample configuration for a proxy running on the same
+# server and passing the client IP address via the X-Real-IP header.
+#
+#RemoteIPInternalProxy 127.0.0.1/24
+#RemoteIPInternalProxy ::1
+#RemoteIPHeader X-Real-IP
+
 <Location /osrf-http-translator>
     SetHandler osrf_http_translator_module
     Require all granted 
