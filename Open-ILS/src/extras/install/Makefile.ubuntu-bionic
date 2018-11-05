@@ -89,13 +89,15 @@ export DEB_APACHE_DISCONF = \
 export CPAN_MODULES = \
 	Business::OnlinePayment::PayPal \
 	Email::Send \
-	MARC::XML \
 	MARC::Charset \
 	Net::Z3950::Simple2ZOOM
 
 export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
+
+export CPAN_MODULES_PGSQL = \
+	MARC::XML
 
 PGSQL_SERVER_DEBS_96 = \
 	$(DEB_PGSQL_COMMON_MODS) \
@@ -138,10 +140,12 @@ all:
 	make -f $(DIR)/Makefile.debian install_debs
 	make -f $(DIR)/Makefile.common install_cpan
 	make -f $(DIR)/Makefile.common install_cpan_force
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
 install_postgres_server:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
+	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
 # note: if/when grunt-cli is available as a
 # package, use the packaged version instead.

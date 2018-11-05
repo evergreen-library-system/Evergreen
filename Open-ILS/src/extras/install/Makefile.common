@@ -9,6 +9,9 @@ install_cpan_force:
 		echo "force install $$m" | perl -MCPAN -e shell ;\
 	done
 
+install_cpan_pgsql:
+	for m in $(CPAN_MODULES_PGSQL); do perl -MCPAN -e "install \"$$m\";"; done
+
 install_net_z3950_simpleserver:
 	if [ ! -f $(LIBNET_Z3950_SIMPLESERVER).tar.gz ]; \
 		then wget $(LIBNET_Z3950_SIMPLESERVER_URL).tar.gz; \
