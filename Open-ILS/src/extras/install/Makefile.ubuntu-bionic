@@ -99,6 +99,10 @@ export CPAN_MODULES_FORCE = \
 export CPAN_MODULES_PGSQL = \
 	MARC::File::XML
 
+PGSQL_APT_REPO_DEBS = \
+        wget \
+        ca-certificates
+
 PGSQL_SERVER_DEBS_96 = \
 	$(DEB_PGSQL_COMMON_MODS) \
 	postgresql-9.6 \
@@ -144,6 +148,8 @@ all:
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
 install_postgres_server:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
 	make -f $(DIR)/Makefile.common install_cpan_pgsql
 
