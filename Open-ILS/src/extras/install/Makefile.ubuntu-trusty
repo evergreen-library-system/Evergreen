@@ -81,7 +81,8 @@ export DEB_APACHE_MODS = \
     proxy_http\
     rewrite\
     cgi\
-    perl
+    perl\
+    remoteip
 
 export DEB_APACHE_DISMODS = \
     deflate
