@@ -1,35 +1,35 @@
-Copy Status
+Item Status
 -----------
 
-To navigate to the copy status editor from the staff client menu, select
-*Administration* -> *Server Administration* -> *Copy Statuses*.
+To navigate to the item status editor from the staff client menu, select
+*Administration* -> *Server Administration* -> *Item Statuses*.
 
-The Copy Status Editor is used to add, edit and delete statuses of copies in
+The Item Status Editor is used to add, edit and delete statuses of items in
 your system.
 
 For each status, you can set the following properties:
 
-* Holdable - If checked, users can place holds on copies in this status,
+* Holdable - If checked, users can place holds on items in this status,
 provided there are no other flags or rules preventing holds. If unchecked,
-users cannot place holds on copies in this status. 
-* OPAC Visible - If checked, copies in this status will be visible in the
-public catalog. If unchecked, copies in this status will not be visible in the
+users cannot place holds on items in this status. 
+* OPAC Visible - If checked, items in this status will be visible in the
+public catalog. If unchecked, items in this status will not be visible in the
 public catalog, but they will be visible when using the catalog in the staff
 client.
-* Sets copy active - If checked, moving a copy that does not yet have an
-active date to this status will set the active date. If the copy already has
+* Sets item active - If checked, moving an item that does not yet have an
+active date to this status will set the active date. If the item already has
 an active date, then no changes will be made to the active date. If unchecked,
-this status will never set the copy's active date. 
-* Is Available - If checked, copies with this status will appear in catalog 
+this status will never set the item's active date. 
+* Is Available - If checked, items with this status will appear in catalog 
 searches where "limit to available" is selected as a search filter.  Also, 
-copies with this status will check out without status warnings.
+items with this status will check out without status warnings.
 By default, the "Available" and "Reshelving" statuses have the "Is Available" 
-flag set. The flag may be applied to local/custom statuses via the copy status 
+flag set. The flag may be applied to local/custom statuses via the item status 
 admin interface.
   
-Evergreen comes pre-loaded with a number of copy statuses.
+Evergreen comes pre-loaded with a number of item statuses.
 
-.Stock copy statuses and default settings
+.Stock item statuses and default settings
 [options="header"]
 |==============================================
 |ID|Name|Holdable|OPAC Visible|Sets copy active
@@ -53,7 +53,7 @@ Evergreen comes pre-loaded with a number of copy statuses.
 |17|Lost and Paid|false|false|false
 |==============================================
 
-Adding Copy Statuses
+Adding Item Statuses
 ~~~~~~~~~~~~~~~~~~~~
 
 . In the _New Status_ field, enter the name of the new status you wish to add.
@@ -67,7 +67,7 @@ status.
 
 image::media/copy_status_add.png[Adding copy statuses]
 
-Deleting Copy Statuses
+Deleting Item Statuses
 ~~~~~~~~~~~~~~~~~~~~~~
 
 . Highlight the statuses you wish to delete. Ctrl-click to select more than one
@@ -78,15 +78,15 @@ status.
 image::media/copy_status_delete.png[Deleting copy statuses]
 
 [NOTE]
-You will not be able to delete statuses if copies currently exist with that
+You will not be able to delete statuses if items currently exist with that
 status.
 
-Editing Copy Statuses
+Editing Item Statuses
 ~~~~~~~~~~~~~~~~~~~~~
 . Double click on a status name to change its name. Enter the new name.
 
 . To change whether a status is holdable, visible in the OPAC, or sets the
-copy's active date, check or uncheck the relevant checkbox.
+item's active date, check or uncheck the relevant checkbox.
 
 . Once you have finished editing the statuses, remember to click Save Changes.
 
