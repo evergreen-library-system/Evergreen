@@ -2380,11 +2380,11 @@ sub create_due_date {
     ) || 'local';
 
     my $due_date = $start_time ?
-        DateTime->now(time_zone => $tz) :
-        $due_date = DateTime::Format::ISO8601
+        DateTime::Format::ISO8601
             ->new
             ->parse_datetime(clean_ISO8601($start_time))
-            ->set_time_zone($tz);
+            ->set_time_zone($tz) :
+        DateTime->now(time_zone => $tz);
 
     # add the circ duration
     $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
