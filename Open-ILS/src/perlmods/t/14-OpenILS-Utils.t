@@ -14,7 +14,7 @@
 # truckload to verify that everything would continue to work if
 # we turn it on across the board.
 
-use Test::More tests => 43;
+use Test::More tests => 47;
 use Test::Warn;
 use DateTime::TimeZone;
 use DateTime::Format::ISO8601;
@@ -121,6 +121,23 @@ is (OpenILS::Utils::DateTime::interval_to_seconds('1 hour'), 3600);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 day'), 86400);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 week'), 604800);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 month'), 2628000);
+
+# With context, no DST change, with timezone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-04T23:59:59-04')->set_time_zone("America/New_York")), 2419200);
+
+# With context, with DST change, with timezone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-14T23:59:59-04')->set_time_zone("America/New_York")), 2415600);
+
+# With context, no DST change, no time zone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-04T23:59:59-04')), 2419200);
+
+# With context, with DST change, no time zone (so, not DST-aware)
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-14T23:59:59-04')), 2419200);
+
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year'), 31536000);
 is (OpenILS::Utils::DateTime::interval_to_seconds('1 year 1 second'), 31536001);
 
