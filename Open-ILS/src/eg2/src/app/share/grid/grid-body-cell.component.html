@@ -1,6 +1,6 @@
 
 <span *ngIf="!column.cellTemplate"
-  [ngbTooltip]="tooltipContent"
+  [ngbTooltip]="context.getRowColumnValue(row, column)"
   placement="top-left"
   class="{{context.cellClassCallback(row, column)}}"
   triggers="mouseenter:mouseleave">
@@ -8,7 +8,7 @@
 </span>
 <span *ngIf="column.cellTemplate" 
   class="{{context.cellClassCallback(row, column)}}"
-  [ngbTooltip]="tooltipContent"
+  [ngbTooltip]="column.cellTemplate"
   placement="top-left"
   #tooltip="ngbTooltip" 
   (mouseenter)="tooltip.open(column.getCellContext(row))"
