@@ -1,6 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
     OnDestroy, HostListener, ViewEncapsulation} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';

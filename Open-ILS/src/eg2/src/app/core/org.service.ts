@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from './idl.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';

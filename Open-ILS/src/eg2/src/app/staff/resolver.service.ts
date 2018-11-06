@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
-import {of} from 'rxjs';
+import {Observable, Observer, of} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
         ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
 import {StoreService} from '@eg/core/store.service';

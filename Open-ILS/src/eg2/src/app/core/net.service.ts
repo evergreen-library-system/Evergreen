@@ -21,8 +21,7 @@
  * the same for streaming and atomic requests.
  */
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
+import {Observable, Observer} from 'rxjs';
 import {EventService, EgEvent} from './event.service';
 
 // Global vars from opensrf.js
