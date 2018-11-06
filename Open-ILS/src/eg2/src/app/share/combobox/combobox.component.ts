@@ -4,18 +4,8 @@
  * </eg-combobox>
  */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {tap} from 'rxjs/operators/tap';
-import {reduce} from 'rxjs/operators/reduce';
-import {of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators/mergeMap';
-import {mapTo} from 'rxjs/operators/mapTo';
-import {debounceTime} from 'rxjs/operators/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operators/distinctUntilChanged';
-import {merge} from 'rxjs/operators/merge';
-import {filter} from 'rxjs/operators/filter';
-import {Subject} from 'rxjs/Subject';
+import {Observable, of, Subject} from 'rxjs';
+import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
 

@@ -1,13 +1,7 @@
 /** TODO PORT ME TO <eg-combobox> */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {mapTo} from 'rxjs/operators/mapTo';
-import {debounceTime} from 'rxjs/operators/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operators/distinctUntilChanged';
-import {merge} from 'rxjs/operators/merge';
-import {filter} from 'rxjs/operators/filter';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
+import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';

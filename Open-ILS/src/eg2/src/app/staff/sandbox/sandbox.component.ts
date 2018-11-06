@@ -1,12 +1,10 @@
+
+import {timer as observableTimer, Observable, of} from 'rxjs';
 import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import {of} from 'rxjs';
-import {map} from 'rxjs/operators/map';
-import {take} from 'rxjs/operators/take';
+import {map, take} from 'rxjs/operators';
 import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -167,7 +165,7 @@ export class SandboxComponent implements OnInit {
         this.progressDialog.open();
 
         // every 250ms emit x*10 for 0-10
-        Observable.timer(0, 250).pipe(
+        observableTimer(0, 250).pipe(
             map(x => x * 10),
             take(11)
         ).subscribe(
