@@ -7,6 +7,7 @@ use FileHandle;
 use Digest::MD5 qw(md5 md5_hex md5_base64);
 use Exporter;
 use DateTime;
+use DateTime::Duration;
 use DateTime::Format::ISO8601;
 use DateTime::TimeZone;
 
@@ -53,7 +54,7 @@ sub AUTOLOAD {
 	return $self->{$name};
 }
 
-=head2 $thing->interval_to_seconds('interval') OR interval_to_seconds('interval')
+=head2 $thing->interval_to_seconds('interval', ['context']) OR interval_to_seconds('interval', ['context'])
 
 =head2 $thing->seconds_to_interval($seconds) OR seconds_to_interval($seconds)
 
@@ -98,31 +99,61 @@ for months (really (365 * 1d)/12 ... that may get smarter, though)
 
 for years (this is 365 * 1d)
 
+Passing in an optional 'context' (DateTime object) will give you the number of seconds for the passed interval *starting from* the given date (e.g. '1 month' from a context of 'February 1' would return the number of seconds needed to get to 'March 1', not the generic calculation of 1/12 of the seconds in a normal year).
+
 =back
 
 =cut
 sub interval_to_seconds {
-	my $self = shift;
-        my $interval = shift || $self;
+    my $class = shift; # throwaway
+    my $interval = ($class eq __PACKAGE__) ? shift : $class;
+    my $context = shift;
 
-	$interval =~ s/(\d{2}):(\d{2}):(\d{2})/ $1 h $2 min $3 s /go;
+    $interval =~ s/(\d{2}):(\d{2}):(\d{2})/ $1 h $2 min $3 s /go;
 
-        $interval =~ s/and/,/g;
-        $interval =~ s/,/ /g;
+    $interval =~ s/and/,/g;
+    $interval =~ s/,/ /g;
 
-        my $amount = 0;
+    my $amount;
+    if ($context) {
+        my $dur = DateTime::Duration->new();
         while ($interval =~ /\s*([\+-]?)\s*(\d+)\s*(\w+)\s*/g) {
-		my ($sign, $count, $type) = ($1, $2, $3);
-		$count = "$sign$count" if ($sign);
-                $amount += $count if ($type =~ /^s/);
-                $amount += 60 * $count if ($type =~ /^m(?!o)/oi);
-                $amount += 60 * 60 * $count if ($type =~ /^h/);
-                $amount += 60 * 60 * 24 * $count if ($type =~ /^d/oi);
-                $amount += 60 * 60 * 24 * 7 * $count if ($type =~ /^w/oi);
-                $amount += ((60 * 60 * 24 * 365)/12) * $count if ($type =~ /^mo/io);
-                $amount += 60 * 60 * 24 * 365 * $count if ($type =~ /^y/oi);
+            my ($sign, $count, $type) = ($1, $2, $3);
+            my $func = ($sign eq '-') ? 'subtract' : 'add';
+            if ($type =~ /^s/) {
+                $type = 'seconds';
+            } elsif ($type =~ /^m(?!o)/oi) {
+                $type = 'minutes';
+            } elsif ($type =~ /^h/) {
+                $type = 'hours';
+            } elsif ($type =~ /^d/oi) {
+                $type = 'days';
+            } elsif ($type =~ /^w/oi) {
+                $type = 'weeks';
+            } elsif ($type =~ /^mo/io) {
+                $type = 'months';
+            } elsif ($type =~ /^y/oi) {
+                $type = 'years';
+            }
+            $dur->$func($type => $count);
         }
-        return $amount;
+        my $later = $context->clone->add_duration($dur);
+        $amount = $later->subtract_datetime_absolute($context)->in_units( 'seconds' );
+    } else {
+        $amount = 0;
+        while ($interval =~ /\s*([\+-]?)\s*(\d+)\s*(\w+)\s*/g) {
+            my ($sign, $count, $type) = ($1, $2, $3);
+            $count = "$sign$count" if ($sign);
+            $amount += $count if ($type =~ /^s/);
+            $amount += 60 * $count if ($type =~ /^m(?!o)/oi);
+            $amount += 60 * 60 * $count if ($type =~ /^h/);
+            $amount += 60 * 60 * 24 * $count if ($type =~ /^d/oi);
+            $amount += 60 * 60 * 24 * 7 * $count if ($type =~ /^w/oi);
+            $amount += ((60 * 60 * 24 * 365)/12) * $count if ($type =~ /^mo/io);
+            $amount += 60 * 60 * 24 * 365 * $count if ($type =~ /^y/oi);
+        }
+    }
+    return $amount;
 }
 
 sub seconds_to_interval {
