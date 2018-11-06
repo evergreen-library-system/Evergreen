@@ -132,6 +132,12 @@
     </eg-grid-field>
     <eg-grid-field label="[% l('Inventory Date') %]"          datatype="timestamp" path="latest_inventory.inventory_date"></eg-grid-field>
     <eg-grid-field label="[% l('Inventory Workstation') %]"   path="latest_inventory.inventory_workstation.name"></eg-grid-field>
+    <eg-grid-field label="[% l('Loan Duration') %]"           path="loan_duration" hidden>
+      <span>{{item['loan_duration'] | string_pick:'[% l('Short') %]':'[% l('Normal') %]':'[% l('Extended') %]'}}</span>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Fine Level') %]"              path="fine_level" hidden>
+      <span>{{item['fine_level'] | string_pick:'[% l('Low') %]':'[% l('Normal') %]':'[% l('High') %]'}}</span>
+    </eg-grid-field>
   
   </eg-grid>
 </div>

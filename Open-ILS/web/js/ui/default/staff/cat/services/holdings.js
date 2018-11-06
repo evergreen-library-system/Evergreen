@@ -436,4 +436,5 @@ function(egCore , $q) {
             }]
     }
 })
+.filter('string_pick', function() { return function(i){ return arguments[i] || ''; }; })
 ;
