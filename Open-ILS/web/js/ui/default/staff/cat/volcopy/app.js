@@ -2149,7 +2149,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         { order_by : { 'acpt' : ['label'] } }, { atomic: true }
                     ).then(function(list) {
                         return list.map(function(item) {
-                            return item.label();
+                            return item.label() + " (" + egCore.org.get(item.owner()).shortname() + ")";
                         });
                     });
                 }
