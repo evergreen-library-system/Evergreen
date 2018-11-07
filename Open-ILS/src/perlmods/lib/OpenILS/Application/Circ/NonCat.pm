@@ -188,8 +188,8 @@ sub noncat_due_date {
 
     my $tz = $U->ou_ancestor_setting_value(
         $circ->circ_lib,
-        'lib.timezone',
-        $self->editor
+        'lib.timezone', 
+        $e,
     ) || 'local';
 
     my $duedate = $_dt_parser
