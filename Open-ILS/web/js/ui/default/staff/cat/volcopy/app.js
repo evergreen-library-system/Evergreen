@@ -1992,7 +1992,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                         $timeout(function(){
                             if (typeof BroadcastChannel != 'undefined') {
                                 var bChannel = new BroadcastChannel("eg.holdings.update");
-                                var bre_ids = cnList && cnList.length > 0 ? cnList.map(function(cn){ return cn.record() }) : [];
+                                var bre_ids = cnList && cnList.length > 0 ? cnList.map(function(cn){ return Number(cn.record()) }) : [];
                                 var cn_ids = cnList && cnList.length > 0 ? cnList.map(function(cn){ return cn.id() }) : [];
                                 bChannel.postMessage({
                                     copies : copy_ids,
