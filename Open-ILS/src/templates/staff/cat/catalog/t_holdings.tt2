@@ -138,6 +138,10 @@
     <eg-grid-field label="[% l('Fine Level') %]"              path="fine_level" hidden>
       <span>{{item['fine_level'] | string_pick:'[% l('Low') %]':'[% l('Normal') %]':'[% l('High') %]'}}</span>
     </eg-grid-field>
+    <eg-grid-field label="[% l('Classification') %]"          path="call_number.label_class.name" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Due Date') %]"                path="_circ.due_date" datecontext="_circ_lib" dateonlyinterval="_duration" datatype="timestamp" visible></eg-grid-field>
+    <eg-grid-field label="[% l('OPAC Visible?') %]"           datatype="bool" path="opac_visible" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Quality') %]"                 path="call_number.record.simple_record.quality" hidden></eg-grid-field>
   
   </eg-grid>
 </div>

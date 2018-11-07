@@ -16,7 +16,8 @@ function(egCore , $q) {
         flesh : 3,
         flesh_fields : {
             acp : ['status','location','circ_lib','parts','age_protect','copy_alerts', 'latest_inventory'],
-            acn : ['prefix','suffix','copies'],
+            acn : ['prefix','suffix','copies','label_class','record'],
+            bre : ['simple_record'],
             alci : ['inventory_workstation']
         }
     }
@@ -130,12 +131,26 @@ function(egCore , $q) {
                     }
                 );
 
-                // create virtual field for copy alert count
+                // create virtual fields for copy alert count and most recent circ
                 angular.forEach(svc.copies, function (cp) {
                     if (cp.copy_alerts) {
                         cp.copy_alert_count = cp.copy_alerts.filter(function(aca) { return aca.ack_time == null ;}).length;
                     }
                     else cp.copy_alert_count = 0;
+
+                    var copy_circ = egCore.pcrud.search('combcirc', { target_copy : cp.id },
+                        {
+                            order_by : {combcirc : 'xact_start desc'},
+                            limit :  1
+                        }
+                    ).then(function(copy_circ) {
+                        if (copy_circ) {
+                            cp._circ = egCore.idl.toHash(copy_circ, true);
+                            cp._circ_lib = copy_circ.circ_lib();
+                            cp._duration = copy_circ.duration();
+                        }
+                        return copy_circ;
+                    });
                 });
 
                 // create a label using just the unique part of the owner list
