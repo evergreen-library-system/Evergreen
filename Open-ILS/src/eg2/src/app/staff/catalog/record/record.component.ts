@@ -8,6 +8,14 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
+import {StoreService} from '@eg/core/store.service';
+
+const ANGJS_TABS: any = {
+    marc_edit: true,
+    holds: true,
+    holdings: true,
+    conjoined: true
+};
 
 @Component({
   selector: 'eg-catalog-record',
@@ -20,6 +28,7 @@ export class RecordComponent implements OnInit {
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
     @ViewChild('recordTabs') recordTabs: NgbTabset;
+    defaultTab: string; // eg.cat.default_record_tab
 
     constructor(
         private router: Router,
@@ -27,19 +36,47 @@ export class RecordComponent implements OnInit {
         private pcrud: PcrudService,
         private bib: BibRecordService,
         private cat: CatalogService,
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
+        private store: StoreService
     ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
 
+        this.defaultTab = 
+            this.store.getLocalItem('eg.cat.default_record_tab')
+            || 'catalog';
+
+        // TODO: Implement default tab handling for tabs that require
+        // and AngJS redirect.
+
         // Watch for URL record ID changes
+        // This includes the initial route.
+        // When applying the default configured tab, no navigation occurs
+        // to apply the tab name to the URL, it displays as the default.
+        // This is done so no intermediate redirect is required, which
+        // messes with browser back/forward navigation.
         this.route.paramMap.subscribe((params: ParamMap) => {
-            this.recordTab = params.get('tab') || 'copy_table';
+            this.recordTab = params.get('tab');
             this.recordId = +params.get('id');
             this.searchContext = this.staffCat.searchContext;
+
+            if (!this.recordTab) {
+                this.recordTab = this.defaultTab || 'catalog';
+                // On initial load, if the default tab is set to one of
+                // the AngularJS tabs, redirect the user there.
+                if (this.recordTab in ANGJS_TABS) {
+                    return this.routeToTab();
+                }
+            }
+
             this.loadRecord();
         });
+    }
+
+    setDefaultTab() {
+        this.defaultTab = this.recordTab;
+        this.store.setLocalItem('eg.cat.default_record_tab', this.recordTab);
     }
 
     // Changing a tab in the UI means changing the route.
@@ -50,10 +87,22 @@ export class RecordComponent implements OnInit {
         // prevent tab changing until after route navigation
         evt.preventDefault();
 
-        let url = '/staff/catalog/record/' + this.recordId;
-        if (this.recordTab !== 'copy_table') {
-            url += '/' + this.recordTab;
+        this.routeToTab();
+    }
+
+    routeToTab() {
+
+        // Route to the AngularJS catalog tab
+        if (this.recordTab in ANGJS_TABS) {
+            const angjsBase = '/eg/staff/cat/catalog/record';
+
+            window.location.href = 
+                `${angjsBase}/${this.recordId}/${this.recordTab}`;
+            return;
         }
+
+        const url = 
+            `/staff/catalog/record/${this.recordId}/${this.recordTab}`;
 
         // Retain search parameters
         this.router.navigate([url], {queryParamsHandling: 'merge'});

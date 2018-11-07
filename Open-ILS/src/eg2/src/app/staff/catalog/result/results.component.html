@@ -1,30 +1,75 @@
 
-<div id="staff-catalog-results-container" *ngIf="searchIsDone()">
-  <div class="row">
-    <div class="col-lg-2"><!--match pagination margin-->
-      <h3 i18n>Search Results ({{searchContext.result.count}})</h3>
-    </div>
-    <div class="col-lg-1"></div>
-    <div class="col-lg-9">
-      <div class="float-right">
-				<eg-catalog-result-pagination></eg-catalog-result-pagination>
+<!-- search results progress bar -->
+<div class="row" *ngIf="searchIsActive()">
+  <div class="col-lg-6 offset-lg-3 pt-3">
+    <div class="progress">
+      <div class="progress-bar progress-bar-striped active w-100"
+        role="progressbar" aria-valuenow="100" 
+        aria-valuemin="0" aria-valuemax="100">
+        <span class="sr-only" i18n>Searching..</span>
       </div>
     </div>
   </div>
-	<div class="row mt-2">
-		<div class="col-lg-2">
-      <eg-catalog-result-facets></eg-catalog-result-facets>
-		</div>
-		<div class="col-lg-10">
-			<div *ngIf="searchContext.result">
-				<div *ngFor="let summary of searchContext.result.records; let idx = index">
-          <div *ngIf="summary">
-					  <eg-catalog-result-record [summary]="summary" [index]="idx">
-					  </eg-catalog-result-record>
-          </div>
-				</div>
-			</div>
-		</div>
-	</div>
 </div>
+
+<!-- no items found -->
+<div *ngIf="searchIsDone() && !searchHasResults()">
+  <div class="row pt-3">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="alert alert-warning">
+        <span i18n>No Maching Items Were Found</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- header, pager, and list of records -->
+<div id="staff-catalog-results-container" *ngIf="searchHasResults()">
+  <div class="row">
+    <div class="col-lg-2" *ngIf="!searchContext.basket">
+      <ng-container *ngIf="searchContext.termSearch.browseEntry">
+        <h3 i18n>Results for browse "{{searchContext.termSearch.browseEntry.value()}}"</h3>
+      </ng-container>
+      <ng-container *ngIf="!searchContext.termSearch.browseEntry">
+        <h3 i18n>Search Results ({{searchContext.result.count}})</h3>
+      </ng-container>
+    </div>
+    <div class="col-lg-2" *ngIf="searchContext.basket">
+      <h3 i18n>Basket View</h3>
+    </div>
+    <div class="col-lg-2">
+      <label class="checkbox" *ngIf="!searchContext.basket">
+        <input type='checkbox' [(ngModel)]="allRecsSelected" 
+            (change)="toggleAllRecsSelected()"/>
+        <span class="pl-1" i18n>Select {{searchContext.pager.rowNumber(0)}} - 
+          {{searchContext.pager.rowNumber(searchContext.currentResultIds().length - 1)}}
+        </span>
+      </label>
+    </div>
+    <div class="col-lg-8">
+      <div class="float-right">
+        <eg-catalog-result-pagination></eg-catalog-result-pagination>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row mt-2">
+      <div class="col-lg-2" *ngIf="!searchContext.basket">
+        <eg-catalog-result-facets></eg-catalog-result-facets>
+      </div>
+      <div
+        [ngClass]="{'col-lg-10': !searchContext.basket, 'col-lg-12': searchContext.basket}">
+        <div *ngIf="shouldStartRendering()">
+          <div *ngFor="let summary of searchContext.result.records; let idx = index">
+            <div *ngIf="summary">
+              <eg-catalog-result-record [summary]="summary" [index]="idx">
+              </eg-catalog-result-record>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 

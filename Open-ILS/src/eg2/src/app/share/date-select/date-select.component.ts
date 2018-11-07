@@ -18,8 +18,12 @@ export class DateSelectComponent implements OnInit {
     @Input() initialDate: Date;  // Date object
     @Input() required: boolean;
     @Input() fieldName: string;
-
     @Input() domId = '';
+
+    _disabled: boolean;
+    @Input() set disabled(d: boolean) {
+        this._disabled = d;
+    }
 
     current: NgbDateStruct;
 

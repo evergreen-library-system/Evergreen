@@ -28,7 +28,9 @@ interface CustomFieldContext {
 
 @Component({
   selector: 'eg-fm-record-editor',
-  templateUrl: './fm-editor.component.html'
+  templateUrl: './fm-editor.component.html',
+  /* align checkboxes when not using class="form-check" */
+  styles: ['input[type="checkbox"] {margin-left: 0px;}']
 })
 export class FmRecordEditorComponent
     extends DialogComponent implements OnInit {
@@ -181,9 +183,12 @@ export class FmRecordEditorComponent
             });
         }
 
-        // create a new record from scratch
+        // create a new record from scratch or from a stub record
+        // provided by the caller.
         this.pkeyIsEditable = !('pkey_sequence' in this.idlDef);
-        this.record = this.idl.create(this.idlClass);
+        if (!this.record) {
+            this.record = this.idl.create(this.idlClass);
+        }
         return this.getFieldList();
     }
 

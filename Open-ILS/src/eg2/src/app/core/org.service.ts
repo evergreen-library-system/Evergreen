@@ -231,9 +231,10 @@ export class OrgService {
     /**
      *
      */
-    settings(names: string[],
+    settings(name: string | string[],
         orgId?: number, anonymous?: boolean): Promise<OrgSettingsBatch> {
 
+        let names = [].concat(name);
         const settings = {};
         let auth: string = null;
         let useCache = false;

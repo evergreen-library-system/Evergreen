@@ -3931,18 +3931,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="record" reltype="has_a" key="id" map="" class="bre"/>
 		</links>
 	</class>
-	<class id="mmr" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord" reporter:label="Metarecord">
+	<class id="mmr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord" reporter:label="Metarecord">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_id_seq">
 			<field name="fingerprint"  reporter:datatype="text"/>
 			<field name="id" reporter:datatype="id" />
 			<field name="master_record" reporter:datatype="link"/>
 			<field name="mods"  reporter:datatype="text"/>
 			<field name="source_records" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="source_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="master_record" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="source_records" reltype="has_many" key="metarecord" map="source" class="mmrsm"/>
+			<link field="source_maps" reltype="has_many" key="metarecord" class="mmrsm"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="cnal" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::net_access_level" oils_persist:tablename="config.net_access_level" reporter:label="Net Access Level">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.net_access_level_id_seq">
@@ -3975,7 +3982,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             </actions>
         </permacrud>
 	</class>
-	<class id="mmrsm" controller="open-ils.cstore" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map" oils_persist:field_safe="true" reporter:label="Metarecord Source Map">
+	<class id="mmrsm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::metarecord_source_map" oils_persist:tablename="metabib.metarecord_source_map" oils_persist:field_safe="true" reporter:label="Metarecord Source Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_source_map_id_seq">
 			<field name="id" reporter:datatype="id" />
 			<field name="metarecord" reporter:datatype="link"/>
@@ -3985,6 +3992,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="source" reltype="has_a" key="id" map="" class="bre"/>
 			<link field="metarecord" reltype="has_a" key="id" map="" class="mmr"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mde" controller="open-ils.cstore open-ils.pcrud" 
 			oils_obj:fieldmapper="metabib::display_entry" 
@@ -4140,6 +4152,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<links>
 			<link field="def_maps" reltype="has_many" key="entry" map="" class="mbedm"/>
 		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
 	</class>
 	<class id="mbedm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::browse_entry_def_map" oils_persist:tablename="metabib.browse_entry_def_map" reporter:label="Combined Browse Entry Definition Map" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.browse_entry_def_map_id_seq">

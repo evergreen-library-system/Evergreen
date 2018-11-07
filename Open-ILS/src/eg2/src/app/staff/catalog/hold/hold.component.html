@@ -1,0 +1,293 @@
+
+<h3 i18n>Place Hold 
+  <small *ngIf="user"> 
+   ({{user.family_name()}}, {{user.first_given_name()}})
+  </small>
+</h3>
+
+<form class="form form-validated common-form" 
+  autocomplete="off" (keydown.enter)="$event.preventDefault()">
+  <div class="row">
+    <div class="col-lg-6 common-form striped-odd">
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" 
+              (change)="holdForChanged()"
+              name="holdFor" value="patron" [(ngModel)]="holdFor"/>
+            <label class="form-check-label" i18n>
+              Place hold for patron by barcode:
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="input-group">
+            <input type='text' class="form-control" name="userBarcode"
+              [disabled]="holdFor!='patron'" id='patron-barcode' 
+              (keyup.enter)="userBarcodeChanged()"
+              [(ngModel)]="userBarcode" (change)="userBarcodeChanged()"/>
+            <div class="input-group-append">
+              <button class="btn btn-outline-dark" 
+                [disabled]="true" i18n>Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" 
+              (change)="holdForChanged()"
+              name="holdFor" value="staff" [(ngModel)]="holdFor"/>
+            <label class="form-check-label" i18n>
+              Place hold for this staff account:
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-6 font-weight-bold">{{requestor.usrname()}}</div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <label i18n>Pickup Location: </label>
+        </div>
+        <div class="col-lg-6">
+          <eg-org-select [applyOrgId]="pickupLib"></eg-org-select>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-lg-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" 
+              name="suspend" [(ngModel)]="suspend"/>
+            <label class="form-check-label" i18n>Suspend Hold</label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <eg-date-select (onChangeAsISO)="activeDateSelected($event)"
+            [disabled]="!suspend">
+          </eg-date-select>
+        </div>
+      </div>
+    </div><!-- left column -->
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <h4 i18n>Notifications</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item d-flex">
+            <div class="flex-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="notifyEmail"
+                  [disabled]="!user || !user.email()" [(ngModel)]="notifyEmail"/>
+                <label class="form-check-label" i18n>Notify by Email</label>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" i18n>Email Address</span>
+                </div>
+                <input type="text" class="form-control" name="userEmail"
+                  [disabled]="true" value="{{user ? user.email() : ''}}"/>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item d-flex">
+            <div class="flex-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" 
+                  name="notifyPhone" [(ngModel)]="notifyPhone"/>
+                <label class="form-check-label" i18n>Notify by Phone</label>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" i18n>Phone Number</span>
+                </div>
+                <input type="text" class="form-control" [disabled]="!notifyPhone"
+                  name="phoneValue" [(ngModel)]="phoneValue"/>
+              </div>
+            </div>
+          </li>
+          <li *ngIf="smsEnabled" class="list-group-item d-flex">
+            <div class="flex-1">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" 
+                  name="notifySms" [(ngModel)]="notifySms"/>
+                <label class="form-check-label" i18n>Notify by SMS</label>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" i18n>SMS Number</span>
+                </div>
+                <input type="text" class="form-control" [disabled]="!notifySms"
+                  name="smsValue" [(ngModel)]="smsValue"/>
+              </div>
+            </div>
+          </li>
+          <li *ngIf="smsEnabled" class="list-group-item d-flex">
+            <div class="flex-1">
+              <label i18n>SMS Carrier</label>
+            </div>
+            <div class="flex-1">
+              <eg-combobox
+                placeholder="SMS Carriers" i18n-placeholder
+                [entries]="smsCarriers">
+              </eg-combobox>
+            </div>
+          </li>
+        </ul><!-- col -->
+      </div><!-- row -->
+    </div><!--card -->
+  </div><!-- col -->
+  <div class="row mt-2">
+    <div class="col-lg-3">
+      <button class="btn btn-success" (click)="placeHolds()" 
+        [disabled]="!user || placeHoldsClicked" i18n>Place Hold(s)</button>
+    </div>
+  </div>
+</form>
+
+<div class="row"><div class="col-lg-12"><hr/></div></div>
+
+<div class="row font-weight-bold pt-3 ml-1 mr-1">
+  <div class="col-lg-12" i18n>Placing 
+    <ng-container *ngIf="holdType == 'M'">METARECORD</ng-container> 
+    <ng-container *ngIf="holdType == 'T'">TITLE</ng-container> 
+    <ng-container *ngIf="holdType == 'V'">VOLUME</ng-container> 
+    <ng-container *ngIf="holdType == 'F'">FORCE COPY</ng-container> 
+    <ng-container *ngIf="holdType == 'C'">COPY</ng-container> 
+    <ng-container *ngIf="holdType == 'R'">RECALL</ng-container> 
+    <ng-container *ngIf="holdType == 'I'">ISSUANCE</ng-container> 
+    <ng-container *ngIf="holdType == 'P'">PARTS</ng-container> 
+    hold on record(s)</div>
+</div>
+
+<ng-template #anyValue>
+  <span class="font-italic" i18n>ANY</span>
+</ng-template>
+
+<!--
+    TODO: add a section per hold context for metarecord holds
+    listing the possible formats and languages.
+
+    TODO: add a secion per hold context for T holds providing a 
+    link to the metarecord hold equivalent (AKA "Advanced Hold 
+    Options") for each record that has selectable filters (and
+    only when metarecord holds are enabled).
+-->
+
+<div class="hold-records-list common-form striped-even">
+
+  <div class="row mt-2 ml-1 mr-1 font-weight-bold">
+    <div class="col-lg-1" i18n>Format</div>
+    <div class="col-lg-3" i18n>Title</div>
+    <div class="col-lg-2" i18n>Author</div>
+    <div class="col-lg-2" i18n>Call Number</div>
+    <div class="col-lg-1" i18n>Barcode</div>
+    <div class="col-lg-2" i18n>Holds Status</div>
+    <div class="col-lg-1" i18n>Override</div>
+  </div>
+  <div class="row mt-1 ml-1 mr-1" *ngFor="let ctx of holdContexts">
+    <div class="col-lg-12" *ngIf="ctx.holdMeta">
+      <div class="row">
+        <div class="col-lg-1">
+          <ng-container 
+            *ngFor="let code of ctx.holdMeta.bibSummary.attributes.icon_format">
+            <img class="pr-1" 
+              alt="{{iconFormatLabel(code)}}"
+              title="{{iconFormatLabel(code)}}"
+              src="/images/format_icons/icon_format/{{code}}.png"/>
+          </ng-container>
+        </div>
+        <!-- TODO: link for a metarecord should 
+            jump to constituent bib list search page? -->
+        <div class="col-lg-3">
+          <a routerLink="/staff/catalog/record/{{ctx.holdMeta.bibId}}">
+            {{ctx.holdMeta.bibSummary.display.title}}
+          </a>
+        </div>
+        <div class="col-lg-2">{{ctx.holdMeta.bibSummary.display.author}}</div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="ctx.holdMeta.volume; else anyValue">
+            {{ctx.holdMeta.volume.label()}}
+          </ng-container>
+        </div>
+        <div class="col-lg-1">
+          <ng-container *ngIf="ctx.holdMeta.copy; else anyValue">
+            {{ctx.holdMeta.copy.barcode()}}
+          </ng-container>
+        </div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="!ctx.lastRequest && !ctx.processing">
+            <div class="alert alert-info" i18n>Hold Pending</div>
+          </ng-container>
+          <ng-container *ngIf="ctx.processing">
+            <div class="alert alert-primary" i18n>Hold Processing...</div>
+          </ng-container>
+          <ng-container *ngIf="ctx.lastRequest">
+            <ng-container *ngIf="ctx.lastRequest.result.success">
+              <div class="alert alert-success" i18n>Hold Succeeded</div>
+            </ng-container>
+            <ng-container *ngIf="!ctx.lastRequest.result.success">
+              <div class="alert alert-danger">
+                {{ctx.lastRequest.result.evt.textcode}}
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+        <div class="col-lg-1">
+          <ng-container *ngIf="canOverride(ctx)">
+            <button class="btn btn-info" (click)="override(ctx)">Override</button>
+          </ng-container>
+        </div>
+      </div>
+      <!-- note: using inline style since class-level styling for rows
+          is superseded by the striped-even styling of the container -->
+      <div class="row" *ngIf="hasMetaFilters(ctx)" 
+        style="background-color:inherit; border:none">
+        <div class="col-lg-1"><label i18n>Formats: </label></div>
+        <div class="col-lg-11 d-flex">
+          <ng-container 
+            *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.formats">
+            <div class="form-check ml-3">
+              <input class="form-check-input" type="checkbox" 
+                [disabled]="ctx.holdMeta.metarecord_filters.formats.length == 1"
+                [(ngModel)]="ctx.selectedFormats.formats[ccvm.code()]"/>
+              <img class="ml-1" 
+                alt="{{iconFormatLabel(ccvm.code())}}"
+                title="{{iconFormatLabel(ccvm.code())}}"
+                src="/images/format_icons/icon_format/{{ccvm.code()}}.png"/>
+              <label class="form-check-label ml-1">
+                {{ccvm.search_label() || ccvm.value()}}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="row" *ngIf="hasMetaFilters(ctx)" 
+        style="background-color:inherit; border:none">
+        <div class="col-lg-1"><label i18n>Languages: </label></div>
+        <div class="col-lg-11 d-flex">
+          <ng-container 
+            *ngFor="let ccvm of ctx.holdMeta.metarecord_filters.langs">
+            <div class="form-check ml-3">
+              <input class="form-check-input" type="checkbox" 
+                [disabled]="ctx.holdMeta.metarecord_filters.langs.length == 1"
+                [(ngModel)]="ctx.selectedFormats.langs[ccvm.code()]"/>
+              <label class="form-check-label ml-1">
+                {{ccvm.search_label() || ccvm.value()}}
+              </label>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

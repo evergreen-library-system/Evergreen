@@ -3,6 +3,7 @@
  */
 import {Injectable, EventEmitter} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
+import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 
 interface NewVolumeData {
     owner: number;
@@ -12,7 +13,10 @@ interface NewVolumeData {
 @Injectable()
 export class HoldingsService {
 
-    constructor(private net: NetService) {}
+    constructor(
+        private net: NetService,
+        private anonCache: AnonCacheService
+    ) {}
 
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(
@@ -30,28 +34,21 @@ export class HoldingsService {
 
         if (raw.length === 0) { raw.push({}); }
 
-        this.net.request(
-            'open-ils.actor',
-            'open-ils.actor.anon_cache.set_value',
-            null, 'edit-these-copies', {
-                record_id: recordId,
-                raw: raw,
-                hide_vols : false,
-                hide_copies : false
+        this.anonCache.setItem(null, 'edit-these-copies', {
+            record_id: recordId,
+            raw: raw,
+            hide_vols : false,
+            hide_copies : false
+        }).then(key => {
+            if (!key) {
+                console.error('Could not create holds cache key!');
+                return;
             }
-        ).subscribe(
-            key => {
-                if (!key) {
-                    console.error('Could not create holds cache key!');
-                    return;
-                }
-                setTimeout(() => {
-                    const url = `/eg/staff/cat/volcopy/${key}`;
-                    window.open(url, '_blank');
-                });
-            }
-        );
+            setTimeout(() => {
+                const url = `/eg/staff/cat/volcopy/${key}`;
+                window.open(url, '_blank');
+            });
+        });
     }
-
 }
 

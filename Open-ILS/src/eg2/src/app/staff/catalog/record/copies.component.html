@@ -20,6 +20,7 @@
 
 <div class='eg-copies w-100 mt-3'>
   <eg-grid #copyGrid [dataSource]="gridDataSource" 
+    [disableSelect]="true"
     [sortable]="false" persistKey="catalog.record.copies">
     <eg-grid-column i18n-label label="Copy ID" path="id" 
       [hidden]="true" [index]="true">

@@ -50,6 +50,13 @@ export class GridBodyComponent implements OnInit {
     }
 
     onRowClick($event: any, row: any, idx: number) {
+
+        if (this.context.disableSelect) {
+            // Avoid any appearance or click behavior when row
+            // selection is disabled.
+            return;
+        }
+
         const index = this.context.getRowIndex(row);
 
         if (this.context.disableMultiSelect) {

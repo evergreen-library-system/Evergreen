@@ -128,10 +128,7 @@ h5 {font-size: .95rem}
 .common-form label {
   font-weight: bold;
 }
-.common-form input[type="checkbox"] {
-  /* BS adds a negative left margin */
-  margin-left: 0px;
-}
+
 .common-form.striped-even .row:nth-child(even) {
   background-color: rgba(0,0,0,.03);
   border-top: 1px solid rgba(0,0,0,.125);

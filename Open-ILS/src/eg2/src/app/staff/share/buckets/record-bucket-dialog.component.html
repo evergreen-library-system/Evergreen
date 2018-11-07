@@ -1,7 +1,14 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
-    <h4 class="modal-title" *ngIf="recId" i18n>Add To Record #{{recId}} to Bucket</h4>
-    <h4 class="modal-title" *ngIf="qId" i18n>Add Records from queue #{{qId}} to Bucket</h4>
+    <h4 class="modal-title">
+      <ng-container *ngIf="recIds.length > 0">
+        <span *ngIf="recIds.length == 1" i18n>
+          Add Record #{{recIds[0]}} to Bucket</span>
+        <span *ngIf="recIds.length > 1" i18n>
+          Add {{recIds.length}} Record(s) to Bucket</span>
+      </ng-container>
+      <span *ngIf="qId" i18n>Add Records from queue #{{qId}} to Bucket</span>
+    </h4>
     <button type="button" class="close" 
       i18n-aria-label aria-label="Close" 
       (click)="dismiss('cross_click')">

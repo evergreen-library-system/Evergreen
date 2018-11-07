@@ -12,5 +12,17 @@ select.form-control:not([size]):not([multiple]) {
 }
 
 #staffcat-search-form {
-  border-bottom: 2px dashed rgba(0,0,0,.225);
+  border-radius: 0px 0px 7px 7px;
+  background-color: rgba(243, 127, 65, .1);
+  box-shadow: 3px 3px 2px rgba(185, 65, 0, .2);
+}
+
+#staffcat-search-form .tab-content {
+  border: 3px;
+}
+
+.tab-content {
+  padding: 5px;
+  margin-top: 25px;
+  font-weight: bold;
 }

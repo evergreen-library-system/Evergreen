@@ -1,0 +1,15 @@
+
+/**
+ * Force the jacket image column to consume a consistent amount of 
+ * horizontal space, while allowing some room for the browser to 
+ * render the correct aspect ratio.
+ */
+.record-jacket-div {
+    width: 68px;
+}
+
+.record-jacket-div img {
+    height: 100%; 
+    max-height:80px; 
+    max-width: 54px;
+}

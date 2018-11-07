@@ -44,6 +44,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // The value is prefixed with 'eg.grid.'
     @Input() persistKey: string;
 
+    @Input() disableSelect: boolean;
+
     // Prevent selection of multiple rows
     @Input() disableMultiSelect: boolean;
 
@@ -109,6 +111,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.isSortable = this.sortable === true;
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;
+        this.context.disableSelect = this.disableSelect === true;
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.rowFlairCallback = this.rowFlairCallback;

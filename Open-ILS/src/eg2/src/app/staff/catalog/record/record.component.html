@@ -19,16 +19,38 @@
     </eg-bib-summary>
   </div>
   <div id='staff-catalog-bib-tabs-container' class='mt-3'>
+    <div class="row">
+      <div class="col-lg-12 text-right">
+        <button class="btn btn-secondary btn-sm" 
+            [disabled]="recordTab == defaultTab"
+            (click)="setDefaultTab()" i18n>Set Default View</button>
+      </div>
+    </div>
     <ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
-      <ngb-tab title="Copy Table" i18n-title id="copy_table">
+      <ngb-tab title="Copy Table" i18n-title id="catalog">
         <ng-template ngbTabContent>
           <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="MARC View" i18n-title id="marc_view">
+      <!-- NOTE some tabs send the user over to the AngJS app -->
+      <ngb-tab title="MARC Edit" i18n-title id="marc_edit">
+      </ngb-tab>
+      <ngb-tab title="MARC View" i18n-title id="marc_html">
         <ng-template ngbTabContent>
           <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
         </ng-template>
+      </ngb-tab>
+      <ngb-tab title="View Holds" i18n-title id="holds">
+      </ngb-tab>
+      <ngb-tab title="Monograph Parts" i18n-title id="monoparts">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-parts [recordId]="recordId">
+          </eg-catalog-record-parts>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Holdings View" i18n-title id="holdings">
+      </ngb-tab>
+      <ngb-tab title="Conjoined Items" i18n-title id="conjoined">
       </ngb-tab>
     </ngb-tabset>
   </div>

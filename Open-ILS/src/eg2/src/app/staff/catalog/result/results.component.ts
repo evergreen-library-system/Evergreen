@@ -1,5 +1,5 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Observable} from 'rxjs';
+import {Component, OnInit, OnDestroy, Input} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {map, switchMap, distinctUntilChanged} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -9,12 +9,13 @@ import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search
 import {PcrudService} from '@eg/core/pcrud.service';
 import {StaffCatalogService} from '../catalog.service';
 import {IdlObject} from '@eg/core/idl.service';
+import {BasketService} from '@eg/share/catalog/basket.service';
 
 @Component({
   selector: 'eg-catalog-results',
   templateUrl: 'results.component.html'
 })
-export class ResultsComponent implements OnInit {
+export class ResultsComponent implements OnInit, OnDestroy {
 
     searchContext: CatalogSearchContext;
 
@@ -22,13 +23,20 @@ export class ResultsComponent implements OnInit {
     // reasonably small set of data w/ lots of repitition.
     userCache: {[id: number]: IdlObject} = {};
 
+    allRecsSelected: boolean;
+
+    searchSub: Subscription;
+    routeSub: Subscription;
+    basketSub: Subscription;
+
     constructor(
         private route: ActivatedRoute,
         private pcrud: PcrudService,
         private cat: CatalogService,
         private bib: BibRecordService,
         private catUrl: CatalogUrlService,
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
+        private basket: BasketService
     ) {}
 
     ngOnInit() {
@@ -41,7 +49,8 @@ export class ResultsComponent implements OnInit {
         // searches.
         //
         // This will also fire on page load.
-        this.route.queryParamMap.subscribe((params: ParamMap) => {
+        this.routeSub = 
+            this.route.queryParamMap.subscribe((params: ParamMap) => {
 
               // TODO: Angular docs suggest using switchMap(), but
               // it's not firing for some reason.  Also, could avoid
@@ -51,8 +60,36 @@ export class ResultsComponent implements OnInit {
               // .map() is not firing either.  I'm missing something.
               this.searchByUrl(params);
         });
+
+        // After each completed search, update the record selector.
+        this.searchSub = this.cat.onSearchComplete.subscribe(
+            ctx => this.applyRecordSelection());
+
+        // Watch for basket changes applied by other components.
+        this.basketSub = this.basket.onChange.subscribe(
+            () => this.applyRecordSelection());
     }
 
+    ngOnDestroy() {
+        this.routeSub.unsubscribe();
+        this.searchSub.unsubscribe();
+        this.basketSub.unsubscribe();
+    }
+
+    // Apply the select-all checkbox when all visible records
+    // are selected.
+    applyRecordSelection() {
+        const ids = this.searchContext.currentResultIds();
+        let allChecked = true;
+        ids.forEach(id => {
+            if (!this.basket.hasRecordId(id)) { 
+                allChecked = false; 
+            }
+        });
+        this.allRecsSelected = allChecked;
+    }
+
+    // Pull values from the URL and run the requested search.
     searchByUrl(params: ParamMap): void {
         this.catUrl.applyUrlParams(this.searchContext, params);
 
@@ -67,6 +104,25 @@ export class ResultsComponent implements OnInit {
         }
     }
 
+    // Records file into place randomly as the server returns data.
+    // To reduce page display shuffling, avoid showing the list of
+    // records until the first few are ready to render.
+    shouldStartRendering(): boolean {
+
+        if (this.searchHasResults()) {
+            const pageCount = this.searchContext.currentResultIds().length;
+            switch (pageCount) {
+                case 1:
+                    return this.searchContext.result.records[0];
+                default:
+                    return this.searchContext.result.records[0]
+                        && this.searchContext.result.records[1];
+            }
+        }
+
+        return false;
+    }
+
     fleshSearchResults(): void {
         const records = this.searchContext.result.records;
         if (!records || records.length === 0) { return; }
@@ -79,6 +135,23 @@ export class ResultsComponent implements OnInit {
         return this.searchContext.searchState === CatalogSearchState.COMPLETE;
     }
 
+    searchIsActive(): boolean {
+        return this.searchContext.searchState === CatalogSearchState.SEARCHING;
+    }
+
+    searchHasResults(): boolean {
+        return this.searchIsDone() && this.searchContext.result.count > 0;
+    }
+
+    toggleAllRecsSelected() {
+        const ids = this.searchContext.currentResultIds();
+
+        if (this.allRecsSelected) {
+            this.basket.addRecordIds(ids);
+        } else {
+            this.basket.removeRecordIds(ids);
+        }
+    }
 }
 
 

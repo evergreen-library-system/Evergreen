@@ -26,9 +26,10 @@ export class RecordBucketDialogComponent
 
     @Input() bucketType: string;
 
-    recId: number;
-    @Input() set recordId(id: number) {
-        this.recId = id;
+    // Add one or more bib records to bucket by ID.
+    recIds: number[];
+    @Input() set recordId(id: number | number[]) {
+        this.recIds = [].concat(id);
     }
 
     // Add items from a (vandelay) bib queue to a bucket
@@ -46,6 +47,7 @@ export class RecordBucketDialogComponent
         private evt: EventService,
         private auth: AuthService) {
         super(modal); // required for subclassing
+        this.recIds = [];
     }
 
     ngOnInit() {
@@ -98,29 +100,33 @@ export class RecordBucketDialogComponent
                 // requires the bucket name.
                 bucket.id(bktId);
                 this.buckets.push(bucket);
-
                 this.addToBucket(bktId);
             }
         });
     }
 
-    // Add the record to the selected existing bucket
     addToBucket(id: number) {
-        if (this.recId) {
+        if (this.recIds.length > 0) {
             this.addRecordToBucket(id);
         } else if (this.qId) {
             this.addQueueToBucket(id);
         }
     }
 
+    // Add the record(s) to the bucket with provided ID.
     addRecordToBucket(bucketId: number) {
-        const item = this.idl.create('cbrebi');
-        item.bucket(bucketId);
-        item.target_biblio_record_entry(this.recId);
+        const items = [];
+        this.recIds.forEach(recId => {
+            const item = this.idl.create('cbrebi');
+            item.bucket(bucketId);
+            item.target_biblio_record_entry(recId);
+            items.push(item);
+        });
+
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.create',
-            this.auth.token(), 'biblio', item
+            this.auth.token(), 'biblio', items
         ).subscribe(resp => {
             const evt = this.evt.parse(resp);
             if (evt) {

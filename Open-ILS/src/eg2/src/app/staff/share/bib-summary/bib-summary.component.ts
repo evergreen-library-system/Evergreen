@@ -14,6 +14,9 @@ export class BibSummaryComponent implements OnInit {
 
     initDone = false;
     expandDisplay = true;
+    @Input() set expand(e: boolean) {
+        this.expandDisplay = e;
+    }
 
     // If provided, the record will be fetched by the component.
     @Input() recordId: number;

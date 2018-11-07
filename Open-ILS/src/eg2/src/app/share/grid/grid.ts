@@ -421,6 +421,7 @@ export class GridContext {
     useLocalSort: boolean;
     persistKey: string;
     disableMultiSelect: boolean;
+    disableSelect: boolean;
     dataSource: GridDataSource;
     columnSet: GridColumnSet;
     rowSelector: GridRowSelector;

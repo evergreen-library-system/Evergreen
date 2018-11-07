@@ -41,7 +41,8 @@ export class PermService {
     }
 
     // workstation required
-    hasWorkPermHere(permNames: string[]): Promise<HasPermHereResult> {
+    hasWorkPermHere(permNames: string | string[]): Promise<HasPermHereResult> {
+        permNames = [].concat(permNames);
         const wsId: number = +this.auth.user().wsid();
 
         if (!wsId) {

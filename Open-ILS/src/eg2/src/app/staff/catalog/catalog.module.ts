@@ -14,6 +14,13 @@ import {StaffCatalogService} from './catalog.service';
 import {RecordPaginationComponent} from './record/pagination.component';
 import {RecordActionsComponent} from './record/actions.component';
 import {HoldingsService} from '@eg/staff/share/holdings.service';
+import {BasketActionsComponent} from './basket-actions.component';
+import {HoldComponent} from './hold/hold.component';
+import {HoldService} from '@eg/staff/share/hold.service';
+import {PartsComponent} from './record/parts.component';
+import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
+import {BrowseComponent} from './browse.component';
+import {BrowseResultsComponent} from './browse/results.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +33,13 @@ import {HoldingsService} from '@eg/staff/share/holdings.service';
     ResultFacetsComponent,
     ResultPaginationComponent,
     RecordPaginationComponent,
-    RecordActionsComponent
+    RecordActionsComponent,
+    BasketActionsComponent,
+    HoldComponent,
+    PartsComponent,
+    PartMergeDialogComponent,
+    BrowseComponent,
+    BrowseResultsComponent
   ],
   imports: [
     StaffCommonModule,
@@ -35,7 +48,8 @@ import {HoldingsService} from '@eg/staff/share/holdings.service';
   ],
   providers: [
     StaffCatalogService,
-    HoldingsService
+    HoldingsService,
+    HoldService
   ]
 })
 
