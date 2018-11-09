@@ -243,7 +243,7 @@
                             </div>
                             <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.page.dimensions.rows > 1 || preview_scope.toolbox_settings.page.dimensions.columns > 1">
                                 <h4>Starting Position on Label Grid</h4>
-                                <p>Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in "Print Grid Size"</p>
+                                <p>Specify the starting <span ng-if="preview_scope.toolbox_settings.feed_option.selected == 'sheet'">row and </span>column where labels should begin printing. Values must not exceed the respective <span ng-if="preview_scope.toolbox_settings.feed_option.selected == 'sheet'">row and </span>column size specified in "Print Grid Size"</p>
                                 <ul>
                                     <li ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
                                         <label>Row:</label>

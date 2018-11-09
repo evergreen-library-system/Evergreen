@@ -288,6 +288,13 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                         egCore.print.fleshPrintScope($scope.preview_scope);
                         $scope.template_changed(); // load the default
                         $scope.rebuild_cn_set();
+                        if ($scope.preview_scope.toolbox_settings && $scope.template_name && $scope.print.template_content) {
+                            var re = /eg\_plt/i;
+                            if (re.test($scope.print.template_content)) {
+                                $scope.applyTemplate($scope.template_name);
+                                $scope.redraw_label_table();
+                            }
+                        }
                     });
 
                 });
@@ -527,6 +534,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
             var output = (style ? style.join("\n") : "") + (comments ? comments.join("\n") : "") + table;
             output = output.replace(/\n+/, "\n");
             $scope.print.template_content = output;
+            $scope.save_locally();
         }
     }
 
