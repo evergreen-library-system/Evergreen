@@ -52,6 +52,7 @@
                             id="browse-search-class" browse_only=1 plural=1 %]
 
                         [% control_bterm = BLOCK %]<input type="text" name="bterm" id="browse-term"
+                            aria-label="[% l('Browse term') %]"
                             value="[% CGI.param('bterm') | html %]" />[% END %]
                         [% control_locg = INCLUDE build_org_selector id='browse-context'
                             show_loc_groups=1

@@ -108,6 +108,7 @@
                                                 <input type="checkbox" id="select-[% rec.bre_id %]" name="selected_record"
                                                     [% IF is_selected %] checked="checked" [% END %]
                                                     title="[% l('Add to Basket') %]"
+                                                    aria-label="[% l('Add to Basket') %]"
                                                     class="result_record_selector hidden" value="[% rec.bre_id %]"></input>
                                                 [% END %]
                                                 [% result_count; result_count = result_count + 1 %].

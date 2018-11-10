@@ -96,10 +96,10 @@
                             <br/>
                             <div id='adv_special_block'>
                             [% END %]
-                                <input title="[% l('Search date') %]"
+                                <input title="[% l('Search date') %]" aria-label="[% l('Search date') %]"
                                   name='date1' type='text' size='4' maxlength='4' value="[% CGI.param('date1') | html %]" />
                                 <span id='adv_global_pub_date_2_span' class='[% CGI.param("pubdate") == "between" ? "" : "hide_me" %]'>
-                                   [% l("and") %] <input name='date2'
+                                   [% l("and") %] <input name='date2' aria-label="[% l('Secondary search date') %]"
                                     title="[% l('Secondary search date') %]" type='text' size='4' maxlength='4' value="[% CGI.param('date2') | html %]" />
                                 </span>
                             [% IF !ctx.exclude_electronic_checkbox %]
