@@ -4798,7 +4798,7 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('ui.patron.default_inet_access_level',
         'Default level of patrons'' internet access',
         'coust', 'description'),
-    'integer', null)
+    'link', 'cnal')
 
 ,( 'ui.patron.edit.au.active.show', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.active.show',
