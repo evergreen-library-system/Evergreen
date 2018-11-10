@@ -105,7 +105,8 @@ function maybeToggleNumCopies(obj) {
             <label for="hold_usr_is_requestor_not">
                 [% l("Place hold for patron by barcode:") %]
             </label>
-            <input type="text" name="hold_usr" id="hold_usr_input" 
+            <input type="text" name="hold_usr" id="hold_usr_input"
+              aria-label="[% l('Barcode') %]"
               value="[% usr_barcode | html %]" 
               onchange="staff_hold_usr_barcode_changed();" 
               onpaste="setTimeout(staff_hold_usr_barcode_changed,1);" 
@@ -260,11 +261,13 @@ function maybeToggleNumCopies(obj) {
                 [% END %]
             </blockquote>
             <blockquote>
+                <label for="hold_suspend">
                 [% IF ctx.hold_data.size == 1;
 		       l('Suspend this hold?');
 		   ELSE;
 		       l('Suspend these holds?');
 		   END %]
+                </label>
                 <img src="[% ctx.media_prefix %]/images/question-mark.png[% ctx.cache_key %]"
                      alt="[% l('Suspend Hold Help') %]"
                      title="[% l('A suspended hold will retain its place in the queue, but will not be fulfilled until it has been activated.') %]" />
@@ -279,7 +282,7 @@ function maybeToggleNumCopies(obj) {
             </blockquote>
         </p>
         [% IF CGI.param('from_basket') %]
-          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket after holds are requested?') %]</input></blockquote>
+          <blockquote><input type="checkbox" name="clear_cart" id="clear_cart" /><label for="clear_cart">[% l('Clear basket after holds are requested?') %]</label></blockquote>
         [% END %]
         <input id="place_hold_submit" type="submit" name="submit" 
             value="[% l('Submit') %]" title="[% l('Submit') %]"

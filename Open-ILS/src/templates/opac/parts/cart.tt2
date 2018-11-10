@@ -1,6 +1,6 @@
 <div id="record_basket">
   <div id="basket_actions">
-    <select id="select_basket_action">
+    <select id="select_basket_action" aria-label="[% l('Select basket action') %]">
       <option value="">[% l('-- Basket Actions --') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist', {}) %]">[% l('View Basket') %]</option>
       <option value="[% mkurl(ctx.opac_root _ '/mylist/move', { action => 'place_hold', entire_list => 1 }) %]">[% l('Place Holds') %]</option>

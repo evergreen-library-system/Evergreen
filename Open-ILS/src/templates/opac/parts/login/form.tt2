@@ -50,7 +50,7 @@
             %]
             <input type='hidden' name='redirect_to' value='[% redirect | html %]'/>
             <input type="checkbox" name="persist" id="login_persist" /><label for="login_persist"> [% l('Stay logged in?') %]</label>
-            <input type="submit" value="[% l('Log in') %]" alt="[% l('Log in') %]" class="opac-button" />
+            <input type="submit" value="[% l('Log in') %]" class="opac-button" />
         </div>
         <input id="client_tz_id" name="client_tz" type="hidden" />
     </form>

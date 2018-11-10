@@ -16,7 +16,7 @@
         <input type="hidden" name="orig_referrer" value="[% CGI.referer | html %]" />
         <input type="hidden" name="redirect_to" value="[% mkurl('', {}, ['list_none_selected', 'cart_none_selected']) %]" />
         <div class="bbag-action" style="clear:both;">
-            <select name="action">
+            <select name="action" aria-label="[% l('Actions for these items') %]">
                 <option>[% l('-- Actions for these items --') %]</option>
                 <option value="place_hold">[% l('Place hold') %]</option>
                 <option value="print">[% l('Print title details') %]</option>
@@ -33,7 +33,7 @@
             </select>
             [%- INCLUDE "opac/parts/preserve_params.tt2"; %]
             <input class="opac-button" type="submit" value="[% l('Go') %]" />
-            <input type="checkbox" name="clear_cart">[% l('Clear entire basket when action complete') %]</input>
+            <input type="checkbox" name="clear_cart" id="clear_cart" /><label for="clear_cart">[% l('Clear entire basket when action complete') %]</label>
             [% IF CGI.param('cart_none_selected') %]
                 <span class="error">[% l('No items were selected') %]</span>
             [% END %]
@@ -43,7 +43,8 @@
                 <thead id="acct_list_header_anon">
                     <tr>
                         <td class='list_checkbox'>
-                            <input type="checkbox" checked="checked" onclick="
+                            <input type="checkbox" checked="checked"
+                                aria-label="[% l('Select all records') %]" onclick="
                                 var inputs=document.getElementsByTagName('input'); 
                                 for (i = 0; i < inputs.length; i++) { 
                                     if (inputs[i].name == 'record' && !inputs[i].disabled) inputs[i].checked = this.checked;}"/>
@@ -59,7 +60,7 @@
                         PROCESS get_marc_attrs args=attrs %]
                     <tr>
                         <td class="list_checkbox">
-                            <input type="checkbox" checked="checked" name="record" value="[% item %]" />
+                            <input type="checkbox" checked="checked" name="record" value="[% item %]" aria-label="[% l('Select record') %]" />
                         </td>
                         <td class="list_entry" data-label="[% l('Title') %]"><a href="[% mkurl(ctx.opac_root _ '/record/' _ item, {}, ['edit_notes', 'id']) %]">[% attrs.title | html %]</a></td>
                         <td class="list_entry" data-label="[% l('Author(s)') %]"><a href="[%-
