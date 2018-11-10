@@ -17,7 +17,7 @@
                     <option value="item_barcode">[% l('Item Barcode') %]</option>
                 </select>
 	
-                <input type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' />
+                <input type="text" name="query" size="16" autofocus placeholder='[% l("Identifier") %]' aria-label='[% l("Identifier") %]' />
 	    <br/>
             [%- lib_select_id="numeric_search_library" -%]
             <label for="[% lib_select_id %]"><strong>[% l("Search Library:") %]</strong>
