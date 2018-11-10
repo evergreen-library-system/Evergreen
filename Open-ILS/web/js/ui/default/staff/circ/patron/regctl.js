@@ -861,6 +861,7 @@ angular.module('egCoreMod')
             card : card,
             cards : [card],
             home_ou : egCore.org.get(egCore.auth.user().ws_ou()),
+            net_access_level : service.org_settings['ui.patron.default_inet_access_level'],
             stat_cat_entries : [],
             waiver_entries : [],
             groups : [],
