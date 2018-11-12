@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1134', :eg_version);
 
 CREATE OR REPLACE FUNCTION metabib.staged_browse(query text, fields integer[], context_org integer, context_locations integer[], staff boolean, browse_superpage_size integer, count_up_from_zero boolean, result_limit integer, next_pivot_pos integer)
  RETURNS SETOF metabib.flat_browse_entry_appearance
