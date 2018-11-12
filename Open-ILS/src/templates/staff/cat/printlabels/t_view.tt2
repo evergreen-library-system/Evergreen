@@ -185,13 +185,13 @@
                 <div ng-show="current_tab == 'settings'">
                     <div>
                         <span>
-                          <b>*All settings will be saved with templates</b>
+                          <b>[% l('*All settings will be saved with templates') %]</b>
                         </span>
                     </div>
                     <form id="print_label_form" name="print_label_form">
                         <div class="print-label-toolbox">
                             <div class="eg-print-label-section">
-                                <h4>Print Feed Option</h4>
+                                <h4>[% l('Print Feed Option') %]</h4>
                                 <ul>
                                     <li ng-repeat="x in preview_scope.toolbox_settings.feed_option.options">
                                         <label>{{x.label}}:</label>
@@ -200,7 +200,7 @@
                                 </ul>
                             </div>
                             <div class="eg-print-label-section">
-                                <h4>Print Option</h4>
+                                <h4>[% l('Print Option') %]</h4>
                                 <ul>
                                     <li ng-repeat="x in preview_scope.toolbox_settings.mode.options">
                                         <label>{{x.label}}:</label>
@@ -208,10 +208,10 @@
                                     </li>
                                 </ul>
                             </div>
-                            <h3>Page Settings</h3>
+                            <h4>[% l('Page Settings') %]</h4>
                             <div class="eg-print-label-section">
-                                <h4>Page Margins</h4>
-                                <p>Must be in format "0.25in", "2.5cm", "1.5in", etc. (units of measurement must be valid CSS)</p>
+                                <p><strong>[% l('Page Margins') %]</strong>
+                                <eg-help-popover help-text="[% l('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                                 <ul>
                                     <li ng-repeat="(x, y) in preview_scope.toolbox_settings.page.margins">
                                         <label>{{y.label}}:</label>
@@ -220,52 +220,53 @@
                                 </ul>
                             </div>
                             <div class="eg-print-label-section">
-                                <h4>Print Grid Size</h4>
-                                <p>Please specify the number of columns and rows (if applicable) on the print medium. This setting is only used to control page layouts and breaks. It will not limit the number of rows printed, which is determined by the number of selected copies. The column count should include each label in a row. For example, if you have a row with two sets of labels that include one spine and one pocket, the count is four.</p>
+                                <p><strong>[% l('Print Grid Size') %]</strong>
+                                <eg-help-popover help-text="[% l('Please specify the number of columns and rows (if applicable) on the print medium. This setting is only used to control page layouts and breaks. It will not limit the number of rows printed, which is determined by the number of selected copies. The column count should include each label in a row. For example, if you have a row with two sets of labels that include one spine and one pocket, the count is four.') %]"></p>
                                 <ul>
                                     <li ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
-                                        <label>Rows:</label>
+                                        <label>[% l('Rows') %]:</label>
                                         <input type="number" ng-model="preview_scope.toolbox_settings.page.dimensions.rows" ng-min="1" required />
                                     </li>
                                     <li>
-                                        <label>Columns:</label>
+                                        <label>[% l('Columns') %]:</label>
                                         <input type="number" ng-model="preview_scope.toolbox_settings.page.dimensions.columns" ng-min="1" required />
                                     </li>
                                 </ul>
                             </div>
                             <div class="eg-print-label-section">
-                                <label>Gap Between Rows</label> <input type="text" ng-model="preview_scope.toolbox_settings.page.space_between_labels.vertical.size" ng-min="0" eg-print-label-valid-css required />
-                                <p>Must be in format "0.25in", "2.5cm", "1.5in", etc. (units of measurement must be valid CSS)</p><br />
-                                <label>Gap Between Columns of a Label Set</label>
-                              <input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required />
-                                <p>Gap between a label “set” (i.e. gap between each spine/pocket combo). Use label 2 left margin to identify how much space to provide between labels within one set. Must be in format "0.25in", "2.5cm", "1.5in", etc. (units of measurement must be valid CSS)</p>
+                                <p><label>[% l('Gap Between Rows') %]</label>
+                                <eg-help-popover help-text="[%l ('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                                <p><input type="text" ng-model="preview_scope.toolbox_settings.page.space_between_labels.vertical.size" ng-min="0" eg-print-label-valid-css required /></p>
+                                <p><label>[% l('Gap Between Columns of a Label Set') %]</label>
+                                <eg-help-popover help-text="[% l('Gap between a label set (i.e. gap between each spine/pocket combo). Use label 2 left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                              <p><input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required /></p>
                             </div>
                             <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.page.dimensions.rows > 1 || preview_scope.toolbox_settings.page.dimensions.columns > 1">
-                                <h4>Starting Position on Label Grid</h4>
-                                <p>Specify the starting <span ng-if="preview_scope.toolbox_settings.feed_option.selected == 'sheet'">row and </span>column where labels should begin printing. Values must not exceed the respective <span ng-if="preview_scope.toolbox_settings.feed_option.selected == 'sheet'">row and </span>column size specified in "Print Grid Size"</p>
+                                <p><strong>[% l('Starting Position on Label Grid') %]</strong>
+                                <eg-help-popover help-text="[% l('Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in &quot;Print Grid Size&quot;') %]"></p>
                                 <ul>
                                     <li ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
-                                        <label>Row:</label>
+                                        <label>[% l('Row') %]:</label>
                                         <input type="number" eg-print-label-valid-int eg-print-label-row-bounds ng-model="preview_scope.toolbox_settings.page.start_position.row" ng-min="1" required />
                                     </li>
                                     <li>
-                                        <label>Column:</label>
+                                        <label>[% l('Column') %]:</label>
                                         <input type="number" eg-print-label-valid-int="" eg-print-label-column-bounds ng-model="preview_scope.toolbox_settings.page.start_position.column" ng-min="1"  required />
                                     </li>
                                 </ul>
                             </div>
                             <div class="eg-print-label-section">
-                                <h4>Label Set Configuration</h4>
-                                <label>Number of Labels in Set:</label>
+                                <h4>[% l('Label Set Configuration') %]</h4>
+                                <label>[% l('Number of Labels in Set') %]:</label>
                               <input type="number" eg-print-label-valid-int="" ng-min="1" ng-model="preview_scope.toolbox_settings.page.label.set.size" />
                               <br />
                               <br />
                                 <ul ng-if="preview_scope.valid_print_label_start_column() && preview_scope.valid_print_label_start_row() && preview_scope.toolbox_settings.mode.selected === 'spine-pocket'">
                                     <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
-                                        <label>Col. {{i + 1}}</label>
+                                        <label>[% l('Column') %] {{i + 1}}</label>
                                         <select id="eg_print_label_column_spec_{{i}}" ng-model="preview_scope.toolbox_settings.page.column_class[i]" ng-change="redraw_label_table()">
-                                            <option value="spine">Label 1</option>
-                                            <option value="pocket">Label 2</option>
+                                            <option value="spine">[% l('Label 1') %]</option>
+                                            <option value="pocket">[% l('Label 2') %]</option>
                                         </select>
                                     </li>
                                 </ul>
