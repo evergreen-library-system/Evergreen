@@ -27,7 +27,7 @@ s.LOCATION_ALERT_MSG =
     "{{copy.barcode()}}","{{copy.location().name()}}") %]';
 s.MARK_DAMAGED_CONFIRM = '[% l("Mark {{num_items}} items as DAMAGED?") %]';
 s.MARK_MISSING_CONFIRM = '[% l("Mark {{num_items}} items as MISSING?") %]';
-s.MARK_DISCARD_CONFIRM = '[% l("Mark {{num_items}} items as DICARD/WEED?") %]';
+s.MARK_DISCARD_CONFIRM = '[% l("Mark {{num_items}} items as DISCARD/WEED?") %]';
 s.MARK_ITEM_CHECKED_OUT = '[% l("Item {{barcode}} is checked out.") %]';
 s.MARK_ITEM_IN_TRANSIT = '[% l("Item {{barcode}} is in transit.") %]';
 s.MARK_ITEM_RESTRICT_DELETE = '[% l("Item {{barcode}} is in a status with a copy delete warning.") %]';

@@ -1376,21 +1376,21 @@ sub mark_item {
     return $evt if $evt;
 
     # Retrieving holds for later use.
-    my $holds = $e->search_action_hold_request(
+    my $holds = $e->search_action_hold_request([
         {
             current_copy => $copy->id,
             fulfillment_time => undef,
             cancel_time => undef,
         },
         {flesh=>1, flesh_fields=>{ahr=>['eligible_copies']}}
-    );
+    ]);
 
     # Throw event if attempting to  mark discard the only copy to fill a hold.
     if ($self->api_name =~ /discard/) {
         if (!$args->{handle_last_hold_copy}) {
             for my $hold (@$holds) {
                 my $eligible = $hold->eligible_copies();
-                if (scalar(@{$eligible}) < 2) {
+                if (!defined($eligible) || scalar(@{$eligible}) < 2) {
                     $evt = OpenILS::Event->new('ITEM_TO_MARK_LAST_HOLD_COPY');
                     last;
                 }
