@@ -838,6 +838,7 @@ DECLARE
     opac_visibility_join    TEXT;
     search_class_join       TEXT;
     r_fields                RECORD;
+    b_tests                 TEXT := '';
 BEGIN
     prepared_query_texts := metabib.autosuggest_prepare_tsquery(raw_query_text);
 
@@ -850,8 +851,21 @@ BEGIN
         IF FOUND THEN
             opac_visibility_join := '';
         ELSE
+            PERFORM 1 FROM config.internal_flag WHERE enabled AND name = 'opac.located_uri.act_as_copy';
+            IF FOUND THEN
+                b_tests := search.calculate_visibility_attribute_test(
+                    'luri_org',
+                    (SELECT ARRAY_AGG(id) FROM actor.org_unit_full_path(visibility_org))
+                );
+            ELSE
+                b_tests := search.calculate_visibility_attribute_test(
+                    'luri_org',
+                    (SELECT ARRAY_AGG(id) FROM actor.org_unit_ancestors(visibility_org))
+                );
+            END IF;
             opac_visibility_join := '
-    JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = x.source)
+    LEFT JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = x.source)
+    LEFT JOIN biblio.record_entry b ON (b.id = x.source)
     JOIN vm ON (acvac.vis_attr_vector @@
             (vm.c_attrs || $$&$$ ||
                 search.calculate_visibility_attribute_test(
@@ -859,7 +873,7 @@ BEGIN
                     (SELECT ARRAY_AGG(id) FROM actor.org_unit_descendants($4))
                 )
             )::query_int
-         )
+         ) OR (b.vis_attr_vector @@ $$' || b_tests || '$$::query_int)
 ';
         END IF;
     ELSE
