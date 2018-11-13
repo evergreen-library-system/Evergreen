@@ -6,7 +6,7 @@
 <div id='adv_global_search' class='data_grid data_grid_center'>
     <div id='adv_search_rows'>
         <!-- Contains the user-addable(?) rows to define search class, containment and text -->
-        <div valign='top' class='adv_global_input_container'>
+        <div class='adv_global_input_container'>
             <table id='adv_global_input_table' role="presentation">
                 <thead>
                     <tr>
@@ -58,7 +58,7 @@
 [%
         END; %]
             <div class='adv_filter_block_item'>
-            <div valign='top'[% IF adv_chunk.js_only %]
+            <div [% IF adv_chunk.js_only %]
                 id='adv_chunk_[% adv_chunk.adv_special %]'
                 class='hidden'[% END %]>
                 <strong><label for="[% adv_chunk.id %]">
