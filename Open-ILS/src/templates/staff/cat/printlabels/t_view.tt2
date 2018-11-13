@@ -9,59 +9,6 @@
   page-break-before: always;
   }
 
-  div.print-label-toolbox input[type=number], div.print-label-toolbox input[type=text] {
-  border: 1px solid #999;
-  border-radius: 3px;
-  margin-right: 12px;
-  width: 56px;
-  }
-
-  div.print-label-toolbox div.eg-print-label-section {
-  border-bottom: 1px solid #DED;
-  display: block;
-  margin: 0 0 10px 0;
-  padding: 0 0 10px 0;
-  }
-
-  div.print-label-toolbox input.ng-invalid {
-  background-color: #FFFF00;
-  color: #FF0000;
-  }
-
-  div.print-label-toolbox label {
-  padding-right: 4px;
-  }
-
-  div.print-label-toolbox ul {
-  display: block;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  }
-
-  div.print-label-toolbox ul li {
-  display: inline-block;
-  padding: 0 0 0 6px;
-  }
-
-  div.print-label-toolbox ul li:first-child {
-  display: inline-block;
-  padding: 0 0 0 0;
-  }
-
-  table.custom-label-table td {
-  vertical-align: top;
-  }
-
-  .print-template-text {
-  height: 36em;
-  width: 100%;
-  }
-
-  .cn-template-text {
-  height: 12em;
-  width: 100%;
-  }
 </style>
 
 <div class="container-fluid" style="text-align:center">
@@ -190,6 +137,7 @@
                     </div>
                     <form id="print_label_form" name="print_label_form">
                         <div class="print-label-toolbox">
+                          <div class="eg-print-label-group">
                             <div class="eg-print-label-section">
                                 <h4>[% l('Print Feed Option') %]</h4>
                                 <ul>
@@ -198,8 +146,8 @@
                                         <input name="label-feed-option" ng-model="preview_scope.toolbox_settings.feed_option.selected" ng-change="redraw_label_table()" type="radio" value="{{x.value}}" />
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="eg-print-label-section">
+                              </div>
+                              <div class="eg-print-label-section">
                                 <h4>[% l('Print Option') %]</h4>
                                 <ul>
                                     <li ng-repeat="x in preview_scope.toolbox_settings.mode.options">
@@ -207,9 +155,11 @@
                                         <input name="label-output-mode" ng-model="preview_scope.toolbox_settings.mode.selected" type="radio" value="{{x.value}}" />
                                     </li>
                                 </ul>
+                              </div>
                             </div>
+                            <div class="eg-print-label-group">
                             <h4>[% l('Page Settings') %]</h4>
-                            <div class="eg-print-label-section">
+                              <div class="eg-print-label-section">
                                 <p><strong>[% l('Page Margins') %]</strong>
                                 <eg-help-popover help-text="[% l('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                                 <ul>
@@ -218,8 +168,8 @@
                                         <input type="text" eg-print-label-valid-css ng-model="preview_scope.toolbox_settings.page.margins[x].size" required />
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="eg-print-label-section">
+                              </div>
+                              <div class="eg-print-label-section">
                                 <p><strong>[% l('Print Grid Size') %]</strong>
                                 <eg-help-popover help-text="[% l('Please specify the number of columns and rows (if applicable) on the print medium. This setting is only used to control page layouts and breaks. It will not limit the number of rows printed, which is determined by the number of selected copies. The column count should include each label in a row. For example, if you have a row with two sets of labels that include one spine and one pocket, the count is four.') %]"></p>
                                 <ul>
@@ -232,16 +182,19 @@
                                         <input type="number" ng-model="preview_scope.toolbox_settings.page.dimensions.columns" ng-min="1" required />
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="eg-print-label-section">
+                              </div>
+                              <div class="eg-print-label-section">
                                 <p><label>[% l('Gap Between Rows') %]</label>
                                 <eg-help-popover help-text="[%l ('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                                 <p><input type="text" ng-model="preview_scope.toolbox_settings.page.space_between_labels.vertical.size" ng-min="0" eg-print-label-valid-css required /></p>
-                                <p><label>[% l('Gap Between Columns of a Label Set') %]</label>
-                                <eg-help-popover help-text="[% l('Gap between a label set (i.e. gap between each spine/pocket combo). Use label 2 left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                               </div>
+                               <div class="eg-print-label-section">
+                                <p><label>[% l('Gap Between Columns') %]</label>
+                                <eg-help-popover help-text="[% l('Gap between each label set (spine/pocket combo) or, when using only one type of label, between each
+label. Use label 2 left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                               <p><input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required /></p>
-                            </div>
-                            <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.page.dimensions.rows > 1 || preview_scope.toolbox_settings.page.dimensions.columns > 1">
+                              </div>
+                              <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.page.dimensions.rows > 1 || preview_scope.toolbox_settings.page.dimensions.columns > 1">
                                 <p><strong>[% l('Starting Position on Label Grid') %]</strong>
                                 <eg-help-popover help-text="[% l('Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in &quot;Print Grid Size&quot;') %]"></p>
                                 <ul>
@@ -254,13 +207,15 @@
                                         <input type="number" eg-print-label-valid-int="" eg-print-label-column-bounds ng-model="preview_scope.toolbox_settings.page.start_position.column" ng-min="1"  required />
                                     </li>
                                 </ul>
-                            </div>
-                            <div class="eg-print-label-section">
-                                <h4>[% l('Label Set Configuration') %]</h4>
+                                </div>
+                              </div> 
+                              <div class="eg-print-label-group">
+                                <div class="eg-print-label-section">
+                                <h4>[% l('Label Set Configuration') %]
+                                <eg-help-popover help-text="[% l('A label set is a group of labels that should print data from the same bibliographic record. In this
+section, identify the number of labels contained in each set, which columns should print spine label data, and which columns should print pocket label data.') %]"></h4>
                                 <label>[% l('Number of Labels in Set') %]:</label>
                               <input type="number" eg-print-label-valid-int="" ng-min="1" ng-model="preview_scope.toolbox_settings.page.label.set.size" />
-                              <br />
-                              <br />
                                 <ul ng-if="preview_scope.valid_print_label_start_column() && preview_scope.valid_print_label_start_row() && preview_scope.toolbox_settings.mode.selected === 'spine-pocket'">
                                     <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
                                         <label>[% l('Column') %] {{i + 1}}</label>
@@ -271,22 +226,26 @@
                                     </li>
                                 </ul>
                               <br />
+                              </div>
                             </div>                          
                         </div>                
                     </form>
-                    <div>
+                    <div class="eg-print-label-group">
+                      <div>
+                       <h4>Font & Label Settings</h4>
                         <span>
                             [% l('These settings do get saved with templates and will override corresponding Library Settings.') %]<br/>
                         </span>
-                    </div>
-                    <div ng-repeat="s in org_unit_settings">
+                      </div>
+                      <div ng-repeat="s in org_unit_settings">
                         <div class="row" style="margin-top: 5mm;">
                         <div class="col-md-6"><label>{{s.label}} <eg-help-popover help-text="{{s.description}}"></label></div>
                             <div class="col-md-6">
                                 <input type="text" ng-model="preview_scope.settings[s.name]"></input>
                             </div>
-                        </div>
-                    </div>
+                         </div>
+                      </div>
+                     </div>
                 </div>
                 <div ng-show="current_tab == 'template'">
                     <div ng-if="print.load_failed" class="alert alert-danger">

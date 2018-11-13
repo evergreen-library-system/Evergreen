@@ -198,3 +198,67 @@ grid[name="-none-"] * label { color: black; }
     white-space: nowrap;
 }
 
+/* Print Item Templates Styles */
+
+div.print-label-toolbox input[type=number], div.print-label-toolbox input[type=text] {
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin-right: 12px;
+  width: 56px;
+  }
+
+div.print-label-toolbox div.eg-print-label-section {
+  display: block;
+  margin: 0 0 10px 0;
+  }
+
+div.eg-print-label-group {
+  border-bottom: 1px solid #DED;
+  margin: 0 0 10px 0;
+  padding: 0 0 10px 0;
+  }
+
+.eg-print-label-section p {
+  margin: 0 0 5px 0;
+  }
+
+div.print-label-toolbox input.ng-invalid {
+  background-color: #FFFF00;
+  color: #FF0000;
+  }
+
+div.print-label-toolbox label {
+  padding-right: 4px;
+  }
+
+div.print-label-toolbox ul {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  }
+
+div.print-label-toolbox ul li {
+  display: inline-block;
+  padding: 0 0 0 6px;
+  }
+
+div.print-label-toolbox ul li:first-child {
+  display: inline-block;
+  padding: 0 0 0 0;
+  }
+
+table.custom-label-table td {
+  vertical-align: top;
+  }
+
+.print-template-text {
+   height: 36em;
+   width: 100%;
+   }
+
+.cn-template-text {
+  height: 12em;
+  width: 100%;
+  }
+
