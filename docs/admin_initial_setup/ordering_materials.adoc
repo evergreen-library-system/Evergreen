@@ -17,7 +17,7 @@ When should libraries use acquisitions?
 * When you want to import large batches of records to quickly get your on-order
   titles into the system.
 
-If your library simply wants to add on-order copies to the catalog so that
+If your library simply wants to add on-order items to the catalog so that
 patrons can view and place holds on titles that have not yet arrived,
 acquisitions may be more than you need. Adding those on-order records via
 cataloging is a simpler option that works well for this use case.
@@ -140,8 +140,8 @@ Providers are the vendors from whom you order titles.
 Distribution Formulas (Optional)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If you are ordering for a multi-branch library system, distribution formulas
-are a useful way to specify the number of copies that should be distributed to
-specific branches and copy locations.
+are a useful way to specify the number of items that should be distributed to
+specific branches and item locations.
 
 . To create a distribution formula, select *Administration -> Acquisitions
   Administration -> Distribution Formulas*. Click the *New Formula* button. Enter
@@ -161,10 +161,10 @@ acquisitions workflow. These settings can be found at *Administration -> Local
 Administration -> Library Settings Editor*.
 
 * Default circulation modifier - Automatically applies a default circulation
-  modifier to all of your acquisitions copies. Useful if you use a specific
-  circulation modifier for on-order copies.
-* Default copy location - Automatically applies a default copy location (e.g.
-  On Order) to acquisitions copies.
+  modifier to all of your acquisitions items. Useful if you use a specific
+  circulation modifier for on-order items.
+* Default copy location - Automatically applies a default item location (e.g.
+  On Order) to acquisitions items.
 * Temporary barcode prefix - Applies a unique prefix to the barcode that is
   automatically generated during the acquisitions process.
 * Temporary call number prefix - Applies a unique prefix to the start of the
@@ -174,7 +174,7 @@ Preparing for order record loading
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 If your library is planning to upload order records in a batch, you need to add
 some information to your provider records so that Evergreen knows how to map
-the copy data contained in the order record.
+the item data contained in the order record.
 
 . Retrieve the record for the provider that has supplied the order records by
   selecting *Administration -> Acquisitions Administration -> Providers*. Click on
