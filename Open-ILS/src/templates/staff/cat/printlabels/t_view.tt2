@@ -191,7 +191,7 @@
                                <div class="eg-print-label-section">
                                 <p><label>[% l('Gap Between Columns') %]</label>
                                 <eg-help-popover help-text="[% l('Gap between each label set (spine/pocket combo) or, when using only one type of label, between each
-label. Use label 2 left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+label. Use pocket label left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                               <p><input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required /></p>
                               </div>
                               <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.page.dimensions.rows > 1 || preview_scope.toolbox_settings.page.dimensions.columns > 1">
@@ -220,8 +220,8 @@ section, identify the number of labels contained in each set, which columns shou
                                     <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
                                         <label>[% l('Column') %] {{i + 1}}</label>
                                         <select id="eg_print_label_column_spec_{{i}}" ng-model="preview_scope.toolbox_settings.page.column_class[i]" ng-change="redraw_label_table()">
-                                            <option value="spine">[% l('Label 1') %]</option>
-                                            <option value="pocket">[% l('Label 2') %]</option>
+                                            <option value="spine">[% l('Spine Label') %]</option>
+                                            <option value="pocket">[% l('Pocket Label') %]</option>
                                         </select>
                                     </li>
                                 </ul>

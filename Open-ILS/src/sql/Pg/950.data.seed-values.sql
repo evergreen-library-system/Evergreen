@@ -17064,13 +17064,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Item Print Label - Left Margin for Left Label'
+        ,'Item Print Label - Left Margin for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Set the default left margin for the leftmost item print Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17080,13 +17080,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Item Print Label - Left Margin for Right Label'
+        ,'Item Print Label - Left Margin for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Set the default left margin for the rightmost item print label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Pocket Label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17096,13 +17096,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Item Print Label - Height for Left Label'
+        ,'Item Print Label - Height for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Set the default height for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17112,13 +17112,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Item Print Label - Width for Left Label'
+        ,'Item Print Label - Width for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Set the default width for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17128,13 +17128,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Item Print Label - Height for Right Label'
+        ,'Item Print Label - Height for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Set the default height for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17144,13 +17144,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Item Print Label - Width for Right Label'
+        ,'Item Print Label - Width for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Set the default width for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
