@@ -5,7 +5,7 @@ Introduction
 ------------
 
 When you migrate to Evergreen, you generally want to migrate the bibliographic
-records and copy information that existed in your previous library system. For
+records and item information that existed in your previous library system. For
 anything more than a few thousand records, you should import the data directly
 into the database rather than use the tools in the staff client. While the data
 that you can extract from your legacy system varies widely, this section
@@ -16,7 +16,7 @@ data formats so that you can then load the data into the database in bulk.
 
 Making electronic resources visible in the catalog
 --------------------------------------------------
-Electronic resources generally do not have any call number or copy information
+Electronic resources generally do not have any call number or item information
 associated with them, and Evergreen enables you to easily make bibliographic
 records visible in the public catalog within sections of the organizational
 unit hierarchy. For example, you can make a set of bibliographic records
@@ -147,17 +147,17 @@ and a label suffix. Label prefixes and suffixes do not affect the sort order of
 the label.
 
 'Copies' connect call numbers to particular instances of that resource at a
-particular library. Each copy has a barcode and must exist in a particular copy
+particular library. Each item has a barcode and must exist in a particular item
 location. Other optional attributes of items include circulation modifier,
-which may affect whether that copy can circulate or for how long it can
-circulate, and OPAC visibility, which controls whether that particular copy
+which may affect whether that item can circulate or for how long it can
+circulate, and OPAC visibility, which controls whether that particular item
 should be visible in the public catalog.
 
 'Parts' provide more granularity for items, primarily to enable patrons to
 place holds on individual parts of a set of items. For example, an encyclopedia
 might be represented by a single bibliographic record, with a single call
 number representing the label for that encyclopedia at a given library, with 26
-items representing each letter of the alphabet, with each copy mapped to a
+items representing each letter of the alphabet, with each item mapped to a
 different part such as _A, B, C, ... Z_.
 
 To migrate this data into your Evergreen system, you will create another
@@ -192,7 +192,7 @@ CREATE TABLE staging_materials (
 
 For the purposes of this example migration of call numbers, items, and parts,
 we assume that you are able to create a tab-delimited file containing values
-that map to the staging table properties, with one copy per line. For example,
+that map to the staging table properties, with one item per line. For example,
 the following 5 lines demonstrate how the file could look for 5 different
 items, with non-applicable attribute values represented by _\N_, and 3 of the
 items connected to a single call number and bibliographic record via parts:
@@ -217,7 +217,7 @@ COPY staging_items (bibkey, callnum, callnum_prefix,
   item_type, owning_lib, barcode, part) FROM 'holdings.tsv';
 ------------------------------------------------------------------------------
 
-Generate the copy locations you need to represent your holdings:
+Generate the item locations you need to represent your holdings:
 
 [source,sql]
 ------------------------------------------------------------------------------
