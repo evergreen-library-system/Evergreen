@@ -117,8 +117,8 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
         },
         mode: {
             options: [
-                { label: "Label 1 Only", value: "spine-only" },
-                { label: "Labels 1 & 2", value: "spine-pocket" }
+                { label: "Spine Label", value: "spine-only" },
+                { label: "Pocket Label", value: "spine-pocket" }
             ],
             selected: "spine-pocket"
         },
