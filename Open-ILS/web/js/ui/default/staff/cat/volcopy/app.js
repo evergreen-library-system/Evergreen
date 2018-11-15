@@ -2567,8 +2567,6 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
 
                 $scope.clearWorking = function () {
                     angular.forEach($scope.working, function (v,k,o) {
-                        if (k != 'MultiMap') $scope.working.MultiMap[k] = [];
-                        $scope.working.MultiMap[k] = [];
                         if (!angular.isObject(v)) {
                             if (typeof v != 'undefined')
                                 $scope.working[k] = undefined;
