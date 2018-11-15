@@ -33,8 +33,8 @@ function(egCore) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','location','status','location','floating','circ_modifier','age_protect'],
-            acn : ['record','prefix','suffix'],
+            acp : ['call_number','location','status','location','floating','circ_modifier','age_protect','circ_lib'],
+            acn : ['record','prefix','suffix','owning_lib'],
             bre : ['simple_record','creator','editor']
         },
         select : { 
