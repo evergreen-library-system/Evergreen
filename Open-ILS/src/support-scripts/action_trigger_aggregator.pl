@@ -73,7 +73,7 @@ $0 \
     --end-date 2012-01-07 \
     --output-file 2012-01-07.notify.csv \
     --local-dir /var/run/evergreen/csv \
-    --remote-account 6
+    --remote-acct 6
 
 Options
 
@@ -104,7 +104,7 @@ Options
         Local directory where the output-file is placed.  If --cleanup is 
         set, this is used as the tmp directory for file generation
 
-    --remote-account
+    --remote-acct
         Evergreen config.remote_account ID
         If set, the output-file will be sent via sFTP/SCP to this server.
 
