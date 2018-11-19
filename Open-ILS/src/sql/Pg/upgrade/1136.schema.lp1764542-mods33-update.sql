@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1136', :eg_version);
 
 -- update mods33 data entered by 1100 with a format of 'mods32'
 -- harmless if you have not run 1100 yet
