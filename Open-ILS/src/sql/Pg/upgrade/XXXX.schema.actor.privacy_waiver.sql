@@ -4,7 +4,7 @@ INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
 
 CREATE TABLE actor.usr_privacy_waiver (
     id BIGSERIAL PRIMARY KEY,
-    usr BIGINT NOT NULL REFERENCES actor.usr(id) DEFERRABLE INITIALLY DEFERRED,
+    usr BIGINT NOT NULL REFERENCES actor.usr(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name TEXT NOT NULL,
     place_holds BOOL DEFAULT FALSE,
     pickup_holds BOOL DEFAULT FALSE,
