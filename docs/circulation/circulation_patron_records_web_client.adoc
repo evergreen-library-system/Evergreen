@@ -134,6 +134,18 @@ that is not in the default patron record.
 Date_ button will work, since the permission group determines the expiration date.
 ============================================================================
 
+Email field
+^^^^^^^^^^^
+
+indexterm:[patrons,email addresses]
+indexterm:[email]
+
+It's possible for administrators to set up the email field to allow or disallow
+multiple email addresses for a single patron (usually separated by a comma).
+If you'd like to make changes to whether multiple email addresses
+are allowed here or not, ask your system administrator to change the
+`ui.patron.edit.au.email.regex` library setting.
+
 
 Patron Self-Registration
 ~~~~~~~~~~~~~~~~~~~~~~~~

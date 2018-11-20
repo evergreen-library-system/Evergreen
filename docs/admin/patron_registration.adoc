@@ -1,0 +1,24 @@
+Patron registration administration
+----------------------------------
+
+Email addresses
+~~~~~~~~~~~~~~~
+
+indexterm:[patrons,email addresses]
+indexterm:[email]
+
+
+It's possible to set up the patron registration form to
+either allow or disallow users to enter multiple email
+addresses for a single patron, separated by a comma.
+
+To do this, go to Administration -> Local Administration
+-> Library Settings Editor.  Search for the setting called
+`ui.patron.edit.au.email.regex`.
+
+If you'd like to allow multiple email addresses, set this
+value to `^(?:(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)(?:,\s?(?!$)|$))*$`
+
+If you'd like to disallow multiple email addresses, set
+this value to `^(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)$`
+
