@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-28 02:22+0000\n"
+"POT-Creation-Date: 2018-10-25 02:23+0000\n"
 "PO-Revision-Date: 2018-03-26 19:30+0000\n"
 "Last-Translator: Galen Charlton <gmc@equinoxinitiative.org>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-05-29 06:14+0000\n"
-"X-Generator: Launchpad (build 18667)\n"
+"X-Launchpad-Export-Date: 2018-10-26 05:55+0000\n"
+"X-Generator: Launchpad (build 18810)\n"
 "Language: fi\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:63
@@ -87,9 +87,9 @@ msgstr ""
 msgid "%1 %2"
 msgstr "%1 %2"
 
-#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
+#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:360 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:65 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -121,7 +121,7 @@ msgid "%m/%d/%Y"
 msgstr "%d.%m.%Y"
 
 #. (ctx.record_hold_count, ctx.copy_summary.$count_entry.count)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:224
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:236
 msgid ""
 "%quant(%1,current hold,current holds) with %quant(%2,total copy,total "
 "copies)."
@@ -135,7 +135,7 @@ msgid "%quant(%1,day,days)"
 msgstr ""
 
 #. (fcount)
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:153
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:161
 msgid "%quant(%1,filter,filters) applied"
 msgstr ""
 
@@ -191,7 +191,7 @@ msgstr "(ei näytetä)"
 msgid "(page %1 of %2)"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:148
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:170
 msgid "- All Parts -"
 msgstr "- Kaikki osat -"
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "A registration error has occurred"
 msgstr "Rekisteröinnissä tapahtui virhe"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:245
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:268
 msgid ""
 "A suspended hold will retain its place in the queue, but will not be "
 "fulfilled until it has been activated."
@@ -309,7 +309,7 @@ msgstr "Aktivoi"
 msgid "Activate On"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:251
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:274
 msgid "Activate on"
 msgstr ""
 
@@ -419,7 +419,7 @@ msgstr "Fraasihaku"
 msgid "Advanced"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:166
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:189
 msgid "Advanced Hold Options"
 msgstr ""
 
@@ -448,7 +448,7 @@ msgstr "Kaikki aineistolajit"
 msgid "All Libraries"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:135
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:157
 msgid "All Parts"
 msgstr ""
 
@@ -680,7 +680,7 @@ msgstr "Takaisin tietueeseen"
 msgid "Back to results"
 msgstr "Takaisin tuloksiin"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:437
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:471
 msgid "Badges:"
 msgstr ""
 
@@ -696,7 +696,7 @@ msgstr "Tunnus:"
 msgid "Basic"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:172
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:195
 msgid "Basic Hold Options"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgstr "Hyllypaikka:"
 msgid "Calligrapher"
 msgstr "Kalligraafikko"
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:75 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:66 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:67 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:235 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:42 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:85 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:22 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:260 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:143
+#: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:75 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:66 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:67 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:235 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:42 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:85 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:22 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:283 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:143
 msgid "Cancel"
 msgstr "Peruuta"
 
@@ -919,7 +919,7 @@ msgstr ""
 msgid "Catalog Browse"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/home.tt2:6 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:196
+#: ../../Open-ILS/src/templates/opac/home.tt2:6 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:204
 msgid "Catalog Home"
 msgstr "Tietokannan aloitussivu"
 
@@ -1028,7 +1028,7 @@ msgstr "Huomautus tietolähteestä: "
 msgid "City"
 msgstr "Kaupunki"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:144
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:156
 msgid "Clear AddedContent Cache"
 msgstr ""
 
@@ -1146,7 +1146,7 @@ msgstr "Sisältää"
 msgid "Contains phrase"
 msgstr "Sisältää lauseen"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:198
+#: ../../Open-ILS/src/templates/opac/parts/record/contents.tt2:211
 msgid "Content descriptions"
 msgstr "Sisältöhuomautus"
 
@@ -1207,7 +1207,7 @@ msgstr ""
 msgid "Copyright holder"
 msgstr "Tekijänoikeuden omistaja"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:426
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:460
 msgid "Copyright:"
 msgstr ""
 
@@ -1295,7 +1295,7 @@ msgstr "Nykyinen salasana"
 msgid "Current Username"
 msgstr "Nykyinen käyttäjätunnus"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:222
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:234
 msgid "Current holds"
 msgstr "Nykyiset varaukset"
 
@@ -1488,7 +1488,7 @@ msgstr ""
 msgid "Distributor"
 msgstr "Jakaja"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:398 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:235
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:432 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:235
 msgid "Distributor:"
 msgstr ""
 
@@ -1609,7 +1609,7 @@ msgstr ""
 msgid "Editing Hold"
 msgstr "Muokataan varausta"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:332 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:289
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:357 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:361 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:289
 msgid "Edition:"
 msgstr "Laitos:"
 
@@ -1633,7 +1633,7 @@ msgstr "Sähköasentaja"
 msgid "Electronic resource"
 msgstr "Digitaalinen aineisto"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:161 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:185
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:173 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:197
 msgid "Electronic resources"
 msgstr "Digitaaliset aineistot"
 
@@ -1649,7 +1649,7 @@ msgstr "Sähköposti"
 msgid "Email Address"
 msgstr "Sähköpostiosoite"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:214
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:237
 msgid "Email Address:"
 msgstr "Sähköpostiosoite:"
 
@@ -1686,7 +1686,7 @@ msgstr ""
 "ilmoittaa saapuneista varauksista sekä erääntyvistä ja myöhässä olevista "
 "lainoista!"
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:100 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:69 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:253
+#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:100 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:69 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:276
 msgid "Enter date in MM/DD/YYYY format"
 msgstr "Syötä päiväys muodossa KK/PP/VVVV"
 
@@ -1865,7 +1865,7 @@ msgstr ""
 msgid "Filmmaker"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:161
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:169
 msgid "Filtered by:"
 msgstr ""
 
@@ -2103,7 +2103,7 @@ msgstr "Olen lainannut tämän niteen aiemmin"
 msgid "ISBN"
 msgstr "ISBN"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:312 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:250
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:317 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:328 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:250
 msgid "ISBN:"
 msgstr "ISBN:"
 
@@ -2111,7 +2111,7 @@ msgstr "ISBN:"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:319 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:258
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:335 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:339 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:258
 msgid "ISSN:"
 msgstr "ISSN:"
 
@@ -2605,7 +2605,7 @@ msgstr "Valmistuspaikka"
 msgid "Manufacturer"
 msgstr "Valmistaja"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:412 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:242
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:446 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:242
 msgid "Manufacturer:"
 msgstr ""
 
@@ -2864,7 +2864,7 @@ msgstr "Ei"
 msgid "No Content Available"
 msgstr "Ei sisältöä saatavilla"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:214
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:237
 msgid ""
 "No configured Email address. See \"My Account\" for setting your Email "
 "address."
@@ -2950,7 +2950,7 @@ msgstr "Ilmoitetaanko puhelimella, kuin varaus on noudettavissa?"
 msgid "Notify by Text by default when a hold is ready for pickup?"
 msgstr "Ilmoitetaanko tekstiviestillä, kun varaus on noudettavissa?"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:208
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:231
 msgid "Notify when hold is ready for pickup?"
 msgstr "Ilmoitetaanko, kun varaus on noudettavissa?"
 
@@ -3110,11 +3110,11 @@ msgstr ""
 msgid "Patron Reviews:"
 msgstr "Asiakkaiden arviot:"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:95
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:117
 msgid "Patron Search"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:92
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:114
 msgid "Patron barcode was not found"
 msgstr "Asiakastunnusta ei löytynyt"
 
@@ -3195,7 +3195,7 @@ msgstr "Henkilötiedot"
 msgid "Phone Number"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:222
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:245
 msgid "Phone Number:"
 msgstr "Puhelinnumero:"
 
@@ -3207,7 +3207,7 @@ msgstr "Valokuvaaja"
 msgid "Phys. Desc.:"
 msgstr "Fyysinen kuvaus:"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:326
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:346 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:351
 msgid "Physical Description:"
 msgstr "Fyysinen kuvaus:"
 
@@ -3223,11 +3223,11 @@ msgstr ""
 msgid "Pickup library"
 msgstr "Noutokirjasto"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:201
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:224
 msgid "Pickup location:"
 msgstr "Noutopaikka:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:29 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:426 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:426 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Tee varaus"
 
@@ -3248,12 +3248,12 @@ msgstr ""
 msgid "Place hold"
 msgstr "Tee varaus"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:83
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:105
 msgid "Place hold for patron by barcode:"
 msgstr "Tee varaus asiakkaalle tunnuksella:"
 
 #. (ctx.user.first_given_name, ctx.user.family_name)
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:105
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:127
 msgid "Place this hold for me (%1 %2)"
 msgstr "Tee tämä varaus minulle (%1 %2)"
 
@@ -3301,7 +3301,7 @@ msgstr ""
 "Syötä käyttäjätunnuksesi tai asiakastunnuksesi, jotta kirjastotilisi "
 "tunnistetaan ja voit pyytää salasanan uusintaa"
 
-#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:8
+#: ../../Open-ILS/src/templates/opac/i18n_strings.tt2:20
 msgid "Please fill out all required fields"
 msgstr ""
 
@@ -3443,7 +3443,7 @@ msgstr "Käsitellään..."
 msgid "Producer"
 msgstr "Tuottaja"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:384 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:228
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:418 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:228
 msgid "Producer:"
 msgstr ""
 
@@ -3503,7 +3503,7 @@ msgstr "Huomautus julkaisusta, joka koskee kuvailtavaa aineistoa: "
 msgid "Publisher"
 msgstr "Julkaisija"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:353 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:205
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:382 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:387 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:205
 msgid "Publisher:"
 msgstr "Julkaisija:"
 
@@ -3576,7 +3576,7 @@ msgstr ""
 msgid "Record Holdings Summary"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:301
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:313
 msgid "Record details"
 msgstr "Tietueen tiedot"
 
@@ -3592,7 +3592,7 @@ msgstr ""
 msgid "Redaktor"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:168
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:176
 msgid "Refine My Original Search"
 msgstr "Tarkenna alkuperäistä hakuani"
 
@@ -3881,7 +3881,7 @@ msgstr ""
 msgid "Search Results facets"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:4 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:159
+#: ../../Open-ILS/src/templates/opac/parts/result/lowhits.tt2:4 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:167
 msgid "Search Results filters"
 msgstr ""
 
@@ -3897,11 +3897,11 @@ msgstr "Haun ja historian asetukset"
 msgid "Search date"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/series.tt2:47
+#: ../../Open-ILS/src/templates/opac/parts/record/series.tt2:60
 msgid "Search for related items by series"
 msgstr "Etsi liittyviä niteitä sarjan mukaan"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/subjects.tt2:104
+#: ../../Open-ILS/src/templates/opac/parts/record/subjects.tt2:142
 msgid "Search for related items by subject"
 msgstr "Etsi liittyviä niteitä aiheen mukaan"
 
@@ -3913,7 +3913,7 @@ msgstr "Hakutuloksia sivulla"
 msgid "Search in progress icon"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:113
+#: ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:121
 msgid "Search only within the chosen list"
 msgstr "Etsi vain valitusta listasta"
 
@@ -3997,11 +3997,11 @@ msgstr ""
 msgid "Select Shelving Location"
 msgstr "Hyllypaikka"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:143
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:165
 msgid "Select a Part (optional):"
 msgstr "Valitse osa (valinnainen):"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:129 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:143
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:151 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:165
 msgid "Select a Part:"
 msgstr "Valitse osa:"
 
@@ -4081,7 +4081,7 @@ msgstr "Sarja"
 msgid "Set Active Date"
 msgstr "Aseta aktiivinen päiväys"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:248
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:14 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:271
 msgid "Set activation date"
 msgstr ""
 
@@ -4351,7 +4351,7 @@ msgstr "Aihe: "
 msgid "Subjects"
 msgstr "Asiasanat/Aiheet"
 
-#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:116 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:71 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:72 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:41 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:84 ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:33 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:36 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:35 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:257 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:258 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:136 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:137 ../../Open-ILS/src/templates/opac/password_reset.tt2:44 ../../Open-ILS/src/templates/opac/password_reset.tt2:67 ../../Open-ILS/src/templates/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates/opac/sms_cn.tt2:39
+#: ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:116 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:71 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:72 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:41 ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:84 ../../Open-ILS/src/templates/opac/myopac/update_email.tt2:33 ../../Open-ILS/src/templates/opac/myopac/update_password.tt2:36 ../../Open-ILS/src/templates/opac/myopac/update_username.tt2:35 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:280 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:281 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:136 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:137 ../../Open-ILS/src/templates/opac/password_reset.tt2:44 ../../Open-ILS/src/templates/opac/password_reset.tt2:67 ../../Open-ILS/src/templates/opac/sms_cn.tt2:37 ../../Open-ILS/src/templates/opac/sms_cn.tt2:38 ../../Open-ILS/src/templates/opac/sms_cn.tt2:39
 msgid "Submit"
 msgstr "Tallenna"
 
@@ -4409,15 +4409,15 @@ msgstr ""
 msgid "Suspend"
 msgstr "Ennakko"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:244
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:267
 msgid "Suspend Hold Help"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:238
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:261
 msgid "Suspend these holds?"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:238
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:261
 msgid "Suspend this hold?"
 msgstr ""
 
@@ -4628,7 +4628,7 @@ msgstr ""
 "Nämä tiedot katoavat kun kirjaudut ulos ellet tallenna sitä pysyväksi "
 "luetteloksi."
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:185
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:208
 msgid "This item does not have any formats available for holds placement"
 msgstr ""
 
@@ -4847,11 +4847,11 @@ msgstr ""
 msgid "View My Temporary List"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:288
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:300
 msgid "View all formats and editions "
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:250
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:262
 msgid "View other formats and editions"
 msgstr ""
 
@@ -4951,19 +4951,19 @@ msgstr ""
 msgid "YYYY-MM-DD or YYYY/MM/DD"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:52 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:247
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:52 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:270
 msgid "Yes"
 msgstr "Kyllä"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:212
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:235
 msgid "Yes, by Email"
 msgstr "Kyllä, sähköpostilla"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:220
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:243
 msgid "Yes, by Phone"
 msgstr "Kyllä, puhelimella"
 
-#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:230
+#: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:253
 msgid "Yes, by Text Messaging"
 msgstr "Kyllä, tekstiviestillä"
 
