@@ -203,6 +203,12 @@ include::admin/search_settings_web_client.adoc[]
 
 include::admin/popularity_badges_web_client.adoc[]
 
+:leveloffset: -1
+
+include::admin/multilingual_search.adoc[]
+
+:leveloffset: 0
+
 
 // Patron UX
 Patron User Experience Administration

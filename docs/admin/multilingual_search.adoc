@@ -1,0 +1,70 @@
+Multilingual Search in Evergreen
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+It is now possible to search for items that contain multiple languages in the Evergreen catalog.  This will help facilitate searching for bilingual and multilingual materials, including specific translations, alternative languages, and to exclude specific translations from a search.  
+
+To identify the language of materials, Evergreen looks at two different fields in the MARC bibliographic record:
+  
+*  008/35-37: the language code located in characters 35-37 of the 008 tag 
+*  041$abdefgm: the 041 tag, subfields $abdefgm, which contain additional language codes   
+
+Multilingual searches can be conducted by constructing searches using specific language codes as a filter.  To search using specific language codes, use the Record Attribute Definition name _item_lang_ followed by the appropriate MARC Code for Languages.  For example, _item_lang(spa)_ will search only for Spanish language materials.
+
+The language filter can be appended to any search.  For example, a title search for _pippi longstocking item_lang(eng,swe)_ will search for English or Swedish language publications of the title.
+
+image::media/multilingual_search1.png[]
+
+Search Syntax
+^^^^^^^^^^^^^
+
+To search for materials that contain multiple languages (Boolean AND), the search filters can be constructed in the following ways:
+
+. Implicit Boolean filtering: _item_lang(eng) item_lang(spa)_
+.. Evergreen assumes a Boolean AND between the search filters
+. Explicit Boolean filtering: _item_lang(eng) && item_lang(spa)_
+.. The double ampersands (&&) explicitly tell Evergreen to apply a Boolean AND to the search filters
+
+To search for materials that contain at least one of the searched languages (Boolean OR), the search filters can be constructed in the following ways:
+
+. List filtering: _item_lang(eng,spa)_
+.. Listing the language codes, separated by a comma, within the search filter, tells Evergreen to apply a Boolean OR to the search filters
+. Explicit Boolean filtering: _item_lang(eng) || item_lang(spa)_
+.. The double pipes (||) explicitly tell Evergreen to apply a Boolean OR to the search filters
+
+To search for materials that contain a specific language and exclude another language from the search results (Boolean NOT), the search filters can be constructed as follows:
+
+. Boolean filtering: _item_lang(spa) -item_lang(eng)_
+.. The dash (-) explicitly tells Evergreen to apply a Boolean NOT to the english language search filter.  Evergreen assumes a Boolean AND between the search filters.
+
+To exclude multiple languages from search results (Boolean NOT), the search filters can be constructed as follows:
+
+. Boolean filtering: _-item_lang(eng) -item_lang(spa)_
+.. The dash (-) explicitly tells Evergreen to apply a Boolean NOT to both search filters.  Evergreen assumes a Boolean AND between the search filters.
+
+To conduct a search for materials that do not contain at least of the of the languages searched (Boolean “NOT” and “OR”), the search filters can be constructed in the following ways:
+
+. List filtering: _-item_lang(eng,spa)_
+.. Explicit Boolean filtering: _-item_lang(eng) || -item_lang(spa)_
+
+
+Advanced Search
+^^^^^^^^^^^^^^^
+
+Within the Advanced Search interface, multiple languages can be selected from the Language filter by holding down the Ctrl key on the keyboard and selecting the desired languages.  This will apply a Boolean OR operator to the language filters.
+
+image::media/multilingual_search2.PNG[]
+
+
+Adding Subfields to the Index
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Additional subfields for the 041 tag, such as h, j, k, and n, can be added to the index through the Record Attribute Definitions interface.  Any records containing the additional subfields will need to be reingested into the database after making changes to the Record Attribute Definition.
+
+. Go to *Administration>Server Administration>Record Attribute Definitions*.
+. Click *Next* to locate the _item_lang_ record attribute definition.
+. To edit the definition, double click on the item_lang row and the configuration window will appear.
+. In the _MARC Subfields_ field, add the subfields you want included in the index.
+. Click *Save*.
+
+image::media/multilingual_search3.PNG[]
+
