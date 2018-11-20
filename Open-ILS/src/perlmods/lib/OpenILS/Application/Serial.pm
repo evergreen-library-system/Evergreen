@@ -77,7 +77,7 @@ sub _cleanse_dates {
     my $fields = shift;
 
     foreach my $field (@$fields) {
-        $item->$field(OpenSRF::Utils::clense_ISO8601($item->$field)) if $item->$field;
+        $item->$field(clean_ISO8601($item->$field)) if $item->$field;
     }
     return 0;
 }
