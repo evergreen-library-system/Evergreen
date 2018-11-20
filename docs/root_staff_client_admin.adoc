@@ -106,6 +106,8 @@ include::admin/copy_statuses.adoc[]
 
 include::admin/circing_uncataloged_materials.adoc[]
 
+include::admin/patron_registration.adoc[]
+
 include::admin/patron_self_registration.adoc[]
 
 
