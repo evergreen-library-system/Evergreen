@@ -830,7 +830,7 @@ sub could_capture {
                 $client->respond($bresv);
             } else {
                 my $start_time = $dt_parser->parse_datetime(
-                    clense_ISO8601($bresv->start_time)
+                    clean_ISO8601($bresv->start_time)
                 );
 
                 if ($now >= $start_time->subtract("seconds" => $elbow_room)) {

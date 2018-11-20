@@ -4064,7 +4064,7 @@ sub _reset_password_request {
 
     # Guard against no active requests
     if ($active_requests->[0]->{'request_time'}) {
-        my $last_request = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($active_requests->[0]->{'request_time'}));
+        my $last_request = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($active_requests->[0]->{'request_time'}));
         my $now = DateTime::Format::ISO8601->new();
 
         # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
@@ -4171,7 +4171,7 @@ sub commit_password_reset {
 
     # Ensure we're still within the TTL for the request
     my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
-    my $threshold = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
+    my $threshold = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
     if ($threshold < DateTime->now(time_zone => 'local')) {
         $e->die_event;
         $logger->info("Password reset request needed to be submitted before $threshold");
