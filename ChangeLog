@@ -1,3 +1,763 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 83c27b0896e6ddede3d0cfb55eb5599d6bc9e507
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Nov 20 13:44:36 2018 -0600
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+21	14	docs/installation/server_upgrade.adoc
+
+commit e8e572617ef50b9ed092312a9a59d699d8ffc12f
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Nov 20 13:42:20 2018 -0600
+
+    bumping Perl version string for 3.1.8
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 6f156b842245583be8a2212ba9631ad8157e4fcb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 14:38:42 2018 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	build/i18n/po/cat.properties/ar-JO.po
+3	3	build/i18n/po/cat.properties/cs-CZ.po
+3	3	build/i18n/po/cat.properties/de-DE.po
+3	3	build/i18n/po/cat.properties/en-CA.po
+3	3	build/i18n/po/cat.properties/en-GB.po
+3	3	build/i18n/po/cat.properties/es-ES.po
+3	3	build/i18n/po/cat.properties/fi-FI.po
+3	3	build/i18n/po/cat.properties/fr-CA.po
+3	3	build/i18n/po/cat.properties/he-IL.po
+3	3	build/i18n/po/cat.properties/hu-HU.po
+3	3	build/i18n/po/cat.properties/hy-AM.po
+3	3	build/i18n/po/cat.properties/oc-FR.po
+3	3	build/i18n/po/cat.properties/pt-BR.po
+3	3	build/i18n/po/cat.properties/ru-RU.po
+3	3	build/i18n/po/cat.properties/sv-SE.po
+3	3	build/i18n/po/cat.properties/tr-TR.po
+3	3	build/i18n/po/common.properties/ar-JO.po
+3	3	build/i18n/po/common.properties/cs-CZ.po
+3	3	build/i18n/po/common.properties/de-DE.po
+3	3	build/i18n/po/common.properties/en-CA.po
+3	3	build/i18n/po/common.properties/en-GB.po
+3	3	build/i18n/po/common.properties/es-ES.po
+3	3	build/i18n/po/common.properties/fi-FI.po
+3	3	build/i18n/po/common.properties/fr-CA.po
+3	3	build/i18n/po/common.properties/he-IL.po
+3	3	build/i18n/po/common.properties/hu-HU.po
+3	3	build/i18n/po/common.properties/hy-AM.po
+3	3	build/i18n/po/common.properties/oc-FR.po
+3	3	build/i18n/po/common.properties/pt-BR.po
+3	3	build/i18n/po/common.properties/ru-RU.po
+3	3	build/i18n/po/common.properties/sv-SE.po
+3	3	build/i18n/po/common.properties/tr-TR.po
+3410	3410	build/i18n/po/db.seed/ar-JO.po
+3430	3429	build/i18n/po/db.seed/cs-CZ.po
+3397	3397	build/i18n/po/db.seed/de-DE.po
+3397	3397	build/i18n/po/db.seed/en-CA.po
+3397	3397	build/i18n/po/db.seed/en-GB.po
+3412	3412	build/i18n/po/db.seed/es-ES.po
+3399	3399	build/i18n/po/db.seed/fi-FI.po
+3397	3397	build/i18n/po/db.seed/fr-CA.po
+3397	3397	build/i18n/po/db.seed/he-IL.po
+3397	3397	build/i18n/po/db.seed/hu-HU.po
+3412	3412	build/i18n/po/db.seed/hy-AM.po
+3397	3397	build/i18n/po/db.seed/oc-FR.po
+3397	3397	build/i18n/po/db.seed/pt-BR.po
+3397	3397	build/i18n/po/db.seed/ru-RU.po
+3397	3397	build/i18n/po/db.seed/sv-SE.po
+3397	3397	build/i18n/po/db.seed/tr-TR.po
+33	33	build/i18n/po/fm_IDL.dtd/ar-JO.po
+46	46	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+25	25	build/i18n/po/fm_IDL.dtd/de-DE.po
+33	33	build/i18n/po/fm_IDL.dtd/en-CA.po
+33	33	build/i18n/po/fm_IDL.dtd/en-GB.po
+33	33	build/i18n/po/fm_IDL.dtd/es-ES.po
+33	33	build/i18n/po/fm_IDL.dtd/fi-FI.po
+27	27	build/i18n/po/fm_IDL.dtd/fr-CA.po
+25	25	build/i18n/po/fm_IDL.dtd/he-IL.po
+25	25	build/i18n/po/fm_IDL.dtd/hu-HU.po
+33	33	build/i18n/po/fm_IDL.dtd/hy-AM.po
+25	25	build/i18n/po/fm_IDL.dtd/oc-FR.po
+33	33	build/i18n/po/fm_IDL.dtd/pt-BR.po
+33	33	build/i18n/po/fm_IDL.dtd/ru-RU.po
+25	25	build/i18n/po/fm_IDL.dtd/sv-SE.po
+25	25	build/i18n/po/fm_IDL.dtd/tr-TR.po
+23	23	build/i18n/po/ils_events.xml/ar-JO.po
+22	22	build/i18n/po/ils_events.xml/cs-CZ.po
+21	21	build/i18n/po/ils_events.xml/de-DE.po
+23	23	build/i18n/po/ils_events.xml/en-CA.po
+23	23	build/i18n/po/ils_events.xml/en-GB.po
+24	24	build/i18n/po/ils_events.xml/es-ES.po
+23	23	build/i18n/po/ils_events.xml/fi-FI.po
+21	21	build/i18n/po/ils_events.xml/fr-CA.po
+21	21	build/i18n/po/ils_events.xml/he-IL.po
+21	21	build/i18n/po/ils_events.xml/hu-HU.po
+23	23	build/i18n/po/ils_events.xml/hy-AM.po
+21	21	build/i18n/po/ils_events.xml/oc-FR.po
+21	21	build/i18n/po/ils_events.xml/pt-BR.po
+21	21	build/i18n/po/ils_events.xml/ru-RU.po
+21	21	build/i18n/po/ils_events.xml/sv-SE.po
+21	21	build/i18n/po/ils_events.xml/tr-TR.po
+52	36	build/i18n/po/lang.dtd/ar-JO.po
+108	39	build/i18n/po/lang.dtd/cs-CZ.po
+25	26	build/i18n/po/lang.dtd/de-DE.po
+54	38	build/i18n/po/lang.dtd/en-CA.po
+54	38	build/i18n/po/lang.dtd/en-GB.po
+55	39	build/i18n/po/lang.dtd/es-ES.po
+55	39	build/i18n/po/lang.dtd/fi-FI.po
+25	26	build/i18n/po/lang.dtd/fr-CA.po
+25	26	build/i18n/po/lang.dtd/he-IL.po
+25	26	build/i18n/po/lang.dtd/hu-HU.po
+74	35	build/i18n/po/lang.dtd/hy-AM.po
+25	26	build/i18n/po/lang.dtd/oc-FR.po
+25	26	build/i18n/po/lang.dtd/pt-BR.po
+25	26	build/i18n/po/lang.dtd/ru-RU.po
+25	26	build/i18n/po/lang.dtd/sv-SE.po
+25	26	build/i18n/po/lang.dtd/tr-TR.po
+61	61	build/i18n/po/tpac/ar-JO.po
+61	61	build/i18n/po/tpac/cs-CZ.po
+61	61	build/i18n/po/tpac/de-DE.po
+61	61	build/i18n/po/tpac/en-CA.po
+61	61	build/i18n/po/tpac/en-GB.po
+136	134	build/i18n/po/tpac/es-ES.po
+61	61	build/i18n/po/tpac/fi-FI.po
+453	373	build/i18n/po/tpac/fr-CA.po
+61	61	build/i18n/po/tpac/he-IL.po
+61	61	build/i18n/po/tpac/hu-HU.po
+61	61	build/i18n/po/tpac/hy-AM.po
+61	61	build/i18n/po/tpac/oc-FR.po
+61	61	build/i18n/po/tpac/pt-BR.po
+61	61	build/i18n/po/tpac/ru-RU.po
+61	61	build/i18n/po/tpac/sv-SE.po
+61	61	build/i18n/po/tpac/tr-TR.po
+286	184	build/i18n/po/webstaff/ar-JO.po
+355	243	build/i18n/po/webstaff/cs-CZ.po
+259	178	build/i18n/po/webstaff/en-GB.po
+309	202	build/i18n/po/webstaff/es-ES.po
+275	179	build/i18n/po/webstaff/hy-AM.po
+262	178	build/i18n/po/webstaff/ru-RU.po
+
+commit b23f558c5bdb29b36a6bcaa7df14a01dcd548fec
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 14:32:22 2018 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	build/i18n/po/tpac/tpac.pot
+78	78	build/i18n/po/webstaff/webstaff.pot
+
+commit 2a4f24ea20e3044f4902d97817792120dff46236
+Author: kilsdonka <43423795+kilsdonka@users.noreply.github.com>
+Date:   Tue Nov 20 09:50:54 2018 -0800
+
+    Docs: Multilingual search documentation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+70	0	docs/admin/multilingual_search.adoc
+-	-	docs/media/multilingual_search1.png
+-	-	docs/media/multilingual_search2.PNG
+-	-	docs/media/multilingual_search3.PNG
+2	0	docs/root.adoc
+6	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/multilingual_search.adoc
+ create mode 100644 docs/media/multilingual_search1.png
+ create mode 100644 docs/media/multilingual_search2.PNG
+ create mode 100644 docs/media/multilingual_search3.PNG
+
+commit d2d6cb7d625d4e1ebfc5782206d5220ba798af24
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Nov 20 08:18:34 2018 -0800
+
+    Docs: adding release notes for 3.1.8
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+74	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 55d3ae167482cc3bc102e22f1f803bdf0950c72e
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Nov 20 09:25:57 2018 -0500
+
+    LP#1643709: Stamping upgrade script
+    
+    Note upgrade script 1137 is only for rel_3_1. In master/rel_3_2 there is
+    upgrade script 1138 for this same function change.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+328	0	Open-ILS/src/sql/Pg/upgrade/1137.function.global.purge-usr-on-merge.sql
+0	361	Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1137.function.global.purge-usr-on-merge.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+
+commit 1fe150c0a56e82c64bed371a326c309d514df1c3
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Sep 14 09:25:57 2018 -0400
+
+    LP#1643709 User merge + purge pgtap test
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+25	0	Open-ILS/src/sql/Pg/t/lp1643709_purge_usrs_on_merge.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1643709_purge_usrs_on_merge.pg
+
+commit 3dc3148fd072b5900e811c22cb07affce15e3949
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Sep 14 08:05:12 2018 -0400
+
+    LP#1643709 purge users on merge instead of flag deleted
+    
+    Purge merged user accounts.
+    
+    Update the upgraded version of the usr_merge() db function to match
+    recnet changes in master.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/999.functions.global.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+
+commit 441f33a6e65b1ea280b1300c8f5d9e8b89866e14
+Author: Jason Boyer <JBoyer@library.in.gov>
+Date:   Fri Nov 2 12:26:18 2018 -0400
+
+    LP1801156: Add missing offline dependencies
+    
+    When iframeResizer.js is missing from the UpUp asset list the
+    loading error prevents further processing, rendering offline
+    mode unusable.
+    
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/base_js.tt2
+
+commit dca8b09ff8fe418e4e0fc4a6e1660929caade45a
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sat Jun 16 14:13:22 2018 -0400
+
+    LP#1761242 Z39.50 Marc View Usability with Mobile Repsonsiveness
+    
+    This patch changes the size of the image in the Z39.50 Marc View from large to
+    medium.  It also incorporates bootstrap's media classes to present the Marc
+    record and the cover image side by side.  If there is no image the marc record
+    display floats to the left of the modal. From a suggestion by Jane Sandbert, it
+    also hides the book cover image on small devices.
+    
+    To test.
+    1. Perform a search in z39.50.  An LOC title search for "Cat in the Hat"
+       returms results of titles with and without images.
+    2. View some of the titles in Marc View, noting the large image.
+    3. Apply the patch.
+    4. Perform the same search and view the results in Marc View.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	2	Open-ILS/src/templates/staff/cat/z3950/t_marc_html.tt2
+
+commit af1c5ce175f35d6b90be0235ccf7275dc98f773f
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Sep 17 10:08:34 2018 -0400
+
+    Lp 1753813: Wrap all oils_persist:source_definitions in CDATA blocks.
+    
+    For safety's sake, we add CDATA sections in all fm_ILD.xml
+    oils_persist:source_definition elements as show in the example at the
+    top of the IDL.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+39	39	Open-ILS/examples/fm_IDL.xml
+
+commit b975a74b340f27b969cae696947efbb9ec590394
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 22:06:21 2018 -0500
+
+    LP#1764542: Fixing upgrade script numbering
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+
+commit efc11961a3f2a2670e0945d9af7482d8d1b45e3c
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 21:58:38 2018 -0500
+
+    LP#1764542: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+0	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+
+commit f77da2a00f574d82e01c4ca7744fb3fc0b563e7f
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jun 4 13:10:31 2018 -0400
+
+    LP#1764542 - Update older sites to MODS 3.3
+    
+    MODS 3.3 support was introduced in March 2009, but this
+    change was never included in an upgrade script.  Older
+    sites on 3.1+ will need to apply this update to avoid scary
+    segmentation faults, and it should be harmless for newer
+    sites and desirable for those on 3.0 or older.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+13	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+
+commit 8a1de53fe3730eac365cf31e9e70ee104cb4347a
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Nov 15 11:43:30 2018 -0500
+
+    LP1755625: Multiple emails in patron editor
+    
+    Even though the HTML5 "email" input type allows multiple
+    addresses to be separated by commas there is nothing that
+    can be done to signal to Angular.js that this is ok; it
+    will only ever accept a single address. This patch forces
+    the type of the input tag to plain text so Angular will
+    rely on any supplied regex to verify the entry.
+    
+    The ui.patron.edit.au.email.regex (Regex for email field on patron
+    registration) library setting can be used to control whether
+    one or multiple email addresses will be permitted on the
+    patron registration form.
+    
+    To allow multiple addresses, that setting can be:
+    
+    ^(?:(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)(?:,\s?(?!$)|$))*$
+    
+    To allow only a single address, use:
+    
+    ^(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)$
+    
+    To test
+    -------
+    [1] In the web staff client, try to register a new patron, entering
+        multiple email addresseses in the email field separated by
+        commas.
+    [2] Note that the email field displays as invalid and the
+        record cannot be saved.
+    [3] Apply the patch and repeat step #1, This time, the email
+        field should accept multiple addresses.
+    [4] Set the Regex for email field on patron registration library
+        setting to the multiple-email form listed above. Reload
+        the patron registration form and verify that it will
+        continue to accept multiple email addresses but will not
+        accept entry that doesn't look like an email address.
+    [5] Set the library setting to the single-address value. Reload
+        the patron registration form; this time it should accept
+        a valid email address but not multiple ones.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+
+3	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 14d6af63440fb724de475e6bc37dce941b19f1e5
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Sep 12 15:52:21 2018 -0400
+
+    Docs: LP#1578719 Update DIG Attributions page
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+17	14	docs/shared/attributions.adoc
+
+commit b65ad62c795748ef9ae5dc2ece77201d0009fb0b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 5 10:52:17 2018 -0500
+
+    LP#1797007 Grid cell tooltips apply to all cells
+    
+    Avoid excessive browser page re-flows, caused by checking cell widths
+    for rendering tooltips, by rendering tooltips for all cells regardless
+    of the size of the content.
+    
+    This reverts commit 1e9c0ab388a0697a1f099970240f2da21bfb5e1f.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+1	30	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit c932d8fdf6bed1e3449d418ee0e6548d70c3ba44
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Nov 7 11:09:10 2018 -0500
+
+    LP#1684202 - fix holdings grid refresh... bre_id array always be integers
+    
+    For some strange reason the volcopy bchannel event data.records
+    would be an array of string integers or a array of ints depending
+    on whether you're adding or editing holdings. This addresses that
+    weirdness.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 808d37022d3080635493432198129a753d51cfa9
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Oct 17 18:06:01 2018 -0400
+
+    LP#1684202 - fix bug the prevented automatic refresh
+    
+    Turns out that Array.includes() does not do implicit type convertions
+    Typical javascript...
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit efd3a536a662c46e61c213c1cb0765015d914246
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Sep 14 11:03:30 2018 -0400
+
+    LP#1684202: Protect against missing features; Make feature more general
+    
+    I've wrapped the BroadcastChannel code in a test derived from the auth version
+    of the same concept.  Also broadcasting the full set of record IDs and the
+    pre-update call number IDs for other interfaces that might be interested. The
+    channel name is also made more generic and made to follow the precedent from
+    the auth channel name.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+28	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+14	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 5b8fa44fbda159040a10a1db510ac517449e8e30
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Nov 12 12:26:40 2018 -0500
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+220	0	Open-ILS/src/sql/Pg/upgrade/1134.function.located_uri_browse_visibility.sql
+0	220	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1134.function.located_uri_browse_visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+
+commit 23d1cbf46853b50113529ca9c895e0ef316c1ba6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Nov 9 12:28:08 2018 -0500
+
+    LP#1773479 Show Located URIs in browse
+    
+    Located URIs depend upon bib-level visibility, as there are no copies
+    to work with.  The browse code, however, was joining in the copy
+    visibility table as if it would always have at least one row per bib,
+    but in the case of located URIs, it does not.
+    
+    Let's change it to a LEFT JOIN to allow the bib row to show up, at
+    which point the existing bib visibility check can do its job.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+220	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+
+commit dbe9a8a269d5f7b7d0b2e50787dcbdaa3a073836
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 14:38:01 2018 -0400
+
+    LP#1724348 Honor default tab from catalog search
+    
+    The default tab selection was not being honored from catalog searches,
+    as the search had already set $scope.record_tab, and we were honoring
+    that value in all cases.
+    
+    Instead, let's honor that value in cases where the OPAC load doesn't
+    change our current record, which should only happen if we load the
+    record directly to a non-opac tab, then go to the OPAC view.
+    
+    To test:
+    1) Set any tab other than "OPAC View" as your default view in record
+    details.
+    2) Do a catalog search.
+    3) Select a record, and notice your default view is not set.
+    4) Apply patch, do the same steps, and notice the default view is now
+    selected.
+    
+    To test regression of bug #1708951:
+    1) In Firefox, load a record directly (e.g.
+    /eg/opac/staff/cat/catalog/record/123).
+    2) Note the default view loaded.
+    3) Click "OPAC View".
+    4) Note the view does not return to your default view, but stays on
+    the OPAC.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+
+5	2	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 3b373fe2c6d617851ef1a34ee930cd01938afed3
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jul 25 11:51:06 2018 -0400
+
+    LP#1783602: Remove copy counts from mr search results page
+    
+    The copy counts on the mr search results page can be wrong if a limiter was
+    applied to the metarecord search. Rather than supply inaccurate information to
+    the user, let's remove the counts from that page until a long-term solution can
+    be developed.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit b8a5bb95b65fdb99b8e064c4444d1aab056bbcb3
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Nov 5 15:50:24 2018 -0500
+
+    LP#1755543: Change placement of help popovers
+    
+    Set the placement of help tip popovers so that they automatically position
+    to a visible place on the screen.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/share/t_help_popover.tt2
+
+commit d43a0a151e7f2facf30ac62c0137e20b2a0b78b8
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Mar 13 12:54:42 2018 -0400
+
+    LP#1755543: Add help tips to Print Item Labels Settings tab
+    
+    Instead of providing lengthy settings descriptions, which result in a lot of
+    scrolling on the Print Item Template page, let's use help tips that can
+    provide guidance to new users without adding clutter to the interface.
+    
+    This commit also turns the field labels into HTML labels for improved
+    accessibility and removes borders on the page. The borders were helpful
+    when we displayed the help text on the page, but are no longer needed.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	6	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit 9a159294b632922c87203cfa2b00495620e94b44
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Jun 7 14:54:45 2018 -0400
+
+    LP#1755896: Web Client mobile menu font color contrast.
+    
+    When viewing the main menu in the web client in a small device or in a
+    browser with a width that is resized to less than 800px the menu
+    collapses and the submenu choices are difficult to read because of lack
+    of contrast.  This patch adds some contrast.
+    
+    To test:
+    1. View the web client in a browser and lessen the width until the menu
+       collapses, or view it in a small device.
+    2. Open some of the menu options to observe the submenus.
+    3. Apply the patch.
+    4. Refresh the browser and repeat steps 1-2 to view the more readable
+       submenus.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit 2aa37737001b4e5050db5ce7f9ff7eeb832a40fb
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 16:40:34 2018 -0500
+
+    LP#1789747: tweak disabling the offline circulation link
+    
+    This patch ensures that the menu link can be fully disabled by
+    giving the "disabled" CSS class to the anchor as well as the
+    li that contains it. It also adds a CSS rule to the disabled
+    class to force the cursor to not-allowed; due to a quirk, an
+    anchor with "pointer-events: none" will not respect "cursor: not-allowed",
+    but the containing element can have that cursor rule.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/templates/staff/css/style.css.tt2
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+
+commit 5c44f0809e68dda82fb9a8d19049c97e3c121ba2
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 4 15:09:31 2018 -0400
+
+    LP#1789747 More SharedWorker sanity checks for egLovefield
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Rogan Hamby <rhamby@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	3	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+
+commit 79a3ca19e58072a421c4a51a39c2ca7991a6adde
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 30 13:19:03 2018 -0400
+
+    LP#1789747 SharedWorker sanity checks
+    
+    Avoid page load failures when SharedWorkers (for offline mode) are
+    not supported.  Additionally, disable the Offline Circulation menu
+    option when SharedWorkers are not supported.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+4	3	Open-ILS/web/js/ui/default/staff/app.js
+11	4	Open-ILS/web/js/ui/default/staff/services/env.js
+3	3	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+6	2	Open-ILS/web/js/ui/default/staff/services/navbar.js
+15	8	Open-ILS/web/js/ui/default/staff/services/org.js
+2	2	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 52d9c71bbbd06912127dbfad91e03d4ae81a5ebe
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 12:54:24 2018 -0500
+
+    LP#1801759: enable mod_remoteip by default
+    
+    Use of mod_remoteip is technically optional, since it's not
+    required that Evergreen run with a proxy such as NGINX. However, since
+    use of proxies is common, enablig mod_remoteip just in case could
+    be useful with minimal cost.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+2	1	Open-ILS/src/extras/install/Makefile.debian-stretch
+2	1	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+2	1	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+
+commit 76f00947364d7f9321452040922a2aaa9dba5f9d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 12:49:35 2018 -0500
+
+    LP#1801759: add mod_remoteip configuration to example Apache config
+    
+    Text taken from an OpenSRF patch added by Bill Erickson per bug 1684970.
+    
+    This patch adds an Apache configuration stanza that uses mod_remoteip
+    to pass the user agent's IP address to the HTTP translator. It is meant
+    for when Apache is being run behind a proxy such as NGINX.
+    
+    To test
+    -------
+    [1] Set up Evergreen with Apache and the WebSockets server running
+        behind a proxy such as NGINX.
+    [2] Enable mod_remoteip (e.g., sudo a2enmod remoteip).
+    [3] Apply the Apache configuration change in this patch, uncommenting
+        out the directives and (if necessary) updating the internal IP
+        address of the proxy.
+    [4] Reload Apache.
+    [5] Perform an action that uses the HTTP translator, e.g., adding a
+        vendor record using the Dojo interface.
+    [6] Verify that the client IP logged is that of the user agent, not
+        the proxy.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit f43c4e51eb0d20da975b499a16f02fb893d20206
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Nov 2 15:00:55 2018 -0400
+
+    Docs: Update old command osrf_ctl.sh to osrf_control
+    
+    Thanks to Rosie Le Faive for catching this problem, and providing the
+    solution!
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	1	docs/admin/marc_templates.adoc
+
+commit 26fd5b966bb9f215d5e3911f308682aec045ce4d
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Oct 26 09:16:14 2018 -0400
+
+    LP1796988: Fix Saving Last Copy Template
+    
+    A line that belongs within a forEach loop escaped
+    its bounds and caused a reference error that prevented
+    the applyTemplate function from saving the last used
+    template. This branch ushers this line back to its
+    pen where it can trouble us no more.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 0b9178c5496714583634a5f1cb780ff39e58c606
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Oct 25 09:35:37 2018 -0400
+
+    Forward Port Release Notes for 3.0.13.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+21	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit c65fbf33b6270b7535497f92914a99b62a16340f
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 18:18:48 2018 -0400
+
+    Forward-port 3.1.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.6-3.1.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.6-3.1.7-upgrade-db.sql
