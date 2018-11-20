@@ -51,6 +51,7 @@ Public catalog
 
 * Removes incorrect copy counts from metarecord search results pages
 * Electronic resources now display in the browse interfaces
+* Restores ability to request password resets
 
 System administration
 ^^^^^^^^^^^^^^^^^^^^^
@@ -73,6 +74,7 @@ Evergreen:
 * Rosie Le Faive
 * Jeanette Lundgren
 * Kathy Lussier
+* Michele Morgan
 * Mike Rylander
 * Jane Sandberg
 * Janet Schrader
