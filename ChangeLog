@@ -1,3 +1,971 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit c48fd50647b9ce44757e23c47bc6fca6c5cc7bce
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 15:29:13 2018 -0500
+
+    Update upgrade docs for 3.2.2 release
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	16	docs/installation/server_upgrade.adoc
+
+commit 99bad0f721f2d09fad4ff22960a5987ec360d20c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit f364ec12cc94cd04f86de4df0dfef5ddb19c3c3b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 15:23:07 2018 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	4	build/i18n/po/circ/cs-CZ.po
+4	4	build/i18n/po/selfcheck.js/cs-CZ.po
+
+commit 27f2cb2e06d0b6d14d47727c8bac3c418b7fec7d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 15:17:31 2018 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	14	build/i18n/po/tpac/tpac.pot
+82	82	build/i18n/po/webstaff/webstaff.pot
+
+commit 017679d0279fd113120c47d2a083b7554f878bed
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 13:50:27 2018 -0500
+
+    Release notes entry for LP#1804038
+    
+    Also, add a missing contributor.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 73667df4a369e91b523a0bce9064b6664a740e47
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 12:33:49 2018 -0500
+
+    LP#1804038 Fix-ups for older 'clense' functions
+    
+    Way back when, we switched from a misspelled 'clense_ISO8601' to a
+    corrected 'cleanse_ISO8601' in OpenSRF.  This function has again moved,
+    and is now part of OpenILS::Utils::DateTime, and is named
+    'clean_ISO8601'.  This was done as part of LP bug #1552778.
+    
+    However, a few stragglers of the misspelling remained, so these were
+    missed when the big changeover occurred.  This hopefully catches them
+    all!
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Serial.pm
+
+commit 25debc65eb9b52129c72abecf1ea5da23421ebb3
+Author: kilsdonka <43423795+kilsdonka@users.noreply.github.com>
+Date:   Tue Nov 20 09:50:54 2018 -0800
+
+    Docs: Multilingual search documentation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+70	0	docs/admin/multilingual_search.adoc
+-	-	docs/media/multilingual_search1.png
+-	-	docs/media/multilingual_search2.PNG
+-	-	docs/media/multilingual_search3.PNG
+2	0	docs/root.adoc
+6	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/multilingual_search.adoc
+ create mode 100644 docs/media/multilingual_search1.png
+ create mode 100644 docs/media/multilingual_search2.PNG
+ create mode 100644 docs/media/multilingual_search3.PNG
+
+commit e82b6edf0d640e36804d5b25f090dff3f1050bd5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 20 12:57:47 2018 -0500
+
+    Release notes entry for LP#1793154
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 8be497fa12f4c9da489b83039d522e540f66af4c
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Tue Nov 20 11:54:50 2018 -0500
+
+    LP1793154: Cancel Holds from OPAC Record
+    
+    The name of the grid handler was misspelled
+    in the holds grid for records in the opac.
+    Swapping the location of the 'wide' part of
+    the function name will allow it to match up
+    with the functions available in the holds
+    grid module.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+
+commit 964295edc98019e688ef8033f4ed85a75b848cb1
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Nov 20 08:50:35 2018 -0800
+
+    Docs: documenting multiple emails in patron editor (LP1755625)
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+24	0	docs/admin/patron_registration.adoc
+12	0	docs/circulation/circulation_patron_records_web_client.adoc
+2	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/patron_registration.adoc
+
+commit 71a23d65f1f8ef6ee92c9f168751fbbcf6edc402
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Nov 20 08:27:35 2018 -0800
+
+    Docs: release notes for 3.2.2
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+78	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 8ab48e237db39e5b30f8714155c289baf040b08b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Nov 20 08:18:34 2018 -0800
+
+    Docs: adding release notes for 3.1.8
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+74	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 095b59e2f3f9c5596c3156130267ac42794805ba
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Nov 20 09:18:05 2018 -0500
+
+    LP#1643709: Stamping upgrade scripts
+    
+    Include placeholder 1137 for 3.1 version of the SQL function changed
+    vs. 1138 which contains the one for 3.2 and master and beyond.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/1137.function.global.purge-usr-on-merge-3.1.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/1138.function.global.purge-usr-on-merge.sql
+0	361	Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1137.function.global.purge-usr-on-merge-3.1.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1138.function.global.purge-usr-on-merge.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+
+commit f4183e66b38ec08e325d59e0b9162dfd6cbb87d1
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Sep 14 09:25:57 2018 -0400
+
+    LP#1643709 User merge + purge pgtap test
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+25	0	Open-ILS/src/sql/Pg/t/lp1643709_purge_usrs_on_merge.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1643709_purge_usrs_on_merge.pg
+
+commit 3edfc1d7b441145e020538b0e513da903111ce53
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Sep 14 08:05:12 2018 -0400
+
+    LP#1643709 purge users on merge instead of flag deleted
+    
+    Purge merged user accounts.
+    
+    Update the upgraded version of the usr_merge() db function to match
+    recnet changes in master.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/999.functions.global.sql
+361	0	Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.function.global.purge-usr-on-merge.sql
+
+commit ebe7726d9033e0c462baa443ab5977c48024a719
+Author: Jason Boyer <JBoyer@library.in.gov>
+Date:   Fri Nov 2 12:33:10 2018 -0400
+
+    LP1801156: Add missing assets to 3.2 Offline mode
+    
+    t_org_select was missing from the UpUp asset list,
+    causing offline mode to be non-functional when unable
+    to connect to the server.
+    
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	0	Open-ILS/src/templates/staff/base_js.tt2
+
+commit 7a0e6b686091e86413e69a6ebfff2f61b68e7f2f
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sat Jun 16 14:13:22 2018 -0400
+
+    LP#1761242 Z39.50 Marc View Usability with Mobile Repsonsiveness
+    
+    This patch changes the size of the image in the Z39.50 Marc View from large to
+    medium.  It also incorporates bootstrap's media classes to present the Marc
+    record and the cover image side by side.  If there is no image the marc record
+    display floats to the left of the modal. From a suggestion by Jane Sandbert, it
+    also hides the book cover image on small devices.
+    
+    To test.
+    1. Perform a search in z39.50.  An LOC title search for "Cat in the Hat"
+       returms results of titles with and without images.
+    2. View some of the titles in Marc View, noting the large image.
+    3. Apply the patch.
+    4. Perform the same search and view the results in Marc View.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	2	Open-ILS/src/templates/staff/cat/z3950/t_marc_html.tt2
+
+commit 1dbf4109ffffe66aba07648fabf103432b932b40
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Sep 17 10:08:34 2018 -0400
+
+    Lp 1753813: Wrap all oils_persist:source_definitions in CDATA blocks.
+    
+    For safety's sake, we add CDATA sections in all fm_ILD.xml
+    oils_persist:source_definition elements as show in the example at the
+    top of the IDL.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+39	39	Open-ILS/examples/fm_IDL.xml
+
+commit 46bd9e31258ea34a3c3e843ff9febf47a000fea5
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 22:06:21 2018 -0500
+
+    LP#1764542: Fixing upgrade script numbering
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+
+commit e0c41ce17e4f51a2139ea4aad3e626f8b0b15a98
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 21:58:38 2018 -0500
+
+    LP#1764542: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+13	0	Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+0	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+
+commit 14b9dad9ce6f81b5d4088a315c64c67c809435f7
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jun 4 13:10:31 2018 -0400
+
+    LP#1764542 - Update older sites to MODS 3.3
+    
+    MODS 3.3 support was introduced in March 2009, but this
+    change was never included in an upgrade script.  Older
+    sites on 3.1+ will need to apply this update to avoid scary
+    segmentation faults, and it should be harmless for newer
+    sites and desirable for those on 3.0 or older.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+13	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+
+commit 996c5e85555e2eb00ea80b44e741a5c4c484b877
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 20 11:00:22 2018 -0400
+
+    LP#1792621: Fix think-o in Hold Shelf Delay YAOUS test
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 6056f30ed1b7db00f7559bcc6ab3c83c2312fcdf
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Sep 17 10:19:34 2018 -0400
+
+    LP#1792621: Ignore deleted items on hold shelf
+    
+    The hold shelf rewrite brought back an old behavioral bug where items deleted
+    while on the hold shelf continued to show on the hold shelf list.  The most
+    recent behavior was to ignore those items, which this commit does.  It also
+    addresses an adjacent issue where holds may show with "Hold Shelf Delay"
+    instead of "Ready For Pickup" in some cases.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+1	0	Open-ILS/web/js/ui/default/staff/circ/holds/app.js
+
+commit fc0264346bacae7ccafee34c0155c13e53d55229
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Nov 15 11:43:30 2018 -0500
+
+    LP1755625: Multiple emails in patron editor
+    
+    Even though the HTML5 "email" input type allows multiple
+    addresses to be separated by commas there is nothing that
+    can be done to signal to Angular.js that this is ok; it
+    will only ever accept a single address. This patch forces
+    the type of the input tag to plain text so Angular will
+    rely on any supplied regex to verify the entry.
+    
+    The ui.patron.edit.au.email.regex (Regex for email field on patron
+    registration) library setting can be used to control whether
+    one or multiple email addresses will be permitted on the
+    patron registration form.
+    
+    To allow multiple addresses, that setting can be:
+    
+    ^(?:(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)(?:,\s?(?!$)|$))*$
+    
+    To allow only a single address, use:
+    
+    ^(?:\b[^@,\s]+@[^@,\s]+\.[^@.,\s]+\b)$
+    
+    To test
+    -------
+    [1] In the web staff client, try to register a new patron, entering
+        multiple email addresseses in the email field separated by
+        commas.
+    [2] Note that the email field displays as invalid and the
+        record cannot be saved.
+    [3] Apply the patch and repeat step #1, This time, the email
+        field should accept multiple addresses.
+    [4] Set the Regex for email field on patron registration library
+        setting to the multiple-email form listed above. Reload
+        the patron registration form and verify that it will
+        continue to accept multiple email addresses but will not
+        accept entry that doesn't look like an email address.
+    [5] Set the library setting to the single-address value. Reload
+        the patron registration form; this time it should accept
+        a valid email address but not multiple ones.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+
+3	1	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+
+commit 72ff895e86ddc16dcd5df42578d477517169fa59
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Sep 12 15:52:21 2018 -0400
+
+    Docs: LP#1578719 Update DIG Attributions page
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+17	14	docs/shared/attributions.adoc
+
+commit 43c75ec072ece2d150ffb3a8a211bfc946785ad3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Nov 6 09:42:17 2018 -0500
+
+    LP#1797007 Grid cell tooltips apply to all cells (Ang)
+    
+    Avoid excessive browser page re-flows, caused by checking cell
+    widths for rendering tooltips, by rendering tooltips for all cells
+    regardless of the size of the content.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.html
+2	34	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.ts
+
+commit c31bf958cd6db4c96811be8db6bb32b75e63c300
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 5 10:52:17 2018 -0500
+
+    LP#1797007 Grid cell tooltips apply to all cells
+    
+    Avoid excessive browser page re-flows, caused by checking cell widths
+    for rendering tooltips, by rendering tooltips for all cells regardless
+    of the size of the content.
+    
+    This reverts commit 1e9c0ab388a0697a1f099970240f2da21bfb5e1f.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	4	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+1	30	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 34613bd46cae4b228beaafcbd44846971c9179a9
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Nov 7 11:09:10 2018 -0500
+
+    LP#1684202 - fix holdings grid refresh... bre_id array always be integers
+    
+    For some strange reason the volcopy bchannel event data.records
+    would be an array of string integers or a array of ints depending
+    on whether you're adding or editing holdings. This addresses that
+    weirdness.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 262a1d35df4293be14f7ea876ab04e491c338a14
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Wed Oct 17 18:06:01 2018 -0400
+
+    LP#1684202 - fix bug the prevented automatic refresh
+    
+    Turns out that Array.includes() does not do implicit type convertions
+    Typical javascript...
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit c6e420d2078ebe8b168dea4695892aefafd11976
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Sep 14 11:03:30 2018 -0400
+
+    LP#1684202: Protect against missing features; Make feature more general
+    
+    I've wrapped the BroadcastChannel code in a test derived from the auth version
+    of the same concept.  Also broadcasting the full set of record IDs and the
+    pre-update call number IDs for other interfaces that might be interested. The
+    channel name is also made more generic and made to follow the precedent from
+    the auth channel name.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+28	0	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+14	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit ac51b481206bbd273ead680b52837273ac1e9389
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Nov 12 12:26:40 2018 -0500
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+220	0	Open-ILS/src/sql/Pg/upgrade/1134.function.located_uri_browse_visibility.sql
+0	220	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1134.function.located_uri_browse_visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+
+commit 1a5a9c9041d5bbd0ee7fda646d26fb22173c2929
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Nov 9 12:28:08 2018 -0500
+
+    LP#1773479 Show Located URIs in browse
+    
+    Located URIs depend upon bib-level visibility, as there are no copies
+    to work with.  The browse code, however, was joining in the copy
+    visibility table as if it would always have at least one row per bib,
+    but in the case of located URIs, it does not.
+    
+    Let's change it to a LEFT JOIN to allow the bib row to show up, at
+    which point the existing bib visibility check can do its job.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+2	2	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+220	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_browse_visibility.sql
+
+commit 6c9b4832b156970a861603a64fa0ae22abaeb4be
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 14:38:01 2018 -0400
+
+    LP#1724348 Honor default tab from catalog search
+    
+    The default tab selection was not being honored from catalog searches,
+    as the search had already set $scope.record_tab, and we were honoring
+    that value in all cases.
+    
+    Instead, let's honor that value in cases where the OPAC load doesn't
+    change our current record, which should only happen if we load the
+    record directly to a non-opac tab, then go to the OPAC view.
+    
+    To test:
+    1) Set any tab other than "OPAC View" as your default view in record
+    details.
+    2) Do a catalog search.
+    3) Select a record, and notice your default view is not set.
+    4) Apply patch, do the same steps, and notice the default view is now
+    selected.
+    
+    To test regression of bug #1708951:
+    1) In Firefox, load a record directly (e.g.
+    /eg/opac/staff/cat/catalog/record/123).
+    2) Note the default view loaded.
+    3) Click "OPAC View".
+    4) Note the view does not return to your default view, but stays on
+    the OPAC.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <JBoyer@library.in.gov>
+
+5	2	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 4eac9154f3fe122e15c4fddef729efd3924672d6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Nov 7 09:27:30 2018 -0500
+
+    LP#1635737 Due date DST noncat thinko fix
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+
+commit d96d5b6bcb279f60b4add125eb33eefa3417fffb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Nov 6 16:22:43 2018 -0500
+
+    LP#1635737 Due date DST-aware thinko fix
+    
+    Minor code refactor to fix thinko and syntax issues.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit b5357b0283c37ce12d161186f1092d138752e4f4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Mon Jul 31 15:55:34 2017 -0400
+
+    LP#1635737 Apply DST-aware timezone to context dates
+    
+    Do our best to enforce the rule required by OpenSRF's interval_to_seconds
+    that when a context date is in use, and you care about DST awareness, you
+    must set the timezone to a DST-aware value, e.g., 'America/New_York'. In
+    most situations, 'local' will suffice for this, as the server is typically
+    configured with a DST-aware timezone in its environment.  However, we will
+    look for an org unit setting called 'lib.timezone' and use that where we
+    can.  See LP#1705524 for info on that setting.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+19	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+10	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+
+commit 8520c3257a71444a9068e1c9de344c2010b2af02
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jul 21 14:28:16 2017 -0400
+
+    LP#1635737 Use new OpenSRF interval_to_seconds() context
+    
+    Use the optional context for interval_to_seconds() to account for the
+    variable length of duration components.  For example, "1 day" may be
+    shorter or longer than 24 hours during a time change event, "1 month"
+    may be shorter or longer depending on which month it is currently, etc.
+    
+    Also, remove some timestamp munging, as that happens within
+    interval_to_seconds() already.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    
+    Conflicts:
+    	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/NonCat.pm
+
+commit 36581e75999f7fda8705e203a4e299988662fa54
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Nov 6 15:27:23 2018 -0500
+
+    LP#1635737: Unit tests for DST and date math
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+18	1	Open-ILS/src/perlmods/t/14-OpenILS-Utils.t
+
+commit 479361d70a31562cb045d14742c85b5440491067
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 6 15:13:47 2018 -0500
+
+    LP#1635737 Add optional context to interval_to_seconds
+    
+    Any given interval (e.g. "1 month") can be a different amount of
+    seconds depending on the context (i.e. "1 month" after February 1 is
+    March 1, but "1 month" after March 1 is April 1, yet March is longer
+    than February).  This affects months all the time, but also can
+    affect days, hours, and even seconds once you consider DST and "leap"
+    times.
+    
+    By giving an optional context to interval_to_seconds, you can find
+    the true number of seconds in, for example, "1 month", when starting
+    from "February 1" (the context).
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+48	17	Open-ILS/src/perlmods/lib/OpenILS/Utils/DateTime.pm
+
+commit f8473b18091b355cc9452ae7adeb5214fa997f7a
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Jul 25 11:51:06 2018 -0400
+
+    LP#1783602: Remove copy counts from mr search results page
+    
+    The copy counts on the mr search results page can be wrong if a limiter was
+    applied to the metarecord search. Rather than supply inaccurate information to
+    the user, let's remove the counts from that page until a long-term solution can
+    be developed.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	1	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 9080603f72e10ef1d18f895fb31cfca77d0bbc89
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Nov 5 15:50:24 2018 -0500
+
+    LP#1755543: Change placement of help popovers
+    
+    Set the placement of help tip popovers so that they automatically position
+    to a visible place on the screen.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/share/t_help_popover.tt2
+
+commit c70a7a11f878983d02192239c74129ad25e44feb
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Mar 13 12:54:42 2018 -0400
+
+    LP#1755543: Add help tips to Print Item Labels Settings tab
+    
+    Instead of providing lengthy settings descriptions, which result in a lot of
+    scrolling on the Print Item Template page, let's use help tips that can
+    provide guidance to new users without adding clutter to the interface.
+    
+    This commit also turns the field labels into HTML labels for improved
+    accessibility and removes borders on the page. The borders were helpful
+    when we displayed the help text on the page, but are no longer needed.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	6	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit cfb872e8432d4967ec3b03c7d31c32c98ed89522
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Thu Jun 7 14:54:45 2018 -0400
+
+    LP#1755896: Web Client mobile menu font color contrast.
+    
+    When viewing the main menu in the web client in a small device or in a
+    browser with a width that is resized to less than 800px the menu
+    collapses and the submenu choices are difficult to read because of lack
+    of contrast.  This patch adds some contrast.
+    
+    To test:
+    1. View the web client in a browser and lessen the width until the menu
+       collapses, or view it in a small device.
+    2. Open some of the menu options to observe the submenus.
+    3. Apply the patch.
+    4. Refresh the browser and repeat steps 1-2 to view the more readable
+       submenus.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+6	0	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit 14a6b09d55c975b3854cfd0720898e0308f39813
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 16:40:34 2018 -0500
+
+    LP#1789747: tweak disabling the offline circulation link
+    
+    This patch ensures that the menu link can be fully disabled by
+    giving the "disabled" CSS class to the anchor as well as the
+    li that contains it. It also adds a CSS rule to the disabled
+    class to force the cursor to not-allowed; due to a quirk, an
+    anchor with "pointer-events: none" will not respect "cursor: not-allowed",
+    but the containing element can have that cursor rule.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/templates/staff/css/style.css.tt2
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+
+commit aa99255b39d8122054bc0646951c3212e44be506
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Sep 4 15:09:31 2018 -0400
+
+    LP#1789747 More SharedWorker sanity checks for egLovefield
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Rogan Hamby <rhamby@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	3	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+
+commit 8f23343b76ebf8f556a5426b478c331698a3a2a6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 30 13:19:03 2018 -0400
+
+    LP#1789747 SharedWorker sanity checks
+    
+    Avoid page load failures when SharedWorkers (for offline mode) are
+    not supported.  Additionally, disable the Offline Circulation menu
+    option when SharedWorkers are not supported.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+4	3	Open-ILS/web/js/ui/default/staff/app.js
+11	4	Open-ILS/web/js/ui/default/staff/services/env.js
+3	3	Open-ILS/web/js/ui/default/staff/services/lovefield.js
+6	2	Open-ILS/web/js/ui/default/staff/services/navbar.js
+15	8	Open-ILS/web/js/ui/default/staff/services/org.js
+2	2	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit b3fc4d63034434e31726ded935b80009d8c3e432
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 16 14:15:53 2018 -0400
+
+    LP#1798170 Load grid data after settings are applied
+    
+    Ensure the initial grid data fetching code does not fire until after the
+    grid configuration has been retrieved and applied.  This fixes an issue
+    where custom columns would contain no values on initial grid load.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+17	14	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 48266b6728fea1478dc710b6e8b9eb7922cf31cc
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 12:49:35 2018 -0500
+
+    LP#1801759: add mod_remoteip configuration to example Apache config
+    
+    Text taken from an OpenSRF patch added by Bill Erickson per bug 1684970.
+    
+    This patch adds an Apache configuration stanza that uses mod_remoteip
+    to pass the user agent's IP address to the HTTP translator. It is meant
+    for when Apache is being run behind a proxy such as NGINX.
+    
+    To test
+    -------
+    [1] Set up Evergreen with Apache and the WebSockets server running
+        behind a proxy such as NGINX.
+    [2] Enable mod_remoteip (e.g., sudo a2enmod remoteip).
+    [3] Apply the Apache configuration change in this patch, uncommenting
+        out the directives and (if necessary) updating the internal IP
+        address of the proxy.
+    [4] Reload Apache.
+    [5] Perform an action that uses the HTTP translator, e.g., adding a
+        vendor record using the Dojo interface.
+    [6] Verify that the client IP logged is that of the user agent, not
+        the proxy.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit 5fdaf3125f54b8855fbcace13b4e855bc5e10078
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Nov 5 12:54:24 2018 -0500
+
+    LP#1801759: enable mod_remoteip by default
+    
+    Use of mod_remoteip is technically optional, since it's not
+    required that Evergreen run with a proxy such as NGINX. However, since
+    use of proxies is common, enablig mod_remoteip just in case could
+    be useful with minimal cost.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/extras/install/Makefile.debian-jessie
+2	1	Open-ILS/src/extras/install/Makefile.debian-stretch
+2	1	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+2	1	Open-ILS/src/extras/install/Makefile.ubuntu-xenial
+
+commit 0fd636e97babdce8b4526fa1d1d412a84a92e627
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Nov 4 15:25:44 2018 -0800
+
+    Docs: updating holding, item, call number terminology
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	5	docs/admin/Org_Unit_Proximity_Adjustments.adoc
+5	5	docs/admin/circulation_limit_groups.adoc
+1	1	docs/admin/cn_prefixes_and_suffixes.adoc
+52	52	docs/admin/copy_locations.adoc
+1	1	docs/admin/popularity_badges_web_client.adoc
+23	23	docs/admin_initial_setup/borrowing_items.adoc
+12	12	docs/admin_initial_setup/migrating_your_data.adoc
+60	60	docs/cataloging/copy-buckets_web_client.adoc
+10	10	docs/cataloging/holdings_templates.adoc
+14	14	docs/cataloging/monograph_parts.adoc
+6	9	docs/cataloging/tpac_copy_edit_links.adoc
+14	11	docs/cataloging/volcopy_editor.adoc
+9	10	docs/development/data_unapi.adoc
+
+commit 17eabd929d0967de016b03e48f5826cfdd8ddbce
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Nov 2 15:00:55 2018 -0400
+
+    Docs: Update old command osrf_ctl.sh to osrf_control
+    
+    Thanks to Rosie Le Faive for catching this problem, and providing the
+    solution!
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	1	docs/admin/marc_templates.adoc
+
+commit 71cf9a7def46ce3fa72e749d31fc62f5758d8df0
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Oct 26 09:16:14 2018 -0400
+
+    LP1796988: Fix Saving Last Copy Template
+    
+    A line that belongs within a forEach loop escaped
+    its bounds and caused a reference error that prevented
+    the applyTemplate function from saving the last used
+    template. This branch ushers this line back to its
+    pen where it can trouble us no more.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 899733acd11c22e96dcb821bd9d0f3ee8a02b691
+Author: abneiman <abneiman@equinoxinitiative.org>
+Date:   Thu Nov 1 13:59:02 2018 -0700
+
+    Docs: Emergency Closing Handler
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+88	0	docs/admin/emergency_closing_handler.adoc
+-	-	docs/media/ECHClosedDatesEditorAddClosing.png
+-	-	docs/media/ECHClosingSnowDay.png
+-	-	docs/media/ECHEditClosing.png
+-	-	docs/media/ECHEditClosingModal.png
+-	-	docs/media/ECHLibraryClosingConstruction.png
+-	-	docs/media/ECHLibraryClosingDetailed.png
+-	-	docs/media/ECHLibraryClosingDone.png
+-	-	docs/media/ECHLibraryClosingMultipleDays.png
+2	0	docs/root.adoc
+2	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/emergency_closing_handler.adoc
+ create mode 100644 docs/media/ECHClosedDatesEditorAddClosing.png
+ create mode 100644 docs/media/ECHClosingSnowDay.png
+ create mode 100644 docs/media/ECHEditClosing.png
+ create mode 100644 docs/media/ECHEditClosingModal.png
+ create mode 100644 docs/media/ECHLibraryClosingConstruction.png
+ create mode 100644 docs/media/ECHLibraryClosingDetailed.png
+ create mode 100644 docs/media/ECHLibraryClosingDone.png
+ create mode 100644 docs/media/ECHLibraryClosingMultipleDays.png
+
+commit f6af63d62f7a183e36fc93083bfb64a5b4c8eac1
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Oct 31 16:53:17 2018 -0400
+
+    Docs: Fix minor release notes formatting bug
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/RELEASE_NOTES_3_2.adoc
+
+commit ae2b807bc0f9e53aeb1a22fdf4bb5cf6ef57315e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Oct 25 09:35:37 2018 -0400
+
+    Forward Port Release Notes for 3.0.13.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+21	0	docs/RELEASE_NOTES_3_0.adoc
+
+commit 604fe387d0fd176ebd94b3bc67185730b4486746
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 18:14:28 2018 -0400
+
+    Forward-port 3.2.1 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.0-3.2.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.0-3.2.1-upgrade-db.sql
