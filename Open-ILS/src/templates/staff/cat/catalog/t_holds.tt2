@@ -53,7 +53,7 @@
       label="[% l('Mark Item Missing') %]"></eg-grid-action>
     <eg-grid-action handler="grid_actions.retarget_wide" group="[% l('Hold') %]"
       label="[% l('Find Another Target') %]"></eg-grid-action>
-    <eg-grid-action handler="grid_actions.cancel_hold_wide" group="[% l('Hold') %]"
+    <eg-grid-action handler="grid_actions.cancel_wide_hold" group="[% l('Hold') %]"
       label="[% l('Cancel Hold') %]"></eg-grid-action>
 
     <eg-grid-field label="[% l('Hold ID') %]" path='hold.id'></eg-grid-field>
