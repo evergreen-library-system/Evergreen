@@ -3,6 +3,80 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.8
+----------------
+This release contains bug fixes improving on Evergreen 3.1.7.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes a bug that blocked logging in from mobile browsers
+* Fixes a readability issue with mobile menus
+* Fixes performance issue related to grid tooltips.
+
+Cataloging
+^^^^^^^^^^
+
+* Improves the functionality of setting a default tab of a bib record
+* The web client now remembers the most recently selected copy template
+* Adds help tips to Print Item Labels Settings tab
+* If you add or edit copies and/or volumes from the Holdings View tab,
+the view now automatically refreshes to show your changes.
+* Provides an upgrade to MODS 3.3 for older Evergreen installations.
+* Improves usability of Z39.50 MARC View.
+
+Circulation
+^^^^^^^^^^^
+
+* Staff can now place multiple email addresses into the patron registration/
+edit form, depending on the value of the `ui.patron.edit.au.email.regex`
+library setting.
+* Fixes an issue with the offline circulation module.
+* When merging two users, the non-lead account is now completely purged from
+the database, rather than simply being marked as deleted.
+
+Public catalog
+^^^^^^^^^^^^^^
+
+* Removes incorrect copy counts from metarecord search results pages
+* Electronic resources now display in the browse interfaces
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The example Apache 2.4 configuration now enables remoteip.
+* Improves syntax in the fm_idl file.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.8 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Rogan Hamby
+* Rosie Le Faive
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
 Evergreen 3.1.7
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.6.
