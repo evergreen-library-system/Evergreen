@@ -43,6 +43,8 @@ library setting.
 * Fixes an issue with the offline circulation module.
 * When merging two users, the non-lead account is now completely purged from
 the database, rather than simply being marked as deleted.
+* Fixes a bug which prevented the canceling of holds from the title
+record.
 
 Public catalog
 ^^^^^^^^^^^^^^
