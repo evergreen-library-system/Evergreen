@@ -733,12 +733,12 @@ sub filter_closed_date_copies {
 sub filter_copies_by_status {
     my $self = shift;
 
+    # Track checked out copies for later recall
+    $self->recall_copies([grep {$_->{status} == 1} @{$self->copies}]);
+
     $self->copies([
         grep {$_->{status} == 0 || $_->{status} == 7} @{$self->copies}
     ]);
-
-    # Track checked out copies for later recall
-    $self->recall_copies([grep {$_->{status} == 1} @{$self->copies}]);
 
     return 1;
 }
