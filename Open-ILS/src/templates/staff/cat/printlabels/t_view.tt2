@@ -147,12 +147,43 @@
                                     </li>
                                 </ul>
                               </div>
-                              <div class="eg-print-label-section">
-                                <h4>[% l('Print Option') %]</h4>
+                             <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
+                                <p><strong>[% l('Starting Position on Label Grid') %]</strong>
+                                <eg-help-popover help-text="[% l('Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in &quot;Print Grid Size&quot;') %]"></p>
+                                <ul>
+                                    <li>
+                                        <label>[% l('Row') %]:</label>
+                                        <input type="number" eg-print-label-valid-int eg-print-label-row-bounds ng-model="preview_scope.toolbox_settings.page.start_position.row" ng-min="1" required />
+                                    </li>
+                                    <li>
+                                        <label>[% l('Column') %]:</label>
+                                        <input type="number" eg-print-label-valid-int="" eg-print-label-column-bounds ng-model="preview_scope.toolbox_settings.page.start_position.column" ng-min="1"  required />
+                                    </li>
+                                </ul>
+                                </div>
+                              </div>
+                              <div class="eg-print-label-group">
+                                <div class="eg-print-label-section">
+                                <h4>[% l('Label Set Configuration') %]
+                                <eg-help-popover help-text="[% l('A label set is a group of labels that should print data from the same bibliographic record. In this
+section, identify the number of labels contained in each set, which columns should print spine label data, and which columns should print pocket label data.') %]"></h4>
                                 <ul>
                                     <li ng-repeat="x in preview_scope.toolbox_settings.mode.options">
                                         <label>{{x.label}}:</label>
                                         <input name="label-output-mode" ng-model="preview_scope.toolbox_settings.mode.selected" type="radio" value="{{x.value}}" />
+                                    </li>
+                                </ul>
+                                </div>
+                                <div class="eg-print-label-section" ng-if="preview_scope.valid_print_label_start_column() && preview_scope.valid_print_label_start_row() && preview_scope.toolbox_settings.page.dimensions.columns > 1">
+                                <label>[% l('Number of Labels in Set') %]:</label>
+                                <input type="number" eg-print-label-valid-int="" ng-min="1" ng-model="preview_scope.toolbox_settings.page.label.set.size" />
+                                <ul>
+                                    <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
+                                        <label>[% l('Column') %] {{i + 1}}</label>
+                                        <select id="eg_print_label_column_spec_{{i}}" ng-model="preview_scope.toolbox_settings.page.column_class[i]" ng-change="redraw_label_table()">
+                                            <option value="spine">[% l('Spine Label') %]</option>
+                                            <option value="pocket">[% l('Pocket Label') %]</option>
+                                        </select>
                                     </li>
                                 </ul>
                               </div>
@@ -184,51 +215,18 @@
                                     </li>
                                 </ul>
                               </div>
-                              <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
+                              <div class="eg-print-label-section">
                                 <p><label>[% l('Gap Between Rows') %]</label>
                                 <eg-help-popover help-text="[%l ('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                                 <p><input type="text" ng-model="preview_scope.toolbox_settings.page.space_between_labels.vertical.size" ng-min="0" eg-print-label-valid-css required /></p>
                                </div>
                                <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
-                                <p><label>[% l('Gap Between Columns') %]</label>
+                               <p><label>[% l('Gap Between') %] <span ng-if="preview_scope.toolbox_settings.page.label.set.size > 1">[% l(' Label Sets') %]</span><span ng-if="preview_scope.toolbox_settings.page.label.set.size === 1">[% l(' Columns') %]</span></label>
                                 <eg-help-popover help-text="[% l('Gap between each label set (spine/pocket combo) or, when using only one type of label, between each
 label. Use pocket label left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
                               <p><input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required /></p>
                               </div>
-                              <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
-                                <p><strong>[% l('Starting Position on Label Grid') %]</strong>
-                                <eg-help-popover help-text="[% l('Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in &quot;Print Grid Size&quot;') %]"></p>
-                                <ul>
-                                    <li>
-                                        <label>[% l('Row') %]:</label>
-                                        <input type="number" eg-print-label-valid-int eg-print-label-row-bounds ng-model="preview_scope.toolbox_settings.page.start_position.row" ng-min="1" required />
-                                    </li>
-                                    <li>
-                                        <label>[% l('Column') %]:</label>
-                                        <input type="number" eg-print-label-valid-int="" eg-print-label-column-bounds ng-model="preview_scope.toolbox_settings.page.start_position.column" ng-min="1"  required />
-                                    </li>
-                                </ul>
-                                </div>
-                              </div> 
-                              <div class="eg-print-label-group" class="eg-print-label-section" ng-if="preview_scope.valid_print_label_start_column() && preview_scope.valid_print_label_start_row() && preview_scope.toolbox_settings.page.dimensions.columns > 1">
-                                <div>
-                                <h4>[% l('Label Set Configuration') %]
-                                <eg-help-popover help-text="[% l('A label set is a group of labels that should print data from the same bibliographic record. In this
-section, identify the number of labels contained in each set, which columns should print spine label data, and which columns should print pocket label data.') %]"></h4>
-                                <label>[% l('Number of Labels in Set') %]:</label>
-                              <input type="number" eg-print-label-valid-int="" ng-min="1" ng-model="preview_scope.toolbox_settings.page.label.set.size" />
-                                <ul>
-                                    <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
-                                        <label>[% l('Column') %] {{i + 1}}</label>
-                                        <select id="eg_print_label_column_spec_{{i}}" ng-model="preview_scope.toolbox_settings.page.column_class[i]" ng-change="redraw_label_table()">
-                                            <option value="spine">[% l('Spine Label') %]</option>
-                                            <option value="pocket">[% l('Pocket Label') %]</option>
-                                        </select>
-                                    </li>
-                                </ul>
-                              <br />
-                              </div>
-                            </div>                          
+                            </div> 
                         </div>                
                     </form>
                     <div class="eg-print-label-group">
