@@ -268,6 +268,8 @@ include::admin/physical_char_wizard_db.adoc[]
 
 :leveloffset: 0
 
+include::admin/copy_locations.adoc[]
+
 include::admin/permissions.adoc[]
 
 include::admin/SMS_messaging.adoc[]

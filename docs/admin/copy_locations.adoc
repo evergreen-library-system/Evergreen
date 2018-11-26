@@ -103,7 +103,7 @@ Create a Shelving Location Group
   the shelving location group.
 
 Order Shelving Location Groups
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you create more than one shelving location group, then you can order the groups in the
 org unit tree.
