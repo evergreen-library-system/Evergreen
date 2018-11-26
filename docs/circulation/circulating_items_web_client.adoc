@@ -471,7 +471,7 @@ The following Library Settings enable you to set preferences related to long ove
 
 [TIP]
 Learn more about these settings in the chapter about the
-<<_library_settings_editor,Library Settings Editor>>.
+Library Settings Editor.
 
 *Permissions to use this Feature*
 
