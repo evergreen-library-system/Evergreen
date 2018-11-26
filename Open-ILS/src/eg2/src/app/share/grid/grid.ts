@@ -1028,6 +1028,7 @@ export class GridToolbarAction {
     group: string;
     disabled: boolean;
     isGroup: boolean; // used for group placeholder entries
+    separator: boolean;
     disableOnRows: (rows: any[]) => boolean;
 }
 

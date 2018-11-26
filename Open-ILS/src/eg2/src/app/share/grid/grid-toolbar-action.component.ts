@@ -35,6 +35,8 @@ export class GridToolbarActionComponent implements OnInit {
     // (default behavior), the action will be enabled.
     @Input() disableOnRows: (rows: any[]) => boolean;
 
+    // If true, render a separator bar only, no action link.
+    @Input() separator: boolean;
 
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {
