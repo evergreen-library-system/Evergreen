@@ -30,7 +30,8 @@
           id="patron-checkout-barcode" type="text"/> 
 
         <input class="btn btn-default" type="submit" 
-          ng-class="{disabled : disable_checkout()}" value="[% l('Submit') %]"/>
+          ng-disabled="disable_checkout()"
+          value="[% l('Submit') %]"/>
 
       </div>
     </form>
@@ -76,7 +77,9 @@
         </label>
       </div> -->
       <div class="col-md-12 col-lg-6">
-        <eg-date-input ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date" show-time-picker></eg-date-input>
+        <eg-date-input min-date="minDate" out-of-range="outOfRange"
+          ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date" show-time-picker>
+        </eg-date-input>
       </div>
 </div>
     </div>

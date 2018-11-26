@@ -1356,13 +1356,12 @@ https://stackoverflow.com/questions/24764802/angular-js-automatically-focus-inpu
 
                 if ($scope.outOfRange !== undefined && (maxDateObj || minDateObj)) {
                     $scope.$watch('ngModel', function (n,o) {
-                        if (n && n != o) {
-                            var bad = false;
-                            var newdate = new Date(n);
-                            if (maxDateObj && newdate.getTime() > maxDateObj.getTime()) bad = true;
-                            if (minDateObj && newdate.getTime() < minDateObj.getTime()) bad = true;
-                            $scope.outOfRange = bad;
-                        }
+                        var bad = false;
+                        var newdate = new Date(n);
+                        if (isNaN(newdate.getTime())) bad = true;
+                        if (maxDateObj && newdate.getTime() > maxDateObj.getTime()) bad = true;
+                        if (minDateObj && newdate.getTime() < minDateObj.getTime()) bad = true;
+                        $scope.outOfRange = bad;
                     });
                 }
             }],
