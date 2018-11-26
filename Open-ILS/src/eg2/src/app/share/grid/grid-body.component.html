@@ -1,3 +1,17 @@
+<!-- uses dropdown menu CSS for easy stying, but it's not a dropdown -->
+<ng-template #contextMenu let-gridContext="gridContext">
+  <ng-container *ngFor="let action of gridContext.toolbarActions">
+    <ng-container *ngIf="action.separator">
+      <div class="dropdown-divider"></div>
+    </ng-container>
+    <ng-container *ngIf="!action.separator">
+      <a class="dropdown-item" (click)="performAction(action)">
+        <span class="ml-2">{{action.label}}</span>
+      </a>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
 <!--
   tabindex=1 so the grid body can capture keyboard events.
 -->
@@ -27,11 +41,20 @@
         </ng-container>
       </ng-container>
     </div>
+    <!-- contextMenu applied to cells instead of rows so the position
+         of the popover is close to the mouse.  As of writing, no way
+         to position the popover at the mouse -->
     <div role="gridcell" class="eg-grid-cell eg-grid-body-cell"
       [ngStyle]="{flex:col.flex}"
       [ngClass]="{'eg-grid-cell-overflow': context.overflowCells}"
       (dblclick)="onRowDblClick(row)"
       (click)="onRowClick($event, row, idx)"
+      #rowContextMenu="ngbPopover"
+      popoverTitle="Actions for Selected Rows" i18n-popoverTitle
+      (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
+      [ngbPopover]="contextMenu"
+      placement="bottom"
+      triggers="manual"
       *ngFor="let col of context.columnSet.displayColumns()">
 
       <eg-grid-body-cell [context]="context" [row]="row" [column]="col">
