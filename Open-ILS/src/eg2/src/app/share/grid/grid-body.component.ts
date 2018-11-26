@@ -1,7 +1,8 @@
 import {Component, Input, OnInit, Host} from '@angular/core';
 import {GridContext, GridColumn, GridRowSelector,
-    GridColumnSet, GridDataSource} from './grid';
+    GridToolbarAction, GridColumnSet, GridDataSource} from './grid';
 import {GridComponent} from './grid.component';
+import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'eg-grid-body',
@@ -12,7 +13,13 @@ export class GridBodyComponent implements OnInit {
 
     @Input() context: GridContext;
 
-    constructor(@Host() private grid: GridComponent) {}
+    // Track the context menus so we can manually close them 
+    // when another popover is opened.
+    contextMenus: NgbPopover[];
+
+    constructor(@Host() private grid: GridComponent) {
+        this.contextMenus = [];
+    }
 
     ngOnInit() {}
 
@@ -71,7 +78,7 @@ export class GridBodyComponent implements OnInit {
         }
     }
 
-    onRowClick($event: any, row: any, idx: number) {
+    handleRowClick($event: any, row: any) {
 
         if (this.context.disableSelect) {
             // Avoid any appearance or click behavior when row
@@ -94,7 +101,10 @@ export class GridBodyComponent implements OnInit {
         } else {
             this.context.selectOneRow(index);
         }
+    }
 
+    onRowClick($event: any, row: any, idx: number) {
+        this.handleRowClick($event, row);
         this.grid.onRowClick.emit(row);
     }
 
@@ -102,5 +112,32 @@ export class GridBodyComponent implements OnInit {
         this.grid.onRowActivate.emit(row);
     }
 
+    performAction(action: GridToolbarAction) {
+        action.action(this.context.getSelectedRows());
+    }
+
+    // Apply row selection, track the new menu if needed, 
+    // manually close any existing open menus, open selected menu.
+    onRowContextClick($event, row: any, contextMenu: NgbPopover) {
+        $event.preventDefault(); // prevent browser context menu
+
+        if (this.context.toolbarActions.length === 0) {
+            // No actions to render.
+            return;
+        }
+
+        this.handleRowClick($event, row);
+
+        const existing = this.contextMenus.filter(m => m === contextMenu)[0];
+        if (!existing) {
+            this.contextMenus.push(contextMenu);
+        }
+
+        // Force any previously opened menus to close, which does 
+        // not naturally occur via context-click.
+        this.contextMenus.forEach(m => m.close());
+
+        contextMenu.open({gridContext: this.context});
+    }
 }
 
