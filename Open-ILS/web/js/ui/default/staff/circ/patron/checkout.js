@@ -19,6 +19,8 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         due_date : new Date()
     };
 
+    $scope.minDate = new Date();
+    $scope.outOfRange = false;
     $scope.gridDataProvider = egGridDataProvider.instance({
         get : function(offset, count) {
             return this.arrayNotifier($scope.checkouts, offset, count);
@@ -31,7 +33,8 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             patronSvc.current.active() == 'f' ||
             patronSvc.current.deleted() == 't' ||
             patronSvc.current.card().active() == 'f' ||
-            patronSvc.fetchedWithInactiveCard()
+            patronSvc.fetchedWithInactiveCard() ||
+            $scope.outOfRange == true
         );
     }
 
@@ -87,8 +90,12 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
     });
 
     $scope.$watch('checkoutArgs.due_date', function(newval) {
-        if ( $scope.date_options.is_until_logout ) {
-            egCore.hatch.setSessionItem('eg.circ.checkout.due_date', newval);
+        if ( $scope.date_options.is_until_logout && !isNaN(newval)) {
+            if (!$scope.outOfRange) {
+                egCore.hatch.setSessionItem('eg.circ.checkout.due_date', newval);
+            } else {
+                egCore.hatch.setSessionItem('eg.circ.checkout.due_date', $scope.checkoutArgs.due_date);
+            }
         }
     });
 
