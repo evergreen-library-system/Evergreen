@@ -536,3 +536,168 @@ and/or processing fee) may be inserted into the last borrower's account.
 *Check in Items* and *Renew Items* on the dropdown menu.
 
 
+Copy Alerts
+~~~~~~~~~~~
+
+The Copy Alerts feature allows library staff to add customized alert messages to copies.  The copy alerts will appear when a specific event takes place, such as when the copy is checked in, checked out, or renewed.  Alerts can be temporary or persistent: temporary alerts will be disabled after the initial alert and acknowledgement from staff, while persistent alerts will display each time the alert event takes place.  Copy Alerts can be configured to display at the circulating or owning library only or, alternatively, when the library at which the alert event takes place is not the circulating or owning library.  Copy Alerts at check in can also be configured to provide options for the next copy status that should be applied to an item.   Library administrators will have the ability to create and customize Copy Alert Types and to suppress copy alerts at specific org units.
+
+Adding a Copy Alert
+^^^^^^^^^^^^^^^^^^^
+
+Copy Alerts can be added to new copies or existing copies using the Volume/Copy Editor.  They can also be added directly to items through the Check In, Check Out, Renew, and Item Status screens.
+
+To add a Copy Alert in the Volume/Copy Editor:
+++++++++++++++++++++++++++++++++++++++++++++++
+
+1. Within the _Volume/Copy Editor_, scroll to the bottom of the screen and click on *Copy Alerts*.
+
+image::media/copyalert1.PNG[]
+
+2. A _New Copy Alert_ window will pop up.
+
+image::media/copyalert2.PNG[]
+
+3. Select an alert _Type_ and enter an alert message.  Check the box next to _Temporary_ if this alert should not appear after the initial alert is acknowledged.  Leaving the Temporary box unchecked will create a persistent alert that will appear each time the action to trigger the alert occurs, such as check in or check out.
+
+4. Click *OK* to save the new Copy Alert.  After adding an initial copy alert, clicking on the *Copy Alerts* button in the _Volume/Copy Editor_ will allow you to add another Copy Alert and to view and edit Existing Copy Alerts.
+
+image::media/copyalert3.PNG[]
+
+5. Within the Volume/Copy Editor, make any additional changes to the item record and click *Store Selected* to store these changes and the new copy alert(s) to the _Completed Copies_ tab.  If you are done modifying the copy, click *Save & Exit* to finalize the changes.
+
+image::media/copyalert4.png[]
+
+To add a Copy Alert from the Check In, Check Out, or Renewal screens:
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+1. Navigate to the appropriate screen, for example to *Circulation>Check In*.
+2. Scan in the item barcode.
+3. Select the item row and go to *Actions>Add Copy Alerts* or right click on the item row and select *Add Copy Alerts*.
+
+image::media/copyalert5.PNG[]
+
+4. The _Add Copy Alert_ window will pop up.  Select the alert _Type_, add an additional alert message if needed, and Click *OK* to save.  This alert will be added to the copy.
+
+image::media/copyalert6.png[]
+
+To add a Copy Alert from the Item Status screen:
+++++++++++++++++++++++++++++++++++++++++++++++++
+
+1. Go to the _Detail View_ of the Item Status screen. 
+2. In the bottom left-hand corner of the item record there is a _Copy Alerts_ option.  Click *Add* to create a new copy alert.
+
+image::media/copyalert7.png[]
+
+3. The *Add Copy Alert* window will pop up.  Select the alert _Type_, add an additional alert message if needed, and Click *OK* to save.  This alert will be added to the copy.
+
+Triggering a Copy Alert
+^^^^^^^^^^^^^^^^^^^^^^^
+
+The Copy Alert will appear when the action required to trigger the alert occurs.  For example, the Normal Checkin Alert will appear when the item is checked in:
+
+image::media/copyalert8.PNG[]
+
+If Next Status options have been configured for the Checkin Alert, staff will see a drop down menu that allows then to select the next Status for the copy:
+
+image::media/copyalert9.png[]
+
+Managing Copy Alerts
+^^^^^^^^^^^^^^^^^^^^
+
+Copy Alerts can be managed from the _Item Status_ screen.  Within the _Quick Summary_ tab of the _Detailed View_ of an item, click on *Manage* to view and *Remove* copy alerts.
+
+image::media/copyalert10.PNG[]
+
+Administration of Copy Alerts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Copy Alert Types
+++++++++++++++++
+
+Copy Alert Types are created and managed in *Administration>Local Administration>Copy Alert Types*.  Copy Alert Types define the action and behavior of an alert message type.  The Alert Types included in a stock installation of Evergreen are:
+
+* Normal checkout
+* Normal checkin
+* Normal renewal
+* Checkin of missing copy
+* Checkin of lost-and-paid copy
+* Checkin of damaged copy
+* Checkin of claims-returned copy
+* Checkin of long overdue copy
+* Checkin of claims-never-checked-out copy
+* Checkin of lost copy
+* Checkout of missing copy
+* Checkout of lost-and-paid copy
+* Checkout of damaged copy
+* Checkout of claims-returned copy
+* Checkout of long overdue copy
+* Checkout of claims-never-checked-out copy
+* Checkout of lost copy
+* Normal checkout at circ lib
+* Normal checkin at circ lib
+* Normal renewal at circ lib
+* Normal checkout at owning lib
+* Normal checkin at owning lib
+* Normal renewal at owning lib
+
+To create a new Copy Alert Type:
+++++++++++++++++++++++++++++++++
+
+1. Go to *Administration>Local Administration>Copy Alert Types*.
+2. Click on *Create* and fill out the following fields as needed:
+* *Name:*  name of the Copy Alert Type.
+* *Active:* indicates if the alert type is currently in use (Yes) or not (No)
+* *State:* indicates the Copy Status of the item at the time of the event.
+* *Event:* the action that takes place in the ILS to trigger the alert.
+* *Scope Org Unit:* indicates which org unit(s) the alert type will apply to.
+* *Next Status:*  can be used with temporary Checkin Alerts only.  If a next status is configured, staff will be presented with a list of statuses to choose from when the item is checked in.
+* *Renewing?:* indicates if the alert should appear during a renewal.
+* *Invert location?:* if set to yes, this setting will invert the following two settings.  For example, if an alert is set to appear at the Circulating Library only, inverting the location will cause the alert to appear at all libraries except the Circulating Library.
+* *At Circulation Library?:* indicates if the alert should appear at the circulation library only.
+* *At Owning Library?:* indicates if the alert should appear at the owning library only.
+3. Click *Save*.
+
+To edit an existing Copy Alert Type:
+++++++++++++++++++++++++++++++++++++
+
+1. Go to *Administration>Local Administration>Copy Alert Types*.
+2. Click on the type and go to *Actions>Edit* or right-click and select *Edit*.
+3. Make changes to the existing configuration and click *Save*.
+
+
+Copy Alert Suppression
+^^^^^^^^^^^^^^^^^^^^^^
+
+The Copy Alert Suppression interface can be used to suppress alert types at a specific org unit.  Suppression of alerts will adhere to the organization unit hierarchy.  For example, if an alert is suppressed at the System level, it will be suppressed for all descendent branches.
+
+To suppress an alert type:
+++++++++++++++++++++++++++
+
+1. Go to *Administration>Local Administration>Copy Alert Suppression*.
+2. Click *Create* and select the _Alert Type_ that you want to suppress from the drop down menu.
+3. Next, select the _Org Unit_ at which the alert should be suppressed.
+4. Click *Save*.
+
+image::media/copyalert11.PNG[]
+
+Copy Alert Related Permissions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The following permissions affect access to copy alert administration and use:
+
+* ADMIN_COPY_ALERT_TYPE
+* ADMIN_COPY_ALERT_SUPPRESS
+* ADMIN_COPY_ALERT
+* CREATE_COPY_ALERT_TYPE
+* CREATE_COPY_ALERT_SUPPRESS
+* CREATE_COPY_ALERT
+* DELETE_COPY_ALERT_TYPE
+* DELETE_COPY_ALERT_SUPPRESS
+* DELETE_COPY_ALERT
+* VIEW_COPY_ALERT_TYPE
+* VIEW_COPY_ALERT_SUPPRESS
+* VIEW_COPY_ALERT
+* UPDATE_COPY_ALERT_TYPE
+* UPDATE_COPY_ALERT_SUPPRESS
+* UPDATE_COPY_ALERT
+
