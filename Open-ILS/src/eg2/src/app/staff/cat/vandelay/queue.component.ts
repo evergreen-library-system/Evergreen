@@ -163,10 +163,15 @@ export class QueueComponent implements OnInit, AfterViewInit {
                 error_detail: rec.error_detail(),
                 import_time: rec.import_time(),
                 imported_as: rec.imported_as(),
-                import_items: rec.import_items(),
-                error_items: rec.import_items().filter(i => i.import_error()),
+                import_items: [],
+                error_items: [],
                 matches: rec.matches()
             };
+
+            if (this.queueType === 'bib') {
+                recHash.import_items = rec.import_items();
+                recHash.error_items = rec.import_items().filter(i => i.import_error());
+            }
 
             // Link the record attribute values to the root record 
             // object so the grid can find them.

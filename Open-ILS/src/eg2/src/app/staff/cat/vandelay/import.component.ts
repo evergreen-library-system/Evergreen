@@ -371,7 +371,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     // Extract selected queue ID or create a new queue when requested.
     resolveQueue(): Promise<number> {
 
-        if (this.selectedQueue.freetext) {
+        if (this.selectedQueue && this.selectedQueue.freetext) {
             // Free text queue selector means create a new entry.
             // TODO: first check for name dupes
 
@@ -384,7 +384,9 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
         } else {
-            return Promise.resolve(this.selectedQueue.id);
+            var queue_id = this.startQueueId;
+            if (this.selectedQueue) queue_id = this.selectedQueue.id;
+            return Promise.resolve(queue_id);
         }
     }
 
@@ -434,8 +436,10 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             // Nothing to enqueue when processing pre-queued records
             return Promise.resolve();
         }
+        var spoolType = this.recordType;
+        if (this.recordType == 'authority') spoolType = 'auth'
 
-        const method = `open-ils.vandelay.${this.recordType}.process_spool`;
+        const method = `open-ils.vandelay.${spoolType}.process_spool`;
 
         return new Promise((resolve, reject) => {
             this.net.request(

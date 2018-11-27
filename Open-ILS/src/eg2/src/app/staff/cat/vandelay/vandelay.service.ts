@@ -244,7 +244,7 @@ export class VandelayService {
         const method = `open-ils.vandelay.${recordType}_queue.create`;
 
         let qType = recordType;
-        if (recordType.match(/acq/)) {
+        if (recordType.match(/bib_acq/)) {
             let qType = 'acq';
         }
 
