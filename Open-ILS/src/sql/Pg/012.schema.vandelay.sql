@@ -2272,7 +2272,7 @@ CREATE TABLE vandelay.session_tracker (
                 ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
 
     -- bib/auth
-    record_type vandelay.bib_queue_queue_type NOT NULL DEFAULT 'bib',
+    record_type TEXT NOT NULL DEFAULT 'bib',
 
     -- Queue defines the source of the data, it does not necessarily
     -- mean that an action is being performed against an entire queue.
@@ -2300,7 +2300,10 @@ CREATE TABLE vandelay.session_tracker (
         CHECK (state IN ('active','error','complete')),
 
     CONSTRAINT vand_tracker_valid_action_type
-        CHECK (action_type IN ('upload', 'enqueue', 'import'))
+        CHECK (action_type IN ('upload', 'enqueue', 'import')),
+
+    CONSTRAINT vand_tracker_valid_record_type
+        CHECK (record_type IN ('bib', 'authority'))
 );
 
 COMMIT;
