@@ -1,6 +1,8 @@
 
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1139', :eg_version);
+
 ALTER TABLE actor.usr ADD COLUMN guardian TEXT;
 
 CREATE INDEX actor_usr_guardian_idx 
