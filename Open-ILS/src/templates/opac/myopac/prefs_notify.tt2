@@ -125,6 +125,11 @@
                         <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" sms_carrier_hide_label="true" %]</td>
                     </tr>
                     [% setting = 'opac.default_sms_notify' %]
+                    <tr id="test_notification_banner" style="display:none">
+                        <td colspan="4">
+                            [% INCLUDE "opac/myopac/test_notification.tt2" %]
+                        </td>
+                    </tr>
                     <tr>
                         <td><label for='[% setting %]'>[% l('Default Mobile Number') %]</label></td>
                         <td>
@@ -132,16 +137,11 @@
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
                             [% IF ctx.user_setting_map.$setting; %]
                             <a href="#" onclick="sendTestNotification(
-                                [% ctx.user.id %], [% ctx.user.home_ou.id %], 'email', '[% ctx.authtoken %]'
+                                [% ctx.user.id %], [% ctx.user.home_ou.id %], 'sms_text', '[% ctx.authtoken %]'
                             )"
                             title="[% l('Send Test Text Message') %]">[% l('Send Test Text Message') %]</a><br />
                             [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]
                             [% END %]
-                        </td>
-                    </tr>
-                    <tr id="test_notification_banner" style="display:none">
-                        <td colspan="4">
-                            [% INCLUDE "opac/myopac/test_notification.tt2" %]
                         </td>
                     </tr>
                     [% END %]
