@@ -1370,6 +1370,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         // in standalone mode, we have no patronSvc
         var prs = patronRegSvc;
         $scope.patron = patron;
+        $scope.base_email = patron.email;
+        $scope.base_default_sms = prs.user_settings['opac.default_sms_notify']
         $scope.field_doc = prs.field_doc;
         $scope.edit_profiles = prs.edit_profiles;
         $scope.edit_profile_entries = prs.edit_profile_entries;
