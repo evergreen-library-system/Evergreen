@@ -66,7 +66,7 @@ CREATE TABLE reporter.template (
 	owner		INT				NOT NULL REFERENCES actor.usr (id) DEFERRABLE INITIALLY DEFERRED,
 	create_time	TIMESTAMP WITH TIME ZONE	NOT NULL DEFAULT NOW(),
 	name		TEXT				NOT NULL,
-	description	TEXT				NOT NULL,
+	description	TEXT				NOT NULL DEFAULT '',
 	data		TEXT				NOT NULL,
 	folder		INT				NOT NULL REFERENCES reporter.template_folder (id) DEFERRABLE INITIALLY DEFERRED
 );
