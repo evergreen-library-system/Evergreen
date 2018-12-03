@@ -611,7 +611,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
     $scope.requestItems = function() {
         var copy_list = $scope.gridControls.selectedItems().map(
             function (i) {
-                i.id;
+                return i.id;
             }
         );
 
