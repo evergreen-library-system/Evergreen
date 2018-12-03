@@ -1926,7 +1926,9 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
 
                 $scope.catalog_url = url;
             });
-        }
+        } else {
+            $scope.catalog_url = url;
+	}
 
     }
 
