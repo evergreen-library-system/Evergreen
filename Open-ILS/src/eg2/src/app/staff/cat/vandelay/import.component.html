@@ -12,10 +12,11 @@
 <div class="common-form striped-odd form-validated ml-3 mr-3">
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Apply/Create Form Template</label>
+      <label for="template-select" i18n>Apply/Create Form Template</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #formTemplateSelector
+        id="template-select"
         (onChange)="templateSelectorChange($event)"
         [allowFreeText]="true"
         [startId]="selectedTemplate"
@@ -39,10 +40,11 @@
 
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Record Type</label>
+      <label for="type-select" i18n>Record Type</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #recordTypeSelector
+        id="type-select"
         (onChange)="selectEntry($event, 'recordType')"
         [disabled]="importSelection()" [required]="true"
         [startId]="recordType" placeholder="Record Type..." i18n-placeholder>
@@ -55,10 +57,11 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label i18n>Select a Record Source</label>
+      <label for="source-select" i18n>Select a Record Source</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #bibSourceSelector
+        id="source-select"
         [entries]="formatEntries('bibSources')" 
         (onChange)="selectEntry($event, 'bibSources')"
         [startId]="selectedBibSource"
@@ -68,10 +71,11 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Select or Create a Qeueue</label>
+      <label for="queue-select" i18n>Select or Create a Queue</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('allQueues')"
+        id="queue-select"
         [startId]="startQueueId"
         [startIdFiresOnChange]="true"
         [disabled]="startQueueId"
@@ -81,10 +85,11 @@
       </eg-combobox>
     </div>
     <div class="col-lg-3">
-      <label i18n>Limit Matches to Bucket</label>
+      <label for="bucket-select" i18n>Limit Matches to Bucket</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox [entries]="formatEntries('bibBuckets')" 
+        id="bucket-select"
         [startId]="selectedBucket"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         (onChange)="selectEntry($event, 'bibBuckets')"
@@ -93,28 +98,33 @@
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Record Match Set</label>
+      <label for="match-set-select" i18n>Record Match Set</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #matchSetSelector
+        id="match-set-select"
         [entries]="formatEntries('matchSets')" 
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
         [startId]="selectedMatchSet || defaultMatchSet"
         (onChange)="selectEntry($event, 'matchSets')"
         placeholder="Match Set..." i18n-placeholder></eg-combobox>
     </div>
-    <div class="col-lg-3"><label i18n>Import Non-Matching Records</label></div>
+    <div class="col-lg-3">
+        <label for="import-non-matching" i18n>Import Non-Matching Records</label>
+    </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
+        id="import-non-matching"
         [(ngModel)]="importNonMatching">
     </div>
  </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Holdings Import Profile</label>
+      <label for="item-import-def" i18n>Holdings Import Profile</label>
     </div>
     <div class="col-lg-3"> <!-- TODO disable for authority -->
       <eg-combobox #holdingsProfileSelector
+        id="item-import-def"
         [entries]="formatEntries('importItemDefs')"
         [startId]="selectedHoldingsProfile"
         [disabled]="(selectedQueue && !selectedQueue.freetext) || importSelection()"
@@ -122,88 +132,109 @@
         placeholder="Holdings Import Profile..." i18n-placeholder>
       </eg-combobox>
     </div>
-    <div class="col-lg-3"><label i18n>Merge On Exact Match (901c)</label></div>
+    <div class="col-lg-3">
+        <label for="merge-on-exact" i18n>Merge On Exact Match (901c)</label>
+    </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        [(ngModel)]="mergeOnExact">
+        id="merge-on-exact" [(ngModel)]="mergeOnExact">
     </div>
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Merge Profile</label>
+      <label for="merge-profiles" i18n>Merge Profile</label>
     </div>
     <div class="col-lg-3">
       <eg-combobox #mergeProfileSelector
+        id="merge-profiles"
         [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'mergeProfiles')"
         placeholder="Merge Profile..." i18n-placeholder>
       </eg-combobox>
     </div>
-    <div class="col-lg-3"><label i18n>Merge On Single Match</label></div>
+    <div class="col-lg-3">
+        <label for="merge-on-single" i18n>Merge On Single Match</label>
+    </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        [(ngModel)]="mergeOnSingleMatch">
+        id="merge-on-single" [(ngModel)]="mergeOnSingleMatch">
     </div>
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Insufficient Quality Fall-Through Profile</label></div>
+      <label for="insuff-merge-profiles" i18n>
+        Insufficient Quality Fall-Through Profile
+    </label>
+    </div>
     <div class="col-lg-3">
       <eg-combobox #fallThruMergeProfileSelector
+        id="insuff-merge-profiles"
         [entries]="formatEntries('mergeProfiles')"
         (onChange)="selectEntry($event, 'FallThruMergeProfile')"
         placeholder="Fall-Through Merge Profile..." i18n-placeholder>
       </eg-combobox>
     </div>
-    <div class="col-lg-3"><label i18n>Merge On Best Match</label></div>
+    <div class="col-lg-3">
+      <label for="merge-on-best" i18n>Merge On Best Match</label>
+    </div>
     <div class="col-lg-3">
       <input class="form-check-input" type="checkbox" 
-        [(ngModel)]="mergeOnBestMatch">
+        id="merge-on-best" [(ngModel)]="mergeOnBestMatch">
     </div>
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Best/Single Match Minimum Quality Ratio</label></div>
+      <label for="min-quality-ratio" i18n>
+        Best/Single Match Minimum Quality Ratio
+      </label>
+    </div>
     <div class="col-lg-3">
-      <input type="number" step="0.1" 
+      <input type="number" step="0.1" id="min-quality-ratio" 
         class="form-control" [(ngModel)]="minQualityRatio">
     </div>
     <div class="col-lg-3">
-      <label i18n>Auto-overlay In-process Acquisitions Copies</label></div>
+      <label for="auto-overlay-acq-copies" i18n>
+        Auto-overlay In-process Acquisitions Copies
+      </label>
+    </div>
     <div class="col-lg-3">
-      <input class="form-check-input" type="checkbox" 
+      <input id="form-check-input" type="checkbox" 
+        name="auto-overlay-acq-copies"
+        [disabled]="recordType == 'authority'"
         [(ngModel)]="autoOverlayAcqCopies">
     </div>
   </div>
   <div class="row">
     <div class="col-lg-3">
-      <label i18n>Optional Session Name:</label>
+      <label for="session-name" i18n>Optional Session Name:</label>
     </div>
     <div class="col-lg-3">
       <input [(ngModel)]="sessionName" class="form-control" type="text"
-        i18n-placeholder placeholder="Session Name..."/>
+        name="session-name" i18n-placeholder placeholder="Session Name..."/>
     </div>
     <div class="col-lg-3">
-      <label i18n>Remove MARC Field Groups</label>
+      <label for="marc-remove-groups" i18n>Remove MARC Field Groups</label>
     </div>
-    <div class="col-lg-3" *ngIf="bibTrashGroups.length == 0">
+    <ng-container *ngIf="recordType != 'authority'">
+      <div class="col-lg-3" *ngIf="bibTrashGroups.length == 0">
         <span i18n class="font-italic">No Groups Configured</span>
-    </div>
-    <div class="col-lg-3" *ngIf="bibTrashGroups.length">
-      <select multiple [(ngModel)]="selectedTrashGroups" 
-        class="form-control" size="3">
-        <option *ngFor="let grp of bibTrashGroups" 
-          value="{{grp.id()}}">{{grp.label()}}</option>
-      </select>
-    </div>
+      </div>
+      <div class="col-lg-3" *ngIf="bibTrashGroups.length">
+        <select multiple [(ngModel)]="selectedTrashGroups" 
+          id="marc-remove-groups" class="form-control" size="3">
+          <option *ngFor="let grp of bibTrashGroups" 
+            value="{{grp.id()}}">{{grp.label()}}</option>
+        </select>
+      </div>
+    </ng-container>
   </div>
   <div class="row" *ngIf="!importSelection()">
     <div class="col-lg-3">
-      <label i18n>File to Upload:</label>
+      <label for="upload-file" i18n>File to Upload:</label>
     </div>
     <div class="col-lg-3">
       <input #fileSelector (change)="fileSelected($event)" 
-        required class="form-control" type="file"/>
+        id="upload-file" required class="form-control" type="file"/>
     </div>
   </div>
   <div class="row" *ngIf="importSelection()">
