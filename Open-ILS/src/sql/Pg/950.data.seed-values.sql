@@ -19291,6 +19291,13 @@ VALUES (
         'Serials Barcode On Receive',
         'cwst', 'label'
     )
+), (
+  'eg.grid.circ.patron.billhistory_xacts', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.circ.patron.billhistory_xacts',
+    'Grid Config: circ.patron.billhistory_xacts',
+    'cwst', 'label'
+  )
 );
 
 
