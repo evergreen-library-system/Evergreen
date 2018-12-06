@@ -788,6 +788,12 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         });
     }
 
+    $scope.need_multiple_selected = function() {
+        var items = $scope.gridControls.selectedItems();
+        if (items.length > 1) return false;
+        return true;
+    }
+
     // fetch the bucket;  on error show the not-allowed message
     if ($scope.bucketId) 
         drawBucket()['catch'](function() { $scope.forbidden = true });
