@@ -23,6 +23,7 @@
     label="[% l('Transfer Title Holds') %]"></eg-grid-action>
 
   <eg-grid-action label="[% l('Merge Selected Records') %]" 
+    disabled="need_multiple_selected"
     handler="openRecordMergeDialog"></eg-grid-action>
 
   <eg-grid-action label="[% l('Export Records') %]" 
