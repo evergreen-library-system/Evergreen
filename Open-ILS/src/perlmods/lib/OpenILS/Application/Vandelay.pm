@@ -909,6 +909,7 @@ sub queued_records_with_matches {
 sub create_session_tracker {
     my ($user_id, $ws_id, $key, $name, $type, $queue_id, $action, $total_acts) = @_;
     my $e = new_editor(xact => 1);
+    $type = 'authority' if $type =~ /auth/;
 
     if ($key) {
         # if other trackers exist for this key, adopt the name
