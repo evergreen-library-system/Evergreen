@@ -151,7 +151,7 @@ sub oils_event_die {
 # Login to the auth server and set the global $authtoken var
 #----------------------------------------------------------------
 sub oils_login {
-	my( $username, $password, $type ) = @_;
+	my( $username, $password, $type, $workstation ) = @_;
 
 	$type |= "staff";
 
@@ -160,9 +160,12 @@ sub oils_login {
 		'open-ils.auth.authenticate.init', $username, $nonce);
 	err("No auth seed") unless $seed;
 
-	my $opts = {	username => $username,
-			password => md5_hex($seed . md5_hex($password)),
-			type => $type };
+    my $opts = {
+        username => $username,
+        password => md5_hex($seed . md5_hex($password)),
+        type => $type,
+        nonce => $nonce
+    };
 
 	if(defined($workstation)) {
 		$opts->{workstation} = $workstation;
