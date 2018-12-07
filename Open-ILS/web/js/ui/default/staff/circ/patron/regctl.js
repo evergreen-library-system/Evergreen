@@ -1223,10 +1223,10 @@ angular.module('egCoreMod')
 .controller('PatronRegCtrl',
        ['$scope','$routeParams','$q','$uibModal','$window','egCore',
         'patronSvc','patronRegSvc','egUnloadPrompt','egAlertDialog',
-        'egWorkLog',
+        'egWorkLog', '$timeout',
 function($scope , $routeParams , $q , $uibModal , $window , egCore ,
          patronSvc , patronRegSvc , egUnloadPrompt, egAlertDialog ,
-         egWorkLog) {
+         egWorkLog, $timeout) {
 
     $scope.page_data_loaded = false;
     $scope.hold_notify_type = { phone : null, email : null, sms : null };
@@ -2109,6 +2109,19 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                     + updated_user.id();
                 $window.open(url, '_blank').focus();
 
+            } else if ($window.location.href.indexOf('stage') > -1 ){
+                // we're here after deleting a self-reg staged user.
+                // Just close tab, since refresh won't find staged user
+                $timeout(function(){
+                    if (typeof BroadcastChannel != 'undefined') {
+                        var bChannel = new BroadcastChannel("eg.pending_usr.update");
+                        bChannel.postMessage({
+                            usr: egCore.idl.toHash(updated_user)
+                        });
+                    }
+
+                    $window.close();
+                });
             } else {
                 // reload the current page
                 $window.location.href = location.href;

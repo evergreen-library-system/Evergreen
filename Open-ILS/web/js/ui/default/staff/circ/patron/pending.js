@@ -50,6 +50,18 @@ function($scope , $q , $routeParams , $window , $location , egCore , egGridDataP
         provider.refresh();
     }
 
+    if (typeof BroadcastChannel != 'undefined') {
+        // connect 2 bChannel
+        holdings_bChannel = new BroadcastChannel('eg.pending_usr.update');
+        holdings_bChannel.onmessage = function(e){
+            if (e.data && e.data.usr.home_ou == $scope.context_org.id()){
+                // pending usr was registered, refresh grid!
+                console.log("Got broadcast from channel eg.pending_usr.update for usr id: " + e.data.usr.id);
+                refresh_page();
+            }
+        }
+    };
+
     provider.get = function(offset, count) {
         var deferred = $q.defer();
         var recv_index = 0;
