@@ -251,9 +251,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                         egCore.strings.GO_TO_RECORD,
                         egCore.strings.GO_BACK
                     ).result.then(function() {
-                        // NOTE: $location.path('/cat/catalog/record/' + result.id()) did not work
-                        // for some reason
-                        $window.location.href = egCore.env.basePath + 'cat/catalog/record/' + result.id();
+                        $window.open(egCore.env.basePath + 'cat/catalog/record/' + result.id());
                     });
                 }
             }
@@ -452,6 +450,7 @@ function($scope , $q , $location , $timeout , $window,  egCore , egGridDataProvi
                     $scope.local_overlay_target = 0;
                     egCore.hatch.removeLocalItem('eg.cat.marked_overlay_record');
                     console.debug('overlay complete, target removed');
+                    $window.open(egCore.env.basePath + 'cat/catalog/record/' + overlay_target);
                 }
             );            
         });
