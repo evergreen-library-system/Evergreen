@@ -699,8 +699,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     args.lead_id,
                     args.records.map(function(val) { return val.id; })
                 ).then(function() {
-                    $window.location.href =
-                        egCore.env.basePath + 'cat/catalog/record/' + args.lead_id;
+                    $window.location.open(egCore.env.basePath + 'cat/catalog/record/' + args.lead_id);
                 });
             });
         });
