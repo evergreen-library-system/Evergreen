@@ -95,7 +95,7 @@ GetOptions(
     'verbose'               => \$verbose,
     'username=s'            => \$username,
     'password=s'            => \$password,
-    'workstation'           => \$workstation,
+    'workstation=s'         => \$workstation,
     'tempdir=s'             => \$tempdir,
     'spoolfile=s'           => \$spoolfile,
     'wait=i'                => \$wait_time,
