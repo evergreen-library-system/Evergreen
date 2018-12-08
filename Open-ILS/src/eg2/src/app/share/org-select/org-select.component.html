@@ -6,6 +6,7 @@
 
 <input type="text" 
   class="form-control"
+  [attr.id]="domId.length ? domId : null"
   [placeholder]="placeholder"
   [(ngModel)]="selected" 
   [ngbTypeahead]="filter"
