@@ -43,6 +43,9 @@ export class OrgSelectComponent implements OnInit {
     @Input() placeholder = '';
     @Input() stickySetting: string;
 
+    // ID to display in the DOM for this selector
+    @Input() domId = '';
+
     // Org unit field displayed in the selector
     @Input() displayField = 'shortname';
 

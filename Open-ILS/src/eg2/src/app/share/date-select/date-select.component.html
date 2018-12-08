@@ -4,6 +4,7 @@
     class="form-control" 
     ngbDatepicker
     #datePicker="ngbDatepicker"
+    [attr.id]="domId.length ? domId : null"
     placeholder="yyyy-mm-dd"
     class="form-control"
     name="{{fieldName}}"

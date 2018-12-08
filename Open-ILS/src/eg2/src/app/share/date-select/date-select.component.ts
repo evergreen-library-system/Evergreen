@@ -19,6 +19,8 @@ export class DateSelectComponent implements OnInit {
     @Input() required: boolean;
     @Input() fieldName: string;
 
+    @Input() domId = '';
+
     current: NgbDateStruct;
 
     @Output() onChangeAsDate: EventEmitter<Date>;
