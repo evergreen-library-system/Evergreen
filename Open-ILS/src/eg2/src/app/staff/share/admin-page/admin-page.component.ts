@@ -75,6 +75,7 @@ export class AdminPageComponent implements OnInit {
     pkeyField: string;
     createNew: () => void;
     deleteSelected: (rows: IdlObject[]) => void;
+    editSelected: (rows: IdlObject[]) => void;
 
     // True if any columns on the object support translations
     translateRowIdx: number;
@@ -153,19 +154,20 @@ export class AdminPageComponent implements OnInit {
 
         // TODO: pass the row activate handler via the grid markup
         this.grid.onRowActivate.subscribe(
-            (idlThing: IdlObject) => {
-                this.editDialog.mode = 'update';
-                this.editDialog.recId = idlThing[this.pkeyField]();
-                this.editDialog.open({size: this.dialogSize}).then(
-                    ok => {
-                        this.successString.current()
-                            .then(str => this.toast.success(str));
-                        this.grid.reload();
-                    },
-                    err => {}
-                );
-            }
+            (idlThing: IdlObject) => this.showEditDialog(idlThing)
         );
+
+        this.editSelected = (idlThings: IdlObject[]) => {
+
+            // Edit each IDL thing one at a time
+            const editOneThing = (thing: IdlObject) => {
+                if (!thing) return;
+
+                this.showEditDialog(thing).then(
+                    () => editOneThing(idlThings.shift()));
+            }
+
+            editOneThing(idlThings.shift()); };
 
         this.createNew = () => {
             this.editDialog.mode = 'create';
@@ -307,6 +309,19 @@ export class AdminPageComponent implements OnInit {
 
     disableDescendantSelector(): boolean {
         return this.contextOrg && this.contextOrg.children().length === 0;
+    }
+
+    showEditDialog(idlThing: IdlObject) {
+        this.editDialog.mode = 'update';
+        this.editDialog.recId = idlThing[this.pkeyField]();
+        return this.editDialog.open({size: this.dialogSize}).then(
+            ok => {
+                this.successString.current()
+                    .then(str => this.toast.success(str));
+                this.grid.reload();
+            },
+            err => {}
+        );
     }
 
 }
