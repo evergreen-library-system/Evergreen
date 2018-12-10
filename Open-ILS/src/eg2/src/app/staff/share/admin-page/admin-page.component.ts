@@ -69,6 +69,8 @@ export class AdminPageComponent implements OnInit {
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('successString') successString: StringComponent;
     @ViewChild('createString') createString: StringComponent;
+    @ViewChild('createErrString') createErrString: StringComponent;
+    @ViewChild('updateFailedString') updateFailedString: StringComponent;
     @ViewChild('translator') translator: TranslateComponent;
 
     idlClassDef: any;
@@ -177,7 +179,10 @@ export class AdminPageComponent implements OnInit {
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 },
-                err => {}
+                err => {
+                    this.createErrString.current()
+                        .then(str => this.toast.danger(str));
+                }
             );
         };
 
@@ -320,7 +325,10 @@ export class AdminPageComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            err => {}
+            err => {
+                this.updateFailedString.current()
+                    .then(str => this.toast.danger(str));
+            }
         );
     }
 
