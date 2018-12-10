@@ -1,8 +1,15 @@
 <ng-template #successStrTmpl i18n>{{idlClassDef.label}} Update Succeeded</ng-template>
 <eg-string #successString [template]="successStrTmpl"></eg-string>
 
+<ng-template #updateFailedStrTmpl i18n>Update of {{idlClassDef.label}} failed</ng-template>
+<eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
+
+
 <ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
 <eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-template #createErrStrTmpl i18n>Failed to create new {{idlClassDef.label}}</ng-template>
+<eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
 
 <ng-container *ngIf="orgField">
   <div class="d-flex">
