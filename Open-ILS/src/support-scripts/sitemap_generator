@@ -163,7 +163,10 @@ sub get_record_ids {
                  )
     ";
     if ($aou_id) {
-        $q .= " WHERE circ_lib IN (SELECT id FROM copy_orgs)";
+        $q .= "
+       INNER JOIN asset.copy ac ON (vc.target_copy = ac.id)
+       WHERE ac.circ_lib IN (SELECT id FROM copy_orgs)
+    ";
     }
     $q .= "
             UNION 
