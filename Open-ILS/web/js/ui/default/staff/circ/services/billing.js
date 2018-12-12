@@ -14,13 +14,14 @@ function($uibModal , $q , egCore) {
     // fetch a fleshed money.billable_xact
     service.fetchXact = function(xact_id) {
         return egCore.pcrud.retrieve('mbt', xact_id, {
-            flesh : 5,
+            flesh : 6,
             flesh_fields : {
                 mbt : ['summary','circulation','grocery','reservation'],
-                circ: ['target_copy'],
+                circ: ['target_copy', 'circ_lib'],
                 acp : ['call_number','location','status','age_protect'],
-                acn : ['record'],
-                bre : ['simple_record']
+                acn : ['record','owning_lib'],
+                bre : ['simple_record'],
+                mg : ['billing_location']
             },
             select : {bre : ['id']}}, // avoid MARC
             {authoritative : true}
