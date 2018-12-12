@@ -6,10 +6,18 @@
 
 <!-- TODO: CSS for big/strong-->
 
+<script>
+function disable_submit() {
+   var submit_element = document.getElementById("place_hold_submit");
+   submit_element.disabled = true;
+   return true;
+};
+</script>
+
 <div id='holds_box' class='canvas' style='margin-top: 6px;'>
     <h1>[% l('Place Hold') %]</h1>
 
-    <form method="post">
+    <form method="post" onsubmit="return disable_submit();">
         <input type="hidden" name="override" value="1" />
         [% FOR k IN ctx.orig_params.keys %]
         <input type="hidden" name="[% k %]" value="[% ctx.orig_params.$k | html %]" />
@@ -85,7 +93,7 @@
                                 );
                             </script>
                         [% END %]
-
+                        
                         [% ELSIF hdata.hold_failed; any_failures = 1 %]
 
                             <div><big><strong>[% l("Hold was not successfully placed"); %]</strong></big></div>
@@ -133,7 +141,7 @@
                 [% |l %]You have permission to override some of the failed holds. Click Submit to override and place your hold on the selected items.[% END %]
             </div>
             <span style='padding-right: 10px;'>
-                <input type="submit" name="submit" value="[% l('Submit') %]"
+                <input id="place_hold_submit" type="submit" name="submit" value="[% l('Submit') %]"
                     title="[% l('Submit') %]" alt="[% l('Submit') %]"
                     class="opac-button" />
             </span>
