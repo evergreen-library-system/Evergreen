@@ -75,7 +75,12 @@ function confirmMultipleHolds() {
 function validateHoldForm() {
     var res = validateMethodSelections(document.getElementsByClassName("hold-alert-method"));
     if (res.isValid) {
-        return confirmMultipleHolds();
+        var result = confirmMultipleHolds();
+        if (result) {
+	    var submit_element = document.getElementById("place_hold_submit");
+            submit_element.disabled = true;
+        }
+        return result;
     } else {
         alert(eg_opac_i18n.EG_MISSING_REQUIRED_INPUT);
         res.culpritNames.forEach(function(n){
