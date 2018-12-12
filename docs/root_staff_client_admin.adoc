@@ -194,10 +194,6 @@ include::admin/receipt_template_editor.adoc[]
 
 include::circulation/self_check_configuration.adoc[]
 
-:leveloffset: -1
-
-include::admin/actiontriggers.adoc[]
-
 :leveloffset: 0
 
 // SEARCH ADMIN
@@ -283,10 +279,20 @@ include::admin/lsa-work_log.adoc[]
 
 include::admin/staff_client-recent_searches.adoc[]
 
+// Other
+
+Other administration
+====================
+
+Introduction
+------------
+
+This section describes other staff client administrator tasks.
+
+include::admin/actiontriggers.adoc[]
 
 :leveloffset: 0
 
 include::shared/attributions.adoc[]
 
 include::shared/end_matter.adoc[]
-

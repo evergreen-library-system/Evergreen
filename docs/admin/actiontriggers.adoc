@@ -28,6 +28,7 @@ Event Definitions is the main tab and contains the key fields when working with 
 
 Table 1: Action Trigger Event Definitions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 |==============================================
 |*Field*                         |*Description*
 | Owning Library                 |The shortname of the library for which the action / trigger / hook is defined.
@@ -43,34 +44,44 @@ Table 1: Action Trigger Event Definitions
 | Failure Cleanup                |After an event is reacted to and if there is a failure a cleanup module can be run to clean up after the event.
 | Granularity                    |Used to group events by how often they should be run. Options are Hourly, Daily, Weekly, Monthly, Yearly, but you may also create new values.
 | Max Event Validity Delay       |Allows events to have a range of time that they are valid.  This value works with the *Processing Delay* to define a time range.
+| Message Library Path           |Defines the org_unit object for a Patron Message Center message.
+| Message Template               |A Template Toolkit template that can be used to generate output for a Patron Message Center message.  The output may or may not be used by the reactor or another external process.
+| Message Title                  |The title that will display on a Patron Message Center message.
+| Message User Path              |Defines the user object for a Patron Message Center message.
 | Opt-In Settings Type           |Choose which User Setting Type will decide if this event will be valid for a certain user.  Use this to allow users to Opt-In or Opt-Out of certain events.
 | Opt-In User Field              |Set to the name of the field in the selected hook's core type that will link the core type to the actor.usr table. 
 | Success Cleanup                |After an event is reacted to successfully a cleanup module can be run to clean up after the event.
 | Template                       |A Template Toolkit template that can be used to generate output.  The output may or may not be used by the reactor or another external process.
-|===============================================
+|==============================================
 
 
 Creating Action Triggers
 ~~~~~~~~~~~~~~~~~~~~~~~~
 . From the top menu, select *Administration* -> *Local Administration* ->  *Notifications / Action triggers*.
 . Click on the _New_ button.
++
+image::media/new_event_def.png[New Event Definition]
++
 . Select an _Owning Library_.
 . Create a unique _Name_ for your new action trigger.
 . Select the _Hook_.
 . Check the _Enabled_ check box.
 . Set the _Processing Delay_ in the appropriate format. E.g. _7 days_ to run 7 days from the trigger event or _00:01:00_ to run 1 hour after the _Processing Delay Context Field_.
 . Set the _Processing Delay Context Field_ and _Processing Group Context Field_.
-. Select the _Reactor_, _Validator_, _Failure Cleanup_.
-. Select the _Granularity_.
-
+. Select the _Reactor_ and _Validator_.
+. Set the _Event Repeatability Delay_.
+. Select the _Failure Cleanup_ and _Granularity_.
 . Set the _Max Event Validity Delay_.
-
++
+image::media/event_def_details.png[Event Definition Details]
++
+. If you wish to send a User Message through the Message Center, set a _Message Library Path_.  Enter text in the _Message Template_.  Enter a title for this message in _Message Title_, and set a value in _Message User Path_.
 . Select the _Opt-In Setting Type_.
-
 . Set the _Opt-In User Field_.
-
 . Select the _Success Cleanup_.
-
++
+image::media/event_def_details_2.png[Event Definition Details]
++
 . Enter text in the _Template_ text box if required. These are for email messages. Here is a sample template for sending 90 day overdue notices:
 
 
@@ -140,17 +151,16 @@ Testing Action Triggers
 
 . Go to the list of action triggers.
 . Click on the blue link text for the action trigger you'd like to test.
++
+image::media/test_event_def.png[Blue Link Text]
++
 . Go to the Test tab.
 . If there is a test available, fill in the required information.
 . View the output of the test.
 
-[WARNING]
-============
-If you are testing an email or SMS notification,
-use your own account as an example.  Using the Test
-feature will actually result in the notification
-being sent if configured correctly.
-============
+image::media/test_event_def_output.png[Test Output]
+
+WARNING: If you are testing an email or SMS notification, use a test account and email as an example. Using the Test feature will actually result in the notification being sent if configured correctly.  Similarly, use a test item or barcode when testing a circulation-based event like Mark Lost since the test will mark the item as lost.
 
 anchor:hooks[]
 
@@ -207,4 +217,3 @@ Table 4. Action Trigger Validators
 |=======================
 
 You may also create, edit and delete Validators. Just remember that their must be an associated subroutine in the Reactor.pm Perl module.
-
