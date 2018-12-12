@@ -2,7 +2,7 @@
 
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Billing Location') %]</div>
-  <div class="col-md-2">{{xact.billing_location().shortname()}}</div>
+  <div class="col-md-2">{{xact.grocery().billing_location().shortname()||xact.circulation().circ_lib().shortname()}}</div>
   <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
   <div class="col-md-2">{{xact.summary().total_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Title') %]</div>
@@ -101,6 +101,12 @@
     <div class="col-md-2 strong-text">[% l('Total Circulations') %]</div>
     <div class="col-md-2">
       {{total_circs}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2 strong-text">[% l('Owning Library') %]</div>
+    <div class="col-md-2">
+      {{xact.circulation().target_copy().call_number().owning_lib().shortname()}}
     </div>
   </div>
 </div>
