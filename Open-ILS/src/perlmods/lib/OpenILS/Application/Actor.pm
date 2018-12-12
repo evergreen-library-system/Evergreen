@@ -4363,7 +4363,7 @@ sub fire_test_notification {
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
     return $e->event unless $$args{home_ou};
-    return $e->die_event unless $e->allowed('UPDATE_USER', $$args{home_ou});
+    return $e->die_event unless $e->allowed('OPAC_LOGIN', $$args{home_ou});
 
     my $event_hook = $$args{event_def_type} or return $e->event;
     my $usr = $e->retrieve_actor_user($$args{target});

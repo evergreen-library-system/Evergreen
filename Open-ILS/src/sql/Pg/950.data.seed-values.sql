@@ -17252,9 +17252,9 @@ $$
 [%- sms_carrier = helpers.get_user_setting(target.id, 'opac.default_sms_carrier') -%]
 From: [%- helpers.get_org_setting(target.home_ou.id, 'org.bounced_emails') || lib.email || params.sender_email || default_sender %]
 To: [%- helpers.get_sms_gateway_email(sms_carrier,sms_number) %]
-Subject: Test SMS
+Subject: Test Text Message
 
-This is a test confirming your default SMS information at [% lib.name %].
+This is a test confirming your mobile number for [% lib.name %] is correct.
 
 Sincerely,
 [% lib.name %]

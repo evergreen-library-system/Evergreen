@@ -93,7 +93,7 @@
             </tr>
             <tr id="test_notification_banner" style="display:none">
                 <td colspan="4">
-                    [% INCLUDE "opac/myopac/test_notification.tt2" %]
+                    [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "email" %]
                 </td>
             </tr>
             <tr>

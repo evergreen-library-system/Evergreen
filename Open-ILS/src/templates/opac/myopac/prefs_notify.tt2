@@ -127,7 +127,7 @@
                     [% setting = 'opac.default_sms_notify' %]
                     <tr id="test_notification_banner" style="display:none">
                         <td colspan="4">
-                            [% INCLUDE "opac/myopac/test_notification.tt2" %]
+                            [% INCLUDE "opac/myopac/test_notification.tt2" message_type = "sms" %]
                         </td>
                     </tr>
                     <tr>
