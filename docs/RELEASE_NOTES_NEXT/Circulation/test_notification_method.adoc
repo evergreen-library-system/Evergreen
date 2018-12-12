@@ -1,0 +1,12 @@
+Test Notification Method
+^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons and staff may request a test notification for a patron's default email address or SMS 
+number via the Patron Registration interface in the staff client or the Opac preferences interface. The OPAC_LOGIN permissions are required to 
+request a notification. When a notification is sent, it will be sent to either the user's default email or default SMS number, depending on 
+what was requested.
+
+Upgrade Notes
++++++++++++++++++++
+
+This feature adds two new rows to action_trigger.event_definition, two into 
+action_trigger.hook, and six into action_trigger.environment.
