@@ -110,6 +110,8 @@ export class FmRecordEditorComponent
         if (id) { this.recId = id; }
     }
 
+    idPrefix: string;
+
     constructor(
       private modal: NgbModal, // required for passing to parent
       private idl: IdlService,
@@ -124,6 +126,9 @@ export class FmRecordEditorComponent
         this.listifyInputs();
         this.idlDef = this.idl.classes[this.idlClass];
         this.recordLabel = this.idlDef.label;
+
+	// Add some randomness to the generated DOM IDs to ensure against clobbering
+	this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
     }
 
     // Opening dialog, fetch data.
