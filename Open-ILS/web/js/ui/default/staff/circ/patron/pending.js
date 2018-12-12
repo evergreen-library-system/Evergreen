@@ -37,12 +37,33 @@ function($scope , $q , $routeParams , $window , $location , egCore , egGridDataP
         ).focus();
     }
 
+    function delete_patron(sel_pending_users) {
+        if (angular.isArray(sel_pending_users)){
+           var promises = [];
+            angular.forEach(sel_pending_users, function(stgu){
+                promises.push(egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.user.stage.delete',
+                    egCore.auth.token(),
+                    stgu.user.row_id()
+                ));
+            });
+
+            $q.all(promises).then(refresh_page);
+        }
+    }
+
     $scope.load_patron = function(action, data, items) {
         load_patron(items);
     }
 
+    $scope.deletePatron = function(action, data, items) {
+        delete_patron(items);
+    }
+
     $scope.grid_controls = {
-        activateItem : load_patron
+        activateItem : load_patron,
+        deleteItem : delete_patron
     }
 
     function refresh_page() {

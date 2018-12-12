@@ -22,6 +22,9 @@
   <eg-grid-menu-item handler="load_patron" 
     label="[% l('Load Patron') %]"></eg-grid-menu-item>
 
+  <eg-grid-menu-item handler="deletePatron"
+    label="[% l('Delete Pending Patron(s)') %]"></eg-grid-menu-item>
+
   <eg-grid-field path='user.row_date' label="[% l('Create Date') %]"></eg-grid-field>
   <eg-grid-field path='user.first_given_name' label="[% l('First Name') %]"></eg-grid-field>
   <eg-grid-field path='user.second_given_name' label="[% l('Middle Name') %]"></eg-grid-field>
