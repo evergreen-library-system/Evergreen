@@ -54,7 +54,7 @@ SELECT is(evergreen.unaccent_and_squash('El Niño'),
           'elnino', 'Spanish "The Kid"');
 
 SELECT is(evergreen.unaccent_and_squash('Œuvres'),
-          CASE WHEN regexp_replace(regexp_replace(version(),'\..+',''),'^PostgreSQL ','')::INT >= 10 THEN 'oeuvres' ELSE 'euvres' END, 'oe ligature');
+          CASE WHEN substring(version() from '^PostgreSQL ([0-9]+\.[0-9]+)')::DECIMAL > 9.5 THEN 'oeuvres' ELSE 'euvres' END, 'oe ligature');
 
 -- Punctuation Tests
 
