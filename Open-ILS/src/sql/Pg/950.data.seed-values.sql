@@ -1929,7 +1929,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 616, 'IMPORT_USE_ORG_UNIT_COPIES', oils_i18n_gettext( 616,
     'Allows users to import records based on the number of org unit copies attached to a record', 'ppl', 'description' )),
  ( 617, 'IMPORT_ON_ORDER_CAT_COPY', oils_i18n_gettext( 617,
-    'Allows users to import copies based on the on-order items attached to a record', 'ppl', 'description' ))
+    'Allows users to import copies based on the on-order items attached to a record', 'ppl', 'description' )),
+ ( 618, 'CREATE_PRECAT', oils_i18n_gettext(618,
+    'Allows a user to create a pre-catalogued copy', 'ppl', 'description'))
 ;
 
 
@@ -2023,6 +2025,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		aout.name = 'Consortium' AND
 		perm.code IN (
 			'CREATE_COPY_TRANSIT',
+			'CREATE_PRECAT',
 			'VIEW_BILLING_TYPE',
 			'VIEW_CIRCULATIONS',
 			'VIEW_COPY_NOTES',
@@ -2165,6 +2168,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_BIB_IMPORT_QUEUE',
 			'CREATE_IMPORT_ITEM',
 			'CREATE_MARC',
+			'CREATE_PRECAT',
 			'CREATE_TITLE_NOTE',
 			'DELETE_BIB_IMPORT_QUEUE',
 			'DELETE_IMPORT_ITEM',
@@ -2258,6 +2262,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_IMPORT_TRASH_FIELD',
 			'CREATE_MERGE_PROFILE',
 			'CREATE_MONOGRAPH_PART',
+			'CREATE_PRECAT',
 			'CREATE_VOLUME_PREFIX',
 			'CREATE_VOLUME_SUFFIX',
 			'DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF',
@@ -2333,6 +2338,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'ADMIN_BOOKING_RESOURCE_ATTR_VALUE',
 			'ADMIN_BOOKING_RESOURCE_TYPE',
 			'ASSIGN_GROUP_PERM',
+			'CREATE_PRECAT',
 			'MARK_ITEM_AVAILABLE',
 			'MARK_ITEM_BINDERY',
 			'MARK_ITEM_CHECKED_OUT',
@@ -2433,6 +2439,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		perm.code IN (
 			'ADMIN_MAX_FINE_RULE',
 			'CREATE_CIRC_DURATION',
+			'CREATE_PRECAT',
 			'DELETE_CIRC_DURATION',
 			'MARK_ITEM_MISSING_PIECES',
 			'UPDATE_CIRC_DURATION',
@@ -2614,6 +2621,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_INVOICE',
 			'CREATE_MARC',
 			'CREATE_PICKLIST',
+			'CREATE_PRECAT',
 			'CREATE_PURCHASE_ORDER',
 			'DELETE_BIB_IMPORT_QUEUE',
 			'DELETE_IMPORT_ITEM',

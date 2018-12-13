@@ -262,7 +262,7 @@ sub run_method {
         # requesting a precat checkout implies that any required
         # overrides have been performed.  Go ahead and re-override.
         $circulator->skip_permit_key(1);
-        $circulator->override(1) if $circulator->request_precat;
+        $circulator->override(1) if ( $circulator->request_precat && $circulator->editor->allowed('CREATE_PRECAT') );
         $circulator->do_permit();
         $circulator->is_checkout(1);
         unless( $circulator->bail_out ) {
@@ -2426,6 +2426,8 @@ sub create_due_date {
 sub make_precat_copy {
     my $self = shift;
     my $copy = $self->copy;
+    return $self->bail_on_events(OpenILS::Event->new('PERM_FAILURE'))
+       unless $self->editor->allowed('CREATE_PRECAT');
 
    if($copy) {
         $logger->debug("circulator: Pre-cat copy already exists in checkout: ID=" . $copy->id);

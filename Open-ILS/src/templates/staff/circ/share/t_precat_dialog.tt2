@@ -37,6 +37,9 @@
         </div>
       </div>
       <div class="modal-footer">
+        <div ng-show="!can_create_precats" class="alert alert-warning">
+            [% l('You do not have permission to complete this action.') %]
+        </div>
         <input type="submit" class="btn btn-primary" value="[% l('Precat Checkout') %]"/>
         <button class="btn btn-warning" ng-click="cancel()"
             ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>

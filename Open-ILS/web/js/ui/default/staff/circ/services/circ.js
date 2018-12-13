@@ -940,12 +940,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             templateUrl: './circ/share/t_precat_dialog',
             backdrop: 'static',
             controller: 
-                ['$scope', '$uibModalInstance', 'circMods',
-                function($scope, $uibModalInstance, circMods) {
+                ['$scope', '$uibModalInstance', 'circMods', 'has_precat_perm',
+                function($scope, $uibModalInstance, circMods, has_precat_perm) {
                 $scope.focusMe = true;
                 $scope.precatArgs = {
                     copy_barcode : params.copy_barcode
                 };
+
+                $scope.can_create_precats = has_precat_perm;
                 $scope.circModifiers = circMods;
                 $scope.ok = function(args) { $uibModalInstance.close(args) }
                 $scope.cancel = function () { $uibModalInstance.dismiss() }
@@ -958,9 +960,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 }
             }],
             resolve : {
-                circMods : function() { 
-                    return service.get_circ_mods();
-                }
+                circMods : function() { return service.get_circ_mods(); },
+                has_precat_perm : function(){ return egCore.perm.hasPermHere('CREATE_PRECAT'); }
             }
         }).result.then(
             function(args) {
