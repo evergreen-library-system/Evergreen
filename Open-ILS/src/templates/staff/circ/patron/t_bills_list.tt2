@@ -55,7 +55,19 @@
   <eg-grid-field label="[% l('Start') %]" path='xact_start' datatype="timestamp"></eg-grid-field>
   <eg-grid-field label="[% l('Total Billed') %]" path='summary.total_owed'></eg-grid-field>
   <eg-grid-field label="[% l('Total Paid') %]" path='summary.total_paid'></eg-grid-field>
-  <eg-grid-field label="[% l('Type') %]" path='xact_type'></eg-grid-field>
+  <eg-grid-field label="[% l('Type') %]" path='summary.xact_type'></eg-grid-field>
+
+  <eg-grid-field path="circulation.target_copy.call_number.label"
+    label="[% l('Call Number') %]" name="call_number">
+  </eg-grid-field>
+
+  <eg-grid-field path="circulation.target_copy.call_number.owning_lib.shortname"
+    label="[% l('Owning Library') %]" name="owning_lib">
+  </eg-grid-field>
+
+  <eg-grid-field path="circulation.target_copy.location.name"
+    label="[% l('Shelving Location') %]" name="location">
+  </eg-grid-field>
 
   <!-- receipt data -->
   <eg-grid-field path='summary.last_billing_type' required></eg-grid-field>
@@ -88,7 +100,7 @@
     label="[% l('Circulation Library') %]" name="circ_lib" hidden>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Location') %]" name="xact_location">
+  <eg-grid-field label="[% l('Billing Location') %]" name="xact_location">
     {{item['grocery.billing_location.shortname']||item['circulation.circ_lib.shortname']}}
   </eg-grid-field>
 
@@ -98,7 +110,7 @@
 
   <!-- import all circ fields, hidden by default -->
   <eg-grid-field path='grocery.*' hidden> </eg-grid-field>
-  <eg-grid-field label="[% l('Billing Location') %]"
+  <eg-grid-field label="[% l('Grocery Billing Location') %]"
     path='grocery.billing_location.shortname' required hidden> </eg-grid-field>
   <eg-grid-field path='circulation.circ_lib' required hidden></eg-grid-field>
   <eg-grid-field path='circulation.duration' required hidden></eg-grid-field>
@@ -110,6 +122,10 @@
     path='circulation.circ_lib.shortname' required hidden> </eg-grid-field>
 
   <eg-grid-field path='circulation.target_copy.*' hidden> </eg-grid-field>
-  
+    <eg-grid-field path='circulation.target_copy.call_number.*' hidden required></eg-grid-field>
+    <eg-grid-field path='circulation.target_copy.call_number.owning_lib.*' hidden required></eg-grid-field>
+    <eg-grid-field path='circulation.target_copy.location.*' hidden required></eg-grid-field>
+    <eg-grid-field path='summary.*' hidden required></eg-grid-field>
+
 </eg-grid>
  
