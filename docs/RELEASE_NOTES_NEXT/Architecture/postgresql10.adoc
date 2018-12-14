@@ -1,0 +1,34 @@
+Database Support for PostgreSQL 10
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen database can now be built with PostgreSQL version 10.
+
+This update has implications for developers who write PgTap tests.  In
+versions of PostgreSQL prior to 10, one could write `\set ECHO` to
+disable the echoing of commands as they were run.  In PostgreSQL
+version 10, using `\set` without a value is an error.  One should now
+write `\set ECHO none` in order to disable the echoing of commands.
+This latter form works in all versions of PostgreSQL currently
+supported by Evergreen.
+
+Database Upgrade
+++++++++++++++++
+If you upgrade your database from a PostgreSQL version of 9.5, or
+lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
+indexes in additon to the normal database upgrade steps.  The index
+recreation is necessary because of changes to the PostgreSQL
+`unaccent` extension module.
+
+The following snippet of SQL code will do the necessary steps:
+
+[source,sql]
+------------------------------------------------------------------------
+DROP INDEX actor_usr_first_given_name_unaccent_idx;
+DROP INDEX actor_usr_second_given_name_unaccent_idx;
+DROP INDEX actor_usr_family_name_unaccent_idx;
+CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(first_given_name));
+CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(second_given_name));
+CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(family_name));
+------------------------------------------------------------------------ 
