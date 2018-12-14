@@ -4,8 +4,6 @@
 UBUNTU_RELEASE=$(lsb_release -sc)
 if [ "$UBUNTU_RELEASE" == "xenial" ]; then
     RUBY_VERSION="2.3.0"
-elif [ "$UBUNTU_RELEASE" == "trusty" ]; then
-    RUBY_VERSION="1.9.1"
 else 
     echo "Could not determine your Ubuntu release."
     echo "Please consult $0 and install manually."
