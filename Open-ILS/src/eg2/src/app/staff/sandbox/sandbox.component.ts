@@ -55,6 +55,9 @@ export class SandboxComponent implements OnInit {
 
     name = 'Jane';
 
+    complimentEvergreen: (rows: IdlObject[]) => void;
+    notOneSelectedRow: (rows: IdlObject[]) => boolean;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
@@ -107,6 +110,10 @@ export class SandboxComponent implements OnInit {
                 return cbt;
             }));
         };
+
+        this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
+        this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length != 1);
+
     }
 
     btGridRowClassCallback(row: any): string {

@@ -41,6 +41,10 @@ export class GridToolbarComponent implements OnInit {
         action.action(this.gridContext.getSelectedRows());
     }
 
+    shouldDisableAction(action: GridToolbarAction) {
+        return action.disabled(this.gridContext.getSelectedRows());
+    }
+
     printHtml() {
         this.gridPrinter.printGrid();
     }
