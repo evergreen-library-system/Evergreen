@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-09-18 16:06:09-0400\n"
+"POT-Creation-Date: 2018-12-14 21:52:08-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,6 +407,11 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr ""
 
+# id::cwst.label__eg.grid.circ.patron.search
+#: 950.data.seed-values.sql:18876
+msgid "Grid Config: circ.patron.search"
+msgstr ""
+
 # id::cbt.name__4 id::coust.label__circ.lost_materials_processing_fee
 # id::coust.description__circ.lost_materials_processing_fee
 #: 950.data.seed-values.sql:681 950.data.seed-values.sql:3670
@@ -517,11 +522,6 @@ msgstr ""
 # id::ppl.description__120
 #: 950.data.seed-values.sql:942
 msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
-
-# id::ccvm.value__1278
-#: 950.data.seed-values.sql:8548
-msgid "Turkey "
 msgstr ""
 
 # id::cmf.label__2
@@ -678,6 +678,11 @@ msgstr ""
 # id::ccvm.value__apa
 #: 950.data.seed-values.sql:6835
 msgid "Apache languages"
+msgstr ""
+
+# id::coust.label__ui.patron.edit.au.guardian.show
+#: 950.data.seed-values.sql:19420
+msgid "GUI: Show guardian field on patron registration"
 msgstr ""
 
 # id::aea.label__INCLUDE_PO_NAME
@@ -2120,11 +2125,6 @@ msgstr ""
 msgid "Simple Mobile"
 msgstr ""
 
-# id::csc.name__8
-#: 950.data.seed-values.sql:13846
-msgid "Bell Mobility & Solo Mobile (Alternate)"
-msgstr ""
-
 # id::ppl.description__201
 #: 950.data.seed-values.sql:1104
 msgid "Allows staff to edit the note for a payment on a transaction"
@@ -2768,6 +2768,14 @@ msgstr ""
 #: 950.data.seed-values.sql:940
 msgid ""
 "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+
+# id::atr.description__ContainerCSV
+#: 950.data.seed-values.sql:13335
+msgid ""
+"Facilitates producing a CSV file representing a book list by introducing an "
+"\"items\" variable into the TT environment, sorted as dictated according to "
+"user params"
 msgstr ""
 
 # id::ccvm.value__1105
@@ -3930,11 +3938,6 @@ msgstr ""
 msgid "Florida "
 msgstr ""
 
-# id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17193
-msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr ""
-
 # id::ccvm.value__970 id::ccvm.value__1595 id::ccvm.value__1607
 # id::ccvm.value__1619 id::ccvm.value__1631
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
@@ -4575,11 +4578,6 @@ msgstr ""
 # id::csc.name__49
 #: 950.data.seed-values.sql:14547
 msgid "Straight Talk / PagePlus Cellular"
-msgstr ""
-
-# id::coust.label__url_verify.url_verification_delay
-#: 950.data.seed-values.sql:15445
-msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 # id::coust.label__credit.processor.paypal.login
@@ -5751,11 +5749,6 @@ msgstr ""
 msgid "ADMIN_SERIAL_DISTRIBUTION"
 msgstr ""
 
-# id::cgf.label__opac.metarecord.holds.format_attr
-#: 950.data.seed-values.sql:16744
-msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr ""
-
 # id::coust.label__circ.selfcheck.patron_login_timeout
 #: 950.data.seed-values.sql:3877
 msgid "Patron Login Timeout (in seconds)"
@@ -6666,9 +6659,9 @@ msgstr ""
 msgid "Qatar "
 msgstr ""
 
-# id::ath.description__container.biblio_record_entry_bucket.csv
-#: 950.data.seed-values.sql:13323
-msgid "Produce a CSV file representing a book list"
+# id::coust.label__url_verify.url_verification_delay
+#: 950.data.seed-values.sql:15445
+msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 # id::ppl.description__308
@@ -6815,6 +6808,11 @@ msgstr ""
 # id::ppl.description__33
 #: 950.data.seed-values.sql:770
 msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+# id::coust.label__ui.patron.edit.au.guardian.suggest
+#: 950.data.seed-values.sql:19433
+msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 
 # id::acqcr.description__1285
@@ -7246,6 +7244,14 @@ msgstr ""
 # id::ccvm.value__85
 #: 950.data.seed-values.sql:6902
 msgid "Chuvash"
+msgstr ""
+
+# id::coust.description__ui.patron.edit.au.guardian.show
+#: 950.data.seed-values.sql:19425
+msgid ""
+"The guardian field will be shown on the patron registration screen. Showing "
+"a field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
 msgstr ""
 
 # id::ccvm.value__1149
@@ -8826,6 +8832,11 @@ msgstr ""
 msgid "Microform"
 msgstr ""
 
+# id::ccvm.value__1240 id::ccvm.value__1259
+#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
+msgid "Saint"
+msgstr ""
+
 # id::csp.label__27
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
@@ -9322,11 +9333,6 @@ msgid ""
 "this setting. They cannot be opted in at any other libraries."
 msgstr ""
 
-# id::cwst.label__eg.grid.circ.patron.search
-#: 950.data.seed-values.sql:18876
-msgid "Grid Config: circ.patron.search"
-msgstr ""
-
 # id::coust.description__circ.password_reset_request_throttle
 #: 950.data.seed-values.sql:3781
 msgid ""
@@ -9448,12 +9454,9 @@ msgstr ""
 msgid "ADMIN_FIELD_DOC"
 msgstr ""
 
-# id::atr.description__ContainerCSV
-#: 950.data.seed-values.sql:13335
-msgid ""
-"Facilitates producing a CSV file representing a book list by introducing an "
-"\"items\" variable into the TT environment, sorted as dictated according to "
-"user params"
+# id::ccvm.value__1278
+#: 950.data.seed-values.sql:8548
+msgid "Turkey "
 msgstr ""
 
 # id::ccvm.value__556
@@ -10366,6 +10369,12 @@ msgstr ""
 msgid "Pennsylvania "
 msgstr ""
 
+# id::vie.description__import.duplicate.sysid
+# id::vie.description__import.duplicate.tcn
+#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
+msgid "Import failed due to system id collision"
+msgstr ""
+
 # id::ccvm.value__660
 #: 950.data.seed-values.sql:7744
 msgid "projected"
@@ -10886,6 +10895,11 @@ msgstr ""
 msgid "Historical Hold Retention Age - Fulfilled"
 msgstr ""
 
+# id::coust.label__ui.patron.edit.guardian_required_for_juv
+#: 950.data.seed-values.sql:19445
+msgid "GUI: Juvenile account requires parent/guardian"
+msgstr ""
+
 # id::ppl.description__412
 #: 950.data.seed-values.sql:1522
 msgid "ADMIN_IMPORT_ITEM_ATTR_DEF"
@@ -11306,13 +11320,9 @@ msgstr ""
 msgid "Serbian"
 msgstr ""
 
-# id::coust.description__circ.checkin.lost_zero_balance.do_not_change
-#: 950.data.seed-values.sql:5374
-msgid ""
-"When an item has been marked lost and all fines/fees have been completely "
-"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
-"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
-"enabled"
+# id::ppl.description__368
+#: 950.data.seed-values.sql:1436
+msgid "Allow a user to update trigger reactors"
 msgstr ""
 
 # id::coust.description__sms.enable
@@ -11635,10 +11645,9 @@ msgstr ""
 msgid "Login via Apache module"
 msgstr ""
 
-# id::coust.label__circ.void_lost_on_checkin
-# id::coust.description__circ.void_lost_on_checkin
-#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
-msgid "Void lost item billing when returned"
+# id::ppl.description__298
+#: 950.data.seed-values.sql:1298
+msgid "DELETE_MARC_CODE"
 msgstr ""
 
 # id::ccvm.value__arg
@@ -11844,6 +11853,11 @@ msgid ""
 "The claims_returned_count field will be shown on the patron registration "
 "screen. Showing a field makes it appear with required fields even when not "
 "required. If the field is required this setting is ignored."
+msgstr ""
+
+# id::csc.name__8
+#: 950.data.seed-values.sql:13846
+msgid "Bell Mobility & Solo Mobile (Alternate)"
 msgstr ""
 
 # id::ccvm.value__184
@@ -12924,6 +12938,11 @@ msgstr ""
 #: 950.data.seed-values.sql:720 950.data.seed-values.sql:724
 #: 950.data.seed-values.sql:768
 msgid "* no longer applicable"
+msgstr ""
+
+# id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
+#: 950.data.seed-values.sql:17193
+msgid "Item Print Label - Call Number Wrap Filter Width"
 msgstr ""
 
 # id::ccvm.value__88
@@ -14520,9 +14539,13 @@ msgstr ""
 msgid "microfilm cartridge"
 msgstr ""
 
-# id::ppl.description__368
-#: 950.data.seed-values.sql:1436
-msgid "Allow a user to update trigger reactors"
+# id::coust.description__circ.checkin.lost_zero_balance.do_not_change
+#: 950.data.seed-values.sql:5374
+msgid ""
+"When an item has been marked lost and all fines/fees have been completely "
+"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
+"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
+"enabled"
 msgstr ""
 
 # id::csc.name__23
@@ -14571,6 +14594,11 @@ msgstr ""
 # id::ccvm.value__169
 #: 950.data.seed-values.sql:6986
 msgid "Gwich'in"
+msgstr ""
+
+# id::cgf.label__opac.metarecord.holds.format_attr
+#: 950.data.seed-values.sql:16744
+msgid "OPAC Metarecord Hold Formats Attribute"
 msgstr ""
 
 # id::cmf.label__53
@@ -15758,10 +15786,9 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr ""
 
-# id::vie.description__import.duplicate.sysid
-# id::vie.description__import.duplicate.tcn
-#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
-msgid "Import failed due to system id collision"
+# id::cwst.label__eg.circ.patron.search.show_extras
+#: 950.data.seed-values.sql:18554
+msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 # id::cbt.name__2
@@ -15886,11 +15913,6 @@ msgstr ""
 # id::ppl.description__59
 #: 950.data.seed-values.sql:820
 msgid "User may link another user to an entry in a statistical category"
-msgstr ""
-
-# id::cwst.label__eg.circ.patron.search.show_extras
-#: 950.data.seed-values.sql:18554
-msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 # id::acqcr.label__1005
@@ -16477,9 +16499,10 @@ msgstr ""
 msgid "Choctaw"
 msgstr ""
 
-# id::ppl.description__298
-#: 950.data.seed-values.sql:1298
-msgid "DELETE_MARC_CODE"
+# id::coust.label__circ.void_lost_on_checkin
+# id::coust.description__circ.void_lost_on_checkin
+#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
+msgid "Void lost item billing when returned"
 msgstr ""
 
 # id::ccvm.value__aym
@@ -17368,6 +17391,14 @@ msgstr ""
 msgid "Musical Sound Recording (Unknown Format)"
 msgstr ""
 
+# id::coust.description__ui.patron.edit.au.guardian.suggest
+#: 950.data.seed-values.sql:19438
+msgid ""
+"The guardian field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
+msgstr ""
+
 # id::ppl.description__3
 #: 950.data.seed-values.sql:710
 msgid "Allow a user to create a metarecord holds"
@@ -17728,9 +17759,9 @@ msgid ""
 " If the field is required this setting is ignored."
 msgstr ""
 
-# id::ccvm.value__1240 id::ccvm.value__1259
-#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
-msgid "Saint"
+# id::ath.description__container.biblio_record_entry_bucket.csv
+#: 950.data.seed-values.sql:13323
+msgid "Produce a CSV file representing a book list"
 msgstr ""
 
 # id::ppl.description__44
@@ -17809,4 +17840,11 @@ msgstr ""
 # id::ccvm.value__749
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
+msgstr ""
+
+# id::coust.description__ui.patron.edit.guardian_required_for_juv
+#: 950.data.seed-values.sql:19450
+msgid ""
+"Require a value for the parent/guardian field in the patron editor for "
+"patrons marked as juvenile"
 msgstr ""
