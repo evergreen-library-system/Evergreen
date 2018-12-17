@@ -16,7 +16,7 @@ export class GridToolbarActionComponent implements OnInit {
     // Optional: add a function that returns true or false.
     // If true, this action will be disabled; if false
     // (default behavior), the action will be enabled.
-    @Input() disabled: (rows: any[]) => boolean;
+    @Input() disableOnRows: (rows: any[]) => boolean;
 
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {}
@@ -32,8 +32,8 @@ export class GridToolbarActionComponent implements OnInit {
         action.label = this.label;
         action.action = this.action;
 
-        action.disabled = (this.disabled == null) ? (rows: any[]) => false : this.disabled;
-
+        action.disableOnRows = (this.disableOnRows === null) ?
+            (rows: any[]) => false : this.disableOnRows;
 
         this.grid.context.toolbarActions.push(action);
     }

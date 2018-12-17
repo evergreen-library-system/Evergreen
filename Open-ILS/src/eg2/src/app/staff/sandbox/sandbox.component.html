@@ -122,7 +122,8 @@ HERasdfE
   [rowFlairCallback]="btGridRowFlairCallback"
   [cellClassCallback]="btGridCellClassCallback"
   [sortable]="true">
-  <eg-grid-toolbar-action label="Action that needs a single row" i18n-label [action]="complimentEvergreen" [disabled]="notOneSelectedRow">
+  <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
+    [action]="complimentEvergreen" [disableOnRows]="notOneSelectedRow">
   </eg-grid-toolbar-action>
   <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
     [cellContext]="btGridTestContext" [sortable]="false">

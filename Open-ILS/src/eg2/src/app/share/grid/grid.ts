@@ -890,7 +890,7 @@ export class GridContext {
 export class GridToolbarAction {
     label: string;
     action: (rows: any[]) => any;
-    disabled: (rows: any[]) => boolean;
+    disableOnRows: (rows: any[]) => boolean;
 }
 
 // Buttons are global actions
