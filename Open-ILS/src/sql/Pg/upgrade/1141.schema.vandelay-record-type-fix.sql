@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1141', :eg_version);
 
 ALTER TABLE vandelay.session_tracker
     ALTER COLUMN record_type TYPE TEXT,
