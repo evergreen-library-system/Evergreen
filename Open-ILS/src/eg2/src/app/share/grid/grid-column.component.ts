@@ -24,6 +24,9 @@ export class GridColumnComponent implements OnInit {
     @Input() datatype: string;
     @Input() multiSortable: boolean;
 
+    // Display date and time when datatype = timestamp
+    @Input() datePlusTime: boolean;
+
     // Used in conjunction with cellTemplate
     @Input() cellContext: any;
     @Input() cellTemplate: TemplateRef<any>;
@@ -50,6 +53,7 @@ export class GridColumnComponent implements OnInit {
         col.isSortable = this.sortable;
         col.isMultiSortable = this.multiSortable;
         col.datatype = this.datatype;
+        col.datePlusTime = this.datePlusTime;
         col.isAuto = false;
         this.grid.context.columnSet.add(col);
     }

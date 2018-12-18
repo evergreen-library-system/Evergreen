@@ -103,6 +103,7 @@ export class SandboxComponent implements OnInit {
             }).pipe(map(cbt => {
                 // example of inline fleshing
                 cbt.owner(this.org.get(cbt.owner()));
+                cbt.datetime_test = new Date();
                 this.oneBtype = cbt;
                 return cbt;
             }));

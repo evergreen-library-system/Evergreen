@@ -24,6 +24,7 @@ export class GridColumn {
     idlClass: string;
     idlFieldDef: any;
     datatype: string;
+    datePlusTime: boolean;
     cellTemplate: TemplateRef<any>;
     cellContext: any;
     isIndex: boolean;
@@ -630,7 +631,12 @@ export class GridContext {
                 val = this.nestedItemFieldValue(row, col);
             }
         }
-        return this.format.transform({value: val, datatype: col.datatype});
+
+        return this.format.transform({
+            value: val,
+            datatype: col.datatype,
+            datePlusTime: Boolean(col.datePlusTime)
+        });
     }
 
     getObjectFieldValue(obj: any, name: string): any {
