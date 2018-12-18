@@ -489,7 +489,7 @@ function(egCore , $q) {
                     '<input id="{{callNumber.id()}}_{{copy.id()}}"'+
                     ' eg-enter="nextBarcode(copy.id())" class="form-control"'+
                     ' type="text" ng-model="barcode" ng-change="updateBarcode()"'+
-                    ' autofocus/>'+
+                    ' ng-focus="selectOnFocus($event)" autofocus/>'+
                     '<div class="label label-danger" ng-if="duplicate_barcode">{{duplicate_barcode_string}}</div>'+
                     '<div class="label label-danger" ng-if="empty_barcode">{{empty_barcode_string}}</div>'+
                 '</div>'+
@@ -508,6 +508,11 @@ function(egCore , $q) {
                 $scope.empty_barcode_string = window.empty_barcode_string;
 
                 if (!$scope.copy.barcode()) $scope.copy.empty_barcode = true;
+
+                $scope.selectOnFocus = function($event) {
+                    if (!$scope.copy.empty_barcode)
+                        $event.target.select();
+                }
 
                 $scope.nextBarcode = function (i) {
                     $scope.focusNext(i, $scope.barcode);
