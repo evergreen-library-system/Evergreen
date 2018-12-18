@@ -96,6 +96,9 @@ export class QueueComponent implements OnInit, AfterViewInit {
     }
 
     openRecord(row: any) {
+        if (this.queueType == 'auth') {
+            this.queueType = 'authority';
+        }
         const url = 
           `/staff/cat/vandelay/queue/${this.queueType}/${this.queueId}/record/${row.id}/marc`;
         this.router.navigate([url]);

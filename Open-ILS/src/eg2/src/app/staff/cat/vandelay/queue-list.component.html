@@ -31,6 +31,8 @@
   persistKey="cat.vandelay.queue.list.auth"
   (onRowActivate)="rowActivated($event)"
   idlClass="vaq" [dataSource]="queueSource">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
 </eg-grid>
 
 
