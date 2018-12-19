@@ -12,6 +12,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 export class ConfirmDialogComponent extends DialogComponent {
     // What question are we asking?
     @Input() public dialogBody: string;
+    @Input() public dialogBodyTemplate: TemplateRef<any>;
 }
 
 

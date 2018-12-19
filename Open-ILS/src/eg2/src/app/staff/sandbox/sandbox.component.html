@@ -236,3 +236,16 @@
     </div>
   </form>
 </div>
+
+<button (click)="confirmNumber(1)">Confirm 1</button>
+<button (click)="confirmNumber(0)">Confirm 0</button>
+<button (click)="confirmNumber(20)">Confirm 20</button>
+
+<eg-confirm-dialog #numConfirmDialog
+  i18n-dialogTitle
+  dialogTitle="Confirm Number"
+  [dialogBodyTemplate]="confirmMsg">
+</eg-confirm-dialog>
+<ng-template #confirmMsg>
+  <span i18n>Are you sure you want to confirm {numThings, plural, =1 {this thing} other {these {{numThings}} things}}?</span>
+</ng-template>

@@ -16,6 +16,7 @@ import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {FormGroup, FormControl} from '@angular/forms';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -33,6 +34,11 @@ export class SandboxComponent implements OnInit {
 
     @ViewChild('fmRecordEditor')
     private fmRecordEditor: FmRecordEditorComponent;
+
+    @ViewChild('numConfirmDialog')
+    private numConfirmDialog: ConfirmDialogComponent;
+
+    public numThings = 0;
 
     // @ViewChild('helloStr') private helloStr: StringComponent;
 
@@ -265,6 +271,13 @@ export class SandboxComponent implements OnInit {
                 .then(txt => this.toast.success(txt));
         }, 4000);
     }
+
+    confirmNumber(num: number): void {
+      this.numThings = num;
+      console.log(this.numThings);
+      this.numConfirmDialog.open();
+    }
+
 }
 
 

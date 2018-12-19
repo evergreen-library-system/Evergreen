@@ -6,7 +6,14 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body"><p>{{dialogBody}}</p></div>
+  <div class="modal-body">
+    <ng-container *ngIf="!dialogBodyTemplate">
+      <p>{{dialogBody}}</p>
+    </ng-container>
+    <ng-container *ngIf="dialogBodyTemplate">
+      <ng-container *ngTemplateOutlet="dialogBodyTemplate"></ng-container>
+    </ng-container>
+  </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-success" 
       (click)="close(true)" i18n>Confirm</button>
