@@ -12,6 +12,9 @@ const routes: Routes = [{
   }, {
     path: 'acq',
     loadChildren: '@eg/staff/admin/acq/admin-acq.module#AdminAcqModule'
+  }, {
+    path: 'booking',
+    loadChildren: '@eg/staff/admin/booking/admin-booking.module#AdminBookingModule'
   }]
 }];
 

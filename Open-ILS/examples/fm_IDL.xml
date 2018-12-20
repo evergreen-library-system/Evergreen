@@ -4932,11 +4932,11 @@ SELECT  usr,
 	<class id="brt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_type" oils_persist:tablename="booking.resource_type" reporter:label="Resource Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_type_id_seq">
 			<field reporter:label="Resource Type ID" name="id" reporter:datatype="id" reporter:selector="name"/>
-			<field reporter:label="Resource Type Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Resource Type Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Fine Interval" name="fine_interval" reporter:datatype="interval"/>
 			<field reporter:label="Fine Amount" name="fine_amount" reporter:datatype="money"/>
 			<field reporter:label="Max Fine Amount" name="max_fine" reporter:datatype="money"/>
-			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
 			<field reporter:label="Catalog Item" name="catalog_item" reporter:datatype="bool"/>
 			<field reporter:label="Bibliographic Record" name="record" reporter:datatype="link"/>
 			<field reporter:label="Transferable" name="transferable" reporter:datatype="bool"/>
@@ -4965,10 +4965,10 @@ SELECT  usr,
 	<class id="brsrc" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource" oils_persist:tablename="booking.resource" reporter:label="Resource">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_id_seq">
 			<field reporter:label="Resource ID" name="id" reporter:datatype="id" reporter:selector="barcode" />
-			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
-			<field reporter:label="Resource Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Resource Type" name="type" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Overbook" name="overbook" reporter:datatype="bool"/>
-			<field reporter:label="Barcode" name="barcode" reporter:datatype="text"/>
+			<field reporter:label="Barcode" name="barcode" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Is Deposit Required" name="deposit" reporter:datatype="bool"/>
 			<field reporter:label="Deposit Amount" name="deposit_amount" reporter:datatype="money"/>
 			<field reporter:label="User Fee" name="user_fee" reporter:datatype="money"/>
@@ -4997,8 +4997,8 @@ SELECT  usr,
 	<class id="bra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr" oils_persist:tablename="booking.resource_attr" reporter:label="Resource Attribute">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_attr_id_seq">
 			<field reporter:label="Resource Attribute ID" name="id" reporter:datatype="id" reporter:selector="name" />
-			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
-			<field reporter:label="Resource Attribute Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Resource Attribute Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Resource Type" name="resource_type" reporter:datatype="link"/>
 			<field reporter:label="Is Required" name="required" reporter:datatype="bool"/>
 			<field reporter:label="Valid Values" name="valid_values" oils_persist:virtual="true" reporter:datatype="link"/>
@@ -5023,9 +5023,9 @@ SELECT  usr,
 	<class id="brav" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr_value" oils_persist:tablename="booking.resource_attr_value" reporter:label="Resource Attribute Value">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_attr_value_id_seq">
 			<field reporter:label="Resource Attribute Value ID" name="id" reporter:datatype="id" reporter:selector="valid_value" />
-			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit"/>
-			<field reporter:label="Resource Attribute" name="attr" reporter:datatype="link"/>
-			<field reporter:label="Valid Value" name="valid_value" reporter:datatype="text"/>
+			<field reporter:label="Owning Library" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Resource Attribute" name="attr" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Valid Value" name="valid_value" reporter:datatype="text" oils_obj:required="true"/>
 			<field reporter:label="Resource Attribute Maps" name="attr_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Resource Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
@@ -5048,9 +5048,9 @@ SELECT  usr,
 	<class id="bram" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="booking::resource_attr_map" oils_persist:tablename="booking.resource_attr_map" reporter:label="Resource Attribute Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="booking.resource_attr_map_id_seq">
 			<field reporter:label="Resource Attribute Map ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Resource" name="resource" reporter:datatype="link"/>
-			<field reporter:label="Resource Attribute" name="resource_attr" reporter:datatype="link"/>
-			<field reporter:label="Attribute Value" name="value" reporter:datatype="link"/>
+			<field reporter:label="Resource" name="resource" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Resource Attribute" name="resource_attr" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Attribute Value" name="value" reporter:datatype="link" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="resource" reltype="has_a" key="id" map="" class="brsrc"/>

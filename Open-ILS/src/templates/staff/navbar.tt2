@@ -508,7 +508,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/booking/index" target="_self">
+            <a href="/eg2/staff/admin/booking/splash" target="_self">
               <span class="glyphicon glyphicon-calendar"></span>
               [% l('Booking Administration') %]
             </a>
