@@ -10,7 +10,7 @@ import {IdlService} from '@eg/core/idl.service';
     template: `
       <eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
       </eg-staff-banner>
-      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"></eg-admin-page>
+      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}" readonlyFields="{{readonlyFields}}"></eg-admin-page>
     `
 })
 
@@ -19,6 +19,7 @@ export class BasicAdminPageComponent implements OnInit {
     idlClass: string;
     classLabel: string;
     persistKeyPfx: string;
+    readonlyFields: string = '';
 
     constructor(
         private route: ActivatedRoute,
@@ -33,7 +34,13 @@ export class BasicAdminPageComponent implements OnInit {
             const data = this.route.snapshot.data[0];
             if (data) { schema = data.schema; }
         }
-        const table = schema + '.' + this.route.snapshot.paramMap.get('table');
+        let table = this.route.snapshot.paramMap.get('table');
+        if (!table) {
+            const data = this.route.snapshot.data[0];
+            if (data) { table = data.table; }
+        }
+        const full_table = schema + '.' + table;
+
 
         // Set the prefix to "server", "local", "workstation",
         // extracted from the URL path.
@@ -44,16 +51,22 @@ export class BasicAdminPageComponent implements OnInit {
             this.persistKeyPfx = '';
         }
 
+        // Pass the readonlyFields param if available
+        if (this.route.snapshot.data[0].readonlyFields) {
+            this.readonlyFields = this.route.snapshot.data[0].readonlyFields;
+        }
+
+
         Object.keys(this.idl.classes).forEach(class_ => {
             const classDef = this.idl.classes[class_];
-            if (classDef.table === table) {
+            if (classDef.table === full_table) {
                 this.idlClass = class_;
                 this.classLabel = classDef.label;
             }
         });
 
         if (!this.idlClass) {
-            throw new Error('Unable to find IDL class for table ' + table);
+            throw new Error('Unable to find IDL class for table ' + full_table);
         }
     }
 }

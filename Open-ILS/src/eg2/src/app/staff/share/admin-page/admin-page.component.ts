@@ -62,6 +62,9 @@ export class AdminPageComponent implements OnInit {
     // 'eg.grid.admin.${persistKeyPfx}.config.billing_type'
     @Input() persistKeyPfx: string;
 
+    // Optional comma-separated list of read-only fields
+    @Input() readonlyFields: string;
+
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('successString') successString: StringComponent;

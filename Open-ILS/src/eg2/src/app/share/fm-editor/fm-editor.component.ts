@@ -256,7 +256,18 @@ export class FmRecordEditorComponent
                 };
             }
 
-            if (field.datatype === 'link') {
+            if (field.datatype === 'link' && field.readOnly) { // no need to fetch all possible values for read-only fields
+                let id_to_fetch = this.record[field.name]();
+                if (id_to_fetch) {
+                    promises.push(
+                        this.pcrud.retrieve(field.class, this.record[field.name]())
+                        .toPromise().then(list => {
+                            field.linkedValues =
+                                this.flattenLinkedValues(field.class, Array(list));
+                        })
+                    );
+                }
+            } else if (field.datatype === 'link') {
                 promises.push(
                     this.pcrud.retrieveAll(field.class, {}, {atomic : true})
                     .toPromise().then(list => {

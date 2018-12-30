@@ -7,6 +7,10 @@ const routes: Routes = [{
     path: 'splash',
     component: AdminBookingSplashComponent
 }, {
+    path: 'resource_type',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'booking', table: 'resource_type', readonlyFields: 'catalog_item,record'}]
+}, {
     path: ':table',
     component: BasicAdminPageComponent,
     // All booking admin pages cover data in the booking.* schema.  No need to
