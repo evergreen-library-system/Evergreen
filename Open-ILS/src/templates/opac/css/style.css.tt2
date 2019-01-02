@@ -34,7 +34,7 @@ img {
 }
 
 a {
-    color: [% css_colors.primary %];
+    color: [% css_colors.link %];
 }
 
 #search-wrapper input[type=text] {
