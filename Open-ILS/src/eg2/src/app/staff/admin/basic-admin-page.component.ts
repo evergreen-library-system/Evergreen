@@ -19,7 +19,7 @@ export class BasicAdminPageComponent implements OnInit {
     idlClass: string;
     classLabel: string;
     persistKeyPfx: string;
-    readonlyFields: string = '';
+    readonlyFields = '';
 
     constructor(
         private route: ActivatedRoute,
@@ -39,7 +39,7 @@ export class BasicAdminPageComponent implements OnInit {
             const data = this.route.snapshot.data[0];
             if (data) { table = data.table; }
         }
-        const full_table = schema + '.' + table;
+        const fullTable = schema + '.' + table;
 
 
         // Set the prefix to "server", "local", "workstation",
@@ -59,14 +59,14 @@ export class BasicAdminPageComponent implements OnInit {
 
         Object.keys(this.idl.classes).forEach(class_ => {
             const classDef = this.idl.classes[class_];
-            if (classDef.table === full_table) {
+            if (classDef.table === fullTable) {
                 this.idlClass = class_;
                 this.classLabel = classDef.label;
             }
         });
 
         if (!this.idlClass) {
-            throw new Error('Unable to find IDL class for table ' + full_table);
+            throw new Error('Unable to find IDL class for table ' + fullTable);
         }
     }
 }

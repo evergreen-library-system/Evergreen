@@ -54,6 +54,8 @@ export class OrgSelectComponent implements OnInit {
     // An onChange event WILL be generated when a default is applied.
     @Input() applyDefault = false;
 
+    @Input() readOnly = false;
+
     // List of org unit IDs to exclude from the selector
     @Input() set hideOrgs(ids: number[]) {
         if (ids) { this.hidden = ids; }
@@ -153,10 +155,13 @@ export class OrgSelectComponent implements OnInit {
 
     // Format for display in the selector drop-down and input.
     formatForDisplay(org: IdlObject): OrgDisplay {
+        let label = org[this.displayField]();
+        if (!this.readOnly) {
+            label = PAD_SPACE.repeat(org.ou_type().depth()) + label;
+        }
         return {
             id : org.id(),
-            label : PAD_SPACE.repeat(org.ou_type().depth())
-              + org[this.displayField](),
+            label : label,
             disabled : false
         };
     }

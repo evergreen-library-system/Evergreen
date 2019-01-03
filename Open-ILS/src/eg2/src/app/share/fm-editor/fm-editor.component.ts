@@ -100,6 +100,9 @@ export class FmRecordEditorComponent
     // list of fields on the IDL, since some are hidden, virtual, etc.
     fields: any[];
 
+    // DOM id prefix to prevent id collisions.
+    idPrefix: string;
+
     @Input() editMode(mode: 'create' | 'update' | 'view') {
         this.mode = mode;
     }
@@ -109,8 +112,6 @@ export class FmRecordEditorComponent
     @Input() set recordId(id: any) {
         if (id) { this.recId = id; }
     }
-
-    idPrefix: string;
 
     constructor(
       private modal: NgbModal, // required for passing to parent
@@ -127,8 +128,8 @@ export class FmRecordEditorComponent
         this.idlDef = this.idl.classes[this.idlClass];
         this.recordLabel = this.idlDef.label;
 
-	// Add some randomness to the generated DOM IDs to ensure against clobbering
-	this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
+        // Add some randomness to the generated DOM IDs to ensure against clobbering
+        this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
     }
 
     // Opening dialog, fetch data.
@@ -256,16 +257,33 @@ export class FmRecordEditorComponent
                 };
             }
 
-            if (field.datatype === 'link' && field.readOnly) { // no need to fetch all possible values for read-only fields
-                let id_to_fetch = this.record[field.name]();
-                if (id_to_fetch) {
-                    promises.push(
-                        this.pcrud.retrieve(field.class, this.record[field.name]())
-                        .toPromise().then(list => {
-                            field.linkedValues =
-                                this.flattenLinkedValues(field.class, Array(list));
-                        })
-                    );
+            if (field.datatype === 'link' && field.readOnly) {
+
+                // no need to fetch all possible values for read-only fields
+                const idToFetch = this.record[field.name]();
+
+                if (idToFetch) {
+
+                    // If the linked class defines a selector field, fetch the
+                    // linked data so we can display the data within the selector
+                    // field.  Otherwise, avoid the network lookup and let the
+                    // bare value (usually an ID) be displayed.
+                    const idField = this.idl.classes[field.class].pkey;
+                    const selector =
+                        this.idl.classes[field.class].field_map[idField].selector;
+
+                    if (selector && selector !== field.name) {
+                        promises.push(
+                            this.pcrud.retrieve(field.class, this.record[field.name]())
+                            .toPromise().then(list => {
+                                field.linkedValues =
+                                    this.flattenLinkedValues(field.class, Array(list));
+                            })
+                        );
+                    } else {
+                        // No selector, display the raw id/key value.
+                        field.linkedValues = [{id: idToFetch, name: idToFetch}];
+                    }
                 }
             } else if (field.datatype === 'link') {
                 promises.push(
