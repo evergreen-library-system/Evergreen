@@ -41,12 +41,15 @@ export class BasicAdminPageComponent implements OnInit {
         }
         const fullTable = schema + '.' + table;
 
-
         // Set the prefix to "server", "local", "workstation",
         // extracted from the URL path.
+        // For admin pages that use none of these, avoid setting
+        // the prefix because that will cause it to double-up.
+        // e.g. eg.grid.acq.acq.cancel_reason
         this.persistKeyPfx = this.route.snapshot.parent.url[0].path;
-        if (this.persistKeyPfx === 'acq') {
-            // ACQ is a special case, becaus unlike 'server', 'local',
+        const selfPrefixers = ['acq', 'booking'];
+        if (selfPrefixers.indexOf(this.persistKeyPfx) > -1) {
+            // ACQ is a special case, because unlike 'server', 'local',
             // 'workstation', the schema ('acq') is the root of the path.
             this.persistKeyPfx = '';
         }
