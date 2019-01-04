@@ -371,7 +371,10 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     // Extract selected queue ID or create a new queue when requested.
     resolveQueue(): Promise<number> {
 
+        if (this.selectedQueue.freetext) {
+        /*
         if (this.selectedQueue && this.selectedQueue.freetext) {
+        */
             // Free text queue selector means create a new entry.
             // TODO: first check for name dupes
 
@@ -384,9 +387,12 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             );
 
         } else {
+            return Promise.resolve(this.selectedQueue.id);
+            /*
             var queue_id = this.startQueueId;
             if (this.selectedQueue) queue_id = this.selectedQueue.id;
             return Promise.resolve(queue_id);
+            */
         }
     }
 

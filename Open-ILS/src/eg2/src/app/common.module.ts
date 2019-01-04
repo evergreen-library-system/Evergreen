@@ -19,6 +19,7 @@ import {PrintService} from '@eg/share/print/print.service';
 // Globally available components
 import {PrintComponent} from '@eg/share/print/print.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
@@ -28,6 +29,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
   declarations: [
     PrintComponent,
     DialogComponent,
+    AlertDialogComponent,
     ConfirmDialogComponent,
     PromptDialogComponent,
     ProgressInlineComponent,
@@ -46,6 +48,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
     FormsModule,
     PrintComponent,
     DialogComponent,
+    AlertDialogComponent,
     ConfirmDialogComponent,
     PromptDialogComponent,
     ProgressInlineComponent,
