@@ -1,4 +1,4 @@
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {tap} from 'rxjs/operators/tap';
 import {map} from 'rxjs/operators/map';
@@ -32,7 +32,6 @@ export class VandelayImportSelection {
 export class VandelayService {
 
     allQueues: {[qtype: string]: IdlObject[]};
-    activeQueues: {[qtype: string]: IdlObject[]}; 
     attrDefs: {[atype: string]: IdlObject[]};
     bibSources: IdlObject[];
     bibBuckets: IdlObject[];
@@ -62,7 +61,6 @@ export class VandelayService {
         private perm: PermService
     ) {
         this.attrDefs = {};
-        this.activeQueues = {};
         this.allQueues = {};
         this.matchSets = {};
         this.importSelection = null;
@@ -99,8 +97,6 @@ export class VandelayService {
     }
 
     // Returns a promise resolved with the list of queues.
-    // Also emits the onQueueListUpdate event so listeners
-    // can detect queue content changes.
     getAllQueues(qtype: string): Promise<IdlObject[]> {
         if (this.allQueues[qtype]) {
             return Promise.resolve(this.allQueues[qtype]);
@@ -116,27 +112,6 @@ export class VandelayService {
         ).pipe(tap(
             queue => this.allQueues[qtype].push(queue)
         )).toPromise().then(() => this.allQueues[qtype]);
-    }
-
-
-    // Returns a promise resolved with the list of queues.
-    // Also emits the onQueueListUpdate event so listeners
-    // can detect queue content changes.
-    getActiveQueues(qtype: string): Promise<IdlObject[]> {
-        if (this.activeQueues[qtype]) {
-            return Promise.resolve(this.activeQueues[qtype]);
-        } else {
-            this.activeQueues[qtype] = [];
-        }
-
-        // could be a big list, invoke in streaming mode
-        return this.net.request(
-            'open-ils.vandelay',
-            `open-ils.vandelay.${qtype}_queue.owner.retrieve`,
-            this.auth.token(), null, {complete: 'f'}
-        ).pipe(tap(
-            queue => this.activeQueues[qtype].push(queue)
-        )).toPromise().then(() => this.activeQueues[qtype]);
     }
 
     getBibSources(): Promise<IdlObject[]> {
@@ -256,9 +231,11 @@ export class VandelayService {
             ).subscribe(queue => {
                 const e = this.evt.parse(queue);
                 if (e) { 
-                    alert(e);
                     reject(e);
                 } else {
+                    // createQueue is always called after queues have
+                    // been fetched and cached.  
+                    this.allQueues[qType].push(queue);
                     resolve(queue.id());
                 }
             });

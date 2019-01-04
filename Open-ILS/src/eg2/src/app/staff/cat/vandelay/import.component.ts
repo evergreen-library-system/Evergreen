@@ -13,6 +13,7 @@ import {VandelayService, VandelayImportSelection,
 import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
+import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
 import {Subject} from 'rxjs/Subject';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
@@ -125,6 +126,9 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         private mergeProfileSelector: ComboboxComponent;
     @ViewChild('fallThruMergeProfileSelector')
         private fallThruMergeProfileSelector: ComboboxComponent;
+
+    @ViewChild('dupeQueueAlert')
+        private dupeQueueAlert: AlertDialogComponent;
 
     constructor(
         private http: HttpClient,
@@ -248,8 +252,9 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 list = this.vandelay.bibBuckets;
                 break;
 
-            case 'allQueues':
-                list = this.vandelay.allQueues[rtype];
+            case 'activeQueues':
+                list = (this.vandelay.allQueues[rtype] || [])
+                        .filter(q => q.complete() === 'f');
                 break;
 
             case 'matchSets':
@@ -372,9 +377,6 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     resolveQueue(): Promise<number> {
 
         if (this.selectedQueue.freetext) {
-        /*
-        if (this.selectedQueue && this.selectedQueue.freetext) {
-        */
             // Free text queue selector means create a new entry.
             // TODO: first check for name dupes
 
@@ -384,15 +386,23 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.selectedHoldingsProfile,
                 this.selectedMatchSet,
                 this.selectedBucket
-            );
+            ).then(
+                id => id,
+                err => {
+                    const evt = this.evt.parse(err);
+                    if (evt) {
+                        if (evt.textcode.match(/QUEUE_EXISTS/)) {
+                            this.dupeQueueAlert.open();
+                        } else {
+                            alert(evt); // server error
+                        }
+                    } 
 
+                    return Promise.reject('Queue Create Failed');
+                }
+            );
         } else {
             return Promise.resolve(this.selectedQueue.id);
-            /*
-            var queue_id = this.startQueueId;
-            if (this.selectedQueue) queue_id = this.selectedQueue.id;
-            return Promise.resolve(queue_id);
-            */
         }
     }
 

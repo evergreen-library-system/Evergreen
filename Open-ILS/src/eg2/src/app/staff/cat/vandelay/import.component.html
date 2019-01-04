@@ -8,6 +8,10 @@
   </div>
 </div>
 
+<eg-alert-dialog #dupeQueueAlert i18n-dialogBody 
+  dialogBody="A queue with the requested name already exists.">
+</eg-alert-dialog>
+
 <h2 i18n>MARC File Upload</h2>
 <div class="common-form striped-odd form-validated ml-3 mr-3">
   <div class="row">
@@ -74,7 +78,7 @@
       <label for="queue-select" i18n>Select or Create a Queue</label>
     </div>
     <div class="col-lg-3">
-      <eg-combobox [entries]="formatEntries('allQueues')"
+      <eg-combobox [entries]="formatEntries('activeQueues')"
         id="queue-select"
         [startId]="startQueueId"
         [startIdFiresOnChange]="true"
