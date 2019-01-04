@@ -138,9 +138,9 @@
   
             <ng-container *ngIf="field.datatype == 'link'">
               <ng-container *ngIf="field.readOnly">
-                <!-- in readOnly mode, if a value is presetn, it will
+                <!-- in readOnly mode, if a value is present, it will
                     live as the only item in the linkedValues array -->
-                <ng-container *ngIf="field.linkedValues[0]">
+                <ng-container *ngIf="(field.linkedValues != null) && (field.linkedValues.length)">
                   <span>{{field.linkedValues[0].name}}</span>
                 </ng-container>
               </ng-container>
