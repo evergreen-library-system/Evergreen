@@ -180,11 +180,9 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        // If we successfully completed the most recent 
-        // upload/import assume the importSelection can be cleared.
-        if (this.uploadComplete) {
-            this.clearSelection();
-        }
+        // Always clear the import selection when navigating away from
+        // the import page.
+        this.clearSelection();
     }
 
     importSelection(): VandelayImportSelection {
