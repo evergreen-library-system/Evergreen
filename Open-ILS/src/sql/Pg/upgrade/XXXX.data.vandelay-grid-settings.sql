@@ -11,55 +11,77 @@ VALUES (
         'cwst', 'label'
     )
 ), (
-    'eg.grid.cat.vandelay.queue.auth', 'gui', 'object',
+    'eg.grid.cat.vandelay.queue.authority', 'gui', 'object',
     oils_i18n_gettext(
-        'eg.grid.cat.vandelay.queue.auth',
+        'eg.grid.cat.vandelay.queue.authority',
         'Grid Config: Vandelay Authority Queue',
         'cwst', 'label'
     )
 ), (
-    'cat.vandelay.match_set.list', 'gui', 'object',
+    'eg.grid.cat.vandelay.match_set.list', 'gui', 'object',
     oils_i18n_gettext(
-        'cat.vandelay.match_set.list',
+        'eg.grid.cat.vandelay.match_set.list',
         'Grid Config: Vandelay Match Sets',
         'cwst', 'label'
     )
 ), (
-    'staff.cat.vandelay.match_set.quality', 'gui', 'object',
+    'eg.grid.cat.vandelay.match_set.quality', 'gui', 'object',
     oils_i18n_gettext(
-        'staff.cat.vandelay.match_set.quality',
+        'eg.grid.cat.vandelay.match_set.quality',
         'Grid Config: Vandelay Match Quality Metrics',
         'cwst', 'label'
     )
 ), (
-    'cat.vandelay.queue.items', 'gui', 'object',
+    'eg.grid.cat.vandelay.queue.items', 'gui', 'object',
     oils_i18n_gettext(
-        'cat.vandelay.queue.items',
+        'eg.grid.cat.vandelay.queue.items',
         'Grid Config: Vandelay Queue Import Items',
         'cwst', 'label'
     )
 ), (
-    'cat.vandelay.queue.list.bib', 'gui', 'object',
+    'eg.grid.cat.vandelay.queue.list.bib', 'gui', 'object',
     oils_i18n_gettext(
-        'cat.vandelay.queue.list.bib',
+        'eg.grid.cat.vandelay.queue.list.bib',
         'Grid Config: Vandelay Bib Queue List',
         'cwst', 'label'
     )
 ), (
-    'cat.vandelay.queue.bib.items', 'gui', 'object',
+    'eg.grid.cat.vandelay.queue.bib.items', 'gui', 'object',
     oils_i18n_gettext(
-        'cat.vandelay.queue.bib.items',
+        'eg.grid.cat.vandelay.queue.bib.items',
         'Grid Config: Vandelay Bib Items',
         'cwst', 'label'
     )
 ), (
-    'cat.vandelay.queue.list.auth', 'gui', 'object',
+    'eg.grid.cat.vandelay.queue.list.auth', 'gui', 'object',
     oils_i18n_gettext(
-        'cat.vandelay.queue.list.auth',
+        'eg.grid.cat.vandelay.queue.list.auth',
         'Grid Config: Vandelay Authority Queue List',
         'cwst', 'label'
     )
+), (
+    'eg.grid.admin.vandelay.merge_profile', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.merge_profile',
+        'Grid Config: Vandelay Merge Profiles',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.bib_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.bib_attr_definition',
+        'Grid Config: Vandelay Bib Record Attributes',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.import_item_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.import_item_attr_definition',
+        'Grid Config: Vandelay Import Item Attributes',
+        'cwst', 'label'
+    )
 );
+
 
 COMMIT;
 
