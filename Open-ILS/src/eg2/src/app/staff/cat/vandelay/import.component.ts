@@ -24,7 +24,7 @@ const TEMPLATE_ATTRS = [
     'selectedBibSource',
     'selectedMatchSet',
     'mergeOnExact',
-    'importNonMatch',
+    'importNonMatching',
     'mergeOnBestMatch',
     'mergeOnSingleMatch',
     'autoOverlayAcqCopies',
