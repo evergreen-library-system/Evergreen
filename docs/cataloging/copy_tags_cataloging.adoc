@@ -3,19 +3,19 @@ Copy Tags
 
 Copy Tags allow staff to apply custom, pre-defined labels or tags to items.  Copy tags are visible in the public catalog and are searchable in both the staff client and public catalog based on configuration.  This feature was designed to be used for Digital Bookplates to attach donation or memorial information to items, but may be used for broader purposes to tag items.
 
-Copy tags can be created ahead of time in the Administration module (See the Administration section of this documentation for more information.) and then applied to copies or they can be created on the fly during the cataloging process.
+Copy tags can be created ahead of time in the Administration module (See the Administration section of this documentation for more information.) and then applied to items or they can be created on the fly during the cataloging process.
 
-Adding Existing Copy Tags to Copies
+Adding Existing Copy Tags to Items
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Copy Tags can be added to existing copies or to new copies as they are cataloged.  To add a copy tag:
+Copy Tags can be added to existing items or to new items as they are cataloged.  To add a copy tag:
 
 . In the _Copy Editor_, click on *Copy Tags*.  A dialog box called _Manage Copy Tags_ will appear.
 
 image::media/copytags5.PNG[]
 
 . Select the *Tag Type* from the drop down menu and start typing in the Tag field to bring up tag suggestions from the existing copy tags.  Select the tag and click *Add Tag*, then click *OK*.
-..    If you are cataloging a new copy, make any other changes to the item record.
+..    If you are cataloging a new item, make any other changes to the item record.
 . Click *Save & Exit*.  The copy tag will now appear in the catalog.
 
 image::media/copytags6.png[]
@@ -31,10 +31,10 @@ Copy tags can be created in the Copy Editor  on the fly while cataloging or view
 . Select the *Tag Type* from the drop down menu and type in the new Tag you want to apply to the item.  Click *Add Tag*, then click *OK*.  The new tag will be created and attached to the item.  It will be owned by the organization unit your workstation is registered to.  The tag can be modified under *Admin->Local Administration->Copy Tags*.
 
 
-Removing Copy Tags from Copies
+Removing Copy Tags from Items
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To remove a copy tag from a copy:
+To remove a copy tag from a item:
 
 . In the Copy Editor, click on *Copy Tags*.  A dialog box called _Manage Copy Tags_ will appear.
 . Click *Remove* next to the tag you would like to remove, and click *OK*.
@@ -43,14 +43,14 @@ To remove a copy tag from a copy:
 image::media/copytags8.PNG[]
 
 
-Adding Copy Tags to Copies in Batch
+Adding Copy Tags to Items in Batch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Copy tags can be added to multiple copies in batch using _Copy Buckets_.  After adding the items to a copy bucket:
+Copy tags can be added to multiple items in batch using _Copy Buckets_.  After adding the items to a copy bucket:
 
 . Go to *Cataloging->Copy Buckets->Bucket View* and select the bucket from the Buckets drop down menu.
 . Select the copies to which you want to add the copy tag and go to *Actions->Apply Tags* or right-click and select *Apply Tags*.  The _Apply Copy Tags_ dialog box will appear.
-. Select the *Tag Type* and enter the *Tag*.  Click *Add Tag*, then click *OK*.  The copy tag will now be attached to the copies.
+. Select the *Tag Type* and enter the *Tag*.  Click *Add Tag*, then click *OK*.  The copy tag will now be attached to the items.
 
 image::media/copytags9.PNG[]
 
