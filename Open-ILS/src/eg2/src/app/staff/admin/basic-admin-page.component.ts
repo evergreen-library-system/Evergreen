@@ -55,7 +55,9 @@ export class BasicAdminPageComponent implements OnInit {
         }
 
         // Pass the readonlyFields param if available
-        if (this.route.snapshot.data[0].readonlyFields) {
+        if (this.route.snapshot.data &&
+            this.route.snapshot.data.length &&
+            this.route.snapshot.data[0].readonlyFields) {
             this.readonlyFields = this.route.snapshot.data[0].readonlyFields;
         }
 
