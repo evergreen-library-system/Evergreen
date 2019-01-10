@@ -216,6 +216,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                         return !angular.isNumber(toolbox_settings.page.dimensions.rows) || !angular.isNumber(toolbox_settings.page.start_position.row) ? false : (toolbox_settings.page.start_position.row <= toolbox_settings.page.dimensions.rows);
                     }
                 };
+
                 $scope.record_details = {};
                 $scope.org_unit_settings = {};
 
@@ -324,18 +325,22 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
     $scope.fetchTemplates(true);
 
     $scope.applyTemplate = function (n) {
-        $scope.print.cn_template_content = $scope.templates[n].cn_content;
-        $scope.print.template_content = $scope.templates[n].content;
-        $scope.print.template_context = $scope.templates[n].context;
-        for (var s in $scope.templates[n].settings) {
-            $scope.preview_scope.settings[s] = $scope.templates[n].settings[s];
+        if (n) {
+            if ($scope.templates[n]) {
+                $scope.print.cn_template_content = $scope.templates[n].cn_content;
+                $scope.print.template_content = $scope.templates[n].content;
+                $scope.print.template_context = $scope.templates[n].context;
+                for (var s in $scope.templates[n].settings) {
+                    $scope.preview_scope.settings[s] = $scope.templates[n].settings[s];
+                }
+                if ($scope.templates[n].toolbox_settings) {
+                    $scope.preview_scope.toolbox_settings = $scope.templates[n].toolbox_settings;
+                    $scope.create_print_label_table();
+                }
+                egCore.hatch.setItem('cat.printlabels.default_template', n);
+                $scope.save_locally();
+            }
         }
-        if ($scope.templates[n].toolbox_settings) {
-            $scope.preview_scope.toolbox_settings = $scope.templates[n].toolbox_settings;
-            $scope.create_print_label_table();
-        }
-        egCore.hatch.setItem('cat.printlabels.default_template', n);
-        $scope.save_locally();
     }
 
     $scope.deleteTemplate = function (n) {
@@ -356,13 +361,12 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
 
     $scope.saveTemplate = function (n) {
         if (n) {
-
             $scope.templates[n] = {
                 content: $scope.print.template_content
                 , context: $scope.print.template_context
                 , cn_content: $scope.print.cn_template_content
-                , settings: $scope.preview_scope.settings
-                , toolbox_settings: $scope.preview_scope.toolbox_settings
+                , settings: JSON.parse(JSON.stringify($scope.preview_scope.settings))
+                , toolbox_settings: JSON.parse(JSON.stringify($scope.preview_scope.toolbox_settings))
             };
             $scope.template_name_list = Object.keys($scope.templates);
 
@@ -513,7 +517,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
             $scope.preview_scope.label_output_copies = labelOutputRowsFilter($scope.preview_scope.copies, $scope.preview_scope.toolbox_settings);
             var html = $scope.print.template_content;
             var d = new Date(); //Added to table ID with 'eg_plt_' to cause $complie on $scope.print.template_content to fire due to template content change.
-            var table = "<table id=\"eg_plt_" + d.getTime().toString() + "_{{$index}}\" eg-print-label-table style=\"border-collapse: collapse; border: 0 solid transparent; border-spacing: 0; margin: {{$index === 0 ?toolbox_settings.page.margins.top.size : 0}} 0 0 0;\" class=\"custom-label-table{{$index % toolbox_settings.page.dimensions.rows === 0 && $index > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" ng-init=\"parentIndex = $index\" ng-repeat=\"row in label_output_copies\">\n";
+            var table = "<table id=\"eg_plt_" + d.getTime().toString() + "_{{$index}}\" eg-print-label-table style=\"border-collapse: collapse; border: 0 solid transparent; border-spacing: 0; margin: {{$index === 0 ? toolbox_settings.page.margins.top.size : 0}} 0 0 0;\" class=\"custom-label-table{{$index % toolbox_settings.page.dimensions.rows === 0 && $index > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" ng-init=\"parentIndex = $index\" ng-repeat=\"row in label_output_copies\">\n";
             table += "<tr>\n";
             table += "<td style=\"border: 0 solid transparent; padding: {{parentIndex % toolbox_settings.page.dimensions.rows === 0 && toolbox_settings.feed_option.selected === 'sheet' && parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : 0}} 0 0 {{$index === 0 ? toolbox_settings.page.margins.left.size : col.styl ? col.styl : toolbox_settings.page.space_between_labels.horizontal.size}};\" ng-repeat=\"col in row.columns\">\n";
             table += "<pre class=\"{{col.cls}}\" style=\"border: none; margin-bottom: 0; margin-top: 0; overflow: hidden;\" ng-if=\"col.cls === 'spine'\">\n";
