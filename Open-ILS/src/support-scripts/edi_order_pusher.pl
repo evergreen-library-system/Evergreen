@@ -129,6 +129,7 @@ if ($po_id) {
         },
         where => {
             '+acqpo' => {
+                state => 'on-order', # on-order only
                 order_date => {'!=' => undef} # activated
             },
             '+acqpro' => {
