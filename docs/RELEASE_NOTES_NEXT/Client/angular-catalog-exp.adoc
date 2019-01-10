@@ -1,0 +1,26 @@
+Option to Enable Experimental Angular Staff Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new org unit setting labeled 'GUI: Enable Experimental Angular 
+Staff Catalog' (ui.staff.angular_catalog.enabled) has been added, allowing
+sites to enable a menu option in the browser client for accessing
+the experimental Angular staff catalog.
+
+When set to true, a new entry in the navigation bar appears in the
+Cataloging menu labled "Staff Catalog (Experimental)".
+
+New Features (Since 3.2)
+++++++++++++++++++++++++
+
+ * Pub date filter
+ * Copy location filter
+ * Group formats and editions
+ * Identifier search
+ * MARC search
+ * Browse search
+ * Place holds
+ * Record baskets and actions
+ * Record detail tabs/actions point to AngularJS versions where needed.
+ * Record detail View In Catalog button
+
+
