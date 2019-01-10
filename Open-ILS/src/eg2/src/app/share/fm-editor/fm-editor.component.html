@@ -15,68 +15,64 @@
         </div>
         <div class="col-lg-7">
 
-          <span *ngIf="field.template">
-            <ng-container
-              *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+          <ng-container [ngSwitch]="inputType(field)">
+
+            <ng-container *ngSwitchCase="'template'">
+              <ng-container
+                *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+              </ng-container> 
             </ng-container> 
-          </span>
 
-          <span *ngIf="!field.template">
-
-            <span *ngIf="field.datatype == 'id' && !pkeyIsEditable">
-              {{record[field.name]()}}
-            </span>
-  
-            <ng-container *ngIf="field.datatype == 'id' && pkeyIsEditable">
-              <ng-container *ngIf="field.readOnly">
-                <span>{{record[field.name]()}}</span>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
-                <input
-                  class="form-control"
-                  name="{{field.name}}"
-                  id="{{idPrefix}}-{{field.name}}"
-                  placeholder="{{field.label}}..."
-                  i18n-placeholder
-                  [required]="field.isRequired()"
-                  [ngModel]="record[field.name]()"
-                  (ngModelChange)="record[field.name]($event)"/>
-              </ng-container>
+            <ng-container *ngSwitchCase="'readonly'">
+              <span>{{record[field.name]()}}</span>
             </ng-container>
-  
-            <ng-container 
-              *ngIf="field.datatype == 'text' || field.datatype == 'interval'">
-              <ng-container *ngIf="field.readOnly">
-                <span>{{record[field.name]()}}</span>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
-                <input
-                  class="form-control"
-                  name="{{field.name}}"
-                  id="{{idPrefix}}-{{field.name}}"
-                  placeholder="{{field.label}}..."
-                  i18n-placeholder
-                  [required]="field.isRequired()"
-                  [ngModel]="record[field.name]()"
-                  (ngModelChange)="record[field.name]($event)"/>
+
+            <ng-container *ngSwitchCase="'readonly-money'">
+              <span>{{record[field.name]() | currency}}</span>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'readonly-list'">
+              <ng-container *ngIf="field.linkedValues">
+                <span>{{field.linkedValues[0].label}}</span>
               </ng-container>
             </ng-container>
 
-            <!-- TODO: add support to eg-date-select for read-only view -->
-            <span *ngIf="field.datatype == 'timestamp'">
+            <ng-container *ngSwitchCase="'timestamp'">
               <eg-date-select
                 domId="{{idPrefix}}-{{field.name}}"
                 (onChangeAsIso)="record[field.name]($event)"
                 initialIso="{{record[field.name]()}}">
               </eg-date-select>
-            </span>
+            </ng-container>
 
-            <ng-container *ngIf="field.datatype == 'int'">
-              <ng-container *ngIf="field.readOnly">
-                <span>{{record[field.name]()}}</span>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
+            <ng-container *ngSwitchCase="'org_unit'">
+              <eg-org-select
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                domId="{{idPrefix}}-{{field.name}}"
+                [limitPerms]="modePerms[mode]"
+                [readOnly]="field.readOnly"
+                [applyDefault]="field.orgDefaultAllowed"
+                [initialOrgId]="record[field.name]()"
+                (onChange)="record[field.name]($event)">
+              </eg-org-select>
+            </ng-container>
+          
+            <ng-container *ngSwitchCase="'money'">
+              <input
+                class="form-control"
+                type="number" step="0.1"
+                name="{{field.name}}"
+                id="{{idPrefix}}-{{field.name}}"
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                [readonly]="field.readOnly"
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
 
+            <ng-container *ngSwitchCase="'int'">
               <input
                 class="form-control"
                 type="number"
@@ -87,91 +83,55 @@
                 [required]="field.isRequired()"
                 [ngModel]="record[field.name]()"
                 (ngModelChange)="record[field.name]($event)"/>
-              </ng-container>
             </ng-container>
 
-            <ng-container *ngIf="field.datatype == 'float'">
-              <ng-container *ngIf="field.readOnly">
-                <span>{{record[field.name]()}}</span>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
-                <input
-                  class="form-control"
-                  type="number" step="0.1"
-                  name="{{field.name}}"
-                  id="{{idPrefix}}-{{field.name}}"
-                  placeholder="{{field.label}}..."
-                  i18n-placeholder
-                  [required]="field.isRequired()"
-                  [ngModel]="record[field.name]()"
-                  (ngModelChange)="record[field.name]($event)"/>
-              </ng-container>
+            <ng-container *ngSwitchCase="'float'">
+              <input
+                class="form-control"
+                type="number" step="0.1"
+                name="{{field.name}}"
+                id="{{idPrefix}}-{{field.name}}"
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
             </ng-container>
-      
-            <ng-container *ngIf="field.datatype == 'money'">
-              <ng-container *ngIf="field.readOnly">
-                <span>{{record[field.name]() | currency}}</span>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
-                <input
-                  class="form-control"
-                  type="number" step="0.1"
-                  name="{{field.name}}"
-                  id="{{idPrefix}}-{{field.name}}"
-                  placeholder="{{field.label}}..."
-                  i18n-placeholder
-                  [readonly]="field.readOnly"
-                  [required]="field.isRequired()"
-                  [ngModel]="record[field.name]()"
-                  (ngModelChange)="record[field.name]($event)"/>
-              </ng-container>
-            </ng-container>
-  
-            <input *ngIf="field.datatype == 'bool'"
-              class="form-check-input"
-              type="checkbox"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              [disabled]="field.readOnly"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
-  
-            <ng-container *ngIf="field.datatype == 'link'">
-              <ng-container *ngIf="field.readOnly">
-                <!-- in readOnly mode, if a value is present, it will
-                    live as the only item in the linkedValues array -->
-                <ng-container *ngIf="(field.linkedValues != null) && (field.linkedValues.length)">
-                  <span>{{field.linkedValues[0].name}}</span>
-                </ng-container>
-              </ng-container>
-              <ng-container *ngIf="!field.readOnly">
-                <span [ngClass]="{nullable : !field.isRequired()}">
-                  <select
-                    class="form-control"
-                    name="{{field.name}}"
-                    id="{{idPrefix}}-{{field.name}}"
-                    [required]="field.isRequired()"
-                    [ngModel]="record[field.name]()"
-                    (ngModelChange)="record[field.name]($event)">
-                    <option *ngFor="let item of field.linkedValues" 
-                      [value]="item.id">{{item.name}}</option>
-                  </select>
-                </span>
-              </ng-container>
-            </ng-container>
-  
-            <eg-org-select *ngIf="field.datatype == 'org_unit'"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              domId="{{idPrefix}}-{{field.name}}"
-              [limitPerms]="modePerms[mode]"
-              [readOnly]="field.readOnly"
-              [applyDefault]="field.orgDefaultAllowed"
-              [initialOrgId]="record[field.name]()"
-              (onChange)="record[field.name]($event)">
-            </eg-org-select>
 
-          </span>
+            <ng-container *ngSwitchCase="'text'">
+              <input
+                class="form-control"
+                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                type="text"
+                placeholder="{{field.label}}..." i18n-placeholder
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'bool'">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                name="{{field.name}}"
+                id="{{idPrefix}}-{{field.name}}"
+                [disabled]="field.readOnly"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
+  
+            <ng-container *ngSwitchCase="'list'">
+              <eg-combobox
+                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                placeholder="{{field.label}}..." i18n-placeholder 
+                [required]="field.isRequired()"
+                [entries]="field.linkedValues"
+                [asyncDataSource]="field.linkedValuesSource"
+                [startId]="record[field.name]()"
+                (onChange)="record[field.name]($event ? $event.id : null)">
+              </eg-combobox>
+            </ng-container>
+          </ng-container> <!-- switch -->
         </div>
       </div>
     </form>

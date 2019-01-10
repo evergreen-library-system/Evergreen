@@ -30,9 +30,11 @@
       (ngModelChange)="record[field.name]($event)">
     </textarea>
   </ng-template>
+  <!-- note: fieldOptions would be best defined in the .ts file, but
+      want to demostrate it can be set in the template as well -->
   <eg-fm-record-editor #fmRecordEditor 
       idlClass="cmrcfld" mode="create" 
-      [customFieldTemplates]="{description:{template:descriptionTemplate,context:{'hello':'goodbye'}}}"
+      [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
       recordId="1" orgDefaultAllowed="owner">
   </eg-fm-record-editor>
   <button class="btn btn-dark" (click)="fmRecordEditor.open({size:'lg'})">

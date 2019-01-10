@@ -1,10 +1,13 @@
 import {Component, OnInit, Input,
     Output, EventEmitter, TemplateRef} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -26,6 +29,43 @@ interface CustomFieldContext {
     [fields: string]: any;
 }
 
+// Collection of extra options that may be applied to fields
+// for controling non-default behaviour.
+export interface FmFieldOptions {
+
+    // Render the field as a combobox using these values, regardless
+    // of the field's datatype.
+    customValues?: {[field: string]: ComboboxEntry[]};
+
+    // Provide / override the "selector" value for the linked class.
+    // This is the field the combobox will search for typeahead.  If no
+    // field is defined, the "selector" field is used.  If no "selector"
+    // field exists, the combobox will pre-load all linked values so
+    // the user can click to navigate.
+    linkedSearchField?: string;
+
+    // When true for combobox fields, pre-fetch the combobox data
+    // so the user can click or type to find values.
+    preloadLinkedValues?: boolean;
+
+    // Directly override the required state of the field.
+    // This only has an affect if the value is true.
+    isRequired?: boolean;
+
+    // If this function is defined, the function will be called
+    // at render time to see if the field should be marked are required.
+    // This supersedes all other isRequired specifiers.
+    isRequiredOverride?: (field: string, record: IdlObject) => boolean;
+
+    // Directly apply the readonly status of the field.
+    // This only has an affect if the value is true.
+    isReadonly?: boolean;
+
+    // Render the field using this custom template instead of chosing
+    // from the default set of form inputs.
+    customTemplate?: CustomFieldTemplate;
+}
+
 @Component({
   selector: 'eg-fm-record-editor',
   templateUrl: './fm-editor.component.html',
@@ -43,6 +83,7 @@ export class FmRecordEditorComponent
     //       'view' for viewing an existing record without editing
     mode: 'create' | 'update' | 'view' = 'create';
     recId: any;
+
     // IDL record we are editing
     // TODO: allow this to be update in real time by the caller?
     record: IdlObject;
@@ -51,8 +92,9 @@ export class FmRecordEditorComponent
     // for the current IDL class
     modePerms: {[mode: string]: string};
 
-    @Input() customFieldTemplates:
-        {[fieldName: string]: CustomFieldTemplate} = {};
+    // Collection of FmFieldOptions for specifying non-default
+    // behaviour for each field (by field name).
+    @Input() fieldOptions: {[fieldName: string]: FmFieldOptions} = {};
 
     // list of fields that should not be displayed
     @Input() hiddenFieldsList: string[] = [];
@@ -71,14 +113,6 @@ export class FmRecordEditorComponent
     // the org-select if no value is present.
     @Input() orgDefaultAllowedList: string[] = [];
     @Input() orgDefaultAllowed: string; // comma-separated string version
-
-    // hash, keyed by field name, of functions to invoke to check
-    // whether a field is required.  Each callback is passed the field
-    // name and the record and should return a boolean value. This
-    // supports cases where whether a field is required or not depends
-    // on the current value of another field.
-    @Input() isRequiredOverride:
-        {[field: string]: (field: string, record: IdlObject) => boolean};
 
     // IDL record display label.  Defaults to the IDL label.
     @Input() recordLabel: string;
@@ -227,14 +261,27 @@ export class FmRecordEditorComponent
         });
     }
 
+    // Returns the name of the field on a class (typically via a linked
+    // field) that acts as the selector value for display / search.
+    getClassSelector(class_: string): string {
+        if (class_) {
+            const linkedClass = this.idl.classes[class_];
+            return linkedClass.pkey ?
+                linkedClass.field_map[linkedClass.pkey].selector : null;
+        }
+        return null;
+    }
 
-    private flattenLinkedValues(cls: string, list: IdlObject[]): any[] {
-        const idField = this.idl.classes[cls].pkey;
-        const selector =
-            this.idl.classes[cls].field_map[idField].selector || idField;
+    private flattenLinkedValues(field: any, list: IdlObject[]): ComboboxEntry[] {
+        const class_ = field.class;
+        const fieldOptions = this.fieldOptions[field.name] || {};
+        const idField = this.idl.classes[class_].pkey;
+
+        const selector = fieldOptions.linkedSearchField
+            || this.getClassSelector(class_) || idField;
 
         return list.map(item => {
-            return {id: item[idField](), name: item[selector]()};
+            return {id: item[idField](), label: item[selector]()};
         });
     }
 
@@ -244,73 +291,134 @@ export class FmRecordEditorComponent
             !f.virtual && !this.hiddenFieldsList.includes(f.name)
         );
 
-        const promises = [];
-
-        this.fields.forEach(field => {
-            field.readOnly = this.mode === 'view'
-                || this.readonlyFieldsList.includes(field.name);
-
-            if (this.isRequiredOverride &&
-                field.name in this.isRequiredOverride) {
-                field.isRequired = () => {
-                    return this.isRequiredOverride[field.name](field.name, this.record);
-                };
-            } else {
-                field.isRequired = () => {
-                    return field.required ||
-                        this.requiredFieldsList.includes(field.name);
-                };
-            }
-
-            if (field.datatype === 'link' && field.readOnly) {
-
-                // no need to fetch all possible values for read-only fields
-                const idToFetch = this.record[field.name]();
-
-                if (idToFetch) {
-
-                    // If the linked class defines a selector field, fetch the
-                    // linked data so we can display the data within the selector
-                    // field.  Otherwise, avoid the network lookup and let the
-                    // bare value (usually an ID) be displayed.
-                    const selector =
-                        this.idl.getLinkSelector(this.idlClass, field.name);
-
-                    if (selector && selector !== field.name) {
-                        promises.push(
-                            this.pcrud.retrieve(field.class, this.record[field.name]())
-                            .toPromise().then(list => {
-                                field.linkedValues =
-                                    this.flattenLinkedValues(field.class, Array(list));
-                            })
-                        );
-                    } else {
-                        // No selector, display the raw id/key value.
-                        field.linkedValues = [{id: idToFetch, name: idToFetch}];
-                    }
-                }
-            } else if (field.datatype === 'link') {
-                promises.push(
-                    this.pcrud.retrieveAll(field.class, {}, {atomic : true})
-                    .toPromise().then(list => {
-                        field.linkedValues =
-                            this.flattenLinkedValues(field.class, list);
-                    })
-                );
-            } else if (field.datatype === 'org_unit') {
-                field.orgDefaultAllowed =
-                    this.orgDefaultAllowedList.includes(field.name);
-            }
-
-            if (this.customFieldTemplates[field.name]) {
-                field.template = this.customFieldTemplates[field.name].template;
-                field.context = this.customFieldTemplates[field.name].context;
-            }
-
-        });
-
         // Wait for all network calls to complete
-        return Promise.all(promises);
+        return Promise.all(
+            this.fields.map(field => this.constructOneField(field)));
+    }
+
+    private constructOneField(field: any): Promise<any> {
+
+        let promise = null;
+        const fieldOptions = this.fieldOptions[field.name] || {};
+
+        field.readOnly = this.mode === 'view'
+            || fieldOptions.isReadonly === true
+            || this.readonlyFieldsList.includes(field.name);
+
+        if (fieldOptions.isRequiredOverride) {
+            field.isRequired = () => {
+                return fieldOptions.isRequiredOverride(field.name, this.record);
+            };
+        } else {
+            field.isRequired = () => {
+                return field.required
+                    || fieldOptions.isRequired
+                    || this.requiredFieldsList.includes(field.name);
+            };
+        }
+
+        if (fieldOptions.customValues) {
+
+            field.linkedValues = fieldOptions.customValues;
+
+        } else if (field.datatype === 'link' && field.readOnly) {
+
+            // no need to fetch all possible values for read-only fields
+            const idToFetch = this.record[field.name]();
+
+            if (idToFetch) {
+
+                // If the linked class defines a selector field, fetch the
+                // linked data so we can display the data within the selector
+                // field.  Otherwise, avoid the network lookup and let the
+                // bare value (usually an ID) be displayed.
+                const selector = fieldOptions.linkedSearchField ||
+                    this.getClassSelector(field.class);
+
+                if (selector && selector !== field.name) {
+                    promise = this.pcrud.retrieve(field.class, idToFetch)
+                        .toPromise().then(list => {
+                            field.linkedValues =
+                                this.flattenLinkedValues(field, Array(list));
+                        });
+                } else {
+                    // No selector, display the raw id/key value.
+                    field.linkedValues = [{id: idToFetch, name: idToFetch}];
+                }
+            }
+
+        } else if (field.datatype === 'link') {
+
+            promise = this.wireUpCombobox(field);
+
+        } else if (field.datatype === 'org_unit') {
+            field.orgDefaultAllowed =
+                this.orgDefaultAllowedList.includes(field.name);
+        }
+
+        if (fieldOptions.customTemplate) {
+            field.template = fieldOptions.customTemplate.template;
+            field.context = fieldOptions.customTemplate.context;
+        }
+
+        return promise || Promise.resolve();
+    }
+
+    wireUpCombobox(field: any): Promise<any> {
+
+        const fieldOptions = this.fieldOptions[field.name] || {};
+
+        const selector = fieldOptions.linkedSearchField ||
+            this.getClassSelector(field.class);
+
+        if (!selector && !fieldOptions.preloadLinkedValues) {
+            // User probably expects an async data source, but we can't
+            // provide one without a selector.  Warn the user.
+            console.warn(`Class ${field.class} has no selector.
+                Pre-fetching all rows for combobox`);
+        }
+
+        if (fieldOptions.preloadLinkedValues || !selector) {
+            return this.pcrud.retrieveAll(field.class, {}, {atomic : true})
+            .toPromise().then(list => {
+                field.linkedValues =
+                    this.flattenLinkedValues(field, list);
+            });
+        }
+
+        // If we have a selector, wire up for async data retrieval
+        field.linkedValuesSource =
+            (term: string): Observable<ComboboxEntry> => {
+
+            const search = {};
+            const orderBy = {order_by: {}};
+            const idField = this.idl.classes[field.class].pkey || 'id';
+
+            search[selector] = {'ilike': `%${term}%`};
+            orderBy.order_by[field.class] = selector;
+
+            return this.pcrud.search(field.class, search, orderBy)
+            .pipe(map(idlThing =>
+                // Map each object into a ComboboxEntry upon arrival
+                this.flattenLinkedValues(field, [idlThing])[0]
+            ));
+        };
+
+        // Using an async data source, but a value is already set
+        // on the field.  Fetch the linked object and add it to the
+        // combobox entry list so it will be avilable for display
+        // at dialog load time.
+        const linkVal = this.record[field.name]();
+        if (linkVal !== null && linkVal !== undefined) {
+            return this.pcrud.retrieve(field.class, linkVal).toPromise()
+            .then(idlThing => {
+                field.linkedValues =
+                    this.flattenLinkedValues(field, Array(idlThing));
+            });
+        }
+
+        // No linked value applied, nothing to pre-fetch.
+        return Promise.resolve();
     }
 
     // Returns a context object to be inserted into a custom
@@ -334,6 +442,53 @@ export class FmRecordEditorComponent
 
     cancel() {
         this.dismiss('canceled');
+    }
+
+    // Returns a string describing the type of input to display
+    // for a given field.  This helps cut down on the if/else
+    // nesti-ness in the template.  Each field will match
+    // exactly one type.
+    inputType(field: any): string {
+
+        if (field.template) {
+            return 'template';
+        }
+
+        // Some widgets handle readOnly for us.
+        if (   field.datatype === 'timestamp'
+            || field.datatype === 'org_unit'
+            || field.datatype === 'bool') {
+            return field.datatype;
+        }
+
+        if (field.readOnly) {
+            if (field.datatype === 'money') {
+                return 'readonly-money';
+            }
+
+            if (field.datatype === 'link' || field.linkedValues) {
+                return 'readonly-list';
+            }
+
+            return 'readonly';
+        }
+
+        if (field.datatype === 'id' && !this.pkeyIsEditable) {
+            return 'readonly';
+        }
+
+        if (   field.datatype === 'int'
+            || field.datatype === 'float'
+            || field.datatype === 'money') {
+            return field.datatype;
+        }
+
+        if (field.datatype === 'link' || field.linkedValues) {
+            return 'list';
+        }
+
+        // datatype == text / interval / editable-pkey
+        return 'text';
     }
 }
 
