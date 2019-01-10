@@ -36,6 +36,7 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
                 'webstaff.format.dates',
                 'webstaff.format.date_and_time',
                 'ui.staff.max_recent_patrons', // affects navbar
+                'ui.staff.angular_catalog.enabled', // affects navbar
                 'lib.timezone'
             ]).then(
                 function(set) {

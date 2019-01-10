@@ -136,12 +136,9 @@
             <span class="material-icons">search</span>
             <span i18n>Search the Catalog</span>
           </a>
-          <!--
-            Link to experimental Angular staff catalog.
-            Leaving disabled until more functionality can be fleshed out.
-          -->
-          <a class="dropdown-item"
-              routerLink="/staff/catalog/search">
+          <a *ngIf="showAngularCatalog"
+            class="dropdown-item"
+            routerLink="/staff/catalog/search">
             <span class="material-icons">search</span>
             <span i18n>Staff Catalog (Experimental)</span>
           </a>

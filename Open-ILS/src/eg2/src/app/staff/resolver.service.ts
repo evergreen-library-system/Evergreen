@@ -130,7 +130,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
             'lib.timezone',
             'webstaff.format.dates',
             'webstaff.format.date_and_time',
-            'ui.staff.max_recent_patrons'
+            'ui.staff.max_recent_patrons',
+            'ui.staff.angular_catalog.enabled' // navbar
         ]).then(settings => {
             this.format.wsOrgTimezone = settings['lib.timezone'];
             this.format.dateFormat = settings['webstaff.format.dates'];

@@ -113,11 +113,16 @@ angular.module('egCoreMod')
                             $scope.username = egCore.auth.user().usrname();
                             $scope.workstation = egCore.auth.workstation();
 
-                            egCore.org.settings('ui.staff.max_recent_patrons')
-                            .then(function(s) {
+                            egCore.org.settings([
+                                'ui.staff.max_recent_patrons',
+                                'ui.staff.angular_catalog.enabled'
+                            ]).then(function(s) {
                                 var val = s['ui.staff.max_recent_patrons'];
                                 $scope.showRecentPatron = val > 0;
                                 $scope.showRecentPatrons = val > 1;
+
+                                $scope.showAngularCatalog = 
+                                    s['ui.staff.angular_catalog.enabled'];
                             });
                         }
                         // need to defer initialization of hotkeys to this point

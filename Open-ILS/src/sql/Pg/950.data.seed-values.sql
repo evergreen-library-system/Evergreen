@@ -19840,7 +19840,24 @@ VALUES (
     )
 );
 
-
+-- NOTE: This setting should be removed once the Angular catalog
+-- becomes the default.
+INSERT into config.org_unit_setting_type 
+    (name, datatype, grp, label, description)
+VALUES ( 
+    'ui.staff.angular_catalog.enabled', 'bool', 'gui',
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'GUI: Enable Experimental Angular Staff Catalog',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'Display an entry point in the browser client for the ' ||
+        'experimental Angular staff catalog.',
+        'coust', 'description'
+    )
+);
 
 INSERT INTO config.org_unit_setting_type
     (name, label, description, grp, datatype)
