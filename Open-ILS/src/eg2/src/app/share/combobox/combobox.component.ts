@@ -11,7 +11,8 @@ import {StoreService} from '@eg/core/store.service';
 
 export interface ComboboxEntry {
   id: any;
-  label: string;
+  // If no label is provided, the 'id' value is used.
+  label?: string;
   freetext?: boolean;
 }
 
@@ -69,8 +70,17 @@ export class ComboboxComponent implements OnInit {
     defaultSelectionApplied: boolean;
 
     @Input() set entries(el: ComboboxEntry[]) {
-        this.entrylist = el;
-        this.applySelection();
+        if (el) {
+            this.entrylist = el;
+            this.applySelection();
+
+            // It's possible to provide an entrylist at load time, but
+            // fetch all future data via async data source.  Track the
+            // values we already have so async lookup won't add them again.
+            // A new entry list wipes out any existing async values.
+            this.asyncIds = {};
+            el.forEach(entry => this.asyncIds['' + entry.id] = true);
+        }
     }
 
     // Emitted when the value is changed via UI.
@@ -138,6 +148,14 @@ export class ComboboxComponent implements OnInit {
         this.selected = this.entrylist.filter(e => e.id === entryId)[0];
     }
 
+    addAsyncEntry(entry: ComboboxEntry) {
+        // Avoid duplicate async entries
+        if (!this.asyncIds['' + entry.id]) {
+            this.asyncIds['' + entry.id] = true;
+            this.addEntry(entry);
+        }
+    }
+
     onBlur() {
         // When the selected value is a string it means we have either
         // no value (user cleared the input) or a free-text value.
@@ -180,12 +198,7 @@ export class ComboboxComponent implements OnInit {
 
         return new Observable(observer => {
             this.asyncDataSource(term).subscribe(
-                (entry: ComboboxEntry) => {
-                    if (!this.asyncIds['' + entry.id]) {
-                        this.asyncIds['' + entry.id] = true;
-                        this.addEntry(entry);
-                    }
-                },
+                (entry: ComboboxEntry) => this.addAsyncEntry(entry),
                 err => {},
                 ()  => {
                     observer.next(term);
@@ -215,6 +228,9 @@ export class ComboboxComponent implements OnInit {
             map((term: string) => {
 
                 if (term === '' || term === '_CLICK_') {
+                    // Avoid displaying the existing entries on-click
+                    // for async sources, becuase that implies we have
+                    // the full data set. (setting?)
                     if (this.asyncDataSource) {
                         return [];
                     } else {
@@ -226,9 +242,10 @@ export class ComboboxComponent implements OnInit {
 
                 // Filter entrylist whose labels substring-match the
                 // text entered.
-                return this.entrylist.filter(entry =>
-                    entry.label.toLowerCase().indexOf(term.toLowerCase()) > -1
-                );
+                return this.entrylist.filter(entry => {
+                    const label = entry.label || entry.id;
+                    return label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+                });
             })
         );
     }
