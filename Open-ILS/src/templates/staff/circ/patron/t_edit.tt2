@@ -462,7 +462,7 @@ within the "form" by name for validation.
   [% draw_field_label('au', 'email') %]
   [% draw_form_input('au', 'email', '', 'email') %]
   <div class="col-md-3" ng-if="base_email && !patron.isnew">
-    <button class="btn btn-default" ng-click="send_test_message({test_type:'email'})">[% l('Send Test Email') %]</button>
+    <button class="btn btn-default" ng-click="send_test_email()">[% l('Send Test Email') %]</button>
   </div>
   <div class="col-md-3 patron-reg-example">
     <button ng-show="patron.email && !patron.isnew" 
@@ -787,7 +787,7 @@ within the "form" by name for validation.
       type='text'/>
   </div>
   <div class="col-md-3" ng-if="base_default_sms && !patron.isnew">
-    <button class="btn btn-default" ng-click="send_test_message({test_type:'sms_text'})">[% l('Send Test Text') %]</button>
+    <button class="btn btn-default" ng-click="send_test_sms()">[% l('Send Test Text') %]</button>
   </div>
 </div>
 

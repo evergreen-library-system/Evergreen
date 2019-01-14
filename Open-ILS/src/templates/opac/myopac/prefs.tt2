@@ -101,8 +101,8 @@
                 <td class='light_border'>[% ctx.user.email | html %]</td>
                 <td class='light_border'>
                 [%- IF ctx.user.email %]
-                <a href="#" onclick="sendTestNotification(
-                        [% ctx.user.id %], [% ctx.user.home_ou.id %], 'email', '[% ctx.authtoken %]'
+                <a href="#" onclick="sendTestEmail(
+                        [% ctx.user.id %], '[% ctx.authtoken %]'
                     )"
                     title="[% l('Send Test Email') %]">[% l('Send Test Email') %]</a></td>
                 [%- END %]

@@ -136,8 +136,8 @@
                             <input onchange="record_change(event)" id='[% setting %]' name='[% setting %]' type="text"
                                 [% IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]' [% END %]/>
                             [% IF ctx.user_setting_map.$setting; %]
-                            <a href="#" onclick="sendTestNotification(
-                                [% ctx.user.id %], [% ctx.user.home_ou.id %], 'sms_text', '[% ctx.authtoken %]'
+                            <a href="#" onclick="sendTestSMS(
+                            [% ctx.user.id %], '[% ctx.authtoken %]'
                             )"
                             title="[% l('Send Test Text Message') %]">[% l('Send Test Text Message') %]</a><br />
                             [% l('Hint: use the full 10 digits of your phone #, no spaces, no dashes'); %]

@@ -656,13 +656,12 @@ angular.module('egCoreMod')
         });
     }
 
-    service.send_test_message = function(patron, args) {
-        var hook = 'au.' + args.test_type + '.test';
+    service.send_test_message = function(user_id, hook) {
 
         return egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.event.test_notification',
-            egCore.auth.token(), {event_def_type: hook, target: patron.id, home_ou: patron.home_ou}
+            egCore.auth.token(), {hook: hook, target: user_id}
         ).then(function(res) {
             return res;
         });
@@ -1973,8 +1972,19 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         });
     }
 
-    $scope.send_test_message = function(args) {
-        patronRegSvc.send_test_message($scope.patron, args).then(function(res) {
+    $scope.send_test_email = function() {
+        patronRegSvc.send_test_message($scope.patron.id, 'au.email.test').then(function(res) {
+            if (res && res.template_output() && res.template_output().is_error() == 'f') {
+                 ngToast.success(egCore.strings.TEST_NOTIFY_SUCCESS);
+            } else {
+                ngToast.warning(egCore.strings.TEST_NOTIFY_FAIL);
+                if (res) console.log(res);
+            }
+        });
+    }
+
+    $scope.send_test_sms = function() {
+        patronRegSvc.send_test_message($scope.patron.id, 'au.sms_text.test').then(function(res) {
             if (res && res.template_output() && res.template_output().is_error() == 'f') {
                  ngToast.success(egCore.strings.TEST_NOTIFY_SUCCESS);
             } else {

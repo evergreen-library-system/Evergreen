@@ -4362,10 +4362,12 @@ sub fire_test_notification {
     my($self, $conn, $auth, $args) = @_;
     my $e = new_editor(authtoken => $auth);
     return $e->event unless $e->checkauth;
-    return $e->event unless $$args{home_ou};
-    return $e->die_event unless $e->allowed('OPAC_LOGIN', $$args{home_ou});
+    if ($e->requestor->id != $$args{target}) {
+        my $home_ou = $e->retrieve_actor_user($$args{target})->home_ou;
+        return $e->die_event unless $home_ou && $e->allowed('USER_VIEW', $home_ou);
+    }
 
-    my $event_hook = $$args{event_def_type} or return $e->event;
+    my $event_hook = $$args{hook} or return $e->event;
     my $usr = $e->retrieve_actor_user($$args{target});
 
     return $e->event unless $usr;

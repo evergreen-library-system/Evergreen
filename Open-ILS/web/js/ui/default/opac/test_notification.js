@@ -1,12 +1,18 @@
-function sendTestNotification(user_id, home_ou, event_def_type, authtoken) {
-    var hook = 'au.' + event_def_type + '.test';
-    
+function sendTestEmail(user_id, authtoken) {
+    sendTestNotification(user_id, 'au.email.test', authtoken);
+}
+
+function sendTestSMS(user_id, authtoken) {
+    sendTestNotification(user_id, 'au.sms_text.test', authtoken);
+}
+
+function sendTestNotification(user_id, hook, authtoken) {
+
     var args = {
         target: user_id,
-        home_ou: home_ou,
-        event_def_type: hook
+        hook: hook
     };
-    
+
     new OpenSRF.ClientSession('open-ils.actor').request({
         method: 'open-ils.actor.event.test_notification',
         params: [authtoken, args],
