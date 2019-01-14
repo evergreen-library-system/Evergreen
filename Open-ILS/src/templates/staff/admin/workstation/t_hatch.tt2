@@ -27,7 +27,7 @@
     <div class="panel panel-danger">
       <div class="panel-heading">[% l('Storing settings in Hatch is deprecated') %]</div>
       <div class="panel-body">
-        [% l("If 'Store Local Settings in Hatch' is enabled.  Use the 'Copy Hatch Settings To Local Storage' button before disabling 'Store Local Settings in Hatch'") %]
+        [% l("If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings To Local Storage' button before disabling 'Store Local Settings in Hatch'") %]
       </div>
     </div>
   </div>
