@@ -27,6 +27,8 @@ from being unintentionally pushed to vendors.
 Cataloging
 ^^^^^^^^^^
 
+* The Z39.50 and record bucket interfaces now open relevant 
+catalog records in new tabs.
 * Fixes a bug that prevented batch importing authority records.
 * The template dropdown in the holdings editor now provides more
 space to accommodate longer template names.
