@@ -1,3 +1,394 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 4c659ad8506731f0598efed889db31e11b2f45a2
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jan 16 15:45:05 2019 -0600
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+22	14	docs/installation/server_upgrade.adoc
+
+commit fac2b65bdccc7beea5c8f8b1baef54a75fc5b542
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Jan 16 15:43:17 2019 -0600
+
+    bumping Perl version string for 3.1.9
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit aac022370de69d92b9a89ea212347f21c32503e1
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jan 16 12:16:56 2019 -0800
+
+    Docs: adding 3.1.9 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+53	0	docs/RELEASE_NOTES_3_1.adoc
+0	24	docs/RELEASE_NOTES_NEXT/Circulation/patron_bill_fixes.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron_bill_fixes.adoc
+
+commit 762221e3e341536ecbcce96d9040df33ec2e98c5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jan 16 15:17:34 2019 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+17	17	build/i18n/po/tpac/ar-JO.po
+17	17	build/i18n/po/tpac/cs-CZ.po
+17	17	build/i18n/po/tpac/de-DE.po
+17	17	build/i18n/po/tpac/en-CA.po
+17	17	build/i18n/po/tpac/en-GB.po
+17	17	build/i18n/po/tpac/es-ES.po
+17	17	build/i18n/po/tpac/fi-FI.po
+17	17	build/i18n/po/tpac/fr-CA.po
+17	17	build/i18n/po/tpac/he-IL.po
+17	17	build/i18n/po/tpac/hu-HU.po
+17	17	build/i18n/po/tpac/hy-AM.po
+17	17	build/i18n/po/tpac/oc-FR.po
+17	17	build/i18n/po/tpac/pt-BR.po
+17	17	build/i18n/po/tpac/ru-RU.po
+17	17	build/i18n/po/tpac/sv-SE.po
+17	17	build/i18n/po/tpac/tr-TR.po
+81	81	build/i18n/po/webstaff/ar-JO.po
+81	81	build/i18n/po/webstaff/cs-CZ.po
+81	81	build/i18n/po/webstaff/en-GB.po
+81	81	build/i18n/po/webstaff/es-ES.po
+81	81	build/i18n/po/webstaff/hy-AM.po
+81	81	build/i18n/po/webstaff/ru-RU.po
+
+commit 655b99f5d3979c6f2a6bd6feb844ca13d3c78199
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jan 16 15:02:46 2019 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+31	27	build/i18n/po/webstaff/webstaff.pot
+
+commit 441b678791a6b9cdbddd2ebf969f9f3046a81c49
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Wed Jan 16 08:36:40 2019 -0500
+
+    LP1742521: Receipt Count Repair
+    
+    The div wrapping the receipt printing controls was
+    shown or hidden using an ng-if declaration which
+    created a new $scope as explained in bug 1696238,
+    which caused the controller to not notice that the
+    value was changed. Changing that to an ng-show
+    allows the updated value to get where it needs to
+    be.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+
+commit 3058a0ddee6d6099a12ee677e909b32f0aa7597b
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Nov 22 15:46:56 2018 -0800
+
+    LP1804716: grab recall-able copies before they are filtered out
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	3	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+
+commit bfbf1fe8c91092ddf7efba49ea4104a23aa7f80e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jan 10 13:45:45 2019 -0500
+
+    Lp 1803734: Only push on-order purchase orders in edi_order_pusher.pl.
+    
+    Add a check for the state of purchase orders being on-order when
+    gathering them in edi_order_pusher.pl.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/support-scripts/edi_order_pusher.pl
+
+commit fb7e842572373d392df3002bbf79c93d89cbb01b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Sep 27 07:53:35 2018 -0700
+
+    LP1782652: Make template dropdown larger in Volume/Copy Editor
+    
+    To test:
+    1) Open an item in the volume/copy editor.
+    2) Go to the Copy Templates tab. Note the spacing of the template bar.
+    3) Create a few templates.  Give them names of 30 characters or more.
+    4) Go back to the Edit tab and select one of your new templates.  Note
+    that after you have selected it, the name of your template does not fit
+    in the dropdown box, and is cut off at the end.
+    5) Apply this commit.
+    6) Go to the Copy Templates tab again.  Note that the spacing of the
+    template bar has not changed.
+    7) Go to the Edit tab.  Note that the template dropdown has changed
+    to be much larger.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+4	4	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 81fbcf9c19c2987cc5464d0cc7cc02e746489123
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Dec 14 11:31:45 2018 -0500
+
+    Add Release Notes for Lp 1662535 & Lp 1743783
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+24	0	docs/RELEASE_NOTES_NEXT/Circulation/patron_bill_fixes.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron_bill_fixes.adoc
+
+commit e88b504a02db180abe85b0238eaca9ba1fd5cc07
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Dec 12 17:57:19 2018 -0500
+
+    LP#1743783 Web Client Bill Full Detail Display Issues
+    
+    Fleshes out retrieved data to be able to display the billing
+    location for both circulation and grocery bills on the full
+    details page as well as the owning library for circulation bills.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+7	1	Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2
+5	4	Open-ILS/web/js/ui/default/staff/circ/services/billing.js
+
+commit ea957a9c63142a6e50e60b4089cfd28cc7c2dbf9
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Dec 12 21:56:55 2018 -0500
+
+    LP#1662535 Patron Bill Grid Columns
+    
+    1) Adding missing columns, including:
+    
+    - Call Number
+    - Owning Library
+    - Shelving Location
+    - Last Billing Note
+    - Last Billing Timestamp
+    - Last Payment Timestamp
+    - Last payment Note
+    - Last Payment Type
+    
+    2) Corrected path for Type
+    
+    3) Changed column name for Location to 'Billing Location'
+    and the former Billing Location to 'Grocery Billing Location' for clarity
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+20	4	Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2
+
+commit 567218dbf48afe306707e6e776a4c360e47e74e5
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 26 14:10:36 2018 -0500
+
+    Docs: LP#1731048: Update json_query documentation for new join syntax
+    
+    This commit simply adds the text from the related commit message (see
+    LP#1527731) to the original DocBook file. NOTE: This documentation is
+    also available on the wiki, and has been updated there as well:
+    
+    https://wiki.evergreen-ils.org/doku.php?id=documentation:tutorials:json_query
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+76	0	docs/TechRef/JSONTutorial.xml
+
+commit 4a7750ddb61b3d7c0811aea19a448ebbe467ff7c
+Author: kilsdonka <43423795+kilsdonka@users.noreply.github.com>
+Date:   Wed Sep 19 15:41:45 2018 -0700
+
+    Docs: virtual index definitions
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+56	0	docs/admin/virtual_index_defs.adoc
+-	-	docs/media/vid1.PNG
+-	-	docs/media/vid2.PNG
+-	-	docs/media/vid3.PNG
+-	-	docs/media/vid4.PNG
+-	-	docs/media/vid5.PNG
+-	-	docs/media/vid6.PNG
+2	0	docs/root.adoc
+2	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/virtual_index_defs.adoc
+ create mode 100644 docs/media/vid1.PNG
+ create mode 100644 docs/media/vid2.PNG
+ create mode 100644 docs/media/vid3.PNG
+ create mode 100644 docs/media/vid4.PNG
+ create mode 100644 docs/media/vid5.PNG
+ create mode 100644 docs/media/vid6.PNG
+
+commit ea984c68a4c259f9318b4088ef4e31555cf41fb9
+Author: kilsdonka <43423795+kilsdonka@users.noreply.github.com>
+Date:   Wed Sep 19 15:59:59 2018 -0700
+
+    Docs: Infrastructure changes to authority browse
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+39	0	docs/admin/infrastructure_auth_browse.adoc
+-	-	docs/media/auth_browse_infra1.png
+-	-	docs/media/auth_browse_infra2.png
+4	0	docs/root.adoc
+2	0	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/admin/infrastructure_auth_browse.adoc
+ create mode 100644 docs/media/auth_browse_infra1.png
+ create mode 100644 docs/media/auth_browse_infra2.png
+
+commit b6ec2a1d382fc470d930882cfa90b0e758d70b76
+Author: katiegmartin <38866437+katiegmartin@users.noreply.github.com>
+Date:   Thu Aug 2 15:06:28 2018 -0400
+
+    Docs: LP1783387: update print templates to reflect new name
+    
+    launchpad 1783387 - update receipt template editor documentation to reflect language change to "print templates" in web client
+    put both terms in index
+    updated title to Print (Receipt) Templates
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	2	docs/admin/receipt_template_editor.adoc
+
+commit 0afebf133bd6f1fdff0ebfc130991f5e9d9ab5cc
+Author: abneiman <abneiman@equinoxinitiative.org>
+Date:   Wed Jun 13 14:50:19 2018 -0400
+
+    Docs: Update basic_holds.adoc
+    
+    Removing reference to XUL
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/circulation/basic_holds.adoc
+
+commit f54a2843273818a16026299dabe317a146cf4814
+Author: abneiman <abneiman@equinoxinitiative.org>
+Date:   Wed Jun 13 14:46:50 2018 -0400
+
+    Docs: Update marc_tag_table.adoc
+    
+    Striking reference to "sprint 2 preview".  Adding location information & screenshots.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+12	4	docs/cataloging/marc_tag_table.adoc
+-	-	docs/media/MARC_Tag_Tables_Detail.PNG
+-	-	docs/media/MARC_Tag_Tables_Grid.PNG
+ create mode 100644 docs/media/MARC_Tag_Tables_Detail.PNG
+ create mode 100644 docs/media/MARC_Tag_Tables_Grid.PNG
+
+commit 61bba69af1673825e64d53a2fb8c99339eaebb76
+Author: jamundson5 <41020387+jamundson5@users.noreply.github.com>
+Date:   Mon Jul 9 15:03:11 2018 -0400
+
+    Docs: Binding Template added to G-binding.adoc
+    
+    Added a section on how to apply a binding template to a distribution as this is necessary to ensure the binding does not fail. Also updated an instance of "Action" to "Actions".
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	1	docs/serials/G-binding.adoc
+
+commit 4de299eb2e8f0b3204a846dce652d1490a417106
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 26 10:04:28 2018 -0500
+
+    LP#1739606: Allow saving Billing History xacts grid
+    
+    For a web staff eg-grid to save and retrieve its settings, it needs a
+    unique persist-key. This commit adds one for the Transactions tab grid
+    under Billing History (on patron record Bills tab, click the History
+    grid button).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2
+
+commit ed6a1d3635bdb4311de6b71007dc06898692def5
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Nov 6 14:14:04 2018 -0500
+
+    LP#1746769 - add item tag owner OU to label in volcopy editor
+    
+    Adding the owner to differentiate item tags with same label
+    that are owned by different OU.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit f9a1dddf6a8ce02dbdb621513cb502ea53f044cc
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 27 17:02:59 2018 -0500
+
+    Forward-port 3.1.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+560	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.7-3.1.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.7-3.1.8-upgrade-db.sql
+
+commit c12037d26fcc0770a8fd65502b7ab1619d9dd438
+Author: kilsdonka <43423795+kilsdonka@users.noreply.github.com>
+Date:   Mon Nov 26 11:40:57 2018 -0800
+
+    Docs: Copy alerts documentation
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+165	0	docs/circulation/circulating_items.adoc
+-	-	docs/media/copyalert1.PNG
+-	-	docs/media/copyalert10.PNG
+-	-	docs/media/copyalert11.PNG
+-	-	docs/media/copyalert2.PNG
+-	-	docs/media/copyalert3.PNG
+-	-	docs/media/copyalert4.png
+-	-	docs/media/copyalert5.PNG
+-	-	docs/media/copyalert6.png
+-	-	docs/media/copyalert7.png
+-	-	docs/media/copyalert8.PNG
+-	-	docs/media/copyalert9.png
+ create mode 100644 docs/media/copyalert1.PNG
+ create mode 100644 docs/media/copyalert10.PNG
+ create mode 100644 docs/media/copyalert11.PNG
+ create mode 100644 docs/media/copyalert2.PNG
+ create mode 100644 docs/media/copyalert3.PNG
+ create mode 100644 docs/media/copyalert4.png
+ create mode 100644 docs/media/copyalert5.PNG
+ create mode 100644 docs/media/copyalert6.png
+ create mode 100644 docs/media/copyalert7.png
+ create mode 100644 docs/media/copyalert8.PNG
+ create mode 100644 docs/media/copyalert9.png
+
+commit 0ca8872d73d7fa8facaeae5108aa6be8c1a3aff8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Nov 26 11:35:56 2018 -0800
+
+    Docs: removing broken link from circ manual
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/circulation/circulating_items_web_client.adoc
