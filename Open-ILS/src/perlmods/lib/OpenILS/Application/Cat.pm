@@ -1176,9 +1176,50 @@ sub fleshed_volume_update {
 
         } elsif( $vol->ischanged ) {
             $logger->info("vol-update: update volume");
-            my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
-            return $resp->{evt} if $resp->{evt};
-            $vol = $resp->{merge_vol} if $resp->{merge_vol};
+
+            # Three cases here:
+            #   1) We're editing a volume, and not its copies.
+            #   2) We're editing a volume, and a subset of its copies.
+            #   3) We're editing a volume, and all of its copies.
+            #
+            # For 1) and 3), we definitely want to edit the volume
+            # itself (and possibly auto-merge), but for 2), we want
+            # to create a new volume (and possibly auto-merge).
+
+            if (scalar(@$copies) == 0) { # case 1
+
+                my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
+                return $resp->{evt} if $resp->{evt};
+                $vol = $resp->{merge_vol} if $resp->{merge_vol};
+
+            } else {
+
+                my $resp = $editor->json_query({
+                  select => {
+                    acp => [
+                      {transform => 'count', aggregate => 1, column => 'id', alias => 'count'}
+                    ]
+                  },
+                  from => 'acp',
+                  where => {
+                    call_number => $vol->id,
+                    deleted => 'f',
+                    id => {'not in' => [ map { $_->id } @$copies ]}
+                  }
+                });
+                if ($resp->[0]->{count} && $resp->[0]->{count} > 0) { # case 2
+
+                    ($vol,$evt) = $assetcom->create_volume( $auto_merge_vols ? { all => 1} : $oargs, $editor, $vol );
+                    return $evt if $evt;
+
+                } else { # case 3
+
+                    my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
+                    return $resp->{evt} if $resp->{evt};
+                    $vol = $resp->{merge_vol} if $resp->{merge_vol};
+                }
+
+            }
         }
 
         # now update any attached copies
