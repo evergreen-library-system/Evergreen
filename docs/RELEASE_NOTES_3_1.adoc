@@ -3,6 +3,59 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.9
+----------------
+This release contains bug fixes improving on Evergreen 3.1.8.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Acquisitions
+^^^^^^^^^^^^
+
+* The new `edi_order_pusher.pl` now only pushes purchase orders with a state of "on-order", to prevent older purchase orders from being unintentionally pushed to vendors.
+
+Cataloging
+^^^^^^^^^^
+
+* The template dropdown in the holdings editor now provides more space to accommodate longer template names.
+* The drop-down of copy tag types in the Manage Copy Tags dialog now includes the owning library of the copy tag type.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue with recalling checked-out materials.
+* Added several missing columns to the patron bills grid.
+* Corrected the display of the Bill Type column in the patron bills grid.
+* Clarified the names of the "Billing Location" and "Grocery Billing Location" columns in the patron bills grid.
+* The Bill Full Details grid now includes a billing location column for both circulation and grocery bills, as well as the owning library for circulation bills.
+* The Billing History transactions grid now remembers any changes that users make to the column settings.
+* Fixes an issue with printing multiple copies of bills.
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.9 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Andrea Buntz Neiman
+* Jeff Davis
+* Bill Erickson
+* Angela Kilsdonk
+* Katie G. Martin
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
 Evergreen 3.1.8
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.7.
