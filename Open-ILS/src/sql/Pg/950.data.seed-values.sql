@@ -5898,6 +5898,14 @@ INSERT into config.org_unit_setting_type
     oils_i18n_gettext('lib.my_account_url',
         'URL for a My Account link. Use a complete URL, such as "https://example.com/eg/opac/login".',
         'coust', 'description'),
+    'string', null),
+( 'opac.uri_default_note_text', 'opac',
+    oils_i18n_gettext('opac.uri_default_note_text',
+        'Default text to appear for 856 links if none is present',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.uri_default_note_text',
+        'When no value is present in the 856$z this string will be used instead',
+        'coust', 'description'),
     'string', null)
 ;
 

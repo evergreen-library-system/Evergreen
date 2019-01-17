@@ -232,7 +232,14 @@ IF num_uris > 0;
             END;
         -%]
         </a>
-        [%- ' - <span property="description">' _ filtered_note _ '</span>' IF filtered_note %]
+        [%- IF filtered_note -%]
+                [%- '- <span property="description">' _ filtered_note _ '</span>' %]
+        [%- ELSE -%]
+            [% IF ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                [% link_note = ctx.get_org_setting(ctx.search_ou, 'opac.uri_default_note_text') %]
+                [% '<span property="description">'; link_note | html; '</span>' %]
+            [% END %]
+        [%- END -%]
         <link property="availability" href="http://schema.org/OnlineOnly" />
         [%- IF attrs.gtin13; '<meta property="gtin13" content="' _ attrs.gtin13 _ '" />'; END; %]
         [%- IF num_uris == 1 %]</p>[% ELSE %]</li>[% END %]
