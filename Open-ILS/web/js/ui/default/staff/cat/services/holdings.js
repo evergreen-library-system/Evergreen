@@ -132,7 +132,9 @@ function(egCore , $q) {
 
                 // create virtual field for copy alert count
                 angular.forEach(svc.copies, function (cp) {
-                    if (cp.copy_alerts) cp.copy_alert_count = cp.copy_alerts.length;
+                    if (cp.copy_alerts) {
+                        cp.copy_alert_count = cp.copy_alerts.filter(function(aca) { return aca.ack_time == null ;}).length;
+                    }
                     else cp.copy_alert_count = 0;
                 });
 
