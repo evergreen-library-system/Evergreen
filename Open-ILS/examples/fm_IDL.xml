@@ -7589,10 +7589,18 @@ SELECT  usr,
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT" global_required="true"/>
-                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT" global_required="true"/>
-                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT" global_required="true"/>
-                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT" global_required="true"/>
+                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+                </create>
+                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</retrieve>
+                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</update>
+                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</delete>
             </actions>
         </permacrud>
 	</class>
@@ -7617,10 +7625,18 @@ SELECT  usr,
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT" global_required="true"/>
-                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT" global_required="true"/>
-                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT" global_required="true"/>
-                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT" global_required="true"/>
+                <create permission="ADMIN_COPY_ALERT CREATE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+                </create>
+                <retrieve permission="ADMIN_COPY_ALERT VIEW_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</retrieve>
+                <update permission="ADMIN_COPY_ALERT UPDATE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</update>
+                <delete permission="ADMIN_COPY_ALERT DELETE_COPY_ALERT">
+                    <context link="copy" field="circ_lib"/>
+				</delete>
             </actions>
         </permacrud>
 	</class>
