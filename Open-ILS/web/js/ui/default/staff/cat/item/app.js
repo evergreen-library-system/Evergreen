@@ -540,11 +540,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
     }
 
     if (copyId.length > 0) {
-        itemSvc.fetch(null,copyId).then(
-            function() {
-                copyGrid.refresh();
-            }
-        );
+        var fetch_list = [];
+        angular.forEach(copyId, function (c) {
+            fetch_list.push(itemSvc.fetch(null,c));
+        });
+
+        return $q.all(fetch_list).then(function (res) { copyGrid.refresh(); });
     }
 
 }])
