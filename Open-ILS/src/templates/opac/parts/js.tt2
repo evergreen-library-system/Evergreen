@@ -169,7 +169,7 @@ var aou_hash = {
 [%- IF ctx.max_cart_size; %]
 <script type="text/javascript">var max_cart_size = [% ctx.max_cart_size %];</script>
 [%- END; %]
-
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/accordion.js[% ctx.cache_key %]"></script>
 
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
 <link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">
