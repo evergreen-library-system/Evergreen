@@ -194,10 +194,15 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.amount_verified = false;
     $scope.disable_auto_print = false;
 
-    // check receipt_on_pay setting default persisted
+    // Load persistant settings
     egCore.hatch.getItem('circ.bills.receiptonpay')
                 .then(function(rcptOnPay){
                     if (rcptOnPay) $scope.receipt_on_pay.isChecked = rcptOnPay;
+                });
+
+    egCore.hatch.getItem('circ.bills.annotatepayment')
+                .then(function(annoPay){
+                    if (annoPay) $scope.annotate_payment = annoPay;
                 });
 
     // pre-define list-returning funcs in case we access them
@@ -404,6 +409,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
 
     $scope.onReceiptOnPayChanged = function(){
         egCore.hatch.setItem('circ.bills.receiptonpay', $scope.receipt_on_pay.isChecked);
+    }
+
+    $scope.onAnnotatePaymentChanged = function(){
+        egCore.hatch.setItem('circ.bills.annotatepayment', $scope.annotate_payment);
     }
 
     function printReceipt(type, payment_ids, payments_made, note) {
