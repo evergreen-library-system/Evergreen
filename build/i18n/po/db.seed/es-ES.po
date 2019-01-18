@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2017-06-22 06:42+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:30+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:54+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: 950.data.seed-values.sql:8354
 msgid "Estonia "
@@ -15514,155 +15514,3 @@ msgstr "Kiribati "
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
 msgstr "Flamenco"
-
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-#~ msgid "SSN"
-#~ msgstr "Número de Seguro Social"
-
-#~ msgid "Example Branch 4"
-#~ msgstr "Rama de ejemplo 4"
-
-#~ msgid "Example Branch 2"
-#~ msgstr "Rama de ejemplo 2"
-
-#~ msgid "Holds: Has Local Copy Block"
-#~ msgstr "Contiene: Tiene Bloque copia local"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests "
-#~ "per user"
-#~ msgstr ""
-#~ "Circulación: Máximo reseteos de solicitudes de contraseña servidos propios "
-#~ "por usuario al mismo tiempo"
-
-#~ msgid "Holds: Block Renewal of Items Needed for Holds"
-#~ msgstr ""
-#~ "Apartados: Bloquear Renovaciones de Artículos Necesarios para Apartados"
-
-#~ msgid "Holds: Clear shelf copy status"
-#~ msgstr "Apartados: Limpiar el estado de la copia en el estante"
-
-#~ msgid "Example Branch 3"
-#~ msgstr "Rama Ejemplo 3"
-
-#~ msgid "Example Branch 1"
-#~ msgstr "Rama Ejemplo 1"
-
-#~ msgid "Selfcheck: Workstation Required"
-#~ msgstr "Verificación Propia: Estación De Trabajo Requerida"
-
-#~ msgid "GUI: Work Log: Maximum Actions Logged"
-#~ msgstr ""
-#~ "Interfaz Gráfico De Usuario: Registro De Trabajo: Acciones Máximas "
-#~ "Registradas"
-
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Sub-biblioteca ejemplo 1"
-
-#~ msgid ""
-#~ "Circulation: Maximum concurrently active self-serve password reset requests"
-#~ msgstr ""
-#~ "Circulación: máximas solicitudes de restablecimiento de contraseña de "
-#~ "autoservicio al mismo tiempo"
-
-#~ msgid ""
-#~ "GUI: Require staff initials for entry/edit of item/patron/penalty "
-#~ "notes/messages."
-#~ msgstr ""
-#~ "Interfaz gráfico de usuarioL Requiere iniciales de un empleado para "
-#~ "entrar/editar un artículo/cliente/notas/mensajes de castigo"
-
-#~ msgid "Example System 1"
-#~ msgstr "Ejemplo De Sistema 1"
-
-#~ msgid "Example System 2"
-#~ msgstr "Ejemplo Sistema 2"
-
-#~ msgid "Local System Administrator"
-#~ msgstr "Administrador Del Sistema Local"
-
-#~ msgid "Selfcheck: Require Patron Password"
-#~ msgstr "Escaneo Propio: Requerir Contraseña Del Cliente"
-
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "Repertorio de las partidas en cuestión"
-
-#~ msgid "Allow a user to mark an item as 'missing'"
-#~ msgstr "Permitir que un usuario marcar un artículo como \"desaparecido\""
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is at the transit "
-#~ "destination or source"
-#~ msgstr ""
-#~ "Permitir a un usuario para abortar un tránsito copia si el usuario está en "
-#~ "el destino de tránsito o la fuente"
-
-#~ msgid "Canceled holds display count"
-#~ msgstr "Cancelado sostiene recuento de display"
-
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "Encabezamientos de materia canadienses"
-
-#~ msgid "How many canceled holds to show in patron holds interfaces"
-#~ msgstr ""
-#~ "¿Cuántas canceladas tiene que mostrar en el patrón tiene las interfaces"
-
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "Tesauro de arte y arquitectura"
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is not at the transit "
-#~ "source or dest"
-#~ msgstr ""
-#~ "Permitir a un usuario para abortar un tránsito copia si el usuario no está "
-#~ "en el origen de tránsito o dest"
-
-#~ msgid "Show all canceled holds that were canceled within this amount of time"
-#~ msgstr ""
-#~ "Mostrar todo cancelado sostiene que se cancela dentro de este período de "
-#~ "tiempo"
-
-#~ msgid "Canceled holds display age"
-#~ msgstr "Cancelado sostiene edad pantalla"
-
-#~ msgid ""
-#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
-#~ "the lost copy on the patron record when it is paid"
-#~ msgstr ""
-#~ "Deja abierta la transacción cuando el saldo largamente esperada es igual a "
-#~ "cero. Esto deja la copia perdida en el registro de usuario cuando se paga"
-
-#~ msgid "Medical Subject Headings"
-#~ msgstr "Titulo de los encabezamientos de materia"
-
-#~ msgid "Allows patrons to create automatic holds from purchase requests."
-#~ msgstr ""
-#~ "Permite a los clientes para crear sostiene automática de solicitudes de "
-#~ "compra."
-
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "Sears Lista de encabezamientos de materia"
-
-#~ msgid "Journal/Magazine & Newspaper Articles"
-#~ msgstr "Diario / Revista y artículos periodísticos"
-
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "Encabezamientos de materia LC para literatura infantil"
-
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr "archivo de autoridades de materia Biblioteca Nacional de Agricultura"
-
-#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
-#~ msgstr ""
-#~ "Permite a un usuario para abortar un tránsito en una copia con el estado de "
-#~ "la falta"
-
-#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
-#~ msgstr ""
-#~ "Permite a un usuario para abortar un tránsito en una copia con el estado de "
-#~ "PERDIDO"
-
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "Biblioteca del Congreso Encabezamiento de Materia"

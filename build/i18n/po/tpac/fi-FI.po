@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2017-02-28 02:28+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Galen Charlton <gmc@equinoxinitiative.org>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:36+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:02+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "Language: fi\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -346,7 +346,7 @@ msgid "Adapter"
 msgstr "Muokkaaja"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr ""
 
@@ -371,7 +371,7 @@ msgstr ""
 msgid "Add to Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr ""
 
@@ -1000,11 +1000,11 @@ msgid "Charges:"
 msgstr ""
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr ""
 
@@ -1016,7 +1016,7 @@ msgstr "Lainaushistoria"
 msgid "Checked Out"
 msgstr "Lainattu"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Lainattu ennen"
 
@@ -2171,7 +2171,7 @@ msgstr "Isäntä"
 msgid "Host institution"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Olen lainannut tämän niteen aiemmin"
 
@@ -3311,16 +3311,16 @@ msgstr "Noutokirjasto"
 msgid "Pickup location:"
 msgstr "Noutopaikka:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Tee varaus"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr ""
 
@@ -3658,7 +3658,7 @@ msgstr ""
 msgid "Radio producer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr ""
 
@@ -3745,7 +3745,7 @@ msgid "Remove %1 filter"
 msgstr ""
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr ""
 
@@ -3765,7 +3765,7 @@ msgstr ""
 msgid "Remove from Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr ""
 
@@ -3898,12 +3898,12 @@ msgstr "Kriitikko"
 msgid "Reviews"
 msgstr "Arvostelut"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Arvostelut ja muuta"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr ""
 
@@ -5309,117 +5309,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Haluatko varmasti veloittaa %1 luottokortiltasi?"
-
-#~ msgid "August"
-#~ msgstr "Elokuu"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Maksuja maksamatta"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Siirry takaisin ja valitse tai poista valinnat muista maksuista "
-#~ "napsauttamalla %1Peruuta%2."
-
-#~ msgid "December"
-#~ msgstr "Joulukuu"
-
-#~ msgid "February"
-#~ msgstr "Helmikuu"
-
-#~ msgid "Fines:"
-#~ msgstr "Sakot:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Yritä uudelleen siirtymällä takaisin tai peruuta tämä maksuyritys."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Velan alkusumma"
-
-#~ msgid "January"
-#~ msgstr "Tammikuu"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Viimeisin maksuaika"
-
-#~ msgid "March"
-#~ msgstr "Maaliskuu"
-
-#~ msgid "November"
-#~ msgstr "Marraskuu"
-
-#~ msgid "October"
-#~ msgstr "Lokakuu"
-
-#~ msgid "Other Fees"
-#~ msgstr "Muut veloitukset"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Maksa maksut"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Maksa valitut maksut"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Valitut maksut, joita olet maksamassa:"
-
-#~ msgid "September"
-#~ msgstr "Syyskuu"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Suorita maksu"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Maksettu yhteensä"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Maksettavaa yhteensä:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Maksutapahtuman aloitusaika"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "Olet lisäämässä väliaikaiseen luetteloon."
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Sinulla ei ole maksuja maksettavana, tai olet valinnut maksut, joiden summa "
-#~ "on negatiivinen.  Emme voi käsitellä negatiivisia summia."
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Et ole vielä luonut luetteloa."
-
-#~ msgid "April"
-#~ msgstr "Huhti"
-
-#~ msgid "Fines"
-#~ msgstr "Maksut"
-
-#~ msgid "July"
-#~ msgstr "Heinä"
-
-#~ msgid "June"
-#~ msgstr "Kesä"
-
-#~ msgid "May"
-#~ msgstr "Touko"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Omat listat"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Poista omasta listasta"
-
-#~ msgid "Temporary List"
-#~ msgstr "Väliaikainen lista"
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Väliaikaisen listan varoitus"
-
-#~ msgid "View My List"
-#~ msgstr "Omat listat"

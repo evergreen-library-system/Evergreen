@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2018-09-16 04:39+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:28+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:52+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "Language: ar\n"
 
 #: 950.data.seed-values.sql:8354
@@ -15007,76 +15007,3 @@ msgstr "كيريباس "
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
 msgstr "موسيقا فلامينكو"
-
-#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
-#~ msgstr "السماح للمستخدم بإلغاء نقل نُسخة بحالة ضائع"
-
-#~ msgid "Allows patrons to create automatic holds from purchase requests."
-#~ msgstr "السماح للمستفيدين بإنشاء أتوماتيكي للحجوزات مِن طلبات الشراء"
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is at the transit "
-#~ "destination or source"
-#~ msgstr ""
-#~ "السماح لـِ المستخدم بإحباط/إفشال عبور/نفل النسخة إذا كان المستفيد في وجهة "
-#~ "العبور أو المصدر"
-
-#~ msgid "Canceled holds display count"
-#~ msgstr "التعداد المعروض للحجوزات الملغية"
-
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "قائمة رؤوس الموضوعات الكندية"
-
-#~ msgid "How many canceled holds to show in patron holds interfaces"
-#~ msgstr "كم عدد الحجوزات الملغية مِن أجل عرضها في نوافذ حجوزات المستفيد"
-
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "مكنز الفنون وهندسة العمارة"
-
-#~ msgid ""
-#~ "Allow a user to abort a copy transit if the user is not at the transit "
-#~ "source or dest"
-#~ msgstr ""
-#~ "السماح لـ المستخدم بإلغاء/إبطال عبور النُسخة إذا كان المستفيد ليس في مصدر "
-#~ "العبور/النقل أو الوجهة"
-
-#~ msgid "Show all canceled holds that were canceled within this amount of time"
-#~ msgstr ""
-#~ "إظهار كافة الحجوزات الملغية/الباطلة التي تمّ إلغائها خلال هذا القدر مِن الوقت"
-
-#~ msgid "Canceled holds display age"
-#~ msgstr "عمر عرض الحجوزات الملغية"
-
-#~ msgid "Medical Subject Headings"
-#~ msgstr "قائمة رؤوس الموضوعات الطبية"
-
-#~ msgid ""
-#~ "Leave transaction open when long-overdue balance equals zero.  This leaves "
-#~ "the lost copy on the patron record when it is paid"
-#~ msgstr ""
-#~ "ترك العملية مفتوحة عندما رصيد الاستقاق الطويل يساوي صفر. هذا يترك النسخة "
-#~ "المفقودة في تسجيلة المستفيد عند دفعها"
-
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "قائمة سيرز لرؤوس الموضوعات"
-
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "مرجع أو دليل المواد المَعنية"
-
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "قائمة رؤوس موضوعات مكتبة الكونغرس لـِ أدب الأطفال"
-
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "قائمة رؤوس موضوعات مكتبة الكونغرس"
-
-#~ msgid "Journal/Magazine & Newspaper Articles"
-#~ msgstr "مقالات الصحف والمجلات/الدوريات"
-
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr "ملف رؤوس موضوعات المكتبة الوطنية الزراعية"
-
-#~ msgid "Allow a user to mark an item as 'missing'"
-#~ msgstr "السماح للمستخدم بتعيين حالة نُسخة كـَ \"ضائع\""
-
-#~ msgid "Allows a user to abort a transit on a copy with status of MISSING"
-#~ msgstr "السماح للمستخدم بإحباط النقل على النسخة التي في حالة مفقود"

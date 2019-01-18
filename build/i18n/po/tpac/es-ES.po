@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2018-09-14 15:03+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Francisco J Guel-Mendoza <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:37+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:02+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -360,7 +360,7 @@ msgid "Adapter"
 msgstr "Adaptador"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr "Agregar %1 a la cesta"
 
@@ -385,7 +385,7 @@ msgstr "Añadir articulo a la lista: %1"
 msgid "Add to Basket"
 msgstr "Agregar a la cesta"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr "Agregar a la cesta"
 
@@ -1020,11 +1020,11 @@ msgid "Charges:"
 msgstr "Cargos:"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "Prestado %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "Préstamo de  E-Item"
 
@@ -1036,7 +1036,7 @@ msgstr "Historial de Préstamos"
 msgid "Checked Out"
 msgstr "El Tomar Prestado"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "El Tomar Prestado Antes"
 
@@ -2197,7 +2197,7 @@ msgstr "Anfitrión"
 msgid "Host institution"
 msgstr "Institución de acogida"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Ejemplar prestado anteriormente"
 
@@ -3352,16 +3352,16 @@ msgstr "Biblioteca para recolección"
 msgid "Pickup location:"
 msgstr "Ubicación de recolección:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Crear Apartado"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "Hacer reserva en %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "Apartar un E-Item"
 
@@ -3700,7 +3700,7 @@ msgstr "director de radio"
 msgid "Radio producer"
 msgstr "productor de radio"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "Icono de calificaciones"
 
@@ -3787,7 +3787,7 @@ msgid "Remove %1 filter"
 msgstr "Quita %1 filtro"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr "Eliminar %1 de la cesta"
 
@@ -3807,7 +3807,7 @@ msgstr "¿Eliminar todos registros de la cesta?"
 msgid "Remove from Basket"
 msgstr "Eliminar de la Cesta"
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr "Eliminar de la cecsta"
 
@@ -3940,12 +3940,12 @@ msgstr "Revisor"
 msgid "Reviews"
 msgstr "Reseñas"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Los comentarios de los amp; Más"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "Los comentarios y más de %1"
 
@@ -5387,138 +5387,3 @@ msgstr "ver"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "volumen"
-
-#~ msgid "April"
-#~ msgstr "Abril"
-
-#~ msgid "August"
-#~ msgstr "Agosto"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Total Debido"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr ""
-#~ "¿Estás seguro de querer realizar el cargo %1 a tu tarjeta de crédito?"
-
-#~ msgid "December"
-#~ msgstr "Diciembre"
-
-#~ msgid "February"
-#~ msgstr "Febrero"
-
-#~ msgid "Fines"
-#~ msgstr "Multas"
-
-#~ msgid "Fines:"
-#~ msgstr "Multas:"
-
-#~ msgid "January"
-#~ msgstr "Enero"
-
-#~ msgid "July"
-#~ msgstr "Julio"
-
-#~ msgid "June"
-#~ msgstr "Junio"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Fecha del último pago"
-
-#~ msgid "March"
-#~ msgstr "Marzo"
-
-#~ msgid "May"
-#~ msgstr "Mayo"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Mis Listas existentes"
-
-#~ msgid "November"
-#~ msgstr "Noviembre"
-
-#~ msgid "October"
-#~ msgstr "Octubre"
-
-#~ msgid "Other Fees"
-#~ msgstr "Otros gastos"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pagar Multas"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pagar multas seleccionadas"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Eliminar de mi lista"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Multas seleccionadas que estas por pagar:"
-
-#~ msgid "September"
-#~ msgstr "Septiembre"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Enviar Pago"
-
-#~ msgid "Temporary List"
-#~ msgstr "Lista temporal"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Cantidad total pagada"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Cantidad total a pagar:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Fecha de inicio de la transacción"
-
-#~ msgid "View My List"
-#~ msgstr "Ver Mi Lista"
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "No has creado una lista aún"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Regrese para intentar nuevamente o para cancelar el intento de pago."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Monto de Adeudo Inicial"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Resultados %1 - %2 de %3"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "Está añadiendo a una lista temporal."
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Haga clic en %1Cancel %2 para volver y (des) seleccionar otras multas"
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Advertencia lista temporal"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Usted o no tiene ninguna multa a pagar o haya seleccionado multas cuyo total "
-#~ "es totalizado a no positivo . No podemos procesar cantidades no positivos ."
-
-#~ msgid "Add %1 to my list"
-#~ msgstr "Añadir %1 a mi lista"
-
-#~ msgid "Remove %1 from my list"
-#~ msgstr "Eliminar %1 de mi lista"
-
-#~ msgid "View My Lists"
-#~ msgstr "Vea Mis Listas"
-
-#~ msgid "View My Temporary List"
-#~ msgstr "Vea Mi Lista Temporal"
-
-#~ msgid " View My Temporary List"
-#~ msgstr " Ver Mi Lista Temporal"
-
-#~ msgid " View My Lists"
-#~ msgstr " Ver Mis Listas"

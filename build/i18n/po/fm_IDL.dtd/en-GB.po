@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2013-04-10 09:03+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Alfredo Hernández <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:56+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: class.stgu.label:10542
 msgid "User Stage"
@@ -9224,50 +9224,3 @@ msgstr ""
 #: field.au.billable_transactions.label:3656
 msgid "Billable Transactions"
 msgstr "Billable Transactions"
-
-#~ msgid "Matched Attribute"
-#~ msgstr "Matched Attribute"
-
-#~ msgid "Billing Timestamp"
-#~ msgstr "Billing Timestamp"
-
-#~ msgid ""
-#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
-#~ msgstr ""
-#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
-
-#~ msgid "Suffix/Title"
-#~ msgstr "Suffix/Title"
-
-#~ msgid "Check Out Date/Time"
-#~ msgstr "Issue Date/Time"
-
-#~ msgid "Test ID"
-#~ msgstr "Test ID"
-
-#~ msgid "Keep"
-#~ msgstr "Keep"
-
-#~ msgid "Circulation Modifier Subtest ID"
-#~ msgstr "Circulation Modifier Subtest ID"
-
-#~ msgid "Circulation Matrix Circulation Modifier Subtest"
-#~ msgstr "Circulation Matrix Circulation Modifier Subtest"
-
-#~ msgid "Thaw Date (if frozen)"
-#~ msgstr "Thaw Date (if frozen)"
-
-#~ msgid "Field Type"
-#~ msgstr "Field Type"
-
-#~ msgid "Field Class"
-#~ msgstr "Field Class"
-
-#~ msgid "Floating?"
-#~ msgstr "Floating?"
-
-#~ msgid "Is Floating"
-#~ msgstr "Is Floating"
-
-#~ msgid "Fielmapper Class"
-#~ msgstr "Fielmapper Class"

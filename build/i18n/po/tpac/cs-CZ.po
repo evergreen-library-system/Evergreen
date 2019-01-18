@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2018-09-19 17:19+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:36+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:02+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -359,7 +359,7 @@ msgid "Adapter"
 msgstr "Autor adaptace"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr "Přidat %1 do košíku"
 
@@ -384,7 +384,7 @@ msgstr "Přidat položku do seznamu: %1"
 msgid "Add to Basket"
 msgstr "Přidat do košíku"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr "Přidat do košíku"
 
@@ -1016,11 +1016,11 @@ msgid "Charges:"
 msgstr "Poplatky:"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "Půjčit %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "Půjčit elektronický exemplář"
 
@@ -1032,7 +1032,7 @@ msgstr "Historie výpůjček"
 msgid "Checked Out"
 msgstr "Půjčeno"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Vypůjčeno před"
 
@@ -2192,7 +2192,7 @@ msgstr "Konferenciér"
 msgid "Host institution"
 msgstr "Hostící instituce"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Tento titul jsem již  měl(a) vypůjčený"
 
@@ -3339,16 +3339,16 @@ msgstr "Knihovna pro vyzvednutí rezervace"
 msgid "Pickup location:"
 msgstr "Knihovna pro vyzvednutí rezervace"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Rezervovat"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "Rezervovat %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "Rezervovat e-exemplář"
 
@@ -3687,7 +3687,7 @@ msgstr "Rozhlasový ředitel"
 msgid "Radio producer"
 msgstr "Rozhlasový producent"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "Ikona hodnocení"
 
@@ -3774,7 +3774,7 @@ msgid "Remove %1 filter"
 msgstr "Odstranit  filtr  %1"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr "Odebrat %1 z košíku"
 
@@ -3794,7 +3794,7 @@ msgstr "Odebrat z košíku všechny záznamy?"
 msgid "Remove from Basket"
 msgstr "Odebrat z košíku"
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr "Odebrat z košíku"
 
@@ -3927,12 +3927,12 @@ msgstr "Recenzent"
 msgid "Reviews"
 msgstr "Recenze"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Recenze aj."
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "Recenze a další pro %1"
 
@@ -5364,138 +5364,3 @@ msgstr "zobrazit"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "signatura"
-
-#~ msgid "April"
-#~ msgstr "Duben"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Opravdu chcete naúčtovat %1 na vaši kreditní kartu?"
-
-#~ msgid "August"
-#~ msgstr "Srpen"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Dlužná částka"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr ""
-#~ "Kliknutím na %1Cancel%2 se vrátíte zpět a zrušíte výběr dalších pokut."
-
-#~ msgid "December"
-#~ msgstr "Prosinec"
-
-#~ msgid "February"
-#~ msgstr "Únor"
-
-#~ msgid "Fines"
-#~ msgstr "Pokuty"
-
-#~ msgid "Fines:"
-#~ msgstr "Pokuty:"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Vrátit se zpět nebo zrušit tento pokus o platbu"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Počáteční dlužná částka"
-
-#~ msgid "June"
-#~ msgstr "Červen"
-
-#~ msgid "January"
-#~ msgstr "Leden"
-
-#~ msgid "July"
-#~ msgstr "Červenec"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Čas platby"
-
-#~ msgid "May"
-#~ msgstr "Květen"
-
-#~ msgid "March"
-#~ msgstr "Březen"
-
-#~ msgid "November"
-#~ msgstr "Listopad"
-
-#~ msgid "October"
-#~ msgstr "Říjen"
-
-#~ msgid "Other Fees"
-#~ msgstr "Další poplatky"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Zaplatit vybrané pokuty"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Zaplatit pokuty"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Odebrat z mého seznamu"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Pokuty vybrané pro tuto platbu:"
-
-#~ msgid "September"
-#~ msgstr "Září"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Potvrdit platbu"
-
-#~ msgid "Temporary List"
-#~ msgstr "Dočasný seznam"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Celkem k platbě"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Datum zahájení transakce"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Celkem zaplaceno"
-
-#~ msgid "View My List"
-#~ msgstr "Zobrazit moje seznamy"
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Ještě jste nevytvořili seznam."
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Buď nemáte žádné pokuty k zaplacení, nebo pokuty, nebo celková výše "
-#~ "vybraných pokut čin má nulovou či negativní hodnotu. Nelze zpracovat platby, "
-#~ "které mají nulovou/negativní hodnotu."
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Varování - dočasný list"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "Přidáváte položky do dočasného seznamu"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Moje seznamy"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Výsledky  %1 - %2 z přibližně %3"
-
-#~ msgid "Add %1 to my list"
-#~ msgstr "Přidat  %1 do mého seznamu"
-
-#~ msgid "Remove %1 from my list"
-#~ msgstr "Odebrat %1 z mého seznamu"
-
-#~ msgid " View My Temporary List"
-#~ msgstr " Zobrazit můj dočasný seznam"
-
-#~ msgid " View My Lists"
-#~ msgstr " Zobrazit moje seznamy"
-
-#~ msgid "View My Lists"
-#~ msgstr "Zobrazit moje seznamy"
-
-#~ msgid "View My Temporary List"
-#~ msgstr "Zobrazit můj dočasný seznam"

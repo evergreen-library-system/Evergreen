@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2015-03-25 16:23+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:33+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:56+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -280,7 +280,7 @@ msgstr "This account is marked as inactive"
 
 #: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
 msgid "The distribution still has dependent objects"
-msgstr ""
+msgstr "The distribution still has dependent objects"
 
 #: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
@@ -292,7 +292,7 @@ msgstr "The requested reporter_report_folder was not found"
 
 #: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
 msgid "The prediction pattern still has dependent objects"
-msgstr ""
+msgstr "The prediction pattern still has dependent objects"
 
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
@@ -394,7 +394,7 @@ msgstr "Booking reservation not found"
 
 #: 1211.BILL_ALREADY_VOIDED:81
 msgid "The bill is already voided"
-msgstr ""
+msgstr "The bill is already voided"
 
 #: 1700.NON_CAT_TYPE_EXISTS:710
 msgid "The non-cataloged type object already exists"
@@ -470,7 +470,7 @@ msgstr "The requested actor_org_address was not found"
 
 #: 11009.SERIAL_STREAM_NOT_EMPTY:1058
 msgid "The stream still has dependent objects"
-msgstr ""
+msgstr "The stream still has dependent objects"
 
 #: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
@@ -566,6 +566,7 @@ msgstr "A record already exists with the requested TCN value"
 msgid ""
 "The transit on this item may not be canceled due to the state the item is in"
 msgstr ""
+"The transit on this item may not be canceled due to the state the item is in"
 
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
@@ -701,7 +702,7 @@ msgstr "The requested config_non_catalogued_type was not found"
 
 #: 1716.COPY_LOCATION_NOT_EMPTY:716
 msgid "The copy location is not empty"
-msgstr ""
+msgstr "The copy location is not empty"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -893,7 +894,7 @@ msgstr ""
 
 #: 1232.ITEM_DEPOSIT_REQUIRED:162
 msgid "Payment of an item deposit is required."
-msgstr ""
+msgstr "Payment of an item deposit is required."
 
 #: 1709.MAX_HOLDS:743
 msgid "User has reached the maximum number of holds"
@@ -933,7 +934,7 @@ msgstr "Asset status was changed since the offline transaction was recorded"
 
 #: 7029.MAX_AUTO_RENEWALS_REACHED:934
 msgid "Circulation has no more auto-renewals remaining"
-msgstr ""
+msgstr "Circulation has no more auto-renewals remaining"
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -1164,7 +1165,7 @@ msgstr "The requested vandelay_queued_authority_record was not found"
 
 #: 1234.ITEM_DEPOSIT_PAID:168
 msgid "An item deposit was paid."
-msgstr ""
+msgstr "An item deposit was paid."
 
 #: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:442
 msgid "The requested biblio_record_note was not found"
@@ -1195,6 +1196,8 @@ msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
 msgstr ""
+"Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
+"the configured limit"
 
 #: 1712.AUTH_QUEUE_EXISTS:752
 msgid "An authority record queue with the same name already exists"
@@ -1210,7 +1213,7 @@ msgstr "The saved item has been edited by another user"
 
 #: 7028.PATRON_CIRC_MISMATCH:931
 msgid "Potentially notified patron does not own the circulation."
-msgstr ""
+msgstr "Potentially notified patron does not own the circulation."
 
 #: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:612
 msgid "The requested acq.lineitem_attr was not found"
@@ -1254,7 +1257,7 @@ msgstr "The requested config_bib_source was not found"
 
 #: 1717.COPY_LOCATION_NOT_FOUND:719
 msgid "The copy location does not exist"
-msgstr ""
+msgstr "The copy location does not exist"
 
 #: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:589
 msgid "The requested vandelay_queued_bib_record was not found"
@@ -1274,7 +1277,7 @@ msgstr "The requested item is already marked as lost"
 
 #: 7016.ITEM_ON_HOLDS_SHELF:895
 msgid "This item is currently on the holds shelf for another patron:"
-msgstr ""
+msgstr "This item is currently on the holds shelf for another patron:"
 
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
@@ -1306,7 +1309,7 @@ msgstr "The patron in question has reached the maximum fine amount"
 
 #: 1233.ITEM_RENTAL_FEE_REQUIRED:165
 msgid "Payment of an item rental fee is required."
-msgstr ""
+msgstr "Payment of an item rental fee is required."
 
 #: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:374
 msgid "The requested container_call_number_bucket_item was not found"
@@ -1353,6 +1356,8 @@ msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
 msgstr ""
+"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
+"configured limit"
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
@@ -1361,32 +1366,3 @@ msgstr "The requested action_non_catalogued_circulation was not found"
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "The requested money_user_summary was not found"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "This requested item is currently on the holds shelf"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "The requested acq.po_lineitem was not found"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "The selecte bill has already been voided"
-
-#~ msgid ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-#~ msgstr ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-
-#~ msgid "Copy has is marked as missing"
-#~ msgstr "Copy has is marked as missing"
-
-#~ msgid "Copy has is marked as lost"
-#~ msgstr "Copy is marked as lost"
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-#~ "successfuly, but the patron's payment could not be recorded within "
-#~ "Evergreen.  Please seek assistance."
-#~ msgstr ""
-#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-#~ "successfully, but the patron's payment could not be recorded within "
-#~ "Evergreen.  Please seek assistance."

@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2018-09-27 12:05+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-28 05:27+0000\n"
-"X-Generator: Launchpad (build 18783)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:55+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "X-Accelerator-Marker: &\n"
 
 #: class.stgu.label:10542
@@ -9244,42 +9244,3 @@ msgstr "ID faktury"
 #: field.au.billable_transactions.label:3656
 msgid "Billable Transactions"
 msgstr "Zúčtovatelné transakce"
-
-#~ msgid "Check Out Date/Time"
-#~ msgstr "Datum / Čas výpůjčky"
-
-#~ msgid "Matched Attribute"
-#~ msgstr "Odpovídající atribut"
-
-#~ msgid "Thaw Date (if frozen)"
-#~ msgstr "Datum \"rozmražení\" (pokud zmraženo)"
-
-#~ msgid "Field Type"
-#~ msgstr "Typ pole"
-
-#~ msgid "Suffix/Title"
-#~ msgstr "Sufix / název"
-
-#~ msgid "Test ID"
-#~ msgstr "ID testu"
-
-#~ msgid "Keep"
-#~ msgstr "Zachovat"
-
-#~ msgid "Circulation Modifier Subtest ID"
-#~ msgstr "ID subtestu modifikátoru výpůjčky"
-
-#~ msgid "Circulation Matrix Circulation Modifier Subtest"
-#~ msgstr "Výpůjční subtest modifikátoru výpůjční matice"
-
-#~ msgid "Floating?"
-#~ msgstr "Pohyblivý exemplář?"
-
-#~ msgid "Is Floating"
-#~ msgstr "Je pohyblivý?"
-
-#~ msgid "Billing Timestamp"
-#~ msgstr "Časová značka vzniku poplatku"
-
-#~ msgid "Subject"
-#~ msgstr "Téma"

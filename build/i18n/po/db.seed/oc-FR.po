@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2016-10-10 21:11+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Cédric VALMARY (Tot en òc) <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) <oc@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:29+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:53+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: 950.data.seed-values.sql:8354
 msgid "Estonia "
@@ -14313,18 +14313,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
 msgstr ""
-
-#~ msgid "Example Branch 4"
-#~ msgstr "Exemple de sucursala 4"
-
-#~ msgid "Example Branch 2"
-#~ msgstr "Exemple de sucursala 2"
-
-#~ msgid "Gwich"
-#~ msgstr "Gwich"
-
-#~ msgid "SSN"
-#~ msgstr "SSN"
-
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Exemple de bibliobús de 1"

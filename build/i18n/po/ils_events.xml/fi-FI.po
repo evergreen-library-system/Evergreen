@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2013-10-15 08:54+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:56+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "Language: fi\n"
 
 #: 1208.TITLE_LAST_COPY:71
@@ -1350,24 +1350,3 @@ msgstr "Pyydettyä kohdetta action_non_cataloged_circulation ei löytynyt"
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "Pyydettyä kohdetta money_user_summary ei löytynyt"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "Pyydetty nide on tällä hetkellä varaushyllyssä"
-
-#~ msgid "The requested acq.po_lineitem was not found"
-#~ msgstr "Pyydettyä kohdetta acq.po_lineitem ei löydy"
-
-#~ msgid "The selecte bill has already been voided"
-#~ msgstr "Valittu maksu on jo mitätöity"
-
-#~ msgid ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-#~ msgstr "Tämän niteen kuljetusta ei voida keskeyttää niteen tilasta johtuen"
-
-#~ msgid ""
-#~ "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
-#~ "successfuly, but the patron's payment could not be recorded within "
-#~ "Evergreen.  Please seek assistance."
-#~ msgstr ""
-#~ "ISO virhe on tapahtunut: luottokorttitapahtuma käsiteltiin onnistuneesti, "
-#~ "mutta asiakkaan maksua ei voitu tallettaa Evergreeniin. Pyydä apua."

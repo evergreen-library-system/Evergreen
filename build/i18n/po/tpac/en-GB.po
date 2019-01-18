@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2018-09-19 09:49+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Stephan Woidowski <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:37+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:02+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "Language: en_GB\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
@@ -361,7 +361,7 @@ msgid "Adapter"
 msgstr "Adapter"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr "Add %1 to basket"
 
@@ -386,7 +386,7 @@ msgstr "Add item to a list: %1"
 msgid "Add to Basket"
 msgstr "Add to Basket"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr "Add to basket"
 
@@ -1015,11 +1015,11 @@ msgid "Charges:"
 msgstr "Charges:"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "Check Out %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "Check Out E-Item"
 
@@ -1031,7 +1031,7 @@ msgstr "Check Out History"
 msgid "Checked Out"
 msgstr "Checked Out"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Checked Out Before"
 
@@ -2186,7 +2186,7 @@ msgstr "Host"
 msgid "Host institution"
 msgstr "Host institution"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "I have checked this item out before"
 
@@ -3329,16 +3329,16 @@ msgstr "Pickup library"
 msgid "Pickup location:"
 msgstr "Pickup location:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Place Hold"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "Place Hold on %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "Place Hold on E-Item"
 
@@ -3677,7 +3677,7 @@ msgstr "Radio director"
 msgid "Radio producer"
 msgstr "Radio producer"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "Ratings Icon"
 
@@ -3764,7 +3764,7 @@ msgid "Remove %1 filter"
 msgstr "Remove %1 filter"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr "Remove %1 from basket"
 
@@ -3784,7 +3784,7 @@ msgstr "Remove all records from basket?"
 msgid "Remove from Basket"
 msgstr "Remove from Basket"
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr "Remove from basket"
 
@@ -3917,12 +3917,12 @@ msgstr "Reviewer"
 msgid "Reviews"
 msgstr "Reviews"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Reviews &amp; More"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "Reviews and More for %1"
 
@@ -5347,136 +5347,3 @@ msgstr "view"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "volume"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Are you sure you are ready to charge %1 to your credit card?"
-
-#~ msgid "April"
-#~ msgstr "April"
-
-#~ msgid "August"
-#~ msgstr "August"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Balance Owed"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "Click %1Cancel%2 to go back and (un)select other fines."
-
-#~ msgid "December"
-#~ msgstr "December"
-
-#~ msgid "Fines"
-#~ msgstr "Fines"
-
-#~ msgid "Fines:"
-#~ msgstr "Fines:"
-
-#~ msgid "February"
-#~ msgstr "February"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Go back to try again or to cancel this payment attempt."
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Initial Amount Owed"
-
-#~ msgid "January"
-#~ msgstr "January"
-
-#~ msgid "July"
-#~ msgstr "July"
-
-#~ msgid "June"
-#~ msgstr "June"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Last Payment Time"
-
-#~ msgid "March"
-#~ msgstr "March"
-
-#~ msgid "May"
-#~ msgstr "May"
-
-#~ msgid "October"
-#~ msgstr "October"
-
-#~ msgid "November"
-#~ msgstr "November"
-
-#~ msgid "Other Fees"
-#~ msgstr "Other Fees"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pay Fines"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pay selected fines"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Remove from my list"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Selected fines you are paying for:"
-
-#~ msgid "September"
-#~ msgstr "September"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Submit Payment"
-
-#~ msgid "Temporary List"
-#~ msgstr "Temporary List"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Total Amount Paid"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Total amount to pay:"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Transaction Start Time"
-
-#~ msgid "View My List"
-#~ msgstr "View My List"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "You have not created a list yet."
-
-#~ msgid " View My Temporary List"
-#~ msgstr " View My Temporary List"
-
-#~ msgid " View My Lists"
-#~ msgstr " View My Lists"
-
-#~ msgid "Add %1 to my list"
-#~ msgstr "Add %1 to my list"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "My Existing Lists"
-
-#~ msgid "Remove %1 from my list"
-#~ msgstr "Remove %1 from my list"
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Temporary List Warning"
-
-#~ msgid "View My Lists"
-#~ msgstr "View My Lists"
-
-#~ msgid "View My Temporary List"
-#~ msgstr "View My Temporary List"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "You are adding to a temporary list."
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Results %1 - %2 of about %3"

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2017-11-01 06:22+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:56+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -1351,14 +1351,3 @@ msgstr "لم يتم العثور على action_non_cataloged_circulation الم�
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
 msgstr "لم يتم العثور على money_user_summary المطلوب"
-
-#~ msgid "This requested item is currently on the holds shelf"
-#~ msgstr "هذه النسخة المطلوبة حالياً في رف الحجوزات"
-
-#~ msgid ""
-#~ "The transit on this item may not be aborted due to the state the item is in"
-#~ msgstr ""
-#~ "مِن المحتمل أنه لم يتم إجهاض/إلغاء النقل في هذه النُسخة بسبب حالة النُسخة في"
-
-#~ msgid "This item is currently on the holds shelf for another patron"
-#~ msgstr "هذه النسخة حالياً موجودة في رف الحجز من أجل مستفيد آخر"

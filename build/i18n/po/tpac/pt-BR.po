@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2015-08-20 18:07+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Job Diógenes Ribeiro Borges <jobdrb@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <pt_BR@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:37+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:02+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -357,7 +357,7 @@ msgid "Adapter"
 msgstr ""
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr ""
 
@@ -382,7 +382,7 @@ msgstr ""
 msgid "Add to Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr ""
 
@@ -1010,11 +1010,11 @@ msgid "Charges:"
 msgstr ""
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr ""
 
@@ -1026,7 +1026,7 @@ msgstr "Histórico de Empréstimos"
 msgid "Checked Out"
 msgstr "Empréstimos"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Empréstimos Antes"
 
@@ -2178,7 +2178,7 @@ msgstr ""
 msgid "Host institution"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Eu já verifiquei este item antes"
 
@@ -3307,16 +3307,16 @@ msgstr "Biblioteca de coleta"
 msgid "Pickup location:"
 msgstr "Local de coleta:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Reservar"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr ""
 
@@ -3654,7 +3654,7 @@ msgstr ""
 msgid "Radio producer"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr ""
 
@@ -3741,7 +3741,7 @@ msgid "Remove %1 filter"
 msgstr ""
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr ""
 
@@ -3761,7 +3761,7 @@ msgstr ""
 msgid "Remove from Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr ""
 
@@ -3894,12 +3894,12 @@ msgstr ""
 msgid "Reviews"
 msgstr "Avaliações"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Resenhas &amp; Mais"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr ""
 
@@ -5296,107 +5296,3 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr ""
-
-#~ msgid "December"
-#~ msgstr "Dezembro"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr ""
-#~ "Você tem certeza que está pronto para cobrar %1 de seu cartão de crédito?"
-
-#~ msgid "April"
-#~ msgstr "Abril"
-
-#~ msgid "August"
-#~ msgstr "Agosto"
-
-#~ msgid "Fines"
-#~ msgstr "Multas"
-
-#~ msgid "Fines:"
-#~ msgstr "Multas:"
-
-#~ msgid "February"
-#~ msgstr "Fevereiro"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Volte a tentar novamente ou cancele esta tentativa de pagamento."
-
-#~ msgid "January"
-#~ msgstr "Janeiro"
-
-#~ msgid "July"
-#~ msgstr "Julho"
-
-#~ msgid "June"
-#~ msgstr "Junho"
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Você ainda não criou uma lista."
-
-#~ msgid "View My List"
-#~ msgstr "Ver minha lista"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Valor total a pagar"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Valor Total Pago"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Saldo Devido"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Dívida Inicial"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Última Hora de Pagamento"
-
-#~ msgid "May"
-#~ msgstr "Maio"
-
-#~ msgid "March"
-#~ msgstr "Março"
-
-#~ msgid "October"
-#~ msgstr "Outubro"
-
-#~ msgid "November"
-#~ msgstr "Novembro"
-
-#~ msgid "Other Fees"
-#~ msgstr "Outras Taxas"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Pagar multas selecionadas"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Pagar multas"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Remover da minha lista"
-
-#~ msgid "September"
-#~ msgstr "Setembro"
-
-#~ msgid "Temporary List"
-#~ msgstr "Lista Temporária"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Hora de Início da Transação"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Confirmar Pagamento"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "Clique %1Cancelar%2 para voltar e (des)selecionar outras multas."
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Selecione as multas que você está pagando:"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Ou você não tem multas a pagar ou selecionou multas cujo valor total é "
-#~ "negativo. Não podemos processar totais não positivos,"

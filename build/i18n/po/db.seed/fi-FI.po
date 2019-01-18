@@ -4,14 +4,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
 "POT-Creation-Date: 2018-09-18 16:06-0400\n"
-"PO-Revision-Date: 2013-10-15 09:08+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Finnish <Unknown>\n"
 "Language-Team: Finnish <evergreen@jns.fi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:28+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 05:52+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 "Language: fi\n"
 
 #: 950.data.seed-values.sql:8354
@@ -15310,100 +15310,3 @@ msgstr ""
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
 msgstr ""
-
-# id::aou.name__5
-#~ msgid "Example Branch 2"
-#~ msgstr "Esimerkkihaara 2"
-
-# id::at.name__b
-#~ msgid "LC subject headings for children's literature"
-#~ msgstr "LC-aiheotsikot lastenkirjallisuudelle"
-
-# id::at.name__d
-#~ msgid "National Agricultural Library subject authority file"
-#~ msgstr "Kansallisen maatalouskirjaston auktoriteettitiedosto"
-
-# id::at.name__r
-#~ msgid "Art and Architecture Thesaurus"
-#~ msgstr "Taiteen ja arkkitehtuurin synonyymisanakirja"
-
-# id::ccvm.value''in__169
-#~ msgid "Gwich"
-#~ msgstr "gwitsin"
-
-# id::aou.name__2
-#~ msgid "Example System 1"
-#~ msgstr "Esimerkkijärjestelmä 1"
-
-# id::aou.name__3
-#~ msgid "Example System 2"
-#~ msgstr "Esimerkkijärjestelmä 2"
-
-# id::czs.label__biblios
-#~ msgid "‡biblios.net"
-#~ msgstr "‡biblios.net"
-
-# id::aou.name__7
-#~ msgid "Example Branch 4"
-#~ msgstr "Esimerkkihaara 4"
-
-# id::aou.name__6
-#~ msgid "Example Branch 3"
-#~ msgstr "Esimerkkihaara 3"
-
-# id::aou.name__4
-#~ msgid "Example Branch 1"
-#~ msgstr "Esimerkkihaara 1"
-
-# id::cit.name__2
-#~ msgid "SSN"
-#~ msgstr "HETU"
-
-# id::at.name__v
-#~ msgid "Repertoire de vedettes-matiere"
-#~ msgstr "Repertoire de vedettes-matiere"
-
-# id::aou.name__8
-#~ msgid "Example Sub-library 1"
-#~ msgstr "Alakirjaston esimerkki 1"
-
-# id::at.name__a
-#~ msgid "Library of Congress Subject Headings"
-#~ msgstr "Kongressin kirjaston aiheotsikot"
-
-# id::cubt.label__folks%3Apub_book_bags.view
-#~ msgid "List Published Book Bags"
-#~ msgstr "Julkaistujen kirjahyllyjen luettelo"
-
-# id::aou.name__9
-#~ msgid "Example Bookmobile 1"
-#~ msgstr "Kirjastoauton esimerkki 1"
-
-# id::at.name__s
-#~ msgid "Sears List of Subject Headings"
-#~ msgstr "Searsin luettelo aiheotsikoista"
-
-# id::cubt.label__folks%3Apub_book_bags.add
-#~ msgid "Add to Published Book Bags"
-#~ msgstr "Lisää julkaistuihin kirjahyllyihin"
-
-# id::at.name__k
-#~ msgid "Canadian Subject Headings"
-#~ msgstr "Kanadalaiset aiheotsikot"
-
-# id::cbrebt.label__bookbag
-#~ msgid "Book Bag"
-#~ msgstr "Kirjahylly"
-
-# id::at.name__c
-#~ msgid "Medical Subject Headings"
-#~ msgstr "Lääketieteelliset aiheet"
-
-# id::ppl.description__35
-#~ msgid "Allow a user to mark an item as 'missing'"
-#~ msgstr "Sallii käyttäjän asettaa nide kadonneeksi"
-
-# id::ppl.description__507
-#~ msgid "Allows a user to abort a transit on a copy with status of LOST"
-#~ msgstr ""
-#~ "Sallii käyttäjän keskeyttää niteen kuljetus, jos nide on merkitty kadonneeksi"

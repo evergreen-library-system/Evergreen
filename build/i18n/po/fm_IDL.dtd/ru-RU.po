@@ -8,19 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-09-18 16:05-0400\n"
-"PO-Revision-Date: 2017-02-05 17:05+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: Jane Sandberg <sandbej@linnbenton.edu>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:32+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
-
-#: class.ccs.label:4317 field.sunit.status.label:5724
-#: field.acp.status.label:7435
-msgid "Copy Status"
-msgstr "Статус единицы"
+"X-Launchpad-Export-Date: 2019-01-17 05:56+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: class.stgu.label:10542
 msgid "User Stage"
@@ -9025,6 +9020,11 @@ msgstr "Запрос записи для Хранения"
 msgid "User Purchase Request Type"
 msgstr ""
 
+#: class.ccs.label:4317 field.sunit.status.label:5724
+#: field.acp.status.label:7435
+msgid "Copy Status"
+msgstr "Статус единицы"
+
 #: field.acqlisum.encumbrance_amount.label:12101
 #: field.acqlisumi.encumbrance_amount.label:12122
 msgid "Encumbrance Amount"
@@ -9234,42 +9234,3 @@ msgstr ""
 #: field.au.billable_transactions.label:3656
 msgid "Billable Transactions"
 msgstr "Платежные Сделки"
-
-#~ msgid "Matched Attribute"
-#~ msgstr "Подобранный атрибут"
-
-#~ msgid "Billing Timestamp"
-#~ msgstr "Временная отметка выписанного счета"
-
-#~ msgid "Field Class"
-#~ msgstr "Тип поля"
-
-#~ msgid ""
-#~ "Circulation Matrix Circulation Modifier Subtest Circulation Modifier Set"
-#~ msgstr ""
-#~ "Матрица  циркуляции Субтест модификатора циркуляции Установка модификатора "
-#~ "циркуляции"
-
-#~ msgid "Suffix/Title"
-#~ msgstr "Суффикс/Заглавие"
-
-#~ msgid "Check Out Date/Time"
-#~ msgstr "Дата/Время регистрации выдачи (документов)"
-
-#~ msgid "Test ID"
-#~ msgstr "ID испытаний"
-
-#~ msgid "Keep"
-#~ msgstr "Хранить"
-
-#~ msgid "Thaw Date (if frozen)"
-#~ msgstr "Дата оттаивания (если заморожены)"
-
-#~ msgid "Field Type"
-#~ msgstr "Тип поля"
-
-#~ msgid "Circulation Modifier Subtest ID"
-#~ msgstr "ID Субтестов модификатора циркуляции"
-
-#~ msgid "Circulation Matrix Circulation Modifier Subtest"
-#~ msgstr "Матрица циркуляции  Субтест модификатора циркуляции"

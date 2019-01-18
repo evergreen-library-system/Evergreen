@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
-"PO-Revision-Date: 2017-09-29 08:23+0000\n"
+"POT-Creation-Date: 2019-01-16 21:06+0000\n"
+"PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:36+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-01-17 06:01+0000\n"
+"X-Generator: Launchpad (build 18856)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -359,7 +359,7 @@ msgid "Adapter"
 msgstr "Ադապտացիա"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr "Ավելացրու նյութ ցուցակին: %1"
 msgid "Add to Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr ""
 
@@ -1012,11 +1012,11 @@ msgid "Charges:"
 msgstr "Գանձումներ։"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "Դուրս է տրված %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "Դուրս է տրված էլ. նյութ։"
 
@@ -1028,7 +1028,7 @@ msgstr "Դուրս տրման պատմություն"
 msgid "Checked Out"
 msgstr "Դուրս տրված"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Դուրս տրված մինչ"
 
@@ -2188,7 +2188,7 @@ msgstr "Հյուրընկալող"
 msgid "Host institution"
 msgstr "Հյուրընկալող հաստատություն"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Ես այս նյութը վերցրել եմ առաջներում"
 
@@ -3334,16 +3334,16 @@ msgstr "Վերցնելու գրադարան"
 msgid "Pickup location:"
 msgstr "Վերցնելու վայր։"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Տեղադրի պահումը"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "Դիր պահում %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "Տեղադրի էլ. նյութի պահում։"
 
@@ -3681,7 +3681,7 @@ msgstr "Ռադիո տնօրեն"
 msgid "Radio producer"
 msgstr "Ռադիո թողարկող"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "Գնահատումների պատկերիկ"
 
@@ -3768,7 +3768,7 @@ msgid "Remove %1 filter"
 msgstr "Հեռացրու %1 զտիչը"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr ""
 
@@ -3788,7 +3788,7 @@ msgstr ""
 msgid "Remove from Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr ""
 
@@ -3921,12 +3921,12 @@ msgstr "Գրախոսող"
 msgid "Reviews"
 msgstr "Գրախոսություններ"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Գրախոսություններ &amp; Ավելին"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "Գրախոսականներ և ավելին սրա համար %1"
 
@@ -5350,137 +5350,3 @@ msgstr "դիտել"
 #: ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:148
 msgid "volume"
 msgstr "հատոր"
-
-#~ msgid "Are you sure you are ready to charge %1 to your credit card?"
-#~ msgstr "Դու վստա՞հ ես որ պատրաստ ես վճարելու %1 to քո կրեդիտ քարտից։"
-
-#~ msgid "April"
-#~ msgstr "Ապրիլ"
-
-#~ msgid "August"
-#~ msgstr "Օգոստոս"
-
-#~ msgid "Balance Owed"
-#~ msgstr "Տնօրինած հաշվեկշիռ"
-
-#~ msgid "Click %1Cancel%2 to go back and (un)select other fines."
-#~ msgstr "Սեղմիր %1Չեղյալ անել%2 հետ գնալ և (հետ)ընտրել այլ տուգանքներ։"
-
-#~ msgid "December"
-#~ msgstr "Դեկտեմբեր"
-
-#~ msgid "Fines"
-#~ msgstr "Տուգանքներ"
-
-#~ msgid "Fines:"
-#~ msgstr "Տուգանքներ։"
-
-#~ msgid "February"
-#~ msgstr "Փետրվար"
-
-#~ msgid "Go back to try again or to cancel this payment attempt."
-#~ msgstr "Ետ գնալ որ նորից փորձես կամ որ չեղյալ անես այս վճարման փորձը։"
-
-#~ msgid "Initial Amount Owed"
-#~ msgstr "Սկզբնական պարտքի գումարը"
-
-#~ msgid "January"
-#~ msgstr "Հունվար"
-
-#~ msgid "June"
-#~ msgstr "Հունիս"
-
-#~ msgid "July"
-#~ msgstr "Հուլիս"
-
-#~ msgid "Last Payment Time"
-#~ msgstr "Վերջին վճարման ժամ"
-
-#~ msgid "May"
-#~ msgstr "Մայիս"
-
-#~ msgid "March"
-#~ msgstr "Մարտ"
-
-#~ msgid "November"
-#~ msgstr "Նոյեմբեր"
-
-#~ msgid "October"
-#~ msgstr "Հոկտեմբեր"
-
-#~ msgid "Other Fees"
-#~ msgstr "Այլ գումարներ"
-
-#~ msgid "Pay Fines"
-#~ msgstr "Վճարի տուգանքներ"
-
-#~ msgid "Pay selected fines"
-#~ msgstr "Վճարի ընտրված տուգանքները"
-
-#~ msgid "Remove from my list"
-#~ msgstr "Հեռացնել իմ ցանկից"
-
-#~ msgid "Selected fines you are paying for:"
-#~ msgstr "Ընտրված տուգանքներ որոնց համար վճարում ես։"
-
-#~ msgid "September"
-#~ msgstr "Սեպտեմբեր"
-
-#~ msgid "Submit Payment"
-#~ msgstr "Հաստատել վճարումը"
-
-#~ msgid "Temporary List Warning"
-#~ msgstr "Ժամանակավոր ցուցակի զգուշացում"
-
-#~ msgid "Temporary List"
-#~ msgstr "Ժամանակավոր ցուցակ"
-
-#~ msgid "Total amount to pay:"
-#~ msgstr "Վճարման ենթակա ընդհանուր գումար"
-
-#~ msgid "Transaction Start Time"
-#~ msgstr "Տրանզակցիայի սկզբանվորման ժամ"
-
-#~ msgid "Total Amount Paid"
-#~ msgstr "Ընդհանուր վճարված գումար"
-
-#~ msgid "View My List"
-#~ msgstr "Դիտիր իմ ցուցակը"
-
-#~ msgid "You are adding to a temporary list."
-#~ msgstr "Դու խմբագրում ես ժամանակավոր ցուցակում"
-
-#~ msgid ""
-#~ "You either have no fines to pay or you have selected fines whose total is "
-#~ "non-positive.  We cannot process non-positive amounts."
-#~ msgstr ""
-#~ "Դու կամ չունես վճարման ենթակա տուգանքներ կամ դու ընտրել ես տուգանքներ որոնց "
-#~ "գումարային արժեքը բացասական է։ Մենք չենք կարող աշխատել բացասական գումարների "
-#~ "դեպքում։"
-
-#~ msgid "You have not created a list yet."
-#~ msgstr "Դու դեռ չես ստեղծել ցուցակ։"
-
-#~ msgid "My Existing Lists"
-#~ msgstr "Իմ առկա ցուցակները"
-
-#~ msgid "Results %1 - %2 of about %3"
-#~ msgstr "Արդյունքներ %1 - %2 մոտ %3"
-
-#~ msgid " View My Temporary List"
-#~ msgstr " Դիտիր իմ ժամանակավոր Ցուցակները"
-
-#~ msgid " View My Lists"
-#~ msgstr " Դիտիր իմ Ցուցակները"
-
-#~ msgid "Add %1 to my list"
-#~ msgstr "Ավելացրու %1 իմ ցուցակին"
-
-#~ msgid "Remove %1 from my list"
-#~ msgstr "Հեռացրու %1 իմ ցուցակից"
-
-#~ msgid "View My Lists"
-#~ msgstr "Դիտիր իմ ցուցակները։"
-
-#~ msgid "View My Temporary List"
-#~ msgstr "Դիտիր իմ ժամանակավոր ցուցակները։"
