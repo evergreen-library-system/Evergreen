@@ -15,6 +15,8 @@ var pcrud;
 var _collection_code_textboxes = [];
 var _collection_code_kludge_active = false;
 var fundSearchFilter = {active : 't'};
+var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
+
 
 function gridDataLoader() {
     fListGrid.resetStore();
@@ -165,6 +167,7 @@ function addEntry(entry) {
                 fmField : field, 
                 fmObject : entry,
                 fmClass : 'acqdfe',
+		labelFormat: (field == 'fund') ? fundLabelFormat : null,
                 searchFilter : (field == 'fund') ? fundSearchFilter : null,
                 parentNode : byName(row, field),
                 orgDefaultsToWs : true,
