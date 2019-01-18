@@ -81,7 +81,7 @@
         <div class="form-group">
           <label for="annotate-payment" class="control-label col-md-5">[% l('Annotate') %]</label>
           <div class="col-md-1">
-            <input id="annotate-payment" type="checkbox" ng-model="annotate_payment"/>
+            <input id="annotate-payment" type="checkbox" ng-model="annotate_payment" ng-change="onAnnotatePaymentChanged()"/>
           </div>
           <div class="col-md-6">
             <button
