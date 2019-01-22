@@ -100,6 +100,26 @@
                             <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
                         </td>
                     </tr>
+                    <tr>
+                        <td>[% l('Email Notification') %]</td>
+                        <td><input type="checkbox" name="email_notify"
+                                [% IF ahr.email_notify == 't' %] checked [% END %] />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>[% l('Phone Notification') %]</td>
+                        <td><input type="text" name="phone_notify"
+                                value="[% ahr.phone_notify | html %]" /></td>
+                    </tr>
+                    <tr>
+                        <td>[% l('SMS Notification') %]</td>
+                        <td><input onblur="check_sms_carrier(event)" type="text" name="sms_notify"
+                                value="[% ahr.sms_notify | html %]" /></td>
+                    </tr>
+                    <tr>
+                        <td>[% l('Default Mobile Carrier') %]</td>
+                        <td>[% INCLUDE "opac/parts/sms_carrier_selector.tt2" ahr, sms_carrier_hide_warning="true", sms_carrier_hide_label="true" %]</td>
+                    </tr>
                     [% END %]
                      
                     <tr><td colspan='4'>

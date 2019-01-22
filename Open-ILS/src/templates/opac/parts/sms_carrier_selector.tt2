@@ -18,11 +18,11 @@
     END;
 %]
 [% IF NOT sms_carrier_hide_label; '<label for="sms_carrier">' _ l('Mobile carrier:') _ '</label>'; END; %]
-<select name="sms_carrier" id="sms_carrier" [% IF sms_carrier_hide_label; 'aria-label="' _ l('Mobile carrier') _ '"'; END; %]>
+<select onchange="record_change(event)" id="sms_carrier" name="sms_carrier" id="sms_carrier" [% IF sms_carrier_hide_label; 'aria-label="' _ l('Mobile carrier') _ '"'; END; %]>
     <option value="">[% l('Please select your mobile carrier') %]</option>
     [% FOR carrier IN carriers.sort('name','region') -%]
     <option value='[% carrier.id | html %]'[%
-        default_carrier == carrier.id ? ' selected="selected"' : ''
+        default_carrier == carrier.id || ahr.sms_carrier == carrier.id ? ' selected="selected"' : ''
     %]>[% carrier.name | html %] ([% carrier.region | html %])</option>
     [% END -%]
 </select>

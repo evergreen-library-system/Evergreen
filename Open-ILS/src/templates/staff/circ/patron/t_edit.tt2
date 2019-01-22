@@ -113,7 +113,7 @@ MACRO draw_form_input(cls, field, path, type, disable) BLOCK;
 %]
   <div class="col-md-3 reg-field-input">
     <input 
-      [% IF type == "email" %]type="text"
+      [% IF type == "email" %]type="text" ng-required="hold_notify_type.email"
       [% ELSE %]type="[% type %]"
       [% END %]
       class="form-control" 
@@ -696,8 +696,9 @@ within the "form" by name for validation.
     <label>{{user_setting_types['opac.default_phone'].label()}}</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input 
+    <input ng-required="hold_notify_type.phone" 
       ng-change="field_modified()" 
+      ng-blur="handle_field_changed(user_settings, 'opac.default_phone')"
       type='text' ng-model="user_settings['opac.default_phone']"/>
   </div>
 </div>
@@ -773,8 +774,9 @@ within the "form" by name for validation.
     <label>[% l('Default SMS/Text Number') %]</label>
   </div>
   <div class="col-md-3 reg-field-input">
-    <input 
+    <input ng-required="hold_notify_type.sms" 
       ng-change="field_modified()" ng-model="user_settings['opac.default_sms_notify']"
+      ng-blur="handle_field_changed(user_settings, 'opac.default_sms_notify')"
       type='text'/>
   </div>
 </div>
@@ -785,7 +787,8 @@ within the "form" by name for validation.
   </div>
   <div class="col-md-3 reg-field-input">
     <span class="nullable">
-      <select str-to-int class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers">
+      <select str-to-int ng-required="user_settings['opac.default_sms_notify']" class="form-control" ng-model="user_settings['opac.default_sms_carrier']" ng-options="c.id() as c.name() for c in sms_carriers"
+      ng-blur="handle_field_changed(user_settings, 'opac.default_sms_carrier')">
         <option value="">Select a Carrier</option>
       </select>
     </span>

@@ -1,6 +1,7 @@
 [%  PROCESS "opac/parts/header.tt2";
     PROCESS "opac/parts/misc_util.tt2";
     PROCESS "opac/parts/hold_status.tt2";
+    PROCESS "opac/parts/hold_notify.tt2";
     PROCESS "opac/parts/myopac/column_sort_support.tt2";
     WRAPPER "opac/parts/myopac/base.tt2";
     myopac_page = "holds";
@@ -119,6 +120,7 @@
                 <th>[% l('Pickup Location') %]</th>
                 <th>[% l('Cancel if not filled by') %]</th>
                 <th>[% l('Status') %]</th>
+                <th>[% l('Notify Method') %]</th>
                 <th>[% l('Notes') %]</th>
             </tr>
             </thead>
@@ -238,6 +240,11 @@
                     <td>
                         <div name="acct_holds_status">
                             [% PROCESS get_hold_status hold=hold; %]
+                        </div>
+                    </td>
+                    <td>
+                        <div name="acct_holds_notify">
+                            [% PROCESS get_hold_notify h=ahr; %]
                         </div>
                     </td>
                     <td class="hold_notes">

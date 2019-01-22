@@ -1,0 +1,28 @@
+[% BLOCK get_hold_notify %]
+    [% # get hash of sms carriers keyed by id:
+        temp = ctx.search_csc('active','t');
+        tcos = { '0' => 'None' };
+        FOR o IN temp;
+            id = o.id;
+            tcos.$id = o;
+        END;
+    %]
+    [% SET any_notify = 0 %]
+    <div>
+    [% IF h.email_notify == 't' %]
+        [% any_notify = 1 %]
+        <strong>[% l("Email") %]</strong>: [% l("Yes") %]<br/>
+    [% END %]
+    [% IF h.phone_notify %]
+        [% any_notify = 1 %]
+        <strong>[% l("Phone") %]</strong>: [% h.phone_notify | html %]<br/>
+    [% END %]
+    [% IF h.sms_notify %]
+        [% any_notify = 1, cid = h.sms_carrier; %]
+        <strong>[% l("SMS") %]</strong>: [% h.sms_notify | html %] ([% tcos.$cid.name() | html %])<br/>
+    [% END %]
+    [% UNLESS any_notify %]
+        <span style="color:red">[% l("None") %]</span>
+    [% END %]
+    </div>
+[% END %]

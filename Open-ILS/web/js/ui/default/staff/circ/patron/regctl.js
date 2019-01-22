@@ -1258,6 +1258,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     $scope.page_data_loaded = false;
     $scope.hold_notify_type = { phone : null, email : null, sms : null };
+    $scope.hold_notify_observer = {};
+    $scope.hold_rel_contacts = {};
     $scope.clone_id = patronRegSvc.clone_id = $routeParams.clone_id;
     $scope.stage_username = 
         patronRegSvc.stage_username = $routeParams.stage_username;
@@ -1375,6 +1377,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         }
 
         extract_hold_notify();
+
         if ($scope.patron.isnew)
             set_new_patron_defaults(prs);
 
@@ -1424,6 +1427,28 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             }
         });
     }
+    
+    // add watchers for hold notify method prefs
+    $scope.$watch('hold_notify_type.phone', function(newVal, oldVal) {
+        var notifyOpt = $scope.hold_notify_observer['phone'];
+        if (newVal !== null) {
+            notifyOpt.newval = newVal;
+        }
+    });
+
+    $scope.$watch('hold_notify_type.sms', function(newVal, oldVal) {
+        var notifyOpt = $scope.hold_notify_observer['sms'];
+        if (newVal !== null) {
+            notifyOpt.newval = newVal;
+        }
+    });
+    
+    $scope.$watch('hold_notify_type.email', function(newVal, oldVal) {
+        var notifyOpt = $scope.hold_notify_observer['email'];
+        if (newVal !== null) {
+            notifyOpt.newval = newVal;
+        }
+    });
 
     // update the currently displayed field documentation
     $scope.set_selected_field_doc = function(cls, field) {
@@ -1870,15 +1895,45 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     }
 
     function extract_hold_notify() {
-        var notify = $scope.user_settings['opac.hold_notify'];
-        if (!notify) return;
+        var p = $scope.patron;
+        var notify = $scope.user_settings['opac.hold_notify'] || '';
+
         $scope.hold_notify_type.phone = Boolean(notify.match(/phone/));
         $scope.hold_notify_type.email = Boolean(notify.match(/email/));
         $scope.hold_notify_type.sms = Boolean(notify.match(/sms/));
+
+        // stores original loaded values for comparison later
+        for (var k in $scope.hold_notify_type){
+            var val = $scope.hold_notify_type[k];
+
+            if ($scope.hold_notify_type.hasOwnProperty(k)){
+                $scope.hold_notify_observer[k] = {old : val, newval: null};
+            }
+        }
+
+        // actual value from user
+        $scope.hold_rel_contacts.day_phone = { old: p.day_phone, newval : null };
+        $scope.hold_rel_contacts.other_phone = { old: p.other_phone, newval : null };
+        $scope.hold_rel_contacts.evening_phone = { old: p.evening_phone, newval : null };
+        // from user_settings
+        $scope.hold_rel_contacts.default_phone = { old: $scope.user_settings['opac.default_phone'], newval : null };
+        $scope.hold_rel_contacts.default_sms = { old: $scope.user_settings['opac.default_sms_notify'], newval : null };
+        $scope.hold_rel_contacts.default_sms_carrier_id = { old: $scope.user_settings['opac.default_sms_carrier'], newval : null };
+
+    }
+
+    function normalizePhone(number){
+        // normalize phone # for comparison, only digits
+        if (number == null || number == undefined) return '';
+        
+        var regex = /[^\d]/g;
+        return number.replace(regex, '');
     }
 
     $scope.invalidate_field = function(field) {
-        patronRegSvc.invalidate_field($scope.patron, field);
+        patronRegSvc.invalidate_field($scope.patron, field).then(function() {
+            $scope.handle_field_changed($scope.patron, field);
+        });
     }
 
     address_alert = function(addr) {
@@ -1983,17 +2038,29 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         console.debug('changing field ' + field_name + ' to ' + value);
 
         switch (field_name) {
-            case 'day_phone' : 
+            case 'day_phone' :
+                if (normalizePhone(value) !== normalizePhone($scope.hold_rel_contacts.day_phone.old)){
+                    $scope.hold_rel_contacts.day_phone.newval = value;
+                }
                 if ($scope.patron.day_phone && 
                     $scope.patron.isnew && 
                     $scope.org_settings['patron.password.use_phone']) {
                     $scope.patron.passwd = $scope.patron.day_phone.substr(-4);
                 }
-            case 'evening_phone' : 
-            case 'other_phone' : 
                 $scope.dupe_value_changed(field_name, value);
                 break;
-
+            case 'evening_phone' :
+                if (normalizePhone(value) !== normalizePhone($scope.hold_rel_contacts.evening_phone.old)){
+                    $scope.hold_rel_contacts.evening_phone.newval = value;
+                }
+                $scope.dupe_value_changed(field_name, value);
+                break;
+            case 'other_phone' : 
+                if (normalizePhone(value) !== normalizePhone($scope.hold_rel_contacts.other_phone.old)){
+                    $scope.hold_rel_contacts.other_phone.newval = value;
+                }
+                $scope.dupe_value_changed(field_name, value);
+                break;
             case 'ident_value':
             case 'ident_value2':
                 $scope.dupe_value_changed('ident', value);
@@ -2029,6 +2096,21 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 // TODO: finish barcode_changed handler.
                 $scope.barcode_changed(value);
                 apply_username_regex();
+                break;
+            case 'opac.default_phone':
+                if (normalizePhone(value) !== normalizePhone($scope.hold_rel_contacts.default_phone.old)){
+                    $scope.hold_rel_contacts.default_phone.newval = value;
+                }
+                break;
+            case 'opac.default_sms_notify':
+                if (normalizePhone(value) !== normalizePhone($scope.hold_rel_contacts.default_sms.old)){
+                    $scope.hold_rel_contacts.default_sms.newval = value;
+                }
+                break;
+            case 'opac.default_sms_carrier':
+                if (value !== $scope.hold_rel_contacts.default_sms_carrier_id.old){
+                    $scope.hold_rel_contacts.default_sms_carrier_id.newval = value;
+                }
                 break;
         }
     }
@@ -2171,11 +2253,15 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                 var ids = $scope.patron.groups.map(function(g) {return g.id()});
                 return patronRegSvc.apply_secondary_groups(updated_user.id(), ids)
             }
-
             return $q.when();
 
+        }).then(findChangedFieldsAffectedHolds)
+        .then(function(changed_fields_plus_holds) {
+            var needModal = changed_fields_plus_holds[0] && changed_fields_plus_holds[0].length > 0;
+            return needModal
+                ? $scope.update_holds_notify_modal(changed_fields_plus_holds[0])
+                : $q.when(); // nothing changed, continue
         }).then(function() {
-
             if (updated_user) {
                 egWorkLog.record(
                     $scope.patron.isnew
@@ -2219,7 +2305,254 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
             }
         });
     }
+    
+    var phone_inputs = ["day_phone", "evening_phone","other_phone", "default_phone"];
+    var sms_inputs = ["default_sms", "default_sms_carrier_id"];
+    var method_prefs = ["sms_notify", "phone_notify", "email_notify"];
+    var groupBy = function(xs, key){
+        return xs.reduce(function(rv, x){
+            (rv[x[key]] = rv[x[key]] || []).push(x);
+            return rv;
+        }, {});
+    };
 
+    function findChangedFieldsAffectedHolds(){
+    
+        var changed_hold_fields = [];
+
+        var default_phone_changed = false;
+        var default_sms_carrier_changed = false;
+        var default_sms_changed = false;
+        for (var c in $scope.hold_rel_contacts){
+            var newinput = $scope.hold_rel_contacts[c].newval;
+            if ($scope.hold_rel_contacts.hasOwnProperty(c)
+                && newinput !== null // null means user has not provided a value in this session
+                && newinput != $scope.hold_rel_contacts[c].old){
+                var changed = $scope.hold_rel_contacts[c];
+                changed.name = c;
+                changed.isChecked = false;
+                changed_hold_fields.push(changed);
+                if (c === 'default_phone') default_phone_changed = true;
+                if (c === 'default_sms_carrier_id') default_sms_carrier_changed = true;
+                if (c === 'default_sms') default_sms_changed = true;
+            }
+        }
+
+        for (var c in $scope.hold_notify_observer){
+            var newinput = $scope.hold_notify_observer[c].newval;
+            if ($scope.hold_notify_observer.hasOwnProperty(c)
+                && newinput !== null // null means user has not provided a value in this session
+                && newinput != $scope.hold_notify_observer[c].old){
+                var changed = $scope.hold_notify_observer[c];
+                changed.name = c + "_notify";
+                changed.isChecked = false;
+                changed_hold_fields.push(changed);
+
+                // if we're turning on phone notifications, offer to update to the
+                // current default number
+                if (c === 'phone' && $scope.user_settings['opac.default_phone'] && newinput && !default_phone_changed) {
+                    changed_hold_fields.push({
+                        name: 'default_phone',
+                        old: 'nosuch',
+                        newval: $scope.user_settings['opac.default_phone'],
+                        isChecked: false
+                    });
+                }
+                // and similarly for SMS
+                if (c === 'sms' && $scope.user_settings['opac.default_sms_carrier'] && newinput && !default_sms_carrier_changed) {
+                    changed_hold_fields.push({
+                        name: 'default_sms_carrier_id',
+                        old: -1,
+                        newval: $scope.user_settings['opac.default_sms_carrier'],
+                        isChecked: false
+                    });
+                }
+                if (c === 'sms' && $scope.user_settings['opac.default_sms_notify'] && newinput && !default_sms_changed) {
+                    changed_hold_fields.push({
+                        name: 'default_sms',
+                        old: 'nosuch',
+                        newval: $scope.user_settings['opac.default_sms_notify'],
+                        isChecked: false
+                    });
+                }
+            }
+        }
+
+        var promises = [];
+        angular.forEach(changed_hold_fields, function(c){
+            promises.push(egCore.net.request('open-ils.circ',
+            'open-ils.circ.holds.retrieve_by_notify_staff',
+            egCore.auth.token(),
+            $scope.patron.id,
+            c.name.includes('notify') || c.name.includes('carrier') ? c.old : c.newval,
+            c.name)
+                .then(function(affected_holds){
+                    if(!affected_holds || affected_holds.length < 1){
+                        // no holds affected - remove change from list
+                        var p = changed_hold_fields.indexOf(c);
+                        changed_hold_fields.splice(p, 1);
+                    } else {
+                        c.affects = affected_holds;
+                        //c.groups = {};
+                        //angular.forEach(c.affects, function(h){
+                        //    c.groups[]
+                        //});
+                        if (!c.name.includes("notify")){
+                            if (c.name === "default_sms_carrier_id") {
+                                c.groups = groupBy(c.affects,'sms_carrier');
+                            } else {
+                                c.groups = groupBy(c.affects, c.name.includes('_phone') ? 'phone_notify':'sms_notify');
+                            }
+                        }
+                    }
+                    return $q.when(changed_hold_fields);
+                })
+            );
+        });
+
+        return $q.all(promises);
+    }
+
+    $scope.update_holds_notify_modal = function(changed_hold_fields){
+        // open modal after-save, pre-reload modal to deal with updated hold notification stuff
+        if ($scope.patron.isnew || changed_hold_fields.length < 1){
+            return $q.when();
+        }
+
+        return $uibModal.open({
+            templateUrl: './circ/patron/t_hold_notify_update',
+            backdrop: 'static',
+            controller:
+                       ['$scope','$uibModalInstance','changed_fields','patron','carriers','def_carrier_id','default_phone','default_sms',
+                function($scope , $uibModalInstance , changed_fields , patron,  carriers,  def_carrier_id , default_phone , default_sms) {
+                // local modal scope
+                $scope.ch_fields = changed_fields;
+                $scope.focusMe = true;
+                $scope.ok = function(msg) {
+
+                    // Need to do this so the page will reload automatically
+                    if (msg == 'no-update') return $uibModalInstance.close();
+
+                    //var selectedChanges = $scope.changed_fields.filter(function(c) {
+                    //    return c.isChecked;
+                    //});
+                    var selectedChanges = [];
+                    angular.forEach($scope.ch_fields, function(f){
+                        if (f.name == 'phone_notify' && f.newval && f.isChecked) {
+                            // convert to default_phone change
+                            f.sel_hids = f.affects.map(function(h){ return h.id});
+                            f.newval = default_phone;
+                            f.name = 'default_phone';
+                            selectedChanges.push(f);
+                        } else if (f.name == 'sms_notify' && f.newval && f.isChecked) {
+                            // convert to default_sms change
+                            f.sel_hids = f.affects.map(function(h){ return h.id});
+                            f.newval = default_sms;
+                            f.name = 'default_sms';
+                            selectedChanges.push(f);
+                        } else if (f.name.includes('notify') || f.name.includes('carrier')){
+                            if (f.isChecked){
+                                f.sel_hids = f.affects.map(function(h){ return h.id});
+                                selectedChanges.push(f);
+                            }
+                        } else {
+                            // this is the sms or phone, so look in the groups obj
+                            f.sel_hids = [];
+                            for (var k in f.groups){
+                                if (f.groups.hasOwnProperty(k)){
+                                    var sel_holds = f.groups[k].filter(function(h){
+                                        return h.isChecked;
+                                    });
+                                    
+                                    var hids = sel_holds.map(function(h){ return h.id});
+                                    f.sel_hids.push.apply(f.sel_hids, hids);
+                                }
+                            }
+
+                            if (f.sel_hids.length > 0) selectedChanges.push(f);
+                        }
+                    });
+
+
+                    // call method to update holds for each change
+                    var chain = $q.when();
+                    angular.forEach(selectedChanges, function(c){
+                        var carrierId = c.name.includes('default_sms') ? Number(def_carrier_id) : null;
+                        chain = chain.then(function() {
+                            return egCore.net.request('open-ils.circ',
+                                    'open-ils.circ.holds.batch_update_holds_by_notify_staff', egCore.auth.token(),
+                                    patron.id,
+                                    c.sel_hids,
+                                    c.old, // TODO: for number changes, old val is effectively moot
+                                    c.newval,
+                                    c.name,
+                                    carrierId).then(function(okList){ console.log(okList) });
+                        });
+                    });
+
+                    // carry out the updates and close modal
+                    chain.finally(function(){ $uibModalInstance.close() });
+                }
+
+                $scope.cancel = function () { $uibModalInstance.dismiss() }
+
+                $scope.isNumberCh = function(c){
+                    return !(c.name.includes('notify') || c.name.includes('carrier'));
+                }
+
+                $scope.chgCt = 0;
+                $scope.groupChanged = function(ch_f, grpK){
+                    var holdArr = ch_f.groups[grpK];
+                    if (holdArr && holdArr.length > 0){
+                        angular.forEach(holdArr, function(h){
+                            if (h.isChecked) { h.isChecked = !h.isChecked; $scope.chgCt-- }
+                            else { h.isChecked = true; $scope.chgCt++ }
+                        });
+                    }
+                }
+                
+                $scope.nonGrpChanged = function(field_ch){
+                    if (field_ch.isChecked) $scope.chgCt++;
+                    else $scope.chgCt--;
+                };
+
+                // use this function as a keydown handler on form
+                // elements that should not submit the form on enter.
+                $scope.preventSubmit = function($event) {
+                    if ($event.keyCode == 13)
+                        $event.preventDefault();
+                }
+
+                $scope.prettyCarrier = function(carrierId){
+                    var sms_carrierObj = carriers.find(function(c){ return c.id == carrierId});
+                    return sms_carrierObj.name;
+                };
+                $scope.prettyBool = function(v){
+                    return v ? 'YES' : 'NO';
+                };
+            }],
+            resolve : {
+                    changed_fields : function(){ return changed_hold_fields },
+                    patron : function(){ return $scope.patron },
+                    def_carrier_id : function(){
+                                       var d = $scope.hold_rel_contacts.default_sms_carrier_id;
+                                       return d.newval ? d.newval : d.old;
+                                    },
+                    default_phone : function() {
+                                        return ($scope.hold_rel_contacts.default_phone.newval) ?
+                                                    $scope.hold_rel_contacts.default_phone.newval :
+                                                    $scope.hold_rel_contacts.default_phone.old;
+                                    },
+                    default_sms : function() {
+                                        return ($scope.hold_rel_contacts.default_sms.newval) ?
+                                                    $scope.hold_rel_contacts.default_sms.newval :
+                                                    $scope.hold_rel_contacts.default_sms.old;
+                                    },
+                    carriers : function(){ return $scope.sms_carriers.map(function(c){ return egCore.idl.toHash(c) }) }
+                }
+        }).result;
+    }
+    
     $scope.edit_passthru.print = function() {
         var print_data = {patron : $scope.patron}
 

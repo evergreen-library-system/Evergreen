@@ -4549,6 +4549,282 @@ sub copy_has_holds_count {
 }
 
 __PACKAGE__->register_method(
+    method    => "retrieve_holds_by_usr_notify_value_staff",
+    api_name  => "open-ils.circ.holds.retrieve_by_notify_staff",
+    signature => {
+        desc   => "Retrieve the hold, for the specified user using the notify value.  $ses_is_req_note",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'User ID',              type => 'number' },
+            { desc => 'notify value',         type => 'string' },
+            { desc => 'notify_type',          type => 'string' }
+        ],
+        return => {
+            desc => 'Hold objects with transits attached, event on error',
+        }
+    }
+);
+
+sub retrieve_holds_by_usr_notify_value_staff {
+    
+    my($self, $conn, $auth, $usr_id, $contact, $cType) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    $e->checkauth or return $e->event;
+
+    if ($e->requestor->id != $usr_id){
+        $e->allowed('VIEW_HOLD') or return $e->event;
+    }
+
+    my $q = {
+        "select" => { "ahr" => ["id", "sms_notify", "phone_notify", "email_notify", "sms_carrier"]},
+        "from" => "ahr",
+        "where" => {
+            "usr"          =>      $usr_id,
+            "capture_time" =>      undef,
+            "cancel_time"  =>      undef,
+            "fulfillment_time" =>  undef,
+        }
+    };
+
+    if ($cType eq "day_phone" or $cType eq "evening_phone" or
+        $cType eq "other_phone" or $cType eq "default_phone"){
+            $q->{where}->{"-not"} = [
+                { "phone_notify" => { "=" => $contact} },
+                { "phone_notify" => { "<>" => undef } }
+            ];
+    }
+
+
+    if ($cType eq "default_sms") {
+        $q->{where}->{"-not"} = [
+            { "sms_notify" => { "=" => $contact} },
+            { "sms_notify" => { "<>" => undef } }
+        ];
+    }
+
+    if ($cType eq "default_sms_carrier_id") {
+        $q->{where}->{"-not"} = [
+            { "sms_carrier" => { "=" => int($contact)} },
+            { "sms_carrier" => { "<>" => undef } }
+        ];
+    }
+
+    if ($cType =~ /notify/){
+        # this is was notification pref change
+        # we find all unfulfilled holds that match have that pref
+        my $optr = $contact == 1 ? "<>" : "="; # unless it's email, true val means we want to query for not null
+        my $conj = $optr eq '=' ? '-or' : '-and';
+        if ($cType =~ /sms/) {
+            $q->{where}->{$conj} = [ { sms_notify => { $optr => undef } }, { sms_notify => { $optr => '' } } ];
+        }
+        if ($cType =~ /phone/) {
+            $q->{where}->{$conj} = [ { phone_notify => { $optr => undef } }, { phone_notify => { $optr => '' } } ];
+        }
+        if ($cType =~ /email/) {
+            if ($contact) {
+                $q->{where}->{'+ahr'} = 'email_notify';
+            } else {
+                $q->{where}->{'-not'} = {'+ahr' => 'email_notify'};
+            }
+        }
+    }
+
+    my $holds = $e->json_query($q);
+    #$hold_ids = [ map { $_->{id} } @$hold_ids ];
+
+    return $holds;
+}
+
+__PACKAGE__->register_method(
+    method    => "batch_update_holds_by_value_staff",
+    api_name  => "open-ils.circ.holds.batch_update_holds_by_notify_staff",
+    signature => {
+        desc   => "Update a user's specified holds, affected by the contact/notify value change. $ses_is_req_note",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'User ID',              type => 'number' },
+            { desc => 'Hold IDs',             type => 'array'  },
+            { desc => 'old notify value',     type => 'string' },
+            { desc => 'new notify value',     type => 'string' },
+            { desc => 'field name',           type => 'string' },
+            { desc => 'SMS carrier ID',       type => 'number' }
+
+        ],
+        return => {
+            desc => 'Hold objects with transits attached, event on error',
+        }
+    }
+);
+
+sub batch_update_holds_by_value_staff {
+    my($self, $conn, $auth, $usr_id, $hold_ids, $oldval, $newval, $cType, $carrierId) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    $e->checkauth or return $e->event;
+    if ($e->requestor->id != $usr_id){
+        $e->allowed('UPDATE_HOLD') or return $e->event;
+    }
+
+    my @success;
+    for my $id (@$hold_ids) {
+        
+        my $hold = $e->retrieve_action_hold_request($id);
+
+        if ($cType eq "day_phone" or $cType eq "evening_phone" or
+            $cType eq "other_phone" or $cType eq "default_phone") {
+
+            if ($newval eq '') {
+                $hold->clear_phone_notify();
+            }
+            else {
+                $hold->phone_notify($newval);
+            }
+        }
+        
+        if ($cType eq "default_sms"){
+            if ($newval eq '') {
+                $hold->clear_sms_notify();
+                $hold->clear_sms_carrier(); # TODO: prevent orphan sms_carrier, via db trigger
+            }
+            else {
+                $hold->sms_notify($newval);
+                $hold->sms_carrier($carrierId);
+            }
+
+        }
+
+        if ($cType eq "default_sms_carrier_id") {
+            $hold->sms_carrier($newval);
+        }
+
+        if ($cType =~ /notify/){
+            # this is a notification pref change
+            if ($cType =~ /email/) { $hold->email_notify($newval); }
+            if ($cType =~ /sms/ and !$newval) { $hold->clear_sms_notify(); }
+            if ($cType =~ /phone/ and !$newval) { $hold->clear_phone_notify(); }
+            # the other case, where x_notify is changed to true,
+            # is covered by an actual value being assigned
+        }
+
+        $e->update_action_hold_request($hold) or return $e->die_event;
+        push @success, $id;
+    }
+
+    #$e->disconnect;
+    $e->commit; #unless $U->event_code($res);
+    return \@success;
+
+}
+
+
+__PACKAGE__->register_method(
+    method    => "retrieve_holds_by_usr_with_notify",
+    api_name  => "open-ils.circ.holds.retrieve.by_usr.with_notify",
+    signature => {
+        desc   => "Retrieve the hold, for the specified user using the notify value.  $ses_is_req_note",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'User ID',              type => 'number' },
+        ],
+        return => {
+            desc => 'Lists of holds with notification values, event on error',
+        }
+    }
+);
+
+sub retrieve_holds_by_usr_with_notify {
+    
+    my($self, $conn, $auth, $usr_id) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    $e->checkauth or return $e->event;
+
+    if ($e->requestor->id != $usr_id){
+        $e->allowed('VIEW_HOLD') or return $e->event;
+    }
+
+    my $q = {
+        "select" => { "ahr" => ["id", "phone_notify", "email_notify", "sms_carrier", "sms_notify"]},
+        "from" => "ahr",
+        "where" => {
+            "usr"          =>      $usr_id,
+            "capture_time" =>      undef,
+            "cancel_time"  =>      undef,
+            "fulfillment_time" =>  undef,
+        }
+    };
+
+    my $holds = $e->json_query($q);
+    return $holds;
+}
+
+__PACKAGE__->register_method(
+    method    => "batch_update_holds_by_value",
+    api_name  => "open-ils.circ.holds.batch_update_holds_by_notify",
+    signature => {
+        desc   => "Update a user's specified holds, affected by the contact/notify value change. $ses_is_req_note",
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'User ID',              type => 'number' },
+            { desc => 'Hold IDs',             type => 'array'  },
+            { desc => 'old notify value',     type => 'string' },
+            { desc => 'new notify value',     type => 'string' },
+            { desc => 'notify_type',          type => 'string' }
+        ],
+        return => {
+            desc => 'Hold objects with transits attached, event on error',
+        }
+    }
+);
+
+sub batch_update_holds_by_value {
+    my($self, $conn, $auth, $usr_id, $hold_ids, $oldval, $newval, $cType) = @_;
+
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    $e->checkauth or return $e->event;
+    if ($e->requestor->id != $usr_id){
+        $e->allowed('UPDATE_HOLD') or return $e->event;
+    }
+
+    my @success;
+    for my $id (@$hold_ids) {
+        
+        my $hold = $e->retrieve_action_hold_request(int($id));
+
+        if ($cType eq "day_phone" or $cType eq "evening_phone" or
+            $cType eq "other_phone" or $cType eq "default_phone") {
+            # change phone number value on hold
+            $hold->phone_notify($newval);
+        }
+        if ($cType eq "default_sms") {
+            # change SMS number value on hold
+            $hold->sms_notify($newval);
+        }
+
+        if ($cType eq "default_sms_carrier_id") {
+            $hold->sms_carrier(int($newval));
+        }
+
+        if ($cType =~ /notify/){
+            # this is a notification pref change
+            if ($cType =~ /email/) { $hold->email_notify($newval); }
+            if ($cType =~ /sms/ and !$newval) { $hold->clear_sms_notify(); }
+            if ($cType =~ /phone/ and !$newval) { $hold->clear_phone_notify(); }
+            # the other case, where x_notify is changed to true,
+            # is covered by an actual value being assigned
+        }
+
+        $e->update_action_hold_request($hold) or return $e->die_event;
+        push @success, $id;
+    }
+
+    #$e->disconnect;
+    $e->commit; #unless $U->event_code($res);
+    return \@success;
+}
+
+__PACKAGE__->register_method(
     method        => "hold_metadata",
     api_name      => "open-ils.circ.hold.get_metadata",
     authoritative => 1,
@@ -4572,6 +4848,7 @@ __PACKAGE__->register_method(
         }
     }
 );
+
 
 sub hold_metadata {
     my ($self, $client, $hold_type, $hold_targets, $org_id) = @_;

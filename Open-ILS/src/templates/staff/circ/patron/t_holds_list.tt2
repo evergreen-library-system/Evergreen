@@ -87,6 +87,7 @@
   <eg-grid-field path='hold.requestor.id' parent-idl-class="ahr" label="[% l('Requestor ID') %]" hidden></eg-grid-field>
   <eg-grid-field path='hold.requestor.usrname' parent-idl-class="ahr" label="[% l('Requestor Username') %]" hidden></eg-grid-field>
   <eg-grid-field path='hold.sms_carrier.name' parent-idl-class="ahr" label="[% l('Notifications SMS Carrier') %]" hidden></eg-grid-field>
+  <eg-grid-field path='hold.sms_carrier' label="[% l('SMS Carrier') %]" hidden></eg-grid-field>
 
   <eg-grid-field path='part.label' parent-idl-class="bmp" label="[% l('Part') %]" hidden></eg-grid-field>
   <eg-grid-field path='volume.*' parent-idl-class="acn" hidden></eg-grid-field>

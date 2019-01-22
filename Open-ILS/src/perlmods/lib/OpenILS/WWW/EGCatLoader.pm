@@ -225,6 +225,7 @@ sub load {
     return $self->load_myopac_circ_history_export if $path =~ m|opac/myopac/circ_history/export|;
     return $self->load_myopac_circ_history if $path =~ m|opac/myopac/circ_history|;
     return $self->load_myopac_hold_history if $path =~ m|opac/myopac/hold_history|;
+    return $self->load_myopac_prefs_notify_changed_holds if $path =~ m|opac/myopac/prefs_notify_changed_holds|;
     return $self->load_myopac_prefs_notify if $path =~ m|opac/myopac/prefs_notify|;
     return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs_settings|;
     return $self->load_myopac_prefs_my_lists if $path =~ m|opac/myopac/prefs_my_lists|;

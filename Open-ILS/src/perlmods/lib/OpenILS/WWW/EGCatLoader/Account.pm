@@ -235,7 +235,270 @@ sub load_myopac_prefs_notify {
 
     # re-fetch user prefs
     $self->ctx->{updated_user_settings} = \%settings;
+
+    # update holds: check if any changes affect any holds
+    my @llchgs = $self->_parse_prefs_notify_hold_related();
+    my @ffectedChgs;
+
+    if ( $self->cgi->param('hasHoldsChanges') ) {
+        # propagate pref_notify changes to holds
+        for my $chset (@llchgs){
+            # FIXME is this still needed?
+        }
+    
+    }
+    else {
+        my $holds = $U->simplereq('open-ils.circ', 'open-ils.circ.holds.retrieve.by_usr.with_notify',
+            $e->authtoken, $e->requestor->id);
+
+        if (@$holds > 0) {
+
+            my $default_phone_changes = {};
+            my $sms_changes           = {};
+            my $new_phone;
+            my $new_carrier;
+            my $new_sms;
+            for my $chset (@llchgs) {
+                next if scalar(@$chset) < 3;
+                my ($old, $new, $field) = @$chset;
+
+                my $bool = $field =~ /_notify/ ? 1 : 0;
+
+                # find holds that would change
+                my $affected = [];
+                foreach my $hold (@$holds) {
+                    if ($field eq 'email_notify') {
+                        my $curr = $hold->{$field} eq 't' ? 'true' : 'false';
+                        push @$affected, $hold if $curr ne $new;
+                    } elsif ($field eq 'default_phone') {
+                        my $old_phone = $hold->{phone_notify} // '';
+                        $new_phone = $new // '';
+                        push @{ $default_phone_changes->{ $old_phone } }, $hold->{id}
+                            if $old_phone ne $new_phone;
+                    } elsif ($field eq 'phone_notify') {
+                        my $curr = ($hold->{$field} // '' ne '') ? 'true' : 'false';
+                        push @$affected, $hold if $curr ne $new;
+                    } elsif ($field eq 'sms_notify') {
+                        my $curr = ($hold->{$field} // '' ne '') ? 'true' : 'false';
+                        push @$affected, $hold if $curr ne $new;
+                    } elsif ($field eq 'sms_info') {
+                        my $old_carrier = $hold->{'sms_carrier'} // '';
+                        my $old_sms = $hold->{'sms_notify'} // '';
+                        $new_carrier = $new->{carrier} // '';
+                        $new_sms = $new->{sms} // '';
+                        if (!($old_carrier eq $new_carrier && $old_sms eq $new_sms)) {
+                            push @{ $sms_changes->{ join("\t", $old_carrier, $old_sms) } }, $hold->{id};
+                        }
+                    }
+                }
+
+                # append affected array to chset
+                if (scalar(@$affected) > 0){
+                    push(@$chset, [ map { $_->{id} } @$affected ]);
+                    push(@ffectedChgs, $chset);
+                }
+            }
+
+
+            foreach my $old_phone (keys %$default_phone_changes) {
+                push(@ffectedChgs, [ $old_phone, $new_phone, 'default_phone', $default_phone_changes->{$old_phone} ]);
+            }
+            foreach my $old_sms_info (keys %$sms_changes) {
+                my ($old_carrier, $old_sms) = split /\t/, $old_sms_info;
+                push(@ffectedChgs, [
+                                        { carrier => $old_carrier, sms => $old_sms },
+                                        { carrier => $new_carrier, sms => $new_sms },
+                                        'sms_info',
+                                        $sms_changes->{$old_sms_info}
+                                   ]);
+            }
+
+            if ( scalar(@ffectedChgs) ){
+                $self->ctx->{affectedChgs} = \@ffectedChgs;
+            }
+        }
+    }
+
     return $self->_load_user_with_prefs || Apache2::Const::OK;
+}
+
+sub _parse_prefs_notify_hold_related {
+
+    my $self = shift;
+    my $for_update = shift;
+
+    # create an array of change arrays
+    my @chgs;
+
+    my @phone_notify = $self->cgi->multi_param('phone_notify[]');
+    push(@chgs, \@phone_notify) if scalar(@phone_notify);
+
+    my $turning_on_phone_notify  = !$for_update &&
+                                   scalar(@phone_notify) &&
+                                   $phone_notify[1] eq 'true';
+    my $turning_off_phone_notify = !$for_update &&
+                                   scalar(@phone_notify) &&
+                                   $phone_notify[1] eq 'false';
+
+    my $changing_default_phone = 0;
+    if (!$turning_off_phone_notify) {
+        my @default_phone = $self->cgi->multi_param('default_phone[]');
+        if ($for_update) {
+            while (scalar(@default_phone) > 0) {
+                my $chg = [ splice(@default_phone, 0, 4) ];
+                if (scalar(@default_phone) > 0 && $default_phone[0] eq 'on') {
+                    push @$chg, shift(@default_phone);
+                    push(@chgs, $chg);
+                    $changing_default_phone = 1;
+                }
+            }
+        } else {
+            if (scalar(@default_phone)) {
+                push @chgs, \@default_phone;
+                $changing_default_phone = 1;
+            }
+        }
+    }
+
+    if ($turning_on_phone_notify && $changing_default_phone) {
+        # we don't need to have both the phone_notify and default_phone
+        # changes; the latter will suffice
+        @chgs = grep { $_->[2] ne 'phone_notify' } @chgs;
+    } elsif ($turning_on_phone_notify && !$changing_default_phone) {
+        # replace the phone_notify change with a default_phone change
+        @chgs = grep { $_->[2] ne 'phone_notify' } @chgs;
+        my $default_phone = $self->cgi->param('opac.default_phone'); # we assume this is set
+        push @chgs, [ '', $default_phone, 'default_phone' ];
+    }
+
+    # on to SMS
+    # ... since both carrier and number are needed to send an SMS notifcation,
+    # we need to treat the pair as a unit
+    my @sms_notify = $self->cgi->multi_param('sms_notify[]');
+    push(@chgs, \@sms_notify) if scalar(@sms_notify);
+
+    my $turning_on_sms_notify  = !$for_update &&
+                                   scalar(@sms_notify) &&
+                                   $sms_notify[1] eq 'true';
+    my $turning_off_sms_notify = !$for_update &&
+                                   scalar(@sms_notify) &&
+                                   $sms_notify[1] eq 'false';
+
+    my $changing_sms_info = 0;
+    if (!$turning_off_sms_notify) {
+        my @sms_carrier = $self->cgi->multi_param('default_sms_carrier_id[]');
+        my @sms = $self->cgi->multi_param('default_sms[]');
+
+        if (scalar(@sms) || scalar(@sms_carrier)) {
+            my $new_carrier = scalar(@sms_carrier) ? $sms_carrier[1] : $self->cgi->param('sms_carrier');
+            my $new_sms = scalar(@sms) ? $sms[1] : $self->cgi->param('opac.default_sms_notify');
+            push @chgs, [
+                            { carrier => '', sms => '' },
+                            { carrier => $new_carrier, sms => $new_sms },
+                            'sms_info'
+                        ];
+           $changing_sms_info = 1;
+        }
+    }
+
+    my @sms_info = $self->cgi->multi_param('sms_info[]'); # only sent by confirmation page
+    if (scalar(@sms_info)) {
+        while (scalar(@sms_info) > 0) {
+            my $chg = [ splice(@sms_info, 0, 4) ];
+            if (scalar(@sms_info) > 0 && $sms_info[0] eq 'on') {
+                push @$chg, shift(@sms_info);
+                my ($carrier, $sms) = split /,/, $chg->[0], -1;
+                $chg->[0] = { carrier => $carrier, sms => $sms };
+                ($carrier, $sms) = split /,/, $chg->[1], -1;
+                $chg->[1] = { carrier => $carrier, sms => $sms };
+                push(@chgs, $chg);
+                $changing_sms_info = 1;
+            }
+        }
+    }
+
+    if ($turning_on_sms_notify && $changing_sms_info) {
+        # we don't need to have both the sms_notify and sms_info
+        # changes; the latter will suffice
+        @chgs = grep { $_->[2] ne 'sms_notify' } @chgs;
+    } elsif ($turning_on_sms_notify && !$changing_sms_info) {
+        # replace the sms_notify change with a sms_info change
+        @chgs = grep { $_->[2] ne 'sms_notify' } @chgs;
+        my $sms_info = {
+            carrier => $self->cgi->param('sms_carrier'),
+            sms     => $self->cgi->param('opac.default_sms_notify'),
+        };
+        push @chgs, [ { carrier => '', sms => ''}, $sms_info, 'sms_info' ];
+    }
+
+    my @email_notify = $self->cgi->multi_param('email_notify[]');
+    push(@chgs, \@email_notify) if scalar(@email_notify);
+
+    if ($for_update) {
+        # if we're updating, keep only the ones that have been
+        # explicitly checked by the user
+        @chgs = grep { scalar(@$_) == 5 && $_->[4] eq 'on' } @chgs;
+    }
+    return @chgs;
+}
+
+sub load_myopac_prefs_notify_changed_holds {
+    my $self = shift;
+    my $e = $self->editor;
+
+    my $hasChanges = $self->cgi->param('hasHoldsChanges');
+    
+    return $self->_load_user_with_prefs || Apache2::Const::OK unless $hasChanges;
+
+    my @ll = $self->_parse_prefs_notify_hold_related(1);
+
+    my @updates;
+    for my $chset (@ll){
+        my ($old, $new, $type, $holdids, $doit) = @$chset;
+        next if $doit ne 'on';
+        
+        # parse string list into array list
+        my @holdids = split(',', $holdids);
+        
+        if ($type =~ /_notify/){
+            # translate true/false string into 1/0
+            $old = $old eq 'true' ? 1 : 0;
+            $new = $new eq 'true' ? 1 : 0;
+        }
+
+        my $update;
+        if ($type eq 'sms_info') {
+            if ($new->{carrier} eq '' && $new->{sms} eq '') {
+                # clear SMS number first to avoid check contrainst issue
+                $update = $U->simplereq('open-ils.circ', "open-ils.circ.holds.batch_update_holds_by_notify",
+                    $e->authtoken, $e->requestor->id, [@holdids], $old->{sms}, $new->{sms}, 'default_sms');
+                push (@updates, $update) if (scalar(@$update) > 0);
+                $update = $U->simplereq('open-ils.circ', "open-ils.circ.holds.batch_update_holds_by_notify",
+                    $e->authtoken, $e->requestor->id, [@holdids], $old->{carrier}, $new->{carrier}, 'default_sms_carrier_id');
+                push (@updates, $update) if (scalar(@$update) > 0);
+            } else {
+                $update = $U->simplereq('open-ils.circ', "open-ils.circ.holds.batch_update_holds_by_notify",
+                    $e->authtoken, $e->requestor->id, [@holdids], $old->{carrier}, $new->{carrier}, 'default_sms_carrier_id');
+                push (@updates, $update) if (scalar(@$update) > 0);
+                $update = $U->simplereq('open-ils.circ', "open-ils.circ.holds.batch_update_holds_by_notify",
+                    $e->authtoken, $e->requestor->id, [@holdids], $old->{sms}, $new->{sms}, 'default_sms');
+                push (@updates, $update) if (scalar(@$update) > 0);
+            }
+        } else {
+            $update = $U->simplereq('open-ils.circ', "open-ils.circ.holds.batch_update_holds_by_notify",
+                $e->authtoken, $e->requestor->id, [@holdids], $old, $new, $type);
+
+            # append affected array to chset
+            if (scalar(@$update) > 0){
+                push(@updates, $update);
+            }
+        }
+    }
+
+    $self->ctx->{'updated'} = \@updates;
+
+    return $self->_load_user_with_prefs || Apache2::Const::OK;
+
 }
 
 sub fetch_optin_prefs {
@@ -959,6 +1222,10 @@ sub handle_hold_update {
             my $val = {"id" => $_};
             $val->{"frozen"} = $self->cgi->param("frozen");
             $val->{"pickup_lib"} = $self->cgi->param("pickup_lib");
+            $val->{"email_notify"} = $self->cgi->param("email_notify") ? 1 : 0;
+            $val->{"phone_notify"} = $self->cgi->param("phone_notify");
+            $val->{"sms_notify"} = $self->cgi->param("sms_notify");
+            $val->{"sms_carrier"} = int($self->cgi->param("sms_carrier")) if $val->{"sms_notify"};
 
             for my $field (qw/expire_time thaw_date/) {
                 # XXX TODO make this support other date formats, not just

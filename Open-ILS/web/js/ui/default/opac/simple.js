@@ -119,3 +119,198 @@ function exclude_onchange(checkbox) {
 
     checkbox.form.submit();
 }
+
+// prefs notify update holds-related code
+var hold_notify_prefs = [];
+document.addEventListener("DOMContentLoaded", function() {
+    var form = document.getElementById('hold_notify_form');
+    if (!form) return;
+    var els = form.elements;
+    for (i = 0; i < els.length; i++){
+        var e = els[i];
+        if (e.id.startsWith("opac") || e.id == 'sms_carrier'){
+            hold_notify_prefs.push({
+                name : e.id,
+                oldval : e.type == 'checkbox' ? e.checked : e.value,
+                newval : null
+            });
+            // set required attribute input fields that need it
+            if (e.id.includes('hold_notify') && !e.id.includes('email')){
+                var fieldToReq = e.id.includes('sms') ? 'opac.default_sms_notify' : 'opac.default_phone';
+                toggle_related_required(fieldToReq, e.checked);
+            }
+
+        }
+    }
+    form.addEventListener('submit', addHoldUpdates);
+});
+
+function appendChgInputs(chg){
+    // server-side we'll parse the param as an array where:
+    // [ #oldval, #newval, #name, [#arr of affected holds], #propagateBool ]
+    // this first POST will set the first three, and the confirmation interstitial
+    // the rest.
+    var form = document.getElementById('hold_notify_form');
+
+    var inputold = document.createElement('input');
+    inputold.setAttribute('type', 'hidden');
+    inputold.setAttribute('name', chg.name + '[]');
+    inputold.setAttribute('value', chg.oldval);
+    form.appendChild(inputold);
+
+    var inputnew = document.createElement('input');
+    inputnew.setAttribute('type', 'hidden');
+    inputnew.setAttribute('name', chg.name + '[]');
+    inputnew.setAttribute('value', chg.newval);
+    form.appendChild(inputnew);
+
+    var inputname = document.createElement('input');
+    inputname.setAttribute('type', 'hidden');
+    inputname.setAttribute('name', chg.name + '[]');
+    inputname.setAttribute('value', chg.name);
+    form.appendChild(inputname);
+}
+
+function addHoldUpdates(){
+    paramTranslate(hold_notify_prefs).forEach(function(chg){
+        // only append a change if it actually changed from
+        // what we had server-side originally
+        if (chg.newval != null && chg.oldval != chg.newval) appendChgInputs(chg);
+    });
+    return true;
+}
+
+function chkPh(number){
+    // normalize phone # for comparison, only digits
+    if (number == null || number == undefined) return '';
+    var regex = /[^\d]/g;
+    return number.replace(regex, '');
+}
+
+function idxOfName(n){
+    return hold_notify_prefs.findIndex(function(e){ return e.name === n});
+}
+
+function record_change(evt){
+    var field = evt.target;
+    switch(field.id){
+        case "opac.hold_notify.email":
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            chg.newval = field.checked;
+            break;
+        case "opac.hold_notify.phone":
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            chg.newval = field.checked;
+            toggle_related_required('opac.default_phone', chg.newval);
+            break;
+        case "opac.hold_notify.sms":
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            chg.newval = field.checked;
+            toggle_related_required('opac.default_sms_notify', chg.newval);
+            break;
+        case "sms_carrier": // carrier id string
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            chg.newval = field.value;
+            break;
+        case "opac.default_phone":
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            if (chkPh(field.value) != chkPh(chg.oldval)){
+                chg.newval = field.value;
+            }
+            break;
+        case "opac.default_sms_notify":
+            var chg = hold_notify_prefs[idxOfName(field.id)]
+            if (chkPh(field.value) != chkPh(chg.oldval)){
+                chg.newval = field.value;
+                toggle_related_required('sms_carrier', chg.newval ? true : false);
+            }
+            break;
+    }
+}
+
+// there are the param values for the changed fields we expect server-side
+function paramTranslate(chArr){
+    return chArr.map(function(ch){
+        var n = "";
+        switch(ch.name){
+            case "opac.hold_notify.email":
+                n = "email_notify";
+                break;
+            case "opac.hold_notify.phone":
+                n = "phone_notify";
+                break;
+            case "opac.hold_notify.sms":
+                n = "sms_notify";
+                break;
+            case "sms_carrier": // carrier id string
+                n = "default_sms_carrier_id";
+                break;
+            case "opac.default_phone":
+                n = "default_phone";
+                break;
+            case "opac.default_sms_notify":
+                n = "default_sms";
+                break;
+        }
+        return { name : n, oldval : ch.oldval, newval : ch.newval };
+    });
+}
+
+function updateHoldsCheck() {
+    // just dynamically add an input that flags that we have
+    // holds-related updates
+    var form = document.getElementById('hold_updates_form');
+    if (!form) return;
+    var els = form.elements;
+    var isValid = false;
+    for (i = 0; i < els.length; i++){
+        var e = els[i];
+        if (e.type == "checkbox" && e.checked){
+            var flag = document.createElement('input');
+            flag.setAttribute('name', 'hasHoldsChanges');
+            flag.setAttribute('type', 'hidden');
+            flag.setAttribute('value', 1);
+            form.appendChild(flag);
+            isValid = true;
+            return isValid;
+        }
+    }
+
+    alert("No option selected.");
+    return isValid;
+}
+
+function check_sms_carrier(e){
+    var sms_num = e.target;
+    // if sms number has anything in it that's not just whitespace, then require a carrier
+    if (!sms_num.value.match(/\S+/)) return;
+
+    var carrierSelect = document.getElementById('sms_carrier');
+    if (carrierSelect.selectedIndex == 0){
+        carrierSelect.setAttribute("required", "");
+    }
+
+}
+
+function canSubmit(evt){
+   // check hold updates form to see if we have any selected
+   // enable the submit button if we do
+    var form = document.getElementById('hold_updates_form');
+    var submit = form.querySelector('input[type="submit"]');
+    if (!form || !submit) return;
+    var els = form.elements;
+    for (i = 0; i < els.length; i++){
+        var e = els[i];
+        if (e.type == "checkbox" && !e.hidden && e.checked){
+            submit.removeAttribute("disabled");
+            return;
+        }
+    }
+
+    submit.setAttribute("disabled","");
+}
+
+function toggle_related_required(id, isRequired){
+    var input = document.getElementById(id);
+    input.required = isRequired;
+}

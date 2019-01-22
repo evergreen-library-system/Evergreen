@@ -1,0 +1,42 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="ok('no-update')"
+    aria-hidden="true">&times;</button>
+  <h4 class="modal-title">[% l('Update Hold Notification Info?') %]</h4>
+</div>
+<div class="modal-body">
+<form name="updateHoldsForm">
+  <div class="row" ng-repeat="f in ch_fields">
+    <div class="col-md-11">
+      <span ng-switch="f.name">
+        <span ng-switch-when="phone_notify">[% l("You have set Notify by Phone to '[_1]'", '{{prettyBool(f.newval)}}') %]</span>
+        <span ng-switch-when="sms_notify">[% l("You have set Notify by SMS to '[_1]'", '{{prettyBool(f.newval)}}') %]</span>
+        <span ng-switch-when="email_notify">[% l("You have set Notify by Email to '[_1]'", '{{prettyBool(f.newval)}}') %]</span>
+        <span ng-switch-when="default_phone">[% l("You have set Default Phone Number to '[_1]'", '{{f.newval}}') %]</span>
+        <span ng-switch-when="default_sms">[% l("You have set Default SMS/Text Number to '[_1]'", '{{f.newval}}') %]</span>
+        <span ng-switch-when="default_sms_carrier_id">[% l("You have set Default SMS Carrier to '[_1]'", '{{prettyCarrier(f.newval)}}') %]</span>
+      </span>
+      <ul style="padding-left:0" ng-if="isNumberCh(f)" class="list-unstyled">
+        <li ng-repeat="(k, h) in f.groups" style="margin-left: 20px">
+          <input id="{{f.name + h[0].id}}" type="checkbox" ng-model="h.isChecked" ng-change="groupChanged(f, k)" style="position: absolute" />
+          <label ng-if="f.newval" for="{{f.name + h[0].id}}" style="padding-left: 1.5em">[% l("'[_1]' is currently used for [_2] hold(s). Update to '[_3]'?", "{{k}}", "{{f.groups[k].length}}", "{{f.newval ? f.newval : '(null)'}}") %]</label>
+          <label ng-if="!f.newval" for="{{f.name + h[0].id}}" style="padding-left: 1.5em">[% l("'[_1]' is currently used for [_2] hold(s). Remove that from the hold(s)?", "{{k}}", "{{f.groups[k].length}}") %]</label>
+        </li>
+      </ul>
+      <ul style="padding-left:0" ng-if="!isNumberCh(f)" class="list-unstyled">
+        <li style="margin-left: 20px">
+          <input id="{{f.name}}" type="checkbox" ng-model="f.isChecked" ng-change="nonGrpChanged(f)" style="position: absolute" />
+          <label ng-if="f.name.includes('sms_carrier')" for="{{f.name}}" style="padding-left: 1.5em">[% l("A carrier other than '[_1]' is currently used in [_2] hold(s). Update to '[_3]'?", "{{prettyCarrier(f.newval)}}", "{{f.affects.length}}", "{{prettyCarrier(f.newval)}}") %]</label>
+          <label ng-if="!f.name.includes('sms_carrier')" for="{{f.name}}" style="padding-left: 1.5em">[% l("[_1] hold(s) have it set to [_2]. Update to [_3]?", "{{f.affects.length}}", "{{prettyBool(f.old)}}", "{{prettyBool(f.newval)}}") %]</label>
+        </li>
+      </ul>
+    </div>
+  </div>
+<div class="modal-footer">
+  <div class="row">
+    <div class="col-md-10 pull-right">
+      <input type="submit" class="btn btn-primary" ng-disabled="chgCt < 1" ng-click="ok()" value="[% l('Update Holds') %]"/>
+      <input type="submit" class="btn btn-warning" ng-click="ok('no-update')" value="[% l('Do Not Update Holds') %]"/>
+    </div>
+  </div>
+
+</div>
