@@ -42,7 +42,10 @@ export class GridToolbarComponent implements OnInit {
     }
 
     shouldDisableAction(action: GridToolbarAction) {
-        return action.disableOnRows(this.gridContext.getSelectedRows());
+        if (action.disableOnRows) {
+            return action.disableOnRows(this.gridContext.getSelectedRows());
+        }
+        return false;
     }
 
     printHtml() {
