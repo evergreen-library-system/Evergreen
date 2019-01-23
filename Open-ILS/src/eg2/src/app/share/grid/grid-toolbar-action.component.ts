@@ -31,9 +31,7 @@ export class GridToolbarActionComponent implements OnInit {
         const action = new GridToolbarAction();
         action.label = this.label;
         action.action = this.action;
-
-        action.disableOnRows = (this.disableOnRows === null) ?
-            (rows: any[]) => false : this.disableOnRows;
+        action.disableOnRows = this.disableOnRows;
 
         this.grid.context.toolbarActions.push(action);
     }

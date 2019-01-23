@@ -113,7 +113,7 @@ export class SandboxComponent implements OnInit {
         };
 
         this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
-        this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length != 1);
+        this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
 
     }
 
