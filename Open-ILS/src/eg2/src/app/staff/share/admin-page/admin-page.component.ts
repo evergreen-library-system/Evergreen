@@ -177,9 +177,11 @@ export class AdminPageComponent implements OnInit {
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 },
-                err => {
-                    this.createErrString.current()
-                        .then(str => this.toast.danger(str));
+                rejection => {
+                    if (!rejection.dismissed) {
+                        this.createErrString.current()
+                            .then(str => this.toast.danger(str));
+                    }
                 }
             );
         };
@@ -323,9 +325,11 @@ export class AdminPageComponent implements OnInit {
                     .then(str => this.toast.success(str));
                 this.grid.reload();
             },
-            err => {
-                this.updateFailedString.current()
-                    .then(str => this.toast.danger(str));
+            rejection => {
+                if (!rejection.dismissed) {
+                    this.updateFailedString.current()
+                        .then(str => this.toast.danger(str));
+                }
             }
         );
     }
