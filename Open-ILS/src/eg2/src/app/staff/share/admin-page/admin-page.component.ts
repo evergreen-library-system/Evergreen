@@ -163,13 +163,14 @@ export class AdminPageComponent implements OnInit {
 
             // Edit each IDL thing one at a time
             const editOneThing = (thing: IdlObject) => {
-                if (!thing) return;
+                if (!thing) { return; }
 
                 this.showEditDialog(thing).then(
                     () => editOneThing(idlThings.shift()));
-            }
+            };
 
-            editOneThing(idlThings.shift()); };
+            editOneThing(idlThings.shift());
+        };
 
         this.createNew = () => {
             this.editDialog.mode = 'create';
