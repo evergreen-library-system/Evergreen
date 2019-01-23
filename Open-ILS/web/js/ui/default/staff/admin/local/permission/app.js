@@ -14,6 +14,15 @@ angular.module('egAdminPermGrpTreeApp',
         resolve : resolver
     });
 
+    // catch admin/local/permission/grp_penalty_threshold
+    var eframe_template = 
+        '<eg-embed-frame allow-escape="true" min-height="min_height" url="local_admin_url" handlers="funcs"></eg-embed-frame>';
+    $routeProvider.when('/admin/local/:schema/:page', {
+        template: eframe_template,
+        controller: 'EmbedConifyCtl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/admin/local/permission/grp_tree'});
 })
 
@@ -433,4 +442,26 @@ function($scope , $q , $timeout , $location , $uibModal , egCore , egPermGrpTree
     egCore.startup.go(function() {
         $scope.refreshTree(egCore.auth.user().ws_ou());
     });
+}])
+
+.controller('EmbedConifyCtl', 
+       ['$scope','$routeParams','$location','egCore',
+function($scope , $routeParams , $location , egCore) {
+
+    $scope.funcs = {
+        ses : egCore.auth.token(),
+    }
+
+    var conify_path = '/eg/conify/global/' + 
+        $routeParams.schema + '/' + $routeParams.page;
+
+    $scope.min_height = 800;
+
+    // embed URL must include protocol/domain or it will be loaded via
+    // push-state, resulting in an infinitely nested pages.
+    $scope.local_admin_url = 
+        $location.absUrl().replace(/\/eg\/staff.*/, conify_path);
+
+    console.log('Loading local admin URL: ' + $scope.local_admin_url);
+
 }])
