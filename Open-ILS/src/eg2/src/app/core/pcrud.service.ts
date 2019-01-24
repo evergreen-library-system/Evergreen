@@ -233,12 +233,16 @@ export class PcrudContext {
                     res => observer.next(res),
                     err => observer.error(err),
                     ()  => {
-                        this.xactClose().toPromise().then(() => {
-                            // 5. disconnect
-                            this.disconnect();
-                            // 6. all done
-                            observer.complete();
-                        });
+                        this.xactClose().toPromise().then(
+                            ok => {
+                                // 5. disconnect
+                                this.disconnect();
+                                // 6. all done
+                                observer.complete();
+                            },
+                            // xact close error
+                            err => observer.error(err)
+                        );
                     }
                 );
             });
