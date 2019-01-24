@@ -73,9 +73,8 @@ export class Tree {
                 // Avoid adding hidden child nodes to the list.
             } else {
                 nodes.push(node);
+                node.children.forEach(n => recurseTree(n, depth, !node.expanded));
             }
-
-            node.children.forEach(n => recurseTree(n, depth, !node.expanded));
         };
 
         recurseTree(this.rootNode, 0, false);
