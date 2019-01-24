@@ -47,6 +47,7 @@ export class TreeComponent implements OnInit {
     ngOnInit() {}
 
     displayNodes(): TreeNode[] {
+        if (!this.tree) { return []; }
         return this.tree.nodeList(true);
     }
 

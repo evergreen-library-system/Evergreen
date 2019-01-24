@@ -1,0 +1,90 @@
+<eg-staff-banner bannerText="Org Unit Type Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-template #editStrTmpl i18n>Org Unit Type Update Succeeded</ng-template>
+<eg-string #editString [template]="editStrTmpl"></eg-string>
+
+<ng-template #createStrTmpl i18n>Org Unit Type Succeessfully Created</ng-template>
+<eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-template #errorStrTmpl i18n>Org Unit Type Update Failed</ng-template>
+<eg-string #errorString [template]="errorStrTmpl"></eg-string>
+
+<eg-confirm-dialog #delConfirm 
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Delete"
+  dialogBody="Delete Org Unit Type {{selected ? selected.label : ''}}?">
+</eg-confirm-dialog>
+
+<eg-fm-record-editor #editDialog idlClass="aout" readonlyFields="depth,parent">
+</eg-fm-record-editor>
+
+<div class="row">
+  <div class="col-lg-4">
+    <h3 i18n>Org Unit Types</h3>
+    <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
+  </div>
+  <div class="col-lg-8">
+    <h3 i18n class="mb-3">Selected Org Unit Type</h3>
+    <ng-container *ngIf="!selected">
+      <div class="alert alert-info font-italic" i18n>
+        Select an org unit type from the tree on the left.
+      </div>
+    </ng-container>
+    <div *ngIf="selected" class="common-form striped-even">
+      <div class="row">
+        <div class="col-lg-3">
+          <label i18n>Actions for Selected: </label>
+        </div>
+        <div class="col-lg-9">
+          <button class="btn btn-info mr-2" (click)="edit()" i18n>Edit</button>
+          <button class="btn btn-info mr-2" (click)="addChild()" i18n>Add Child</button>
+          <button class="btn btn-warning mr-2" (click)="remove()" i18n>Delete</button>
+        </div>
+      </div>
+      <div class="row">
+        <!-- TODO: use FmRecordEditPaneComponent once it exists -->
+        <div class="col-lg-4">
+          <label i18n>Name: </label>
+        </div>
+        <div class="col-lg-8 font-weight-bold">
+          {{selected.callerData.name()}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <label i18n>Label: </label>
+        </div>
+        <div class="col-lg-8 font-weight-bold">
+          {{selected.callerData.opac_label()}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <label i18n>Can Have Users: </label>
+        </div>
+        <div class="col-lg-8 font-weight-bold">
+          <!-- TODO: use <eg-bool/> once merged-->
+          {{selected.callerData.can_have_users() == 't'}}
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-lg-4">
+            <label i18n>Can Have Volumes: </label>
+          </div>
+          <div class="col-lg-8 font-weight-bold">
+            <!-- TODO: use <eg-bool/> once merged-->
+            {{selected.callerData.can_have_vols() == 't'}}
+          </div>
+        </div>
+      <div class="row">
+        <div class="col-lg-4">
+          <label i18n>Depth: </label>
+        </div>
+        <div class="col-lg-8 font-weight-bold">
+          {{selected.callerData.depth()}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

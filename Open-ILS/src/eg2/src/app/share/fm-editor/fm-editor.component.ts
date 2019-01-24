@@ -85,7 +85,6 @@ export class FmRecordEditorComponent
     recId: any;
 
     // IDL record we are editing
-    // TODO: allow this to be update in real time by the caller?
     record: IdlObject;
 
     // Permissions extracted from the permacrud defs in the IDL
@@ -180,6 +179,13 @@ export class FmRecordEditorComponent
         );
     }
 
+    // Set the record value and clear the recId value to
+    // indicate the record is our current source of data.
+    setRecord(record: IdlObject) {
+        this.record = record;
+        this.recId = null;
+    }
+
     // Translate comma-separated string versions of various inputs
     // to arrays.
     private listifyInputs() {
@@ -207,8 +213,16 @@ export class FmRecordEditorComponent
         };
 
         if (this.mode === 'update' || this.mode === 'view') {
-            return this.pcrud.retrieve(this.idlClass, this.recId)
-            .toPromise().then(rec => {
+
+            let promise;
+            if (this.record && this.recId === null) {
+                promise = Promise.resolve(this.record);
+            } else {
+                promise = 
+                    this.pcrud.retrieve(this.idlClass, this.recId).toPromise();
+            }
+
+            return promise.then(rec => {
 
                 if (!rec) {
                     return Promise.reject(`No '${this.idlClass}'
@@ -224,7 +238,9 @@ export class FmRecordEditorComponent
         // create a new record from scratch or from a stub record
         // provided by the caller.
         this.pkeyIsEditable = !('pkey_sequence' in this.idlDef);
-        if (!this.record) {
+        if (!this.record || this.recId) {
+            // user provided no seed record, create one.
+            this.recId = null;
             this.record = this.idl.create(this.idlClass);
         }
         return this.getFieldList();
