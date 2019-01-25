@@ -302,11 +302,13 @@ export class AdminPageComponent implements OnInit {
 
                 const search = {};
                 search[this.orgField] = orgs;
-                return this.pcrud.search(this.idlClass, search, searchOps);
+                return this.pcrud.search(
+                    this.idlClass, search, searchOps, {fleshSelectors: true});
             }
 
             // No org filter -- fetch all rows
-            return this.pcrud.retrieveAll(this.idlClass, searchOps);
+            return this.pcrud.retrieveAll(
+                this.idlClass, searchOps, {fleshSelectors: true});
         };
     }
 

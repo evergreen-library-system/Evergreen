@@ -273,9 +273,8 @@ export class FmRecordEditorComponent
                     // linked data so we can display the data within the selector
                     // field.  Otherwise, avoid the network lookup and let the
                     // bare value (usually an ID) be displayed.
-                    const idField = this.idl.classes[field.class].pkey;
                     const selector =
-                        this.idl.classes[field.class].field_map[idField].selector;
+                        this.idl.getLinkSelector(this.idlClass, field.name);
 
                     if (selector && selector !== field.name) {
                         promises.push(

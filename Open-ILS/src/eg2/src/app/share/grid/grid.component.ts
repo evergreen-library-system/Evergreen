@@ -80,6 +80,20 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // grid data.
     @Input() pageOffset: number;
 
+    // If true and an idlClass is specificed, the grid assumes
+    // datatype=link fields that link to classes which define a selector
+    // are fleshed with the linked object.  And, instead of displaying
+    // the raw field value, displays the selector value from the linked
+    // object.  The caller is responsible for fleshing the appropriate
+    // fields in the GridDataSource getRows handler.
+    //
+    // This only applies to auto-generated columns.
+    //
+    // For example, idlClass="aou" and field="ou_type", the display
+    // value will be ou_type().name() since "name" is the selector
+    // field on the "aout" class.
+    @Input() showLinkSelectors: boolean;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -112,6 +126,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;
         this.context.disableSelect = this.disableSelect === true;
+        this.context.showLinkSelectors = this.showLinkSelectors === true;
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.rowFlairCallback = this.rowFlairCallback;

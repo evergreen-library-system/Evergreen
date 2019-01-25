@@ -49,7 +49,7 @@
 <eg-translate #translator></eg-translate>
 
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
-    [sortable]="true" persistKey="{{persistKey}}">
+    [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
   </eg-grid-toolbar-button>

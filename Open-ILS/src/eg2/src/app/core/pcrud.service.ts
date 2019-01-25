@@ -13,6 +13,10 @@ interface PcrudReqOps {
     anonymous?: boolean;
     idlist?: boolean;
     atomic?: boolean;
+    // If true, link-type fields which link to a class that defines a
+    // selector will be fleshed with the linked value.  This affects
+    // retrieve(), retrieveAll(), and search() calls.
+    fleshSelectors?: boolean;
 }
 
 // For for documentation purposes.
@@ -86,10 +90,42 @@ export class PcrudContext {
         this.session.disconnect();
     }
 
+    // Adds "flesh" logic to retrieve linked values for all fields
+    // that link to a class which defines a selector field.
+    applySelectorFleshing(fmClass: string, pcrudOps: any) {
+        pcrudOps = pcrudOps || {};
+
+        if (!pcrudOps.flesh) {
+            pcrudOps.flesh = 1;
+        }
+
+        if (!pcrudOps.flesh_fields) {
+            pcrudOps.flesh_fields = {};
+        }
+
+        this.idl.classes[fmClass].fields
+        .filter(f => f.datatype === 'link' && !f.virtual)
+        .forEach(field => {
+            const selector = this.idl.getLinkSelector(fmClass, field.name);
+            if (!selector) { return; }
+
+            if (!pcrudOps.flesh_fields[fmClass]) {
+                pcrudOps.flesh_fields[fmClass] = [];
+            }
+
+            if (pcrudOps.flesh_fields[fmClass].indexOf(field.name) < 0) {
+                pcrudOps.flesh_fields[fmClass].push(field.name);
+            }
+        });
+    }
+
     retrieve(fmClass: string, pkey: Number | string,
             pcrudOps?: any, reqOps?: PcrudReqOps): Observable<PcrudResponse> {
         reqOps = reqOps || {};
         this.authoritative = reqOps.authoritative || false;
+        if (reqOps.fleshSelectors) {
+            this.applySelectorFleshing(fmClass, pcrudOps);
+        }
         return this.dispatch(
             `open-ils.pcrud.retrieve.${fmClass}`,
              [this.token(reqOps), pkey, pcrudOps]);
@@ -111,6 +147,10 @@ export class PcrudContext {
         let method = `open-ils.pcrud.${returnType}.${fmClass}`;
 
         if (reqOps.atomic) { method += '.atomic'; }
+
+        if (reqOps.fleshSelectors) {
+            this.applySelectorFleshing(fmClass, pcrudOps);
+        }
 
         return this.dispatch(method, [this.token(reqOps), search, pcrudOps]);
     }

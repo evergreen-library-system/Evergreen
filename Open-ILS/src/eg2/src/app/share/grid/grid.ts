@@ -437,6 +437,7 @@ export class GridContext {
     defaultVisibleFields: string[];
     defaultHiddenFields: string[];
     overflowCells: boolean;
+    showLinkSelectors: boolean;
 
     // Services injected by our grid component
     idl: IdlService;
@@ -624,12 +625,11 @@ export class GridContext {
 
     getRowColumnValue(row: any, col: GridColumn): string {
         let val;
-        if (col.name in row) {
+
+        if (col.path) {
+            val = this.nestedItemFieldValue(row, col);
+        } else if (col.name in row) {
             val = this.getObjectFieldValue(row, col.name);
-        } else {
-            if (col.path) {
-                val = this.nestedItemFieldValue(row, col);
-            }
         }
 
         return this.format.transform({
@@ -657,7 +657,7 @@ export class GridContext {
         for (let i = 0; i < steps.length; i++) {
             const step = steps[i];
 
-            if (typeof obj !== 'object') {
+            if (obj === null || obj === undefined || typeof obj !== 'object') {
                 // We have run out of data to step through before
                 // reaching the end of the path.  Conclude fleshing via
                 // callback if provided then exit.
@@ -861,6 +861,15 @@ export class GridContext {
             col.datatype = field.datatype;
             col.isIndex = (field.name === pkeyField);
             col.isAuto = true;
+
+            if (this.showLinkSelectors) {
+                const selector = this.idl.getLinkSelector(
+                    this.columnSet.idlClass, field.name);
+                if (selector) {
+                    col.path = field.name + '.' + selector;
+                }
+            }
+
             this.columnSet.add(col);
         });
     }
