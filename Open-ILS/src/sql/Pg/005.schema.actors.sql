@@ -399,7 +399,8 @@ CREATE TRIGGER actor_org_unit_parent_protect_trigger
 
 CREATE TABLE actor.org_lasso (
     id      SERIAL  PRIMARY KEY,
-    name   	TEXT    UNIQUE
+    name   	TEXT    UNIQUE,
+    global  BOOL    NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE actor.org_lasso_map (

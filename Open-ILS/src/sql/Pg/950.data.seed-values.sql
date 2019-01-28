@@ -1952,7 +1952,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 627, 'SSO_ADMIN', oils_i18n_gettext(627,
     'Modify patron SSO settings', 'ppl', 'description')),
  ( 628, 'MANAGE_HOLD_GROUPS', oils_i18n_gettext(628,
-    'Manage batch (subscription) hold events', 'ppl', 'description'))
+    'Manage batch (subscription) hold events', 'ppl', 'description')),
+ ( 629, 'ADMIN_LIBRARY_GROUPS', oils_i18n_gettext(629,
+    'Administer library groups', 'ppl', 'description'))
 ;
 
 

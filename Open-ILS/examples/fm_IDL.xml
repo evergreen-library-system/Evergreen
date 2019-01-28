@@ -6369,26 +6369,30 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
-	<class id="lasso" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso" oils_persist:tablename="actor.org_lasso" reporter:label="Org Lasso">
+	<class id="lasso" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso" oils_persist:tablename="actor.org_lasso" reporter:label="Library Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="name" reporter:datatype="text"/>
+			<field reporter:label="Library Group ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text"/>
+			<field reporter:label="Global?" name="global" reporter:datatype="bool"/>
+			<field reporter:label="Maps" name="maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
-		<links/>
+		<links>
+			<link field="maps" reltype="has_many" key="lasso" map="" class="lmap"/>
+        </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_LASSO" global_required="true"/>
-                <retrieve permission="CREATE_LASSO UPDATE_LASSO DELETE_LASSO" global_required="true"/>
-                <update permission="UPDATE_LASSO" global_required="true"/>
-                <delete permission="DELETE_LASSO" global_required="true"/>
+                <create permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
+                <delete permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
             </actions>
         </permacrud>
 	</class>
-	<class id="lmap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso_map" oils_persist:tablename="actor.org_lasso_map" reporter:label="Org Lasso Map">
+	<class id="lmap" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_lasso_map" oils_persist:tablename="actor.org_lasso_map" reporter:label="Library Group Map">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_lasso_map_id_seq">
-			<field name="id" reporter:datatype="id" />
-			<field name="lasso" reporter:datatype="link"/>
-			<field name="org_unit" reporter:datatype="org_unit"/>
+			<field reporter:label="Library Group Map ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Library Group" name="lasso" reporter:datatype="link"/>
+			<field reporter:label="Organizational Unit" name="org_unit" reporter:datatype="org_unit"/>
 		</fields>
 		<links>
 			<link field="lasso" reltype="has_a" key="id" map="" class="lasso"/>
@@ -6396,10 +6400,10 @@ SELECT  usr,
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
-                <create permission="CREATE_LASSO_MAP" global_required="true"/>
-                <retrieve permission="CREATE_LASSO_MAP UPDATE_LASSO_MAP DELETE_LASSO_MAP" global_required="true"/>
-                <update permission="UPDATE_LASSO_MAP" global_required="true"/>
-                <delete permission="DELETE_LASSO_MAP" global_required="true"/>
+                <create permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
+                <retrieve/>
+                <update permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
+                <delete permission="ADMIN_LIBRARY_GROUPS" global_required="true"/>
             </actions>
         </permacrud>
 	</class>

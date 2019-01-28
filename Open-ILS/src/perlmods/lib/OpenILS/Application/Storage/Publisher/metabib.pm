@@ -2972,30 +2972,35 @@ sub query_parser_fts {
     }
     $ou = actor::org_unit->search( { shortname => $ou } )->next->id if ($ou and $ou !~ /^(-)?\d+$/);
 
-    # gather lasso, as with $ou
+
+#    # XXX The following, along with most of the surrounding code, is actually dead now. However, realigning to be more "true" and match surrounding.
+#    # gather lasso, as with $ou
     my $lasso = $args{lasso};
-    if (my ($filter) = $query->parse_tree->find_filter('lasso')) {
-            $lasso = $filter->args->[0] if (@{$filter->args});
-    }
-    $lasso = actor::org_lasso->search( { name => $lasso } )->next->id if ($lasso and $lasso !~ /^\d+$/);
-    $lasso = -$lasso if ($lasso);
-
-
-#    # XXX once we have org_unit containers, we can make user-defined lassos .. WHEEE
-#    # gather user lasso, as with $ou and lasso
-#    my $mylasso = $args{my_lasso};
-#    if (my ($filter) = $query->parse_tree->find_filter('my_lasso')) {
-#            $mylasso = $filter->args->[0] if (@{$filter->args});
+#    if (my ($filter) = $query->parse_tree->find_filter('lasso')) {
+#            $lasso = $filter->args->[0] if (@{$filter->args});
 #    }
-#    $mylasso = actor::org_unit->search( { name => $mylasso } )->next->id if ($mylasso and $mylasso !~ /^\d+$/);
-
-
-    # if we have a lasso, go with that, otherwise ... ou
-    $ou = $lasso if ($lasso);
+#    # search by name if an id (number) wasn't given
+#    $lasso = actor::org_lasso->search( { name => $lasso } )->next->id if ($lasso and $lasso !~ /^\d+$/);
+#
+#    # gather lasso org list
+#    my $lasso_orgs = [];
+#    $lasso_orgs = [actor::org_lasso_map->search( { lasso => $lasso } )] if ($lasso);
+#
+#
+##    # XXX once we have org_unit containers, we can make user-defined lassos .. WHEEE
+##    # gather user lasso, as with $ou and lasso
+    my $mylasso = $args{my_lasso};
+##    if (my ($filter) = $query->parse_tree->find_filter('my_lasso')) {
+##            $mylasso = $filter->args->[0] if (@{$filter->args});
+##    }
+##    $mylasso = actor::org_unit->search( { name => $mylasso } )->next->id if ($mylasso and $mylasso !~ /^\d+$/);
+#
+#
+#    # if we have a lasso, go with that, otherwise ... ou
+#    $ou = $lasso if ($lasso);
 
     # gather the preferred OU, if one is specified, as with $ou
     my $pref_ou = $args{pref_ou};
-    $log->info("pref_ou = $pref_ou");
     if (my ($filter) = $query->parse_tree->find_filter('pref_ou')) {
             $pref_ou = $filter->args->[0] if (@{$filter->args});
     }
@@ -3303,6 +3308,7 @@ sub query_parser_fts_wrapper {
 
     # XXX All of the following, down to the 'return' is basically dead code. someone higher up should handle it
     $query = "site($args{org_unit}) $query" if ($args{org_unit});
+    $query = "lasso($args{lasso}) $query" if ($args{lasso});
     $query = "depth($args{depth}) $query" if (defined($args{depth}));
     $query = "sort($args{sort}) $query" if ($args{sort});
     $query = "core_limit($args{core_limit}) $query" if ($args{core_limit});

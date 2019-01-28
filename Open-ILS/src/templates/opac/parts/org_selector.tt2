@@ -131,4 +131,69 @@ BLOCK build_org_selector;
 
         [%- END %]
     </select>
+[%- END;
+
+BLOCK build_scope_selector;
+    IF !name; 
+        name = id;
+    END;
+    IF !value;
+        value = loc_value;
+    END;
+
+    ou_id = ctx.search_ou;
+    context_org = ctx.get_aou(ou_id);
+
+    # if the selected org unit is out of hiding scope, 
+    # disable the ou-hide scoping altogether.
+    hiding_disabled = ctx.org_hiding_disabled(value);
+    hiding_depth = ctx.get_org_setting(ou_id, 'opac.org_unit_hiding.depth') -%]
+
+    <select [% IF id %] id='[% id %]' [% END -%]
+            title='[% arialabel || l("Select Library") %]' 
+            name='[% name %]'>
+            <option value=''>[% l('No Restrictions') | html %]</option>
+
+        <optgroup label="[% l('Search Scope') %]"> [%
+        FOR d IN ctx.sorted_aout_list(); # sorts by depth and opac_label
+            NEXT IF !hiding_disabled AND hiding_depth > 0 AND d.depth < hiding_depth;
+            NEXT IF d.depth > context_org.ou_type.depth; # only show ancestors-and-self
+            opt_value = 'depth(' _ d.depth _ ')';
+            selected = '';
+            IF value == opt_value; selected = 'selected="selected"'; END %]
+            <option value='[% opt_value %]' [% selected %]> 
+                [% d.opac_label | html %]
+            </option>
+        [% END %]
+        </optgroup>
+
+        [% IF ctx.lassos.size > 0;
+            %] <optgroup label="[% l('Library Groups') %]"> [%
+            FOR lasso IN ctx.lassos;
+                opt_value = 'lasso(' _ lasso.id _ ')';
+                selected = '';
+                IF value == opt_value; selected = 'selected="selected"'; END %]
+                <option value='[% opt_value %]' [% selected %]> 
+                    [% lasso.name | html %]
+                </option>
+            [% END %]
+            </optgroup>
+        [% END;
+
+        IF show_loc_groups AND ctx.copy_location_groups.size > 0;
+            %] <optgroup label="[% l('Location Groups') %]"> [%
+            FOR lc_ou_id IN ctx.copy_location_groups.keys;
+                FOR grp IN ctx.copy_location_groups.$lc_ou_id;
+                    opt_value = 'location_groups(' _ grp.id _ ')';
+                    selected = '';
+                    IF value == opt_value; selected = 'selected="selected"'; END %]
+                    <option value='[% opt_value %]' [% selected %]> 
+                        [% grp.name | html %]
+                    </option>
+                [% END %]
+            [% END %]
+            </optgroup>
+        [% END %]
+
+    </select>
 [%- END %]

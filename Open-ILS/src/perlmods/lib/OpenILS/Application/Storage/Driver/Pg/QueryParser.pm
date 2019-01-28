@@ -1450,15 +1450,34 @@ sub flatten {
     my $site_org = $ot;
     my $negate = 'FALSE';
 
-    my ($site_filter) = grep { $_->name eq 'site' } @{$self->filters};
-    if ($site_filter and @{$site_filter->args} == 1) {
-       $negate = $site_filter->negate ? 'TRUE' : 'FALSE';
+    my @lasso_list;
+    my ($lasso_filter) = grep { $_->name eq 'lasso' } @{$self->filters};
+    if ($lasso_filter and @{$lasso_filter->args} == 1) {
+        $negate = $lasso_filter->negate ? 'TRUE' : 'FALSE';
 
-       my $sitename = $site_filter->args->[0];
-       $site_org = $U->find_org_by_shortname($ot, $sitename) || $ot;
+        my $lasso = $lasso_filter->args->[0];
+        if ($lasso !~ /^\d+$/) {
+            $lasso = $U->find_lasso_by_name($lasso);
+        }
+
+        if ($lasso) {
+            $lasso = $lasso->id if (ref $lasso);
+            @lasso_list = map { $_->org_unit } @{ $U->fetch_lasso_org_maps($lasso) };
+        }
     }
 
-    my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
+
+    if (!@lasso_list) {
+        my ($site_filter) = grep { $_->name eq 'site' } @{$self->filters};
+        if ($site_filter and @{$site_filter->args} == 1) {
+           $negate = $site_filter->negate ? 'TRUE' : 'FALSE';
+
+           my $sitename = $site_filter->args->[0];
+           $site_org = $U->find_org_by_shortname($ot, $sitename) || $ot;
+        }
+    }
+
+    my $dorgs = scalar(@lasso_list) ? [@lasso_list] : $U->get_org_descendants($site_org->id, $depth_filter);
     my $aorgs = $U->get_org_ancestors($site_org->id);
 
     flesh_parents($ot);
@@ -1472,7 +1491,8 @@ sub flatten {
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
 
-    if (!$self->find_filter('locations') && !$self->find_filter('location_groups')) {
+    # NOTE: both lassos and shelving locations preclude Located URI search
+    if (!$lasso_filter && !$self->find_filter('locations') && !$self->find_filter('location_groups')) {
         my $lorgs = [@$aorgs];
         my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
         push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));

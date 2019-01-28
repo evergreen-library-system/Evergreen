@@ -70,87 +70,9 @@ sub init_ro_object_cache {
     my $locale_subs = {};
     my $locale = $ctx->{locale};
 
-    # make all "field_safe" classes accesible by default in the template context
-    my @classes = grep {
-        ($Fieldmapper::fieldmap->{$_}->{field_safe} || '') =~ /true/i
-    } keys %{ $Fieldmapper::fieldmap };
+    # Create special-purpose subs
 
-    for my $class (@classes) {
-
-        my $hint = $Fieldmapper::fieldmap->{$class}->{hint};
-        next if $hint eq 'aou'; # handled separately
-
-        my $ident_field =  $Fieldmapper::fieldmap->{$class}->{identity};
-        (my $eclass = $class) =~ s/Fieldmapper:://o;
-        $eclass =~ s/::/_/g;
-
-        my $list_key = "${hint}_list";
-        my $get_key = "get_$hint";
-        my $search_key = "search_$hint";
-
-        my $memcache_key = join('.', 'EGWeb',$locale,$hint) . '.';
-
-        # Retrieve the full set of objects with class $hint
-        $locale_subs->{$list_key} = sub {
-            my $from_memcache = 0;
-            my $list = $memcache->get_cache($memcache_key.'list');
-            if ($list) {
-                $cache{list}{$locale}{$hint} = $list;
-                $from_memcache = 1;
-            }
-            my $method = "retrieve_all_$eclass";
-            my $e = new_editor();
-            $cache{list}{$locale}{$hint} = $e->$method() unless $cache{list}{$locale}{$hint};
-            undef $e;
-            $memcache->put_cache($memcache_key.'list',$cache{list}{$locale}{$hint}) unless $from_memcache;
-            return $cache{list}{$locale}{$hint};
-        };
-
-        # locate object of class $hint with Ident field $id
-        $cache{map}{$hint} = {};
-        $locale_subs->{$get_key} = sub {
-            my $id = shift;
-            return $cache{map}{$locale}{$hint}{$id} if $cache{map}{$locale}{$hint}{$id};
-            ($cache{map}{$locale}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$locale_subs->{$list_key}->()};
-            return $cache{map}{$locale}{$hint}{$id};
-        };
-
-        # search for objects of class $hint where field=value
-        $cache{search}{$hint} = {};
-        $locale_subs->{$search_key} = sub {
-            my ($field, $val, $filterfield, $filterval) = @_;
-            my $method = "search_$eclass";
-            my $cacheval = $val;
-            my $scalar_cacheval = 1;
-
-            if (ref $val) {
-                $scalar_cacheval = 0;
-                $val = [sort(@$val)] if ref $val eq 'ARRAY';
-                $cacheval = OpenSRF::Utils::JSON->perl2JSON($val);
-                #$self->apache->log->info("cacheval : $cacheval");
-            }
-
-            my $search_obj = {$field => $val};
-            if($filterfield) {
-                $search_obj->{$filterfield} = $filterval;
-                $cacheval .= ':' . $filterfield . ':' . $filterval;
-            } elsif (
-                $scalar_cacheval
-                and $cache{list}{$locale}{$hint}
-                and !$cache{search}{$locale}{$hint}{$field}{$cacheval}
-            ) {
-                return $cache{search}{$locale}{$hint}{$field}{$cacheval} =
-                    [ grep { $_->$field() eq $val } @{$cache{list}{$locale}{$hint}} ];
-            }
-
-            my $e = new_editor();
-            $cache{search}{$locale}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
-                unless $cache{search}{$locale}{$hint}{$field}{$cacheval};
-            undef $e;
-            return $cache{search}{$locale}{$hint}{$field}{$cacheval};
-        };
-    }
-
+    # aou is special because it's tree-ish
     $locale_subs->{aou_tree} = sub {
 
         # fetch the org unit tree
@@ -188,6 +110,11 @@ sub init_ro_object_cache {
         return undef unless defined $org_id;
         $locale_subs->{aou_tree}->(); # force the org tree to load
         return $cache{map}{$locale}{aou}{$org_id};
+    };
+
+    # Returns a flat list of aout objects, sorted by depth and opac_label.
+    $locale_subs->{sorted_aout_list} = sub {
+        return [ sort { $a->depth() <=> $b->depth() || $a->opac_label() cmp $b->opac_label() } @{$locale_subs->{aout_list}->()} ];
     };
 
     # Returns a flat list of aou objects.  often easier to manage than a tree.
@@ -325,6 +252,87 @@ sub init_ro_object_cache {
 
         return $cache{authority_fields}{$locale}{$control_set};
     };
+
+    # make all "field_safe" classes accesible by default in the template context
+    my @classes = grep {
+        ($Fieldmapper::fieldmap->{$_}->{field_safe} || '') =~ /true/i
+    } keys %{ $Fieldmapper::fieldmap };
+
+    for my $class (@classes) {
+
+        my $hint = $Fieldmapper::fieldmap->{$class}->{hint};
+        next if $hint eq 'aou'; # handled separately
+
+        my $ident_field =  $Fieldmapper::fieldmap->{$class}->{identity};
+        (my $eclass = $class) =~ s/Fieldmapper:://o;
+        $eclass =~ s/::/_/g;
+
+        my $list_key = "${hint}_list";
+        my $get_key = "get_$hint";
+        my $search_key = "search_$hint";
+
+        my $memcache_key = join('.', 'EGWeb',$locale,$hint) . '.';
+
+        # Retrieve the full set of objects with class $hint
+        $locale_subs->{$list_key} ||= sub {
+            my $from_memcache = 0;
+            my $list = $memcache->get_cache($memcache_key.'list');
+            if ($list) {
+                $cache{list}{$locale}{$hint} = $list;
+                $from_memcache = 1;
+            }
+            my $method = "retrieve_all_$eclass";
+            my $e = new_editor();
+            $cache{list}{$locale}{$hint} = $e->$method() unless $cache{list}{$locale}{$hint};
+            undef $e;
+            $memcache->put_cache($memcache_key.'list',$cache{list}{$locale}{$hint}) unless $from_memcache;
+            return $cache{list}{$locale}{$hint};
+        };
+
+        # locate object of class $hint with Ident field $id
+        $cache{map}{$hint} = {};
+        $locale_subs->{$get_key} ||= sub {
+            my $id = shift;
+            return $cache{map}{$locale}{$hint}{$id} if $cache{map}{$locale}{$hint}{$id};
+            ($cache{map}{$locale}{$hint}{$id}) = grep { $_->$ident_field eq $id } @{$locale_subs->{$list_key}->()};
+            return $cache{map}{$locale}{$hint}{$id};
+        };
+
+        # search for objects of class $hint where field=value
+        $cache{search}{$hint} = {};
+        $locale_subs->{$search_key} ||= sub {
+            my ($field, $val, $filterfield, $filterval) = @_;
+            my $method = "search_$eclass";
+            my $cacheval = $val;
+            my $scalar_cacheval = 1;
+
+            if (ref $val) {
+                $scalar_cacheval = 0;
+                $val = [sort(@$val)] if ref $val eq 'ARRAY';
+                $cacheval = OpenSRF::Utils::JSON->perl2JSON($val);
+                #$self->apache->log->info("cacheval : $cacheval");
+            }
+
+            my $search_obj = {$field => $val};
+            if($filterfield) {
+                $search_obj->{$filterfield} = $filterval;
+                $cacheval .= ':' . $filterfield . ':' . $filterval;
+            } elsif (
+                $scalar_cacheval
+                and $cache{list}{$locale}{$hint}
+                and !$cache{search}{$locale}{$hint}{$field}{$cacheval}
+            ) {
+                return $cache{search}{$locale}{$hint}{$field}{$cacheval} =
+                    [ grep { $_->$field() eq $val } @{$cache{list}{$locale}{$hint}} ];
+            }
+
+            my $e = new_editor();
+            $cache{search}{$locale}{$hint}{$field}{$cacheval} = $e->$method($search_obj)
+                unless $cache{search}{$locale}{$hint}{$field}{$cacheval};
+            undef $e;
+            return $cache{search}{$locale}{$hint}{$field}{$cacheval};
+        };
+    }
 
     $ctx->{$_} = $locale_subs->{$_} for keys %$locale_subs;
     $ro_object_subs->{$locale} = $locale_subs;
@@ -694,7 +702,7 @@ sub load_copy_location_groups {
                 }
             }
         },
-        {order_by => {acplg => 'pos'}}
+        {order_by => {acplg => ['pos','name']}}
     ]);
 
     my %buckets;
@@ -734,6 +742,24 @@ sub load_my_hold_subscriptions {
         $self->editor->search_container_user_bucket(
             {btype => 'hold_subscription', id => $sub_ids, pub => 't'}
         ) : [];
+}
+
+sub load_lassos {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    # User can access global lassos and those at the current search lib
+    my $direct_lassos = $self->editor->search_actor_org_lasso_map(
+        { org_unit => $ctx->{search_ou} }
+    );
+    $direct_lassos = [ map { $_->lasso } @$direct_lassos];
+
+    my $lassos = $self->editor->search_actor_org_lasso(
+        { '-or' => { global => 't', @$direct_lassos ? (id => { in => $direct_lassos}) : () } }
+    );
+
+    $ctx->{lassos} = [ sort { $a->name cmp $b->name } @$lassos ];
+    $self->apache->log->info("Fetched ".scalar(@$lassos)." lassos");
 }
 
 sub set_file_download_headers {

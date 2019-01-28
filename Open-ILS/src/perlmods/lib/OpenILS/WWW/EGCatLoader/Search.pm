@@ -138,6 +138,10 @@ sub _prepare_biblio_search {
     # is still empty up to this point, there is no query.  abandon ship.
     return () unless $query;
 
+    # The search_scope param comes from a mixed-use dropdown containing depth,
+    # lasso, and location_groups filters.
+    $query .= ' ' . $cgi->param('search_scope') if defined $cgi->param('search_scope');
+
     # sort is treated specially, even though it's actually a filter
     if (defined($cgi->param('sort'))) {
         $query =~ s/sort\([^\)]*\)//g;  # override existing sort(). no stacking.

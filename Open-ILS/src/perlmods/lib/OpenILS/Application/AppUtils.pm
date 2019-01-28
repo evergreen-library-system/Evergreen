@@ -775,6 +775,20 @@ sub find_org_by_shortname {
     return undef;
 }
 
+sub find_lasso_by_name {
+    my( $self, $name )  = @_;
+    return $self->simplereq(
+        'open-ils.cstore', 
+        'open-ils.cstore.direct.actor.org_lasso.search.atomic', { name => $name } )->[0];
+}
+
+sub fetch_lasso_org_maps {
+    my( $self, $lasso )  = @_;
+    return $self->simplereq(
+        'open-ils.cstore', 
+        'open-ils.cstore.direct.actor.org_lasso_map.search.atomic', { lasso => $lasso } );
+}
+
 sub fetch_non_cat_type_by_name_and_org {
     my( $self, $name, $orgId ) = @_;
     $logger->debug("Fetching non cat type $name at org $orgId");

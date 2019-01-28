@@ -407,11 +407,13 @@ sub load_common {
 
     $self->extract_copy_location_group_info;
     $ctx->{search_ou} = $self->_get_search_lib();
+    $ctx->{search_scope} = $self->cgi->param('search_scope');
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
     $self->load_eg_cache_hash;
     $self->load_copy_location_groups;
     $self->load_my_hold_subscriptions;
     $self->load_hold_subscriptions if $ctx->{is_staff};
+    $self->load_lassos;
     $self->staff_saved_searches_set_expansion_state if $ctx->{is_staff};
     $self->load_search_filter_groups($ctx->{search_ou});
     $self->load_org_util_funcs;

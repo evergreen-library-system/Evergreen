@@ -34,6 +34,8 @@
     ,[ l('Import Match Sets'), "./admin/server/vandelay/match_set" ]
     ,[ l('Item Statuses'), "./admin/server/legacy/config/copy_status" ]
     ,[ l('Item Tag Types'), "./admin/server/config/copy_tag_type" ]
+    ,[ l('Library Groups'), "/eg2/staff/admin/server/actor/org_lasso" ]
+    ,[ l('Library Group Maps'), "/eg2/staff/admin/server/actor/org_lasso_map" ]
     ,[ l('MARC Coded Value Maps'), "./admin/server/config/coded_value_map" ]
     ,[ l('MARC Import Remove Fields'), "./admin/server/vandelay/import_bib_trash_group" ]
     ,[ l('MARC Record Attributes'), "./admin/server/config/record_attr_definition" ]
