@@ -3337,6 +3337,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Classification Scheme" name="label_class" reporter:datatype="link"/>
 			<field reporter:label="Prefix" name="prefix" reporter:datatype="link"/>
 			<field reporter:label="Suffix" name="suffix" reporter:datatype="link"/>
+			<field reporter:label="Dewey Classification" name="dewey" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
@@ -3350,6 +3351,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<link field="label_class" reltype="has_a" key="id" map="" class="acnc"/>
 			<link field="prefix" reltype="has_a" key="id" map="" class="acnp"/>
 			<link field="suffix" reltype="has_a" key="id" map="" class="acns"/>
+			<link field="dewey" reltype="might_have" key="call_number" map="" class="racnd"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -3357,6 +3359,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
                 <retrieve/>
                 <update permission="UPDATE_VOLUME" context_field="owning_lib"/>
                 <delete permission="DELETE_VOLUME" context_field="owning_lib"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="racnd" controller="open-ils.cstore open-ils.reporter-store open-ils.pcrud" oils_obj:fieldmapper="reporter::asset_call_number_dewey" oils_persist:tablename="reporter.asset_call_number_dewey" reporter:label="Dewey Classification">
+		<fields oils_persist:primary="call_number">
+			<field reporter:label="Call Number" name="call_number" reporter:datatype="link" />
+			<field reporter:label="Dewey Number" name="dewey" reporter:datatype="text"/>
+			<field reporter:label="Dewey Range - Tens" name="dewey_range_tens" reporter:datatype="text"/>
+			<field reporter:label="Dewey Range - Hundreds" name="dewey_range_hundreds" reporter:datatype="text"/>
+			<field reporter:label="Dewey Block - Tens" name="dewey_block_tens" reporter:datatype="text"/>
+			<field reporter:label="Dewey Block - Hundreds" name="dewey_block_hundreds" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="call_number" reltype="has_a" key="id" map="" class="acn"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve/>
             </actions>
         </permacrud>
 	</class>
