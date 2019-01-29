@@ -499,7 +499,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
             var l = null;
             console.log(item);
             if (item.datatype == "bool") {
-                egConfirmDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, item.value || '',
+                egConfirmDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, (typeof item.value === "undefined" ? egCore.strings.TEMPLATE_CONF_UNSET : item.value.toString()),
                     {ok : function() {
                         egReportTemplateSvc.filter_fields[item.index].value = true;
                     },
