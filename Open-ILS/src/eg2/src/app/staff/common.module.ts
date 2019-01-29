@@ -14,6 +14,7 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {ToastComponent} from '@eg/share/toast/toast.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {StringService} from '@eg/share/string/string.service';
+import {TitleComponent} from '@eg/share/title/title.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {RecordBucketDialogComponent} from '@eg/staff/share/buckets/record-bucket-dialog.component';
@@ -35,6 +36,7 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     AccessKeyInfoComponent,
     ToastComponent,
     StringComponent,
+    TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
     DateSelectComponent,
@@ -58,6 +60,7 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     AccessKeyInfoComponent,
     ToastComponent,
     StringComponent,
+    TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
     DateSelectComponent,

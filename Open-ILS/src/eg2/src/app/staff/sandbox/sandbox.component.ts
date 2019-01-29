@@ -53,6 +53,8 @@ export class SandboxComponent implements OnInit {
 
     name = 'Jane';
 
+    dynamicTitleText: string;
+
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
@@ -112,7 +114,6 @@ export class SandboxComponent implements OnInit {
 
         this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
-
     }
 
     btGridRowClassCallback(row: any): string {
