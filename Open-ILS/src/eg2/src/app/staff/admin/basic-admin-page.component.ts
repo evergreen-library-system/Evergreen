@@ -8,6 +8,8 @@ import {IdlService} from '@eg/core/idl.service';
 
 @Component({
     template: `
+      <eg-title i18n-prefix prefix="{{classLabel}} Administration">
+      </eg-title>
       <eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
       </eg-staff-banner>
       <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"></eg-admin-page>
