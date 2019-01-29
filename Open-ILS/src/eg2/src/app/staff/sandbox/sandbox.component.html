@@ -2,6 +2,19 @@
 <eg-staff-banner bannerText="Sandbox" i18n-bannerText>
 </eg-staff-banner>
 
+<eg-title 
+  i18n-prefix i18n-suffix
+  prefix=":) {{dynamicTitleText}}"
+  suffix="Sandbox">
+</eg-title>
+
+<div class="row flex pt-2">
+  <div i18n> Modify Page Title: </div>
+  <div class="col-lg-2">
+    <input type="text" [(ngModel)]="dynamicTitleText" class="form-control"/>
+  </div>
+</div>
+
 <!-- FM Editor Experiments ----------------------------- -->
 <div class="row mb-3">
   <ng-template #descriptionTemplate 
@@ -100,7 +113,6 @@
 <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
 
 <br/><br/>
-HERasdfE
 <div class="row">
   <div class="col-lg-3">
     <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
