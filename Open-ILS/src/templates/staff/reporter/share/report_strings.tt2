@@ -139,6 +139,7 @@ s.TEMPLATE_CONF_BETWEEN = '[% l( "Field value is between (comma separated):") %]
 s.TEMPLATE_CONF_NOT_IN = '[% l( "Field does not match one of list (comma separated):") %]';
 s.TEMPLATE_CONF_IN = '[% l( "Field matches one of list (comma separated):") %]';
 s.TEMPLATE_CONF_DEFAULT = '[% l( "Value:") %]';
+s.TEMPLATE_CONF_UNSET = '<[% l( "Unset") %]>';
 s.TEMPLATE_CONF_CONFIRM_SAVE = '[% l( "Save Template?") %]';
 s.TEMPLATE_CONF_SUCCESS_SAVE = '[% l( "Template was successfully saved.") %]';
 s.TEMPLATE_CONF_FAIL_SAVE = '[% l( "Template save failed.") %]';
