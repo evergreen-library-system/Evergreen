@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="Windows-1252"?>
 <!--
 Template for printing item labels (spine, pocket, etc.).
 
@@ -20,7 +21,7 @@ HTML itself.
 -->
 <style>
     /* The .spine here defines a CSS "class", which in this case, is used by our
-       spine label */
+       left label */
     .spine {
 
         /* this pulls from the "Item Print Label Font Family" setting, but will
@@ -35,24 +36,24 @@ HTML itself.
            default to 'normal' */
         font-weight: {{settings['webstaff.cat.label.font.weight'] || 'normal'}};
 
-        /* this pulls from the "Item Print Label - Height for Spine Label"
+        /* this pulls from the "Item Print Label - Height for Left Label"
            setting, but will default to '1.25in' */
         height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
         min-height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
         max-height: {{settings['webstaff.cat.label.left_label.height'] || '1.25in'}};
 
-        /* this pulls from the "Item Print Label - Width for Spine Label"
+        /* this pulls from the "Item Print Label - Width for Left Label"
            setting, but will default to '1in' */
         width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
         min-width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
         max-width: {{settings['webstaff.cat.label.left_label.width'] || '1in'}};
 
-        /* this pulls from the "Item Print Label - Left Margin for Spine Label"
+        /* this pulls from the "Item Print Label - Left Margin for Left Label"
            setting, but will default to '0in' */
         margin-left: {{settings['webstaff.cat.label.left_label.left_margin'] || '0in'}};
     }
 
-    /* This CSS class is used by our pocket label */
+    /* This CSS class is used by our right label */
     .pocket {
 
         /* this pulls from the "Item Print Label Font Family" setting, but will
@@ -67,19 +68,19 @@ HTML itself.
            default to 'normal' */
         font-weight: {{settings['webstaff.cat.label.font.weight'] || 'normal'}};
 
-        /* this pulls from the "Item Print Label - Height for Spine Label"
+        /* this pulls from the "Item Print Label - Height for Left Label"
            setting, but will default to '1.25in' */
         height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
         min-height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
         max-height: {{settings['webstaff.cat.label.right_label.height'] || '1.25in'}};
 
-        /* this pulls from the "Item Print Label - Width for Spine Label"
+        /* this pulls from the "Item Print Label - Width for Left Label"
            setting, but will default to '2.625in' */
         width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
         min-width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
         max-width: {{settings['webstaff.cat.label.right_label.width'] || '2.625in'}};
 
-        /* this pulls from the "Item Print Label - Left Margin for Pocket Label"
+        /* this pulls from the "Item Print Label - Left Margin for Left Label"
            setting, but will default to '0in' */
         margin-left: {{settings['webstaff.cat.label.right_label.left_margin'] || '0in'}};
 
@@ -120,6 +121,7 @@ HTML itself.
                 copy['call_number.label_class']
                 copy['call_number.label_sortkey']
                 copy['call_number.notes']
+                copy['call_number.owning_lib']
                 copy['call_number.owning_lib.id']
                 copy['call_number.owning_lib.shortname']
                 copy['call_number.owning_lib.name']
@@ -172,6 +174,7 @@ HTML itself.
                 copy['call_number.uri_maps']
                 copy['call_number.uris']
                 copy['circ_as_type']
+                copy['circ_lib']
                 copy['circ_lib.id']
                 copy['circ_lib.shortname']
                 copy['circ_lib.name']

@@ -35,6 +35,8 @@ function (egCore) {
         flesh_fields: {
             acp: ['call_number', 'location', 'status', 'location', 'floating', 'circ_modifier', 'age_protect'],
             acn: ['record', 'prefix', 'suffix'],
+            acp: ['call_number', 'location', 'status', 'location', 'floating', 'circ_modifier', 'age_protect', 'circ_lib'],
+            acn: ['record', 'prefix', 'suffix', 'owning_lib'],
             bre: ['simple_record', 'creator', 'editor']
         },
         select: {
@@ -123,7 +125,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
             selected: "spine-pocket"
         },
         page: {
-            column_class: ["spine"],
+            column_class: ["spine", "pocket"],
             dimensions: {
                 columns: 2,
                 rows: 1
@@ -164,7 +166,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                 $scope.preview_scope = {
                     'copies': []
                     , 'settings': {}
-                    , 'toolbox_settings': toolbox_settings
+                    , 'toolbox_settings': JSON.parse(JSON.stringify(toolbox_settings))
                     , 'get_cn_for': function (copy) {
                         var key = $scope.rendered_cn_key_by_copy_id[copy.id];
                         if (key) {
@@ -216,7 +218,6 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                         return !angular.isNumber(toolbox_settings.page.dimensions.rows) || !angular.isNumber(toolbox_settings.page.start_position.row) ? false : (toolbox_settings.page.start_position.row <= toolbox_settings.page.dimensions.rows);
                     }
                 };
-
                 $scope.record_details = {};
                 $scope.org_unit_settings = {};
 
@@ -256,6 +257,11 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                                 }
                             }
                         });
+                        egCore.hatch.getItem('cat.printlabels.last_toolbox_settings').then(function (last_toolbox_settings) {
+                            if (last_toolbox_settings) {
+                                $scope.preview_scope.toolbox_settings = JSON.parse(JSON.stringify(last_toolbox_settings));
+                            }
+                        });
                     })
                 );
 
@@ -289,13 +295,6 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                         egCore.print.fleshPrintScope($scope.preview_scope);
                         $scope.template_changed(); // load the default
                         $scope.rebuild_cn_set();
-                        if ($scope.preview_scope.toolbox_settings && $scope.template_name && $scope.print.template_content) {
-                            var re = /eg\_plt/i;
-                            if (re.test($scope.print.template_content)) {
-                                $scope.applyTemplate($scope.template_name);
-                                $scope.redraw_label_table();
-                            }
-                        }
                     });
 
                 });
@@ -305,6 +304,12 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
 
         });
 
+    }
+
+    $scope.checkForToolboxCustomizations = function (tText, redraw) {
+        var re = /eg\_plt\_(\d+)/;
+        redraw ? $scope.redraw_label_table() : false;
+        return re.test(tText);
     }
 
     $scope.fetchTemplates = function (set_default) {
@@ -325,22 +330,17 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
     $scope.fetchTemplates(true);
 
     $scope.applyTemplate = function (n) {
-        if (n) {
-            if ($scope.templates[n]) {
-                $scope.print.cn_template_content = $scope.templates[n].cn_content;
-                $scope.print.template_content = $scope.templates[n].content;
-                $scope.print.template_context = $scope.templates[n].context;
-                for (var s in $scope.templates[n].settings) {
-                    $scope.preview_scope.settings[s] = $scope.templates[n].settings[s];
-                }
-                if ($scope.templates[n].toolbox_settings) {
-                    $scope.preview_scope.toolbox_settings = $scope.templates[n].toolbox_settings;
-                    $scope.create_print_label_table();
-                }
-                egCore.hatch.setItem('cat.printlabels.default_template', n);
-                $scope.save_locally();
-            }
+        $scope.print.cn_template_content = $scope.templates[n].cn_content;
+        $scope.print.template_content = $scope.templates[n].content;
+        $scope.print.template_context = $scope.templates[n].context;
+        for (var s in $scope.templates[n].settings) {
+            $scope.preview_scope.settings[s] = $scope.templates[n].settings[s];
         }
+        if ($scope.templates[n].toolbox_settings) {
+            $scope.preview_scope.toolbox_settings = JSON.parse(JSON.stringify($scope.templates[n].toolbox_settings));
+        }
+        egCore.hatch.setItem('cat.printlabels.default_template', n);
+        $scope.save_locally();
     }
 
     $scope.deleteTemplate = function (n) {
@@ -361,6 +361,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
 
     $scope.saveTemplate = function (n) {
         if (n) {
+
             $scope.templates[n] = {
                 content: $scope.print.template_content
                 , context: $scope.print.template_context
@@ -401,6 +402,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
         .then(
             function (html) {
                 $scope.print.template_content = html;
+                $scope.checkForToolboxCustomizations(html, true);
             },
             function () {
                 $scope.print.template_content = '';
@@ -423,9 +425,15 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
         );
         egCore.hatch.getItem('cat.printlabels.last_settings').then(function (s) {
             if (s) {
-                $scope.preview_scope.settings = s;
+                $scope.preview_scope.settings = JSON.parse(JSON.stringify(s));
             }
         });
+        egCore.hatch.getItem('cat.printlabels.last_toolbox_settings').then(function (t) {
+            if (t) {
+                $scope.preview_scope.toolbox_settings = JSON.parse(JSON.stringify(t));
+            }
+        });
+
     }
 
     $scope.reset_to_default = function () {
@@ -439,10 +447,12 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
             'item_label_cn'
         );
         egCore.hatch.removeItem('cat.printlabels.last_settings');
+        egCore.hatch.removeItem('cat.printlabels.last_toolbox_settings');
         for (s in $scope.preview_scope.settings) {
             $scope.preview_scope.settings[s] = undefined;
         }
-        $scope.preview_scope.settings = {};
+        $scope.preview_scope.toolbox_settings = JSON.parse(JSON.stringify(toolbox_settings));
+
         egCore.org.settings($scope.org_unit_setting_list).then(function (res) {
             $scope.preview_scope.settings = res;
         });
@@ -463,7 +473,8 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
             'item_label_cn',
             $scope.print.cn_template_content
         );
-        egCore.hatch.setItem('cat.printlabels.last_settings', $scope.preview_scope.settings);
+        egCore.hatch.setItem('cat.printlabels.last_settings', JSON.parse(JSON.stringify($scope.preview_scope.settings)));
+        egCore.hatch.setItem('cat.printlabels.last_toolbox_settings', JSON.parse(JSON.stringify($scope.preview_scope.toolbox_settings)));
     }
 
     $scope.imported_print_templates = { data: '' };
@@ -476,9 +487,11 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                         content: el.content
                         , context: el.context
                         , cn_content: el.cn_content
-                        , settings: el.settings
-                        , toolbox_settings: el.toolbox_settings
+                        , settings: JSON.parse(JSON.stringify(el.settings))
                     };
+                    if (el.toolbox_settings) {
+                        $scope.templates[k].toolbox_settings = JSON.parse(JSON.stringify(el.toolbox_settings));
+                    }
                 });
                 $scope.saveTemplate();
                 $scope.template_changed(); // refresh
@@ -512,50 +525,39 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
         });
     }
 
-    $scope.create_print_label_table = function () {
+    $scope.redraw_label_table = function () {
         if ($scope.print_label_form.$valid && $scope.print.template_content && $scope.preview_scope) {
             $scope.preview_scope.label_output_copies = labelOutputRowsFilter($scope.preview_scope.copies, $scope.preview_scope.toolbox_settings);
+            var d = new Date().getTime().toString();
             var html = $scope.print.template_content;
-            var d = new Date(); //Added to table ID with 'eg_plt_' to cause $complie on $scope.print.template_content to fire due to template content change.
-            var table = "<table id=\"eg_plt_" + d.getTime().toString() + "_{{$index}}\" eg-print-label-table style=\"border-collapse: collapse; border: 0 solid transparent; border-spacing: 0; margin: {{$index === 0 ? toolbox_settings.page.margins.top.size : 0}} 0 0 0;\" class=\"custom-label-table{{$index % toolbox_settings.page.dimensions.rows === 0 && $index > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" ng-init=\"parentIndex = $index\" ng-repeat=\"row in label_output_copies\">\n";
-            table += "<tr>\n";
-            table += "<td style=\"border: 0 solid transparent; padding: {{parentIndex % toolbox_settings.page.dimensions.rows === 0 && toolbox_settings.feed_option.selected === 'sheet' && parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : 0}} 0 0 {{$index === 0 ? toolbox_settings.page.margins.left.size : col.styl ? col.styl : toolbox_settings.page.space_between_labels.horizontal.size}};\" ng-repeat=\"col in row.columns\">\n";
-            table += "<pre class=\"{{col.cls}}\" style=\"border: none; margin-bottom: 0; margin-top: 0; overflow: hidden;\" ng-if=\"col.cls === 'spine'\">\n";
-            table += "{{col.c ? get_cn_for(col.c) : ''}}";
-            table += "</pre>\n";
-            table += "<pre class=\"{{col.cls}}{{parentIndex % toolbox_settings.page.dimensions.rows === 0 && parentIndex > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" style=\"border: none;  margin-bottom: 0; margin-top: 0; overflow: hidden;\" ng-if=\"col.cls === 'pocket'\">\n";
-            table += "{{col.c ? col.c.barcode : ''}}\n";
-            table += "{{col.c ? col.c['call_number.label'] : ''}}\n";
-            table += "{{col.c ? get_bib_for(col.c).author : ''}}\n";
-            table += "{{col.c ? (get_bib_for(col.c).title | wrap:28:'once':'  ') : ''}}\n";
-            table += "</pre>\n";
-            table += "</td>\n"
-            table += "</tr>\n";
-            table += "</table>";
-            var comments = html.match(/\<\!\-\-(?:(?!\-\-\>)(?:.|\s))*\-\-\>\s*/g);
-            html = html.replace(/\<\!\-\-(?:(?!\-\-\>)(?:.|\s))*\-\-\>\s*/g, "");
-            var style = html.match(/\<style[^\>]*\>(?:(?!\<\/style\>)(?:.|\s))*\<\/style\>\s*/gi);
-            var output = (style ? style.join("\n") : "") + (comments ? comments.join("\n") : "") + table;
-            output = output.replace(/\n+/, "\n");
-            $scope.print.template_content = output;
-            $scope.save_locally();
-        }
-    }
-
-    $scope.redraw_label_table = function () {
-        var d = new Date(); //Added to table ID with 'eg_plt_' to cause $complie on $scope.print.template_content to fire due to template content change.
-        var table = "<table id=\"eg_plt_" + d.getTime().toString() + "\"\></table>\n";
-        $scope.print.template_content += table;
-        $scope.create_print_label_table();
-    }
-
-    $scope.$watch('preview_scope.toolbox_settings.page.dimensions.columns',
-        function (newVal, oldVal) {
-            if (newVal && newVal != oldVal && $scope.preview_scope) {
-                $scope.redraw_label_table();
+            if ($scope.checkForToolboxCustomizations(html)) {
+                html = html.replace(/eg\_plt\_\d+/, "eg_plt_" + d);
+                $scope.print.template_content = html;
+            } else {
+                var table = "<table id=\"eg_plt_" + d + "_{{$index}}\" eg-print-label-table style=\"border-collapse: collapse; border: 0 solid transparent; border-spacing: 0; margin: {{$index === 0 ? toolbox_settings.page.margins.top.size : 0}} 0 0 0;\" class=\"custom-label-table{{$index % toolbox_settings.page.dimensions.rows === 0 && $index > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" ng-init=\"parentIndex = $index\" ng-repeat=\"row in label_output_copies\">\n";
+                table += "<tr>\n";
+                table += "<td style=\"border: 0 solid transparent; padding: {{parentIndex % toolbox_settings.page.dimensions.rows === 0 && toolbox_settings.feed_option.selected === 'sheet' && parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : parentIndex > 0 ? toolbox_settings.page.space_between_labels.vertical.size : 0}} 0 0 {{$index === 0 ? toolbox_settings.page.margins.left.size : col.styl ? col.styl : toolbox_settings.page.space_between_labels.horizontal.size}};\" ng-repeat=\"col in row.columns\">\n";
+                table += "<pre class=\"{{col.cls}}\" style=\"border: none; margin-bottom: 0; margin-top: 0; overflow: hidden;\" ng-if=\"col.cls === 'spine'\">\n";
+                table += "{{col.c ? get_cn_for(col.c) : ''}}";
+                table += "</pre>\n";
+                table += "<pre class=\"{{col.cls}}{{parentIndex % toolbox_settings.page.dimensions.rows === 0 && parentIndex > 0 && toolbox_settings.feed_option.selected === 'sheet' ? ' page-break' : ''}}\" style=\"border: none;  margin-bottom: 0; margin-top: 0; overflow: hidden;\" ng-if=\"col.cls === 'pocket'\">\n";
+                table += "{{col.c ? col.c.barcode : ''}}\n";
+                table += "{{col.c ? col.c['call_number.label'] : ''}}\n";
+                table += "{{col.c ? get_bib_for(col.c).author : ''}}\n";
+                table += "{{col.c ? (get_bib_for(col.c).title | wrap:28:'once':'  ') : ''}}\n";
+                table += "</pre>\n";
+                table += "</td>\n"
+                table += "</tr>\n";
+                table += "</table>";
+                var comments = html.match(/\<\!\-\-(?:(?!\-\-\>)(?:.|\s))*\-\-\>\s*/g);
+                html = html.replace(/\<\!\-\-(?:(?!\-\-\>)(?:.|\s))*\-\-\>\s*/g, '');
+                var style = html.match(/\<style[^\>]*\>(?:(?!\<\/style\>)(?:.|\s))*\<\/style\>\s*/gi);
+                var output = (comments ? comments.join("\n") : "") + (style ? style.join("\n") : "") + table;
+                output = output.replace(/\n+/, "\n");
+                $scope.print.template_content = output;
             }
         }
-    );
+    }
 
     $scope.$watch('print.cn_template_content', function (newVal, oldVal) {
         if (newVal && newVal != oldVal) {
@@ -575,14 +577,14 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
         }
     });
 
-    $scope.$watchGroup(['preview_scope.toolbox_settings.page.margins.top.size', 'preview_scope.toolbox_settings.page.margins.left.size', 'preview_scope.toolbox_settings.page.dimensions.rows', 'preview_scope.toolbox_settings.page.space_between_labels.horizontal.size', 'preview_scope.toolbox_settings.page.space_between_labels.vertical.size', 'preview_scope.toolbox_settings.page.start_position.row', 'preview_scope.toolbox_settings.page.start_position.column', 'preview_scope.toolbox_settings.page.label.gap.size'], function (newVal, oldVal) {
+    $scope.$watchGroup(['preview_scope.toolbox_settings.page.margins.top.size', 'preview_scope.toolbox_settings.page.margins.left.size', 'preview_scope.toolbox_settings.page.dimensions.rows', 'preview_scope.toolbox_settings.page.dimensions.columns', 'preview_scope.toolbox_settings.page.space_between_labels.horizontal.size', 'preview_scope.toolbox_settings.page.space_between_labels.vertical.size', 'preview_scope.toolbox_settings.page.start_position.row', 'preview_scope.toolbox_settings.page.start_position.column', 'preview_scope.toolbox_settings.page.label.gap.size'], function (newVal, oldVal) {
         if (newVal && newVal != oldVal && $scope.preview_scope.label_output_copies) {
             $scope.redraw_label_table();
         }
     });
 
     $scope.$watch("preview_scope.toolbox_settings.mode.selected", function (newVal, oldVal) {
-        if (newVal && newVal != oldVal) {
+        if (newVal && newVal != oldVal && $scope.preview_scope) {
             var ts_p = $scope.preview_scope.toolbox_settings.page;
             if (ts_p.label.set.size === 1) {
                 if (newVal === "spine-pocket") {
@@ -605,7 +607,7 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
     });
 
     $scope.$watch("preview_scope.toolbox_settings.page.label.set.size", function (newVal, oldVal) {
-        if (newVal && newVal != oldVal) {
+        if (newVal && newVal != oldVal && oldVal) {
             var ts_p = $scope.preview_scope.toolbox_settings.page;
             if (angular.isNumber(newVal)) {
                 while (ts_p.column_class.length > ts_p.label.set.size) {
@@ -615,7 +617,24 @@ function ($scope, $q, $window, $routeParams, $location, $timeout, egCore, egNet,
                     ts_p.column_class.push("spine");
                 }
             }
-            $scope.redraw_label_table();
+        }
+    });
+
+    $scope.$watch('print.cn_template_content', function (newVal, oldVal) {
+        if (newVal && newVal != oldVal) {
+            $scope.rebuild_cn_set();
+        }
+    });
+
+    $scope.$watch("preview_scope.settings['webstaff.cat.label.call_number_wrap_filter_height']", function (newVal, oldVal) {
+        if (newVal && newVal != oldVal) {
+            $scope.rebuild_cn_set();
+        }
+    });
+
+    $scope.$watch("preview_scope.settings['webstaff.cat.label.call_number_wrap_filter_width']", function (newVal, oldVal) {
+        if (newVal && newVal != oldVal) {
+            $scope.rebuild_cn_set();
         }
     });
 
