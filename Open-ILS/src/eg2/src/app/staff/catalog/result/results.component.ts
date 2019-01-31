@@ -49,7 +49,7 @@ export class ResultsComponent implements OnInit, OnDestroy {
         // searches.
         //
         // This will also fire on page load.
-        this.routeSub = 
+        this.routeSub =
             this.route.queryParamMap.subscribe((params: ParamMap) => {
 
               // TODO: Angular docs suggest using switchMap(), but
@@ -82,8 +82,8 @@ export class ResultsComponent implements OnInit, OnDestroy {
         const ids = this.searchContext.currentResultIds();
         let allChecked = true;
         ids.forEach(id => {
-            if (!this.basket.hasRecordId(id)) { 
-                allChecked = false; 
+            if (!this.basket.hasRecordId(id)) {
+                allChecked = false;
             }
         });
         this.allRecsSelected = allChecked;

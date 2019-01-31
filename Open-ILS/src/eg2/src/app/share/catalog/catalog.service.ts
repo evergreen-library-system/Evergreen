@@ -37,7 +37,7 @@ export class CatalogService {
         private basket: BasketService
     ) {
         this.onSearchComplete = new EventEmitter<CatalogSearchContext>();
-        
+
     }
 
     search(ctx: CatalogSearchContext): Promise<void> {
@@ -47,7 +47,7 @@ export class CatalogService {
             return this.basketSearch(ctx);
         } else if (ctx.marcSearch.isSearchable()) {
             return this.marcSearch(ctx);
-        } else if (ctx.identSearch.isSearchable() && 
+        } else if (ctx.identSearch.isSearchable() &&
             ctx.identSearch.queryType === 'item_barcode') {
             return this.barcodeSearch(ctx);
         } else {
@@ -119,7 +119,7 @@ export class CatalogService {
         } else {
             fullQuery = ctx.compileTermSearchQuery();
 
-            if (ctx.termSearch.groupByMetarecord 
+            if (ctx.termSearch.groupByMetarecord
                 && !ctx.termSearch.fromMetarecord) {
                 method = 'open-ils.search.metabib.multiclass.query';
             }
@@ -134,7 +134,7 @@ export class CatalogService {
         if (ctx.isStaff) {
             method += '.staff';
         }
-        
+
         return new Promise((resolve, reject) => {
             this.net.request(
                 'open-ils.search', method, {
@@ -151,7 +151,7 @@ export class CatalogService {
 
     }
 
-    // When showing titles linked to a browse entry, fetch 
+    // When showing titles linked to a browse entry, fetch
     // the entry data as well so the UI can display it.
     fetchBrowseEntry(ctx: CatalogSearchContext) {
         const ts = ctx.termSearch;
@@ -190,7 +190,7 @@ export class CatalogService {
         const isMeta = ctx.termSearch.isMetarecordSearch();
 
         let observable: Observable<BibRecordSummary>;
-        
+
         if (isMeta) {
             observable = this.bibService.getMetabibSummary(
                 ctx.currentResultIds(), ctx.searchOrg.id(), depth);
@@ -307,9 +307,9 @@ export class CatalogService {
                 format => format.code() === code)[0];
             if (ccvm) {
                 return ccvm.search_label();
-            }                                                                  
-        }                                                                      
-    }      
+            }
+        }
+    }
 
     fetchCmfs(): Promise<void> {
         // At the moment, we only need facet CMFs.
@@ -333,11 +333,11 @@ export class CatalogService {
         const orgIds = this.org.fullPath(contextOrg, true);
         this.copyLocations = [];
 
-        return this.pcrud.search('acpl', 
+        return this.pcrud.search('acpl',
             {deleted: 'f', opac_visible: 't', owning_lib: orgIds},
             {order_by: {acpl: 'name'}},
             {anonymous: true}
-        ).pipe(tap(loc => this.copyLocations.push(loc))).toPromise()
+        ).pipe(tap(loc => this.copyLocations.push(loc))).toPromise();
     }
 
     browse(ctx: CatalogSearchContext): Observable<any> {

@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
+import {Observable, Subscription} from 'rxjs';
 import {map, switchMap, distinctUntilChanged} from 'rxjs/operators';
 import {ActivatedRoute, ParamMap} from '@angular/router';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -49,7 +48,7 @@ export class BrowseResultsComponent implements OnInit {
         if (bs.isSearchable()) {
             this.results = [];
             this.cat.browse(this.searchContext)
-                .subscribe(result => this.addResult(result))
+                .subscribe(result => this.addResult(result));
         }
     }
 
@@ -68,11 +67,11 @@ export class BrowseResultsComponent implements OnInit {
                 const heading = headingStruct[fieldId][0];
 
                 const inList = result.list_authorities.filter(
-                    id => Number(id) === Number(heading.target))[0]
+                    id => Number(id) === Number(heading.target))[0];
 
-                if (   heading.target 
+                if (   heading.target
                     && heading.main_entry
-                    && heading.target_count 
+                    && heading.target_count
                     && !inList
                     && !seen[heading.target]) {
 
@@ -119,12 +118,12 @@ export class BrowseResultsComponent implements OnInit {
         }
     }
 
-    searchByBrowseEntry(result) { 
+    searchByBrowseEntry(result) {
 
         // Avoid propagating browse values to term search.
         this.searchContext.browseSearch.reset();
 
-        this.searchContext.termSearch.hasBrowseEntry = 
+        this.searchContext.termSearch.hasBrowseEntry =
             result.browse_entry + ',' + result.fields;
         this.staffCat.search();
     }

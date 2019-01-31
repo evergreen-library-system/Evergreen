@@ -43,7 +43,7 @@ export class RecordComponent implements OnInit {
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
 
-        this.defaultTab = 
+        this.defaultTab =
             this.store.getLocalItem('eg.cat.default_record_tab')
             || 'catalog';
 
@@ -96,12 +96,12 @@ export class RecordComponent implements OnInit {
         if (this.recordTab in ANGJS_TABS) {
             const angjsBase = '/eg/staff/cat/catalog/record';
 
-            window.location.href = 
+            window.location.href =
                 `${angjsBase}/${this.recordId}/${this.recordTab}`;
             return;
         }
 
-        const url = 
+        const url =
             `/staff/catalog/record/${this.recordId}/${this.recordTab}`;
 
         // Retain search parameters

@@ -1,12 +1,12 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';
-import {RecordBucketDialogComponent} 
-    from '@eg/staff/share/buckets/record-bucket-dialog.component';
+import {RecordBucketDialogComponent
+    } from '@eg/staff/share/buckets/record-bucket-dialog.component';
 
 @Component({
   selector: 'eg-catalog-basket-actions',
@@ -41,10 +41,10 @@ export class BasketActionsComponent implements OnInit {
     applyAction() {
         console.debug('Performing basket action', this.basketAction);
 
-        switch(this.basketAction) {
+        switch (this.basketAction) {
             case 'view':
                 // This does not propagate search params -- unclear if needed.
-                this.router.navigate(['/staff/catalog/search'], 
+                this.router.navigate(['/staff/catalog/search'],
                     {queryParams: {showBasket: true}});
                 break;
 
@@ -57,7 +57,7 @@ export class BasketActionsComponent implements OnInit {
                     this.router.navigate(['/staff/catalog/hold/T'],
                         {queryParams: {target: ids}});
                 });
-                break; 
+                break;
 
             case 'print':
                 this.basket.getRecordIds().then(ids => {

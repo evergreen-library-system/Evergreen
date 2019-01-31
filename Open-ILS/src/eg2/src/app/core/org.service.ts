@@ -253,7 +253,7 @@ export class OrgService {
             }
 
         } else if (!anonymous) {
-            console.warn('Attempt to fetch org setting(s)', 
+            console.warn('Attempt to fetch org setting(s)',
                 name, 'in non-anonymous mode without an authtoken');
             return Promise.resolve({});
         }

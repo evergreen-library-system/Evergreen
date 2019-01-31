@@ -96,7 +96,7 @@ export class CatalogMarcContext {
 
 export class CatalogIdentContext {
     value: string;
-    queryType: string; 
+    queryType: string;
 
     reset() {
         this.value = '';
@@ -105,7 +105,7 @@ export class CatalogIdentContext {
 
     isSearchable() {
         return (
-            this.value !== '' 
+            this.value !== ''
             && this.queryType !== ''
         );
     }
@@ -158,8 +158,8 @@ export class CatalogTermContext {
     // contents of a metarecord.
     isMetarecordSearch(): boolean {
         return (
-            this.isSearchable() && 
-            this.groupByMetarecord && 
+            this.isSearchable() &&
+            this.groupByMetarecord &&
             this.fromMetarecord === null
         );
     }
@@ -321,16 +321,15 @@ export class CatalogSearchContext {
         if (this.sort) {
             const parts = this.sort.split(/\./);
             args.sort = parts[0]; // title, author, etc.
-            if (parts[1]) { args.sort_dir = 'descending' };
+            if (parts[1]) { args.sort_dir = 'descending'; }
         }
 
         return args;
     }
 
     compileIdentSearchQuery(): string {
-
-        let str = ' site(' + this.searchOrg.shortname() + ')';
-        return str + ' ' + 
+        const str = ' site(' + this.searchOrg.shortname() + ')';
+        return str + ' ' +
             this.identSearch.queryType + ':' + this.identSearch.value;
     }
 
@@ -430,7 +429,7 @@ export class CatalogSearchContext {
         if (qcount > 1) { str += ')'; }
         // -------
 
-        if (ts.hasBrowseEntry) { 
+        if (ts.hasBrowseEntry) {
             // stored as a comma-separated string of "entryId,fieldId"
             str += ` has_browse_entry(${ts.hasBrowseEntry})`;
         }

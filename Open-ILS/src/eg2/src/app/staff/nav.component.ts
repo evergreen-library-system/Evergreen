@@ -45,11 +45,11 @@ export class StaffNavComponent implements OnInit {
         );
 
         // NOTE: this can eventually go away.
-        // Avoid attempts to fetch org settings if the user has not yet 
+        // Avoid attempts to fetch org settings if the user has not yet
         // logged in (e.g. this is the login page).
         if (this.user()) {
             this.org.settings('ui.staff.angular_catalog.enabled')
-            .then(settings => this.showAngularCatalog = 
+            .then(settings => this.showAngularCatalog =
                 Boolean(settings['ui.staff.angular_catalog.enabled']));
         }
     }

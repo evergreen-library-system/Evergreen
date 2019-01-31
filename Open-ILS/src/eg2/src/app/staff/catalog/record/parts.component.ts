@@ -73,7 +73,7 @@ export class PartsComponent implements OnInit {
                 order_by: orderBy
             };
 
-            return this.pcrud.search('bmp', 
+            return this.pcrud.search('bmp',
                 {record: this.recId, deleted: 'f'}, searchOps);
         };
 

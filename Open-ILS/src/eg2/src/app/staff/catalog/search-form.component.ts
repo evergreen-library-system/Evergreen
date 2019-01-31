@@ -29,7 +29,6 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         private staffCat: StaffCatalogService
     ) {
         this.copyLocations = [];
-        //this.searchTab = 'term';
     }
 
     ngOnInit() {
@@ -140,9 +139,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
         // TODO: is this how we avoid displaying too many locations?
         const org = this.context.searchOrg;
-        if (org.id() === this.org.root().id()) { 
+        if (org.id() === this.org.root().id()) {
             this.copyLocations = [];
-            return; 
+            return;
         }
 
         this.cat.fetchCopyLocations(org).then(() =>
@@ -184,7 +183,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         this.context.pager.offset = 0; // New search
 
         // Form search overrides basket display
-        this.context.showBasket = false; 
+        this.context.showBasket = false;
 
         switch (this.searchTab) {
 
@@ -199,7 +198,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 this.staffCat.search();
                 break;
 
-            case 'ident': 
+            case 'ident':
                 this.context.marcSearch.reset();
                 this.context.browseSearch.reset();
                 this.context.termSearch.reset();

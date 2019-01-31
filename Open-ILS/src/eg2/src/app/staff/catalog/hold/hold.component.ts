@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {tap} from 'rxjs/operators/tap';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -13,8 +13,8 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
-import {HoldService, HoldRequest, HoldRequestTarget} 
-    from '@eg/staff/share/hold.service';
+import {HoldService, HoldRequest,
+    HoldRequestTarget} from '@eg/staff/share/hold.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 class HoldContext {
@@ -32,7 +32,7 @@ class HoldContext {
            // code => selected-boolean
            formats: {},
            langs: {}
-        }
+        };
     }
 }
 
@@ -40,7 +40,7 @@ class HoldContext {
   templateUrl: 'hold.component.html'
 })
 export class HoldComponent implements OnInit {
-    
+
     holdType: string;
     holdTargets: number[];
     user: IdlObject; //
@@ -107,15 +107,15 @@ export class HoldComponent implements OnInit {
         this.getTargetMeta();
 
         this.org.settings('sms.enable').then(sets => {
-            this.smsEnabled = sets['sms.enable']
+            this.smsEnabled = sets['sms.enable'];
             if (!this.smsEnabled) { return; }
 
             this.pcrud.search('csc', {active: 't'}, {order_by: {csc: 'name'}})
             .subscribe(carrier => {
                 this.smsCarriers.push({
-                    id: carrier.id(), 
+                    id: carrier.id(),
                     label: carrier.name()
-                })
+                });
             });
         });
 
@@ -154,7 +154,7 @@ export class HoldComponent implements OnInit {
 
     // Map the selected metarecord filters optoins to a JSON-encoded
     // list of attr filters as required by the API.
-    // Compiles a blob of 
+    // Compiles a blob of
     // {target: JSON({"0": [{_attr: ctype, _val: code}, ...], "1": [...]})}
     // TODO: this should live in the hold service, not in the UI code.
     mrSelectorsToFilters(ctx: HoldContext): {[target: number]: string} {
@@ -196,9 +196,9 @@ export class HoldComponent implements OnInit {
         }
 
         if (Object.keys(compiled).length > 0) {
-            const result = {};
-            result[ctx.holdTarget] = JSON.stringify(compiled);
-            return result;
+            const res = {};
+            res[ctx.holdTarget] = JSON.stringify(compiled);
+            return res;
         }
 
         return null;
@@ -225,15 +225,15 @@ export class HoldComponent implements OnInit {
     userBarcodeChanged() {
 
         // Avoid simultaneous or duplicate lookups
-        if (this.userBarcode === this.currentUserBarcode) { 
-            return; 
+        if (this.userBarcode === this.currentUserBarcode) {
+            return;
         }
 
         this.resetForm();
 
-        if (!this.userBarcode) { 
+        if (!this.userBarcode) {
             this.user = null;
-            return; 
+            return;
         }
 
         this.user = null;
@@ -242,7 +242,7 @@ export class HoldComponent implements OnInit {
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.get_barcodes',
-            this.auth.token(), this.auth.user().ws_ou(), 
+            this.auth.token(), this.auth.user().ws_ou(),
             'actor', this.userBarcode
         ).subscribe(barcodes => {
 
@@ -292,7 +292,7 @@ export class HoldComponent implements OnInit {
 
             if (value === '' || value === null) { return; }
 
-            switch(name) {
+            switch (name) {
                 case 'opac.hold_notify':
                     this.notifyPhone = Boolean(value.match(/phone/));
                     this.notifyEmail = Boolean(value.match(/email/));
@@ -300,7 +300,7 @@ export class HoldComponent implements OnInit {
                     break;
 
                 case 'opac.default_pickup_location':
-                    this.pickupLib = value; 
+                    this.pickupLib = value;
                     break;
             }
         });
@@ -322,7 +322,7 @@ export class HoldComponent implements OnInit {
 
         const target = this.holdTargets[idx];
         const ctx = this.holdContexts.filter(
-            ctx => ctx.holdTarget === target)[0];
+            c => c.holdTarget === target)[0];
 
         this.placeOneHold(ctx).then(() => this.placeHolds(idx + 1));
     }
@@ -352,15 +352,15 @@ export class HoldComponent implements OnInit {
                 console.log('hold returned: ', request);
                 ctx.lastRequest = request;
                 ctx.processing = false;
-    
+
                 // If this request failed and was not already an override,
                 // see of this user has permission to override.
-                if (!request.override && 
+                if (!request.override &&
                     !request.result.success && request.result.evt) {
-    
+
                     const txtcode = request.result.evt.textcode;
                     const perm = txtcode + '.override';
-    
+
                     return this.perm.hasWorkPermHere(perm).then(
                         permResult => ctx.canOverride = permResult[perm]);
                 }
@@ -377,7 +377,7 @@ export class HoldComponent implements OnInit {
     }
 
     canOverride(ctx: HoldContext): boolean {
-        return ctx.lastRequest && 
+        return ctx.lastRequest &&
                 !ctx.lastRequest.result.success && ctx.canOverride;
     }
 

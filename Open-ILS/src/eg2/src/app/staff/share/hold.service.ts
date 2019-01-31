@@ -2,23 +2,22 @@
  * Common code for mananging holdings
  */
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {mergeMap} from 'rxjs/operators/mergeMap';
+import {Observable} from 'rxjs';
+import {map, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {EventService, EgEvent} from '@eg/core/event.service';
 import {AuthService} from '@eg/core/auth.service';
-import {BibRecordService, BibRecordSummary} 
-    from '@eg/share/catalog/bib-record.service';
+import {BibRecordService,
+    BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 
 // Response from a place-holds API call.
 export interface HoldRequestResult {
     success: boolean;
     holdId?: number;
     evt?: EgEvent;
-};
+}
 
 // Values passed to the place-holds API call.
 export interface HoldRequest {
@@ -35,8 +34,8 @@ export interface HoldRequest {
     thawDate?: string; // ISO date
     frozen?: boolean;
     holdableFormats?: {[target: number]: string};
-    result?: HoldRequestResult
-};
+    result?: HoldRequestResult;
+}
 
 // A fleshed hold request target object containing whatever data is
 // available for each hold type / target.  E.g. a TITLE hold will
@@ -69,7 +68,7 @@ export class HoldService {
     ) {}
 
     placeHold(request: HoldRequest): Observable<HoldRequest> {
-        
+
         let method = 'open-ils.circ.holds.test_and_create.batch';
         if (request.override) { method = method + '.override'; }
 
@@ -119,7 +118,7 @@ export class HoldService {
         ));
     }
 
-    getHoldTargetMeta(holdType: string, holdTarget: number | number[], 
+    getHoldTargetMeta(holdType: string, holdTarget: number | number[],
         orgId?: number): Observable<HoldRequestTarget> {
 
         const targetIds = [].concat(holdTarget);

@@ -180,10 +180,10 @@ export class BibRecordService {
         }));
     }
 
-    // A Metabib Summary is a BibRecordSummary with the lead record as 
-    // its core bib record plus attributes (e.g. formats) from related 
+    // A Metabib Summary is a BibRecordSummary with the lead record as
+    // its core bib record plus attributes (e.g. formats) from related
     // records.
-    getMetabibSummary(metabibIds: number | number[], 
+    getMetabibSummary(metabibIds: number | number[],
         orgId?: number, orgDepth?: number): Observable<BibRecordSummary> {
 
         const ids = [].concat(metabibIds);
@@ -192,16 +192,16 @@ export class BibRecordService {
             return from([]);
         }
 
-        return this.pcrud.search('mmr', {id: ids}, 
-            {flesh: 1, flesh_fields: {mmr: ['source_maps']}}, 
+        return this.pcrud.search('mmr', {id: ids},
+            {flesh: 1, flesh_fields: {mmr: ['source_maps']}},
             {anonymous: true}
         ).pipe(mergeMap(mmr => this.compileMetabib(mmr, orgId, orgDepth)));
     }
 
     // 'metabib' must have its "source_maps" field fleshed.
-    // Get bib summaries for all related bib records so we can 
+    // Get bib summaries for all related bib records so we can
     // extract data that must be appended to the master record summary.
-    compileMetabib(metabib: IdlObject, 
+    compileMetabib(metabib: IdlObject,
         orgId?: number, orgDepth?: number): Observable<BibRecordSummary> {
 
         // TODO: Create an API similar to the one that builds a combined
@@ -210,7 +210,7 @@ export class BibRecordService {
 
         // Non-master records
         const relatedBibIds = metabib.source_maps()
-            .map(map => map.source())
+            .map(m => m.source())
             .filter(id => id !== metabib.master_record());
 
         let observer;
@@ -222,8 +222,8 @@ export class BibRecordService {
         this.getBibSummary(metabib.master_record(), orgId, orgDepth)
         .subscribe(summary => {
             summary.metabibId = metabib.id();
-            summary.metabibRecords = 
-                metabib.source_maps().map(map => Number(map.source()))
+            summary.metabibRecords =
+                metabib.source_maps().map(m => Number(m.source()));
 
             let promise;
 

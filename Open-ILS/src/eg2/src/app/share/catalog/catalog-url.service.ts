@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ParamMap} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
-import {CatalogSearchContext, CatalogBrowseContext, CatalogMarcContext, 
+import {CatalogSearchContext, CatalogBrowseContext, CatalogMarcContext,
    CatalogTermContext, FacetFilter} from './search-context';
 import {CATALOG_CCVM_FILTERS} from './search-context';
 
@@ -80,7 +80,7 @@ export class CatalogUrlService {
             params.joinOp = [];
             params.matchOp = [];
 
-            ['format', 'available', 'hasBrowseEntry', 'date1', 
+            ['format', 'available', 'hasBrowseEntry', 'date1',
                 'date2', 'dateOp', 'groupByMetarecord', 'fromMetarecord']
             .forEach(field => {
                 if (ts[field]) {
@@ -116,7 +116,7 @@ export class CatalogUrlService {
                     }));
                 });
             }
-        
+
             if (ts.copyLocations.length && ts.copyLocations[0] !== '') {
                 params.copyLocations = ts.copyLocations.join(',');
             }
@@ -200,7 +200,7 @@ export class CatalogUrlService {
         } else if (params.has('query')) {
 
             // Scalars
-            ['format', 'available', 'date1', 'date2', 
+            ['format', 'available', 'date1', 'date2',
                 'dateOp', 'groupByMetarecord', 'fromMetarecord']
             .forEach(field => {
                 if (params.has(field)) {
@@ -212,14 +212,14 @@ export class CatalogUrlService {
             ['query', 'fieldClass', 'joinOp', 'matchOp'].forEach(field => {
                 const arr = params.getAll(field);
                 if (params.has(field)) {
-                    ts[field] = params.getAll(field); 
+                    ts[field] = params.getAll(field);
                 }
             });
 
             CATALOG_CCVM_FILTERS.forEach(code => {
-                const val = params.get(code);
-                if (val) {
-                    ts.ccvmFilters[code] = val.split(/,/);
+                const ccvmVal = params.get(code);
+                if (ccvmVal) {
+                    ts.ccvmFilters[code] = ccvmVal.split(/,/);
                 } else {
                     ts.ccvmFilters[code] = [''];
                 }

@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
@@ -67,7 +67,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
             holdTarget = this.summary.metabibId;
         }
 
-        this.router.navigate([`/staff/catalog/hold/${holdType}`], 
+        this.router.navigate([`/staff/catalog/hold/${holdType}`],
             {queryParams: {target: holdTarget}});
     }
 
@@ -88,7 +88,7 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     navigateToRecord(summary: BibRecordSummary) {
         const params = this.catUrl.toUrlParams(this.searchContext);
 
-        // Jump to metarecord constituent records page when a 
+        // Jump to metarecord constituent records page when a
         // MR has more than 1 constituents.
         if (summary.metabibId && summary.metabibRecords.length > 1) {
             this.searchContext.termSearch.fromMetarecord = summary.metabibId;

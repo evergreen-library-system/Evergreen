@@ -2,7 +2,7 @@
  * Service for communicating with the server-side "anonymous" cache.
  */
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {NetService} from '@eg/core/net.service';
 
@@ -30,14 +30,14 @@ export class AnonCacheService {
             'open-ils.actor',
             'open-ils.actor.anon_cache.set_value',
             cacheKey, attr, value
-        ).toPromise().then(cacheKey => {
-            if (cacheKey) {
-                return cacheKey;
+        ).toPromise().then(key => {
+            if (key) {
+                return key;
             } else {
                 return Promise.reject(
-                    `Could not apply a value for attr=${attr} cacheKey=${cacheKey}`);
+                    `Could not apply a value for attr=${attr} cacheKey=${key}`);
             }
-        })
+        });
     }
 
     removeItem(cacheKey: string, attr: string): Promise<string> {

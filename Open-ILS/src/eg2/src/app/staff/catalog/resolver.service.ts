@@ -39,14 +39,14 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
     fetchSettings(): Promise<any> {
 
         return this.store.getItemBatch([
-            'eg.search.search_lib', 
+            'eg.search.search_lib',
             'eg.search.pref_lib'
         ]).then(settings => {
-            this.staffCat.defaultSearchOrg = 
+            this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);
-            this.staffCat.prefOrg = 
+            this.staffCat.prefOrg =
                 this.org.get(settings['eg.search.pref_lib']);
-        })
+        });
     }
 }
 

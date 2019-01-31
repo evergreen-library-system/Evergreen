@@ -1,5 +1,5 @@
 import {Injectable, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {StoreService} from '@eg/core/store.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -27,8 +27,8 @@ export class BasketService {
         private pcrud: PcrudService,
         private store: StoreService,
         private anonCache: AnonCacheService
-    ) { 
-        this.idList = []; 
+    ) {
+        this.idList = [];
         this.onChange = new EventEmitter<number[]>();
     }
 
@@ -50,7 +50,7 @@ export class BasketService {
 
         return this.anonCache.getItem(cacheKey, BASKET_CACHE_ATTR).then(
             list => {
-                if (!list) {return this.idList};
+                if (!list) { return this.idList; }
                 this.idList = list.map(id => Number(id));
                 return this.idList;
             }
@@ -66,8 +66,8 @@ export class BasketService {
         const cacheKey = this.store.getLoginSessionItem(BASKET_CACHE_KEY_COOKIE);
 
         return this.anonCache.setItem(cacheKey, BASKET_CACHE_ATTR, this.idList)
-        .then(cacheKey => {
-            this.store.setLoginSessionItem(BASKET_CACHE_KEY_COOKIE, cacheKey);
+        .then(key => {
+            this.store.setLoginSessionItem(BASKET_CACHE_KEY_COOKIE, key);
             this.onChange.emit(this.idList);
             return this.idList;
         });
@@ -76,8 +76,8 @@ export class BasketService {
     addRecordIds(ids: number[]): Promise<number[]> {
         ids = ids.filter(id => !this.hasRecordId(id)); // avoid dupes
 
-        if (ids.length === 0) { 
-            return Promise.resolve(this.idList); 
+        if (ids.length === 0) {
+            return Promise.resolve(this.idList);
         }
         return this.setRecordIds(
             this.idList.concat(ids.map(id => Number(id))));
