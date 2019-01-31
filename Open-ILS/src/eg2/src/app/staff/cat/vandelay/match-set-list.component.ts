@@ -1,6 +1,6 @@
 import {Component, AfterViewInit, ViewChild} from '@angular/core';
-import {Router} from '@angular/router';              
-import {Pager} from '@eg/share/util/pager';                                    
+import {Router} from '@angular/router';
+import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
@@ -32,12 +32,12 @@ export class MatchSetListComponent implements AfterViewInit {
 
         this.gridSource.getRows = (pager: Pager) => {
             const orgs = this.org.ancestors(this.contextOrg, true);
-            return this.pcrud.search('vms', {owner: orgs}, {   
+            return this.pcrud.search('vms', {owner: orgs}, {
                 order_by: {vms: ['name']},
                 limit: pager.limit,
                 offset: pager.offset
             });
-        }
+        };
 
         this.createNew = () => {
             this.editDialog.mode = 'create';

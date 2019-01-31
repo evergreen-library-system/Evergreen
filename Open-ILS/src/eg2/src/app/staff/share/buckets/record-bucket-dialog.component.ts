@@ -49,7 +49,7 @@ export class RecordBucketDialogComponent
     }
 
     ngOnInit() {
-        
+
         if (this.qId) {
             this.bucketType = 'vandelay_queue';
         } else {

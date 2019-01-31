@@ -1,9 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import {map} from 'rxjs/operators/map';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';              
-import {Pager} from '@eg/share/util/pager';                                    
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -31,7 +30,7 @@ export class QueueItemsComponent {
         private auth: AuthService,
         private vandelay: VandelayService) {
 
-        this.route.paramMap.subscribe((params: ParamMap) => {                  
+        this.route.paramMap.subscribe((params: ParamMap) => {
             this.queueId = +params.get('id');
             this.queueType = params.get('qtype');
         });
@@ -54,7 +53,7 @@ export class QueueItemsComponent {
         this.limitToImportErrors = (checked: boolean) => {
             this.filterImportErrors = checked;
             this.itemsGrid.reload();
-        }
+        };
     }
 }
 

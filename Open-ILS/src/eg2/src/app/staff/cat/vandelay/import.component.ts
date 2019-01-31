@@ -1,12 +1,14 @@
-import {Component, OnInit, AfterViewInit, Input, ViewChild, OnDestroy} from '@angular/core';
-import {tap} from 'rxjs/operators/tap';
+import {Component, OnInit, AfterViewInit, Input,
+    ViewChild, OnDestroy} from '@angular/core';
+import {Subject} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {ComboboxComponent, 
+import {ComboboxComponent,
     ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {VandelayService, VandelayImportSelection,
   VANDELAY_UPLOAD_PATH} from './vandelay.service';
@@ -14,7 +16,6 @@ import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
-import {Subject} from 'rxjs/Subject';
 import {ServerStoreService} from '@eg/core/server-store.service';
 
 const TEMPLATE_SETTING_NAME = 'eg.cat.vandelay.import.templates';
@@ -46,7 +47,7 @@ interface ImportOptions {
     merge_profile?: any;
     fall_through_merge_profile?: any;
     strip_field_groups?: number[];
-    match_quality_ratio: number,
+    match_quality_ratio: number;
     exit_early: boolean;
 }
 
@@ -60,7 +61,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // used for applying a default queue ID value when we have
     // a load-time queue before the queue combobox entries exist.
-    startQueueId: number; 
+    startQueueId: number;
 
     bibTrashGroups: IdlObject[];
     selectedTrashGroups: number[];
@@ -104,15 +105,15 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     newTemplateName: string;
 
     @ViewChild('fileSelector') private fileSelector;
-    @ViewChild('uploadProgress') 
+    @ViewChild('uploadProgress')
         private uploadProgress: ProgressInlineComponent;
-    @ViewChild('enqueueProgress') 
+    @ViewChild('enqueueProgress')
         private enqueueProgress: ProgressInlineComponent;
-    @ViewChild('importProgress') 
+    @ViewChild('importProgress')
         private importProgress: ProgressInlineComponent;
 
     // Need these refs so values can be applied via external stimuli
-    @ViewChild('formTemplateSelector') 
+    @ViewChild('formTemplateSelector')
         private formTemplateSelector: ComboboxComponent;
     @ViewChild('recordTypeSelector')
         private recordTypeSelector: ComboboxComponent;
@@ -244,7 +245,9 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (etype) {
             case 'bibSources':
                 return (this.vandelay.bibSources || []).map(
-                    s => { return {id: s.id(), label: s.source()}; });
+                    s => {
+                        return {id: s.id(), label: s.source()};
+                    });
 
             case 'bibBuckets':
                 list = this.vandelay.bibBuckets;
@@ -279,7 +282,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         switch (etype) {
             case 'recordType':
                 this.recordType = id;
-              
+                break;
+
             case 'bibSources':
                 this.selectedBibSource = id;
                 break;
@@ -307,7 +311,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     fileSelected($event) {
-       this.selectedFile = $event.target.files[0]; 
+       this.selectedFile = $event.target.files[0];
     }
 
     // Required form data varies depending on context.
@@ -315,8 +319,8 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.vandelay.importSelection) {
             return this.importActionSelected();
         } else {
-            return this.selectedQueue 
-                && Boolean(this.recordType) && Boolean(this.selectedFile)
+            return this.selectedQueue &&
+                Boolean(this.recordType) && Boolean(this.selectedFile);
         }
     }
 
@@ -394,7 +398,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                         } else {
                             alert(evt); // server error
                         }
-                    } 
+                    }
 
                     return Promise.reject('Queue Create Failed');
                 }
@@ -410,18 +414,18 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             // Nothing to upload when processing pre-queued records.
             return Promise.resolve();
         }
-        
+
         const formData: FormData = new FormData();
 
         formData.append('ses', this.auth.token());
-        formData.append('marc_upload', 
+        formData.append('marc_upload',
             this.selectedFile, this.selectedFile.name);
 
         if (this.selectedBibSource) {
-            formData.append('bib_source', ''+this.selectedBibSource);
+            formData.append('bib_source', '' + this.selectedBibSource);
         }
 
-        const req = new HttpRequest('POST', VANDELAY_UPLOAD_PATH, formData, 
+        const req = new HttpRequest('POST', VANDELAY_UPLOAD_PATH, formData,
             {reportProgress: true, responseType: 'text'});
 
         return this.http.request(req).pipe(tap(
@@ -433,7 +437,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                 } else if (evt instanceof HttpResponse) {
                     this.sessionKey = evt.body as string;
                     console.log(
-                        'Vandelay file uploaded OK with key '+this.sessionKey);
+                        'Vandelay file uploaded OK with key ' + this.sessionKey);
                 }
             },
 
@@ -450,16 +454,19 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
             // Nothing to enqueue when processing pre-queued records
             return Promise.resolve();
         }
-        var spoolType = this.recordType;
-        if (this.recordType == 'authority') spoolType = 'auth'
+
+        let spoolType = this.recordType;
+        if (this.recordType === 'authority') {
+            spoolType = 'auth';
+        }
 
         const method = `open-ils.vandelay.${spoolType}.process_spool`;
 
         return new Promise((resolve, reject) => {
             this.net.request(
-                'open-ils.vandelay', method, 
+                'open-ils.vandelay', method,
                 this.auth.token(), this.sessionKey, this.activeQueueId,
-                null, null, this.selectedBibSource, 
+                null, null, this.selectedBibSource,
                 (this.sessionName || null), true
             ).subscribe(
                 tracker => {
@@ -472,7 +479,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
                         trkr => {
                             this.enqueueProgress.update({
                                 // enqueue API only tracks actions performed
-                                max: null, 
+                                max: null,
                                 value: trkr.actions_performed()
                             });
                         },
@@ -515,7 +522,7 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         return new Promise((resolve, reject) => {
-            this.net.request('open-ils.vandelay', 
+            this.net.request('open-ils.vandelay',
                 method, this.auth.token(), target, options)
             .subscribe(
                 tracker => {
@@ -579,14 +586,14 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
         const template = {};
         TEMPLATE_ATTRS.forEach(key => template[key] = this[key]);
 
-        console.debug("Saving import profile", template);
+        console.debug('Saving import profile', template);
 
         this.formTemplates[this.selectedTemplate] = template;
         return this.store.setItem(TEMPLATE_SETTING_NAME, this.formTemplates);
     }
 
     markTemplateDefault() {
-        
+
         Object.keys(this.formTemplates).forEach(
             name => delete this.formTemplates.default
         );

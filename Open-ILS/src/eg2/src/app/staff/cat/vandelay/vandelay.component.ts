@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, NavigationEnd} from "@angular/router";
-import {take} from 'rxjs/operators/take';
+import {Router, ActivatedRoute, NavigationEnd} from '@angular/router';
+import {take} from 'rxjs/operators';
 import {VandelayService} from './vandelay.service';
 import {IdlObject} from '@eg/core/idl.service';
 

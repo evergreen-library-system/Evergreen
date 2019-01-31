@@ -71,10 +71,10 @@ export class RecentImportsComponent implements OnInit {
         this.pcrud.search('vst', query, {order_by: {vst: 'create_time'}})
         .subscribe(
             tracker => {
-                // The screen flickers less if the tracker array is 
+                // The screen flickers less if the tracker array is
                 // updated inline instead of rebuilt every time.
 
-                const existing = 
+                const existing =
                     this.trackers.filter(t => t.id() === tracker.id())[0];
 
                 if (existing) {
@@ -116,7 +116,7 @@ export class RecentImportsComponent implements OnInit {
             },
             err => {},
             ()  => {
-                const active = 
+                const active =
                     this.trackers.filter(t => t.state() === 'active');
 
                 // Continue updating the display with updated tracker

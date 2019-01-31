@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';              
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -20,7 +20,7 @@ export class MatchSetComponent implements OnInit {
         private pcrud: PcrudService,
         private org: OrgService
     ) {
-        this.route.paramMap.subscribe((params: ParamMap) => {                  
+        this.route.paramMap.subscribe((params: ParamMap) => {
             this.matchSetId = +params.get('id');
             this.matchSetTab = params.get('matchSetTab');
         });
@@ -42,7 +42,7 @@ export class MatchSetComponent implements OnInit {
         // prevent tab changing until after route navigation
         evt.preventDefault();
 
-        const url = 
+        const url =
           `/staff/cat/vandelay/match_sets/${this.matchSetId}/${this.matchSetTab}`;
 
         this.router.navigate([url]);

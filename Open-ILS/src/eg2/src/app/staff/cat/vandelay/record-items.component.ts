@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild} from '@angular/core';
-import {Pager} from '@eg/share/util/pager';                                    
+import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -29,7 +29,7 @@ export class RecordItemsComponent {
 
         // queue API does not support sorting
         this.gridSource.getRows = (pager: Pager) => {
-            return this.pcrud.search('vii', 
+            return this.pcrud.search('vii',
                 {record: this.recordId}, {order_by: {vii: ['id']}});
         };
     }

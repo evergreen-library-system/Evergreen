@@ -28,6 +28,7 @@
     "@nguniversal/express-engine": "^7.1.0",
     "bootstrap-css-only": "^4.2.1",
     "core-js": "^2.6.3",
+    "file-saver": "^2.0.0",
     "ngx-cookie": "^4.1.2",
     "rxjs": "^6.4.0",
     "zone.js": "^0.8.29"

@@ -2,7 +2,7 @@ import {Component, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {saveAs} from 'file-saver/FileSaver';
+import {saveAs} from 'file-saver';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
@@ -26,7 +26,7 @@ export class ExportComponent implements AfterViewInit {
     isExporting: boolean;
 
     @ViewChild('fileSelector') private fileSelector;
-    @ViewChild('exportProgress') 
+    @ViewChild('exportProgress')
         private exportProgress: ProgressInlineComponent;
 
     constructor(
@@ -54,12 +54,12 @@ export class ExportComponent implements AfterViewInit {
             setTimeout(() => {
                 this.renderer.selectRootElement(
                     `#${this.recordSource}-input`).focus();
-            })
+            });
         }
     }
 
     fileSelected($event) {
-       this.selectedFile = $event.target.files[0]; 
+       this.selectedFile = $event.target.files[0];
     }
 
     hasNeededData(): boolean {
@@ -86,20 +86,20 @@ export class ExportComponent implements AfterViewInit {
         switch (this.recordSource) {
 
             case 'csv':
-                formData.append('idcolumn', ''+this.fieldNumber);
-                formData.append('idfile', 
+                formData.append('idcolumn', '' + this.fieldNumber);
+                formData.append('idfile',
                     this.selectedFile, this.selectedFile.name);
                 break;
 
             case 'record-id':
-                formData.append('id', ''+this.recordId);
+                formData.append('id', '' + this.recordId);
                 break;
 
             case 'bucket-id':
-                formData.append('containerid', ''+this.bucketId);
+                formData.append('containerid', '' + this.bucketId);
                 break;
         }
-        
+
         this.sendExportRequest(formData);
     }
 
@@ -108,19 +108,19 @@ export class ExportComponent implements AfterViewInit {
         const fileName = `export.${this.recordType}.` +
             `${this.recordEncoding}.${this.recordFormat}`;
 
-        const req = new HttpRequest('POST', VANDELAY_EXPORT_PATH, 
+        const req = new HttpRequest('POST', VANDELAY_EXPORT_PATH,
             formData, {reportProgress: true, responseType: 'text'});
 
         this.http.request(req).subscribe(
             evt => {
-                console.log(evt);
+                console.debug(evt);
                 if (evt.type === HttpEventType.DownloadProgress) {
                     // File size not reported by server in advance.
                     this.exportProgress.update({value: evt.loaded});
 
                 } else if (evt instanceof HttpResponse) {
 
-                    saveAs(new Blob([evt.body], 
+                    saveAs(new Blob([evt.body as Blob],
                         {type: 'application/octet-stream'}), fileName);
 
                     this.isExporting = false;

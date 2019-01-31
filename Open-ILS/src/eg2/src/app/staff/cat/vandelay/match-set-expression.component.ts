@@ -54,7 +54,7 @@ export class MatchSetExpressionComponent implements OnInit {
         if (!this.matchSet_) { return Promise.resolve(); }
 
         return this.pcrud.search('vmsp',
-            {match_set: this.matchSet_.id()}, {}, 
+            {match_set: this.matchSet_.id()}, {},
             {atomic: true, authoritative: true}
         ).toPromise().then(points => this.ingestMatchPoints(points));
     }
@@ -101,7 +101,7 @@ export class MatchSetExpressionComponent implements OnInit {
 
     getPointLabel(point: IdlObject, showmatch?: boolean): Promise<string> {
         return this.strings.interpolate(
-            'staff.cat.vandelay.matchpoint.label', 
+            'staff.cat.vandelay.matchpoint.label',
             {point: point, showmatch: showmatch}
         );
     }
@@ -110,7 +110,7 @@ export class MatchSetExpressionComponent implements OnInit {
 
     deleteNode() {
         this.changesMade = true;
-        const node = this.tree.selectedNode()
+        const node = this.tree.selectedNode();
         this.tree.removeNode(node);
     }
 
@@ -144,13 +144,13 @@ export class MatchSetExpressionComponent implements OnInit {
 
         } else {
 
-            if (ptype == 'attr') {
+            if (ptype === 'attr') {
                 point.svf(this.newPoint.values.recordAttr);
 
-            } else if (ptype == 'marc') {
+            } else if (ptype === 'marc') {
                 point.tag(this.newPoint.values.marcTag);
                 point.subfield(this.newPoint.values.marcSf);
-            } else if (ptype == 'heading') {
+            } else if (ptype === 'heading') {
                 point.heading(true);
             }
 
@@ -159,7 +159,7 @@ export class MatchSetExpressionComponent implements OnInit {
         }
 
         const node: TreeNode = new TreeNode({
-            id: point.id(), 
+            id: point.id(),
             callerData: {point: point}
         });
 
@@ -175,13 +175,13 @@ export class MatchSetExpressionComponent implements OnInit {
 
             if (node.children.length) {
                 return '(' + node.children.map(renderNode).join(
-                    ' ' + node.callerData.slimLabel + ' ') + ')'
+                    ' ' + node.callerData.slimLabel + ' ') + ')';
             } else if (!node.callerData.point.bool_op()) {
                 return node.callerData.slimLabel;
             } else {
                 return '()';
             }
-        }
+        };
 
         return renderNode(this.tree.rootNode);
     }
@@ -211,7 +211,7 @@ export class MatchSetExpressionComponent implements OnInit {
             'open-ils.vandelay.match_set.update',
             this.auth.token(), this.matchSet_.id(), rootPoint
         ).toPromise().then(
-            ok =>this.refreshTree(),
+            ok => this.refreshTree(),
             err => console.error(err)
         );
     }

@@ -1,10 +1,8 @@
 import {Component, OnInit, AfterViewInit, ViewChild} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import {map} from 'rxjs/operators/map';
-import {filter} from 'rxjs/operators/filter';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';              
-import {Pager} from '@eg/share/util/pager';                                    
+import {Observable} from 'rxjs';
+import {map, filter} from 'rxjs/operators';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -52,7 +50,7 @@ export class QueueComponent implements OnInit, AfterViewInit {
         private auth: AuthService,
         private vandelay: VandelayService) {
 
-        this.route.paramMap.subscribe((params: ParamMap) => {                  
+        this.route.paramMap.subscribe((params: ParamMap) => {
             this.queueType = params.get('qtype');
             this.queueId = +params.get('id');
         });
@@ -87,8 +85,8 @@ export class QueueComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        if (this.queueType) { 
-            this.applyQueueType(); 
+        if (this.queueType) {
+            this.applyQueueType();
             if (this.queueId) {
                 this.loadQueueSummary();
             }
@@ -96,10 +94,10 @@ export class QueueComponent implements OnInit, AfterViewInit {
     }
 
     openRecord(row: any) {
-        if (this.queueType == 'auth') {
+        if (this.queueType === 'auth') {
             this.queueType = 'authority';
         }
-        const url = 
+        const url =
           `/staff/cat/vandelay/queue/${this.queueType}/${this.queueId}/record/${row.id}/marc`;
         this.router.navigate([url]);
     }
@@ -126,11 +124,11 @@ export class QueueComponent implements OnInit, AfterViewInit {
     }
 
     qtypeShort(): string {
-        return this.queueType === 'bib' ? 'bib' : 'auth';    
+        return this.queueType === 'bib' ? 'bib' : 'auth';
     }
 
     loadQueueSummary(): Promise<any> {
-        const method = 
+        const method =
             `open-ils.vandelay.${this.qtypeShort()}_queue.summary.retrieve`;
 
         return this.net.request(
@@ -143,11 +141,11 @@ export class QueueComponent implements OnInit, AfterViewInit {
         const options = {
             clear_marc: true,
             offset: pager.offset,
-            limit: pager.limit, 
+            limit: pager.limit,
             flesh_import_items: true,
             non_imported: this.filters.nonImported,
             with_import_error: this.filters.withErrors
-        }
+        };
 
         return this.vandelay.getQueuedRecords(
             this.queueId, this.queueType, options, this.filters.matches).pipe(
@@ -158,7 +156,7 @@ export class QueueComponent implements OnInit, AfterViewInit {
             const e = this.evt.parse(rec);
             if (e) { console.error(e); return false; }
             return true;
-        }), 
+        }),
         map(rec => {
             const recHash: any = {
                 id: rec.id(),
@@ -176,10 +174,10 @@ export class QueueComponent implements OnInit, AfterViewInit {
                 recHash.error_items = rec.import_items().filter(i => i.import_error());
             }
 
-            // Link the record attribute values to the root record 
+            // Link the record attribute values to the root record
             // object so the grid can find them.
             rec.attributes().forEach(attr => {
-                const def = 
+                const def =
                     this.attrDefs.filter(d => d.id() === attr.field())[0];
                 recHash[def.code()] = attr.attr_value();
             });

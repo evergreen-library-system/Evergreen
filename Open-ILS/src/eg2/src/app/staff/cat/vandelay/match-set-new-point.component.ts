@@ -31,7 +31,7 @@ export class MatchSetNewPointComponent implements OnInit {
     @Input() isForQuality: boolean;
 
     // biblio, authority, quality
-    @Input() set pointType(type_: string) { 
+    @Input() set pointType(type_: string) {
         this.values.pointType = type_;
         this.values.recordAttr = '';
         this.values.matchScore = 1;

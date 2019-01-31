@@ -1,8 +1,7 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';              
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import {map} from 'rxjs/operators/map';
+import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import {Observable, of} from 'rxjs';
+import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
@@ -47,7 +46,7 @@ export class QueuedRecordMatchesComponent implements OnInit {
 
         this.bibDataSource.getRows = (pager: Pager) => {
             return this.getBibMatchRows(pager);
-        }
+        };
 
         /* TODO
         this.authDataSource.getRows = (pager: Pager) => {
@@ -57,7 +56,7 @@ export class QueuedRecordMatchesComponent implements OnInit {
         // Mark or un-mark as row as the merge target on row click
         this.matchRowClick = (row: any) => {
             this.toggleMergeTarget(row.id);
-        }
+        };
     }
 
     toggleMergeTarget(matchId: number) {
@@ -126,7 +125,7 @@ export class QueuedRecordMatchesComponent implements OnInit {
                                     vqbr_quality: this.queuedRecord.quality(),
                                     match_score: match.match_score(),
                                     bib_summary: bibSummaries[match.eg_record()]
-                                }
+                                };
 
                                 observer.next(row);
                             });
@@ -143,7 +142,7 @@ export class QueuedRecordMatchesComponent implements OnInit {
         if (this.queuedRecord) {
             return Promise.resolve('');
         }
-        let idlClass = this.queueType === 'bib' ? 'vqbr' : 'vqar';
+        const idlClass = this.queueType === 'bib' ? 'vqbr' : 'vqar';
         const flesh = {flesh: 1, flesh_fields: {}};
         flesh.flesh_fields[idlClass] = ['matches'];
         return this.pcrud.retrieve(idlClass, this.recordId, flesh)

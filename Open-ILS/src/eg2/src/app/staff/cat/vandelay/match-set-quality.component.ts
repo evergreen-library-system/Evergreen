@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild, AfterViewInit, Input} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import {Observable, of} from 'rxjs';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {NetService} from '@eg/core/net.service';
@@ -21,8 +20,8 @@ export class MatchSetQualityComponent implements OnInit {
     matchSet_: IdlObject;
     @Input() set matchSet(ms: IdlObject) {
         this.matchSet_ = ms;
-        if (ms) { 
-            this.matchSetType = ms.mtype(); 
+        if (ms) {
+            this.matchSetType = ms.mtype();
             if (this.grid) {
                 this.grid.reload();
             }
@@ -48,7 +47,7 @@ export class MatchSetQualityComponent implements OnInit {
         this.dataSource.getRows = (pager: Pager, sort: any[]) => {
 
             if (!this.matchSet_) {
-                return Observable.of();
+                return of();
             }
 
             const orderBy: any = {};
@@ -64,7 +63,7 @@ export class MatchSetQualityComponent implements OnInit {
 
             const search = {match_set: this.matchSet_.id()};
             return this.pcrud.search('vmsq', search, searchOps);
-        }
+        };
 
         this.deleteSelected = (rows: any[]) => {
             this.pcrud.remove(rows).subscribe(
@@ -78,7 +77,7 @@ export class MatchSetQualityComponent implements OnInit {
     ngOnInit() {}
 
     addQuality() {
-        const quality = this.idl.create('vmsq');  
+        const quality = this.idl.create('vmsq');
         const values = this.newPoint.values;
 
         quality.match_set(this.matchSet_.id());
