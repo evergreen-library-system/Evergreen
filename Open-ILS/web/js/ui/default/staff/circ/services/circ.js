@@ -1361,26 +1361,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                                 handle_checkin: !$scope.applyFine
                         }).then(function(resp) {
                             if (evt = egCore.evt.parse(resp)) {
-                                egCore.pcrud.retrieve('ccs', 14)
-                                    .then(function(resp) {
-                                        service.handle_mark_item_event(
-                                            {id : params.id, barcode : params.barcode},
-                                            resp,
-                                            {
-                                                apply_fines: $scope.applyFine,
-                                                override_amount: $scope.billArgs.charge,
-                                                override_btype: $scope.billArgs.type,
-                                                override_note: $scope.billArgs.note,
-                                                handle_checkin: !$scope.applyFine
-                                            },
-                                            evt);
-                                    }).then(function(resp) {
-                                        // noop?
-                                        //if (doRefresh) egItem.add_barcode_to_list(params.barcode);
-                                    }, function(resp) {
-                                        doRefresh = false;
-                                        console.error('mark damaged failed: ' + evt);
-                                    });
+                                doRefresh = false;
+                                console.debug("mark damaged more information required. Pushing back.");
+                                service.mark_damaged({
+                                    id: params.id,
+                                    barcode: params.barcode,
+                                    charge: evt.payload.charge,
+                                    circ: evt.payload.circ,
+                                    refresh: params.refresh
+                                });
+                                console.error('mark damaged failed: ' + evt);
                             }
                         }).then(function() {
                             if (doRefresh) egItem.add_barcode_to_list(params.barcode);
