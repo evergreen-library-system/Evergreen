@@ -25,7 +25,7 @@
                         <select class="form-control" ng-model="batch.prefix" ng-options="p.id() as p.label() for p in prefix_list"></select>
                     </div>
                     <div class="col-xs-2">
-                        <input class="form-control" type="text" ng-model="batch.label"/>
+                        <eg-basic-combo-box list="batch.marcCallNumbers" selected="batch.label"></eg-basic-combo-box>
                     </div>
                     <div class="col-xs-1">
                         <select class="form-control" ng-model="batch.suffix" ng-options="s.id() as s.label() for s in suffix_list"></select>
