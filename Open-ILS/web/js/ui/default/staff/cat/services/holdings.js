@@ -137,21 +137,28 @@ function(egCore , $q) {
                         cp.copy_alert_count = cp.copy_alerts.filter(function(aca) { return aca.ack_time == null ;}).length;
                     }
                     else cp.copy_alert_count = 0;
-
-                    var copy_circ = egCore.pcrud.search('combcirc', { target_copy : cp.id },
-                        {
-                            order_by : {combcirc : 'xact_start desc'},
-                            limit :  1
-                        }
-                    ).then(function(copy_circ) {
-                        if (copy_circ) {
-                            cp._circ = egCore.idl.toHash(copy_circ, true);
-                            cp._circ_lib = copy_circ.circ_lib();
-                            cp._duration = copy_circ.duration();
-                        }
-                        return copy_circ;
-                    });
                 });
+
+                // Grab the open circulation (i.e. checkin_time=null) for
+                // all of the copies we're rendering so we can display
+                // due date info.  There should only ever be one circulation
+                // at most with checkin_time=null for any copy.
+                var copyIds = svc.copies.map(function(cp) {return cp.id})
+                    .filter(function(id) {return Boolean(id)}); // avoid nulls
+
+                egCore.pcrud.search('circ', 
+                    {target_copy: copyIds, checkin_time: null}
+                ).then(
+                    null, // complete
+                    null, // error
+                    function(circ) {
+                        var cp = svc.copies.filter(function(c) { 
+                            return c.id == circ.target_copy() })[0];
+                        cp._circ = egCore.idl.toHash(circ, true);
+                        cp._circ_lib = circ.circ_lib();
+                        cp._duration = circ.duration();
+                    }
+                );
 
                 // create a label using just the unique part of the owner list
                 var index = 0;
