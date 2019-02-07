@@ -480,6 +480,7 @@ BEGIN
 	-- actor.*
 	DELETE FROM actor.card WHERE usr = src_usr;
 	DELETE FROM actor.stat_cat_entry_usr_map WHERE target_usr = src_usr;
+	DELETE FROM actor.usr_privacy_waiver WHERE usr = src_usr;
 
 	-- The following update is intended to avoid transient violations of a foreign
 	-- key constraint, whereby actor.usr_address references itself.  It may not be
