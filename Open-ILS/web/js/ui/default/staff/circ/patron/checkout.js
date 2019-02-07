@@ -96,7 +96,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         return (
             patronSvc.current &&
             patronSvc.current.email() &&
-            patronSvc.current.email().match(/.*@.*/).length
+            patronSvc.current.email().match(/.*@.*/)
         );
     }
 
