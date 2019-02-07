@@ -450,7 +450,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             card : { barcode : cusr.card().barcode() },
             expire_date : cusr.expire_date(),
             alias : cusr.alias(),
-            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/).length),
+            has_email : Boolean(patronSvc.current.email() && patronSvc.current.email().match(/.*@.*/)),
             has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
         };
 
@@ -587,7 +587,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                             card : { barcode : cusr.card().barcode() },
                             expire_date : cusr.expire_date(),
                             alias : cusr.alias(),
-                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/)),
                             has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
                         }
                     }
@@ -1086,7 +1086,7 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
                             card : { barcode : cusr.card().barcode() },
                             expire_date : cusr.expire_date(),
                             alias : cusr.alias(),
-                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/)),
                             has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
                         }
                     }
