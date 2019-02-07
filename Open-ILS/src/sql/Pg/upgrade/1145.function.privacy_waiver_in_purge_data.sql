@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+INSERT INTO config.upgrade_log (version) VALUES ('1145');
 
 CREATE OR REPLACE FUNCTION actor.usr_purge_data(
 	src_usr  IN INTEGER,

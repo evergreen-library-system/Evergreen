@@ -1,6 +1,6 @@
 BEGIN;
 
-INSERT INTO config.upgrade_log (version) VALUES ('XXXX');
+INSERT INTO config.upgrade_log (version) VALUES ('1144');
 
 CREATE TABLE actor.usr_privacy_waiver (
     id BIGSERIAL PRIMARY KEY,
