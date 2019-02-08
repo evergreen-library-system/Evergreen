@@ -37,6 +37,7 @@ export DEBS = \
 	libdbi-dev\
 	libdbi1\
 	libemail-simple-perl\
+	libemail-mime-perl\
 	libexcel-writer-xlsx-perl\
 	libgd-graph3d-perl\
 	liblocale-maketext-lexicon-perl\
