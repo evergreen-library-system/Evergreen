@@ -555,6 +555,7 @@ vim:et:ts=4:sw=4:
                                 <unit>103</unit>
                                 <unit>104</unit>
                             </org_units>
+                            <restrict_by_home_ou>false</restrict_by_home_ou>
                         </authenticator>
                         -->
                         <!-- 'native' is a proxied version of Evergreen's standard authentication -->

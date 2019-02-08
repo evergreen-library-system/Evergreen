@@ -260,10 +260,14 @@ sub login {
                     $logger->debug("Authenticated username '" . $args->{'username'} . "' has no Evergreen account, aborting");
                     return OpenILS::Event->new( 'LOGIN_FAILED' );
                 } else {
-                    # TODO: verify that this authenticator is allowed to do auth
-                    # for the specified username (i.e. if the authenticator is for
-                    # Library A only, it shouldn't be able to do auth for
-                    # Library B's users)
+                    my $restrict_by_ou = $authenticator->{restrict_by_home_ou};
+                    if ($args->{org} and defined($restrict_by_ou) and $restrict_by_ou =~ /^t/i) {
+                        my $descendants = $U->get_org_descendants($args->{org});
+                        unless (grep $user->[0]->home_ou, @$descendants) {
+                            $logger->debug("Matching user does not belong to this org, aborting");
+                            return OpenILS::Event->new( 'LOGIN_FAILED' );
+                        }
+                    }
                     $args->{user_id} = $user->[0]->id;
                 }
 
