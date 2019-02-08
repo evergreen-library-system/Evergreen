@@ -3,7 +3,7 @@ use strict; use warnings;
 use Error qw/:try/;
 use Data::Dumper;
 use Email::Send;
-use Email::Simple;
+use Email::MIME;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Trigger::Reactor;
 use OpenSRF::Utils::Logger qw/:logger/;
@@ -29,7 +29,7 @@ Email is encoded in UTF-8 and the corresponding MIME-Version, Content-Type,
 and Content-Transfer-Encoding headers are set to help mail user agents
 decode the content.
 
-The From, To, Subject, Bcc, Cc, Reply-To and Sender -fields are
+The From, To, Bcc, Cc, Reply-To, Sender, and Subject fields are
 automatically MIME-encoded.
 
 No default template is assumed, and all information other than the
@@ -56,12 +56,19 @@ sub handler {
     my $stat;
     my $err;
 
-    my $email = Email::Simple->new($text);
+    my $email = Email::MIME->new($text);
 
-    for my $hfield (qw/From To Subject Bcc Cc Reply-To Sender/) {
-	my @headers = $email->header($hfield);
-	$email->header_set($hfield => map { encode("MIME-Header", $_) } @headers) if ($headers[0]);
+    # Handle the address fields.  In addition to encoding the values
+    # properly, we make sure there is only 1 each.
+    for my $hfield (qw/From To Bcc Cc Reply-To Sender/) {
+        my @headers = $email->header($hfield);
+        $email->header_str_set($hfield => join(',', @headers)) if ($headers[0]);
     }
+
+    # Handle the Subject field.  Again, the standard says there can be
+    # only one.
+    my @headers = $email->header('Subject');
+    $email->header_str_set('Subject' => $headers[0]) if ($headers[0]);
 
     $email->header_set('MIME-Version' => '1.0');
     $email->header_set('Content-Type' => "text/plain; charset=UTF-8");
