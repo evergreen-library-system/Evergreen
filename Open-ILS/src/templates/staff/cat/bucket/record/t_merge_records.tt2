@@ -5,45 +5,62 @@
     <h4 class="modal-title">[% l('Merge records?') %]</h4>
   </div>
   <div class="modal-body">
-      <div class="row">
+      <div class="row pad-all-min">
         <div class="col-xs-3">
           <label for="merge_profile_selector">[% l('Choose merge profile') %]</label>
           <eg-fm-value-selector id="merge_profile_selector" ng-model="merge_profile" idl-class="vmp" ou-setting="cat.default_merge_profile" filter="{'preserve_spec':{'=':null}}" sticky-setting="eg.cat.record_bucket.default_merge_profile"></eg-fm-value-selector>
         </div>
+        <div class="col-xs-2">
+          <button class="btn btn-default" ng-click="showHoldings=!showHoldings">
+              [% l('Toggle Holdings Display') %]</button>
+        </div>
+        <div class="col-xs-3">
+          <div ng-if="!lead_id" class="alert alert-info">
+            [% l('Please select a lead record') %]
+          </div>
+        </div>
+        <div class="col-xs-4 flex-row">
+          <!-- pull-right not working, push the action buttons to 
+                the right via flex -->
+          <div class="flex-2"></div>
+          <div>
+            <input type="submit" ng-click="ok()"
+              ng-class="{disabled : !lead_id || records.length < 1 }"
+              class="btn btn-primary" value="[% l('Merge') %]"/>
+            <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+          </div>
+        </div>
       </div>
-      <div class="row">
-          <div class="col-xs-6">
-            <h4>[% l('Lead record') %]</h4>
-            <div ng-if="lead_id">
-               <tabset>
-                 <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
-                   <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
-                   <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
-                   <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
-                             in-place-mode="true"
-                             record-type="bre" flat-only="true" embedded="true" 
-                             ng-show="editing_inplace" on-save="post_edit_inplace">
-                   </eg-marc-edit-record>
-                   <eg-record-breaker record-id="lead_id" marc-xml="lead.marc_xml" ng-show="!editing_inplace"></eg-record-breaker>
-                   <eg-volume-list record-id="lead_id" edit-copies="true" edit-volumes="true"></eg-volume-list>
-                 </tab>
-               </tabset>
-            </div>
-            <div ng-if="!lead_id">
-                [% l('Please select a lead record from the right...') %]
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <h4>[% l('Records to merge into lead') %]</h4>
-            <tabset>
-              <tab heading="[% l('Bib [_1]', '{{rec.id}}') %]" ng-repeat="rec in records">
-                <button class="btn btn-default btn-sm" ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
-                <button class="btn btn-default btn-sm" ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
-                <eg-record-breaker record-id="rec.id"></eg-record-breaker>
-                <eg-volume-list record-id="rec.id" edit-copies="true" edit-volumes="true"></eg-volume-list>
-              </tab>
-            </tabset>
-          </div>
+
+      <div class="flex-row" style="overflow:scroll">
+        <div ng-if="lead_id" class="flex-1">
+          <tabset>
+            <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
+              <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 
+                ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
+              <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 
+                ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
+              <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
+                 in-place-mode="true"
+                 record-type="bre" flat-only="true" embedded="true" 
+                 ng-show="editing_inplace" on-save="post_edit_inplace">
+              </eg-marc-edit-record>
+              <eg-record-breaker record-id="lead_id" marc-xml="lead.marc_xml" 
+                ng-show="!editing_inplace"></eg-record-breaker>
+              <eg-volume-list ng-if="showHoldings" record-id="lead_id" 
+                edit-copies="true" edit-volumes="true"></eg-volume-list>
+            </tab>
+          </tabset>
+        </div>
+        <div class="flex-1" ng-repeat="rec in records">
+          <button class="btn btn-default btn-sm" 
+            ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
+          <button class="btn btn-default btn-sm" 
+            ng-click="drop(rec)">[% l('Remove from consideration') %]</button>
+          <eg-record-breaker record-id="rec.id"></eg-record-breaker>
+          <eg-volume-list ng-if="showHoldings" record-id="rec.id" 
+            edit-copies="true" edit-volumes="true"></eg-volume-list>
+        </div>
       </div>
   </div>
   <div class="modal-footer">

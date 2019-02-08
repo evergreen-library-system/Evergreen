@@ -571,6 +571,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 $scope.merge_profile = null;
                 $scope.lead = { marc_xml : null };
                 $scope.editing_inplace = false;
+                $scope.showHoldings = false;
                 angular.forEach(records, function(rec) {
                     $scope.records.push({ id : rec.id });
                 });
