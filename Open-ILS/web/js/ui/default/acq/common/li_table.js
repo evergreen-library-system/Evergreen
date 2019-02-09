@@ -787,7 +787,7 @@ function AcqLiTable() {
             oilsBasePath + "/acq/lineitem/worksheet/" + li.id() + 
             '?source=' + encodeURIComponent(location.pathname + location.search)
 
-        if (!IAMBROWSER) {
+        if (!window.IAMBROWSER) {
             nodeByName("show_requests_link", row).href =
                 oilsBasePath + "/acq/picklist/user_request?lineitem=" + li.id() +
                 '?source=' + encodeURIComponent(location.pathname + location.search);
