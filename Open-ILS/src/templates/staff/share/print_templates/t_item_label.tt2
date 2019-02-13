@@ -95,6 +95,10 @@ HTML itself.
     /* This pulls from the "Item Print Label - Inline CSS" setting */
     {{settings['webstaff.cat.label.inline_css']||''}}
 
+    .print+.print {
+        page-break-before: always;
+    }
+
 </style>
 
 <!-- Here we are implementing our combined label as 2-column HTML <table>, with

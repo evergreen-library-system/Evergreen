@@ -2,12 +2,8 @@
 <style>
   /* TODO: move me */
 
-  body {
-
-  }
-
   table.page-break {
-  page-break-before: always;
+      page-break-before: always;
   }
 
 </style>
