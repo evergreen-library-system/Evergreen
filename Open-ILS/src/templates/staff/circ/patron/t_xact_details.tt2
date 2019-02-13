@@ -2,7 +2,10 @@
 
 <div class="row">
   <div class="col-md-2 strong-text">[% l('Billing Location') %]</div>
-  <div class="col-md-2">{{xact.grocery().billing_location().shortname()||xact.circulation().circ_lib().shortname()}}</div>
+  <div class="col-md-2">
+    <a href="[% ctx.base_path %]/opac/library/{{xact.grocery().billing_location().shortname()||xact.circulation().circ_lib().shortname()}}" target="_blank">
+    {{xact.grocery().billing_location().shortname()||xact.circulation().circ_lib().shortname()}}</a>
+  </div>
   <div class="col-md-2 strong-text">[% l('Total Billed') %]</div>
   <div class="col-md-2">{{xact.summary().total_owed() | currency}}</div>
   <div class="col-md-2 strong-text">[% l('Title') %]</div>
@@ -105,12 +108,11 @@
   </div>
   <div class="row">
     <div class="col-md-2 strong-text">[% l('Owning Library') %]</div>
-    <div class="col-md-2">
-      {{xact.circulation().target_copy().call_number().owning_lib().shortname()}}
+    <div class="col-md-2"><a href="[% ctx.base_path %]/opac/library/{{xact.circulation().target_copy().call_number().owning_lib().shortname()}}" target="_blank">
+      {{xact.circulation().target_copy().call_number().owning_lib().shortname()}}</a>
     </div>
   </div>
 </div>
-
 <hr/>
 <ul class="nav nav-tabs">
   <li ng-class="{active : xact_tab == 'statement'}">
