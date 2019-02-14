@@ -1679,6 +1679,10 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
             } else if ($scope.org_settings[sug_set]) {
                 field_visibility[field_key] = 1;
+
+            } else if ($scope.org_settings[sho_set] === false){
+                // hide the field if the 'show' setting is explicitly false (not undefined)
+                field_visibility[field_key] = -1;
             }
         }
 
