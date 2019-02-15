@@ -134,13 +134,8 @@ var FM_TABLE_DISPLAY = {
                 var d = JSON2js(t.data());
                 if (d.version >= 4 && d.doc_url) {
                     var args = {};
-                    if (typeof xulG == 'undefined') {
-                        args.href = d.doc_url;
-                        args.target = '_blank';
-                    } else {
-                        args.href = '';
-                        args.onclick = "xulG.new_tab('" + d.doc_url + "'); return false"
-                    }
+                    args.href = d.doc_url;
+                    args.target='_blank';
                     return elem('a', args, 'External Documentation')
                 }
                 return text('');
