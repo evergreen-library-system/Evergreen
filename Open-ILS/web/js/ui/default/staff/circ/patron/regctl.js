@@ -902,6 +902,7 @@ angular.module('egCoreMod')
                 usr : user.id,
                 isnew : true,
                 valid : true,
+                address_type : egCore.strings.REG_ADDR_TYPE,
                 _is_mailing : cls == 'stgma',
                 _is_billing : cls == 'stgba'
             };
