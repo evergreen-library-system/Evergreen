@@ -856,6 +856,7 @@ BEGIN
 			pref_second_given_name = NULL,
 			pref_family_name = NULL,
 			pref_suffix = NULL,
+			name_keywords = NULL,
 			create_date = now(),
 			expire_date = now()
 	WHERE
