@@ -1,0 +1,5 @@
+Purge User Preferred Names
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+The new, user preferred name fields are now set to NULL in the
+database when a user account is purged via the staff client or using
+the actor.usr_delete function in the database.
