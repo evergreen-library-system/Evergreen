@@ -48,6 +48,33 @@ h5 {font-size: .95rem}
 .flex-4 {flex: 4}
 .flex-5 {flex: 5}
 
+/** BS deprecated the well, but it's replacement is not quite the same.
+ * Define our own version and expand it to a full "table".
+ * */
+.well-row {
+  display: flex;
+}
+.well-table .well-label {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin: 4px;
+  padding: 4px;
+  min-height: 40px;
+}
+
+.well-table .well-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.05);
+  padding: 4px;
+  margin: 4px;
+  min-height: 40px;
+}
+
 
 /* usefuf for mat-icon buttons without any background or borders */
 .material-icon-button {

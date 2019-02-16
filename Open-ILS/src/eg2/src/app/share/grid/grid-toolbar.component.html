@@ -7,7 +7,7 @@
     <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length">
       <button *ngFor="let btn of gridContext.toolbarButtons" 
         [disabled]="btn.disabled"
-        class="btn btn-outline-dark mr-1" (click)="btn.action()">
+        class="btn btn-outline-dark mr-1" (click)="performButtonAction(btn)">
         {{btn.label}}
       </button>
     </div>
@@ -38,7 +38,16 @@
       <button class="dropdown-item" (click)="performAction(action)"
         *ngFor="let action of gridContext.toolbarActions"
         [disabled]="shouldDisableAction(action)">
-        <span class="ml-2">{{action.label}}</span>
+        <ng-container *ngIf="action.isGroup">
+          <span class="ml-2 font-weight-bold font-italic">{{action.label}}</span>
+        </ng-container>
+        <ng-container *ngIf="action.group && !action.isGroup">
+          <!-- grouped entries are indented -->
+          <span class="ml-4">{{action.label}}</span>
+        </ng-container>
+        <ng-container *ngIf="!action.group && !action.isGroup">
+          <span class="ml-2">{{action.label}}</span>
+        </ng-container>
       </button>
     </div>
   </div>

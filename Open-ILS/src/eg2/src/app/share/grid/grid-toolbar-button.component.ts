@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Host, TemplateRef} from '@angular/core';
+import {Component, Input, Output, OnInit, Host, TemplateRef, EventEmitter} from '@angular/core';
 import {GridToolbarButton} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -11,7 +11,13 @@ export class GridToolbarButtonComponent implements OnInit {
 
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
+
+    // Register to click events
+    @Output() onClick: EventEmitter<any>;
+
+    // DEPRECATED: Pass a reference to a function that is called on click.
     @Input() action: () => any;
+
 
     @Input() set disabled(d: boolean) {
         // Support asynchronous disabled values by appling directly
@@ -25,7 +31,9 @@ export class GridToolbarButtonComponent implements OnInit {
 
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {
+        this.onClick = new EventEmitter<any>();
         this.button = new GridToolbarButton();
+        this.button.onClick = this.onClick;
     }
 
     ngOnInit() {

@@ -103,6 +103,13 @@ export class RecordComponent implements OnInit {
             this.bib.fleshBibUsers([summary.record]);
         });
     }
+
+    currentSearchOrg(): IdlObject {
+        if (this.staffCat && this.staffCat.searchContext) {
+            return this.staffCat.searchContext.searchOrg;
+        }
+        return null;
+    }
 }
 
 

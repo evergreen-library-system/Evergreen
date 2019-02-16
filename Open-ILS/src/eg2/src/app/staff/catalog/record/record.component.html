@@ -21,7 +21,7 @@
   <div id='staff-catalog-bib-tabs-container' class='mt-3'>
     <div class="row">
       <div class="col-lg-12 text-right">
-        <button class="btn btn-secondary btn-sm" 
+        <button class="btn btn-secondary btn-sm"
             [disabled]="recordTab == defaultTab"
             (click)="setDefaultTab()" i18n>Set Default View</button>
       </div>
@@ -51,13 +51,10 @@
       </ngb-tab>
       <ngb-tab title="View Holds" i18n-title id="holds">
         <ng-template ngbTabContent>
-          <div class="alert alert-info mt-3" i18n>
-            Holds tab not yet implemented.  See the
-            <a target="_blank"
-              href="/eg/staff/cat/catalog/record/{{recordId}}/holds">
-              AngularJS Holds Tab.
-            </a>
-          </div>
+          <eg-holds-grid [recordId]="recordId"
+            persistKey="cat.catalog.wide_holds"
+            [defaultSort]="[{name:'request_time',dir:'asc'}]"
+            [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Monograph Parts" i18n-title id="monoparts">

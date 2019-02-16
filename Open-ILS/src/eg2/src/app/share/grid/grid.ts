@@ -1,7 +1,7 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef} from '@angular/core';
+import {TemplateRef, EventEmitter} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -910,14 +910,18 @@ export class GridContext {
 // Actions apply to specific rows
 export class GridToolbarAction {
     label: string;
-    action: (rows: any[]) => any;
+    onClick: EventEmitter<any []>;
+    action: (rows: any[]) => any; // DEPRECATED
+    group: string;
+    isGroup: boolean; // used for group placeholder entries
     disableOnRows: (rows: any[]) => boolean;
 }
 
 // Buttons are global actions
 export class GridToolbarButton {
     label: string;
-    action: () => any;
+    onClick: EventEmitter<any []>;
+    action: () => any; // DEPRECATED
     disabled: boolean;
 }
 

@@ -1,7 +1,7 @@
 /**
  * Common code for mananging holdings
  */
-import {Injectable, EventEmitter} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {map, mergeMap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
@@ -56,13 +56,14 @@ export interface HoldRequestTarget {
     metarecord_filters?: any;
 }
 
+/** Service for performing various hold-related actions */
+
 @Injectable()
-export class HoldService {
+export class HoldsService {
 
     constructor(
         private evt: EventService,
         private net: NetService,
-        private pcrud: PcrudService,
         private auth: AuthService,
         private bib: BibRecordService,
     ) {}
@@ -138,5 +139,31 @@ export class HoldService {
             }));
         }));
     }
+
+    /**
+      * Update a list of holds.
+      * Returns observable of results, one per hold.
+      * Result is either a Number (hold ID) or an EgEvent object.
+      */
+    updateHolds(holds: IdlObject[]): Observable<any> {
+
+        return this.net.request(
+            'open-ils.circ',
+            'open-ils.circ.hold.update.batch',
+            this.auth.token(), holds
+        ).pipe(map(response => {
+
+            if (Number(response) > 0) { return Number(response); }
+
+            if (Array.isArray(response)) { response = response[0]; }
+
+            const evt = this.evt.parse(response);
+
+            console.warn('Hold update returned event', evt);
+            return evt;
+        }));
+    }
 }
+
+
 

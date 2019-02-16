@@ -13,7 +13,7 @@ They do not have to be added to the providers list.
 */
 
 // consider moving these to core...
-import {FormatService} from '@eg/core/format.service';
+import {FormatService, FormatValuePipe} from '@eg/core/format.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 // Globally available components
@@ -33,7 +33,8 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
     ConfirmDialogComponent,
     PromptDialogComponent,
     ProgressInlineComponent,
-    ProgressDialogComponent
+    ProgressDialogComponent,
+    FormatValuePipe
   ],
   imports: [
     CommonModule,
@@ -52,7 +53,8 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
     ConfirmDialogComponent,
     PromptDialogComponent,
     ProgressInlineComponent,
-    ProgressDialogComponent
+    ProgressDialogComponent,
+    FormatValuePipe
   ]
 })
 

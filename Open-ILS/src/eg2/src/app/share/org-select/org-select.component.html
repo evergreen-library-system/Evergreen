@@ -14,6 +14,7 @@
     class="form-control"
     [attr.id]="domId.length ? domId : null"
     [placeholder]="placeholder"
+    [disabled]="disabled"
     [(ngModel)]="selected" 
     [ngbTypeahead]="filter"
     [resultTemplate]="displayTemplate"
