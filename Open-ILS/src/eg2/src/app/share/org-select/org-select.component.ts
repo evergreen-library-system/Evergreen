@@ -27,9 +27,11 @@ export class OrgSelectComponent implements OnInit {
 
     selected: OrgDisplay;
     hidden: number[] = [];
-    disabled: number[] = [];
     click$ = new Subject<string>();
     startOrg: IdlObject;
+
+    // Disable the entire input
+    @Input() disabled: boolean;
 
     @ViewChild('instance') instance: NgbTypeahead;
 
@@ -56,8 +58,9 @@ export class OrgSelectComponent implements OnInit {
     }
 
     // List of org unit IDs to disable in the selector
+    _disabledOrgs: number[] = [];
     @Input() set disableOrgs(ids: number[]) {
-        if (ids) { this.disabled = ids; }
+        if (ids) { this._disabledOrgs = ids; }
     }
 
     // Apply an org unit value at load time.

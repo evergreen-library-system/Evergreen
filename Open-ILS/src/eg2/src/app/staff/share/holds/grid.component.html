@@ -1,0 +1,244 @@
+<!-- hold grid with jump-off points to detail page and other actions -->
+
+<!-- our on-demand dialogs-->
+<eg-progress-dialog #progressDialog></eg-progress-dialog>
+<eg-hold-transfer-dialog #transferDialog></eg-hold-transfer-dialog>
+<eg-mark-damaged-dialog #markDamagedDialog></eg-mark-damaged-dialog>
+<eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
+<eg-hold-retarget-dialog #retargetDialog></eg-hold-retarget-dialog>
+<eg-hold-cancel-dialog #cancelDialog></eg-hold-cancel-dialog>
+<eg-hold-manage-dialog #manageDialog></eg-hold-manage-dialog>
+
+<div class='eg-holds w-100 mt-3'>
+
+  <ng-container *ngIf="mode == 'detail'">
+    <eg-hold-detail [wideHold]="detailHold" (onShowList)="mode='list'">
+    </eg-hold-detail>
+  </ng-container>
+
+  <ng-container *ngIf="mode == 'list'">
+
+    <div class="row" *ngIf="!hidePickupLibFilter">
+      <div class="col-lg-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text" i18n>Pickup Library</div>
+          </div>
+          <eg-org-select [initialOrg]="pickupLib" (onChange)="pickupLibChanged($event)">
+          </eg-org-select>
+        </div>
+      </div>
+    </div>
+
+    <eg-grid #holdsGrid [dataSource]="gridDataSource" [sortable]="true"
+      [multiSortable]="true" [persistKey]="persistKey"
+      (onRowActivate)="showDetail($event)">
+
+      <eg-grid-toolbar-action
+        i18n-label label="Show Hold Details" i18n-group group="Hold"
+        (onClick)="showDetails($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-label label="Modify Hold(s)" group="Hold" i18n-group
+        (onClick)="showManageDialog($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-label label="Show Last Few Circulations" group="Item" i18n-group
+        (onClick)="showRecentCircs($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-label label="Retrieve Patron" group="Patron" i18n-group
+        (onClick)="showPatron($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Hold" i18n-label label="Transfer To Marked Title"
+        (onClick)="showTransferDialog($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        group="Item" i18n-group i18n-label label="Mark Item Damaged"
+        (onClick)="showMarkDamagedDialog($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Item" i18n-label label="Mark Item Missing"
+        (onClick)="showMarkMissingDialog($event)">
+      </eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18n-group group="Hold" i18n-label label="Find Another Target"
+        (onClick)="showRetargetDialog($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action
+        i18-group group="Hold" i18n-label label="Cancel Hold"
+        (onClick)="showCancelDialog($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true">
+      </eg-grid-column>
+
+      <ng-template #barcodeTmpl let-hold="row">
+        <a href="/eg/staff/cat/item/{{cp_id}}/summary">
+          {{hold.cp_barcode}}
+        </a>
+      </ng-template>
+      <eg-grid-column i18n-label label="Current Item" name='cp_barcode'
+        [cellTemplate]="barcodeTmpl">
+      </eg-grid-column>
+
+      <eg-grid-column i18n-label label="Patron Barcode"
+          path='ucard_barcode' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Patron alias" path="usr_alias"></eg-grid-column>
+      <eg-grid-column i18n-label label="Request Date"
+          path='request_time' datatype="timestamp"></eg-grid-column>
+      <eg-grid-column i18n-label label="Capture Date" path='capture_time'
+          datatype="timestamp"></eg-grid-column>
+      <eg-grid-column i18n-label label="Available Date" path='shelf_time'
+          datatype="timestamp"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Type" path='hold_type'></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
+
+      <ng-template #titleTmpl let-hold="row">
+        <a class="no-href" routerLink="/staff/catalog/record/{{hold.record_id}}">
+          {{hold.title}}
+        </a>
+      </ng-template>
+      <eg-grid-column i18n-label label="Title" [hidden]="true"
+          name='title' [cellTemplate]="titleTmpl"></eg-grid-column>
+      <eg-grid-column i18n-label label="Author" path='author'
+          [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Potential Items" path='potentials'>
+      </eg-grid-column>
+      <eg-grid-column i18n-label label="Status" path='status_string'>
+      </eg-grid-column>
+      <eg-grid-column i18n-label label="Queue Position"
+          path='relative_queue_position' [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='usr_id' i18n-label label="User ID" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='usr_usrname' i18n-label label="Username" [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column path='usr_first_given_name' i18n-label label="First Name" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='usr_family_name' i18n-label label="Last Name" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='rusr_id' i18n-label label="Requestor ID" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='rusr_usrname' i18n-label label="Requestor Username" [hidden]="true"></eg-grid-column>
+
+     <eg-grid-column i18n-label label="Item Status" path="cs_name" [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column path='acnp_label' i18n-label label="CN Prefix" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='acns_label' i18n-label label="CN Suffix" [hidden]="true"></eg-grid-column>
+      <eg-grid-column path='mvr.*' parent-idl-class="mvr" [hidden]="true"></eg-grid-column>
+
+      <eg-grid-column i18n-label label="Fulfillment Date/Time" path='fulfillment_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Checkin Time" path='checkin_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Return Time" path='return_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Last Targeting Date/Time" path='prev_check_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Expire Time" path='expire_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Cancel Date/Time" path='cancel_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Cancelation note" path='cancel_note' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Target" path='target' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Current Copy" path='current_copy' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Fulfilling Staff" path='fulfillment_staff' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Fulfilling Library" path='fulfillment_lib' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Requesting Library" path='request_lib' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Requesting User" path='requestor' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="User" path='usr' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Selection Library" path='selection_ou' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Item Selection Depth" path='selection_depth' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Holdable Formats (for M-type hold)" path='holdable_formats' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Notifications Phone Number" path='phone_notify' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Notifications SMS Number" path='sms_notify' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Notify by Email?" path='email_notify' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="SMS Carrier" path='sms_carrier' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Currently Frozen" path='frozen' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Activation Date" path='thaw_date' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Top of Queue" path='cut_in_line' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Is Mint Condition" path='mint_condition' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Shelf Expire Time" path='shelf_expire_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Current Shelf Library" path='current_shelf_lib' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Behind Desk" path='behind_desk' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status" path='hold_status' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Clearable" path='clear_me' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Is Staff-placed Hold" path='is_staff_hold' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Cancelation Cause ID" path='cc_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Cancelation Cause" path='cc_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library" path='pl_shortname'></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library Name" path='pl_name' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library Email" path='pl_email' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library Phone" path='pl_phone' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Pickup Library Opac Visible" path='pl_opac_visible' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit ID" path='tr_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Send Time" path='tr_source_send_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Receive Time" path='tr_dest_recv_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Copy" path='tr_target_copy' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Source" path='tr_source' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Destination" path='tr_dest' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Copy Status" path='tr_copy_status' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Hold" path='tr_hold' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Transit Cancel Time" path='tr_cancel_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Hold Note Count" path='note_count' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="User Display Name" path='usr_display_name' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Requestor Username" path='rusr_usrname' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy ID" path='cp_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Number on Volume" path='cp_copy_number' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Fine Level" path='cp_fine_level' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Can Circulate" path='cp_circulate' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Deposit Amount" path='cp_deposit_amount' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Is Deposit Required" path='cp_deposit' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Is Reference" path='cp_ref' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Is Holdable" path='cp_holdable' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Price" path='cp_price' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Barcode" path='cp_barcode' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Circulation Modifier" path='cp_circ_modifier' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Circulate as MARC Type" path='cp_circ_as_type' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Precat Dummy Title" path='cp_dummy_title' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Precat Dummy Author" path='cp_dummy_author' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Alert Message (deprecated)" path='cp_alert_message' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy OPAC Visible" path='cp_opac_visible' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Deleted" path='cp_deleted' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Floating Group" path='cp_floating' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Precat Dummy ISBN" path='cp_dummy_isbn' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Status Change Time" path='cp_status_change_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Active Date" path='cp_active_date' datatype="timestamp" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Is Mint Condition" path='cp_mint_condition' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Cost" path='cp_cost' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status Is Holdable" path='cs_holdable' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status Is OPAC Visible" path='cs_opac_visible' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status Is Copy-Active" path='cs_copy_active' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status Is Deleted" path='cs_restrict_copy_delete' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Status Is Available" path='cs_is_available' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Issuance i18n-label label" path='issuance_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Call Number ID" path='cn_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="CN i18n-label label" path='cn_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="CN i18n-label label Class" path='cn_label_class' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="CN Sort Key" path='cn_label_sortkey' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Part ID" path='p_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Part i18n-label label" path='p_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Part Sort Key" path='p_label_sortkey' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Part Is Deleted" path='p_deleted' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="CN Full i18n-label label" path='cn_full_label' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Record ID" path='record_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location ID" path='acpl_id' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location" path='acpl_name' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Holdable" path='acpl_holdable' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Hold-Verify" path='acpl_hold_verify' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location OPAC Visible" path='acpl_opac_visible' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Can Circulate" path='acpl_circulate' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Prefix" path='acpl_label_prefix' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Suffix" path='acpl_label_suffix' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Checkin Alert" path='acpl_checkin_alert' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Is Deleted" path='acpl_deleted' datatype="bool" [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location URL" path='acpl_url' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Copy Location Order" path='copy_location_order_position' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Default Estimated Wait Time" path='default_estimated_wait' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Minimum Estimated Wait Time" path='min_estimated_wait' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Peer Hold Count" path='other_holds' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Total Wait Time" path='total_wait_time' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Notify Count" path='notification_count' [hidden]="true"></eg-grid-column>
+      <eg-grid-column i18n-label label="Last Notify Time" path='last_notification_time' datatype="timestamp" [hidden]="true"></eg-grid-column>
+
+    </eg-grid>
+
+  </ng-container>
+
+</div>
+
+

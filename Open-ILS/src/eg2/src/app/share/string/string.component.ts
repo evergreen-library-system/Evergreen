@@ -14,7 +14,12 @@ import {StringService} from '@eg/share/string/string.service';
   selector: 'eg-string',
   template: `
     <span style='display:none'>
-    <ng-container *ngTemplateOutlet="template; context:ctx"></ng-container>
+      <ng-container *ngIf="template">
+        <ng-container *ngTemplateOutlet="template; context:ctx"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="!template">
+        <span>{{text}}</span>
+      </ng-container>
     </span>
   `
 })
@@ -64,11 +69,11 @@ export class StringComponent implements OnInit {
     // NOTE: talking to the native DOM element is not so great, but
     // hopefully we can retire the String* code entirely once
     // in-code translations are supported (Ang6?)
-    current(ctx?: any): Promise<string> {
+    async current(ctx?: any): Promise<string> {
         if (ctx) { this.ctx = ctx; }
-        return new Promise(resolve => {
-            setTimeout(() => resolve(this.elm.nativeElement.textContent));
-        });
+        return new Promise<string>(resolve =>
+            setTimeout(() => resolve(this.elm.nativeElement.textContent))
+        );
     }
 }
 

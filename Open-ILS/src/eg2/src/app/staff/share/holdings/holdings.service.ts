@@ -4,6 +4,8 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {NetService} from '@eg/core/net.service';
 import {AnonCacheService} from '@eg/share/util/anon-cache.service';
+import {AuthService} from '@eg/core/auth.service';
+import {EventService} from '@eg/core/event.service';
 
 interface NewVolumeData {
     owner: number;
@@ -15,6 +17,8 @@ export class HoldingsService {
 
     constructor(
         private net: NetService,
+        private auth: AuthService,
+        private evt: EventService,
         private anonCache: AnonCacheService
     ) {}
 

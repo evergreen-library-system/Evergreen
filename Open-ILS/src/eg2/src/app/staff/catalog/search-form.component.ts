@@ -97,7 +97,13 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 selector = '#first-query-input';
         }
 
-        this.renderer.selectRootElement(selector).focus();
+        try {
+            // TODO: sometime the selector is not available in the DOM
+            // until even later (even with setTimeouts).  Need to fix this.
+            // Note the error is thrown from selectRootElement(), not the
+            // call to .focus() on a null reference.
+            this.renderer.selectRootElement(selector).focus();
+        } catch (E) {}
     }
 
     /**

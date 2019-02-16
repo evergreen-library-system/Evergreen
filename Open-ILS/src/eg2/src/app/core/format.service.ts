@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Pipe, PipeTransform} from '@angular/core';
 import {DatePipe, CurrencyPipe} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -128,6 +128,17 @@ export class FormatService {
             default:
                 return value + '';
         }
+    }
+}
+
+
+// Pipe-ify the above formating logic for use in templates
+@Pipe({name: 'formatValue'})
+export class FormatValuePipe implements PipeTransform {
+    constructor(private formatter: FormatService) {}
+    // Add other filter params as needed to fill in the FormatParams
+    transform(value: string, datatype: string): string {
+        return this.formatter.transform({value: value, datatype: datatype});
     }
 }
 

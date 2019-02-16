@@ -41,7 +41,7 @@ export class DialogComponent implements OnInit {
         this.onOpen$ = new EventEmitter<any>();
     }
 
-    open(options?: NgbModalOptions): Promise<any> {
+    async open(options?: NgbModalOptions): Promise<any> {
 
         if (this.modalRef !== null) {
             console.warn('Dismissing existing dialog');

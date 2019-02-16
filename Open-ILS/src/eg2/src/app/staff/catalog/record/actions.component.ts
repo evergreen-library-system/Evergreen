@@ -7,7 +7,7 @@ import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
 import {StringService} from '@eg/share/string/string.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {HoldingsService} from '@eg/staff/share/holdings.service';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
 
 @Component({
   selector: 'eg-catalog-record-actions',

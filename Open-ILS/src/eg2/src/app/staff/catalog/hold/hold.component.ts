@@ -13,8 +13,8 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
-import {HoldService, HoldRequest,
-    HoldRequestTarget} from '@eg/staff/share/hold.service';
+import {HoldsService, HoldRequest,
+    HoldRequestTarget} from '@eg/staff/share/holds/holds.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 class HoldContext {
@@ -78,7 +78,7 @@ export class HoldComponent implements OnInit {
         private bib: BibRecordService,
         private cat: CatalogService,
         private staffCat: StaffCatalogService,
-        private holds: HoldService,
+        private holds: HoldsService,
         private perm: PermService
     ) {
         this.holdContexts = [];
