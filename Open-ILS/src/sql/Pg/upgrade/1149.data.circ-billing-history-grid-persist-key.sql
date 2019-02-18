@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1149', :eg_version); -- Dyrcona/mmorgan/gmcharlt
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
