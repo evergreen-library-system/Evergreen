@@ -1,7 +1,7 @@
 
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1148', :eg_version); -- csharp/gmcharlt
 
 CREATE OR REPLACE FUNCTION actor.usr_delete(
 	src_usr  IN INTEGER,
