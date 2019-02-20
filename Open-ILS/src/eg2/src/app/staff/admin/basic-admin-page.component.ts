@@ -12,7 +12,7 @@ import {IdlService} from '@eg/core/idl.service';
       </eg-title>
       <eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
       </eg-staff-banner>
-      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}" 
+      <eg-admin-page persistKeyPfx="{{persistKeyPfx}}" idlClass="{{idlClass}}"
         readonlyFields="{{readonlyFields}}"></eg-admin-page>
     `
 })
@@ -59,11 +59,10 @@ export class BasicAdminPageComponent implements OnInit {
 
         // Pass the readonlyFields param if available
         if (this.route.snapshot.data &&
-            this.route.snapshot.data.length &&
+            this.route.snapshot.data[0] && // snapshot.data is a HASH.
             this.route.snapshot.data[0].readonlyFields) {
             this.readonlyFields = this.route.snapshot.data[0].readonlyFields;
         }
-
 
         Object.keys(this.idl.classes).forEach(class_ => {
             const classDef = this.idl.classes[class_];
