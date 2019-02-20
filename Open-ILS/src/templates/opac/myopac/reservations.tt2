@@ -8,8 +8,8 @@
     <table id="acct_reservations_main_header" class="table_no_border_space table_no_cell_pad item_list_padding">
         <tr>
             <th scope="col">[% l('Resource type') %]</th>
-            <th scope="col">[% l('Reservation start time') %]</th>
-            <th scope="col">[% l('Reservation end time') %]</th>
+            <th scope="col">[% l('Start time') %]</th>
+            <th scope="col">[% l('End time') %]</th>
             <th scope="col">[% l('Pickup location') %]</th>
             <th scope="col">[% l('Status') %]</th>
         </tr>
