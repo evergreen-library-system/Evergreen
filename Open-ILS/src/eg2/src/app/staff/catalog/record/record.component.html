@@ -34,6 +34,15 @@
       </ngb-tab>
       <!-- NOTE some tabs send the user over to the AngJS app -->
       <ngb-tab title="MARC Edit" i18n-title id="marc_edit">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            MARC Edit not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/marc_edit">
+              AngularJS MARC Edit Tab.
+            </a>
+          </div>
+        </ng-template>
       </ngb-tab>
       <ngb-tab title="MARC View" i18n-title id="marc_html">
         <ng-template ngbTabContent>
@@ -41,6 +50,15 @@
         </ng-template>
       </ngb-tab>
       <ngb-tab title="View Holds" i18n-title id="holds">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            Holds tab not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/holds">
+              AngularJS Holds Tab.
+            </a>
+          </div>
+        </ng-template>
       </ngb-tab>
       <ngb-tab title="Monograph Parts" i18n-title id="monoparts">
         <ng-template ngbTabContent>
@@ -49,8 +67,26 @@
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Holdings View" i18n-title id="holdings">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            Holdings not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/holdings">
+              AngularJS Holdings Tab.
+            </a>
+          </div>
+        </ng-template>
       </ngb-tab>
       <ngb-tab title="Conjoined Items" i18n-title id="conjoined">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            Conjoined Items not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/conjoined">
+              AngularJS Conjoined Items Tab.
+            </a>
+          </div>
+        </ng-template>
       </ngb-tab>
     </ngb-tabset>
   </div>

@@ -10,13 +10,6 @@ import {StaffCatalogService} from '../catalog.service';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {StoreService} from '@eg/core/store.service';
 
-const ANGJS_TABS: any = {
-    marc_edit: true,
-    holds: true,
-    holdings: true,
-    conjoined: true
-};
-
 @Component({
   selector: 'eg-catalog-record',
   templateUrl: 'record.component.html'
@@ -47,9 +40,6 @@ export class RecordComponent implements OnInit {
             this.store.getLocalItem('eg.cat.default_record_tab')
             || 'catalog';
 
-        // TODO: Implement default tab handling for tabs that require
-        // and AngJS redirect.
-
         // Watch for URL record ID changes
         // This includes the initial route.
         // When applying the default configured tab, no navigation occurs
@@ -63,11 +53,6 @@ export class RecordComponent implements OnInit {
 
             if (!this.recordTab) {
                 this.recordTab = this.defaultTab || 'catalog';
-                // On initial load, if the default tab is set to one of
-                // the AngularJS tabs, redirect the user there.
-                if (this.recordTab in ANGJS_TABS) {
-                    return this.routeToTab();
-                }
             }
 
             this.loadRecord();
@@ -91,16 +76,6 @@ export class RecordComponent implements OnInit {
     }
 
     routeToTab() {
-
-        // Route to the AngularJS catalog tab
-        if (this.recordTab in ANGJS_TABS) {
-            const angjsBase = '/eg/staff/cat/catalog/record';
-
-            window.location.href =
-                `${angjsBase}/${this.recordId}/${this.recordTab}`;
-            return;
-        }
-
         const url =
             `/staff/catalog/record/${this.recordId}/${this.recordTab}`;
 
