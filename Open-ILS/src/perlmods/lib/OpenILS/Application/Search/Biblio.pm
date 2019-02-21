@@ -1880,10 +1880,16 @@ sub send_event_email_output {
         $stat = $sender->send($email);
     } catch Error with {
         $err = $stat = shift;
-        $logger->error("resend_at_email: Email failed with error: $err");
+        $logger->error("send_event_email_output: Email failed with error: $err");
     };
 
-    return undef;
+    if( !$err and $stat and $stat->type eq 'success' ) {
+        $logger->info("send_event_email_output: successfully sent email");
+        return 1;
+    } else {
+        $logger->warn("send_event_email_output: unable to send email: ".Dumper($stat));
+        return 0;
+    }
 }
 
 __PACKAGE__->register_method(
