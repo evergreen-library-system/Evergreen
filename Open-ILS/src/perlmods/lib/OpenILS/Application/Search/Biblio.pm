@@ -1955,20 +1955,20 @@ sub format_biblio_record_entry {
         $auth = shift @_;
         ($captcha_pass, $email, $subject) = splice @_, -3, 3;
     }
-    my ($bib_id, $holdings_context, $bib_sort, $sort_dir, $group_member) = @_;
-    $holdings_context ||= $U->get_org_tree->id;
+    my ($bib_id, $holdings_context_org, $bib_sort, $sort_dir, $group_member) = @_;
+    $holdings_context_org ||= $U->get_org_tree->id;
     $bib_sort ||= 'author';
     $sort_dir ||= 'ascending';
 
-    my $e; my $context_org; my $type = 'brief';
+    my $e; my $event_context_org; my $type = 'brief';
 
     if ($for_print) {
-        $context_org = $holdings_context;
+        $event_context_org = $holdings_context_org;
         $e = new_editor(xact => 1);
     } elsif ($for_email) {
         $e = new_editor(authtoken => $auth, xact => 1);
         return $e->die_event unless $captcha_pass || $e->checkauth;
-        $context_org = $e->requestor ? $e->requestor->home_ou : $holdings_context;
+        $event_context_org = $e->requestor ? $e->requestor->home_ou : $holdings_context_org;
         $email ||= $e->requestor ? $e->requestor->email : '';
     }
 
@@ -1979,7 +1979,7 @@ sub format_biblio_record_entry {
         }
     }
 
-    $holdings_context = $e->retrieve_actor_org_unit($holdings_context);
+    $holdings_context_org = $e->retrieve_actor_org_unit($holdings_context_org);
 
     my $bib_ids;
     if (ref $bib_id ne 'ARRAY') {
@@ -2014,7 +2014,7 @@ sub format_biblio_record_entry {
         type        => $type,
         email       => $email,
         subject     => $subject,
-        context_org => $holdings_context->shortname,
+        context_org => $holdings_context_org->shortname,
         sort_by     => $bib_sort,
         sort_dir    => $sort_dir,
         preview     => $preview
@@ -2022,14 +2022,14 @@ sub format_biblio_record_entry {
 
     if ($for_print) {
 
-        return $U->fire_object_event(undef, 'biblio.format.record_entry.print', [ $bucket ], $context_org, undef, [ $usr_data ]);
+        return $U->fire_object_event(undef, 'biblio.format.record_entry.print', [ $bucket ], $event_context_org, undef, [ $usr_data ]);
 
     } elsif ($for_email) {
 
-        return $U->fire_object_event(undef, 'biblio.format.record_entry.email', [ $bucket ], $context_org, undef, [ $usr_data ])
+        return $U->fire_object_event(undef, 'biblio.format.record_entry.email', [ $bucket ], $event_context_org, undef, [ $usr_data ])
             if ($preview);
 
-        $U->create_events_for_hook('biblio.format.record_entry.email', $bucket, $context_org, undef, $usr_data, 1);
+        $U->create_events_for_hook('biblio.format.record_entry.email', $bucket, $event_context_org, undef, $usr_data, 1);
     }
 
     return undef;
