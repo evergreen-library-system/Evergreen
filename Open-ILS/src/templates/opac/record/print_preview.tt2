@@ -9,7 +9,7 @@
     <br class="clear-both" />
     <div id="content-wrapper" class="content-wrapper-record-page">
 
-    <form id="previewForm" action="[% mkurl('',{},['locg','format','sort','sort_by','context_org','bre_id','is_list']) %]">
+    <form id="previewForm" action="[% mkurl('',{},['locg','format','sort','sort_dir','context_org','bre_id','is_list']) %]">
         <input type="hidden" name="old_event" value="[% ctx.preview_record.id %]"/>
         <input type="hidden" name="bre_id" value="[% ctx.bre_id %]"/>
         <input type="hidden" name="locg" value="[% ctx.selected_print_email_loc %]"/>
