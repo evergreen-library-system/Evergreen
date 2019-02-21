@@ -1911,6 +1911,7 @@ __PACKAGE__->register_method(
             { desc => 'Biblio record entry ID or array of IDs', type => 'number' },
             { desc => 'Context library for holdings, if applicable' => 'number' },
             { desc => 'Sort order, if applicable' => 'string' },
+            { desc => 'Sort direction, if applicable' => 'string' },
             { desc => 'Definition Group Member id' => 'number' },
         ],
         return => {
@@ -1943,32 +1944,31 @@ __PACKAGE__->register_method(
 );
 
 sub format_biblio_record_entry {
-    my($self, $conn, $arg1, $arg2, $arg3, $arg4, $arg5, $arg6, $captcha_pass, $email, $subject) = @_;
+    my ($self, $conn) = splice @_, 0, 2;
 
     my $for_print = ($self->api_name =~ /print/);
     my $for_email = ($self->api_name =~ /email/);
     my $preview = ($self->api_name =~ /preview/);
 
-    my $e; my $auth; my $bib_id; my $context_org; my $holdings_context; my $bib_sort; my $group_member; my $type = 'brief'; my $sort_dir;
+    my ($auth, $captcha_pass, $email, $subject);
+    if ($for_email) {
+        $auth = shift @_;
+        ($captcha_pass, $email, $subject) = splice @_, -3, 3;
+    }
+    my ($bib_id, $holdings_context, $bib_sort, $sort_dir, $group_member) = @_;
+    $holdings_context ||= $U->get_org_tree->id;
+    $bib_sort ||= 'author';
+    $sort_dir ||= 'ascending';
+
+    my $e; my $context_org; my $type = 'brief';
 
     if ($for_print) {
-        $bib_id = $arg1;
-        $context_org = $arg2 || $U->get_org_tree->id;
-        $holdings_context = $context_org;
-        $bib_sort = $arg3 || 'author';
-        $sort_dir = $arg4 || 'ascending';
-        $group_member = $arg5;
+        $context_org = $holdings_context;
         $e = new_editor(xact => 1);
     } elsif ($for_email) {
-        $auth = $arg1;
-        $bib_id = $arg2;
-        $bib_sort = $arg4 || 'author';
-        $sort_dir = $arg5 || 'ascending';
-        $group_member = $arg6;
         $e = new_editor(authtoken => $auth, xact => 1);
         return $e->die_event unless $captcha_pass || $e->checkauth;
-        $holdings_context = $arg3 || $U->get_org_tree->id;
-        $context_org = $e->requestor ? $e->requestor->home_ou : $arg3;
+        $context_org = $e->requestor ? $e->requestor->home_ou : $holdings_context;
         $email ||= $e->requestor ? $e->requestor->email : '';
     }
 
