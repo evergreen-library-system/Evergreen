@@ -449,8 +449,9 @@ $_TT_helpers = {
                 $$bib{item_type} = $xml->findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="item_type"]')->get_node(1)->getAttribute('coded-value');
                 my $p = $xml->findnodes('//*[@tag="260" or @tag="264"]/*[@code="b"]')->get_node(1);
                 $$bib{publisher} = $p ? $p->textContent : '';
-                $$bib{pubdatesort} = $$bib{pubdate} = $xml->findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="date1"]')->get_node(1)->textContent;
-                $$bib{pubdatesort} = lc($$bib{pubdatesort});
+                my $pd = $xml->findnodes('//*[local-name()="attributes"]/*[local-name()="field"][@name="date1"]')->get_node(1);
+                $$bib{pubdate} = $pd ? $pd->textContent : '';
+                $$bib{pubdatesort} = lc($$bib{pubdate});
                 $$bib{isbn} = $xml->findnodes('//*[@tag="020"]/*[@code="a"]')->to_literal_delimited(', ');
                 $$bib{issn} = $xml->findnodes('//*[@tag="022"]/*[@code="a"]')->to_literal_delimited(', ');
                 $$bib{upc} = $xml->findnodes('//*[@tag="024"]/*[@code="a"]')->to_literal_delimited(', ');
