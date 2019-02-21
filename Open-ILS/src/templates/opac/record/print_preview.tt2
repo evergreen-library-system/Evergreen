@@ -65,7 +65,7 @@
         [% ELSE %]
             <div class="print-error">
                 [% l(
-                    'Error previwing record: [_1]',
+                    'Error previewing record: [_1]',
                         (ctx.preview_record.textcode ? ctx.preview_record.textcode _ ' / ' _ ctx.preview_record.desc : 0) ||
                         ctx.preview_record.error_output.data ||
                         l('No record data returned from server')
