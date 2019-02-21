@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1153', :eg_version);
 
 UPDATE config.org_unit_setting_type
 SET label = oils_i18n_gettext(
