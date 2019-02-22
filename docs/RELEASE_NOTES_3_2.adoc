@@ -3,6 +3,89 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.4
+---------------
+
+This release contains bug fixes improving on Evergreen 3.2.3.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Accessibility
+^^^^^^^^^^^^^
+
+* Adds appropriate alt text to the Evergreen splash page (https://bugs.launchpad.net/evergreen/+bug/1802594[Bug #1802594])
+* The public catalog search box now only autofocuses when searching is the main purpose of the page (https://bugs.launchpad.net/evergreen/+bug/1796225[Bug #1796225])
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Fixes an issue that prevented purchase orders to not open in a new tab (https://bugs.launchpad.net/evergreen/+bug/1813290[Bug #1813290])
+
+Circulation
+^^^^^^^^^^^
+
+* The Billing History grids now save their configuration in the database (https://bugs.launchpad.net/evergreen/+bug/1806709[Bug #1806709])
+
+Cataloging
+^^^^^^^^^^
+
+* Catalogers can now set the Bib Source in the Z39.50 Overlay and Import interfaces (https://bugs.launchpad.net/evergreen/+bug/1727345[Bug #1727345])
+* Fixes an issue where publishers display in the publication date column in copy buckets (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+* Electronic reources no longer display a call number called _##URI##_ in the Volume Editor (https://bugs.launchpad.net/evergreen/+bug/1752665[Bug #1752665])
+* Spine/pocket label templates can now include circulation library and owning library (https://bugs.launchpad.net/evergreen/+bug/1726568[Bug #1726568])
+
+
+Reports
+^^^^^^^
+
+* Fixes an issue where external documentation links can open in the reports module (https://bugs.launchpad.net/evergreen/+bug/1784893[Bug #1784893])
+* Fixes an issue where publishers display as a publication date in reports (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+
+Search
+^^^^^^
+
+* Staff users can now set their prefered default Advanced Search pane (https://bugs.launchpad.net/evergreen/+bug/1799963[Bug #1799963])
+* The public catalog search box now only autofocuses when searching is the main purpose of the page (https://bugs.launchpad.net/evergreen/+bug/1796225[Bug #1796225])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The _DELETE_COPY_ALERT_ permission no longer needs to be granted on the consortium level (https://bugs.launchpad.net/evergreen/+bug/1783421[Bug #1783421])
+
+Angular client
+^^^^^^^^^^^^^^
+
+* The angular client now uses Angular 7 (https://bugs.launchpad.net/evergreen/+bug/1801984[Bug #1801984])
+* The angular client grid actions can now be disabled depending on the criteria of which rows are selected (https://bugs.launchpad.net/evergreen/+bug/1808268[Bug #1808268])
+* Angular client pages now display their own titles in the browser tab, rather than _AngEG_ (https://bugs.launchpad.net/evergreen/+bug/1813647[Bug #1813647])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.2.4 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* James Fournie
+* Angela Kilsdonk
+* Sam Link
+* Tiffany Little
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* Dan Wells
+
 Evergreen 3.2.3
 ----------------
 This release contains bug fixes improving on Evergreen 3.2.3.
