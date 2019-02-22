@@ -3,6 +3,55 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.10
+----------------
+
+This release contains bug fixes improving on Evergreen 3.1.9.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Cataloging
+^^^^^^^^^^
+
+* Catalogers can now set the Bib Source in the Z39.50 Overlay and Import interfaces (https://bugs.launchpad.net/evergreen/+bug/1727345[Bug #1727345])
+* Fixes an issue where publishers display in the publication date column in copy buckets (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+* Electronic reources no longer display a call number called _##URI##_ in the Volume Editor (https://bugs.launchpad.net/evergreen/+bug/1752665[Bug #1752665])
+* Spine/pocket label templates can now include circulation library and owning library (https://bugs.launchpad.net/evergreen/+bug/1726568[Bug #1726568])
+
+Reports
+^^^^^^^
+
+* Fixes an issue where external documentation links can open in the reports module (https://bugs.launchpad.net/evergreen/+bug/1784893[Bug #1784893])
+* Fixes an issue where publishers display as a publication date in reports (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The _DELETE_COPY_ALERT_ permission no longer needs to be granted on the consortium level (https://bugs.launchpad.net/evergreen/+bug/1783421[Bug #1783421])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.10 point release of
+Evergreen:
+
+* John Amundson
+* Galen Charlton
+* Jeff Davis
+* James Fournie
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* Dan Wells
+
+
 Evergreen 3.1.9
 ----------------
 This release contains bug fixes improving on Evergreen 3.1.8.
