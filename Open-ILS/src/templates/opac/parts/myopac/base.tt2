@@ -6,9 +6,11 @@
         {url => "circs", name => l("Items Checked Out")},
         {url => "holds", name => l("Holds")},
         {url => "prefs", name => l("Account Preferences")},
-        {url => "lists", name => l("My Lists")},
-        {url => "reservations", name => l("Reservations")}
+        {url => "lists", name => l("My Lists")}
     ];
+    IF (ctx.show_reservations_tab == 'true');
+        myopac_pages.push({url => "reservations", name => l("Reservations")});
+    END;
     skin_root = "../"
 %]
     <h2 class="sr-only">[% l('My Account') %]</h2>
