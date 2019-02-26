@@ -1,3 +1,547 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 96d7086e0b357e563e1060b43f82dc80704ec7d0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 14:38:22 2019 -0500
+
+    Update upgrade docs for 3.2.4
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+22	60	docs/installation/server_upgrade.adoc
+
+commit b150e7a59f7ad331b3781c8c5247da893c7045ef
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 14:32:32 2019 -0500
+
+    Bumping Perl version string for 3.2.4
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 0927ec1ae34ba489b87876c56f1a4b1d0252d381
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 13:15:52 2019 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+124	0	build/i18n/po/PCrudFilterPane.js/en-GB.po
+1857	0	build/i18n/po/acq/en-CA.po
+198	0	build/i18n/po/actor/en-GB.po
+335	0	build/i18n/po/circ/en-CA.po
+413	0	build/i18n/po/serial/en-CA.po
+144	0	build/i18n/po/urlverify/en-GB.po
+10476	0	build/i18n/po/webstaff/en-CA.po
+ create mode 100644 build/i18n/po/PCrudFilterPane.js/en-GB.po
+ create mode 100644 build/i18n/po/acq/en-CA.po
+ create mode 100644 build/i18n/po/actor/en-GB.po
+ create mode 100644 build/i18n/po/circ/en-CA.po
+ create mode 100644 build/i18n/po/serial/en-CA.po
+ create mode 100644 build/i18n/po/urlverify/en-GB.po
+ create mode 100644 build/i18n/po/webstaff/en-CA.po
+
+commit 4e0b9d31cdbda3c356b22778b361ae4e60375255
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 13:13:13 2019 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+2	2	build/i18n/po/FlattenerGrid.js/FlattenerGrid.js.pot
+2	2	build/i18n/po/PCrudFilterPane.js/PCrudFilterPane.js.pot
+2	2	build/i18n/po/Searcher.js/Searcher.js.pot
+2	2	build/i18n/po/TranslatorPopup.js/TranslatorPopup.js.pot
+2	2	build/i18n/po/URLVerify.js/URLVerify.js.pot
+2	2	build/i18n/po/User.js/User.js.pot
+2	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+2	2	build/i18n/po/acq.js/acq.js.pot
+2	2	build/i18n/po/authority.js/authority.js.pot
+2	2	build/i18n/po/capture.js/capture.js.pot
+32	106	build/i18n/po/cat.properties/cat.properties.pot
+12	33	build/i18n/po/circ.properties/circ.properties.pot
+2	2	build/i18n/po/conify.js/conify.js.pot
+77	72	build/i18n/po/db.seed/db.seed.pot
+1336	1336	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+20	20	build/i18n/po/ils_events.xml/ils_events.xml.pot
+29	29	build/i18n/po/lang.dtd/lang.dtd.pot
+2	2	build/i18n/po/match_set.js/match_set.js.pot
+16	54	build/i18n/po/offline.properties/offline.properties.pot
+54	70	build/i18n/po/opac.dtd/opac.dtd.pot
+2	2	build/i18n/po/opac.js/opac.js.pot
+54	152	build/i18n/po/patron.properties/patron.properties.pot
+2	2	build/i18n/po/pickup_and_return.js/pickup_and_return.js.pot
+2	2	build/i18n/po/pull_list.js/pull_list.js.pot
+2	2	build/i18n/po/register.js/register.js.pot
+11	18	build/i18n/po/reports.dtd/reports.dtd.pot
+2	2	build/i18n/po/reports.js/reports.js.pot
+2	2	build/i18n/po/reservation.js/reservation.js.pot
+2	2	build/i18n/po/selfcheck.js/selfcheck.js.pot
+2	2	build/i18n/po/serial.js/serial.js.pot
+18	81	build/i18n/po/serial.properties/serial.properties.pot
+1	1	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/vandelay.js/vandelay.js.pot
+4	4	build/i18n/po/webstaff/webstaff.pot
+
+commit 6936c74debebf2b0649be0930c55d217acd4add8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Feb 22 13:15:56 2019 -0800
+
+    Docs: Adding release notes for 3.2.4
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+83	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit c8c549aba8ce7bf400f05c8c524a38417bbaaabf
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Feb 22 12:30:14 2019 -0800
+
+    Docs: adding release notes for 3.1.10
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+49	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 55c15c175dc1364bc2215a5aeaf39d9f0e5eb5cf
+Author: McCanna <tmccanna@georgialibraries.org>
+Date:   Fri Feb 15 13:29:21 2019 -0500
+
+    LP#1784893 Reporter - External Documentation Links
+    
+    Removed old xulG logic which was not working in
+    the web client. Link now opens in new browser tab.
+    
+    Signed-off-by: McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	7	Open-ILS/web/opac/common/js/fm_table_conf.js
+
+commit 78e034b04161c3f63190d4ca9ee8767b03c0b747
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 29 13:01:18 2019 -0500
+
+    LP1813647 Titles for Angular admin and splash page
+    
+    Add page titles for auto-generated admin pages, workstation admin, and
+    the root splash page.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/splash.component.html
+1	1	Open-ILS/src/eg2/src/index.html
+
+commit 8be67995e06a390f31a13dc8112fd8bd8feb0e88
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 29 11:15:38 2019 -0500
+
+    LP1813647 Angular page title component & sandbox example
+    
+    Adds a new component <eg-title /> which may be used to pass strings to
+    the native Angular Title service.
+    
+    Each title may have a prefix and/or a suffix.  If both are defined, they
+    are separated by a "-" (by default / en-US) and the prefix is tructed to
+    12 characters, consistent with AngularJS strings.setPageTitle()
+    function.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	0	Open-ILS/src/eg2/src/app/share/title/title.component.html
+55	0	Open-ILS/src/eg2/src/app/share/title/title.component.ts
+3	0	Open-ILS/src/eg2/src/app/staff/common.module.ts
+13	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+2	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/title/title.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/title/title.component.ts
+
+commit 8c9ad3ecb5c5a5070b8ad3b6c7c9091b4970b6f7
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 18 14:17:29 2019 -0500
+
+    LP#1802594: (follow-up) avoid a regression on "Copy" => "Item"
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit 75fc0082b68f732f0c669e9e2547c78573be46ea
+Author: Sam Link <slink@LIBPC002>
+Date:   Wed Dec 12 11:35:20 2018 -0500
+
+    LP1802594 - Splash Page Image Alt Text
+    
+    Added alt="evergreen" to the logo image on the splash page, and alt=""
+    role="presentation" to the icon images. This was done for both the AngJS
+    and Ang7 clients.
+    
+    Signed-off-by: Sam Link <slink@LIBPC002>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	9	Open-ILS/src/eg2/src/app/staff/splash.component.html
+10	10	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit 2ecb1b4767cd8faecc50a4956099aa854ad101a0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sat Feb 9 15:45:50 2019 -0500
+
+    Lp 1813290: Fix IAMBROWSER check in ac lineitem table.
+    
+    Looks like commit e9a9875d added a check for IAMBROWSER that missed
+    the window.  This commit adds the window.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/acq/common/li_table.js
+
+commit 5f3e439be0fc8f3694d411580496da52c987c66d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Oct 6 05:52:09 2018 -0700
+
+    LP1796225: Only auto-focus search on the home page
+    
+    For a11y and usability, it's better to autofocus form fields
+    only when they are the main purpose of a page.
+    
+    To test:
+    1) In the public catalog, visit the search results, record view,
+    library details, basket, and password reset pages.  Notice that
+    the cursor leaps to the search bar in each of these pages.
+    2) Apply this commit.
+    3) Re-visit all those pages.  Notice that the cursor no longer
+    leaps to the search bar.
+    4) Visit the home page of the public catalog.  Notice that the
+    cursor still leaps to the search bar on this page only.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/opac/parts/searchbar.tt2
+
+commit 328ab0122963fe7a4259605997b2e9ae4966a012
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Dec 3 13:23:39 2018 -0500
+
+    LP1799963: Adjust fix to Staff Default Adv Search
+    
+    By moving the only assignment to $scope.catalog_url inside
+    an if(<url is advanced search>) then only the advanced search
+    page can load in the opac. By adding a second assignment
+    inside an else block all opac pages can load again.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	1	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit e4310f1f8575a9383eb45e1bd167bd8ab9506096
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Thu Oct 25 17:54:42 2018 -0400
+
+    LP#1799963 - fix catalog advanced search type default
+    
+    Since eg.search.adv_pane is now a server stored WS setting
+    it needed to be fetched with the proper way in order to work.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Angela Kilsdonk <akilsdonk@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	5	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit aec49df028acb2b1226ab208eb66a540eb983083
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 18 13:37:00 2019 -0500
+
+    LP#1806709: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1149.data.circ-billing-history-grid-persist-key.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1149.data.circ-billing-history-grid-persist-key.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+
+commit fb3116c996850f38ac333d8e2faeb0a64b78dd6c
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Dec 5 14:55:30 2018 -0500
+
+    Lp 1806709: Add circ.patron.billhistory_xacts persist key to database.
+    
+    We add the eg.grid.circ.patron.billhistory_xacts persist key to
+    config.workstation_setting_type in the database.
+    
+    This is a follow-on to the LP1739606: Allow saving Billing History
+    xacts grid commit and should be applied to master and rel_3_2.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+
+commit e4b7c9d0e0818de77b7baf0aa1850bd359c2ddaa
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Nov 15 09:59:44 2018 -0500
+
+    LP#1726568: expose circ lib and owning lib fields to spine/pocket labels
+    
+    This patch fleshes the item circulation library and owning library
+    fields so that spine/pocket labels can include the short name or
+    full name of the OU rather than just the ID.  As a consequence, the
+    following fields are now available for label templates:
+    
+    * copy['call_number.owning_lib.id']
+    * copy['call_number.owning_lib.shortname']
+    * copy['call_number.owning_lib.name']
+    * copy['circ_lib.id']
+    * copy['circ_lib.shortname']
+    * copy['circ_lib.name']
+    
+    If, for some reason, existing label templates intentionally use
+    copy['call_number.owning_lib'] or copy['circ_lib'] to include the numeric
+    ID of the OU on the label, they will need to be replaced with
+    copy['call_number.owning_lib.id'] or copy['circ_lib.id'] respectively.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Open the print labels window for an item and try including one
+        or more of the new fields listed above; verify that the current
+        value is displayed on the label preview.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+6	2	Open-ILS/src/templates/staff/share/print_templates/t_item_label.tt2
+2	2	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit 878c7078c3a9d6c13f67792bcf74aa511e7c4d0a
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Aug 21 13:01:06 2018 -0700
+
+    LP#1752665: suppress located URIs in holdings view
+    
+    To test:
+    
+    [1] Locate or create a bibliographic record that has at least
+        one located URI (e.g., an 856 with a $9 containing an org
+        unit code)
+    [2] View the record in the Holdings View in the web staff interface,
+        with the 'Show empty call numbers' (or volumes) option
+        selected.
+    [3] Note that rows are displayed with a call number label of '##URI##';
+        these are for the located URIs and should not be visible here.
+    [4] Apply the patch and repeat step 2. This time the '##URI##' entries
+        should not display.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit b38c072ad7f9733538fa55220b5b17978df30308
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Nov 6 14:08:42 2018 -0500
+
+    LP#1801984 Upgrading Angular 6 to Angular 7
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1876	1436	Open-ILS/src/eg2/package-lock.json
+26	26	Open-ILS/src/eg2/package.json
+1	2	Open-ILS/src/eg2/src/app/core/locale.service.ts
+1	2	Open-ILS/src/eg2/src/app/core/net.service.ts
+1	1	Open-ILS/src/eg2/src/app/core/org.service.ts
+1	2	Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+2	4	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+2	3	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+2	12	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+1	2	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	8	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+2	3	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.ts
+1	2	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+1	3	Open-ILS/src/eg2/src/app/staff/resolver.service.ts
+4	6	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+2	1	Open-ILS/src/eg2/src/environments/environment.prod.ts
+1	1	Open-ILS/src/eg2/src/polyfills.ts
+
+commit 2390eba169637fd18c6682a5ddcd6d136edc06ea
+Author: James Fournie <jfournie@vcc.ca>
+Date:   Thu Jan 17 13:23:12 2019 -0800
+
+    LP1783421 - Make Copy Alerts permission not global
+    
+    For some reason copy alerts require global permissions.  Instead
+    update the IDL for asset.active_copy_alert and asset.copy_alert to
+    require {CREATE,VIEW,UPDATE,DELETE}_COPY_ALERT perms only as far as
+    they are scoped for the circ lib of the copy.
+    
+    Signed-off-by: James Fournie <jfournie@vcc.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+24	8	Open-ILS/examples/fm_IDL.xml
+
+commit 2f505a51fab34ff6d7ed299815472d7c04f3d2dd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 23 12:09:18 2019 -0500
+
+    LP1808268 eg2 grid action disableOnRows sanity check
+    
+    The === null test for determining if a disableOnRows handler was set was
+    not broad enough to capture undefined values.  This commit changes it to
+    a more generic if() test to cover null/undefined.  Also, instead of
+    creating a dummy function in the action, the testing code checks for the
+    presence of the function at run time.
+    
+    Apply a fix to an ng-lint warning introduced by this series of commits in
+    the sandbox code.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+4	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 2dc42228985912b638e70107abaac3db61b91773
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 17 10:56:36 2018 -0500
+
+    LP#1808268 eg2 grid rename action disable option
+    
+    Rename the "disabled" attribute on toolbar-action to "disabeOnRows" to
+    better clarify the expected input value: function returning bool instead
+    of bool variable.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+
+commit c22dc19b8e6516794d29111dce8c501055878dd9
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 13 20:50:15 2018 -0800
+
+    LP1808268: Add [disable] option to <eg-grid-toolbar-action> in eg2
+    
+    To test:
+    1) Apply this commit and recompile eg2.
+    2) Open the eg2 sandbox (https://yourdomain/eg2/staff/sandbox)
+    3) Ensure that the action called "Action that needs a single row"
+    is only enabled when one row of the grid is selected.
+    4) Create more <eg-grid-toolbar-actions> on grids in eg2.  Make sure
+    that they all enable/disable those actions per the output of the
+    functions you reference in the [disabled] attribute.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+8	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+4	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+4	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+1	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+7	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit 9f6db569aba8118f1a654fce9165aa7f6c68a9eb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jan 22 14:33:08 2019 -0500
+
+    Forward-port 3.2.3 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+17	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.2-3.2.3-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.2-3.2.3-upgrade-db.sql
+
+commit 914c321f8e1c0a209ec325209960d3b890d311ed
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Sep 21 11:46:59 2018 -0400
+
+    LP#1727345 - fix bibsource when importing or overlaying
+    
+    This addresses several issues that were causing the
+    bib source to either not display correctly on the record page
+    or not save correctly when editing z3950 imports/overlays
+    Refactors passing around of bib source into eg-marc-edit and it's
+    child directive egMarcEditBibsource.
+    
+    Two paths to test:
+    Path A)
+        1. Import a new bib record from z3950, but via "Edit then Import"
+        2. Bring up marc editor and choose save w/ bib source.
+        3. Verify chosen bib source saved correctly on record page.
+    Path B)
+        1. Mark a record as target for Overlay, go to z3950 import.
+        2. Make a search, select item for Overlay.
+        3. Choose Edit z3950 record to bring up marceditor, save with a bib source.
+        4. Verify chosen bib source saved correctly on record page.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2
+2	2	Open-ILS/src/templates/staff/cat/z3950/t_marc_edit.tt2
+19	6	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+28	6	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+
+commit e0bc23f8777bc55dd49f01cc0736c18e34232369
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Jan 21 12:00:13 2019 -0500
+
+    LP#1812698 - stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/1142.schema.reporter_simple_record_pubdate_fix.sql
+0	42	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1142.schema.reporter_simple_record_pubdate_fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+
+commit 48dcd803d06fd41a540c018e28ff6e4bae227c08
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jan 21 11:49:54 2019 -0500
+
+    LP#1812698 - Fix broken pubdate display
+    
+    reporter.simple_record, which is now used more
+    extensively for bib display, had a copy-paste error
+    originating in 2014 that now gets corrected.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
