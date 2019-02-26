@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-24 16:29-0400\n"
+"POT-Creation-Date: 2019-02-26 09:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #: lang.version
@@ -1463,7 +1463,7 @@ msgstr ""
 
 #: staff.cat.opac.alt_serial.label
 #: staff.cat.opac.alt_serial.accesskey
-msgid "&Alternate Serial Control"
+msgid "Altern&ate Serial Control"
 msgstr ""
 
 #: staff.cat.opac.batch_receive.label
@@ -3571,7 +3571,7 @@ msgstr ""
 
 #: staff.main.menu.admin.non_cat_type_edit.label
 #: staff.main.menu.admin.non_cat_type_edit.accesskey
-msgid "&Non-Cataloged Type Editor"
+msgid "No&n-Cataloged Type Editor"
 msgstr ""
 
 #: staff.main.menu.admin.offline_xacts.label
@@ -5897,7 +5897,7 @@ msgid "Overdue:"
 msgstr ""
 
 #: staff.patron_display.contact.caption
-msgid "Identity &amp; Contact Info"
+msgid "Identity & Contact Info"
 msgstr ""
 
 #: staff.patron_display.tab.account_info.label
@@ -7136,7 +7136,8 @@ msgid "Use enumerations?"
 msgstr ""
 
 #: staff.serial.patternwiz.use_enum.desc
-msgid "\"v.\" and \"no.\" are common first and second level enumeration captions."
+msgid ""
+"\"v.\" and \"no.\" are common first and second level enumeration captions."
 msgstr ""
 
 #: staff.serial.patternwiz.enum_row.enum_capt
@@ -7941,8 +7942,8 @@ msgstr ""
 #: staff.server.admin.offline.xacts.status.desc
 msgid ""
 "The transactions from the following workstations have been uploaded, but not "
-"processed.  When all expected workstations are present here, use the "
-"Process button above."
+"processed.  When all expected workstations are present here, use the Process "
+"button above."
 msgstr ""
 
 #: staff.server.admin.offline.xacts.errors.label
@@ -8730,9 +8731,9 @@ msgstr ""
 
 #: staff.server.admin.non_cat_types.in_house.help
 msgid ""
-"If the \"In-House\" flag is set on a non-cataloged type, items that circulate "
-"as that type will create \"In-House\" circulations.  This is ideal for "
-"computer use, room \"rentals\", etc."
+"If the \"In-House\" flag is set on a non-cataloged type, items that "
+"circulate as that type will create \"In-House\" circulations.  This is ideal "
+"for computer use, room \"rentals\", etc."
 msgstr ""
 
 #: staff.server.admin.non_cat_types.update.success
@@ -8931,8 +8932,8 @@ msgstr ""
 
 #: staff.server.admin.org_settings.apply_all.note
 msgid ""
-"I. \"Apply to all Locations\" will force the new setting to be applied to all "
-"locations in the location dropdown."
+"I. \"Apply to all Locations\" will force the new setting to be applied to "
+"all locations in the location dropdown."
 msgstr ""
 
 #: staff.server.admin.org_settings.update_success
@@ -8961,8 +8962,8 @@ msgstr ""
 
 #: staff.server.admin.org_settings.circ.hold_expire_interval.desc
 msgid ""
-"Amount of time after a hold is placed before the hold expires.  Example \"100 "
-"days\""
+"Amount of time after a hold is placed before the hold expires.  Example \""
+"100 days\""
 msgstr ""
 
 #: staff.server.admin.org_settings.global.credit.allow
@@ -9085,8 +9086,7 @@ msgstr ""
 
 #: staff.server.admin.org_settings.cat.bib.keep_on_empty.desc
 msgid ""
-"Do not automatically delete a bib record when all attached copies are "
-"deleted"
+"Do not automatically delete a bib record when all attached copies are deleted"
 msgstr ""
 
 #: staff.server.admin.org_settings.cat.bib.alert_on_empty
@@ -9302,8 +9302,8 @@ msgstr ""
 
 #: staff.server.admin.stat_cat.info_prompt
 msgid ""
-"* To edit or view information about an entry, click on the entry in the "
-"drop-down menu"
+"* To edit or view information about an entry, click on the entry in the drop-"
+"down menu"
 msgstr ""
 
 #: staff.server.admin.stat_cat.sip_field_warning
@@ -11533,7 +11533,7 @@ msgstr ""
 
 #: staff.cat.marcedit.stackSubfields.label
 #: staff.cat.marcedit.stackSubfields.accesskey
-msgid "&Stack subfields"
+msgid "Stack &subfields"
 msgstr ""
 
 #: staff.cat.marcedit.fastItemAdd.label
@@ -13178,7 +13178,7 @@ msgstr ""
 
 #: staff.patron.holds_overlay.simplified_pull_list.label
 #: staff.patron.holds_overlay.simplified_pull_list.accesskey
-msgid "Simplified Pull List &Interface"
+msgid "S&implified Pull List Interface"
 msgstr ""
 
 #: staff.patron.holds_overlay.place_hold.label
@@ -14002,8 +14002,8 @@ msgstr ""
 
 #: staff.patron.ue.bad_date.label
 msgid ""
-"The date provided is either in the future or invalid.  We are expecting "
-"YYYY-MM-DD"
+"The date provided is either in the future or invalid.  We are expecting YYYY-"
+"MM-DD"
 msgstr ""
 
 #: staff.patron.ue.made_barred.label
@@ -14546,8 +14546,8 @@ msgstr ""
 #: staff.printing.advanced.custom_print.warning.text
 msgid ""
 "This print strategy will ignore the printer settings in the \"Normal "
-"Settings\" section. Advanced templates using Javascript may not work, even if "
-"the external tool can take the receipt.html file."
+"Settings\" section. Advanced templates using Javascript may not work, even "
+"if the external tool can take the receipt.html file."
 msgstr ""
 
 #: staff.printing.advanced.html_templates.warning.header
@@ -14557,15 +14557,15 @@ msgstr ""
 #: staff.printing.advanced.html_templates.warning.text
 msgid ""
 "If using Receipt Templates with either the DOS LPT1 Print strategy or the "
-"Custom/External Print strategy (with \"receipt.txt\"), the client will try to "
-"translate any HTML markup to text, but this process may be imperfect, and "
+"Custom/External Print strategy (with \"receipt.txt\"), the client will try "
+"to translate any HTML markup to text, but this process may be imperfect, and "
 "for the best fidelity you should consider reworking your templates to be "
 "plain text if you are using a plain text print strategy.  However, if using "
 "a plain text print strategy with HTML markup, you may include special "
 "character codes in 2-digit hexadecimal in a \"hex\" attribute for any given "
 "element.  Such codes will be converted to actual characters and inserted at "
-"the place of the tag.  For example, &lt;p hex=\"0C\"&gt;Hello World&lt;/p&gt; "
-"will translate to form feed control character + Hello World. &lt;p&gt;Hello "
+"the place of the tag.  For example, &lt;p hex=\"0C\"&gt;Hello World&lt;/p&gt;"
+" will translate to form feed control character + Hello World. &lt;p&gt;Hello "
 "World&lt;/p hex=\"0C\"&gt; will translate to Hello World + form feed control "
 "character."
 msgstr ""
