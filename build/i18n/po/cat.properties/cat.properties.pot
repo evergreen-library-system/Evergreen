@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-08-15 11:29-0400\n"
+"POT-Creation-Date: 2019-02-26 13:11-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #: bib.no_marc
@@ -316,13 +316,9 @@ msgid "Transfer"
 msgstr ""
 
 #: staff.cat.copy_browser.transfer.cancel.label
-msgctxt "staff.cat.copy_browser.transfer.cancel.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.copy_browser.transfer.cancel.accesskey
-msgctxt "staff.cat.copy_browser.transfer.cancel.accesskey"
-msgid "C"
+msgctxt "staff.cat.copy_browser.transfer.cancel.label staff.cat.copy_browser.transfer.cancel.accesskey"
+msgid "&Cancel"
 msgstr ""
 
 #: staff.cat.copy_browser.transfer.title
@@ -703,13 +699,9 @@ msgid "%1$s copies"
 msgstr ""
 
 #: staff.cat.copy_editor.apply.label
-msgctxt "staff.cat.copy_editor.apply.label"
-msgid "Apply"
-msgstr ""
-
 #: staff.cat.copy_editor.apply.accesskey
-msgctxt "staff.cat.copy_editor.apply.accesskey"
-msgid "A"
+msgctxt "staff.cat.copy_editor.apply.label staff.cat.copy_editor.apply.accesskey"
+msgid "&Apply"
 msgstr ""
 
 #: staff.cat.copy_editor.cancel.label
@@ -939,12 +931,8 @@ msgid "Mediocre"
 msgstr ""
 
 #: staff.cat.copy_notes.render_notes.label
-msgid "Add New Note"
-msgstr ""
-
 #: staff.cat.copy_notes.render_notes.accesskey
-msgctxt "staff.cat.copy_notes.render_notes.accesskey"
-msgid "A"
+msgid "&Add New Note"
 msgstr ""
 
 #: staff.cat.copy_notes.widgets_apply.note_id
@@ -1018,22 +1006,14 @@ msgid "Initials"
 msgstr ""
 
 #: staff.cat.copy_notes.new_note.cancel.label
-msgctxt "staff.cat.copy_notes.new_note.cancel.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.copy_notes.new_note.cancel.accesskey
-msgctxt "staff.cat.copy_notes.new_note.cancel.accesskey"
-msgid "C"
+msgctxt "staff.cat.copy_notes.new_note.cancel.label staff.cat.copy_notes.new_note.cancel.accesskey"
+msgid "&Cancel"
 msgstr ""
 
 #: staff.cat.copy_notes.new_note.add_note.label
-msgid "Add Note"
-msgstr ""
-
 #: staff.cat.copy_notes.new_note.add_note.accesskey
-msgctxt "staff.cat.copy_notes.new_note.add_note.accesskey"
-msgid "A"
+msgid "&Add Note"
 msgstr ""
 
 #: staff.cat.copy_notes.new_note.error
@@ -1342,13 +1322,9 @@ msgid "Delete"
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.cancel_button.label
-msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.record_buckets.delete_records.cancel_button.accesskey
-msgctxt "staff.cat.record_buckets.delete_records.cancel_button.accesskey"
-msgid "C"
+msgctxt "staff.cat.record_buckets.delete_records.cancel_button.label staff.cat.record_buckets.delete_records.cancel_button.accesskey"
+msgid "&Cancel"
 msgstr ""
 
 #: staff.cat.record_buckets.delete_records.xml2
@@ -1520,13 +1496,9 @@ msgid "Transfer"
 msgstr ""
 
 #: staff.cat.util.transfer_copies.cancel.label
-msgctxt "staff.cat.util.transfer_copies.cancel.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.util.transfer_copies.cancel.accesskey
-msgctxt "staff.cat.util.transfer_copies.cancel.accesskey"
-msgid "C"
+msgctxt "staff.cat.util.transfer_copies.cancel.label staff.cat.util.transfer_copies.cancel.accesskey"
+msgid "&Cancel"
 msgstr ""
 
 #: staff.cat.util.transfer_copies.window_title
@@ -1606,8 +1578,8 @@ msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_message
 msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
+"Action failed.  One or more of these items is in a special status such as \""
+"Checked Out\" or \"In Transit\" and cannot be changed to the Damaged status."
 msgstr ""
 
 #: staff.cat.util.mark_item_damaged.af_title
@@ -1720,8 +1692,8 @@ msgstr ""
 
 #: staff.cat.util.mark_item_missing.af_message
 msgid ""
-"Action failed.  One or more of these items is in a special status such as "
-"\"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
+"Action failed.  One or more of these items is in a special status such as \""
+"Checked Out\" or \"In Transit\" and cannot be changed to the Missing status."
 msgstr ""
 
 #: staff.cat.util.mark_item_missing.af_title
@@ -1827,13 +1799,9 @@ msgid "Volume Buckets"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.my_init.btn.label
-msgctxt "staff.cat.volume_copy_creator.my_init.btn.label"
-msgid "Apply"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.my_init.btn.accesskey
-msgctxt "staff.cat.volume_copy_creator.my_init.btn.accesskey"
-msgid "A"
+msgctxt "staff.cat.volume_copy_creator.my_init.btn.label staff.cat.volume_copy_creator.my_init.btn.accesskey"
+msgid "&Apply"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.create_part.btn.label
@@ -1841,45 +1809,28 @@ msgid "Create Part Designator"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.edit_then_create.btn.label
-msgid "Edit then Create"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.edit_then_create.btn.accesskey
-msgctxt "staff.cat.volume_copy_creator.edit_then_create.btn.accesskey"
-msgid "C"
+msgid "Edit then &Create"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.label
-msgid "Create with Defaults"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.create_with_defaults.btn.accesskey
-msgid "D"
+msgid "Create with &Defaults"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.create.btn.label
-msgid "Create Volumes/Items"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.create.btn.accesskey
-msgctxt "staff.cat.volume_copy_creator.create.btn.accesskey"
-msgid "C"
+msgid "&Create Volumes/Items"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.label
-msgid "Edit then Re-barcode"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.edit_then_rebarcode.btn.accesskey
-msgid "E"
+msgid "&Edit then Re-barcode"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.rebarcode.btn.label
-msgid "Re-barcode / Update Items"
-msgstr ""
-
 #: staff.cat.volume_copy_creator.rebarcode.btn.accesskey
-msgid "R"
+msgid "&Re-barcode / Update Items"
 msgstr ""
 
 #: staff.cat.volume_copy_creator.render_volume_count_entry.message
@@ -1980,39 +1931,23 @@ msgid "Failure during list construction."
 msgstr ""
 
 #: staff.cat.z3950.results_view.label
-msgid "Results View"
-msgstr ""
-
 #: staff.cat.z3950.results_view.accesskey
-msgctxt "staff.cat.z3950.results_view.accesskey"
-msgid "V"
+msgid "Results &View"
 msgstr ""
 
 #: staff.cat.z3950.marc_view.label
-msgid "MARC View"
-msgstr ""
-
 #: staff.cat.z3950.marc_view.accesskey
-msgctxt "staff.cat.z3950.marc_view.accesskey"
-msgid "V"
+msgid "MARC &View"
 msgstr ""
 
 #: staff.cat.z3950.hide_top_pane.label
-msgid "Hide Top Pane"
-msgstr ""
-
 #: staff.cat.z3950.hide_top_pane.accesskey
-msgctxt "staff.cat.z3950.hide_top_pane.accesskey"
-msgid "T"
+msgid "Hide &Top Pane"
 msgstr ""
 
 #: staff.cat.z3950.unhide_top_pane.label
-msgid "Show Top Pane"
-msgstr ""
-
 #: staff.cat.z3950.unhide_top_pane.accesskey
-msgctxt "staff.cat.z3950.unhide_top_pane.accesskey"
-msgid "T"
+msgid "Show &Top Pane"
 msgstr ""
 
 #: staff.cat.z3950.marked_record_for_overlay_indicator.record_id.label
@@ -2149,7 +2084,6 @@ msgid "Import Collision"
 msgstr ""
 
 #: staff.cat.z3950.spawn_marc_editor.btn1_overlay
-msgctxt "staff.cat.z3950.spawn_marc_editor.btn1_overlay"
 msgid "Overlay"
 msgstr ""
 
@@ -2198,22 +2132,14 @@ msgid "Overlay this record?"
 msgstr ""
 
 #: staff.cat.z3950.confirm_overlay.lead.label
-msgctxt "staff.cat.z3950.confirm_overlay.lead.label"
-msgid "Overlay"
-msgstr ""
-
 #: staff.cat.z3950.confirm_overlay.lead.accesskey
-msgid "O"
+msgid "&Overlay"
 msgstr ""
 
 #: staff.cat.z3950.confirm_overlay.cancel.label
-msgctxt "staff.cat.z3950.confirm_overlay.cancel.label"
-msgid "Cancel"
-msgstr ""
-
 #: staff.cat.z3950.confirm_overlay.cancel.accesskey
-msgctxt "staff.cat.z3950.confirm_overlay.cancel.accesskey"
-msgid "C"
+msgctxt "staff.cat.z3950.confirm_overlay.cancel.label staff.cat.z3950.confirm_overlay.cancel.accesskey"
+msgid "&Cancel"
 msgstr ""
 
 #: staff.cat.z3950.confirm_overlay.title

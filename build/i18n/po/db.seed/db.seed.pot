@@ -1,9 +1,9 @@
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-09-18 16:06:09-0400\n"
+"POT-Creation-Date: 2019-02-26 13:11:34-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -203,7 +203,7 @@ msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr ""
 
 # id::cwst.label__eg.search.pref_lib
-#: 950.data.seed-values.sql:19308
+#: 950.data.seed-values.sql:19315
 msgid "Staff Catalog Preferred Library"
 msgstr ""
 
@@ -407,6 +407,11 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr ""
 
+# id::cwst.label__eg.grid.circ.patron.search
+#: 950.data.seed-values.sql:18876
+msgid "Grid Config: circ.patron.search"
+msgstr ""
+
 # id::cbt.name__4 id::coust.label__circ.lost_materials_processing_fee
 # id::coust.description__circ.lost_materials_processing_fee
 #: 950.data.seed-values.sql:681 950.data.seed-values.sql:3670
@@ -517,11 +522,6 @@ msgstr ""
 # id::ppl.description__120
 #: 950.data.seed-values.sql:942
 msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
-
-# id::ccvm.value__1278
-#: 950.data.seed-values.sql:8548
-msgid "Turkey "
 msgstr ""
 
 # id::cmf.label__2
@@ -2120,11 +2120,6 @@ msgstr ""
 msgid "Simple Mobile"
 msgstr ""
 
-# id::csc.name__8
-#: 950.data.seed-values.sql:13846
-msgid "Bell Mobility & Solo Mobile (Alternate)"
-msgstr ""
-
 # id::ppl.description__201
 #: 950.data.seed-values.sql:1104
 msgid "Allows staff to edit the note for a payment on a transaction"
@@ -2768,6 +2763,14 @@ msgstr ""
 #: 950.data.seed-values.sql:940
 msgid ""
 "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+
+# id::atr.description__ContainerCSV
+#: 950.data.seed-values.sql:13335
+msgid ""
+"Facilitates producing a CSV file representing a book list by introducing an "
+"\"items\" variable into the TT environment, sorted as dictated according to "
+"user params"
 msgstr ""
 
 # id::ccvm.value__1105
@@ -3930,11 +3933,6 @@ msgstr ""
 msgid "Florida "
 msgstr ""
 
-# id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
-#: 950.data.seed-values.sql:17193
-msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr ""
-
 # id::ccvm.value__970 id::ccvm.value__1595 id::ccvm.value__1607
 # id::ccvm.value__1619 id::ccvm.value__1631
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
@@ -4575,11 +4573,6 @@ msgstr ""
 # id::csc.name__49
 #: 950.data.seed-values.sql:14547
 msgid "Straight Talk / PagePlus Cellular"
-msgstr ""
-
-# id::coust.label__url_verify.url_verification_delay
-#: 950.data.seed-values.sql:15445
-msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 # id::coust.label__credit.processor.paypal.login
@@ -5751,11 +5744,6 @@ msgstr ""
 msgid "ADMIN_SERIAL_DISTRIBUTION"
 msgstr ""
 
-# id::cgf.label__opac.metarecord.holds.format_attr
-#: 950.data.seed-values.sql:16744
-msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr ""
-
 # id::coust.label__circ.selfcheck.patron_login_timeout
 #: 950.data.seed-values.sql:3877
 msgid "Patron Login Timeout (in seconds)"
@@ -6666,9 +6654,9 @@ msgstr ""
 msgid "Qatar "
 msgstr ""
 
-# id::ath.description__container.biblio_record_entry_bucket.csv
-#: 950.data.seed-values.sql:13323
-msgid "Produce a CSV file representing a book list"
+# id::coust.label__url_verify.url_verification_delay
+#: 950.data.seed-values.sql:15445
+msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 # id::ppl.description__308
@@ -8826,6 +8814,11 @@ msgstr ""
 msgid "Microform"
 msgstr ""
 
+# id::ccvm.value__1240 id::ccvm.value__1259
+#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
+msgid "Saint"
+msgstr ""
+
 # id::csp.label__27
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
@@ -9322,11 +9315,6 @@ msgid ""
 "this setting. They cannot be opted in at any other libraries."
 msgstr ""
 
-# id::cwst.label__eg.grid.circ.patron.search
-#: 950.data.seed-values.sql:18876
-msgid "Grid Config: circ.patron.search"
-msgstr ""
-
 # id::coust.description__circ.password_reset_request_throttle
 #: 950.data.seed-values.sql:3781
 msgid ""
@@ -9448,12 +9436,9 @@ msgstr ""
 msgid "ADMIN_FIELD_DOC"
 msgstr ""
 
-# id::atr.description__ContainerCSV
-#: 950.data.seed-values.sql:13335
-msgid ""
-"Facilitates producing a CSV file representing a book list by introducing an "
-"\"items\" variable into the TT environment, sorted as dictated according to "
-"user params"
+# id::ccvm.value__1278
+#: 950.data.seed-values.sql:8548
+msgid "Turkey "
 msgstr ""
 
 # id::ccvm.value__556
@@ -10364,6 +10349,12 @@ msgstr ""
 # id::ccvm.value__1214
 #: 950.data.seed-values.sql:8484
 msgid "Pennsylvania "
+msgstr ""
+
+# id::vie.description__import.duplicate.sysid
+# id::vie.description__import.duplicate.tcn
+#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
+msgid "Import failed due to system id collision"
 msgstr ""
 
 # id::ccvm.value__660
@@ -11306,13 +11297,9 @@ msgstr ""
 msgid "Serbian"
 msgstr ""
 
-# id::coust.description__circ.checkin.lost_zero_balance.do_not_change
-#: 950.data.seed-values.sql:5374
-msgid ""
-"When an item has been marked lost and all fines/fees have been completely "
-"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
-"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
-"enabled"
+# id::ppl.description__368
+#: 950.data.seed-values.sql:1436
+msgid "Allow a user to update trigger reactors"
 msgstr ""
 
 # id::coust.description__sms.enable
@@ -11635,10 +11622,9 @@ msgstr ""
 msgid "Login via Apache module"
 msgstr ""
 
-# id::coust.label__circ.void_lost_on_checkin
-# id::coust.description__circ.void_lost_on_checkin
-#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
-msgid "Void lost item billing when returned"
+# id::ppl.description__298
+#: 950.data.seed-values.sql:1298
+msgid "DELETE_MARC_CODE"
 msgstr ""
 
 # id::ccvm.value__arg
@@ -11745,7 +11731,7 @@ msgid "Brunei "
 msgstr ""
 
 # id::cwst.label__eg.search.search_lib
-#: 950.data.seed-values.sql:19301
+#: 950.data.seed-values.sql:19308
 msgid "Staff Catalog Default Search Library"
 msgstr ""
 
@@ -11844,6 +11830,11 @@ msgid ""
 "The claims_returned_count field will be shown on the patron registration "
 "screen. Showing a field makes it appear with required fields even when not "
 "required. If the field is required this setting is ignored."
+msgstr ""
+
+# id::csc.name__8
+#: 950.data.seed-values.sql:13846
+msgid "Bell Mobility & Solo Mobile (Alternate)"
 msgstr ""
 
 # id::ccvm.value__184
@@ -12924,6 +12915,11 @@ msgstr ""
 #: 950.data.seed-values.sql:720 950.data.seed-values.sql:724
 #: 950.data.seed-values.sql:768
 msgid "* no longer applicable"
+msgstr ""
+
+# id::coust.label__webstaff.cat.label.call_number_wrap_filter_width
+#: 950.data.seed-values.sql:17193
+msgid "Item Print Label - Call Number Wrap Filter Width"
 msgstr ""
 
 # id::ccvm.value__88
@@ -14520,9 +14516,13 @@ msgstr ""
 msgid "microfilm cartridge"
 msgstr ""
 
-# id::ppl.description__368
-#: 950.data.seed-values.sql:1436
-msgid "Allow a user to update trigger reactors"
+# id::coust.description__circ.checkin.lost_zero_balance.do_not_change
+#: 950.data.seed-values.sql:5374
+msgid ""
+"When an item has been marked lost and all fines/fees have been completely "
+"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
+"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
+"enabled"
 msgstr ""
 
 # id::csc.name__23
@@ -14571,6 +14571,11 @@ msgstr ""
 # id::ccvm.value__169
 #: 950.data.seed-values.sql:6986
 msgid "Gwich'in"
+msgstr ""
+
+# id::cgf.label__opac.metarecord.holds.format_attr
+#: 950.data.seed-values.sql:16744
+msgid "OPAC Metarecord Hold Formats Attribute"
 msgstr ""
 
 # id::cmf.label__53
@@ -15758,10 +15763,9 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr ""
 
-# id::vie.description__import.duplicate.sysid
-# id::vie.description__import.duplicate.tcn
-#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
-msgid "Import failed due to system id collision"
+# id::cwst.label__eg.circ.patron.search.show_extras
+#: 950.data.seed-values.sql:18554
+msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 # id::cbt.name__2
@@ -15886,11 +15890,6 @@ msgstr ""
 # id::ppl.description__59
 #: 950.data.seed-values.sql:820
 msgid "User may link another user to an entry in a statistical category"
-msgstr ""
-
-# id::cwst.label__eg.circ.patron.search.show_extras
-#: 950.data.seed-values.sql:18554
-msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 # id::acqcr.label__1005
@@ -16477,9 +16476,10 @@ msgstr ""
 msgid "Choctaw"
 msgstr ""
 
-# id::ppl.description__298
-#: 950.data.seed-values.sql:1298
-msgid "DELETE_MARC_CODE"
+# id::coust.label__circ.void_lost_on_checkin
+# id::coust.description__circ.void_lost_on_checkin
+#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
+msgid "Void lost item billing when returned"
 msgstr ""
 
 # id::ccvm.value__aym
@@ -17589,6 +17589,11 @@ msgstr ""
 msgid "M-II"
 msgstr ""
 
+# id::cwst.label__eg.grid.circ.patron.billhistory_xacts
+#: 950.data.seed-values.sql:19296
+msgid "Grid Config: circ.patron.billhistory_xacts"
+msgstr ""
+
 # id::coust.description__ui.patron.edit.au.email.require
 #: 950.data.seed-values.sql:4813
 msgid "The email field will be required on the patron registration screen."
@@ -17728,9 +17733,9 @@ msgid ""
 " If the field is required this setting is ignored."
 msgstr ""
 
-# id::ccvm.value__1240 id::ccvm.value__1259
-#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
-msgid "Saint"
+# id::ath.description__container.biblio_record_entry_bucket.csv
+#: 950.data.seed-values.sql:13323
+msgid "Produce a CSV file representing a book list"
 msgstr ""
 
 # id::ppl.description__44

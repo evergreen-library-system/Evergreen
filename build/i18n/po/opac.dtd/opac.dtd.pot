@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-27 11:41-0400\n"
+"POT-Creation-Date: 2019-02-26 13:10-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #. =================================================================
@@ -259,9 +259,8 @@ msgstr ""
 
 #: common.password_criteria
 msgid ""
-"The password must be at least 7 characters in length, \n"
-"contain at least one letter (a-z/A-Z), \n"
-"and contain at least one number."
+"The password must be at least 7 characters in length, contain at least one "
+"letter (a-z/A-Z), and contain at least one number."
 msgstr ""
 
 #: common.a2z.title
@@ -294,22 +293,20 @@ msgstr ""
 
 #: holds.where_am_i
 msgid ""
-"Holds lists are not as simple as \n"
-"'first come, first served.'  A complex matrix combining \n"
-"consideration of item ownership, patron home library, and item purchase \n"
-"date determines  priorities for holds; the list is dynamic, changing \n"
-"with every hold placed.  Therefore, any indication of a place in the \n"
-"holds list would be inaccurate.  The holds system is designed to \n"
-"obtain a requested item in the fastest and most efficient way possible. \n"
-"Your library will contact you when you hold items become \n"
-"available."
+"Holds lists are not as simple as 'first come, first served.'  A complex "
+"matrix combining consideration of item ownership, patron home library, and "
+"item purchase date determines  priorities for holds; the list is dynamic, "
+"changing with every hold placed.  Therefore, any indication of a place in "
+"the holds list would be inaccurate.  The holds system is designed to obtain "
+"a requested item in the fastest and most efficient way possible. Your "
+"library will contact you when you hold items become available."
 msgstr ""
 
 #: holds.advanced_options
 msgid ""
-"If you wish to broaden the scope of your hold to include other \n"
-"versions of this title, select the formats that would be acceptable. \n"
-"The first available copy will be sent to you."
+"If you wish to broaden the scope of your hold to include other versions of "
+"this title, select the formats that would be acceptable. The first available "
+"copy will be sent to you."
 msgstr ""
 
 #. =================================================================
@@ -401,13 +398,11 @@ msgstr ""
 #: home.js.disabled
 msgid ""
 "JavaScript must be enabled in order for you to use the regular Evergreen "
-"Catalog. \n"
-"However, it seems JavaScript is either disabled or not supported by your "
-"browser. \n"
-"To use the regular Evergreen Catalog, enable JavaScript by changing your "
-"browser options, then \n"
-"<a style='color: blue; text-decoration: underline;' href='/'>try again</a>. \n"
-"<br/><br/>Alternatively, you can use the basic HTML-only catalog: "
+"Catalog. However, it seems JavaScript is either disabled or not supported by "
+"your browser. To use the regular Evergreen Catalog, enable JavaScript by "
+"changing your browser options, then <a style='color: blue; text-decoration: "
+"underline;' href='/'>try again</a>. <br/><br/>Alternatively, you can use the "
+"basic HTML-only catalog: "
 msgstr ""
 
 #. =================================================================
@@ -416,8 +411,7 @@ msgstr ""
 #: myopac.delete.bookbag
 msgid ""
 "This will remove the selected bookbag and all items contained within the "
-"bookbag. \n"
-"Are you sure you wish to continue?"
+"bookbag. Are you sure you wish to continue?"
 msgstr ""
 
 #: myopac.no.bookbags
@@ -497,9 +491,8 @@ msgstr ""
 #: myopac.publish.text
 msgid ""
 "Sharing a Bookbag means that the contents of the Bookbag will be visible to "
-"others. \n"
-"To see the public view of a shared Bookbag, click the \"View\" link in the \n"
-"\"Shared\" column of the Bookbag list at the top of this page."
+"others. To see the public view of a shared Bookbag, click the \"View\" link "
+"in the \"Shared\" column of the Bookbag list at the top of this page."
 msgstr ""
 
 #: myopac.item.confirm
@@ -508,9 +501,8 @@ msgstr ""
 
 #: myopac.publish.confirm
 msgid ""
-"Sharing this bookbag will allow the contents \n"
-"of the bookbag to be seen by others.  Are you sure you wish to share this "
-"bookbag?"
+"Sharing this bookbag will allow the contents of the bookbag to be seen by "
+"others.  Are you sure you wish to share this bookbag?"
 msgstr ""
 
 #: myopac.unpublish.confirm
@@ -527,12 +519,12 @@ msgstr ""
 
 #: myopac.create.warning
 msgid ""
-"Warning: Adding items to a bookbag creates a link between you and the \n"
-"items in the database.  The contents of the bookbag are NOT publicly \n"
-"viewable unless the bookbag is shared. However, if you prefer not to \n"
-"have any link between your patron record and a particular item or items, \n"
-"we suggest that you do not place said items in a bookbag or that you \n"
-"avoid using bookbags all together.  Thank you."
+"Warning: Adding items to a bookbag creates a link between you and the items "
+"in the database.  The contents of the bookbag are NOT publicly viewable "
+"unless the bookbag is shared. However, if you prefer not to have any link "
+"between your patron record and a particular item or items, we suggest that "
+"you do not place said items in a bookbag or that you avoid using bookbags "
+"all together.  Thank you."
 msgstr ""
 
 #: myopac.describe.bookbags
@@ -750,9 +742,8 @@ msgstr ""
 
 #: myopac.holds.freeze.confirm
 msgid ""
-"Are you sure you wish to suspend the selected holds? \n"
-"If an item has already been selected to fulfill the hold, it will not be "
-"suspended"
+"Are you sure you wish to suspend the selected holds? If an item has already "
+"been selected to fulfill the hold, it will not be suspended"
 msgstr ""
 
 #: myopac.holds.thaw.confirm
@@ -858,10 +849,9 @@ msgstr ""
 #: myopac.prefs.help
 msgid ""
 "This setting defines how you will be notified of holds that are ready to be "
-"picked up from the library. \n"
-"By default, holds will use the notification style you choose here. \n"
-"However, you will still have the option to change individual holds "
-"regardless of this setting."
+"picked up from the library. By default, holds will use the notification "
+"style you choose here. However, you will still have the option to change "
+"individual holds regardless of this setting."
 msgstr ""
 
 #: myopac.holds.unfrozen
@@ -877,8 +867,8 @@ msgstr ""
 #. =================================================================
 #: myopac.summary.expired
 msgid ""
-"Your account expired on <span id='myopac.expired.date'/>! \n"
-"Please see a librarian to renew your account."
+"Your account expired on <span id='myopac.expired.date'/>! Please see a "
+"librarian to renew your account."
 msgstr ""
 
 #: myopac.summary.notes
@@ -995,8 +985,7 @@ msgstr ""
 
 #: myopac.summary.username.dup
 msgid ""
-"The requested username is not available.  Please choose a different "
-"username."
+"The requested username is not available.  Please choose a different username."
 msgstr ""
 
 #: myopac.summary.username.success
@@ -1760,7 +1749,7 @@ msgid "Next page"
 msgstr ""
 
 #: rdetail.page.next.short
-msgid "&#187;"
+msgid "»"
 msgstr ""
 
 #: rdetail.page.last
@@ -1785,9 +1774,8 @@ msgstr ""
 
 #: rdetail.record.deleted
 msgid ""
-"This record has been deleted from the database. \n"
-"We recommend that you remove this title from any bookbags it may have been "
-"added to."
+"This record has been deleted from the database. We recommend that you remove "
+"this title from any bookbags it may have been added to."
 msgstr ""
 
 #: rdetail.none
@@ -2173,17 +2161,14 @@ msgstr ""
 
 #: common.hold.barred
 msgid ""
-"PATRON BARRED. Please see any notes in the \n"
-"\"Staff Notes\" section of your \"My Account\" page or contact your local "
-"library."
+"PATRON BARRED. Please see any notes in the \"Staff Notes\" section of your \""
+"My Account\" page or contact your local library."
 msgstr ""
 
 #: common.hold.item.invalid
 msgid ""
-"This hold is no longer valid. It's likely that the \n"
-"target for the hold was deleted from the system.  Please cancel this hold "
-"and \n"
-"place a new one."
+"This hold is no longer valid. It's likely that the target for the hold was "
+"deleted from the system.  Please cancel this hold and place a new one."
 msgstr ""
 
 #: common.hold.patron.invalid
@@ -2203,11 +2188,10 @@ msgstr ""
 
 #: common.hold.failed
 msgid ""
-"No items were found that could fulfill the requested holds. \n"
-"It's possible that choosing a different format will result in a successful "
-"hold. \n"
-"It is also possible that you have exceeded the number of allowable holds. \n"
-"For further information, please consult your local librarian."
+"No items were found that could fulfill the requested holds. It's possible "
+"that choosing a different format will result in a successful hold. It is "
+"also possible that you have exceeded the number of allowable holds. For "
+"further information, please consult your local librarian."
 msgstr ""
 
 #: common.control.click
@@ -2291,8 +2275,8 @@ msgstr ""
 
 #: login.first.time
 msgid ""
-"This appears to be the first time you have logged in. \n"
-"You will need to change your password."
+"This appears to be the first time you have logged in. You will need to "
+"change your password."
 msgstr ""
 
 #: login.password.current.enter
@@ -2336,9 +2320,9 @@ msgstr ""
 
 #: login.failed
 msgid ""
-"Login failed. The username or password provided was not valid. \n"
-"Passwords are case-sensitive.  Check your Caps-Lock key and try again or "
-"contact your local library."
+"Login failed. The username or password provided was not valid. Passwords are "
+"case-sensitive.  Check your Caps-Lock key and try again or contact your "
+"local library."
 msgstr ""
 
 #: button.go

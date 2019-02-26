@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-03 23:32-0400\n"
+"POT-Creation-Date: 2019-02-26 13:10-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #. Common Entities
@@ -595,13 +595,13 @@ msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_reports_no_delete
 msgid ""
-"        One or more of the selected templates could not be deleted because \n"
+"        One or more of the selected templates could not be deleted because "
 "there are reports or outputs that depend on them."
 msgstr ""
 
 #: reports.oils_rpt_folder_window.dependant_outputs_no_delete
 msgid ""
-"        One or more of the selected reports could not be deleted because \n"
+"        One or more of the selected reports could not be deleted because "
 "there are outputs that depend on them."
 msgstr ""
 
@@ -615,24 +615,17 @@ msgstr ""
 
 #: reports.oils_rpt_folder_window.delete_all_attached_reports
 msgid ""
-"        This will also delete all of your attached reports and outputs for \n"
-"this template. \n"
-" \n"
-"If other users have reports or outputs attached to this template, \n"
-"those will be left untouched and the template will not be deleted. \n"
-" \n"
-"Do you wish to continue?"
+"        This will also delete all of your attached reports and outputs for "
+"this template.  If other users have reports or outputs attached to this "
+"template, those will be left untouched and the template will not be "
+"deleted.  Do you wish to continue?"
 msgstr ""
 
 #: reports.oils_rpt_folder_window.delete_all_attached_outputs
 msgid ""
-"        This will also delete all of your attached outputs for \n"
-"this report. \n"
-" \n"
-"If other users have outputs attached to this report, \n"
-"those will be left untouched and the report will not be deleted. \n"
-" \n"
-"Do you wish to continue?"
+"        This will also delete all of your attached outputs for this report.  "
+"If other users have outputs attached to this report, those will be left "
+"untouched and the report will not be deleted.  Do you wish to continue?"
 msgstr ""
 
 #: reports.oils_rpt_param_editor.column
