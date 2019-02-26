@@ -1,3 +1,272 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 547dcff5273f6f355a92e3bc302bb6d95a29c7cf
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Feb 26 09:08:15 2019 -0600
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+23	14	docs/installation/server_upgrade.adoc
+
+commit e4a0cb2c243734c13f8a421ce7befee311a73ffe
+Author: blake <blake@mobiusconsortium.org>
+Date:   Tue Feb 26 09:05:27 2019 -0600
+
+    bumping Perl version string for 3.1.10
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 13affb19227aea92f0d2a4cada5a94b2d3382be3
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 09:48:13 2019 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+124	0	build/i18n/po/PCrudFilterPane.js/en-GB.po
+1857	0	build/i18n/po/acq/en-CA.po
+198	0	build/i18n/po/actor/en-GB.po
+335	0	build/i18n/po/circ/en-CA.po
+413	0	build/i18n/po/serial/en-CA.po
+144	0	build/i18n/po/urlverify/en-GB.po
+34	30	build/i18n/po/webstaff/ar-JO.po
+35	31	build/i18n/po/webstaff/cs-CZ.po
+9838	0	build/i18n/po/webstaff/en-CA.po
+34	30	build/i18n/po/webstaff/en-GB.po
+34	30	build/i18n/po/webstaff/es-ES.po
+34	30	build/i18n/po/webstaff/hy-AM.po
+34	30	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/PCrudFilterPane.js/en-GB.po
+ create mode 100644 build/i18n/po/acq/en-CA.po
+ create mode 100644 build/i18n/po/actor/en-GB.po
+ create mode 100644 build/i18n/po/circ/en-CA.po
+ create mode 100644 build/i18n/po/serial/en-CA.po
+ create mode 100644 build/i18n/po/urlverify/en-GB.po
+ create mode 100644 build/i18n/po/webstaff/en-CA.po
+
+commit cfff8b681c9d29a5be81711ee382b32c62a7707b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 09:33:18 2019 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+2	2	build/i18n/po/FlattenerGrid.js/FlattenerGrid.js.pot
+2	2	build/i18n/po/PCrudFilterPane.js/PCrudFilterPane.js.pot
+2	2	build/i18n/po/Searcher.js/Searcher.js.pot
+2	2	build/i18n/po/TranslatorPopup.js/TranslatorPopup.js.pot
+2	2	build/i18n/po/URLVerify.js/URLVerify.js.pot
+2	2	build/i18n/po/User.js/User.js.pot
+2	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+2	2	build/i18n/po/acq.js/acq.js.pot
+2	2	build/i18n/po/authority.js/authority.js.pot
+2	2	build/i18n/po/capture.js/capture.js.pot
+32	106	build/i18n/po/cat.properties/cat.properties.pot
+12	33	build/i18n/po/circ.properties/circ.properties.pot
+2	2	build/i18n/po/conify.js/conify.js.pot
+62	62	build/i18n/po/db.seed/db.seed.pot
+1299	1299	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+20	20	build/i18n/po/ils_events.xml/ils_events.xml.pot
+29	29	build/i18n/po/lang.dtd/lang.dtd.pot
+2	2	build/i18n/po/match_set.js/match_set.js.pot
+16	54	build/i18n/po/offline.properties/offline.properties.pot
+54	70	build/i18n/po/opac.dtd/opac.dtd.pot
+2	2	build/i18n/po/opac.js/opac.js.pot
+54	152	build/i18n/po/patron.properties/patron.properties.pot
+2	2	build/i18n/po/pickup_and_return.js/pickup_and_return.js.pot
+2	2	build/i18n/po/pull_list.js/pull_list.js.pot
+2	2	build/i18n/po/register.js/register.js.pot
+11	18	build/i18n/po/reports.dtd/reports.dtd.pot
+2	2	build/i18n/po/reports.js/reports.js.pot
+2	2	build/i18n/po/reservation.js/reservation.js.pot
+2	2	build/i18n/po/selfcheck.js/selfcheck.js.pot
+2	2	build/i18n/po/serial.js/serial.js.pot
+18	81	build/i18n/po/serial.properties/serial.properties.pot
+1	1	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/vandelay.js/vandelay.js.pot
+3	3	build/i18n/po/webstaff/webstaff.pot
+
+commit a0bde647fd0f79606f72a82c6092d45b394ad44d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Feb 22 12:30:14 2019 -0800
+
+    Docs: adding release notes for 3.1.10
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+49	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 48356ae5d4bc8ee9926947d255b0a4f46300f56d
+Author: McCanna <tmccanna@georgialibraries.org>
+Date:   Fri Feb 15 13:29:21 2019 -0500
+
+    LP#1784893 Reporter - External Documentation Links
+    
+    Removed old xulG logic which was not working in
+    the web client. Link now opens in new browser tab.
+    
+    Signed-off-by: McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+2	7	Open-ILS/web/opac/common/js/fm_table_conf.js
+
+commit 17d49cb0812614c92874d3e571059d713ba2c3cc
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu Nov 15 09:59:44 2018 -0500
+
+    LP#1726568: expose circ lib and owning lib fields to spine/pocket labels
+    
+    This patch fleshes the item circulation library and owning library
+    fields so that spine/pocket labels can include the short name or
+    full name of the OU rather than just the ID.  As a consequence, the
+    following fields are now available for label templates:
+    
+    * copy['call_number.owning_lib.id']
+    * copy['call_number.owning_lib.shortname']
+    * copy['call_number.owning_lib.name']
+    * copy['circ_lib.id']
+    * copy['circ_lib.shortname']
+    * copy['circ_lib.name']
+    
+    If, for some reason, existing label templates intentionally use
+    copy['call_number.owning_lib'] or copy['circ_lib'] to include the numeric
+    ID of the OU on the label, they will need to be replaced with
+    copy['call_number.owning_lib.id'] or copy['circ_lib.id'] respectively.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Open the print labels window for an item and try including one
+        or more of the new fields listed above; verify that the current
+        value is displayed on the label preview.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+
+6	2	Open-ILS/src/templates/staff/share/print_templates/t_item_label.tt2
+2	2	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit 12f12f15e75952a2a0555a445dbfa198b6b0d8ff
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Aug 21 13:01:06 2018 -0700
+
+    LP#1752665: suppress located URIs in holdings view
+    
+    To test:
+    
+    [1] Locate or create a bibliographic record that has at least
+        one located URI (e.g., an 856 with a $9 containing an org
+        unit code)
+    [2] View the record in the Holdings View in the web staff interface,
+        with the 'Show empty call numbers' (or volumes) option
+        selected.
+    [3] Note that rows are displayed with a call number label of '##URI##';
+        these are for the located URIs and should not be visible here.
+    [4] Apply the patch and repeat step 2. This time the '##URI##' entries
+        should not display.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit 5db7ed07d2b2fcabfadbfef3dd3376ea9bfae0ee
+Author: James Fournie <jfournie@vcc.ca>
+Date:   Thu Jan 17 13:23:12 2019 -0800
+
+    LP1783421 - Make Copy Alerts permission not global
+    
+    For some reason copy alerts require global permissions.  Instead
+    update the IDL for asset.active_copy_alert and asset.copy_alert to
+    require {CREATE,VIEW,UPDATE,DELETE}_COPY_ALERT perms only as far as
+    they are scoped for the circ lib of the copy.
+    
+    Signed-off-by: James Fournie <jfournie@vcc.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+24	8	Open-ILS/examples/fm_IDL.xml
+
+commit 4323869ba270fe54a03484801e363f0a553b45e9
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jan 22 14:32:45 2019 -0500
+
+    Forward-port 3.1.9 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.8-3.1.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.8-3.1.9-upgrade-db.sql
+
+commit 553381eb82709d1d44a04bd9d2d4a9deea7b6c59
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Fri Sep 21 11:46:59 2018 -0400
+
+    LP#1727345 - fix bibsource when importing or overlaying
+    
+    This addresses several issues that were causing the
+    bib source to either not display correctly on the record page
+    or not save correctly when editing z3950 imports/overlays
+    Refactors passing around of bib source into eg-marc-edit and it's
+    child directive egMarcEditBibsource.
+    
+    Two paths to test:
+    Path A)
+        1. Import a new bib record from z3950, but via "Edit then Import"
+        2. Bring up marc editor and choose save w/ bib source.
+        3. Verify chosen bib source saved correctly on record page.
+    Path B)
+        1. Mark a record as target for Overlay, go to z3950 import.
+        2. Make a search, select item for Overlay.
+        3. Choose Edit z3950 record to bring up marceditor, save with a bib source.
+        4. Verify chosen bib source saved correctly on record page.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/z3950/t_edit_overlay_record.tt2
+2	2	Open-ILS/src/templates/staff/cat/z3950/t_marc_edit.tt2
+19	6	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+28	6	Open-ILS/web/js/ui/default/staff/cat/z3950/app.js
+
+commit 57c43e9755b71eaa314bc993b2282a75527cd2f0
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Jan 21 12:00:13 2019 -0500
+
+    LP#1812698 - stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    
+    Conflicts:
+    	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/1142.schema.reporter_simple_record_pubdate_fix.sql
+0	42	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1142.schema.reporter_simple_record_pubdate_fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+
+commit 482afe6f8f1e77742c05d337a7df38589cb53ef8
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jan 21 11:49:54 2019 -0500
+
+    LP#1812698 - Fix broken pubdate display
+    
+    reporter.simple_record, which is now used more
+    extensively for bib display, had a copy-paste error
+    originating in 2014 that now gets corrected.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+42	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter_simple_record_pubdate_fix.sql
