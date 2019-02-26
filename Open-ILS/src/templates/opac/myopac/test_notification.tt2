@@ -2,11 +2,11 @@
     [% l('Message Sent') %]
 </div>
 <div>
-    [% l('If you do not receive ') %] [% IF message_type == "email" %] 
-        [% l(a'n email') %] 
-    [% ELSIF message_type == "sms" %] 
-        [% l(' text') %] 
-    [% END %] [% l('message, contact your Library for more information.') %]
+    [% l('If you do not receive ') %] [% IF message_type == "email" %]
+        [% l('an email') %]
+    [% ELSIF message_type == "sms" %]
+        [% l('a text') %]
+    [% END %] [% l(' message, contact your Library for more information.') %]
 </div>
 
 <div>[% ctx.user.home_ou.name %]</div>

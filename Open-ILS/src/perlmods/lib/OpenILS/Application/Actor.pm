@@ -4364,7 +4364,7 @@ sub fire_test_notification {
     return $e->event unless $e->checkauth;
     if ($e->requestor->id != $$args{target}) {
         my $home_ou = $e->retrieve_actor_user($$args{target})->home_ou;
-        return $e->die_event unless $home_ou && $e->allowed('USER_VIEW', $home_ou);
+        return $e->die_event unless $home_ou && $e->allowed('VIEW_USER', $home_ou);
     }
 
     my $event_hook = $$args{hook} or return $e->event;
