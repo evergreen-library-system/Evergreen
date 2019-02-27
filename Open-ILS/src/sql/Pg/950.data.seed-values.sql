@@ -1923,7 +1923,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 613, 'ADMIN_CAROUSEL', oils_i18n_gettext(613,
     'Allow a user to manage carousels', 'ppl', 'description')),
  ( 614, 'REFRESH_CAROUSEL', oils_i18n_gettext(614,
-    'Allow a user to refresh carousels', 'ppl', 'description'))
+    'Allow a user to refresh carousels', 'ppl', 'description')),
+ ( 615, 'ADMIN_REMOTEAUTH', oils_i18n_gettext( 615,
+    'Administer remote patron authentication', 'ppl', 'description' ))
 ;
 
 

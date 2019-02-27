@@ -36,6 +36,7 @@ FTS_CONFIG_FILE
 100.circ_matrix.sql
 110.hold_matrix.sql
 120.floating_groups.sql
+150.remoteauth.sql
 
 210.schema.serials.sql
 200.schema.acq.sql

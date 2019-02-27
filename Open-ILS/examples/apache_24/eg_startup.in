@@ -14,6 +14,7 @@ use OpenILS::WWW::EGWeb ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::EGCatLo
 use OpenILS::WWW::IDL2js ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::FlatFielder;
 use OpenILS::WWW::PhoneList ('@sysconfdir@/opensrf_core.xml');
+use OpenILS::WWW::RemoteAuth ('@sysconfdir@/opensrf_core.xml');
 
 # Pass second argument of '1' to enable template caching.
 use OpenILS::WWW::PrintTemplate ('/openils/conf/opensrf_core.xml', 0);
@@ -25,7 +26,6 @@ use OpenILS::WWW::PrintTemplate ('/openils/conf/opensrf_core.xml', 0);
 
 #use OpenILS::WWW::Redirect qw(@sysconfdir@/opensrf_core.xml);
 #OpenILS::WWW::Redirect->parse_ips_file('@sysconfdir@/lib_ips.txt');
-
 
 
 1;

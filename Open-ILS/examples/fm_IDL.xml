@@ -12940,6 +12940,32 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="cra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remoteauth_profile" oils_persist:tablename="config.remoteauth_profile" reporter:label="Remote Patron Authentication Configuration Profile">
+		<fields oils_persist:primary="name">
+			<field name="name" reporter:datatype="text"/>
+			<field name="description" reporter:datatype="text"/>
+			<field name="context_org" reporter:datatype="org_unit"/>
+			<field name="enabled" reporter:datatype="bool"/>
+			<field name="perm" reporter:datatype="link"/>
+			<field name="restrict_to_org" reporter:datatype="bool"/>
+			<field name="allow_inactive" reporter:datatype="bool"/>
+			<field name="allow_expired" reporter:datatype="bool"/>
+			<field name="block_list" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="context_org" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_REMOTEAUTH" context_field="context_org"/>
+				<retrieve permission="STAFF_LOGIN" context_field="context_org"/>
+				<update permission="ADMIN_REMOTEAUTH" context_field="context_org"/>
+				<delete permission="ADMIN_REMOTEAUTH" context_field="context_org"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 
