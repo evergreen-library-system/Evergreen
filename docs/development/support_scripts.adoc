@@ -15,6 +15,10 @@ http://evergreen-ils.org/communicate/[Evergreen IRC channel or email lists].
 Here is a summary of the most commonly used scripts. The script name links
 to more thorough documentation, if available.
 
+ * action_trigger_aggregator.pl
+   -- Groups together event output for already processed events.  Useful for
+      creating files that contain data from a group of events.  Such as a CSV
+      file with all the overdue data for one day.
  * <<_processing_action_triggers,action_trigger_runner.pl>>
    -- Useful for creating events for specified hooks and running pending events
  * authority_authority_linker.pl

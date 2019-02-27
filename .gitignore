@@ -64,6 +64,7 @@ Open-ILS/src/python/build/
 Open-ILS/src/python/Evergreen.egg-info/
 Open-ILS/src/python/Makefile
 Open-ILS/src/python/Makefile.in
+Open-ILS/src/support-scripts/action_trigger_aggregator.pl
 Open-ILS/src/support-scripts/action_trigger_runner.pl
 Open-ILS/src/support-scripts/authority_authority_linker.pl
 Open-ILS/src/support-scripts/authority_control_fields.pl

@@ -23,7 +23,7 @@ use OpenILS::Utils::CStoreEditor;
 use OpenILS::Utils::RemoteAccount;
 use OpenILS::Utils::Fieldmapper;
 
-my $osrf_config = '/openils/conf/opensrf_core.xml';
+my $osrf_config = '@sysconfdir@/opensrf_core.xml';
 my $default_start_date = DateTime->now->strftime('%F');
 my $date        = '';
 my $start_date  = '';
@@ -83,7 +83,7 @@ Options
     --cleanup
         Remove the local file after script is done.
 
-    --event-defs 
+    --event-defs
         action_trigger.event_definition IDs to include
 
     --granularity
@@ -102,7 +102,7 @@ Options
 
     --osrf-config
         To set the OpenSRF config to something other than the default of
-        '/openils/conf/opensrf_core.xml'
+        '@sysconfdir@/opensrf_core.xml'
 
     --output-file [default STDOUT]
         Output goes to this file.  

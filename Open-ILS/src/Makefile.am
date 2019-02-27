@@ -130,6 +130,7 @@ gen_scripts = \
 	@srcdir@/extras/import/marc2bre.pl \
 	@srcdir@/extras/import/marc2sre.pl \
 	@srcdir@/extras/import/parallel_pg_loader.pl \
+	$(supportscr)/action_trigger_aggregator.pl \
 	$(supportscr)/action_trigger_runner.pl \
 	$(supportscr)/authority_control_fields.pl \
 	$(supportscr)/authority_authority_linker.pl \
@@ -210,6 +211,10 @@ uninstall-hook:
 
 @srcdir@/extras/import/parallel_pg_loader.pl: Makefile @srcdir@/extras/import/parallel_pg_loader.pl.in
 	$(do_subst) @srcdir@/extras/import/parallel_pg_loader.pl.in > "$@"
+	chmod 755 "$@"
+
+$(supportscr)/action_trigger_aggregator.pl: Makefile $(supportscr)/action_trigger_aggregator.pl.in
+	$(do_subst) $(supportscr)/action_trigger_aggregator.pl.in > "$@"
 	chmod 755 "$@"
 
 $(supportscr)/action_trigger_runner.pl: Makefile $(supportscr)/action_trigger_runner.pl.in
