@@ -67,6 +67,7 @@
           <input type="file" eg-file-reader 
             container="barcodesFromFile" value="[% l('Upload from File') %]">
         </div>
+        <eg-help-popover help-text="[% l('File Format: One barcode per line. All whitespace and commas will be removed before processing.') %]">
       </div>
     </div>
     <div class="flex-cell"></div><!-- force the final divs to the right -->

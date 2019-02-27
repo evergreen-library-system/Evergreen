@@ -280,10 +280,14 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
             $scope.args.barcode = '';
             var barcodes = [];
 
-            angular.forEach(newVal.split(/\n/), function(line) {
+            angular.forEach(newVal.split(/\r?\n/), function(line) {
+                //remove all whitespace and commas
+                line = line.replace(/[\s,]+/g,'');
+
+                //Or remove leading/trailing whitespace
+                //line = line.replace(/(^[\s,]+|[\s,]+$/g,'');
+
                 if (!line) return;
-                // scrub any trailing spaces or commas from the barcode
-                line = line.replace(/(.*?)($|\s.*|,.*)/,'$1');
                 barcodes.push(line);
             });
 
@@ -292,10 +296,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
                 var barcode = barcodes.pop();
                 egProgressDialog.increment();
 
-                if (!barcode) { // All done here.
+                if (barcode == undefined) { // All done here.
                     egProgressDialog.close();
                     copyGrid.refresh();
-                    copyGrid.selectItems([itemSvc.copies[0].index]);
+                    if(itemSvc.copies[0]){  // Were any copies actually retrieved
+                        copyGrid.selectItems([itemSvc.copies[0].index]);
+                    }
                     return;
                 }
 
