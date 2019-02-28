@@ -1,0 +1,124 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2018-12-14 21:52-0400\n"
+"PO-Revision-Date: 2019-02-24 10:40+0000\n"
+"Last-Translator: Stephan Woidowski <swoidowski@t-online.de>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2019-02-25 05:32+0000\n"
+"X-Generator: Launchpad (build 18886)\n"
+
+#: PCrudFilterPane.js:OPERATOR_NE
+msgid "is not"
+msgstr "is not"
+
+#: PCrudFilterPane.js:OPERATOR_EQ
+msgid "is"
+msgstr "is"
+
+#: PCrudFilterPane.js:NAME_SAVED_FILTER_SET
+msgid "Enter a name for your saved filter set:"
+msgstr "Enter a name for your saved filter set:"
+
+#: PCrudFilterPane.js:OPERATOR_IN
+msgid "is in the set"
+msgstr "is in the set"
+
+#: PCrudFilterPane.js:OPERATOR_IS_NULL
+msgid "is null"
+msgstr "is null"
+
+#: PCrudFilterPane.js:OPERATOR_BETWEEN
+msgid "is between"
+msgstr "is between"
+
+#: PCrudFilterPane.js:OPERATOR_NOT_LIKE
+msgid "is not like"
+msgstr "is not like"
+
+#: PCrudFilterPane.js:OPERATOR_NOT_IN
+msgid "is not in the set"
+msgstr "is not in the set"
+
+#: PCrudFilterPane.js:CHOOSE_FILTER_TO_LOAD
+msgid "Choose filter sets to load"
+msgstr "Choose filter sets to load"
+
+#: PCrudFilterPane.js:OPERATOR_LIKE
+msgid "is like"
+msgstr "is like"
+
+#: PCrudFilterPane.js:OPERATOR_IS_NOT_NULL
+msgid "is not null"
+msgstr "is not null"
+
+#: PCrudFilterPane.js:NEED_NAME
+msgid "You must enter a name for the saved filters."
+msgstr "You must enter a name for the saved filters."
+
+#: PCrudFilterPane.js:ADD_ROW
+msgid "Add Row"
+msgstr "Add Row"
+
+#: PCrudFilterPane.js:EMPTY_CASE_COMPACT
+msgid "Add rows to filter results."
+msgstr "Add rows to filter results."
+
+#: PCrudFilterPane.js:OPERATOR_NOT_BETWEEN
+msgid "is not between"
+msgstr "is not between"
+
+#: PCrudFilterPane.js:EMPTY_CASE
+msgid ""
+"Add rows to filter results, or just click Apply to see unfiltered results."
+msgstr ""
+"Add rows to filter results, or just click Apply to see unfiltered results."
+
+#: PCrudFilterPane.js:EMPTY_LIST
+msgid "Cannot compile search filter.  Empty lists not allowed."
+msgstr "Cannot compile search filter.  Empty lists not allowed."
+
+#: PCrudFilterPane.js:OPERATOR_LT
+msgid "is less than"
+msgstr "is less than"
+
+#: PCrudFilterPane.js:DEFAULT_DIALOG_TITLE
+msgid "Filter Results"
+msgstr "Filter Results"
+
+#: PCrudFilterPane.js:OPERATOR_GT
+msgid "is greater than"
+msgstr "is greater than"
+
+#: PCrudFilterPane.js:OPERATOR_GTE
+msgid "is greater than or equal to"
+msgstr "is greater than or equal to"
+
+#: PCrudFilterPane.js:LOAD_FILTERS
+msgid "Load Filters"
+msgstr "Load Filters"
+
+#: PCrudFilterPane.js:OPERATOR_LTE
+msgid "is less than or equal to"
+msgstr "is less than or equal to"
+
+#: PCrudFilterPane.js:CANCEL
+msgid "Cancel"
+msgstr "Cancel"
+
+#: PCrudFilterPane.js:APPLY
+msgid "Apply"
+msgstr "Apply"
+
+#: PCrudFilterPane.js:SAVE_FILTERS
+msgid "Save Filters"
+msgstr "Save Filters"

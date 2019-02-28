@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-18 16:06-0400\n"
+"POT-Creation-Date: 2018-12-14 21:52-0400\n"
 "PO-Revision-Date: 2015-10-16 09:16+0000\n"
 "Last-Translator: Anthony Harrington <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:30+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2018-12-16 05:33+0000\n"
+"X-Generator: Launchpad (build 18837)\n"
 
 #: 950.data.seed-values.sql:8354
 msgid "Estonia "
@@ -342,6 +342,10 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.credit.payments.allow"
 msgstr ""
 
+#: 950.data.seed-values.sql:18876
+msgid "Grid Config: circ.patron.search"
+msgstr ""
+
 #: 950.data.seed-values.sql:681 950.data.seed-values.sql:3670
 #: 950.data.seed-values.sql:3673
 msgid "Lost Materials Processing Fee"
@@ -430,10 +434,6 @@ msgstr "Oriya"
 
 #: 950.data.seed-values.sql:942
 msgid "Allow a user to add/remove users to/from the \"User\" group"
-msgstr ""
-
-#: 950.data.seed-values.sql:8548
-msgid "Turkey "
 msgstr ""
 
 #: 950.data.seed-values.sql:121
@@ -562,6 +562,10 @@ msgstr "Courier Code"
 #: 950.data.seed-values.sql:6835
 msgid "Apache languages"
 msgstr "Apache languages"
+
+#: 950.data.seed-values.sql:19420
+msgid "GUI: Show guardian field on patron registration"
+msgstr ""
 
 #: 950.data.seed-values.sql:17609
 msgid "Orders Include PO Name"
@@ -1729,10 +1733,6 @@ msgstr ""
 msgid "Simple Mobile"
 msgstr ""
 
-#: 950.data.seed-values.sql:13846
-msgid "Bell Mobility & Solo Mobile (Alternate)"
-msgstr ""
-
 #: 950.data.seed-values.sql:1104
 msgid "Allows staff to edit the note for a payment on a transaction"
 msgstr ""
@@ -2248,6 +2248,13 @@ msgstr "Soninke"
 #: 950.data.seed-values.sql:940
 msgid ""
 "Allow a user to remove an existing workstation so a new one can replace it"
+msgstr ""
+
+#: 950.data.seed-values.sql:13335
+msgid ""
+"Facilitates producing a CSV file representing a book list by introducing an "
+"\"items\" variable into the TT environment, sorted as dictated according to "
+"user params"
 msgstr ""
 
 #: 950.data.seed-values.sql:8375
@@ -3184,10 +3191,6 @@ msgstr ""
 msgid "Florida "
 msgstr ""
 
-#: 950.data.seed-values.sql:17193
-msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr ""
-
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
 #: 950.data.seed-values.sql:8899 950.data.seed-values.sql:8912
 #: 950.data.seed-values.sql:8925
@@ -3700,10 +3703,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:14547
 msgid "Straight Talk / PagePlus Cellular"
-msgstr ""
-
-#: 950.data.seed-values.sql:15445
-msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 #: 950.data.seed-values.sql:4174 950.data.seed-values.sql:4177
@@ -4650,10 +4649,6 @@ msgstr ""
 msgid "ADMIN_SERIAL_DISTRIBUTION"
 msgstr ""
 
-#: 950.data.seed-values.sql:16744
-msgid "OPAC Metarecord Hold Formats Attribute"
-msgstr ""
-
 #: 950.data.seed-values.sql:3877
 msgid "Patron Login Timeout (in seconds)"
 msgstr ""
@@ -5391,8 +5386,8 @@ msgstr ""
 msgid "Qatar "
 msgstr ""
 
-#: 950.data.seed-values.sql:13323
-msgid "Produce a CSV file representing a book list"
+#: 950.data.seed-values.sql:15445
+msgid "Number of seconds to wait between URL test attempts."
 msgstr ""
 
 #: 950.data.seed-values.sql:1318
@@ -5510,6 +5505,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:770
 msgid "Allow a user to record payments in the Billing Interface"
+msgstr ""
+
+#: 950.data.seed-values.sql:19433
+msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 
 #: 950.data.seed-values.sql:11972
@@ -5855,6 +5854,13 @@ msgstr ""
 #: 950.data.seed-values.sql:6902
 msgid "Chuvash"
 msgstr "Chuvash"
+
+#: 950.data.seed-values.sql:19425
+msgid ""
+"The guardian field will be shown on the patron registration screen. Showing "
+"a field makes it appear with required fields even when not required. If the "
+"field is required this setting is ignored."
+msgstr ""
 
 #: 950.data.seed-values.sql:8419
 msgid "Lebanon "
@@ -7134,6 +7140,10 @@ msgstr ""
 msgid "Microform"
 msgstr ""
 
+#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
+msgid "Saint"
+msgstr ""
+
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
 msgstr "Alerting block on Hold"
@@ -7532,10 +7542,6 @@ msgid ""
 "this setting. They cannot be opted in at any other libraries."
 msgstr ""
 
-#: 950.data.seed-values.sql:18876
-msgid "Grid Config: circ.patron.search"
-msgstr ""
-
 #: 950.data.seed-values.sql:3781
 msgid ""
 "Prevent the creation of new self-serve password reset requests until the "
@@ -7636,11 +7642,8 @@ msgstr ""
 msgid "ADMIN_FIELD_DOC"
 msgstr ""
 
-#: 950.data.seed-values.sql:13335
-msgid ""
-"Facilitates producing a CSV file representing a book list by introducing an "
-"\"items\" variable into the TT environment, sorted as dictated according to "
-"user params"
+#: 950.data.seed-values.sql:8548
+msgid "Turkey "
 msgstr ""
 
 #: 950.data.seed-values.sql:7387
@@ -8378,6 +8381,10 @@ msgstr ""
 msgid "Pennsylvania "
 msgstr ""
 
+#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
+msgid "Import failed due to system id collision"
+msgstr "Import failed due to system id collision"
+
 #: 950.data.seed-values.sql:7744
 msgid "projected"
 msgstr ""
@@ -8803,6 +8810,10 @@ msgstr ""
 msgid "Historical Hold Retention Age - Fulfilled"
 msgstr ""
 
+#: 950.data.seed-values.sql:19445
+msgid "GUI: Juvenile account requires parent/guardian"
+msgstr ""
+
 #: 950.data.seed-values.sql:1522
 msgid "ADMIN_IMPORT_ITEM_ATTR_DEF"
 msgstr ""
@@ -9136,12 +9147,8 @@ msgstr ""
 msgid "Serbian"
 msgstr "Serbian"
 
-#: 950.data.seed-values.sql:5374
-msgid ""
-"When an item has been marked lost and all fines/fees have been completely "
-"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
-"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
-"enabled"
+#: 950.data.seed-values.sql:1436
+msgid "Allow a user to update trigger reactors"
 msgstr ""
 
 #: 950.data.seed-values.sql:5267
@@ -9404,8 +9411,8 @@ msgstr ""
 msgid "Login via Apache module"
 msgstr "Login via Apache module"
 
-#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
-msgid "Void lost item billing when returned"
+#: 950.data.seed-values.sql:1298
+msgid "DELETE_MARC_CODE"
 msgstr ""
 
 #: 950.data.seed-values.sql:6838
@@ -9573,6 +9580,10 @@ msgid ""
 "The claims_returned_count field will be shown on the patron registration "
 "screen. Showing a field makes it appear with required fields even when not "
 "required. If the field is required this setting is ignored."
+msgstr ""
+
+#: 950.data.seed-values.sql:13846
+msgid "Bell Mobility & Solo Mobile (Alternate)"
 msgstr ""
 
 #: 950.data.seed-values.sql:7001
@@ -10446,6 +10457,10 @@ msgstr ""
 #: 950.data.seed-values.sql:720 950.data.seed-values.sql:724
 #: 950.data.seed-values.sql:768
 msgid "* no longer applicable"
+msgstr ""
+
+#: 950.data.seed-values.sql:17193
+msgid "Item Print Label - Call Number Wrap Filter Width"
 msgstr ""
 
 #: 950.data.seed-values.sql:6905
@@ -11720,8 +11735,12 @@ msgstr ""
 msgid "microfilm cartridge"
 msgstr ""
 
-#: 950.data.seed-values.sql:1436
-msgid "Allow a user to update trigger reactors"
+#: 950.data.seed-values.sql:5374
+msgid ""
+"When an item has been marked lost and all fines/fees have been completely "
+"paid on the transaction, do not void or reinstate any fines/fees EVEN IF "
+"circ.void_lost_on_checkin and/or circ.void_lost_proc_fee_on_checkin are "
+"enabled"
 msgstr ""
 
 #: 950.data.seed-values.sql:14105
@@ -11761,6 +11780,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:6986
 msgid "Gwich'in"
+msgstr ""
+
+#: 950.data.seed-values.sql:16744
+msgid "OPAC Metarecord Hold Formats Attribute"
 msgstr ""
 
 #: 950.data.seed-values.sql:334
@@ -12710,9 +12733,9 @@ msgstr ""
 msgid "UPDATE_ORG_UNIT_SETTING.circ.selfcheck.alert_on_checkout_event"
 msgstr ""
 
-#: 950.data.seed-values.sql:12674 950.data.seed-values.sql:12675
-msgid "Import failed due to system id collision"
-msgstr "Import failed due to system id collision"
+#: 950.data.seed-values.sql:18554
+msgid "Patron Search Show Extra Search Options"
+msgstr ""
 
 #: 950.data.seed-values.sql:677
 msgid "Long Overdue Collection Fee"
@@ -12813,10 +12836,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:820
 msgid "User may link another user to an entry in a statistical category"
-msgstr ""
-
-#: 950.data.seed-values.sql:18554
-msgid "Patron Search Show Extra Search Options"
 msgstr ""
 
 #: 950.data.seed-values.sql:11951
@@ -13282,8 +13301,8 @@ msgstr ""
 msgid "Choctaw"
 msgstr "Choctaw"
 
-#: 950.data.seed-values.sql:1298
-msgid "DELETE_MARC_CODE"
+#: 950.data.seed-values.sql:4021 950.data.seed-values.sql:4024
+msgid "Void lost item billing when returned"
 msgstr ""
 
 #: 950.data.seed-values.sql:6851
@@ -14005,6 +14024,13 @@ msgstr ""
 msgid "Musical Sound Recording (Unknown Format)"
 msgstr ""
 
+#: 950.data.seed-values.sql:19438
+msgid ""
+"The guardian field will be suggested on the patron registration screen. "
+"Suggesting a field makes it appear when suggested fields are shown. If the "
+"field is shown or required this setting is ignored."
+msgstr ""
+
 #: 950.data.seed-values.sql:710
 msgid "Allow a user to create a metarecord holds"
 msgstr ""
@@ -14298,8 +14324,8 @@ msgid ""
 "If the field is required this setting is ignored."
 msgstr ""
 
-#: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
-msgid "Saint"
+#: 950.data.seed-values.sql:13323
+msgid "Produce a CSV file representing a book list"
 msgstr ""
 
 #: 950.data.seed-values.sql:790
@@ -14362,6 +14388,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
+msgstr ""
+
+#: 950.data.seed-values.sql:19450
+msgid ""
+"Require a value for the parent/guardian field in the patron editor for "
+"patrons marked as juvenile"
 msgstr ""
 
 #~ msgid "Example Branch 4"
