@@ -1,4 +1,8 @@
-UPDATE config.xml_transform SET xslt=$XSLT$<?xml version="1.0" encoding="UTF-8"?>
+BEGIN;
+
+-- SELECT evergreen.upgrade_deps_block_check('xxxx', :eg_version);
+
+INSERT INTO config.xml_transform (name,namespace_uri,prefix,xslt) VALUES ('mads21','http://www.loc.gov/mads/v2','mads21',$XSLT$<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:mads="http://www.loc.gov/mads/v2"
 	xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:marc="http://www.loc.gov/MARC21/slim"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
@@ -181,7 +185,7 @@ UPDATE config.xml_transform SET xslt=$XSLT$<?xml version="1.0" encoding="UTF-8"?
 
 
 <!--
-2.15	reversed genre and setAuthority template order under relatedTypeAttribute			tmee 11/13/2018
+2.15  reversed genre and setAuthority template order under relatedTypeAttribute                       tmee 11/13/2018
 2.14    Fixed bug in mads:geographic attributes syntax                                      ws   05/04/2016		
 2.13	fixed repeating <geographic>														tmee 01/31/2014
 2.12	added $2 authority for <classification>												tmee 09/18/2012
@@ -1622,5 +1626,6 @@ UPDATE config.xml_transform SET xslt=$XSLT$<?xml version="1.0" encoding="UTF-8"?
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="*"/>
-</xsl:stylesheet>$XSLT$
-WHERE name = 'mads21';;
+</xsl:stylesheet>$XSLT$);
+
+COMMIT;
