@@ -1,3 +1,0 @@
-Include Item Status in marc_export Items Export
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The marc_export program now includes the item status in the 852 subfield s when exporting items.

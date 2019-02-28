@@ -1,7 +1,0 @@
-Booking Administration Moved To Angular
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Administration => Booking Administration pages have been ported to
-Angular using the new Angular grids.  Entry points from both AngularJS
-and Angular apps point to the new interfaces.
-
