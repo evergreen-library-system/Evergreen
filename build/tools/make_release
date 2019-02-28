@@ -259,6 +259,11 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
                 cat Open-ILS/src/sql/Pg/upgrade/$NUM.* 2>/dev/null | grep -v '^\s*\(BEGIN\|COMMIT\);\s*$' >> $UPGRADE_FILE
             done;
             echo "COMMIT;" >> $UPGRADE_FILE
+            #Add call to auditor.update_auditors() to keep auditor tables up to date
+            echo "" >> $UPGRADE_FILE
+            echo "-- Update auditor tables to catch changes to source tables." >> $UPGRADE_FILE
+            echo "--   Can be removed/skipped if there were no schema changes." >> $UPGRADE_FILE
+            echo "SELECT auditor.update_auditors();" >> $UPGRADE_FILE
             MAYBE_DUPES=`grep -oP 'CREATE (OR REPLACE )?FUNCTION +\K[^ ]*(?= *\()' $UPGRADE_FILE | sort | grep -P '^(.*)\n\1$' | sort -u`
             if [ -n "$MAYBE_DUPES" ]; then
                 echo ""
