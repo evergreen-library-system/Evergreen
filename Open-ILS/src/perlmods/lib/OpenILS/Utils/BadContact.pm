@@ -102,7 +102,7 @@ sub mark_users_contact_invalid {
         my ($result) = $U->simplereq('open-ils.actor', 'open-ils.actor.user.penalty.apply',
             $editor->authtoken,
             $usr_penalty,
-            { message => $_->$contact_type }
+            { message => $addl_note ? $_->$contact_type.' '.$addl_note : $_->$contact_type }
         );
 
         # FIXME: this perpetuates a bug; the patron editor UI doesn't handle these error states well
