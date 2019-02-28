@@ -4059,7 +4059,7 @@ sub checkin_flesh_events {
 sub log_me {
     my( $self, $msg ) = @_;
     my $bc = ($self->copy) ? $self->copy->barcode :
-        $self->barcode;
+        $self->copy_barcode;
     $bc ||= "";
     my $usr = ($self->patron) ? $self->patron->id : "";
     $logger->info("circulator: $msg requestor=".$self->editor->requestor->id.
