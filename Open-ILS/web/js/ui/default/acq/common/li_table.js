@@ -2876,7 +2876,7 @@ function AcqLiTable() {
                 acqLitPoCreateDialog.show();
                 break;
 
-            case 'save_picklist':
+            case 'move_picklist':
                 acqLitSavePlDialog.show();
                 break;
 
