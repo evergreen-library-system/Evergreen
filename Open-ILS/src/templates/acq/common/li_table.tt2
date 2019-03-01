@@ -21,7 +21,7 @@
                 * for all, otherwise combine with |
             -->
                     <option mask='*'  value='_'>[% l('--Actions--') %]</option>
-                    <option mask='pl|gs|vp|fs' value='save_picklist'>[% l('Save Items To Selection List') %]</option>
+                    <option mask='pl|gs|vp|fs' value='move_picklist'>[% l('Move Items To Selection List') %]</option>
                     <option mask='pl|gs|vp' value='selector_ready'>[% l('Mark Ready for Selector') %]</option>
                     <option mask='pl|gs|vp' value='order_ready'>[% l('Mark Ready for Order') %]</option>
                     <option mask='pl|po|gs|vp'  value='delete_selected'>[% l('Delete Selected Items') %]</option>
