@@ -290,6 +290,8 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         copyId = cp_list.split(',');
     }
 
+    var modified_items = new Set();
+
     $scope.context.page = 'list';
 
     /*
@@ -422,6 +424,21 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         );
         return cp_id_list;
     }
+
+    $scope.refreshGridData = function() {
+        var chain = $q.when();
+        var all_items = itemSvc.copies.map((item) => {return item.id});
+        angular.forEach(all_items.reverse(), function(i) {
+            itemSvc.copies.shift();
+            chain = chain.then(function() {
+                return itemSvc.fetch(null, i);
+            });
+        });
+        return chain.then(function() {
+            copyGrid.refresh();
+        });
+    }
+
 
     $scope.add_copies_to_bucket = function() {
         var copy_list = gatherSelectedHoldingsIds();
@@ -611,6 +628,34 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
                 copyGrid.refresh();
             }
         );
+    }
+
+    $scope.statusIconColumn = {
+        isEnabled: true,
+        template:  function(item) {
+            var icon = '';
+            if (modified_items.has(item['id'])) {
+                icon = '<span class="glyphicon glyphicon-floppy-saved"' +
+                    'title="' + egCore.strings.ITEM_SUCCESSFULLY_MODIFIED + '" ' +
+                    'aria-label="' + egCore.strings.ITEM_SUCCESSFULLY_MODIFIED + '">' +
+                    '</span>';
+            }
+            return icon
+        }
+    }
+
+    if (typeof BroadcastChannel != 'undefined') {
+        var holdings_bChannel = new BroadcastChannel("eg.holdings.update");
+        holdings_bChannel.onmessage = function(e) {
+            angular.forEach(e.data.copies, function(i) {
+                modified_items.add(i);
+            });
+            ngToast.create(egCore.strings.ITEMS_SUCCESSFULLY_MODIFIED);
+            $scope.refreshGridData();
+        }
+        $scope.$on('$destroy', function() {
+            holdings_bChannel.close();
+        });
     }
 
 }])
