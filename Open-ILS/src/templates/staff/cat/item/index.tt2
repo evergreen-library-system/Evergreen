@@ -35,7 +35,12 @@
     s.SUCCESS_UPDATE_INVENTORY =
       "[% l('Updated most recent inventory data for selected items.') %]";
     s.FAIL_UPDATE_INVENTORY =
-      "[% l('Failed to update recent inventory data for selected items.')%]"
+      "[% l('Failed to update recent inventory data for selected items.')%]";
+    s.ITEM_SUCCESSFULLY_MODIFIED =
+      "[% l('Item successfully modified') %]";
+    s.ITEMS_SUCCESSFULLY_MODIFIED =
+      "[% l('Item(s) successfully modified') %]";
+
   }])
 </script>
 [% END %]
