@@ -19874,7 +19874,6 @@ INSERT INTO config.org_unit_setting_type
         'bool'
     );
 
-
 INSERT INTO config.usr_activity_type 
     (id, ewhat, ehow, egroup, enabled, transient, label)
 VALUES (
@@ -19895,5 +19894,15 @@ VALUES (
 ), (
     30, 'verify', NULL, 'authz', TRUE, TRUE,
     oils_i18n_gettext(30, 'Generic Verify', 'cuat', 'label')
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'catalog.record.holds.prefetch', 'cat', 'bool',
+    oils_i18n_gettext(
+        'catalog.record.holds.prefetch',
+        'Pre-Fetch Record Holds',
+        'cwst', 'label'
+    )
 );
 

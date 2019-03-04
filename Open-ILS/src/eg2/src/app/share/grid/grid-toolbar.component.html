@@ -18,6 +18,7 @@
       <ng-container *ngFor="let cb of gridContext.toolbarCheckboxes">
         <label class="form-check-label">
           <input class="form-check-input" type="checkbox"
+            [(ngModel)]="cb.isChecked"
             (click)="cb.onChange.emit($event.target.checked)"/>
             {{cb.label}}
         </label>
