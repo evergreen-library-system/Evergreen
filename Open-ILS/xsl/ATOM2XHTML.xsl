@@ -8,6 +8,7 @@ Copyright (c) 2006 GPLS.
 
 Author: Michael Fagan, parts by Joel Tesler; modifications by Mike Rylander / GPLS
 Changelog:
+        2019-03-04: Use URN:BIBID for cover art lookup.
 	2005-11-28: Updated to work with OpenSearch 1.1 Draft 2 (rather than Draft 1)
 	2005-10-19: Changlog added (unknown update)
 Description: Converts an OpenSearch feed into XHTML.
@@ -301,23 +302,8 @@ To-do list:
 
 	<xsl:template match="dc:identifier">
 		<xsl:attribute name="src">
-			<xsl:choose>
-				<xsl:when test="position() &lt; 2 and string-length(.) &gt; 9">
-					<xsl:variable name="isbnraw"><xsl:value-of select="substring-after(.,'ISBN:')"/></xsl:variable>
-					<xsl:choose>
-						<xsl:when test="substring-before($isbnraw,' ')">
-							<xsl:variable name="isbntrimmed"><xsl:value-of select="substring-before($isbnraw,' ')"/></xsl:variable>
-							<xsl:value-of select="concat('/opac/extras/ac/jacket/small/',$isbntrimmed)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat('/opac/extras/ac/jacket/small/',$isbnraw)"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:text>/opac/extras/ac/jacket/small/</xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
+			<xsl:variable name="bibid"><xsl:value-of select="substring-after(.,'BIBID:')"/></xsl:variable>
+			<xsl:value-of select="concat('/opac/extras/ac/jacket/small/r/',$bibid)"/>
 		</xsl:attribute>		
 	</xsl:template>
 
