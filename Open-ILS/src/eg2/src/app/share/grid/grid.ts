@@ -927,7 +927,7 @@ export class GridToolbarButton {
 
 export class GridToolbarCheckbox {
     label: string;
-    onChange: (checked: boolean) => void;
+    onChange: EventEmitter<boolean>;
 }
 
 export class GridDataSource {

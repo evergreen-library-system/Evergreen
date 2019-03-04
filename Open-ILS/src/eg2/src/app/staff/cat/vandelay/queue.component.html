@@ -4,7 +4,7 @@
 
 <ng-container *ngIf="queueSummary && queueSummary.queue">
 
-  <eg-confirm-dialog 
+  <eg-confirm-dialog
     #confirmDelDlg
     i18n-dialogTitle i18n-dialogBody
     dialogTitle="Confirm Delete"
@@ -51,7 +51,7 @@
           <li class="list-group-item">
             <div class="d-flex">
               <div class="flex-1">
-                <a [routerLink]="" (click)="importSelected()" 
+                <a [routerLink]="" (click)="importSelected()"
                   i18n>Import Selected Records</a>
               </div>
               <div class="flex-1">
@@ -68,7 +68,7 @@
                 </a>
               </div>
               <div class="flex-1">
-                <a [routerLink]="" (click)="exportNonImported()" 
+                <a [routerLink]="" (click)="exportNonImported()"
                   i18n>Export Non-Imported Records</a>
               </div>
             </div>
@@ -117,11 +117,11 @@
   <a *ngIf="queueType=='auth'" href="/eg/staff/cat/catalog/authority/{{row.imported_as}}/marc_edit">
     {{row.imported_as}}
   </a>
-  
+
 </ng-template>
 
 
-<!-- 
+<!--
 Most columns are generated programmatically from queued record attribute
 definitions.  Hide a number of stock record attributes by default
 because there are a lot of them.
@@ -134,23 +134,22 @@ because there are a lot of them.
   hideFields="language,pagination,price,rec_identifier,eg_tcn_source,eg_identifier,item_barcode,zsource">
 
   <eg-grid-toolbar-checkbox i18n-label label="Records With Matches"
-    [onChange]="limitToMatches"></eg-grid-toolbar-checkbox>
+    (onChange)="limitToMatches($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-toolbar-checkbox i18n-label label="Non-Imported Records"
-    [onChange]="limitToNonImported"></eg-grid-toolbar-checkbox>
+    (onChange)="limitToNonImported($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-toolbar-checkbox i18n-label label="Records with Import Errors"
-    [onChange]="limitToImportErrors"></eg-grid-toolbar-checkbox>
+    (onChange)="limitToImportErrors($event)"></eg-grid-toolbar-checkbox>
 
-  <eg-grid-column name="id" [index]="true" 
-    [hidden]="true"></eg-grid-column>
-  <eg-grid-column i18n-label label="Matches" 
+  <eg-grid-column name="id" [index]="true" [hidden]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Matches"
     name="+matches" [cellTemplate]="matchesTmpl"></eg-grid-column>
-  <eg-grid-column name="import_error" i18n-label 
+  <eg-grid-column name="import_error" i18n-label
     label="Import Errors" [cellTemplate]="errorsTmpl"></eg-grid-column>
-  <eg-grid-column name="import_time" i18n-label 
+  <eg-grid-column name="import_time" i18n-label
     label="Import Date" datatype="timestamp"></eg-grid-column>
-  <eg-grid-column name="imported_as" i18n-label 
+  <eg-grid-column name="imported_as" i18n-label
     label="Imported As" [cellTemplate]="importedAsTmpl"></eg-grid-column>
 </eg-grid>
 

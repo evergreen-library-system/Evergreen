@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Host, TemplateRef} from '@angular/core';
+import {Component, Input, OnInit, Host, Output, EventEmitter} from '@angular/core';
 import {GridToolbarCheckbox} from './grid';
 import {GridComponent} from './grid.component';
 
@@ -15,10 +15,12 @@ export class GridToolbarCheckboxComponent implements OnInit {
     // This is an input instead of an Output because the handler is
     // passed off to the grid context for maintenance -- events
     // are not fired directly from this component.
-    @Input() onChange: (checked: boolean) => void;
+    @Output() onChange: EventEmitter<boolean>;
 
     // get a reference to our container grid.
-    constructor(@Host() private grid: GridComponent) {}
+    constructor(@Host() private grid: GridComponent) {
+        this.onChange = new EventEmitter<boolean>();
+    }
 
     ngOnInit() {
 

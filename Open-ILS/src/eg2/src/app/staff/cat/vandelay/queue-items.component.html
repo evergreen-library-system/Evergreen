@@ -8,11 +8,11 @@
   </div>
 </div>
 
-<eg-grid #itemsGrid 
+<eg-grid #itemsGrid
   showFields="record,import_error,imported_as,import_time,owning_lib,call_number,barcode"
   persistKey="cat.vandelay.queue.items"
   idlClass="vii" [dataSource]="gridSource">
-  <eg-grid-toolbar-checkbox [onChange]="limitToImportErrors"
+  <eg-grid-toolbar-checkbox (onChange)="limitToImportErrors($event)"
     i18n-label label="Limit to Import Failures"></eg-grid-toolbar-checkbox>
 
 </eg-grid>
