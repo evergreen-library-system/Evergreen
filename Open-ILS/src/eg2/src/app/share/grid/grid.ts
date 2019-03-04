@@ -542,18 +542,34 @@ export class GridContext {
     sortLocalData() {
 
         const sortDefs = this.dataSource.sort.map(sort => {
+            const column = this.columnSet.getColByName(sort.name);
+
             const def = {
                 name: sort.name,
                 dir: sort.dir,
-                col: this.columnSet.getColByName(sort.name)
+                col: column
             };
 
             if (!def.col.comparator) {
-                def.col.comparator = (a, b) => {
-                    if (a < b) { return -1; }
-                    if (a > b) { return 1; }
-                    return 0;
-                };
+                switch (def.col.datatype) {
+                    case 'id':
+                    case 'money':
+                    case 'int':
+                        def.col.comparator = (a, b) => {
+                            a = Number(a);
+                            b = Number(b);
+                            if (a < b) { return -1; }
+                            if (a > b) { return 1; }
+                            return 0;
+                        };
+                        break;
+                    default:
+                        def.col.comparator = (a, b) => {
+                            if (a < b) { return -1; }
+                            if (a > b) { return 1; }
+                            return 0;
+                        };
+                }
             }
 
             return def;
@@ -573,8 +589,6 @@ export class GridContext {
 
                 const diff = sortDef.col.comparator(valueA, valueB);
                 if (diff === 0) { continue; }
-
-                console.log(valueA, valueB, diff);
 
                 return sortDef.dir === 'DESC' ? -diff : diff;
             }
@@ -927,6 +941,7 @@ export class GridToolbarButton {
 
 export class GridToolbarCheckbox {
     label: string;
+    isChecked: boolean;
     onChange: EventEmitter<boolean>;
 }
 

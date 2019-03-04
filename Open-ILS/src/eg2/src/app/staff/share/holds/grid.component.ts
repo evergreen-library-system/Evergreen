@@ -5,6 +5,7 @@ import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {Pager} from '@eg/share/util/pager';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
@@ -33,6 +34,12 @@ export class HoldsGridComponent implements OnInit {
     // Grid persist key
     @Input() persistKey: string;
 
+    @Input() preFetchSetting: string;
+        // If set, all holds are fetched on grid load and sorting/paging all
+    // happens in the client.  If false, sorting and paging occur on
+    // the server.
+    enablePreFetch: boolean;
+
     // How to sort when no sort parameters have been applied
     // via grid controls.  This uses the eg-grid sort format:
     // [{name: fname, dir: 'asc'}, {name: fname2, dir: 'desc'}]
@@ -46,7 +53,6 @@ export class HoldsGridComponent implements OnInit {
     detailHold: any;
     editHolds: number[];
     transferTarget: number;
-    copyStatuses: {[id: string]: IdlObject};
 
     @ViewChild('holdsGrid') private holdsGrid: GridComponent;
     @ViewChild('progressDialog')
@@ -104,32 +110,57 @@ export class HoldsGridComponent implements OnInit {
     constructor(
         private net: NetService,
         private org: OrgService,
+        private store: ServerStoreService,
         private auth: AuthService
     ) {
         this.gridDataSource = new GridDataSource();
-        this.copyStatuses = {};
+        this.enablePreFetch = null;
     }
 
     ngOnInit() {
         this.initDone = true;
         this.pickupLib = this.org.get(this.initialPickupLib);
 
+        if (this.preFetchSetting) {
+
+                this.store.getItem(this.preFetchSetting).then(
+                    applied => this.enablePreFetch = Boolean(applied)
+                );
+
+        }
+
+        if (!this.defaultSort) {
+            this.defaultSort = [{name: 'request_time', dir: 'asc'}];
+        }
+
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
-
-            if (this.defaultSort && sort.length === 0) {
-                // Only use initial sort if sorting has not been modified
-                // by the grid's own sort controls.
-                sort = this.defaultSort;
-            }
-
-            // sorting not currently supported
+            sort = sort.length > 0 ? sort : this.defaultSort;
             return this.fetchHolds(pager, sort);
         };
+    }
+
+    // Returns true after all data/settings/etc required to render the
+    // grid have been fetched.
+    initComplete(): boolean {
+        return this.enablePreFetch !== null;
     }
 
     pickupLibChanged(org: IdlObject) {
         this.pickupLib = org;
         this.holdsGrid.reload();
+    }
+
+    preFetchHolds(apply: boolean) {
+        this.enablePreFetch = apply;
+
+        if (apply) {
+            setTimeout(() => this.holdsGrid.reload());
+        }
+
+        if (this.preFetchSetting) {
+            // fire and forget
+            this.store.setItem(this.preFetchSetting, apply);
+        }
     }
 
     applyFilters(): any {
@@ -167,11 +198,16 @@ export class HoldsGridComponent implements OnInit {
         const filters = this.applyFilters();
 
         const orderBy: any = [];
-        sort.forEach(obj => {
-            const subObj: any = {};
-            subObj[obj.name] = {dir: obj.dir, nulls: 'last'};
-            orderBy.push(subObj);
-        });
+        if (sort.length > 0) {
+            sort.forEach(obj => {
+                const subObj: any = {};
+                subObj[obj.name] = {dir: obj.dir, nulls: 'last'};
+                orderBy.push(subObj);
+            });
+        }
+
+        const limit = this.enablePreFetch ? null : pager.limit;
+        const offset = this.enablePreFetch ? 0 : pager.offset;
 
         let observer: Observer<any>;
         const observable = new Observable(obs => observer = obs);
@@ -183,10 +219,7 @@ export class HoldsGridComponent implements OnInit {
         this.net.request(
             'open-ils.circ',
             'open-ils.circ.hold.wide_hash.stream',
-            // Pre-fetch all holds consistent with AngJS version
-            this.auth.token(), filters, orderBy
-            // Alternatively, fetch holds in pages.
-            // this.auth.token(), filters, orderBy, pager.limit, pager.offset
+            this.auth.token(), filters, orderBy, limit, offset
         ).subscribe(
             holdData => {
 

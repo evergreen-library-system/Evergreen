@@ -52,6 +52,7 @@
       <ngb-tab title="View Holds" i18n-title id="holds">
         <ng-template ngbTabContent>
           <eg-holds-grid [recordId]="recordId"
+            preFetchSetting="catalog.record.holds.prefetch"
             persistKey="cat.catalog.wide_holds"
             [defaultSort]="[{name:'request_time',dir:'asc'}]"
             [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
