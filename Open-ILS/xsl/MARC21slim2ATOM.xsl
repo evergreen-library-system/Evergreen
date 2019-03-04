@@ -4,6 +4,7 @@
 	<xsl:output method="xml" indent="yes"/>
 	
 	<!--Added ISBN and deleted attributes 6/04 jer-->
+	<!--Added BIBID to facilitate covert art lookup 2019-03-04 jrs-->
 	
 	<xsl:template match="/">
 			<xsl:apply-templates/>
@@ -118,6 +119,14 @@
 					<xsl:value-of select="marc:subfield[@code='a']"/>
 				</dc:identifier>
 			</xsl:for-each>
+
+                        <xsl:for-each select="marc:datafield[@tag=901]">
+                                <dc:identifier>
+                                        <xsl:text>URN:BIBID:</xsl:text>
+                                        <xsl:value-of select="marc:subfield[@code='c']"/>
+                                </dc:identifier>
+                        </xsl:for-each>
+
 
 			<xsl:for-each select="marc:datafield[@tag=506]">
 				<rights>
