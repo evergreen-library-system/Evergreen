@@ -12,7 +12,7 @@ policies.
 
 To limit checkouts by shelving location:
 
-. Click *Administration -> Local Administration ->  Circ Limit Sets*.
+. Click *Administration -> Local Administration ->  Circulation Limit Sets*.
 . Click *New* to create a new circulation limit set.
 . In the *Owning Library* field, select the library that can create and edit
 this limit set.

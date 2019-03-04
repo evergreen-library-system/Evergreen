@@ -113,12 +113,12 @@ Circulation Limit Sets
 Circulation Limit Sets allow you to limit the maximum number of items for
 different types of materials that a patron can check out at one time. Evergreen
 supports creating these limits based on circulation modifiers, shelving locations,
-or circ limit groups, which allow you to create limits based on MARC data.
+or circulation limit groups, which allow you to create limits based on MARC data.
 The below instructions will allow you to create limits based on circulation
 modifiers.
 
 * Configure the circulation limit sets by selecting *Administration -> Local
-Administration -> Circ Limit Sets*.
+Administration -> Circulation Limit Sets*.
 * *Items Out* -  The maximum number of items circulated to a patron at the same
 time.
 * *Min Depth* - Enter the minimum depth in the org tree that
