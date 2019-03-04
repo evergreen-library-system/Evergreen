@@ -2381,6 +2381,7 @@ sub check_title_hold {
 
     my %params       = %$params;
     my $depth        = $params{depth}        || 0;
+    $params{depth} = $depth;   #define $params{depth} if unset, since it gets used later
     my $selection_ou = $params{selection_ou} || $params{pickup_lib};
     my $oargs        = $params{oargs}        || {};
 
