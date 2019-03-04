@@ -18,7 +18,6 @@ export class QueueItemsComponent {
     queueType: string;
     queueId: number;
     filterImportErrors: boolean;
-    limitToImportErrors: (checked: boolean) => void;
 
     gridSource: GridDataSource;
     @ViewChild('itemsGrid') itemsGrid: GridComponent;
@@ -49,11 +48,12 @@ export class QueueItemsComponent {
                 }
             );
         };
-
-        this.limitToImportErrors = (checked: boolean) => {
-            this.filterImportErrors = checked;
-            this.itemsGrid.reload();
-        };
     }
+
+    limitToImportErrors(checked: boolean) {
+        this.filterImportErrors = checked;
+        this.itemsGrid.reload();
+    }
+
 }
 

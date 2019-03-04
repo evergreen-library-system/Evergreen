@@ -31,10 +31,6 @@ export class QueueComponent implements OnInit, AfterViewInit {
         withErrors: false
     };
 
-    limitToMatches: (checked: boolean) => void;
-    limitToNonImported: (checked: boolean) => void;
-    limitToImportErrors: (checked: boolean) => void;
-
     // keep a local copy for convenience
     attrDefs: IdlObject[];
 
@@ -61,23 +57,24 @@ export class QueueComponent implements OnInit, AfterViewInit {
             return this.loadQueueRecords(pager);
         };
 
-        this.limitToMatches = (checked: boolean) => {
-            this.filters.matches = checked;
-            this.queueGrid.reload();
-        };
-
-        this.limitToNonImported = (checked: boolean) => {
-            this.filters.nonImported = checked;
-            this.queueGrid.reload();
-        };
-
-        this.limitToImportErrors = (checked: boolean) => {
-            this.filters.withErrors = checked;
-            this.queueGrid.reload();
-        };
     }
 
     ngOnInit() {
+    }
+
+    limitToMatches(checked: boolean) {
+        this.filters.matches = checked;
+        this.queueGrid.reload();
+    }
+
+    limitToNonImported(checked: boolean) {
+        this.filters.nonImported = checked;
+        this.queueGrid.reload();
+    }
+
+    limitToImportErrors(checked: boolean) {
+        this.filters.withErrors = checked;
+        this.queueGrid.reload();
     }
 
     queuePageOffset(): number {
