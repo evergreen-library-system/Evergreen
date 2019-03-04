@@ -2146,3 +2146,141 @@ UPDATE actor.usr SET
     credit_forward_balance = '0',
     mailing_address = CURRVAL('actor.usr_address_id_seq')
     WHERE id=CURRVAL('actor.usr_id_seq');
+
+
+-- users for auth testing
+-- barcode pattern: 99999393XXX
+
+-- expired
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393001', 4, 'Simpson', 'marges1234',
+        'Marge', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '742 Evergreen Terrace', 't',
+        'NT', 'Springfield', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393001', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+UPDATE actor.usr SET expire_date = '2010-01-01' WHERE id=CURRVAL('actor.usr_id_seq');
+
+-- deleted
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393002', 4, 'Simpson', 'homers1234',
+        'Homer', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '742 Evergreen Terrace', 't',
+        'NT', 'Springfield', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393002', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+UPDATE actor.usr SET deleted = TRUE WHERE id=CURRVAL('actor.usr_id_seq');
+
+-- barred
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393003', 4, 'Simpson', 'barts1234',
+        'Bart', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '742 Evergreen Terrace', 't',
+        'NT', 'Springfield', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393003', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+UPDATE actor.usr SET barred = TRUE WHERE id=CURRVAL('actor.usr_id_seq');
+
+-- valid
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393004', 4, 'Simpson', 'lisas1234',
+        'Lisa', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '742 Evergreen Terrace', 't',
+        'NT', 'Springfield', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393004', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+-- inactive
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393005', 4, 'Simpson', 'maggies1234',
+        'Maggie', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '742 Evergreen Terrace', 't',
+        'NT', 'Springfield', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393005', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');
+
+UPDATE actor.usr SET active = FALSE WHERE id=CURRVAL('actor.usr_id_seq');
+
+-- external
+INSERT INTO actor.usr
+    (profile, ident_type, usrname, home_ou, family_name, passwd, first_given_name, second_given_name, expire_date, dob, suffix)
+    VALUES (2, 3, '99999393100', 6, 'Manhattan', 'shelbyvillem1234',
+        'Shelbyville', '', NOW() + '3 years'::INTERVAL, NULL, '');
+
+INSERT INTO actor.usr_address
+    (country, within_city_limits, post_code, street1, valid, state, city, street2, county, usr)
+    VALUES ('USA', 't', '20521', '1 Shelbyville Way', 't',
+        'NT', 'Shelbyville', '', '', CURRVAL('actor.usr_id_seq'));
+
+INSERT INTO actor.card (barcode, usr)
+    VALUES ('99999393100', CURRVAL('actor.usr_id_seq'));
+
+UPDATE actor.usr SET
+    card = CURRVAL('actor.card_id_seq'),
+    billing_address = CURRVAL('actor.usr_address_id_seq'),
+    credit_forward_balance = '0',
+    mailing_address = CURRVAL('actor.usr_address_id_seq')
+    WHERE id=CURRVAL('actor.usr_id_seq');

@@ -99,6 +99,9 @@ INSERT INTO biblio.record_entry (marc, last_xact_id)
 -- load survey data
 \i surveys.sql
 
+-- load remoteauth data
+\i remoteauth.sql
+
 -- clean up the env
 \i env_destroy.sql
 
