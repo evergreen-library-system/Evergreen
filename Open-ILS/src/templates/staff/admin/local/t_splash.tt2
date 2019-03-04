@@ -10,11 +10,11 @@
 [%
     interfaces = [
      [ l('Address Alerts'), "./admin/local/actor/address_alert" ]
-    ,[ l('Age Overdue Circs to Lost'), "./admin/local/circ/age_to_lost" ]
+    ,[ l('Age Overdue Circulations to Lost'), "./admin/local/circ/age_to_lost" ]
     ,[ l('Auto-Print Settings'), "./admin/local/config/auto_print" ]
     ,[ l('Barcode Completion'), "./admin/local/config/barcode_completion" ]
     ,[ l('Cash Reports'), "./admin/local/money/cash_reports" ]
-    ,[ l('Circ Limit Sets'), "./admin/local/config/circ_limit_set" ]
+    ,[ l('Circulation Limit Sets'), "./admin/local/config/circ_limit_set" ]
     ,[ l('Circulation Policies'), "./admin/local/config/circ_matrix_matchpoint" ]
     ,[ l('Closed Dates Editor'), "./admin/local/actor/closed_dates" ]
     ,[ l('Item Alert Types'), "./admin/local/config/copy_alert_types" ]
