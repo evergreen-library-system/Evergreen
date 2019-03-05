@@ -36,5 +36,6 @@
     </a>
   </eg-grid-field>
 
+  <eg-grid-field label="[% l('Deleted?') %]" path="biblio_record.deleted"></eg-grid-field>
 
 </eg-grid>
