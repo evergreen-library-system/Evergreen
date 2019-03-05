@@ -20,23 +20,45 @@ export class GridBodyComponent implements OnInit {
     onGridKeyDown(evt: KeyboardEvent) {
         switch (evt.key) {
             case 'ArrowUp':
-                this.context.selectPreviousRow();
+                if (evt.shiftKey) {
+                    // Extend selection up one row
+                    this.context.selectMultiRowsPrevious();
+                } else {
+                    this.context.selectPreviousRow();
+                }
                 evt.stopPropagation();
                 break;
             case 'ArrowDown':
-                this.context.selectNextRow();
+                if (evt.shiftKey) {
+                    // Extend selection down one row
+                    this.context.selectMultiRowsNext();
+                } else {
+                    this.context.selectNextRow();
+                }
                 evt.stopPropagation();
                 break;
             case 'ArrowLeft':
+            case 'PageUp':
                 this.context.toPrevPage()
                 .then(ok => this.context.selectFirstRow(), err => {});
                 evt.stopPropagation();
                 break;
             case 'ArrowRight':
+            case 'PageDown':
                 this.context.toNextPage()
                 .then(ok => this.context.selectFirstRow(), err => {});
                 evt.stopPropagation();
                 break;
+            case 'a':
+                // control-a means select all visible rows.
+                // For consistency, select all rows in the current page only.
+                if (evt.ctrlKey) {
+                    this.context.rowSelector.clear();
+                    this.context.selectRowsInPage();
+                    evt.preventDefault();
+                }
+                break;
+
             case 'Enter':
                 if (this.context.lastSelectedIndex) {
                     this.grid.onRowActivate.emit(
