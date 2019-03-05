@@ -33,7 +33,8 @@
       </div>
 
       <div class="flex-row" style="overflow:scroll">
-        <div ng-if="lead_id" class="flex-1">
+        <div ng-if="lead_id" 
+          ng-class="{'record-merge-container': !editing_inplace, 'record-edit-container': editing_inplace}">
           <tabset>
             <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 

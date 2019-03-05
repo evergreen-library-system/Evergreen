@@ -217,3 +217,11 @@ grid[name="-none-"] * label { color: black; }
   white-space: pre-wrap;
 }
 
+/* Avoid word wrapping in edit mode and add scrolls for navigation */
+.record-edit-container {
+  flex: 1;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  white-space: nowrap;
+}
+
