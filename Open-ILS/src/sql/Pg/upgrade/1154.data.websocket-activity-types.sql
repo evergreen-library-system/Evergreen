@@ -1,6 +1,6 @@
 BEGIN;
 
--- SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1154', :eg_version);
 
 INSERT INTO config.usr_activity_type 
     (id, ewhat, ehow, egroup, enabled, transient, label)
