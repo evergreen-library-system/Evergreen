@@ -1,0 +1,63 @@
+BEGIN;
+
+SELECT plan(8);
+
+-- test accounts:
+-- 99999393000: not found (user does not exist)
+-- 99999393001: expired
+-- 99999393002: deleted
+-- 99999393003: barred
+-- 99999393004: valid
+-- 99999393005: inactive
+-- 99999393100: external
+
+SELECT isnt_empty(
+  'SELECT * FROM config.remoteauth_profile WHERE enabled IS TRUE AND name = ''Basic''',
+  'Basic HTTP authentication is enabled'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393000')),
+  'not_found',
+  'Confirm remoteauth test for nonexistent patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393001')),
+  'expired',
+  'Confirm remoteauth test for expired patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393002')),
+  'not_found',
+  'Confirm remoteauth test for deleted patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393003')),
+  'blocked',
+  'Confirm remoteauth test for barred patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393004')),
+  'success',
+  'Confirm remoteauth test for valid patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393005')),
+  'blocked',
+  'Confirm remoteauth test for inactive patron'
+);
+
+SELECT is(
+  (SELECT * FROM actor.permit_remoteauth('Basic', (SELECT id FROM actor.usr WHERE usrname = '99999393100')),
+  'not_found',
+  'Confirm remoteauth test for external patron'
+);
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;
