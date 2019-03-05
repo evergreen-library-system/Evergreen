@@ -1,26 +1,31 @@
 
-<div class="eg-grid-row eg-grid-header-row">
+<div row="row" class="eg-grid-row eg-grid-header-row">
   <ng-container *ngIf="!context.disableSelect">
-    <div class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-      <input type='checkbox' (click)="handleBatchSelect($event)">
+    <div role="columnheader"
+      class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
+      <input type='checkbox' (click)="handleBatchSelect($event)"
+        [(ngModel)]="batchRowCheckbox">
     </div>
   </ng-container>
-  <div class="eg-grid-cell eg-grid-header-cell eg-grid-number-cell eg-grid-cell-skinny">
+  <div role="columnheader"
+    class="eg-grid-cell eg-grid-header-cell eg-grid-number-cell eg-grid-cell-skinny">
     <span i18n="number|Row Number Header">#</span>
   </div>
-  <div *ngIf="context.rowFlairIsEnabled" 
+  <div *ngIf="context.rowFlairIsEnabled"
+    role="columnheader"
     class="eg-grid-cell eg-grid-header-cell eg-grid-flair-cell">
     <span class="material-icons">notifications</span>
   </div>
-  <div *ngFor="let col of context.columnSet.displayColumns()" 
-    draggable="true" 
+  <div role="columnheader"
+    *ngFor="let col of context.columnSet.displayColumns()"
+    draggable="true"
     (dragstart)="dragColumn = col"
     (drop)="onColumnDrop(col)"
     (dragover)="onColumnDragEnter($event, col)"
     (dragleave)="onColumnDragLeave($event, col)"
     [ngClass]="{'dragover' : col.isDragTarget}"
     class="eg-grid-cell eg-grid-header-cell" [ngStyle]="{flex:col.flex}">
-    <a class="sortable label-with-material-icon" *ngIf="col.isSortable" 
+    <a class="sortable label-with-material-icon" *ngIf="col.isSortable"
       (click)="sortOneColumn(col)">
       <span class="eg-grid-header-cell-sort-label">{{col.label}}</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"

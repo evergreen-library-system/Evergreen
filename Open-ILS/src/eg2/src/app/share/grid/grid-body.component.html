@@ -2,7 +2,7 @@
   tabindex=1 so the grid body can capture keyboard events.
 -->
 <div class="eg-grid-body" tabindex="1" (keydown)="onGridKeyDown($event)">
-  <div class="eg-grid-row eg-grid-body-row {{context.rowClassCallback(row)}}"
+  <div role="row" class="eg-grid-row eg-grid-body-row {{context.rowClassCallback(row)}}"
     [ngClass]="{'selected': context.rowSelector.contains(context.getRowIndex(row))}"
     *ngFor="let row of context.dataSource.getPageOfRows(context.pager); let idx = index">
 
@@ -27,7 +27,8 @@
         </ng-container>
       </ng-container>
     </div>
-    <div class="eg-grid-cell eg-grid-body-cell" [ngStyle]="{flex:col.flex}"
+    <div role="gridcell" class="eg-grid-cell eg-grid-body-cell"
+      [ngStyle]="{flex:col.flex}"
       [ngClass]="{'eg-grid-cell-overflow': context.overflowCells}"
       (dblclick)="onRowDblClick(row)"
       (click)="onRowClick($event, row, idx)"
