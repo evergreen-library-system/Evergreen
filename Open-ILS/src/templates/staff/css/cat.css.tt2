@@ -198,3 +198,22 @@ grid[name="-none-"] * label { color: black; }
     white-space: nowrap;
 }
 
+.record-merge-container {
+  flex: 1;
+  max-height: 600px;
+  /*
+   * LP1739293 Leaving for reference in case anyone wants to allow the
+   * marc records to occupy more horizontal space and/or put scroll bars
+   * on the individual records instead of a single vertical scroll.
+  min-width: 600px;
+  max-width: 900px;
+  overflow-y: scroll;
+  */
+}
+
+.record-merge-container pre {
+  /* in the merge view, wrap text so it doesn't gobble up 
+   * all of the horizontal space */
+  white-space: pre-wrap;
+}
+

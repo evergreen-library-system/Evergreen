@@ -52,7 +52,7 @@
             </tab>
           </tabset>
         </div>
-        <div class="flex-1" ng-repeat="rec in records">
+        <div class="record-merge-container" ng-repeat="rec in records">
           <button class="btn btn-default btn-sm" 
             ng-click="use_as_lead(rec)">[% l('Use as lead record') %]</button>
           <button class="btn btn-default btn-sm" 
