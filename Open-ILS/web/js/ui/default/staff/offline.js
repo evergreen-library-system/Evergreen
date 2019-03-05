@@ -330,6 +330,12 @@ function($routeProvider , $locationProvider , $compileProvider) {
             egCore.hatch.setItem('eg.offline.print_receipt', $scope.do_print)
         }
 
+        $scope.lookupNoncatTypeName = function (type) {
+            var nc =  $scope.noncats.filter(function(n){ return n.id() == type })[0];
+            if (nc) return nc.name();
+            return '';
+        }
+
         $scope.logged_in = egCore.auth.token() ? true : false;
 
 

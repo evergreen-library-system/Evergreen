@@ -358,7 +358,10 @@
               <tbody>
                 <tr ng-repeat="xact in xact_page.checkout track by $index">
                   <td>{{xact.patron_barcode}}</td>
-                  <td>{{xact.barcode}}</td>
+                  <td>
+                      <div ng-if="xact.barcode">{{xact.barcode}}</div>
+                      <div ng-if="!xact.barcode">{{lookupNoncatTypeName(xact.noncat_type)}} ({{xact.noncat_count}})</div>
+                  </td>
                   <td>{{xact.due_date | date:'shortDate'}}</td>
                 </tr>
               </tbody>
