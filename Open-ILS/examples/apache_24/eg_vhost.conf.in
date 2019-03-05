@@ -836,6 +836,26 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     </IfModule>
 </Location>
 
+<Location /api/basicauth>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::RemoteAuth
+    Options +ExecCGI
+
+    # access restricted to localhost by default; since this module provides no
+    # client authentiation, restricting access by IP or other means is stongly
+    # recommended
+    Require local
+
+    # remoteauth profile name
+    PerlSetVar OILSRemoteAuthProfile "Basic"
+    # Perl module for processing requests
+    PerlSetVar OILSRemoteAuthHandler "OpenILS::WWW::RemoteAuth::Basic"
+
+    # staff username/password for config lookup and patron retrieval
+    PerlSetVar OILSRemoteAuthClientUsername "admin"
+    PerlSetVar OILSRemoteAuthClientPassword "demo123"
+</Location>
+
 
 # Uncomment the following to force SSL for everything. Note that this defeats caching
 # and you will suffer a performance hit.
