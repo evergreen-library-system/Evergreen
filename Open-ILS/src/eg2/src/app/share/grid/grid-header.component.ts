@@ -13,9 +13,15 @@ export class GridHeaderComponent implements OnInit {
 
     dragColumn: GridColumn;
 
+    batchRowCheckbox: boolean;
+
     constructor() {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.context.selectRowsInPageEmitter.subscribe(
+            () => this.batchRowCheckbox = true
+        );
+    }
 
     onColumnDragEnter($event: any, col: any) {
         if (this.dragColumn && this.dragColumn.name !== col.name) {
@@ -71,9 +77,7 @@ export class GridHeaderComponent implements OnInit {
     }
 
     selectAll() {
-        const rows = this.context.dataSource.getPageOfRows(this.context.pager);
-        const indexes = rows.map(r => this.context.getRowIndex(r));
-        this.context.rowSelector.select(indexes);
+        this.context.selectRowsInPage();
     }
 
     allRowsAreSelected(): boolean {

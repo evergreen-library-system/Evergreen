@@ -1,8 +1,8 @@
 
-<div class="eg-grid">
+<div class="eg-grid" role="grid">
 
   <eg-grid-toolbar
-    [gridContext]="context" 
+    [gridContext]="context"
     [gridPrinter]="gridPrinter"
     [colWidthConfig]="colWidthConfig">
   </eg-grid-toolbar>
@@ -11,7 +11,7 @@
 
   <eg-grid-column-width #colWidthConfig [gridContext]="context">
   </eg-grid-column-width>
-  
+
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
 

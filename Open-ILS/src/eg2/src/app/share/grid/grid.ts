@@ -442,6 +442,10 @@ export class GridContext {
     overflowCells: boolean;
     showLinkSelectors: boolean;
 
+    // Allow calling code to know when the select-all-rows-in-page
+    // action has occurred.
+    selectRowsInPageEmitter: EventEmitter<void>;
+
     // Services injected by our grid component
     idl: IdlService;
     org: OrgService;
@@ -467,6 +471,7 @@ export class GridContext {
     }
 
     init() {
+        this.selectRowsInPageEmitter = new EventEmitter<void>();
         this.columnSet = new GridColumnSet(this.idl, this.idlClass);
         this.columnSet.isSortable = this.isSortable === true;
         this.columnSet.isMultiSortable = this.isMultiSortable === true;
@@ -731,6 +736,12 @@ export class GridContext {
         this.lastSelectedIndex = index;
     }
 
+    selectMultipleRows(indexes: any[]) {
+        this.rowSelector.clear();
+        this.rowSelector.select(indexes);
+        this.lastSelectedIndex = indexes[indexes.length - 1];
+    }
+
     // selects or deselects an item, without affecting the others.
     // returns true if the item is selected; false if de-selected.
     toggleSelectOneRow(index: any) {
@@ -770,12 +781,84 @@ export class GridContext {
         }
     }
 
+    // shift-up-arrow
+    // Select the previous row in addition to any currently selected row.
+    // However, if the previous row is already selected, assume the user
+    // has reversed direction and now wants to de-select the last selected row.
+    selectMultiRowsPrevious() {
+        if (!this.lastSelectedIndex) { return; }
+        const pos = this.getRowPosition(this.lastSelectedIndex);
+        const selectedIndexes = this.rowSelector.selected();
+
+        const promise = // load the previous page of data if needed
+            (pos === this.pager.offset) ? this.toPrevPage() : Promise.resolve();
+
+        promise.then(
+            ok => {
+                const row = this.dataSource.data[pos - 1];
+                const newIndex = this.getRowIndex(row);
+                if (selectedIndexes.filter(i => i === newIndex).length > 0) {
+                    // Prev row is already selected.  User is reversing direction.
+                    this.rowSelector.deselect(this.lastSelectedIndex);
+                    this.lastSelectedIndex = newIndex;
+                } else {
+                    this.selectMultipleRows(selectedIndexes.concat(newIndex));
+                }
+            },
+            err => {}
+        );
+    }
+
+    // shift-down-arrow
+    // Select the next row in addition to any currently selected row.
+    // However, if the next row is already selected, assume the user
+    // has reversed direction and wants to de-select the last selected row.
+    selectMultiRowsNext() {
+        if (!this.lastSelectedIndex) { return; }
+        const pos = this.getRowPosition(this.lastSelectedIndex);
+        const selectedIndexes = this.rowSelector.selected();
+
+        const promise = // load the next page of data if needed
+            (pos === (this.pager.offset + this.pager.limit - 1)) ?
+            this.toNextPage() : Promise.resolve();
+
+        promise.then(
+            ok => {
+                const row = this.dataSource.data[pos + 1];
+                const newIndex = this.getRowIndex(row);
+                if (selectedIndexes.filter(i => i === newIndex).length > 0) {
+                    // Next row is already selected.  User is reversing direction.
+                    this.rowSelector.deselect(this.lastSelectedIndex);
+                    this.lastSelectedIndex = newIndex;
+                } else {
+                    this.selectMultipleRows(selectedIndexes.concat(newIndex));
+                }
+            },
+            err => {}
+        );
+    }
+
+    getFirstRowInPage(): any {
+        return this.dataSource.data[this.pager.offset];
+    }
+
+    getLastRowInPage(): any {
+        return this.dataSource.data[this.pager.offset + this.pager.limit - 1];
+    }
+
     selectFirstRow() {
-        this.selectRowByPos(this.pager.offset);
+        this.selectOneRow(this.getRowIndex(this.getFirstRowInPage()));
     }
 
     selectLastRow() {
-        this.selectRowByPos(this.pager.offset + this.pager.limit - 1);
+        this.selectOneRow(this.getRowIndex(this.getLastRowInPage()));
+    }
+
+    selectRowsInPage() {
+        const rows = this.dataSource.getPageOfRows(this.pager);
+        const indexes = rows.map(r => this.getRowIndex(r));
+        this.rowSelector.select(indexes);
+        this.selectRowsInPageEmitter.emit();
     }
 
     toPrevPage(): Promise<any> {
