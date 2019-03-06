@@ -651,6 +651,13 @@ export class GridContext {
         return selected;
     }
 
+    rowIsSelected(row: any): boolean {
+        const index = this.getRowIndex(row);
+        return this.rowSelector.selected().filter(
+            idx => idx === index
+        ).length > 0;
+    }
+
     getRowColumnValue(row: any, col: GridColumn): string {
         let val;
 

@@ -78,6 +78,9 @@ export class GridToolbarComponent implements OnInit {
     }
 
     performAction(action: GridToolbarAction) {
+        if (action.isGroup || action.separator) {
+            return; // These don't perform actions
+        }
         const rows = this.gridContext.getSelectedRows();
         action.onClick.emit(rows);
         if (action.action) { action.action(rows); }
