@@ -1,0 +1,7 @@
+<span class="material-icons" placement="{{placement}}" *ngIf="helpLink.length < 1; else withUrl" ngbPopover="{{helpText}}" triggers="keyup.enter click" tabindex="0">live_help</span>
+<ng-template #withUrl>
+  <ng-template #popContent>
+    <a target="_blank" href="{{helpLink}}">{{helpText}}</a>
+  </ng-template>
+  <span class="material-icons" [ngbPopover]="popContent" placement="{{placement}}" triggers="keyup.enter click" tabindex="0">live_help</span>
+</ng-template>

@@ -21,6 +21,7 @@ import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.compo
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
+import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -43,7 +44,8 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    EgHelpPopoverComponent
   ],
   imports: [
     EgCommonModule,
@@ -67,7 +69,8 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,
-    AdminPageComponent
+    AdminPageComponent,
+    EgHelpPopoverComponent
   ]
 })
 

@@ -7,7 +7,7 @@
   prefix=":) {{dynamicTitleText}}"
   suffix="Sandbox">
 </eg-title>
-
+<eg-help-popover [placement]="'right'" helpText="This page is for random ng stuff!"></eg-help-popover>
 <div class="row flex pt-2">
   <div i18n> Modify Page Title: </div>
   <div class="col-lg-2">
@@ -47,6 +47,8 @@
 <div class="row mb-3">
   <div class="col-lg-3">
     <button class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
+    <eg-help-popover [placement]="'bottom'" helpText="Exercise your clicking finger by clicking the button above.">
+    </eg-help-popover>
   </div>
   <div class="col-lg-3">
     <eg-progress-inline [max]="100" [value]="1" #progress></eg-progress-inline>
@@ -59,11 +61,13 @@
     <button class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
   </div>
   <div class="col-lg-3">
+    <eg-help-popover helpLink="https://www.youtube.com/watch?v=dQw4w9WgXcQ" helpText="This popover is supposed to help or something...!"></eg-help-popover>
     <eg-combobox [allowFreeText]="true" 
       placeholder="Combobox with static data"
       [entries]="cbEntries"></eg-combobox>
   </div>
   <div class="col-lg-3">
+    <eg-help-popover helpText="You have to type to see any options in this dropdown."></eg-help-popover>
     <eg-combobox
       placeholder="Combobox with dynamic data"
       [asyncDataSource]="cbAsyncSource"></eg-combobox>
@@ -71,6 +75,7 @@
 </div>
 <div class="row mb-3">
   <div class="col-lg-4">
+   <eg-help-popover helpText="If you like Toast you must click below!" placement="'auto'"></eg-help-popover>
    <button class="btn btn-info" (click)="testToast()">Test Toast Message</button>
   </div>
   <div class="col-lg-2">
