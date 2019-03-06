@@ -13,7 +13,7 @@ export class GridBodyComponent implements OnInit {
 
     @Input() context: GridContext;
 
-    // Track the context menus so we can manually close them 
+    // Track the context menus so we can manually close them
     // when another popover is opened.
     contextMenus: NgbPopover[];
 
@@ -116,7 +116,7 @@ export class GridBodyComponent implements OnInit {
         action.action(this.context.getSelectedRows());
     }
 
-    // Apply row selection, track the new menu if needed, 
+    // Apply row selection, track the new menu if needed,
     // manually close any existing open menus, open selected menu.
     onRowContextClick($event, row: any, contextMenu: NgbPopover) {
         $event.preventDefault(); // prevent browser context menu
@@ -126,14 +126,18 @@ export class GridBodyComponent implements OnInit {
             return;
         }
 
-        this.handleRowClick($event, row);
+        if (!this.context.rowIsSelected(row)) {
+            // If the focused row is not selected, select it.
+            // Otherwise, avoid modifying the row selection.
+            this.context.selectOneRow(this.context.getRowIndex(row));
+        }
 
         const existing = this.contextMenus.filter(m => m === contextMenu)[0];
         if (!existing) {
             this.contextMenus.push(contextMenu);
         }
 
-        // Force any previously opened menus to close, which does 
+        // Force any previously opened menus to close, which does
         // not naturally occur via context-click.
         this.contextMenus.forEach(m => m.close());
 
