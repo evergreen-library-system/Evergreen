@@ -20,6 +20,8 @@ export class GridColumn {
     hidden: boolean;
     visible: boolean;
     sort: number;
+    // IDL class of the object which contains this field.
+    // Not to be confused with the class of a linked object.
     idlClass: string;
     idlFieldDef: any;
     datatype: string;
@@ -189,6 +191,7 @@ export class GridColumnSet {
             const idlInfo = this.idlInfoFromDotpath(col.path);
             if (idlInfo) {
                 col.idlFieldDef = idlInfo.idlField;
+                col.idlClass = idlInfo.idlClass.name;
                 if (!col.label) {
                     col.label = col.idlFieldDef.label || col.idlFieldDef.name;
                     col.datatype = col.idlFieldDef.datatype;
@@ -634,6 +637,8 @@ export class GridContext {
 
         return this.format.transform({
             value: val,
+            idlClass: col.idlClass,
+            idlField: col.idlFieldDef ? col.idlFieldDef.name : col.name,
             datatype: col.datatype,
             datePlusTime: Boolean(col.datePlusTime)
         });
@@ -681,6 +686,12 @@ export class GridContext {
         if (idlField) {
             if (!col.datatype) {
                 col.datatype = idlField.datatype;
+            }
+            if (!col.idlFieldDef) {
+                idlField = col.idlFieldDef;
+            }
+            if (!col.idlClass) {
+                col.idlClass = idlClassDef.name;
             }
             if (!col.label) {
                 col.label = idlField.label || idlField.name;
@@ -858,6 +869,7 @@ export class GridContext {
             col.name = field.name;
             col.label = field.label || field.name;
             col.idlFieldDef = field;
+            col.idlClass = this.columnSet.idlClass;
             col.datatype = field.datatype;
             col.isIndex = (field.name === pkeyField);
             col.isAuto = true;

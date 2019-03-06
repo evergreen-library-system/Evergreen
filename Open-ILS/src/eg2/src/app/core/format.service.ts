@@ -71,6 +71,44 @@ export class FormatService {
 
         switch (datatype) {
 
+            case 'link':
+                if (typeof value !== 'object') {
+                    return value + ''; // no fleshed value here
+                }
+
+                if (!params.idlClass || !params.idlField) {
+                    // Without a full accounting of the field data,
+                    // we can't determine the display value.
+                    return value + '';
+                }
+
+                const localClass = this.idl.classes[params.idlClass];
+
+                if (!localClass) {
+                    console.warn(`No such IDL class ${params.idlClass}`);
+                    return value + '';
+                }
+
+                if (!localClass.field_map[params.idlField]) {
+                    console.warn(`IDL class ${params.idlClass} ` +
+                        `has no field named "${params.idlField}"`);
+                    return value + '';
+                }
+
+                const linkType = localClass.field_map[params.idlField]['reltype'];
+                if (linkType !== 'has_a') {
+                    return value + ''; // eh?
+                }
+
+                const localField = localClass.field_map[params.idlField];
+                const remoteKey = localField['key'];
+
+                const remoteClass = this.idl.classes[localField['class']];
+                const remoteField = remoteClass.field_map[remoteKey];
+                const remoteSelector = remoteField.selector || remoteField.name;
+
+                return value[remoteSelector]() + '';
+
             case 'org_unit':
                 const orgField = params.orgField || 'shortname';
                 const org = this.org.get(value);
