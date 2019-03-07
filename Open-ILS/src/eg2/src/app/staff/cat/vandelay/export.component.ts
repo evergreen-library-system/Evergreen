@@ -1,4 +1,5 @@
-import {Component, AfterViewInit, ViewChild, Renderer2} from '@angular/core';
+import {Component, AfterViewInit, ViewChild, Renderer2, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {NgbPanelChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClient, HttpRequest, HttpEventType} from '@angular/common/http';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
@@ -6,13 +7,14 @@ import {saveAs} from 'file-saver';
 import {AuthService} from '@eg/core/auth.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
-import {VandelayService, VANDELAY_EXPORT_PATH} from './vandelay.service';
+import {VANDELAY_EXPORT_PATH} from './vandelay.service';
+import {BasketService} from '@eg/share/catalog/basket.service';
 
 
 @Component({
   templateUrl: 'export.component.html'
 })
-export class ExportComponent implements AfterViewInit {
+export class ExportComponent implements AfterViewInit, OnInit {
 
     recordSource: string;
     fieldNumber: number;
@@ -24,6 +26,8 @@ export class ExportComponent implements AfterViewInit {
     recordEncoding: string;
     includeHoldings: boolean;
     isExporting: boolean;
+    exportingBasket: boolean;
+    basketRecords: number[];
 
     @ViewChild('fileSelector') private fileSelector;
     @ViewChild('exportProgress')
@@ -31,22 +35,43 @@ export class ExportComponent implements AfterViewInit {
 
     constructor(
         private renderer: Renderer2,
+        private route: ActivatedRoute,
         private http: HttpClient,
         private toast: ToastService,
-        private auth: AuthService
+        private auth: AuthService,
+        private basket: BasketService
     ) {
         this.recordType = 'biblio';
         this.recordFormat = 'USMARC';
         this.recordEncoding = 'UTF-8';
         this.includeHoldings = false;
+        this.basketRecords = [];
+    }
+
+    ngOnInit() {
+        const segments = this.route.snapshot.url.length;
+        if (segments > 0 &&
+            this.route.snapshot.url[segments - 1].path === 'basket') {
+                this.exportingBasket = true;
+                this.basket.getRecordIds().then(
+                    ids => this.basketRecords = ids
+                );
+        }
     }
 
     ngAfterViewInit() {
+        if (this.exportingBasket) {
+            return; // no source to focus
+        }
         this.renderer.selectRootElement('#csv-input').focus();
     }
 
     sourceChange($event: NgbPanelChangeEvent) {
         this.recordSource = $event.panelId;
+
+        if (this.exportingBasket) {
+            return; // no source to focus
+        }
 
         if ($event.nextState) { // panel opened
 
@@ -64,7 +89,10 @@ export class ExportComponent implements AfterViewInit {
 
     hasNeededData(): boolean {
         return Boolean(
-            this.selectedFile || this.recordId || this.bucketId
+            this.selectedFile ||
+            this.recordId     ||
+            this.bucketId     ||
+            (this.exportingBasket && this.basketRecords.length > 0)
         );
     }
 
@@ -83,21 +111,27 @@ export class ExportComponent implements AfterViewInit {
             formData.append('holdings', '1');
         }
 
-        switch (this.recordSource) {
+        if (this.exportingBasket) {
+            this.basketRecords.forEach(id => formData.append('id', '' + id));
 
-            case 'csv':
-                formData.append('idcolumn', '' + this.fieldNumber);
-                formData.append('idfile',
-                    this.selectedFile, this.selectedFile.name);
-                break;
+        } else {
 
-            case 'record-id':
-                formData.append('id', '' + this.recordId);
-                break;
+            switch (this.recordSource) {
 
-            case 'bucket-id':
-                formData.append('containerid', '' + this.bucketId);
-                break;
+                case 'csv':
+                    formData.append('idcolumn', '' + this.fieldNumber);
+                    formData.append('idfile',
+                        this.selectedFile, this.selectedFile.name);
+                    break;
+
+                case 'record-id':
+                    formData.append('id', '' + this.recordId);
+                    break;
+
+                case 'bucket-id':
+                    formData.append('containerid', '' + this.bucketId);
+                    break;
+            }
         }
 
         this.sendExportRequest(formData);

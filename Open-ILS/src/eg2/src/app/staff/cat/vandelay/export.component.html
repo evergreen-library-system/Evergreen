@@ -3,60 +3,73 @@
 <div class="common-form striped-even form-validated">
   <div class="row">
     <div class="col-lg-6">
-      <div class="row"><label>Select a Record Source</label></div>
-      <ngb-accordion [closeOthers]="true" activeIds="csv" 
-        (panelChange)="sourceChange($event)">
-        <ngb-panel id="csv" title="CSV File">
-          <ng-template ngbPanelContent>
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="csv-input" i18n>Use Field Number</label>
+     <ng-container *ngIf="exportingBasket">
+        <div class="alert alert-info" i18n>
+          Exporting {{basketRecords.length}} Records from Catalog Basket.
+        </div>
+        <div>
+          <a routerLink="/staff/catalog/search" queryParamsHandling="merge">
+            <button class="btn btn-info" i18n>Return to Catalog</button>
+          </a>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!exportingBasket">
+        <div class="row"><label>Select a Record Source</label></div>
+        <ngb-accordion [closeOthers]="true" activeIds="csv" 
+          (panelChange)="sourceChange($event)">
+          <ngb-panel id="csv" title="CSV File">
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="csv-input" i18n>Use Field Number</label>
+                </div>
+                <div class="col-lg-6">
+                  <input id='csv-input' type="number" class="form-control" 
+                    [(ngModel)]="fieldNumber"
+                    i18n-placeholder placeholder="Starts at 0..."/>
+                </div>
               </div>
-              <div class="col-lg-6">
-                <input id='csv-input' type="number" class="form-control" 
-                  [(ngModel)]="fieldNumber"
-                  i18n-placeholder placeholder="Starts at 0..."/>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="use-csv-file" i18n>From CSV file</label>
+                </div>
+                <div class="col-lg-6">
+                  <input #fileSelector (change)="fileSelected($event)" 
+                    id="use-csv-file" class="form-control" type="file"/>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="use-csv-file" i18n>From CSV file</label>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="record-id" title="Record ID">
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="record-id-input" i18n>Record ID</label>
+                </div>
+                <div class="col-lg-6">
+                  <input id='record-id-input' type="number" 
+                    class="form-control" [(ngModel)]="recordId"/>
+                </div>
               </div>
-              <div class="col-lg-6">
-                <input #fileSelector (change)="fileSelected($event)" 
-                  id="use-csv-file" class="form-control" type="file"/>
+            </ng-template>
+          </ngb-panel>
+          <ngb-panel id="bucket-id" title="Bucket">
+            <ng-template ngbPanelContent>
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="bucket-id-input" i18n>Bucket ID</label>
+                </div>
+                <div class="col-lg-6">
+                  <input id='bucket-id-input' type="number" 
+                    class="form-control" [(ngModel)]="bucketId"/>
+                </div>
               </div>
-            </div>
-          </ng-template>
-        </ngb-panel>
-        <ngb-panel id="record-id" title="Record ID">
-          <ng-template ngbPanelContent>
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="record-id-input" i18n>Record ID</label>
-              </div>
-              <div class="col-lg-6">
-                <input id='record-id-input' type="number" 
-                  class="form-control" [(ngModel)]="recordId"/>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-panel>
-        <ngb-panel id="bucket-id" title="Bucket">
-          <ng-template ngbPanelContent>
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="bucket-id-input" i18n>Bucket ID</label>
-              </div>
-              <div class="col-lg-6">
-                <input id='bucket-id-input' type="number" 
-                  class="form-control" [(ngModel)]="bucketId"/>
-              </div>
-            </div>
-          </ng-template>
-        </ngb-panel>
-      </ngb-accordion>
+            </ng-template>
+          </ngb-panel>
+        </ngb-accordion>
+      </ng-container>
     </div><!-- col -->
+
     <div class="col-lg-6">
       <div class="row">
         <div class="col-lg-6">
@@ -64,6 +77,7 @@
         </div>
         <div class="col-lg-6">
           <select class="form-control" 
+            [disabled]="exportingBasket"
             [(ngModel)]="recordType" id="record-type">
             <option i18n value="biblio">Bibliographic Records</option>
             <option i18n value="authority">Authority Records</option>
@@ -121,5 +135,6 @@
       </div>
     </div><!-- left col -->
   </div><!-- row -->
-</div>
+</div><!-- form -->
+
 
