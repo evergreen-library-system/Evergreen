@@ -7,6 +7,7 @@ Template for printing offline checkout receipts; fields available include:
   * barcode
   * patron_barcode
   * due_date
+  * noncat_count
 
 -->
 <div>
@@ -15,9 +16,9 @@ Template for printing offline checkout receipts; fields available include:
   <hr/>
   <ol>
     <li ng-repeat="checkout in transactions">
-      <div>[% l('Barcode: [_1] Due: [_2]', 
-        '{{checkout.barcode}}',
-        '{{checkout.due_date | date:"short"}}') %]</div>
+      <div ng-if="checkout.barcode">[% l('Barcode:') %] {{checkout.barcode}}</div>
+      <div ng-if="!checkout.barcode">[% l('Non-cataloged Item') %] ({{checkout.noncat_count}})</div>
+      <div>[% l('Due Date:') %] {{checkout.due_date | date:"short"}}</div>
     </li>
   </ol>
   <hr/>
