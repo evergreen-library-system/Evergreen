@@ -1,0 +1,10 @@
+Staff Catalog Basket Export Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new "Export Records" option to the staff catalog basket menu.
+When selected, the user is directed to the Vandelay record export
+interface, which will be set to "basket export" mode.  Staff can then
+apply export preferences (usmarc, marxml, etc.) and export the basket
+records.  In "basket export" mode, Vandley provides a link to return to
+the catalog (preserving search params).
+
