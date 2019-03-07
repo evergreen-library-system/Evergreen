@@ -10300,7 +10300,7 @@ SELECT  usr,
 	<class id="rxbt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_billing_totals" oils_persist:tablename="reporter.xact_billing_totals" reporter:label="Transaction Billing Totals">
 		<fields oils_persist:primary="xact">
 			<field reporter:label="Transaction ID" name="xact" reporter:datatype="int" />
-			<field reporter:label="Unvoided Billing Amount" name="unvoided" reporter:datatype="int" />
+			<field reporter:label="Unvoided Billing Amount" name="unvoided" reporter:datatype="money" />
 			<field reporter:label="Voided Billing Amount" name="voided" reporter:datatype="money"/>
 			<field reporter:label="Total Billing Amount" name="total" reporter:datatype="money"/>
 		</fields>
@@ -10311,7 +10311,7 @@ SELECT  usr,
 	<class id="rxpt" controller="open-ils.reporter-store" oils_obj:fieldmapper="reporter::xact_paid_totals" oils_persist:tablename="reporter.xact_paid_totals" reporter:label="Transaction Paid Totals">
 		<fields oils_persist:primary="xact">
 			<field reporter:label="Transaction ID" name="xact" reporter:datatype="int" />
-			<field reporter:label="Unvoided Paid Amount" name="unvoided" reporter:datatype="int" />
+			<field reporter:label="Unvoided Paid Amount" name="unvoided" reporter:datatype="money" />
 			<field reporter:label="Voided (Returned) Paid Amount" name="voided" reporter:datatype="money"/>
 			<field reporter:label="Total Paid Amount" name="total" reporter:datatype="money"/>
 		</fields>
