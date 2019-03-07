@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BasketService} from '@eg/share/catalog/basket.service';
-import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -85,6 +84,13 @@ export class BasketActionsComponent implements OnInit {
                         this.auth.token(), ids
                     ).toPromise(); // fire-and-forget
                 });
+                break;
+
+            case 'export_marc':
+                this.router.navigate(
+                    ['/staff/cat/vandelay/export/basket'],
+                    {queryParamsHandling: 'merge'}
+                );
                 break;
 
             case 'bucket':

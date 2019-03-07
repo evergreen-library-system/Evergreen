@@ -28,6 +28,9 @@ const routes: Routes = [{
     path: 'export',
     component: ExportComponent
   }, {
+    path: 'export/basket',
+    component: ExportComponent
+  }, {
     path: 'queue',
     component: QueueListComponent
   }, {
