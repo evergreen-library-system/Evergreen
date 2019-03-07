@@ -52,8 +52,8 @@ angular.module('egItemStatus',
  * Parent scope for list and detail views
  */
 .controller('SearchCtrl', 
-       ['$scope','$location','$timeout','egCore','egGridDataProvider','egItem',
-function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) {
+       ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem',
+function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
     $scope.args = {}; // search args
 
     // sub-scopes (search / detail-view) apply their version 
@@ -98,6 +98,41 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
             id : $scope.args.copyId,
             'call_number.record.id' : $scope.args.recordId
         }]);
+    }
+
+    $scope.findAcquisition = function() {
+        var acqData;
+        var promises = [];
+        $scope.openAcquisitionLineItem([$scope.args.copyId]);
+    }
+
+    $scope.openAcquisitionLineItem = function (cp_list) {
+        var hasResults = false;
+        var promises = [];
+
+        angular.forEach(cp_list, function (copyId) {
+            promises.push(
+                egNet.request(
+                    'open-ils.acq',
+                    'open-ils.acq.lineitem.retrieve.by_copy_id',
+                    egCore.auth.token(),
+                    copyId
+                ).then(function (acqData) {
+                    if (acqData) {
+                        if (acqData.a) {
+                            acqData = egCore.idl.toHash(acqData);
+                            var url = '/eg/acq/po/view/' + acqData.purchase_order + '/' + acqData.id;
+                            $timeout(function () { $window.open(url, '_blank') });
+                            hasResults = true;
+                        }
+                    }
+                })
+            )
+        });
+
+        $q.all(promises).then(function () {
+            !hasResults ? alert('There is no corresponding purchase order for this item.') : false;
+        });
     }
 
     $scope.requestItems = function() {
@@ -244,10 +279,11 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
        ['$scope','$q','$routeParams','$location','$timeout','$window','egCore',
         'egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
         'egProgressDialog', 'ngToast',
-function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
-         egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
-         egProgressDialog, ngToast) {
-
+// function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
+//          egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
+//          egProgressDialog, ngToast) {
+    function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
+                 egProgressDialog, ngToast) {
     var copyId = [];
     var cp_list = $routeParams.idList;
     if (cp_list) {
@@ -390,6 +426,17 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
     $scope.add_copies_to_bucket = function() {
         var copy_list = gatherSelectedHoldingsIds();
         itemSvc.add_copies_to_bucket(copy_list);
+    }
+
+    $scope.locateAcquisition = function() {
+        if (gatherSelectedHoldingsIds) {
+            var cp_list = gatherSelectedHoldingsIds();
+            if (cp_list) {
+                if (cp_list.length > 0) {
+                    $scope.openAcquisitionLineItem(cp_list);
+                }
+            }
+        }
     }
 
     $scope.update_inventory = function() {

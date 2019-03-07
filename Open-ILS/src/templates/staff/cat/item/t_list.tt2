@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="Windows-1252"?>
 <eg-grid
   id-field="index"
   idl-class="acp"
@@ -40,7 +41,9 @@
     label="[% l('Record Holds') %]"></eg-grid-action>
   <eg-grid-action handler="print_labels" group="[% l('Show') %]"
     label="[% l('Print Labels') %]"></eg-grid-action>
-    
+  <eg-grid-action handler="locateAcquisition" group="[% l('Show') %]"
+    label="[% l('Originating Acquisition') %]"></eg-grid-action>
+
   <eg-grid-action handler="selectedHoldingsDamaged" group="[% l('Mark') %]"
     label="[% l('Item as Damaged') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
