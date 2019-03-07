@@ -90,6 +90,9 @@
         <li><a href ng-click="cancel_transit()">[% l('Cancel Transit') %]</a></li>
         <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
 
+        <p><b>[% l('Show') %]</b></p>
+        <li><a href ng-click="findAcquisition()">[% l('Originating Acquisition') %]</a></li>
+
         <p><b>[% l('Mark') %]</b></p>    
         <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>
         <li><a href ng-click="selectedHoldingsMissing()">[% l('Item as Missing') %]</a></li>
