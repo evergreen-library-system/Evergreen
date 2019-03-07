@@ -59,7 +59,7 @@ To develop and test queries, views, and tables, you will need
 * Access to the Evergreen PostgreSQL database at the command line. This is 
 normally the psql application. You 
 can access the Postgres documentation at the 
-http://http://www.postgresql.org/docs/[Official Postgres documentation] for 
+https://www.postgresql.org/docs/[Official Postgres documentation] for 
 more information about PostgreSQL.
 * Knowledge of the Evergreen database structure for the data that you want to 
 access. You can find this information by looking at the Evergreen schema
