@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1158', :eg_version);
 
 --LP#1759238: Fix typo in seed data for Physical Description
 
