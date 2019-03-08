@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1159', :eg_version);
 
 INSERT INTO config.marc_field(marc_format, marc_record_type, tag, name, description,
                               fixed_field, repeatable, mandatory, hidden)
