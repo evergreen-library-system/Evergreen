@@ -13,6 +13,7 @@ import {Pager} from '@eg/share/util/pager';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {FormatService} from '@eg/core/format.service';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -58,12 +59,16 @@ export class SandboxComponent implements OnInit {
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
+    // selector field value on metarecord object
+    aMetarecord: string;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
         private pcrud: PcrudService,
         private strings: StringService,
         private toast: ToastService,
+        private format: FormatService,
         private printer: PrintService
     ) {
     }
@@ -114,6 +119,17 @@ export class SandboxComponent implements OnInit {
 
         this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
+
+        this.pcrud.retrieve('bre', 1, {}, {fleshSelectors: true})
+        .subscribe(bib => {
+            // Format service will automatically find the selector
+            // value to display from our fleshed metarecord field.
+            this.aMetarecord = this.format.transform({
+                value: bib.metarecord(),
+                idlClass: 'bre',
+                idlField: 'metarecord'
+            });
+        });
     }
 
     btGridRowClassCallback(row: any): string {

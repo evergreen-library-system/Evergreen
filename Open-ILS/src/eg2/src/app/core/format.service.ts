@@ -78,36 +78,28 @@ export class FormatService {
 
                 if (!params.idlClass || !params.idlField) {
                     // Without a full accounting of the field data,
-                    // we can't determine the display value.
+                    // we can't determine the linked selector field.
                     return value + '';
                 }
 
-                const localClass = this.idl.classes[params.idlClass];
+                const selector =
+                    this.idl.getLinkSelector(params.idlClass, params.idlField);
 
-                if (!localClass) {
-                    console.warn(`No such IDL class ${params.idlClass}`);
+                if (selector && typeof value[selector] === 'function') {
+                    const val = value[selector]();
+
+                    if (Array.isArray(val)) {
+                        // Typically has_many links will not be fleshed,
+                        // but in the off-chance the are, avoid displaying
+                        // an array reference value.
+                        return '';
+                    } else {
+                        return val + '';
+                    }
+
+                } else {
                     return value + '';
                 }
-
-                if (!localClass.field_map[params.idlField]) {
-                    console.warn(`IDL class ${params.idlClass} ` +
-                        `has no field named "${params.idlField}"`);
-                    return value + '';
-                }
-
-                const linkType = localClass.field_map[params.idlField]['reltype'];
-                if (linkType !== 'has_a') {
-                    return value + ''; // eh?
-                }
-
-                const localField = localClass.field_map[params.idlField];
-                const remoteKey = localField['key'];
-
-                const remoteClass = this.idl.classes[localField['class']];
-                const remoteField = remoteClass.field_map[remoteKey];
-                const remoteSelector = remoteField.selector || remoteField.name;
-
-                return value[remoteSelector]() + '';
 
             case 'org_unit':
                 const orgField = params.orgField || 'shortname';

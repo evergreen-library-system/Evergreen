@@ -3934,7 +3934,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<class id="mmr" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="metabib::metarecord" oils_persist:tablename="metabib.metarecord" reporter:label="Metarecord">
 		<fields oils_persist:primary="id" oils_persist:sequence="metabib.metarecord_id_seq">
 			<field name="fingerprint"  reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id" />
+			<field name="id" reporter:datatype="id" reporter:selector="fingerprint" />
 			<field name="master_record" reporter:datatype="link"/>
 			<field name="mods"  reporter:datatype="text"/>
 			<field name="source_records" oils_persist:virtual="true" reporter:datatype="link"/>

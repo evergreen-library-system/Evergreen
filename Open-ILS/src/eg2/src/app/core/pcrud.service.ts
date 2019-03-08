@@ -104,13 +104,30 @@ export class PcrudContext {
         }
 
         this.idl.classes[fmClass].fields
-        .filter(f => 
+        .filter(f =>
             f.datatype === 'link' && (
-                f.reltype === 'has_a' || f.reltype === 'might_have'    
+                f.reltype === 'has_a' || f.reltype === 'might_have'
             )
         ).forEach(field => {
+
             const selector = this.idl.getLinkSelector(fmClass, field.name);
             if (!selector) { return; }
+
+            if (field.map) {
+                // For mapped fields, we only want to auto-flesh them
+                // if both steps along the path are single-row fleshers.
+
+                const mapClass = field['class'];
+                const mapField = field.map;
+                const def = this.idl.classes[mapClass].field_map[mapField];
+
+                if (!(def.reltype === 'has_a' ||
+                      def.reltype === 'might_have')) {
+                    // Field maps to a remote field which may contain
+                    // multiple rows.  Skip it.
+                    return;
+                }
+            }
 
             if (!pcrudOps.flesh_fields[fmClass]) {
                 pcrudOps.flesh_fields[fmClass] = [];
