@@ -104,8 +104,11 @@ export class PcrudContext {
         }
 
         this.idl.classes[fmClass].fields
-        .filter(f => f.datatype === 'link' && !f.virtual)
-        .forEach(field => {
+        .filter(f => 
+            f.datatype === 'link' && (
+                f.reltype === 'has_a' || f.reltype === 'might_have'    
+            )
+        ).forEach(field => {
             const selector = this.idl.getLinkSelector(fmClass, field.name);
             if (!selector) { return; }
 
