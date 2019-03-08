@@ -389,7 +389,7 @@ BEGIN
                     COALESCE((SELECT name_keywords FROM dusr), ''),  E'\\s+'
                 )
             ) AS parts
-        ) SELECT ARRAY_TO_STRING(ARRAY_AGG(kw.parts), ' ') FROM keywords kw
+        ) SELECT STRING_AGG(kw.parts, ' ') FROM keywords kw
     ) WHERE id = dest_usr;
 
     -- Finally, delete the source user
