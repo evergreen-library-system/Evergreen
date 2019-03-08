@@ -1202,7 +1202,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         var keys = Object.keys($scope.working.MultiMap);
         // for-loop for shortcut exit
         for (var i = 0; i < keys.length; i++) {
-            if ($scope.working.MultiMap[keys[i]].length > 1) {
+            if ($scope.working.MultiMap[keys[i]] &&
+                $scope.working.MultiMap[keys[i]].length > 1) {
                 return true;
             }
         }
