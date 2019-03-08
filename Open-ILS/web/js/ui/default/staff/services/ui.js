@@ -980,7 +980,7 @@ function($uibModal , $interpolate , egCore) {
                     $scope.isopen = $scope.clickedopen || ($filter('filter')(
                         $scope.list,
                         $scope.selected
-                    ).length > 0 && $scope.selected.length > 0);
+                    ).length > 0 && $scope.selected && $scope.selected.length > 0);
                     if ($scope.clickedclosed) {
                         $scope.isopen = false;
                         $scope.clickedclosed = null;
