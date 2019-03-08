@@ -3430,6 +3430,7 @@ sub uber_hold_impl {
     my $flesh_fields = ['current_copy', 'usr', 'notes'];
     push (@$flesh_fields, 'requestor') if $args->{include_requestor};
     push (@$flesh_fields, 'cancel_cause') if $args->{include_cancel_cause};
+    push (@$flesh_fields, 'sms_carrier') if $args->{include_sms_carrier};
 
     my $hold = $e->retrieve_action_hold_request([
         $hold_id,
