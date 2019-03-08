@@ -227,7 +227,7 @@
       </div>
     </li>
     <li ng-if="defaults.attributes.opac_visible">
-      <div class="bg-info"><label>[% l('OPAC Visible') %]</label></div>
+      <div class="bg-info"><label>[% l('OPAC Visible?') %]</label></div>
       <div ng-class="{'bg-success': working.opac_visible !== undefined}">
         <div class="col-lg-6">
           <label>
@@ -252,7 +252,7 @@
       </div>
     </li>
     <li ng-if="defaults.attributes.circ_modifier">
-      <div class="bg-info"><label>[% l('OPAC Visible') %]</label></div>
+      <div class="bg-info"><label>[% l('Circulation Modifier') %]</label></div>
       <div ng-class="{'bg-success': working.circ_modifier !== undefined}">
         <select class="form-control"
           ng-model="working.circ_modifier"
@@ -379,7 +379,7 @@
       </div>
     </li>
     <li ng-if="defaults.attributes.deposit_amount">
-      <div class="bg-info"><label>[% l('Deposit Amount?') %]</label></div>
+      <div class="bg-info"><label>[% l('Deposit Amount') %]</label></div>
       <div ng-class="{'bg-success': working.deposit_amount !== undefined}">
         <input class="form-control" str-to-float 
           ng-model="working.deposit_amount" type="number" step="0.01"/>
@@ -461,7 +461,7 @@
       <div ng-if="hasMulti()"> </div>
     </li>
     <li ng-if="defaults.attributes.alerts">
-      <div class="bg-info"><label>[% l('Item Notes') %]</label></div>
+      <div class="bg-info"><label>[% l('Item Alerts') %]</label></div>
       <div ng-class="{'bg-success': working.alerts !== undefined}">
         <button class="btn btn-default" type="button"
           ng-click="copy_alerts_dialog(workingGridControls.selectedItems())">
