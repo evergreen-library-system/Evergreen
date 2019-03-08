@@ -4752,6 +4752,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'ui.patron.edit.au.dob.example', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.dob.example',
+        'Example dob field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.dob.example',
+        'The Example for validation on the dob field in patron registration.',
+        'coust', 'description'),
+    'string', null)
+
 ,( 'ui.patron.edit.au.dob.calendar', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.dob.calendar',
         'Show calendar widget for dob field on patron registration',

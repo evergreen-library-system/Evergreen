@@ -348,6 +348,7 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.dob.show',
             'ui.patron.edit.au.dob.suggest',
             'ui.patron.edit.au.dob.calendar',
+            'ui.patron.edit.au.dob.example',
             'ui.patron.edit.au.juvenile.show',
             'ui.patron.edit.au.juvenile.suggest',
             'ui.patron.edit.au.ident_value.show',
