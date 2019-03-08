@@ -94,6 +94,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field name="cash_payment" oils_persist:virtual="true" />
 			<field name="check_payment" oils_persist:virtual="true" />
 			<field name="credit_card_payment" oils_persist:virtual="true" />
+			<field name="debit_card_payment" oils_persist:virtual="true" />
 		</fields>
 		<links>
 			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
@@ -7462,6 +7463,33 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
+	<class id="mdcp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="money::debit_card_payment" oils_persist:tablename="money.debit_card_payment" reporter:label="Debit Card Payment">
+		<fields oils_persist:primary="id" oils_persist:sequence="money.payment_id_seq">
+			<field reporter:label="Accepting Staff Member" name="accepting_usr" reporter:datatype="link"/>
+			<field reporter:label="Amount" name="amount" reporter:datatype="money" />
+			<field reporter:label="Amount Collected" name="amount_collected" reporter:datatype="money" />
+			<field reporter:label="Workstation link" name="cash_drawer" reporter:datatype="link"/>
+			<field reporter:label="Payment ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
+			<field reporter:label="Payment Timestamp" name="payment_ts" reporter:datatype="timestamp"/>
+			<field reporter:label="Transaction link" name="xact" reporter:datatype="link"/>
+			<field reporter:label="Payment link" name="payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Payment Type" name="payment_type" oils_persist:virtual="true" reporter:datatype="text"/>
+		</fields>
+		<links>
+			<link field="payment" reltype="might_have" key="id" map="" class="mp"/>
+			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+		</links>
+        <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+            <actions>
+                <retrieve permission="VIEW_USER_TRANSACTIONS">
+                    <context link="xact" jump="usr" field="home_ou"/>
+                </retrieve>
+			</actions>
+		</permacrud>
+	</class>
 	<class id="acp" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="asset::copy" oils_persist:tablename="asset.copy" reporter:core="true" reporter:label="Item">
 		<fields oils_persist:primary="id" oils_persist:sequence="asset.copy_id_seq">
 			<field reporter:label="Age Hold Protection" name="age_protect" reporter:datatype="link"/>
@@ -8054,6 +8082,7 @@ SELECT  usr,
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Account Adjustment Detail" name="account_adjustment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Debit Card Payment Detail" name="debit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -8065,6 +8094,7 @@ SELECT  usr,
 			<link field="goods_payment" reltype="might_have" key="id" map="" class="mgp"/>
 			<link field="account_adjustment" reltype="might_have" key="id" map="" class="maa"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
+			<link field="debit_card_payment" reltype="might_have" key="id" map="" class="mdcp"/>
 		</links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
@@ -8136,6 +8166,7 @@ SELECT  usr,
 			<field reporter:label="Forgive Payment Detail" name="forgive_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Goods Payment Detail" name="goods_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Account Adjustment Detail" name="account_adjustment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Debit Card Payment Detail" name="debit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -8148,6 +8179,7 @@ SELECT  usr,
 			<link field="account_adjustment" reltype="might_have" key="id" map="" class="maa"/>
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
+			<link field="debit_card_payment" reltype="might_have" key="id" map="" class="mdcp"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -8195,6 +8227,7 @@ SELECT  usr,
 			<field reporter:label="Cash Payment" name="cash_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Credit Card Payment" name="credit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Check Payment" name="check_payment" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Debit Card Payment" name="debit_card_payment" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="cash_payment" reltype="might_have" key="id" map="" class="mcp"/>
@@ -8203,6 +8236,7 @@ SELECT  usr,
 			<link field="xact" reltype="has_a" key="id" map="" class="mbt"/>
 			<link field="accepting_usr" reltype="has_a" key="id" map="" class="au"/>
 			<link field="cash_drawer" reltype="has_a" key="id" map="" class="aws"/>
+			<link field="debit_card_payment" reltype="might_have" key="id" map="" class="mdcp"/>
 		</links>
 	</class>
 	<class id="cbrebi" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="container::biblio_record_entry_bucket_item" oils_persist:tablename="container.biblio_record_entry_bucket_item" reporter:label="Biblio Record Entry Bucket Item">

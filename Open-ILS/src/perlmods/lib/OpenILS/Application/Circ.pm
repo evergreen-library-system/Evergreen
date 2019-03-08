@@ -1938,6 +1938,7 @@ sub user_payments_list {
                         'xact',
                         'cash_payment',
                         'credit_card_payment',
+                        'debit_card_payment',
                         'credit_payment',
                         'check_payment',
                         'work_payment',

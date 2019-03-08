@@ -40,6 +40,7 @@ A receipt of your  transaction:<hr/>
         <div ng-switch-when="cash_payment">[% l('Cash') %]</div>
         <div ng-switch-when="check_payment">[% l('Check') %]</div>
         <div ng-switch-when="credit_card_payment">[% l('Credit Card') %]</div>
+        <div ng-switch-when="debit_card_payment">[% l('Debit Card') %]</div>
         <div ng-switch-when="credit_payment">[% l('Patron Credit') %]</div>
         <div ng-switch-when="work_payment">[% l('Work') %]</div>
         <div ng-switch-when="forgive_payment">[% l('Forgive') %]</div>

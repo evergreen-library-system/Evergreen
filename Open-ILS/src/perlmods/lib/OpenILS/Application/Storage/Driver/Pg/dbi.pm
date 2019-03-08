@@ -131,6 +131,12 @@
     money::credit_card_payment->sequence( 'money.payment_id_seq' );
 
     #---------------------------------------------------------------------
+    package money::debit_card_payment;
+    
+    money::debit_card_payment->table( 'money.debit_card_payment' );
+    money::debit_card_payment->sequence( 'money.payment_id_seq' );
+
+    #---------------------------------------------------------------------
     package money::work_payment;
     
     money::work_payment->table( 'money.work_payment' );

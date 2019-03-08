@@ -668,11 +668,24 @@ CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.credit_card_payment FOR
 CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.credit_card_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('credit_card_payment');
 
 
+CREATE TABLE money.debit_card_payment () INHERITS (money.bnm_desk_payment);
+ALTER TABLE money.debit_card_payment ADD PRIMARY KEY (id);
+CREATE INDEX money_debit_card_payment_xact_idx ON money.debit_card_payment (xact);
+CREATE INDEX money_debit_card_id_idx ON money.debit_card_payment (id);
+CREATE INDEX money_debit_card_payment_ts_idx ON money.debit_card_payment (payment_ts);
+CREATE INDEX money_debit_card_payment_accepting_usr_idx ON money.debit_card_payment (accepting_usr);
+CREATE INDEX money_debit_card_payment_cash_drawer_idx ON money.debit_card_payment (cash_drawer);
+
+CREATE TRIGGER mat_summary_add_tgr AFTER INSERT ON money.debit_card_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_add ('debit_card_payment');
+CREATE TRIGGER mat_summary_upd_tgr AFTER UPDATE ON money.debit_card_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_update ('debit_card_payment');
+CREATE TRIGGER mat_summary_del_tgr BEFORE DELETE ON money.debit_card_payment FOR EACH ROW EXECUTE PROCEDURE money.materialized_summary_payment_del ('debit_card_payment');
+
+
 CREATE OR REPLACE VIEW money.non_drawer_payment_view AS
 	SELECT	p.*, c.relname AS payment_type
 	  FROM	money.bnm_payment p         
 			JOIN pg_class c ON p.tableoid = c.oid
-	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment');
+	  WHERE	c.relname NOT IN ('cash_payment','check_payment','credit_card_payment','debit_card_payment');
 
 CREATE OR REPLACE VIEW money.cashdrawer_payment_view AS
 	SELECT	ou.id AS org_unit,

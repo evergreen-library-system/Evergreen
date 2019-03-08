@@ -60,6 +60,7 @@ function($q , egCore , egWorkLog , patronSvc) {
                 case 'cash_payment' : msg = egCore.strings.EG_WORK_LOG_CASH_PAYMENT; break;
                 case 'check_payment' : msg = egCore.strings.EG_WORK_LOG_CHECK_PAYMENT; break;
                 case 'credit_card_payment' : msg = egCore.strings.EG_WORK_LOG_CREDIT_CARD_PAYMENT; break;
+                case 'debit_card_payment' : msg = egCore.strings.EG_WORK_LOG_DEBIT_CARD_PAYMENT; break;
                 case 'credit_payment' : msg = egCore.strings.EG_WORK_LOG_CREDIT_PAYMENT; break;
                 case 'work_payment' : msg = egCore.strings.EG_WORK_LOG_WORK_PAYMENT; break;
                 case 'forgive_payment' : msg = egCore.strings.EG_WORK_LOG_FORGIVE_PAYMENT; break;

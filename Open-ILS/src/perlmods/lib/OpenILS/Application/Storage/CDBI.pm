@@ -716,6 +716,7 @@ sub modify_from_fieldmapper {
     #money::payment->might_have( cash_payment => 'money::cash_payment' );
     #money::payment->might_have( check_payment => 'money::check_payment' );
     #money::payment->might_have( credit_card_payment => 'money::credit_card_payment' );
+    #money::payment->might_have( debit_card_payment => 'money::debit_card_payment' );
     #money::payment->might_have( forgive_payment => 'money::forgive_payment' );
     #money::payment->might_have( work_payment => 'money::work_payment' );
     #money::payment->might_have( credit_payment => 'money::credit_payment' );
@@ -731,6 +732,10 @@ sub modify_from_fieldmapper {
     money::credit_card_payment->has_a( xact => 'money::billable_transaction' );
     money::credit_card_payment->has_a( accepting_usr => 'actor::user' );
     #money::credit_card_payment->might_have( payment => 'money::payment' );
+
+    money::debit_card_payment->has_a( xact => 'money::billable_transaction' );
+    money::debit_card_payment->has_a( accepting_usr => 'actor::user' );
+    #money::debit_card_payment->might_have( payment => 'money::payment' );
 
     money::forgive_payment->has_a( xact => 'money::billable_transaction' );
     money::forgive_payment->has_a( accepting_usr => 'actor::user' );

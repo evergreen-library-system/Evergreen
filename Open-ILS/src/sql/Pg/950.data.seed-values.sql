@@ -11788,6 +11788,7 @@ Transaction ID: [% xact_id %]
                     [% CASE "check_payment" %]check
                     [% CASE "credit_card_payment" %]credit card
                     [%- IF mp.credit_card_payment.cc_number %] ([% mp.credit_card_payment.cc_number %])[% END %]
+                    [% CASE "debit_card_payment" %]debit card
                     [% CASE "credit_payment" %]credit
                     [% CASE "forgive_payment" %]forgiveness
                     [% CASE "goods_payment" %]goods

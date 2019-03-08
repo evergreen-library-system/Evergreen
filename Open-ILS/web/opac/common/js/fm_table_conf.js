@@ -64,12 +64,14 @@ var FM_TABLE_DISPLAY = {
 			'workstation',
 			'cash_payment',
 			'check_payment',	
-			'credit_card_payment'
+			'credit_card_payment',
+			'debit_card_payment'
 		],
 		money : [
 			'cash_payment',
 			'check_payment',	
-			'credit_card_payment'
+			'credit_card_payment',
+			'debit_card_payment'
 		]
 	},
 

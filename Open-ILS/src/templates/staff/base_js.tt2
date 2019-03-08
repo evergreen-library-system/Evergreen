@@ -122,6 +122,7 @@ UpUp.start({
     s.EG_WORK_LOG_CASH_PAYMENT = '[% l('Cash Payment') %]';
     s.EG_WORK_LOG_CHECK_PAYMENT = '[% l('Check Payment') %]';
     s.EG_WORK_LOG_CREDIT_CARD_PAYMENT = '[% l('Credit Card Payment') %]';
+    s.EG_WORK_LOG_DEBIT_CARD_PAYMENT = '[% l('Debit Card Payment') %]';
     s.EG_WORK_LOG_CREDIT_PAYMENT = '[% l('Credit Payment') %]';
     s.EG_WORK_LOG_WORK_PAYMENT = '[% l('Work Payment') %]';
     s.EG_WORK_LOG_FORGIVE_PAYMENT = '[% l('Forgive Payment') %]';

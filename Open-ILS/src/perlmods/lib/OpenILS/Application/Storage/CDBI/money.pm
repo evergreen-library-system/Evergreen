@@ -120,6 +120,13 @@ __PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer
                      approval_code note voided cc_number/);
 #-------------------------------------------------------------------------------
 
+package money::debit_card_payment;
+use base qw/money/;
+__PACKAGE__->table('money_debit_card_payment');
+__PACKAGE__->columns(Primary => 'id');
+__PACKAGE__->columns(Essential => qw/xact amount payment_ts cash_drawer accepting_usr amount_collected note/);
+#-------------------------------------------------------------------------------
+
 package money::forgive_payment;
 use base qw/money/;
 __PACKAGE__->table('money_forgive_payment');

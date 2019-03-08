@@ -422,7 +422,8 @@ sub ou_desk_payments {
     SELECT  ws.id as workstation,
         SUM( CASE WHEN p.payment_type = 'cash_payment' THEN p.amount ELSE 0.0 END ) as cash_payment,
         SUM( CASE WHEN p.payment_type = 'check_payment' THEN p.amount ELSE 0.0 END ) as check_payment,
-        SUM( CASE WHEN p.payment_type = 'credit_card_payment' THEN p.amount ELSE 0.0 END ) as credit_card_payment
+        SUM( CASE WHEN p.payment_type = 'credit_card_payment' THEN p.amount ELSE 0.0 END ) as credit_card_payment,
+        SUM( CASE WHEN p.payment_type = 'debit_card_payment' THEN p.amount ELSE 0.0 END ) as debit_card_payment
       FROM  money.desk_payment_view p
         JOIN actor.workstation ws ON (ws.id = p.cash_drawer)
       WHERE p.payment_ts >= '$startdate'
@@ -442,6 +443,7 @@ sub ou_desk_payments {
         $x->cash_payment($$r[1]);
         $x->check_payment($$r[2]);
         $x->credit_card_payment($$r[3]);
+        $x->debit_card_payment($$r[4]);
 
         $client->respond($x);
     }
