@@ -1,0 +1,7 @@
+Experiment Staff Catalog Call Number Browse
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds support for call number browsing in the staff catalog.  The browse
+results display vertically for consistency with the regular search and
+browse result interfaces.
+
