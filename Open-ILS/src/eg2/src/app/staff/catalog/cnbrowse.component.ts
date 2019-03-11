@@ -3,20 +3,20 @@ import {StaffCatalogService} from './catalog.service';
 import {SearchFormComponent} from './search-form.component';
 
 @Component({
-  templateUrl: 'browse.component.html'
+  templateUrl: 'cnbrowse.component.html'
 })
-export class BrowseComponent implements OnInit {
+export class CnBrowseComponent implements OnInit {
 
     @ViewChild('searchForm') searchForm: SearchFormComponent;
 
     constructor(
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
     ) {}
 
     ngOnInit() {
         // A SearchContext provides all the data needed for browse.
         this.staffCat.createContext();
-        this.searchForm.searchTab = 'browse';
+        this.searchForm.searchTab = 'cnbrowse';
     }
 }
 

@@ -112,6 +112,22 @@ export class CatalogIdentContext {
 
 }
 
+export class CatalogCnBrowseContext {
+    value: string;
+    // offset in pages from base browse term
+    // e.g. -2 means 2 pages back (alphabetically) from the original search.
+    offset: number;
+
+    reset() {
+        this.value = '';
+        this.offset = 0;
+    }
+
+    isSearchable() {
+        return this.value !== '';
+    }
+}
+
 export class CatalogTermContext {
     fieldClass: string[];
     query: string[];
@@ -214,6 +230,7 @@ export class CatalogSearchContext {
     marcSearch: CatalogMarcContext;
     identSearch: CatalogIdentContext;
     browseSearch: CatalogBrowseContext;
+    cnBrowseSearch: CatalogCnBrowseContext;
 
     // Result from most recent search.
     result: CatalogSearchResults;
@@ -232,6 +249,7 @@ export class CatalogSearchContext {
         this.marcSearch = new CatalogMarcContext();
         this.identSearch = new CatalogIdentContext();
         this.browseSearch = new CatalogBrowseContext();
+        this.cnBrowseSearch = new CatalogCnBrowseContext();
         this.reset();
     }
 

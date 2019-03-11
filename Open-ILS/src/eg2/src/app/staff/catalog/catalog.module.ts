@@ -24,6 +24,8 @@ import {BrowseComponent} from './browse.component';
 import {BrowseResultsComponent} from './browse/results.component';
 import {HoldingsMaintenanceComponent} from './record/holdings.component';
 import {ConjoinedComponent} from './record/conjoined.component';
+import {CnBrowseComponent} from './cnbrowse.component';
+import {CnBrowseResultsComponent} from './cnbrowse/results.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import {ConjoinedComponent} from './record/conjoined.component';
     BrowseComponent,
     BrowseResultsComponent,
     ConjoinedComponent,
-    HoldingsMaintenanceComponent
+    HoldingsMaintenanceComponent,
+    CnBrowseComponent,
+    CnBrowseResultsComponent
   ],
   imports: [
     StaffCommonModule,

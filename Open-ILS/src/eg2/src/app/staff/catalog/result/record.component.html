@@ -25,6 +25,15 @@
             <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
           </a>
         </div>
+        <!-- for call number browse display -->
+        <ng-container *ngIf="callNumber">
+          <div class="pl-2 font-weight-bold">
+            {{callNumber.prefix().label()}}
+            {{callNumber.label()}}
+            {{callNumber.suffix().label()}}
+            @ {{orgName(callNumber.owning_lib())}}
+          </div>
+        </ng-container>
         <div class="flex-1 pl-2">
           <div class="row">
             <div class="col-lg-12 font-weight-bold">

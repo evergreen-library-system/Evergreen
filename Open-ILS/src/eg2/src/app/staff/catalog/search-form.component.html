@@ -296,6 +296,22 @@ TODO focus search input
           </div>
         </ng-template>
       </ngb-tab>
+      <ngb-tab title="Shelf Browse" i18n-title id="cnbrowse">
+        <ng-template ngbTabContent>
+          <div class="row mt-4">
+            <div class="col-lg-12 form-inline">
+              <label for="cnbrowse-term-input" i18n>
+                Browse Call Numbers starting with 
+              </label>
+              <input type="text" class="form-control ml-2" 
+                id='cnbrowse-term-input' name="query"
+                [(ngModel)]="context.cnBrowseSearch.value"
+                (keyup.enter)="searchByForm()"
+                placeholder="Browse Call Numbers..."/>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>      
     </ngb-tabset>
   </div>
   <div class="col-lg-4">

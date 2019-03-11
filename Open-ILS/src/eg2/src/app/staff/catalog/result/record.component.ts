@@ -3,6 +3,7 @@ import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
+import {IdlObject} from '@eg/core/idl.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
 import {CatalogSearchContext} from '@eg/share/catalog/search-context';
@@ -19,6 +20,12 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
 
     @Input() index: number;  // 0-index display row
     @Input() summary: BibRecordSummary;
+
+    // Optional call number (acn) object to highlight
+    // Assumed prefix/suffix are fleshed
+    // Used by call number browse.
+    @Input() callNumber: IdlObject;
+
     searchContext: CatalogSearchContext;
     isRecordSelected: boolean;
     basketSub: Subscription;
