@@ -76,6 +76,10 @@ function($q , egCore , egWorkLog , patronSvc) {
             // payment API returns the update xact id so we can track it
             // for future payments without having to refresh the user.
             patronSvc.current.last_xact_id(resp.last_xact_id);
+
+            // reload patron data if credit balance has changed:
+            if(type === 'credit_payment' || patron_credit){ patronSvc.refreshPrimary(); }
+
             return resp.payments;
         });
     }
