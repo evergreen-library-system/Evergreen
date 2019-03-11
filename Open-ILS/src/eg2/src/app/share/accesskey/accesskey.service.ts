@@ -25,7 +25,9 @@ export class AccessKeyService {
      * string.  For example:  Control and 't' becomes 'ctrl+t'.
      */
     compressKeys(evt: KeyboardEvent): string {
-
+        if (!evt.key) {
+            return null;
+        }
         let s = '';
         if (evt.ctrlKey || evt.metaKey) { s += 'ctrl+'; }
         if (evt.altKey) { s += 'alt+'; }

@@ -1,14 +1,14 @@
 import {Injectable} from '@angular/core';
-import {Observable, Observer} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
         ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from './catalog.service';
+import {BasketService} from '@eg/share/catalog/basket.service';
+
 
 @Injectable()
 export class CatalogResolver implements Resolve<Promise<any[]>> {
@@ -20,7 +20,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
         private net: NetService,
         private auth: AuthService,
         private cat: CatalogService,
-        private staffCat: StaffCatalogService
+        private staffCat: StaffCatalogService,
+        private basket: BasketService
     ) {}
 
     resolve(
@@ -32,7 +33,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
         return Promise.all([
             this.cat.fetchCcvms(),
             this.cat.fetchCmfs(),
-            this.fetchSettings()
+            this.fetchSettings(),
+            this.basket.getRecordIds()
         ]);
     }
 

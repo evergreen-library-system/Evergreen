@@ -122,6 +122,11 @@ export class CatalogUrlService {
             }
         }
 
+        if (context.cnBrowseSearch.isSearchable()) {
+            params.cnBrowseTerm = context.cnBrowseSearch.value;
+            params.cnBrowsePage = context.cnBrowseSearch.offset;
+        }
+
         return params;
     }
 
@@ -183,6 +188,11 @@ export class CatalogUrlService {
             if (params.has('browsePivot')) {
                 context.browseSearch.pivot = +params.get('browsePivot');
             }
+        }
+
+        if (params.get('cnBrowseTerm')) {
+            context.cnBrowseSearch.value = params.get('cnBrowseTerm');
+            context.cnBrowseSearch.offset = Number(params.get('cnBrowsePage'));
         }
 
         const ts = context.termSearch;

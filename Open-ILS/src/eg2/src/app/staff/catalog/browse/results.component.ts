@@ -1,38 +1,37 @@
-import {Component, OnInit, Input} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
-import {map, switchMap, distinctUntilChanged} from 'rxjs/operators';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute, ParamMap} from '@angular/router';
+import {Subscription} from 'rxjs';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordService} from '@eg/share/catalog/bib-record.service';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
-import {PcrudService} from '@eg/core/pcrud.service';
 import {StaffCatalogService} from '../catalog.service';
-import {IdlObject} from '@eg/core/idl.service';
 
 @Component({
   selector: 'eg-catalog-browse-results',
   templateUrl: 'results.component.html'
 })
-export class BrowseResultsComponent implements OnInit {
+export class BrowseResultsComponent implements OnInit, OnDestroy {
 
     searchContext: CatalogSearchContext;
     results: any[];
+    routeSub: Subscription;
 
     constructor(
         private route: ActivatedRoute,
-        private pcrud: PcrudService,
         private cat: CatalogService,
-        private bib: BibRecordService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService
     ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
-        this.route.queryParamMap.subscribe((params: ParamMap) => {
-            this.browseByUrl(params);
-        });
+        this.routeSub = this.route.queryParamMap.subscribe(
+            (params: ParamMap) => this.browseByUrl(params)
+        );
+    }
+
+    ngOnDestroy() {
+        this.routeSub.unsubscribe();
     }
 
     browseByUrl(params: ParamMap): void {

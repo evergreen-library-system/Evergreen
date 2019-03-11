@@ -362,4 +362,15 @@ export class CatalogService {
             ctx.searchState = CatalogSearchState.COMPLETE;
         }));
     }
+
+    cnBrowse(ctx: CatalogSearchContext): Observable<any> {
+        ctx.searchState = CatalogSearchState.SEARCHING;
+        const cbs = ctx.cnBrowseSearch;
+
+        return this.net.request(
+            'open-ils.supercat',
+            'open-ils.supercat.call_number.browse',
+            cbs.value, ctx.searchOrg.shortname(), ctx.pager.limit, cbs.offset
+        ).pipe(tap(result => ctx.searchState = CatalogSearchState.COMPLETE));
+    }
 }

@@ -89,7 +89,6 @@ export class StaffCatalogService {
      */
     browse(): void {
         if (!this.searchContext.browseSearch.isSearchable()) { return; }
-
         const params = this.catUrl.toUrlParams(this.searchContext);
 
         // Force a new browse every time this method is called, even if
@@ -102,7 +101,16 @@ export class StaffCatalogService {
         params.ridx = '' + this.routeIndex++;
 
         this.router.navigate(
-          ['/staff/catalog/browse'], {queryParams: params});
+            ['/staff/catalog/browse'], {queryParams: params});
+    }
+
+    // Call number browse.
+    // Redirect to cn browse page and let its component perform the search
+    cnBrowse(): void {
+        if (!this.searchContext.cnBrowseSearch.isSearchable()) { return; }
+        const params = this.catUrl.toUrlParams(this.searchContext);
+        params.ridx = '' + this.routeIndex++; // see comments above
+        this.router.navigate(['/staff/catalog/cnbrowse'], {queryParams: params});
     }
 }
 

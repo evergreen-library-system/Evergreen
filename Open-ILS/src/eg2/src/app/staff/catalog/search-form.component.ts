@@ -81,7 +81,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     focusTabInput() {
         // Select a DOM node to focus when the tab changes.
-        let selector;
+        let selector: string;
         switch (this.searchTab) {
             case 'ident':
                 selector = '#ident-query-input';
@@ -91,6 +91,9 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 break;
             case 'browse':
                 selector = '#browse-term-input';
+                break;
+            case 'cnbrowse':
+                selector = '#cnbrowse-term-input';
                 break;
             default:
                 this.refreshCopyLocations();
@@ -197,6 +200,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 this.context.marcSearch.reset();
                 this.context.browseSearch.reset();
                 this.context.identSearch.reset();
+                this.context.cnBrowseSearch.reset();
                 this.context.termSearch.hasBrowseEntry = '';
                 this.context.termSearch.browseEntry = null;
                 this.context.termSearch.fromMetarecord = null;
@@ -208,6 +212,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 this.context.marcSearch.reset();
                 this.context.browseSearch.reset();
                 this.context.termSearch.reset();
+                this.context.cnBrowseSearch.reset();
                 this.staffCat.search();
                 break;
 
@@ -215,6 +220,7 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 this.context.browseSearch.reset();
                 this.context.termSearch.reset();
                 this.context.identSearch.reset();
+                this.context.cnBrowseSearch.reset();
                 this.staffCat.search();
                 break;
 
@@ -222,8 +228,18 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                 this.context.marcSearch.reset();
                 this.context.termSearch.reset();
                 this.context.identSearch.reset();
+                this.context.cnBrowseSearch.reset();
                 this.context.browseSearch.pivot = null;
                 this.staffCat.browse();
+                break;
+
+            case 'cnbrowse':
+                this.context.marcSearch.reset();
+                this.context.termSearch.reset();
+                this.context.identSearch.reset();
+                this.context.browseSearch.reset();
+                this.context.cnBrowseSearch.offset = 0;
+                this.staffCat.cnBrowse();
                 break;
         }
     }
@@ -235,10 +251,6 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     searchIsActive(): boolean {
         return this.context.searchState === CatalogSearchState.SEARCHING;
-    }
-
-    goToBrowse() {
-        this.router.navigate(['/staff/catalog/browse']);
     }
 }
 

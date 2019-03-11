@@ -17,9 +17,6 @@ export class CatalogComponent implements OnInit {
         // child components.  After initial creation, the context is
         // reset and updated as needed to apply new search parameters.
         this.staffCat.createContext();
-
-        // Cache the basket on page load.
-        this.basket.getRecordIds();
     }
 }
 
