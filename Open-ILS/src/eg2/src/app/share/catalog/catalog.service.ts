@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
-import {mergeMap, map, tap} from 'rxjs/operators';
+import {map, tap} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
 import {UnapiService} from '@eg/share/catalog/unapi.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';

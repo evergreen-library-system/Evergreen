@@ -1,7 +1,6 @@
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
-import {Params} from '@angular/router';
 
 // CCVM's we care about in a catalog context
 // Don't fetch them all because there are a lot.

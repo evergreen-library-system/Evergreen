@@ -47,6 +47,11 @@ export class StaffCatalogService {
         this.applySearchDefaults();
     }
 
+    cloneContext(context: CatalogSearchContext): CatalogSearchContext {
+        const params: any = this.catUrl.toUrlParams(context);
+        return this.catUrl.fromUrlHash(params);
+    }
+
     applySearchDefaults(): void {
         if (!this.searchContext.searchOrg) {
             this.searchContext.searchOrg =

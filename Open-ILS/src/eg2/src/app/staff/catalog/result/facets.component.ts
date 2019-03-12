@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
+import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {CatalogSearchContext, FacetFilter} from '@eg/share/catalog/search-context';
 import {StaffCatalogService} from '../catalog.service';
 
@@ -25,6 +26,7 @@ export class ResultFacetsComponent implements OnInit {
 
     constructor(
         private cat: CatalogService,
+        private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService
     ) {
         this.facetConfig = FACET_CONFIG;
@@ -38,10 +40,11 @@ export class ResultFacetsComponent implements OnInit {
         return this.searchContext.termSearch.hasFacet(new FacetFilter(cls, name, value));
     }
 
-    applyFacet(cls: string, name: string, value: string): void {
-        this.searchContext.termSearch.toggleFacet(new FacetFilter(cls, name, value));
-        this.searchContext.pager.offset = 0;
-        this.staffCat.search();
+    getFacetUrlParams(cls: string, name: string, value: string): any {
+        const context = this.staffCat.cloneContext(this.searchContext);
+        context.termSearch.toggleFacet(new FacetFilter(cls, name, value));
+        context.pager.offset = 0;
+        return this.catUrl.toUrlParams(context);
     }
 }
 
