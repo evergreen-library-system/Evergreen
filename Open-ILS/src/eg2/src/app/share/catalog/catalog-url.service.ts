@@ -4,6 +4,7 @@ import {OrgService} from '@eg/core/org.service';
 import {CatalogSearchContext, CatalogBrowseContext, CatalogMarcContext,
    CatalogTermContext, FacetFilter} from './search-context';
 import {CATALOG_CCVM_FILTERS} from './search-context';
+import {HashParams} from '@eg/share/util/hash-params';
 
 @Injectable()
 export class CatalogUrlService {
@@ -128,6 +129,10 @@ export class CatalogUrlService {
         }
 
         return params;
+    }
+
+    fromUrlHash(params: any): CatalogSearchContext {
+        return this.fromUrlParams(new HashParams(params));
     }
 
     /**

@@ -21,9 +21,18 @@
         <!-- XXX hard-coded width so columns align vertically regardless
              of the presence of a jacket image -->
         <div class="pl-2 record-jacket-div" >
-          <a href="javascript:void(0)" (click)="navigateToRecord(summary)">
-            <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
-          </a>
+          <ng-container *ngIf="hasMrConstituentRecords(summary)">
+            <a routerLink="/staff/catalog/search"
+              [queryParams]="appendFromMrParam(summary)">
+              <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
+            </a>
+          </ng-container>
+          <ng-container *ngIf="!hasMrConstituentRecords(summary)">
+              <a routerLink="/staff/catalog/record/{{summary.id}}"
+                [queryParams]="currentParams()">
+                <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
+              </a>
+          </ng-container>
         </div>
         <!-- for call number browse display -->
         <ng-container *ngIf="callNumber">
@@ -38,17 +47,25 @@
           <div class="row">
             <div class="col-lg-12 font-weight-bold">
               <!-- nbsp allows the column to take shape when no value exists -->
-              <a href="javascript:void(0)"
-                (click)="navigateToRecord(summary)">
-                {{summary.display.title || '&nbsp;'}}
-              </a>
+              <ng-container *ngIf="hasMrConstituentRecords(summary)">
+                  <a routerLink="/staff/catalog/search"
+                    [queryParams]="appendFromMrParam(summary)">
+                    {{summary.display.title || '&nbsp;'}}
+                  </a>
+              </ng-container>
+              <ng-container *ngIf="!hasMrConstituentRecords(summary)">
+                <a routerLink="/staff/catalog/record/{{summary.id}}"
+                  [queryParams]="currentParams()">
+                  {{summary.display.title || '&nbsp;'}}
+                </a>
+              </ng-container>
             </div>
           </div>
           <div class="row pt-2">
             <div class="col-lg-12">
               <!-- nbsp allows the column to take shape when no value exists -->
-              <a href="javascript:void(0)"
-                (click)="searchAuthor(summary)">
+              <a routerLink="/staff/catalog/search"
+                  [queryParams]="getAuthorSearchParams(summary)">
                 {{summary.display.author || '&nbsp;'}}
               </a>
             </div>

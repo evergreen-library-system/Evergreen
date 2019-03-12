@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Router} from '@angular/router';
+import {Router, ParamMap} from '@angular/router';
 import {OrgService} from '@eg/core/org.service';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
@@ -82,29 +82,35 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         alert('Adding to list for bib ' + this.summary.id);
     }
 
-    searchAuthor(summary: any) {
-        this.searchContext.reset();
-        this.searchContext.termSearch.fieldClass = ['author'];
-        this.searchContext.termSearch.query = [summary.display.author];
-        this.staffCat.search();
+    // Params to genreate a new author search based on a reset
+    // clone of the current page params.
+    getAuthorSearchParams(summary: BibRecordSummary): any {
+        const tmpContext = this.staffCat.cloneContext(this.searchContext);
+        tmpContext.reset();
+        tmpContext.termSearch.fieldClass = ['author'];
+        tmpContext.termSearch.query = [summary.display.author];
+        return this.catUrl.toUrlParams(tmpContext);
     }
 
-    /**
-     * Propagate the search params along when navigating to each record.
-     */
-    navigateToRecord(summary: BibRecordSummary) {
-        const params = this.catUrl.toUrlParams(this.searchContext);
+    // Returns the URL parameters for the current page plus the
+    // "fromMetarecord" param used for linking title links to
+    // MR constituent result records list.
+    appendFromMrParam(summary: BibRecordSummary): any {
+        const tmpContext = this.staffCat.cloneContext(this.searchContext);
+        tmpContext.termSearch.fromMetarecord = summary.metabibId;
+        return this.catUrl.toUrlParams(tmpContext);
+    }
 
-        // Jump to metarecord constituent records page when a
-        // MR has more than 1 constituents.
-        if (summary.metabibId && summary.metabibRecords.length > 1) {
-            this.searchContext.termSearch.fromMetarecord = summary.metabibId;
-            this.staffCat.search();
-            return;
-        }
+    // Returns true if the selected record summary is a metarecord summary
+    // and it links to more than one constituent bib record.
+    hasMrConstituentRecords(summary: BibRecordSummary): boolean {
+        return (
+            summary.metabibId && summary.metabibRecords.length > 1
+        );
+    }
 
-        this.router.navigate(
-            ['/staff/catalog/record/' + summary.id], {queryParams: params});
+    currentParams(): any {
+        return this.catUrl.toUrlParams(this.searchContext);
     }
 
     toggleBasketEntry() {

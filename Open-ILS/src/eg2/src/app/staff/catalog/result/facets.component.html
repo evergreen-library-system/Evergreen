@@ -26,8 +26,8 @@
                 <div class="row">
                   <div class="col-lg-9">
                     <a class="card-link"
-                      href='javascript:;'
-                      (click)="applyFacet(facetConf.facetClass, name, value.value)">
+                      routerLink="/staff/catalog/search"
+                      [queryParams]="getFacetUrlParams(facetConf.facetClass, name, value.value)">
                       {{value.value}}
                     </a>
                   </div>
