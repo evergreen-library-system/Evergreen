@@ -87,6 +87,43 @@ function(egCore , $q) {
                     }
                 });
 
+                if (empty_org) {
+
+                    var empty_org_list = [];
+                    angular.forEach(svc.org_use_map,function(v,k){
+                        if (v == 0) empty_org_list.push(k);
+                    });
+
+                    angular.forEach(empty_org_list, function (oid) {
+                        var owner = egCore.org.get(oid);
+                        if (owner.ou_type().can_have_vols() != 't') return;
+
+                        var owner_list = [];
+                        while (owner.parent_ou()) { // we're going to skip the top of the tree...
+                            owner_list.unshift(owner.shortname());
+                            owner = egCore.org.get(owner.parent_ou());
+                        }
+
+                        var owner_label = owner_list.join(' ... ');
+
+                        svc.copies.push({
+                            index      : index++,
+                            id_list    : [],
+                            call_number: { label : '' },
+                            barcode    : '',
+                            owner_id   : oid,
+                            owner_list : owner_list,
+                            owner_label: owner_label,
+                            copy_count : 0,
+                            cn_count   : 0,
+                            copy_alert_count : 0
+                        });
+                    });
+                }
+
+                svc.ongoing = false;
+
+
                 svc.copies = svc.copies.sort(
                     function (a, b) {
                         function compare_array (x, y, i) {
@@ -253,40 +290,6 @@ function(egCore , $q) {
                         new_list = cn_list;
     
                     }
-                }
-
-                if (empty_org) {
-
-                    var empty_org_list = [];
-                    angular.forEach(svc.org_use_map,function(v,k){
-                        if (v == 0) empty_org_list.push(k);
-                    });
-
-                    angular.forEach(empty_org_list, function (oid) {
-                        var owner = egCore.org.get(oid);
-                        if (owner.ou_type().can_have_vols() != 't') return;
-
-                        var owner_list = [];
-                        while (owner.parent_ou()) { // we're going to skip the top of the tree...
-                            owner_list.unshift(owner.shortname());
-                            owner = egCore.org.get(owner.parent_ou());
-                        }
-
-                        var owner_label = owner_list.join(' ... ');
-
-                        new_list.push({
-                            index      : index++,
-                            id_list    : [],
-                            call_number: { label : '' },
-                            barcode    : '',
-                            owner_id   : oid,
-                            owner_list : owner_list,
-                            owner_label: owner_label,
-                            copy_count : 0,
-                            cn_count   : 0,
-                            copy_alert_count : 0
-                        });
-                    });
                 }
 
                 svc.copies = new_list;

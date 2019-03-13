@@ -1,7 +1,7 @@
 
 <div>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
       <div class="input-group">
         <span class="input-group-addon">[% l('Show holdings at or below') %]</span>
         <eg-org-selector selected="holdings_ou" onchange="holdings_ou_changed" sticky-setting="cat.holdings_view_ou"></eg-org-selector>
