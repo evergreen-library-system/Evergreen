@@ -1002,16 +1002,9 @@ sub generate_fines {
     my $circs;
     my $editor = new_editor;
     if ($circ_id) {
-#        my $circ;
-#        if ($circ = action::circulation->search_where( { id => $circ_id, stop_fines => undef } )) {
-#            $circ = action::circulation->retrieve($circ_id)->to_fieldmapper;
-#        } elsif ($circ = booking::reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } )) {
-#            $circ = booking::reservation->retrieve($circ_id)->to_fieldmapper;
-#        }
-#        $circs = [$circ] if ($circ);
         $circs = $editor->search_action_circulation( { id => $circ_id, stop_fines => undef } );
         unless (@$circs) {
-            $circs = $editor->search_booking_reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } );
+            $circs = $editor->search_booking_reservation( { id => $circ_id, return_time => undef, cancel_time => undef } );
         }
     } else {
         $circs = [overdue_circs(undef, 1, 1, 1)];
