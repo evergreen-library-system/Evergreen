@@ -42,8 +42,7 @@
               <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 
                 ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
               <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
-                 in-place-mode="true"
-                 record-type="bre" flat-only="true" embedded="true" 
+                 in-place-mode="true" record-type="bre" embedded="true" 
                  ng-show="editing_inplace" on-save="post_edit_inplace">
               </eg-marc-edit-record>
               <eg-record-breaker record-id="lead_id" marc-xml="lead.marc_xml" 

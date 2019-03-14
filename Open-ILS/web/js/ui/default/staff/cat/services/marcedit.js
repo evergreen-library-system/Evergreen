@@ -709,7 +709,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 $scope.enable_fast_add = false;
                 $scope.fast_item_callnumber = '';
                 $scope.fast_item_barcode = '';
-                
+
                 $scope.flatEditor = { isEnabled : $scope.flatOnly ? true : false };
                 
                 egCore.hatch.getItem('cat.marcedit.flateditor').then(function(val) {

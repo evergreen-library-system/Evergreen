@@ -11,29 +11,29 @@
     </div>
   </div>
 
-  <div class="pad-vert row marctypesource">
-    <div class="col-md-2 form-group" ng-show="!flatOnly">
+  <div class="pad-vert pad-left row flex-row marctypesource">
+    <div class="form-group pad-horiz" ng-show="!flatOnly">
       <label>
         <input type="checkbox" ng-model="flatEditor.isEnabled" ng-change="refreshVisual()"/>
         [% l('Flat Text Editor') %]
       </label>
     </div>
-    <div class="col-md-2 form-group" ng-show="!flatOnly">
+    <div class="form-group pad-horiz" ng-show="!flatOnly">
       <label>
         <input type="checkbox" ng-model="stackSubfields.enabled" />
         [% l('Stack subfields') %]
       </label>
     </div>
-    <div class="col-md-3">
-      <div class="input-group">
+    <div class="">
+      <div class="input-group pad-horiz">
         <span class="input-group-addon"><b>[% l('Record Type') %]</b></span>
         <span class="input-group-addon">{{calculated_record_type}}</span>
       </div>
     </div>
-    <div ng-if="bre" class="col-md-2">
+    <div ng-if="bre" class="pad-horiz">
       <eg-marc-edit-bibsource/>
     </div>
-    <div class="col-md-3">
+    <div class="pad-horiz">
       <div class="btn-group">
         <span class="btn-group">
           <button class="btn btn-default" ng-show="record_type == 'bre' && !flatOnly" ng-click="validateHeadings()">[% l('Validate') %]</button>

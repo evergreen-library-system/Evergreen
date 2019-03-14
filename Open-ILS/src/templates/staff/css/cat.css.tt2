@@ -18,6 +18,7 @@
 
 .marcfastitemadd, .marctypesource {
     border-bottom: solid thin gray;
+    flex-wrap: wrap;
 }
 
 .marcedit {
