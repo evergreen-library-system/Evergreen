@@ -14,6 +14,7 @@
 
 .marcflateditor {
     max-width: 100%;
+    font-family: 'Lucida Console', Monaco, monospace;
 }
 
 .marcfastitemadd, .marctypesource {
