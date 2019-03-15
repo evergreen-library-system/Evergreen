@@ -16,7 +16,22 @@
 </ng-template>
 
 <ng-template #holdableTemplate let-copy="row" let-context="userContext">
-  <span *ngIf="context.holdable(copy)" i18n>Yes</span>
+  <span *ngIf="context.holdable(copy)" i18n>
+    <div class="border-bottom">
+      <a routerLink="/staff/catalog/hold/C"
+        [queryParams]="{target: copy.id}"
+        queryParamsHandling="merge" i18n>
+        Copy Hold
+      </a>
+    </div>
+    <div>
+      <a routerLink="/staff/catalog/hold/V"
+        [queryParams]="{target: copy.call_number}"
+        queryParamsHandling="merge" i18n>
+        Volume Hold
+      </a>
+    </div>
+  </span>
   <span *ngIf="!context.holdable(copy)" i18n>No</span>
 </ng-template>
 
