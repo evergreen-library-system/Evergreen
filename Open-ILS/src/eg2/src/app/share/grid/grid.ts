@@ -32,6 +32,7 @@ export class GridColumn {
     isDragTarget: boolean;
     isSortable: boolean;
     isMultiSortable: boolean;
+    disableTooltip: boolean;
     comparator: (valueA: any, valueB: any) => number;
 
     // True if the column was automatically generated.
@@ -1033,6 +1034,7 @@ export class GridDataSource {
     data: any[];
     sort: any[];
     allRowsRetrieved: boolean;
+    requestingData: boolean;
     getRows: (pager: Pager, sort: any[]) => Observable<any>;
 
     constructor() {
@@ -1068,16 +1070,23 @@ export class GridDataSource {
             return Promise.resolve();
         }
 
+        // If we have to call out for data, set inFetch
+        this.requestingData = true;
+
         return new Promise((resolve, reject) => {
             let idx = pager.offset;
             return this.getRows(pager, this.sort).subscribe(
-                row => this.data[idx++] = row,
+                row => {
+                    this.data[idx++] = row;
+                    this.requestingData = false;
+                },
                 err => {
                     console.error(`grid getRows() error ${err}`);
                     reject(err);
                 },
                 ()  => {
                     this.checkAllRetrieved(pager, idx);
+                    this.requestingData = false;
                     resolve();
                 }
             );

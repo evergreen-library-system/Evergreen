@@ -66,13 +66,8 @@
       </ngb-tab>
       <ngb-tab title="Holdings View" i18n-title id="holdings">
         <ng-template ngbTabContent>
-          <div class="alert alert-info mt-3" i18n>
-            Holdings not yet implemented.  See the
-            <a target="_blank"
-              href="/eg/staff/cat/catalog/record/{{recordId}}/holdings">
-              AngularJS Holdings Tab.
-            </a>
-          </div>
+          <eg-holdings-maintenance [recordId]="recordId">
+          </eg-holdings-maintenance>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Conjoined Items" i18n-title id="conjoined">

@@ -40,7 +40,14 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
 
         return this.store.getItemBatch([
             'eg.search.search_lib',
-            'eg.search.pref_lib'
+            'eg.search.pref_lib',
+            'cat.holdings_show_empty_org',
+            'cat.holdings_show_empty',
+            'cat.marcedit.stack_subfields',
+            'cat.marcedit.flateditor',
+            'eg.cat.record.summary.collapse',
+            'cat.holdings_show_copies',
+            'cat.holdings_show_vols'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);

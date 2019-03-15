@@ -15,12 +15,20 @@
   <eg-grid-print #gridPrinter [gridContext]="context">
   </eg-grid-print>
 
-  <!-- move me too -->
-  <div class="row" *ngIf="dataSource.data.length == 0">
-    <div class="col-lg-12 text-center alert alert-light font-italic" i18n>
-      Nothing to Display
+  <ng-container *ngIf="dataSource.data.length == 0">
+    <div class="row">>
+      <ng-container *ngIf="dataSource.requestingData">
+        <div class="col-lg-6 offset-lg-3 text-center mt-3">
+         <eg-progress-inline></eg-progress-inline>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!dataSource.requestingData">
+        <div class="col-lg-12 text-center alert alert-light font-italic" i18n>
+          Nothing to Display
+        </div>
+      </ng-container>
     </div>
-  </div>
+  </ng-container>
 
   <eg-grid-body [context]="context"></eg-grid-body>
 </div>
