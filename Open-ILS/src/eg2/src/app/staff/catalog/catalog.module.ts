@@ -21,6 +21,7 @@ import {PartsComponent} from './record/parts.component';
 import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
 import {BrowseComponent} from './browse.component';
 import {BrowseResultsComponent} from './browse/results.component';
+import {HoldingsMaintenanceComponent} from './record/holdings.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import {BrowseResultsComponent} from './browse/results.component';
     PartMergeDialogComponent,
     BrowseComponent,
     BrowseResultsComponent,
+    HoldingsMaintenanceComponent
   ],
   imports: [
     StaffCommonModule,

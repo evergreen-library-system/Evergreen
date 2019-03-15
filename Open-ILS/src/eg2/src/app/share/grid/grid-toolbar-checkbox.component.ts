@@ -16,29 +16,48 @@ export class GridToolbarCheckboxComponent implements OnInit {
     // This does NOT fire the onChange handler.
     @Input() initialValue: boolean;
 
-    // This is an input instead of an Output because the handler is
-    // passed off to the grid context for maintenance -- events
-    // are not fired directly from this component.
     @Output() onChange: EventEmitter<boolean>;
+
+    private cb: GridToolbarCheckbox;
 
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {
         this.onChange = new EventEmitter<boolean>();
+
+        // Create in constructor so we can accept values before the
+        // grid is fully rendered.
+        this.cb = new GridToolbarCheckbox();
+        this.cb.isChecked = null;
+        this.initialValue = null;
     }
 
     ngOnInit() {
-
         if (!this.grid) {
             console.warn('GridToolbarCheckboxComponent needs a [grid]');
             return;
         }
 
-        const cb = new GridToolbarCheckbox();
-        cb.label = this.label;
-        cb.onChange = this.onChange;
-        cb.isChecked = this.initialValue;
+        this.cb.label = this.label;
+        this.cb.onChange = this.onChange;
 
-        this.grid.context.toolbarCheckboxes.push(cb);
+        if (this.cb.isChecked === null && this.initialValue !== null) {
+            this.cb.isChecked = this.initialValue;
+        }
+
+        this.grid.context.toolbarCheckboxes.push(this.cb);
+    }
+
+    // Toggle the value.  onChange is not fired.
+    toggle() {
+        this.cb.isChecked = !this.cb.isChecked;
+    }
+
+    // Set/get the value.  onChange is not fired.
+    checked(value?: boolean): boolean {
+        if (value === true || value === false) {
+            this.cb.isChecked = value;
+        }
+        return this.cb.isChecked;
     }
 }
 

@@ -79,6 +79,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // Allow the caller to jump directly to a specific page of
     // grid data.
     @Input() pageOffset: number;
+    // Pass in a default page size.  May be overridden by settings.
+    @Input() pageSize: number;
 
     // If true and an idlClass is specificed, the grid assumes
     // datatype=link fields that link to classes which define a selector
@@ -139,6 +141,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
         if (this.pageOffset) {
             this.context.pager.offset = this.pageOffset;
+        }
+
+        if (this.pageSize) {
+            this.context.pager.limit = this.pageSize;
         }
 
         // TS doesn't seem to like: let foo = bar || () => '';

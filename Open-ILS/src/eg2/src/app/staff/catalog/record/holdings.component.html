@@ -1,0 +1,94 @@
+
+<ng-template #locationTemplate let-row="row" let-userContext="userContext">
+  <!-- pl-* is doubled for added impact -->
+  <div class="pl-{{row.locationDepth}}">
+    <span class="pl-{{row.locationDepth}}">
+      <a class="label-with-material-icon" (click)="userContext.toggleExpandRow(row)">
+        <!--  leave the icons in place for all node types, but make them
+              invisible when they are not needed. -->
+        <span *ngIf="row.treeNode.expanded"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          class="material-icons p-0 m-0">arrow_drop_down</span>
+        <span *ngIf="!row.treeNode.expanded"
+          [ngClass]="{invisible: row.copy || row.treeNode.children.length == 0}"
+          class="material-icons p-0 m-0">arrow_right</span>
+        <span>{{row.locationLabel}}</span>
+      </a>
+    </span>
+  </div>
+</ng-template>
+
+<ng-template #holdableTemplate let-row="row" let-userContext="userContext">
+  <ng-container *ngIf="row.copy">
+    <ng-container *ngIf="userContext.copyIsHoldable(row.copy); else notHoldable">
+      <span i18n>Yes</span>
+    </ng-container>
+    <ng-template #notHoldable><span i18n>No</span></ng-template>
+  </ng-container>
+</ng-template>
+
+
+<div class='eg-copies w-100 mt-3'>
+  <eg-grid #holdingsGrid [dataSource]="gridDataSource"
+    (onRowActivate)="onRowActivate($event)"
+    [pageSize]="50" [rowClassCallback]="rowClassCallback"
+    [sortable]="false" persistKey="cat.holdings">
+
+    <!-- checkboxes -->
+
+    <eg-grid-toolbar-checkbox i18n-label label="Show Volumes" 
+      #volsCheckbox (onChange)="toggleShowVolumes($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Copies" 
+      #copiesCheckbox (onChange)="toggleShowCopies($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Volumes"            
+      #emptyVolsCheckbox (onChange)="toggleShowEmptyVolumes($event)">
+    </eg-grid-toolbar-checkbox> 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Libs"            
+      #emptyLibsCheckbox (onChange)="toggleShowEmptyLibs($event)">
+    </eg-grid-toolbar-checkbox> 
+
+    <!-- fields -->
+    <eg-grid-column path="index" [hidden]="true" [index]="true">
+    </eg-grid-column>
+    <eg-grid-column path="copy.id" [hidden]="true" label="Copy ID" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="volume.id" [hidden]="true" label="Volume ID" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column name="location_barcode" [flex]="4"
+      [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
+      label="Location/Barcode" [disableTooltip]="true" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="volumeCount" datatype="number" label="Volumes" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="copyCount" datatype="number" label="Copies" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column path="callNumberLabel" label="Call Number" i18n-label>
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circ Library" path="copy.circ_lib" 
+      datatype="org_unit"></eg-grid-column>
+    <eg-grid-column i18n-label label="Owning Library" path="volume.owning_lib" 
+      datatype="org_unit"></eg-grid-column>
+    <eg-grid-column i18n-label label="Due Date" path="circ.due_date" 
+      datatype="timestamp"></eg-grid-column>
+    <eg-grid-column i18n-label label="Shelving Location" path="copy.location.name">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Circulation Modifier" path="copy.circ_modifier">
+    </eg-grid-column>
+
+    <eg-grid-column i18n-label label="Status" path="copy.status.name">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Active/Create Date" 
+      path="copy.active_date" datatype="timestamp">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Age Hold Protection" 
+      path="copy.age_protect.name"></eg-grid-column>
+
+    <eg-grid-column i18n-label label="Holdable?" name="holdable" 
+      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext">
+    </eg-grid-column>
+
+  </eg-grid>
+</div>
+

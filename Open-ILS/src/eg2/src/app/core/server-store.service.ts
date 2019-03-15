@@ -60,6 +60,22 @@ export class ServerStoreService {
         );
     }
 
+    // Sync call for items known to be cached locally.
+    getItemCached(key: string): any {
+        return this.cache[key];
+    }
+
+    // Sync batch call for items known to be cached locally
+    getItemBatchCached(keys: string[]): {[key: string]: any} {
+        const values: any = {};
+        keys.forEach(key => {
+            if (key in this.cache) {
+                values[key] = this.cache[key];
+            }
+        });
+        return values;
+    }
+
     // Returns a set of key/value pairs for the requested settings
     getItemBatch(keys: string[]): Promise<any> {
 
