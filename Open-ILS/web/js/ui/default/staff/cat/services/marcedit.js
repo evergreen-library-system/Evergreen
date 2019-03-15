@@ -696,8 +696,10 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             });
 
         },
-        controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable','egConfirmDialog','egAlertDialog',
-            function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable , egConfirmDialog , egAlertDialog ) {
+        controller : ['$timeout','$scope','$q','$window','egCore', 'egTagTable',
+                      'egConfirmDialog','egAlertDialog','ngToast','egStrings',
+            function ( $timeout , $scope , $q,  $window , egCore ,  egTagTable , 
+                       egConfirmDialog , egAlertDialog , ngToast , egStrings) {
 
 
                 $scope.onSaveCallback = $scope.onSave;
@@ -1384,6 +1386,69 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     return deferred.resolve($scope.recordId)
                 };
 
+                // Returns a promise 
+                function createOrUpdateRecord() {
+
+                    var promise;
+                    if ($scope.recordId) {  
+
+                        var method = $scope.record_type === 'bre' ?
+                            'open-ils.cat.biblio.record.marc.replace' :
+                            'open-ils.cat.authority.record.overlay';
+
+                        promise = egCore.net.request(
+                            'open-ils.cat', method,
+                            egCore.auth.token(), $scope.recordId, 
+                            $scope.Record().marc(), $scope.Record().source()
+                        );
+
+                    } else {
+
+                        var method = $scope.record_type === 'bre' ?
+                            'open-ils.cat.biblio.record.xml.create' :
+                            'open-ils.cat.authority.record.import';
+
+                        promise = egCore.net.request(
+                            'open-ils.cat', method,
+                            egCore.auth.token(), 
+                            $scope.Record().marc(),
+                            $scope.Record().source()
+                        );
+                    }
+
+                    return promise.then(handleCreateOrUpdateResult);
+                }
+
+                function handleCreateOrUpdateResult(result) {
+
+                    var evt = egCore.evt.parse(result)
+                    var mode = $scope.recordId ? 'update' : 'create';
+
+                    if (evt) {
+                        var msg = mode === 'update' ? 
+                            egStrings.MARC_ALERT_UPDATE_FAILED :
+                            egStrings.MARC_ALERT_CREATE_FAILED;
+                        ngToast.warning(msg, {error: '' + evt});
+                        return $q.reject();
+                    }
+
+                    var msg = mode === 'update' ? 
+                        egStrings.MARC_ALERT_UPDATE_SUCCESS :
+                        egStrings.MARC_ALERT_CREATE_SUCCESS;
+                    ngToast.create(msg);
+
+                    console.debug('MARC create/update returned', result);
+
+                    // synchronize values 
+                    if (!$scope.recordId) {
+                        $scope.recordId = $scope.caretRecId = result.id(); 
+                    }
+
+                    $scope.dirtyFlag = false;
+
+                    return result;
+                }
+
                 $scope.saveRecord = function () {
                     
                     if ($scope.inPlaceMode) {
@@ -1397,77 +1462,42 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     }
 
                     $scope.mangle_005();
-                    $scope.Record().editor(egCore.auth.user().id());
-                    $scope.Record().edit_date('now');
                     $scope.record.pruneEmptyFieldsAndSubfields();
                     $scope.Record().marc($scope.record.toXmlString());
-                    if ($scope.recordId) {
-                        return egCore.pcrud.update(
-                            $scope.Record()
-                        ).then(function() { // success
+
+                    var updating = Boolean($scope.recordId);
+                    return createOrUpdateRecord().then(function(record) {
+
+                        if (updating) {
                             $scope.save_stack_depth = $scope.record_undo_stack.length;
-                            $scope.dirtyFlag = false;
-                            if ($scope.enable_fast_add) {
-                                egCore.net.request(
-                                    'open-ils.actor',
-                                    'open-ils.actor.anon_cache.set_value',
-                                    null, 'edit-these-copies', {
-                                        record_id: $scope.recordId,
-                                        raw: [{
-                                            label : $scope.fast_item_callnumber,
-                                            barcode : $scope.fast_item_barcode,
-                                            fast_add : true
-                                        }],
-                                        hide_vols : false,
-                                        hide_copies : false
-                                    }
-                                ).then(function(key) {
-                                    if (key) {
-                                        var url = egCore.env.basePath + 'cat/volcopy/' + key;
-                                        $timeout(function() { $window.open(url, '_blank') });
-                                    } else {
-                                        alert('Could not create anonymous cache key!');
-                                    }
-                                });
-                            }
-                        }, function() { // failure
-                            alert('Could not save the record!');
-                        }).then(loadRecord).then(processOnSaveCallbacks);
-                    } else {
-                        $scope.Record().creator(egCore.auth.user().id());
-                        $scope.Record().create_date('now');
-                        return egCore.pcrud.create(
-                            $scope.Record()
-                        ).then(function(bre) {
-                            $scope.dirtyFlag = false;
-                            $scope.recordId = bre.id(); 
-                            $scope.caretRecId = $scope.recordId;
-                            if ($scope.enable_fast_add) {
-                                egCore.net.request(
-                                    'open-ils.actor',
-                                    'open-ils.actor.anon_cache.set_value',
-                                    null, 'edit-these-copies', {
-                                        record_id: $scope.recordId,
-                                        raw: [{
-                                            label : $scope.fast_item_callnumber,
-                                            barcode : $scope.fast_item_barcode,
-                                        }],
-                                        hide_vols : false,
-                                        hide_copies : false
-                                    }
-                                ).then(function(key) {
-                                    if (key) {
-                                        var url = egCore.env.basePath + 'cat/volcopy/' + key;
-                                        $timeout(function() { $window.open(url, '_blank') });
-                                    } else {
-                                        alert('Could not create anonymous cache key!');
-                                    }
-                                });
-                            }
-                        }).then(loadRecord).then(processOnSaveCallbacks);
-                    }
+                        }
 
+                        if (!$scope.enable_fast_add) {
+                            return record;
+                        }
 
+                        egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.anon_cache.set_value',
+                            null, 'edit-these-copies', {
+                                record_id: $scope.recordId,
+                                raw: [{
+                                    label : $scope.fast_item_callnumber,
+                                    barcode : $scope.fast_item_barcode,
+                                    fast_add : true
+                                }],
+                                hide_vols : false,
+                                hide_copies : false
+                            }
+                        ).then(function(key) {
+                            if (key) {
+                                var url = egCore.env.basePath + 'cat/volcopy/' + key;
+                                $timeout(function() { $window.open(url, '_blank') });
+                            } else {
+                                alert('Could not create anonymous cache key!');
+                            }
+                        });
+                    }).then(loadRecord).then(processOnSaveCallbacks);
                 };
 
                 $scope.seeBreaker = function () {
