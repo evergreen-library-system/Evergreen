@@ -32,7 +32,8 @@ sub import_authority_record {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('CREATE_AUTHORITY_RECORD');
-    my $rec = OpenILS::Application::Cat::AuthCommon->import_authority_record($marc_xml, $source);
+    my $rec = OpenILS::Application::Cat::AuthCommon->
+        import_authority_record($e, $marc_xml, $source);
     $e->commit unless $U->event_code($rec);
     return $rec;
 }
@@ -129,10 +130,10 @@ sub overlay_authority_record {
     my $e = new_editor(authtoken=>$auth, xact=>1);
     return $e->die_event unless $e->checkauth;
     return $e->die_event unless $e->allowed('UPDATE_AUTHORITY_RECORD');
-    my $rec = OpenILS::Application::Cat::AuthCommon->overlay_authority_record($rec_id, $marc_xml, $source);
+    my $rec = OpenILS::Application::Cat::AuthCommon->
+        overlay_authority_record($e, $rec_id, $marc_xml, $source);
     $e->commit unless $U->event_code($rec);
     return $rec;
-
 }
 
 __PACKAGE__->register_method(
