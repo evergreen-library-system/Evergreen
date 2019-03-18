@@ -442,6 +442,7 @@ export class GridContext {
     defaultHiddenFields: string[];
     overflowCells: boolean;
     showLinkSelectors: boolean;
+    disablePaging: boolean;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -464,7 +465,6 @@ export class GridContext {
         this.store = store;
         this.format = format;
         this.pager = new Pager();
-        this.pager.limit = 10;
         this.rowSelector = new GridRowSelector();
         this.toolbarButtons = [];
         this.toolbarCheckboxes = [];
@@ -478,6 +478,9 @@ export class GridContext {
         this.columnSet.isMultiSortable = this.isMultiSortable === true;
         this.columnSet.defaultHiddenFields = this.defaultHiddenFields;
         this.columnSet.defaultVisibleFields = this.defaultVisibleFields;
+        if (!this.pager.limit) {
+            this.pager.limit = this.disablePaging ? MAX_ALL_ROW_COUNT : 10;
+        }
         this.generateColumns();
     }
 

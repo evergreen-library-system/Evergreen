@@ -56,6 +56,8 @@
     </div>
   </div>
 
+  <ng-container *ngIf="!gridContext.disablePaging">
+
   <button [disabled]="gridContext.pager.isFirstPage()" type="button"
     class="btn btn-outline-dark mr-1" (click)="gridContext.pager.toFirst()">
     <span title="First Page" i18n-title
@@ -71,17 +73,6 @@
     <span title="Next Page" i18n-title
         class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
   </button>
-
-  <!--
-  Hiding jump-to-last since there's no analog in the angularjs grid and
-  it has limited value since the size of the data set is often unknown.
-  <button [disabled]="!gridContext.pager.resultCount || gridContext.pager.isLastPage()"
-    type="button" class="btn btn-outline-dark mr-1" (click)="gridContext.pager.toLast()">
-    <span title="First Page" i18n-title
-        class="material-icons mat-icon-in-button">last_page</span>
-  </button>
-  -->
-
   <div ngbDropdown class="mr-1" placement="bottom-right">
     <button ngbDropdownToggle class="btn btn-outline-dark text-button">
       <span title="Select Row Count" i18n-title i18n>
@@ -96,6 +87,9 @@
       </a>
     </div>
   </div>
+  
+  </ng-container><!-- if disablePaging-->
+
 
   <button type="button"
     class="btn btn-outline-dark mr-1"
