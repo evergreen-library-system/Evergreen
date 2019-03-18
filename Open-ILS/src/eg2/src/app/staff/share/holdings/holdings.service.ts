@@ -24,9 +24,10 @@ export class HoldingsService {
 
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(
-        recordId: number,                   // Bib record ID
-        addToVols: number[] = [],           // Add copies to existing volumes
-        volumeData: NewVolumeData[] = []) { // Creating new volumes
+        recordId: number,               // Bib record ID
+        addToVols?: number[],           // Add copies to / modify existing vols
+        volumeData?: NewVolumeData[],   // Creating new volumes
+        hideCopies?: boolean) {         // Hide the copy edit pane
 
         const raw: any[] = [];
 
@@ -42,7 +43,7 @@ export class HoldingsService {
             record_id: recordId,
             raw: raw,
             hide_vols : false,
-            hide_copies : false
+            hide_copies : hideCopies ? true : false
         }).then(key => {
             if (!key) {
                 console.error('Could not create holds cache key!');

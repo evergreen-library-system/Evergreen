@@ -1,0 +1,109 @@
+<eg-string #successMsg text="Successfully Modified Copy Alerts" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Modify Copy Alerts" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <ng-container *ngIf="mode == 'create'">
+        <span i18n>Adding alerts for {{copies.length}} item(s).</span>
+      </ng-container>
+      <ng-container *ngIf="mode == 'manage'">
+        <span i18n>Managing alerts for item {{copies[0].barcode()}}</span>
+      </ng-container>
+      <span i18n></span>
+    </h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-4 form-validated">
+    <div class="row mt-2 p-2 rounded border border-success">
+      <div class="col-lg-4">
+        <eg-combobox [entries]="alertTypes" 
+          i18n-placeholder placeholder="New Alert Type..."
+          [required]="true"
+          (onChange)="newAlert.alert_type($event ? $event.id : null)">
+        </eg-combobox>
+      </div>
+      <div class="col-lg-5">
+        <textarea class="form-control" rows="2" 
+          i18n-placeholder placeholder="New Alert Note..."
+          (ngModelChange)="newAlert.note($event)" [ngModel]="newAlert.note()">
+        </textarea>
+      </div>
+      <div class="col-lg-3">
+        <div class="d-flex flex-column">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" 
+              [ngModel]="newAlert.temp() == 't'" 
+              (ngModelChange)="newAlert.temp($event ? 't' : 'f')"
+              id="new-alert-temporary">
+            <label class="form-check-label" for="new-alert-temporary" i18n>
+              Temporary?
+            </label>
+          </div>
+          <div class="pt-2">
+            <button class="btn btn-success" (click)="addNew()" i18n>
+              Add New
+            </button>
+          </div>  
+        </div>  
+      </div>
+    </div>
+    <ng-container *ngIf="mode == 'manage'">
+      <!-- in manage mode list all of the alerts linked to the copy -->
+      <div class="row mt-2" 
+        *ngFor="let alert of copy.copy_alerts()">
+        <div class="col-lg-12 pb-2"><hr/></div>
+        <div class="col-lg-4">
+          <eg-combobox [entries]="alertTypes" [startId]="alert.alert_type()"
+            i18n-placeholder placeholder="Alert Type..."
+            [required]="true"
+            (onChange)="alert.alert_type($event ? $event.id : null); alert.ischanged(true)">
+          </eg-combobox>
+          <div class="pl-2 pt-2" i18n>
+            Added: {{alert.create_time() | date:'shortDate'}}
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <textarea class="form-control" rows="2" 
+            i18n-placeholder placeholder="Alert Note..."
+            (ngModelChange)="alert.note($event); alert.ischanged(true)"
+            [ngModel]="alert.note()">
+          </textarea>
+        </div>
+        <div class="col-lg-3">
+          <div class="d-flex flex-column">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" 
+                [ngModel]="alert.temp() == 't'" 
+                (ngModelChange)="alert.temp($event ? 't' : 'f'); alert.ischanged(true)"
+                id="alert-temporary-{{alert.id()}}">
+              <label class="form-check-label" for="alert-temporary-{{alert.id()}}" i18n>
+                Temporary?
+              </label>
+            </div>
+            <div class="form-check pt-2">
+              <input class="form-check-input" type="checkbox" 
+                [ngModel]="alert.ack_time() != null" 
+                (ngModelChange)="alert.ack_time($event ? 'now' : null); alert.ischanged(true)"
+                id="alert-temporary-{{alert.id()}}">
+              <label class="form-check-label" for="alert-temporary-{{alert.id()}}" i18n>
+                Clear?
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" 
+      (click)="dismiss('canceled')" i18n>Close</button>
+    <ng-container *ngIf="mode == 'manage'">
+      <button class="btn btn-success mr-2" 
+        (click)="applyChanges()" i18n>Apply Changes</button>
+    </ng-container>
+  </div>
+</ng-template>

@@ -1,9 +1,8 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
-import {PcrudService} from '@eg/core/pcrud.service';
-import {CatalogService} from '@eg/share/catalog/catalog.service';
-import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
+import {BibRecordService, BibRecordSummary
+    } from '@eg/share/catalog/bib-record.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 
 @Component({
   selector: 'eg-bib-summary',
@@ -13,10 +12,16 @@ import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.s
 export class BibSummaryComponent implements OnInit {
 
     initDone = false;
-    expandDisplay = true;
-    @Input() set expand(e: boolean) {
-        this.expandDisplay = e;
+
+    // True / false if the display is vertically expanded
+    private _exp: boolean;
+    set expand(e: boolean) {
+        this._exp = e;
+        if (this.initDone) {
+            this.saveExpandState();
+        }
     }
+    get expand(): boolean { return this._exp; }
 
     // If provided, the record will be fetched by the component.
     @Input() recordId: number;
@@ -32,14 +37,12 @@ export class BibSummaryComponent implements OnInit {
 
     constructor(
         private bib: BibRecordService,
-        private cat: CatalogService,
-        private net: NetService,
         private org: OrgService,
-        private pcrud: PcrudService
+        private store: ServerStoreService
     ) {}
 
     ngOnInit() {
-        this.initDone = true;
+
         if (this.summary) {
             this.summary.getBibCallNumber();
         } else {
@@ -47,6 +50,14 @@ export class BibSummaryComponent implements OnInit {
                 this.loadSummary();
             }
         }
+
+        this.store.getItem('eg.cat.record.summary.collapse')
+        .then(value => this.expand = !value)
+        .then(() => this.initDone = true);
+    }
+
+    saveExpandState() {
+        this.store.setItem('eg.cat.record.summary.collapse', !this.expand);
     }
 
     loadSummary(): void {

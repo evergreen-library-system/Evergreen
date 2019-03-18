@@ -3,7 +3,7 @@
   <div class="row ml-0 mr-0">
     <div id='staff-catalog-bib-navigation'>
       <div *ngIf="searchContext.isSearchable()">
-        <eg-catalog-record-pagination [recordId]="recordId">
+        <eg-catalog-record-pagination [recordId]="recordId" [recordTab]="recordTab">
         </eg-catalog-record-pagination>
       </div>
     </div>

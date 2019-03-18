@@ -1,0 +1,50 @@
+
+
+<eg-string #successMsg
+    text="Successfully Replaced Barcode" i18n-text></eg-string>
+<eg-string #errorMsg 
+    text="Failed To Replace Barcode" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+    <div class="modal-header bg-info">
+      <h4 class="modal-title">
+        <span i18n>Replace Item Barcode</span>
+      </h4>
+      <button type="button" class="close" 
+        i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-lg-4" i18n>Replacing barcode</div>
+        <div class="col-lg-8 font-weight-bold">{{copy.barcode()}}</div>
+      </div>
+      <div class="row pt-2 form-validated">
+        <div class="col-lg-4" i18n>
+          <label for="new-barcode-intput">New Barcode:</label>
+        </div>
+        <div class="col-log-8">
+          <input type="text" class="form-control" [required]="true"
+            [(ngModel)]="newBarcode" (keyup)="barcodeExists=false" 
+            id="new-barcode-input"/>
+        </div>
+      </div>
+      <div class="row d-flex pt-2 justify-content-center" *ngIf="barcodeExists">
+        <div class="alert alert-danger" i18n>
+          Barcode <span class="font-weight-bold">{{newBarcode}}</span> is already in use.
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <ng-container>
+        <button type="button" class="btn btn-warning" 
+          (click)="dismiss('canceled')" i18n>Cancel</button>
+        <button type="button" class="btn btn-success" 
+          (click)="replaceOneBarcode()" [disabled]="!newBarcode" i18n>
+          Replace Barcode
+        </button>
+      </ng-container>
+    </div>
+  </ng-template>
+  

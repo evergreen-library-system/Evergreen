@@ -18,6 +18,14 @@ export class RecordPaginationComponent implements OnInit {
     initDone = false;
     searchContext: CatalogSearchContext;
 
+    _recordTab: string;
+    @Input() set recordTab(tab: string) {
+        this._recordTab = tab;
+    }
+    get recordTab(): string {
+        return this._recordTab;
+    }
+
     @Input() set recordId(id: number) {
         this.id = id;
         // Only apply new record data after the initial load
@@ -38,40 +46,32 @@ export class RecordPaginationComponent implements OnInit {
         this.setIndex();
     }
 
+    routeToRecord(id: number) {
+        let url = '/staff/catalog/record/' + id;
+        if (this.recordTab) { url += '/' + this.recordTab; }
+        const params = this.catUrl.toUrlParams(this.searchContext);
+        this.router.navigate([url], {queryParams: params});
+    }
+
     firstRecord(): void {
-        this.findRecordAtIndex(0).then(id => {
-            const params = this.catUrl.toUrlParams(this.searchContext);
-            this.router.navigate(
-                ['/staff/catalog/record/' + id], {queryParams: params});
-        });
+        this.findRecordAtIndex(0)
+        .then(id => this.routeToRecord(id));
     }
 
     lastRecord(): void {
-        this.findRecordAtIndex(
-            this.searchContext.result.count - 1
-        ).then(id => {
-            const params = this.catUrl.toUrlParams(this.searchContext);
-            this.router.navigate(
-                ['/staff/catalog/record/' + id], {queryParams: params});
-        });
+        this.findRecordAtIndex(this.searchContext.result.count - 1)
+        .then(id => this.routeToRecord(id));
     }
 
     nextRecord(): void {
-        this.findRecordAtIndex(this.index + 1).then(id => {
-            const params = this.catUrl.toUrlParams(this.searchContext);
-            this.router.navigate(
-                ['/staff/catalog/record/' + id], {queryParams: params});
-        });
+        this.findRecordAtIndex(this.index + 1)
+        .then(id => this.routeToRecord(id));
     }
 
     prevRecord(): void {
-        this.findRecordAtIndex(this.index - 1).then(id => {
-            const params = this.catUrl.toUrlParams(this.searchContext);
-            this.router.navigate(
-                ['/staff/catalog/record/' + id], {queryParams: params});
-        });
+        this.findRecordAtIndex(this.index - 1)
+        .then(id => this.routeToRecord(id));
     }
-
 
     // Returns the offset of the record within the search results as a whole.
     searchIndex(idx: number): number {
