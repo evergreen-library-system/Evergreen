@@ -89,7 +89,7 @@ export class ComboboxComponent implements OnInit {
 
     // Useful for massaging the match string prior to comparison
     // and display.  Default version trims leading/trailing spaces.
-    formatDisplayString: (ComboboxEntry) => string;
+    formatDisplayString: (e: ComboboxEntry) => string;
 
     constructor(
       private elm: ElementRef,

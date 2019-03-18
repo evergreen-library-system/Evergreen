@@ -3,16 +3,26 @@ import {Observable, Observer, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
 import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
-import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridToolbarCheckboxComponent} from '@eg/share/grid/grid-toolbar-checkbox.component';
+import {GridToolbarCheckboxComponent
+    } from '@eg/share/grid/grid-toolbar-checkbox.component';
+import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-
+import {MarkDamagedDialogComponent
+    } from '@eg/staff/share/holdings/mark-damaged-dialog.component';
+import {MarkMissingDialogComponent
+    } from '@eg/staff/share/holdings/mark-missing-dialog.component';
+import {AnonCacheService} from '@eg/share/util/anon-cache.service';
+import {HoldingsService} from '@eg/staff/share/holdings/holdings.service';
+import {CopyAlertsDialogComponent
+    } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
+import {ReplaceBarcodeDialogComponent
+    } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
@@ -53,26 +63,44 @@ class HoldingsEntry {
 
 @Component({
   selector: 'eg-holdings-maintenance',
-  templateUrl: 'holdings.component.html'
+  templateUrl: 'holdings.component.html',
+  styleUrls: ['holdings.component.css']
 })
 export class HoldingsMaintenanceComponent implements OnInit {
 
-    recId: number;
     initDone = false;
     gridDataSource: GridDataSource;
     gridTemplateContext: any;
     @ViewChild('holdingsGrid') holdingsGrid: GridComponent;
 
     // Manage visibility of various sub-sections
-    @ViewChild('volsCheckbox') volsCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('copiesCheckbox') copiesCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('emptyVolsCheckbox') emptyVolsCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('emptyLibsCheckbox') emptyLibsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('volsCheckbox')
+        private volsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('copiesCheckbox')
+        private copiesCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('emptyVolsCheckbox')
+        private emptyVolsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('emptyLibsCheckbox')
+        private emptyLibsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('markDamagedDialog')
+        private markDamagedDialog: MarkDamagedDialogComponent;
+    @ViewChild('markMissingDialog')
+        private markMissingDialog: MarkMissingDialogComponent;
+    @ViewChild('copyAlertsDialog')
+        private copyAlertsDialog: CopyAlertsDialogComponent;
+    @ViewChild('replaceBarcode')
+        private replaceBarcode: ReplaceBarcodeDialogComponent;
 
-    contextOrg: IdlObject;
     holdingsTree: HoldingsTree;
-    holdingsTreeOrgCache: {[id: number]: HoldingsTreeNode};
+
+    // nodeType => id => tree node cache
+    treeNodeCache: {[nodeType: string]: {[id: number]: HoldingsTreeNode}};
+
+    // When true and a grid reload is called, the holdings data will be
+    // re-fetched from the server.
     refreshHoldings: boolean;
+
+    // Used as a row identifier in th grid, since we're mixing object types.
     gridIndex: number;
 
     // List of copies whose due date we need to retrieve.
@@ -82,35 +110,54 @@ export class HoldingsMaintenanceComponent implements OnInit {
     // When not true, render based on the current "expanded" state of each node.
     // Rendering from prefs happens on initial load and when any prefs change.
     renderFromPrefs: boolean;
+
     rowClassCallback: (row: any) => string;
 
+    private _recId: number;
     @Input() set recordId(id: number) {
-        this.recId = id;
+        this._recId = id;
         // Only force new data collection when recordId()
         // is invoked after ngInit() has already run.
         if (this.initDone) {
-            this.refreshHoldings = true;
-            this.holdingsGrid.reload();
+            this.hardRefresh();
         }
     }
+    get recordId(): number {
+        return this._recId;
+    }
+
+    contextOrg: IdlObject;
 
     constructor(
-        private net: NetService,
         private org: OrgService,
-        private auth: AuthService,
         private pcrud: PcrudService,
+        private auth: AuthService,
         private staffCat: StaffCatalogService,
-        private store: ServerStoreService
+        private store: ServerStoreService,
+        private localStore: StoreService,
+        private holdings: HoldingsService,
+        private anonCache: AnonCacheService
     ) {
         // Set some sane defaults before settings are loaded.
-        this.contextOrg = this.org.get(this.auth.user().ws_ou());
         this.gridDataSource = new GridDataSource();
         this.refreshHoldings = true;
         this.renderFromPrefs = true;
 
+        // TODO: need a separate setting for this?
+        this.contextOrg = this.staffCat.searchContext.searchOrg;
+
         this.rowClassCallback = (row: any): string => {
-             if (row.volume && !row.copy) {
-                return 'bg-info';
+            if (row.volume) {
+                if (row.copy) {
+                    return 'holdings-copy-row';
+                } else {
+                    return 'holdings-volume-row';
+                }
+            } else {
+                // Add a generic org unit class and a depth-specific
+                // class for styling different levels of the org tree.
+                return 'holdings-org-row holdings-org-row-' +
+                    row.treeNode.target.ou_type().depth();
             }
         }
 
@@ -142,7 +189,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     ngOnInit() {
         this.initDone = true;
 
-        // These are pre-cached via the resolver.
+        // These are pre-cached via the catalog resolver.
         const settings = this.store.getItemBatchCached([
             'cat.holdings_show_empty_org',
             'cat.holdings_show_empty',
@@ -150,18 +197,31 @@ export class HoldingsMaintenanceComponent implements OnInit {
             'cat.holdings_show_vols'
         ]);
 
-        this.volsCheckbox.checked(settings['cat.holdings_show_vols']);
+        // Show volumes by default when no preference is set.
+        let showVols = settings['cat.holdings_show_vols'];
+        if (showVols === null) { showVols = true; }
+
+        this.volsCheckbox.checked(showVols);
         this.copiesCheckbox.checked(settings['cat.holdings_show_copies']);
         this.emptyVolsCheckbox.checked(settings['cat.holdings_show_empty']);
         this.emptyLibsCheckbox.checked(settings['cat.holdings_show_empty_org']);
 
+        this.initHoldingsTree();
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             return this.fetchHoldings(pager);
         };
     }
 
-    ngAfterViewInit() {
+    contextOrgChanged(org: IdlObject) {
+        this.contextOrg = org;
+        this.hardRefresh();
+    }
 
+    hardRefresh() {
+        this.renderFromPrefs = true;
+        this.refreshHoldings = true;
+        this.initHoldingsTree();
+        this.holdingsGrid.reload();
     }
 
     toggleShowCopies(value: boolean) {
@@ -210,33 +270,40 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     initHoldingsTree() {
 
+        const visibleOrgs = this.org.fullPath(this.contextOrg, true);
+
         // The initial tree simply matches the org unit tree
         const traverseOrg = (node: HoldingsTreeNode) => {
-            node.expanded = true;
             node.target.children().forEach((org: IdlObject) => {
+                if (visibleOrgs.indexOf(org.id()) == -1) {
+                    return; // Org is outside of scope
+                }
                 const nodeChild = new HoldingsTreeNode();
                 nodeChild.nodeType = 'org';
                 nodeChild.target = org;
                 nodeChild.parentNode = node;
                 node.children.push(nodeChild);
-                this.holdingsTreeOrgCache[org.id()] = nodeChild;
+                this.treeNodeCache.org[org.id()] = nodeChild;
                 traverseOrg(nodeChild);
             });
         }
 
+        this.treeNodeCache = {
+            org: {},
+            volume: {},
+            copy: {}
+        };
+
         this.holdingsTree = new HoldingsTree();
         this.holdingsTree.root.nodeType = 'org';
         this.holdingsTree.root.target = this.org.root();
-
-        this.holdingsTreeOrgCache = {};
-        this.holdingsTreeOrgCache[this.org.root().id()] = this.holdingsTree.root;
+        this.treeNodeCache.org[this.org.root().id()] = this.holdingsTree.root;
 
         traverseOrg(this.holdingsTree.root);
     }
 
     // Org node children are sorted with any child org nodes pushed to the
     // front, followed by the call number nodes sorted alphabetcially by label.
-    // TODO: prefix/suffix
     sortOrgNodeChildren(node: HoldingsTreeNode) {
         node.children = node.children.sort((a, b) => {
             if (a.nodeType === 'org') {
@@ -248,7 +315,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
             } else if (b.nodeType === 'org') {
                 return 1;
             } else {
-                return a.target.label() < b.target.label() ? -1 : 1;
+                // TODO: should this use label sortkey instead of
+                // the compiled volume label?
+                return a.target._label < b.target._label ? -1 : 1;
             }
         });
     }
@@ -309,7 +378,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         switch(node.nodeType) {
             case 'org':
-                if (this.renderFromPrefs && node.volumeCount === 0
+                if (node.volumeCount === 0
                     && !this.emptyLibsCheckbox.checked()) {
                     return;
                 }
@@ -321,7 +390,16 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 break;
 
             case 'volume':
-                entry.locationLabel = node.target.label(); // TODO prefix/suffix
+                if (this.renderFromPrefs) {
+                    if (!this.volsCheckbox.checked()) {
+                        return;
+                    }
+                    if (node.copyCount === 0
+                        && !this.emptyVolsCheckbox.checked()) {
+                        return;
+                    }
+                }
+                entry.locationLabel = node.target._label;
                 entry.locationDepth = node.parentNode.target.ou_type().depth() + 1;
                 entry.callNumberLabel = entry.locationLabel;
                 entry.volume = node.target;
@@ -357,9 +435,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.renderFromPrefs = false;
     }
 
-
+    // Grab volumes, copies, and related data.
     fetchHoldings(pager: Pager): Observable<any> {
-        if (!this.recId) { return of([]); }
+        if (!this.recordId) { return of([]); }
 
         return new Observable<any>(observer => {
 
@@ -368,12 +446,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 return;
             }
 
-            this.initHoldingsTree();
             this.itemCircsNeeded = [];
 
             this.pcrud.search('acn',
-                {   record: this.recId,
-                    owning_lib: this.org.ancestors(this.contextOrg, true),
+                {   record: this.recordId,
+                    owning_lib: this.org.fullPath(this.contextOrg, true),
                     deleted: 'f',
                     label: {'!=' : '##URI##'}
                 }, {
@@ -384,7 +461,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
                         acn: ['prefix', 'suffix', 'copies'],
                         acli: ['inventory_workstation']
                     }
-                }
+                },
+                {authoritative: true}
             ).subscribe(
                 vol => this.appendVolume(vol),
                 err => {},
@@ -413,28 +491,278 @@ export class HoldingsMaintenanceComponent implements OnInit {
         })).toPromise();
     }
 
-    appendVolume(volume: IdlObject) {
+    // Compile prefix + label + suffix into field volume._label;
+    setVolumeLabel(volume: IdlObject) {
+        const pfx = volume.prefix() ? volume.prefix().label() : '';
+        const sfx = volume.suffix() ? volume.suffix().label() : '';
+        volume._label = pfx ? pfx + ' ' : '';
+        volume._label += volume.label();
+        volume._label += sfx ? ' ' + sfx : '';
+    }
 
-        const volNode = new HoldingsTreeNode();
-        volNode.parentNode = this.holdingsTreeOrgCache[volume.owning_lib()];
-        volNode.parentNode.children.push(volNode);
-        volNode.nodeType = 'volume';
+    // Create the tree node for the volume if it doesn't already exist.
+    // Do the same for its linked copies.
+    appendVolume(volume: IdlObject) {
+        let volNode = this.treeNodeCache.volume[volume.id()];
+        this.setVolumeLabel(volume);
+
+        if (volNode) {
+            const pNode = this.treeNodeCache.org[volume.owning_lib()]
+            if (volNode.parentNode.target.id() !== pNode.target.id()) {
+                // Volume owning library changed.  Un-link it from the previous
+                // org unit collection before adding to the new one.
+                // XXX TODO: ^--
+                volNode.parentNode = pNode;
+                volNode.parentNode.children.push(volNode);
+            }
+        } else {
+            volNode = new HoldingsTreeNode();
+            volNode.nodeType = 'volume';
+            volNode.parentNode = this.treeNodeCache.org[volume.owning_lib()]
+            volNode.parentNode.children.push(volNode);
+            this.treeNodeCache.volume[volume.id()] = volNode;
+        }
+
         volNode.target = volume;
 
         volume.copies()
             .sort((a: IdlObject, b: IdlObject) => a.barcode() < b.barcode() ? -1 : 1)
-            .forEach((copy: IdlObject) => {
-                const copyNode = new HoldingsTreeNode();
+            .forEach((copy: IdlObject) => this.appendCopy(volNode, copy));
+    }
+
+    // Find or create a copy node.
+    appendCopy(volNode: HoldingsTreeNode, copy: IdlObject) {
+        let copyNode = this.treeNodeCache.copy[copy.id()];
+
+        if (copyNode) {
+            const oldParent = copyNode.parentNode;
+            if (oldParent.target.id() !== volNode.target.id()) {
+                // TODO: copy changed owning volume.  Remove it from
+                // the previous volume before adding to the new volume.
                 copyNode.parentNode = volNode;
                 volNode.children.push(copyNode);
-                copyNode.nodeType = 'copy';
-                copyNode.target = copy;
-                const stat = Number(copy.status().id());
-                if (stat === 1 /* checked out */ || stat === 16 /* long overdue */) {
-                    this.itemCircsNeeded.push(copy);
+            }
+        } else {
+            // New node required
+            copyNode = new HoldingsTreeNode();
+            copyNode.nodeType = 'copy';
+            volNode.children.push(copyNode);
+            copyNode.parentNode = volNode;
+            this.treeNodeCache.copy[copy.id()] = copyNode;
+        }
+
+        copyNode.target = copy;
+        const stat = Number(copy.status().id());
+
+        if (stat === 1 /* checked out */ || stat === 16 /* long overdue */) {
+            // Avoid looking up circs on items that are not checked out.
+            this.itemCircsNeeded.push(copy);
+        }
+    }
+
+    // Which copies in the grid are selected.
+    selectedCopyIds(rows: HoldingsEntry[], skipStatus?: number): number[] {
+        let copyRows = rows.filter(r => Boolean(r.copy)).map(r => r.copy);
+        if (skipStatus) {
+            copyRows = copyRows.filter(
+                c => Number(c.status().id()) !== Number(skipStatus));
+        }
+        return copyRows.map(c => Number(c.id()));
+    }
+
+    selectedVolumeIds(rows: HoldingsEntry[]): number[] {
+        return rows
+            .filter(r => r.treeNode.nodeType === 'volume')
+            .map(r => Number(r.volume.id()));
+    }
+
+    async showMarkDamagedDialog(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows, 14 /* ignore damaged */);
+
+        if (copyIds.length === 0) { return; }
+
+        let rowsModified = false;
+
+        const markNext = async(ids: number[]) => {
+            if (ids.length === 0) {
+                return Promise.resolve();
+            }
+
+            this.markDamagedDialog.copyId = ids.pop();
+            return this.markDamagedDialog.open({size: 'lg'}).then(
+                ok => {
+                    if (ok) { rowsModified = true; }
+                    return markNext(ids);
+                },
+                dismiss => markNext(ids)
+            );
+        };
+
+        await markNext(copyIds);
+        if (rowsModified) {
+            this.refreshHoldings = true;
+            this.holdingsGrid.reload();
+        }
+    }
+
+    showMarkMissingDialog(rows: any[]) {
+        const copyIds = this.selectedCopyIds(rows, 4 /* ignore missing */);
+        if (copyIds.length > 0) {
+            this.markMissingDialog.copyIds = copyIds;
+            this.markMissingDialog.open({}).then(
+                rowsModified => {
+                    if (rowsModified) {
+                        this.refreshHoldings = true;
+                        this.holdingsGrid.reload();
+                    }
+                },
+                dismissed => {} // avoid console errors
+            );
+        }
+    }
+
+    // Mark record, library, and potentially the selected call number
+    // as the current transfer target.
+    markLibCnForTransfer(rows: HoldingsEntry[]) {
+        if (rows.length === 0) {
+            return;
+        }
+
+        // Action may only apply to a single org or volume row.
+        const node = rows[0].treeNode;
+        if (node.nodeType === 'copy') {
+            return;
+        }
+
+        let orgId: number;
+
+        if (node.nodeType === 'org') {
+            orgId = node.target.id();
+
+            // Clear volume target when performed on an org unit row
+            this.localStore.removeLocalItem('eg.cat.transfer_target_vol');
+
+        } else if (node.nodeType === 'volume') {
+
+            // All volume nodes are children of org nodes.
+            orgId = node.parentNode.target.id();
+
+            // Add volume target when performed on a volume row.
+            this.localStore.setLocalItem(
+                'eg.cat.transfer_target_vol', node.target.id())
+        }
+
+        this.localStore.setLocalItem('eg.cat.transfer_target_record', this.recordId);
+        this.localStore.setLocalItem('eg.cat.transfer_target_lib', orgId);
+    }
+
+    openAngJsWindow(path: string) {
+        const url = `/eg/staff/${path}`;
+        window.open(url, '_blank');
+    }
+
+    openItemHolds(rows: HoldingsEntry[]) {
+        if (rows.length > 0 && rows[0].copy) {
+            this.openAngJsWindow(`cat/item/${rows[0].copy.id()}/holds`);
+        }
+    }
+
+    openItemStatusList(rows: HoldingsEntry[]) {
+        const ids = this.selectedCopyIds(rows);
+        if (ids.length > 0) {
+            return this.openAngJsWindow(`cat/item/search/${ids.join(',')}`);
+        }
+    }
+
+    openItemStatus(rows: HoldingsEntry[]) {
+        if (rows.length > 0 && rows[0].copy) {
+           return this.openAngJsWindow(`cat/item/${rows[0].copy.id()}`);
+        }
+    }
+
+    openItemTriggeredEvents(rows: HoldingsEntry[]) {
+        if (rows.length > 0 && rows[0].copy) {
+           return this.openAngJsWindow(
+               `cat/item/${rows[0].copy.id()}/triggered_events`);
+        }
+    }
+
+    openItemPrintLabels(rows: HoldingsEntry[]) {
+        const ids = this.selectedCopyIds(rows);
+        if (ids.length === 0) { return; }
+
+        this.anonCache.setItem(null, 'print-labels-these-copies', {copies: ids})
+        .then(key => this.openAngJsWindow(`cat/printlabels/${key}`));
+    }
+
+    openVolCopyEdit(rows: HoldingsEntry[], addVols: boolean, addCopies: boolean) {
+
+        // The user may select a set of volumes by selecting volume and/or
+        // copy rows.
+        const volumes = [];
+        rows.forEach(r => {
+            if (r.treeNode.nodeType === 'volume') {
+                volumes.push(r.volume);
+            } else if (r.treeNode.nodeType === 'copy') {
+                volumes.push(r.treeNode.parentNode.target);
+            }
+        });
+
+        if (addCopies && !addVols) {
+            // Adding copies to an existing set of volumes.
+            if (volumes.length > 0) {
+                const volIds = volumes.map(v => Number(v.id()));
+                this.holdings.spawnAddHoldingsUi(this.recordId, volIds);
+            }
+
+        } else if (addVols) {
+            const entries = [];
+
+            if (volumes.length > 0) {
+
+                // When adding volumes, if any are selected in the grid,
+                // create volumes that have the same label and owner.
+                volumes.forEach(v =>
+                    entries.push({label: v.label(), owner: v.owning_lib()}));
+
+                } else {
+
+                // Otherwise create new volumes from scratch.
+                entries.push({owner: this.auth.user().ws_ou()})
+            }
+
+            this.holdings.spawnAddHoldingsUi(
+                this.recordId, null, entries, !addCopies);
+        }
+    }
+
+    openItemNotes(rows: HoldingsEntry[], mode: string) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+
+        this.copyAlertsDialog.copyIds = copyIds;
+        this.copyAlertsDialog.mode = mode;
+        this.copyAlertsDialog.open({size: 'lg'}).then(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
                 }
-            });
+            },
+            dismissed => {}
+        )
+    }
+
+    openReplaceBarcodeDialog(rows: HoldingsEntry[]) {
+        const ids = this.selectedCopyIds(rows);
+        if (ids.length === 0) { return; }
+        this.replaceBarcode.copyIds = ids;
+        this.replaceBarcode.open({}).then(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            },
+            dismissed => {}
+        );
     }
 }
-
-

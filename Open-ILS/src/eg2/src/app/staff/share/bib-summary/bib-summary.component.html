@@ -8,12 +8,12 @@
     <div>
       <a class="with-material-icon no-href text-primary" 
         title="Show More" i18n-title
-        *ngIf="!expandDisplay" (click)="expandDisplay=true">
+        *ngIf="!expand" (click)="expand=true">
         <span class="material-icons">expand_more</span>
       </a>
       <a class="with-material-icon no-href text-primary" 
         title="Show Less" i18n-title
-        *ngIf="expandDisplay" (click)="expandDisplay=false">
+        *ngIf="expand" (click)="expand=false">
         <span class="material-icons">expand_less</span>
       </a>
     </div>
@@ -36,7 +36,7 @@
           </div>
         </div>
       </li>
-      <li class="list-group-item" *ngIf="expandDisplay">
+      <li class="list-group-item" *ngIf="expand">
         <div class="d-flex">
           <div class="flex-1 font-weight-bold" i18n>Author:</div>
           <div class="flex-3">{{summary.display.author}}</div>
@@ -52,7 +52,7 @@
           </div>
         </div>
       </li>
-      <li class="list-group-item" *ngIf="expandDisplay">
+      <li class="list-group-item" *ngIf="expand">
         <div class="d-flex">
           <div class="flex-1 font-weight-bold" i18n>Bib Call #:</div>
           <div class="flex-3">{{summary.bibCallNumber}}</div>

@@ -335,7 +335,7 @@ export class HoldsGridComponent implements OnInit {
             }
 
             this.markDamagedDialog.copyId = ids.pop();
-            this.markDamagedDialog.open({size: 'lg'}).then(
+            return this.markDamagedDialog.open({size: 'lg'}).then(
                 ok => {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
@@ -395,5 +395,7 @@ export class HoldsGridComponent implements OnInit {
         }
     }
 }
+
+
 
 

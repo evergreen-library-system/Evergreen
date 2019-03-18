@@ -47,7 +47,8 @@ import {HoldingsMaintenanceComponent} from './record/holdings.component';
     StaffCommonModule,
     CatalogCommonModule,
     CatalogRoutingModule,
-    HoldsModule
+    HoldsModule,
+    HoldingsModule
   ],
   providers: [
     StaffCatalogService
