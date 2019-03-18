@@ -1,5 +1,6 @@
 <div class="eg-embed-frame">
   <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape &&  showIframe" ng-click="escapeEmbed()">[% l('Open in New Window') %]</button>
+  <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape &&  showIframe" ng-click="restoreEmbed()">[% l('Refresh') %]</button>
   <button type="button" class="btn btn-default btn-xs" ng-show="allowEscape && !showIframe" ng-click="restoreEmbed()">[% l('Re-embed') %]</button>
   <!--
     'src' is replaced by the controller, after linking, and as soon as a
