@@ -96,6 +96,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // field on the "aout" class.
     @Input() showLinkSelectors: boolean;
 
+    @Input() disablePaging: boolean;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -132,6 +134,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.rowFlairCallback = this.rowFlairCallback;
+        this.context.disablePaging = this.disablePaging === true;
         if (this.showFields) {
             this.context.defaultVisibleFields = this.showFields.split(',');
         }
