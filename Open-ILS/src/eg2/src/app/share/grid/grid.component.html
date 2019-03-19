@@ -16,15 +16,15 @@
   </eg-grid-print>
 
   <ng-container *ngIf="dataSource.data.length == 0">
-    <div class="row">>
+    <div class="row">
       <ng-container *ngIf="dataSource.requestingData">
         <div class="col-lg-6 offset-lg-3 text-center mt-3">
-         <eg-progress-inline></eg-progress-inline>
+          <eg-progress-inline></eg-progress-inline>
         </div>
       </ng-container>
       <ng-container *ngIf="!dataSource.requestingData">
-        <div class="col-lg-12 text-center alert alert-light font-italic" i18n>
-          Nothing to Display
+        <div class="col-lg-12 text-center alert alert-light font-italic">
+          <span i18n>Nothing to Display</span>
         </div>
       </ng-container>
     </div>
