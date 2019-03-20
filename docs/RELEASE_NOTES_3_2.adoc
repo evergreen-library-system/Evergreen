@@ -3,6 +3,111 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.5
+---------------
+
+This release contains bug fixes improving on Evergreen 3.2.4.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Improves the web client splash screen by linking the images along with their links
+  (https://bugs.launchpad.net/evergreen/+bug/1802662[Bug #1802662])
+
+Circulation
+^^^^^^^^^^^
+
+* Allows the Title Hold screen to remember previously selected pickup library
+  (https://bugs.launchpad.net/evergreen/+bug/1665534[Bug #1665534])
+* Sorting improvements for printing the Holds Pull List
+  (https://bugs.launchpad.net/evergreen/+bug/1749502[Bug #1749502])
+* Better display for non-catalogued checkouts in the offline checkout preview
+  pane (https://bugs.launchpad.net/evergreen/+bug/1818576[Bug #1818576])
+
+Cataloging
+^^^^^^^^^^
+
+* Fixes a bug that changed subfield order in bib record after editing a linked
+  authority (https://bugs.launchpad.net/evergreen/+bug/712490[Bug #712490])
+* Allows opening multiple selected items in Item Status screen from the Holdings
+  View (https://bugs.launchpad.net/evergreen/+bug/1734775[Bug #1734775])
+* Adds missing "Deleted?" column choice to Record Buckets
+  (https://bugs.launchpad.net/evergreen/+bug/1746360[Bug #1746360])
+* Fixes the batch Call Number label field on the Call Number editor to populate
+  from the MARC record (https://bugs.launchpad.net/evergreen/+bug/1793196[Bug
+  #1793196])
+* Fixes a bug to allow editing the call number label for some but not all
+  attached items (https://bugs.launchpad.net/evergreen/+bug/1794588[Bug
+  #1794588])
+* Fixes the sort order of Parts on the Holdings View
+  (https://bugs.launchpad.net/evergreen/+bug/1800178[Bug #1800178])
+* Adds missing action "Find Originating Acquisition" to Cataloging actions menu
+  (https://bugs.launchpad.net/evergreen/+bug/1705497[Bug #1705497])
+* Keeps the Item Status screen updated after editing items
+  (https://bugs.launchpad.net/evergreen/+bug/1721109[Bug #1721109])
+* Fixes a bug with the "checked" state of the Item note "Public Note" checkbox
+  (https://bugs.launchpad.net/evergreen/+bug/1778571[Bug #1778571])
+* Fixes a bug with Item Alert counts in the Holdings view
+  (https://bugs.launchpad.net/evergreen/+bug/1798628[Bug #1798628])
+* Improved display when merging bib records from a bucket (side by side, with
+  optional holdings) (https://bugs.launchpad.net/evergreen/+bug/1739293[Bug
+  #1739293])
+* Fixes issues where edits to MARC records would fail to save during merge
+  (https://bugs.launchpad.net/evergreen/+bug/1776736[Bug #1776736])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Web client (websocket) logins are now properly tracked as user activity
+  (https://bugs.launchpad.net/evergreen/+bug/1818153[Bug #1818153])
+* Fixes some log warnings related to Holds Depth
+  (https://bugs.launchpad.net/evergreen/+bug/1667497[Bug #1667497])
+* Fixes a bug in the fine generator related to Bookings
+  (https://bugs.launchpad.net/evergreen/+bug/1819796[Bug #1819796])
+* Fixes the Group Penalty Threshold link under the Local Administration menu
+  (https://bugs.launchpad.net/evergreen/+bug/1812389[Bug #1812389])
+* Fixes a typo in seed data and all related PO files for translation
+  (https://bugs.launchpad.net/evergreen/+bug/1759238[Bug #1759238])
+* Fixes an error in the sitemap_generator script when using the shortname
+  parameter (https://bugs.launchpad.net/evergreen/+bug/1808006[Bug #1808006])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.2.5 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Adam Bowling
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Jason Etheridge
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Sam Link
+* Tiffany Little
+* Terran McCanna
+* Michele Morgan
+* Geoff Sams
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
 Evergreen 3.2.4
 ---------------
 
