@@ -26,6 +26,7 @@ export class GridColumn {
     idlFieldDef: any;
     datatype: string;
     datePlusTime: boolean;
+    ternaryBool: boolean;
     cellTemplate: TemplateRef<any>;
     cellContext: any;
     isIndex: boolean;
@@ -656,6 +657,12 @@ export class GridContext {
             val = this.nestedItemFieldValue(row, col);
         } else if (col.name in row) {
             val = this.getObjectFieldValue(row, col.name);
+        }
+
+        if (col.datatype === 'bool') {
+            // Avoid string-ifying bools so we can use an <eg-bool/>
+            // in the grid template.
+            return val;
         }
 
         return this.format.transform({
