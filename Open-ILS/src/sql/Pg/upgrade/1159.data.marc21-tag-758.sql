@@ -51,4 +51,4 @@ INSERT INTO config.marc_subfield(marc_format, marc_record_type, tag, code, descr
 VALUES (1, 'biblio', '758', '8', $$Field link and sequence number$$,
 TRUE, FALSE, FALSE);
 
--- COMMIT;
+COMMIT;
