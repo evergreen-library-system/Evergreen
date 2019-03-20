@@ -25,6 +25,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
+import {BoolDisplayComponent} from '@eg/share/util/bool.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
     PromptDialogComponent,
     ProgressInlineComponent,
     ProgressDialogComponent,
+    BoolDisplayComponent,
     FormatValuePipe
   ],
   imports: [
@@ -55,6 +57,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
     PromptDialogComponent,
     ProgressInlineComponent,
     ProgressDialogComponent,
+    BoolDisplayComponent,
     FormatValuePipe
   ]
 })

@@ -119,7 +119,8 @@ export class FormatService {
 
             case 'bool':
                 // Slightly better than a bare 't' or 'f'.
-                // Should probably add a global true/false string.
+                // Note the caller is better off using an <eg-bool/> for
+                // boolean display.
                 return Boolean(
                     value === 't' || value === 1 ||
                     value === '1' || value === true
