@@ -9,9 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "create-mock-idl": "cd src/test_data && perl idl2js.pl",
-    "export-strings": "ng xi18n --output-path locale",
-    "merge-strings": "xliffmerge",
-    "build-fr-CA": "ng build --configuration=production-fr-CA --output-path ../../web/eg2/fr-CA --deploy-url /eg2/fr-CA/ --base-href /eg2/fr-CA; sed -i s/IDL2js\\\"/IDL2js?locale=fr-CA\\\"/g ../../web/eg2/fr-CA/index.html; sed -i s/lang=\\\"en\\\"/lang=\\\"fr\\\"/g ../../web/eg2/fr-CA/index.html"
+    "export-strings": "ng xi18n --output-path locale --i18n-format xmb",
+    "build-cs-CZ": "ng build --configuration=production-cs-CZ --output-path ../../web/eg2/cs-CZ --deploy-url /eg2/cs-CZ/ --base-href /eg2/cs-CZ; sed -i s/IDL2js\\\"/IDL2js?locale=cs-CZ\\\"/g ../../web/eg2/cs-CZ/index.html; sed -i s/lang=\\\"en\\\"/lang=\\\"cs\\\"/g ../../web/eg2/cs-CZ/index.html"
   },
   "private": true,
   "dependencies": {
@@ -55,31 +54,5 @@
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
     "typescript": "~3.1.6"
-  },
-  "xliffmergeOptions": {
-    "srcDir": "src/locale",
-    "genDir": "src/locale",
-    "i18nFile": "messages.xlf",
-    "i18nBaseFile": "messages",
-    "i18nFormat": "xlf",
-    "encoding": "UTF-8",
-    "defaultLanguage": "en",
-    "languages": [
-      "en",
-      "fr-CA"
-    ],
-    "removeUnusedIds": true,
-    "supportNgxTranslate": false,
-    "ngxTranslateExtractionPattern": "@@|ngx-translate",
-    "useSourceAsTarget": true,
-    "targetPraefix": "",
-    "targetSuffix": "",
-    "beautifyOutput": false,
-    "allowIdChange": false,
-    "autotranslate": false,
-    "apikey": "",
-    "apikeyfile": "",
-    "verbose": false,
-    "quiet": false
   }
 }
