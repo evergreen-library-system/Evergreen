@@ -427,7 +427,9 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 
     $scope.refreshGridData = function() {
         var chain = $q.when();
-        var all_items = itemSvc.copies.map((item) => {return item.id});
+        var all_items = itemSvc.copies.map(function(item) {
+            return item.id;
+        });
         angular.forEach(all_items.reverse(), function(i) {
             itemSvc.copies.shift();
             chain = chain.then(function() {
