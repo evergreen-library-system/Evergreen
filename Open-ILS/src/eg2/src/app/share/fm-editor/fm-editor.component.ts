@@ -117,6 +117,10 @@ export class FmRecordEditorComponent
     // IDL record display label.  Defaults to the IDL label.
     @Input() recordLabel: string;
 
+    // When true at the component level, pre-fetch the combobox data
+    // for all combobox fields.  See also FmFieldOptions.
+    @Input() preloadLinkedValues: boolean;
+
     // Emit the modified object when the save action completes.
     @Output() onSave$ = new EventEmitter<IdlObject>();
 
@@ -367,6 +371,13 @@ export class FmRecordEditorComponent
     wireUpCombobox(field: any): Promise<any> {
 
         const fieldOptions = this.fieldOptions[field.name] || {};
+
+        // globally preloading unless a field-specific value is set.
+        if (this.preloadLinkedValues) {
+            if (!('preloadLinkedValues' in fieldOptions)) {
+                fieldOptions.preloadLinkedValues = true;
+            }
+        }
 
         const selector = fieldOptions.linkedSearchField ||
             this.getClassSelector(field.class);
