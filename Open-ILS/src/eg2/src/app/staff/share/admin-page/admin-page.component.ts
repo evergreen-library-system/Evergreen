@@ -171,6 +171,10 @@ export class AdminPageComponent implements OnInit {
 
         this.createNew = () => {
             this.editDialog.mode = 'create';
+            // We reuse the same editor for all actions.  Be sure
+            // create action does not try to modify an existing record.
+            this.editDialog.recId = null;
+            this.editDialog.record = null;
             this.editDialog.open({size: this.dialogSize}).then(
                 ok => {
                     this.createString.current()
