@@ -264,6 +264,7 @@ values.
 !Default ident type for patron registration!This is the default Ident Type for new users in the patron editor.!Selection list!
 !Default showing suggested patron registration fields!Instead of All fields, show just suggested fields in patron registration by default.!True/False!
 !Disable the ability to save list column configurations locally.!GUI: Disable the ability to save list column configurations locally. If set, columns may still be manipulated, however, the changes do not persist. Also, existing local configurations are ignored if this setting is true.!True/False!
+!Enable Experimental Angular Staff Catalog!Adds an entry to the Web client's search menu so that staff can experiment with the new Angular Staff Catalog.!True/False!
 !Example for Day_phone field on patron registration!The example on validation on the Day_phone field in patron registration.!Text!
 !Example for Email field on patron registration!The example on validation on the Email field in patron  registration.!Text!
 !Example for Evening-phone on patron registration!The example on validation on the Evening-phone field in patron registration.!Text!

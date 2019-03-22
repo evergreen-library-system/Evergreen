@@ -156,6 +156,11 @@ import progress.  It also allows users to start multiple imports at
 the same time and follow the status of each in one interace.
 
 
+Spine Label Sheet Printing
+++++++++++++++++++++++++++
+
+Catalogers can now print spine labels onto 8 1/2 x 11 inch label sheets.
+
 
 Circulation
 ~~~~~~~~~~~
@@ -195,11 +200,12 @@ waiver)," is used to enable or disable this feature.
 Client
 ~~~~~~
 
-Booking Administration Moved To Angular
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Administration => Booking Administration pages have been ported to
+Server and Booking Administration Moved To Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Administration => Server Administration and 
+Administration => Booking Administration pages have been ported to
 Angular using the new Angular grids.  Entry points from both AngularJS
-and Angular apps point to the new interfaces.
+and Angular web clients point to the new interfaces.
 
 Option to Enable Experimental Angular Staff Catalog
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -254,22 +260,33 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
+* King County Library System (KCLS)
+* MassLNC Evergreen Development Initiative
 * Pennsylvania Integrated Library System (PaILS)
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
+* Adam Bowling
 * Steve Callender
+* Eva Cerninakova
 * Jeff Davis
 * Jason Etheridge
 * Bill Erickson
 * Rogan Hamby
 * Kathy Lussier
+* Terran McCanna
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Jane Sandberg
 * Chris Sharp
 * Ben Shum
+* Remington Steed
 * Jason Stephenson
+* Anahi Valdez
 * Dan Wells
+* Stephen Woidowski
 * John Yorio
 
 
@@ -277,7 +294,9 @@ We also thank the following organizations whose employees contributed
 patches:
 
 * BC Libraries Cooperative
+* Catalyte
 * CW MARS
+* Emerald Data Networks
 * Equinox Open Library Initiative
 * Georgia PINES
 * King County Library System
