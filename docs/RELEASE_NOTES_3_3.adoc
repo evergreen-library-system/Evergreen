@@ -5,7 +5,30 @@ Evergreen 3.3 Release Notes
 
 Upgrade notes
 -------------
-TODO
+
+Upgrading PostgreSQL
+^^^^^^^^^^^^^^^^^^^^
+Evergreen now supports PostgreSQL 9.6 and 10.
+If you upgrade your database from a PostgreSQL version of 9.5, or
+lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
+indexes in additon to the normal database upgrade steps.  The index
+recreation is necessary because of changes to the PostgreSQL
+`unaccent` extension module.
+
+The following snippet of SQL code will do the necessary steps:
+
+[source,sql]
+------------------------------------------------------------------------
+DROP INDEX actor_usr_first_given_name_unaccent_idx;
+DROP INDEX actor_usr_second_given_name_unaccent_idx;
+DROP INDEX actor_usr_family_name_unaccent_idx;
+CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(first_given_name));
+CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(second_given_name));
+CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(family_name));
+------------------------------------------------------------------------ 
 
 
 New Features
@@ -16,13 +39,12 @@ Administration
 
 Include Item Status in marc_export Items Export
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The marc_export program now includes the item status in the 852 subfield s when exporting items.
+The marc_export script now includes the item status in the 852 subfield s when exporting items.
 
 Ability to Reingest Certain Record Attributes In pingest.pl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 An option, `--attr`, has been added to the `pingest.pl` support script
 that allows the user to specify which record attributes to reingest.
-This option is used to specify which record attribute(s) to reingest.
 It can be used one or more times to specify one or more attributes to
 ingest.  It can be omitted to reingest all record attributes.  This
 option is ignored if the `--skip-attrs` option is used.
@@ -55,28 +77,6 @@ write `\set ECHO none` in order to disable the echoing of commands.
 This latter form works in all versions of PostgreSQL currently
 supported by Evergreen.
 
-Database Upgrade
-++++++++++++++++
-If you upgrade your database from a PostgreSQL version of 9.5, or
-lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
-indexes in additon to the normal database upgrade steps.  The index
-recreation is necessary because of changes to the PostgreSQL
-`unaccent` extension module.
-
-The following snippet of SQL code will do the necessary steps:
-
-[source,sql]
-------------------------------------------------------------------------
-DROP INDEX actor_usr_first_given_name_unaccent_idx;
-DROP INDEX actor_usr_second_given_name_unaccent_idx;
-DROP INDEX actor_usr_family_name_unaccent_idx;
-CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr
-      (evergreen.unaccent_and_squash(first_given_name));
-CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr
-      (evergreen.unaccent_and_squash(second_given_name));
-CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr
-      (evergreen.unaccent_and_squash(family_name));
------------------------------------------------------------------------- 
 
 
 Ubuntu 18.04 Bionic Beaver
@@ -98,13 +98,13 @@ Cataloging
 MARC Import/Export Interface Update (Angular Port)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This MARC Import/Export (AKA Vandelay) interface is now built on
-Angular(6) instead of Dojo.  The functionality is consistent with the
+Angular(7) instead of Dojo.  The functionality is consistent with the
 previous version of the interface, with minor UI adjustments to match
-the Angular style, plus one new interface called 'Recent Imports'
+the Angular style, plus one new interface called 'Recent Imports'.
 
 Import Templates
 ++++++++++++++++
-Users may now saves sets of import attributes from the MARC import form as 
+Users may now save sets of import attributes from the MARC import form as 
 named templates.  Users may select a default template, applied on page load 
 by default, and users may delete existing templates.
 
@@ -117,7 +117,7 @@ the user may track the progress without refreshing the page.
 
 This interface makes it possible to exit the main import tab or the
 Vandelay interface altogether and return at a later time to check on
-import progress.  It also allows users to kick-off multiple imports at
+import progress.  It also allows users to start multiple imports at
 the same time and follow the status of each in one interace.
 
 
@@ -254,19 +254,28 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+* Pennsylvania Integrated Library System (PaILS)
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
+* Steve Callender
+* Bill Erickson
+* Rogan Hamby
+* Ben Shum
+* Jason Stephenson
+* Dan Wells
+* John Yorio
 
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* CW MARS
+* Equinox Open Library Initiative
+* King County Library System
+* Linn-Benton Community College
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/

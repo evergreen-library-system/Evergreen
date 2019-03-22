@@ -188,6 +188,7 @@ record.  This 852 field includes the following information:
 |$k                |Call number prefix
 |$m                |Call number suffix
 |$p                |Barcode
+|$s                |Status
 |$t                |Copy number
 |$x                |Miscellaneous item information
 |$y                |Price
@@ -278,6 +279,23 @@ pingest.pl accepts the following command line options:
 --skip-facets::
 --skip-display::
     Skip the selected reingest component.
+
+--attr::
+    This option allows the user to specify which record attributes to reingest.
+It can be used one or more times to specify one or more attributes to
+ingest.  It can be omitted to reingest all record attributes.  This
+option is ignored if the `--skip-attrs` option is used.
++
+The `--attr` option is most useful after doing something specific that
+requires only a partial ingest of records.  For instance, if you add a
+new language to the `config.coded_value_map` table, you will want to
+reingest the `item_lang` attribute on all of your records.  The
+following command line will do that, and only that, ingest:
++
+----
+$ /openils/bin/pingest.pl --skip-browse --skip-search --skip-facets \
+    --skip-display --attr=item_lang
+----
 
 
 
