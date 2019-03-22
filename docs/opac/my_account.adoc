@@ -236,6 +236,24 @@ there is no way for a patron to recover those data.
 After changing any of these settings, you must click _Save_ to store your 
 preferences.
 
+Authorize other people to use your account
+++++++++++++++++++++++++++++++++++++++++++
+
+indexterm:[Allow others to use my account]
+indexterm:[checking out,materials on another patron's account]
+indexterm:[holds,picking up another patron's]
+indexterm:[privacy waiver]
+
+
+If your library has enabled it, you can authorize other people to use
+your account. In the Search and History Preferences tab
+under Account Preferences, find the section labeled "Allow others to use
+my account". Enter the name and indicate that the
+specified person is allowed to place holds, pickup holds, view
+borrowing history, and check out items on their account.  This
+information will also be visible to circulation staff at your library.
+
+
 
 indexterm:[holds, preferred pickup location]
 
