@@ -14,6 +14,7 @@ import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
+import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -28,6 +29,9 @@ export class SandboxComponent implements OnInit {
 
     @ViewChild('printTemplate')
     private printTemplate: TemplateRef<any>;
+
+    @ViewChild('fmRecordEditor')
+    private fmRecordEditor: FmRecordEditorComponent;
 
     // @ViewChild('helloStr') private helloStr: StringComponent;
 
@@ -130,6 +134,19 @@ export class SandboxComponent implements OnInit {
                 idlField: 'metarecord'
             });
         });
+    }
+
+    openEditor() {
+        this.fmRecordEditor.open({size: 'lg'}).then(
+            ok => { console.debug(ok); },
+            err => {
+                if (err && err.dismissed) {
+                    console.debug('dialog was dismissed');
+                } else {
+                    console.error(err);
+                }
+            }
+        );
     }
 
     btGridRowClassCallback(row: any): string {
