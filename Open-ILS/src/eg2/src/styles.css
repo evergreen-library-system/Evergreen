@@ -11,13 +11,13 @@
  * icons.  More research needed.
  * /
 /*
-@import '~material-design-icons/iconfont/material-icons.css'; 
+@import '~material-design-icons/iconfont/material-icons.css';
 */
 
 /** BS default fonts are huge */
 body, .form-control, .btn, .input-group-text {
   /* This more or less matches the font size of the angularjs client.
-   * The default BS4 font of 1rem is comically large. 
+   * The default BS4 font of 1rem is comically large.
    */
   font-size: .88rem;
 }
@@ -115,13 +115,21 @@ h5 {font-size: .95rem}
   padding: .5rem;
 }
 
-@media all and (min-width: 800px) {                                            
-    /* scrollable typeahead menus for full-size screens */                               
+@media all and (min-width: 800px) {
+    /* scrollable typeahead menus for full-size screens */
     ngb-typeahead-window {
-        height: auto;                                                          
-        max-height: 200px;                                                     
-        overflow-x: hidden;                                                    
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
     }
+}
+
+/* Limit size of dropdown menus and allow for scrolling */
+.dropdown-menu {
+  height: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  font-size: 98%;
 }
 
 /* --------------------------------------------------------------------------
@@ -169,7 +177,7 @@ h5 {font-size: .95rem}
 
 
 /**
- * Only display the print container when printing 
+ * Only display the print container when printing
  */
 #eg-print-container {
     display: none;
