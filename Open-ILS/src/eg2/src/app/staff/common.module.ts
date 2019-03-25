@@ -1,11 +1,9 @@
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {EgCommonModule} from '@eg/common.module';
+import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {AudioService} from '@eg/share/util/audio.service';
 import {GridModule} from '@eg/share/grid/grid.module';
 import {StaffBannerComponent} from './share/staff-banner.component';
-import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
-import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.component';
-import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
@@ -17,7 +15,6 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {StringService} from '@eg/share/string/string.service';
 import {TitleComponent} from '@eg/share/title/title.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
-import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
@@ -32,9 +29,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 @NgModule({
   declarations: [
     StaffBannerComponent,
-    ComboboxComponent,
-    ComboboxEntryComponent,
-    OrgSelectComponent,
     OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
@@ -43,7 +37,6 @@ import {ReactiveFormsModule} from '@angular/forms';
     TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
-    DateSelectComponent,
     BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,
@@ -52,16 +45,15 @@ import {ReactiveFormsModule} from '@angular/forms';
   ],
   imports: [
     EgCommonModule,
-    GridModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonWidgetsModule,
+    GridModule
   ],
   exports: [
     EgCommonModule,
+    CommonWidgetsModule,
     GridModule,
     StaffBannerComponent,
-    ComboboxComponent,
-    ComboboxEntryComponent,
-    OrgSelectComponent,
     OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
@@ -70,7 +62,6 @@ import {ReactiveFormsModule} from '@angular/forms';
     TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
-    DateSelectComponent,
     BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,

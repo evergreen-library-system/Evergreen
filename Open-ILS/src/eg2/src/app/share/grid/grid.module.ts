@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {EgCommonModule} from '@eg/common.module';
+import {CommonWidgetsModule} from '@eg/share/common-widgets.module';
 import {GridComponent} from './grid.component';
 import {GridColumnComponent} from './grid-column.component';
 import {GridHeaderComponent} from './grid-header.component';
@@ -33,7 +34,8 @@ import {GridPrintComponent} from './grid-print.component';
         GridPrintComponent
     ],
     imports: [
-        EgCommonModule
+        EgCommonModule,
+        CommonWidgetsModule
     ],
     exports: [
         // public components
