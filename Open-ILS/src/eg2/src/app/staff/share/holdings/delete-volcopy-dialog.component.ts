@@ -73,10 +73,10 @@ export class DeleteVolcopyDialogComponent
                         // Marking copies deleted in forceDeleteCopies mode
                         // is not required, but we do it here so we can
                         // report the number of copies to be deleted.
-                        c.isdeleted(true)
+                        c.isdeleted(true);
                         this.numCopies++;
                     }
-                })
+                });
             }
         });
 
@@ -103,7 +103,7 @@ export class DeleteVolcopyDialogComponent
                 const evt = this.evt.parse(result);
                 if (evt) {
                     console.warn(evt);
-                    this.errorMsg.current().then(msg =>this.toast.warning(msg));
+                    this.errorMsg.current().then(msg => this.toast.warning(msg));
                     this.numFailed++;
                 } else {
                     this.numSucceeded++;
@@ -112,7 +112,7 @@ export class DeleteVolcopyDialogComponent
             },
             err => {
                 console.warn(err);
-                this.errorMsg.current().then(msg =>this.toast.warning(msg));
+                this.errorMsg.current().then(msg => this.toast.warning(msg));
                 this.numFailed++;
             }
         );
