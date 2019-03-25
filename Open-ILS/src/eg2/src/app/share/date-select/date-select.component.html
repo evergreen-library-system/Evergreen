@@ -1,16 +1,18 @@
 
-<div class="input-group">
-  <input
+<div class="input-group eg-date-select form-validated">
+  <input 
     class="form-control"
     ngbDatepicker
     #datePicker="ngbDatepicker"
     [attr.id]="domId.length ? domId : null"
     placeholder="yyyy-mm-dd"
     class="form-control"
+    container="body"
     name="{{fieldName}}"
     [disabled]="_disabled"
     [required]="required"
     [(ngModel)]="current"
+    (keyup.enter)="onDateEnter()"
     (dateSelect)="onDateSelect($event)"/>
   <div class="input-group-append">
     <button class="btn btn-outline-secondary" [disabled]="_disabled"

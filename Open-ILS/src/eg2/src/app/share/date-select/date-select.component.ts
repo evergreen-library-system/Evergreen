@@ -9,7 +9,8 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'eg-date-select',
-  templateUrl: './date-select.component.html'
+  templateUrl: './date-select.component.html',
+  styleUrls: ['date-select.component.css']
 })
 export class DateSelectComponent implements OnInit {
 
@@ -30,11 +31,35 @@ export class DateSelectComponent implements OnInit {
     @Output() onChangeAsDate: EventEmitter<Date>;
     @Output() onChangeAsIso: EventEmitter<string>;
     @Output() onChangeAsYmd: EventEmitter<string>;
+    @Output() onCleared: EventEmitter<string>;
+
+    // convenience methods to access current selected date
+    currentAsYmd(): string {
+        if (this.current == null) { return null; }
+        if (!this.isValidDate(this.current)) { return null; }
+        return `${this.current.year}-${String(this.current.month).padStart(2, '0')}-${String(this.current.day).padStart(2, '0')}`;
+    }
+    currentAsIso(): string {
+        if (this.current == null) { return null; }
+        if (!this.isValidDate(this.current)) { return null; }
+        const ymd = `${this.current.year}-${String(this.current.month).padStart(2, '0')}-${String(this.current.day).padStart(2, '0')}`;
+        const date = this.localDateFromYmd(ymd);
+        const iso = date.toISOString();
+        return iso;
+    }
+    currentAsDate(): Date {
+        if (this.current == null) { return null; }
+        if (!this.isValidDate(this.current)) { return null; }
+        const ymd = `${this.current.year}-${String(this.current.month).padStart(2, '0')}-${String(this.current.day).padStart(2, '0')}`;
+        const date = this.localDateFromYmd(ymd);
+        return date;
+    }
 
     constructor() {
         this.onChangeAsDate = new EventEmitter<Date>();
         this.onChangeAsIso = new EventEmitter<string>();
         this.onChangeAsYmd = new EventEmitter<string>();
+        this.onCleared = new EventEmitter<string>();
     }
 
     ngOnInit() {
@@ -55,8 +80,21 @@ export class DateSelectComponent implements OnInit {
         }
     }
 
+    isValidDate(dt: NgbDateStruct): dt is NgbDateStruct {
+        return (<NgbDateStruct>dt).year !== undefined;
+    }
+
+    onDateEnter() {
+        if (this.current === null) {
+            this.onCleared.emit('cleared');
+        } else if (this.isValidDate(this.current)) {
+            this.onDateSelect(this.current);
+        }
+        // ignoring invalid input for now
+    }
+
     onDateSelect(evt) {
-        const ymd = `${evt.year}-${evt.month}-${evt.day}`;
+        const ymd = `${evt.year}-${String(evt.month).padStart(2, '0')}-${String(evt.day).padStart(2, '0')}`;
         const date = this.localDateFromYmd(ymd);
         const iso = date.toISOString();
         this.onChangeAsDate.emit(date);
@@ -71,6 +109,15 @@ export class DateSelectComponent implements OnInit {
         return new Date(
             Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
     }
+
+    reset() {
+        this.current = {
+            year: null,
+            month: null,
+            day: null
+        };
+    }
+
 }
 
 
