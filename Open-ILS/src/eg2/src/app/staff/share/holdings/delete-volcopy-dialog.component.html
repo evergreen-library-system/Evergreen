@@ -1,0 +1,33 @@
+
+
+<eg-string #successMsg
+    text="Successfully Holdings" i18n-text></eg-string>
+<eg-string #errorMsg 
+    text="Failed To Delete Holdings" i18n-text></eg-string>
+
+
+<ng-template #dialogContent>
+    <div class="modal-header bg-info">
+      <h4 class="modal-title">
+        <span i18n>Delete Holdings</span>
+      </h4>
+      <button type="button" class="close" 
+        i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p i18n>Delete {{numVols}} call numbers and {{numCopies}} copies?</p>
+    </div>
+    <div class="modal-footer">
+      <ng-container>
+        <button type="button" class="btn btn-warning" 
+          (click)="dismiss('canceled')" i18n>Cancel</button>
+        <button type="button" class="btn btn-success" 
+          (click)="deleteHoldings()" i18n>
+          Delete Holdings
+        </button>
+      </ng-container>
+    </div>
+  </ng-template>
+  

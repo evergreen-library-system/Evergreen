@@ -5,13 +5,15 @@ import {MarkDamagedDialogComponent} from './mark-damaged-dialog.component';
 import {MarkMissingDialogComponent} from './mark-missing-dialog.component';
 import {CopyAlertsDialogComponent} from './copy-alerts-dialog.component';
 import {ReplaceBarcodeDialogComponent} from './replace-barcode-dialog.component';
+import {DeleteVolcopyDialogComponent} from './delete-volcopy-dialog.component';
 
 @NgModule({
     declarations: [
       MarkDamagedDialogComponent,
       MarkMissingDialogComponent,
       CopyAlertsDialogComponent,
-      ReplaceBarcodeDialogComponent
+      ReplaceBarcodeDialogComponent,
+      DeleteVolcopyDialogComponent
     ],
     imports: [
         StaffCommonModule
@@ -20,7 +22,8 @@ import {ReplaceBarcodeDialogComponent} from './replace-barcode-dialog.component'
       MarkDamagedDialogComponent,
       MarkMissingDialogComponent,
       CopyAlertsDialogComponent,
-      ReplaceBarcodeDialogComponent
+      ReplaceBarcodeDialogComponent,
+      DeleteVolcopyDialogComponent
     ],
     providers: [
         HoldingsService

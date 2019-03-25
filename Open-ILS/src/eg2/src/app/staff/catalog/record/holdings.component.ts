@@ -2,7 +2,7 @@ import {Component, OnInit, Input, ViewChild} from '@angular/core';
 import {Observable, Observer, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
-import {IdlObject} from '@eg/core/idl.service';
+import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -23,6 +23,8 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
+import {DeleteVolcopyDialogComponent
+    } from '@eg/staff/share/holdings/delete-volcopy-dialog.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
@@ -90,6 +92,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('replaceBarcode')
         private replaceBarcode: ReplaceBarcodeDialogComponent;
+    @ViewChild('deleteVolcopy')
+        private deleteVolcopy: DeleteVolcopyDialogComponent;
 
     holdingsTree: HoldingsTree;
 
@@ -130,6 +134,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
     constructor(
         private org: OrgService,
+        private idl: IdlService,
         private pcrud: PcrudService,
         private auth: AuthService,
         private staffCat: StaffCatalogService,
@@ -526,6 +531,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         volNode.target = volume;
 
         volume.copies()
+            .filter((copy: IdlObject) => (copy.deleted() !== 't'))
             .sort((a: IdlObject, b: IdlObject) => a.barcode() < b.barcode() ? -1 : 1)
             .forEach((copy: IdlObject) => this.appendCopy(volNode, copy));
     }
@@ -757,6 +763,65 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (ids.length === 0) { return; }
         this.replaceBarcode.copyIds = ids;
         this.replaceBarcode.open({}).then(
+            modified => {
+                if (modified) {
+                    this.hardRefresh();
+                }
+            },
+            dismissed => {}
+        );
+    }
+
+    // mode 'vols' -- only delete empty volumes
+    // mode 'copies' -- only delete selected copies
+    // mode 'both' -- delete selected copies and selected volumes, plus all
+    // copies linked to selected volumes, regardless of whether they are selected.
+    deleteHoldings(rows: HoldingsEntry[], mode: 'vols' | 'copies' | 'both') {
+        const volHash: any = {};
+
+        if (mode === 'vols' || mode === 'both') {
+            // Collect the volumes to be deleted.
+            rows.filter(r => r.treeNode.nodeType === 'volume').forEach(r => {
+                const vol = this.idl.clone(r.volume);
+                if (mode === 'vols') {
+                    if (vol.copies().length > 0) {
+                        // cannot delete non-empty volume in this mode.
+                        return;
+                    }
+                } else {
+                    vol.copies().forEach(c => c.isdeleted(true));
+                }
+                vol.isdeleted(true);
+                volHash[vol.id()] = vol;
+            });
+        }
+
+        if (mode === 'copies' || mode === 'both') {
+            // Collect the copies to be deleted, including their volumes
+            // since the API expects fleshed volume objects.
+            rows.filter(r => r.treeNode.nodeType === 'copy').forEach(r => {
+                const vol = r.treeNode.parentNode.target;
+                if (!volHash[vol.id()]) {
+                    volHash[vol.id()] = this.idl.clone(vol);
+                    volHash[vol.id()].copies([]);
+                }
+                const copy = this.idl.clone(r.copy);
+                copy.isdeleted(true);
+                volHash[vol.id()].copies().push(copy);
+            });
+        }
+
+        if (Object.keys(volHash).length === 0) {
+            // No data to process.
+            return;
+        }
+
+        // Note forceDeleteCopies should not be necessary here, since we
+        // manually marked all copies as deleted on deleted volumes in
+        // "both" mode.
+        this.deleteVolcopy.forceDeleteCopies = mode === 'both';
+        this.deleteVolcopy.volumes = Object.values(volHash);
+        this.deleteVolcopy.open({size: 'sm'}).then(
             modified => {
                 if (modified) {
                     this.hardRefresh();
