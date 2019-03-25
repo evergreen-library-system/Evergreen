@@ -102,8 +102,8 @@ export class ReplaceBarcodeDialogComponent
                     console.error('Replace barcode failed: ', err);
                     this.toast.warning(await this.errorMsg.current());
                 }
-            )
-        })
+            );
+        });
     }
 }
 

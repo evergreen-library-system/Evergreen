@@ -37,3 +37,4 @@ export class BoolDisplayComponent {
         this.value = null;
     }
 }
+

@@ -166,7 +166,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 return 'holdings-org-row holdings-org-row-' +
                     row.treeNode.target.ou_type().depth();
             }
-        }
+        };
 
         this.gridTemplateContext = {
             toggleExpandRow: (row: HoldingsEntry) => {
@@ -178,7 +178,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                     const traverse = (node: HoldingsTreeNode) => {
                         node.expanded = false;
                         node.children.forEach(traverse);
-                    }
+                    };
                     traverse(row.treeNode);
                 }
 
@@ -190,7 +190,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                     && copy.location().holdable() === 't'
                     && copy.status().holdable() === 't';
             }
-        }
+        };
     }
 
     ngOnInit() {
@@ -282,7 +282,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         // The initial tree simply matches the org unit tree
         const traverseOrg = (node: HoldingsTreeNode) => {
             node.target.children().forEach((org: IdlObject) => {
-                if (visibleOrgs.indexOf(org.id()) == -1) {
+                if (visibleOrgs.indexOf(org.id()) === -1) {
                     return; // Org is outside of scope
                 }
                 const nodeChild = new HoldingsTreeNode();
@@ -293,7 +293,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 this.treeNodeCache.org[org.id()] = nodeChild;
                 traverseOrg(nodeChild);
             });
-        }
+        };
 
         this.treeNodeCache = {
             org: {},
@@ -336,7 +336,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (node.nodeType === 'org') {
             node.copyCount = 0;
             node.volumeCount = 0;
-        } else if(node.nodeType === 'volume') {
+        } else if (node.nodeType === 'volume') {
             node.copyCount = 0;
         }
 
@@ -383,7 +383,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         entry.treeNode = node;
         entry.index = this.gridIndex++;
 
-        switch(node.nodeType) {
+        switch (node.nodeType) {
             case 'org':
                 if (node.volumeCount === 0
                     && !this.emptyLibsCheckbox.checked()) {
@@ -416,7 +416,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             case 'copy':
                 entry.locationLabel = node.target.barcode();
                 entry.locationDepth = node.parentNode.parentNode.target.ou_type().depth() + 2;
-                entry.callNumberLabel = node.parentNode.target.label() // TODO
+                entry.callNumberLabel = node.parentNode.target.label(); // TODO
                 entry.volume = node.parentNode.target;
                 entry.copy = node.target;
                 entry.circ = node.target._circ;
@@ -514,7 +514,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.setVolumeLabel(volume);
 
         if (volNode) {
-            const pNode = this.treeNodeCache.org[volume.owning_lib()]
+            const pNode = this.treeNodeCache.org[volume.owning_lib()];
             if (volNode.parentNode.target.id() !== pNode.target.id()) {
                 // Volume owning library changed.  Un-link it from the previous
                 // org unit collection before adding to the new one.
@@ -525,7 +525,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         } else {
             volNode = new HoldingsTreeNode();
             volNode.nodeType = 'volume';
-            volNode.parentNode = this.treeNodeCache.org[volume.owning_lib()]
+            volNode.parentNode = this.treeNodeCache.org[volume.owning_lib()];
             volNode.parentNode.children.push(volNode);
             this.treeNodeCache.volume[volume.id()] = volNode;
         }
@@ -657,7 +657,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
             // Add volume target when performed on a volume row.
             this.localStore.setLocalItem(
-                'eg.cat.transfer_target_vol', node.target.id())
+                'eg.cat.transfer_target_vol', node.target.id());
         }
 
         this.localStore.setLocalItem('eg.cat.transfer_target_record', this.recordId);
@@ -736,7 +736,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 } else {
 
                 // Otherwise create new volumes from scratch.
-                entries.push({owner: this.auth.user().ws_ou()})
+                entries.push({owner: this.auth.user().ws_ou()});
             }
 
             this.holdings.spawnAddHoldingsUi(
@@ -757,7 +757,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 }
             },
             dismissed => {}
-        )
+        );
     }
 
     openReplaceBarcodeDialog(rows: HoldingsEntry[]) {
