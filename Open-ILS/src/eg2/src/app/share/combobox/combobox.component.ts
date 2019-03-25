@@ -102,7 +102,8 @@ export class ComboboxComponent implements OnInit {
         this.defaultSelectionApplied = false;
 
         this.formatDisplayString = (result: ComboboxEntry) => {
-            return result.label.trim();
+            const display = result.label || result.id;
+            return (display + '').trim();
         };
     }
 
