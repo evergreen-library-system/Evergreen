@@ -1,7 +1,5 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
 import {Router, ActivatedRoute, ParamMap} from '@angular/router';
-import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
@@ -10,7 +8,6 @@ import {PermService} from '@eg/core/perm.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {BibRecordService, BibRecordSummary} from '@eg/share/catalog/bib-record.service';
-import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search-context';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
 import {StaffCatalogService} from '../catalog.service';
 import {HoldsService, HoldRequest,
@@ -89,13 +86,14 @@ export class HoldComponent implements OnInit {
 
         this.holdType = this.route.snapshot.params['type'];
         this.holdTargets = this.route.snapshot.queryParams['target'];
+        this.holdFor = this.route.snapshot.queryParams['holdFor'] || 'patron';
 
         if (!Array.isArray(this.holdTargets)) {
             this.holdTargets = [this.holdTargets];
         }
 
         this.holdTargets = this.holdTargets.map(t => Number(t));
-        this.holdFor = 'patron';
+
         this.requestor = this.auth.user();
         this.pickupLib = this.auth.user().ws_ou();
 
@@ -103,6 +101,10 @@ export class HoldComponent implements OnInit {
             const ctx = new HoldContext(target);
             return ctx;
         });
+
+        if (this.holdFor === 'staff') {
+            this.holdForChanged();
+        }
 
         this.getTargetMeta();
 

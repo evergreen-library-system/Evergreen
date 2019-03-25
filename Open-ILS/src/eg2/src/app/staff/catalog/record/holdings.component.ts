@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
 import {Observable, Observer, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
@@ -133,6 +134,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     contextOrg: IdlObject;
 
     constructor(
+        private router: Router,
         private org: OrgService,
         private idl: IdlService,
         private pcrud: PcrudService,
@@ -829,5 +831,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
             },
             dismissed => {}
         );
+    }
+
+    requestItems(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length === 0) { return; }
+        const params = {target: copyIds, holdFor: 'staff'};
+        this.router.navigate(['/staff/catalog/hold/C'], {queryParams: params});
     }
 }
