@@ -7,7 +7,7 @@ Upgrade notes
 -------------
 
 Migrating Parent/guardian information
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Sites who traditionally store parent/guardian information in the
 patron 'Secondary Identification' field can migrate values from this
 field to the new guardian field with the following SQL:
@@ -42,7 +42,7 @@ COMMIT;
 
 
 Upgrading PostgreSQL
-^^^^^^^^^^^^^^^^^^^^
+~~~~~~~~~~~~~~~~~~~~
 Evergreen now supports PostgreSQL 9.6 and 10.
 If you upgrade your database from a PostgreSQL version of 9.5, or
 lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
