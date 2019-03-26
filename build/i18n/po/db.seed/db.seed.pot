@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2019-02-26 13:11:34-0400\n"
+"POT-Creation-Date: 2019-03-26 12:08:03-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -245,6 +245,13 @@ msgstr ""
 # id::ccvm.value__299
 #: 950.data.seed-values.sql:7116
 msgid "Nahuatl"
+msgstr ""
+
+# id::ppl.description__146
+#: 950.data.seed-values.sql:994
+msgid ""
+"Allow a staff member to define where another staff member has their "
+"permissions"
 msgstr ""
 
 # id::cust.label__history.hold.retention_start
@@ -4052,11 +4059,6 @@ msgstr ""
 msgid "notated music"
 msgstr ""
 
-# id::cmf.label__39
-#: 950.data.seed-values.sql:227
-msgid "Physical Description"
-msgstr ""
-
 # id::ccvm.value__400
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
@@ -4589,6 +4591,11 @@ msgstr ""
 # id::ccvm.value__131
 #: 950.data.seed-values.sql:6948
 msgid "Fanti"
+msgstr ""
+
+# id::cuat.label__26
+#: 950.data.seed-values.sql:19433
+msgid "Login via Websocket V2"
 msgstr ""
 
 # id::ccvm.value__426
@@ -9337,6 +9344,11 @@ msgstr ""
 msgid "Gospel music"
 msgstr ""
 
+# id::cuat.label__25
+#: 950.data.seed-values.sql:19430
+msgid "Login via Websocket V1"
+msgstr ""
+
 # id::ccvm.value__248
 #: 950.data.seed-values.sql:7065
 msgid "Latvian"
@@ -12154,6 +12166,11 @@ msgstr ""
 msgid "ADMIN_Z3950_SOURCE"
 msgstr ""
 
+# id::cuat.label__27
+#: 950.data.seed-values.sql:19436
+msgid "Verification via Websocket v1"
+msgstr ""
+
 # id::coust.description__vandelay.item.barcode.prefix
 #: 950.data.seed-values.sql:16541
 msgid "Apply this prefix to any auto-generated item barcodes"
@@ -12847,11 +12864,9 @@ msgstr ""
 msgid "No information supplied"
 msgstr ""
 
-# id::ppl.description__146
-#: 950.data.seed-values.sql:994
-msgid ""
-"Allow a staff member to define where another staff member has their "
-"permissions"
+# id::cmf.label__39
+#: 950.data.seed-values.sql:227
+msgid "Physical Description"
 msgstr ""
 
 # id::coust.label__circ.grace.extend
@@ -14516,6 +14531,11 @@ msgstr ""
 msgid "microfilm cartridge"
 msgstr ""
 
+# id::cuat.label__28
+#: 950.data.seed-values.sql:19439
+msgid "Verifiation via Websocket V2"
+msgstr ""
+
 # id::coust.description__circ.checkin.lost_zero_balance.do_not_change
 #: 950.data.seed-values.sql:5374
 msgid ""
@@ -14805,6 +14825,11 @@ msgstr ""
 #: 950.data.seed-values.sql:5633 950.data.seed-values.sql:5636
 #: 950.data.seed-values.sql:5637 950.data.seed-values.sql:5644
 msgid "Miscellaneous"
+msgstr ""
+
+# id::cuat.label__30
+#: 950.data.seed-values.sql:19445
+msgid "Generic Verify"
 msgstr ""
 
 # id::coust.description__cat.bib.alert_on_empty
@@ -15910,6 +15935,11 @@ msgstr ""
 # id::ccvm.value__289
 #: 950.data.seed-values.sql:7106
 msgid "Manobo languages"
+msgstr ""
+
+# id::cuat.label__29
+#: 950.data.seed-values.sql:19442
+msgid "Generic Login"
 msgstr ""
 
 # id::ccvm.value__425
