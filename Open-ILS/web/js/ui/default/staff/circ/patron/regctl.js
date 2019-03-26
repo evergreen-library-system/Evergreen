@@ -168,7 +168,7 @@ angular.module('egCoreMod')
     service.check_email_different = function(email) {
         if (service.existing_patron) {
             if (email != service.existing_patron.email()) {
-                return $q.when(true);
+                return true;
             }
         }
     }
