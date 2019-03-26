@@ -1,14 +1,14 @@
 
 
 <eg-string #successMsg
-    text="Successfully Attached Conjoined Item(s)" i18n-text></eg-string>
+    text="Successfully Attached/Modified Conjoined Item(s)" i18n-text></eg-string>
 <eg-string #errorMsg 
-    text="Failed To Attach Conjoined Item(s)" i18n-text></eg-string>
+    text="Failed To Attach/Modify Conjoined Item(s)" i18n-text></eg-string>
 
 <ng-template #dialogContent>
     <div class="modal-header bg-info">
       <h4 class="modal-title">
-        <span i18n>Attach {{copyIds.length}} Conjoined Item(s)</span>
+        <span i18n>Attach/Modify {{copyIds.length}} Conjoined Item(s)</span>
       </h4>
       <button type="button" class="close" 
         i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
@@ -34,7 +34,7 @@
           (click)="dismiss('canceled')" i18n>Cancel</button>
         <button type="button" class="btn btn-success" 
           (click)="linkCopies()" [disabled]="!peerType" i18n>
-          Attach
+          Attach/Modify
         </button>
       </ng-container>
     </div>

@@ -9,17 +9,26 @@ import {GridComponent} from './grid.component';
 
 export class GridToolbarActionComponent implements OnInit {
 
+    toolbarAction: GridToolbarAction;
+
     // Note most input fields should match class fields for GridColumn
     @Input() label: string;
 
     // Register to click events
     @Output() onClick: EventEmitter<any []>;
 
+    // When present, actions will be grouped by the provided label.
+    @Input() group: string;
+
     // DEPRECATED: Pass a reference to a function that is called on click.
     @Input() action: (rows: any[]) => any;
 
-    // When present, actions will be grouped by the provided label.
-    @Input() group: string;
+    @Input() set disabled(d: boolean) {
+        this.toolbarAction.disabled = d;
+    }
+    get disabled(): boolean {
+        return this.toolbarAction.disabled;
+    }
 
     // Optional: add a function that returns true or false.
     // If true, this action will be disabled; if false
@@ -30,6 +39,7 @@ export class GridToolbarActionComponent implements OnInit {
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {
         this.onClick = new EventEmitter<any []>();
+        this.toolbarAction = new GridToolbarAction();
     }
 
     ngOnInit() {
@@ -39,12 +49,16 @@ export class GridToolbarActionComponent implements OnInit {
             return;
         }
 
-        const action = new GridToolbarAction();
-        action.label = this.label;
-        action.action = this.action;
-        action.onClick = this.onClick;
-        action.group = this.group;
-        action.disableOnRows = this.disableOnRows;
-        this.grid.context.toolbarActions.push(action);
+        if (this.action) {
+            console.debug('toolbar [action] is deprecated.  use (onClick) instead.')
+        }
+
+        this.toolbarAction.label = this.label;
+        this.toolbarAction.onClick = this.onClick;
+        this.toolbarAction.group = this.group;
+        this.toolbarAction.action = this.action;
+        this.toolbarAction.disabled = this.disabled;
+        this.toolbarAction.disableOnRows = this.disableOnRows;
+        this.grid.context.toolbarActions.push(this.toolbarAction);
     }
 }
