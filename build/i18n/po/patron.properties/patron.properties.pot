@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 09:32-0400\n"
+"POT-Creation-Date: 2017-05-25 00:15-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #: staff.patron.barcode_entry.user_permission_editor
@@ -554,7 +554,8 @@ msgstr ""
 
 #: staff.patron.display.init.network_request.window_message
 msgid ""
-"Press a navigation button above (for example, Check Out) to clear this alert."
+"Press a navigation button above (for example, Check Out) to clear this "
+"alert."
 msgstr ""
 
 #: staff.patron.display.init.network_request.dump_error_message
@@ -715,15 +716,23 @@ msgid "Please choose a Hold Range:"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.done.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_selection_depth.done.accesskey
-msgctxt "staff.patron.holds.holds_edit_selection_depth.done.label staff.patron.holds.holds_edit_selection_depth.done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.holds.holds_edit_selection_depth.done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.cancel.label
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_selection_depth.cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.label staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_selection_depth.cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.choose_library
@@ -733,14 +742,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.singular
 msgid ""
-"Are you sure you would like to change the Hold Range for hold %1$s to \"%2$"
-"s\"?;"
+"Are you sure you would like to change the Hold Range for hold %1$s to \"%"
+"2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_message.plural
 msgid ""
-"Are you sure you would like to change the Hold Range for holds %1$s to \"%2$"
-"s\"?;"
+"Are you sure you would like to change the Hold Range for holds %1$s to \"%"
+"2$s\"?;"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_selection_depth.modify_holds_title
@@ -757,15 +766,23 @@ msgid "Please choose a new Pickup Library:"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.done.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_pickup_lib.done.accesskey
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.label staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.label
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.label staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_pickup_lib.cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.choose_lib
@@ -775,8 +792,8 @@ msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.singular
 msgid ""
-"Are you sure you would like to change the Pick Up Library for hold %1$s to "
-"%2$s?"
+"Are you sure you would like to change the Pick Up Library for hold %1$s to %"
+"2$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_pickup_lib.change_pickup_lib_message.plural
@@ -797,15 +814,23 @@ msgid ""
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.label staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.label staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_phone_notify.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_phone_notify.choose_phone_number
@@ -836,15 +861,23 @@ msgid ""
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_notify.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey
-msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.label staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.label staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_sms_notify.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_notify.choose_phone_number
@@ -873,15 +906,23 @@ msgid "Please select a new mobile carrier for hold notification via text:"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_carrier.btn_done.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey
-msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.label staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.label staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_sms_carrier.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_sms_carrier.choose_carrier
@@ -912,19 +953,30 @@ msgid ""
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.btn_email.label
+msgid "Email"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_email_notify.btn_email.accesskey
-msgid "&Email"
+msgid "E"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.btn_no_email.label
+msgid "No Email"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey
-msgid "&No Email"
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_no_email.accesskey"
+msgid "N"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.label
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.label staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_edit_email_notify.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_edit_email_notify.set_notifs
@@ -962,19 +1014,30 @@ msgid ""
 msgstr ""
 
 #: staff.patron.holds.holds_cut_in_line.btn_cut.label
+msgid "Top of Queue"
+msgstr ""
+
 #: staff.patron.holds.holds_cut_in_line.btn_cut.accesskey
-msgid "&Top of Queue"
+msgid "T"
 msgstr ""
 
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.label
+msgid "No Top of Queue"
+msgstr ""
+
 #: staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey
-msgid "&No Top of Queue"
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_no_cut.accesskey"
+msgid "N"
 msgstr ""
 
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.label
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.label staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_cut_in_line.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_cut_in_line.set_notifs
@@ -1007,19 +1070,30 @@ msgid "Accept only \"good condition\" copies?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.label
+msgid "Good Condition"
+msgstr ""
+
 #: staff.patron.holds.holds_desire_mint_condition.btn_good.accesskey
-msgid "&Good Condition"
+msgid "G"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.label
+msgid "Any Condition"
+msgstr ""
+
 #: staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey
-msgid "&Any Condition"
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_mediocre.accesskey"
+msgid "A"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.label
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey
-msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.label staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.holds.holds_desire_mint_condition.btn_cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.set_notifs
@@ -1028,14 +1102,14 @@ msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.singular
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for hold "
-"%1$s?"
+"Are you sure you would like to restrict to Good Condition copies for hold %"
+"1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.enable_good.plural
 msgid ""
-"Are you sure you would like to restrict to Good Condition copies for holds "
-"%1$s?"
+"Are you sure you would like to restrict to Good Condition copies for holds %"
+"1$s?"
 msgstr ""
 
 #: staff.patron.holds.holds_desire_mint_condition.disable_good.singular
@@ -1195,14 +1269,21 @@ msgid "Move patron %1$s into patron %2$s's usergroup..."
 msgstr ""
 
 #: staff.patron.info_group.link_patron.move.label
+msgid "Move"
+msgstr ""
+
 #: staff.patron.info_group.link_patron.move.accesskey
-msgid "&Move"
+msgid "M"
 msgstr ""
 
 #: staff.patron.info_group.link_patron.done.label
+msgctxt "staff.patron.info_group.link_patron.done.label"
+msgid "Done"
+msgstr ""
+
 #: staff.patron.info_group.link_patron.done.accesskey
-msgctxt "staff.patron.info_group.link_patron.done.label staff.patron.info_group.link_patron.done.accesskey"
-msgid "&Done"
+msgctxt "staff.patron.info_group.link_patron.done.accesskey"
+msgid "D"
 msgstr ""
 
 #: staff.patron.info_group.link_patron.move_patron_to_usergroup
@@ -1254,8 +1335,12 @@ msgid "Total Items Overdue: %1$s"
 msgstr ""
 
 #: staff.patron.info_notes.render_notes.add_new_note.label
+msgid "Add New Note"
+msgstr ""
+
 #: staff.patron.info_notes.render_notes.add_new_note.accesskey
-msgid "&Add New Note"
+msgctxt "staff.patron.info_notes.render_notes.add_new_note.accesskey"
+msgid "A"
 msgstr ""
 
 #: staff.patron.info_notes.render_notes.tooltiptext
@@ -1326,14 +1411,23 @@ msgid "Initials"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.cancel.label
+msgctxt "staff.patron.info_notes.new_note.cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.info_notes.new_note.cancel.accesskey
-msgctxt "staff.patron.info_notes.new_note.cancel.label staff.patron.info_notes.new_note.cancel.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.info_notes.new_note.cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.add.label
+msgctxt "staff.patron.info_notes.new_note.add.label"
+msgid "Add Note"
+msgstr ""
+
 #: staff.patron.info_notes.new_note.add.accesskey
-msgid "&Add Note"
+msgctxt "staff.patron.info_notes.new_note.add.accesskey"
+msgid "A"
 msgstr ""
 
 #: staff.patron.info_notes.new_note.add_note_title
@@ -1755,9 +1849,13 @@ msgid "Merge"
 msgstr ""
 
 #: staff.patron.usr_buckets.merge_records.cancel_button.label
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label"
+msgid "Cancel"
+msgstr ""
+
 #: staff.patron.usr_buckets.merge_records.cancel_button.accesskey
-msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.label staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
-msgid "&Cancel"
+msgctxt "staff.patron.usr_buckets.merge_records.cancel_button.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.patron.usr_buckets.merge_records.lead_record_number

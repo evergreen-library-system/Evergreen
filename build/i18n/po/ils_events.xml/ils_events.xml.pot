@@ -1,9 +1,9 @@
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2019-02-26 09:32:55-0400\n"
+"POT-Creation-Date: 2018-10-24 16:30:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,6 +97,10 @@ msgstr ""
 msgid "The requested actor_card was not found"
 msgstr ""
 
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
+msgid "The lineitem detail has no owning_lib"
+msgstr ""
+
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr ""
@@ -185,6 +189,10 @@ msgstr ""
 
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
+msgstr ""
+
+#: 8002.OFFLINE_FILE_ERROR:945
+msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
@@ -303,10 +311,6 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:604
 msgid "An authority record already exists with the requested ARN"
-msgstr ""
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
-msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:822
@@ -518,10 +522,6 @@ msgstr ""
 
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
-msgstr ""
-
-#: 8002.OFFLINE_FILE_ERROR:945
-msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1704.TCN_EXISTS:728
@@ -979,6 +979,12 @@ msgstr ""
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+
 #: 1705.VOLUME_LABEL_EXISTS:731
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -1046,6 +1052,10 @@ msgstr ""
 
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
+msgstr ""
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
+msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
@@ -1226,10 +1236,6 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
-msgid "The lineitem detail has no owning_lib"
-msgstr ""
-
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1272,12 +1278,6 @@ msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
-msgstr ""
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
 msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
