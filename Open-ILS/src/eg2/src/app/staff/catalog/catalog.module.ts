@@ -4,6 +4,7 @@ import {CatalogCommonModule} from '@eg/share/catalog/catalog-common.module';
 import {CatalogRoutingModule} from './routing.module';
 import {HoldsModule} from '@eg/staff/share/holds/holds.module';
 import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
+import {BookingModule} from '@eg/staff/share/booking/booking.module';
 import {CatalogComponent} from './catalog.component';
 import {SearchFormComponent} from './search-form.component';
 import {ResultsComponent} from './result/results.component';
@@ -50,7 +51,8 @@ import {ConjoinedComponent} from './record/conjoined.component';
     CatalogCommonModule,
     CatalogRoutingModule,
     HoldsModule,
-    HoldingsModule
+    HoldingsModule,
+    BookingModule
   ],
   providers: [
     StaffCatalogService

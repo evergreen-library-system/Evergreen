@@ -51,6 +51,7 @@
 <eg-delete-volcopy-dialog #deleteVolcopy></eg-delete-volcopy-dialog>
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
 <eg-conjoined-items-dialog #conjoinedDialog></eg-conjoined-items-dialog>
+<eg-make-bookable-dialog #makeBookableDialog></eg-make-bookable-dialog>
 
 <!-- holdings grid -->
 <div class='eg-copies w-100 mt-3'>
@@ -228,7 +229,8 @@
     </eg-grid-column>
     <eg-grid-column path="copyCount" datatype="number" label="Copies" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volume._label" name="call_number.label" label="Call Number" i18n-label>
+    <eg-grid-column path="volume._label" name="call_number.label" 
+      label="Call Number" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="copy.barcode" name="barcode" label="Barcode" i18n-label>
     </eg-grid-column>
@@ -238,15 +240,18 @@
       datatype="org_unit"></eg-grid-column>
     <eg-grid-column i18n-label label="Due Date" path="circ.due_date" 
       datatype="timestamp"></eg-grid-column>
-    <eg-grid-column i18n-label label="Shelving Location" path="copy.location.name" name="location.name">
+    <eg-grid-column i18n-label label="Shelving Location" 
+      path="copy.location.name" name="location.name">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Circulation Modifier" 
       path="copy.circ_modifier" name="circ_modifier">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Copy Number" path="copy.copy_number" name="copy_number" [hidden]="true">
+    <eg-grid-column i18n-label label="Copy Number" path="copy.copy_number" 
+      name="copy_number" [hidden]="true">
     </eg-grid-column>
 
-    <eg-grid-column i18n-label label="Status" path="copy.status.name" name="status_name">
+    <eg-grid-column i18n-label label="Status" 
+      path="copy.status.name" name="status_name">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Call Number Prefix" 
       path="volume.prefix.label" name="call_number.prefix.label" [hidden]="true">

@@ -30,6 +30,8 @@ import {BucketDialogComponent
     } from '@eg/staff/share/buckets/bucket-dialog.component';
 import {ConjoinedItemsDialogComponent
     } from '@eg/staff/share/holdings/conjoined-items-dialog.component';
+import {MakeBookableDialogComponent
+    } from '@eg/staff/share/booking/make-bookable-dialog.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
@@ -103,6 +105,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private bucketDialog: BucketDialogComponent;
     @ViewChild('conjoinedDialog')
         private conjoinedDialog: ConjoinedItemsDialogComponent;
+    @ViewChild('makeBookableDialog')
+        private makeBookableDialog: MakeBookableDialogComponent;
 
     holdingsTree: HoldingsTree;
 
@@ -882,7 +886,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
     makeBookable(rows: HoldingsEntry[]) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length > 0) {
-            alert('TODO');
+            this.makeBookableDialog.copyIds = copyIds;
+            this.makeBookableDialog.open({}).then(
+                modified => {}, // No refresh needed
+                dismissed => {}
+            )
         }
     }
 }
