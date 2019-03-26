@@ -30,6 +30,7 @@ export class ConjoinedItemsDialogComponent
     numFailed: number;
     peerTypes: ComboboxEntry[];
     peerRecord: number;
+    existingMaps: any;
 
     onOpenSub: Subscription;
 
@@ -64,11 +65,20 @@ export class ConjoinedItemsDialogComponent
             if (this.peerTypes.length === 0) {
                 this.getPeerTypes();
             }
+
+            this.fetchExisting();
         });
     }
 
     ngOnDestroy() {
         this.onOpenSub.unsubscribe();
+    }
+
+    fetchExisting() {
+        this.existingMaps = {};
+        this.pcrud.search('bpbcm',
+            {target_copy: this.copyIds, peer_record: this.peerRecord})
+        .subscribe(map => this.existingMaps[map.target_copy()] = map);
     }
 
     getPeerTypes(): Promise<any> {
@@ -95,12 +105,19 @@ export class ConjoinedItemsDialogComponent
         }
 
         const id = this.ids.pop();
-        const map = this.idl.create('bpbcm');
+        const map = this.existingMaps[id] || this.idl.create('bpbcm');
         map.peer_record(this.peerRecord);
         map.target_copy(id);
         map.peer_type(this.peerType);
 
-        return this.pcrud.create(map).toPromise().then(
+        let promise: Promise<any>;
+        if (this.existingMaps[id]) {
+            promise = this.pcrud.update(map).toPromise();
+        } else {
+            promise = this.pcrud.create(map).toPromise();
+        }
+
+        return promise.then(
             ok => {
                 this.successMsg.current().then(msg => this.toast.success(msg));
                 this.numSucceeded++;
