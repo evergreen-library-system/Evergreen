@@ -1021,6 +1021,7 @@ export class GridToolbarAction {
     onClick: EventEmitter<any []>;
     action: (rows: any[]) => any; // DEPRECATED
     group: string;
+    disabled: boolean;
     isGroup: boolean; // used for group placeholder entries
     disableOnRows: (rows: any[]) => boolean;
 }

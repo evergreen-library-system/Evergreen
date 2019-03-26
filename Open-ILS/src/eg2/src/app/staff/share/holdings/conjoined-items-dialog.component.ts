@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy, Input, ViewChild, Renderer2} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {IdlService} from '@eg/core/idl.service';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StoreService} from '@eg/core/store.service';
@@ -23,22 +23,23 @@ export class ConjoinedItemsDialogComponent
     extends DialogComponent implements OnInit, OnDestroy {
 
     @Input() copyIds: number[];
-    ids: number[]; // copy of list so we can pop()
+
+    // If true, ignore the provided copyIds array and fetch all of
+    // the linked copies to work on.
+    @Input() modifyAll: boolean;
+
+    // If peerRecord is not set, the localStorage value will be used.
+    @Input() peerRecord: number;
 
     peerType: number;
     numSucceeded: number;
     numFailed: number;
     peerTypes: ComboboxEntry[];
-    peerRecord: number;
     existingMaps: any;
-
     onOpenSub: Subscription;
 
-    @ViewChild('successMsg')
-        private successMsg: StringComponent;
-
-    @ViewChild('errorMsg')
-        private errorMsg: StringComponent;
+    @ViewChild('successMsg') private successMsg: StringComponent;
+    @ViewChild('errorMsg') private errorMsg: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -48,25 +49,33 @@ export class ConjoinedItemsDialogComponent
         private localStore: StoreService) {
         super(modal); // required for subclassing
         this.peerTypes = [];
+        this.copyIds = [];
     }
 
     ngOnInit() {
         this.onOpenSub = this.onOpen$.subscribe(() => {
-            this.ids = [].concat(this.copyIds);
+            if (this.modifyAll) {
+                // This will be set once the list of copies to
+                // modify has been fetched.
+                this.copyIds = [];
+            }
             this.numSucceeded = 0;
             this.numFailed = 0;
-            this.peerRecord =
-                this.localStore.getLocalItem('eg.cat.marked_conjoined_record');
 
             if (!this.peerRecord) {
-                this.close(false);
+                this.peerRecord =
+                    this.localStore.getLocalItem('eg.cat.marked_conjoined_record');
+
+                    if (!this.peerRecord) {
+                    this.close(false);
+                }
             }
 
             if (this.peerTypes.length === 0) {
                 this.getPeerTypes();
             }
 
-            this.fetchExisting();
+            this.fetchExistingMaps();
         });
     }
 
@@ -74,17 +83,29 @@ export class ConjoinedItemsDialogComponent
         this.onOpenSub.unsubscribe();
     }
 
-    fetchExisting() {
+    fetchExistingMaps() {
         this.existingMaps = {};
-        this.pcrud.search('bpbcm',
-            {target_copy: this.copyIds, peer_record: this.peerRecord})
-        .subscribe(map => this.existingMaps[map.target_copy()] = map);
+        const search: any = {
+            peer_record: this.peerRecord
+        };
+
+        if (!this.modifyAll) {
+            search.target_copy = this.copyIds;
+        }
+
+        this.pcrud.search('bpbcm', search)
+        .subscribe(map => {
+            this.existingMaps[map.target_copy()] = map;
+            if (this.modifyAll) {
+                this.copyIds.push(map.target_copy());
+            }
+        });
     }
 
+    // Fetch and map peer types to combobox entries
     getPeerTypes(): Promise<any> {
         return this.pcrud.retrieveAll('bpt', {}, {atomic: true}).toPromise()
         .then(types =>
-            // Map types to ComboboxEntry's
             this.peerTypes = types.map(t => ({id: t.id(), label: t.name()}))
         );
     }
@@ -97,37 +118,36 @@ export class ConjoinedItemsDialogComponent
         }
     }
 
-    linkCopies(): Promise<any> {
+    // Create or update peer copy links.
+    linkCopies() {
 
-        if (this.ids.length === 0) {
-            this.close(this.numSucceeded > 0);
-            return Promise.resolve();
-        }
+        const maps: IdlObject[] = [];
+        this.copyIds.forEach(id => {
+            let map: IdlObject;
+            if (this.existingMaps[id]) {
+                map = this.existingMaps[id];
+                map.ischanged(true);
+            } else {
+                map = this.idl.create('bpbcm');
+                map.isnew(true);
+            }
 
-        const id = this.ids.pop();
-        const map = this.existingMaps[id] || this.idl.create('bpbcm');
-        map.peer_record(this.peerRecord);
-        map.target_copy(id);
-        map.peer_type(this.peerType);
+            map.peer_record(this.peerRecord);
+            map.target_copy(id);
+            map.peer_type(this.peerType);
+            maps.push(map);
+        });
 
-        let promise: Promise<any>;
-        if (this.existingMaps[id]) {
-            promise = this.pcrud.update(map).toPromise();
-        } else {
-            promise = this.pcrud.create(map).toPromise();
-        }
-
-        return promise.then(
-            ok => {
-                this.successMsg.current().then(msg => this.toast.success(msg));
-                this.numSucceeded++;
-                return this.linkCopies();
-            },
+        return this.pcrud.autoApply(maps).subscribe(
+            ok => this.numSucceeded++,
             err => {
                 this.numFailed++;
                 console.error(err);
                 this.errorMsg.current().then(msg => this.toast.warning(msg));
-                return this.linkCopies();
+            },
+            () => {
+                this.successMsg.current().then(msg => this.toast.success(msg));
+                this.close(this.numSucceeded > 0);
             }
         );
     }

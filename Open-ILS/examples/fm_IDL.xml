@@ -7476,7 +7476,7 @@ SELECT  usr,
 			<field reporter:label="Last Editing User" name="editor" reporter:datatype="link"/>
 			<field reporter:label="Fine Level" name="fine_level" reporter:datatype="int"/>
 			<field reporter:label="Is Holdable" name="holdable" reporter:datatype="bool" />
-			<field reporter:label="Copy ID" name="id" reporter:datatype="id"/>
+			<field reporter:label="Copy ID" name="id" reporter:selector="barcode" reporter:datatype="id"/>
 			<field reporter:label="Loan Duration" name="loan_duration" reporter:datatype="int"/>
 			<field reporter:label="Shelving Location" name="location" reporter:datatype="link"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool" />

@@ -72,13 +72,8 @@
       </ngb-tab>
       <ngb-tab title="Conjoined Items" i18n-title id="conjoined">
         <ng-template ngbTabContent>
-          <div class="alert alert-info mt-3" i18n>
-            Conjoined Items not yet implemented.  See the
-            <a target="_blank"
-              href="/eg/staff/cat/catalog/record/{{recordId}}/conjoined">
-              AngularJS Conjoined Items Tab.
-            </a>
-          </div>
+          <eg-catalog-record-conjoined [recordId]="recordId">
+          </eg-catalog-record-conjoined>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>

@@ -1,0 +1,27 @@
+
+
+<eg-conjoined-items-dialog #conjoinedDialog 
+  [peerRecord]="recordId" [modifyAll]="true">
+</eg-conjoined-items-dialog>
+
+<eg-confirm-dialog #confirmUnlink 
+  i18n-dialogTitle dialogTitle="Confirm Unlink"
+  i18n-dialogBody dialogBody="Unlink {{idsToUnlink.length}} Items?">
+</eg-confirm-dialog>
+
+<div class="mt-3">
+
+  <eg-grid #conjoinedGrid idlClass="bpbcm" [dataSource]="gridDataSource"
+      [sortable]="true" persistKey="catalog.record.conjoined" class="mt-3">
+    
+    <eg-grid-toolbar-button [disabled]="!hasPerm" i18n-label 
+      label="Change Type" (onClick)="openConjoinedDialog()">
+    </eg-grid-toolbar-button>
+    
+    <eg-grid-toolbar-action 
+      [disabled]="!hasPerm"
+      label="Unlink" i18n-label (onClick)="unlink($event)">
+    </eg-grid-toolbar-action>
+
+  </eg-grid>
+</div>
