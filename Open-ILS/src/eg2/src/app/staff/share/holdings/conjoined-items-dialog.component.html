@@ -1,0 +1,42 @@
+
+
+<eg-string #successMsg
+    text="Successfully Attached Conjoined Item(s)" i18n-text></eg-string>
+<eg-string #errorMsg 
+    text="Failed To Attach Conjoined Item(s)" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+    <div class="modal-header bg-info">
+      <h4 class="modal-title">
+        <span i18n>Attach {{copyIds.length}} Conjoined Item(s)</span>
+      </h4>
+      <button type="button" class="close" 
+        i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row form-validated">
+        <div class="col-lg-4" i18n>
+          <label for="cbox-peer-types">Peer Type:</label>
+        </div>
+        <div class="col-lg-8">
+          <eg-combobox [entries]="peerTypes" [required]="true"
+            i18n-placeholder placeholder="Peer Type..."
+            id="cbox-peer-types" (onChange)="peerTypeChanged($event)">
+          </eg-combobox>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <ng-container>
+        <button type="button" class="btn btn-warning" 
+          (click)="dismiss('canceled')" i18n>Cancel</button>
+        <button type="button" class="btn btn-success" 
+          (click)="linkCopies()" [disabled]="!peerType" i18n>
+          Attach
+        </button>
+      </ng-container>
+    </div>
+  </ng-template>
+  
