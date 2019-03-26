@@ -28,6 +28,8 @@ import {DeleteVolcopyDialogComponent
     } from '@eg/staff/share/holdings/delete-volcopy-dialog.component';
 import {BucketDialogComponent
     } from '@eg/staff/share/buckets/bucket-dialog.component';
+import {ConjoinedItemsDialogComponent
+    } from '@eg/staff/share/holdings/conjoined-items-dialog.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
@@ -99,6 +101,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private deleteVolcopy: DeleteVolcopyDialogComponent;
     @ViewChild('bucketDialog')
         private bucketDialog: BucketDialogComponent;
+    @ViewChild('conjoinedDialog')
+        private conjoinedDialog: ConjoinedItemsDialogComponent;
 
     holdingsTree: HoldingsTree;
 
@@ -851,7 +855,18 @@ export class HoldingsMaintenanceComponent implements OnInit {
             this.bucketDialog.itemIds = copyIds;
             this.bucketDialog.open({size: 'lg'}).then(
                 // No need to reload the grid after adding items to buckets.
-                () => {},
+                ok => {},
+                dismissed => {}
+            );
+        }
+    }
+
+    openConjoinedDialog(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length > 0) {
+            this.conjoinedDialog.copyIds = copyIds;
+            this.conjoinedDialog.open({size: 'sm'}).then(
+                ok => {}, // No grid reload required
                 dismissed => {}
             );
         }

@@ -50,6 +50,7 @@
 <eg-replace-barcode-dialog #replaceBarcode></eg-replace-barcode-dialog>
 <eg-delete-volcopy-dialog #deleteVolcopy></eg-delete-volcopy-dialog>
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
+<eg-conjoined-items-dialog #conjoinedDialog></eg-conjoined-items-dialog>
 
 <!-- holdings grid -->
 <div class='eg-copies w-100 mt-3'>
@@ -83,6 +84,11 @@
 
     <eg-grid-toolbar-action
       i18n-label label="Request Items" (onClick)="requestItems($event)">
+    </eg-grid-toolbar-action>
+
+    <eg-grid-toolbar-action
+      i18n-label label="Link as Conjoined to Marked Bib Record"
+      (onClick)="openConjoinedDialog($event)">
     </eg-grid-toolbar-action>
 
     <!-- row actions : Add -->
