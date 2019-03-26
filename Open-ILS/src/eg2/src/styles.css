@@ -125,11 +125,11 @@ h5 {font-size: .95rem}
 }
 
 /* Limit size of dropdown menus and allow for scrolling */
-.dropdown-menu {
+.scrollable-menu {
   height: auto;
   max-height: 300px;
   overflow-y: auto;
-  font-size: 98%;
+  font-size: 99%;
 }
 
 /* --------------------------------------------------------------------------

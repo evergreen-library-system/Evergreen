@@ -38,7 +38,7 @@
       <span title="Actions For Selected Rows" i18n-title
         class="material-icons mat-icon-in-button">playlist_add_check</span>
     </button>
-    <div class="dropdown-menu" ngbDropdownMenu>
+    <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <button class="dropdown-item" (click)="performAction(action)"
         *ngFor="let action of gridContext.toolbarActions"
         [disabled]="shouldDisableAction(action)">
@@ -109,7 +109,7 @@
       <span title="Show Grid Options" i18n-title
         class="material-icons mat-icon-in-button">settings</span>
     </button>
-    <div class="dropdown-menu" ngbDropdownMenu>
+    <div class="dropdown-menu scrollable-menu" ngbDropdownMenu>
       <a class="dropdown-item label-with-material-icon"
         (click)="columnConfDialog.open({size:'lg'})">
         <span class="material-icons">build</span>
