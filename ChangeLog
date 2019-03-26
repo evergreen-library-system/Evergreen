@@ -1,3 +1,896 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit ba053a312b59bcb40ff1f34ed13178c6240f2894
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 26 14:38:22 2019 -0500
+
+    Update upgrade docs for 3.2.5
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+22	60	docs/installation/server_upgrade.adoc
+
+commit bc17f1f0eac8edf757a51978c48700bb92faf2c4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 26 16:15:48 2019 -0400
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 88c3bd9d689c2f9d1e65f7cb085553a0c45dfd2c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Mar 26 16:15:11 2019 -0400
+
+    Docs: Revise 3.2.5 bugfix release notes
+    
+    This commit adds release notes for recently pushed fixes to the new
+    Angular pieces of the web client.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+14	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit dd07cba8c15f0268647a68c19feb02146dcbfb8a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 26 12:28:53 2019 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+335	0	build/i18n/po/circ/en-GB.po
+375	0	build/i18n/po/kpac/en-GB.po
+419	0	build/i18n/po/serial/en-GB.po
+30	14	build/i18n/po/webstaff/ar-JO.po
+78	62	build/i18n/po/webstaff/cs-CZ.po
+34	22	build/i18n/po/webstaff/en-CA.po
+93	72	build/i18n/po/webstaff/en-GB.po
+24	14	build/i18n/po/webstaff/es-ES.po
+27	14	build/i18n/po/webstaff/hy-AM.po
+24	14	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/circ/en-GB.po
+ create mode 100644 build/i18n/po/kpac/en-GB.po
+ create mode 100644 build/i18n/po/serial/en-GB.po
+
+commit a37154508d8fc078b5d9bae5ada105a534c13ecd
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 26 12:08:27 2019 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+41	11	build/i18n/po/db.seed/db.seed.pot
+180	173	build/i18n/po/webstaff/webstaff.pot
+
+commit c9e3cd64261e8b24b756de5a630fb01a23a493f5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 20 14:38:44 2019 -0400
+
+    LP1821067 Angular i18n uses XMB; cs-CZ examples
+    
+    Includes documentation updates and cs-CZ example using export cs-CZ .xtb
+    translation bundle.
+    
+    Also remove xmliffmerge configuration options since we are not using
+    xliff files.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	5	Open-ILS/src/eg2/CHEAT_SHEET.adoc
+4	4	Open-ILS/src/eg2/angular.json
+2	29	Open-ILS/src/eg2/package.json
+2	1	Open-ILS/src/eg2/src/environments/environment.prod.ts
+
+commit f38a629f356c555254f56c989080d67a4b7d1474
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 20 14:38:14 2019 -0400
+
+    LP1821067 Angular Czech translation bundle
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+495	0	Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+ create mode 100644 Open-ILS/src/eg2/src/locale/messages.cs-CZ.xtb
+
+commit b46e5e774bdbe1468a05d474af722fcbea048835
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 22 13:41:12 2019 -0700
+
+    LP1821409 Ang admin editor clears fields on new
+    
+    The Angular admin pages re-use an FmEditor component for creating and
+    updating objects.  When creating a new object after editing an existing
+    object, reset the editor so it won't load the previously edited object.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 52ae1b1d5adbba0c860db59c06c84b19541e3fc2
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 23 17:30:26 2019 -0500
+
+    LP1807461 Admin page avoid errors on dialog dismissal
+    
+    Add support to the base DialogComponent class for passing information to
+    the caller via the reject handler about whether a dialog was dismissed
+    via user interface interaction (body click, esc key, cross click, cancel
+    button) or for some other reason, presumably an error.
+    
+    Teach the generic admin page to avoid toasting errors when an edit or
+    create dialog is dismissed via UI.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+25	1	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+10	6	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 4a054a7ef822f1094e28f8c0fc3faacd77bd6df4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 23 16:13:52 2019 -0500
+
+    LP1807458 Eg2 grid Edit option lint repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	3	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 4574eaf3442ee4dc9b0cde6e6e2d941ce9c17eef
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 10 15:06:23 2018 -0500
+
+    LP#1807461 FM-editor show danger toasts when create/update fails
+    
+    Display a danger toast when update or create attempts fail in the
+    Angular fieldmapper editor dialog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+10	2	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit d794c5b848a6007a134ac8782309d87be5ed5e84
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 10 13:09:36 2018 -0500
+
+    LP#1807458 Angular admin grid Edit Selected option
+    
+    Adds a new "Edit Selected" action to the "Actions for Selected Items"
+    menu in the general purpose admin grid.  This only visibly affects the
+    ACQ admin grids at time of writing, but applies to all auto-generated
+    admin grids.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+27	12	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit baabffdfc14c2a648c503cf6fe26df07a694bcaf
+Author: abneiman <abneiman@equinoxinitiative.org>
+Date:   Tue Feb 19 17:22:04 2019 -0500
+
+    docs: Statcat updates
+    
+    Signed-off-by: abneiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+16	7	docs/admin/lsa-statcat.adoc
+-	-	docs/media/lsa-statcat-2.png
+-	-	docs/media/lsa-statcat-3.png
+-	-	docs/media/lsa-statcat-3a.png
+-	-	docs/media/lsa-statcat-5.png
+-	-	docs/media/lsa-statcat-6.png
+-	-	docs/media/lsa-statcat-8.png
+ create mode 100644 docs/media/lsa-statcat-3a.png
+
+commit 1a307d20aa6ded7cc5e7248e35c4d658d9c28ae5
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 20 11:57:02 2019 -0400
+
+    Docs: Add bugfix release notes for 3.2.5
+    
+    For the acknowledgements section, I opted to include anyone who had
+    signed off on a commit in 3.2.5. I'm not sure what the criteria were
+    for pervious point release notes.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+105	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 77600513ca30b431079d7384237161089bbeae41
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Mar 20 12:16:54 2019 -0400
+
+    Docs: Add bugfix release notes for 3.1.11
+    
+    For the acknowledgements section, I opted to include anyone who had
+    signed off on a commit in 3.1.11. Not sure if this is the same as past
+    point release notes.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+72	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit a5c5dbf7c2fe2e10357ece7f9110796951615b8c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 14 12:03:58 2019 -0400
+
+    LP1776736 Record merge marc edit repairs
+    
+    1. Fixes issues where edits to MARC records would fail to save during
+       merge.
+    
+    2. Provide options to select flat or non-flat text editor in edit mode
+       for record merges.
+    
+    3. Allow record editor action buttons/selectors to flow down
+       horizontally when they don't fit in a narrow space.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	2	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+7	7	Open-ILS/src/templates/staff/cat/share/t_marcedit.tt2
+1	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+27	15	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 3b17ee40181c7ae5f67c97db34b91f9dde7c1610
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Tue Feb 26 14:21:06 2019 -0600
+
+    LP1749502 - Holds Pull List Print Order
+    
+    - Expose call number affix sortkey data.
+    - Use sortkey data to sort default pull list template.
+    - Combine all call number info into one field in default pull list template.
+    - Sorty by shelf location position if it exists, then by shelf location name if it doesn't
+    - Only grab copy info if copy is assigned, to not break patron holds grid.
+    - Remove some web console logging only needed for testing.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+
+2	6	Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+37	31	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit 3ec7bdcbac4a87c0db98b6d589c0aaca6d126337
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 12 15:34:56 2018 -0400
+
+    LP 1749502: Add Call Number Prefix & Suffix to pull list print template.
+    
+    We add the call number prefix and suffix as separate columns to the
+    holds pull list print template.  We also add the suffix to the end of
+    the orderBy so that we also sort by the suffix.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+
+5	1	Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+
+commit 935a4242ff3ae243492b024a14be52394a7397ce
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue May 29 16:06:59 2018 +0000
+
+    lp1749502 Prefix patch
+    
+    - Ensure prefix information is properly set
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+
+1	1	Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+12	10	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit c7e13807e5d3ef24458c2e247be502a5fe848e63
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu May 17 21:08:27 2018 +0000
+
+    lp1749502 Holds Pull List Print Order
+    
+    - Ensure copy shelf location position is available for each hold on
+    holds shelf.
+    - Add _copy_location_position to hold_data while printing.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+
+1	1	Open-ILS/src/templates/staff/share/print_templates/t_hold_pull_list.tt2
+20	1	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit 343a2f8068542665df7e5e2bcdb5eb37d8459698
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 11:53:09 2019 -0500
+
+    LP1739293 Record merged edit-in-place avoid wrap
+    
+    When using the inline editor, prevent text wrapping and instead allow
+    the text to overflow x and y and use scrolls to navigate.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+2	1	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+8	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+
+commit c30d8d45c469174b047a14407c950cec96c2f4a7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 11:10:44 2019 -0500
+
+    LP1739293 Record merge fits container
+    
+    Allow the text contents of each merged MARC record to wrap so the
+    records may fit horizontally on the screen.  A single vertical scroll
+    allows the user to scroll down to see any parts of the record that
+    require more vertical space.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+19	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+
+commit 816b16492bf4d6ff4cdaf34a287ee321763ef7a4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 8 11:25:10 2019 -0500
+
+    LP1739293 Record merge horizontal; optional holdings
+    
+    * Tile bib records horizontally in record bucket => merge records
+      interface.
+    
+    * Add a "Toggle Holdings View" button for displaying holdings and leave
+      holdings un-displayed by default.
+    
+    * Duplicate the Merge and Cancel buttons along the top of the dialog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+50	33	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+1	0	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+
+commit de32afd744a7bdefd1418da7da503d4a9d8f508d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Mar 13 12:37:23 2019 -0400
+
+    LP 1819796: Fix method call on undefined value in generate_fines
+    
+    The below message repeats in the open-ils.storage_stderr.log:
+    
+    Caught error from 'run' method: Can't call method "search_where" on an
+    undefined value at
+    /usr/local/share/perl/5.26.1/OpenILS/Application/Storage/Publisher/action.pm
+    line 1014.
+    
+    This commit removes an errant ->search_where on a CStoreEditor call to
+    make that message go away.
+    
+    Also, delete some lines of code that were commented out at the time the
+    code was converted to use CStoreEditor.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	8	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 289e5ee465c60f94842c85ca9a8f4b308488d64f
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Mar 8 15:27:45 2019 -0500
+
+    LP1793196 Fix console error when none selected
+    
+    If you open the dropdown and close it without selecting anything, the
+    console shows an error complaining that $scope.selected is undefined.
+    This commit checks that it exists in that case before using it.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/web/js/ui/default/staff/services/ui.js
+
+commit 448118772255aaecf7e8d7e483f53e8da67d5c03
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Feb 5 12:28:15 2019 -0500
+
+    LP1793196 Volume batch editor offers MARC call numbers
+    
+    Provide call numbers extracted from the MARC record as options in the
+    volume batch editor.  Call numbers to extract are based on the load-time
+    classification scheme, defaulting to Generic ('1') if no default scheme
+    is applied.
+    
+    Patch includes additional sanity checks on volume editor utility
+    functions to avoid console errors referencing undefined values.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+22	5	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 331db31999bbd3747b62e6348d3e1d27117c7949
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Sep 2 16:13:46 2018 -0700
+
+    LP1665534: Make pickup library in bib record holds view sticky
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/catalog/t_holds.tt2
+
+commit d2265ab8cc08165e789a9341702035ed6365c4ef
+Author: Steven Callender <stevecallender@esilibrary.com>
+Date:   Tue Dec 11 13:18:27 2018 -0500
+
+    LP1808006 - Sitemap generator fix to allow shortname parameter.
+    
+    Signed-off-by: Steven Callender <stevecallender@esilibrary.com>
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	1	Open-ILS/src/support-scripts/sitemap_generator
+
+commit dfb52ae31bef4f3bdadb936e551ad38d413e4d04
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Jan 17 13:33:10 2019 -0500
+
+    LP1798628: Copy alert counts in Holdings
+    
+    Currently the count of all copy alerts ever applied
+    to a copy is displayed in the Holdings view, which
+    can be quite confusing when clicking Manage and not
+    seeing the expected number of alerts. This branch
+    changes the display to only count the number of
+    events currently active since those are the only
+    ones available to manage.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	1	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit 80d9c400eafe016343bedfa65c9fad053585d2b6
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Oct 25 08:53:32 2018 -0400
+
+    LP#1778571 Fix logic error converting JS bool to DB bool
+    
+    Two minor bugs in the Copy Notes editor had the same cause in two
+    separate places. The cause was forgetting to convert the checkbox status
+    (a JavaScript bool) to the correct database format ('t' or 'f'). The
+    resulting symptoms were buggy behavior related to the state of the
+    "Public Note" checkbox. This commit addresses both cases mentioned in
+    the bug report and comments.
+    
+    To test the buggy behavior:
+    1. Edit an item (e.g. click the "Edit" link from the client OPAC view).
+    2. Click the "Item Notes" button (near the bottom of the editor).
+    3. Add a new note and check the "Public Note" box.
+    4. Click "OK".
+    5. Click "Item Notes" again and notice that the "Public Note" box on your
+       new note is no longer checked. (That's bug #1.)
+    6. Check "Public Note" again, click "OK", and click "Save & Exit".
+    7. Edit the same item again. Click "Item Notes".
+    8. Your note should correctly have the "Public Note" checkbox checked.
+    9. Uncheck the box and click "OK". Click "Save & Exit".
+    10. Edit the same item. Click "Item Notes".
+    11. Notice that your change didn't save. The "Public Note" checkbox is
+        still checked. (That's bug #2.)
+    
+    To test the fixes:
+    - Clear your browser cache.
+    - Repeat the steps above, noticing that:
+      - At step 5, the new note correctly has the "Public Note" checkbox
+        checked.
+      - At step 11, the edited note correctly has the "Public Note" checkbox
+        unchecked.
+    
+    NOTE: Testing requires clearing the browser cache, since the
+    t_copy_notes.tt2 file is fetched asynchronously by AngularJS.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_copy_notes.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit d0a8024de9331542c83120d8fddacbe13b08d7d7
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Mar 8 14:19:02 2019 -0500
+
+    LP#1759238: stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+11	0	Open-ILS/src/sql/Pg/upgrade/1158.data.fix-typo-in-seed-data.sql
+0	11	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix-typo-in-seed-data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1158.data.fix-typo-in-seed-data.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix-typo-in-seed-data.sql
+
+commit acdce777c319edcae4810697fa99b209775864eb
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue May 1 10:38:39 2018 -0400
+
+    LP#1759238: Add upgrade script to fix typo for Physical Description in DB
+    
+    This upgrade script will check and update the typo if it is present in
+    an existing installation.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+11	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix-typo-in-seed-data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.fix-typo-in-seed-data.sql
+
+commit f7afe0c718760b780421eb5ea38cdfe40521ff7b
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue May 1 10:29:25 2018 -0400
+
+    LP#1769238: fix typo in 950.data.seed-values.sql for Physical Description
+    
+    Instead of "Physical Description", "Physical Descrption" is used by mistake.
+    Fix the seed data and all related PO files for translation.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    
+    Conflicts:
+    	build/i18n/po/db.seed/cs-CZ.po
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	1	build/i18n/po/db.seed/ar-JO.po
+1	1	build/i18n/po/db.seed/cs-CZ.po
+1	1	build/i18n/po/db.seed/db.seed.pot
+1	1	build/i18n/po/db.seed/de-DE.po
+1	1	build/i18n/po/db.seed/en-CA.po
+1	1	build/i18n/po/db.seed/en-GB.po
+1	1	build/i18n/po/db.seed/es-ES.po
+1	1	build/i18n/po/db.seed/fi-FI.po
+1	1	build/i18n/po/db.seed/fr-CA.po
+1	1	build/i18n/po/db.seed/he-IL.po
+1	1	build/i18n/po/db.seed/hu-HU.po
+1	1	build/i18n/po/db.seed/hy-AM.po
+1	1	build/i18n/po/db.seed/oc-FR.po
+1	1	build/i18n/po/db.seed/pt-BR.po
+1	1	build/i18n/po/db.seed/ru-RU.po
+1	1	build/i18n/po/db.seed/sv-SE.po
+1	1	build/i18n/po/db.seed/tr-TR.po
+
+commit d731c233112b6ebdf8fde12f80a3b7916f608539
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Mar 8 13:54:35 2019 -0500
+
+    Lp 712490: Stamping UPgrade Script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+202	0	Open-ILS/src/sql/Pg/upgrade/1157.schema.vandelay-replace-field-order.sql
+0	202	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1157.schema.vandelay-replace-field-order.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+
+commit 793286531f5c2cbb7625e8c54f2f3dbade71491a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 19 11:42:43 2017 -0400
+
+    LP#712490 Vandelay replace/merge PGTAP tests
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+135	0	Open-ILS/src/sql/Pg/t/lp712490-vand-replace-field-merge.pg
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp712490-vand-replace-field-merge.pg
+
+commit 028750d7c2ff992a3702533925c62b9c15b93f1e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Oct 18 17:00:59 2017 -0400
+
+    LP#712490 Vandelay merge-based field replacement
+    
+    Modify the vandelay field replacement logic to merge replacement data
+    into existing field data where possible, instead of simply deleting then
+    re-adding the data.  The key benefit is that subfields retain their order
+    in affected MARC fields.  As a result, for example, propagating
+    authority field changes to bib records will no longer result in the $0
+    field being pushed to the front of the field when it was previously that
+    last subfield.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+188	22	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+202	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+
+commit b493ff500fab9b70379068ef2bbc5ce2e78abf68
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Wed Jan 16 08:57:26 2019 -0500
+
+    LP1794588 Web client edit single call number changes all when multiple items attached
+    
+    This patch tweaks the behavior Cat.pm's fleshed_volume_update, aka
+    open-ils.cat.asset.volume.fleshed.batch.update
+    
+    Previously, if a volume label was edited, all items attached to that
+    volume would be essentially affected.  Now, if only a sub-set of items
+    for the original volume being edited are being edited along with the
+    volume, then a new volume is potentially created instead, leaving the
+    original volume (and its unedited copies) untouched.  If no copies are
+    being edited along with a volume, then the volume itself is edited.
+    
+    Auto-merging of volumes may still happen in all of these scenarios.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+44	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit a0ed58488100cc8fd4a8be5a41146bea491c4e2f
+Author: Sam Link <slink@LIBPC002>
+Date:   Thu Dec 13 11:06:55 2018 -0500
+
+    lp1802662 - Splash Page Icon Links
+    
+    Moved the image icons on splash.component.html and t_splash.tt2 inside
+    the anchor links to the associated pages.
+    
+    Signed-off-by: Sam Link <slink@LIBPC002>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+23	13	Open-ILS/src/eg2/src/app/staff/splash.component.html
+23	13	Open-ILS/src/templates/staff/t_splash.tt2
+
+commit 090b92cd992a29f76a0cba472f8bce22234cfd2d
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Mar 5 12:34:49 2019 -0500
+
+    LP#1818576 Offline Noncataloged Checkout Preview
+    
+    This adds the noncataloged type and number to the right-hand
+    preview when doing an offline checkout. (Prior to this, the
+    display was blank if there was no barcode.)
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	1	Open-ILS/src/templates/staff/offline-interface.tt2
+6	0	Open-ILS/web/js/ui/default/staff/offline.js
+
+commit 8b7536f75d6debe3ab65e5226b2179ef31e0ffe6
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Jan 23 10:52:24 2019 -0500
+
+    LP#1812389: make Group Penalty Threshold admin page accessible again
+    
+    As a consequence of the patch for bug 1744756 adding a new
+    admin/local/permission AngularJS app, the routing for
+    admin/local/permission/grp_penalty_threshold got broken, making the
+    embdeded Conify interface for group penalty thresholds inaccessible
+    from the web staff client. This patch fixes that.
+    
+    To test
+    -------
+    [1] From Administration | Local Administration, go to Group Penalty
+        Thresholds. Note that the embedded Conify admin interface
+        is not displayed and the URL changes to .../permission/grp_tree.
+    [2] Apply the patch and repeat step 1. This time, the admin interface
+        should appear.
+    [3] Verify that the Permission Group Tree Entries interface remains
+        accessible from Local Administration.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/templates/staff/admin/local/permission/index.tt2
+32	1	Open-ILS/web/js/ui/default/staff/admin/local/permission/app.js
+
+commit a36a915ab853babbc42f5f3d9a1fb7858fb1cf73
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Jan 17 09:58:08 2019 -0500
+
+    LP1734775: Show multiple items in Item Status
+    
+    The ListCtrl controller was only displaying a single
+    copy when an id list was passed to Item Status in the
+    URL. This branch separates each id into a separate
+    fetch call and when all have been resolved it
+    refreshes the grid, which now has all of the items.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+6	5	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit cbfdbd554f1147357c11bf94f0ef34c667c40e9e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Mar 1 17:03:31 2019 -0800
+
+    LP1721109: Update item status when holdings are edited
+    
+    To test:
+    1) Go to Item Status List View, select an item, and go to Actions >
+    Edit > Items (or Call Numbers, or both).
+    2) Make a change to one of the columns you have active in
+    the Item Status list view. Click Save and Exit.
+    3) Note that the list view of Item Status has not updated.
+    4) Load this commit.
+    5) Repeat steps 1-2.
+    6) Note that the columns are updated this time.  Note that
+    there is a new status column, and that an icon appears for
+    all the rows that you have changed.  Also, note that there
+    is a toast message in the bottom right hand corner of the
+    screen confirming that you have successfully made your change.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+6	1	Open-ILS/src/templates/staff/cat/item/index.tt2
+1	0	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+45	0	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 8b0f6581a9d47b738452a8cefc5e50346af0f8cc
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Wed Mar 6 23:06:09 2019 -0500
+
+    LP #1705497 Replaces functionality in web client from legacy
+    XUL client by including a find function for originating
+    acquisition where it exists.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+4	1	Open-ILS/src/templates/staff/cat/item/t_list.tt2
+53	6	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit 41dc957622090d1a1fb71b81556aedddb09dbac0
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Mar 7 07:14:50 2019 -0800
+
+    Docs: Fixing broken link
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/reports/reporter_add_data_source.adoc
+
+commit dc9f879b3152549f286dbe9a8725aa3a64de4562
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Oct 26 11:28:32 2018 -0400
+
+    LP#1800178 Holdings View should also sort by part
+    
+    The Holdings View tab of the web client doesn't correctly sort by
+    monograph parts. The JS is already grabbing the part label for display,
+    so this commit moves that chunk before the sorting code, and also grabs
+    the sort key. Note that the part labels and sort keys are joined per
+    item, since the database supports multiple parts per item (though the UI
+    hasn't yet supported that). And we now join the label on comma-space,
+    instead of the default (just a comma).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+13	8	Open-ILS/web/js/ui/default/staff/cat/services/holdings.js
+
+commit e2a63a87ad6ba013b6e1b692e562c06636f02fbd
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 12:21:00 2019 -0500
+
+    LP1818153 Stamping DB upgrade - WS user activity
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/1154.data.websocket-activity-types.sql
+0	28	Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1154.data.websocket-activity-types.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+
+commit 2581a140f6ac75912797a8d60a63ed5bb9043e6f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 28 17:20:31 2019 -0500
+
+    LP1818153 Log user activity for websocket login/verify
+    
+    Adds support for logging additional user activity types:
+    
+     * websocket v1 login (apache2-websockets)
+     * websocket v2 login (websocketd)
+     * websocket v1 verify
+     * websocket v2 verify
+     * generic login (any ingress)
+     * generic verify (any ingress)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+23	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+
+commit a24c5f1d9b644f84c2708c817a57fae6f31a6c65
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Tue Mar 5 10:50:59 2019 -0500
+
+    LP#1746360 Add Deleted Column to Record Bucket
+    
+    This adds the Deleted column to the Record Bucket view.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2
+
+commit 3e06b45bd6063d97302b1372ff3e902f8929aaa1
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Mon Mar 4 08:57:02 2019 -0600
+
+    LP#1667497 - Define $params{depth} to avoid uninitialized warning.
+    
+    $depth is set to 0 if $params{depth} is unset, but then $params{depth}
+    gets used later on, which causes an uninitialized value warning.
+    
+    So set $params{depth} to whatever $depth was set to.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit d14d21fbd3cf945fc38856047977253f7d29a4ca
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 15:59:26 2019 -0500
+
+    Forward-port 3.2.4 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+58	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.3-3.2.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.3-3.2.4-upgrade-db.sql
