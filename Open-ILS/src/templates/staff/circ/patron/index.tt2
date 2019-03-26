@@ -51,6 +51,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
   s.CHECK_IN_CONFIRM = "[% l('Check In Items?') %]";
   s.REG_INVALID_FIELDS = 
     "[% l('Please enter valid values for all required fields.') %]"
+  s.REG_PASSWORD_RESET_REQUEST_NO_EMAIL =
+    "[% l('An email address is required for a password reset link to be sent.') %]";
+  s.REG_PASSWORD_RESET_REQUEST_DIFFERENT_EMAIL =
+    "[% l('Patron email address appears to have been changed but not yet saved. Please save user before attempting to send password reset link.') %]";
+  s.REG_PASSWORD_RESET_REQUEST_SUCCESSFUL =
+    "[% l('Submitted request for password reset link to be sent via email.') %]";
   s.PAYMENT_WARN_AMOUNT = "[% l('Are you sure you want to apply a payment of $[_1]?', '{{payment_amount}}') %]";
   s.PAYMENT_WARN_AMOUNT_TITLE = "[% l('Verify Payment Amount') %]";
   s.PAYMENT_OVER_MAX = "[% l('Payments over $[_1] are denied by policy.', '{{max_amount}}') %]";
