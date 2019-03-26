@@ -17,7 +17,7 @@ import {StringService} from '@eg/share/string/string.service';
 import {TitleComponent} from '@eg/share/title/title.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
-import {RecordBucketDialogComponent} from '@eg/staff/share/buckets/record-bucket-dialog.component';
+import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
 import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
@@ -40,7 +40,7 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     OpChangeComponent,
     FmRecordEditorComponent,
     DateSelectComponent,
-    RecordBucketDialogComponent,
+    BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,
     AdminPageComponent
@@ -64,7 +64,7 @@ import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.componen
     OpChangeComponent,
     FmRecordEditorComponent,
     DateSelectComponent,
-    RecordBucketDialogComponent,
+    BucketDialogComponent,
     BibSummaryComponent,
     TranslateComponent,
     AdminPageComponent

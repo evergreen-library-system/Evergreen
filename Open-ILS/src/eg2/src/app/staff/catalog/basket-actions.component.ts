@@ -5,8 +5,8 @@ import {Router} from '@angular/router';
 import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {PrintService} from '@eg/share/print/print.service';
-import {RecordBucketDialogComponent
-    } from '@eg/staff/share/buckets/record-bucket-dialog.component';
+import {BucketDialogComponent
+    } from '@eg/staff/share/buckets/bucket-dialog.component';
 
 @Component({
   selector: 'eg-catalog-basket-actions',
@@ -17,7 +17,7 @@ export class BasketActionsComponent implements OnInit {
     basketAction: string;
 
     @ViewChild('addBasketToBucketDialog')
-        addToBucketDialog: RecordBucketDialogComponent;
+        addToBucketDialog: BucketDialogComponent;
 
     constructor(
         private router: Router,
@@ -89,8 +89,12 @@ export class BasketActionsComponent implements OnInit {
 
             case 'bucket':
                 this.basket.getRecordIds().then(ids => {
-                    this.addToBucketDialog.recordId = ids;
-                    this.addToBucketDialog.open({size: 'lg'});
+                    this.addToBucketDialog.bucketClass = 'biblio';
+                    this.addToBucketDialog.itemIds = ids;
+                    this.addToBucketDialog.open({size: 'lg'}).then(
+                        ok => {},
+                        dismissed => {}
+                    );
                 });
                 break;
 

@@ -75,8 +75,8 @@
           </li>
           <li class="list-group-item">
             <div class="d-flex">
-              <eg-record-bucket-dialog #bucketDialog [queueId]="queueId">
-              </eg-record-bucket-dialog>
+              <eg-bucket-dialog #bucketDialog bucketClass="biblio" [fromBibQueue]="queueId">
+              </eg-bucket-dialog>
               <div class="flex-1">
                 <a [routerLink]="" (click)="bucketDialog.open({size:'lg'})" i18n>
                   Copy Queue To Bucket
