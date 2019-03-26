@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-01-16 21:07+0000\n"
+"POT-Creation-Date: 2019-02-26 17:54+0000\n"
 "PO-Revision-Date: 2019-01-16 20:50+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-01-17 06:03+0000\n"
-"X-Generator: Launchpad (build 18856)\n"
+"X-Launchpad-Export-Date: 2019-02-27 06:13+0000\n"
+"X-Generator: Launchpad (build 18886)\n"
 "Language: arabic\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
@@ -224,8 +224,8 @@ msgstr ""
 
 #. ("{{hold.usr().family_name()}}", "{{hold.usr().first_given_name()}}", "{{hold.usr().second_given_name()}}", "{{hold.usr().card().barcode()}}")
 #. ("{{hold.requestor().family_name()}}", "{{hold.requestor().first_given_name()}}", "{{hold.requestor().second_given_name()}}", "{{hold.requestor().card().barcode()}}")
-#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{circ.usr().family_name()}}", "{{circ.usr().first_given_name()}}", "{{circ.usr().second_given_name()}}", "{{circ.usr().card().barcode()}}")
+#. ("{{prev_circ_usr.family_name()}}", "{{prev_circ_usr.first_given_name()}}", "{{prev_circ_usr.second_given_name()}}", "{{prev_circ_usr.card().barcode()}}")
 #. ("{{user.family_name()}}", "{{user.first_given_name()}}", "{{user.second_given_name()}}", "{{user.card().barcode()}}")
 #: ../../Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2:27 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:118 ../../Open-ILS/src/templates/staff/cat/item/t_circs_pane.tt2:18 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:17 ../../Open-ILS/src/templates/staff/cat/item/t_holds_pane.tt2:30 ../../Open-ILS/src/templates/staff/circ/patron/t_move_to_group_dialog.tt2:15
 msgid "%1, %2 %3 : %4"
@@ -1167,8 +1167,8 @@ msgstr "الباركود: %1"
 msgid "Barcode: %1 Checkin date: %2"
 msgstr "الباركود: %1 تاريخ الإرجاع: %2"
 
-#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{renewal.copy.barcode}}", "{{renewal.circ.due_date | egDueDate:$root.egDateAndTimeFormat:renewal.circ.circ_lib:renewal.circ.duration}}")
+#. ("{{checkout.barcode}}", "{{checkout.due_date | date:\"short\"}}")
 #. ("{{checkout.copy.barcode}}", "{{checkout.circ.due_date | egDueDate:$root.egDateAndTimeFormat:checkout.circ.circ_lib:checkout.circ.duration}}")
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_checkout.tt2:35 ../../Open-ILS/src/templates/staff/share/print_templates/t_items_out.tt2:36 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_checkout.tt2:18 ../../Open-ILS/src/templates/staff/share/print_templates/t_offline_renew.tt2:16 ../../Open-ILS/src/templates/staff/share/print_templates/t_renew.tt2:18
 msgid "Barcode: %1 Due: %2"
@@ -2417,10 +2417,6 @@ msgstr "مُعرف النسخة"
 msgid "Copy Is Mint Condition"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:38
-msgid "Copy Local Storage Settings To Hatch"
-msgstr "نسخ إعدادات التخزين المحلي من أجل الهاتش"
-
 #: ../../Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2:44 ../../Open-ILS/src/templates/staff/circ/transits/t_list.tt2:54
 msgid "Copy Location"
 msgstr "موقع النسخة"
@@ -2632,8 +2628,8 @@ msgstr "تم الإنشاء بوساطة:"
 msgid "Created On"
 msgstr "تمّ الإنشاء في"
 
-#. ("{{notify.notify_staff().usrname()}}")
 #. ("{{note.creator().usrname()}}")
+#. ("{{notify.notify_staff().usrname()}}")
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_notes.tt2:18 ../../Open-ILS/src/templates/staff/circ/share/t_hold_details.tt2:129
 msgid "Created by %1"
 msgstr "تم الإنشاء بوساطة %1"
@@ -2928,6 +2924,10 @@ msgstr "حذف الملاحظة؟"
 #: ../../Open-ILS/src/templates/staff/admin/actor/org_unit/t_main_tab.tt2:65
 msgid "Delete Org"
 msgstr "حذف المنظمة"
+
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_pending_list.tt2:26
+msgid "Delete Pending Patron(s)"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/admin/server/authority/heading_field.tt2:31 ../../Open-ILS/src/templates/staff/admin/server/config/copy_tag_type.tt2:31 ../../Open-ILS/src/templates/staff/admin/server/config/marc_field.tt2:45 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:49 ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field_virtual_map.tt2:33 ../../Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2:11
 msgid "Delete Record"
@@ -4156,6 +4156,10 @@ msgstr "أكبر من أو يساوي"
 msgid "Grid Columns Configuration"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/staff/circ/patron/t_bills_list.tt2:113
+msgid "Grocery Billing Location"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_patron_groups_dialog.tt2:16
 msgid "Group"
 msgstr "المجموعة"
@@ -4516,6 +4520,12 @@ msgstr "المعرف"
 
 #: ../../Open-ILS/src/templates/staff/admin/server/config/metabib_field.tt2:34
 msgid "Identifier"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:30
+msgid ""
+"If 'Store Local Settings in Hatch' is enabled, use the 'Copy Hatch Settings "
+"To Local Storage' button before disabling 'Store Local Settings in Hatch'"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_prediction_wizard.tt2:91
@@ -8911,10 +8921,6 @@ msgstr "وقت إيقاف الغرامة"
 msgid "Store Local Settings in Hatch"
 msgstr "تخزين الإعدادات المحلية في الهاتش"
 
-#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:54
-msgid "Store Offline Transaction Data in Hatch"
-msgstr "تخزين بيانات عملية ـ بدون اتصال بالإنترنت ـ في الهاتش"
-
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2:121
 msgid "Store Selected"
 msgstr "حفظ المحدد"
@@ -8926,6 +8932,10 @@ msgstr "التفضيلات المحفوظة"
 #: ../../Open-ILS/src/templates/staff/admin/workstation/t_stored_prefs.tt2:13
 msgid "Stored User Preferences"
 msgstr "تفضيلات المستخدم المحفوظة"
+
+#: ../../Open-ILS/src/templates/staff/admin/workstation/t_hatch.tt2:28
+msgid "Storing settings in Hatch is deprecated"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/serials/t_view_items_grid.tt2:113
 msgid "Stream ID"
@@ -10551,3 +10561,9 @@ msgstr ""
 #: ../../Open-ILS/src/templates/staff/cat/bucket/share/t_bucket_info.tt2:6 ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_bucket_info.tt2:6
 msgid "{} items"
 msgstr "{}  النُسخ"
+
+#~ msgid "Copy Local Storage Settings To Hatch"
+#~ msgstr "نسخ إعدادات التخزين المحلي من أجل الهاتش"
+
+#~ msgid "Store Offline Transaction Data in Hatch"
+#~ msgstr "تخزين بيانات عملية ـ بدون اتصال بالإنترنت ـ في الهاتش"
