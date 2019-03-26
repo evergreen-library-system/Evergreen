@@ -75,6 +75,20 @@ System administration
 * Fixes an error in the sitemap_generator script when using the shortname
   parameter (https://bugs.launchpad.net/evergreen/+bug/1808006[Bug #1808006])
 
+Angular client
+^^^^^^^^^^^^^^
+
+* Adds an early copy of the Czech translation to the new Angular pieces of the
+  web client (https://bugs.launchpad.net/evergreen/+bug/1821067[Bug #1821067])
+* Adds "Edit Selected" action to the "Actions for Selected Items" menu in the
+  default Angular admin grid
+  (https://bugs.launchpad.net/evergreen/+bug/1807458[BUG #1807458])
+* Adds a notification message when updating fails in the default Angular edit
+  dialog (https://bugs.launchpad.net/evergreen/+bug/1807461[Bug #1807461])
+* Fixes a bug when creating a new object after editing an existing object in an
+  Angular admin grid (https://bugs.launchpad.net/evergreen/+bug/1821409[Bug
+#1821409])
+
 
 Acknowledgments
 ~~~~~~~~~~~~~~~
