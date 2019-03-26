@@ -6,37 +6,36 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 /**
  * Dialog for adding bib records to new and existing record buckets.
  */
 
 @Component({
-  selector: 'eg-record-bucket-dialog',
-  templateUrl: 'record-bucket-dialog.component.html'
+  selector: 'eg-bucket-dialog',
+  templateUrl: 'bucket-dialog.component.html'
 })
 
-export class RecordBucketDialogComponent
-    extends DialogComponent implements OnInit {
+export class BucketDialogComponent extends DialogComponent implements OnInit {
 
     selectedBucket: number;
     newBucketName: string;
     newBucketDesc: string;
     buckets: any[];
 
-    @Input() bucketType: string;
+    @Input() bucketClass: 'biblio' | 'user' | 'callnumber' | 'copy';
+    @Input() bucketType: string; // e.g. staff_client
 
-    // Add one or more bib records to bucket by ID.
-    recIds: number[];
-    @Input() set recordId(id: number | number[]) {
-        this.recIds = [].concat(id);
-    }
+    // ID's of items to add to the bucket
+    @Input() itemIds: number[];
 
-    // Add items from a (vandelay) bib queue to a bucket
-    qId: number;
-    @Input() set queueId(id: number) {
-        this.qId = id;
-    }
+    // If set, itemIds will be derived from the records in a bib queue
+    @Input() fromBibQueue: number;
+
+    // bucket item classes are these plus a following 'i'.
+    bucketFmClass: 'ccb' | 'ccnb' | 'cbreb' | 'cub';
+    targetField: string;
 
     constructor(
         private modal: NgbModal, // required for passing to parent
@@ -47,40 +46,77 @@ export class RecordBucketDialogComponent
         private evt: EventService,
         private auth: AuthService) {
         super(modal); // required for subclassing
-        this.recIds = [];
+        this.buckets = [];
+        this.itemIds = [];
+        this.fromBibQueue = null;
     }
 
     ngOnInit() {
-
-        if (this.qId) {
-            this.bucketType = 'vandelay_queue';
-        } else {
-            this.bucketType = 'staff_client';
-        }
-
         this.onOpen$.subscribe(ok => {
-            // Reset data on dialog open
-
-            this.selectedBucket = null;
-            this.newBucketName = '';
-            this.newBucketDesc = '';
-
+            this.reset(); // Reset data on dialog open
             this.net.request(
                 'open-ils.actor',
                 'open-ils.actor.container.retrieve_by_class.authoritative',
                 this.auth.token(), this.auth.user().id(),
-                'biblio', this.bucketType
+                this.bucketClass, this.bucketType
             ).subscribe(buckets => this.buckets = buckets);
         });
+    }
+
+    reset() {
+        this.selectedBucket = null;
+        this.newBucketName = '';
+        this.newBucketDesc = '';
+
+        if (!this.bucketClass) {
+            this.bucketClass = 'biblio';
+        }
+
+        switch (this.bucketClass) {
+            case 'biblio':
+                if (this.fromBibQueue) {
+                    this.bucketType = 'vandelay_queue';
+                }
+                this.bucketFmClass = 'cbreb';
+                this.targetField = 'target_biblio_record_entry';
+                break;
+            case 'copy':
+                this.bucketFmClass = 'ccb';
+                this.targetField = 'target_copy';
+                break;
+            case 'callnumber':
+                this.bucketFmClass = 'ccnb';
+                this.targetField = 'target_call_number';
+                break;
+            case 'user':
+                this.bucketFmClass = 'cub';
+                this.targetField = 'target_user';
+        }
+
+        if (!this.bucketType) {
+            this.bucketType = 'staff_client';
+        }
     }
 
     addToSelected() {
         this.addToBucket(this.selectedBucket);
     }
 
+    bucketChanged(entry: ComboboxEntry) {
+        if (entry) {
+            this.selectedBucket = entry.id;
+        } else {
+            this.selectedBucket = null;
+        }
+    }
+
+    formatBucketEntries(): ComboboxEntry[] {
+        return this.buckets.map(b => ({id: b.id(), label: b.name()}));
+    }
+
     // Create a new bucket then add the record
     addToNew() {
-        const bucket = this.idl.create('cbreb');
+        const bucket = this.idl.create(this.bucketFmClass);
 
         bucket.owner(this.auth.user().id());
         bucket.name(this.newBucketName);
@@ -90,7 +126,7 @@ export class RecordBucketDialogComponent
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.container.create',
-            this.auth.token(), 'biblio', bucket
+            this.auth.token(), this.bucketClass, bucket
         ).subscribe(bktId => {
             const evt = this.evt.parse(bktId);
             if (evt) {
@@ -106,27 +142,27 @@ export class RecordBucketDialogComponent
     }
 
     addToBucket(id: number) {
-        if (this.recIds.length > 0) {
+        if (this.itemIds.length > 0) {
             this.addRecordToBucket(id);
-        } else if (this.qId) {
-            this.addQueueToBucket(id);
+        } else if (this.fromBibQueue) {
+            this.addBibQueueToBucket(id);
         }
     }
 
     // Add the record(s) to the bucket with provided ID.
     addRecordToBucket(bucketId: number) {
         const items = [];
-        this.recIds.forEach(recId => {
-            const item = this.idl.create('cbrebi');
+        this.itemIds.forEach(itemId => {
+            const item = this.idl.create(this.bucketFmClass + 'i');
             item.bucket(bucketId);
-            item.target_biblio_record_entry(recId);
+            item[this.targetField](itemId);
             items.push(item);
         });
 
         this.net.request(
             'open-ils.actor',
             'open-ils.actor.container.item.create',
-            this.auth.token(), 'biblio', items
+            this.auth.token(), this.bucketClass, items
         ).subscribe(resp => {
             const evt = this.evt.parse(resp);
             if (evt) {
@@ -137,14 +173,14 @@ export class RecordBucketDialogComponent
         });
     }
 
-    addQueueToBucket(bucketId: number) {
+    addBibQueueToBucket(bucketId: number) {
         const bucket = this.buckets.filter(b => b.id() === bucketId)[0];
         if (!bucket) { return; }
 
         this.net.request(
             'open-ils.vandelay',
             'open-ils.vandelay.bib_queue.to_bucket',
-            this.auth.token(), this.qId, bucket.name()
+            this.auth.token(), this.fromBibQueue, bucket.name()
         ).toPromise().then(resp => {
             const evt = this.evt.parse(resp);
             if (evt) {

@@ -1,13 +1,13 @@
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title">
-      <ng-container *ngIf="recIds.length > 0">
-        <span *ngIf="recIds.length == 1" i18n>
-          Add Record #{{recIds[0]}} to Bucket</span>
-        <span *ngIf="recIds.length > 1" i18n>
-          Add {{recIds.length}} Record(s) to Bucket</span>
+      <ng-container *ngIf="itemIds.length > 0">
+        <span *ngIf="itemIds.length == 1" i18n>
+          Add Item #{{itemIds[0]}} to Bucket</span>
+        <span *ngIf="itemIds.length > 1" i18n>
+          Add {{itemIds.length}} Items to Bucket</span>
       </ng-container>
-      <span *ngIf="qId" i18n>Add Records from queue #{{qId}} to Bucket</span>
+      <span *ngIf="fromBibQueue" i18n>Add Records from queue #{{fromBibQueue}} to Bucket</span>
     </h4>
     <button type="button" class="close" 
       i18n-aria-label aria-label="Close" 
@@ -19,14 +19,10 @@
     <div class="row">
       <div class="col-lg-3 font-weight-bold" i18n>Name of existing bucket</div>
       <div class="col-lg-5">
-         <select 
-          class="form-control"
-          placeholder="Existing Bucket..."
-          i18n-placeholder
-          [(ngModel)]="selectedBucket">
-          <option *ngFor="let bkt of buckets" 
-            value="{{bkt.id()}}">{{bkt.name()}}</option>
-        </select>
+        <eg-combobox [entries]="formatBucketEntries()" 
+          (onChange)="bucketChanged($event)"
+          placeholder="Existing Bucket..." i18n-placeholder>
+        </eg-combobox>
       </div>
       <div class="col-lg-4">
         <button class="btn btn-info" (click)="addToSelected()" i18n 

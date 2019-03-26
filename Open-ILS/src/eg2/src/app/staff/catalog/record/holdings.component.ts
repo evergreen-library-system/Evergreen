@@ -26,6 +26,8 @@ import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
 import {DeleteVolcopyDialogComponent
     } from '@eg/staff/share/holdings/delete-volcopy-dialog.component';
+import {BucketDialogComponent
+    } from '@eg/staff/share/buckets/bucket-dialog.component';
 
 // The holdings grid models a single HoldingsTree, composed of HoldingsTreeNodes
 // flattened on-demand into a list of HoldingEntry objects.
@@ -95,6 +97,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private replaceBarcode: ReplaceBarcodeDialogComponent;
     @ViewChild('deleteVolcopy')
         private deleteVolcopy: DeleteVolcopyDialogComponent;
+    @ViewChild('bucketDialog')
+        private bucketDialog: BucketDialogComponent;
 
     holdingsTree: HoldingsTree;
 
@@ -838,5 +842,18 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (copyIds.length === 0) { return; }
         const params = {target: copyIds, holdFor: 'staff'};
         this.router.navigate(['/staff/catalog/hold/C'], {queryParams: params});
+    }
+
+    openBucketDialog(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length > 0) {
+            this.bucketDialog.bucketClass = 'copy';
+            this.bucketDialog.itemIds = copyIds;
+            this.bucketDialog.open({size: 'lg'}).then(
+                // No need to reload the grid after adding items to buckets.
+                () => {},
+                dismissed => {}
+            );
+        }
     }
 }
