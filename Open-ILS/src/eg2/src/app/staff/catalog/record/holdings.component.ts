@@ -871,4 +871,18 @@ export class HoldingsMaintenanceComponent implements OnInit {
             );
         }
     }
+
+    bookItems(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length > 0) {
+            alert('TODO');
+        }
+    }
+
+    makeBookable(rows: HoldingsEntry[]) {
+        const copyIds = this.selectedCopyIds(rows);
+        if (copyIds.length > 0) {
+            alert('TODO');
+        }
+    }
 }
