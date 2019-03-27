@@ -1,4 +1,5 @@
 import {Component, Input, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -90,7 +91,12 @@ export class AdminPageComponent implements OnInit {
     viewPerms: string;
     canCreate: boolean;
 
+    // Filters may be passed via URL query param.
+    // They are used to augment the grid data search query.
+    gridFilters: {[key: string]: string | number};
+
     constructor(
+        private route: ActivatedRoute,
         private idl: IdlService,
         private org: OrgService,
         private auth: AuthService,
@@ -101,7 +107,7 @@ export class AdminPageComponent implements OnInit {
         this.translatableFields = [];
     }
 
-    applyOrgValues() {
+    applyOrgValues(orgId?: number) {
 
         if (this.disableOrgFilter) {
             this.orgField = null;
@@ -121,7 +127,7 @@ export class AdminPageComponent implements OnInit {
 
         if (this.orgField) {
             this.orgFieldLabel = this.idlClassDef.field_map[this.orgField].label;
-            this.contextOrg = this.org.root();
+            this.contextOrg = this.org.get(orgId) || this.org.root();
         }
     }
 
@@ -139,6 +145,16 @@ export class AdminPageComponent implements OnInit {
                 this.idlClassDef.table;
         }
 
+        // gridFilters are a JSON encoded string
+        const filters = this.route.snapshot.queryParamMap.get('gridFilters');
+        if (filters) {
+            try {
+                this.gridFilters = JSON.parse(filters);
+            } catch (E) {
+                console.error('Invalid grid filters provided: ', filters)
+            }
+        }
+
         // Limit the view org selector to orgs where the user has
         // permacrud-encoded view permissions.
         const pc = this.idlClassDef.permacrud;
@@ -146,8 +162,9 @@ export class AdminPageComponent implements OnInit {
             this.viewPerms = pc.retrieve.perms;
         }
 
+        const contextOrg = this.route.snapshot.queryParamMap.get('contextOrg');
         this.checkCreatePerms();
-        this.applyOrgValues();
+        this.applyOrgValues(Number(contextOrg));
 
         // If the caller provides not data source, create a generic one.
         if (!this.dataSource) {
@@ -288,6 +305,14 @@ export class AdminPageComponent implements OnInit {
                 order_by: orderBy
             };
 
+            if (!this.contextOrg && !this.gridFilters) {
+                // No org filter -- fetch all rows
+                return this.pcrud.retrieveAll(
+                    this.idlClass, searchOps, {fleshSelectors: true});
+            }
+
+            const search: any = {};
+
             if (this.contextOrg) {
                 // Filter rows by those linking to the context org and
                 // optionally ancestor and descendant org units.
@@ -304,15 +329,18 @@ export class AdminPageComponent implements OnInit {
                         this.org.descendants(this.contextOrg, true));
                 }
 
-                const search = {};
                 search[this.orgField] = orgs;
-                return this.pcrud.search(
-                    this.idlClass, search, searchOps, {fleshSelectors: true});
             }
 
-            // No org filter -- fetch all rows
-            return this.pcrud.retrieveAll(
-                this.idlClass, searchOps, {fleshSelectors: true});
+            if (this.gridFilters) {
+                // Lay the URL grid filters over our search object.
+                Object.keys(this.gridFilters).forEach(key => {
+                    search[key] = this.gridFilters[key];
+                });
+            }
+
+            return this.pcrud.search(
+                this.idlClass, search, searchOps, {fleshSelectors: true});
         };
     }
 

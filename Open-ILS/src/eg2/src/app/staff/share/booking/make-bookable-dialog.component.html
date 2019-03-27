@@ -16,9 +16,20 @@
       </button>
     </div>
     <div class="modal-body">
-      <div class="row">
-        <div class="col-lg-12 d-flex justify-content-center">
+      <div class="row" *ngIf="!updateComplete">
+        <div class="col-lg-12">
           <span i18n>Make {{copyIds.length}} Item(s) Bookable?</span>
+        </div>
+      </div>
+      <div class="row" *ngIf="updateComplete">
+        <div class="col-lg-12 d-flex flex-column">
+          <div i18n>{{numSucceeded}} Item(s) Made Bookable.</div>
+          <div class="mt-2">
+            <a target="_blank" routerLink="/staff/admin/booking/resource"
+              [queryParams]="manageUrlParams()" i18n>
+              Manage Bookable Resources
+            </a>
+          </div>
         </div>
       </div>
     </div>
