@@ -33,7 +33,7 @@ export class BibRecordSummary {
     net: NetService;
 
     constructor(record: IdlObject, orgId: number, orgDepth: number) {
-        this.id = record.id();
+        this.id = Number(record.id());
         this.record = record;
         this.orgId = orgId;
         this.orgDepth = orgDepth;
@@ -221,7 +221,7 @@ export class BibRecordService {
         // Reconsider this approach (see also note above about API).
         this.getBibSummary(metabib.master_record(), orgId, orgDepth)
         .subscribe(summary => {
-            summary.metabibId = metabib.id();
+            summary.metabibId = Number(metabib.id());
             summary.metabibRecords =
                 metabib.source_maps().map(m => Number(m.source()));
 

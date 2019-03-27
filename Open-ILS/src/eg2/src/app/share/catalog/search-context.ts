@@ -276,7 +276,7 @@ export class CatalogSearchContext {
     }
 
     addResultId(id: number, resultIdx: number ): void {
-        this.resultIds[resultIdx + this.pager.offset] = id;
+        this.resultIds[resultIdx + this.pager.offset] = Number(id);
     }
 
     // Return the record at the requested index.
