@@ -42,6 +42,9 @@
     font-weight: bold;
     padding-left: 5px;
   }
+  .field-changed {
+    border: 3px solid #0e0;
+  }
 </style>
 
 <div>
@@ -130,7 +133,7 @@
   <ul class="copy-attributes-grid">
     <li ng-if="defaults.attributes.circulate">
       <div class="bg-info"><label>[% l('Circulate?') %]</label></div>
-      <div ng-class="{'bg-success': working.circulate !== undefined}">
+      <div ng-class="{'bg-success': working.circulate !== undefined, 'field-changed': field_changed('circulate')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.circulate" value="t"/>
@@ -150,7 +153,7 @@
     </li>
     <li ng-if="defaults.attributes.status">
       <div class="bg-info"><label>[% l('Status') %]</label></div>
-      <div ng-class="{'bg-success': working.status !== undefined}">
+      <div ng-class="{'bg-success': working.status !== undefined, 'field-changed': field_changed('status')}">
         <select class="form-control" ng-model="working.status"
           ng-options="s.id() as s.name() disable when magic_status_list.indexOf(s.id(),0) > -1 for s in status_list">
         </select>
@@ -166,7 +169,7 @@
     </li>
     <li ng-if="defaults.attributes.circ_lib">
       <div class="bg-info"><label>[% l('Circulating Library') %]</label></div>
-      <div ng-class="{'bg-success': working.circ_lib !== undefined}">
+      <div ng-class="{'bg-success': working.circ_lib !== undefined, 'field-changed': field_changed('circ_lib')}">
         <eg-org-selector
           alldisabled="{{!defaults.attributes.circ_lib}}"
           selected="working.circ_lib"
@@ -187,7 +190,7 @@
     </li>
     <li ng-if="defaults.attributes.ref">
       <div class="bg-info"><label>[% l('Reference?') %]</label></div>
-      <div ng-class="{'bg-success': working.ref !== undefined}">
+      <div ng-class="{'bg-success': working.ref !== undefined, 'field-changed': field_changed('ref')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.ref" value="t"/>
@@ -212,7 +215,7 @@
     </li>
     <li ng-if="defaults.attributes.location">
       <div class="bg-info"><label>[% l('Shelving Location') %]</label></div>
-      <div ng-class="{'bg-success': working.location !== undefined}">
+      <div ng-class="{'bg-success': working.location !== undefined, 'field-changed': field_changed('location')}">
         <select class="form-control" ng-model="working.location"
           ng-options="l.id() as i18n.ou_qualified_location_name(l) for l in location_list">
         </select>
@@ -228,7 +231,7 @@
     </li>
     <li ng-if="defaults.attributes.opac_visible">
       <div class="bg-info"><label>[% l('OPAC Visible?') %]</label></div>
-      <div ng-class="{'bg-success': working.opac_visible !== undefined}">
+      <div ng-class="{'bg-success': working.opac_visible !== undefined, 'field-changed': field_changed('opac_visible')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.opac_visible" value="t"/>
@@ -253,7 +256,7 @@
     </li>
     <li ng-if="defaults.attributes.circ_modifier">
       <div class="bg-info"><label>[% l('Circulation Modifier') %]</label></div>
-      <div ng-class="{'bg-success': working.circ_modifier !== undefined}">
+      <div ng-class="{'bg-success': working.circ_modifier !== undefined, 'field-changed': field_changed('circ_modifier')}">
         <select class="form-control"
           ng-model="working.circ_modifier"
           ng-options="m.code() as m.name() for m in circ_modifier_list | orderBy: 'name()'">
@@ -270,7 +273,7 @@
     </li>
     <li ng-if="defaults.attributes.price">
       <div class="bg-info"><label>[% l('Price') %]</label></div>
-      <div ng-class="{'bg-success': working.price !== undefined}">
+      <div ng-class="{'bg-success': working.price !== undefined, 'field-changed': field_changed('price')}">
         <input class="form-control" str-to-float ng-model="working.price" 
           type="number" step="0.01"/>
       </div>
@@ -284,7 +287,7 @@
     </li>
     <li ng-if="defaults.attributes.loan_duration">
       <div class="bg-info"><label>[% l('Loan Duration') %]</label></div>
-      <div ng-class="{'bg-success': working.loan_duration !== undefined}">
+      <div ng-class="{'bg-success': working.loan_duration !== undefined, 'field-changed': field_changed('loan_duration')}">
         <select class="form-control" int-to-str ng-model="working.loan_duration">
           <option value="1">[% l('Short') %]</option>
           <option value="2" selected>[% l('Normal') %]</option>
@@ -301,7 +304,7 @@
     </li>
     <li ng-if="defaults.attributes.cost">
       <div class="bg-info"><label>[% l('Acquisitions Cost') %]</label></div>
-      <div ng-class="{'bg-success': working.cost !== undefined}">
+      <div ng-class="{'bg-success': working.cost !== undefined, 'field-changed': field_changed('cost')}">
         <input class="form-control" str-to-float ng-model="working.cost" 
           type="number" step="0.01"/>
       </div>
@@ -315,7 +318,7 @@
     </li>
     <li ng-if="defaults.attributes.circ_as_type">
       <div class="bg-info"><label>[% l('Circulate as Type') %]</label></div>
-      <div ng-class="{'bg-success': working.circ_as_type !== undefined}">
+      <div ng-class="{'bg-success': working.circ_as_type !== undefined, 'field-changed': field_changed('circ_as_type')}">
         <select class="form-control" ng-model="working.circ_as_type"
           ng-options="t.code() as t.value() for t in circ_type_list">
           <option value="">[% l('&lt;NONE&gt;') %]</option>
@@ -332,7 +335,7 @@
     </li>
     <li ng-if="defaults.attributes.holdable">
       <div class="bg-info"><label>[% l('Holdable?') %]</label></div>
-      <div ng-class="{'bg-success': working.holdable !== undefined}">
+      <div ng-class="{'bg-success': working.holdable !== undefined, 'field-changed': field_changed('holdable')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.holdable" value="t"/>
@@ -356,7 +359,7 @@
     </li>
     <li ng-if="defaults.attributes.deposit">
       <div class="bg-info"><label>[% l('Deposit?') %]</label></div>
-      <div ng-class="{'bg-success': working.deposit !== undefined}">
+      <div ng-class="{'bg-success': working.deposit !== undefined, 'field-changed': field_changed('deposit')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.deposit" value="t"/>
@@ -380,7 +383,7 @@
     </li>
     <li ng-if="defaults.attributes.deposit_amount">
       <div class="bg-info"><label>[% l('Deposit Amount') %]</label></div>
-      <div ng-class="{'bg-success': working.deposit_amount !== undefined}">
+      <div ng-class="{'bg-success': working.deposit_amount !== undefined, 'field-changed': field_changed('deposit_amount')}">
         <input class="form-control" str-to-float 
           ng-model="working.deposit_amount" type="number" step="0.01"/>
       </div>
@@ -394,7 +397,7 @@
     </li>
     <li ng-if="defaults.attributes.age_protect">
       <div class="bg-info"><label>[% l('Age-based Hold Protection') %]</label></div>
-      <div ng-class="{'bg-success': working.age_protect !== undefined}">
+      <div ng-class="{'bg-success': working.age_protect !== undefined, 'field-changed': field_changed('age_protect')}">
         <select class="form-control"
           ng-model="working.age_protect"
           ng-options="a.id() as a.name() for a in age_protect_list">
@@ -411,7 +414,7 @@
     </li>
     <li ng-if="defaults.attributes.mint_condition">
       <div class="bg-info"><label>[% l('Quality') %]</label></div>
-      <div ng-class="{'bg-success': working.mint_condition !== undefined}">
+      <div ng-class="{'bg-success': working.mint_condition !== undefined, 'field-changed': field_changed('mint_condition')}">
         <div class="col-lg-6">
           <label>
             <input type="radio" ng-model="working.mint_condition" value="t"/>
@@ -435,7 +438,7 @@
     </li>
     <li ng-if="defaults.attributes.fine_level">
       <div class="bg-info"><label>[% l('Fine Level') %]</label></div>
-      <div ng-class="{'bg-success': working.fine_level !== undefined}">
+      <div ng-class="{'bg-success': working.fine_level !== undefined, 'field-changed': field_changed('fine_level')}">
         <select class="form-control" int-to-str ng-model="working.fine_level">
           <option value="1">[% l('Low') %]</option>
           <option value="2" selected>[% l('Normal') %]</option>
@@ -472,7 +475,7 @@
     </li>
     <li ng-if="defaults.attributes.floating">
       <div class="bg-info"><label>[% l('Floating') %]</label></div>
-      <div ng-class="{'bg-success': working.floating !== undefined}">
+      <div ng-class="{'bg-success': working.floating !== undefined, 'field-changed': field_changed('floating')}">
         <select class="form-control" ng-model="working.floating"
           ng-options="a.id() as a.name() for a in floating_list">
           <option value="">[% l('&lt;NONE&gt;') %]</option>
