@@ -1,3 +1,3028 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 47f5b3de378df086d9f5644cda4ba04b3abad9d2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 16:31:37 2019 -0500
+
+    Customize upgrade notes for 3.3.0
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+26	64	docs/installation/server_upgrade.adoc
+
+commit bdd88deb2eeeae6543b546174a18a81fae65642b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Feb 24 12:09:57 2014 -0500
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit bb7cfe46c3bd447aef89ac9d7dae180dc4694986
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 28 11:43:31 2019 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+335	0	build/i18n/po/circ/en-GB.po
+315	80	build/i18n/po/db.seed/ar-JO.po
+393	100	build/i18n/po/db.seed/cs-CZ.po
+289	77	build/i18n/po/db.seed/de-DE.po
+289	77	build/i18n/po/db.seed/en-CA.po
+289	77	build/i18n/po/db.seed/en-GB.po
+289	77	build/i18n/po/db.seed/es-ES.po
+289	77	build/i18n/po/db.seed/fi-FI.po
+289	77	build/i18n/po/db.seed/fr-CA.po
+289	77	build/i18n/po/db.seed/he-IL.po
+289	77	build/i18n/po/db.seed/hu-HU.po
+353	91	build/i18n/po/db.seed/hy-AM.po
+289	77	build/i18n/po/db.seed/oc-FR.po
+289	77	build/i18n/po/db.seed/pt-BR.po
+289	77	build/i18n/po/db.seed/ru-RU.po
+289	77	build/i18n/po/db.seed/sv-SE.po
+289	77	build/i18n/po/db.seed/tr-TR.po
+2511	2485	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2512	2486	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2507	2481	build/i18n/po/fm_IDL.dtd/de-DE.po
+2511	2485	build/i18n/po/fm_IDL.dtd/en-CA.po
+2511	2485	build/i18n/po/fm_IDL.dtd/en-GB.po
+2511	2485	build/i18n/po/fm_IDL.dtd/es-ES.po
+2511	2485	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2507	2481	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2507	2481	build/i18n/po/fm_IDL.dtd/he-IL.po
+2507	2481	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2511	2485	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2507	2481	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2508	2482	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2508	2482	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2507	2481	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2507	2481	build/i18n/po/fm_IDL.dtd/tr-TR.po
+383	0	build/i18n/po/kpac/en-GB.po
+419	0	build/i18n/po/serial/en-GB.po
+67	23	build/i18n/po/tpac/ar-JO.po
+76	32	build/i18n/po/tpac/cs-CZ.po
+67	23	build/i18n/po/tpac/de-DE.po
+74	30	build/i18n/po/tpac/en-CA.po
+69	25	build/i18n/po/tpac/en-GB.po
+67	23	build/i18n/po/tpac/es-ES.po
+67	23	build/i18n/po/tpac/fi-FI.po
+67	23	build/i18n/po/tpac/fr-CA.po
+67	23	build/i18n/po/tpac/he-IL.po
+67	23	build/i18n/po/tpac/hu-HU.po
+67	23	build/i18n/po/tpac/hy-AM.po
+67	23	build/i18n/po/tpac/oc-FR.po
+67	23	build/i18n/po/tpac/pt-BR.po
+67	23	build/i18n/po/tpac/ru-RU.po
+67	23	build/i18n/po/tpac/sv-SE.po
+67	23	build/i18n/po/tpac/tr-TR.po
+326	129	build/i18n/po/webstaff/ar-JO.po
+743	515	build/i18n/po/webstaff/cs-CZ.po
+691	499	build/i18n/po/webstaff/en-CA.po
+740	543	build/i18n/po/webstaff/en-GB.po
+320	129	build/i18n/po/webstaff/es-ES.po
+323	129	build/i18n/po/webstaff/hy-AM.po
+320	129	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/circ/en-GB.po
+ create mode 100644 build/i18n/po/kpac/en-GB.po
+ create mode 100644 build/i18n/po/serial/en-GB.po
+
+commit d208baf0f8d1f4d70f181fbbf9a4e31b64b75481
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 28 11:40:11 2019 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+41	11	build/i18n/po/db.seed/db.seed.pot
+8	8	build/i18n/po/tpac/tpac.pot
+229	218	build/i18n/po/webstaff/webstaff.pot
+
+commit 844bd68a87ae26e4eb307ba1521efb5f6b73d815
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 28 11:35:34 2019 -0400
+
+    Forward-port 3.2.5 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+240	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.4-3.2.5-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.4-3.2.5-upgrade-db.sql
+
+commit 1522d95ec18dec4fb562df8b29c2437a8faac5a0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 27 12:43:32 2019 -0400
+
+    Coerce numbers for bib IDs in Angular staff catalog
+    
+    Under some circumstances, the search results screen in the new
+    experimental Angular staff catalog did not display any results (though
+    it did show the pager, facets, etc.).
+    
+    This was traced back to the results array attempting to be populated
+    with ID values of '-1' instead of the real IDs.  Coercing the incoming
+    IDs to numbers appears to resolve the issue.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+1	1	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+
+commit c09ef9a36cabb111b052ca57ad5a92aca91bafc0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Mar 26 18:04:04 2019 -0400
+
+    Fix Asciidoc levels in 3.3 release notes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	docs/RELEASE_NOTES_3_3.adoc
+
+commit fc8bd352006cded176635cb31c0924a06f90777e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 25 20:48:05 2019 +0000
+
+    LP1811288 Sandbox editor handles dismissals
+    
+    Teach the sandbox FM editor example to log a useful message on dialog
+    dismissal instead of throwing an error (as a result of the uncaught
+    rejection).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+17	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit a3731c9261f3ab89503fc0e9609cbc941b235703
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 25 20:29:27 2019 +0000
+
+    LP1811288 Allow Combobox to default to field id
+    
+    If a combobox field is provided without a label, use the id value as the
+    display value.  This helps avoid ugly JS errors while trying to format
+    a null string.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	1	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+
+commit 9e69671b29ba913ec9d1c414c06034dc8f8de9d4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 22 14:43:34 2019 -0700
+
+    LP1811288 Admin grids preload combobox values
+    
+    Adds a global option to the fieldmapper editor component to preload
+    linked selector values by default.  Update the basic admin pages to use
+    the new flag to preload comboboxes.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+11	0	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+
+commit 00de31433cc02b1f3233f8ed2aff5ab30f9c24e1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Feb 20 13:51:36 2019 -0500
+
+    LP1811288 Basic admin page readonlyFields repair
+    
+    Fix a bug in the basic admin page component that prevented the readOnly
+    fields from successfully propagating to the fieldmapper editor.
+    
+    To Test:
+    1. Navigate to /eg2/en-US/staff/admin/booking/resource_type
+    2. Click "New Resource Type"
+    3. Confirm the "Bibliographic Record" field is disabled.
+    
+    Includes ng-lint repair as well.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	3	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+
+commit d63c7c397cf215fe92d02454bdc8c6f55e1be3c0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 10 18:04:59 2019 -0500
+
+    LP1811288 Angular fm-editor uses combobox
+    
+    * Linked field options traditionally rendered via <select> are now
+      rendered with an eg-combobox.
+    * Caller has option to force a combobox to preload values or rely solely
+      on typehead.
+    * Caller has option to provide a canned list of combobox values.
+    * Caller has option to set / override which field on the linked class
+      should searched by the typeahead
+    * General improvements to fm-editor form building and field options
+      management.
+    * Includes Angular7 rxjs import repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+87	127	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+231	76	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+3	1	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+
+commit 1f6c9b60e2aad209c50b94dbac760eb2a2accae0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 11 13:06:23 2019 -0500
+
+    LP1811288 Combobox support entrylist+async / id labels
+    
+    Allow the caller to pass a seed entrylist value for async comboboxes.
+    This is useful when a value should be applied to the box on load instead
+    of waiting for user input for typeahead loading.
+    
+    Allow combobox entries to default to using the 'id' field for the label
+    if no label is provided.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.html
+29	12	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+
+commit 5046ced464f8689814409da2e75fc9a8a3c489f0
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Feb 25 10:24:09 2019 -0800
+
+    LP1797934: follow-up: make the reservations tab in MyOpac optional
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/templates/opac/parts/config.tt2
+4	2	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+
+commit 759512d66b6abbee768d631f00278c7022f48eda
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Mar 22 14:55:19 2019 -0700
+
+    Docs: finalizing 3.3 release notes and related documentation
+
+23	4	docs/RELEASE_NOTES_3_3.adoc
+1	0	docs/admin/librarysettings.adoc
+
+commit 1db81cf40bd5b1f227db9efe3072e6ecbc3bd26c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 8 13:16:35 2019 -0500
+
+    LP1819179 PCRUD selector fleshing handles maps
+    
+    Teach the PCUD selector fleshing code to handle selector fields on
+    mapped classes, where an intermediate object flesh is performed by pcrud
+    at flesh time.
+    
+    Adds a 'selector' column on metabib.metarecord in the IDL so that we can
+    have a functioning example of this to use in the sandbox test code.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+15	23	Open-ILS/src/eg2/src/app/core/format.service.ts
+10	1	Open-ILS/src/eg2/src/app/core/idl.service.ts
+19	2	Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+2	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+16	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit d26ece239b3e0b703b44bc0f6b23711d4daf9fb4
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 8 12:30:26 2019 -0500
+
+    LP1819179 IDL2js includes 'map' attribute data
+    
+    Patch from Mike Rylander to teach the IDL2js generator to include 'map'
+    attributes, which allow JS clients to step through mapped, linked
+    fields, particuarly useful for auto-fleshing these fields.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	2	Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+1	1	Open-ILS/xsl/fm_IDL2js.xsl
+
+commit 2fe42126c7a7a2f0f30b70a6eef1ee4f562feb2d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 6 17:41:25 2019 -0500
+
+    LP#1819179: Angular value formatter gets link smarts
+    
+    Teach the FormatService to display selector values for linked objects
+    when the requested field is a link field and it contains an object value
+    instead of just a id/key value.
+    
+    Improve IDL data passing from the grid to the IDL service so it can
+    better determine which fields are avialble for link selector display.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+38	0	Open-ILS/src/eg2/src/app/core/format.service.ts
+12	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit 8480ca2446a3c73e505a59f755a19cc4dd30731b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 25 15:17:56 2019 -0500
+
+    LP1812670 Angular grid shows selector labels
+    
+    * Teach PcrudService how to flesh link fields when a selector is defined
+      on the linked class. This uses a new search/retrieve API flag
+      {fleshSelectors:true}.
+    
+    * Teach the grid how to render selector values when configured to do so
+      via a new grid component attribute [showLinkSelectors]="true".
+    
+    * Teach the Angular staff admin page to request linked selectors from
+      pcrud and tell its grid to expect them.
+    
+    * Adds utility function to IdlServer for finding the selector for a
+      given class + field.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+14	0	Open-ILS/src/eg2/src/app/core/idl.service.ts
+40	0	Open-ILS/src/eg2/src/app/core/pcrud.service.ts
+1	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+15	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+15	6	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+4	2	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit e685683c315532087da35169589c06c8f23a61d2
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Mar 22 11:37:35 2019 -0700
+
+    Docs: more improvements to 3.3 release notes and related docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+42	35	docs/RELEASE_NOTES_3_3.adoc
+2	0	docs/admin/librarysettings.adoc
+43	0	docs/admin/patron_registration.adoc
+18	0	docs/opac/my_account.adoc
+
+commit a2c35d81ae38ad85364bd560d6fce2e4e396cb9e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Mar 22 08:49:31 2019 -0700
+
+    Docs: Revising 3.3 release notes and related docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+41	32	docs/RELEASE_NOTES_3_3.adoc
+18	0	docs/development/support_scripts.adoc
+
+commit 8706a278b6093339e80c3348752fb46d90f3e9a6
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 20 11:08:23 2019 -0400
+
+    LP#1780639: fix error made when stamping DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1159.data.marc21-tag-758.sql
+
+commit f497f4173e8d787e43e718c7c6b5c5a3b7fa9799
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Mar 20 11:07:18 2019 -0400
+
+    LP#1709698: fix error made when stamping DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/upgrade/1156.schema.reporter.template.sql
+
+commit d2ad575a275a7d138627a14612bb461325aa8c0f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 11:10:44 2019 -0500
+
+    LP1739293 Record merge fits container
+    
+    Allow the text contents of each merged MARC record to wrap so the
+    records may fit horizontally on the screen.  A single vertical scroll
+    allows the user to scroll down to see any parts of the record that
+    require more vertical space.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Elaine Hardy <ehardy@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+20	1	Open-ILS/src/templates/staff/css/cat.css.tt2
+
+commit c7c0a9d745f15b16812da97943cf9be0c06bf535
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Mar 8 14:33:44 2019 -0500
+
+    LP#1780639 - stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+54	0	Open-ILS/src/sql/Pg/upgrade/1159.data.marc21-tag-758.sql
+0	54	Open-ILS/src/sql/Pg/upgrade/XXX.data.marc21-tag-758.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1159.data.marc21-tag-758.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXX.data.marc21-tag-758.sql
+
+commit aa8faff980a11d5c6334fa715f34063e9fed8842
+Author: Cesar Velez <cesar.velez@equinoxinitiative.org>
+Date:   Tue Dec 4 18:30:56 2018 -0500
+
+    LP#1780639 - add marc tag identifier field 758
+    
+    Add needed sql to seed data.
+    
+    Signed-off by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off by: Beth Willis <willis@noblenet.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+50	0	Open-ILS/src/sql/Pg/960.data.marc21-tag-tables.sql
+54	0	Open-ILS/src/sql/Pg/upgrade/XXX.data.marc21-tag-758.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXX.data.marc21-tag-758.sql
+
+commit f098f38804e33b4c056290335b3efe39117419d9
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Mar 8 13:54:35 2019 -0500
+
+    Lp 712490: Stamping UPgrade Script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+202	0	Open-ILS/src/sql/Pg/upgrade/1157.schema.vandelay-replace-field-order.sql
+0	202	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1157.schema.vandelay-replace-field-order.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-replace-field-order.sql
+
+commit c20bfea3494cd8a5930f7be1bb5e1bb0b85fd180
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Mar 8 13:34:53 2019 -0500
+
+    LP#1709698 - stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+7	0	Open-ILS/src/sql/Pg/upgrade/1156.schema.reporter.template.sql
+0	2	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.reporter.template.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1156.schema.reporter.template.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.reporter.template.sql
+
+commit 57f2d3c5cd2fdba10d407054f06aa7514420142e
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Nov 30 14:34:04 2018 -0500
+
+    LP#1709698: no longer require descriptions in report templates
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jessica Woolford <jwoolford@biblio.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+2	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.reporter.template.sql
+1	1	Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.reporter.template.sql
+
+commit 0f507bd002605883c347cb0e235d3837c491edb0
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Mar 8 09:49:42 2019 -0500
+
+    LP1716473 A few tweaks to correct field labels
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	4	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 3946b81aefcdbab2973ab012eb28569172471a55
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 4 16:41:01 2019 -0500
+
+    LP1716473 Release Notes: copy edit hide disabled
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+15	0	docs/RELEASE_NOTES_NEXT/Cataloging/copy-edit-hide-defaults.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/copy-edit-hide-defaults.adoc
+
+commit e29d207f5cdaad8e1f217ae1ac119a2d7ba4f8ca
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 4 14:06:59 2019 -0500
+
+    LP1716473 Copy editor hide disabled defaults
+    
+    Disabling a field in the copy editor "Defaults" tab now hides the field
+    instead of simply disabling it.  Once a field is hidden, subsequent
+    field shift left to fill the space.
+    
+    The "Working Items" grid is shifted to the bottom of the page, below the
+    attributes editor.  This allows the attributes to fill the horizontal
+    space and puts the working items and save operations visually at the end
+    of the page, i.e. at end of the work flow.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+502	490	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+17	17	Open-ILS/src/templates/staff/cat/volcopy/t_edit.tt2
+13	0	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit b6a5ab4ed4ea708ba0513578f7bc41d31a515b27
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 8 09:58:54 2019 -0500
+
+    LP1811689 Stamping upgrade - truncate simple rec
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+20	0	Open-ILS/src/sql/Pg/upgrade/1155.schema.reporter-simple-rec-truncate.sql
+0	20	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter-simple-rec-truncate.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1155.schema.reporter-simple-rec-truncate.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter-simple-rec-truncate.sql
+
+commit 15b279a7db9c15838a64900bded47f8a4cf3be56
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Feb 1 12:28:58 2019 -0500
+
+    LP1811689 TRUNCATE when rebuilding simple record
+    
+    TRUNCATE reporter.materialized_simple_record for more efficient
+    rebuilding of the table.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+20	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter-simple-rec-truncate.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.reporter-simple-rec-truncate.sql
+
+commit 8c3537565269c854390cdb92c4a4bd6bd550a317
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 12:21:00 2019 -0500
+
+    LP1818153 Stamping DB upgrade - WS user activity
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/1154.data.websocket-activity-types.sql
+0	28	Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1154.data.websocket-activity-types.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+
+commit 56c8b389191d741ac66d07975b29901a77be8d8f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 28 17:20:31 2019 -0500
+
+    LP1818153 Log user activity for websocket login/verify
+    
+    Adds support for logging additional user activity types:
+    
+     * websocket v1 login (apache2-websockets)
+     * websocket v2 login (websocketd)
+     * websocket v1 verify
+     * websocket v2 verify
+     * generic login (any ingress)
+     * generic verify (any ingress)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+
+23	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+28	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.websocket-activity-types.sql
+
+commit d1e58bbe6dd32d65f2f20d52607eafa36e01e20e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 21 14:21:47 2019 -0500
+
+    LP1806087 Synchronize browse code for staff cat / tpac
+    
+    Teach the TPAC to call the use browse API, which was originally built
+    from the TPAC browse code.  This way we avoid duplicating the code.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+12	311	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Browse.pm
+
+commit c2c491618d3ff284eabe545716000118d775478b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 21 13:12:52 2019 -0500
+
+    LP1806087 Ang catalog pending tabs offer manual redirect
+    
+    Instead of sending users to the AngJS versions of not-yet-implemented
+    tabs from the Angular catalog, show a message indicating the tab is not
+    yet implemented and offer a link to open the requested record tab in a
+    new browser tab.  This better clarifies what is happening and helps to
+    avoid situations where the back-button is confusingly hijacked via
+    intermediate redirect.
+    
+    We now also open the "View" link for copies in a new tab as well for
+    consistency with the modified "Edit" link.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	2	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+36	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+0	25	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+
+commit 81d5551dd07d55b4be4ae05397d6b7e78571ac9b
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 17:55:15 2019 -0500
+
+    Stop asciidoc from squawking about missing list number
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	docs/installation/server_installation.adoc
+
+commit dc6b9d956a705f8d0d2fdba88af00a8ef69daaad
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 16:20:14 2019 -0500
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	3	build/i18n/po/AutoFieldWidget.js/ar-JO.po
+3	3	build/i18n/po/AutoFieldWidget.js/cs-CZ.po
+4	4	build/i18n/po/AutoFieldWidget.js/de-DE.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/en-GB.po
+3	3	build/i18n/po/AutoFieldWidget.js/es-ES.po
+3	3	build/i18n/po/AutoFieldWidget.js/fi-FI.po
+3	3	build/i18n/po/AutoFieldWidget.js/fr-CA.po
+3	3	build/i18n/po/AutoFieldWidget.js/he-IL.po
+3	3	build/i18n/po/AutoFieldWidget.js/hu-HU.po
+3	3	build/i18n/po/AutoFieldWidget.js/hy-AM.po
+3	3	build/i18n/po/AutoFieldWidget.js/oc-FR.po
+3	3	build/i18n/po/AutoFieldWidget.js/pt-BR.po
+3	3	build/i18n/po/AutoFieldWidget.js/ru-RU.po
+3	3	build/i18n/po/AutoFieldWidget.js/sv-SE.po
+3	3	build/i18n/po/AutoFieldWidget.js/tr-TR.po
+3	3	build/i18n/po/FlattenerGrid.js/ar-JO.po
+3	3	build/i18n/po/FlattenerGrid.js/cs-CZ.po
+3	3	build/i18n/po/FlattenerGrid.js/de-DE.po
+3	3	build/i18n/po/FlattenerGrid.js/en-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/en-GB.po
+3	3	build/i18n/po/FlattenerGrid.js/es-ES.po
+3	3	build/i18n/po/FlattenerGrid.js/fi-FI.po
+3	3	build/i18n/po/FlattenerGrid.js/fr-CA.po
+3	3	build/i18n/po/FlattenerGrid.js/hy-AM.po
+3	3	build/i18n/po/PCrudFilterPane.js/ar-JO.po
+3	3	build/i18n/po/PCrudFilterPane.js/cs-CZ.po
+3	3	build/i18n/po/PCrudFilterPane.js/de-DE.po
+124	0	build/i18n/po/PCrudFilterPane.js/en-GB.po
+3	3	build/i18n/po/PCrudFilterPane.js/es-ES.po
+3	3	build/i18n/po/PCrudFilterPane.js/fi-FI.po
+3	3	build/i18n/po/PCrudFilterPane.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/ar-JO.po
+3	3	build/i18n/po/Searcher.js/cs-CZ.po
+3	3	build/i18n/po/Searcher.js/de-DE.po
+3	3	build/i18n/po/Searcher.js/en-CA.po
+3	3	build/i18n/po/Searcher.js/en-GB.po
+3	3	build/i18n/po/Searcher.js/es-ES.po
+3	3	build/i18n/po/Searcher.js/fi-FI.po
+3	3	build/i18n/po/Searcher.js/fr-CA.po
+3	3	build/i18n/po/Searcher.js/hy-AM.po
+3	3	build/i18n/po/Searcher.js/oc-FR.po
+3	3	build/i18n/po/Searcher.js/pt-BR.po
+3	3	build/i18n/po/Searcher.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/ar-JO.po
+3	3	build/i18n/po/TranslatorPopup.js/cs-CZ.po
+4	4	build/i18n/po/TranslatorPopup.js/de-DE.po
+3	3	build/i18n/po/TranslatorPopup.js/en-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/en-GB.po
+3	3	build/i18n/po/TranslatorPopup.js/es-ES.po
+3	3	build/i18n/po/TranslatorPopup.js/fi-FI.po
+3	3	build/i18n/po/TranslatorPopup.js/fr-CA.po
+3	3	build/i18n/po/TranslatorPopup.js/he-IL.po
+3	3	build/i18n/po/TranslatorPopup.js/hu-HU.po
+3	3	build/i18n/po/TranslatorPopup.js/hy-AM.po
+3	3	build/i18n/po/TranslatorPopup.js/oc-FR.po
+3	3	build/i18n/po/TranslatorPopup.js/pt-BR.po
+3	3	build/i18n/po/TranslatorPopup.js/ru-RU.po
+3	3	build/i18n/po/TranslatorPopup.js/sv-SE.po
+3	3	build/i18n/po/TranslatorPopup.js/tr-TR.po
+3	3	build/i18n/po/URLVerify.js/ar-JO.po
+3	3	build/i18n/po/URLVerify.js/cs-CZ.po
+3	3	build/i18n/po/URLVerify.js/de-DE.po
+3	3	build/i18n/po/URLVerify.js/en-GB.po
+3	3	build/i18n/po/URLVerify.js/es-ES.po
+3	3	build/i18n/po/URLVerify.js/hy-AM.po
+3	3	build/i18n/po/URLVerify.js/pt-BR.po
+3	3	build/i18n/po/User.js/ar-JO.po
+3	3	build/i18n/po/User.js/cs-CZ.po
+3	3	build/i18n/po/User.js/de-DE.po
+3	3	build/i18n/po/User.js/en-CA.po
+3	3	build/i18n/po/User.js/en-GB.po
+3	3	build/i18n/po/User.js/es-ES.po
+3	3	build/i18n/po/User.js/fi-FI.po
+3	3	build/i18n/po/User.js/fr-CA.po
+3	3	build/i18n/po/User.js/he-IL.po
+3	3	build/i18n/po/User.js/hu-HU.po
+3	3	build/i18n/po/User.js/hy-AM.po
+3	3	build/i18n/po/User.js/oc-FR.po
+3	3	build/i18n/po/User.js/pt-BR.po
+3	3	build/i18n/po/User.js/ru-RU.po
+3	3	build/i18n/po/User.js/sv-SE.po
+3	3	build/i18n/po/User.js/tr-TR.po
+3	3	build/i18n/po/XULTermLoader.js/ar-JO.po
+3	3	build/i18n/po/XULTermLoader.js/cs-CZ.po
+3	3	build/i18n/po/XULTermLoader.js/de-DE.po
+3	3	build/i18n/po/XULTermLoader.js/en-CA.po
+3	3	build/i18n/po/XULTermLoader.js/en-GB.po
+3	3	build/i18n/po/XULTermLoader.js/es-ES.po
+3	3	build/i18n/po/XULTermLoader.js/fi-FI.po
+3	3	build/i18n/po/XULTermLoader.js/fr-CA.po
+3	3	build/i18n/po/XULTermLoader.js/he-IL.po
+3	3	build/i18n/po/XULTermLoader.js/hu-HU.po
+3	3	build/i18n/po/XULTermLoader.js/hy-AM.po
+3	3	build/i18n/po/XULTermLoader.js/oc-FR.po
+3	3	build/i18n/po/XULTermLoader.js/pt-BR.po
+3	3	build/i18n/po/XULTermLoader.js/ru-RU.po
+3	3	build/i18n/po/XULTermLoader.js/sv-SE.po
+3	3	build/i18n/po/XULTermLoader.js/tr-TR.po
+3	3	build/i18n/po/acq.js/ar-JO.po
+3	3	build/i18n/po/acq.js/cs-CZ.po
+4	4	build/i18n/po/acq.js/de-DE.po
+3	3	build/i18n/po/acq.js/en-CA.po
+3	3	build/i18n/po/acq.js/en-GB.po
+3	3	build/i18n/po/acq.js/es-ES.po
+3	3	build/i18n/po/acq.js/fi-FI.po
+3	3	build/i18n/po/acq.js/fr-CA.po
+3	3	build/i18n/po/acq.js/he-IL.po
+3	3	build/i18n/po/acq.js/hu-HU.po
+3	3	build/i18n/po/acq.js/hy-AM.po
+3	3	build/i18n/po/acq.js/oc-FR.po
+3	3	build/i18n/po/acq.js/pt-BR.po
+3	3	build/i18n/po/acq.js/ru-RU.po
+3	3	build/i18n/po/acq.js/sv-SE.po
+3	3	build/i18n/po/acq.js/tr-TR.po
+1857	0	build/i18n/po/acq/en-CA.po
+198	0	build/i18n/po/actor/en-GB.po
+3	3	build/i18n/po/authority.js/ar-JO.po
+3	3	build/i18n/po/authority.js/cs-CZ.po
+4	4	build/i18n/po/authority.js/de-DE.po
+3	3	build/i18n/po/authority.js/en-CA.po
+3	3	build/i18n/po/authority.js/en-GB.po
+3	3	build/i18n/po/authority.js/es-ES.po
+3	3	build/i18n/po/authority.js/fi-FI.po
+3	3	build/i18n/po/authority.js/fr-CA.po
+3	3	build/i18n/po/authority.js/hy-AM.po
+3	3	build/i18n/po/authority.js/oc-FR.po
+3	3	build/i18n/po/authority.js/pt-BR.po
+3	3	build/i18n/po/authority.js/ru-RU.po
+3	3	build/i18n/po/authority.js/tr-TR.po
+3	3	build/i18n/po/capture.js/ar-JO.po
+3	3	build/i18n/po/capture.js/cs-CZ.po
+3	3	build/i18n/po/capture.js/de-DE.po
+3	3	build/i18n/po/capture.js/en-CA.po
+3	3	build/i18n/po/capture.js/en-GB.po
+3	3	build/i18n/po/capture.js/es-ES.po
+3	3	build/i18n/po/capture.js/fi-FI.po
+3	3	build/i18n/po/capture.js/fr-CA.po
+3	3	build/i18n/po/capture.js/he-IL.po
+3	3	build/i18n/po/capture.js/hu-HU.po
+3	3	build/i18n/po/capture.js/hy-AM.po
+3	3	build/i18n/po/capture.js/oc-FR.po
+3	3	build/i18n/po/capture.js/pt-BR.po
+3	3	build/i18n/po/capture.js/ru-RU.po
+3	3	build/i18n/po/capture.js/sv-SE.po
+3	3	build/i18n/po/capture.js/tr-TR.po
+4	4	build/i18n/po/circ/cs-CZ.po
+335	0	build/i18n/po/circ/en-CA.po
+3	3	build/i18n/po/conify.js/ar-JO.po
+3	3	build/i18n/po/conify.js/cs-CZ.po
+3	3	build/i18n/po/conify.js/de-DE.po
+3	3	build/i18n/po/conify.js/en-CA.po
+3	3	build/i18n/po/conify.js/en-GB.po
+3	3	build/i18n/po/conify.js/es-ES.po
+3	3	build/i18n/po/conify.js/fi-FI.po
+3	3	build/i18n/po/conify.js/fr-CA.po
+3	3	build/i18n/po/conify.js/he-IL.po
+3	3	build/i18n/po/conify.js/hu-HU.po
+3	3	build/i18n/po/conify.js/hy-AM.po
+3	3	build/i18n/po/conify.js/oc-FR.po
+3	3	build/i18n/po/conify.js/pt-BR.po
+3	3	build/i18n/po/conify.js/ru-RU.po
+3	3	build/i18n/po/conify.js/sv-SE.po
+3	3	build/i18n/po/conify.js/tr-TR.po
+99	67	build/i18n/po/db.seed/ar-JO.po
+211	159	build/i18n/po/db.seed/cs-CZ.po
+86	54	build/i18n/po/db.seed/de-DE.po
+87	55	build/i18n/po/db.seed/en-CA.po
+87	55	build/i18n/po/db.seed/en-GB.po
+101	69	build/i18n/po/db.seed/es-ES.po
+89	57	build/i18n/po/db.seed/fi-FI.po
+86	54	build/i18n/po/db.seed/fr-CA.po
+86	54	build/i18n/po/db.seed/he-IL.po
+86	54	build/i18n/po/db.seed/hu-HU.po
+102	70	build/i18n/po/db.seed/hy-AM.po
+86	54	build/i18n/po/db.seed/oc-FR.po
+87	55	build/i18n/po/db.seed/pt-BR.po
+86	54	build/i18n/po/db.seed/ru-RU.po
+86	54	build/i18n/po/db.seed/sv-SE.po
+86	54	build/i18n/po/db.seed/tr-TR.po
+2252	2248	build/i18n/po/fm_IDL.dtd/ar-JO.po
+56	52	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2240	2236	build/i18n/po/fm_IDL.dtd/de-DE.po
+2252	2248	build/i18n/po/fm_IDL.dtd/en-CA.po
+2252	2248	build/i18n/po/fm_IDL.dtd/en-GB.po
+2252	2248	build/i18n/po/fm_IDL.dtd/es-ES.po
+2252	2248	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2242	2238	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2240	2236	build/i18n/po/fm_IDL.dtd/he-IL.po
+2240	2236	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2252	2248	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2240	2236	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2252	2248	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2252	2248	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2240	2236	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2240	2236	build/i18n/po/fm_IDL.dtd/tr-TR.po
+23	23	build/i18n/po/ils_events.xml/ar-JO.po
+22	22	build/i18n/po/ils_events.xml/cs-CZ.po
+21	21	build/i18n/po/ils_events.xml/de-DE.po
+23	23	build/i18n/po/ils_events.xml/en-CA.po
+41	36	build/i18n/po/ils_events.xml/en-GB.po
+24	24	build/i18n/po/ils_events.xml/es-ES.po
+23	23	build/i18n/po/ils_events.xml/fi-FI.po
+21	21	build/i18n/po/ils_events.xml/fr-CA.po
+21	21	build/i18n/po/ils_events.xml/he-IL.po
+21	21	build/i18n/po/ils_events.xml/hu-HU.po
+23	23	build/i18n/po/ils_events.xml/hy-AM.po
+21	21	build/i18n/po/ils_events.xml/oc-FR.po
+21	21	build/i18n/po/ils_events.xml/pt-BR.po
+21	21	build/i18n/po/ils_events.xml/ru-RU.po
+21	21	build/i18n/po/ils_events.xml/sv-SE.po
+21	21	build/i18n/po/ils_events.xml/tr-TR.po
+6	6	build/i18n/po/lang.dtd/cs-CZ.po
+3	3	build/i18n/po/match_set.js/ar-JO.po
+3	3	build/i18n/po/match_set.js/cs-CZ.po
+3	3	build/i18n/po/match_set.js/en-GB.po
+3	3	build/i18n/po/match_set.js/es-ES.po
+3	3	build/i18n/po/match_set.js/fr-CA.po
+3	3	build/i18n/po/match_set.js/hy-AM.po
+3	3	build/i18n/po/opac.dtd/es-ES.po
+3	3	build/i18n/po/opac.js/ar-JO.po
+3	3	build/i18n/po/opac.js/cs-CZ.po
+3	3	build/i18n/po/opac.js/de-DE.po
+3	3	build/i18n/po/opac.js/en-CA.po
+3	3	build/i18n/po/opac.js/en-GB.po
+3	3	build/i18n/po/opac.js/es-ES.po
+3	3	build/i18n/po/opac.js/fi-FI.po
+3	3	build/i18n/po/opac.js/fr-CA.po
+3	3	build/i18n/po/opac.js/he-IL.po
+3	3	build/i18n/po/opac.js/hu-HU.po
+3	3	build/i18n/po/opac.js/hy-AM.po
+3	3	build/i18n/po/opac.js/oc-FR.po
+3	3	build/i18n/po/opac.js/pt-BR.po
+3	3	build/i18n/po/opac.js/ru-RU.po
+3	3	build/i18n/po/opac.js/sv-SE.po
+3	3	build/i18n/po/opac.js/tr-TR.po
+3	3	build/i18n/po/pickup_and_return.js/ar-JO.po
+3	3	build/i18n/po/pickup_and_return.js/cs-CZ.po
+4	4	build/i18n/po/pickup_and_return.js/de-DE.po
+3	3	build/i18n/po/pickup_and_return.js/en-CA.po
+3	3	build/i18n/po/pickup_and_return.js/en-GB.po
+3	3	build/i18n/po/pickup_and_return.js/es-ES.po
+3	3	build/i18n/po/pickup_and_return.js/fi-FI.po
+3	3	build/i18n/po/pickup_and_return.js/fr-CA.po
+3	3	build/i18n/po/pickup_and_return.js/he-IL.po
+3	3	build/i18n/po/pickup_and_return.js/hu-HU.po
+3	3	build/i18n/po/pickup_and_return.js/hy-AM.po
+3	3	build/i18n/po/pickup_and_return.js/oc-FR.po
+3	3	build/i18n/po/pickup_and_return.js/pt-BR.po
+3	3	build/i18n/po/pickup_and_return.js/ru-RU.po
+3	3	build/i18n/po/pickup_and_return.js/sv-SE.po
+3	3	build/i18n/po/pickup_and_return.js/tr-TR.po
+3	3	build/i18n/po/pull_list.js/ar-JO.po
+3	3	build/i18n/po/pull_list.js/cs-CZ.po
+3	3	build/i18n/po/pull_list.js/de-DE.po
+3	3	build/i18n/po/pull_list.js/en-CA.po
+3	3	build/i18n/po/pull_list.js/en-GB.po
+3	3	build/i18n/po/pull_list.js/es-ES.po
+3	3	build/i18n/po/pull_list.js/fi-FI.po
+3	3	build/i18n/po/pull_list.js/fr-CA.po
+3	3	build/i18n/po/pull_list.js/he-IL.po
+3	3	build/i18n/po/pull_list.js/hu-HU.po
+3	3	build/i18n/po/pull_list.js/hy-AM.po
+3	3	build/i18n/po/pull_list.js/oc-FR.po
+3	3	build/i18n/po/pull_list.js/pt-BR.po
+3	3	build/i18n/po/pull_list.js/ru-RU.po
+3	3	build/i18n/po/pull_list.js/sv-SE.po
+3	3	build/i18n/po/pull_list.js/tr-TR.po
+3	3	build/i18n/po/register.js/ar-JO.po
+3	3	build/i18n/po/register.js/cs-CZ.po
+3	3	build/i18n/po/register.js/de-DE.po
+3	3	build/i18n/po/register.js/en-CA.po
+3	3	build/i18n/po/register.js/en-GB.po
+3	3	build/i18n/po/register.js/es-ES.po
+3	3	build/i18n/po/register.js/fi-FI.po
+3	3	build/i18n/po/register.js/fr-CA.po
+3	3	build/i18n/po/register.js/he-IL.po
+3	3	build/i18n/po/register.js/hu-HU.po
+3	3	build/i18n/po/register.js/hy-AM.po
+3	3	build/i18n/po/register.js/oc-FR.po
+3	3	build/i18n/po/register.js/pt-BR.po
+3	3	build/i18n/po/register.js/ru-RU.po
+3	3	build/i18n/po/register.js/sv-SE.po
+3	3	build/i18n/po/register.js/tr-TR.po
+3	3	build/i18n/po/reports.js/ar-JO.po
+3	3	build/i18n/po/reports.js/cs-CZ.po
+4	4	build/i18n/po/reports.js/de-DE.po
+3	3	build/i18n/po/reports.js/en-CA.po
+3	3	build/i18n/po/reports.js/en-GB.po
+3	3	build/i18n/po/reports.js/es-ES.po
+3	3	build/i18n/po/reports.js/fi-FI.po
+3	3	build/i18n/po/reports.js/fr-CA.po
+3	3	build/i18n/po/reports.js/he-IL.po
+3	3	build/i18n/po/reports.js/hu-HU.po
+3	3	build/i18n/po/reports.js/hy-AM.po
+3	3	build/i18n/po/reports.js/oc-FR.po
+3	3	build/i18n/po/reports.js/pt-BR.po
+3	3	build/i18n/po/reports.js/ru-RU.po
+3	3	build/i18n/po/reports.js/sv-SE.po
+3	3	build/i18n/po/reports.js/tr-TR.po
+3	3	build/i18n/po/reservation.js/ar-JO.po
+3	3	build/i18n/po/reservation.js/cs-CZ.po
+4	4	build/i18n/po/reservation.js/de-DE.po
+3	3	build/i18n/po/reservation.js/en-CA.po
+3	3	build/i18n/po/reservation.js/en-GB.po
+3	3	build/i18n/po/reservation.js/es-ES.po
+3	3	build/i18n/po/reservation.js/fi-FI.po
+3	3	build/i18n/po/reservation.js/fr-CA.po
+3	3	build/i18n/po/reservation.js/he-IL.po
+3	3	build/i18n/po/reservation.js/hu-HU.po
+3	3	build/i18n/po/reservation.js/hy-AM.po
+3	3	build/i18n/po/reservation.js/oc-FR.po
+3	3	build/i18n/po/reservation.js/pt-BR.po
+3	3	build/i18n/po/reservation.js/ru-RU.po
+3	3	build/i18n/po/reservation.js/sv-SE.po
+3	3	build/i18n/po/reservation.js/tr-TR.po
+3	3	build/i18n/po/selfcheck.js/ar-JO.po
+5	5	build/i18n/po/selfcheck.js/cs-CZ.po
+4	4	build/i18n/po/selfcheck.js/de-DE.po
+3	3	build/i18n/po/selfcheck.js/en-CA.po
+3	3	build/i18n/po/selfcheck.js/en-GB.po
+3	3	build/i18n/po/selfcheck.js/es-ES.po
+3	3	build/i18n/po/selfcheck.js/fi-FI.po
+3	3	build/i18n/po/selfcheck.js/fr-CA.po
+3	3	build/i18n/po/selfcheck.js/he-IL.po
+3	3	build/i18n/po/selfcheck.js/hu-HU.po
+3	3	build/i18n/po/selfcheck.js/hy-AM.po
+3	3	build/i18n/po/selfcheck.js/oc-FR.po
+3	3	build/i18n/po/selfcheck.js/pt-BR.po
+3	3	build/i18n/po/selfcheck.js/ru-RU.po
+3	3	build/i18n/po/selfcheck.js/sv-SE.po
+3	3	build/i18n/po/selfcheck.js/tr-TR.po
+3	3	build/i18n/po/serial.js/ar-JO.po
+3	3	build/i18n/po/serial.js/cs-CZ.po
+3	3	build/i18n/po/serial.js/de-DE.po
+3	3	build/i18n/po/serial.js/en-GB.po
+3	3	build/i18n/po/serial.js/es-ES.po
+3	3	build/i18n/po/serial.js/hy-AM.po
+413	0	build/i18n/po/serial/en-CA.po
+30	26	build/i18n/po/tpac/ar-JO.po
+22	18	build/i18n/po/tpac/cs-CZ.po
+30	26	build/i18n/po/tpac/de-DE.po
+46	36	build/i18n/po/tpac/en-CA.po
+32	28	build/i18n/po/tpac/en-GB.po
+30	26	build/i18n/po/tpac/es-ES.po
+30	26	build/i18n/po/tpac/fi-FI.po
+30	26	build/i18n/po/tpac/fr-CA.po
+30	26	build/i18n/po/tpac/he-IL.po
+30	26	build/i18n/po/tpac/hu-HU.po
+30	26	build/i18n/po/tpac/hy-AM.po
+30	26	build/i18n/po/tpac/oc-FR.po
+30	26	build/i18n/po/tpac/pt-BR.po
+30	26	build/i18n/po/tpac/ru-RU.po
+30	26	build/i18n/po/tpac/sv-SE.po
+30	26	build/i18n/po/tpac/tr-TR.po
+144	0	build/i18n/po/urlverify/en-GB.po
+3	3	build/i18n/po/vandelay.js/ar-JO.po
+3	3	build/i18n/po/vandelay.js/cs-CZ.po
+3	3	build/i18n/po/vandelay.js/en-CA.po
+3	3	build/i18n/po/vandelay.js/en-GB.po
+3	3	build/i18n/po/vandelay.js/es-ES.po
+3	3	build/i18n/po/vandelay.js/hy-AM.po
+3	3	build/i18n/po/vandelay.js/pt-BR.po
+344	255	build/i18n/po/webstaff/ar-JO.po
+666	578	build/i18n/po/webstaff/cs-CZ.po
+10486	0	build/i18n/po/webstaff/en-CA.po
+661	577	build/i18n/po/webstaff/en-GB.po
+344	255	build/i18n/po/webstaff/es-ES.po
+333	253	build/i18n/po/webstaff/hy-AM.po
+323	246	build/i18n/po/webstaff/ru-RU.po
+ create mode 100644 build/i18n/po/PCrudFilterPane.js/en-GB.po
+ create mode 100644 build/i18n/po/acq/en-CA.po
+ create mode 100644 build/i18n/po/actor/en-GB.po
+ create mode 100644 build/i18n/po/circ/en-CA.po
+ create mode 100644 build/i18n/po/serial/en-CA.po
+ create mode 100644 build/i18n/po/urlverify/en-GB.po
+ create mode 100644 build/i18n/po/webstaff/en-CA.po
+
+commit 67ed733b0bcb48b8c7c2fefb6274d4382da598c5
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 16:12:17 2019 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+353	89	build/i18n/po/db.seed/db.seed.pot
+2505	2479	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+64	20	build/i18n/po/tpac/tpac.pot
+294	126	build/i18n/po/webstaff/webstaff.pot
+
+commit 1d5c79ec38511c202c6e47aed85b2dafa3dd8c04
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 15:59:02 2019 -0500
+
+    Forward-port 3.1.10 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+45	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.9-3.1.10-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.9-3.1.10-upgrade-db.sql
+
+commit ed9eeacfe84dd6bc02f1a39c4a4265e3150dfc80
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 15:44:46 2019 -0500
+
+    First pass at 3.3 release notes
+    
+    Ran create_release_notes.sh, cleaned up the output a bit, and removed
+    the separate files.  Still TODO are acknowledgments and combing out
+    any upgrade notes.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+273	0	docs/RELEASE_NOTES_3_3.adoc
+0	3	docs/RELEASE_NOTES_NEXT/Administration/marc-export-copy-status.adoc
+0	21	docs/RELEASE_NOTES_NEXT/Administration/pingest-specify-record-atrributes.adoc
+0	34	docs/RELEASE_NOTES_NEXT/Architecture/postgresql10.adoc
+0	9	docs/RELEASE_NOTES_NEXT/Architecture/ubuntu-bionic.adoc
+0	28	docs/RELEASE_NOTES_NEXT/Cataloging/vandelay-angular-port.adoc
+0	52	docs/RELEASE_NOTES_NEXT/Circulation/patron-guardian-field.adoc
+0	15	docs/RELEASE_NOTES_NEXT/Circulation/privacy_waiver.adoc
+0	7	docs/RELEASE_NOTES_NEXT/Client/angular-booking-admin.adoc
+0	26	docs/RELEASE_NOTES_NEXT/Client/angular-catalog-exp.adoc
+0	4	docs/RELEASE_NOTES_NEXT/OPAC/UPC_Advanced_Search.adoc
+0	13	docs/RELEASE_NOTES_NEXT/OPAC/add_booking_reservations_to_opac.adoc
+ create mode 100644 docs/RELEASE_NOTES_3_3.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/marc-export-copy-status.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/pingest-specify-record-atrributes.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/postgresql10.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/ubuntu-bionic.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/vandelay-angular-port.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron-guardian-field.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/privacy_waiver.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/angular-booking-admin.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Client/angular-catalog-exp.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/UPC_Advanced_Search.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/add_booking_reservations_to_opac.adoc
+
+commit bb6495dd8e2e7a8c8cee4577799b14b061261f21
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 27 10:44:59 2019 -0500
+
+    LP#1813646: For now, direct the Home link to the AngularJS version.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+
+commit 47f5ddaa8b029d41c710255380260614ef7ea6ae
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Feb 22 11:31:59 2019 -0500
+
+    LP#1801191: Refactor for clarity; bugfix
+    
+    This commit makes a few small adjustments:
+    
+    - Replace two instances of 'cleanse_ISO8601' with 'clean_ISO8601', as
+      the former does not exist (at least in these contexts)
+    - Delay converting DateTimes to strings until necessary (which allows us
+      to compare the original DateTime objects instead of having to recreate
+      them from strings)
+    - Increase comments
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	9	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+11	14	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+
+commit 9c90558644e7154a0a68505f719c698f1826954d
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Nov 1 16:29:36 2018 -0700
+
+    LP#1801191: ensure recall does not extend due date
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+8	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+10	0	Open-ILS/src/perlmods/lib/OpenILS/Utils/HoldTargeter.pm
+
+commit fed895c05164efb1c01b1516b3bc806477fc587f
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Feb 21 13:05:48 2019 -0500
+
+    LP#1787479: Stamping upgrade script
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+96	0	Open-ILS/src/sql/Pg/upgrade/1153.data.update_item_label_org_unit_labels.sql
+0	96	Open-ILS/src/sql/Pg/upgrade/xxxx.data.update_item_label_org_unit_labels
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1153.data.update_item_label_org_unit_labels.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.update_item_label_org_unit_labels
+
+commit 71e0eacf2ebb8d0691b99d943e43008769e7fe63
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Tue Feb 12 23:15:08 2019 -0500
+
+    LP#1787479 Final fixes for print label customizations. Corrects duplication of pcrud objects
+    in previous submission and adds CSS to item label template.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	5	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+4	0	Open-ILS/src/templates/staff/share/print_templates/t_item_label.tt2
+0	2	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit b4de131879229f2aefd3ee84c6d4e3f3962657a0
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Tue Jan 29 16:31:43 2019 -0500
+
+    LP#1787479: Fixes print label template customization saving for local storage
+    
+    updates and incorporates added template fields from the patch
+    user/gmcharlt/lp1726568_label_owning_lib.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+11	8	Open-ILS/src/templates/staff/share/print_templates/t_item_label.tt2
+93	74	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit 1e248098368da44b2b6c9a2eef30faef67a9356f
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Thu Jan 10 02:05:50 2019 -0500
+
+    LP#1787479: Adds customization for multipage print label printing and fixes the issue
+    with saving templates after the change to DB saving from local storage.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+19	15	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit a76e3313a76ef2c548590baba9b9def0768ca3dd
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Fri Nov 23 09:07:26 2018 -0500
+
+    LP#1787479: Relocate t_view.tt2 file
+    
+    Accidentally saved tt2 changes in last commit to the wrong directory. Fixing
+    it in this commit.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+36	38	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+0	274	Open-ILS/web/js/ui/default/staff/cat/printlabels/t_view.tt2
+ delete mode 100644 Open-ILS/web/js/ui/default/staff/cat/printlabels/t_view.tt2
+
+commit c7783ded8da83b035f2c0a007609f101f75fc600
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Sat Nov 17 13:56:12 2018 -0500
+
+    LP#1787479: More layout changes
+    
+    Based on cataloger feedback, we 1) Moved the Label Set Configuration higher
+    grouped with the spine and spine/pocket options because all of these options
+    are related 2) Moved the starting label option higher because this is the
+    one setting that will probably be adjusted on each use of the interface and
+    3) Made the Gap Between Columns setting label conditional on whether the
+    user us printing to a sheet with label sets or not.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+274	0	Open-ILS/web/js/ui/default/staff/cat/printlabels/t_view.tt2
+ create mode 100644 Open-ILS/web/js/ui/default/staff/cat/printlabels/t_view.tt2
+
+commit a80f25685d9f7617434c800adb62c20031ed8508
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Wed Nov 14 12:49:16 2018 -0500
+
+    LP#1787479: Make the display of some fields conditional on the Print Feed Option
+    
+    Ideally, we would remove the entire Page Settings section for those who are
+    printing to a continuous feed printer, but it carries the risk of users
+    not being able to see a field with a value that is affecting the layout. However, there are several fields within that section that don't affect the
+    continuous feed layout and can be hidden in continuous feed mode. I also
+    adjusted one help tip to display different information for continuous and
+    sheet feed printing.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+9	8	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+2	2	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit 2da42a5b540c67e3421f06629e34a71c1d958072
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Nov 13 21:07:19 2018 -0500
+
+    LP#1787479: Make label names more descriptive
+    
+    As previously discussed on the cataloging list and the LP bug, the previous
+    label names of 'left' and 'right' no longer make sense since staff can
+    control the placement of these labels. However, label 1 and label 2 are too
+    generic. We therefore are going back to spine and pocket labels.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+12	12	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+96	0	Open-ILS/src/sql/Pg/upgrade/xxxx.data.update_item_label_org_unit_labels
+3	3	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+8	8	Open-ILS/src/templates/staff/share/print_templates/t_item_label.tt2
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.data.update_item_label_org_unit_labels
+
+commit 920b10a2834ee41b2d2a61eba4eee8f6a3bbcba4
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Tue Nov 13 12:27:02 2018 -0500
+
+    LP#1787479: Some CSS and other formatting changes
+    
+    Moved most of the CSS to cat.css.tt2; removed most borders since they aren't
+    needed as much without the full settings descriptions on the page; added some
+    more help text and removed Windows carriage returns.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+33	74	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+64	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+3	3	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit 06a7f93c29b90f3e3a63c30cce8156f413a23124
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Nov 12 13:04:02 2018 -0500
+
+    LP#1787479: Use help tips for settings descriptions
+    
+    We are now using popup help tips for descriptions on this page. Adding these
+    help tips for the new settings added through this branch.
+    
+    Also changes strings in this interface to translatable text.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+25	24	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit f1c754c49211f82ca82773e0d578b31768c37f40
+Author: Kathy Lussier <klussier@masslnc.org>
+Date:   Mon Nov 12 09:42:50 2018 -0500
+
+    LP#1787479: Restore spacing fixes
+    
+    Restore spacing fixes introduced by Garry Collum that were overwritten with
+    the original branch.
+    
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+25	26	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+commit c33bc5438d3383666aaddb43b190c5da5ea8b2b4
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Fri Nov 9 00:35:25 2018 -0500
+
+    Modified Evergreen custom print label toolbox with save modifications.
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+8	0	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit a4411d6aedfc2134b85af40f9580375a06ffc1b6
+Author: Adam Bowling <abowling@emeralddata.net>
+Date:   Wed Oct 17 16:15:44 2018 -0400
+
+    LP#1787479: Custom label printing toolbox
+    
+    Signed-off-by: Adam Bowling <abowling@emeralddata.net>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    
+    Conflicts:
+    	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+
+269	113	Open-ILS/src/templates/staff/cat/printlabels/t_view.tt2
+395	134	Open-ILS/web/js/ui/default/staff/cat/printlabels/app.js
+
+commit c85d6a55a5edc1b37e76366f8849326a586996da
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Feb 21 12:30:45 2019 -0500
+
+    LP1806087 Repair SQL upgrade script file name
+    
+    Make the name of the file match the upgrade version number applied by
+    the file.
+    
+    As is, build/tools/update_db.sh fails to recognize a new update is
+    available.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	23	Open-ILS/src/sql/Pg/upgrade/1151.data.ang-catalog-preview-setting.sql
+23	0	Open-ILS/src/sql/Pg/upgrade/1152.data.ang-catalog-preview-setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1151.data.ang-catalog-preview-setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1152.data.ang-catalog-preview-setting.sql
+
+commit 3d6c412fbd41bb44801912982b893a4b25da9c11
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Feb 20 17:08:38 2019 -0500
+
+    LP1797934: Simplify header labels
+    
+    Since the patron is already on the "Reservations" tab in their account,
+    it seems unnecessary to use the word "Reservations" in the header
+    labels. Also, simpler labels will make translations easier, since "Start
+    time" and "End time" are already used in other Bookings interfaces.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/templates/opac/myopac/reservations.tt2
+
+commit a28f18e1b40bc8577cdc353cfb6732e26d964953
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 15 12:00:00 2018 -0500
+
+    LP1797934: Add a patron's booking reservations to their OPAC account
+    
+    This commit creates a new tab in the patron OPAC account area where a
+    patron can view their current bookings.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+55	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Booking.pm
+1	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader.pm
+14	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+7	7	Open-ILS/src/templates/opac/css/style.css.tt2
+39	0	Open-ILS/src/templates/opac/myopac/reservations.tt2
+2	1	Open-ILS/src/templates/opac/parts/myopac/base.tt2
+13	0	docs/RELEASE_NOTES_NEXT/OPAC/add_booking_reservations_to_opac.adoc
+21	0	docs/opac/my_account.adoc
+ create mode 100644 Open-ILS/src/templates/opac/myopac/reservations.tt2
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/add_booking_reservations_to_opac.adoc
+
+commit 0b4f44e817c2a91a93d1a13cba2bf8318fb12c8c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Feb 20 17:05:25 2019 -0500
+
+    LP#1806087 Stamp upgrade script for staff catalog preview
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+23	0	Open-ILS/src/sql/Pg/upgrade/1151.data.ang-catalog-preview-setting.sql
+0	23	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ang-catalog-preview-setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1151.data.ang-catalog-preview-setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ang-catalog-preview-setting.sql
+
+commit abfa1eab40c9979fdac2baa184b1b969c72396d8
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Feb 7 19:54:56 2019 +0000
+
+    lp1806087 Place Holds Improvements
+    
+    - Disable SMS Carriers dropdown if Notify by SMS  unchecked.
+    - Move Search for patron button to same level as "Place Hold (name)" text.
+    - Add Search icon to "Search for Patron" button
+    - Add "Submit" button to Barcode input for improved UX.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	9	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+
+commit 582bb8924e1801aaee40e73e79c3ebd312dc8a2e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 31 10:42:57 2019 -0500
+
+    LP1806087 Angular catalog Ang7 & lint repairs
+    
+    Update rxjs imports to work with Angular7.  Add ng-lint repairs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/core/org.service.ts
+8	8	Open-ILS/src/eg2/src/app/share/catalog/basket.service.ts
+10	10	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+1	1	Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+8	8	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+11	11	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+8	9	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+6	6	Open-ILS/src/eg2/src/app/share/util/anon-cache.service.ts
+6	6	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+7	8	Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.ts
+26	26	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+4	5	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+9	10	Open-ILS/src/eg2/src/app/staff/share/hold.service.ts
+
+commit 3cf69812344e55e0a647d3c344e3c7665efc9493
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 10 13:33:19 2019 -0500
+
+    LP1806087 Experimental Angular catalog release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+26	0	docs/RELEASE_NOTES_NEXT/Client/angular-catalog-exp.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/angular-catalog-exp.adoc
+
+commit 38feacd1a79ab733e3ae8cfb356fba18383795f8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 10 12:11:41 2019 -0500
+
+    LP1806087 Org setting to enable experimental staff catalog
+    
+    Adds a new org unit setting "GUI: Enable Experimental Angular Staff
+    Catalog" (ui.staff.angular_catalog.enabled).  When set to true, a new
+    navbar menu item will appear in both the Angular and AngJS client menus
+    for "Staff Catalog (Experimental)".  This action directs the user to the
+    Angular staff catalog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	2	Open-ILS/src/eg2/src/app/core/org.service.ts
+3	6	Open-ILS/src/eg2/src/app/staff/nav.component.html
+14	0	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/resolver.service.ts
+18	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+23	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.ang-catalog-preview-setting.sql
+2	5	Open-ILS/src/templates/staff/navbar.tt2
+7	2	Open-ILS/web/js/ui/default/staff/services/navbar.js
+1	0	Open-ILS/web/js/ui/default/staff/services/startup.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.ang-catalog-preview-setting.sql
+
+commit 7075905d588919bce7e6a520b3a061e142e16e19
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Nov 7 10:18:31 2018 -0500
+
+    LP1806087 Angular staff catalog phase II.
+    
+    * Record detail tabs redirect to AngJS catalog where needed.
+    * Initial holds placement UI.
+    * Record baskets, actions, and UI.
+    * Ported MonographParts tab to Angular
+    * Set default catalog tab
+    * Browse
+    * MARC search
+    * Identifier search
+    * pub date filter
+    * Record detail 'View in Catalog' button
+    * Group formats and editions
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	2	Open-ILS/examples/fm_IDL.xml
+2	1	Open-ILS/src/eg2/src/app/core/org.service.ts
+2	1	Open-ILS/src/eg2/src/app/core/perm.service.ts
+1	1	Open-ILS/src/eg2/src/app/core/server-store.service.ts
+103	0	Open-ILS/src/eg2/src/app/share/catalog/basket.service.ts
+97	7	Open-ILS/src/eg2/src/app/share/catalog/bib-record.service.ts
+5	1	Open-ILS/src/eg2/src/app/share/catalog/catalog-common.module.ts
+164	72	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+182	26	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+332	127	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+2	1	Open-ILS/src/eg2/src/app/share/date-select/date-select.component.html
+5	1	Open-ILS/src/eg2/src/app/share/date-select/date-select.component.ts
+8	3	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+5	3	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+5	3	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.html
+3	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+1	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+59	0	Open-ILS/src/eg2/src/app/share/util/anon-cache.service.ts
+28	0	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.html
+106	0	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.html
+28	0	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.ts
+84	0	Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.html
+140	0	Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.ts
+8	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+16	2	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+22	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+293	0	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+401	0	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+5	1	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+1	0	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+28	0	Open-ILS/src/eg2/src/app/staff/catalog/record/part-merge-dialog.component.html
+70	0	Open-ILS/src/eg2/src/app/staff/catalog/record/part-merge-dialog.component.ts
+22	0	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.html
+123	0	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+24	2	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+54	5	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+9	15	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.ts
+15	0	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.css
+51	36	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+51	16	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+65	20	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.html
+78	5	Open-ILS/src/eg2/src/app/staff/catalog/result/results.component.ts
+10	1	Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+13	1	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.css
+321	231	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+156	53	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+1	6	Open-ILS/src/eg2/src/app/staff/nav.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.ts
+9	2	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+16	10	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+143	0	Open-ILS/src/eg2/src/app/staff/share/hold.service.ts
+19	22	Open-ILS/src/eg2/src/app/staff/share/holdings.service.ts
+1	4	Open-ILS/src/eg2/src/styles.css
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor/Container.pm
+90	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+2	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search.pm
+392	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Browse.pm
+ create mode 100644 Open-ILS/src/eg2/src/app/share/catalog/basket.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/anon-cache.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/browse.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/browse.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/part-merge-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/part-merge-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/hold.service.ts
+ create mode 100644 Open-ILS/src/perlmods/lib/OpenILS/Application/Search/Browse.pm
+
+commit 39c71a13a01e89e91a91472492adef5fa8910084
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Jan 25 08:14:40 2019 -0500
+
+    Lp 1813172: Option to Specify Attributes for Reingest in pingest.pl
+    
+    Add the --attr option to pingest.pl to specify one or more specific
+    attributes to be reingested by metabib.reingest_record_attributes.
+    
+    Add a release note.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+11	2	Open-ILS/src/support-scripts/pingest.pl
+21	0	docs/RELEASE_NOTES_NEXT/Administration/pingest-specify-record-atrributes.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/pingest-specify-record-atrributes.adoc
+
+commit 306e823c8de4951ff061fd6c855de3cac77371db
+Author: Katlyn Beck <kbeck@catalyte.io>
+Date:   Wed Nov 28 16:47:56 2018 +0000
+
+    lp1717551 Holdings view action menu clarity adjustment
+    
+    - Added clarifying wording for add, edit, and delete options
+    
+    Signed-off-by: Katlyn Beck <kbeck@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	10	Open-ILS/src/templates/staff/cat/catalog/t_holdings.tt2
+
+commit a472eb53bf3119c4af1a90683a5c213da4f8dd22
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 29 13:01:18 2019 -0500
+
+    LP1813647 Titles for Angular admin and splash page
+    
+    Add page titles for auto-generated admin pages, workstation admin, and
+    the root splash page.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	0	Open-ILS/src/eg2/src/app/staff/admin/acq/admin-acq-splash.component.html
+4	1	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking-splash.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.html
+2	0	Open-ILS/src/eg2/src/app/staff/splash.component.html
+1	1	Open-ILS/src/eg2/src/index.html
+
+commit c9c9c2c3413e6640222556dfa20d9afbbb5dac57
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Feb 19 18:14:49 2019 -0500
+
+    LP#1779158 Stamping upgrade scripts for Angular Vandelay
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+88	0	Open-ILS/src/sql/Pg/upgrade/1150.data.vandelay-grid-settings.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1151.data.vandelay-template-settings.sql
+0	88	Open-ILS/src/sql/Pg/upgrade/XXXX.data.vandelay-grid-settings.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/YYYY.data.vandelay-template-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1150.data.vandelay-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1151.data.vandelay-template-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.vandelay-grid-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.data.vandelay-template-settings.sql
+
+commit dc79692240236a916b23f647993a489e7657e48f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 31 12:08:37 2019 -0500
+
+    LP1779158 Angular7 and ng-lint updates
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/eg2/package-lock.json
+1	0	Open-ILS/src/eg2/package.json
+3	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/display-attrs.component.ts
+12	12	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.ts
+36	29	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+10	10	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-new-point.component.ts
+6	7	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set.component.ts
+6	7	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.ts
+18	18	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.ts
+16	18	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+7	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.ts
+32	35	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+
+commit a3d3e73a752612d435c54a0ca8a8dca5c8fe40a6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Jan 8 10:57:53 2019 -0500
+
+    LP1779158 Import field id/class mismatch fix
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+
+commit 1b5985fc636be0748504201f275bf548b376ceeb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 7 16:35:15 2019 -0500
+
+    LP1779158 Always clear import selection
+    
+    Clear the import selection (e.g. Queue => Import All Items) from the
+    import UI when the user navigates away, regardless of whether the import
+    succeeded.  Otherwise, the import UI gets stuck in selection mode
+    requiring the user to manually clear it.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	5	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+
+commit 65eee056f8165ccc97070e9ba3b16bab054e8834
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 7 16:23:12 2019 -0500
+
+    LP1779158 Vandelay workstation setting repairs/additions
+    
+    * Fix some workstation setting names that were missing the 'eg.grid.*'
+      prefix
+    * Add workstation setting types for merge profile and attr definition
+      admin pages.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+33	12	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+36	14	Open-ILS/src/sql/Pg/upgrade/XXXX.data.vandelay-grid-settings.sql
+
+commit 667b1c6ddea74f66406eff7abdc184a559a27a99
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 7 16:04:41 2019 -0500
+
+    LP1779158 Import non-matching saved template repair
+    
+    Fix issue in Vandelay import form templates where template variable name
+    did not match the form variable name.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+
+commit a3bae111c13dfbae6d8555db0356e277344b8a3b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 4 11:07:31 2019 -0500
+
+    LP1779158 Cache new queues / display active queues
+    
+    * Only list active (non-complete) queues in the Vandelay queue selector
+      combobox.
+    * Display an alert message when the user attempts to create a queue
+      whose name collides with an existing queue for the user.
+    * Be sure newly created queues are added to the local cache of queues in
+      the Vandelay service.
+    * Remove unused activeQueue list from vandelay.service to avoid having
+      to maintain 2 separate queue caches.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+21	11	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+4	27	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+
+commit 03268d65d2699b7b402aff0037e48e6566a331f8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 4 11:05:17 2019 -0500
+
+    LP1779158 Angular alert dialog component
+    
+    Similar to the PromptDialogComponent except it displays a simple message
+    (formatted as 'danger') and the only option available to the user is to
+    close the dialog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/eg2/src/app/common.module.ts
+9	0	Open-ILS/src/eg2/src/app/share/dialog/alert.component.html
+18	0	Open-ILS/src/eg2/src/app/share/dialog/alert.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/alert.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/dialog/alert.component.ts
+
+commit 169cd66fe4589ff742511aa8e2bbc353f6b1c253
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Dec 18 22:57:21 2018 +0000
+
+    lp1779158 Inspect Queue Improvements
+    
+    - Add "Delete selected" option to Authority Queues
+    - Change Queuetype to 'authority' from 'auth' when selecting single record to view
+    in auth record queue.
+    - Ensure "Imported As" link correctly navigates to Auth record view for Auth Queues
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.html
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.html
+5	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+
+commit 48576fe0d0a648bee37de68fc7beba3585cbe7dc
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Tue Nov 27 21:07:35 2018 +0000
+
+    lp1779158 Vandelay Authority Import Tweaks
+    
+    - Check for "Auth" string
+    - Dummy rec.import_items when record is not bib
+    - Teach resolveQueue() to assume startQueueId unless a queue is selected already
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+    	modified:   Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	3	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+7	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+
+commit f2504b21de1eb5e3eae3047c2de0dc24b8999583
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 4 14:13:42 2018 -0500
+
+    LP#1779158 Vandelay UI accessibilty/usability improvements
+    
+    * Associate <input>'s with their labels in the import and export forms
+    * Hide the MARC removal groups selector when record type is authority.
+    * Disable ACQ copy overlay option when record type is authority.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	13	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.html
+65	34	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+
+commit e6ce65d3b8b0188b4c30bc31abce9e2cbba40336
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Oct 29 12:31:26 2018 -0400
+
+    LP#1800481 Vandelay import form templates
+    
+    Support saving MARC Import form values as named templates.  Values are
+    stored as (by defualt) workstation settings.  A template may be selected
+    as the default and templates may be deleted.
+    
+    Includes release notes update angular vandelay.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+40	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+132	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/YYYY.data.vandelay-template-settings.sql
+7	0	docs/RELEASE_NOTES_NEXT/Cataloging/vandelay-angular-port.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/YYYY.data.vandelay-template-settings.sql
+
+commit bcc72fa70921a842d5c876c72278e8ab355e28a2
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Oct 11 15:47:58 2018 -0400
+
+    LP#1779158 Ang6 Vandelay Release Notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+21	0	docs/RELEASE_NOTES_NEXT/Cataloging/vandelay-angular-port.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/vandelay-angular-port.adoc
+
+commit 8777877cd9ccdc45fbc8286e4fcc272931d3b1a9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jun 28 18:23:39 2018 -0400
+
+    LP#1779158 Ang6 Vandelay UI Port
+    
+    Port of the MARC Import/Export UI from a Dojo-driven interface to a
+    Angular(6) interface.
+    
+    Includes an additional UI called "Recent Imports" which displays
+    Vandelay session tracker information for both active sessions and those
+    within the selected time frame.  Active sessions are updated regularly
+    to display progress to the user.
+    
+    Includes grid persist key workstation settings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+15	0	Open-ILS/src/eg2/src/app/staff/cat/routing.module.ts
+17	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/display-attrs.component.html
+35	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/display-attrs.component.ts
+119	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.html
+138	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.ts
+9	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/holdings-profiles.component.ts
+234	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+491	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+69	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.html
+219	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.ts
+37	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+78	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+77	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-new-point.component.html
+65	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-new-point.component.ts
+27	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.html
+105	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.ts
+36	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set.component.html
+51	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set.component.ts
+9	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/merge-profiles.component.ts
+19	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.html
+60	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.ts
+36	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.html
+102	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.ts
+152	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+250	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+96	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+153	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+31	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.html
+42	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.ts
+67	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.html
+140	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.ts
+6	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.html
+37	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.ts
+75	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/routing.module.ts
+44	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.html
+34	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.ts
+61	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.module.ts
+343	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/routing.module.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+48	3	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+21	7	Open-ILS/src/perlmods/lib/OpenILS/Application/Vandelay.pm
+59	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+66	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.vandelay-grid-settings.sql
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/display-attrs.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/display-attrs.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/holdings-profiles.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/import.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-new-point.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-new-point.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-quality.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/merge-profiles.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-list.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/recent-imports.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/record-items.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/routing.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/cat/vandelay/vandelay.service.ts
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.vandelay-grid-settings.sql
+
+commit 142655ae2b4d808fc43e34e4223dbbf0c04e7d44
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Dec 14 16:00:41 2018 -0500
+
+    Lp 1808580: Remove Installation Support for Ubuntu 14.04
+    
+    Remove prerequisite installation on Ubuntu 14.04 "Trusty Tahr" from
+    Makefile.install and the edi_translator installation script.
+    
+    Remove and/or update references to Ubuntu 14.04 Trusty Tahr to Ubuntu
+    18.04 Bionic Beaver in the server installation and upgrade documents.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+0	2	Open-ILS/src/edi_translator/install-ubuntu.sh
+1	13	Open-ILS/src/extras/Makefile.install
+0	168	Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+5	17	docs/installation/server_installation.adoc
+1	2	docs/installation/server_upgrade.adoc
+ delete mode 100644 Open-ILS/src/extras/install/Makefile.ubuntu-trusty
+
+commit 8acac4652ca08321a117ad2292493d7755b48460
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 18 13:37:00 2019 -0500
+
+    LP#1806709: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1149.data.circ-billing-history-grid-persist-key.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1149.data.circ-billing-history-grid-persist-key.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-billing-history-grid-persist-key.sql
+
+commit eb2d38267effaa3ecce608d8dfe4cc765b561eb2
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 18 13:01:27 2019 -0500
+
+    LP#1812733: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+120	0	Open-ILS/src/sql/Pg/upgrade/1148.schema.fix_actor_usr_delete_function.sql
+0	120	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_actor_usr_delete_function.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1148.schema.fix_actor_usr_delete_function.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_actor_usr_delete_function.sql
+
+commit 84b19c08a3f917907f32a79ca0544c1a20356397
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Feb 18 12:57:48 2019 -0500
+
+    LP#1812733: put in correct version of actor.usr_delete()
+    
+    This fixes an issue in the previous patch where second_given_name
+    would never have been NULLed.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_actor_usr_delete_function.sql
+
+commit c819ee44d328a511fcd59d576abf4b5a2941c72e
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon Jan 21 13:50:17 2019 -0500
+
+    LP#1812733 - Repair actor.usr_delete function.
+    
+    The Parent/Guardian feature altered the actor.usr_delete
+    function, but accidentally tries to update the "guardian"
+    field twice.  This fixes that problem.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+119	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_actor_usr_delete_function.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.fix_actor_usr_delete_function.sql
+
+commit 8f5fe0722161f767ffa4a73e1add8d4216b06195
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Feb 13 12:00:27 2019 -0500
+
+    Stamping upgrade script
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+254	0	Open-ILS/src/sql/Pg/upgrade/1147.data.server-admin-grid-settings.sql
+0	254	Open-ILS/src/sql/Pg/upgrade/XXXX.data.server-admin-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1147.data.server-admin-grid-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.server-admin-grid-settings.sql
+
+commit 4a95d2a5d56a017b986805ef0dc9016f5958e8ab
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 24 11:37:51 2019 -0500
+
+    LP1811156 Angular server admin grid settings
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+250	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+254	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.server-admin-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.server-admin-grid-settings.sql
+
+commit 092dd5188780637dafb6db73c5163fddc8c1090b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jan 9 17:13:43 2019 -0500
+
+    LP1811156 Activate Angular server admin page
+    
+    Point Admin -> Server Admin from AngJS and Angular navbars to the
+    Angular version of the server admin splash page.
+    
+    Includes Angular auto-admin page sanity check for cases where a route
+    has no extra data.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+3	1	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+0	6	Open-ILS/src/eg2/src/app/staff/nav.component.html
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+
+commit 6ae2427affb3e6cb8c5f96b2a21530efd6798a70
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Thu Feb 7 17:40:15 2019 -0500
+
+    LP#1715767 - stamping upgrade scripts
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/1144.schema.actor.privacy_waiver.sql
+342	0	Open-ILS/src/sql/Pg/upgrade/1145.function.privacy_waiver_in_purge_data.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/1146.data.privacy_waiver.sql
+0	21	Open-ILS/src/sql/Pg/upgrade/XXXX.data.privacy_waiver.sql
+0	342	Open-ILS/src/sql/Pg/upgrade/XXXX.function.privacy_waiver_in_purge_data.sql
+0	17	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor.privacy_waiver.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1144.schema.actor.privacy_waiver.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1145.function.privacy_waiver_in_purge_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1146.data.privacy_waiver.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.privacy_waiver.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.privacy_waiver_in_purge_data.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor.privacy_waiver.sql
+
+commit c016af3dd14e9ac7c5a5ec54e9b5339e20e1279a
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Feb 7 11:38:47 2019 -0800
+
+    LP#1715767: remove privacy waiver entries when purging user data
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+342	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.privacy_waiver_in_purge_data.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.privacy_waiver_in_purge_data.sql
+
+commit be0e7e2cd4139d6e1e3d9a42440cf04296e96dcb
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Nov 19 15:53:00 2018 -0800
+
+    LP#1715767: remove privacy waiver entries when referenced actor.usr rows are deleted
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/sql/Pg/005.schema.actors.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor.privacy_waiver.sql
+
+commit c7727d4966d63a14419c2a8e9df5cabf11f76ee3
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Wed Feb 7 15:11:18 2018 -0800
+
+    LP#1715767: Allow others to use my account (privacy waiver)
+    
+    Use case: Jane Doe has a hold ready for pickup but is unable to come
+    into the library.  Her husband John Doe goes to the library to pick up
+    the hold on her behalf.  His name is listed on Jane's account, so
+    library staff know it's okay to check out the book on Jane's account and
+    give it to John.
+    
+    This commit adds a new table which lists the names of people who are
+    allowed to place holds, pick up holds, check out items, or view
+    borrowing history for a user account.  Staff can add, edit, or remove
+    entries via the patron editor in the web client; patrons can do so in My
+    Account.  The entries are not linked to other user accounts and they do
+    not add any extra functionality.  They are essentially special patron
+    notes for circulation staff.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+32	0	Open-ILS/examples/fm_IDL.xml
+104	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Actor.pm
+49	2	Open-ILS/src/perlmods/lib/OpenILS/WWW/EGCatLoader/Account.pm
+10	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+15	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.privacy_waiver.sql
+17	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor.privacy_waiver.sql
+43	1	Open-ILS/src/templates/opac/myopac/prefs_settings.tt2
+49	0	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+14	0	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+43	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+1	0	Open-ILS/web/js/ui/default/staff/services/user.js
+15	0	docs/RELEASE_NOTES_NEXT/Circulation/privacy_waiver.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.privacy_waiver.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.actor.privacy_waiver.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/privacy_waiver.adoc
+
+commit 43405971832887b5cbe75b6eb2421dd1b09a1baf
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Feb 5 15:35:53 2019 -0500
+
+    Lp 1805897: Add Release Note
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	0	docs/RELEASE_NOTES_NEXT/Administration/marc-export-copy-status.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/marc-export-copy-status.adoc
+
+commit 20a7f91f7ab83d23613fe98228b3f7546f6daa10
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Thu Nov 29 15:19:43 2018 -0500
+
+    Lp 1805897: Add Item Status to the Holdings of marc_export.in
+    
+    Export status in the 852 subfield s when exporting items.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: John Yorio <jyorio@equinoxinitiative.org>
+    Signed-off-by: Steve Callender <stevecallender@equinoxinitiative.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+24	0	Open-ILS/src/support-scripts/marc_export.in
+
+commit 32d52c674e6663e319b4f22a4ba46b16a9791de8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 25 12:27:42 2019 -0500
+
+    LP1809288 Angular Booking Admin release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+7	0	docs/RELEASE_NOTES_NEXT/Client/angular-booking-admin.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/angular-booking-admin.adoc
+
+commit 7ae23c6e8dd126f525a1eae9b5f936274618760f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Jan 25 12:10:14 2019 -0500
+
+    LP1809288 Stamping SQL upgrade for booking admin
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/1143.data.booking-admin-grid-settings.sql
+0	43	Open-ILS/src/sql/Pg/upgrade/XXXX.data.booking-admin-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1143.data.booking-admin-grid-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.booking-admin-grid-settings.sql
+
+commit e85ce6c10d5b7295bda9821be358cf6ed32bf481
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Jan 4 12:08:08 2019 -0800
+
+    LP1809288: Fix a small javascript error when value is undefined
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+
+commit 5be172fdae30e68e8036a7b066e8b29cbdfbc67b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 3 10:36:07 2019 -0500
+
+    LP1809288 Avoid booking grid prefix doubling
+    
+    Teach the booking admin to avoid doubling up the grid prefix, which
+    would lead to grid settings with names like eg.grid.booking.booking.*
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	3	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+15	15	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.booking-admin-grid-settings.sql
+
+commit b901a7e97d7e7be96aceb8cff3cbec6ac83b6cc6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Jan 3 10:17:42 2019 -0500
+
+    LP1809288 Angular fm-editor read-only additions
+    
+    * Add read-only view to org-select
+    * FM editor displays read-only values as plain text
+    * Mark readOnly checkboxes "disabled"
+    * Link fields only fetch linked data when an IDL selector exists
+    * Minor code/style changes
+    ** Define all class vars before class methods (ng-lint)
+    ** Replace some tabs with spaces (ng-lint)
+    ** Avoid unnecessary type defs with default values (ng-lint)
+    ** More const goodness (ng-lint)
+    ** camelCase some vars for consistentcy
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+106	74	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+32	14	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+20	12	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.html
+7	2	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+
+commit 2e60910340c3d7c55685e6421f4749f86092e19c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Dec 29 16:40:10 2018 -0800
+
+    LP1809288: Make some brt fields read-only
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+12	1	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+17	4	Open-ILS/src/eg2/src/app/staff/admin/basic-admin-page.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/admin/booking/routing.module.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+3	0	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 6d19d729d6348926ecc31a59c934202bd85fef40
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Dec 29 15:17:02 2018 -0800
+
+    LP1809288: Add workstation grid settings for booking admin
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+38	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.booking-admin-grid-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.booking-admin-grid-settings.sql
+
+commit 0c19eb5c596735ddcd4c9eb1fa0c1b70a050ce6e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 20 11:39:03 2018 -0600
+
+    LP1809288: Port Booking Admin to Angular
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+13	13	Open-ILS/examples/fm_IDL.xml
+18	0	Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking-splash.component.html
+11	0	Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking-splash.component.ts
+24	0	Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking.module.ts
+22	0	Open-ILS/src/eg2/src/app/staff/admin/booking/routing.module.ts
+3	0	Open-ILS/src/eg2/src/app/staff/admin/routing.module.ts
+2	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking-splash.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking-splash.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/booking/admin-booking.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/admin/booking/routing.module.ts
+
+commit 356c8646200af58b3ed079262a1c7bda84dcf2fe
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Jan 22 14:32:45 2019 -0500
+
+    Forward-port 3.1.9 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.8-3.1.9-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.8-3.1.9-upgrade-db.sql
+
+commit 9b294be6a8280609781729ecbfb85f90ae9469f7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Dec 18 10:50:26 2018 -0500
+
+    LP1807764 Angular grid gets datePlusTime option
+    
+    Adds a new boolean datePlusTime option to the Angular grid column
+    configuration, informing the grid to display both date and time in the
+    cell for a datetype=timestamp column.
+    
+    Includes sandbox example.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+7	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+1	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+
+commit eaca9cd603da425a82ad478c7798645ea45c2178
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Jan 7 10:49:28 2019 -0500
+
+    LP1810802 org_top() SQL upgrade repairs
+    
+    1. Drop the org_top function before recreating it since the return type
+    changes.
+    
+    2. Fis syntax error in "COMMIT:"
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	1	Open-ILS/src/sql/Pg/upgrade/1140.function.non-set-returning-evergreen.org_top.sql
+
+commit c78ddc8c1c9785ddcabd287ad241ff7fb97ab1c9
+Author: abneiman <abneiman@equinoxinitiative.org>
+Date:   Wed Dec 12 14:48:35 2018 -0500
+
+    docs: LP1258628: screenshots & updates to actiontriggers.adoc
+    
+    Added a handful of screenshots; added language for Message Center definitions, and pulled in language about testing action triggers from this document: http://docs.evergreen-ils.org/dev/_creating_action_triggers.html
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+25	16	docs/admin/actiontriggers.adoc
+-	-	docs/media/event_def_details.png
+-	-	docs/media/event_def_details_2.png
+-	-	docs/media/new_event_def.png
+-	-	docs/media/test_event_def.png
+-	-	docs/media/test_event_def_output.png
+11	5	docs/root_staff_client_admin.adoc
+ create mode 100644 docs/media/event_def_details.png
+ create mode 100644 docs/media/event_def_details_2.png
+ create mode 100644 docs/media/new_event_def.png
+ create mode 100644 docs/media/test_event_def.png
+ create mode 100644 docs/media/test_event_def_output.png
+
+commit 4fca2c7ba62469646fe6aea141304f5d35b54105
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Dec 17 17:01:45 2018 -0500
+
+    LP1806968 Stamping SQL upgrade: Vand. session tracker fixes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/1141.schema.vandelay-record-type-fix.sql
+0	14	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-record-type-fix.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1141.schema.vandelay-record-type-fix.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.vandelay-record-type-fix.sql
+
+commit d32427162b215f5b48388596ccde7a60976c60fb
+Author: Ben Shum <ben@evergreener.net>
+Date:   Fri Dec 14 21:52:32 2018 -0500
+
+    Translation updates - newpot
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+2	2	build/i18n/po/AutoFieldWidget.js/AutoFieldWidget.js.pot
+2	2	build/i18n/po/FlattenerGrid.js/FlattenerGrid.js.pot
+2	2	build/i18n/po/PCrudFilterPane.js/PCrudFilterPane.js.pot
+2	2	build/i18n/po/Searcher.js/Searcher.js.pot
+2	2	build/i18n/po/TranslatorPopup.js/TranslatorPopup.js.pot
+2	2	build/i18n/po/URLVerify.js/URLVerify.js.pot
+2	2	build/i18n/po/User.js/User.js.pot
+2	2	build/i18n/po/XULTermLoader.js/XULTermLoader.js.pot
+2	2	build/i18n/po/acq.js/acq.js.pot
+2	2	build/i18n/po/authority.js/authority.js.pot
+2	2	build/i18n/po/capture.js/capture.js.pot
+2	2	build/i18n/po/conify.js/conify.js.pot
+108	70	build/i18n/po/db.seed/db.seed.pot
+2239	2235	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+20	20	build/i18n/po/ils_events.xml/ils_events.xml.pot
+2	2	build/i18n/po/match_set.js/match_set.js.pot
+2	2	build/i18n/po/opac.js/opac.js.pot
+2	2	build/i18n/po/pickup_and_return.js/pickup_and_return.js.pot
+2	2	build/i18n/po/pull_list.js/pull_list.js.pot
+2	2	build/i18n/po/register.js/register.js.pot
+2	2	build/i18n/po/reports.js/reports.js.pot
+2	2	build/i18n/po/reservation.js/reservation.js.pot
+2	2	build/i18n/po/selfcheck.js/selfcheck.js.pot
+2	2	build/i18n/po/serial.js/serial.js.pot
+27	23	build/i18n/po/tpac/tpac.pot
+2	2	build/i18n/po/vandelay.js/vandelay.js.pot
+193	172	build/i18n/po/webstaff/webstaff.pot
+
+commit 6174085203ce0c7ad18670f5576af153b5bfac4e
+Author: Ben Shum <ben@evergreener.net>
+Date:   Fri Dec 14 14:37:45 2018 -0500
+
+    LP#1730726: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/1140.function.non-set-returning-evergreen.org_top.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/XXXX.function.non-set-returning-evergreen.org_top.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1140.function.non-set-returning-evergreen.org_top.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.non-set-returning-evergreen.org_top.sql
+
+commit a17462f413098287b4b6d61054df9f8a382715f7
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Dec 14 08:59:12 2018 -0500
+
+    LP 1730726: Add Release Notes for PostgreSQL 10 Support.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+34	0	docs/RELEASE_NOTES_NEXT/Architecture/postgresql10.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/postgresql10.adoc
+
+commit c656616431525e2bcb2f178ab0b3ae1739e742ac
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Dec 12 13:24:01 2018 -0500
+
+    Lp 1730726: Fix lp1501781-unaccent_and_squash.pg for PostgreSQL 9.6
+    
+    PostgreSQL 9.6 apparently exhibits the same behavior as Postgresql 10
+    when it comes the OE ligature in the unaccent function.  We modify the
+    test case to take that into account.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/t/lp1501781-unaccent_and_squash.pg
+
+commit b10d97df412eac54423dd29d585df053bce29b57
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Nov 6 11:00:33 2018 -0500
+
+    Lp 1730726: Fix lp1501781-unaccent_and_squash.pg for PostgreSQL 10
+    
+    PostgreSQL 10 has improvements in the unaccent function used by the
+    evergreen.unaccent_and_squash function.  The test needs a small
+    modification to take this into account.  Actual code change from Mike
+    Rylander with a little typo fix.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/t/lp1501781-unaccent_and_squash.pg
+
+commit d6c3fa77249d34e7627104369eae9d02340e647e
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Nov 6 07:01:24 2018 -0500
+
+    Lp 1730726: Fix a number of PgTap tests for PostgreSQL 10.
+    
+    A number of tests disabled output via "\set ECHO".  In PostgreSQL 10,
+    the lack of a value in \set is an error.  We change these lines to
+    "\set ECHO none".
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/live_t/0824.item_import_defaults.pg
+1	1	Open-ILS/src/sql/Pg/live_t/0847.auth_overlay_generator.pg
+1	1	Open-ILS/src/sql/Pg/live_t/0852.prox_adjust.pg
+1	1	Open-ILS/src/sql/Pg/make-pgtap-tests.pl
+1	1	Open-ILS/src/sql/Pg/t/0799.state_field_required_toggle.pg
+1	1	Open-ILS/src/sql/Pg/t/dewey.pg
+1	1	Open-ILS/src/sql/Pg/t/lp1198475-lost-and-paid-status.pg
+1	1	Open-ILS/src/sql/Pg/t/lp1533329-restrict-opt-in-setting.pg
+1	1	Open-ILS/src/sql/Pg/t/lp1582354_report_able_to_show_bibs_where_the_last_copy_was_deleted_cancels.pg
+1	1	Open-ILS/src/sql/Pg/t/lp1599634_Circulation_report_source_to_include_in-house_and_non_cat_circ.pg
+1	1	Open-ILS/src/sql/Pg/t/lp980296-void-lost-lo-claims-returned.pg
+1	1	Open-ILS/src/sql/Pg/t/regress/lp1272074_0858_fixed_field_enhancements.pg
+1	1	Open-ILS/src/sql/Pg/t/schema.pg
+1	1	Open-ILS/src/sql/Pg/t/versions.pg
+
+commit 768e8261135d1413b6d4f3900ab41e63ead24eaf
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Nov 5 14:37:19 2018 -0500
+
+    Lp 1730726: Basic Patch to build the database with PostgreSQL 10.
+    
+    * Modify the evergreen.org_top() function, with code from Galen
+      Charlton, to be non-set returning.
+    
+    * Modify Open-ILS/src/support-scripts/eg_db_config.in to not strip the
+      period from PostgreSQL version numbers and to use the first two
+      components when checking for supported PostgreSQL versions.
+    
+    * Add link from Open-ILS/src/sql/Pg/000.english.pg94.fts-config.sql
+      to Open-ILS/src/sql/Pg/000.english.pg10.fts-config.sql.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	0	Open-ILS/src/sql/Pg/000.english.pg10.fts-config.sql
+2	3	Open-ILS/src/sql/Pg/990.schema.unapi.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.non-set-returning-evergreen.org_top.sql
+3	3	Open-ILS/src/support-scripts/eg_db_config.in
+ create mode 120000 Open-ILS/src/sql/Pg/000.english.pg10.fts-config.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.non-set-returning-evergreen.org_top.sql
+
+commit d46ef91807ea827f563259551ab7652ac044ac81
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Dec 13 13:37:10 2018 -0500
+
+    LP#1793585: Add Release Notes
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+9	0	docs/RELEASE_NOTES_NEXT/Architecture/ubuntu-bionic.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Architecture/ubuntu-bionic.adoc
+
+commit e8f4486f2b1f5abe3d374bcd9932c4d89aabc552
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Nov 5 16:33:53 2018 -0500
+
+    LP#1793585: Fix PostgreSQL apt repo source setup
+    
+    For standalone DB server install, ensure that we are applying the proper
+    PostgreSQL community apt repo for packages.
+    
+    DO NOT backport this branch.  There are presently known issues with
+    Ubuntu 18.04 and email generation from action/trigger and other
+    interfaces.  We plan to address these before the 3.3 release, but do
+    not necessarily expect to backport those fixes.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+6	0	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+
+commit 5e6344dac1e2fdd65b5bfd2f95891d696dc5359b
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Nov 5 16:26:04 2018 -0500
+
+    LP#1793585: Change to use MARC::File::XML
+    
+    Use MARC::File::XML instead of MARC::XML (this is ancient and not used)
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+
+commit c962f16a1af9aa112dab6d824d7fbbfb9475a1b8
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Nov 5 15:42:51 2018 -0500
+
+    LP#1793585: PGSQL dependency update
+    
+    The MARC::XML cpan dependency needs to be included as part of the standalone
+    Postgres server install for Ubuntu 18.04.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	0	Open-ILS/src/extras/install/Makefile.common
+5	1	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+
+commit 47ddb4bf46cfbe1e3e823d9b42f2abe6715409aa
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Sep 25 11:47:05 2018 -0400
+
+    LP#1793585: Fix Unescaped left brace in regex Perl error.
+    
+    Running make check results in the following error on Perl 5.26:
+    
+    Unescaped left brace in regex is illegal here in regex; marked by <-- HERE in m/\${ <-- HERE EMAIL_SENDER}/ at Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/HoldNotify.pm line 358.
+    
+    Prior to Ubuntu 18.04 and Perl 5.26, this was a deprecation warning.
+    This commit fixes the regular expressions in HoldNotify.pm to escape
+    the left braces to make this error/warning go away.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+16	16	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/HoldNotify.pm
+
+commit 87fc10188dbf53c2f94286e074bcdbe4d07a9527
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Sep 20 11:08:12 2018 -0400
+
+    LP#1793585: Update README to include Bionic references
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	6	docs/installation/server_installation.adoc
+
+commit 54f1962988a4788730de83335b21b0b6a1633ba4
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Sep 20 11:03:30 2018 -0400
+
+    LP#1793585: Support Ubuntu 18.04 Bionic Beaver
+    
+    Changes to Makefile.install to support this version of Ubuntu.
+    
+    Note: We are using PG9.6 from the PostgreSQL apt source instead of the
+    standard PG10 version that ships with Ubuntu 18.04. Further testing required
+    before we switch PG versions so relying on a known working version for now.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+12	0	Open-ILS/src/extras/Makefile.install
+162	0	Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+ create mode 100644 Open-ILS/src/extras/install/Makefile.ubuntu-bionic
+
+commit 50645912b5cbaf5ef8b5f953365cb121c7eba3ea
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Nov 27 17:02:59 2018 -0500
+
+    Forward-port 3.1.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+560	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.7-3.1.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.7-3.1.8-upgrade-db.sql
+
+commit 894694aee327ae0700ea3ef84190497675ec9bff
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Tue Nov 27 00:34:44 2018 -0500
+
+    LP#1714070 Stamping upgrade script
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+173	0	Open-ILS/src/sql/Pg/upgrade/1139.schema.patron-guardian.sql
+0	171	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-guardian.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1139.schema.patron-guardian.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-guardian.sql
+
+commit fa363a9d3917a7f6dba48cf5c91e125decd6d8d9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sun Oct 28 10:10:12 2018 -0400
+
+    LP#1714070 Parent/guardian field release notes
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+52	0	docs/RELEASE_NOTES_NEXT/Circulation/patron-guardian-field.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/patron-guardian-field.adoc
+
+commit 0456d89acfc9b0fc7c4928d3c0c74996d5085655
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sun Oct 21 20:10:19 2018 -0400
+
+    LP#1714070 Patron parent/guardian field
+    
+    Adds a new dedicated patron parent/guardian field.  This field is
+    editable in the patron edit interface, displays in the patron summary
+    side bar on the browser client, and is search-able from the patron
+    search interface in the browser client.
+    
+    Adds patron editor "show" and "suggest" library settings.
+    
+    Also adds a new library setting
+    'ui.patron.edit.guardian_required_for_juv' ("GUI: Juvenile account
+    requires parent/guardian").  When this setting is applied, a value
+    will be required in the patron editor when the juvenile flag is active.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Kathy Lussier <klussier@masslnc.org>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	0	Open-ILS/examples/fm_IDL.xml
+3	0	Open-ILS/src/sql/Pg/005.schema.actors.sql
+42	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+1	0	Open-ILS/src/sql/Pg/999.functions.global.sql
+171	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-guardian.sql
+10	0	Open-ILS/src/templates/staff/circ/patron/t_edit.tt2
+4	0	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+10	6	Open-ILS/src/templates/staff/share/t_patron_search_form.tt2
+18	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.patron-guardian.sql
+
+commit 4c62ec8ff3d1ee626da4a8bae6eba2f7f534282d
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 22:04:23 2018 -0500
+
+    LP#1764542: Fixing upgrade script stamping
+    
+    Last commit deleted it, not changed it.  Repairing issue.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+12	0	Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1136.schema.lp1764542-mods33-update.sql
+
+commit 0d2dac8751e64a86297110b69a641d0673feb165
+Author: Ben Shum <ben@evergreener.net>
+Date:   Sun Nov 18 21:58:38 2018 -0500
+
+    LP#1764542: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1764542-mods33-update.sql
+
+commit 0024789ad38851f357ec95dbedde0fc41e3d6b2c
+Author: Dan Scott <dscott@laurentian.ca>
+Date:   Mon Aug 31 11:54:10 2015 -0400
+
+    LP1490616: Adjust "Penalties & Messages" label (webby)
+    
+    The pane in the web-based staff client to display penalties and messages
+    currently has a label of "Staff-Generated Penalties/Messages", which is
+    misleading as the list includes system-generated penalties and messages.
+    
+    Modify this to "Penalties and Messages" to avoid the "/" construction
+    (which is considered harder to translate) and avoid the impression that
+    it contains only staff-generated penalties and messages.
+    
+    Signed-off-by: Dan Scott <dscott@laurentian.ca>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_messages.tt2
+
+commit 2f1cee0185493e985c3258f5ff1b3b57f885b19b
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Nov 15 21:02:54 2018 -0500
+
+    LP#1091885: Stamping upgrade script
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+83	0	Open-ILS/src/sql/Pg/upgrade/1135.schema.lp_1091885_reingest_on_undelete.sql
+0	83	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.lp_1091885_reingest_on_undelete.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1135.schema.lp_1091885_reingest_on_undelete.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.lp_1091885_reingest_on_undelete.sql
+
+commit 020e2e74c9f336fab7bcecca78ff7d3315279c43
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Mar 23 10:54:05 2018 -0400
+
+    LP#1091885: make sure bibs get reingested on undelete
+    
+    Signed-off-by: Rogan Hamby <rogan@equinoxinitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+36	0	Open-ILS/src/sql/Pg/t/lp1091885_reingest_on_undelete.pg
+83	0	Open-ILS/src/sql/Pg/upgrade/xxxx.schema.lp_1091885_reingest_on_undelete.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1091885_reingest_on_undelete.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.schema.lp_1091885_reingest_on_undelete.sql
+
+commit 9023f96c0e976fc3e0e6f688244cda041e3c7390
+Author: Ben Shum <ben@evergreener.net>
+Date:   Thu Nov 15 14:04:28 2018 -0500
+
+    LP#1757455: followup to fix installing i18n
+    
+    Actually installing a language also runs updatepo and subsequently attempts
+    to copy the various dtd and property files to their correct places.
+    
+    Remove from the Makefile target for install, but retain the dtd web opac
+    folder which is apparently where we put fieldmapper and some other files
+    later.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	16	build/i18n/Makefile
+
+commit 5e9132fb1407aa4d9962bdbe2a7dc3e811bc78d7
+Author: Ben Shum <ben@evergreener.net>
+Date:   Mon Nov 5 14:03:44 2018 -0500
+
+    LP#1757455: Deprecate i18n building for XUL client
+    
+    Remove older dtds and properties files from the Makefile for i18n build
+    process.
+    
+    To test
+    -------
+    [1] Apply patch.
+    [2] Make a change to a XUL properties or DTD file
+    [3] Run 'make newpot' in build/i18n.
+    [4] Verify that your change is not reflected in the updated POT files.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	build/i18n/Makefile
+
+commit a14b16dd197ce62529fa91410088ec54db50ccc4
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Nov 13 10:56:07 2018 -0500
+
+    LP#1783440: add release notes entry
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	docs/RELEASE_NOTES_NEXT/OPAC/UPC_Advanced_Search.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/OPAC/UPC_Advanced_Search.adoc
+
+commit 1576ce5213907f0d63964557580a25f848cf03f9
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Wed Jul 25 08:38:11 2018 -0400
+
+    LP#1783440: adding UPC to numeric search types in advanced search
+    
+    To test
+    -------
+    [1] Go the Advanced Search page in the public catalog, then to the
+        Numeric Search tab.
+    [2] Search on a UPC value (e.g., in Concerto, "883929159529").
+    [3] Verify that a hit is retrieved.
+    
+    Signed-off-by: Rogan Hamby <rhamby@equinoxinitiative.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/opac/parts/advanced/numeric.tt2
+
+commit 67832d8dce6fa4e8bb0c8ce70dbf8039971d63f5
+Author: Ben Shum <ben@evergreener.net>
+Date:   Tue Nov 6 15:35:49 2018 -0500
+
+    Add eg_startup back to .gitignore
+    
+    Since we moved eg_startup to apache_24, we also need to ignore there.
+    
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+
+1	0	.gitignore
+
+commit 33f9e02ffc2620a63fd3426442a3fd1ce2759685
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Oct 24 18:18:48 2018 -0400
+
+    Forward-port 3.1.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.6-3.1.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.6-3.1.7-upgrade-db.sql
+
+commit 1319a3aa6ad46d66085a512ad3144b926ce41ca3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Oct 10 18:37:59 2018 -0700
+
+    Docs: correcting inaccurate statement in action trigger docs
+
+9	2	docs/admin/actiontriggers.adoc
+
+commit 10c7e635d3ec3c201da17ecdd89e1cce9823d03b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 8 14:42:30 2018 -0700
+
+    Docs: adding info about testing action triggers
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+10	0	docs/admin/actiontriggers.adoc
+
+commit 2aa51b43f79b8f970bdd95782e4c1b5bb979432f
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 8 14:37:30 2018 -0700
+
+    Docs: adding action/triggers to staff client admin docs
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	0	docs/admin/actiontriggers.adoc
+3	0	docs/root_staff_client_admin.adoc
+
+commit 65e6050f121efa449f182b9e15839cb9030c872c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Oct 8 14:36:48 2018 -0700
+
+    Docs: re-adding missing anchor to install instructions
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/installation/server_installation.adoc
+
+commit e53ad89d2445c61a0d983310e1dba19b7c79602a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Sep 27 17:56:00 2018 -0400
+
+    Forward-port 3.1.6 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+401	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.5-3.1.6-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.5-3.1.6-upgrade-db.sql
+
+commit cef31e9994436c9bd637d1ab599aae55766ef7ec
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Sep 27 17:55:09 2018 -0400
+
+    Forward-port 3.0.12 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+401	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.11-3.0.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.0.11-3.0.12-upgrade-db.sql
