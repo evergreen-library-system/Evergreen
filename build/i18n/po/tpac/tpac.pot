@@ -426,7 +426,7 @@ msgstr ""
 msgid "Adjacency"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
 msgid "Advanced"
 msgstr ""
 
@@ -699,7 +699,7 @@ msgstr ""
 msgid "Barcode:"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
 msgid "Basic"
 msgstr ""
 
@@ -845,7 +845,7 @@ msgstr ""
 msgid "Broader term"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
+#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:30
 msgid "Browse"
 msgstr ""
 
@@ -2026,7 +2026,7 @@ msgstr ""
 msgid "Go to record %1"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:55
 msgid "Go to..."
 msgstr ""
 
@@ -2787,12 +2787,12 @@ msgstr ""
 msgid "Musician"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:14 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:16 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
 msgid "My Account"
 msgstr ""
 
 #. (page.name)
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:34
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:36
 msgid "My Account - %1"
 msgstr ""
 
@@ -4028,7 +4028,7 @@ msgstr ""
 msgid "Search the Catalog"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:22
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
 msgid "Search:"
 msgstr ""
 
@@ -4105,7 +4105,7 @@ msgstr ""
 msgid "Select a preference page"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:51
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
 msgid "Select an account page"
 msgstr ""
 
