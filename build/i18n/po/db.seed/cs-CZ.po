@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-12-14 21:52-0400\n"
-"PO-Revision-Date: 2019-02-24 12:21+0000\n"
+"POT-Creation-Date: 2019-02-28 16:11-0400\n"
+"PO-Revision-Date: 2019-03-19 15:31+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-02-25 05:32+0000\n"
-"X-Generator: Launchpad (build 18886)\n"
+"X-Launchpad-Export-Date: 2019-03-20 05:32+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -85,6 +85,10 @@ msgstr "Počet zobrazených zrušených rezervací/požadavků"
 #: 950.data.seed-values.sql:15712
 msgid "Upload Merge on Single Match by Default"
 msgstr "Upload Merge on Single Match by Default"
+
+#: 950.data.seed-values.sql:19794
+msgid "Grid Config: admin.server.permission.perm_list"
+msgstr "Nastavení tabulky: admin.server.oprávnění.seznam_oprávnění"
 
 #: 950.data.seed-values.sql:8116
 msgid "Full score"
@@ -186,7 +190,7 @@ msgstr ""
 msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr "Nastavení tabulky: katalog.signatury-jednotky.exempláře.úplné"
 
-#: 950.data.seed-values.sql:19308
+#: 950.data.seed-values.sql:19315
 msgid "Staff Catalog Preferred Library"
 msgstr "Preferovaná knihovna pro služební katalog"
 
@@ -240,6 +244,11 @@ msgstr ""
 "vždy nebo - když je použito v kombinaci s nastaveným intervalem -  zakáže "
 "záporné poplatky po uplynutí určitého  časového období."
 
+#: 950.data.seed-values.sql:19612
+msgid "Grid Config: admin.server.actor.stat_cat_sip_fields"
+msgstr ""
+"Nastavení tabulky: admin.server.činitel.pole_sip_statistické_kategorie"
+
 # id::aout.name__5
 #: 950.data.seed-values.sql:665
 msgid "Bookmobile"
@@ -292,10 +301,6 @@ msgstr "CREATE_ORG_UNIT"
 #: 950.data.seed-values.sql:526
 msgid "Available"
 msgstr "Dostupné"
-
-#: 950.data.seed-values.sql:17113
-msgid "Item Print Label - Width for Left Label"
-msgstr "Tiskový štítek jednotky - Šířka pro levý štítek"
 
 # id::crcd.name__6
 #: 950.data.seed-values.sql:483
@@ -468,6 +473,10 @@ msgstr ""
 "pro předkatalogizované exempláře. Hodnotou by měla být \"zkratka\" "
 "organizační jednotky."
 
+#: 950.data.seed-values.sql:19447
+msgid "Grid Config: Vandelay Match Quality Metrics"
+msgstr "Nastavení tabulky: Metriky kvality shody pro Vandelay"
+
 # id::clm.value__ori
 #: 950.data.seed-values.sql:7144
 msgid "Oriya"
@@ -625,7 +634,7 @@ msgstr "Kód kurýra"
 msgid "Apache languages"
 msgstr "Apačské jazyky"
 
-#: 950.data.seed-values.sql:19420
+#: 950.data.seed-values.sql:19507
 msgid "GUI: Show guardian field on patron registration"
 msgstr ""
 "Grafické uživatelské rozhraní: Zobrazit pole Zákonný zástupce při registraci "
@@ -717,6 +726,10 @@ msgid ""
 msgstr ""
 "Povolit uživateli prodloužení výpůjčky,  i když je exemplář požadován pro "
 "rezervaci"
+
+#: 950.data.seed-values.sql:19752
+msgid "Grid Config: admin.server.config.coded_value_map"
+msgstr "Nastavení tabulky: admin.server.nastavení.mapy_kódovaných_polí"
 
 #: 950.data.seed-values.sql:4678
 msgid ""
@@ -1044,6 +1057,10 @@ msgstr ""
 "Formátovazt data podle tohoto vzoru (příklady: \"rrrr-MM-dd\" pro  \"2010-04-"
 "26\", \"MMM d, rrrr\" pro \"26. dub 2010\")"
 
+#: 950.data.seed-values.sql:17145
+msgid "Item Print Label - Width for Pocket Label"
+msgstr "Tiskový štítek jednotky - šířka knihžního štítků"
+
 #: 950.data.seed-values.sql:7136
 msgid "Nubian languages"
 msgstr "Nubijské jazyky"
@@ -1111,10 +1128,6 @@ msgstr ""
 "Pokud se částka zbývající ve fondu (včetně již utracených peněz a závazků)  "
 "dostane pod toto procento, při pokusu utratit peníze z tohoto fondu obdží "
 "personál varovnou zprávu."
-
-#: 950.data.seed-values.sql:17065
-msgid "Item Print Label - Left Margin for Left Label"
-msgstr "Tiskový štítek jednotky - Levý okraj pro levý štítek"
 
 #: 950.data.seed-values.sql:18603
 msgid "Grid Config: admin.server.asset.copy_tag"
@@ -1241,6 +1254,14 @@ msgstr "Jaoština (Afrika)"
 msgid "This acquisition request has been fulfilled."
 msgstr "Tento akviziční požadavek byl splněni"
 
+#: 950.data.seed-values.sql:17119
+msgid ""
+"Set the default width for the item print Spine Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Nastavte výchozí šířku pro tisk hřbetních štítků jednotky. Prosím, použijte "
+"jednotku měření, která je validní pro CSS. Například \"1in\" or \"2.5cm\""
+
 #: 950.data.seed-values.sql:12823
 msgid ""
 "CSV output has been requested for Import Items from records in an Importer "
@@ -1359,6 +1380,10 @@ msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 "Povolit uživateli vytvořit nová data uzavření knihovny pro tuto lokaci"
 
+#: 950.data.seed-values.sql:19682
+msgid "Grid Config: admin.server.config.circ_limit_group"
+msgstr "Nastavení tabulky: admin.server.nastavení.skupiny_výpůjčních_limitů"
+
 # id::clm.value__tuk
 #: 950.data.seed-values.sql:7262
 msgid "Turkmen"
@@ -1390,6 +1415,10 @@ msgstr "Tádžikistán "
 #: 950.data.seed-values.sql:18729
 msgid "Grid Config: cat.holdings"
 msgstr "Nastavení tabulky: katalog.jednotky"
+
+#: 950.data.seed-values.sql:19668
+msgid "Grid Config: admin.server.asset.call_number_suffix"
+msgstr "Nastavení tabulky:  admin.server.asset.sufix_signatury"
 
 #: 950.data.seed-values.sql:8505
 msgid "Rhode Island "
@@ -1503,6 +1532,10 @@ msgstr "Nastavení tabulky: rezervace_označení_police"
 msgid "Zimbabwe "
 msgstr "Zimbabwe "
 
+#: 950.data.seed-values.sql:19787
+msgid "Grid Config: admin.server.config.metabib_field"
+msgstr "Nastavení tabulky: admin.server.nastavení.pole_metabib"
+
 #: 950.data.seed-values.sql:16068
 msgid "Long-Overdue Max Return Interval"
 msgstr "Maximální interval pro vrácení dlouhodobě nevrácených"
@@ -1557,6 +1590,10 @@ msgid ""
 msgstr ""
 "Základní token pro autentizaci klienta pomocí OverDrive API (dodané  "
 "OverDrive)"
+
+#: 950.data.seed-values.sql:19454
+msgid "Grid Config: Vandelay Queue Import Items"
+msgstr "Nastavení tabulky: Položky fronty Vandelay pro import"
 
 #: 950.data.seed-values.sql:7288
 msgid "Sorbian languages"
@@ -1663,6 +1700,10 @@ msgstr "33 1/3 ot/min"
 #: 950.data.seed-values.sql:1944
 msgid "Can do anything at the Branch level"
 msgstr "Může dělat cokoliv na úrovni pobočky"
+
+#: 950.data.seed-values.sql:17129
+msgid "Item Print Label - Height for Pocket Label"
+msgstr "Tiskový štítek jednotky - výška knižního štítku"
 
 #: 950.data.seed-values.sql:19023
 msgid "Print Template Context: hold_shelf_slip"
@@ -2067,9 +2108,17 @@ msgstr "Zrušit rezervace"
 msgid "Speeches"
 msgstr "Projevy"
 
+#: 950.data.seed-values.sql:19426
+msgid "Grid Config: Vandelay Bib Queue"
+msgstr "Nastavení tabulky: bibliografická fronta Vandelay"
+
 #: 950.data.seed-values.sql:13423
 msgid "See Also From Tracing -- Meeting Name"
 msgstr "Směrování odkazu viz též -- jméno akce"
+
+#: 950.data.seed-values.sql:19468
+msgid "Grid Config: Vandelay Bib Items"
+msgstr "Nastavení tabulky: Bibliografické jednotky Vandelay"
 
 #: 950.data.seed-values.sql:5152
 msgid "Cap results in Patron Search at this number."
@@ -2277,6 +2326,10 @@ msgstr ""
 msgid "Indonesian"
 msgstr "Indonéština"
 
+#: 950.data.seed-values.sql:19822
+msgid "Grid Config: admin.server.config.weight_assoc"
+msgstr "Nastavení tabulky: admin.server.nastavení.asociace_vah"
+
 #: 950.data.seed-values.sql:726
 msgid "Allow a user to update another user's hold"
 msgstr "Povolit uživateli aktualizovat rezervace jiných uživatelů"
@@ -2345,6 +2398,12 @@ msgstr "Povolit uživateli srovnat účet (obvykle na nulu)"
 msgid "Tatar"
 msgstr "Tatarština"
 
+#: 950.data.seed-values.sql:19849
+msgid "GUI: Enable Experimental Angular Staff Catalog"
+msgstr ""
+"Grafické uživatelské rozhraní: Zapnout experimentální Angular katalog pro "
+"personál"
+
 #: 950.data.seed-values.sql:992
 msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
@@ -2397,6 +2456,10 @@ msgstr "Saudská Arábie "
 #: 950.data.seed-values.sql:8397
 msgid "Indonesia "
 msgstr "Indonésie "
+
+#: 950.data.seed-values.sql:19780
+msgid "Grid Config: admin.server.config.metabib_field_ts_map"
+msgstr "Nastavení tabulky: admin.server.nastavení.mapy_pole_metabib_ts"
 
 #: 950.data.seed-values.sql:7232
 msgid "Syriac"
@@ -3188,18 +3251,13 @@ msgstr "Navrhnout na kartě registračních údajů čtenáře pole Alias"
 msgid "Maltese"
 msgstr "Maltština"
 
+#: 950.data.seed-values.sql:19745
+msgid "Grid Config: admin.server.vandelay.match_set"
+msgstr "Nastavení tabulky: admin.server.vandelay.sada_shody"
+
 #: 950.data.seed-values.sql:7016
 msgid "Inupiaq"
 msgstr "Inupiak"
-
-#: 950.data.seed-values.sql:17119
-msgid ""
-"Set the default width for the leftmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-"Nastavení výchozí šířky pro tiskový štítek jednotky nejvíce vlevo. Prosím, "
-"použit měrné jednotky, které jsou platné pro CSS. Např. \"1in\"nebor "
-"\"2.5cm\""
 
 #: 950.data.seed-values.sql:4334
 msgid ""
@@ -3586,6 +3644,10 @@ msgid ""
 "Allow a user to override the circ.holds.hold_has_copy_at.block setting"
 msgstr "Povolit uživateli obejít nastavení circ.holds.hold_has_copy_at.block"
 
+#: 950.data.seed-values.sql:19710
+msgid "Grid Config: admin.server.config.copy_status"
+msgstr "Nastavení tabulky: admin.server.nastavení.statust_exempláře"
+
 #: 950.data.seed-values.sql:3144 950.data.seed-values.sql:3147
 msgid "Default Item Price"
 msgstr "Přednastavená cena exemplářů"
@@ -3637,6 +3699,10 @@ msgstr "Fyzický popis"
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
 msgstr "Songhajština"
+
+#: 950.data.seed-values.sql:19489
+msgid "Grid Config: Vandelay Bib Record Attributes"
+msgstr "Nastavení tabulky: Atributy bibliografických záznamů pro Vandelay"
 
 #: 950.data.seed-values.sql:5134
 msgid "Regex for phone fields on patron registration"
@@ -3930,6 +3996,10 @@ msgstr "Lubu-katanžština"
 #: 950.data.seed-values.sql:1286
 msgid "DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
 msgstr "DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
+
+#: 950.data.seed-values.sql:19461
+msgid "Grid Config: Vandelay Bib Queue List"
+msgstr "Nastavení tabulky:  Seznam bibliografické fronty Vandelay"
 
 #: 950.data.seed-values.sql:7335
 msgid "Comic strips"
@@ -4384,6 +4454,10 @@ msgstr "Severní teritorium (Austrálie) "
 msgid "user_request.update"
 msgstr "user_request.update"
 
+#: 950.data.seed-values.sql:19696
+msgid "Grid Config: admin.server.config.rule_max_fine"
+msgstr "Nastavení tabulky: admin.server.nastavení.pravidla_maximálních_pokut"
+
 #: 950.data.seed-values.sql:7856
 msgid "microscope slide"
 msgstr "sklíčko"
@@ -4633,6 +4707,10 @@ msgstr "Bradžština"
 #: 950.data.seed-values.sql:7988
 msgid "Dance forms"
 msgstr "Taneční formy"
+
+#: 950.data.seed-values.sql:19724
+msgid "Grid Config: admin.server.config.global_flag"
+msgstr "Nastavení tabulky: admin.server.nastavení.globální_indikátory"
 
 #: 950.data.seed-values.sql:8308
 msgid "Bermuda Islands "
@@ -5096,6 +5174,10 @@ msgstr "Povolit uživateli vytvořit / načíst / změnit / smazat typy aktivit"
 msgid "UPDATE_COPY_NOTE"
 msgstr "UPDATE_COPY_NOTE"
 
+#: 950.data.seed-values.sql:17113
+msgid "Item Print Label - Width for Spine Label"
+msgstr "Tiskový štítek jednotky - šířka hřbetního štítku"
+
 # id::clm.value__chu
 #: 950.data.seed-values.sql:6901
 msgid "Church Slavic"
@@ -5222,6 +5304,10 @@ msgstr "USA Mobility"
 msgid "Local Library System"
 msgstr "Lokální knihovní systém"
 
+#: 950.data.seed-values.sql:19836
+msgid "Grid Config: admin.server.config.z3950_source"
+msgstr "Nastavení tabulky: admin.server.nastavení.zdroje_Z39.50"
+
 # id::clm.value__kor
 #: 950.data.seed-values.sql:7048
 msgid "Korean"
@@ -5319,6 +5405,10 @@ msgstr "Forma popisné jednotky"
 #: 950.data.seed-values.sql:1254
 msgid "UPDATE_TRANSIT"
 msgstr "UPDATE_TRANSIT"
+
+#: 950.data.seed-values.sql:19654
+msgid "Grid Config: admin.server.config.billing_type"
+msgstr "Nastavení tabulky: admin.server.nastavení.typy_polatků"
 
 #: 950.data.seed-values.sql:11970
 msgid "The quantity of goods that is on back-order."
@@ -6051,7 +6141,7 @@ msgstr "Zobrazit pole Stát na kartě registračních údajů čtenáře"
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr "Povolit čtenáři zaznamenat platbu v rozhraní pro platby"
 
-#: 950.data.seed-values.sql:19433
+#: 950.data.seed-values.sql:19520
 msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 "Grafické uživatelské rozhraní: Navrhnout pole zákonný zástupce při "
@@ -6415,6 +6505,12 @@ msgstr "Tisková šablona: status_jednotky"
 msgid "ADMIN_USER_SETTING_TYPE"
 msgstr "ADMIN_USER_SETTING_TYPE"
 
+#: 950.data.seed-values.sql:19759
+msgid "Grid Config: admin.server.vandelay.import_bib_trash_group"
+msgstr ""
+"Nastavení tabulky: "
+"admin.server.vandelay.skupina_vyřazených_bibliografického_importu"
+
 #: 950.data.seed-values.sql:18687
 msgid "Grid Config: cat.bucket.copy.pending"
 msgstr "Nastavení tabulky: skupina.exempláře.nevyřízené"
@@ -6427,7 +6523,7 @@ msgstr "Požadovat na kartě registračních údajů čtenáře pole E-mail"
 msgid "Chuvash"
 msgstr "Čuvaština"
 
-#: 950.data.seed-values.sql:19425
+#: 950.data.seed-values.sql:19512
 msgid ""
 "The guardian field will be shown on the patron registration screen. Showing "
 "a field makes it appear with required fields even when not required. If the "
@@ -6456,6 +6552,10 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max"
 #: 950.data.seed-values.sql:8196
 msgid "Transverse Mercator"
 msgstr "Příčné Merkatorovo zobrazení"
+
+#: 950.data.seed-values.sql:19475
+msgid "Grid Config: Vandelay Authority Queue List"
+msgstr "Nastavení tabulky: Seznam fronty autorit Vandelay"
 
 #: 950.data.seed-values.sql:8464
 msgid "New Mexico "
@@ -6512,6 +6612,10 @@ msgstr ""
 #: 950.data.seed-values.sql:1116
 msgid "CREATE_CIRC_DURATION"
 msgstr "CREATE_CIRC_DURATION"
+
+#: 950.data.seed-values.sql:19766
+msgid "Grid Config: admin.server.config.record_attr_definition"
+msgstr "Nastavení tabulky: admin.server.nastavení.definice_atributů_záznamu"
 
 #: 950.data.seed-values.sql:13950
 msgid "Iridium"
@@ -6722,6 +6826,14 @@ msgstr "Počet kusů skutečně přijatých v cílové destinaci"
 msgid "Siksika"
 msgstr "Siksika"
 
+#: 950.data.seed-values.sql:17135
+msgid ""
+"Set the default height for the item print Pocket Label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Nastavte výchozí výšku pro tisk knižních lístků. Prosím, použijte jednotky "
+"měření, které jsou CSS validní. Například \"1in\" or \"2.5cm\""
+
 #: 950.data.seed-values.sql:4442
 msgid ""
 "Full URL path to a Javascript File to be loaded when printing. Should "
@@ -6742,6 +6854,10 @@ msgstr "Iowa "
 #: 950.data.seed-values.sql:7579 950.data.seed-values.sql:7580
 msgid "Map"
 msgstr "Mapa"
+
+#: 950.data.seed-values.sql:19801
+msgid "Grid Config: admin.server.config.remote_account"
+msgstr "Nastavení tabulky: admin. server.nastavení.vzdálený účet"
 
 #: 950.data.seed-values.sql:4114
 msgid ""
@@ -7034,7 +7150,7 @@ msgstr "Manština (manx)"
 
 #: 950.data.seed-values.sql:17177
 msgid "Item Print Label - Call Number Wrap Filter Height"
-msgstr "Tiskové štítky jednotek - Výška filtru pro zarovnání signatur"
+msgstr "Tiskový štítek jednotky - výška filtru pro zarovnání signatur"
 
 #: 950.data.seed-values.sql:13442
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
@@ -7143,6 +7259,11 @@ msgstr ""
 msgid "Sign languages"
 msgstr "Znakové jazyky"
 
+#: 950.data.seed-values.sql:19598
+msgid "Grid Config: admin.server.config.rule_age_hold_protect"
+msgstr ""
+"Nastavení tabulky: admin.server.nastavení.dočasná_ochrana_před_rezervacemi"
+
 # id::clm.value__chm
 #: 950.data.seed-values.sql:6896
 msgid "Mari"
@@ -7213,10 +7334,6 @@ msgstr "Počáteční status pro přijímané položky"
 #: 950.data.seed-values.sql:8506
 msgid "Romania "
 msgstr "Rumunsko "
-
-#: 950.data.seed-values.sql:18512
-msgid "Holdings View Show Empty Orgs"
-msgstr "Zobrazení jednotek ukazuje prázdné knihovny"
 
 #: 950.data.seed-values.sql:6914
 msgid "Cushitic (Other)"
@@ -7494,6 +7611,10 @@ msgstr "Fond"
 msgid "Upload Merge on Best Match by Default"
 msgstr "Jako výchozí  při nahrádní  sloučit při nejlepší shodě"
 
+#: 950.data.seed-values.sql:19738
+msgid "Grid Config: admin.server.config.hold_matrix_weights"
+msgstr "Nastavení tabulky: admin.server.nastavení.váhy_rezervačních_matic"
+
 #: 950.data.seed-values.sql:13408
 msgid "Heading -- Genre/Form Term"
 msgstr "Záhlaví -- termín žánru/formy"
@@ -7544,6 +7665,10 @@ msgstr "Diagramy"
 #: 950.data.seed-values.sql:1424
 msgid "Allow a user to create trigger hooks"
 msgstr "Povolit uživateli vytvořit vazby spouštěče (triggeru)"
+
+#: 950.data.seed-values.sql:19661
+msgid "Grid Config: admin.server.asset.call_number_prefix"
+msgstr "Nastavení tabulky: admin.server.asset.prefix_signatury"
 
 #: 950.data.seed-values.sql:5646
 msgid "List Published Book Lists"
@@ -7716,6 +7841,16 @@ msgstr "Povolit uživateli zobrazit typy poplatků"
 msgid "Grid Config: cat.catalog.wide_holds"
 msgstr ""
 
+#: 950.data.seed-values.sql:19869
+msgid ""
+"Add a note to a user account indicating that specified people are allowed to "
+"place holds, pick up holds, check out items, or view borrowing history for "
+"that user account"
+msgstr ""
+"Přidat do uživatelského účtu poznámku, která upozorňuje, že na tento účet "
+"mohou  určití lidé  zadávat rezervace, vyzvedávat rezervace, půjčovat "
+"knihovní jednotky nebo zobrazit historii výpůjček"
+
 #: 950.data.seed-values.sql:8110 950.data.seed-values.sql:8744
 #: 950.data.seed-values.sql:8774 950.data.seed-values.sql:8804
 #: 950.data.seed-values.sql:8834
@@ -7748,6 +7883,10 @@ msgid ""
 msgstr ""
 "Kód kurýra pro knihovnu. Dostupný v šablonách stvrzenek pro přepravu jako "
 "makro %courier_code%."
+
+#: 950.data.seed-values.sql:19703
+msgid "Grid Config: admin.server.config.circ_modifier"
+msgstr "Nastavení tabulky: admin.server.nastavení.modifikátor_výpůjčky"
 
 # id::clm.value__sco
 #: 950.data.seed-values.sql:7189
@@ -7849,7 +7988,7 @@ msgstr "Mikroformáty"
 
 #: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
 msgid "Saint"
-msgstr ""
+msgstr "Svatý"
 
 #: 950.data.seed-values.sql:40
 msgid "Alerting block on Hold"
@@ -8164,10 +8303,18 @@ msgstr ""
 "Pole Telefonní číslo večer bude požadováno na kartě registračních údajů "
 "čtenáře."
 
+#: 950.data.seed-values.sql:17097
+msgid "Item Print Label - Height for Spine Label"
+msgstr "Tiskový štítek jednotky - výška hřbetního štítku"
+
 #: 950.data.seed-values.sql:856
 msgid "Allow a user to view which users have checked out a given copy"
 msgstr ""
 "Povolit uživateli zobrazit, kteří uživatelé mají vypůjčený daný exemplář"
+
+#: 950.data.seed-values.sql:19633
+msgid "Grid Config: admin.server.authority.heading_field"
+msgstr "Nastavení tabulky: admin.server.autority.pole_záhlaví"
 
 #: 950.data.seed-values.sql:8188
 msgid "Azimuthal, other"
@@ -8243,6 +8390,16 @@ msgstr "Obecné"
 #: 950.data.seed-values.sql:4123
 msgid "Often the same thing as the PayPal manager login"
 msgstr "Často totéz jako manažerské přihlášení do PayPal"
+
+#: 950.data.seed-values.sql:17087
+msgid ""
+"Set the default left margin for the item print Pocket Label (or in other "
+"words, the desired space between the two labels). Please include a unit of "
+"measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Zadejte výchozí levý okraj pro tisk knižních lístků (neboli požadovanou "
+"mezeru mezi dvěma štítky). Prosím použijte měrné jednotky, které jsou CSS "
+"validní,  například \"1in\" nebo \"2.5cm\""
 
 #: 950.data.seed-values.sql:1356
 msgid "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval"
@@ -8687,6 +8844,10 @@ msgstr "Guyana "
 msgid "Chechen"
 msgstr "Čečenština"
 
+#: 950.data.seed-values.sql:19440
+msgid "Grid Config: Vandelay Match Sets"
+msgstr "Nastavení tabulky: Sady shod pro Vandelay"
+
 # id::clm.value__san
 #: 950.data.seed-values.sql:7184
 msgid "Sanskrit"
@@ -9027,6 +9188,14 @@ msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
 "Použít tento prefix na každou automaticky generovanou signaturu exempláře"
 
+#: 950.data.seed-values.sql:17103
+msgid ""
+"Set the default height for the item print Spine Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Zadejte výchozí výšku pro tisk hřbetních štítků.   Prosím použijte měrné "
+"jednotky, které jsou CSS validní, například \"1in\" nebo \"2.5cm\""
+
 # id::clfm.description__s
 #: 950.data.seed-values.sql:7344
 msgid "The item is a speech or collection of speeches."
@@ -9221,10 +9390,6 @@ msgstr "Tokelau "
 msgid "Allow a user to add/remove users to/from the \"Data Review\" group"
 msgstr ""
 "Povolit uživateli přidat/odebrat uživatele do/ze skupiny \"Kontrola dat\""
-
-#: 950.data.seed-values.sql:17129
-msgid "Item Print Label - Height for Right Label"
-msgstr "Šablona pro tisk štítků jednotek - Výška pro pravý štítek"
 
 #: 950.data.seed-values.sql:8484
 msgid "Pennsylvania "
@@ -9592,6 +9757,10 @@ msgstr ""
 "Maximální počet hledání Z39.50, které mohou probíhat v daném okamžiku při "
 "dávkovém hledání Z39.50"
 
+#: 950.data.seed-values.sql:19808
+msgid "Grid Config: admin.server.config.sms_carrier"
+msgstr "Nastavení tabulky: admin.server.nastavení.sms_operátor"
+
 #: 950.data.seed-values.sql:8358
 msgid "French Guiana "
 msgstr "Francouzská Guyana "
@@ -9653,6 +9822,10 @@ msgstr ""
 "Zobrazit pole druhé jméno ( second_given_name) na kartě registračních údajů "
 "čtenáře"
 
+#: 950.data.seed-values.sql:19496
+msgid "Grid Config: Vandelay Import Item Attributes"
+msgstr "Nastavení tabulky: Atributy jednotek importu pro Vandelay"
+
 #: 950.data.seed-values.sql:3700
 msgid ""
 "When this count is exceeded, a staff override is required to mark the item "
@@ -9709,7 +9882,7 @@ msgstr "Automaticky obejít povolené blokace rezervací (čtenáři)"
 msgid "Historical Hold Retention Age - Fulfilled"
 msgstr "Doba uchování historie rezervací - splněné"
 
-#: 950.data.seed-values.sql:19445
+#: 950.data.seed-values.sql:19532
 msgid "GUI: Juvenile account requires parent/guardian"
 msgstr ""
 "Grafické uživatelské rozhraní: Pro účet nezletilého čtenáře je vyžadován "
@@ -9869,6 +10042,10 @@ msgid ""
 msgstr ""
 "Definuje výchozí klasifikační schém pro nové signatury: 1 = Obecné; 2 = "
 "Deweyho třídění; 3 = LC (třídění Kongresové knihovny)"
+
+#: 950.data.seed-values.sql:19731
+msgid "Grid Config: admin.server.config.hard_due_date"
+msgstr "Nastavení tabulky: admin.server.nastavení.pevné_datum_vrácení"
 
 #: 950.data.seed-values.sql:4891
 msgid "Suggest ident_value field on patron registration"
@@ -10458,7 +10635,7 @@ msgstr "PayPal podpis"
 msgid "Brunei "
 msgstr "Brunej "
 
-#: 950.data.seed-values.sql:19301
+#: 950.data.seed-values.sql:19308
 msgid "Staff Catalog Default Search Library"
 msgstr "Výchozí knihovna pro vyhledávání ve služebním katalogu"
 
@@ -10545,6 +10722,11 @@ msgid ""
 msgstr ""
 "Pole Telefonní číslo  ve dne  - day_phone - bude požadováno na kartě "
 "registračních údajů čtenáře jako povinné"
+
+#: 950.data.seed-values.sql:19829
+msgid "Grid Config: admin.server.config.z3950_index_field_map"
+msgstr ""
+"Nastavení tabulky: admin.server.nastavení.mapa_indexovaných_polí_z39.50"
 
 #: 950.data.seed-values.sql:3376
 msgid ""
@@ -10668,7 +10850,7 @@ msgstr "Dzongkä"
 
 #: 950.data.seed-values.sql:1914
 msgid "APPLY_WORKSTATION_SETTING"
-msgstr ""
+msgstr "POUŽÍT_NASTAVENÍ_PRACOVNÍ_STANICE"
 
 #: 950.data.seed-values.sql:8614
 msgid "Detailed date"
@@ -10681,6 +10863,10 @@ msgstr "Cincinnati Bell"
 #: 950.data.seed-values.sql:19037
 msgid "Print Template Context: holds_for_bib"
 msgstr "Kontext tiskové šablony: rezervace_na_bib_záznam"
+
+#: 950.data.seed-values.sql:19773
+msgid "Grid Config: admin.server.config.metabib_class"
+msgstr "Nastavení tabulky: admin.server.nastavení.třída_metabib"
 
 #: 950.data.seed-values.sql:5362
 msgid "Use Lost and Paid copy status"
@@ -10715,14 +10901,6 @@ msgstr ""
 #: 950.data.seed-values.sql:8951
 msgid "Playing cards"
 msgstr "Hrací karty"
-
-#: 950.data.seed-values.sql:17103
-msgid ""
-"Set the default height for the leftmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-"Nastavení výchozí výšky levého tiskového štítku. Použijte prosím měrné "
-"jedntoky, které jsou platné v  CSS. Například \"1in\" nebo \"2,5cm\""
 
 #: 950.data.seed-values.sql:840
 msgid "Allow a user to create a new in-house-use "
@@ -11541,7 +11719,7 @@ msgstr "* již nelze použít"
 
 #: 950.data.seed-values.sql:17193
 msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr "Tiskový štítek exempláře - Šířka filtru pro zalomení signatur"
+msgstr "Tiskový štítek jednotky - šířka filtru pro zalomení signatur"
 
 #: 950.data.seed-values.sql:6905
 msgid "Coptic"
@@ -11743,6 +11921,10 @@ msgstr "Povolí uživateli zpracovat a ověřit URL"
 msgid "See Also From Tracing -- Topical Term"
 msgstr "Směrování odkazu viz též --věcné téma"
 
+#: 950.data.seed-values.sql:18883
+msgid "Collapse Bib Record Summary"
+msgstr "Sbalit přehled bibliografického záznamu"
+
 #: 950.data.seed-values.sql:9734
 msgid "A patron acquisition request has been marked Received."
 msgstr "U akvizičního požadavku čtenáře došlo ke změně na Přijato"
@@ -11823,6 +12005,10 @@ msgstr ""
 msgid "Caucasian (Other)"
 msgstr "Kavkazské jazyky (ostatní)"
 
+#: 950.data.seed-values.sql:19647
+msgid "Grid Config: admin.server.config.best_hold_order"
+msgstr "Nastavení tabulky: admin.server.nastavení.nejlepší_pořadí_rezervací"
+
 #: 950.data.seed-values.sql:12070
 msgid "Historical Hold Retention Age - Canceled (Patron in person)"
 msgstr "Doba uchování historie rezervací - zrušené (čtenářem)"
@@ -11856,6 +12042,15 @@ msgstr "Všechna hudba"
 #: 950.data.seed-values.sql:7336
 msgid "Dramas"
 msgstr "Divadelní hry"
+
+#: 950.data.seed-values.sql:17071
+msgid ""
+"Set the default left margin for the item print Spine Label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Zadejte výchozí levý okraj  pro tisk hřbetních štítků jednotky.  Prosím "
+"použijte měrné jednotky, které jsou CSS validní, například \"1in\" nebo "
+"\"2.5cm\""
 
 #: 950.data.seed-values.sql:18855
 msgid "Grid Config: serials.mfhd_grid"
@@ -11969,6 +12164,10 @@ msgstr "Pole pro výši pokuty, interval pokuty a maximum pokuty"
 msgid "Print Template Context: offline_checkin"
 msgstr "Kontext tiskové šablony: offline_vrácení"
 
+#: 950.data.seed-values.sql:19547
+msgid "Vandelay Import Form Templates"
+msgstr "Šablony formátů pro import pro Vandelay"
+
 #: 950.data.seed-values.sql:7362
 msgid "Subunit"
 msgstr "Dílčí jednotka"
@@ -12048,6 +12247,18 @@ msgstr "Faerské ostrovy "
 #: 950.data.seed-values.sql:4603
 msgid "Suggest active field on patron registration"
 msgstr "Navrhnout pole Aktivní na kartě registračních údajů čtenáře"
+
+#: 950.data.seed-values.sql:17065
+msgid "Item Print Label - Left Margin for Spine Label"
+msgstr "Tiskový štítek jednotky - levý okraj hřbetního štítku"
+
+#: 950.data.seed-values.sql:17151
+msgid ""
+"Set the default width for the item print Pocket Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+"Zadejte výchozí šířku pro tisk knižních lístků jednotky. Prosím použijte "
+"měrné jednotky, které jsou CSS validní, například \"1in\" nebo \"2.5cm\""
 
 #: 950.data.seed-values.sql:8007 950.data.seed-values.sql:8128
 #: 950.data.seed-values.sql:8147 950.data.seed-values.sql:8264
@@ -13021,6 +13232,11 @@ msgstr "Diskografie"
 msgid "Monograph/Item"
 msgstr "Monografie (i vícesvazkové)"
 
+#: 950.data.seed-values.sql:19866
+msgid "Allow others to use patron account (privacy waiver)"
+msgstr ""
+"Povolit ostatním používat účet čtenáře (zřeknutí se ochrany osobních údajů)_"
+
 #: 950.data.seed-values.sql:7167
 msgid "Pushto"
 msgstr "Pašto (pachto, paštština)"
@@ -13122,6 +13338,10 @@ msgstr "Statistiky"
 #: 950.data.seed-values.sql:8353
 msgid "England "
 msgstr "Anglie "
+
+#: 950.data.seed-values.sql:19433
+msgid "Grid Config: Vandelay Authority Queue"
+msgstr "Nastavení tabulky: Fronta autorit Vandelay"
 
 # id::clm.value__sal
 #: 950.data.seed-values.sql:7182
@@ -13251,10 +13471,6 @@ msgstr "Sukuma"
 msgid "Print Template: bills_historical"
 msgstr "Tisková šablona: historie_poplatků"
 
-#: 950.data.seed-values.sql:17145
-msgid "Item Print Label - Width for Right Label"
-msgstr "Tisková šablona štítků jednotek - Šírka pro pravý štítek"
-
 #: 950.data.seed-values.sql:2817
 msgid "Patron via OPAC"
 msgstr "Čtenář prostřednictvím OPACu"
@@ -13323,10 +13539,6 @@ msgstr "Záznam odkazující na systemizované záhlaví -- unifikovaný název"
 msgid "C Beyond"
 msgstr "C Beyond"
 
-#: 950.data.seed-values.sql:17097
-msgid "Item Print Label - Height for Left Label"
-msgstr "Tisková šablona štítků jednotek - Výška pro levý štítek"
-
 #: 950.data.seed-values.sql:1702
 msgid "Update Bibliographic Record Peer Type"
 msgstr "Upravit rovnocenný typ biliografického záznamu"
@@ -13365,6 +13577,10 @@ msgid "Merge records on best match by default during ACQ file upload"
 msgstr ""
 "Při nahrávání souboru v akvizici standardně sloučit záznamy při nejlepší "
 "shodě"
+
+#: 950.data.seed-values.sql:19675
+msgid "Grid Config: admin.server.config.rule_circ_duration"
+msgstr "Nastavení tabulky: admin.server.nastavení.pravidla_trvání_výpůjček"
 
 #: 950.data.seed-values.sql:14428
 msgid "Cellcom"
@@ -13442,6 +13658,11 @@ msgstr "často totéž jako login"
 #: 950.data.seed-values.sql:1805
 msgid "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
 msgstr "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
+
+#: 950.data.seed-values.sql:19605
+msgid "Grid Config: admin.server.asset.stat_cat_sip_fields"
+msgstr ""
+"Nastavení tabulky: server-admin.asset.pole_statistických_kategorií_pro_sip"
 
 #: 950.data.seed-values.sql:8029
 msgid "Suites"
@@ -13546,6 +13767,10 @@ msgstr "Výchozí zobrazení záznamu"
 msgid "User may reset a default entry in a patron statistical category"
 msgstr ""
 "Uživatel smí resetovat výchozí údaje ve čtenářské statistické kategorii"
+
+#: 950.data.seed-values.sql:19619
+msgid "Grid Config: admin.server.authority.browse_axis"
+msgstr "Nastavení tabulky: admin.server.autority.osa_procházení"
 
 #: 950.data.seed-values.sql:7127
 msgid "Nias"
@@ -13830,6 +14055,10 @@ msgstr "ADMIN_ACQ_DISTRIB_FORMULA"
 msgid "Grid Config: admin.serials.pattern_template"
 msgstr "Nastavení tabulky: admin.seriály.šablony_schémat"
 
+#: 950.data.seed-values.sql:19689
+msgid "Grid Config: admin.server.config.circ_matrix_weights"
+msgstr "Nastavení tabulky: admin.server.config.váhy_výpůjčních_matic"
+
 #: 950.data.seed-values.sql:153
 msgid "All Subjects"
 msgstr "Všechna témata"
@@ -13934,14 +14163,6 @@ msgstr ""
 #: 950.data.seed-values.sql:7652
 msgid "text"
 msgstr "text"
-
-#: 950.data.seed-values.sql:17151
-msgid ""
-"Set the default width for the rightmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-"Nastavení výchozí šířky pravého tiskového štítku. Použijte prosím měrné "
-"jednotky, kterou jsou platné v CSS. Například \"1in\" nebo \"2,5cm\""
 
 #: 950.data.seed-values.sql:1632
 msgid "UPDATE_USER_BTYPE"
@@ -14289,16 +14510,6 @@ msgstr "Kantáty"
 msgid "Show prefix field on patron registration"
 msgstr "Zobrazit pole Prefix na kartě registračních údajů čtenáře"
 
-#: 950.data.seed-values.sql:17087
-msgid ""
-"Set the default left margin for the rightmost item print label (or in other "
-"words, the desired space between the two labels). Please include a unit of "
-"measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-"Nastavení výchozího levého okraje pro pravý tiskový šítek exempláře (tj. "
-"požadovanou mezeru mezi dvěma štítky). Prosím, použijte měrné jednotky, "
-"které jsou platné v CSS, např. \"1in\" nebo \"2.5cm\""
-
 #: 950.data.seed-values.sql:18414
 msgid "Checkin: Auto-Print Holds and Transits"
 msgstr "Vracení: Automatický tisk rezervací a přeprav"
@@ -14347,6 +14558,10 @@ msgstr ""
 #: 950.data.seed-values.sql:18834
 msgid "Grid Config: circ.patron.archived_messages"
 msgstr "Nastavení tabulky: výpůjčka.čtenář.archivované_zprávy"
+
+#: 950.data.seed-values.sql:19717
+msgid "Grid Config: admin.server.config.floating_group"
+msgstr "Nastavení tabulky: admin.server.config.skupiny_pohyblivých_exemplářů"
 
 # id::clfm.description__m
 #: 950.data.seed-values.sql:7342
@@ -14555,6 +14770,10 @@ msgstr "Povolit upravit/znovu použít akviziční seznam"
 msgid "Finland "
 msgstr "Finsko "
 
+#: 950.data.seed-values.sql:19482
+msgid "Grid Config: Vandelay Merge Profiles"
+msgstr "Nastavení tabulky: Profily sloučení pro Vandelay"
+
 #: 950.data.seed-values.sql:818
 msgid "User may update an entry in a copy statistical category"
 msgstr "Uživatel smí upravit údaj statistické kategorie exempláře"
@@ -14736,6 +14955,10 @@ msgstr ""
 msgid "Malformed record cause Overlay failure"
 msgstr "Poškozený záznam způsobil chybu při přepsání"
 
+#: 950.data.seed-values.sql:19815
+msgid "Grid Config: admin.server.config.usr_activity_type"
+msgstr "Nastavení tabulky: admin.server.nastavení.typy_uživatelských_aktivit"
+
 #: 950.data.seed-values.sql:8232 950.data.seed-values.sql:8888
 #: 950.data.seed-values.sql:8901 950.data.seed-values.sql:8914
 #: 950.data.seed-values.sql:8927
@@ -14749,6 +14972,14 @@ msgstr "Povolit uživateli zobrazit výpůjčky jiného uživatele"
 #: 950.data.seed-values.sql:8480
 msgid "Oklahoma "
 msgstr "Oklahoma "
+
+#: 950.data.seed-values.sql:19854
+msgid ""
+"Display an entry point in the browser client for the experimental Angular "
+"staff catalog."
+msgstr ""
+"Zobrazit v prohlížeči klienta vstupní bod pro experimentální služební "
+"katalog v Angularu"
 
 #: 950.data.seed-values.sql:3898
 msgid "All selfcheck stations must use a workstation"
@@ -14789,6 +15020,10 @@ msgstr ""
 #: 950.data.seed-values.sql:7215
 msgid "Sogdian"
 msgstr "Soghdština"
+
+#: 950.data.seed-values.sql:19640
+msgid "Grid Config: admin.server.authority.thesaurus"
+msgstr "Nastavení tabulky: admin.server.autority.tezaurus"
 
 #: 950.data.seed-values.sql:1500
 msgid "ADMIN_BOOKING_RESERVATION_ATTR_MAP"
@@ -14838,15 +15073,6 @@ msgstr "Semitské jazyky (ostatní)"
 msgid "DELETE_IMPORT_ITEM_ATTR_DEF"
 msgstr "DELETE_IMPORT_ITEM_ATTR_DEF"
 
-#: 950.data.seed-values.sql:17071
-msgid ""
-"Set the default left margin for the leftmost item print Label. Please "
-"include a unit of measurement that is valid CSS. For example, \"1in\" or "
-"\"2.5cm\""
-msgstr ""
-"Nastavení výchozího levého kraje pro levý tiskový štítek. Prosím použijte "
-"měrné jednotky, které jsou validní v CSS. Např. \"1in\" nebo \"2.5cm\""
-
 #: 950.data.seed-values.sql:4379
 msgid ""
 "The OPAC should not display payments by patrons that are older than any "
@@ -14865,7 +15091,7 @@ msgstr "kartridž počítačového čipu"
 
 #: 950.data.seed-values.sql:17161
 msgid "Item Print Label - Inline CSS"
-msgstr "Tiskové štítky jednotek - inline CSS"
+msgstr "Tiskové štítky jednotky - inline CSS"
 
 #: 950.data.seed-values.sql:7760
 msgid "audio"
@@ -15159,9 +15385,9 @@ msgstr ""
 "načteny jako jednotky, které Mají chybějící kusy.  Pokud toto nastavení "
 "chybí, bude použit status Poškozené"
 
-#: 950.data.seed-values.sql:18883
-msgid "Collapse Bib Record Summary"
-msgstr "Sbalit přehled bibliografického záznamu"
+#: 950.data.seed-values.sql:17081
+msgid "Item Print Label - Left Margin for Pocket Label"
+msgstr "Tiskový štítek jednotky - levý okraj knižního štítku"
 
 #: 950.data.seed-values.sql:1056
 msgid "Allow a user to mark an item status as 'checked out'"
@@ -15221,14 +15447,6 @@ msgstr ""
 #: 950.data.seed-values.sql:2815
 msgid "Patron in person"
 msgstr "Čtenář osobně"
-
-#: 950.data.seed-values.sql:17135
-msgid ""
-"Set the default height for the rightmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-"Nastavení výchozí výšky pro tisk pravého štítku jednotky. Prosím, použijte "
-"měrné jednotky, které jsou validní v CSS. Napříkla \"1in\" nebo  \"2.5cm\""
 
 #: 950.data.seed-values.sql:4111
 msgid "Enable PayflowPro payments"
@@ -15340,7 +15558,7 @@ msgstr "Doba trvání výpůjčky která spustí znovuvyvolání"
 
 #: 950.data.seed-values.sql:8189
 msgid "Gall"
-msgstr ""
+msgstr "Gallovo zobrazení"
 
 #: 950.data.seed-values.sql:7989
 msgid "Divertimentos, serenades, cassations, divertissements, and notturni"
@@ -15417,7 +15635,11 @@ msgstr "Výchozí status exempláře (běžný)"
 msgid "Musical Sound Recording (Unknown Format)"
 msgstr "Hudební zvukový záznam (neznámý formát)"
 
-#: 950.data.seed-values.sql:19438
+#: 950.data.seed-values.sql:19626
+msgid "Grid Config: admin.server.authority.control_set"
+msgstr "Nastavení tabulky: admin.server.autority.kontrolní_set"
+
+#: 950.data.seed-values.sql:19525
 msgid ""
 "The guardian field will be suggested on the patron registration screen. "
 "Suggesting a field makes it appear when suggested fields are shown. If the "
@@ -15586,9 +15808,9 @@ msgstr ""
 "Zobrazit navrhovaná pole. Pokud je pole zobrazeno nebo je povinné, toto "
 "nastavení bude ignorováno."
 
-#: 950.data.seed-values.sql:17081
-msgid "Item Print Label - Left Margin for Right Label"
-msgstr "Tiskové štítky jednotek - Levý okraj pro pravý štítek"
+#: 950.data.seed-values.sql:18512
+msgid "Holdings View Show Empty Orgs"
+msgstr "Zobrazení jednotek ukazuje prázdné knihovny"
 
 #: 950.data.seed-values.sql:798
 msgid "Allow a user to view other users' permission groups"
@@ -15617,6 +15839,10 @@ msgstr "Severní Irsko "
 #: 950.data.seed-values.sql:7379
 msgid "M-II"
 msgstr "M-II"
+
+#: 950.data.seed-values.sql:19296
+msgid "Grid Config: circ.patron.billhistory_xacts"
+msgstr "Nastavení tabulky: výpůjčky.čtenář.historie_poplatků"
 
 #: 950.data.seed-values.sql:4813
 msgid "The email field will be required on the patron registration screen."
@@ -15807,7 +16033,7 @@ msgstr "Kiribati "
 msgid "Flamenco"
 msgstr "Flamenco"
 
-#: 950.data.seed-values.sql:19450
+#: 950.data.seed-values.sql:19537
 msgid ""
 "Require a value for the parent/guardian field in the patron editor for "
 "patrons marked as juvenile"
@@ -15993,5 +16219,72 @@ msgstr ""
 #~ msgid "Allows a user to abort a transit on a copy with status of LOST"
 #~ msgstr "Povolit uživateli zrušit přepravu exempláře se statusem \"ztraceno\""
 
+#~ msgid "Item Print Label - Left Margin for Left Label"
+#~ msgstr "Tiskový štítek jednotky - Levý okraj pro levý štítek"
+
+#~ msgid "Item Print Label - Width for Left Label"
+#~ msgstr "Tiskový štítek jednotky - Šířka pro levý štítek"
+
+#~ msgid ""
+#~ "Set the default height for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí výšky levého tiskového štítku. Použijte prosím měrné "
+#~ "jedntoky, které jsou platné v  CSS. Například \"1in\" nebo \"2,5cm\""
+
+#~ msgid "Item Print Label - Height for Right Label"
+#~ msgstr "Šablona pro tisk štítků jednotek - Výška pro pravý štítek"
+
+#~ msgid ""
+#~ "Set the default left margin for the rightmost item print label (or in other "
+#~ "words, the desired space between the two labels). Please include a unit of "
+#~ "measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozího levého okraje pro pravý tiskový šítek exempláře (tj. "
+#~ "požadovanou mezeru mezi dvěma štítky). Prosím, použijte měrné jednotky, "
+#~ "které jsou platné v CSS, např. \"1in\" nebo \"2.5cm\""
+
+#~ msgid ""
+#~ "Set the default width for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí šířky pravého tiskového štítku. Použijte prosím měrné "
+#~ "jednotky, kterou jsou platné v CSS. Například \"1in\" nebo \"2,5cm\""
+
+#~ msgid "Item Print Label - Height for Left Label"
+#~ msgstr "Tisková šablona štítků jednotek - Výška pro levý štítek"
+
+#~ msgid "Item Print Label - Width for Right Label"
+#~ msgstr "Tisková šablona štítků jednotek - Šírka pro pravý štítek"
+
+#~ msgid ""
+#~ "Set the default left margin for the leftmost item print Label. Please "
+#~ "include a unit of measurement that is valid CSS. For example, \"1in\" or "
+#~ "\"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozího levého kraje pro levý tiskový štítek. Prosím použijte "
+#~ "měrné jednotky, které jsou validní v CSS. Např. \"1in\" nebo \"2.5cm\""
+
+#~ msgid ""
+#~ "Set the default height for the rightmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí výšky pro tisk pravého štítku jednotky. Prosím, použijte "
+#~ "měrné jednotky, které jsou validní v CSS. Napříkla \"1in\" nebo  \"2.5cm\""
+
+#~ msgid "Item Print Label - Left Margin for Right Label"
+#~ msgstr "Tiskové štítky jednotek - Levý okraj pro pravý štítek"
+
 #~ msgid "Canceled holds display count"
 #~ msgstr "Počet zobrazených zrušených rezervací"
+
+#~ msgid ""
+#~ "Set the default width for the leftmost item print label. Please include a "
+#~ "unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#~ msgstr ""
+#~ "Nastavení výchozí šířky pro tiskový štítek jednotky nejvíce vlevo. Prosím, "
+#~ "použit měrné jednotky, které jsou platné pro CSS. Např. \"1in\"nebor "
+#~ "\"2.5cm\""
+
+#~ msgid "Physical Descrption"
+#~ msgstr "Fyzický popis"

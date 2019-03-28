@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2018-12-14 21:52-0400\n"
+"POT-Creation-Date: 2019-02-28 16:11-0400\n"
 "PO-Revision-Date: 2017-06-22 10:04+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:33+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
+"X-Launchpad-Export-Date: 2019-03-09 05:34+0000\n"
+"X-Generator: Launchpad (build 18894)\n"
 
 #: 950.data.seed-values.sql:8354
 msgid "Estonia "
@@ -78,6 +78,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:15712
 msgid "Upload Merge on Single Match by Default"
+msgstr ""
+
+#: 950.data.seed-values.sql:19794
+msgid "Grid Config: admin.server.permission.perm_list"
 msgstr ""
 
 #: 950.data.seed-values.sql:8116
@@ -166,7 +170,7 @@ msgstr ""
 msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr ""
 
-#: 950.data.seed-values.sql:19308
+#: 950.data.seed-values.sql:19315
 msgid "Staff Catalog Preferred Library"
 msgstr ""
 
@@ -212,6 +216,10 @@ msgid ""
 "\"true\" to prohibit negative balances at all times or, when used in "
 "conjunction with an interval setting, to prohibit negative balances after a "
 "set period of time."
+msgstr ""
+
+#: 950.data.seed-values.sql:19612
+msgid "Grid Config: admin.server.actor.stat_cat_sip_fields"
 msgstr ""
 
 #: 950.data.seed-values.sql:665
@@ -260,10 +268,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:526
 msgid "Available"
-msgstr ""
-
-#: 950.data.seed-values.sql:17113
-msgid "Item Print Label - Width for Left Label"
 msgstr ""
 
 #: 950.data.seed-values.sql:483
@@ -418,6 +422,10 @@ msgid ""
 "the org unit"
 msgstr ""
 
+#: 950.data.seed-values.sql:19447
+msgid "Grid Config: Vandelay Match Quality Metrics"
+msgstr ""
+
 #: 950.data.seed-values.sql:7144
 msgid "Oriya"
 msgstr ""
@@ -553,7 +561,7 @@ msgstr ""
 msgid "Apache languages"
 msgstr ""
 
-#: 950.data.seed-values.sql:19420
+#: 950.data.seed-values.sql:19507
 msgid "GUI: Show guardian field on patron registration"
 msgstr ""
 
@@ -635,6 +643,10 @@ msgstr ""
 #: 950.data.seed-values.sql:752
 msgid ""
 "Allow a user to continue to renew an item even if it is required for a hold"
+msgstr ""
+
+#: 950.data.seed-values.sql:19752
+msgid "Grid Config: admin.server.config.coded_value_map"
 msgstr ""
 
 #: 950.data.seed-values.sql:4678
@@ -926,6 +938,10 @@ msgid ""
 "\"MMM d, yyyy\" for \"Apr 26, 2010\")"
 msgstr ""
 
+#: 950.data.seed-values.sql:17145
+msgid "Item Print Label - Width for Pocket Label"
+msgstr ""
+
 #: 950.data.seed-values.sql:7136
 msgid "Nubian languages"
 msgstr ""
@@ -984,10 +1000,6 @@ msgid ""
 "When the amount remaining in the fund, including spent money and "
 "encumbrances, goes below this percentage, attempts to spend from the fund "
 "will result in a warning to the staff."
-msgstr ""
-
-#: 950.data.seed-values.sql:17065
-msgid "Item Print Label - Left Margin for Left Label"
 msgstr ""
 
 #: 950.data.seed-values.sql:18603
@@ -1102,6 +1114,12 @@ msgstr ""
 msgid "This acquisition request has been fulfilled."
 msgstr ""
 
+#: 950.data.seed-values.sql:17119
+msgid ""
+"Set the default width for the item print Spine Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:12823
 msgid ""
 "CSV output has been requested for Import Items from records in an Importer "
@@ -1210,6 +1228,10 @@ msgstr ""
 msgid "Allow a user to create a new closed date for a location"
 msgstr ""
 
+#: 950.data.seed-values.sql:19682
+msgid "Grid Config: admin.server.config.circ_limit_group"
+msgstr ""
+
 #: 950.data.seed-values.sql:7262
 msgid "Turkmen"
 msgstr ""
@@ -1235,6 +1257,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18729
 msgid "Grid Config: cat.holdings"
+msgstr ""
+
+#: 950.data.seed-values.sql:19668
+msgid "Grid Config: admin.server.asset.call_number_suffix"
 msgstr ""
 
 #: 950.data.seed-values.sql:8505
@@ -1338,6 +1364,10 @@ msgstr ""
 msgid "Zimbabwe "
 msgstr ""
 
+#: 950.data.seed-values.sql:19787
+msgid "Grid Config: admin.server.config.metabib_field"
+msgstr ""
+
 #: 950.data.seed-values.sql:16068
 msgid "Long-Overdue Max Return Interval"
 msgstr ""
@@ -1388,6 +1418,10 @@ msgstr ""
 msgid ""
 "Basic token for client authentication with OverDrive API (supplied by "
 "OverDrive)"
+msgstr ""
+
+#: 950.data.seed-values.sql:19454
+msgid "Grid Config: Vandelay Queue Import Items"
 msgstr ""
 
 #: 950.data.seed-values.sql:7288
@@ -1480,6 +1514,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1944
 msgid "Can do anything at the Branch level"
+msgstr ""
+
+#: 950.data.seed-values.sql:17129
+msgid "Item Print Label - Height for Pocket Label"
 msgstr ""
 
 #: 950.data.seed-values.sql:19023
@@ -1862,8 +1900,16 @@ msgstr ""
 msgid "Speeches"
 msgstr ""
 
+#: 950.data.seed-values.sql:19426
+msgid "Grid Config: Vandelay Bib Queue"
+msgstr ""
+
 #: 950.data.seed-values.sql:13423
 msgid "See Also From Tracing -- Meeting Name"
+msgstr ""
+
+#: 950.data.seed-values.sql:19468
+msgid "Grid Config: Vandelay Bib Items"
 msgstr ""
 
 #: 950.data.seed-values.sql:5152
@@ -2047,6 +2093,10 @@ msgstr ""
 msgid "Indonesian"
 msgstr ""
 
+#: 950.data.seed-values.sql:19822
+msgid "Grid Config: admin.server.config.weight_assoc"
+msgstr ""
+
 #: 950.data.seed-values.sql:726
 msgid "Allow a user to update another user's hold"
 msgstr ""
@@ -2113,6 +2163,10 @@ msgstr ""
 msgid "Tatar"
 msgstr ""
 
+#: 950.data.seed-values.sql:19849
+msgid "GUI: Enable Experimental Angular Staff Catalog"
+msgstr ""
+
 #: 950.data.seed-values.sql:992
 msgid "Allow a user to delete an item out of another user's container"
 msgstr ""
@@ -2163,6 +2217,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8397
 msgid "Indonesia "
+msgstr ""
+
+#: 950.data.seed-values.sql:19780
+msgid "Grid Config: admin.server.config.metabib_field_ts_map"
 msgstr ""
 
 #: 950.data.seed-values.sql:7232
@@ -2874,14 +2932,12 @@ msgstr ""
 msgid "Maltese"
 msgstr ""
 
-#: 950.data.seed-values.sql:7016
-msgid "Inupiaq"
+#: 950.data.seed-values.sql:19745
+msgid "Grid Config: admin.server.vandelay.match_set"
 msgstr ""
 
-#: 950.data.seed-values.sql:17119
-msgid ""
-"Set the default width for the leftmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+#: 950.data.seed-values.sql:7016
+msgid "Inupiaq"
 msgstr ""
 
 #: 950.data.seed-values.sql:4334
@@ -3229,6 +3285,10 @@ msgid ""
 "Allow a user to override the circ.holds.hold_has_copy_at.block setting"
 msgstr ""
 
+#: 950.data.seed-values.sql:19710
+msgid "Grid Config: admin.server.config.copy_status"
+msgstr ""
+
 #: 950.data.seed-values.sql:3144 950.data.seed-values.sql:3147
 msgid "Default Item Price"
 msgstr ""
@@ -3274,6 +3334,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
+msgstr ""
+
+#: 950.data.seed-values.sql:19489
+msgid "Grid Config: Vandelay Bib Record Attributes"
 msgstr ""
 
 #: 950.data.seed-values.sql:5134
@@ -3540,6 +3604,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1286
 msgid "DELETE_AUTHORITY_IMPORT_IMPORT_FIELD_DEF"
+msgstr ""
+
+#: 950.data.seed-values.sql:19461
+msgid "Grid Config: Vandelay Bib Queue List"
 msgstr ""
 
 #: 950.data.seed-values.sql:7335
@@ -3956,6 +4024,10 @@ msgstr ""
 msgid "user_request.update"
 msgstr ""
 
+#: 950.data.seed-values.sql:19696
+msgid "Grid Config: admin.server.config.rule_max_fine"
+msgstr ""
+
 #: 950.data.seed-values.sql:7856
 msgid "microscope slide"
 msgstr ""
@@ -4184,6 +4256,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7988
 msgid "Dance forms"
+msgstr ""
+
+#: 950.data.seed-values.sql:19724
+msgid "Grid Config: admin.server.config.global_flag"
 msgstr ""
 
 #: 950.data.seed-values.sql:8308
@@ -4608,6 +4684,10 @@ msgstr ""
 msgid "UPDATE_COPY_NOTE"
 msgstr ""
 
+#: 950.data.seed-values.sql:17113
+msgid "Item Print Label - Width for Spine Label"
+msgstr ""
+
 #: 950.data.seed-values.sql:6901
 msgid "Church Slavic"
 msgstr ""
@@ -4719,6 +4799,10 @@ msgstr ""
 msgid "Local Library System"
 msgstr ""
 
+#: 950.data.seed-values.sql:19836
+msgid "Grid Config: admin.server.config.z3950_source"
+msgstr ""
+
 #: 950.data.seed-values.sql:7048
 msgid "Korean"
 msgstr ""
@@ -4796,6 +4880,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1254
 msgid "UPDATE_TRANSIT"
+msgstr ""
+
+#: 950.data.seed-values.sql:19654
+msgid "Grid Config: admin.server.config.billing_type"
 msgstr ""
 
 #: 950.data.seed-values.sql:11970
@@ -5479,7 +5567,7 @@ msgstr ""
 msgid "Allow a user to record payments in the Billing Interface"
 msgstr ""
 
-#: 950.data.seed-values.sql:19433
+#: 950.data.seed-values.sql:19520
 msgid "GUI: Suggest guardian field on patron registration"
 msgstr ""
 
@@ -5815,6 +5903,10 @@ msgstr ""
 msgid "ADMIN_USER_SETTING_TYPE"
 msgstr ""
 
+#: 950.data.seed-values.sql:19759
+msgid "Grid Config: admin.server.vandelay.import_bib_trash_group"
+msgstr ""
+
 #: 950.data.seed-values.sql:18687
 msgid "Grid Config: cat.bucket.copy.pending"
 msgstr ""
@@ -5827,7 +5919,7 @@ msgstr ""
 msgid "Chuvash"
 msgstr ""
 
-#: 950.data.seed-values.sql:19425
+#: 950.data.seed-values.sql:19512
 msgid ""
 "The guardian field will be shown on the patron registration screen. Showing "
 "a field makes it appear with required fields even when not required. If the "
@@ -5852,6 +5944,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8196
 msgid "Transverse Mercator"
+msgstr ""
+
+#: 950.data.seed-values.sql:19475
+msgid "Grid Config: Vandelay Authority Queue List"
 msgstr ""
 
 #: 950.data.seed-values.sql:8464
@@ -5903,6 +5999,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1116
 msgid "CREATE_CIRC_DURATION"
+msgstr ""
+
+#: 950.data.seed-values.sql:19766
+msgid "Grid Config: admin.server.config.record_attr_definition"
 msgstr ""
 
 #: 950.data.seed-values.sql:13950
@@ -6086,6 +6186,12 @@ msgstr ""
 msgid "Siksika"
 msgstr ""
 
+#: 950.data.seed-values.sql:17135
+msgid ""
+"Set the default height for the item print Pocket Label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:4442
 msgid ""
 "Full URL path to a Javascript File to be loaded when printing. Should "
@@ -6101,6 +6207,10 @@ msgstr ""
 #: 950.data.seed-values.sql:7491 950.data.seed-values.sql:7492
 #: 950.data.seed-values.sql:7579 950.data.seed-values.sql:7580
 msgid "Map"
+msgstr ""
+
+#: 950.data.seed-values.sql:19801
+msgid "Grid Config: admin.server.config.remote_account"
 msgstr ""
 
 #: 950.data.seed-values.sql:4114
@@ -6473,6 +6583,10 @@ msgstr ""
 msgid "Sign languages"
 msgstr ""
 
+#: 950.data.seed-values.sql:19598
+msgid "Grid Config: admin.server.config.rule_age_hold_protect"
+msgstr ""
+
 #: 950.data.seed-values.sql:6896
 msgid "Mari"
 msgstr ""
@@ -6536,10 +6650,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8506
 msgid "Romania "
-msgstr ""
-
-#: 950.data.seed-values.sql:18512
-msgid "Holdings View Show Empty Orgs"
 msgstr ""
 
 #: 950.data.seed-values.sql:6914
@@ -6783,6 +6893,10 @@ msgstr ""
 msgid "Upload Merge on Best Match by Default"
 msgstr ""
 
+#: 950.data.seed-values.sql:19738
+msgid "Grid Config: admin.server.config.hold_matrix_weights"
+msgstr ""
+
 #: 950.data.seed-values.sql:13408
 msgid "Heading -- Genre/Form Term"
 msgstr ""
@@ -6831,6 +6945,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1424
 msgid "Allow a user to create trigger hooks"
+msgstr ""
+
+#: 950.data.seed-values.sql:19661
+msgid "Grid Config: admin.server.asset.call_number_prefix"
 msgstr ""
 
 #: 950.data.seed-values.sql:5646
@@ -6992,6 +7110,13 @@ msgstr ""
 msgid "Grid Config: cat.catalog.wide_holds"
 msgstr ""
 
+#: 950.data.seed-values.sql:19869
+msgid ""
+"Add a note to a user account indicating that specified people are allowed to "
+"place holds, pick up holds, check out items, or view borrowing history for "
+"that user account"
+msgstr ""
+
 #: 950.data.seed-values.sql:8110 950.data.seed-values.sql:8744
 #: 950.data.seed-values.sql:8774 950.data.seed-values.sql:8804
 #: 950.data.seed-values.sql:8834
@@ -7017,6 +7142,10 @@ msgstr ""
 msgid ""
 "Courier Code for the library.  Available in transit slip templates as the "
 "%courier_code% macro."
+msgstr ""
+
+#: 950.data.seed-values.sql:19703
+msgid "Grid Config: admin.server.config.circ_modifier"
 msgstr ""
 
 #: 950.data.seed-values.sql:7189
@@ -7392,8 +7521,16 @@ msgid ""
 "The evening_phone field will be required on the patron registration screen."
 msgstr ""
 
+#: 950.data.seed-values.sql:17097
+msgid "Item Print Label - Height for Spine Label"
+msgstr ""
+
 #: 950.data.seed-values.sql:856
 msgid "Allow a user to view which users have checked out a given copy"
+msgstr ""
+
+#: 950.data.seed-values.sql:19633
+msgid "Grid Config: admin.server.authority.heading_field"
 msgstr ""
 
 #: 950.data.seed-values.sql:8188
@@ -7461,6 +7598,13 @@ msgstr ""
 
 #: 950.data.seed-values.sql:4123
 msgid "Often the same thing as the PayPal manager login"
+msgstr ""
+
+#: 950.data.seed-values.sql:17087
+msgid ""
+"Set the default left margin for the item print Pocket Label (or in other "
+"words, the desired space between the two labels). Please include a unit of "
+"measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:1356
@@ -7858,6 +8002,10 @@ msgstr ""
 msgid "Chechen"
 msgstr ""
 
+#: 950.data.seed-values.sql:19440
+msgid "Grid Config: Vandelay Match Sets"
+msgstr ""
+
 #: 950.data.seed-values.sql:7184
 msgid "Sanskrit"
 msgstr ""
@@ -8165,6 +8313,12 @@ msgstr ""
 msgid "Apply this prefix to any auto-generated item call numbers"
 msgstr ""
 
+#: 950.data.seed-values.sql:17103
+msgid ""
+"Set the default height for the item print Spine Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
+msgstr ""
+
 #: 950.data.seed-values.sql:7344
 msgid "The item is a speech or collection of speeches."
 msgstr ""
@@ -8331,10 +8485,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1815
 msgid "Allow a user to add/remove users to/from the \"Data Review\" group"
-msgstr ""
-
-#: 950.data.seed-values.sql:17129
-msgid "Item Print Label - Height for Right Label"
 msgstr ""
 
 #: 950.data.seed-values.sql:8484
@@ -8664,6 +8814,10 @@ msgid ""
 "time when performing batch Z39.50 searches"
 msgstr ""
 
+#: 950.data.seed-values.sql:19808
+msgid "Grid Config: admin.server.config.sms_carrier"
+msgstr ""
+
 #: 950.data.seed-values.sql:8358
 msgid "French Guiana "
 msgstr ""
@@ -8714,6 +8868,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:5026
 msgid "Show second_given_name field on patron registration"
+msgstr ""
+
+#: 950.data.seed-values.sql:19496
+msgid "Grid Config: Vandelay Import Item Attributes"
 msgstr ""
 
 #: 950.data.seed-values.sql:3700
@@ -8768,7 +8926,7 @@ msgstr ""
 msgid "Historical Hold Retention Age - Fulfilled"
 msgstr ""
 
-#: 950.data.seed-values.sql:19445
+#: 950.data.seed-values.sql:19532
 msgid "GUI: Juvenile account requires parent/guardian"
 msgstr ""
 
@@ -8916,6 +9074,10 @@ msgstr ""
 msgid ""
 "Defines the default classification scheme for new call numbers: 1 = Generic; "
 "2 = Dewey; 3 = LC"
+msgstr ""
+
+#: 950.data.seed-values.sql:19731
+msgid "Grid Config: admin.server.config.hard_due_date"
 msgstr ""
 
 #: 950.data.seed-values.sql:4891
@@ -9455,7 +9617,7 @@ msgstr ""
 msgid "Brunei "
 msgstr ""
 
-#: 950.data.seed-values.sql:19301
+#: 950.data.seed-values.sql:19308
 msgid "Staff Catalog Default Search Library"
 msgstr ""
 
@@ -9524,6 +9686,10 @@ msgstr ""
 #: 950.data.seed-values.sql:4732
 msgid ""
 "The day_phone field will be required on the patron registration screen."
+msgstr ""
+
+#: 950.data.seed-values.sql:19829
+msgid "Grid Config: admin.server.config.z3950_index_field_map"
 msgstr ""
 
 #: 950.data.seed-values.sql:3376
@@ -9650,6 +9816,10 @@ msgstr ""
 msgid "Print Template Context: holds_for_bib"
 msgstr ""
 
+#: 950.data.seed-values.sql:19773
+msgid "Grid Config: admin.server.config.metabib_class"
+msgstr ""
+
 #: 950.data.seed-values.sql:5362
 msgid "Use Lost and Paid copy status"
 msgstr ""
@@ -9679,12 +9849,6 @@ msgstr ""
 #: 950.data.seed-values.sql:8247 950.data.seed-values.sql:8941
 #: 950.data.seed-values.sql:8951
 msgid "Playing cards"
-msgstr ""
-
-#: 950.data.seed-values.sql:17103
-msgid ""
-"Set the default height for the leftmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:840
@@ -10610,6 +10774,10 @@ msgstr ""
 msgid "See Also From Tracing -- Topical Term"
 msgstr ""
 
+#: 950.data.seed-values.sql:18883
+msgid "Collapse Bib Record Summary"
+msgstr ""
+
 #: 950.data.seed-values.sql:9734
 msgid "A patron acquisition request has been marked Received."
 msgstr ""
@@ -10684,6 +10852,10 @@ msgstr ""
 msgid "Caucasian (Other)"
 msgstr ""
 
+#: 950.data.seed-values.sql:19647
+msgid "Grid Config: admin.server.config.best_hold_order"
+msgstr ""
+
 #: 950.data.seed-values.sql:12070
 msgid "Historical Hold Retention Age - Canceled (Patron in person)"
 msgstr ""
@@ -10713,6 +10885,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7336
 msgid "Dramas"
+msgstr ""
+
+#: 950.data.seed-values.sql:17071
+msgid ""
+"Set the default left margin for the item print Spine Label. Please include a "
+"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:18855
@@ -10822,6 +11000,10 @@ msgstr ""
 msgid "Print Template Context: offline_checkin"
 msgstr ""
 
+#: 950.data.seed-values.sql:19547
+msgid "Vandelay Import Form Templates"
+msgstr ""
+
 #: 950.data.seed-values.sql:7362
 msgid "Subunit"
 msgstr ""
@@ -10894,6 +11076,16 @@ msgstr ""
 
 #: 950.data.seed-values.sql:4603
 msgid "Suggest active field on patron registration"
+msgstr ""
+
+#: 950.data.seed-values.sql:17065
+msgid "Item Print Label - Left Margin for Spine Label"
+msgstr ""
+
+#: 950.data.seed-values.sql:17151
+msgid ""
+"Set the default width for the item print Pocket Label. Please include a unit "
+"of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:8007 950.data.seed-values.sql:8128
@@ -11764,6 +11956,10 @@ msgstr ""
 msgid "Monograph/Item"
 msgstr ""
 
+#: 950.data.seed-values.sql:19866
+msgid "Allow others to use patron account (privacy waiver)"
+msgstr ""
+
 #: 950.data.seed-values.sql:7167
 msgid "Pushto"
 msgstr ""
@@ -11857,6 +12053,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8353
 msgid "England "
+msgstr ""
+
+#: 950.data.seed-values.sql:19433
+msgid "Grid Config: Vandelay Authority Queue"
 msgstr ""
 
 #: 950.data.seed-values.sql:7182
@@ -11975,10 +12175,6 @@ msgstr ""
 msgid "Print Template: bills_historical"
 msgstr ""
 
-#: 950.data.seed-values.sql:17145
-msgid "Item Print Label - Width for Right Label"
-msgstr ""
-
 #: 950.data.seed-values.sql:2817
 msgid "Patron via OPAC"
 msgstr ""
@@ -12041,10 +12237,6 @@ msgstr ""
 msgid "C Beyond"
 msgstr ""
 
-#: 950.data.seed-values.sql:17097
-msgid "Item Print Label - Height for Left Label"
-msgstr ""
-
 #: 950.data.seed-values.sql:1702
 msgid "Update Bibliographic Record Peer Type"
 msgstr ""
@@ -12078,6 +12270,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:15701
 msgid "Merge records on best match by default during ACQ file upload"
+msgstr ""
+
+#: 950.data.seed-values.sql:19675
+msgid "Grid Config: admin.server.config.rule_circ_duration"
 msgstr ""
 
 #: 950.data.seed-values.sql:14428
@@ -12148,6 +12344,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1805
 msgid "UPDATE_ORG_UNIT_SETTING.circ.min_item_price"
+msgstr ""
+
+#: 950.data.seed-values.sql:19605
+msgid "Grid Config: admin.server.asset.stat_cat_sip_fields"
 msgstr ""
 
 #: 950.data.seed-values.sql:8029
@@ -12250,6 +12450,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1750
 msgid "User may reset a default entry in a patron statistical category"
+msgstr ""
+
+#: 950.data.seed-values.sql:19619
+msgid "Grid Config: admin.server.authority.browse_axis"
 msgstr ""
 
 #: 950.data.seed-values.sql:7127
@@ -12508,6 +12712,10 @@ msgstr ""
 msgid "Grid Config: admin.serials.pattern_template"
 msgstr ""
 
+#: 950.data.seed-values.sql:19689
+msgid "Grid Config: admin.server.config.circ_matrix_weights"
+msgstr ""
+
 #: 950.data.seed-values.sql:153
 msgid "All Subjects"
 msgstr ""
@@ -12603,12 +12811,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7652
 msgid "text"
-msgstr ""
-
-#: 950.data.seed-values.sql:17151
-msgid ""
-"Set the default width for the rightmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:1632
@@ -12933,13 +13135,6 @@ msgstr ""
 msgid "Show prefix field on patron registration"
 msgstr ""
 
-#: 950.data.seed-values.sql:17087
-msgid ""
-"Set the default left margin for the rightmost item print label (or in other "
-"words, the desired space between the two labels). Please include a unit of "
-"measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
-msgstr ""
-
 #: 950.data.seed-values.sql:18414
 msgid "Checkin: Auto-Print Holds and Transits"
 msgstr ""
@@ -12984,6 +13179,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18834
 msgid "Grid Config: circ.patron.archived_messages"
+msgstr ""
+
+#: 950.data.seed-values.sql:19717
+msgid "Grid Config: admin.server.config.floating_group"
 msgstr ""
 
 #: 950.data.seed-values.sql:7342
@@ -13186,6 +13385,10 @@ msgstr ""
 msgid "Finland "
 msgstr ""
 
+#: 950.data.seed-values.sql:19482
+msgid "Grid Config: Vandelay Merge Profiles"
+msgstr ""
+
 #: 950.data.seed-values.sql:818
 msgid "User may update an entry in a copy statistical category"
 msgstr ""
@@ -13354,6 +13557,10 @@ msgstr ""
 msgid "Malformed record cause Overlay failure"
 msgstr ""
 
+#: 950.data.seed-values.sql:19815
+msgid "Grid Config: admin.server.config.usr_activity_type"
+msgstr ""
+
 #: 950.data.seed-values.sql:8232 950.data.seed-values.sql:8888
 #: 950.data.seed-values.sql:8901 950.data.seed-values.sql:8914
 #: 950.data.seed-values.sql:8927
@@ -13366,6 +13573,12 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8480
 msgid "Oklahoma "
+msgstr ""
+
+#: 950.data.seed-values.sql:19854
+msgid ""
+"Display an entry point in the browser client for the experimental Angular "
+"staff catalog."
 msgstr ""
 
 #: 950.data.seed-values.sql:3898
@@ -13395,6 +13608,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7215
 msgid "Sogdian"
+msgstr ""
+
+#: 950.data.seed-values.sql:19640
+msgid "Grid Config: admin.server.authority.thesaurus"
 msgstr ""
 
 #: 950.data.seed-values.sql:1500
@@ -13443,13 +13660,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:1332
 msgid "DELETE_IMPORT_ITEM_ATTR_DEF"
-msgstr ""
-
-#: 950.data.seed-values.sql:17071
-msgid ""
-"Set the default left margin for the leftmost item print Label. Please "
-"include a unit of measurement that is valid CSS. For example, \"1in\" or "
-"\"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:4379
@@ -13736,8 +13946,8 @@ msgid ""
 "is used."
 msgstr ""
 
-#: 950.data.seed-values.sql:18883
-msgid "Collapse Bib Record Summary"
+#: 950.data.seed-values.sql:17081
+msgid "Item Print Label - Left Margin for Pocket Label"
 msgstr ""
 
 #: 950.data.seed-values.sql:1056
@@ -13792,12 +14002,6 @@ msgstr ""
 
 #: 950.data.seed-values.sql:2815
 msgid "Patron in person"
-msgstr ""
-
-#: 950.data.seed-values.sql:17135
-msgid ""
-"Set the default height for the rightmost item print label. Please include a "
-"unit of measurement that is valid CSS. For example, \"1in\" or \"2.5cm\""
 msgstr ""
 
 #: 950.data.seed-values.sql:4111
@@ -13972,7 +14176,11 @@ msgstr ""
 msgid "Musical Sound Recording (Unknown Format)"
 msgstr ""
 
-#: 950.data.seed-values.sql:19438
+#: 950.data.seed-values.sql:19626
+msgid "Grid Config: admin.server.authority.control_set"
+msgstr ""
+
+#: 950.data.seed-values.sql:19525
 msgid ""
 "The guardian field will be suggested on the patron registration screen. "
 "Suggesting a field makes it appear when suggested fields are shown. If the "
@@ -14125,8 +14333,8 @@ msgid ""
 "field is shown or required this setting is ignored."
 msgstr ""
 
-#: 950.data.seed-values.sql:17081
-msgid "Item Print Label - Left Margin for Right Label"
+#: 950.data.seed-values.sql:18512
+msgid "Holdings View Show Empty Orgs"
 msgstr ""
 
 #: 950.data.seed-values.sql:798
@@ -14155,6 +14363,10 @@ msgstr ""
 
 #: 950.data.seed-values.sql:7379
 msgid "M-II"
+msgstr ""
+
+#: 950.data.seed-values.sql:19296
+msgid "Grid Config: circ.patron.billhistory_xacts"
 msgstr ""
 
 #: 950.data.seed-values.sql:4813
@@ -14335,7 +14547,7 @@ msgstr ""
 msgid "Flamenco"
 msgstr ""
 
-#: 950.data.seed-values.sql:19450
+#: 950.data.seed-values.sql:19537
 msgid ""
 "Require a value for the parent/guardian field in the patron editor for "
 "patrons marked as juvenile"
