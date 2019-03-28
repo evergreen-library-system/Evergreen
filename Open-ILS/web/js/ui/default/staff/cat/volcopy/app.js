@@ -1152,6 +1152,8 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         return true;
     }
 
+    $scope.changed_fields = [];
+
     $scope.completeToWorking = function () {
         angular.forEach( $scope.completedGridControls.selectedItems(), function (c) {
             angular.forEach( $scope.completed_copies, function (w, i) {
@@ -1188,6 +1190,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                                 return;
                             }
                             if (cp[field]() !== newval) {
+                                $scope.changed_fields[cp.$$hashKey+field] = true;
                                 cp[field](newval);
                                 cp.ischanged(1);
                                 $scope.dirty = true;
@@ -1198,6 +1201,14 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             }
         });
     }
+
+    // determine if any of the selected copies have had changed their value for this field:
+    $scope.field_changed = function (field){
+        // if objects controlling selection don't exist, assume the fields haven't changed
+        if(!$scope.workingGridControls || !$scope.workingGridControls.selectedItems){ return false; }
+        var selected = $scope.workingGridControls.selectedItems();
+        return selected.reduce((acc, cp) => acc || $scope.changed_fields[cp.$$hashKey+field], false);
+    };
 
     $scope.working = {
         MultiMap: {},
