@@ -130,7 +130,7 @@ export class GridColumnSet {
                 if (idx === 0) {
                     this.columns.unshift(col);
                 } else {
-                    this.columns.splice(idx - 1, 0, col);
+                    this.columns.splice(idx, 0, col);
                 }
                 return true;
             }
@@ -444,6 +444,7 @@ export class GridContext {
     overflowCells: boolean;
     showLinkSelectors: boolean;
     disablePaging: boolean;
+    showDeclaredFieldsOnly: boolean;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -988,6 +989,10 @@ export class GridContext {
                 if (selector) {
                     col.path = field.name + '.' + selector;
                 }
+            }
+
+            if (this.showDeclaredFieldsOnly) {
+                col.hidden = true;
             }
 
             this.columnSet.add(col);

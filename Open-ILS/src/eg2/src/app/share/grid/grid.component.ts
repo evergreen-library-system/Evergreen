@@ -76,6 +76,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // the selected fields will be hidden.
     @Input() hideFields: string;
 
+    // When true, only display columns that are declared in the markup
+    // and leave all auto-generated fields hidden.
+    @Input() showDeclaredFieldsOnly: boolean;
+
     // Allow the caller to jump directly to a specific page of
     // grid data.
     @Input() pageOffset: number;
@@ -133,6 +137,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.showLinkSelectors = this.showLinkSelectors === true;
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
+        this.context.showDeclaredFieldsOnly = this.showDeclaredFieldsOnly;
         this.context.rowFlairCallback = this.rowFlairCallback;
         this.context.disablePaging = this.disablePaging === true;
         if (this.showFields) {
