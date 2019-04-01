@@ -66,6 +66,10 @@ export class SandboxComponent implements OnInit {
     // selector field value on metarecord object
     aMetarecord: string;
 
+    // cross-tab communications example
+    private sbChannel: any;
+    sbChannelText: string;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
@@ -75,6 +79,10 @@ export class SandboxComponent implements OnInit {
         private format: FormatService,
         private printer: PrintService
     ) {
+        // BroadcastChannel is not yet defined in PhantomJS and elsewhere
+        this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
+            {} : new BroadcastChannel('eg.sbChannel');
+        this.sbChannel.onmessage = (e) => this.sbChannelHandler(e);
     }
 
     ngOnInit() {
@@ -134,6 +142,14 @@ export class SandboxComponent implements OnInit {
                 idlField: 'metarecord'
             });
         });
+    }
+
+    sbChannelHandler = msg => {
+        setTimeout(() => { this.sbChannelText = msg.data.msg; });
+    }
+
+    sendMessage($event) {
+        this.sbChannel.postMessage({msg : $event.target.value});
     }
 
     openEditor() {

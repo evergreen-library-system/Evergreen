@@ -126,6 +126,20 @@
 </div>
 <br/><br/>
 
+<div>
+  <h4>Cross-tab communications example</h4>
+  <p>To test, open this sandbox in a second browser tab. Enter something in the input box below, then switch to the other tab and click anywhere on the page. 
+     You should see the message that you sent to the other browser tab.</p>
+</div>
+<div class="row">
+  <div class="col-lg-3">
+    <input type="text" #sendSbMessage placeholder="message to send to another tab" size="40" (change)="sendMessage($event)">
+  </div>
+  <div class="col-lg-3">
+    message received: {{sbChannelText}}
+  </div>
+</div>
+
 <!-- grid stuff -->
 <ng-template #cellTmpl let-row="row" let-col="col" let-userContext="userContext">
   HELLO {{userContext.hello}}
