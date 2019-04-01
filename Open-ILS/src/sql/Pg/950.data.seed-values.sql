@@ -4911,6 +4911,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'bool', null)
 
+,( 'ui.patron.edit.au.ident_value.require', 'gui',
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.require',
+        'require ident_value field on patron registration',
+        'coust', 'label'),
+    oils_i18n_gettext('ui.patron.edit.au.ident_value.require',
+        'The ident_value field will be required on the patron registration screen.',
+        'coust', 'description'),
+    'bool', null)
+
 ,( 'ui.patron.edit.au.ident_value.show', 'gui',
     oils_i18n_gettext('ui.patron.edit.au.ident_value.show',
         'Show ident_value field on patron registration',

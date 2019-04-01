@@ -353,6 +353,7 @@ angular.module('egCoreMod')
             'ui.patron.edit.au.juvenile.show',
             'ui.patron.edit.au.juvenile.suggest',
             'ui.patron.edit.au.ident_value.show',
+            'ui.patron.edit.au.ident_value.require',
             'ui.patron.edit.au.ident_value.suggest',
             'ui.patron.edit.au.ident_value2.show',
             'ui.patron.edit.au.ident_value2.suggest',
