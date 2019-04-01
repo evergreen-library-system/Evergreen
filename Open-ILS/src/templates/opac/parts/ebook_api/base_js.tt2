@@ -45,13 +45,13 @@ dojo.forEach(vendor_list, function(v) {
 // essential info for performing a transaction
 var ebook_action = {};
 [%- IF CGI.param("action").defined %]
-ebook_action.type = '[% CGI.param("action") %]';
+ebook_action.type = '[% CGI.param("action") | html %]';
 [%- END -%]
 [%- IF CGI.param("title").defined %]
-ebook_action.title_id = '[% CGI.param("title") %]';
+ebook_action.title_id = '[% CGI.param("title") | html %]';
 [%- END -%]
 [%- IF CGI.param("vendor").defined %]
-ebook_action.vendor = '[% CGI.param("vendor") %]';
+ebook_action.vendor = '[% CGI.param("vendor") | html %]';
 [%- END -%]
 
 [% IF ctx.user %]
