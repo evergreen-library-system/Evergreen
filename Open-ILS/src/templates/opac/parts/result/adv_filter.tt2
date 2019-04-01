@@ -62,8 +62,8 @@ FOR filter IN ctx.query_struct.filters;
 [%- END; # IF locations -%]
 
 [%- IF pubdate_filters.grep('^' _ filter.name _ '$').size;
-    date1 = CGI.param('date1');
-    date2 = CGI.param('date2');
+    date1 = CGI.param('date1') | html;
+    date2 = CGI.param('date2') | html;
 -%]
     <div class="adv_filter_results_group_wrapper">
       <div class="adv_filter_results_group">

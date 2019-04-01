@@ -189,7 +189,7 @@ function maybeToggleNumCopies(obj) {
                                 [% l('Advanced Hold Options') %]</a>
                         [% END %]
                         [% IF CGI.param('hold_type') == 'M' AND CGI.param('bre_id') %]
-                            <input type="hidden" name="bre_id" value="[% CGI.param('bre_id') %]" />
+                            <input type="hidden" name="bre_id" value="[% CGI.param('bre_id') | html %]" />
                             <a id='basic_hold_link'
                                href="[% mkurl('', {hold_target => CGI.param('bre_id'), hold_type => 'T'}) %]">
                                 [% l('Basic Hold Options') %]</a>

@@ -148,10 +148,10 @@ function disable_submit() {
         [% END %]
         <span>
         [% IF any_failures OR ctx.general_hold_error %]
-        <a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Cancel') %]</a>
+        <a href="[% CGI.param('redirect_to') | html || CGI.referer | html %]">[% l('Cancel') %]</a>
         [% ELSE %]
         <div class='hold_success_links'>
-          <span><a href="[% CGI.param('redirect_to') || CGI.referer | html %]">[% l('Continue') %]</a></span>
+          <span><a href="[% CGI.param('redirect_to') | html || CGI.referer | html %]">[% l('Continue') %]</a></span>
            [% IF ctx.is_staff %]
              [% IF CGI.param('hold_type') == 'C';
                   hold_type_label = l('copy');
