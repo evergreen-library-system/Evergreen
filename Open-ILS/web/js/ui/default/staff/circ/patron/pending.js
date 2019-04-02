@@ -90,7 +90,8 @@ function($scope , $q , $routeParams , $window , $location , egCore , egGridDataP
         egCore.net.request(
             'open-ils.actor',
             'open-ils.actor.user.stage.retrieve.by_org',
-            egCore.auth.token(), $scope.context_org.id()
+            egCore.auth.token(), $scope.context_org.id(),
+            count, offset
 
         ).then(
             deferred.resolve, null, 
