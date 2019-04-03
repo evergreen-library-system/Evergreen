@@ -1,0 +1,16 @@
+--rebuild-rmsr Option Added to pingest.pl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An option, `--rebuild-rmsr`, has been added to the pingest.pl support
+script.  This option will rebuild the
+reporter.materialized_simple_record (rmsr) table after the ingests are
+complete.
+
+This option might prove useful if you want to rebuild the table as
+part of a larger reingest.  If all you wish to do is to rebuild the
+rmsr table, then it would be just as simple to connect to the database
+server and run the following SQL:
+
+[source,sql]
+----
+SELECT reporter.refresh_materialized_simple_record();
+----

@@ -34,6 +34,7 @@ my $skip_attrs;   # Skip the record attributes reingest.
 my $skip_search;  # Skip the search reingest.
 my $skip_facets;  # Skip the facets reingest.
 my $skip_display; # Skip the display reingest.
+my $rebuild_rmsr; # Rebuild reporter.materialized_simple_record.
 my $start_id;     # start processing at this bib ID.
 my $end_id;       # stop processing when this bib ID is reached.
 my $max_duration; # max processing duration in seconds
@@ -61,6 +62,7 @@ GetOptions(
     'skip-search'    => \$skip_search,
     'skip-facets'    => \$skip_facets,
     'skip-display'   => \$skip_display,
+    'rebuild-rmsr'   => \$rebuild_rmsr,
     'start-id=i'     => \$start_id,
     'end-id=i'       => \$end_id,
     'pipe'           => \$opt_pipe,
@@ -93,6 +95,8 @@ sub help {
         This option can be used more than once to specify multiple
         attributes to ingest.
         This option is ignored if --skip-attrs is also given.
+    --rebuild-rmsr
+        Rebuild the reporter.materialized_simple_record table.
 
     --start-id
         Start processing at this record ID.
@@ -230,6 +234,9 @@ while ($count < $lists) {
     }
 }
 
+# Rebuild reporter.materialized_simple_record after the ingests.
+rmsr_rebuild() if ($rebuild_rmsr);
+
 # This subroutine forks a process to do the browse-only ingest on the
 # @blist above.  It cannot be parallelized, but can run in parrallel
 # to the other ingests.
@@ -323,4 +330,13 @@ END_OF_INGEST
             warn ("metabib.reingest_record_attributes failed for record $_");
         }
     }
+}
+
+# Rebuild/refresh reporter.materialized_simple_record
+sub rmsr_rebuild {
+    print("Rebuilding reporter.materialized_simple_record\n");
+    my $dbh = DBI->connect("DBI:Pg:database=$db_db;host=$db_host;port=$db_port;application_name=pingest",
+                           $db_user, $db_password);
+    $dbh->selectall_arrayref("SELECT reporter.refresh_materialized_simple_record();");
+    $dbh->disconnect();
 }
