@@ -215,35 +215,26 @@ export class QueueComponent implements OnInit, AfterViewInit {
     }
 
     deleteQueue() {
-        this.confirmDelDlg.open().then(
-            yes => {
-                this.progressDlg.open();
-                return this.net.request(
-                    'open-ils.vandelay',
-                    `open-ils.vandelay.${this.qtypeShort()}_queue.delete`,
-                    this.auth.token(), this.queueId
-                ).toPromise();
-            },
-            no => {
-                this.progressDlg.close();
-                return Promise.reject('delete failed');
-            }
-        ).then(
-            resp => {
-                this.progressDlg.close();
-                const e = this.evt.parse(resp);
-                if (e) {
-                    console.error(e);
-                    alert(e);
-                } else {
+
+        this.confirmDelDlg.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.progressDlg.open();
+            this.net.request(
+                'open-ils.vandelay',
+                `open-ils.vandelay.${this.qtypeShort()}_queue.delete`,
+                this.auth.token(), this.queueId
+            ).toPromise().then(
+                resp => {
+                    const e = this.evt.parse(resp);
+                    if (e) { return new Error(e.toString()); }
+
                     // Jump back to the main queue page.
                     this.router.navigate(['/staff/cat/vandelay/queue']);
-                }
-            },
-            err => {
-                this.progressDlg.close();
-            }
-        );
+                },
+                err => console.error('queue deletion failed!', err)
+            ).finally(() => this.progressDlg.close());
+        });
     }
 
     exportNonImported() {

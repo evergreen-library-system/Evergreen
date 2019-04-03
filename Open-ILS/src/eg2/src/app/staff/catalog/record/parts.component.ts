@@ -81,10 +81,8 @@ export class PartsComponent implements OnInit {
             (part: IdlObject) => {
                 this.editDialog.mode = 'update';
                 this.editDialog.recId = part.id();
-                this.editDialog.open().then(
-                    ok => this.partsGrid.reload(),
-                    err => {}
-                );
+                this.editDialog.open()
+                    .subscribe(ok => this.partsGrid.reload());
             }
         );
 
@@ -95,10 +93,7 @@ export class PartsComponent implements OnInit {
             this.editDialog.record = part;
 
             this.editDialog.mode = 'create';
-            this.editDialog.open().then(
-                ok => this.partsGrid.reload(),
-                err => {}
-            );
+            this.editDialog.open().subscribe(ok => this.partsGrid.reload());
         };
 
         this.deleteSelected = (parts: IdlObject[]) => {
@@ -113,10 +108,7 @@ export class PartsComponent implements OnInit {
         this.mergeSelected = (parts: IdlObject[]) => {
             if (parts.length < 2) { return; }
             this.mergeDialog.parts = parts;
-            this.mergeDialog.open().then(
-                ok => this.partsGrid.reload(),
-                err => console.debug('Dialog dismissed')
-            );
+            this.mergeDialog.open().subscribe(ok => this.partsGrid.reload());
         };
     }
 }

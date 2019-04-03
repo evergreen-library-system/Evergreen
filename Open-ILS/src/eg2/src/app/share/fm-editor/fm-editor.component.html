@@ -5,13 +5,18 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" 
-      (click)="dismiss('cross_click')">
+      i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <form #fmEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
+      <ng-container *ngIf="!record">
+        <!-- display a progress dialog while the editor 
+            fetches the needed data -->
+        <eg-progress-inline></eg-progress-inline> 
+      </ng-container>
+      <ng-container *ngIf="record">
       <div class="form-group row" *ngFor="let field of fields">
         <div class="col-lg-3">
           <label for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
@@ -145,6 +150,7 @@
           </a>
         </div>
       </div>
+      </ng-container>
     </form>
   </div>
   <div class="modal-footer">

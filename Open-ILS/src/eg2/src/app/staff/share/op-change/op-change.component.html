@@ -2,8 +2,7 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Change Operator</h4>
     <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" 
-      (click)="dismiss('cross_click')">
+      i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -60,6 +59,6 @@
   </div>
   <div class="modal-footer">
     <button (click)="login()" class="btn btn-info" i18n>OK/Continue</button>
-    <button (click)="dismiss('canceled')" class="btn btn-warning ml-2" i18n>Cancel</button>
+    <button (click)="close()" class="btn btn-warning ml-2" i18n>Cancel</button>
   </div>
 </ng-template>

@@ -158,15 +158,10 @@ export class SandboxComponent implements OnInit {
     }
 
     openEditor() {
-        this.fmRecordEditor.open({size: 'lg'}).then(
-            ok => { console.debug(ok); },
-            err => {
-                if (err && err.dismissed) {
-                    console.debug('dialog was dismissed');
-                } else {
-                    console.error(err);
-                }
-            }
+        this.fmRecordEditor.open({size: 'lg'}).subscribe(
+            pcrudResult => console.debug('Record editor performed action'),
+            err => console.error(err),
+            () => console.debug('Dialog closed')
         );
     }
 

@@ -41,10 +41,8 @@ export class MatchSetListComponent implements AfterViewInit {
 
         this.createNew = () => {
             this.editDialog.mode = 'create';
-            this.editDialog.open({size: 'lg'}).then(
-                ok => this.grid.reload(),
-                err => {}
-            );
+            this.editDialog.open({size: 'lg'})
+                .subscribe(() => this.grid.reload());
         };
 
         this.deleteSelected = (matchSets: IdlObject[]) => {
@@ -62,10 +60,8 @@ export class MatchSetListComponent implements AfterViewInit {
             (matchSet: IdlObject) => {
                 this.editDialog.mode = 'update';
                 this.editDialog.recId = matchSet.id();
-                this.editDialog.open({size: 'lg'}).then(
-                    ok => this.grid.reload(),
-                    err => {}
-                );
+                this.editDialog.open({size: 'lg'})
+                    .subscribe(() => this.grid.reload());
             }
         );
     }

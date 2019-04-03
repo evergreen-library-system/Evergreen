@@ -10,8 +10,7 @@
       <span *ngIf="fromBibQueue" i18n>Add Records from queue #{{fromBibQueue}} to Bucket</span>
     </h4>
     <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" 
-      (click)="dismiss('cross_click')">
+      i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>

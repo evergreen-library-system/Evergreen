@@ -2,8 +2,7 @@
   <div class="modal-header bg-info">
     <h4 class="modal-title">{{dialogTitle}}</h4>
     <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" 
-      (click)="dismiss('cross_click')">
+      i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -17,6 +16,6 @@
     <button type="button" class="btn btn-success" 
       (click)="close(promptValue)" i18n>Confirm</button>
     <button type="button" class="btn btn-warning" 
-      (click)="dismiss('canceled')" i18n>Cancel</button>
+      (click)="close()" i18n>Cancel</button>
   </div>
 </ng-template>
