@@ -121,16 +121,14 @@ export class WorkstationsComponent implements OnInit {
 
     private handleCollision(): Promise<number> {
         return new Promise((resolve, reject) => {
-            this.wsExistsDialog.open()
-            .then(
-                confirmed => {
+            this.wsExistsDialog.open().subscribe(override => {
+                if (override) {
                     this.registerWorkstationApi(true).then(
                         wsId => resolve(wsId),
                         notOk => reject(notOk)
                     );
-                },
-                dismissed => reject(dismissed)
-            );
+                }
+            });
         });
     }
 

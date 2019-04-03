@@ -171,6 +171,91 @@ export class AdminPageComponent implements OnInit {
         this.grid.onRowActivate.subscribe(
             (idlThing: IdlObject) => this.showEditDialog(idlThing)
         );
+
+        this.editSelected = (idlThings: IdlObject[]) => {
+
+            // Edit each IDL thing one at a time
+            const editOneThing = (thing: IdlObject) => {
+                if (!thing) { return; }
+
+                this.showEditDialog(thing).then(
+                    () => editOneThing(idlThings.shift()));
+            };
+
+            editOneThing(idlThings.shift());
+        };
+
+        this.createNew = () => {
+            this.editDialog.mode = 'create';
+            // We reuse the same editor for all actions.  Be sure
+            // create action does not try to modify an existing record.
+            this.editDialog.recId = null;
+            this.editDialog.record = null;
+            this.editDialog.open({size: this.dialogSize}).subscribe(
+                result => {
+                    this.createString.current()
+                        .then(str => this.toast.success(str));
+                    this.grid.reload();
+                },
+                error => {
+                    this.createErrString.current()
+                        .then(str => this.toast.danger(str));
+                }
+            );
+        };
+
+        this.deleteSelected = (idlThings: IdlObject[]) => {
+            idlThings.forEach(idlThing => idlThing.isdeleted(true));
+            this.pcrud.autoApply(idlThings).subscribe(
+                val => console.debug('deleted: ' + val),
+                err => {},
+                ()  => this.grid.reload()
+            );
+        };
+
+        // Open the field translation dialog.
+        // Link the next/previous actions to cycle through each translatable
+        // field on each row.
+        this.translate = () => {
+            this.translateRowIdx = 0;
+            this.translateFieldIdx = 0;
+            this.translator.fieldName = this.translatableFields[this.translateFieldIdx];
+            this.translator.idlObject = this.dataSource.data[this.translateRowIdx];
+
+            this.translator.nextString = () => {
+
+                if (this.translateFieldIdx < this.translatableFields.length - 1) {
+                    this.translateFieldIdx++;
+
+                } else if (this.translateRowIdx < this.dataSource.data.length - 1) {
+                    this.translateRowIdx++;
+                    this.translateFieldIdx = 0;
+                }
+
+                this.translator.idlObject =
+                    this.dataSource.data[this.translateRowIdx];
+                this.translator.fieldName =
+                    this.translatableFields[this.translateFieldIdx];
+            };
+
+            this.translator.prevString = () => {
+
+                if (this.translateFieldIdx > 0) {
+                    this.translateFieldIdx--;
+
+                } else if (this.translateRowIdx > 0) {
+                    this.translateRowIdx--;
+                    this.translateFieldIdx = 0;
+                }
+
+                this.translator.idlObject =
+                    this.dataSource.data[this.translateRowIdx];
+                this.translator.fieldName =
+                    this.translatableFields[this.translateFieldIdx];
+            };
+
+            this.translator.open({size: 'lg'});
+        };
     }
 
     checkCreatePerms() {
@@ -262,22 +347,24 @@ export class AdminPageComponent implements OnInit {
         return this.contextOrg && this.contextOrg.children().length === 0;
     }
 
-    showEditDialog(idlThing: IdlObject) {
+    showEditDialog(idlThing: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
         this.editDialog.recId = idlThing[this.pkeyField]();
-        return this.editDialog.open({size: this.dialogSize}).then(
-            ok => {
-                this.successString.current()
-                    .then(str => this.toast.success(str));
-                this.grid.reload();
-            },
-            rejection => {
-                if (!rejection.dismissed) {
+        return new Promise((resolve, reject) => {
+            this.editDialog.open({size: this.dialogSize}).subscribe(
+                result => {
+                    this.successString.current()
+                        .then(str => this.toast.success(str));
+                    this.grid.reload();
+                    resolve(result);
+                },
+                error => {
                     this.updateFailedString.current()
                         .then(str => this.toast.danger(str));
+                    reject(error);
                 }
-            }
-        );
+            );
+        });
     }
 
     editSelected(idlThings: IdlObject[]) {

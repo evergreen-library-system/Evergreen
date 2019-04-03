@@ -1,18 +1,31 @@
 import {Component, Input, OnInit, ViewChild, TemplateRef, EventEmitter} from '@angular/core';
+import {Observable, Observer} from 'rxjs';
 import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
 /**
  * Dialog base class.  Handles the ngbModal logic.
  * Sub-classed component templates must have a #dialogContent selector
  * at the root of the template (see ConfirmDialogComponent).
+ *
+ * Dialogs interact with the caller via Observable.
+ *
+ * dialog.open().subscribe(
+ *   value => handleValue(value),
+ *   error => handleError(error),
+ *   ()    => console.debug('dialog closed')
+ * );
+ *
+ * It is up to the dialog implementer to decide what values to
+ * pass to the caller via the dialog.respond(data) and/or
+ * dialog.close(data) methods.
+ *
+ * dialog.close(...) closes the modal window and completes the
+ * observable, unless an error was previously passed, in which
+ * case the observable is already complete.
+ *
+ * dialog.close() with no data closes the dialog without passing
+ * any values to the caller.
  */
-
-export interface DialogRejectionResponse {
-    // Did the user simply close the dialog without performing an action.
-    dismissed?: boolean;
-    // Relays error, etc. messages from the dialog handler to the caller.
-    message?: string;
-}
 
 @Component({
     selector: 'eg-dialog',
@@ -32,6 +45,9 @@ export class DialogComponent implements OnInit {
     // called in the overridding method.
     onOpen$ = new EventEmitter<any>();
 
+    // How we relay responses to the caller.
+    observer: Observer<any>;
+
     // The modalRef allows direct control of the modal instance.
     private modalRef: NgbModalRef = null;
 
@@ -41,11 +57,11 @@ export class DialogComponent implements OnInit {
         this.onOpen$ = new EventEmitter<any>();
     }
 
-    async open(options?: NgbModalOptions): Promise<any> {
+    open(options?: NgbModalOptions): Observable<any> {
 
         if (this.modalRef !== null) {
-            console.warn('Dismissing existing dialog');
-            this.dismiss();
+            this.error('Dialog was replaced!');
+            this.finalize();
         }
 
         this.modalRef = this.modalService.open(this.dialogContent, options);
@@ -55,49 +71,62 @@ export class DialogComponent implements OnInit {
             setTimeout(() => this.onOpen$.emit(true));
         }
 
-        return new Promise( (resolve, reject) => {
+        return new Observable(observer => {
+            this.observer = observer;
 
             this.modalRef.result.then(
-                (result) => {
-                    resolve(result);
-                    this.modalRef = null;
-                },
+                // Results are relayed to the caller via our observer.
+                // Our Observer is marked complete via this.close().
+                // Nothing to do here.
+                result => {},
 
-                (result) => {
-                    // NgbModal creates some result values for us, which
-                    // are outside of our control.  Other dismissal
-                    // reasons are agreed upon by implementing subclasses.
-                    console.debug('dialog closed with ' + result);
-
-                    const dismissed = (
-                           result === 0 // body click
-                        || result === 1 // Esc key
-                        || result === 'canceled' // Cancel button
-                        || result === 'cross_click' // modal top-right X
-                    );
-
-                    const rejection: DialogRejectionResponse = {
-                        dismissed: dismissed,
-                        message: result
-                    };
-
-                    reject(rejection);
-                    this.modalRef = null;
-                }
+                // Modal was dismissed via UI control which
+                // bypasses call to this.close()
+                dismissed => this.finalize()
             );
         });
     }
 
-    close(reason?: any): void {
-        if (this.modalRef) {
-            this.modalRef.close(reason);
+    // Send a response to the caller without closing the dialog.
+    respond(value: any) {
+        if (this.observer && value !== undefined) {
+            this.observer.next(value);
         }
     }
 
-    dismiss(reason?: any): void {
-        if (this.modalRef) {
-            this.modalRef.dismiss(reason);
+    // Sends error event to the caller and closes the dialog.
+    // Once an error is sent, our observable is complete and
+    // cannot be used again to send any messages.
+    error(value: any, close?: boolean) {
+        if (this.observer) {
+            console.error('Dialog produced error', value);
+            this.observer.error(value);
+            this.observer = null;
         }
+        if (this.modalRef) { this.modalRef.close(); }
+        this.finalize();
+    }
+
+    // Close the dialog, optionally with a value to relay to the caller.
+    // Calling close() with no value simply dismisses the dialog.
+    close(value?: any) {
+        this.respond(value);
+        if (this.modalRef) { this.modalRef.close(); }
+        this.finalize();
+    }
+
+    dismiss() {
+        console.warn('Dialog.dismiss() is deprecated.  Use close() instead');
+        this.close();
+    }
+
+    // Clean up after closing the dialog.
+    finalize() {
+        if (this.observer) { // null if this.error() called
+            this.observer.complete();
+            this.observer = null;
+        }
+        this.modalRef = null;
     }
 }
 

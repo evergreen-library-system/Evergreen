@@ -6,7 +6,7 @@ import {map} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 
 interface CustomFieldTemplate {
@@ -170,14 +170,8 @@ export class FmRecordEditorComponent
 
         // Add some randomness to the generated DOM IDs to ensure against clobbering
         this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
-    }
 
-    // Opening dialog, fetch data.
-    open(options?: NgbModalOptions): Promise<any> {
-        return this.initRecord().then(
-            ok => super.open(options),
-            err => console.warn(`Error fetching FM data: ${err}`)
-        );
+        this.onOpen$.subscribe(() => this.initRecord());
     }
 
     // Translate comma-separated string versions of various inputs
@@ -447,12 +441,12 @@ export class FmRecordEditorComponent
         this.convertDatatypesToIdl(recToSave);
         this.pcrud[this.mode]([recToSave]).toPromise().then(
             result => this.close(result),
-            error  => this.dismiss(error)
+            error  => this.error(error)
         );
     }
 
     cancel() {
-        this.dismiss('canceled');
+        this.close();
     }
 
     // Returns a string describing the type of input to display
