@@ -16,19 +16,32 @@
 <div class="row ml-0 mr-0">
 
   <a target="_blank" href="/eg/opac/record/{{recId}}">
-    <button class="btn btn-info ml-1" i18n>View in Catalog</button>
+    <button class="btn btn-outline-primary ml-1" i18n>View in Catalog</button>
   </a>
 
   <a routerLink="/staff/catalog/hold/T" [queryParams]="{target: recId}">
-    <button class="btn btn-info ml-1" i18n>Place Hold</button>
+    <button class="btn btn-outline-primary ml-1" i18n>Place Hold</button>
   </a>
 
-  <button class="btn btn-info ml-1" (click)="addVolumes()" i18n>
+  <button class="btn btn-outline-primary ml-1" (click)="addVolumes()" i18n>
     Add Holdings
   </button>
 
   <div ngbDropdown placement="bottom-right" class="ml-1">
-    <button class="btn btn-info" id="actionsForDd" 
+    <button class="btn btn-outline-primary" id="actionsForSerials"
+      ngbDropdownToggle i18n>Serials</button>
+    <div ngbDropdownMenu aria-labelledby="actionsForSerials">
+      <a class="dropdown-item" href="/eg/staff/serials/{{recId}}" i18n>
+        Manage Subscriptions
+      </a>
+      <a class="dropdown-item" href="/eg/staff/serials/{{recId}}/manage-mfhds" i18n>
+        Manage MFHDs
+      </a>
+    </div>
+  </div>
+
+  <div ngbDropdown placement="bottom-right" class="ml-1">
+    <button class="btn btn-outline-primary" id="actionsForDd"
       ngbDropdownToggle i18n>Mark For...</button>
     <div ngbDropdownMenu aria-labelledby="actionsForDd">
       <button class="dropdown-item" (click)="mark('conjoined')">
@@ -62,7 +75,7 @@
   </div>
 
   <div ngbDropdown placement="bottom-right" class="ml-1">
-    <button class="btn btn-info" id="otherActionsForDd" 
+    <button class="btn btn-outline-primary" id="otherActionsForDd"
       ngbDropdownToggle i18n>Other Actions</button>
     <div ngbDropdownMenu aria-labelledby="otherActionsForDd">
       <button class="dropdown-item" (click)="recordBucketDialog.open({size: 'lg'})">
