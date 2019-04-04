@@ -1,0 +1,88 @@
+Configurable APIs for Patron Authentication and Retrieval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Summary
++++++++
+
+Many external services need to authenticate patrons and retrieve information about their accounts from Evergreen.  Most of these services support some form of HTTP-based authentication, but every service has its own requirements and none of them support native Evergreen authentication.  Meanwhile, libraries often need to restrict access to these external services based on patron type, current status, standing penalties, and so on.
+
+To meet these needs, Evergreen now has support for separate, configurable HTTP API endpoints for remote patron authentication and retrieval.  Each RemoteAuth endpoint handles a different external service or authentication method.  You set up the endpoints you want in your Apache config; each one uses a generic mod_perl handler to manage incoming requests, and specifies a Perl module that can actually talk to the external service, as well as an authentication profile that determines which patrons can be authenticated at this endpoint.  Support for https://tools.ietf.org/html/rfc7617["Basic" HTTP Authentication] is provided as a reference implementation.
+
+
+
+How it works
+++++++++++++
+
+. Client submits a request to a RemoteAuth endpoint containing user credentials and any additional requirements.
+. RemoteAuth loads the handler module for this endpoint.
+. Handler processes the request and authorizes the client.
+. Handler loads this endpoint's configuration from the database.
+. Handler authenticates the user using the credentials provided, and tests whether auth is permitted for this user at this endpoint.
+. Handler returns an appropriate response to RemoteAuth, which passes the response to the client.
+
+
+Apache configuration
+++++++++++++++++++++
+
+To define a new RemoteAuth endpoint, add a new Location directive in your `eg_vhost.conf` file.  The default configuration for Basic auth looks like this:
+
+....
+<Location /api/basicauth>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::RemoteAuth
+    Options +ExecCGI
+
+    # access restricted to localhost by default; since this module provides no
+    # client authentiation, restricting access by IP or other means is stongly
+    # recommended
+    Require local
+
+    # remoteauth profile name
+    PerlSetVar OILSRemoteAuthProfile "Basic"
+    # Perl module for processing requests
+    PerlSetVar OILSRemoteAuthHandler "OpenILS::WWW::RemoteAuth::Basic"
+
+    # staff username/password for profile lookup and patron retrieval
+    PerlSetVar OILSRemoteAuthClientUsername "admin"
+    PerlSetVar OILSRemoteAuthClientPassword "demo123"
+</Location>
+....
+
+Here, the URL path `/api/basicauth` is our endpoint.  External clients send appropriately-constructed requests to this URL and get a response indicating whether auth succeeded (and containing patron account information, depending on how the endpoint is configured).
+
+Since different external services have different requirements for patron auth, each RemoteAuth endpoint handles requests differently.  All endpoints use `OpenILS::WWW::RemoteAuth` as the main mod_perl handler, but specific implementation details are handled by the module specified by the OILSRemoteAuthHandler variable -- in this case, `OpenILS::WWW::RemoteAuth::Basic` for Basic HTTP Authentication endpoints.
+
+The OILSRemoteAuthProfile variable specifies the name of a profile in the config.remoteauth_profile database table (see "Database configuration" below).
+
+OILSRemoteAuthClientUsername and OILSRemoteAuthClientPassword are the username and password of an Evergreen user account that has the permissions necessary to (1) view users at this location and (2) retrieve config entries from the config.remoteauth_profile table.  Ideally, these credentials would be provided in the actual request.  Where that's not possible, as in the present case, we include the client credentials in our Apache configuration.
+
+When an endpoint doesn't use client-provided authorization credentials, we may wish to restrict access to the endpoint by IP address or other means.  By default, Basic auth only allows connections originating from the same server ("Require local").  To make an endpoint publicly accessible, use "Require all granted".  To restrict access by IP, use "Require ip <ip-address>".
+
+
+Database configuration
+++++++++++++++++++++++
+
+In each endpoint's Apache configuration, the OILSRemoteAuthProfile variable specifies the name of an entry in the config.remoteauth_profile table (see "Apache configuration" above).  The profile tells us the context org unit for requests at this endpoint and defines rules for permitting auth requests.  Supported rules include:
+
+* *perm:* a permission which the user must have in order to be authenticated via RemoteAuth
+* *restrict_to_org:* only allow users belonging to this location to be authenticated, even if the client can retrieve users at other locations
+* *allow_inactive:* allow authentication for inactive users
+* *allow_expired:* allow authentication for expired users
+* *block_list:* authentication is not permitted if the user has a standing penalty at this location with one of these blocks
+
+RemoteAuth uses the actor.permit_remoteauth database function to apply these rules during an authentication request.  For example, if allow_expired is false and the user is expired, the database function will respond with "expired" and RemoteAuth will deny the authentication request.
+
+You can use the same configuration for multiple endpoints.  For example, suppose you need separate endpoints for EZProxy and Basic HTTP Authentication, but you want both endpoints to use the same auth rules.  In that case, each endpoint gets a separate entry in `eg_vhost.conf`, but the profile name specified by the OILSRemoteAuthProfile variable will be the same for both endpoints.
+
+
+Test plan
++++++++++
+
+. Install the branch on a test server and load concerto data.  Basic auth will be enabled by default for localhost access only.
+. Generate base64-encoded credentials for your test user: `echo -n "<username>:<password>" | base64`
+. Query the basic auth endpoint: `curl -k -s -o /dev/null -I -w "%{http_code}\n" https://localhost/api/basicauth -H "Authorization: Basic <base64-encoded-credentials>"`
+
+This will return 200 if auth is successful, and 403 if auth fails or is not permitted.
+
+There's also a Perl live test.  However, the live test may fail in some environments due to an https://github.com/libwww-perl/libwww-perl/issues/83#issuecomment-405233929[upstream bug] in `LWP::Protocol::https` that prevents us from skipping certificate verification.  The packaged version of that module in Ubuntu 16.04 is affected; installing `LWP::Protocol::https` version >=6.07 from CPAN resolves the problem.
+
