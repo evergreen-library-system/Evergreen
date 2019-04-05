@@ -116,7 +116,7 @@ export class TranslateComponent
             this.pcrud.update(entry).toPromise().then(
                 ok => {
                     if (!this.nextString) {
-                        this.close('Translation updated');
+                        this.close(this.translatedValue);
                     }
                 },
                 err => console.error(err)
@@ -134,7 +134,7 @@ export class TranslateComponent
         this.pcrud.create(entry).toPromise().then(
             ok => {
                 if (!this.nextString) {
-                    this.close('Translation created');
+                    this.close(this.translatedValue);
                 }
             },
             err => console.error('Translation creation failed')

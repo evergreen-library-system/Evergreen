@@ -1,4 +1,4 @@
-import {Component, OnInit, Input,
+import {Component, OnInit, Input, ViewChild,
     Output, EventEmitter, TemplateRef} from '@angular/core';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {Observable} from 'rxjs';
@@ -8,6 +8,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
+
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -129,6 +131,8 @@ export class FmRecordEditorComponent
     // Emit an error message when the save action fails.
     @Output() onError$ = new EventEmitter<string>();
 
+    @ViewChild('translator') private translator: TranslateComponent;
+
     // IDL info for the the selected IDL class
     idlDef: any;
 
@@ -212,13 +216,15 @@ export class FmRecordEditorComponent
             update: pc.update ? pc.update.perms : [],
         };
 
+        this.pkeyIsEditable = !('pkey_sequence' in this.idlDef);
+
         if (this.mode === 'update' || this.mode === 'view') {
 
             let promise;
             if (this.record && this.recId === null) {
                 promise = Promise.resolve(this.record);
             } else {
-                promise = 
+                promise =
                     this.pcrud.retrieve(this.idlClass, this.recId).toPromise();
             }
 
@@ -235,14 +241,12 @@ export class FmRecordEditorComponent
             });
         }
 
-        // create a new record from scratch or from a stub record
-        // provided by the caller.
-        this.pkeyIsEditable = !('pkey_sequence' in this.idlDef);
-        if (!this.record || this.recId) {
-            // user provided no seed record, create one.
-            this.recId = null;
-            this.record = this.idl.create(this.idlClass);
-        }
+        // In 'create' mode.
+        //
+        // Create a new record from the stub record provided by the
+        // caller or a new from-scratch record
+        this.setRecord(this.record || this.idl.create(this.idlClass));
+
         return this.getFieldList();
     }
 
@@ -516,6 +520,21 @@ export class FmRecordEditorComponent
 
         // datatype == text / interval / editable-pkey
         return 'text';
+    }
+
+    openTranslator(field: string) {
+        this.translator.fieldName = field;
+        this.translator.idlObject = this.record;
+
+        // TODO: will need to change once LP1823041 is merged
+        this.translator.open().then(
+            newValue => {
+                if (newValue) {
+                    this.record[field](newValue);
+                }
+            },
+            () => {} // avoid console error
+        );
     }
 }
 

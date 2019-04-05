@@ -1,3 +1,6 @@
+<!-- idlObject and fieldName applied programmatically -->
+<eg-translate #translator></eg-translate>
+
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
@@ -10,7 +13,7 @@
   <div class="modal-body">
     <form #fmEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
       <div class="form-group row" *ngFor="let field of fields">
-        <div class="col-lg-3 offset-lg-1">
+        <div class="col-lg-3">
           <label for="{{idPrefix}}-{{field.name}}">{{field.label}}</label>
         </div>
         <div class="col-lg-7">
@@ -132,6 +135,14 @@
               </eg-combobox>
             </ng-container>
           </ng-container> <!-- switch -->
+        </div>
+        <div class="col-lg-1" *ngIf="field.i18n && !field.readOnly">
+          <a (click)="openTranslator(field.name)"
+            i18n-title title="Translate">
+            <button class="btn btn-outline-info mat-icon-in-button">
+              <span class="material-icons">translate</span>
+            </button>
+          </a>
         </div>
       </div>
     </form>
