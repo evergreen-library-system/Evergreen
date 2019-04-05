@@ -44,6 +44,17 @@ export class OrgService {
         return this.orgList;
     }
 
+    // Returns a list of org unit type objects
+    typeList(): IdlObject[] {
+        const types = [];
+        this.list().forEach(org => {
+            if ((types.filter(t => t.id() === org.ou_type().id())).length === 0) {
+                types.push(org.ou_type());
+            }
+        });
+        return types;
+    }
+
     /**
      * Returns a list of org units that match the selected criteria.
      * All filters must match for an org to be included in the result set.

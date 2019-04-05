@@ -1,0 +1,44 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Add New Permission Group Mapping</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" 
+      (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-lg-5" i18n>Permission Group</div>
+      <div class="col-lg-7">{{permGroup.name()}}</div>
+    </div>
+    <div class="row mt-1 pt-1">
+      <div class="col-lg-5" i18n>New Permission</div>
+      <div class="col-lg-7">
+        <eg-combobox [asyncDataSource]="permEntries"
+          (onChange)="perm = $event ? $event.id : null">
+        </eg-combobox>
+      </div>
+    </div>
+    <div class="row mt-1 pt-1">
+      <div class="col-lg-5" i18n>Depth</div>
+      <div class="col-lg-7">
+        <select [(ngModel)]="depth" class="p-1">
+          <option *ngFor="let d of orgDepths" value="{{d}}">{{d}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-1 pt-1">
+      <div class="col-lg-5" i18n>Grantable</div>
+      <div class="col-lg-7">
+        <input type="checkbox" [(ngModel)]="grantable"/>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      (click)="create()" i18n>Create</button>
+    <button type="button" class="btn btn-warning" 
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>

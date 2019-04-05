@@ -39,7 +39,7 @@ export interface FmFieldOptions {
 
     // Render the field as a combobox using these values, regardless
     // of the field's datatype.
-    customValues?: {[field: string]: ComboboxEntry[]};
+    customValues?: ComboboxEntry[];
 
     // Provide / override the "selector" value for the linked class.
     // This is the field the combobox will search for typeahead.  If no

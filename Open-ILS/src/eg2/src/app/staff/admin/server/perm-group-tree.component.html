@@ -1,0 +1,205 @@
+<eg-staff-banner bannerText="Permission Group Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-string #createString i18n-text text="Permission Group Mapping Added">
+</eg-string>
+<eg-string #successString i18n-text text="Permission Group Update Succeeded">
+</eg-string>
+<eg-string #errorString i18n-text text="Permission Group Update Failed">
+</eg-string>
+
+<eg-string #createMapString i18n-text text="Permission Group Mapping Added">
+</eg-string>
+<eg-string #successMapString i18n-text text="Permission Group Mapping Update Succeeded">
+  </eg-string>
+<eg-string #errorMapString i18n-text text="Permission Group Mapping Update Failed">
+</eg-string>
+
+<eg-fm-record-editor #editDialog idlClass="pgt" readonlyFields="parent"
+   [fieldOptions]="fmEditorOptions()">
+</eg-fm-record-editor>
+
+<eg-confirm-dialog #delConfirm                                                 
+  i18n-dialogTitle i18n-dialogBody                                             
+  dialogTitle="Confirm Delete"                                                 
+  dialogBody="Delete Permission Group {{selected ? selected.label : ''}}?">    
+</eg-confirm-dialog>
+
+
+<eg-perm-group-map-dialog #addMappingDialog 
+  [permGroup]="selected ? selected.callerData : null"
+  [orgDepths]="orgDepths"
+  [permMaps]="groupPermMaps()" [permissions]="permissions">
+</eg-perm-group-map-dialog>
+
+<div class="row">
+  <div class="col-lg-3">
+    <h3 i18n>Permission Groups</h3>
+    <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
+  </div>
+  <div class="col-lg-9">
+    <h3 i18n class="mb-3">Selected Permission Group</h3>
+    <ng-container *ngIf="!selected">
+      <div class="alert alert-info font-italic" i18n>
+        Select a permission group from the tree on the left.
+      </div>
+      <ng-container *ngIf="loading">
+          <div class="row">
+            <div class="col-lg-6">
+              <eg-progress-inline></eg-progress-inline>
+            </div>
+          </div>
+        </ng-container>
+    </ng-container>
+    <div *ngIf="selected" class="common-form striped-even">
+      <ngb-tabset>
+        <ngb-tab title="Group Details" i18n-title id="detail">
+          <ng-template ngbTabContent>
+            <div class="row">
+              <div class="col-lg-3">
+                <label i18n>Actions for Selected: </label>
+              </div>
+              <div class="col-lg-9">
+                <button class="btn btn-info mr-2" (click)="edit()" i18n>Edit</button>
+                <button class="btn btn-info mr-2" (click)="addChild()" i18n>Add Child</button>
+                <button class="btn btn-warning mr-2" (click)="remove()" i18n>Delete</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>Name: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                {{selected.callerData.name()}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>Description: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                {{selected.callerData.description()}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>User Expiration Interval: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                {{selected.callerData.perm_interval()}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>Application Permission: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                {{selected.callerData.application_perm()}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>Hold Priority: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                {{selected.callerData.hold_priority()}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-4">
+                <label i18n>User Group?: </label>
+              </div>
+              <div class="col-lg-8 font-weight-bold">
+                <!-- TODO: replace with <eg-bool/> when merged -->
+                {{selected.callerData.usergroup() == 't'}}
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Group Permissions" i18n-title id="perm">
+          <ng-template ngbTabContent>
+
+            <div class="row d-flex m-2 mb-3">
+              <button class="btn btn-success" (click)="applyChanges()" i18n
+                [disabled]='!changesPending()'>
+                Apply Changes
+              </button>
+              <button class="btn btn-info ml-3" (click)="openAddDialog()" i18n>
+                Add New Mapping
+              </button>
+              <div class="col-lg-3">
+                <input class="form-control ml-2" [(ngModel)]="filterText"
+                  i18n-placeholder placeholder="Filter..."/>
+              </div>
+              <button class="btn btn-outline-secondary ml-1" 
+                (click)="filterText=''" i18n>
+                Clear
+              </button>
+            </div>
+            
+            <div class="row font-weight-bold">
+              <div class="col-lg-5" i18n>Permissions</div>
+              <div class="col-lg-4" i18n>Group</div>
+              <div class="col-lg-1" i18n>Depth</div>
+              <div class="col-lg-1" i18n>Grantable?</div>
+              <div class="col-lg-1" i18n>Delete?</div>
+            </div>
+
+            <div class="row" *ngFor="let map of groupPermMaps()"
+                [ngClass]="{'bg-danger': map.isdeleted()}">
+              <div class="col-lg-5">
+                <span title="{{map.perm().description()}}">{{map.perm().code()}}</span>
+              </div>
+              <ng-container *ngIf="permIsInherited(map); else nativeMap">
+                <div class="col-lg-4">
+                  <a href="javascript:;" (click)="selectGroup(map.grp().id())">
+                    {{map.grp().name()}}
+                  </a>
+                </div>
+                <div class="col-lg-1 text-center">{{map.depth()}}</div>
+                <!-- TODO migrate to <eg-bool/> once merged-->
+                <div class="col-lg-1 d-flex flex-column justify-content-center">
+                  <div class="d-flex justify-content-center p-3 rounded border border-secondary">
+                    <eg-bool [value]="map.grantable() == 't'"></eg-bool>
+                  </div>
+                </div>
+                <div class="col-lg-1"> </div>
+              </ng-container>
+              <ng-template #nativeMap>
+                <div class="col-lg-4">{{map.grp().name()}}</div>
+                <div class="col-lg-1">
+                  <select [ngModel]="map.depth()" class="p-1"
+                    (ngModelChange)="map.depth($event); map.ischanged(true)">
+                    <option *ngFor="let d of orgDepths" value="{{d}}">{{d}}</option>
+                  </select>
+                </div>
+                <div class="col-lg-1 d-flex flex-column justify-content-center">
+                  <div class="d-flex justify-content-center p-3 rounded border border-info">                
+                    <input type="checkbox" class="align-middle"
+                      i18n-title title="Grantable?"
+                      [ngModel]="map.grantable() == 't'"
+                      (ngModelChange)="map.grantable($event ? 't' : 'f'); map.ischanged(true)"/>
+                  </div>
+                </div>
+                <div class="col-lg-1 d-flex flex-column justify-content-center">
+                  <div class="d-flex justify-content-center p-3 rounded border border-danger">
+                    <input type="checkbox" class="align-middle"
+                      i18n-title title="Delete Mapping"
+                      [ngModel]="map.isdeleted()"
+                      (ngModelChange)="map.isdeleted($event)"/>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+            <div class="row d-flex m-2 mb-3">
+              <button class="btn btn-success" (click)="applyChanges()" i18n
+                [disabled]='!changesPending()'>
+                Apply Changes
+              </button>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </div>
+</div>

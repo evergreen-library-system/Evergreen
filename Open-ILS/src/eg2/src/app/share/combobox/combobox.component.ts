@@ -67,7 +67,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // Entry ID of the default entry to select (optional)
     // onChange() is NOT fired when applying the default value,
     // unless startIdFiresOnChange is set to true.
-    @Input() startId: any;
+    @Input() startId: any = null;
     @Input() startIdFiresOnChange: boolean;
 
     @Input() idlClass: string;
@@ -187,7 +187,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // Apply a default selection where needed
     applySelection() {
 
-        if (this.startId &&
+        if (this.startId !== null &&
             this.entrylist && !this.defaultSelectionApplied) {
 
             const entry =

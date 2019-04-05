@@ -4,6 +4,7 @@ import {AdminServerSplashComponent} from './admin-server-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {OrgUnitTypeComponent} from './org-unit-type.component';
 import {PrintTemplateComponent} from './print-template.component';
+import {PermGroupTreeComponent} from './perm-group-tree.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -14,6 +15,9 @@ const routes: Routes = [{
 }, {
     path: 'config/print_template',
     component: PrintTemplateComponent
+}, {
+    path: 'permission/grp_tree',
+    component: PermGroupTreeComponent
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
