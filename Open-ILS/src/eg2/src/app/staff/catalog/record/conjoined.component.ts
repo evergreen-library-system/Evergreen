@@ -73,8 +73,9 @@ export class ConjoinedComponent implements OnInit {
         if (this.idsToUnlink.length === 0) { return; }
 
         try { // rejects on dismiss, which results in an Error
+            // TODO this will change with LP #1823041
             await this.confirmUnlink.open({size: 'sm'});
-        } catch (dismissed) {return;}
+        } catch (dismissed) { return; }
 
         const maps = [];
         this.pcrud.search('bpbcm',
@@ -90,7 +91,7 @@ export class ConjoinedComponent implements OnInit {
                         this.idsToUnlink = [];
                         this.grid.reload();
                     }
-                )
+                );
             }
         );
     }

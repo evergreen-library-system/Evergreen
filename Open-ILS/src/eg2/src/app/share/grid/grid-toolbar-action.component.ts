@@ -50,7 +50,7 @@ export class GridToolbarActionComponent implements OnInit {
         }
 
         if (this.action) {
-            console.debug('toolbar [action] is deprecated.  use (onClick) instead.')
+            console.debug('toolbar [action] is deprecated. use (onClick) instead.');
         }
 
         this.toolbarAction.label = this.label;

@@ -151,7 +151,7 @@ export class AdminPageComponent implements OnInit {
             try {
                 this.gridFilters = JSON.parse(filters);
             } catch (E) {
-                console.error('Invalid grid filters provided: ', filters)
+                console.error('Invalid grid filters provided: ', filters);
             }
         }
 
