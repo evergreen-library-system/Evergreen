@@ -890,7 +890,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             this.makeBookableDialog.open({}).then(
                 modified => {}, // No refresh needed
                 dismissed => {}
-            )
+            );
         }
     }
 }
