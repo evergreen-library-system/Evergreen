@@ -1,0 +1,14 @@
+Port Permission Group Admin to Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Migrate the Admin => Server Admin => Permission Groups admin page to 
+Angular.
+
+As an added feature, the interface now displays inherited permissions
+alongside linked permissions for each group.  Inherited permissions
+are read-only and act to indicate to the user when a group already has
+a certain permission and therefore may not need a new one added.
+
+Additionally, a new filter option is available in the linked permissions
+interface for filtering the displayed linked permissions by code or 
+description.
