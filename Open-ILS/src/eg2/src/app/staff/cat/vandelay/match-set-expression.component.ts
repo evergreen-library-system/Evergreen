@@ -56,9 +56,36 @@ export class MatchSetExpressionComponent implements OnInit {
         return this.pcrud.search('vmsp',
             {match_set: this.matchSet_.id()}, {},
             {atomic: true, authoritative: true}
-        ).toPromise().then(points => this.ingestMatchPoints(points));
+        ).toPromise().then(points => {
+            if (points.length > 0) {
+                this.ingestMatchPoints(points);
+            } else {
+                this.addRootNode();
+            }
+        });
     }
 
+    // When creating a new tree, add a stub boolean node
+    // as the root so the tree has something to render.
+    addRootNode() {
+
+        const point = this.idl.create('vmsp');
+        point.id(this.newId--);
+        point.isnew(true);
+        point.match_set(this.matchSet_.id());
+        point.children([]);
+        point.bool_op('AND');
+
+        const node: TreeNode = new TreeNode({
+            id: point.id(),
+            callerData: {point: point}
+        });
+
+        this.tree = new Tree(node);
+        this.setNodeLabel(node, point);
+    }
+
+    // Tree-ify a set of match points.
     ingestMatchPoints(points: IdlObject[]) {
         const nodes = [];
         const idmap: any = {};
@@ -116,6 +143,14 @@ export class MatchSetExpressionComponent implements OnInit {
 
     hasSelectedNode(): boolean {
         return Boolean(this.tree.selectedNode());
+    }
+
+    isRootNode(): boolean {
+        const node = this.tree.selectedNode();
+        if (node && this.tree.findParentNode(node) === null) {
+            return true;
+        }
+        return false;
     }
 
     selectedIsBool(): boolean {
