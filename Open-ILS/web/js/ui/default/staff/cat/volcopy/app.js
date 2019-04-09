@@ -130,7 +130,8 @@ function(egCore , $q) {
             { flesh : 1,
               flesh_fields : {
                 asc : ['owner','entries']
-              }
+              },
+              order_by : [{'class':'asc', 'field':'owner'},{'class':'asc', 'field':'name'},{'class':'asce', 'field':'value'} ]
             },
             { atomic : true }
         );
