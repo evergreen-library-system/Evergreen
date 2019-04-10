@@ -91,7 +91,7 @@
   <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
-  <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.simple_record.title" name="title">
+  <eg-grid-field label="[% l('Title') %]" path="target_copy.call_number.record.wide_display_entry.title" name="title">
     <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.target_copy().call_number().record().id()}}">
       {{item.target_copy().call_number().record().wide_display_entry().title()}}
     </a>
