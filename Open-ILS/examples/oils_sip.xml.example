@@ -29,6 +29,13 @@
 	</listeners>
 
 	<accounts>
+		<!--
+		Fine Item Detail returned by the Patron Information Request is
+		manufacturer-specific.  We support the following formats:
+		3m,  Swyer_A, Swyer_B, and EG_Legacy (default).
+		Specify which treatment you want in the av_format attribute.
+		For example: <login id="sc" password="pwd" institution="main" av_format="3m">
+		-->
 		<login id="scclient" password="clientpwd" institution="gapines"/>
 	</accounts>
 
@@ -129,13 +136,6 @@
 						flag instead of always returning not-OK
 					<option name='patron_calculate_recal_ok' value='true' />
 					-->
-		    <!-- 
-			Fine Item Detail returned by the Patron Information Request is  
-		        manufacturer-specific.  We support the following formats: 
-		           3m,  Swyer_A, Swyer_B, and EG_Legacy (default)
-		        Specify which treatment you want in the av_format option.
-	            <option name='av_format' value='eg_legacy' />
-                    -->
 
 				</options>
 
