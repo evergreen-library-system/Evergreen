@@ -4,6 +4,7 @@
     <div role="columnheader"
       class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
       <input type='checkbox' (click)="handleBatchSelect($event)"
+        i18n-aria-label aria-label="All rows"
         [(ngModel)]="batchRowCheckbox">
     </div>
   </ng-container>
