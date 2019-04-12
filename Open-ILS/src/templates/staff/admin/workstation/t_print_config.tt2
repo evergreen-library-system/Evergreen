@@ -70,7 +70,12 @@
                   <ul uib-dropdown-menu>
                     <li ng-repeat="printer in printers">
                       <a href='' ng-click="setPrinter(printer.name)">
-                        {{printer.name}}
+                        <span ng-if="printer.name == 'hatch_file_writer'">
+                          [% l('Hatch File Writer') %]
+                        </span>
+                        <span ng-if="printer.name != 'hatch_file_writer'">
+                          {{printer.name}}
+                        </span>
                       </a>
                     </li>
                   </ul>
@@ -81,8 +86,10 @@
                 <input ng-if="printers[0] && !printConfig[context]" type="text" 
                   class="form-control" disabled="disabled"
                   value="[% l('No Printer Selected') %]">
-                <input ng-if="printConfig[context].printer" type="text" 
-                  class="form-control" disabled="disabled"
+                <input ng-if="useFileWriter()" type="text" disabled="disabled"
+                  class="form-control" value="[% l('Hatch File Writer') %]"/>
+                <input ng-if="printConfig[context].printer && !useFileWriter()" 
+                  type="text" class="form-control" disabled="disabled"
                   value="{{printConfig[context].printer}}">
               </div><!-- /input-group -->
             </div><!-- col -->
@@ -100,7 +107,17 @@
             </div>
           </div><!-- row -->
 
-          <div class="row" ng-hide="isTestView || !hatchIsOpen()"> 
+          <div class="pad-vert" 
+            ng-show="!isTestView && hatchIsOpen() && useFileWriter()">
+            <div class="alert alert-info">
+              [% |l %]Hatch File Writer translates print output to plain text 
+and writes the content to a text file in the Hatch profile directory.  No
+additional settings are required.[% END %]
+            </div>
+          </div>
+
+          <div class="row" 
+            ng-show="!isTestView && hatchIsOpen() && !useFileWriter()"
             <div class="col-md-10">
               <div class="row">
                 <div class="col-md-1"></div>
@@ -136,7 +153,6 @@
                     '{{printerOptions.defaultPaperSource}}') %]</span>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-md-1"></div>
                 <div class="col-md-2">
