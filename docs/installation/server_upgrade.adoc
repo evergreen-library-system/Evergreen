@@ -117,21 +117,21 @@ chown -R opensrf:opensrf /openils
   As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
------------------------------------------------------------
+------------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
 ln -sf rel_2_12_rc/server server
-----------------------------------------------------------
+------------------------------------------------------------
 +
 . As the *opensrf* user, update opensrf_core.xml and opensrf.xml by copying the
   new example files (/openils/conf/opensrf_core.xml.example and
   /openils/conf/opensrf.xml). The _-b_ option creates a backup copy of the old file.
 +
 [source, bash]
-----------------------------------------------------------
+------------------------------------------------------------
 cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
-----------------------------------------------------------
+------------------------------------------------------------
 +
 [CAUTION]
 Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
@@ -322,7 +322,7 @@ srfsh% login username password
 You should see a result like:
 +
 [source, bash]
-------------------------------------------------------
+--------------------------------------------------------------
 Received Data: "250bf1518c7527a03249858687714376"
     ------------------------------------
     Request Completed Successfully
@@ -346,7 +346,7 @@ Received Data: "250bf1518c7527a03249858687714376"
     Request Completed Successfully
     Request Time in seconds: 1.336568
     ------------------------------------
-----------------------------------------------------------
+--------------------------------------------------------------
 +
 If this does not work, it's time to do some <<install-troubleshooting-1,troubleshooting>>.
 +

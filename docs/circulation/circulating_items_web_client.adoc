@@ -182,7 +182,7 @@ These options may be selected simultaneously. The selected option is displayed i
 
 image::media/checkin_options_web_client.png[]
 
-====================================================
+===================================================
   
 Renewal and Editing the Item's Due Date
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -256,7 +256,7 @@ Lost Item Billing
 - Marking an item Lost will automatically bill the patron the replacement cost of the item as recorded in the price field in the item record, and a processing fee as determined by your local policy. If the lost item has overdue charges, the overdue charges may be voided or retained based on local policy.
 - A lost-then-returned item will disappear from the Items Out screen only when all bills linked to this particular circulation have been resolved. Bills may include replacement charges, processing fees, and manual charges added to the existing bills. 
 - The replacement fee and processing fee for lost-then-returned items may be voided if set by local policy. Overdue fines may be reinstated on lost-then-returned items if set by local policy.
-==========================
+========================
 
 Refunds for Lost Items
 ^^^^^^^^^^^^^^^^^^^^^^^
