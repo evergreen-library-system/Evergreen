@@ -106,16 +106,18 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
 
         if (args.content_type == 'text/html') {
             promise = service.ingest_print_content(
-                args.content_type, args.content, args.scope);
+                args.content_type, args.content, args.scope
+            ).then(function(html) {
+                // For good measure, wrap the compiled HTML in container tags.
+                return "<html><body>" + html + "</body></html>";
+            });
         } else {
             // text content requires no compilation for remote printing.
             promise = $q.when(args.content);
         }
 
-        return promise.then(function(html) {
-            // For good measure, wrap the compiled HTML in container tags.
-            html = "<html><body>" + html + "</body></html>";
-            service.last_print.content = html;
+        return promise.then(function(content) {
+            service.last_print.content = content;
             service.last_print.context = args.context || 'default';
             service.last_print.content_type = args.content_type;
             service.last_print.show_dialog = args.show_dialog;

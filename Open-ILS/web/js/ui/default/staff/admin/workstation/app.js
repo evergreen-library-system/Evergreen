@@ -279,8 +279,12 @@ function($scope , egCore) {
     }
 
     function loadPrinterOptions(name) {
-        egCore.hatch.getPrinterOptions(name).then(
-            function(options) {$scope.printerOptions = options});
+        if (name == 'hatch_file_writer') {
+            $scope.printerOptions = {};
+        } else {
+            egCore.hatch.getPrinterOptions(name).then(
+                function(options) {$scope.printerOptions = options});
+        }
     }
 
     $scope.setPrinter = function(name) {
@@ -311,6 +315,13 @@ function($scope , egCore) {
         }
     }
 
+    $scope.useFileWriter = function() {
+        return (
+            $scope.printConfig[$scope.context] &&
+            $scope.printConfig[$scope.context].printer == 'hatch_file_writer'
+        );
+    }
+
     // Load startup data....
     // Don't bother talking to Hatch if it's not there.
     if (!egCore.hatch.hatchAvailable) return;
@@ -319,6 +330,12 @@ function($scope , egCore) {
     egCore.hatch.getPrinters()
     .then(function(printers) { 
         $scope.printers = printers;
+
+        printers.push({
+            // We need a static name for saving configs.
+            // Human-friendly label is set in the template.
+            name: 'hatch_file_writer' 
+        });
 
         var def = $scope.getPrinterByAttr('is-default', true);
         if (!def && printers.length) def = printers[0];

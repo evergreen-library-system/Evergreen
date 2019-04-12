@@ -162,6 +162,13 @@ angular.module('egCoreMod')
 
         return service.getPrintConfig(context).then(
             function(config) {
+                if (config.printer == 'hatch_file_writer') {
+                    if (contentType == 'text/html') {
+                        content = service.html2txt(content);
+                    }
+                    return service.setRemoteItem(
+                        'receipt.' + context + '.txt', content, true);
+                } 
                 // print configuration retrieved; print
                 return service.attemptHatchDelivery({
                     action : 'print',
@@ -704,12 +711,15 @@ angular.module('egCoreMod')
 
 
     // set the value for a stored or new item
-    service.setRemoteItem = function(key, value) {
+    // When "bare" is true, the value will not be JSON-encoded
+    // on the file system.
+    service.setRemoteItem = function(key, value, bare) {
         service.keyCache[key] = value;
         return service.attemptHatchDelivery({
             key : key, 
             content : value, 
             action : 'set',
+            bare: bare
         });
     }
 
@@ -1000,6 +1010,60 @@ angular.module('egCoreMod')
             );
         } 
         return $q.when(null);
+    }
+
+    // COPIED FROM XUL util/text.js
+    service.reverse_preserve_string_in_html = function( text ) {
+        text = text.replace(/&amp;/g, '&');
+        text = text.replace(/&quot;/g, '"');
+        text = text.replace(/&#39;/g, "'");
+        text = text.replace(/&nbsp;/g, ' ');
+        text = text.replace(/&lt;/g, '<');
+        text = text.replace(/&gt;/g, '>');
+        return text;
+    }
+
+    // COPIED FROM XUL util/print.js
+    service.html2txt = function(html) {
+        var lines = html.split(/\n/);
+        var new_lines = [];
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            if (!line) {
+                new_lines.push(line);
+                continue;
+            }
+
+            // This undoes the util.text.preserve_string_in_html 
+            // call that spine_label.js does
+            line = service.reverse_preserve_string_in_html(line);
+
+            // This looks for @hex attributes containing 2-digit hex 
+            // codes, and converts them into real characters
+            line = line.replace(/(<.+?)hex=['"](.+?)['"](.*?>)/gi, 
+                function(str,p1,p2,p3,offset,s) {
+
+                var raw_chars = '';
+                var hex_chars = p2.match(/[0-9,a-f,A-F][0-9,a-f,A-F]/g);
+                for (var j = 0; j < hex_chars.length; j++) {
+                    raw_chars += String.fromCharCode( parseInt(hex_chars[j],16) );
+                }
+                return p1 + p3 + raw_chars;
+            });
+
+            line = line.replace(/<head.*?>.*?<\/head>/gi, '');
+            line = line.replace(/<br.*?>/gi,'\r\n');
+            line = line.replace(/<table.*?>/gi,'');
+            line = line.replace(/<tr.*?>/gi,'');
+            line = line.replace(/<hr.*?>/gi,'\r\n');
+            line = line.replace(/<p.*?>/gi,'');
+            line = line.replace(/<block.*?>/gi,'');
+            line = line.replace(/<li.*?>/gi,' * ');
+            line = line.replace(/<.+?>/gi,'');
+            if (line) { new_lines.push(line); }
+        }
+
+        return new_lines.join('\n');
     }
 
     // The only requirement for opening Hatch is that the DOM be loaded.
