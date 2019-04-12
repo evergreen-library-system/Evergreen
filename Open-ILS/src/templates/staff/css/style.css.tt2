@@ -542,7 +542,7 @@ table.list tr.selected td { /* deprecated? */
     /* scrollable menus for full-size screens */
     .scrollable-menu {
         height: auto;
-        max-height: 200px;
+        max-height: 400px;
         overflow-x: hidden;
     }
 }
