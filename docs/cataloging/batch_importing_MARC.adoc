@@ -270,7 +270,7 @@ If you are overlaying existing items which already have stat cats
 attached to them, the overlay process will keep those values unless the
 incoming items contain updated values for matching categories.
 |Status ||
-|==================
+|=============================
 
 
 Import Records

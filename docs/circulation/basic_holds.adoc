@@ -15,7 +15,7 @@ Evergreen has different levels of holds. Library staff can place holds at all le
 |Parts        |P              |Patron wants a particular part of title (e.g. volume or disk number)    | Staff or patron selects part on the create/edit hold screen when setting holds notification options.   |Patron or staff  |Holdings with identical parts attached to a single MARC (title) record.
 |Volume       |V              |Patron or staff want any title associated with a particular call number | In the staff client, click on _Volume Hold_ under _Holdable?_ |Staff only |Holdings attached to a single call number (volume)
 |Copy         |C              |Patron or staff want a specific copy of an item |In the staff client, click on _Copy Hold_ under _Holdable?_ |Staff only |A specific copy (barcode)
-|===============================
+|==============================
 
 
 Title Level Hold

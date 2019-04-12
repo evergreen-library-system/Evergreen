@@ -48,7 +48,7 @@ image::media/booking-create-bookable-1.png[]
 ** sec(s), min(s)
 ** s, m, h
 ** 00:00:30, 00:01:00, 01:00:00
-===================================================================
+====================================================================
 
 * Fine Amount - The amount that will be charged at each Fine Interval.
 * Owning Library - The home library of the resource.
