@@ -15,6 +15,7 @@ They do not have to be added to the providers list.
 
 // consider moving these to core...
 import {HatchService} from '@eg/share/print/hatch.service';
+import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 // Globally available components
@@ -79,6 +80,7 @@ export class EgCommonModule {
         return {
             ngModule: EgCommonModule,
             providers: [
+                HtmlToTxtService,
                 HatchService,
                 PrintService,
                 ToastService

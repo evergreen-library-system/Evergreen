@@ -22,6 +22,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import * as Moment from 'moment-timezone';
 import {SampleDataService} from '@eg/share/util/sample-data.service';
+import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
 
 @Component({
   templateUrl: 'sandbox.component.html',
@@ -114,7 +115,8 @@ export class SandboxComponent implements OnInit {
         private toast: ToastService,
         private format: FormatService,
         private printer: PrintService,
-        private samples: SampleDataService
+        private samples: SampleDataService,
+        private h2txt: HtmlToTxtService
     ) {
         // BroadcastChannel is not yet defined in PhantomJS and elsewhere
         this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
@@ -271,6 +273,9 @@ export class SandboxComponent implements OnInit {
                     }
             } )
         });
+
+        const str = 'C&#xe9;sar&nbsp;&amp;&nbsp;Me';
+        console.log(this.h2txt.htmlToTxt(str));
     }
 
     sbChannelHandler = msg => {
