@@ -22,7 +22,7 @@ interface CustomFieldTemplate {
     context?: {[fields: string]: any};
 }
 
-interface CustomFieldContext {
+export interface CustomFieldContext {
     // Current create/edit/view record
     record: IdlObject;
 

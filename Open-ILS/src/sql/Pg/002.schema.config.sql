@@ -1335,4 +1335,18 @@ INSERT INTO config.hold_type (hold_type,description) VALUES
     ('P','Part Hold')
 ;
 
+CREATE TABLE config.print_template (
+    id           SERIAL PRIMARY KEY,
+    name         TEXT NOT NULL, 
+    label        TEXT NOT NULL, -- i18n
+    owner        INT NOT NULL, -- REFERENCES actor.org_unit (id)
+    active       BOOLEAN NOT NULL DEFAULT FALSE,
+    locale       TEXT REFERENCES config.i18n_locale(code) 
+                 ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    content_type TEXT NOT NULL DEFAULT 'text/html',
+    template     TEXT NOT NULL,
+    CONSTRAINT   name_once_per_lib UNIQUE (owner, name),
+    CONSTRAINT   label_once_per_lib UNIQUE (owner, label)
+);
+
 COMMIT;

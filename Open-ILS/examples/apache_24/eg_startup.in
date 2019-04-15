@@ -15,6 +15,9 @@ use OpenILS::WWW::IDL2js ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::FlatFielder;
 use OpenILS::WWW::PhoneList ('@sysconfdir@/opensrf_core.xml');
 
+# Pass second argument of '1' to enable template caching.
+use OpenILS::WWW::PrintTemplate ('/openils/conf/opensrf_core.xml', 0);
+
 # - Uncomment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:
 # - actor.org_unit.shortname <start_ip> <end_ip>

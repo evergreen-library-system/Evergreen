@@ -18,6 +18,7 @@ import {HoldRetargetDialogComponent
 import {HoldTransferDialogComponent} from './transfer-dialog.component';
 import {HoldCancelDialogComponent} from './cancel-dialog.component';
 import {HoldManageDialogComponent} from './manage-dialog.component';
+import {PrintService} from '@eg/share/print/print.service';
 
 /** Holds grid with access to detail page and other actions */
 
@@ -35,7 +36,10 @@ export class HoldsGridComponent implements OnInit {
     @Input() persistKey: string;
 
     @Input() preFetchSetting: string;
-        // If set, all holds are fetched on grid load and sorting/paging all
+
+    @Input() printTemplate: string;
+
+    // If set, all holds are fetched on grid load and sorting/paging all
     // happens in the client.  If false, sorting and paging occur on
     // the server.
     enablePreFetch: boolean;
@@ -111,7 +115,8 @@ export class HoldsGridComponent implements OnInit {
         private net: NetService,
         private org: OrgService,
         private store: ServerStoreService,
-        private auth: AuthService
+        private auth: AuthService,
+        private printer: PrintService
     ) {
         this.gridDataSource = new GridDataSource();
         this.enablePreFetch = null;
@@ -388,6 +393,30 @@ export class HoldsGridComponent implements OnInit {
                 }
             );
         }
+    }
+
+    printHolds() {
+        // Request a page with no limit to get all of the wide holds for
+        // printing.  Call requestPage() directly instead of grid.reload()
+        // since we may already have the data.
+
+        const pager = new Pager();
+        pager.offset = 0;
+        pager.limit = null;
+
+        if (this.gridDataSource.sort.length === 0) {
+            this.gridDataSource.sort = this.defaultSort;
+        }
+
+        this.gridDataSource.requestPage(pager).then(() => {
+            if (this.gridDataSource.data.length > 0) {
+                this.printer.print({
+                    templateName: this.printTemplate || 'holds_for_bib',
+                    contextData: this.gridDataSource.data,
+                    printContext: 'default'
+                });
+            }
+        });
     }
 }
 

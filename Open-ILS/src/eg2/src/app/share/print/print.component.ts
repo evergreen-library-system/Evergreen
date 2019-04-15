@@ -53,35 +53,64 @@ export class PrintComponent implements OnInit {
 
         this.isPrinting = true;
 
-        this.applyTemplate(printReq);
-
-        // Give templates a chance to render before printing
-        setTimeout(() => {
-            this.dispatchPrint(printReq);
-            this.reset();
+        this.applyTemplate(printReq).then(() => {
+            // Give templates a chance to render before printing
+            setTimeout(() => {
+                this.dispatchPrint(printReq);
+                this.reset();
+            });
         });
     }
 
-    applyTemplate(printReq: PrintRequest) {
+    applyTemplate(printReq: PrintRequest): Promise<any> {
 
         if (printReq.template) {
-            // Inline template.  Let Angular do the interpolationwork.
+            // Local Angular template.
             this.template = printReq.template;
             this.context = {$implicit: printReq.contextData};
-            return;
+            return Promise.resolve();
         }
 
-        if (printReq.text && !this.useHatch()) {
-            // Insert HTML into the browser DOM for in-browser printing only.
+        let promise;
 
-            if (printReq.contentType === 'text/plain') {
+        // Precompiled text
+        if (printReq.text) {
+            promise = Promise.resolve();
+
+        } else if (printReq.templateName || printReq.templateId) {
+            // Server-compiled template
+
+            promise = this.printer.compileRemoteTemplate(printReq).then(
+                response => {
+                    printReq.text = response.content;
+                    printReq.contentType = response.contentType;
+                },
+                err => {
+                    console.error('Error compiling template', printReq);
+                    return Promise.reject(new Error(
+                        'Error compiling server-hosted print template'));
+                }
+            );
+
+        } else {
+            console.error('Cannot find template', printReq);
+            return Promise.reject(new Error('Cannot find print template'));
+        }
+
+        return promise.then(() => {
+
+            // Insert HTML into the browser DOM for in-browser printing.
+            if (printReq.text && !this.useHatch()) {
+
+                if (printReq.contentType === 'text/plain') {
                 // Wrap text/plain content in pre's to prevent
                 // unintended html formatting.
-                printReq.text = `<pre>${printReq.text}</pre>`;
-            }
+                    printReq.text = `<pre>${printReq.text}</pre>`;
+                }
 
-            this.htmlContainer.innerHTML = printReq.text;
-        }
+                this.htmlContainer.innerHTML = printReq.text;
+            }
+        });
     }
 
     // Clear the print data
@@ -129,7 +158,10 @@ export class PrintComponent implements OnInit {
     printViaHatch(printReq: PrintRequest) {
 
         // Send a full HTML document to Hatch
-        const html = `<html><body>${printReq.text}</body></html>`;
+        let html = printReq.text;
+        if (printReq.contentType === 'text/html') {
+            html = `<html><body>${printReq.text}</body></html>`;
+        }
 
         this.serverStore.getItem(`eg.print.config.${printReq.printContext}`)
         .then(config => {

@@ -50,6 +50,7 @@
         <ng-template ngbTabContent>
           <eg-holds-grid [recordId]="recordId"
             preFetchSetting="catalog.record.holds.prefetch"
+            printTemplate="holds_for_bib"
             persistKey="cat.catalog.wide_holds"
             [defaultSort]="[{name:'request_time',dir:'asc'}]"
             [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>

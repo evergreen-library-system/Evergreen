@@ -21,6 +21,7 @@ import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import * as Moment from 'moment-timezone';
+import {SampleDataService} from '@eg/share/util/sample-data.service';
 
 @Component({
   templateUrl: 'sandbox.component.html',
@@ -112,7 +113,8 @@ export class SandboxComponent implements OnInit {
         private strings: StringService,
         private toast: ToastService,
         private format: FormatService,
-        private printer: PrintService
+        private printer: PrintService,
+        private samples: SampleDataService
     ) {
         // BroadcastChannel is not yet defined in PhantomJS and elsewhere
         this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
@@ -412,6 +414,21 @@ export class SandboxComponent implements OnInit {
         d.setDate(d.getDate() - 7);
         return d;
     }
-}
 
+    testServerPrint() {
+
+        // Note these values can be IDL objects or plain hashes.
+        const templateData = {
+            patron:  this.samples.listOfThings('au')[0],
+            address: this.samples.listOfThings('aua')[0]
+        };
+
+        // NOTE: eventually this will be baked into the print service.
+        this.printer.print({
+            templateName: 'patron_address',
+            contextData: templateData,
+            printContext: 'default'
+        });
+    }
+}
 

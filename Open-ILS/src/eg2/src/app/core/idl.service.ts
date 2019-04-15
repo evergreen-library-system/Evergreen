@@ -156,5 +156,45 @@ export class IdlService {
         }
         return null;
     }
+
+    toHash(obj: any, flatten?: boolean): any {
+
+        if (typeof obj !== 'object' || obj === null) {
+            return obj;
+        }
+
+        if (Array.isArray(obj)) {
+            return obj.map(item => this.toHash(item));
+        }
+
+        const fieldNames = obj._isfieldmapper ?
+            Object.keys(this.classes[obj.classname].field_map) :
+            Object.keys(obj);
+
+        const hash: any = {};
+        fieldNames.forEach(field => {
+
+            const val = this.toHash(
+                typeof obj[field] === 'function' ?  obj[field]() : obj[field],
+                flatten
+            );
+
+            if (val === undefined) { return; }
+
+            if (flatten && val !== null &&
+                typeof val === 'object' && !Array.isArray(val)) {
+
+                Object.keys(val).forEach(key => {
+                    const fname = field + '.' + key;
+                    hash[fname] = val[key];
+                });
+
+            } else {
+                hash[field] = val;
+            }
+        });
+
+        return hash;
+    }
 }
 

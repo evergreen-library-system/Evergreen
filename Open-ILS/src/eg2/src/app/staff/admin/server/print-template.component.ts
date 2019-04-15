@@ -1,0 +1,271 @@
+import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {ActivatedRoute} from '@angular/router';
+import {IdlService, IdlObject} from '@eg/core/idl.service';
+import {PcrudService} from '@eg/core/pcrud.service';
+import {AuthService} from '@eg/core/auth.service';
+import {OrgService} from '@eg/core/org.service';
+import {ComboboxComponent, ComboboxEntry
+    } from '@eg/share/combobox/combobox.component';
+import {PrintService} from '@eg/share/print/print.service';
+import {LocaleService} from '@eg/core/locale.service';
+import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {SampleDataService} from '@eg/share/util/sample-data.service';
+import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+
+/**
+ * Print Template Admin Page
+ */
+
+@Component({
+    templateUrl: 'print-template.component.html'
+})
+
+export class PrintTemplateComponent implements OnInit {
+
+    entries: ComboboxEntry[];
+    template: IdlObject;
+    sampleJson: string;
+    invalidJson = false;
+    localeCode: string;
+    localeEntries: ComboboxEntry[];
+    compiledContent: string;
+    templateCache: {[id: number]: IdlObject} = {};
+    initialOrg: number;
+    selectedOrgs: number[];
+
+    @ViewChild('templateSelector') templateSelector: ComboboxComponent;
+    @ViewChild('tabs') tabs: NgbTabset;
+    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
+    @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
+
+    // Define some sample data that can be used for various templates
+    // Data will be filled out via the sample data service.
+    // Keys map to print template names
+    sampleData: any = {
+        patron_address: {},
+        holds_for_bib: {}
+    };
+
+    constructor(
+        private route: ActivatedRoute,
+        private idl: IdlService,
+        private org: OrgService,
+        private pcrud: PcrudService,
+        private auth: AuthService,
+        private locale: LocaleService,
+        private printer: PrintService,
+        private samples: SampleDataService
+    ) {
+        this.entries = [];
+        this.localeEntries = [];
+    }
+
+    ngOnInit() {
+        this.initialOrg = this.auth.user().ws_ou();
+        this.selectedOrgs = [this.initialOrg];
+        this.localeCode = this.locale.currentLocaleCode();
+        this.locale.supportedLocales().subscribe(
+            l => this.localeEntries.push({id: l.code(), label: l.name()}));
+        this.setTemplateInfo().subscribe();
+        this.fleshSampleData();
+    }
+
+    fleshSampleData() {
+
+        // NOTE: server templates work fine with IDL objects, but
+        // vanilla hashes are easier to work with in the admin UI.
+
+        // Classes for which sample data exists
+        const classes = ['au', 'ac', 'aua', 'ahr', 'acp', 'mwde'];
+        const samples: any = {};
+        classes.forEach(class_ => samples[class_] =
+            this.idl.toHash(this.samples.listOfThings(class_, 10)));
+
+        // Wide holds are hashes instead of IDL objects.
+        // Add fields as needed.
+        const wide_holds = [{
+            request_time: this.samples.randomDate().toISOString(),
+            ucard_barcode: samples.ac[0].barcode,
+            usr_family_name: samples.au[0].family_name,
+            usr_alias: samples.au[0].alias,
+            cp_barcode: samples.acp[0].barcode
+        }, {
+            request_time: this.samples.randomDate().toISOString(),
+            ucard_barcode: samples.ac[1].barcode,
+            usr_family_name: samples.au[1].family_name,
+            usr_alias: samples.au[1].alias,
+            cp_barcode: samples.acp[1].barcode
+        }];
+
+        this.sampleData.patron_address = {
+            patron:  samples.au[0],
+            address: samples.aua[0]
+        };
+
+        this.sampleData.holds_for_bib = wide_holds;
+    }
+
+    onTabChange(evt: NgbTabChangeEvent) {
+        if (evt.nextId === 'template') {
+            this.refreshPreview();
+        }
+    }
+
+    container(): any {
+        // Only present when its tab is visible
+        return document.getElementById('template-preview-pane');
+    }
+
+    // TODO should the ngModelChange handler fire for org-family-select
+    // even when the values don't change?
+    orgOnChange(family: OrgFamily) {
+        // Avoid reundant server calls.
+        if (!this.sameIds(this.selectedOrgs, family.orgIds)) {
+            this.selectedOrgs = family.orgIds;
+            this.setTemplateInfo().subscribe();
+        }
+    }
+
+    // True if the 2 arrays contain the same contents,
+    // regardless of the order.
+    sameIds(arr1: any[], arr2: any[]): boolean {
+        if (arr1.length !== arr2.length) {
+            return false;
+        }
+        for (let i = 0; i < arr1.length; i++) {
+            if (!arr2.includes(arr1[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    localeOnChange(code: string) {
+        if (code) {
+            this.localeCode = code;
+            this.setTemplateInfo().subscribe();
+        }
+    }
+
+    // Fetch name/id for all templates in range.
+    // Avoid fetching the template content until needed.
+    setTemplateInfo(): Observable<IdlObject> {
+        this.entries = [];
+        this.template = null;
+        this.templateSelector.applyEntryId(null);
+        this.compiledContent = '';
+
+        return this.pcrud.search('cpt',
+            {
+                owner: this.selectedOrgs,
+                locale: this.localeCode
+            }, {
+                select: {cpt: ['id', 'label', 'owner']},
+                order_by: {cpt: 'label'}
+            }
+        ).pipe(map(tmpl => {
+            this.templateCache[tmpl.id()] = tmpl;
+            this.entries.push({id: tmpl.id(), label: tmpl.label()});
+            return tmpl;
+        }));
+    }
+
+    getOwnerName(id: number): string {
+        return this.org.get(this.templateCache[id].owner()).shortname();
+    }
+
+    selectTemplate(id: number) {
+
+        if (id === null) {
+            this.template = null;
+            this.compiledContent = '';
+            return;
+        }
+
+        this.pcrud.retrieve('cpt', id).subscribe(t => {
+            this.template = t;
+            const data = this.sampleData[t.name()];
+            if (data) {
+                this.sampleJson = JSON.stringify(data, null, 2);
+                this.refreshPreview();
+            }
+        });
+    }
+
+    refreshPreview() {
+        if (!this.sampleJson) { return; }
+        this.compiledContent = '';
+
+        let data;
+        try {
+            data = JSON.parse(this.sampleJson);
+            this.invalidJson = false;
+        } catch (E) {
+            this.invalidJson = true;
+        }
+
+        this.printer.compileRemoteTemplate({
+            templateId: this.template.id(),
+            contextData: data,
+            printContext: 'default' // required, has no impact here
+
+        }).then(response => {
+
+            this.compiledContent = response.content;
+            if (response.contentType === 'text/html') {
+                this.container().innerHTML = response.content;
+            } else {
+                // Assumes text/plain or similar
+                this.container().innerHTML = '<pre>' + response.content + '</pre>';
+            }
+        });
+    }
+
+    applyChanges() {
+        this.container().innerHTML = '';
+        this.pcrud.update(this.template).toPromise()
+            .then(() => this.refreshPreview());
+    }
+
+    openEditDialog() {
+        this.editDialog.setRecord(this.template);
+        this.editDialog.mode = 'update';
+        this.editDialog.open({size: 'lg'}).toPromise().then(id => {
+            if (id !== undefined) {
+                const selectedId = this.template.id();
+                this.setTemplateInfo().toPromise().then(
+                    _ => this.selectTemplate(selectedId)
+                );
+            }
+        });
+    }
+
+    cloneTemplate() {
+        const tmpl = this.idl.clone(this.template);
+        tmpl.id(null);
+        this.editDialog.setRecord(tmpl);
+        this.editDialog.mode = 'create';
+        this.editDialog.open({size: 'lg'}).toPromise().then(newTmpl => {
+            if (newTmpl !== undefined) {
+                this.setTemplateInfo().toPromise()
+                    .then(_ => this.selectTemplate(newTmpl.id()));
+            }
+        });
+    }
+
+    deleteTemplate() {
+        this.confirmDelete.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+            this.pcrud.remove(this.template).toPromise().then(_ => {
+                this.setTemplateInfo().toPromise()
+                    .then(x => this.selectTemplate(null));
+            });
+        });
+    }
+}
+
+

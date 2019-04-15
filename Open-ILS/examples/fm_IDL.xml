@@ -12822,6 +12822,34 @@ SELECT  usr,
     	</fields>
 	</class>
 
+	<class id="cpt" controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::print_template" 
+		oils_persist:tablename="config.print_template" 
+		reporter:label="Print Templates">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.print_template_id_seq">
+			<field name="id" reporter:datatype="id"  reporter:selector="label"/>
+			<field name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="label" reporter:datatype="text" oils_obj:required="true" oils_persist:i18n="true"/>
+			<field reporter:label="Owner" name="owner" oils_obj:required="true" reporter:datatype="link"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Locale" name="locale" reporter:datatype="link"/>
+			<field name="content_type" reporter:datatype="text"/>
+			<field name="template" reporter:datatype="text" oils_obj:required="true"/>
+		</fields>
+		<links>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="locale" reltype="has_a" key="id" map="" class="i18n_l"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_PRINT_TEMPLATE" context_field="owner"/>
+				<retrieve permission="STAFF_LOGIN" context_field="owner"/>
+				<update permission="ADMIN_PRINT_TEMPLATE" context_field="owner"/>
+				<delete permission="ADMIN_PRINT_TEMPLATE" context_field="owner"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 

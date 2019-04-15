@@ -3,6 +3,7 @@ import {StaffCommonModule} from '@eg/staff/common.module';
 import {SandboxRoutingModule} from './routing.module';
 import {SandboxComponent} from './sandbox.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {SampleDataService} from '@eg/share/util/sample-data.service';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule
   ],
   providers: [
+    SampleDataService
   ]
 })
 

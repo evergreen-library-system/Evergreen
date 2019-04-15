@@ -142,10 +142,23 @@
 
 <!-- printing -->
 
-<button class="btn btn-secondary" (click)="doPrint()">Test Print</button>
-<ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
+<h4>PRINTING</h4>
 
-<button class="btn btn-secondary" (click)="printWithDialog()">Print with dialog</button>
+<div class="d-flex">
+  <div class="mr-2">
+    <button class="btn btn-info" (click)="doPrint()">Test Local Print</button>
+    <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
+  </div>
+  <div class="mr-2">
+    <button class="btn btn-info" (click)="printWithDialog()">
+      Print with dialog (Hatch Only)
+    </button>
+  </div>
+  <div class="mr-2">
+    <button class="btn btn-info" 
+      (click)="testServerPrint()">Test Server-Generated Print</button>
+  </div>
+</div>
 
 <br/><br/>
 <div class="row">

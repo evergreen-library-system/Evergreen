@@ -79,6 +79,10 @@
         i18-group group="Hold" i18n-label label="Cancel Hold"
         (onClick)="showCancelDialog($event)"></eg-grid-toolbar-action>
 
+      <eg-grid-toolbar-action
+        i18-group group="Hold" i18n-label label="Print Holds"
+        (onClick)="printHolds()"></eg-grid-toolbar-action>
+
       <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true" datatype="id">
       </eg-grid-column>
 

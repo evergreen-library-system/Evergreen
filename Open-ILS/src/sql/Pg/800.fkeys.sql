@@ -258,4 +258,7 @@ ALTER TABLE config.marc_subfield ADD CONSTRAINT config_marc_subfield_owner_fkey 
 
 ALTER TABLE config.copy_tag_type ADD CONSTRAINT copy_tag_type_owner_fkey FOREIGN KEY (owner) REFERENCES  actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED;
 
+ALTER TABLE config.print_template ADD CONSTRAINT cpt_owner_fkey 
+    FOREIGN KEY (owner) REFERENCES  actor.org_unit(id) DEFERRABLE INITIALLY DEFERRED;
+
 COMMIT;

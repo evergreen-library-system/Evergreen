@@ -10,7 +10,8 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
-import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {FmRecordEditorComponent, FmFieldOptions
+    } from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
@@ -70,6 +71,9 @@ export class AdminPageComponent implements OnInit {
     // Optional template containing help/about text which will
     // be added to the page, above the grid.
     @Input() helpTemplate: TemplateRef<any>;
+
+    // Override field options for create/edit dialog
+    @Input() fieldOptions: {[field: string]: FmFieldOptions};
 
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;

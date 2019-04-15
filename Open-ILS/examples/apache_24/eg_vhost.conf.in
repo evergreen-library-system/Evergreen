@@ -773,6 +773,14 @@ RewriteRule ^/openurl$ ${openurl:%1} [NE,PT]
     </LocationMatch>
 </IfModule>
 
+<Location /print_template>
+    SetHandler perl-script
+    PerlHandler OpenILS::WWW::PrintTemplate
+    Options +ExecCGI
+    PerlSendHeader On
+    Require all granted 
+</Location>
+
 
 <Location /IDL2js>
 
