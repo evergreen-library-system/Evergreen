@@ -4,7 +4,7 @@ import {DialogComponent} from '@eg/share/dialog/dialog.component';
 
 @Component({
   selector: 'eg-root',
-  template: '<router-outlet></router-outlet><eg-print></eg-print>'
+  template: '<router-outlet></router-outlet>'
 })
 
 export class BaseComponent {

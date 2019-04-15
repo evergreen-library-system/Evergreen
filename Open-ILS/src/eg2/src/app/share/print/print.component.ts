@@ -5,6 +5,8 @@ import {ServerStoreService} from '@eg/core/server-store.service';
 import {HatchService, HatchMessage} from '@eg/core/hatch.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
+import {HtmlToTxtService} from '@eg/share/util/htmltotxt.service';
+const HATCH_FILE_WRITER_PRINTER = 'hatch_file_writer';
 
 @Component({
     selector: 'eg-print',
@@ -33,6 +35,7 @@ export class PrintComponent implements OnInit {
         private elm: ElementRef,
         private store: StoreService,
         private serverStore: ServerStoreService,
+        private h2txt: HtmlToTxtService,
         private hatch: HatchService,
         private toast: ToastService,
         private strings: StringService,
@@ -177,6 +180,9 @@ export class PrintComponent implements OnInit {
     }
 
     printViaHatch(printReq: PrintRequest) {
+        if (!printReq.contentType) {
+            printReq.contentType = 'text/html';
+        }
 
         // Send a full HTML document to Hatch
         let html = printReq.text;
@@ -187,13 +193,30 @@ export class PrintComponent implements OnInit {
         this.serverStore.getItem(`eg.print.config.${printReq.printContext}`)
         .then(config => {
 
-            const msg = new HatchMessage({
-                action: 'print',
-                content: html,
-                settings: config || {},
-                contentType: 'text/html',
-                showDialog: printReq.showDialog
-            });
+            let msg: HatchMessage;
+
+            if (config && config.printer === HATCH_FILE_WRITER_PRINTER) {
+
+                const text = printReq.contentType === 'text/plain' ?
+                    html : this.h2txt.htmlToTxt(html);
+
+                msg = new HatchMessage({
+                    action: 'set',
+                    key: `receipt.${printReq.printContext}.txt`,
+                    content: text,
+                    bare: true
+                });
+
+            } else {
+
+                msg = new HatchMessage({
+                    action: 'print',
+                    content: html,
+                    settings: config || {},
+                    contentType: 'text/html',
+                    showDialog: printReq.showDialog
+                });
+            }
 
             this.hatch.sendRequest(msg).then(
                 ok  => console.debug('Print request succeeded'),
