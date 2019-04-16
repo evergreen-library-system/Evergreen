@@ -1318,4 +1318,21 @@ CREATE TABLE config.copy_tag_type (
 CREATE INDEX config_copy_tag_type_owner_idx
     ON config.copy_tag_type (owner);
 
+CREATE TABLE config.hold_type (
+    id          SERIAL,
+    hold_type   TEXT UNIQUE,
+    description TEXT
+);
+
+INSERT INTO config.hold_type (hold_type,description) VALUES
+    ('C','Copy Hold'),
+    ('V','Volume Hold'),
+    ('T','Title Hold'),
+    ('M','Metarecord Hold'),
+    ('R','Recall Hold'),
+    ('F','Force Hold'),
+    ('I','Issuance Hold'),
+    ('P','Part Hold')
+;
+
 COMMIT;

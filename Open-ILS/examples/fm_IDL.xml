@@ -6356,6 +6356,7 @@ SELECT  usr,
 			<link field="current_shelf_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="sms_carrier" reltype="has_a" key="id" map="" class="csc"/>
 			<link field="acq_request" reltype="has_a" key="id" map="" class="aur"/>
+			<link field="hold_type" reltype="has_a" key="hold_type" map="" class="cht"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>
@@ -12811,6 +12812,14 @@ SELECT  usr,
 			<link field="name" reltype="has_a" key="name" map="" class="cwst"/>
 			<link field="workstation" reltype="has_a" key="id" map="" class="aws"/>
 		</links>
+	</class>
+
+	<class id="cht" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::hold_type" oils_persist:tablename="config.hold_type" reporter:label="Hold Type" oils_persist:readonly="true">
+    	<fields oils_persist:primary="id" oils_persist:sequence="config.hold_type_id_seq">
+        	<field name="id" reporter:selector="name" reporter:datatype="id"/>
+        	<field name="description"  reporter:datatype="text" oils_persist:i18n="true"/>
+        	<field name="hold_type"  reporter:datatype="text" oils_persist:i18n="true"/>
+    	</fields>
 	</class>
 
 	<!-- ********************************************************************************************************************* -->

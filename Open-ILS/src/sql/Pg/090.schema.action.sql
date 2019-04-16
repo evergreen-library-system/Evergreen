@@ -442,7 +442,7 @@ CREATE TABLE action.hold_request (
 	selection_ou		INT				NOT NULL,
 	selection_depth		INT				NOT NULL DEFAULT 0,
 	pickup_lib		INT				NOT NULL REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED,
-	hold_type		TEXT				NOT NULL, -- CHECK (hold_type IN ('M','T','V','C')),  -- XXX constraint too constraining...
+	hold_type		TEXT				REFERENCES config.hold_type (hold_type) DEFERRABLE INITIALLY DEFERRED,
 	holdable_formats	TEXT,
 	phone_notify		TEXT,
 	email_notify		BOOL				NOT NULL DEFAULT FALSE,
