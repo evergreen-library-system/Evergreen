@@ -704,6 +704,19 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                 if (typeof $scope.onSaveCallback !== 'undefined' && !angular.isArray($scope.onSaveCallback))
                     $scope.onSaveCallback = [ $scope.onSaveCallback ];
 
+                $scope.$watch('dirtyFlag',
+                    function(newVal, oldVal) {
+                        if (newVal && newVal != oldVal && !$scope.opac_iframe) {
+                            $($window).on('beforeunload', function(){
+                                return 'There is unsaved data in this record.'
+                            });
+                        } else {
+                            if (!$scope.opac_iframe)
+                                $($window).off('beforeunload');
+                        }
+                    }
+                );
+
                 MARC21.Record.delimiter = '$';
 
                 $scope.enable_fast_add = false;
@@ -1426,6 +1439,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                         return egCore.pcrud.create(
                             $scope.Record()
                         ).then(function(bre) {
+                            $scope.dirtyFlag = false;
                             $scope.recordId = bre.id(); 
                             $scope.caretRecId = $scope.recordId;
                             if ($scope.enable_fast_add) {
