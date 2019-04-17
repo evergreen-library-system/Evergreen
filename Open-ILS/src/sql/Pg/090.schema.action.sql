@@ -469,7 +469,8 @@ CREATE TABLE action.hold_request (
 	mint_condition  BOOL NOT NULL DEFAULT TRUE,
 	shelf_expire_time TIMESTAMPTZ,
 	current_shelf_lib INT REFERENCES actor.org_unit DEFERRABLE INITIALLY DEFERRED,
-    behind_desk BOOLEAN NOT NULL DEFAULT FALSE
+    behind_desk BOOLEAN NOT NULL DEFAULT FALSE,
+	hopeless_date		TIMESTAMP WITH TIME ZONE
 );
 ALTER TABLE action.hold_request ADD CONSTRAINT sms_check CHECK (
     sms_notify IS NULL

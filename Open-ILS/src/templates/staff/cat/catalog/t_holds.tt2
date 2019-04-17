@@ -129,6 +129,7 @@
   <eg-grid-field label="[% l('Shelf Expire Time') %]" path='hold.shelf_expire_time' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Current Shelf Library') %]" path='hold.current_shelf_lib' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Behind Desk') %]" path='hold.behind_desk' datatype="bool" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Hopeless Date') %]" path='hold.hopeless_date' datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]" path='hold.hold_status' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Clearable') %]" path='hold.clear_me' datatype="bool" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Is Staff-placed Hold') %]" path='hold.is_staff_hold' datatype="bool" hidden></eg-grid-field>

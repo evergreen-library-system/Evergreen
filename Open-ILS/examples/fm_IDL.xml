@@ -4603,6 +4603,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field name="copy_active" reporter:datatype="bool" reporter:label="Sets Item Active"/>
             <field name="restrict_copy_delete" reporter:datatype="bool" reporter:label="Restrict Deletion"/>
             <field name="is_available" reporter:datatype="bool" reporter:label="Available"/>
+            <field name="hopeless_prone" reporter:datatype="bool" reporter:label="Prone to Hopeless Holds?"/>
 		</fields>
 		<links/>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
@@ -6574,6 +6575,7 @@ SELECT  usr,
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link" />
+			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -6739,6 +6741,7 @@ SELECT  usr,
 			<field reporter:label="Is Staff Hold?" name="is_staff_hold" reporter:datatype="bool" />
 			<field reporter:label="Potential Copies" name="potential_copies" reporter:datatype="int" />
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
+			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>
@@ -6810,6 +6813,7 @@ SELECT  usr,
 			<field reporter:label="Current Shelf Lib" name="current_shelf_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Behind Desk" name="behind_desk" reporter:datatype="bool"/>
 			<field reporter:label="Acquisition Request" name="acq_request" reporter:datatype="link" />
+			<field reporter:label="Hopeless Date" name="hopeless_date" reporter:datatype="timestamp"/>
 		</fields>
 		<links>
 			<link field="fulfillment_lib" reltype="has_a" key="id" map="" class="aou"/>

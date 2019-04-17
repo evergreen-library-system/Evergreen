@@ -203,6 +203,11 @@ sub init {
 
     # Map of org id to 1. Any org in the map is closed.
     $self->{closed_orgs} = {map {$_ => 1} @closed_orgs};
+
+    my $hopeless_prone = $self->editor->search_config_copy_status({
+        hopeless_prone => 't'
+    });
+    $self->{hopeless_prone_status_ids} = { map { $_->id => 1} @{ $hopeless_prone } };
 }
 
 
@@ -626,6 +631,59 @@ sub update_copy_maps {
     return 1 if $resp && @$resp;
 
     return $self->exit_targeter("Error creating hold copy maps", 1);
+}
+
+# Hopeless Date logic based on copy map
+sub handle_hopeless_date {
+    my ($self) = @_;
+    my $e = $self->editor;
+    my $hold = $self->hold;
+    my $need_update = 0;
+
+    # If copy map is empty and hopeless date is not already set,
+    # then set it. Otherwise, let's check the items for Hopeless
+    # Prone statuses.  If all are hopeless then set the hopeless
+    # date if needed.  If at least one is not hopeless, then
+    # clear the the hopeless date if not already unset.
+
+    if (scalar(@{$self->copies}) == 0) {
+        $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): no copies');
+        if (!$hold->hopeless_date) {
+            $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): setting hopeless_date');
+            $hold->hopeless_date('now');
+            $need_update = 1;
+        }
+    } else {
+        my $all_hopeless = 1;
+        foreach my $copy_hash (@{$self->copies}) {
+            if (!$self->parent->{hopeless_prone_status_ids}->{$copy_hash->{status}}) {
+                $all_hopeless = 0;
+            }
+        }
+        if ($all_hopeless) {
+            $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): all copies have hopeless prone status');
+            if (!$hold->hopeless_date) {
+                $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): setting hopeless_date');
+                $hold->hopeless_date('now');
+                $need_update = 1;
+            }
+        } else {
+            $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): at least one copy without a hopeless prone status');
+            if ($hold->hopeless_date) {
+                $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): clearing hopeless_date');
+                $hold->clear_hopeless_date;
+                $need_update = 1;
+            }
+        }
+    }
+
+    if ($need_update) {
+        $logger->debug('Hopeless Holds logic (hold id ' . $hold->id . '): attempting update');
+        $e->update_action_hold_request($hold)
+            or return $self->exit_targeter(
+                "Error updating Hopeless Date for hold request", 1);
+        # FIXME: sanity-check, will a commit happen further down the line for all use cases?
+    }
 }
 
 # unique set of circ lib IDs for all in-progress copy blobs.
@@ -1263,6 +1321,10 @@ sub target {
     return unless $self->handle_expired_hold;
     return unless $self->get_hold_copies;
     return unless $self->update_copy_maps;
+
+    # Hopeless Date logic based on copy map
+
+    $self->handle_hopeless_date;
 
     # Confirm that we have something to work on.  If we have no
     # copies at this point, there's also nothing to recall.
