@@ -1584,6 +1584,9 @@ angular.module('egGridMod',
                 idl_class.fields,
                 function(field) {
                     if (field.virtual) return;
+                    // Columns declared in the markup take precedence
+                    // of matching auto-columns.
+                    if (cols.findColumn(field.name)) return;
                     if (field.datatype == 'link' || field.datatype == 'org_unit') {
                         // if the field is a link and the linked class has a
                         // "selector" field specified, use the selector field
