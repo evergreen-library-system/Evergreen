@@ -489,7 +489,7 @@
 
             <div class="row pad-vert"></div>
 
-            <div class="row" ng-repeat="sc in statcats" ng-show="statcat_visible(sc.owner().id())">
+            <div class="row" ng-repeat="sc in statcats | orderBy:['owner().name()','name()']" ng-show="statcat_visible(sc.owner().id())">
                 <div class="col-xs-12">
                     <div class="row bg-info">
                         <div class="col-xs-12">
