@@ -1,5 +1,5 @@
 /**
- * Common code for mananging holdings
+ * Common code for mananging holds
  */
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
