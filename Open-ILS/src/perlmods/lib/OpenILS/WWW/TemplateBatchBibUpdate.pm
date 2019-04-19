@@ -421,7 +421,7 @@ sub show_template {
                 { data : cbreb.toStoreData(
                         fieldmapper.standardRequest(
                             ['open-ils.actor','open-ils.actor.container.retrieve_by_class.authoritative'],
-                            [u.authtoken, u.user.id(), 'biblio', 'staff_client']
+                            [u.authtoken, u.user.id(), 'biblio', ['staff_client','vandelay_queue']]
                         )
                     )
                 }
