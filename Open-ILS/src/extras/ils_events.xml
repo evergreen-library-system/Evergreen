@@ -704,7 +704,9 @@
 	<event code='1881' textcode='PERMISSION_GRP_PENALTY_THRESHOLD_NOT_FOUND'>
 		<desc xml:lang='en-US'>The requested permission_grp_penalty_threshold was not found</desc>
 	</event>
-
+    <event code='1882' textcode='RECORD_REFERENCED_BY_LINEITEM'>
+        <desc xml:lang="en-US">The selected bib record has an open lineitem order referencing it.</desc>
+    </event>
 
 	<event code='1700' textcode='NON_CAT_TYPE_EXISTS'>
 		<desc xml:lang="en-US"> The non-cataloged type object already exists </desc>

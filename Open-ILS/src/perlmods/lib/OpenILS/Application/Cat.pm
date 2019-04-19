@@ -1296,6 +1296,17 @@ sub delete_bib_record {
     return $e->die_event unless $e->allowed('DELETE_RECORD', $e->requestor->ws_ou);
     my $vols = $e->search_asset_call_number({record=>$rec_id, deleted=>'f'});
     return OpenILS::Event->new('RECORD_NOT_EMPTY', payload=>$rec_id) if @$vols;
+    my $acq_li_count = $e->json_query({
+        select => {jub => [{column => 'id', transform => 'count'}]},
+    from => 'jub',
+    where => {
+        '+jub' => {
+                 eg_bib_id => $rec_id,
+                 state => ['new','pending-order','on-order']
+            }
+        }
+    })->[0];
+    return OpenILS::Event->new('RECORD_REFERENCED_BY_LINEITEM', payload => $rec_id) if ($acq_li_count->{id} > 0);
     my $evt = OpenILS::Application::Cat::BibCommon->delete_rec($e, $rec_id);
     if($evt) { $e->rollback; return $evt; }   
     $e->commit;
