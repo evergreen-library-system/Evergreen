@@ -1090,8 +1090,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         });
     }
 
-    $scope.$watch('defaults.statcat_filter', function() {
-        $scope.saveDefaults();
+    $scope.$watch('defaults.statcat_filter', function(n,o) {
+        if (n && n != o)
+            $scope.saveDefaults();
     });
     $scope.$watch('defaults.auto_gen_barcode', function (n,o) {
         itemSvc.auto_gen_barcode = n
