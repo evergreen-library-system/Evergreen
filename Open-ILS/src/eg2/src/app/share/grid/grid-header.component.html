@@ -24,9 +24,9 @@
       (click)="sortOneColumn(col)">
       <span class="eg-grid-header-cell-sort-label">{{col.label}}</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
-        *ngIf="isColumnSorting(col, 'ASC')">arrow_downwards</span>
+        *ngIf="isColumnSorting(col, 'ASC')">arrow_upwards</span>
       <span class="material-icons eg-grid-header-cell-sort-arrow"
-        *ngIf="isColumnSorting(col, 'DESC')">arrow_upwards</span>
+        *ngIf="isColumnSorting(col, 'DESC')">arrow_downwards</span>
     </a>
     <span *ngIf="!col.isSortable">{{col.label}}</span>
   </div>
