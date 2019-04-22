@@ -989,6 +989,19 @@ angular.module('egCoreMod')
         return deferred.promise;
     }
 
+    service.hostname = function() {
+        if (service.hatchAvailable) {
+            return service.attemptHatchDelivery({action : 'hostname'})
+            .then(
+                function(name) { return name; },
+                // Gracefully handle case where Hatch has not yet been 
+                // updated to include the hostname command.
+                function() {return null}
+            );
+        } 
+        return $q.when(null);
+    }
+
     // The only requirement for opening Hatch is that the DOM be loaded.
     // Open the connection now so its state will be immediately available.
     service.openHatch();

@@ -106,6 +106,15 @@ export class HatchService {
         }
     }
 
+    // Returns promise of null if Hatch is not available.
+    hostname(): Promise<string> {
+        const msg = new HatchMessage({action: 'hostname'});
+        return this.sendRequest(msg).then(
+            (m: HatchMessage) => m.response,
+            (err) => null
+        );
+    }
+
     getItem(key: string): Promise<any> {
         const msg = new HatchMessage({action: 'get', key: key});
         return this.sendRequest(msg).then((m: HatchMessage) => m.response);
