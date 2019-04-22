@@ -828,6 +828,10 @@ function($scope , $q , $window , $location , egCore , egAlertDialog , workstatio
 
     console.log('set context org to ' + $scope.contextOrg);
 
+    egCore.hatch.hostname().then(function(name) {
+        $scope.newWSName = name || '';
+    });
+
     // fetch workstation reg perms
     egCore.perm.hasPermAt('REGISTER_WORKSTATION', true)
     .then(function(orgList) { 

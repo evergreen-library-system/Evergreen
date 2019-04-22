@@ -8,6 +8,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {EventService} from '@eg/core/event.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {HatchService} from '@eg/core/hatch.service';
 
 // Slim version of the WS that's stored in the cache.
 interface Workstation {
@@ -46,6 +47,7 @@ export class WorkstationsComponent implements OnInit {
         private store: StoreService,
         private auth: AuthService,
         private org: OrgService,
+        private hatch: HatchService,
         private perm: PermService
     ) {}
 
@@ -54,9 +56,14 @@ export class WorkstationsComponent implements OnInit {
 
         .then(wsList => {
             this.workstations = wsList || [];
-            return this.store.getDefaultWorkstation();
 
-        }).then(def => {
+            // Populate the new WS name field with the hostname when available.
+            return this.setNewName();
+
+        }).then(
+            ok => this.store.getDefaultWorkstation()
+
+        ).then(def => {
             this.defaultName = def;
             this.selectedName = this.auth.workstation() || this.defaultName;
             const rm = this.route.snapshot.paramMap.get('remove');
@@ -101,11 +108,10 @@ export class WorkstationsComponent implements OnInit {
 
         this.workstations = this.workstations.filter(w => w.name !== name);
         this.store.setWorkstations(this.workstations);
+    }
 
-        if (this.defaultName === name) {
-            this.defaultName = null;
-            this.store.removeWorkstations();
-        }
+    setNewName() {
+        this.hatch.hostname().then(name => this.newName = name || '');
     }
 
     canDeleteSelected(): boolean {
