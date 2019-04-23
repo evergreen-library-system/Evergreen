@@ -72,16 +72,16 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
     var service = {};
 
     service.get_all = function() {
-        return egCore.hatch.getItem('eg.workstation.all')
+        return egCore.hatch.getWorkstations()
         .then(function(all) { return all || [] });
     }
 
     service.get_default = function() {
-        return egCore.hatch.getItem('eg.workstation.default');
+        return egCore.hatch.getDefaultWorkstation();
     }
 
     service.set_default = function(name) {
-        return egCore.hatch.setItem('eg.workstation.default', name);
+        return egCore.hatch.setDefaultWorkstation(name);
     }
 
     service.register_workstation = function(base_name, name, org_id) {
@@ -140,7 +140,7 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
         return service.get_all()
         .then(function(all) {
             all.push(new_ws);
-            return egCore.hatch.setItem('eg.workstation.all', all)
+            return egCore.hatch.setWorkstations(all)
             .then(function() { return new_ws });
         });
     }
@@ -150,13 +150,13 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
     service.remove_workstation = function(name) {
         console.debug('Removing workstation: ' + name);
 
-        return egCore.hatch.getItem('eg.workstation.all')
+        return egCore.hatch.getWorkstations()
 
         // remove from list of all workstations
         .then(function(all) {
             if (!all) all = [];
             var keep = all.filter(function(ws) {return ws.name != name});
-            return egCore.hatch.setItem('eg.workstation.all', keep)
+            return egCore.hatch.setWorkstations(keep);
 
         }).then(function() { 
 
@@ -165,7 +165,7 @@ function($q , $timeout , $location , egCore , egConfirmDialog) {
         }).then(function(def) {
             if (def == name) {
                 console.debug('Removing default workstation: ' + name);
-                return egCore.hatch.removeItem('eg.workstation.default');
+                return egCore.hatch.removeDefaultWorkstation();
             }
         });
     }
@@ -234,8 +234,13 @@ function($scope , egCore) {
     $scope.setContentType = function(type) { $scope.contentType = type }
     $scope.setContentType('text/plain');
 
+    var hatchPrinting = false;
+    egCore.hatch.usePrinting().then(function(answer) {
+        hatchPrinting = answer;
+    });
+
     $scope.useHatchPrinting = function() {
-        return egCore.hatch.usePrinting();
+        return hatchPrinting;
     }
 
     $scope.hatchIsOpen = function() {
@@ -959,15 +964,18 @@ function($scope , egCore , ngToast) {
     var hatch = egCore.hatch;  // convenience
 
     $scope.hatch_available = hatch.hatchAvailable;
-    $scope.hatch_printing = hatch.usePrinting();
     $scope.hatch_settings = hatch.useSettings();
     $scope.hatch_offline  = hatch.useOffline();
+
+    hatch.usePrinting().then(function(answer) {
+        $scope.hatch_printing = answer;
+    });
 
     // Apply Hatch settings as changes occur in the UI.
     
     $scope.$watch('hatch_printing', function(newval) {
         if (typeof newval != 'boolean') return;
-        hatch.setLocalItem('eg.hatch.enable.printing', newval);
+        hatch.setItem('eg.hatch.enable.printing', newval);
     });
 
     $scope.$watch('hatch_settings', function(newval) {

@@ -360,7 +360,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
             if (setting !== undefined) $scope.do_check_changed = true;
         });
 
-        egCore.hatch.getItem('eg.workstation.all')
+        egCore.hatch.getWorkstations()
         .then(function(all) {
             if (all && all.length) {
                 $scope.workstations = all;
@@ -381,7 +381,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
                     }
                 } else {
                     // no workstation requested; use the default
-                    egCore.hatch.getItem('eg.workstation.default')
+                    egCore.hatch.getDefaultWorkstation()
                     .then(function(ws) {
                         var ws_obj = all.filter(function(w) {
                             return ws == w.name

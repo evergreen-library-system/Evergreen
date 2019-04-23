@@ -36,10 +36,14 @@ export class StaffLoginComponent implements OnInit {
         // Focus username
         this.renderer.selectRootElement('#username').focus();
 
-        this.workstations = this.store.getLocalItem('eg.workstation.all');
-        this.args.workstation =
-            this.store.getLocalItem('eg.workstation.default');
-        this.applyWorkstation();
+        this.store.getWorkstations()
+        .then(wsList => {
+            this.workstations = wsList;
+            return this.store.getDefaultWorkstation();
+        }).then(def => {
+            this.args.workstation = def;
+            this.applyWorkstation();
+        });
     }
 
     applyWorkstation() {

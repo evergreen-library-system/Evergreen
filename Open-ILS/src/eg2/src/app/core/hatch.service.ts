@@ -22,7 +22,7 @@ export class HatchMessage {
     }
 }
 
-@Injectable()
+@Injectable({providedIn: 'root'})
 export class HatchService {
 
     isAvailable: boolean;
@@ -44,7 +44,7 @@ export class HatchService {
         // When the Hatch extension loads, it tacks an attribute onto
         // the top-level documentElement to indicate it's available.
         if (!window.document.documentElement.getAttribute('hatch-is-open')) {
-            console.warn('Could not connect to Hatch');
+            console.debug('Could not connect to Hatch');
             return this.isAvailable = false;
         }
 
@@ -104,6 +104,21 @@ export class HatchService {
             console.error(`Hatch request returned status ${msg.status}`, msg);
             msg.rejector(msg);
         }
+    }
+
+    getItem(key: string): Promise<any> {
+        const msg = new HatchMessage({action: 'get', key: key});
+        return this.sendRequest(msg).then((m: HatchMessage) => m.response);
+    }
+
+    setItem(key: string, val: any): Promise<any> {
+        const msg = new HatchMessage({action: 'set', key: key, content: val});
+        return this.sendRequest(msg).then((m: HatchMessage) => m.response);
+    }
+
+    removeItem(key: string): Promise<any> {
+        const msg = new HatchMessage({action: 'remove', key: key});
+        return this.sendRequest(msg).then((m: HatchMessage) => m.response);
     }
 }
 

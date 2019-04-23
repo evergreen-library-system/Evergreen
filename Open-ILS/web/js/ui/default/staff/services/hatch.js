@@ -44,36 +44,11 @@ angular.module('egCoreMod')
     service.serverSettingSummaries = {};
 
     /**
-     * List string prefixes for On-Call storage keys. On-Call keys
-     * are those that can be set/get/remove'd from localStorage when
-     * Hatch is not avaialable, even though Hatch is configured as the
-     * primary storage location for the key in question.  On-Call keys
-     * are those that allow the user to login and perform basic admin
-     * tasks (like disabling Hatch) even when Hatch is down.
-     * AKA Browser Staff Run Level 3.
-     * Note that no attempt is made to synchronize data between Hatch
-     * and localStorage for On-Call keys.  Only one destation is active 
-     * at a time and each maintains its own data separately.
-     */
-    service.onCallPrefixes = ['eg.workstation'];
-    
-    // Returns true if the key can be set/get in localStorage even when 
-    // Hatch is not available.
-    service.keyIsOnCall = function(key) {
-        var oncall = false;
-        angular.forEach(service.onCallPrefixes, function(pfx) {
-            if (key.match(new RegExp('^' + pfx))) 
-                oncall = true;
-        });
-        return oncall;
-    }
-
-    /**
      * Settings with these prefixes will always live in the browser.
      */
     service.browserOnlyPrefixes = [
-        'eg.workstation', 
-        'eg.hatch',
+        'eg.hatch.enable.settings', // deprecated
+        'eg.hatch.enable.offline', // deprecated
         'eg.cache',
         'current_tag_table_marc21_biblio',
         'FFPos',
@@ -233,24 +208,169 @@ angular.module('egCoreMod')
         );
     }
 
-    // TODO: once Hatch is printing-only, should probably store
-    // this preference on the server.
     service.usePrinting = function() {
-        return service.getLocalItem('eg.hatch.enable.printing');
+        return service.getItem('eg.hatch.enable.printing');
     }
 
+    // DEPRECATED
     service.useSettings = function() {
         return service.getLocalItem('eg.hatch.enable.settings');
     }
 
+    // DEPRECATED
     service.useOffline = function() {
         return service.getLocalItem('eg.hatch.enable.offline');
+    }
+
+    service.getWorkstations = function() {
+        if (service.hatchAvailable) {
+            return service.mergeWorkstations().then(
+                function() {
+                    service.removeLocalItem('eg.workstation.all');
+                    return service.getRemoteItem('eg.workstation.all');
+                }
+            );
+        } else {
+            return $q.when(service.getLocalItem('eg.workstation.all'));
+        }
+    }
+
+    // See if any workstations are stored in local storage.  If so, also
+    // see if we have any stored in Hatch.  If both, merged workstations
+    // from localStorage in Hatch storage, skipping any whose name
+    // collide with a workstation in Hatch.  If none exist in Hatch,
+    // copy the localStorage workstations over wholesale.
+    service.mergeWorkstations = function() {
+        var existing = service.getLocalItem('eg.workstation.all');
+
+        if (!existing || existing.length === 0) {
+            return $q.when();
+        }
+
+        return service.getRemoteItem('eg.workstation.all')
+        .then(function(inHatch) {
+
+            if (!inHatch || inHatch.length === 0) {
+                // Nothing to merge, copy the data over directly
+                console.debug('No workstations in hatch to merge');
+                return service.setRemoteItem('eg.workstation.all', existing);
+            }
+
+            var addMe = [];
+            existing.forEach(function(ws) {
+                var match = inHatch.filter(
+                    function(w) {return w.name === ws.name})[0];
+                if (!match) {
+                    console.log(
+                        'Migrating workstation from local storage to hatch: ' 
+                        + ws.name
+                    );
+                    addMe.push(ws);
+                }
+            });
+            inHatch = inHatch.concat(addMe);
+            return service.setRemoteItem('eg.workstation.all', inHatch);
+        });
+    }
+
+    service.getDefaultWorkstation = function() {
+
+        if (service.hatchAvailable) {
+            return service.getRemoteItem('eg.workstation.default')
+            .then(function(name) {
+                if (name) {
+                    // We have a default in Hatch, remove any lingering
+                    // value from localStorage.
+                    service.removeLocalItem('eg.workstation.default');
+                    return name;
+                }
+
+                name = service.getLocalItem('eg.workstation.default');
+                if (name) {
+                    console.log('Migrating default workstation to Hatch ' + name);
+                    return service.setRemoteItem('eg.workstation.default', name)
+                    .then(function() {return name;});
+                }
+
+                return null;
+            });
+        } else {
+            return $q.when(service.getLocalItem('eg.workstation.default'));
+        }
+    }
+
+    service.setWorkstations = function(workstations, isJson) {
+        if (service.hatchAvailable) {
+            return service.setRemoteItem('eg.workstation.all', workstations);
+        } else {
+            return $q.when(
+                service.setLocalItem('eg.workstation.all', workstations, isJson));
+        }
+    }
+
+    service.setDefaultWorkstation = function(name, isJson) {
+        if (service.hatchAvailable) {
+            return service.setRemoteItem('eg.workstation.default', name);
+        } else {
+            return $q.when(
+                service.setLocalItem('eg.workstation.default', name, isJson));
+        }
+    }
+
+    service.removeWorkstations = function() {
+        if (service.hatchAvailable) {
+            return service.removeRemoteItem('eg.workstation.all');
+        } else {
+            return $q.when(
+                service.removeLocalItem('eg.workstation.all'));
+        }
+    }
+
+    service.removeDefaultWorkstation = function() {
+        if (service.hatchAvailable) {
+            return service.removeRemoteItem('eg.workstation.default');
+        } else {
+            return $q.when(
+                service.removeLocalItem('eg.workstation.default'));
+        }
+    }
+
+
+    // Workstation actions always use Hatch when it's available
+    service.getWorkstationItem = function(key) {
+        if (service.hatchAvailable) {
+            return service.getRemoteItem(key);
+        } else {
+            return $q.when(service.getLocalItem(key));
+        }
+    }
+
+    service.setWorkstationItem = function(key, value) {
+        if (service.hatchAvailable) {
+            return service.setRemoteItem(key, value);
+        } else {
+            return $q.when(service.setLocalItem(key, value));
+        }
+    }
+
+    service.removeWorkstationItem = function(key) {
+        if (service.hatchAvailable) {
+            return service.removeRemoteItem(key);
+        } else {
+            return $q.when(service.removeLocalItem(key));
+        }
+    }
+
+    service.keyIsWorkstation = function(key) {
+        return Boolean(key.match(/eg.workstation/));
     }
 
     // get the value for a stored item
     service.getItem = function(key) {
 
-        console.debug('getting item: ' + key);
+        if (service.keyIsWorkstation(key)) {
+            return service.getWorkstationItem(key);
+        }
 
         if (!service.keyStoredInBrowser(key)) {
             return service.getServerItem(key);
@@ -260,14 +380,7 @@ angular.module('egCoreMod')
 
         service.getBrowserItem(key).then(
             function(val) { deferred.resolve(val); },
-
             function() { // Hatch error
-                if (service.keyIsOnCall(key)) {
-                    console.warn("Unable to getItem from Hatch: " + key + 
-                        ". Retrieving item from local storage instead");
-                    deferred.resolve(service.getLocalItem(key));
-                }
-
                 deferred.reject("Unable to getItem from Hatch: " + key);
             }
         );
@@ -388,6 +501,10 @@ angular.module('egCoreMod')
      */
     service.setItem = function(key, value) {
 
+        if (service.keyIsWorkstation(key)) {
+            return service.setWorkstationItem(key, value);
+        }
+
         if (!service.keyStoredInBrowser(key)) {
             return service.setServerItem(key, value);
         }
@@ -397,13 +514,6 @@ angular.module('egCoreMod')
             function(val) {deferred.resolve(val);},
 
             function() { // Hatch error
-
-                if (service.keyIsOnCall(key)) {
-                    console.warn("Unable to setItem in Hatch: " + 
-                        key + ". Setting in local storage instead");
-
-                    deferred.resolve(service.setLocalItem(key, value));
-                }
                 deferred.reject("Unable to setItem in Hatch: " + key);
             }
         );
@@ -627,13 +737,6 @@ angular.module('egCoreMod')
         if (service.hatchAvailable)
             return service.appendRemoteItem(key, value);
 
-        if (service.keyIsOnCall(key)) {
-            console.warn("Unable to appendItem in Hatch: " + 
-                key + ". Setting in local storage instead");
-
-            return $q.when(service.appendLocalItem(key, value));
-        }
-
         console.error("Unable to appendItem in Hatch: " + key);
         return $q.reject();
     }
@@ -686,6 +789,10 @@ angular.module('egCoreMod')
     // remove a stored item
     service.removeItem = function(key) {
 
+        if (service.keyIsWorkstation(key)) {
+            return service.removeWorkstationItem(key);
+        }
+
         if (!service.keyStoredInBrowser(key)) {
             return service.removeServerItem(key);
         }
@@ -694,14 +801,6 @@ angular.module('egCoreMod')
         service.removeBrowserItem(key).then(
             function(response) {deferred.resolve(response);},
             function() { // Hatch error
-
-                if (service.keyIsOnCall(key)) {
-                    console.warn("Unable to removeItem from Hatch: " + key + 
-                        ". Removing item from local storage instead");
-
-                    deferred.resolve(service.removeLocalItem(key));
-                }
-
                 deferred.reject("Unable to removeItem from Hatch: " + key);
             }
         );

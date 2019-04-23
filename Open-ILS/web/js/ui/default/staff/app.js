@@ -60,7 +60,7 @@ function($routeProvider , $locationProvider) {
         // if the user is already logged in, jump to splash page
         if (egCore.auth.user()) $location.path('/');
 
-        egCore.hatch.getItem('eg.workstation.all')
+        egCore.hatch.getWorkstations()
         .then(function(all) {
             if (all && all.length) {
                 $scope.workstations = all.map(function(a) { return a.name });
@@ -79,7 +79,7 @@ function($routeProvider , $locationProvider) {
                     }
                 } else {
                     // no workstation requested; use the default
-                    egCore.hatch.getItem('eg.workstation.default')
+                    egCore.hatch.getDefaultWorkstation()
                     .then(function(ws) {
                         $scope.args = {workstation : ws}
                     });
