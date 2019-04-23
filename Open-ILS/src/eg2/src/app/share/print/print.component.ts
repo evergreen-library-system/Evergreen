@@ -2,7 +2,7 @@ import {Component, OnInit, TemplateRef, ElementRef, Renderer2} from '@angular/co
 import {PrintService, PrintRequest} from './print.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {HatchService, HatchMessage} from './hatch.service';
+import {HatchService, HatchMessage} from '@eg/core/hatch.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
 
@@ -26,6 +26,8 @@ export class PrintComponent implements OnInit {
 
     printQueue: PrintRequest[];
 
+    useHatch: boolean;
+
     constructor(
         private renderer: Renderer2,
         private elm: ElementRef,
@@ -45,6 +47,9 @@ export class PrintComponent implements OnInit {
 
         this.htmlContainer =
             this.renderer.selectRootElement('#eg-print-html-container');
+
+        this.serverStore.getItem('eg.hatch.enable.printing')
+            .then(use => this.useHatch = use);
     }
 
     handlePrintRequest(printReq: PrintRequest) {
@@ -163,17 +168,12 @@ export class PrintComponent implements OnInit {
             show_dialog: printReq.showDialog
         });
 
-        if (this.useHatch()) {
+        if (this.useHatch) {
             this.printViaHatch(printReq);
         } else {
             // Here the needed HTML is already in the page.
             window.print();
         }
-    }
-
-    useHatch(): boolean {
-        return this.store.getLocalItem('eg.hatch.enable.printing')
-            && this.hatch.connect();
     }
 
     printViaHatch(printReq: PrintRequest) {

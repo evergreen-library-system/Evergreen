@@ -9,6 +9,7 @@ import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {PermService} from '@eg/core/perm.service';
 import {OrgService} from '@eg/core/org.service';
 import {FormatService} from '@eg/core/format.service';
+import {HatchService} from '@eg/core/hatch.service';
 
 const LOGIN_PATH = '/staff/login';
 const WS_MANAGE_PATH = '/staff/admin/workstation/workstations/manage';
@@ -26,6 +27,7 @@ export class StaffResolver implements Resolve<Observable<any>> {
         private router: Router,
         private route: ActivatedRoute,
         private ngLocation: Location,
+        private hatch: HatchService,
         private store: StoreService,
         private org: OrgService,
         private net: NetService,
@@ -37,6 +39,8 @@ export class StaffResolver implements Resolve<Observable<any>> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<any> {
+
+        this.hatch.connect();
 
         // Staff cookies stay in /$base/staff/
         // NOTE: storing session data at '/' so it can be shared by
