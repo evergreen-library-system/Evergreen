@@ -29,6 +29,15 @@ image::media/marcoverlay4.png[]
 9. When you are satisfied that you have selected the correct merge profile, click the *Merge* button in the bottom right corner.
 10. Note that merge profiles that contain a preserve field specification are not available to be chosen in this interface, as they would have the effect of reversing which bibliographic record is considered the target of the merge.
 
+Track Record Merges
+^^^^^^^^^^^^^^^^^^^
+
+When 2 or more bib records are merged in a record bucket, all records involved are stamped with a new merge_date value. For any bib record, this field indicates the last time it was involved in a merge. At the same time, all subordinate records (i.e. those deleted as a product of the merge) are stamped with a merged_to value indicating which bib record the source record was merged with.
+
+In the browser client bib record display, a warning alert now appears along the top of the page (below the Deleted alert) indicating when a record was used in a merge, when it was merged, and which record it was merge with, rendered as a link to the target record.
+
+image::media/merge_tracking.png[merge message with date]
+
 Merge Records Using Z39.50
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
