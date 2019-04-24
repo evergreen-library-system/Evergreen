@@ -45,6 +45,10 @@ This is a complete list of the receipts currently in use in Evergreen.
 *Renew*:: List of items that have been renewed using the Renew Item Screen.
 *Transit List*:: Prints the list of items in-transit from the Transit List.
 *Transit Slip*:: This is printed when an items goes in-transit to another location.
+*Offline Checkout*::A basic checkout receipt for Offline use. 
+*Offline Checkin*::A basic listing of times checked in Offline.
+*Offline Renew*::A basic listing of items renewed in Offline.
+*Offline In-House Use*::Listing of items used in house in Offline. 
 
 
 Editing Receipts
@@ -228,15 +232,14 @@ once you import the receipts on the new machine.
 
 Exporting templates
 ^^^^^^^^^^^^^^^^^^^
-As you can only save a template on to the computer you are working on you will
+As you can only save a template on to the computer you are working (*Save Locally*) on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
 computer in the workroom that you use to checkin items or capture holds with)
 
-. Export.  
-. Select the location to save the template to, name the template, and click
-*Save*.
-. Click OK. 
+. Export Customized Templates.
+. Saves a “print_templates.json” file in the downloads folder.
+NOTE: You can rename a the file to better track your changes.
 
 Importing Templates
 ^^^^^^^^^^^^^^^^^^^
