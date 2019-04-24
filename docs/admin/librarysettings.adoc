@@ -20,19 +20,19 @@ together. You may browse the list or search for the entry you want to
 edit. Type in your search term in the filter box. You may clear or
 re-apply the filter by clicking *Clear Filter* or *Filter*.
 +
-image::media/lse-1.png[]
+image::media/lse-1.png[Filtering the Library Settings Editor List]
 +
 3. To edit an entry click *Edit* in the line.
 4. Read the instruction in the pop-up window. Make the change. Click
 *Update Setting* to save the change. Click *Delete Setting* if you wish
 to delete it.
 +
-image::media/lse-2.png[]
+image::media/lse-2.png[Editing a Library Setting]
 +
 5. Click *History* to view the previous values, if any, of a setting.
 You can revert back to an old value by clicking *revert*.
 +
-image::media/lse-3.png[]
+image::media/lse-3.png[Library Setting History]
 
 NOTE: Please note that different settings may require different data
 formats, which are listed in the <<_settings_overview,Settings
@@ -50,13 +50,13 @@ Those settings displayed on the screen are copied to the clipboard.
 Paste the contents to a text editor, such as Notepad. Save the file on
 your computer.
 +
-image::media/lse-4.png[]
+image::media/lse-4.png[Exporting Library Settings]
 +
 2. To import library settings, click the *Import* button on the *Library
 Settings Editor* screen. Open your previously saved file and copy the
 contents. Click *Paste* in the pop-up window. Click *Submit*.
 +
-image::media/lse-5.png[]
+image::media/lse-5.png[Importing Library Settings]
 
 Settings Overview
 ~~~~~~~~~~~~~~~~~
@@ -83,7 +83,7 @@ values.
 |Fund Spending Limit for Block|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will be blocked.|Number|
 |Fund Spending Limit for Warning|When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.|Number|
 |Rollover Distribution Formulae Funds|During fiscal rollover, update distribution formulae to use new funds|True/False|
-|Set copy creator as receiver|When receiving am item in acquisitions, set the item "creator" to be the staff that received the item|True/False|
+|Set copy creator as receiver|When receiving an item in acquisitions, set the item "creator" to be the staff that received the item|True/False|
 |Temporary barcode prefix|Temporary barcode prefix added to temporary item records.|Text|
 |Temporary call number prefix|Temporary call number prefix|Text|
 |Upload Activate PO|Activate the purchase order by default during ACQ file upload|True/False|
