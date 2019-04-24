@@ -83,7 +83,7 @@ working points in increasing importance.
 . After creating a match point, drag the completed match point under the folder
   with the appropriately-named Boolean folder under the Expression tree.
 +
-image::media/create_match_sets.png[]
+image::media/create_match_sets.png[Creating a Match Point]
 . Click *Save Changes to Expression*.
 
 Quality Metrics
@@ -96,7 +96,7 @@ records and to make importing decisions based on quality.
   as your quality metric.
 * The encoding level record attribute can be one indicator of record quality.
 
-image::media/record_quality_metrics.png[]
+image::media/record_quality_metrics.png[Quality Metric Grid]
 
 Import Item Attributes
 ~~~~~~~~~~~~~~~~~~~~~~
