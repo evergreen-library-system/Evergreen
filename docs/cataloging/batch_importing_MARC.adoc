@@ -148,11 +148,11 @@ Replace Mode
 
 Replace Mode enables you to replace an existing part of the expression tree
 with a new record attribute, MARC tag, or Boolean operator.  For example, if
-the top of the tree is AND, in replace mode, you could change that to an OR.
+the top of the tree is AND, in Replace Mode, you could change that to an OR.
 
 . Create a working match point.
 
-. Click *Enter replace mode*.
+. Click *Enter Replace Mode*.
 
 . Highlight the piece of the tree that you want to replace.
 
