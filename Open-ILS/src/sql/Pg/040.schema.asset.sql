@@ -967,7 +967,8 @@ CREATE TABLE asset.copy_tag (
     index_vector    tsvector NOT NULL,
     staff_note      TEXT,
     pub             BOOLEAN DEFAULT TRUE,
-    owner           INTEGER NOT NULL REFERENCES actor.org_unit (id)
+    owner           INTEGER NOT NULL REFERENCES actor.org_unit (id),
+    url             TEXT
 );
 
 CREATE INDEX asset_copy_tag_label_idx

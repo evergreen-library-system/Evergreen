@@ -12706,6 +12706,7 @@ SELECT  usr,
 			<field reporter:label="Staff Note" name="staff_note" reporter:datatype="text"/>
 			<field reporter:label="Is OPAC Visible?" name="pub" reporter:datatype="bool"/>
 			<field reporter:label="Owner" name="owner" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="URL" name="url" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="tag_type" reltype="has_a" key="code" map="" class="cctt"/>

@@ -236,7 +236,15 @@ END; # FOREACH bib
                 <tr class="copy_tag_row">
                     <td>&nbsp;</td>
                     <td class="copy_tag" colspan="4">
-                        <span class="copy_tag_value">[% tag.value | html %]</span>
+                        <span class="copy_tag_value">
+                            [% IF tag.url %]
+                            <a href="[% tag.url | html %]">
+                            [% END %]
+                                [% tag.value | html %]
+                            [% IF tag.url %]
+                            </a>
+                            [% END %]
+                        </span>
                     </td>
                 <tr>
             [% END %]
