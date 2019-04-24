@@ -1066,6 +1066,15 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
         },
         setSort : function() {
             return ['create_date'];
+        },
+        watchQuery: function() {
+            if (patronSvc.current) {
+                return {
+                    usrgroup : patronSvc.current.usrgroup(),
+                    deleted : 'f'
+                };
+            }
+            return null;
         }
     }
 
@@ -1075,11 +1084,6 @@ function($scope,  $routeParams , $q , $window , $timeout,  $location , egCore ,
         // grid query.
         if (redirect) return;
         // let initTab() fetch the user first so we can know the usrgroup
-
-        grid.setQuery({
-            usrgroup : patronSvc.current.usrgroup(),
-            deleted : 'f'
-        });
         $scope.totals.owed = patronSvc.patron_stats.fines.group_balance_owed;
     });
 
