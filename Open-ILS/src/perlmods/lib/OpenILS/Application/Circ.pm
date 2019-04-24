@@ -1109,7 +1109,11 @@ sub fetch_copy_tags {
         }
     };
 
-    return $e->search_asset_copy_tag([$filter, { join => { acptcm => {} } }]);
+    return $e->search_asset_copy_tag([$filter, {
+        join => { acptcm => {} },
+        flesh => 1,
+        flesh_fields => { acpt => ['tag_type'] }
+    }]);
 }
 
 

@@ -240,7 +240,7 @@ END; # FOREACH bib
                             [% IF tag.url %]
                             <a href="[% tag.url | html %]">
                             [% END %]
-                                [% tag.value | html %]
+                                [% tag.tag_type.label _ ": " _ tag.value | html %]
                             [% IF tag.url %]
                             </a>
                             [% END %]
