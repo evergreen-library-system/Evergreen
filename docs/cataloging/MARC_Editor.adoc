@@ -98,3 +98,16 @@ There are three relevant tables that contain the values that display in the fixe
 . *config.coded_value_map* defines the set of valid values for many of the fixed fields and the translatable, human-friendly labels for them.
 . *config.record_attr_definition* links together the information from the config.marc21_ff_pos_map and  config.coded_value_map tables.
 
+Deleting MARC Records
+^^^^^^^^^^^^^^^^^^^^^
+You can delete MARC records using the MARC Editor.
+
+To Delete a MARC record
++++++++++++++++++++++++
+
+. Retrieve and display the appropriate record in the MARC editor.
+. Click on the _MARC Edit_ tab.
+. Click the *Delete* button.
+. In the modal window, click the *OK/Continue* button to remove the MARC record.
+
+image::media/marc_delete_record_3_3.png[]
