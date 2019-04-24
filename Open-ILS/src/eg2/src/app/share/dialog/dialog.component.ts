@@ -7,6 +7,13 @@ import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap
  * at the root of the template (see ConfirmDialogComponent).
  */
 
+export interface DialogRejectionResponse {
+    // Did the user simply close the dialog without performing an action.
+    dismissed?: boolean;
+    // Relays error, etc. messages from the dialog handler to the caller.
+    message?: string;
+}
+
 @Component({
     selector: 'eg-dialog',
     template: '<ng-template></ng-template>'
@@ -34,7 +41,7 @@ export class DialogComponent implements OnInit {
         this.onOpen$ = new EventEmitter<any>();
     }
 
-    open(options?: NgbModalOptions): Promise<any> {
+    async open(options?: NgbModalOptions): Promise<any> {
 
         if (this.modalRef !== null) {
             console.warn('Dismissing existing dialog');
@@ -55,9 +62,26 @@ export class DialogComponent implements OnInit {
                     resolve(result);
                     this.modalRef = null;
                 },
+
                 (result) => {
+                    // NgbModal creates some result values for us, which
+                    // are outside of our control.  Other dismissal
+                    // reasons are agreed upon by implementing subclasses.
                     console.debug('dialog closed with ' + result);
-                    reject(result);
+
+                    const dismissed = (
+                           result === 0 // body click
+                        || result === 1 // Esc key
+                        || result === 'canceled' // Cancel button
+                        || result === 'cross_click' // modal top-right X
+                    );
+
+                    const rejection: DialogRejectionResponse = {
+                        dismissed: dismissed,
+                        message: result
+                    };
+
+                    reject(rejection);
                     this.modalRef = null;
                 }
             );

@@ -1002,16 +1002,9 @@ sub generate_fines {
     my $circs;
     my $editor = new_editor;
     if ($circ_id) {
-#        my $circ;
-#        if ($circ = action::circulation->search_where( { id => $circ_id, stop_fines => undef } )) {
-#            $circ = action::circulation->retrieve($circ_id)->to_fieldmapper;
-#        } elsif ($circ = booking::reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } )) {
-#            $circ = booking::reservation->retrieve($circ_id)->to_fieldmapper;
-#        }
-#        $circs = [$circ] if ($circ);
         $circs = $editor->search_action_circulation( { id => $circ_id, stop_fines => undef } );
         unless (@$circs) {
-            $circs = $editor->search_booking_reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } );
+            $circs = $editor->search_booking_reservation( { id => $circ_id, return_time => undef, cancel_time => undef } );
         }
     } else {
         $circs = [overdue_circs(undef, 1, 1, 1)];
@@ -1661,7 +1654,7 @@ sub process_recall {
 
     $log->info("Found " . scalar(@$all_copies) . " eligible checked-out copies for recall");
 
-    my $return_date = DateTime->now(time_zone => 'local')->add(seconds => interval_to_seconds($return_interval))->iso8601();
+    my $return_date = DateTime->now(time_zone => 'local')->add(seconds => interval_to_seconds($return_interval));
 
     # Iterate over the checked-out copies to find a copy with a
     # loan period longer than the recall threshold:
@@ -1675,15 +1668,24 @@ sub process_recall {
         my $circ = $circs->[0];
         $log->info("Recalling circ ID : " . $circ->id);
 
+        my $old_due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date));
+
         # Give the user a new due date of either a full recall threshold,
         # or the return interval, whichever is further in the future
-        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold))->iso8601();
-        if (DateTime->compare(DateTime::Format::ISO8601->parse_datetime($threshold_date), DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
+        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold));
+        if (DateTime->compare($threshold_date, $return_date) == 1) {
+            # extend $return_date to threshold
             $return_date = $threshold_date;
+        }
+        # But don't go past the original due date
+        # (the threshold should not be past the due date, but manual edits can cause it to be)
+        if (DateTime->compare($return_date, $old_due_date) == 1) {
+            # truncate $return_date to due date
+            $return_date = $old_due_date;
         }
 
         my $update_fields = {
-            due_date => $return_date,
+            due_date => $return_date->iso8601(),
             renewal_remaining => 0,
         };
 

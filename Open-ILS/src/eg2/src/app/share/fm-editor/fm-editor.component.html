@@ -15,84 +15,51 @@
         </div>
         <div class="col-lg-7">
 
-          <span *ngIf="field.template">
-            <ng-container
-              *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+          <ng-container [ngSwitch]="inputType(field)">
+
+            <ng-container *ngSwitchCase="'template'">
+              <ng-container
+                *ngTemplateOutlet="field.template; context:customTemplateFieldContext(field)">
+              </ng-container> 
             </ng-container> 
-          </span>
 
-          <span *ngIf="!field.template">
+            <ng-container *ngSwitchCase="'readonly'">
+              <span>{{record[field.name]()}}</span>
+            </ng-container>
 
-            <span *ngIf="field.datatype == 'id' && !pkeyIsEditable">
-              {{record[field.name]()}}
-            </span>
-  
-            <input *ngIf="field.datatype == 'id' && pkeyIsEditable"
-              class="form-control"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              [readonly]="field.readOnly"
-              [required]="field.isRequired()"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
-  
-            <input *ngIf="field.datatype == 'text' || field.datatype == 'interval'"
-              class="form-control"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              [readonly]="field.readOnly"
-              [required]="field.isRequired()"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
+            <ng-container *ngSwitchCase="'readonly-money'">
+              <span>{{record[field.name]() | currency}}</span>
+            </ng-container>
 
-            <span *ngIf="field.datatype == 'timestamp'">
+            <ng-container *ngSwitchCase="'readonly-list'">
+              <ng-container *ngIf="field.linkedValues">
+                <span>{{field.linkedValues[0].label}}</span>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'timestamp'">
               <eg-date-select
                 domId="{{idPrefix}}-{{field.name}}"
                 (onChangeAsIso)="record[field.name]($event)"
                 initialIso="{{record[field.name]()}}">
               </eg-date-select>
-            </span>
+            </ng-container>
 
-            <input *ngIf="field.datatype == 'int'"
-              class="form-control"
-              type="number"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              [readonly]="field.readOnly"
-              [required]="field.isRequired()"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
-  
-            <input *ngIf="field.datatype == 'float'"
-              class="form-control"
-              type="number" step="0.1"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              [readonly]="field.readOnly"
-              [required]="field.isRequired()"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
-  
-            <span *ngIf="field.datatype == 'money'">
-              <!-- in read-only mode display the local-aware currency -->
-              <input *ngIf="field.readOnly"
-                class="form-control"
-                type="number" step="0.1"
-                name="{{field.name}}"
-                id="{{idPrefix}}-{{field.name}}"
-                [readonly]="field.readOnly"
-                [required]="field.isRequired()"
-                [ngModel]="record[field.name]() | currency"/>
-  
-              <input *ngIf="!field.readOnly"
+            <ng-container *ngSwitchCase="'org_unit'">
+              <eg-org-select
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                domId="{{idPrefix}}-{{field.name}}"
+                [limitPerms]="modePerms[mode]"
+                [readOnly]="field.readOnly"
+                [applyDefault]="field.orgDefaultAllowed"
+                [initialOrgId]="record[field.name]()"
+                (onChange)="record[field.name]($event)">
+              </eg-org-select>
+            </ng-container>
+          
+            <ng-container *ngSwitchCase="'money'">
+              <input
                 class="form-control"
                 type="number" step="0.1"
                 name="{{field.name}}"
@@ -103,43 +70,68 @@
                 [required]="field.isRequired()"
                 [ngModel]="record[field.name]()"
                 (ngModelChange)="record[field.name]($event)"/>
-            </span>
-  
-            <input *ngIf="field.datatype == 'bool'"
-              class="form-check-input"
-              type="checkbox"
-              name="{{field.name}}"
-              id="{{idPrefix}}-{{field.name}}"
-              [readonly]="field.readOnly"
-              [ngModel]="record[field.name]()"
-              (ngModelChange)="record[field.name]($event)"/>
-  
-            <span *ngIf="field.datatype == 'link'"
-              [ngClass]="{nullable : !field.isRequired()}">
-              <select
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'int'">
+              <input
                 class="form-control"
+                type="number"
+                name="{{field.name}}"
+                id="{{idPrefix}}-{{field.name}}"
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'float'">
+              <input
+                class="form-control"
+                type="number" step="0.1"
+                name="{{field.name}}"
+                id="{{idPrefix}}-{{field.name}}"
+                placeholder="{{field.label}}..."
+                i18n-placeholder
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'text'">
+              <input
+                class="form-control"
+                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                type="text"
+                placeholder="{{field.label}}..." i18n-placeholder
+                [required]="field.isRequired()"
+                [ngModel]="record[field.name]()"
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'bool'">
+              <input
+                class="form-check-input"
+                type="checkbox"
                 name="{{field.name}}"
                 id="{{idPrefix}}-{{field.name}}"
                 [disabled]="field.readOnly"
-                [required]="field.isRequired()"
                 [ngModel]="record[field.name]()"
-                (ngModelChange)="record[field.name]($event)">
-                <option *ngFor="let item of field.linkedValues" 
-                  [value]="item.id">{{item.name}}</option>
-              </select>
-            </span>
+                (ngModelChange)="record[field.name]($event)"/>
+            </ng-container>
   
-            <eg-org-select *ngIf="field.datatype == 'org_unit'"
-              placeholder="{{field.label}}..."
-              i18n-placeholder
-              domId="{{idPrefix}}-{{field.name}}"
-              [limitPerms]="modePerms[mode]"
-              [applyDefault]="field.orgDefaultAllowed"
-              [initialOrgId]="record[field.name]()"
-              (onChange)="record[field.name]($event)">
-            </eg-org-select>
-
-          </span>
+            <ng-container *ngSwitchCase="'list'">
+              <eg-combobox
+                id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
+                placeholder="{{field.label}}..." i18n-placeholder 
+                [required]="field.isRequired()"
+                [entries]="field.linkedValues"
+                [asyncDataSource]="field.linkedValuesSource"
+                [startId]="record[field.name]()"
+                (onChange)="record[field.name]($event ? $event.id : null)">
+              </eg-combobox>
+            </ng-container>
+          </ng-container> <!-- switch -->
         </div>
       </div>
     </form>

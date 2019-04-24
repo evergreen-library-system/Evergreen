@@ -229,6 +229,7 @@ sub load {
     return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs_settings|;
     return $self->load_myopac_prefs_my_lists if $path =~ m|opac/myopac/prefs_my_lists|;
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
+    return $self->load_myopac_reservations if $path =~ m|opac/myopac/reservations|;
     return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
 
     return Apache2::Const::OK;

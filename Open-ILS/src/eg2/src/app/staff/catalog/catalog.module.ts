@@ -2,6 +2,8 @@ import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {CatalogCommonModule} from '@eg/share/catalog/catalog-common.module';
 import {CatalogRoutingModule} from './routing.module';
+import {HoldsModule} from '@eg/staff/share/holds/holds.module';
+import {HoldingsModule} from '@eg/staff/share/holdings/holdings.module';
 import {CatalogComponent} from './catalog.component';
 import {SearchFormComponent} from './search-form.component';
 import {ResultsComponent} from './result/results.component';
@@ -13,7 +15,12 @@ import {ResultRecordComponent} from './result/record.component';
 import {StaffCatalogService} from './catalog.service';
 import {RecordPaginationComponent} from './record/pagination.component';
 import {RecordActionsComponent} from './record/actions.component';
-import {HoldingsService} from '@eg/staff/share/holdings.service';
+import {BasketActionsComponent} from './basket-actions.component';
+import {HoldComponent} from './hold/hold.component';
+import {PartsComponent} from './record/parts.component';
+import {PartMergeDialogComponent} from './record/part-merge-dialog.component';
+import {BrowseComponent} from './browse.component';
+import {BrowseResultsComponent} from './browse/results.component';
 
 @NgModule({
   declarations: [
@@ -26,16 +33,22 @@ import {HoldingsService} from '@eg/staff/share/holdings.service';
     ResultFacetsComponent,
     ResultPaginationComponent,
     RecordPaginationComponent,
-    RecordActionsComponent
+    RecordActionsComponent,
+    BasketActionsComponent,
+    HoldComponent,
+    PartsComponent,
+    PartMergeDialogComponent,
+    BrowseComponent,
+    BrowseResultsComponent,
   ],
   imports: [
     StaffCommonModule,
     CatalogCommonModule,
-    CatalogRoutingModule
+    CatalogRoutingModule,
+    HoldsModule
   ],
   providers: [
-    StaffCatalogService,
-    HoldingsService
+    StaffCatalogService
   ]
 })
 

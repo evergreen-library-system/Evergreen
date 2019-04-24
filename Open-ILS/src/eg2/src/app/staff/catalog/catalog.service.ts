@@ -82,6 +82,28 @@ export class StaffCatalogService {
           ['/staff/catalog/search'], {queryParams: params});
     }
 
+    /**
+     * Redirect to the browse results page while propagating the current
+     * browse paramters into the URL.  Let the browse results component
+     * execute the actual browse.
+     */
+    browse(): void {
+        if (!this.searchContext.browseSearch.isSearchable()) { return; }
+
+        const params = this.catUrl.toUrlParams(this.searchContext);
+
+        // Force a new browse every time this method is called, even if
+        // it's the same as the active browse.  Since router navigation
+        // exits early when the route + params is identical, add a
+        // random token to the route params to force a full navigation.
+        // This also resolves a problem where only removing secondary+
+        // versions of a query param fail to cause a route navigation.
+        // (E.g. going from two query= params to one).
+        params.ridx = '' + this.routeIndex++;
+
+        this.router.navigate(
+          ['/staff/catalog/browse'], {queryParams: params});
+    }
 }
 
 

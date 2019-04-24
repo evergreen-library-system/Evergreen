@@ -1,6 +1,6 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
     OnDestroy, HostListener, ViewEncapsulation} from '@angular/core';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -44,6 +44,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // The value is prefixed with 'eg.grid.'
     @Input() persistKey: string;
 
+    @Input() disableSelect: boolean;
+
     // Prevent selection of multiple rows
     @Input() disableMultiSelect: boolean;
 
@@ -78,6 +80,20 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // grid data.
     @Input() pageOffset: number;
 
+    // If true and an idlClass is specificed, the grid assumes
+    // datatype=link fields that link to classes which define a selector
+    // are fleshed with the linked object.  And, instead of displaying
+    // the raw field value, displays the selector value from the linked
+    // object.  The caller is responsible for fleshing the appropriate
+    // fields in the GridDataSource getRows handler.
+    //
+    // This only applies to auto-generated columns.
+    //
+    // For example, idlClass="aou" and field="ou_type", the display
+    // value will be ou_type().name() since "name" is the selector
+    // field on the "aout" class.
+    @Input() showLinkSelectors: boolean;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -109,6 +125,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.isSortable = this.sortable === true;
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;
+        this.context.disableSelect = this.disableSelect === true;
+        this.context.showLinkSelectors = this.showLinkSelectors === true;
         this.context.disableMultiSelect = this.disableMultiSelect === true;
         this.context.rowFlairIsEnabled = this.rowFlairIsEnabled  === true;
         this.context.rowFlairCallback = this.rowFlairCallback;

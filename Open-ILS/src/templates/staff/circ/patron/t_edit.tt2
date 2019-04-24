@@ -803,6 +803,55 @@ within the "form" by name for validation.
   </div>
 </div>
 
+<div class="row reg-field-row" ng-if="org_settings['circ.privacy_waiver']">
+  <div class="col-md-3 reg-field-label">
+    <label>[% l('Allow others to use my account') %]</label>
+  </div>
+  <div class="col-md-3 reg-field-input">
+    <div class="row" ng-repeat="waiver_entry in patron.waiver_entries" ng-hide="waiver_entry.isdeleted">
+      <div class="row flex-row">
+        <div class="flex-cell">
+          <input ng-change="field_modified()"
+            type='text' ng-model="waiver_entry.name"/>
+        </div>
+        <div class="flex-cell">
+          <button type="button" 
+            ng-click="field_modified();delete_waiver_entry(waiver_entry)" 
+            class="btn btn-danger">[% l('X') %]</button>
+        </div>
+      </div>
+      <div class="row flex-row reg-field-input">
+        <div class="flex-cell">
+          <label><input ng-change="field_modified()"
+            type='checkbox' ng-model="waiver_entry.place_holds"/>
+            [% l('Place Holds?') %]</label>
+        </div>
+        <div class="flex-cell">
+          <label><input ng-change="field_modified()"
+            type='checkbox' ng-model="waiver_entry.pickup_holds"/>
+            [% l('Pick Up Holds?') %]</label>
+        </div>
+        <div class="flex-cell">
+          <label><input ng-change="field_modified()"
+            type='checkbox' ng-model="waiver_entry.view_history"/>
+            [% l('View Borrowing History?') %]</label>
+        </div>
+        <div class="flex-cell">
+          <label><input ng-change="field_modified()"
+            type='checkbox' ng-model="waiver_entry.checkout_items"/>
+            [% l('Check Out Items?') %]</label>
+        </div>
+      </div> <!-- end checkboxes -->
+    </div> <!-- end ng-repeat waiver_entry -->
+    <div class="row">
+      <div class="col-md-3 reg-field-input">
+      <button type="button" ng-click="new_waiver_entry()" 
+        class="btn btn-success">[% l('Add Person') %]</button>
+      </div>
+    </div>
+  </div> <!-- end waiver entries input -->
+</div> <!-- end waiver entries row -->
+
 </div> <!-- end offline test -->
 
 <!-- addresses -->

@@ -39,6 +39,7 @@ my $end_id;       # stop processing when this bib ID is reached.
 my $max_duration; # max processing duration in seconds
 my $help;         # show help text
 my $opt_pipe;     # Read record ids from STDIN.
+my $record_attrs; # Record attributes for metabib.reingest_record_attributes.
 
 # Database connection options with defaults:
 my $db_user = $ENV{PGUSER} || 'evergreen';
@@ -64,6 +65,7 @@ GetOptions(
     'end-id=i'       => \$end_id,
     'pipe'           => \$opt_pipe,
     'max-duration=i' => \$max_duration,
+    'attr=s@'        => \$record_attrs,
     'help'           => \$help
 );
 
@@ -85,6 +87,12 @@ sub help {
     --skip-facets
     --skip-display
         Skip the selected reingest component
+
+    --attr
+        Specify a record attribute for ingest
+        This option can be used more than once to specify multiple
+        attributes to ingest.
+        This option is ignored if --skip-attrs is also given.
 
     --start-id
         Start processing at this record ID.
@@ -301,13 +309,14 @@ sub reingest_attributes {
     my $dbh = shift;
     my $list = shift;
     my $sth = $dbh->prepare(<<END_OF_INGEST
-SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc)
+SELECT metabib.reingest_record_attributes(rid := id, prmarc := marc, pattr_list := ?)
 FROM biblio.record_entry
 WHERE id = ?
 END_OF_INGEST
     );
+    $sth->bind_param(1, $record_attrs);
     foreach (@$list) {
-        $sth->bind_param(1, $_);
+        $sth->bind_param(2, $_);
         if ($sth->execute()) {
             my $crap = $sth->fetchall_arrayref();
         } else {

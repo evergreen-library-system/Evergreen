@@ -1,13 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
 <style>
   /* TODO: move me */
-  .print-template-text {
-    height: 36em;
-    width: 100%;
+
+  table.page-break {
+      page-break-before: always;
   }
-  .cn-template-text {
-    height: 12em;
-    width: 100%;
-  }
+
 </style>
 
 <div class="container-fluid" style="text-align:center">
@@ -15,7 +13,6 @@
         [% l('Print Item Labels') %]
     </div>
 </div>
-
 <div class="row">
     <div class="col-md-3">
        <div class="input-group">
@@ -38,14 +35,12 @@
             </select>
         </div>
     </div>
-
     <div class="col-md-2">
         <div class="btn-group">
             <button class="btn btn-default" ng-click="saveTemplate(template_name)">[% l('Save') %]</button>
             <button class="btn btn-default" ng-click="deleteTemplate(template_name)">[% l('Delete') %]</button>
         </div>
     </div>
-
     <div class="col-md-3">
         <div class="btn-group">
             <span class="btn btn-default btn-file">
@@ -53,14 +48,14 @@
                 <input type="file" eg-file-reader container="imported_templates.data">
             </span>
             <label class="btn btn-default"
-               eg-json-exporter container="templates"
-               default-file-name="'[% l('exported_label_templates.json') %]'">
-               [% l('Export') %]
+                eg-json-exporter container="templates"
+                default-file-name="'[% l('exported_label_templates.json') %]'">
+                [% l('Export') %]
             </label>
-            <label class="btn btn-default" ng-click="reset_to_default()">[% l('Default') %]</label>
-         </div>
+            <label class="btn btn-default" ng-click="reset_to_default()">
+                [% l('Default') %]</button>
+            </div>
     </div>
-
     <div class="col-md-1 pull-right">
         <button class="btn btn-default" ng-click="print_labels()">[% l('Print') %]</button>
     </div>
@@ -69,92 +64,207 @@
 <hr/>
 
 <div class="row">
-  <div class="col-md-5">
-    <ul class="nav nav-tabs">
-        <li ng-class="{active : current_tab == 'cn_template'}">
-            <a ng-click="set_tab('cn_template')">
-                [% l('Call Number Template') %]
-            </a>
-        </li>
-        <li ng-class="{active : current_tab == 'call_numbers'}">
-            <a ng-click="set_tab('call_numbers')">
-                [% l('Call Numbers') %]
-            </a>
-        </li>
-        <li ng-class="{active : current_tab == 'settings'}">
-            <a ng-click="set_tab('settings')">
-                [% l('Settings') %]
-            </a>
-        </li>
-        <li ng-class="{active : current_tab == 'template'}">
-            <a ng-click="set_tab('template')">
-                [% l('Label Template') %]
-            </a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active">
-            <div ng-show="current_tab == 'cn_template'">
-                <h4>
-                    [% l('Call Number Preview') %]
-                </h4>
-                <div eg-print-template-output ng-show="true"
-                    content="print.cn_template_content"
-                    context="{ copy : preview_scope.copies[0], get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
-                <h4>
+    <div class="col-md-5">
+        <ul class="nav nav-tabs">
+            <li ng-class="{active : current_tab == 'cn_template'}">
+                <a ng-click="set_tab('cn_template')">
                     [% l('Call Number Template') %]
-                </h4>
-                <div><span>[% l('Changes here will wipe out manual changes in the Call Numbers tab.') %]<br/></span></div>
-                <textarea ng-model="print.cn_template_content" class="print-template-text">
-                </textarea>
-                <div ng-repeat="copy in preview_scope.copies">
-                    <div id="cn_for_copy_{{copy.id}}" eg-print-template-output ng-show="false"
+                </a>
+            </li>
+            <li ng-class="{active : current_tab == 'call_numbers'}">
+                <a ng-click="set_tab('call_numbers')">
+                    [% l('Call Numbers') %]
+                </a>
+            </li>
+            <li ng-class="{active : current_tab == 'settings'}">
+                <a ng-click="set_tab('settings')">
+                    [% l('Settings') %]
+                </a>
+            </li>
+            <li ng-class="{active : current_tab == 'template'}">
+                <a ng-click="set_tab('template')">
+                    [% l('Label Template') %]
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active">
+                <div ng-show="current_tab == 'cn_template'">
+                    <h4>
+                        [% l('Call Number Preview') %]
+                    </h4>
+                    <div eg-print-template-output ng-show="true"
                         content="print.cn_template_content"
-                        context="{ copy : copy, get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
-                </div>
-            </div>
-            <div ng-show="current_tab == 'call_numbers'">
-                <h4>
-                    [% l('Formatted Call Numbers') %]
-                </h4>
-                <div><span>[% l('Manual adjustments may be made here. These do not get saved with templates.') %]<br/></span></div>
-                <div ng-repeat="cn in rendered_call_number_set">
-                    <textarea ng-model="cn.value" class="cn-template-text">
+                        context="{ copy : preview_scope.copies[0], get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
+                    <h4>
+                        [% l('Call Number Template') %]
+                    </h4>
+                    <div>
+                        <span>
+                            [% l('Changes here will wipe out manual changes in the Call Numbers tab.') %]<br/>
+                        </span>
+                    </div>
+                    <textarea ng-model="print.cn_template_content" class="print-template-text">
                     </textarea>
-                </div>
-            </div>
-            <div ng-show="current_tab == 'settings'">
-                <div><span>[% l('These settings do get saved with templates and will override corresponding Library Settings.') %]<br/></span></div>
-                <div ng-repeat="s in org_unit_settings">
-                    <div class="row" style="margin-top: 5mm;">
-                        <div class="col-md-6"><label>{{s.label}} <eg-help-popover help-text="{{s.description}}"></label></div>
-                        <div class="col-md-6"><input type="text" ng-model="preview_scope.settings[s.name]"></input></div>
+                    <div ng-repeat="copy in preview_scope.copies">
+                        <div id="cn_for_copy_{{copy.id}}" eg-print-template-output ng-show="false"
+                            content="print.cn_template_content"
+                            context="{ copy : copy, get_cn_and_location_prefix : preview_scope.get_cn_and_location_prefix, get_cn_and_location_suffix : preview_scope.get_cn_and_location_suffix, settings : preview_scope.settings }"></div>
                     </div>
                 </div>
-
-            </div>
-            <div ng-show="current_tab == 'template'">
-                <div ng-if="print.load_failed" class="alert alert-danger">
-                  [% l(
-                    "Unable to load template '[_1]'.  The web server returned an error.",
-                    '{{print.template_name}}')
-                  %]
+                <div ng-show="current_tab == 'call_numbers'">
+                    <h4>
+                        [% l('Formatted Call Numbers') %]
+                    </h4>
+                    <div>
+                        <span>
+                            [% l('Manual adjustments may be made here. These do not get saved with templates.') %]<br/>
+                        </span>
+                    </div>
+                    <div ng-repeat="cn in rendered_call_number_set">
+                        <textarea ng-model="cn.value" class="cn-template-text">
+                        </textarea>
+                    </div>
                 </div>
-                <div>
-                  <textarea ng-model="print.template_content" class="print-template-text">
-                  </textarea>
+                <div ng-show="current_tab == 'settings'">
+                    <div>
+                        <span>
+                          <b>[% l('*All settings will be saved with templates') %]</b>
+                        </span>
+                    </div>
+                    <form id="print_label_form" name="print_label_form">
+                        <div class="print-label-toolbox">
+                          <div class="eg-print-label-group">
+                            <div class="eg-print-label-section">
+                                <h4>[% l('Print Feed Option') %]</h4>
+                                <ul>
+                                    <li ng-repeat="x in preview_scope.toolbox_settings.feed_option.options">
+                                        <label>{{x.label}}:</label>
+                                        <input name="label-feed-option" ng-model="preview_scope.toolbox_settings.feed_option.selected" ng-change="redraw_label_table()" type="radio" value="{{x.value}}" />
+                                    </li>
+                                </ul>
+                              </div>
+                             <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
+                                <p><strong>[% l('Starting Position on Label Grid') %]</strong>
+                                <eg-help-popover help-text="[% l('Specify the starting row and column where labels should begin printing. Values must not exceed the respective row and column size specified in &quot;Print Grid Size&quot;') %]"></p>
+                                <ul>
+                                    <li>
+                                        <label>[% l('Row') %]:</label>
+                                        <input type="number" eg-print-label-valid-int eg-print-label-row-bounds ng-model="preview_scope.toolbox_settings.page.start_position.row" ng-min="1" required />
+                                    </li>
+                                    <li>
+                                        <label>[% l('Column') %]:</label>
+                                        <input type="number" eg-print-label-valid-int="" eg-print-label-column-bounds ng-model="preview_scope.toolbox_settings.page.start_position.column" ng-min="1"  required />
+                                    </li>
+                                </ul>
+                                </div>
+                              </div>
+                              <div class="eg-print-label-group">
+                                <div class="eg-print-label-section">
+                                <h4>[% l('Label Set Configuration') %]
+                                <eg-help-popover help-text="[% l('A label set is a group of labels that should print data from the same bibliographic record. In this
+section, identify the number of labels contained in each set, which columns should print spine label data, and which columns should print pocket label data.') %]"></h4>
+                                <ul>
+                                    <li ng-repeat="x in preview_scope.toolbox_settings.mode.options">
+                                        <label>{{x.label}}:</label>
+                                        <input name="label-output-mode" ng-model="preview_scope.toolbox_settings.mode.selected" type="radio" value="{{x.value}}" />
+                                    </li>
+                                </ul>
+                                </div>
+                                <div class="eg-print-label-section" ng-if="preview_scope.valid_print_label_start_column() && preview_scope.valid_print_label_start_row() && preview_scope.toolbox_settings.page.dimensions.columns > 1">
+                                <label>[% l('Number of Labels in Set') %]:</label>
+                                <input type="number" eg-print-label-valid-int="" ng-min="1" ng-model="preview_scope.toolbox_settings.page.label.set.size" />
+                                <ul>
+                                    <li ng-repeat="i in preview_scope.toolbox_settings.page.label.set.size | columnRowRange">
+                                        <label>[% l('Column') %] {{i + 1}}</label>
+                                        <select id="eg_print_label_column_spec_{{i}}" ng-model="preview_scope.toolbox_settings.page.column_class[i]" ng-change="redraw_label_table()">
+                                            <option value="spine">[% l('Spine Label') %]</option>
+                                            <option value="pocket">[% l('Pocket Label') %]</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                              </div>
+                            </div>
+                            <div class="eg-print-label-group">
+                            <h4>[% l('Page Settings') %]</h4>
+                              <div class="eg-print-label-section">
+                                <p><strong>[% l('Page Margins') %]</strong>
+                                <eg-help-popover help-text="[% l('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                                <ul>
+                                    <li ng-repeat="(x, y) in preview_scope.toolbox_settings.page.margins">
+                                        <label>{{y.label}}:</label>
+                                        <input type="text" eg-print-label-valid-css ng-model="preview_scope.toolbox_settings.page.margins[x].size" required />
+                                    </li>
+                                </ul>
+                              </div>
+                              <div class="eg-print-label-section">
+                                <p><strong>[% l('Print Grid Size') %]</strong>
+                                        <span ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'"><eg-help-popover help-text="[% l('Please specify the number of columns and rows on the print medium. This setting is only used to control page layouts and breaks. It will not limit the number of rows printed, which is determined by the number of selected copies. The column count should include each label in a row. For example, if you have a row with two sets of labels that include one spine and one pocket, the count is four.') %]"></span>
+                                         <span ng-if="preview_scope.toolbox_settings.feed_option.selected === 'continuous'"><eg-help-popover help-text="[% l('Please specify the number of columns on the print medium. The column count should include each label on your medium. For example, if your medium has a spine and pocket label, the count is two.') %]"></span></p>
+                                <ul>
+                                    <li ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
+                                        <label>[% l('Rows') %]:</label>
+                                        <input type="number" ng-model="preview_scope.toolbox_settings.page.dimensions.rows" ng-min="1" required />
+                                    </li>
+                                    <li>
+                                        <label>[% l('Columns') %]:</label>
+                                        <input type="number" ng-model="preview_scope.toolbox_settings.page.dimensions.columns" ng-min="1" required />
+                                    </li>
+                                </ul>
+                              </div>
+                              <div class="eg-print-label-section">
+                                <p><label>[% l('Gap Between Rows') %]</label>
+                                <eg-help-popover help-text="[%l ('Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                                <p><input type="text" ng-model="preview_scope.toolbox_settings.page.space_between_labels.vertical.size" ng-min="0" eg-print-label-valid-css required /></p>
+                               </div>
+                               <div class="eg-print-label-section" ng-if="preview_scope.toolbox_settings.feed_option.selected === 'sheet'">
+                               <p><label>[% l('Gap Between') %] <span ng-if="preview_scope.toolbox_settings.page.label.set.size > 1">[% l(' Label Sets') %]</span><span ng-if="preview_scope.toolbox_settings.page.label.set.size === 1">[% l(' Columns') %]</span></label>
+                                <eg-help-popover help-text="[% l('Gap between each label set (spine/pocket combo) or, when using only one type of label, between each
+label. Use pocket label left margin to identify how much space to provide between labels within one set. Must be in format &quot;0.25in&quot;, &quot;2.5cm&quot;, &quot;1.5in&quot;, etc. (units of measurement must be valid CSS)') %]"></p>
+                              <p><input type="text" ng-model="preview_scope.toolbox_settings.page.label.gap.size" ng-min="0" eg-print-label-valid-css required /></p>
+                              </div>
+                            </div> 
+                        </div>                
+                    </form>
+                    <div class="eg-print-label-group">
+                      <div>
+                       <h4>Font & Label Settings</h4>
+                        <span>
+                            [% l('These settings do get saved with templates and will override corresponding Library Settings.') %]<br/>
+                        </span>
+                      </div>
+                      <div ng-repeat="s in org_unit_settings">
+                        <div class="row" style="margin-top: 5mm;">
+                        <div class="col-md-6"><label>{{s.label}} <eg-help-popover help-text="{{s.description}}"></label></div>
+                            <div class="col-md-6">
+                                <input type="text" ng-model="preview_scope.settings[s.name]"></input>
+                            </div>
+                         </div>
+                      </div>
+                     </div>
+                </div>
+                <div ng-show="current_tab == 'template'">
+                    <div ng-if="print.load_failed" class="alert alert-danger">
+                        [% l(
+                        "Unable to load template '[_1]'.  The web server returned an error.",
+                        '{{print.template_name}}')
+                        %]
+                    </div>
+                    <div>
+                        <textarea ng-model="print.template_content" class="print-template-text">
+                        </textarea>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-  </div>
-  <div class="col-md-7">
-    <h3>
-        [% l('Label Preview') %]
-    </h3>
-    <div eg-print-template-output
-      content="print.template_content"
-      context="preview_scope"></div>
-  </div> <!-- col -->
+    <div class="col-md-7">
+        <h3>
+            [% l('Label Preview') %]
+        </h3>
+        <div eg-print-template-output
+          content="print.template_content"
+          context="preview_scope"></div>
+    </div>
+    <!-- col -->
 </div>
-

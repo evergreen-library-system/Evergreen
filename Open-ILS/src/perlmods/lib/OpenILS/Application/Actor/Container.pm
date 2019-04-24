@@ -350,7 +350,8 @@ sub item_create {
     return $e->die_event unless $e->checkauth;
     my $items = (ref $item eq 'ARRAY') ? $item : [$item];
 
-    my ( $bucket, $evt ) = $apputils->fetch_container_e($e, $item->bucket, $class);
+    my ( $bucket, $evt ) = 
+        $apputils->fetch_container_e($e, $items->[0]->bucket, $class);
     return $evt if $evt;
 
     if( $bucket->owner ne $e->requestor->id ) {

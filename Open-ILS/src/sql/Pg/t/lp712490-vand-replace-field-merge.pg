@@ -1,0 +1,135 @@
+BEGIN;
+
+-- Plan the tests.
+SELECT plan(5);
+
+SELECT is(
+    (SELECT vandelay.replace_field($$
+<record xmlns="http://www.loc.gov/MARC21/slim" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>         a              </leader>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-</subfield>
+  </datafield>
+</record>
+$$, $$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-2013</subfield>
+  </datafield>
+</record>
+$$, '100abcdef')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Banks, Iain M</subfield><subfield code="d">1954-2013</subfield></datafield></record>',
+    'Replacing a value for a single existing subfield'
+);
+
+SELECT is(
+    (SELECT vandelay.replace_field($$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>         a              </leader>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+  </datafield>
+</record>
+$$, $$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-2013</subfield>
+  </datafield>
+</record>
+$$, '100abcdef')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Banks, Iain M</subfield><subfield code="d">1954-2013</subfield></datafield></record>',
+    'Adding a missing field'
+);
+
+SELECT is(
+    (SELECT vandelay.replace_field($$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>         a              </leader>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-</subfield>
+  </datafield>
+</record>
+$$, $$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="b">HELLO</subfield>
+    <subfield code="d">1954-2013</subfield>
+  </datafield>
+</record>
+$$, '100abcdef')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Banks, Iain M</subfield><subfield code="b">HELLO</subfield><subfield code="d">1954-2013</subfield></datafield></record>',
+    'Splicing a new field into the existing fields'
+);
+
+SELECT is(
+    (SELECT vandelay.replace_field($$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>         a              </leader>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-</subfield>
+    <subfield code="z">STAY PUT</subfield>
+  </datafield>
+</record>
+$$, $$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="b">HELLO</subfield>
+    <subfield code="y">IGNORE ME</subfield>
+    <subfield code="d">1954-2013</subfield>
+  </datafield>
+</record>
+$$, '100abcdef')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Banks, Iain M</subfield><subfield code="b">HELLO</subfield><subfield code="d">1954-2013</subfield><subfield code="z">STAY PUT</subfield></datafield></record>',
+    'Splice new field, ignore uncontrolled source field, leave uncontrolled target field in place'
+);
+
+SELECT is(
+    (SELECT vandelay.replace_field($$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <leader>         a              </leader>
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+    <subfield code="d">1954-</subfield>
+  </datafield>
+</record>
+$$, $$
+<record xmlns="http://www.loc.gov/MARC21/slim"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
+  <datafield tag="100" ind1="1" ind2=" ">
+    <subfield code="a">Banks, Iain M</subfield>
+  </datafield>
+</record>
+$$, '100abcdef')),
+    '<record    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"    xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd"    xmlns="http://www.loc.gov/MARC21/slim"><leader>         a              </leader><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Banks, Iain M</subfield></datafield></record>',
+    'Removing a subfield'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+

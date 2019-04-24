@@ -72,11 +72,20 @@ function(egCore , $q) {
 
         var p = egCore.pcrud.search(
             'acn',
-            {record : rid, owning_lib : org_list, deleted : 'f'},
+            {record : rid, owning_lib : org_list, deleted : 'f', label : {'!=' : '##URI##'}},
             svc.flesh
         ).then(
             function() { // finished
                 if (p.cancel) return;
+
+                // create virtual field for displaying active parts
+                angular.forEach(svc.copies, function (cp) {
+                    cp.monograph_parts = '';
+                    if (cp.parts && cp.parts.length > 0) {
+                        cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join(', ');
+                        cp.monograph_parts_sortkeys = cp.parts.map(function(obj) { return obj.label_sortkey; }).join();
+                    }
+                });
 
                 svc.copies = svc.copies.sort(
                     function (a, b) {
@@ -105,6 +114,10 @@ function(egCore , $q) {
                             if (a.call_number.label < b.call_number.label) return -1;
                             if (a.call_number.label > b.call_number.label) return 1;
 
+                            // also parts sortkeys combined string
+                            if (a.monograph_parts_sortkeys < b.monograph_parts_sortkeys) return -1;
+                            if (a.monograph_parts_sortkeys > b.monograph_parts_sortkeys) return 1;
+
                             // try copy number
                             if (a.copy_number < b.copy_number) return -1;
                             if (a.copy_number > b.copy_number) return 1;
@@ -117,17 +130,11 @@ function(egCore , $q) {
                     }
                 );
 
-                // create virtual field for displaying active parts
-                angular.forEach(svc.copies, function (cp) {
-                    cp.monograph_parts = '';
-                    if (cp.parts && cp.parts.length > 0) {
-                        cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join();
-                    }
-                });
-
                 // create virtual field for copy alert count
                 angular.forEach(svc.copies, function (cp) {
-                    if (cp.copy_alerts) cp.copy_alert_count = cp.copy_alerts.length;
+                    if (cp.copy_alerts) {
+                        cp.copy_alert_count = cp.copy_alerts.filter(function(aca) { return aca.ack_time == null ;}).length;
+                    }
                     else cp.copy_alert_count = 0;
                 });
 

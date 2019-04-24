@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
+"POT-Creation-Date: 2019-03-01 02:44+0000\n"
 "PO-Revision-Date: 2017-09-29 08:23+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:36+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-03-02 05:37+0000\n"
+"X-Generator: Launchpad (build 18888)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -97,9 +97,9 @@ msgstr "%1 "
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
-#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:383 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:74 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -359,7 +359,7 @@ msgid "Adapter"
 msgstr "Ադապտացիա"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr ""
 
@@ -384,7 +384,7 @@ msgstr "Ավելացրու նյութ ցուցակին: %1"
 msgid "Add to Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr ""
 
@@ -452,7 +452,7 @@ msgstr "Հասցեներ"
 msgid "Adjacency"
 msgstr "Շրջակայք"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:25
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
 msgid "Advanced"
 msgstr "Ընդլայնված"
 
@@ -496,6 +496,10 @@ msgid ""
 msgstr ""
 "Բոլոր հասանելի պատճենները ժամանակավորապես անհասանելի են քո ստացման "
 "գրադարանից։ Տեղադրելով պահում կհանգեցնի ավելի երկար սպասման ժամանակի։"
+
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:125
+msgid "Allow others to use my account"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:49 ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:30
 msgid "Amount"
@@ -728,7 +732,7 @@ msgstr "Շտրիխ կոդ"
 msgid "Barcode:"
 msgstr "Շտրիխ կոդ:"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:23
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
 msgid "Basic"
 msgstr "Հիմնական"
 
@@ -874,7 +878,7 @@ msgstr "Հեռարձակում"
 msgid "Broader term"
 msgstr "Լայն տերմին"
 
-#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:27
+#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
 msgid "Browse"
 msgstr "Զննել"
 
@@ -891,7 +895,7 @@ msgstr "Զննել քարտարանը"
 msgid "Call Number"
 msgstr "Դասիչ"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:14
 msgid "Call Number (Shelf Browse)"
 msgstr "Դասիչ (դարականիշ)"
 
@@ -935,7 +939,7 @@ msgstr "Չեղյալ անել"
 msgid "Cancel unless filled by"
 msgstr "Չեղյալ անել մինչ լրացվի"
 
-#: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:15
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:24 ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:15
 msgid "Canceled"
 msgstr "Չեղյալ անել"
 
@@ -1012,11 +1016,11 @@ msgid "Charges:"
 msgstr "Գանձումներ։"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "Դուրս է տրված %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "Դուրս է տրված էլ. նյութ։"
 
@@ -1024,11 +1028,15 @@ msgstr "Դուրս է տրված էլ. նյութ։"
 msgid "Check Out History"
 msgstr "Դուրս տրման պատմություն"
 
-#: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:53
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:144 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:158
+msgid "Check Out Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:26 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:53
 msgid "Checked Out"
 msgstr "Դուրս տրված"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "Դուրս տրված մինչ"
 
@@ -1437,7 +1445,7 @@ msgstr "Նվիրվում է"
 msgid "Dedicator"
 msgstr "Նվիրում է"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:125
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:167
 msgid "Default Font Size"
 msgstr "Լռակյաց տառատեսակի չափ"
 
@@ -1761,6 +1769,10 @@ msgstr ""
 msgid "Enacting jurisdiction"
 msgstr "Իրավասության ընդունումը"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:12
+msgid "End time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Engineer"
 msgstr "Ինժեներ"
@@ -2060,7 +2072,7 @@ msgstr "Ետ գնալ"
 msgid "Go to record %1"
 msgstr "Գնա գրառում %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:52
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
 msgid "Go to..."
 msgstr "Գնա․․․"
 
@@ -2188,7 +2200,7 @@ msgstr "Հյուրընկալող"
 msgid "Host institution"
 msgstr "Հյուրընկալող հաստատություն"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "Ես այս նյութը վերցրել եմ առաջներում"
 
@@ -2200,7 +2212,7 @@ msgstr "ISBN"
 msgid "ISBN:"
 msgstr "ISBN:"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:12
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -2208,7 +2220,7 @@ msgstr "ISSN"
 msgid "ISSN:"
 msgstr "ISSN:"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:19
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:20
 msgid "Identifier"
 msgstr "Նկարագրիչ"
 
@@ -2331,7 +2343,7 @@ msgstr "Տվող մարմնի նշում։ "
 msgid "Issuing body"
 msgstr "Տրամադրող մարմին"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:16
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:17
 msgid "Item Barcode"
 msgstr "Նյութի շտրիխ կոդ"
 
@@ -2426,7 +2438,7 @@ msgstr "Վճռորոշ բառ"
 msgid "Keyword Search Tips"
 msgstr "Բանալի բառով որոնման հնարք"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:14
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:15
 msgid "LCCN"
 msgstr "LCCN"
 
@@ -2454,7 +2466,7 @@ msgstr "Լեզվի նշում։ "
 msgid "Language:"
 msgstr "Լեզու։"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:129
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:171
 msgid "Large Font"
 msgstr "Լայն տառատեսակ"
 
@@ -2850,12 +2862,12 @@ msgstr "Երաժշտական տնօրեն"
 msgid "Musician"
 msgstr "Երաժիշտ"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:13 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:14 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
 msgid "My Account"
 msgstr "Իմ հաշիվը"
 
 #. (page.name)
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:33
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:34
 msgid "My Account - %1"
 msgstr "Իմ հաշվեհամարը - %1"
 
@@ -2891,7 +2903,7 @@ msgstr "Իմ Հաղորդագրությունները"
 msgid "Name"
 msgstr "Անունը"
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:285
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:285 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:130 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:155
 msgid "Name:"
 msgstr "Անուն:"
 
@@ -3318,6 +3330,10 @@ msgstr "Ֆիզիկ. նկարագր."
 msgid "Physical Description:"
 msgstr "Ֆիզիկական նկարագրություն։"
 
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:139 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:157
+msgid "Pick Up Holds"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3208 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3216 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:69 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:119
 msgid "Pickup Location"
 msgstr "Վերցնելու վայր"
@@ -3330,24 +3346,28 @@ msgstr "Վերցնե՞լ պահումները դարակի հետևից երբ �
 msgid "Pickup library"
 msgstr "Վերցնելու գրադարան"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:13
+msgid "Pickup location"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:226
 msgid "Pickup location:"
 msgstr "Վերցնելու վայր։"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "Տեղադրի պահումը"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "Դիր պահում %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "Տեղադրի էլ. նյութի պահում։"
 
-#: ../../Open-ILS/src/templates/opac/parts/cart.tt2:6
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:134 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:156 ../../Open-ILS/src/templates/opac/parts/cart.tt2:6
 msgid "Place Holds"
 msgstr ""
 
@@ -3681,7 +3701,7 @@ msgstr "Ռադիո տնօրեն"
 msgid "Radio producer"
 msgstr "Ռադիո թողարկող"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "Գնահատումների պատկերիկ"
 
@@ -3698,7 +3718,7 @@ msgstr "Ռեակտիվացված է %1"
 msgid "Ready for Checkout"
 msgstr "Պատրաստ է տացքի"
 
-#: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:66
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:28 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:66
 msgid "Ready for Pickup"
 msgstr "Վերցնելու համար պատրաստ է"
 
@@ -3754,7 +3774,7 @@ msgstr "Վերաձևակերպի այս արդյունքները"
 msgid "Registration successful!"
 msgstr "Գրանցումը հաջող է"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:128
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:170
 msgid "Regular Font"
 msgstr "Սովորական տառատեսակ"
 
@@ -3768,7 +3788,7 @@ msgid "Remove %1 filter"
 msgstr "Հեռացրու %1 զտիչը"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr ""
 
@@ -3788,7 +3808,7 @@ msgstr ""
 msgid "Remove from Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr ""
 
@@ -3860,9 +3880,21 @@ msgstr "Հետազոտական խմբի անդամ"
 msgid "Researcher"
 msgstr "Հետազոտող"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:6 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3
+msgid "Reservations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:30
+msgid "Reserved"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:6
 msgid "Reset Password"
 msgstr "Վերագործարկեք գաղտնաբառը"
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:10
+msgid "Resource type"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Respondent"
@@ -3921,12 +3953,12 @@ msgstr "Գրախոսող"
 msgid "Reviews"
 msgstr "Գրախոսություններ"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "Գրախոսություններ &amp; Ավելին"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "Գրախոսականներ և ավելին սրա համար %1"
 
@@ -3947,7 +3979,7 @@ msgstr "Շաբաթ: %1 - %2"
 msgid "Saturday: closed"
 msgstr "Շաբաթ։ փակ է"
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:298 ../../Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2:64 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:102 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:138
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:298 ../../Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2:64 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:102 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:180
 msgid "Save"
 msgstr "Հիշել"
 
@@ -3995,7 +4027,7 @@ msgstr "Արտագրող"
 msgid "Sculptor"
 msgstr "Քանդակագործ"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:49 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:50 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:28 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:29 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:38 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:101
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:49 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:50 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:29 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:30 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:38 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:101
 msgid "Search"
 msgstr "Որոնում"
 
@@ -4023,7 +4055,7 @@ msgstr "Փնտրման մուտք"
 msgid "Search Library"
 msgstr "Որոնիր գրադարանը"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:40 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:22
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:40 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:23
 msgid "Search Library:"
 msgstr "Փնտրիր գրադարան"
 
@@ -4095,7 +4127,7 @@ msgstr "Փնտրման տերմին"
 msgid "Search the Catalog"
 msgstr "Փնտրիր քարտարանը"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:21
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:22
 msgid "Search:"
 msgstr "Փնտրել"
 
@@ -4172,7 +4204,7 @@ msgstr "Ընտրիր մասը։"
 msgid "Select a preference page"
 msgstr "Ընտրի նախապատվության էջը"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:50
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:51
 msgid "Select an account page"
 msgstr "Ընտրիր հաշվի էջը"
 
@@ -4465,6 +4497,10 @@ msgstr "Բեմի կառավարիչ"
 msgid "Standards body"
 msgstr "Ստանդարտների մարմին"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:11
+msgid "Start time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/advanced/global_row.tt2:1
 msgid "Starts with"
 msgstr "Սկսվում է սրանով"
@@ -4477,7 +4513,7 @@ msgstr "Նահանգ"
 msgid "State or Province"
 msgstr "Նահանգ կամ երկրամաս"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3210 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3217 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:46 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:27 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:70 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:40 ../../Open-ILS/src/templates/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:55 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:373
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3210 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3217 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:46 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:27 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:70 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:40 ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:55 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:373
 msgid "Status"
 msgstr "Կարգավիճակ"
 
@@ -4607,7 +4643,7 @@ msgstr "Համակարգի մանրամասների նշում։ "
 msgid "System rules do not define how to handle this item"
 msgstr "Համակարգի օրենքները չեն սահմանում ինչպես պահել նյութը։"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:15
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:16
 msgid "TCN"
 msgstr "TCN"
 
@@ -4929,6 +4965,10 @@ msgstr "Տեսակ "
 msgid "Typographer"
 msgstr "Տպագրիչ"
 
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:12
+msgid "UPC"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "University place"
 msgstr "Համալսարանի վայր"
@@ -4979,6 +5019,10 @@ msgstr "Տեսաձայնագրող"
 
 #: ../../Open-ILS/src/templates/opac/parts/cart.tt2:21 ../../Open-ILS/src/templates/opac/parts/cart.tt2:5 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:126
 msgid "View Basket"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
+msgid "View Borrowing History"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:28
@@ -5159,6 +5203,10 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/myopac/main.tt2:202
 msgid "You have no current fines."
 msgstr "Դու չունես ընթացիկ տուգանքներ"
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:37
+msgid "You have no current reservations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:33
 msgid "You have no e-item holds ready to be checked out."

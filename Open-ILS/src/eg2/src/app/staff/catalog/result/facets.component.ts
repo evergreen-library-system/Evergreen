@@ -35,11 +35,11 @@ export class ResultFacetsComponent implements OnInit {
     }
 
     facetIsApplied(cls: string, name: string, value: string): boolean {
-        return this.searchContext.hasFacet(new FacetFilter(cls, name, value));
+        return this.searchContext.termSearch.hasFacet(new FacetFilter(cls, name, value));
     }
 
     applyFacet(cls: string, name: string, value: string): void {
-        this.searchContext.toggleFacet(new FacetFilter(cls, name, value));
+        this.searchContext.termSearch.toggleFacet(new FacetFilter(cls, name, value));
         this.searchContext.pager.offset = 0;
         this.staffCat.search();
     }

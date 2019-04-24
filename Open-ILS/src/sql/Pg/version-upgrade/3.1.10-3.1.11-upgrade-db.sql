@@ -1,0 +1,231 @@
+--Upgrade Script for 3.1.10 to 3.1.11
+\set eg_version '''3.1.11'''
+BEGIN;
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.1.11', :eg_version);
+
+SELECT evergreen.upgrade_deps_block_check('1154', :eg_version);
+
+INSERT INTO config.usr_activity_type 
+    (id, ewhat, ehow, egroup, enabled, transient, label)
+VALUES (
+    25, 'login', 'ws-translator-v1', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(25, 'Login via Websocket V1', 'cuat', 'label')
+), (
+    26, 'login', 'ws-translator-v2', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(26, 'Login via Websocket V2', 'cuat', 'label')
+), (
+    27, 'verify', 'ws-translator-v1', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(27, 'Verification via Websocket v1', 'cuat', 'label')
+), (
+    28, 'verify', 'ws-translator-v2', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(28, 'Verifiation via Websocket V2', 'cuat', 'label')
+), (
+    29, 'login', NULL, 'authen', TRUE, TRUE,
+    oils_i18n_gettext(29, 'Generic Login', 'cuat', 'label')
+), (
+    30, 'verify', NULL, 'authz', TRUE, TRUE,
+    oils_i18n_gettext(30, 'Generic Verify', 'cuat', 'label')
+);
+
+
+
+SELECT evergreen.upgrade_deps_block_check('1157', :eg_version); 
+
+CREATE OR REPLACE FUNCTION vandelay.replace_field 
+    (target_xml TEXT, source_xml TEXT, field TEXT) RETURNS TEXT AS $_$
+
+    use strict;
+    use MARC::Record;
+    use MARC::Field;
+    use MARC::File::XML (BinaryEncoding => 'UTF-8');
+    use MARC::Charset;
+
+    MARC::Charset->assume_unicode(1);
+
+    my $target_xml = shift;
+    my $source_xml = shift;
+    my $field_spec = shift;
+
+    my $target_r = MARC::Record->new_from_xml($target_xml);
+    my $source_r = MARC::Record->new_from_xml($source_xml);
+
+    return $target_xml unless $target_r && $source_r;
+
+    # Extract the field_spec components into MARC tags, subfields, 
+    # and regex matches.  Copied wholesale from vandelay.strip_field()
+
+    my @field_list = split(',', $field_spec);
+    my %fields;
+    for my $f (@field_list) {
+        $f =~ s/^\s*//; $f =~ s/\s*$//;
+        if ($f =~ /^(.{3})(\w*)(?:\[([^]]*)\])?$/) {
+            my $field = $1;
+            $field =~ s/\s+//;
+            my $sf = $2;
+            $sf =~ s/\s+//;
+            my $match = $3;
+            $match =~ s/^\s*//; $match =~ s/\s*$//;
+            $fields{$field} = { sf => [ split('', $sf) ] };
+            if ($match) {
+                my ($msf,$mre) = split('~', $match);
+                if (length($msf) > 0 and length($mre) > 0) {
+                    $msf =~ s/^\s*//; $msf =~ s/\s*$//;
+                    $mre =~ s/^\s*//; $mre =~ s/\s*$//;
+                    $fields{$field}{match} = { sf => $msf, re => qr/$mre/ };
+                }
+            }
+        }
+    }
+
+    # Returns a flat list of subfield (code, value, code, value, ...)
+    # suitable for adding to a MARC::Field.
+    sub generate_replacement_subfields {
+        my ($source_field, $target_field, @controlled_subfields) = @_;
+
+        # Performing a wholesale field replacment.  
+        # Use the entire source field as-is.
+        return map {$_->[0], $_->[1]} $source_field->subfields
+            unless @controlled_subfields;
+
+        my @new_subfields;
+
+        # Iterate over all target field subfields:
+        # 1. Keep uncontrolled subfields as is.
+        # 2. Replace values for controlled subfields when a
+        #    replacement value exists on the source record.
+        # 3. Delete values for controlled subfields when no 
+        #    replacement value exists on the source record.
+
+        for my $target_sf ($target_field->subfields) {
+            my $subfield = $target_sf->[0];
+            my $target_val = $target_sf->[1];
+
+            if (grep {$_ eq $subfield} @controlled_subfields) {
+                if (my $source_val = $source_field->subfield($subfield)) {
+                    # We have a replacement value
+                    push(@new_subfields, $subfield, $source_val);
+                } else {
+                    # no replacement value for controlled subfield, drop it.
+                }
+            } else {
+                # Field is not controlled.  Copy it over as-is.
+                push(@new_subfields, $subfield, $target_val);
+            }
+        }
+
+        # Iterate over all subfields in the source field and back-fill
+        # any values that exist only in the source field.  Insert these
+        # subfields in the same relative position they exist in the
+        # source field.
+                
+        my @seen_subfields;
+        for my $source_sf ($source_field->subfields) {
+            my $subfield = $source_sf->[0];
+            my $source_val = $source_sf->[1];
+            push(@seen_subfields, $subfield);
+
+            # target field already contains this subfield, 
+            # so it would have been addressed above.
+            next if $target_field->subfield($subfield);
+
+            # Ignore uncontrolled subfields.
+            next unless grep {$_ eq $subfield} @controlled_subfields;
+
+            # Adding a new subfield.  Find its relative position and add
+            # it to the list under construction.  Work backwards from
+            # the list of already seen subfields to find the best slot.
+
+            my $done = 0;
+            for my $seen_sf (reverse(@seen_subfields)) {
+                my $idx = @new_subfields;
+                for my $new_sf (reverse(@new_subfields)) {
+                    $idx--;
+                    next if $idx % 2 == 1; # sf codes are in the even slots
+
+                    if ($new_subfields[$idx] eq $seen_sf) {
+                        splice(@new_subfields, $idx + 2, 0, $subfield, $source_val);
+                        $done = 1;
+                        last;
+                    }
+                }
+                last if $done;
+            }
+
+            # if no slot was found, add to the end of the list.
+            push(@new_subfields, $subfield, $source_val) unless $done;
+        }
+
+        return @new_subfields;
+    }
+
+    # MARC tag loop
+    for my $f (keys %fields) {
+        my $tag_idx = -1;
+        for my $target_field ($target_r->field($f)) {
+
+            # field spec contains a regex for this field.  Confirm field on 
+            # target record matches the specified regex before replacing.
+            if (exists($fields{$f}{match})) {
+                next unless (grep { $_ =~ $fields{$f}{match}{re} } 
+                    $target_field->subfield($fields{$f}{match}{sf}));
+            }
+
+            my @new_subfields;
+            my @controlled_subfields = @{$fields{$f}{sf}};
+
+            # If the target record has multiple matching bib fields,
+            # replace them from matching fields on the source record
+            # in a predictable order to avoid replacing with them with
+            # same source field repeatedly.
+            my @source_fields = $source_r->field($f);
+            my $source_field = $source_fields[++$tag_idx];
+
+            if (!$source_field && @controlled_subfields) {
+                # When there are more target fields than source fields
+                # and we are replacing values for subfields and not
+                # performing wholesale field replacment, use the last
+                # available source field as the input for all remaining
+                # target fields.
+                $source_field = $source_fields[$#source_fields];
+            }
+
+            if (!$source_field) {
+                # No source field exists.  Delete all affected target
+                # data.  This is a little bit counterintuitive, but is
+                # backwards compatible with the previous version of this
+                # function which first deleted all affected data, then
+                # replaced values where possible.
+                if (@controlled_subfields) {
+                    $target_field->delete_subfield($_) for @controlled_subfields;
+                } else {
+                    $target_r->delete_field($target_field);
+                }
+                next;
+            }
+
+            my @new_subfields = generate_replacement_subfields(
+                $source_field, $target_field, @controlled_subfields);
+
+            # Build the replacement field from scratch.  
+            my $replacement_field = MARC::Field->new(
+                $target_field->tag,
+                $target_field->indicator(1),
+                $target_field->indicator(2),
+                @new_subfields
+            );
+
+            $target_field->replace_with($replacement_field);
+        }
+    }
+
+    $target_xml = $target_r->as_xml_record;
+    $target_xml =~ s/^<\?.+?\?>$//mo;
+    $target_xml =~ s/\n//sgo;
+    $target_xml =~ s/>\s+</></sgo;
+
+    return $target_xml;
+
+$_$ LANGUAGE PLPERLU;
+
+
+COMMIT;

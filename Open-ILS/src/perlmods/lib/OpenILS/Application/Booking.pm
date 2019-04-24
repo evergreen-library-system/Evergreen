@@ -455,6 +455,8 @@ sub resource_list_by_attrs {
         return [map { $_->{id} } @$rows];
     }
 }
+
+
 __PACKAGE__->register_method(
     method   => "resource_list_by_attrs",
     api_name => "open-ils.booking.resources.filtered_id_list",
@@ -600,6 +602,59 @@ sub reservation_list_by_filters {
     $e->disconnect;
     return $bresv_list ? $bresv_list : [];
 }
+
+__PACKAGE__->register_method(
+    method   => "upcoming_reservation_list_by_user",
+    api_name => "open-ils.booking.reservations.upcoming_reservation_list_by_user",
+    argc     => 2,
+    signature=> {
+        params => [
+            {type => 'string', desc => 'Authentication token'},
+            {type => 'User ID', type => 'number', desc => 'User ID'},
+        ],
+        return => { desc => "Information about all reservations for a user that haven't yet ended." },
+    },
+    notes    => "You can send undef/NULL as the User ID to get reservations for the logged in user."
+);
+
+sub upcoming_reservation_list_by_user {
+    my ($self, $conn, $auth, $user_id) = @_;
+    my $e = new_editor(authtoken => $auth);
+    return $e->event unless $e->checkauth;
+
+    $user_id = $e->requestor->id unless defined $user_id;
+    
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->event;
+        return $e->event unless $e->allowed('VIEW_TRANSACTION');
+    }
+
+    my $select = { 'bresv' => [qw/start_time end_time cancel_time capture_time pickup_time pickup_lib/],
+        'brsrc' => [ 'barcode' ],
+        'brt' => [{'column' => 'name', 'alias' => 'resource_type_name'}],
+        'aou' => ['shortname', {'column' => 'name', 'alias' => 'pickup_name'}] };
+
+    my $from = { 'bresv' => {'brsrc' => {'field' => 'id', 'fkey' => 'current_resource'},
+        'brt' => {'field' => 'id', 'fkey' => 'target_resource_type'},
+        'aou' => {'field' => 'id', 'fkey' => 'pickup_lib'}} };
+
+    my $query = {
+        'select'   => $select,
+        'from'     => $from,
+        'where'    => { 'usr' => $user_id, 'return_time' => undef, 'end_time' => {'>' => gmtime_ISO8601() }},
+        'order_by' => [{ class => bresv => field => start_time => direction => 'asc' }]
+    };
+
+    my $cstore = OpenSRF::AppSession->connect('open-ils.cstore');
+    my $rows = $cstore->request(
+        'open-ils.cstore.json_query.atomic', $query
+    )->gather(1);
+    $cstore->disconnect;
+    $e->disconnect;
+    return [] if not @$rows;
+    return $rows;
+}
+
 __PACKAGE__->register_method(
     method   => "reservation_list_by_filters",
     api_name => "open-ils.booking.reservations.filtered_id_list",

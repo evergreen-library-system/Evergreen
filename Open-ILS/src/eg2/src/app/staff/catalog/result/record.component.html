@@ -9,44 +9,57 @@
 <div class="col-lg-12 card tight-card mb-2 bg-light">
   <div class="card-body">
     <div class="row">
-      <div class="col-lg-1">
-        <a href="javascript:void(0)" (click)="navigatToRecord(summary.id)">
-          <img style="height:80px"
-            src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
-        </a>
-      </div>
-      <div class="col-lg-5">
-        <div class="row">
-          <div class="col-lg-12 font-weight-bold">
-            <!-- nbsp allows the column to take shape when no value exists -->
-            <span class="font-weight-light font-italic">
-              #{{index + 1 + searchContext.pager.offset}}
-            </span>
-            <a href="javascript:void(0)"
-              (click)="navigatToRecord(summary.id)">
-              {{summary.display.title || '&nbsp;'}}
-            </a>
-          </div>
+      <!-- Checkbox, jacket image, and title blob live in a flex row
+           because there's no way to give them col-lg-* columns that
+           don't waste a lot of space. -->
+      <div class="col-lg-6 d-flex">
+        <label class="checkbox">
+          <span class="font-weight-bold font-italic">
+            {{index + 1 + searchContext.pager.offset}}.
+          </span>
+          <input class="pl-1" type='checkbox' [(ngModel)]="isRecordSelected"
+            (change)="toggleBasketEntry()"/>
+        </label>
+        <!-- XXX hard-coded width so columns align vertically regardless
+             of the presence of a jacket image -->
+        <div class="pl-2 record-jacket-div" >
+          <a href="javascript:void(0)" (click)="navigateToRecord(summary)">
+            <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
+          </a>
         </div>
-        <div class="row pt-2">
-          <div class="col-lg-12">
-            <!-- nbsp allows the column to take shape when no value exists -->
-            <a href="javascript:void(0)"
-              (click)="searchAuthor(summary)">
-              {{summary.display.author || '&nbsp;'}}
-            </a>
+        <div class="flex-1 pl-2">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold">
+              <!-- nbsp allows the column to take shape when no value exists -->
+              <a href="javascript:void(0)"
+                (click)="navigateToRecord(summary)">
+                {{summary.display.title || '&nbsp;'}}
+              </a>
+            </div>
           </div>
-        </div>
-        <div class="row pt-2">
-          <div class="col-lg-12">
-            <!-- only shows the first icon format -->
-            <span *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
-              <img class="pr-1"
-                src="/images/format_icons/icon_format/{{summary.attributes.icon_format[0]}}.png"/>
-              <span>{{iconFormatLabel(summary.attributes.icon_format[0])}}</span>
-            </span>
-            <span class='pl-1'>{{summary.display.edition}}</span>
-            <span class='pl-1'>{{summary.display.pubdate}}</span>
+          <div class="row pt-2">
+            <div class="col-lg-12">
+              <!-- nbsp allows the column to take shape when no value exists -->
+              <a href="javascript:void(0)"
+                (click)="searchAuthor(summary)">
+                {{summary.display.author || '&nbsp;'}}
+              </a>
+            </div>
+          </div>
+          <div class="row pt-2">
+            <div class="col-lg-12">
+              <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
+                <ng-container *ngFor="let icon of summary.attributes.icon_format">
+                <span class="pr-1">
+                  <img class="pr-1"
+                    src="/images/format_icons/icon_format/{{icon}}.png"/>
+                  <span>{{iconFormatLabel(icon)}}</span>
+                </span>
+                </ng-container>
+              </ng-container>
+              <span class='pl-1'>{{summary.display.edition}}</span>
+              <span class='pl-1'>{{summary.display.pubdate}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -114,6 +127,7 @@
                   <span i18n>Place Hold</span>
                 </button>
               </span>
+              <!--
               <span class="pl-1">
                 <button 
                   (click)="addToListDialog.recordId=summary.record.id(); addToListDialog.open({size: 'lg'})"
@@ -122,6 +136,7 @@
                   <span i18n>Add to List</span>
                 </button>
               </span>
+              -->
             </div>
           </div>
         </div>

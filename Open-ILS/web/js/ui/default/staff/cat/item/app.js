@@ -52,8 +52,8 @@ angular.module('egItemStatus',
  * Parent scope for list and detail views
  */
 .controller('SearchCtrl', 
-       ['$scope','$location','$timeout','egCore','egGridDataProvider','egItem',
-function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) {
+       ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem',
+function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
     $scope.args = {}; // search args
 
     // sub-scopes (search / detail-view) apply their version 
@@ -98,6 +98,41 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
             id : $scope.args.copyId,
             'call_number.record.id' : $scope.args.recordId
         }]);
+    }
+
+    $scope.findAcquisition = function() {
+        var acqData;
+        var promises = [];
+        $scope.openAcquisitionLineItem([$scope.args.copyId]);
+    }
+
+    $scope.openAcquisitionLineItem = function (cp_list) {
+        var hasResults = false;
+        var promises = [];
+
+        angular.forEach(cp_list, function (copyId) {
+            promises.push(
+                egNet.request(
+                    'open-ils.acq',
+                    'open-ils.acq.lineitem.retrieve.by_copy_id',
+                    egCore.auth.token(),
+                    copyId
+                ).then(function (acqData) {
+                    if (acqData) {
+                        if (acqData.a) {
+                            acqData = egCore.idl.toHash(acqData);
+                            var url = '/eg/acq/po/view/' + acqData.purchase_order + '/' + acqData.id;
+                            $timeout(function () { $window.open(url, '_blank') });
+                            hasResults = true;
+                        }
+                    }
+                })
+            )
+        });
+
+        $q.all(promises).then(function () {
+            !hasResults ? alert('There is no corresponding purchase order for this item.') : false;
+        });
     }
 
     $scope.requestItems = function() {
@@ -244,15 +279,18 @@ function($scope , $location , $timeout , egCore , egGridDataProvider , itemSvc) 
        ['$scope','$q','$routeParams','$location','$timeout','$window','egCore',
         'egGridDataProvider','egItem','egUser','$uibModal','egCirc','egConfirmDialog',
         'egProgressDialog', 'ngToast',
-function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
-         egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
-         egProgressDialog, ngToast) {
-
+// function($scope , $q , $routeParams , $location , $timeout , $window , egCore , 
+//          egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
+//          egProgressDialog, ngToast) {
+    function($scope , $q , $routeParams , $location , $timeout , $window , egCore , egGridDataProvider , itemSvc , egUser , $uibModal , egCirc , egConfirmDialog,
+                 egProgressDialog, ngToast) {
     var copyId = [];
     var cp_list = $routeParams.idList;
     if (cp_list) {
         copyId = cp_list.split(',');
     }
+
+    var modified_items = new Set();
 
     $scope.context.page = 'list';
 
@@ -387,9 +425,37 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
         return cp_id_list;
     }
 
+    $scope.refreshGridData = function() {
+        var chain = $q.when();
+        var all_items = itemSvc.copies.map(function(item) {
+            return item.id;
+        });
+        angular.forEach(all_items.reverse(), function(i) {
+            itemSvc.copies.shift();
+            chain = chain.then(function() {
+                return itemSvc.fetch(null, i);
+            });
+        });
+        return chain.then(function() {
+            copyGrid.refresh();
+        });
+    }
+
+
     $scope.add_copies_to_bucket = function() {
         var copy_list = gatherSelectedHoldingsIds();
         itemSvc.add_copies_to_bucket(copy_list);
+    }
+
+    $scope.locateAcquisition = function() {
+        if (gatherSelectedHoldingsIds) {
+            var cp_list = gatherSelectedHoldingsIds();
+            if (cp_list) {
+                if (cp_list.length > 0) {
+                    $scope.openAcquisitionLineItem(cp_list);
+                }
+            }
+        }
     }
 
     $scope.update_inventory = function() {
@@ -559,11 +625,40 @@ function($scope , $q , $routeParams , $location , $timeout , $window , egCore ,
     }
 
     if (copyId.length > 0) {
-        itemSvc.fetch(null,copyId).then(
-            function() {
-                copyGrid.refresh();
+        var fetch_list = [];
+        angular.forEach(copyId, function (c) {
+            fetch_list.push(itemSvc.fetch(null,c));
+        });
+
+        return $q.all(fetch_list).then(function (res) { copyGrid.refresh(); });
+    }
+
+    $scope.statusIconColumn = {
+        isEnabled: true,
+        template:  function(item) {
+            var icon = '';
+            if (modified_items.has(item['id'])) {
+                icon = '<span class="glyphicon glyphicon-floppy-saved"' +
+                    'title="' + egCore.strings.ITEM_SUCCESSFULLY_MODIFIED + '" ' +
+                    'aria-label="' + egCore.strings.ITEM_SUCCESSFULLY_MODIFIED + '">' +
+                    '</span>';
             }
-        );
+            return icon
+        }
+    }
+
+    if (typeof BroadcastChannel != 'undefined') {
+        var holdings_bChannel = new BroadcastChannel("eg.holdings.update");
+        holdings_bChannel.onmessage = function(e) {
+            angular.forEach(e.data.copies, function(i) {
+                modified_items.add(i);
+            });
+            ngToast.create(egCore.strings.ITEMS_SUCCESSFULLY_MODIFIED);
+            $scope.refreshGridData();
+        }
+        $scope.$on('$destroy', function() {
+            holdings_bChannel.close();
+        });
     }
 
 }])

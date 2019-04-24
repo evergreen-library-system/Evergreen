@@ -224,7 +224,7 @@ INSERT INTO config.metabib_field (id, field_class, name,
     label, xpath, display_field, search_field, browse_field)
 VALUES (
     39, 'keyword', 'physical_description',
-    oils_i18n_gettext(39, 'Physical Descrption', 'cmf', 'label'),
+    oils_i18n_gettext(39, 'Physical Description', 'cmf', 'label'),
     $$(//mods33:mods/mods33:physicalDescription/mods33:form|//mods33:mods/mods33:physicalDescription/mods33:extent|//mods33:mods/mods33:physicalDescription/mods33:reformattingQuality|//mods33:mods/mods33:physicalDescription/mods33:internetMediaType|//mods33:mods/mods33:physicalDescription/mods33:digitalOrigin)$$,
     TRUE, TRUE, FALSE
 );
@@ -17064,13 +17064,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Item Print Label - Left Margin for Left Label'
+        ,'Item Print Label - Left Margin for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Set the default left margin for the leftmost item print Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17080,13 +17080,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Item Print Label - Left Margin for Right Label'
+        ,'Item Print Label - Left Margin for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Set the default left margin for the rightmost item print label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Pocket Label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17096,13 +17096,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Item Print Label - Height for Left Label'
+        ,'Item Print Label - Height for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Set the default height for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17112,13 +17112,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Item Print Label - Width for Left Label'
+        ,'Item Print Label - Width for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Set the default width for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17128,13 +17128,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Item Print Label - Height for Right Label'
+        ,'Item Print Label - Height for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Set the default height for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17144,13 +17144,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Item Print Label - Width for Right Label'
+        ,'Item Print Label - Width for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Set the default width for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -19291,6 +19291,13 @@ VALUES (
         'Serials Barcode On Receive',
         'cwst', 'label'
     )
+), (
+  'eg.grid.circ.patron.billhistory_xacts', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.circ.patron.billhistory_xacts',
+    'Grid Config: circ.patron.billhistory_xacts',
+    'cwst', 'label'
+  )
 );
 
 
@@ -19413,6 +19420,86 @@ VALUES (
     )
 );
 
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.cat.vandelay.queue.bib', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib',
+        'Grid Config: Vandelay Bib Queue',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.auth', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.auth',
+        'Grid Config: Vandelay Authority Queue',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.match_set.list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.match_set.list',
+        'Grid Config: Vandelay Match Sets',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.match_set.quality', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.match_set.quality',
+        'Grid Config: Vandelay Match Quality Metrics',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.items', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.items',
+        'Grid Config: Vandelay Queue Import Items',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.list.bib', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.list.bib',
+        'Grid Config: Vandelay Bib Queue List',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.bib.items', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib.items',
+        'Grid Config: Vandelay Bib Items',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.list.auth', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.list.auth',
+        'Grid Config: Vandelay Authority Queue List',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.merge_profile', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.merge_profile',
+        'Grid Config: Vandelay Merge Profiles',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.bib_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.bib_attr_definition',
+        'Grid Config: Vandelay Bib Record Attributes',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.import_item_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.import_item_attr_definition',
+        'Grid Config: Vandelay Import Item Attributes',
+        'cwst', 'label'
+    )
+);
+
 
 INSERT into config.org_unit_setting_type (name, label, description, datatype) 
 VALUES ( 
@@ -19454,6 +19541,368 @@ VALUES (
     'bool'
 );
 
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.cat.vandelay.import.templates', 'cat', 'object',
+    oils_i18n_gettext(
+        'eg.cat.vandelay.import.templates',
+        'Vandelay Import Form Templates',
+        'cwst', 'label'
+    )
+);
 
 
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.booking.resource', 'gui', 'object',
+    oils_i18n_gettext (
+        'eg.grid.admin.booking.resource',
+        'Grid Config: admin.booking.resource',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr',
+        'Grid Config: admin.booking.resource_attr',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr_map', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr_map',
+        'Grid Config: admin.booking.resource_attr_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr_value', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr_value',
+        'Grid Config: admin.booking.resource_attr_value',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_type',
+        'Grid Config: admin.booking.resource_type',
+        'cwst', 'label'
+    )
+);
+
+
+-- server admin workstation settings
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.server.config.rule_age_hold_protect', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_age_hold_protect',
+        'Grid Config: admin.server.config.rule_age_hold_protect',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.stat_cat_sip_fields', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.stat_cat_sip_fields',
+        'Grid Config: admin.server.asset.stat_cat_sip_fields',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.actor.stat_cat_sip_fields', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.actor.stat_cat_sip_fields',
+        'Grid Config: admin.server.actor.stat_cat_sip_fields',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.browse_axis', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.browse_axis',
+        'Grid Config: admin.server.authority.browse_axis',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.control_set', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.control_set',
+        'Grid Config: admin.server.authority.control_set',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.heading_field', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.heading_field',
+        'Grid Config: admin.server.authority.heading_field',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.thesaurus', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.thesaurus',
+        'Grid Config: admin.server.authority.thesaurus',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.best_hold_order', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.best_hold_order',
+        'Grid Config: admin.server.config.best_hold_order',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.billing_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.billing_type',
+        'Grid Config: admin.server.config.billing_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.call_number_prefix', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.call_number_prefix',
+        'Grid Config: admin.server.asset.call_number_prefix',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.call_number_suffix', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.call_number_suffix',
+        'Grid Config: admin.server.asset.call_number_suffix',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.rule_circ_duration', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_circ_duration',
+        'Grid Config: admin.server.config.rule_circ_duration',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_limit_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_limit_group',
+        'Grid Config: admin.server.config.circ_limit_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_matrix_weights', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_matrix_weights',
+        'Grid Config: admin.server.config.circ_matrix_weights',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.rule_max_fine', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_max_fine',
+        'Grid Config: admin.server.config.rule_max_fine',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_modifier', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_modifier',
+        'Grid Config: admin.server.config.circ_modifier',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.copy_status', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.copy_status',
+        'Grid Config: admin.server.config.copy_status',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.floating_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.floating_group',
+        'Grid Config: admin.server.config.floating_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.global_flag', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.global_flag',
+        'Grid Config: admin.server.config.global_flag',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.hard_due_date', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.hard_due_date',
+        'Grid Config: admin.server.config.hard_due_date',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.hold_matrix_weights', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.hold_matrix_weights',
+        'Grid Config: admin.server.config.hold_matrix_weights',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.vandelay.match_set', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.vandelay.match_set',
+        'Grid Config: admin.server.vandelay.match_set',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.coded_value_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.coded_value_map',
+        'Grid Config: admin.server.config.coded_value_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.vandelay.import_bib_trash_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.vandelay.import_bib_trash_group',
+        'Grid Config: admin.server.vandelay.import_bib_trash_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.record_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.record_attr_definition',
+        'Grid Config: admin.server.config.record_attr_definition',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_class', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_class',
+        'Grid Config: admin.server.config.metabib_class',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field_ts_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field_ts_map',
+        'Grid Config: admin.server.config.metabib_field_ts_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field',
+        'Grid Config: admin.server.config.metabib_field',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.permission.perm_list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.permission.perm_list',
+        'Grid Config: admin.server.permission.perm_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.remote_account', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.remote_account',
+        'Grid Config: admin.server.config.remote_account',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.sms_carrier', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.sms_carrier',
+        'Grid Config: admin.server.config.sms_carrier',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.usr_activity_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.usr_activity_type',
+        'Grid Config: admin.server.config.usr_activity_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.weight_assoc', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.weight_assoc',
+        'Grid Config: admin.server.config.weight_assoc',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.z3950_index_field_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.z3950_index_field_map',
+        'Grid Config: admin.server.config.z3950_index_field_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.z3950_source', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.z3950_source',
+        'Grid Config: admin.server.config.z3950_source',
+        'cwst', 'label'
+    )
+);
+
+-- NOTE: This setting should be removed once the Angular catalog
+-- becomes the default.
+INSERT into config.org_unit_setting_type 
+    (name, datatype, grp, label, description)
+VALUES ( 
+    'ui.staff.angular_catalog.enabled', 'bool', 'gui',
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'GUI: Enable Experimental Angular Staff Catalog',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'Display an entry point in the browser client for the ' ||
+        'experimental Angular staff catalog.',
+        'coust', 'description'
+    )
+);
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+    VALUES (
+        'circ.privacy_waiver',
+        oils_i18n_gettext('circ.privacy_waiver',
+            'Allow others to use patron account (privacy waiver)',
+            'coust', 'label'),
+        oils_i18n_gettext('circ.privacy_waiver',
+            'Add a note to a user account indicating that specified people are allowed to ' ||
+            'place holds, pick up holds, check out items, or view borrowing history for that user account',
+            'coust', 'description'),
+        'circ',
+        'bool'
+    );
+
+INSERT INTO config.usr_activity_type 
+    (id, ewhat, ehow, egroup, enabled, transient, label)
+VALUES (
+    25, 'login', 'ws-translator-v1', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(25, 'Login via Websocket V1', 'cuat', 'label')
+), (
+    26, 'login', 'ws-translator-v2', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(26, 'Login via Websocket V2', 'cuat', 'label')
+), (
+    27, 'verify', 'ws-translator-v1', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(27, 'Verification via Websocket v1', 'cuat', 'label')
+), (
+    28, 'verify', 'ws-translator-v2', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(28, 'Verifiation via Websocket V2', 'cuat', 'label')
+), (
+    29, 'login', NULL, 'authen', TRUE, TRUE,
+    oils_i18n_gettext(29, 'Generic Login', 'cuat', 'label')
+), (
+    30, 'verify', NULL, 'authz', TRUE, TRUE,
+    oils_i18n_gettext(30, 'Generic Verify', 'cuat', 'label')
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'catalog.record.holds.prefetch', 'cat', 'bool',
+    oils_i18n_gettext(
+        'catalog.record.holds.prefetch',
+        'Pre-Fetch Record Holds',
+        'cwst', 'label'
+    )
+);
 

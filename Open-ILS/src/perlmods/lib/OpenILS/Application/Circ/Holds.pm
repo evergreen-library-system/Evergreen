@@ -2381,6 +2381,7 @@ sub check_title_hold {
 
     my %params       = %$params;
     my $depth        = $params{depth}        || 0;
+    $params{depth} = $depth;   #define $params{depth} if unset, since it gets used later
     my $selection_ou = $params{selection_ou} || $params{pickup_lib};
     my $oargs        = $params{oargs}        || {};
 
@@ -3502,12 +3503,13 @@ sub find_hold_mvr {
     my $volume;
     my $issuance;
     my $part;
+    my $metarecord;
     my $no_mvr = $args->{suppress_mvr};
 
     if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
-        my $mr = $e->retrieve_metabib_metarecord($hold->target)
+        $metarecord = $e->retrieve_metabib_metarecord($hold->target)
             or return $e->event;
-        $tid = $mr->master_record;
+        $tid = $metarecord->master_record;
 
     } elsif( $hold->hold_type eq OILS_HOLD_TYPE_TITLE ) {
         $tid = $hold->target;
@@ -3553,7 +3555,8 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
     my $title = $e->retrieve_biblio_record_entry($tid);
-    return ( ($no_mvr) ? undef : $U->record_to_mvr($title), $volume, $copy, $issuance, $part, $title );
+    return ( ($no_mvr) ? undef : $U->record_to_mvr($title), 
+        $volume, $copy, $issuance, $part, $title, $metarecord);
 }
 
 __PACKAGE__->register_method(
@@ -4503,6 +4506,91 @@ sub copy_has_holds_count {
         }
     }
     return 0;
+}
+
+__PACKAGE__->register_method(
+    method        => "hold_metadata",
+    api_name      => "open-ils.circ.hold.get_metadata",
+    authoritative => 1,
+    stream => 1,
+    signature     => {
+        desc => q/
+            Returns a stream of objects containing whatever bib, 
+            volume, etc. data is available to the specific hold 
+            type and target.
+        /,
+        params => [
+            {desc => 'Hold Type', type => 'string'},
+            {desc => 'Hold Target(s)', type => 'number or array'},
+            {desc => 'Context org unit (optional)', type => 'number'}
+        ],
+        return => {
+            desc => q/
+                Stream of hold metadata objects.
+            /,
+            type => 'object'
+        }
+    }
+);
+
+sub hold_metadata {
+    my ($self, $client, $hold_type, $hold_targets, $org_id) = @_;
+
+    $hold_targets = [$hold_targets] unless ref $hold_targets;
+
+    my $e = new_editor();
+    for my $target (@$hold_targets) {
+
+        # create a dummy hold for find_hold_mvr
+        my $hold = Fieldmapper::action::hold_request->new;
+        $hold->hold_type($hold_type);
+        $hold->target($target);
+
+        my (undef, $volume, $copy, $issuance, $part, $bre, $metarecord) = 
+            find_hold_mvr($e, $hold, {suppress_mvr => 1});
+
+        $bre->clear_marc; # avoid bulk
+
+        my $meta = {
+            target => $target,
+            copy => $copy,
+            volume => $volume,
+            issuance => $issuance,
+            part => $part,
+            bibrecord => $bre,
+            metarecord => $metarecord,
+            metarecord_filters => {}
+        };
+
+        # If this is a bib hold or metarecord hold, also return the
+        # available set of MR filters (AKA "Holdable Formats") for the
+        # hold.  For bib holds these may be used to upgrade the hold
+        # from a bib to metarecord hold.
+        if ($hold_type eq 'T') {
+            my $map = $e->search_metabib_metarecord_source_map(
+                {source => $meta->{bibrecord}->id})->[0];
+
+            if ($map) {
+                $meta->{metarecord} = 
+                    $e->retrieve_metabib_metarecord($map->metarecord);
+            }
+        }
+
+        if ($meta->{metarecord}) {
+
+            my ($filters) = 
+                $self->method_lookup('open-ils.circ.mmr.holds.filters')
+                    ->run($meta->{metarecord}->id, $org_id);
+
+            if ($filters) {
+                $meta->{metarecord_filters} = $filters->{metarecord};
+            }
+        }
+
+        $client->respond($meta);
+    }
+
+    return undef;
 }
 
 1;

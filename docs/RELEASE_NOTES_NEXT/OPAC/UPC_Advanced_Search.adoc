@@ -1,4 +1,0 @@
-Display UPC as Option for Public Catalog Advanced Search
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Numeric Search tab of the public catalog Advanced Search
-now includes an option to search by UPC (Universal Product Code).

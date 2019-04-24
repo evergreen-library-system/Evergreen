@@ -62,16 +62,22 @@ export class AdminPageComponent implements OnInit {
     // 'eg.grid.admin.${persistKeyPfx}.config.billing_type'
     @Input() persistKeyPfx: string;
 
+    // Optional comma-separated list of read-only fields
+    @Input() readonlyFields: string;
+
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('successString') successString: StringComponent;
     @ViewChild('createString') createString: StringComponent;
+    @ViewChild('createErrString') createErrString: StringComponent;
+    @ViewChild('updateFailedString') updateFailedString: StringComponent;
     @ViewChild('translator') translator: TranslateComponent;
 
     idlClassDef: any;
     pkeyField: string;
     createNew: () => void;
     deleteSelected: (rows: IdlObject[]) => void;
+    editSelected: (rows: IdlObject[]) => void;
 
     // True if any columns on the object support translations
     translateRowIdx: number;
@@ -150,29 +156,40 @@ export class AdminPageComponent implements OnInit {
 
         // TODO: pass the row activate handler via the grid markup
         this.grid.onRowActivate.subscribe(
-            (idlThing: IdlObject) => {
-                this.editDialog.mode = 'update';
-                this.editDialog.recId = idlThing[this.pkeyField]();
-                this.editDialog.open({size: this.dialogSize}).then(
-                    ok => {
-                        this.successString.current()
-                            .then(str => this.toast.success(str));
-                        this.grid.reload();
-                    },
-                    err => {}
-                );
-            }
+            (idlThing: IdlObject) => this.showEditDialog(idlThing)
         );
+
+        this.editSelected = (idlThings: IdlObject[]) => {
+
+            // Edit each IDL thing one at a time
+            const editOneThing = (thing: IdlObject) => {
+                if (!thing) { return; }
+
+                this.showEditDialog(thing).then(
+                    () => editOneThing(idlThings.shift()));
+            };
+
+            editOneThing(idlThings.shift());
+        };
 
         this.createNew = () => {
             this.editDialog.mode = 'create';
+            // We reuse the same editor for all actions.  Be sure
+            // create action does not try to modify an existing record.
+            this.editDialog.recId = null;
+            this.editDialog.record = null;
             this.editDialog.open({size: this.dialogSize}).then(
                 ok => {
                     this.createString.current()
                         .then(str => this.toast.success(str));
                     this.grid.reload();
                 },
-                err => {}
+                rejection => {
+                    if (!rejection.dismissed) {
+                        this.createErrString.current()
+                            .then(str => this.toast.danger(str));
+                    }
+                }
             );
         };
 
@@ -289,11 +306,13 @@ export class AdminPageComponent implements OnInit {
 
                 const search = {};
                 search[this.orgField] = orgs;
-                return this.pcrud.search(this.idlClass, search, searchOps);
+                return this.pcrud.search(
+                    this.idlClass, search, searchOps, {fleshSelectors: true});
             }
 
             // No org filter -- fetch all rows
-            return this.pcrud.retrieveAll(this.idlClass, searchOps);
+            return this.pcrud.retrieveAll(
+                this.idlClass, searchOps, {fleshSelectors: true});
         };
     }
 
@@ -304,6 +323,24 @@ export class AdminPageComponent implements OnInit {
 
     disableDescendantSelector(): boolean {
         return this.contextOrg && this.contextOrg.children().length === 0;
+    }
+
+    showEditDialog(idlThing: IdlObject) {
+        this.editDialog.mode = 'update';
+        this.editDialog.recId = idlThing[this.pkeyField]();
+        return this.editDialog.open({size: this.dialogSize}).then(
+            ok => {
+                this.successString.current()
+                    .then(str => this.toast.success(str));
+                this.grid.reload();
+            },
+            rejection => {
+                if (!rejection.dismissed) {
+                    this.updateFailedString.current()
+                        .then(str => this.toast.danger(str));
+                }
+            }
+        );
     }
 
 }

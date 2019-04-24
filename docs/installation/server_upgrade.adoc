@@ -8,7 +8,7 @@ Software Prerequisites
 
   * **PostgreSQL**: The minimum supported version is 9.4.
   * **Linux**: Evergreen 2.12.0 has been tested on Debian Stretch (9.0),
-    Debian Jessie (8.0), Ubuntu Xenial Xerus (16.04),and Ubuntu Trusty Tahr (14.04).
+    Debian Jessie (8.0), Ubuntu Xenial Xerus (16.04), and Ubuntu Bionic Beaver (18.04).
     If you are running an older version of these distributions, you may want
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -69,7 +69,6 @@ indexterm:[Linux, Ubuntu]
   * `debian-stretch` for Debian Stretch (9.0) (EDI compatibility in progress)
   * `debian-jessie` for Debian Jessie (8.0) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
   * `ubuntu-xenial` for Ubuntu Xenial Xerus (16.04) (EDI compatibility in progress)
-  * `ubuntu-trusty` for Ubuntu Trusty Tahr (14.04) (See https://bugs.launchpad.net/evergreen/+bug/1342227[Bug 134222] if you want to use EDI)
 
 +
 [source, bash]
@@ -118,21 +117,21 @@ chown -R opensrf:opensrf /openils
   As the *opensrf* user, update the server symlink in /openils/var/web/xul/:
 +
 [source, bash]
------------------------------------------------------------
+------------------------------------------------------------
 cd /openils/var/web/xul/
 rm server
 ln -sf rel_2_12_rc/server server
-----------------------------------------------------------
+------------------------------------------------------------
 +
 . As the *opensrf* user, update opensrf_core.xml and opensrf.xml by copying the
   new example files (/openils/conf/opensrf_core.xml.example and
   /openils/conf/opensrf.xml). The _-b_ option creates a backup copy of the old file.
 +
 [source, bash]
-----------------------------------------------------------
+------------------------------------------------------------
 cp -b /openils/conf/opensrf_core.xml.example /openils/conf/opensrf_core.xml
 cp -b /openils/conf/opensrf.xml.example /openils/conf/opensrf.xml
-----------------------------------------------------------
+------------------------------------------------------------
 +
 [CAUTION]
 Copying these configuration files will remove any customizations you have made to them. Remember to redo your customizations after copying them.
@@ -323,7 +322,7 @@ srfsh% login username password
 You should see a result like:
 +
 [source, bash]
-------------------------------------------------------
+--------------------------------------------------------------
 Received Data: "250bf1518c7527a03249858687714376"
     ------------------------------------
     Request Completed Successfully
@@ -347,7 +346,7 @@ Received Data: "250bf1518c7527a03249858687714376"
     Request Completed Successfully
     Request Time in seconds: 1.336568
     ------------------------------------
-----------------------------------------------------------
+--------------------------------------------------------------
 +
 If this does not work, it's time to do some <<install-troubleshooting-1,troubleshooting>>.
 +

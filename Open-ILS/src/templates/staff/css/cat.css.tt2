@@ -18,6 +18,7 @@
 
 .marcfastitemadd, .marctypesource {
     border-bottom: solid thin gray;
+    flex-wrap: wrap;
 }
 
 .marcedit {
@@ -196,5 +197,96 @@ grid[name="-none-"] * label { color: black; }
 /* Wrapping in bootstrap style can separate radio buttons from their labels. */
 .col-xs-3 {
     white-space: nowrap;
+}
+
+/* Print Item Templates Styles */
+
+div.print-label-toolbox input[type=number], div.print-label-toolbox input[type=text] {
+  border: 1px solid #999;
+  border-radius: 3px;
+  margin-right: 12px;
+  width: 56px;
+  }
+
+div.print-label-toolbox div.eg-print-label-section {
+  display: block;
+  margin: 0 0 10px 0;
+  }
+
+div.eg-print-label-group {
+  border-bottom: 1px solid #DED;
+  margin: 0 0 10px 0;
+  padding: 0 0 10px 0;
+  }
+
+.eg-print-label-section p {
+  margin: 0 0 5px 0;
+  }
+
+div.print-label-toolbox input.ng-invalid {
+  background-color: #FFFF00;
+  color: #FF0000;
+  }
+
+div.print-label-toolbox label {
+  padding-right: 4px;
+  }
+
+div.print-label-toolbox ul {
+  display: block;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  }
+
+div.print-label-toolbox ul li {
+  display: inline-block;
+  padding: 0 0 0 6px;
+  }
+
+div.print-label-toolbox ul li:first-child {
+  display: inline-block;
+  padding: 0 0 0 0;
+  }
+
+table.custom-label-table td {
+  vertical-align: top;
+  }
+
+.print-template-text {
+   height: 36em;
+   width: 100%;
+   }
+
+.cn-template-text {
+  height: 12em;
+  width: 100%;
+}
+
+.record-merge-container {
+  flex: 1;
+  max-height: 600px;
+  /*
+   * LP1739293 Leaving for reference in case anyone wants to allow the
+   * marc records to occupy more horizontal space and/or put scroll bars
+   * on the individual records instead of a single vertical scroll.
+  min-width: 600px;
+  max-width: 900px;
+  overflow-y: scroll;
+  */
+}
+
+.record-merge-container pre {
+  /* in the merge view, wrap text so it doesn't gobble up 
+   * all of the horizontal space */
+  white-space: pre-wrap;
+}
+
+/* Avoid word wrapping in edit mode and add scrolls for navigation */
+.record-edit-container {
+  flex: 1;
+  overflow-x: scroll;
+  overflow-y: scroll;
+  white-space: nowrap;
 }
 

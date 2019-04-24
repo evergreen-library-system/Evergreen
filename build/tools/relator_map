@@ -4,8 +4,11 @@ use warnings;
 
 use XML::LibXML;
 use XML::LibXML::Reader;
-use LWP::Simple;
+use LWP::Simple qw($ua get);
 use Data::Dumper;
+
+# loc.gov blocks basic user agents now
+$ua->agent('Evergreen/3.1');
 
 my %relator;
 my $code = 0;

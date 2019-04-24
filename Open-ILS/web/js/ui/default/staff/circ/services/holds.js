@@ -490,23 +490,50 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         // current_copy is not always fleshed in the API
         if (hold.current_copy() && typeof hold.current_copy() != 'object') {
             hold.current_copy(hold_data.copy);
-            
+        }
+
+        if (hold.current_copy()) {
             // likewise, current_copy's status isn't fleshed in the API
             if(hold.current_copy().status() !== null &&
                typeof hold.current_copy().status() != 'object')
                 egCore.pcrud.retrieve('ccs',hold.current_copy().status()
                     ).then(function(c) { hold.current_copy().status(c) });
-        }
-
-        if (volume) {
-            //Call number affixes are not always fleshed in the API
-            if (volume.prefix() && typeof volume.prefix() != 'object') {
-                console.debug('fetching call number prefix');
-                egCore.pcrud.retrieve('acnp',volume.prefix()).then(function(p) {volume.prefix(p)});
+        
+            // current_copy's shelving location position isn't always accessible
+            if (hold.current_copy().location()) {
+                //console.debug('fetching hold copy location order');
+                var location_id;
+                if (typeof hold.current_copy().location() != 'object') {
+                    location_id = hold.current_copy().location();
+                } else {
+                    location_id = hold.current_copy().location().id();
+                }
+                egCore.pcrud.search(
+                    'acplo',
+                    {location: location_id, org: egCore.auth.user().ws_ou()},
+                    null,
+                    {atomic:true}
+                ).then(function(orders) {
+                    if(orders[0]){
+                        hold_data.hold._copy_location_position = orders[0].position();
+                    } else {
+                        hold_data.hold._copy_location_position = 999;
+                    }
+                });
             }
-            if (volume.suffix() && typeof volume.suffix() != 'object') {
-                console.debug('fetching call number prefix');
-                egCore.pcrud.retrieve('acns',volume.suffix()).then(function(s) {volume.suffix(s)});
+
+            //Call number affixes are not always fleshed in the API
+            if (hold_data.volume.prefix) {
+                //console.debug('fetching call number prefix');
+                //console.log(hold_data.volume.prefix());
+                egCore.pcrud.retrieve('acnp',hold_data.volume.prefix())
+                .then(function(p) {hold_data.volume.prefix = p.label(); hold_data.volume.prefix_sortkey = p.label_sortkey()});
+            }
+            if (hold_data.volume.suffix) {
+                //console.debug('fetching call number suffix');
+                //console.log(hold_data.volume.suffix());
+                egCore.pcrud.retrieve('acns',hold_data.volume.suffix())
+                .then(function(s) {hold_data.volume.suffix = s.label(); hold_data.volume.suffix_sortkey = s.label_sortkey()});
             }
         }
     }

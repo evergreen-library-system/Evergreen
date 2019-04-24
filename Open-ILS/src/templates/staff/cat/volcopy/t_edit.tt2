@@ -25,7 +25,7 @@
                         <select class="form-control" ng-model="batch.prefix" ng-options="p.id() as p.label() for p in prefix_list"></select>
                     </div>
                     <div class="col-xs-2">
-                        <input class="form-control" type="text" ng-model="batch.label"/>
+                        <eg-basic-combo-box list="batch.marcCallNumbers" selected="batch.label"></eg-basic-combo-box>
                     </div>
                     <div class="col-xs-1">
                         <select class="form-control" ng-model="batch.suffix" ng-options="s.id() as s.label() for s in suffix_list"></select>
@@ -101,11 +101,16 @@
         <div class="tab-content">
           <div class="tab-pane active">
             <div ng-show="copytab == 'working'">
-        
+
             <div class="container-fluid"> <!-- working copy editor -->
+                <div class="row give-cell-border" style="margin:0px;padding:0px">
+                    <div class="col-lg-12" style="margin:0px;padding:0px"
+                        <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_attr_edit'"></div>
+                    </div>
+                </div>
                 <div class="row">
-                    <div class="col-lg-4">
-        
+                    <div class="col-lg-12">
+
                         <eg-grid
                           id-field="id"
                           idl-class="acp"
@@ -116,13 +121,13 @@
                           after-select="afterItemSelect"
                           persist-key="cat.volcopy.copies"
                           dateformat="{{$root.egDateAndTimeFormat}}">
-        
+
                           <eg-grid-menu-item disabled="disableSave" handler="workingToComplete"
                            label="[% l('Store Selected') %]"></eg-grid-menu-item>
                           <eg-grid-menu-item disabled="disableSave" handler="workingSaveAndExit"
                            label="[% l('Save & Exit') %]"></eg-grid-menu-item>
-        
-                        
+
+
                           <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
                           <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
@@ -130,18 +135,13 @@
                           <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
                           <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Item ID') %]"     path="id" hidden></eg-grid-field>
-                        
+
                         </eg-grid>
-        
-                    </div>
-        
-                    <div class="col-lg-8 give-cell-border">
-                        <div ng-include="'[% ctx.base_path %]/staff/cat/volcopy/t_attr_edit'"></div>
+
                     </div>
                 </div>
             </div>
-        
-            </div>
+
             <div ng-show="copytab == 'complete'">
                <eg-grid
                  id-field="id"
@@ -152,15 +152,15 @@
                  grid-controls="completedGridControls"
                  persist-key="cat.volcopy.copies.complete"
                  dateformat="{{$root.egDateAndTimeFormat}}">
-               
+
                  <eg-grid-menu-item standalone="true" handler="completeToWorking"
                   label="[% l('Edit Selected') %]"></eg-grid-menu-item>
-        
+
                  <eg-grid-menu-item disabled="disableSave" handler="saveAndContinue"
                   label="[% l('Save Completed') %]"></eg-grid-menu-item>
                  <eg-grid-menu-item disabled="disableSave" handler="saveAndExit"
                   label="[% l('Save & Exit') %]"></eg-grid-menu-item>
-        
+
                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
                  <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Activated') %]"   path="active_date" datatype="timestamp" visible></eg-grid-field>

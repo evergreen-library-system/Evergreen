@@ -115,6 +115,78 @@ sub update_user_setting {
 
 
 __PACKAGE__->register_method(
+    method    => "update_privacy_waiver",
+    api_name  => "open-ils.actor.patron.privacy_waiver.update",
+    signature => {
+        desc => "Replaces any existing privacy waiver entries for the patron with the supplied values.",
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID', type => 'number'},
+            {desc => 'Arrayref of privacy waiver entries', type => 'object'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+sub update_privacy_waiver {
+    my($self, $conn, $auth, $user_id, $waiver) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    $user_id = $e->requestor->id unless defined $user_id;
+
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    }
+
+    foreach my $w (@$waiver) {
+        $w->{usr} = $user_id unless $w->{usr};
+        if ($w->{id} && $w->{id} ne 'new') {
+            my $existing_rows = $e->search_actor_usr_privacy_waiver({usr => $user_id, id => $w->{id}});
+            if ($existing_rows) {
+                my $existing = $existing_rows->[0];
+                # delete existing if name is empty
+                if (!$w->{name} or $w->{name} =~ /^\s*$/) {
+                    $e->delete_actor_usr_privacy_waiver($existing) or return $e->die_event;
+
+                # delete existing if none of the boxes were checked
+                } elsif (!$w->{place_holds} && !$w->{pickup_holds} && !$w->{checkout_items} && !$w->{view_history}) {
+                    $e->delete_actor_usr_privacy_waiver($existing) or return $e->die_event;
+
+                # otherwise, update existing waiver entry
+                } else {
+                    $existing->name($w->{name});
+                    $existing->place_holds($w->{place_holds});
+                    $existing->pickup_holds($w->{pickup_holds});
+                    $existing->checkout_items($w->{checkout_items});
+                    $existing->view_history($w->{view_history});
+                    $e->update_actor_usr_privacy_waiver($existing) or return $e->die_event;
+                }
+            } else {
+                $logger->warn("No privacy waiver entry found for user $user_id with ID " . $w->{id});
+            }
+
+        } else {
+            # ignore new entries with empty name or with no boxes checked
+            next if (!$w->{name} or $w->{name} =~ /^\s*$/);
+            next if (!$w->{place_holds} && !$w->{pickup_holds} && !$w->{checkout_items} && !$w->{view_history});
+            my $new = Fieldmapper::actor::usr_privacy_waiver->new;
+            $new->usr($w->{usr});
+            $new->name($w->{name});
+            $new->place_holds($w->{place_holds});
+            $new->pickup_holds($w->{pickup_holds});
+            $new->checkout_items($w->{checkout_items});
+            $new->view_history($w->{view_history});
+            $e->create_actor_usr_privacy_waiver($new) or return $e->die_event;
+        }
+    }
+
+    $e->commit;
+    return 1;
+}
+
+
+__PACKAGE__->register_method(
     method    => "set_ou_settings",
     api_name  => "open-ils.actor.org_unit.settings.update",
     signature => {
@@ -444,6 +516,9 @@ sub update_patron {
     ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron);
     return $evt if $evt;
 
+    ( $new_patron, $evt ) = _add_update_waiver_entries($e, $patron, $new_patron);
+    return $evt if $evt;
+
     ( $new_patron, $evt ) = _add_survey_responses($e, $patron, $new_patron);
     return $evt if $evt;
 
@@ -540,6 +615,7 @@ sub flesh_user {
         "billing_address",
         "mailing_address",
         "stat_cat_entries",
+        "waiver_entries",
         "settings",
         "usr_activity"
     ];
@@ -568,6 +644,7 @@ sub _clone_patron {
     $new_patron->clear_ischanged();
     $new_patron->clear_isdeleted();
     $new_patron->clear_stat_cat_entries();
+    $new_patron->clear_waiver_entries();
     $new_patron->clear_permissions();
     $new_patron->clear_standing_penalties();
 
@@ -888,6 +965,32 @@ sub _update_card {
 }
 
 
+sub _add_update_waiver_entries {
+    my $e = shift;
+    my $patron = shift;
+    my $new_patron = shift;
+    my $evt;
+
+    my $waiver_entries = $patron->waiver_entries();
+    for my $waiver (@$waiver_entries) {
+        next unless ref $waiver;
+        $waiver->usr($new_patron->id());
+        if ($waiver->isnew()) {
+            next if (!$waiver->name() or $waiver->name() =~ /^\s*$/);
+            next if (!$waiver->place_holds() && !$waiver->pickup_holds() && !$waiver->checkout_items() && !$waiver->view_history());
+            $logger->info("Adding new patron waiver entry");
+            $waiver->clear_id();
+            $e->create_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        } elsif ($waiver->ischanged()) {
+            $logger->info("Updating patron waiver entry " . $waiver->id);
+            $e->update_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        } elsif ($waiver->isdeleted()) {
+            $logger->info("Deleting patron waiver entry " . $waiver->id);
+            $e->delete_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        }
+    }
+    return ($new_patron, undef);
+}
 
 
 # returns event on error.  returns undef otherwise
@@ -3007,6 +3110,7 @@ sub user_retrieve_fleshed_by_id {
         "billing_address",
         "mailing_address",
         "stat_cat_entries",
+        "waiver_entries",
         "usr_activity" ];
     return new_flesh_user($user_id, $fields, $e);
 }

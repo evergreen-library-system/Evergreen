@@ -6,9 +6,11 @@
     [ngClass]="{'selected': context.rowSelector.contains(context.getRowIndex(row))}"
     *ngFor="let row of context.dataSource.getPageOfRows(context.pager); let idx = index">
 
-    <div class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-      <input type='checkbox' [(ngModel)]="context.rowSelector.indexes[context.getRowIndex(row)]">
-    </div>
+    <ng-container *ngIf="!context.disableSelect">
+      <div class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
+        <input type='checkbox' [(ngModel)]="context.rowSelector.indexes[context.getRowIndex(row)]">
+      </div>
+    </ng-container>
     <div class="eg-grid-cell eg-grid-number-cell eg-grid-cell-skinny">
       {{context.pager.rowNumber(idx)}}
     </div>

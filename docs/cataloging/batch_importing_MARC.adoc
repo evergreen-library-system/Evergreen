@@ -270,7 +270,7 @@ If you are overlaying existing copies which already have stat cats
 attached to them, the overlay process will keep those values unless the
 incoming copies contain updated values for matching categories.
 |Status ||
-|==================
+|=============================
 
 
 Import Records

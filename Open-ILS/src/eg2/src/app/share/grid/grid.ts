@@ -1,9 +1,8 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
+import {TemplateRef, EventEmitter} from '@angular/core';
+import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -21,9 +20,12 @@ export class GridColumn {
     hidden: boolean;
     visible: boolean;
     sort: number;
+    // IDL class of the object which contains this field.
+    // Not to be confused with the class of a linked object.
     idlClass: string;
     idlFieldDef: any;
     datatype: string;
+    datePlusTime: boolean;
     cellTemplate: TemplateRef<any>;
     cellContext: any;
     isIndex: boolean;
@@ -189,6 +191,7 @@ export class GridColumnSet {
             const idlInfo = this.idlInfoFromDotpath(col.path);
             if (idlInfo) {
                 col.idlFieldDef = idlInfo.idlField;
+                col.idlClass = idlInfo.idlClass.name;
                 if (!col.label) {
                     col.label = col.idlFieldDef.label || col.idlFieldDef.name;
                     col.datatype = col.idlFieldDef.datatype;
@@ -396,7 +399,7 @@ export class GridRowSelector {
 
 export interface GridRowFlairEntry {
     icon: string;   // name of material icon
-    title: string;  // tooltip string
+    title?: string;  // tooltip string
 }
 
 export class GridColumnPersistConf {
@@ -421,6 +424,7 @@ export class GridContext {
     useLocalSort: boolean;
     persistKey: string;
     disableMultiSelect: boolean;
+    disableSelect: boolean;
     dataSource: GridDataSource;
     columnSet: GridColumnSet;
     rowSelector: GridRowSelector;
@@ -436,6 +440,7 @@ export class GridContext {
     defaultVisibleFields: string[];
     defaultHiddenFields: string[];
     overflowCells: boolean;
+    showLinkSelectors: boolean;
 
     // Services injected by our grid component
     idl: IdlService;
@@ -537,18 +542,34 @@ export class GridContext {
     sortLocalData() {
 
         const sortDefs = this.dataSource.sort.map(sort => {
+            const column = this.columnSet.getColByName(sort.name);
+
             const def = {
                 name: sort.name,
                 dir: sort.dir,
-                col: this.columnSet.getColByName(sort.name)
+                col: column
             };
 
             if (!def.col.comparator) {
-                def.col.comparator = (a, b) => {
-                    if (a < b) { return -1; }
-                    if (a > b) { return 1; }
-                    return 0;
-                };
+                switch (def.col.datatype) {
+                    case 'id':
+                    case 'money':
+                    case 'int':
+                        def.col.comparator = (a, b) => {
+                            a = Number(a);
+                            b = Number(b);
+                            if (a < b) { return -1; }
+                            if (a > b) { return 1; }
+                            return 0;
+                        };
+                        break;
+                    default:
+                        def.col.comparator = (a, b) => {
+                            if (a < b) { return -1; }
+                            if (a > b) { return 1; }
+                            return 0;
+                        };
+                }
             }
 
             return def;
@@ -568,8 +589,6 @@ export class GridContext {
 
                 const diff = sortDef.col.comparator(valueA, valueB);
                 if (diff === 0) { continue; }
-
-                console.log(valueA, valueB, diff);
 
                 return sortDef.dir === 'DESC' ? -diff : diff;
             }
@@ -623,14 +642,20 @@ export class GridContext {
 
     getRowColumnValue(row: any, col: GridColumn): string {
         let val;
-        if (col.name in row) {
+
+        if (col.path) {
+            val = this.nestedItemFieldValue(row, col);
+        } else if (col.name in row) {
             val = this.getObjectFieldValue(row, col.name);
-        } else {
-            if (col.path) {
-                val = this.nestedItemFieldValue(row, col);
-            }
         }
-        return this.format.transform({value: val, datatype: col.datatype});
+
+        return this.format.transform({
+            value: val,
+            idlClass: col.idlClass,
+            idlField: col.idlFieldDef ? col.idlFieldDef.name : col.name,
+            datatype: col.datatype,
+            datePlusTime: Boolean(col.datePlusTime)
+        });
     }
 
     getObjectFieldValue(obj: any, name: string): any {
@@ -651,7 +676,7 @@ export class GridContext {
         for (let i = 0; i < steps.length; i++) {
             const step = steps[i];
 
-            if (typeof obj !== 'object') {
+            if (obj === null || obj === undefined || typeof obj !== 'object') {
                 // We have run out of data to step through before
                 // reaching the end of the path.  Conclude fleshing via
                 // callback if provided then exit.
@@ -675,6 +700,12 @@ export class GridContext {
         if (idlField) {
             if (!col.datatype) {
                 col.datatype = idlField.datatype;
+            }
+            if (!col.idlFieldDef) {
+                idlField = col.idlFieldDef;
+            }
+            if (!col.idlClass) {
+                col.idlClass = idlClassDef.name;
             }
             if (!col.label) {
                 col.label = idlField.label || idlField.name;
@@ -852,9 +883,19 @@ export class GridContext {
             col.name = field.name;
             col.label = field.label || field.name;
             col.idlFieldDef = field;
+            col.idlClass = this.columnSet.idlClass;
             col.datatype = field.datatype;
             col.isIndex = (field.name === pkeyField);
             col.isAuto = true;
+
+            if (this.showLinkSelectors) {
+                const selector = this.idl.getLinkSelector(
+                    this.columnSet.idlClass, field.name);
+                if (selector) {
+                    col.path = field.name + '.' + selector;
+                }
+            }
+
             this.columnSet.add(col);
         });
     }
@@ -883,19 +924,25 @@ export class GridContext {
 // Actions apply to specific rows
 export class GridToolbarAction {
     label: string;
-    action: (rows: any[]) => any;
+    onClick: EventEmitter<any []>;
+    action: (rows: any[]) => any; // DEPRECATED
+    group: string;
+    isGroup: boolean; // used for group placeholder entries
+    disableOnRows: (rows: any[]) => boolean;
 }
 
 // Buttons are global actions
 export class GridToolbarButton {
     label: string;
-    action: () => any;
+    onClick: EventEmitter<any []>;
+    action: () => any; // DEPRECATED
     disabled: boolean;
 }
 
 export class GridToolbarCheckbox {
     label: string;
-    onChange: (checked: boolean) => void;
+    isChecked: boolean;
+    onChange: EventEmitter<boolean>;
 }
 
 export class GridDataSource {

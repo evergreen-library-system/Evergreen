@@ -1,9 +1,0 @@
-Ubuntu 18.04 Bionic Beaver
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-Evergreen can now be installed on Ubuntu 18.04 Bionic Beaver.  To
-install the prerequisites, use ubuntu-bionic as the Makefile.install
-target.
-
-This update also fixes a Perl warning in the HoldNotify module that is
-an error in the version of Perl (5.26) that is installed on Ubuntu
-18.04.

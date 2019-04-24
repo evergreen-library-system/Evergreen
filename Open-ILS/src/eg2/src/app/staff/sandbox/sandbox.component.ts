@@ -1,12 +1,10 @@
+
+import {timer as observableTimer, Observable, of} from 'rxjs';
 import {Component, OnInit, ViewChild, Input, TemplateRef} from '@angular/core';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringService} from '@eg/share/string/string.service';
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/timer';
-import {of} from 'rxjs';
-import {map} from 'rxjs/operators/map';
-import {take} from 'rxjs/operators/take';
+import {map, take} from 'rxjs/operators';
 import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -15,6 +13,8 @@ import {Pager} from '@eg/share/util/pager';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {FormatService} from '@eg/core/format.service';
+import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -29,6 +29,9 @@ export class SandboxComponent implements OnInit {
 
     @ViewChild('printTemplate')
     private printTemplate: TemplateRef<any>;
+
+    @ViewChild('fmRecordEditor')
+    private fmRecordEditor: FmRecordEditorComponent;
 
     // @ViewChild('helloStr') private helloStr: StringComponent;
 
@@ -55,12 +58,21 @@ export class SandboxComponent implements OnInit {
 
     name = 'Jane';
 
+    dynamicTitleText: string;
+
+    complimentEvergreen: (rows: IdlObject[]) => void;
+    notOneSelectedRow: (rows: IdlObject[]) => boolean;
+
+    // selector field value on metarecord object
+    aMetarecord: string;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
         private pcrud: PcrudService,
         private strings: StringService,
         private toast: ToastService,
+        private format: FormatService,
         private printer: PrintService
     ) {
     }
@@ -103,10 +115,38 @@ export class SandboxComponent implements OnInit {
             }).pipe(map(cbt => {
                 // example of inline fleshing
                 cbt.owner(this.org.get(cbt.owner()));
+                cbt.datetime_test = new Date();
                 this.oneBtype = cbt;
                 return cbt;
             }));
         };
+
+        this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
+        this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
+
+        this.pcrud.retrieve('bre', 1, {}, {fleshSelectors: true})
+        .subscribe(bib => {
+            // Format service will automatically find the selector
+            // value to display from our fleshed metarecord field.
+            this.aMetarecord = this.format.transform({
+                value: bib.metarecord(),
+                idlClass: 'bre',
+                idlField: 'metarecord'
+            });
+        });
+    }
+
+    openEditor() {
+        this.fmRecordEditor.open({size: 'lg'}).then(
+            ok => { console.debug(ok); },
+            err => {
+                if (err && err.dismissed) {
+                    console.debug('dialog was dismissed');
+                } else {
+                    console.error(err);
+                }
+            }
+        );
     }
 
     btGridRowClassCallback(row: any): string {
@@ -159,7 +199,7 @@ export class SandboxComponent implements OnInit {
         this.progressDialog.open();
 
         // every 250ms emit x*10 for 0-10
-        Observable.timer(0, 250).pipe(
+        observableTimer(0, 250).pipe(
             map(x => x * 10),
             take(11)
         ).subscribe(

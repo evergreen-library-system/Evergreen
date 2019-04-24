@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {IdlObject, IdlService} from './idl.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
@@ -231,9 +231,10 @@ export class OrgService {
     /**
      *
      */
-    settings(names: string[],
+    settings(name: string | string[],
         orgId?: number, anonymous?: boolean): Promise<OrgSettingsBatch> {
 
+        let names = [].concat(name);
         const settings = {};
         let auth: string = null;
         let useCache = false;
@@ -252,8 +253,9 @@ export class OrgService {
             }
 
         } else if (!anonymous) {
-            return Promise.reject(
-                'Use "anonymous" To retrieve org settings without an authtoken');
+            console.warn('Attempt to fetch org setting(s)',
+                name, 'in non-anonymous mode without an authtoken');
+            return Promise.resolve({});
         }
 
         if (useCache) {

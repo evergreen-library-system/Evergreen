@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
+import {Observable, Observer} from 'rxjs';
 import {Router, Resolve, RouterStateSnapshot,
         ActivatedRouteSnapshot} from '@angular/router';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -38,22 +37,16 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
     }
 
     fetchSettings(): Promise<any> {
-        const promises = [];
 
-        promises.push(
-            this.store.getItem('eg.search.search_lib').then(
-                id => this.staffCat.defaultSearchOrg = this.org.get(id)
-            )
-        );
-
-        promises.push(
-            this.store.getItem('eg.search.pref_lib').then(
-                id => this.staffCat.prefOrg = this.org.get(id)
-            )
-        );
-
-        return Promise.all(promises);
+        return this.store.getItemBatch([
+            'eg.search.search_lib',
+            'eg.search.pref_lib'
+        ]).then(settings => {
+            this.staffCat.defaultSearchOrg =
+                this.org.get(settings['eg.search.search_lib']);
+            this.staffCat.prefOrg =
+                this.org.get(settings['eg.search.pref_lib']);
+        });
     }
-
 }
 

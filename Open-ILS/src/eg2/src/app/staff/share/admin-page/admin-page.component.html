@@ -1,8 +1,15 @@
 <ng-template #successStrTmpl i18n>{{idlClassDef.label}} Update Succeeded</ng-template>
 <eg-string #successString [template]="successStrTmpl"></eg-string>
 
+<ng-template #updateFailedStrTmpl i18n>Update of {{idlClassDef.label}} failed</ng-template>
+<eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
+
+
 <ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
 <eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-template #createErrStrTmpl i18n>Failed to create new {{idlClassDef.label}}</ng-template>
+<eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
 
 <ng-container *ngIf="orgField">
   <div class="d-flex">
@@ -42,18 +49,21 @@
 <eg-translate #translator></eg-translate>
 
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
-    [sortable]="true" persistKey="{{persistKey}}">
+    [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
     label="Apply Translations" i18n-label [action]="translate">
   </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  </eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
   </eg-grid-toolbar-action>
 </eg-grid>
 
-<eg-fm-record-editor #editDialog idlClass="{{idlClass}}">
+<eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
+    [preloadLinkedValues]="true" readonlyFields="{{readonlyFields}}">
 </eg-fm-record-editor>
 
 

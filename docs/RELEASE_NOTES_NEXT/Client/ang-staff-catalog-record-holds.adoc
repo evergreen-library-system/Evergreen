@@ -1,0 +1,15 @@
+(Experimental) Angular Staff Catalog Record Holds Tab
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Adds support for the Holds tab in the record detail view of the Angular
+staff catalog.  Includes grid and hold-related actions.
+
+ * Holds grid
+ * Batch cancel holds
+ * Batch retarget holds
+ * Batch edit holds
+  ** Unified form to modify notify options, dates, etc.
+ * hold detail page (menu and row double-click)
+ * Batch mark items damaged
+ * Batch mark items missing
+ * Show last few circulations
+ * Retrieve patron

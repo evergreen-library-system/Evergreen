@@ -17,6 +17,7 @@ function($q,  $timeout,  egNet,  egAuth,  egOrg) {
             'billing_address',                                                     
             'mailing_address',                                                     
             'stat_cat_entries',                                                    
+            'waiver_entries',
             'usr_activity',
             'notes'
         ]

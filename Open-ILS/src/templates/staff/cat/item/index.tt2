@@ -35,7 +35,12 @@
     s.SUCCESS_UPDATE_INVENTORY =
       "[% l('Updated most recent inventory data for selected items.') %]";
     s.FAIL_UPDATE_INVENTORY =
-      "[% l('Failed to update recent inventory data for selected items.')%]"
+      "[% l('Failed to update recent inventory data for selected items.')%]";
+    s.ITEM_SUCCESSFULLY_MODIFIED =
+      "[% l('Item successfully modified') %]";
+    s.ITEMS_SUCCESSFULLY_MODIFIED =
+      "[% l('Item(s) successfully modified') %]";
+
   }])
 </script>
 [% END %]
@@ -89,6 +94,9 @@
         <li><a href ng-click="renew()">[% l('Renew Items') %]</a></li>
         <li><a href ng-click="cancel_transit()">[% l('Cancel Transit') %]</a></li>
         <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
+
+        <p><b>[% l('Show') %]</b></p>
+        <li><a href ng-click="findAcquisition()">[% l('Originating Acquisition') %]</a></li>
 
         <p><b>[% l('Mark') %]</b></p>    
         <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>

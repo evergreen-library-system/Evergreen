@@ -2,6 +2,19 @@
 <eg-staff-banner bannerText="Sandbox" i18n-bannerText>
 </eg-staff-banner>
 
+<eg-title 
+  i18n-prefix i18n-suffix
+  prefix=":) {{dynamicTitleText}}"
+  suffix="Sandbox">
+</eg-title>
+
+<div class="row flex pt-2">
+  <div i18n> Modify Page Title: </div>
+  <div class="col-lg-2">
+    <input type="text" [(ngModel)]="dynamicTitleText" class="form-control"/>
+  </div>
+</div>
+
 <!-- FM Editor Experiments ----------------------------- -->
 <div class="row mb-3">
   <ng-template #descriptionTemplate 
@@ -17,12 +30,14 @@
       (ngModelChange)="record[field.name]($event)">
     </textarea>
   </ng-template>
+  <!-- note: fieldOptions would be best defined in the .ts file, but
+      want to demostrate it can be set in the template as well -->
   <eg-fm-record-editor #fmRecordEditor 
       idlClass="cmrcfld" mode="create" 
-      [customFieldTemplates]="{description:{template:descriptionTemplate,context:{'hello':'goodbye'}}}"
+      [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
       recordId="1" orgDefaultAllowed="owner">
   </eg-fm-record-editor>
-  <button class="btn btn-dark" (click)="fmRecordEditor.open({size:'lg'})">
+  <button class="btn btn-dark" (click)="openEditor()">
       Fm Record Editor
   </button>
 </div>
@@ -100,7 +115,6 @@
 <ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
 
 <br/><br/>
-HERasdfE
 <div class="row">
   <div class="col-lg-3">
     <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
@@ -122,12 +136,19 @@ HERasdfE
   [rowFlairCallback]="btGridRowFlairCallback"
   [cellClassCallback]="btGridCellClassCallback"
   [sortable]="true">
+  <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
+    [action]="complimentEvergreen" [disableOnRows]="notOneSelectedRow">
+  </eg-grid-toolbar-action>
   <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
     [cellContext]="btGridTestContext" [sortable]="false">
   </eg-grid-column>
   <eg-grid-column [sortable]="false" path="owner.name"></eg-grid-column>
+  <eg-grid-column [sortable]="false" path="datetime_test" 
+    datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
 </eg-grid>
 
 <br/><br/>
 
+<h4>PCRUD auto flesh and FormatService detection</h4>
+<div *ngIf="aMetarecord">Fingerprint: {{aMetarecord}}</div>
 

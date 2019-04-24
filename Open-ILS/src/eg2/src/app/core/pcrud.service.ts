@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {Observer} from 'rxjs/Observer';
+import {Observable, Observer} from 'rxjs';
 import {IdlService, IdlObject} from './idl.service';
 import {NetService, NetRequest} from './net.service';
 import {AuthService} from './auth.service';
@@ -14,6 +13,10 @@ interface PcrudReqOps {
     anonymous?: boolean;
     idlist?: boolean;
     atomic?: boolean;
+    // If true, link-type fields which link to a class that defines a
+    // selector will be fleshed with the linked value.  This affects
+    // retrieve(), retrieveAll(), and search() calls.
+    fleshSelectors?: boolean;
 }
 
 // For for documentation purposes.
@@ -87,10 +90,62 @@ export class PcrudContext {
         this.session.disconnect();
     }
 
+    // Adds "flesh" logic to retrieve linked values for all fields
+    // that link to a class which defines a selector field.
+    applySelectorFleshing(fmClass: string, pcrudOps: any) {
+        pcrudOps = pcrudOps || {};
+
+        if (!pcrudOps.flesh) {
+            pcrudOps.flesh = 1;
+        }
+
+        if (!pcrudOps.flesh_fields) {
+            pcrudOps.flesh_fields = {};
+        }
+
+        this.idl.classes[fmClass].fields
+        .filter(f =>
+            f.datatype === 'link' && (
+                f.reltype === 'has_a' || f.reltype === 'might_have'
+            )
+        ).forEach(field => {
+
+            const selector = this.idl.getLinkSelector(fmClass, field.name);
+            if (!selector) { return; }
+
+            if (field.map) {
+                // For mapped fields, we only want to auto-flesh them
+                // if both steps along the path are single-row fleshers.
+
+                const mapClass = field['class'];
+                const mapField = field.map;
+                const def = this.idl.classes[mapClass].field_map[mapField];
+
+                if (!(def.reltype === 'has_a' ||
+                      def.reltype === 'might_have')) {
+                    // Field maps to a remote field which may contain
+                    // multiple rows.  Skip it.
+                    return;
+                }
+            }
+
+            if (!pcrudOps.flesh_fields[fmClass]) {
+                pcrudOps.flesh_fields[fmClass] = [];
+            }
+
+            if (pcrudOps.flesh_fields[fmClass].indexOf(field.name) < 0) {
+                pcrudOps.flesh_fields[fmClass].push(field.name);
+            }
+        });
+    }
+
     retrieve(fmClass: string, pkey: Number | string,
             pcrudOps?: any, reqOps?: PcrudReqOps): Observable<PcrudResponse> {
         reqOps = reqOps || {};
         this.authoritative = reqOps.authoritative || false;
+        if (reqOps.fleshSelectors) {
+            this.applySelectorFleshing(fmClass, pcrudOps);
+        }
         return this.dispatch(
             `open-ils.pcrud.retrieve.${fmClass}`,
              [this.token(reqOps), pkey, pcrudOps]);
@@ -112,6 +167,10 @@ export class PcrudContext {
         let method = `open-ils.pcrud.${returnType}.${fmClass}`;
 
         if (reqOps.atomic) { method += '.atomic'; }
+
+        if (reqOps.fleshSelectors) {
+            this.applySelectorFleshing(fmClass, pcrudOps);
+        }
 
         return this.dispatch(method, [this.token(reqOps), search, pcrudOps]);
     }

@@ -4,24 +4,15 @@
  * </eg-combobox>
  */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {tap} from 'rxjs/operators/tap';
-import {reduce} from 'rxjs/operators/reduce';
-import {of} from 'rxjs';
-import {mergeMap} from 'rxjs/operators/mergeMap';
-import {mapTo} from 'rxjs/operators/mapTo';
-import {debounceTime} from 'rxjs/operators/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operators/distinctUntilChanged';
-import {merge} from 'rxjs/operators/merge';
-import {filter} from 'rxjs/operators/filter';
-import {Subject} from 'rxjs/Subject';
+import {Observable, of, Subject} from 'rxjs';
+import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
 
 export interface ComboboxEntry {
   id: any;
-  label: string;
+  // If no label is provided, the 'id' value is used.
+  label?: string;
   freetext?: boolean;
 }
 
@@ -79,8 +70,17 @@ export class ComboboxComponent implements OnInit {
     defaultSelectionApplied: boolean;
 
     @Input() set entries(el: ComboboxEntry[]) {
-        this.entrylist = el;
-        this.applySelection();
+        if (el) {
+            this.entrylist = el;
+            this.applySelection();
+
+            // It's possible to provide an entrylist at load time, but
+            // fetch all future data via async data source.  Track the
+            // values we already have so async lookup won't add them again.
+            // A new entry list wipes out any existing async values.
+            this.asyncIds = {};
+            el.forEach(entry => this.asyncIds['' + entry.id] = true);
+        }
     }
 
     // Emitted when the value is changed via UI.
@@ -102,7 +102,8 @@ export class ComboboxComponent implements OnInit {
         this.defaultSelectionApplied = false;
 
         this.formatDisplayString = (result: ComboboxEntry) => {
-            return result.label.trim();
+            const display = result.label || result.id;
+            return (display + '').trim();
         };
     }
 
@@ -140,6 +141,20 @@ export class ComboboxComponent implements OnInit {
     addEntry(entry: ComboboxEntry) {
         this.entrylist.push(entry);
         this.applySelection();
+    }
+
+    // Manually set the selected value by ID.
+    // This does NOT fire the onChange handler.
+    applyEntryId(entryId: any) {
+        this.selected = this.entrylist.filter(e => e.id === entryId)[0];
+    }
+
+    addAsyncEntry(entry: ComboboxEntry) {
+        // Avoid duplicate async entries
+        if (!this.asyncIds['' + entry.id]) {
+            this.asyncIds['' + entry.id] = true;
+            this.addEntry(entry);
+        }
     }
 
     onBlur() {
@@ -184,12 +199,7 @@ export class ComboboxComponent implements OnInit {
 
         return new Observable(observer => {
             this.asyncDataSource(term).subscribe(
-                (entry: ComboboxEntry) => {
-                    if (!this.asyncIds['' + entry.id]) {
-                        this.asyncIds['' + entry.id] = true;
-                        this.addEntry(entry);
-                    }
-                },
+                (entry: ComboboxEntry) => this.addAsyncEntry(entry),
                 err => {},
                 ()  => {
                     observer.next(term);
@@ -219,6 +229,9 @@ export class ComboboxComponent implements OnInit {
             map((term: string) => {
 
                 if (term === '' || term === '_CLICK_') {
+                    // Avoid displaying the existing entries on-click
+                    // for async sources, becuase that implies we have
+                    // the full data set. (setting?)
                     if (this.asyncDataSource) {
                         return [];
                     } else {
@@ -230,9 +243,10 @@ export class ComboboxComponent implements OnInit {
 
                 // Filter entrylist whose labels substring-match the
                 // text entered.
-                return this.entrylist.filter(entry =>
-                    entry.label.toLowerCase().indexOf(term.toLowerCase()) > -1
-                );
+                return this.entrylist.filter(entry => {
+                    const label = entry.label || entry.id;
+                    return label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+                });
             })
         );
     }

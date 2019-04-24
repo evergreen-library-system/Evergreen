@@ -45,7 +45,7 @@
                 }
               ]
             },
-            "production-fr-CA": {
+            "production-cs-CZ": {
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
@@ -55,9 +55,9 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "i18nFile": "src/locale/messages.fr-CA.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "fr-CA",
+              "i18nFile": "src/locale/messages.cs-CZ.xtb",
+              "i18nFormat": "xtb",
+              "i18nLocale": "cs-CZ",
               "i18nMissingTranslation": "ignore",
               "fileReplacements": [
                 {

@@ -65,7 +65,7 @@ export class ServerStoreService {
 
         const values: any = {};
         keys.forEach(key => {
-            if (this.cache[key]) {
+            if (key in this.cache) {
                 values[key] = this.cache[key];
             }
         });

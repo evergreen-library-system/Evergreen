@@ -3,6 +3,276 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.5
+---------------
+
+This release contains bug fixes improving on Evergreen 3.2.4.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Improves the web client splash screen by linking the images along with their links
+  (https://bugs.launchpad.net/evergreen/+bug/1802662[Bug #1802662])
+
+Circulation
+^^^^^^^^^^^
+
+* Allows the Title Hold screen to remember previously selected pickup library
+  (https://bugs.launchpad.net/evergreen/+bug/1665534[Bug #1665534])
+* Sorting improvements for printing the Holds Pull List
+  (https://bugs.launchpad.net/evergreen/+bug/1749502[Bug #1749502])
+* Better display for non-catalogued checkouts in the offline checkout preview
+  pane (https://bugs.launchpad.net/evergreen/+bug/1818576[Bug #1818576])
+
+Cataloging
+^^^^^^^^^^
+
+* Fixes a bug that changed subfield order in bib record after editing a linked
+  authority (https://bugs.launchpad.net/evergreen/+bug/712490[Bug #712490])
+* Allows opening multiple selected items in Item Status screen from the Holdings
+  View (https://bugs.launchpad.net/evergreen/+bug/1734775[Bug #1734775])
+* Adds missing "Deleted?" column choice to Record Buckets
+  (https://bugs.launchpad.net/evergreen/+bug/1746360[Bug #1746360])
+* Fixes the batch Call Number label field on the Call Number editor to populate
+  from the MARC record (https://bugs.launchpad.net/evergreen/+bug/1793196[Bug
+  #1793196])
+* Fixes a bug to allow editing the call number label for some but not all
+  attached items (https://bugs.launchpad.net/evergreen/+bug/1794588[Bug
+  #1794588])
+* Fixes the sort order of Parts on the Holdings View
+  (https://bugs.launchpad.net/evergreen/+bug/1800178[Bug #1800178])
+* Adds missing action "Find Originating Acquisition" to Cataloging actions menu
+  (https://bugs.launchpad.net/evergreen/+bug/1705497[Bug #1705497])
+* Keeps the Item Status screen updated after editing items
+  (https://bugs.launchpad.net/evergreen/+bug/1721109[Bug #1721109])
+* Fixes a bug with the "checked" state of the Item note "Public Note" checkbox
+  (https://bugs.launchpad.net/evergreen/+bug/1778571[Bug #1778571])
+* Fixes a bug with Item Alert counts in the Holdings view
+  (https://bugs.launchpad.net/evergreen/+bug/1798628[Bug #1798628])
+* Improved display when merging bib records from a bucket (side by side, with
+  optional holdings) (https://bugs.launchpad.net/evergreen/+bug/1739293[Bug
+  #1739293])
+* Fixes issues where edits to MARC records would fail to save during merge
+  (https://bugs.launchpad.net/evergreen/+bug/1776736[Bug #1776736])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Web client (websocket) logins are now properly tracked as user activity
+  (https://bugs.launchpad.net/evergreen/+bug/1818153[Bug #1818153])
+* Fixes some log warnings related to Holds Depth
+  (https://bugs.launchpad.net/evergreen/+bug/1667497[Bug #1667497])
+* Fixes a bug in the fine generator related to Bookings
+  (https://bugs.launchpad.net/evergreen/+bug/1819796[Bug #1819796])
+* Fixes the Group Penalty Threshold link under the Local Administration menu
+  (https://bugs.launchpad.net/evergreen/+bug/1812389[Bug #1812389])
+* Fixes a typo in seed data and all related PO files for translation
+  (https://bugs.launchpad.net/evergreen/+bug/1759238[Bug #1759238])
+* Fixes an error in the sitemap_generator script when using the shortname
+  parameter (https://bugs.launchpad.net/evergreen/+bug/1808006[Bug #1808006])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.2.5 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Adam Bowling
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Jason Etheridge
+* Rogan Hamby
+* Elaine Hardy
+* Kyle Huckins
+* Sam Link
+* Tiffany Little
+* Terran McCanna
+* Michele Morgan
+* Geoff Sams
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
+Evergreen 3.2.4
+---------------
+
+This release contains bug fixes improving on Evergreen 3.2.3.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Accessibility
+^^^^^^^^^^^^^
+
+* Adds appropriate alt text to the Evergreen splash page (https://bugs.launchpad.net/evergreen/+bug/1802594[Bug #1802594])
+* The public catalog search box now only autofocuses when searching is the main purpose of the page (https://bugs.launchpad.net/evergreen/+bug/1796225[Bug #1796225])
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Fixes an issue that prevented purchase orders to not open in a new tab (https://bugs.launchpad.net/evergreen/+bug/1813290[Bug #1813290])
+
+Circulation
+^^^^^^^^^^^
+
+* The Billing History grids now save their configuration in the database (https://bugs.launchpad.net/evergreen/+bug/1806709[Bug #1806709])
+
+Cataloging
+^^^^^^^^^^
+
+* Catalogers can now set the Bib Source in the Z39.50 Overlay and Import interfaces (https://bugs.launchpad.net/evergreen/+bug/1727345[Bug #1727345])
+* Fixes an issue where publishers display in the publication date column in copy buckets (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+* Electronic reources no longer display a call number called _##URI##_ in the Volume Editor (https://bugs.launchpad.net/evergreen/+bug/1752665[Bug #1752665])
+* Spine/pocket label templates can now include circulation library and owning library (https://bugs.launchpad.net/evergreen/+bug/1726568[Bug #1726568])
+
+
+Reports
+^^^^^^^
+
+* Fixes an issue where external documentation links can open in the reports module (https://bugs.launchpad.net/evergreen/+bug/1784893[Bug #1784893])
+* Fixes an issue where publishers display as a publication date in reports (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+
+Search
+^^^^^^
+
+* Staff users can now set their prefered default Advanced Search pane (https://bugs.launchpad.net/evergreen/+bug/1799963[Bug #1799963])
+* The public catalog search box now only autofocuses when searching is the main purpose of the page (https://bugs.launchpad.net/evergreen/+bug/1796225[Bug #1796225])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The _DELETE_COPY_ALERT_ permission no longer needs to be granted on the consortium level (https://bugs.launchpad.net/evergreen/+bug/1783421[Bug #1783421])
+
+Angular client
+^^^^^^^^^^^^^^
+
+* The angular client now uses Angular 7 (https://bugs.launchpad.net/evergreen/+bug/1801984[Bug #1801984])
+* The angular client grid actions can now be disabled depending on the criteria of which rows are selected (https://bugs.launchpad.net/evergreen/+bug/1808268[Bug #1808268])
+* Angular client pages now display their own titles in the browser tab, rather than _AngEG_ (https://bugs.launchpad.net/evergreen/+bug/1813647[Bug #1813647])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.2.4 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* James Fournie
+* Angela Kilsdonk
+* Sam Link
+* Tiffany Little
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* Dan Wells
+
+Evergreen 3.2.3
+----------------
+This release contains bug fixes improving on Evergreen 3.2.3.
+All bug fixes refer to the staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Hatch is now deprecated for local data storage.  Hatch is
+still recommended for printing in certain situations.
+
+Acquisitions
+^^^^^^^^^^^^
+
+* The new `edi_order_pusher.pl` now only pushes purchase orders
+with a state of "on-order", to prevent older purchase orders
+from being unintentionally pushed to vendors.
+
+Cataloging
+^^^^^^^^^^
+
+* The Z39.50 and record bucket interfaces now open relevant 
+catalog records in new tabs.
+* Fixes a bug that prevented batch importing authority records.
+* The template dropdown in the holdings editor now provides more
+space to accommodate longer template names.
+* The drop-down of copy tag types in the Manage Copy Tags dialog
+now includes the owning library of the copy tag type.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue with recalling checked-out materials.
+* Added several missing columns to the patron bills grid.
+* Corrected the display of the Bill Type column in the patron bills grid.
+* Clarified the names of the "Billing Location" and "Grocery Billing
+Location" columns in the patron bills grid.
+* The Bill Full Details grid now includes a billing location column
+for both circulation and grocery bills, as well as the owning library for
+circulation bills.
+* The Billing History transactions grid now remembers any changes that
+users make to the column settings.
+* Fixes an issue with printing multiple copies of bills.
+* Fixes an issue with saving self-registered patron accounts.
+* Staff can now delete self-registered patron accounts.
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Fixes the marc_stream_importer to be compatible with Vandelay session
+tracking.
+* Includes an accessibility improvement for the Acquisitions
+Administration interfaces.
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.2.3 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Andrea Buntz Neiman
+* Jeff Davis
+* Bill Erickson
+* Kyle Huckins
+* Angela Kilsdonk
+* Katie G. Martin
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
 Evergreen 3.2.2
 ----------------
 This release contains bug fixes improving on Evergreen 3.2.1.

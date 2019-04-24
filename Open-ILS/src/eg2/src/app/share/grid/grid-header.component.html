@@ -1,8 +1,10 @@
 
 <div class="eg-grid-row eg-grid-header-row">
-  <div class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-    <input type='checkbox' (click)="handleBatchSelect($event)">
-  </div>
+  <ng-container *ngIf="!context.disableSelect">
+    <div class="eg-grid-cell eg-grid-header-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
+      <input type='checkbox' (click)="handleBatchSelect($event)">
+    </div>
+  </ng-container>
   <div class="eg-grid-cell eg-grid-header-cell eg-grid-number-cell eg-grid-cell-skinny">
     <span i18n="number|Row Number Header">#</span>
   </div>

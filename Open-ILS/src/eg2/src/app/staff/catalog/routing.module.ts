@@ -4,6 +4,8 @@ import {CatalogComponent} from './catalog.component';
 import {ResultsComponent} from './result/results.component';
 import {RecordComponent} from './record/record.component';
 import {CatalogResolver} from './resolver.service';
+import {HoldComponent} from './hold/hold.component';
+import {BrowseComponent} from './browse.component';
 
 const routes: Routes = [{
   path: '',
@@ -16,9 +18,16 @@ const routes: Routes = [{
     path: 'record/:id',
     component: RecordComponent
   }, {
+    path: 'hold/:type',
+    component: HoldComponent
+  }, {
     path: 'record/:id/:tab',
     component: RecordComponent
-  }]
+  }]}, {
+  // Browse is a top-level UI
+  path: 'browse',
+  component: BrowseComponent,
+  resolve: {catResolver : CatalogResolver},
 }];
 
 @NgModule({

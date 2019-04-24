@@ -1,13 +1,7 @@
 /** TODO PORT ME TO <eg-combobox> */
 import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {map} from 'rxjs/operators/map';
-import {mapTo} from 'rxjs/operators/mapTo';
-import {debounceTime} from 'rxjs/operators/debounceTime';
-import {distinctUntilChanged} from 'rxjs/operators/distinctUntilChanged';
-import {merge} from 'rxjs/operators/merge';
-import {filter} from 'rxjs/operators/filter';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
+import {map, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
 import {OrgService} from '@eg/core/org.service';
@@ -33,9 +27,11 @@ export class OrgSelectComponent implements OnInit {
 
     selected: OrgDisplay;
     hidden: number[] = [];
-    disabled: number[] = [];
     click$ = new Subject<string>();
     startOrg: IdlObject;
+
+    // Disable the entire input
+    @Input() disabled: boolean;
 
     @ViewChild('instance') instance: NgbTypeahead;
 
@@ -54,14 +50,17 @@ export class OrgSelectComponent implements OnInit {
     // An onChange event WILL be generated when a default is applied.
     @Input() applyDefault = false;
 
+    @Input() readOnly = false;
+
     // List of org unit IDs to exclude from the selector
     @Input() set hideOrgs(ids: number[]) {
         if (ids) { this.hidden = ids; }
     }
 
     // List of org unit IDs to disable in the selector
+    _disabledOrgs: number[] = [];
     @Input() set disableOrgs(ids: number[]) {
-        if (ids) { this.disabled = ids; }
+        if (ids) { this._disabledOrgs = ids; }
     }
 
     // Apply an org unit value at load time.
@@ -153,10 +152,13 @@ export class OrgSelectComponent implements OnInit {
 
     // Format for display in the selector drop-down and input.
     formatForDisplay(org: IdlObject): OrgDisplay {
+        let label = org[this.displayField]();
+        if (!this.readOnly) {
+            label = PAD_SPACE.repeat(org.ou_type().depth()) + label;
+        }
         return {
             id : org.id(),
-            label : PAD_SPACE.repeat(org.ou_type().depth())
-              + org[this.displayField](),
+            label : label,
             disabled : false
         };
     }

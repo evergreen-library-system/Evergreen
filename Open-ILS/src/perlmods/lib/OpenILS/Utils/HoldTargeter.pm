@@ -733,12 +733,12 @@ sub filter_closed_date_copies {
 sub filter_copies_by_status {
     my $self = shift;
 
+    # Track checked out copies for later recall
+    $self->recall_copies([grep {$_->{status} == 1} @{$self->copies}]);
+
     $self->copies([
         grep {$_->{status} == 0 || $_->{status} == 7} @{$self->copies}
     ]);
-
-    # Track checked out copies for later recall
-    $self->recall_copies([grep {$_->{status} == 1} @{$self->copies}]);
 
     return 1;
 }
@@ -1181,24 +1181,31 @@ sub process_recalls {
 
     $self->log_hold("recalling circ ".$circ->id);
 
+    my $old_due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date));
+
     # Give the user a new due date of either a full recall threshold,
     # or the return interval, whichever is further in the future.
     my $threshold_date = DateTime::Format::ISO8601
         ->parse_datetime(clean_ISO8601($circ->xact_start))
-        ->add(seconds => interval_to_seconds($threshold))
-        ->iso8601();
+        ->add(seconds => interval_to_seconds($threshold));
 
     my $return_date = DateTime->now(time_zone => 'local')->add(
-        seconds => interval_to_seconds($interval))->iso8601();
+        seconds => interval_to_seconds($interval));
 
-    if (DateTime->compare(
-        DateTime::Format::ISO8601->parse_datetime($threshold_date),
-        DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
+    if (DateTime->compare($threshold_date, $return_date) == 1) {
+        # extend $return_date to threshold
         $return_date = $threshold_date;
+    }
+    # But don't go past the original due date
+    # (the threshold should not be past the due date, but manual edits can
+    # cause it to be)
+    if (DateTime->compare($return_date, $old_due_date) == 1) {
+        # truncate $return_date to due date
+        $return_date = $old_due_date;
     }
 
     my %update_fields = (
-        due_date => $return_date,
+        due_date => $return_date->iso8601(),
         renewal_remaining => 0,
     );
 

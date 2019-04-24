@@ -42,7 +42,7 @@ the reporter daemon can be started.
 Remember that if the server is restarted, the reporter daemon will need to be 
 restarted before you can view reports unless you have configured your server to 
 start the daemon automatically at start up time. 
-==============
+=============
 
 Stopping the Reporter Daemon
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

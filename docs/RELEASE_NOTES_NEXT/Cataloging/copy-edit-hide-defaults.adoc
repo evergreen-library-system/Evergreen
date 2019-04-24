@@ -1,0 +1,15 @@
+Copy Edit Interface Display Modifications
+^^^^^^^^^^^^^^^^^^^^^^^^^^6^^^^^^^^^^^^^^
+
+Hide Disabled Fields
+++++++++++++++++++++
+
+Disabling a field in the "Defaults" tab in the copy editor now hides the 
+field instead of simply disabling it.
+
+Working Items Moves Down
+++++++++++++++++++++++++
+
+The "Working Items" grid now sits below the item attribute edit area, so the
+attribute are allowed to fill the horizontal space.
+

@@ -1,0 +1,27 @@
+<div class="row mt-2">
+  <div class="col-lg-7">
+    <div class="row ml-2 mt-4">
+      <span class="mr-2" i18n>Add New:</span>
+      <button class="btn btn-outline-dark mr-2" *ngIf="matchSetType=='biblio'"
+        (click)="newPointType='attr'" i18n>Record Attribute</button>
+      <button class="btn btn-outline-dark mr-2" 
+        (click)="newPointType='marc'" i18n>MARC Tag and Subfield</button>
+    </div>
+    <eg-match-set-new-point #newPoint 
+      [pointType]="newPointType" [isForQuality]="true">
+    </eg-match-set-new-point>
+    <div class="row mt-2 ml-2" *ngIf="newPointType">
+      <button class="btn btn-success mr-2" 
+        (click)="addQuality()" i18n>Add</button>
+      <button class="btn btn-warning"
+        (click)="newPointType=null" i18n>Cancel</button>
+    </div>
+  </div>
+</div>
+
+<eg-grid idlClass="vmsq" [dataSource]="dataSource" #grid
+  persistKey="staff.cat.vandelay.match_set.quality">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+</eg-grid>
+

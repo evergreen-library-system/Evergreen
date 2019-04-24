@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-09-19 00:23+0000\n"
+"POT-Creation-Date: 2019-03-01 02:44+0000\n"
 "PO-Revision-Date: 2018-09-16 04:38+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-09-20 05:36+0000\n"
-"X-Generator: Launchpad (build 18780)\n"
+"X-Launchpad-Export-Date: 2019-03-02 05:37+0000\n"
+"X-Generator: Launchpad (build 18888)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -99,9 +99,9 @@ msgstr "%1 "
 msgid "%1 %2"
 msgstr "%1 %2"
 
+#. (title, part.label)
 #. (copy.label, copy_org.name)
 #. (title, hold.hold.part.label)
-#. (title, part.label)
 #: ../../Open-ILS/src/templates/opac/myopac/holds.tt2:188 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:27 ../../Open-ILS/src/templates/opac/myopac/lists.tt2:383 ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:74 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:37
 msgid "%1 (%2)"
 msgstr "%1 (%2)"
@@ -361,7 +361,7 @@ msgid "Adapter"
 msgstr "مُقتبس سينمائي"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:488
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:110 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
 msgid "Add %1 to basket"
 msgstr "إضافة %1 إلى السلة"
 
@@ -386,7 +386,7 @@ msgstr "إضافة نُسخة إلى قائمة: %1"
 msgid "Add to Basket"
 msgstr "إضافة إلى السلة"
 
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:490
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:112 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:492
 msgid "Add to basket"
 msgstr "إضافة إلى السلة"
 
@@ -454,7 +454,7 @@ msgstr "العناوين"
 msgid "Adjacency"
 msgstr "التجاور"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:25
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
 msgid "Advanced"
 msgstr "متقدم"
 
@@ -498,6 +498,10 @@ msgid ""
 msgstr ""
 "كل النُسخ المتاحة غير متاحة مؤقتاً في المكتبة المحددة، وبالتالي عليك "
 "الانتظار طويلاً بعد حجز هذه النُسخة."
+
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:125
+msgid "Allow others to use my account"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/main_payment_form.tt2:49 ../../Open-ILS/src/templates/opac/myopac/main_payments.tt2:30
 msgid "Amount"
@@ -731,7 +735,7 @@ msgstr "الباركود"
 msgid "Barcode:"
 msgstr "الباركود:"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:23
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
 msgid "Basic"
 msgstr "أساسي"
 
@@ -877,7 +881,7 @@ msgstr "مذيع"
 msgid "Broader term"
 msgstr "مصطلح أوسع"
 
-#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:27
+#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
 msgid "Browse"
 msgstr "تصفح"
 
@@ -894,7 +898,7 @@ msgstr "تصفح الفهرس"
 msgid "Call Number"
 msgstr "رمز الاستدعاء"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:14
 msgid "Call Number (Shelf Browse)"
 msgstr "رمز الاستدعاء (تصفح الـــرّف)"
 
@@ -938,7 +942,7 @@ msgstr "إلغاء في"
 msgid "Cancel unless filled by"
 msgstr "إلغاء إلا إذا تمت التعبئة بوساطة"
 
-#: ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:15
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:24 ../../Open-ILS/src/templates/opac/parts/hold_status.tt2:15
 msgid "Canceled"
 msgstr "تم الإلغاء"
 
@@ -1015,11 +1019,11 @@ msgid "Charges:"
 msgstr "أعباء:"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:460
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:88 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:462
 msgid "Check Out %1"
 msgstr "إعارة %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:463
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:11 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:19 ../../Open-ILS/src/templates/opac/myopac/ebook_checkout.tt2:7 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:89 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:465
 msgid "Check Out E-Item"
 msgstr "إعارة نسخة إلكترونية"
 
@@ -1027,11 +1031,15 @@ msgstr "إعارة نسخة إلكترونية"
 msgid "Check Out History"
 msgstr "أرشيف الإعارة"
 
-#: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:53
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:144 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:158
+msgid "Check Out Items"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:26 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:53
 msgid "Checked Out"
 msgstr "المُعار"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:407
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:409
 msgid "Checked Out Before"
 msgstr "تمت الإعارة من قبل"
 
@@ -1438,7 +1446,7 @@ msgstr "إهداء إلى"
 msgid "Dedicator"
 msgstr "إهداء من"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:125
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:167
 msgid "Default Font Size"
 msgstr "حجم الخط الافتراضي"
 
@@ -1762,6 +1770,10 @@ msgstr ""
 msgid "Enacting jurisdiction"
 msgstr "المتخصص بسن القوانين واللوائح"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:12
+msgid "End time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Engineer"
 msgstr "مهندس"
@@ -2061,7 +2073,7 @@ msgstr "الرجوع إلى الخلف"
 msgid "Go to record %1"
 msgstr "الذهاب إلى التسجيلة %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:52
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
 msgid "Go to..."
 msgstr "الذهاب إلى"
 
@@ -2187,7 +2199,7 @@ msgstr "المُضيف"
 msgid "Host institution"
 msgstr "المؤسسة المُضيفة"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:408
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:410
 msgid "I have checked this item out before"
 msgstr "لقد تم اختبار هذه النسخة من قبل"
 
@@ -2199,7 +2211,7 @@ msgstr "ردمك"
 msgid "ISBN:"
 msgstr "ردمك:"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:12
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:13
 msgid "ISSN"
 msgstr "ردمد"
 
@@ -2207,7 +2219,7 @@ msgstr "ردمد"
 msgid "ISSN:"
 msgstr "ردمد:"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:19
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:20
 msgid "Identifier"
 msgstr "المُعرف"
 
@@ -2327,7 +2339,7 @@ msgstr "ملاحظة هيئة أو جسم الاصدار ـ عدد الدوري�
 msgid "Issuing body"
 msgstr "هيئة أو جسم الاصدار ـ عدد الدورية ـ"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:16
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:17
 msgid "Item Barcode"
 msgstr "باركود النُسخة"
 
@@ -2422,7 +2434,7 @@ msgstr "الكلمات المفتاحية"
 msgid "Keyword Search Tips"
 msgstr "تلميحات البحث بالكلمات المفتاحية"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:14
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:15
 msgid "LCCN"
 msgstr "رقم الضبط في مكتبة الكونغرس"
 
@@ -2450,7 +2462,7 @@ msgstr "ملاحظة اللغة: "
 msgid "Language:"
 msgstr "اللغة:"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:129
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:171
 msgid "Large Font"
 msgstr "خط كبير"
 
@@ -2845,12 +2857,12 @@ msgstr "مخرج موسيقي"
 msgid "Musician"
 msgstr "موسيقي"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:13 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:14 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
 msgid "My Account"
 msgstr "حسابي"
 
 #. (page.name)
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:33
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:34
 msgid "My Account - %1"
 msgstr "حسابي - %1"
 
@@ -2886,7 +2898,7 @@ msgstr "رسائلي"
 msgid "Name"
 msgstr "الاسم"
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:285
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:285 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:130 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:155
 msgid "Name:"
 msgstr "الاسم:"
 
@@ -3315,6 +3327,10 @@ msgstr "الوصف المادي:"
 msgid "Physical Description:"
 msgstr "الوصف المادي"
 
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:139 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:157
+msgid "Pick Up Holds"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3208 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3216 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:69 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:119
 msgid "Pickup Location"
 msgstr "موقع الاستلام"
@@ -3327,24 +3343,28 @@ msgstr "التقاط الحجوزات من وراء المكتب عندما يك
 msgid "Pickup library"
 msgstr "مكتبة الاستلام"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:13
+msgid "Pickup location"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:226
 msgid "Pickup location:"
 msgstr "مكان الاستلام:"
 
-#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:451 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
+#: ../../Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2:16 ../../Open-ILS/src/templates/opac/parts/place_hold.tt2:51 ../../Open-ILS/src/templates/opac/parts/place_hold_result.tt2:10 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:79 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:453 ../../Open-ILS/src/templates/opac/place_hold.tt2:1
 msgid "Place Hold"
 msgstr "حجز"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:448 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:469
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:78 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:95 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:450 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:471
 msgid "Place Hold on %1"
 msgstr "حجز %1"
 
-#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:472
+#: ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:12 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:20 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:8 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:96 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:474
 msgid "Place Hold on E-Item"
 msgstr "وضع حجز للنسخة الإلكترونية"
 
-#: ../../Open-ILS/src/templates/opac/parts/cart.tt2:6
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:134 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:156 ../../Open-ILS/src/templates/opac/parts/cart.tt2:6
 msgid "Place Holds"
 msgstr ""
 
@@ -3676,7 +3696,7 @@ msgstr "مخرج برامج راديو"
 msgid "Radio producer"
 msgstr "منتج برامج راديو"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:514
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:516
 msgid "Ratings Icon"
 msgstr "أيقونة التقييم"
 
@@ -3693,7 +3713,7 @@ msgstr "إعادة التفعيل على %1"
 msgid "Ready for Checkout"
 msgstr "جاهز لـِ الإعارة"
 
-#: ../../Open-ILS/src/templates/opac/parts/topnav.tt2:66
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:28 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:66
 msgid "Ready for Pickup"
 msgstr "متاح للإعارة بعد الحجز"
 
@@ -3749,7 +3769,7 @@ msgstr "تنقيح النتائج"
 msgid "Registration successful!"
 msgstr "تم التسجيل بنجاح!"
 
-#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:128
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:170
 msgid "Regular Font"
 msgstr "الخط الاعتيادي"
 
@@ -3763,7 +3783,7 @@ msgid "Remove %1 filter"
 msgstr "إزالة التصفية %1"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:495
+#: ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:118 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
 msgid "Remove %1 from basket"
 msgstr ""
 
@@ -3783,7 +3803,7 @@ msgstr ""
 msgid "Remove from Basket"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:497
+#: ../../Open-ILS/src/templates/opac/parts/anon_list.tt2:24 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:120 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:499
 msgid "Remove from basket"
 msgstr ""
 
@@ -3855,9 +3875,21 @@ msgstr "عضو فريق البحث"
 msgid "Researcher"
 msgstr "باحث"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:6 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:3
+msgid "Reservations"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:30
+msgid "Reserved"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/password_reset.tt2:6
 msgid "Reset Password"
 msgstr "تغيير كلمة المرور"
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:10
+msgid "Resource type"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "Respondent"
@@ -3916,12 +3948,12 @@ msgstr "المُراجع"
 msgid "Reviews"
 msgstr "مراجعات"
 
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:515
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:517
 msgid "Reviews &amp; More"
 msgstr "المراجعات &amp; إلخ"
 
 #. (attrs.title)
-#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:510
+#: ../../Open-ILS/src/templates/opac/parts/result/table.tt2:512
 msgid "Reviews and More for %1"
 msgstr "مراجعات والمزيد حول %1"
 
@@ -3942,7 +3974,7 @@ msgstr "السبت: %1 - %2"
 msgid "Saturday: closed"
 msgstr "السبت: مغلق"
 
-#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:298 ../../Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2:64 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:102 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:138
+#: ../../Open-ILS/src/templates/opac/myopac/lists.tt2:298 ../../Open-ILS/src/templates/opac/myopac/prefs_my_lists.tt2:64 ../../Open-ILS/src/templates/opac/myopac/prefs_notify.tt2:102 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:180
 msgid "Save"
 msgstr "حفظ"
 
@@ -3990,7 +4022,7 @@ msgstr "ناسخ"
 msgid "Sculptor"
 msgstr "نحات"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:49 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:50 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:28 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:29 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:38 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:101
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:49 ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:50 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:29 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:30 ../../Open-ILS/src/templates/opac/parts/advanced/search.tt2:38 ../../Open-ILS/src/templates/opac/parts/searchbar.tt2:101
 msgid "Search"
 msgstr "بحث"
 
@@ -4018,7 +4050,7 @@ msgstr "مُدخلات البحث"
 msgid "Search Library"
 msgstr "المكتبة المراد البحث فيها"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:40 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:22
+#: ../../Open-ILS/src/templates/opac/parts/advanced/expert.tt2:40 ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:23
 msgid "Search Library:"
 msgstr "مكتبة البحث"
 
@@ -4090,7 +4122,7 @@ msgstr "مصطلح البحث"
 msgid "Search the Catalog"
 msgstr "البحث في الفهرس"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:21
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:22
 msgid "Search:"
 msgstr "بحث:"
 
@@ -4167,7 +4199,7 @@ msgstr "تحديد جزء:"
 msgid "Select a preference page"
 msgstr "اختيار صفحة التفضيلات"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:50
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:51
 msgid "Select an account page"
 msgstr "اختيار صفحة الحساب"
 
@@ -4457,6 +4489,10 @@ msgstr "مدير المسرح"
 msgid "Standards body"
 msgstr "معايير المتن"
 
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:11
+msgid "Start time"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/advanced/global_row.tt2:1
 msgid "Starts with"
 msgstr "يبدأ بـــــِ"
@@ -4469,7 +4505,7 @@ msgstr "الولاية"
 msgid "State or Province"
 msgstr "الولاية أو المقاطعة"
 
-#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3210 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3217 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:46 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:27 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:70 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:40 ../../Open-ILS/src/templates/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:55 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:373
+#: ../../Open-ILS/src/templates/opac/css/style.css.tt2:3210 ../../Open-ILS/src/templates/opac/css/style.css.tt2:3217 ../../Open-ILS/src/templates/opac/myopac/ebook_holds.tt2:46 ../../Open-ILS/src/templates/opac/myopac/ebook_place_hold.tt2:27 ../../Open-ILS/src/templates/opac/myopac/hold_history.tt2:70 ../../Open-ILS/src/templates/opac/myopac/holds.tt2:121 ../../Open-ILS/src/templates/opac/myopac/holds/edit.tt2:40 ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:14 ../../Open-ILS/src/templates/opac/parts/ebook_api/avail.tt2:30 ../../Open-ILS/src/templates/opac/parts/record/copy_table.tt2:55 ../../Open-ILS/src/templates/opac/parts/result/table.tt2:373
 msgid "Status"
 msgstr "الحالة"
 
@@ -4599,7 +4635,7 @@ msgstr "ملاحظة تفاصيل النظام: "
 msgid "System rules do not define how to handle this item"
 msgstr "قواعد النظام لا تحدد كيفية التعامل مع هذه النُسخة"
 
-#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:15
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:16
 msgid "TCN"
 msgstr "رقم التحكم بالنقل"
 
@@ -4914,6 +4950,10 @@ msgstr "النوع: "
 msgid "Typographer"
 msgstr "مُنسق الخطوط"
 
+#: ../../Open-ILS/src/templates/opac/parts/advanced/numeric.tt2:12
+msgid "UPC"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/opac/parts/relators.tt2:1
 msgid "University place"
 msgstr "مكان الجامعة"
@@ -4964,6 +5004,10 @@ msgstr "مصور فيديو"
 
 #: ../../Open-ILS/src/templates/opac/parts/cart.tt2:21 ../../Open-ILS/src/templates/opac/parts/cart.tt2:5 ../../Open-ILS/src/templates/opac/parts/record/summary.tt2:126
 msgid "View Basket"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:149 ../../Open-ILS/src/templates/opac/myopac/prefs_settings.tt2:159
+msgid "View Borrowing History"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/parts/myopac/main_base.tt2:28
@@ -5142,6 +5186,10 @@ msgstr ""
 #: ../../Open-ILS/src/templates/opac/myopac/main.tt2:202
 msgid "You have no current fines."
 msgstr "ليس لديك أي غرامات حالية"
+
+#: ../../Open-ILS/src/templates/opac/myopac/reservations.tt2:37
+msgid "You have no current reservations"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/opac/myopac/ebook_holds_ready.tt2:33
 msgid "You have no e-item holds ready to be checked out."

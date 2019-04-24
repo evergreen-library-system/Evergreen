@@ -1,0 +1,96 @@
+
+<ng-template #bibIdTemplate let-row="row">
+  <a routerLink="/staff/catalog/record/{{row.eg_record}}/marc_view" i18n>
+    {{row.eg_record}}
+  </a>
+</ng-template>
+
+<ng-template #targetTemplate let-row="row">
+  <ng-container *ngIf="isOverlayTarget(row.id)">
+    <span i18n-title title="Selected Merge Target" 
+      class="material-icons">check_circle</span>
+  </ng-container>
+</ng-template>
+
+<ng-container *ngIf="queueType == 'bib'">
+  <eg-grid #bibGrid [dataSource]="bibDataSource" 
+    (onRowClick)="matchRowClick($event)"
+    [disableMultiSelect]="true">
+    <!--
+    <eg-grid-toolbar-action i18n-label label="Mark As Overlay Target"
+      [action]="markOverlayTarget">
+    </eg-grid-toolbar-action>
+    -->
+    <eg-grid-column name="id" [index]="true" [hidden]="true" 
+      i18n-label label="Match ID">
+    </eg-grid-column>
+    <eg-grid-column name="selected" i18n-label label="Merge Target"
+      [cellTemplate]="targetTemplate">
+    </eg-grid-column>
+    <eg-grid-column name="eg_record" i18n-label label="Record ID"
+      [cellTemplate]="bibIdTemplate">
+    </eg-grid-column>
+    <eg-grid-column name="match_score" i18n-label label="Match Score">
+    </eg-grid-column>
+    <eg-grid-column name="bre_quality" i18n-label label="Matched Record Quality">
+    </eg-grid-column>
+    <eg-grid-column name="vqbr_quality" i18n-label label="Queued Record Quality">
+    </eg-grid-column>
+    <eg-grid-column path="bib_summary.display.title" i18n-label label="Title">
+    </eg-grid-column>
+    <eg-grid-column path="bib_summary.record.creator.usrname" 
+      i18n-label label="Creator">
+    </eg-grid-column>
+    <eg-grid-column path="bib_summary.record.create_date" datatype="timestamp"
+      i18n-label label="Create Date">
+    </eg-grid-column>
+    <eg-grid-column path="bib_summary.record.editor.usrname" 
+      i18n-label label="Editor">
+    </eg-grid-column>
+    <eg-grid-column path="bib_summary.record.edit_date" datatype="timestamp"
+      i18n-label label="Edit Date">
+    </eg-grid-column>
+  </eg-grid>
+</ng-container>
+<ng-container *ngIf="queueType == 'authority'">
+  <eg-grid #authGrid [dataSource]="authDataSource">
+    <eg-grid-column name="id" [index]="true" [hidden]="true" 
+      i18n-label label="Match ID">
+    </eg-grid-column>
+  </eg-grid>
+</ng-container>
+
+
+<!--
+{
+name: '[% l('Merge Target') %]',
+get: vlGetOverlayTargetSelector,
+formatter : vlFormatOverlayTargetSelector,
+},
+{name: '[% l('ID') %]', field:'id'},
+{   name: '[% l('View MARC') %]',
+get: vlGetViewMARC,
+formatter : vlFormatViewMatchMARC
+},
+{name: '[% l('Match Score') %]', field:'match_score'},
+{name: '[% l('Queued Record Quality') %]', field:'rec_quality'},
+{name: '[% l('Matched Record Quality') %]', field:'match_quality'},
+{name: '[% l('Creator') %]', get: vlGetCreator},
+{name: '[% l('Create Date') %]', field:'create_date', get: vlGetDateTimeField},
+{name: '[% l('Last Edit Date') %]', field:'edit_date', get: vlGetDateTimeField},
+{name: '[% l('Source') %]', field:'source'},
+]]
+}];
+
+if (recordType == 'auth') {
+vlMatchGridLayout[0].cells[0].push(
+{name: '[% l("Heading") %]', field:'heading'}
+);
+} else {
+vlMatchGridLayout[0].cells[0].push(
+{name: '[% l('TCN Source') %]', field:'tcn_source'},
+{name: '[% l('TCN Value') %]', field:'tcn_value'}
+);
+}
+-->
+

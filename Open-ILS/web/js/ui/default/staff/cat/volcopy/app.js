@@ -1064,9 +1064,23 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 if ($scope.defaults.barcode_checkdigit) itemSvc.barcode_checkdigit = true;
                 if ($scope.defaults.auto_gen_barcode) itemSvc.auto_gen_barcode = true;
             }
+
+            // Fetch the list of bib-level callnumbers based on the applied
+            // classification scheme.  If none is defined, default to "1"
+            // (Generic) since it provides the most options.
+            egCore.net.request(
+                'open-ils.cat',
+                'open-ils.cat.biblio.record.marc_cn.retrieve',
+                $scope.record_id,
+                $scope.batch.classification || 1
+            ).then(function(list) {
+                $scope.batch.marcCallNumbers = [];
+                list.forEach(function(hash) {
+                    $scope.batch.marcCallNumbers.push(Object.values(hash)[0]);
+                });
+            });
         });
     }
-    $scope.fetchDefaults();
 
     $scope.$watch('defaults.statcat_filter', function() {
         $scope.saveDefaults();
@@ -1172,6 +1186,19 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         statcats_multi: {},
         statcat_filter: undefined
     };
+
+    // Returns true if we are editing multiple copies and at least
+    // one field contains multiple values.
+    $scope.hasMulti = function() {
+        var keys = Object.keys($scope.working.MultiMap);
+        // for-loop for shortcut exit
+        for (var i = 0; i < keys.length; i++) {
+            if ($scope.working.MultiMap[keys[i]].length > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     $scope.copyAlertUpdate = function (alerts) {
         if (!$scope.in_item_select &&
@@ -1458,7 +1485,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }
 
         $scope.circTypeValue = function (x) {
-            if (x === null) return egCore.strings.UNSET;
+            if (x === null || x === undefined) return egCore.strings.UNSET;
             var s = $scope.circ_type_list.filter(function(y) {
                 return y.code() == x;
             });
@@ -1467,7 +1494,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }
 
         $scope.ageprotectName = function (x) {
-            if (x === null) return egCore.strings.UNSET;
+            if (x === null || x === undefined) return egCore.strings.UNSET;
             var s = $scope.age_protect_list.filter(function(y) {
                 return y.id() == x;
             });
@@ -1476,7 +1503,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }
 
         $scope.floatingName = function (x) {
-            if (x === null) return egCore.strings.UNSET;
+            if (x === null || x === undefined) return egCore.strings.UNSET;
             var s = $scope.floating_list.filter(function(y) {
                 return y.id() == x;
             });
@@ -1485,7 +1512,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
         }
 
         $scope.circmodName = function (x) {
-            if (x === null) return egCore.strings.UNSET;
+            if (x === null || x === undefined) return egCore.strings.UNSET;
             var s = $scope.circ_modifier_list.filter(function(y) {
                 return y.code() == x;
             });
@@ -1507,6 +1534,9 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 }
 
                 $scope.record_id = data.record_id;
+
+                // Fetch defaults 
+                $scope.fetchDefaults();
 
                 function fetchRaw () {
                     if (!$scope.only_vols) $scope.dirty = true;
@@ -2079,7 +2109,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                             var n = new egCore.idl.acpn();
                             n.isnew(1);
                             n.creator(note.creator);
-                            n.pub(note.pub);
+                            n.pub(note.pub ? 't' : 'f');
                             n.title(note.title);
                             n.value(note.value);
                             n.owning_copy(cp.id());

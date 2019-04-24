@@ -3,7 +3,7 @@
     <div class="navbar-nav">
       <div class="nav-item">
         <a i18n class="nav-link with-material-icon" 
-          routerLink="/staff/splash"
+          href="/eg/staff/"
           egAccessKey keyCtx="navbar"
           keySpec="alt+h" i18n-keySpec
           keyDesc="Navigate Home" i18n-keyDesc>
@@ -26,10 +26,7 @@
             <span class="material-icons">assignment</span>
             <span i18n>Search for Copies by Barcode</span>
           </a>
-          <a class="dropdown-item" routerLink="/staff/catalog/search"
-            egAccessKey keyCtx="navbar"
-            keySpec="alt+c" i18n-keySpec
-            keyDesc="Navigate To Catalog" i18n-keyDesc>
+          <a href="/eg/staff/cat/catalog/index" class="dropdown-item">
             <span class="material-icons">search</span>
             <span i18n>Search the Catalog</span>
           </a>
@@ -139,17 +136,12 @@
             <span class="material-icons">search</span>
             <span i18n>Search the Catalog</span>
           </a>
-          <!--
-            Link to experimental Angular staff catalog.
-            Leaving disabled until more functionality can be fleshed out.
-          -->
-          <!--
-          <a class="dropdown-item"
-              routerLink="/staff/catalog/search">
+          <a *ngIf="showAngularCatalog"
+            class="dropdown-item"
+            routerLink="/staff/catalog/search">
             <span class="material-icons">search</span>
             <span i18n>Staff Catalog (Experimental)</span>
           </a>
-          -->
           <a href="/eg/staff/cat/bucket/record/view" class="dropdown-item">
             <span class="material-icons">list_alt</span>
             <span i18n>Record Buckets</span>
@@ -184,7 +176,7 @@
             <span class="material-icons">cloud_download</span>
             <span i18n>Import Record from Z39.50</span>
           </a>
-          <a href="/eg/staff/cat/catalog/vandelay" class="dropdown-item">
+          <a routerLink="/staff/cat/vandelay/import" class="dropdown-item">
             <span class="material-icons">import_export</span>
             <span i18n>MARC Batch Import/Export</span>
           </a>
@@ -336,14 +328,8 @@
             <span class="material-icons">person</span>
             <span i18n>User Permission Editor</span>
           </a>
-          <!-- Angular version
           <a class="dropdown-item"
               routerLink="/staff/admin/server/splash">
-            <span class="material-icons">account_balance</span>
-            <span i18n>Server Administration</span>
-          </a>
-          -->
-          <a class="dropdown-item" href="/eg/staff/admin/server/index">
             <span class="material-icons">account_balance</span>
             <span i18n>Server Administration</span>
           </a>
@@ -360,7 +346,8 @@
             <span class="material-icons">layers</span>
             <span i18n>Serials Administration</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/admin/booking/index">
+          <a class="dropdown-item"
+              routerLink="/staff/admin/booking/splash">
             <span class="material-icons">business_center</span>
             <span i18n>Booking Administration</span>
           </a>

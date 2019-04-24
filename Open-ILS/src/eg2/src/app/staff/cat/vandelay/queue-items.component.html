@@ -1,0 +1,19 @@
+<div class="row mb-3">
+  <div class="col-lg-2">
+    <button class="btn btn-info label-with-material-icon"
+      routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}">
+      <span class="material-icons">arrow_back</span>
+      <span i18n>Return to Queue</span>
+    </button>
+  </div>
+</div>
+
+<eg-grid #itemsGrid
+  showFields="record,import_error,imported_as,import_time,owning_lib,call_number,barcode"
+  persistKey="cat.vandelay.queue.items"
+  idlClass="vii" [dataSource]="gridSource">
+  <eg-grid-toolbar-checkbox (onChange)="limitToImportErrors($event)"
+    i18n-label label="Limit to Import Failures"></eg-grid-toolbar-checkbox>
+
+</eg-grid>
+

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {environment} from '../../environments/environment';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {CookieService} from 'ngx-cookie';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';

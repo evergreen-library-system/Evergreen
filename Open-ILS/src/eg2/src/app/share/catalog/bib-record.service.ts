@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {mergeMap} from 'rxjs/operators/mergeMap';
-import {from} from 'rxjs/observable/from';
-import {map} from 'rxjs/operators/map';
+import {Observable, from} from 'rxjs';
+import {mergeMap, map, tap} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
 import {UnapiService} from '@eg/share/catalog/unapi.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -22,6 +20,8 @@ export const HOLDINGS_XPATH =
 
 export class BibRecordSummary {
     id: number; // == record.id() for convenience
+    metabibId: number; // If present, this is a metabib summary
+    metabibRecords: number[]; // all constituent bib records
     orgId: number;
     orgDepth: number;
     record: IdlObject;
@@ -33,13 +33,14 @@ export class BibRecordSummary {
     net: NetService;
 
     constructor(record: IdlObject, orgId: number, orgDepth: number) {
-        this.id = record.id();
+        this.id = Number(record.id());
         this.record = record;
         this.orgId = orgId;
         this.orgDepth = orgDepth;
         this.display = {};
         this.attributes = {};
         this.bibCallNumber = null;
+        this.metabibRecords = [];
     }
 
     ingest() {
@@ -69,7 +70,10 @@ export class BibRecordSummary {
         // Any attr can be multi-valued.
         this.record.mattrs().forEach(attr => {
             if (this.attributes[attr.attr()]) {
-                this.attributes[attr.attr()].push(attr.value());
+                // Avoid dupes
+                if (this.attributes[attr.attr()].indexOf(attr.value()) < 0) {
+                    this.attributes[attr.attr()].push(attr.value());
+                }
             } else {
                 this.attributes[attr.attr()] = [attr.value()];
             }
@@ -83,9 +87,16 @@ export class BibRecordSummary {
             return Promise.resolve(this.holdCount);
         }
 
+        let method = 'open-ils.circ.bre.holds.count';
+        let target = this.id;
+
+        if (this.metabibId) {
+            method = 'open-ils.circ.mmr.holds.count';
+            target = this.metabibId;
+        }
+
         return this.net.request(
-            'open-ils.circ',
-            'open-ils.circ.bre.holds.count', this.id
+            'open-ils.circ', method, target
         ).toPromise().then(count => this.holdCount = count);
     }
 
@@ -133,7 +144,7 @@ export class BibRecordService {
     }
 
     // Avoid fetching the MARC blob by specifying which fields on the
-    // bre to select.  Note that fleshed fields are explicitly selected.
+    // bre to select.  Note that fleshed fields are implicitly selected.
     fetchableBreFields(): string[] {
         return this.idl.classes.bre.fields
             .filter(f => !f.virtual && f.name !== 'marc')
@@ -167,6 +178,83 @@ export class BibRecordService {
                 return summary;
             });
         }));
+    }
+
+    // A Metabib Summary is a BibRecordSummary with the lead record as
+    // its core bib record plus attributes (e.g. formats) from related
+    // records.
+    getMetabibSummary(metabibIds: number | number[],
+        orgId?: number, orgDepth?: number): Observable<BibRecordSummary> {
+
+        const ids = [].concat(metabibIds);
+
+        if (ids.length === 0) {
+            return from([]);
+        }
+
+        return this.pcrud.search('mmr', {id: ids},
+            {flesh: 1, flesh_fields: {mmr: ['source_maps']}},
+            {anonymous: true}
+        ).pipe(mergeMap(mmr => this.compileMetabib(mmr, orgId, orgDepth)));
+    }
+
+    // 'metabib' must have its "source_maps" field fleshed.
+    // Get bib summaries for all related bib records so we can
+    // extract data that must be appended to the master record summary.
+    compileMetabib(metabib: IdlObject,
+        orgId?: number, orgDepth?: number): Observable<BibRecordSummary> {
+
+        // TODO: Create an API similar to the one that builds a combined
+        // mods blob for metarecords, except using display fields, etc.
+        // For now, this seems to get the job done.
+
+        // Non-master records
+        const relatedBibIds = metabib.source_maps()
+            .map(m => m.source())
+            .filter(id => id !== metabib.master_record());
+
+        let observer;
+        const observable = new Observable<BibRecordSummary>(o => observer = o);
+
+        // NOTE: getBibSummary calls getHoldingsSummary against
+        // the bib record unnecessarily.  It's called again below.
+        // Reconsider this approach (see also note above about API).
+        this.getBibSummary(metabib.master_record(), orgId, orgDepth)
+        .subscribe(summary => {
+            summary.metabibId = Number(metabib.id());
+            summary.metabibRecords =
+                metabib.source_maps().map(m => Number(m.source()));
+
+            let promise;
+
+            if (relatedBibIds.length > 0) {
+
+                // Grab data for MR bib summary augmentation
+                promise = this.pcrud.search('mraf', {id: relatedBibIds})
+                    .pipe(tap(attr => summary.record.mattrs().push(attr)))
+                    .toPromise();
+            } else {
+
+                // Metarecord has only one constituent bib.
+                promise = Promise.resolve();
+            }
+
+            promise.then(() => {
+
+                // Re-compile with augmented data
+                summary.compileRecordAttrs();
+
+                // Fetch holdings data for the metarecord
+                this.getHoldingsSummary(metabib.id(), orgId, orgDepth, true)
+                .then(holdingsSummary => {
+                    summary.holdingsSummary = holdingsSummary;
+                    observer.next(summary);
+                    observer.complete();
+                });
+            });
+        });
+
+        return observable;
     }
 
     // Flesh the creator and editor fields.
@@ -209,12 +297,12 @@ export class BibRecordService {
     }
 
     getHoldingsSummary(recordId: number,
-        orgId: number, orgDepth: number): Promise<any> {
+        orgId: number, orgDepth: number, isMetarecord?: boolean): Promise<any> {
 
         const holdingsSummary = [];
 
         return this.unapi.getAsXmlDocument({
-            target: 'bre',
+            target: isMetarecord ? 'mmr' : 'bre',
             id: recordId,
             extras: '{holdings_xml}',
             format: 'holdings_xml',

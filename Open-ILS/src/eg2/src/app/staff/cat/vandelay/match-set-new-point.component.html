@@ -1,0 +1,77 @@
+<div class="row ml-2 mt-4 p-2 border border-secondary" *ngIf="values.pointType">
+  <div class="col-lg-12 common-form striped-odd form-validated">
+    <ng-container *ngIf="values.pointType=='attr'">
+      <div class="row mb-1">
+        <div class="col-lg-3" i18n>Record Attribute:</div>
+        <div class="col-lg-4">
+          <eg-combobox [entries]="bibAttrDefEntries"
+            [required]="true" 
+            (onChange)="values.recordAttr=$event ? $event.id : ''"
+            placeholder="Record Attribute..." i18n-placeholder>                       
+          </eg-combobox>  
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="values.pointType=='marc'">
+      <div class="row mb-1">
+        <div class="col-lg-3" i18n>Tag:</div>
+        <div class="col-lg-2">
+          <input required type="text" class="form-control" [(ngModel)]="values.marcTag"/>
+        </div>
+      </div>
+      <div class="row mb-1">
+        <div class="col-lg-3" i18n>Subfield ‡:</div>
+        <div class="col-lg-2">
+          <input required type="text" class="form-control" [(ngModel)]="values.marcSf"/>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="values.pointType=='heading'">
+      <div class="row mb-1">
+        <div class="col-lg-3" i18n>Normalized Heading:</div>
+        <div class="col-lg-2">
+          <input type="checkbox" class="form-check-input" checked disabled/>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="values.pointType!='bool'">
+      <div class="row mb-1">
+        <div class="col-lg-3">Match Score:</div>
+        <div class="col-lg-2">
+          <input required type="number" class="form-control" 
+            [(ngModel)]="values.matchScore" step="0.1"/>
+        </div>
+      </div>
+      <ng-container *ngIf="!isForQuality">
+        <div class="row mb-1">
+          <div class="col-lg-3">Negate:</div>
+          <div class="col-lg-2">
+            <input type="checkbox" 
+              class="form-check-input" [(ngModel)]="values.negate"/>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="values.pointType=='bool'">
+      <div class="row mb-1">
+        <div class="col-lg-3">Operator:</div>
+        <div class="col-lg-2">
+          <select class="form-control" [(ngModel)]="values.boolOp">
+            <option value='AND' i18n>AND</option>
+            <option value='OR' i18n>OR</option>
+          </select>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isForQuality">
+      <div class="row mb-1">
+        <div class="col-lg-3" i18n>Value:</div>
+        <div class="col-lg-2">
+          <input type="text" class="form-control" required 
+            [(ngModel)]="values.value"/>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+

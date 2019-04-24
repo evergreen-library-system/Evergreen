@@ -133,5 +133,28 @@ export class IdlService {
 
         return result;
     }
+
+    // Given a field on an IDL class, returns the name of the field
+    // on the linked class that acts as the selector for the linked class.
+    // Returns null if no selector is found or the field is not a link.
+    getLinkSelector(fmClass: string, field: string): string {
+        let fieldDef = this.classes[fmClass].field_map[field];
+
+        if (fieldDef.map) {
+            // For mapped fields, we want the selector field on the
+            // remotely linked object instead of the directly
+            // linked object.
+            const linkedClass = this.classes[fieldDef.class];
+            fieldDef = linkedClass.field_map[fieldDef.map];
+        }
+
+        if (fieldDef.class) {
+            const classDef = this.classes[fieldDef.class];
+            if (classDef.pkey) {
+                return classDef.field_map[classDef.pkey].selector || null;
+            }
+        }
+        return null;
+    }
 }
 

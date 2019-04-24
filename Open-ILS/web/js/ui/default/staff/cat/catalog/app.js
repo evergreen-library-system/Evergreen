@@ -1919,13 +1919,17 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         // whatever default pane the user has chosen via workstation
         // preference
         if (url.match(/\/opac\/advanced$/)) {
-            var adv_pane = egCore.hatch.getLocalItem('eg.search.adv_pane');
-            if (adv_pane) {
-                url += '?pane=' + encodeURIComponent(adv_pane);
-            }
-        }
+            egCore.hatch.getItem('eg.search.adv_pane').then(function(adv_pane_val){
+                if (adv_pane_val) {
+                    url += '?pane=' + encodeURIComponent(adv_pane_val);
+                }
 
-        $scope.catalog_url = url;
+                $scope.catalog_url = url;
+            });
+        } else {
+            $scope.catalog_url = url;
+	}
+
     }
 
     function init_parts_url() {

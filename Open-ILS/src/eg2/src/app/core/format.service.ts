@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, Pipe, PipeTransform} from '@angular/core';
 import {DatePipe, CurrencyPipe} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
@@ -71,6 +71,36 @@ export class FormatService {
 
         switch (datatype) {
 
+            case 'link':
+                if (typeof value !== 'object') {
+                    return value + ''; // no fleshed value here
+                }
+
+                if (!params.idlClass || !params.idlField) {
+                    // Without a full accounting of the field data,
+                    // we can't determine the linked selector field.
+                    return value + '';
+                }
+
+                const selector =
+                    this.idl.getLinkSelector(params.idlClass, params.idlField);
+
+                if (selector && typeof value[selector] === 'function') {
+                    const val = value[selector]();
+
+                    if (Array.isArray(val)) {
+                        // Typically has_many links will not be fleshed,
+                        // but in the off-chance the are, avoid displaying
+                        // an array reference value.
+                        return '';
+                    } else {
+                        return val + '';
+                    }
+
+                } else {
+                    return value + '';
+                }
+
             case 'org_unit':
                 const orgField = params.orgField || 'shortname';
                 const org = this.org.get(value);
@@ -98,6 +128,17 @@ export class FormatService {
             default:
                 return value + '';
         }
+    }
+}
+
+
+// Pipe-ify the above formating logic for use in templates
+@Pipe({name: 'formatValue'})
+export class FormatValuePipe implements PipeTransform {
+    constructor(private formatter: FormatService) {}
+    // Add other filter params as needed to fill in the FormatParams
+    transform(value: string, datatype: string): string {
+        return this.formatter.transform({value: value, datatype: datatype});
     }
 }
 
