@@ -132,7 +132,7 @@ image::media/overdue_checkin_web_client.png[]
 
 5) Print out the hold or transit slip and place the item on the hold shelf or route it to the proper library.
 
-6) If the item is not in a state acceptable for hold/transit (for instance, it is damaged), select the line of the item, and choose Cancel Transit from the Actions menu.  The item will then have a status of Canceled Transit rather than In Transit.
+6) If the item is not in a state acceptable for hold/transit (for instance, it is damaged), select the line of the item, and choose *Actions* -> *Cancel Transit*.  The item will then have a status of _Canceled Transit_ rather than _In Transit_.
 
 image::media/Check In-Cancel Transit.png[Actions Menu - Cancel Transit]
 
