@@ -350,7 +350,7 @@ include::cataloging/marc_tag_table.adoc[]
 
 include::cataloging/copy-buckets_web_client.adoc[]
 
-include::cataloging/copy_tags_cataloging.adoc[]
+include::cataloging/item_tags_cataloging.adoc[]
 
 include::cataloging/MARC_Editor.adoc[]
 
