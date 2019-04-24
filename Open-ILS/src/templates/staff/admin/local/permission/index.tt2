@@ -1,0 +1,27 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Permission Groups");
+  ctx.page_app = "egAdminPermGrpTreeApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/eframe.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/permission/app.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.ROOT_NODE_NAME = '[% l('Display Entries') %]';
+  s.UPDATE_SUCCESS = '[% l('Display Entry order succesfully updated') %]';
+  s.UPDATE_FAILURE = '[% l('Display Entry order failed to update') %]';
+  s.ADD_SUCCESS = '[% l('Display Entry succesfully added') %]';
+  s.ADD_FAILURE = '[% l('Failed to add Display Entry') %]';
+  s.REMOVE_SUCCESS = '[% l('Display Entry succesfully removed') %]';
+  s.REMOVE_FAILURE = '[% l('Failed to remove Display Entry') %]';
+}]);
+</script>
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

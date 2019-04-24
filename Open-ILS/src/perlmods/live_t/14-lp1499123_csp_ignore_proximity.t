@@ -14,21 +14,6 @@ our $apputils = 'OpenILS::Application::AppUtils';
 use constant WORKSTATION_NAME => 'BR1-test-lp1499123_csp_ignore_proximity.t';
 use constant WORKSTATION_LIB => 4;
 
-# Because this may run multiple times, without a DB reload, we search
-# for the workstation before registering it.
-sub find_workstation {
-    my $r = $apputils->simplereq(
-        'open-ils.actor',
-        'open-ils.actor.workstation.list',
-        $script->authtoken,
-        WORKSTATION_LIB
-    );
-    if ($r->{&WORKSTATION_LIB}) {
-        return scalar(grep {$_->name() eq WORKSTATION_NAME} @{$r->{&WORKSTATION_LIB}});
-    }
-    return 0;
-}
-
 sub retrieve_staff_chr {
     my $e = shift;
     my $staff_chr = $e->retrieve_config_standing_penalty(25);
@@ -158,7 +143,7 @@ $script->authenticate({
 ok($script->authtoken, 'Initial Login');
 
 SKIP: {
-    my $ws = find_workstation();
+    my $ws = $script->find_workstation(WORKSTATION_NAME, WORKSTATION_LIB);
     skip 'Workstation exists', 1 if ($ws);
     $ws = $script->register_workstation(WORKSTATION_NAME, WORKSTATION_LIB) unless ($ws);
     ok(! ref $ws, 'Registered a new workstation');

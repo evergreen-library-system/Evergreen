@@ -1,0 +1,29 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Confirm Basket Email") %]
+    <h2 class="sr-only">[% l('Confirm Basket Email') %]</h2>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <div id="content-wrapper">
+        <div id="main-content">
+          [% IF ctx.mylist.size %]
+             <p class="big-strong">[% l('Please confirm that you want to email the [_1] titles in the basket.', ctx.mylist.size) %]
+             <form method="post" action="[% mkurl(ctx.opac_root _ '/mylist/doemail', {}, 1) %]">
+             <input type="hidden" name="redirect_to" value="[% ctx.referer %]" />
+             <input type="checkbox" name="clear_basket" value="on" />
+             <label for="clear_basket">[% l('Clear basket after emailing it.') %]</label>
+             <br />
+             <input id="print_cart_submit" type="submit" name="submit"
+               value="[% l('Confirm') %]" title="[% l('Confirm') %]"
+               alt="[% l('Confirm') %]" class="opac-button" />
+             <input type="reset" name="cancel" onclick="window.location='[% ctx.referer | html %]'" value="[% l('Cancel') %]" id="clear_basket_cancel" class="opac-button" />
+             </form>
+          [% ELSE %]
+            <div class="warning_box">[% l("The basket is empty."); %]</div>
+            <button type="button" class="opac-button" onclick="window.location='[% ctx.referer | html %]'">[% l('Return') %]</button>
+          [% END %]
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[%- END %]

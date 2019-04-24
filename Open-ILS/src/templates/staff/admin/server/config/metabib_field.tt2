@@ -51,6 +51,7 @@
     <eg-grid-field label="[% l('ID') %]"    path='id' required hidden></eg-grid-field>
     <eg-grid-field label="[% l('Label') %]" path="label" required></eg-grid-field>
     <eg-grid-field label="[% l('Class') %]" path="field_class"></eg-grid-field>
+    <eg-grid-field label="[% l('Weight') %]" path='weight'></eg-grid-field>
     <eg-grid-field label="[% l('Field') %]" path="name" hidden></eg-grid-field>
     <eg-grid-field label="[% l('Search Field') %]" path='search_field'></eg-grid-field>
     <eg-grid-field label="[% l('Facet Field') %]" path='facet_field'></eg-grid-field>

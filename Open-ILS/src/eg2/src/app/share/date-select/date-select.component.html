@@ -1,0 +1,23 @@
+
+<div class="input-group">
+  <input
+    class="form-control"
+    ngbDatepicker
+    #datePicker="ngbDatepicker"
+    [attr.id]="domId.length ? domId : null"
+    placeholder="yyyy-mm-dd"
+    class="form-control"
+    name="{{fieldName}}"
+    [disabled]="_disabled"
+    [required]="required"
+    [(ngModel)]="current"
+    (dateSelect)="onDateSelect($event)"/>
+  <div class="input-group-append">
+    <button class="btn btn-outline-secondary" [disabled]="_disabled"
+      (click)="datePicker.toggle()" type="button">
+      <span title="Select Date" i18n-title
+        class="material-icons mat-icon-in-button">calendar_today</span>
+    </button>
+  </div>
+</div>
+

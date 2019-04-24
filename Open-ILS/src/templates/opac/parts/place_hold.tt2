@@ -66,7 +66,8 @@ function maybeToggleNumCopies(obj) {
                 SET some_holds_allowed = 0 IF some_holds_allowed == -1;
               ELSE; some_holds_allowed = 1; END;
             END %]
-      
+     
+      [% IF loop.first %] 
     <form method="post" name="PlaceHold" onsubmit="return validateHoldForm()" >
         <input type="hidden" name="hold_type" value="[% CGI.param('hold_type') | html %]" />
         [%  
@@ -129,6 +130,7 @@ function maybeToggleNumCopies(obj) {
             </span>
         </p>
         [% END %]
+      [% END %]
 
         <table id='hold-items-list'>
             <tr>
@@ -180,7 +182,7 @@ function maybeToggleNumCopies(obj) {
                         [% END %]
                     [% END %]
 		    [% INCLUDE "opac/parts/multi_hold_select.tt2" IF NOT (this_hold_disallowed AND hdata.part_required); %]
-                    [% IF NOT metarecords.disabled %]
+                    [% IF NOT metarecords.disabled AND ctx.hold_data.size == 1 %]
                         [% IF CGI.param('hold_type') == 'T' AND hdata.record.metarecord AND !hdata.part_required %]
                         <!-- Grab the bre_id so that we can restore it if user accidentally clicks advanced options -->
                            [% bre_id = hdata.target.id %]
@@ -276,6 +278,9 @@ function maybeToggleNumCopies(obj) {
                 <em>[% l('Enter date in MM/DD/YYYY format') %]</em>
             </blockquote>
         </p>
+        [% IF CGI.param('from_basket') %]
+          <blockquote><input type="checkbox" name="clear_cart">[% l('Clear basket after holds are requested?') %]</input></blockquote>
+        [% END %]
         <input id="place_hold_submit" type="submit" name="submit" 
             value="[% l('Submit') %]" title="[% l('Submit') %]"
             alt="[% l('Submit') %]" class="opac-button" />

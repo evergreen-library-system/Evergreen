@@ -1,0 +1,37 @@
+
+<div class="d-flex mb-3">
+  <div>
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Owner</span>
+      </div>
+      <eg-org-select
+        [initialOrg]="contextOrg"
+        (onChange)="orgOnChange($event)">
+      </eg-org-select>
+    </div>
+  </div>
+</div>
+
+<ng-template #nameTmpl let-row="row">
+  <a routerLink="/staff/cat/vandelay/match_sets/{{row.id()}}/editor">
+    {{row.name()}}
+  </a> 
+</ng-template>
+
+<eg-grid #grid [dataSource]="gridSource"
+  persistKey="cat.vandelay.match_set.list"
+  idlClass="vms" [dataSource]="queueSource">
+  <eg-grid-toolbar-button label="New Match Set" i18n-label [action]="createNew">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+  <eg-grid-column name="name" [cellTemplate]="nameTmpl">
+  </eg-grid-column>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog idlClass="vms">
+</eg-fm-record-editor>
+
+
+

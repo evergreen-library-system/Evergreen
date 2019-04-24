@@ -30,6 +30,24 @@
     <h3 class="sr-only">[% l('Search Results List') %]</h3>
     </div>
             <div id="result_block" class="result_block_visible">
+                [% IF !ctx.is_meta %]
+                <div id="record_selector_block" class="hidden">
+                    <input type="checkbox" id="select_all_records"></input>
+                    <label for="select_all_records">[% l('Select [_1] - [_2]', ctx.result_start, ctx.result_stop) %]</label>
+                    <span id="selected_records_summary">
+                        <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab="">
+                          <span id="selected_records_count">[% ctx.mylist.size %]</span>
+                          [% IF ctx.mylist.size == 1; %]
+                              [% l('selected title') %]
+                          [% ELSE; %]
+                              [% l('selected titles') %]
+                          [% END; %]
+                        </a>
+                        <span id="hit_selected_record_limit" class="hidden">Reached limit!</span>
+                    <span>
+                    <a id="clear_basket" href="#">[% l('Clear basket') %]</a>
+                </div>
+                [% END %]
                 <table id="result_table_table" title="[% l('Search Results') %]"
                   class="table_no_border_space table_no_cell_pad">
                     <thead class="sr-only">
@@ -64,13 +82,13 @@
                                     # this case, only, record
                                     record_url_path = ctx.opac_root _ '/record/' _ attrs.mr_constituent_ids.0;
                                     add_parms = { badges => rec.badges.join(',') };
-                                    del_parms = [];
+                                    del_parms = ['quux'];
                                 END;
                                 hold_type = 'M';
                             ELSE;
                                 record_url_path = ctx.opac_root _ '/record/' _ rec.bre_id; 
                                 add_parms = { badges => rec.badges.join(',') };
-                                del_parms = [];
+                                del_parms = ['quux'];
                                 hold_type = 'T';
                             END;
 
@@ -82,11 +100,18 @@
 				    add_parms.import(
 					 {query => ctx.naive_query_scrub(ctx.user_query)} );
                             END;
+                            is_selected = ctx.mylist.grep('^' _ rec.id _ '$').size;
                         %]
-                        <tr class="result_table_row">
-                                            <td class="results_row_count" name="results_row_count">[%
-                                                    result_count; result_count = result_count + 1
-                                                %].</td>
+                        <tr class="result_table_row [% IF is_selected %]result_table_row_selected[% END %]">
+                                            <td class="results_row_count" name="results_row_count">
+                                                [% IF !ctx.is_meta; %]
+                                                <input type="checkbox" id="select-[% rec.bre_id %]" name="selected_record"
+                                                    [% IF is_selected %] checked="checked" [% END %]
+                                                    title="[% l('Add to Basket') %]"
+                                                    class="result_record_selector hidden" value="[% rec.bre_id %]"></input>
+                                                [% END %]
+                                                [% result_count; result_count = result_count + 1 %].
+                                            </td>
                                             <td class='result_table_pic_header'>
                                                 <a href="[% mkurl(record_url_path, add_parms, del_parms); %]">
                                                  <img alt="[% l('Book cover') %]"
@@ -105,7 +130,7 @@
                                                     </abbr>
                                                     [% END %]
                                                     <a class='record_title search_link' name='record_[% rec.id %]'
-                                                        href="[% record_url %]"
+                                                        href="[% mkurl(record_url_path, add_parms, del_parms); %]"
                                                         [% html_text_attr('title', l('Display record details for "[_1]"', attrs.title)) %]>
                                                         [% IF attrs.hl.title; attrs.hl.title; ELSE; attrs.title | html; END %]
                                                      </a>
@@ -184,7 +209,7 @@ END;
                                                        role="presentation"
                                                        title="[% l('Record Holdings Summary') %]"
                                                        class="table_no_border_space table_no_cell_pad table_no_border results_info_table">
-                                                        [% UNLESS rec.mmr_id %]
+                                                        [% UNLESS rec.mmr_id OR show_detail_view %]
                                                            [% IF args.holdings.size > 0 %]
                                                         <tr name='bib_cn_list' class='result_table_title_cell'>
                                                             <td valign='top'>
@@ -322,7 +347,7 @@ END;
                                                                 <td valign='top'>
                                                                     <strong>[% l('Electronic resource') %]</strong>
                                                                 </td>
-                                                                <td><a href="[% uri.href %]" class="uri_link">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
+                                                                <td><a href="[% uri.href %]" class="uri_link" target="_blank">[% uri.link | html %]</a>[% ' - ' _ uri.note | html IF uri.note %]</td>
                                                             </tr>
                                                             [% END %]
                                                          [% END %]
@@ -376,7 +401,9 @@ END;
                                                             INCLUDE "opac/parts/ebook_api/avail.tt2";
                                                         END;
                                                     %]
-                                                    [% PROCESS "opac/parts/result/copy_counts.tt2" %]
+                                                    [% UNLESS rec.mmr_id;
+                                                            PROCESS "opac/parts/result/copy_counts.tt2";
+                                                        END; %]
                                                     [% IF rec.user_circulated %]
                                                     <div class="result_item_circulated">
                                                         <img src="[% ctx.media_prefix %]/images/green_check.png[% ctx.cache_key %]" alt="[% l('Checked Out Before') %]"/>
@@ -451,24 +478,30 @@ END;
                                                     [% IF !ctx.is_meta %]
                                                         <div class="results_aux_utils result_util">
                                                         [% IF !ctx.is_staff %]
+                                                            [%
+                                                                addhref = mkurl(ctx.opac_root _ '/mylist/add',
+                                                                        {record => rec.id, anchor => 'record_' _ rec.id}, 1);
+                                                                delhref = mkurl(ctx.opac_root _ '/mylist/delete',
+                                                                        {record => rec.id, anchor => 'record_' _ rec.id}, 1);
+                                                            %]
+                                                            <a href="[% addhref %]" id="mylist_add_[% rec.id %]"
+                                                                data-recid="[% rec.id %]" data-action="add"
+                                                                class="mylist_action [% IF ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
+                                                                title="[% l("Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
+                                                                <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                                                                [% l("Add to basket") %]
+                                                            </a>
+                                                            <a href="[% delhref %]" id="mylist_delete_[% rec.id %]"
+                                                                data-recid="[% rec.id %]" data-action="delete"
+                                                                class="mylist_action [% IF !ctx.mylist.grep('^' _ rec.id _ '$').size %]hidden[% END %]"
+                                                                title="[% l("Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
+                                                                <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                                                                [% l("Remove from basket") %]
+                                                            </a>
                                                             [%  IF ctx.user;
                                                                 INCLUDE "opac/parts/bookbag_actions.tt2";
+                                                                END;
                                                             %]
-                                                            [%  ELSE;
-                                                                operation = ctx.mylist.grep(rec.id).size ? "delete" : "add";
-                                                                label = (operation == "add") ?  l("Add to my list") : l("Remove from my list");
-                                                                title_label = (operation == "add") ? 
-                                                                  l("Add [_1] to my list", attrs.title) : 
-                                                                  l("Remove [_1] from my list", attrs.title);
-                                                                href = mkurl(ctx.opac_root _ '/mylist/' _ operation, 
-                                                                        {record => rec.id, anchor => 'record_' _ rec.id}, 1);
-                                                            %]      
-                                                            <a href="[% href %]" class="no-dec" 
-                                                                [% html_text_attr('title', title_label) %] rel="nofollow" vocab="">
-                                                                <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="" />
-                                                                [% label %]
-                                                            </a>
-                                                            [% END %]
                                                         [% END %]
                                                         </div>
                                                     [% END %]

@@ -1,0 +1,20 @@
+
+
+<div class="eg-tree" *ngFor="let node of displayNodes()">
+  <div class="eg-tree-node-wrapper d-flex"
+    [ngStyle]="{'padding-left': (node.depth * 20) + 'px'}">
+    <div class="eg-tree-node-expandy">
+      <div *ngIf="node.children.length" (click)="node.toggleExpand()"
+        i18n-title title="Toggle Expand Node">
+        <span *ngIf="!node.expanded" class="material-icons">expand_more</span>
+        <span *ngIf="node.expanded" class="material-icons">expand_less</span>
+      </div>
+      <div *ngIf="!node.children.length" class="eg-tree-node-nochild">
+       &nbsp; 
+      </div>
+    </div>
+    <div class="eg-tree-node" [ngClass]="{active : node.selected}">
+      <a [routerLink]="" (click)="handleNodeClick(node)">{{node.label}}</a>
+    </div>
+  </div>
+</div>

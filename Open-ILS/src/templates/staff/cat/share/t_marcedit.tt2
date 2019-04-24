@@ -11,29 +11,29 @@
     </div>
   </div>
 
-  <div class="pad-vert row marctypesource">
-    <div class="col-md-2 form-group" ng-show="!flatOnly">
+  <div class="pad-vert pad-left row flex-row marctypesource">
+    <div class="form-group pad-horiz" ng-show="!flatOnly">
       <label>
         <input type="checkbox" ng-model="flatEditor.isEnabled" ng-change="refreshVisual()"/>
         [% l('Flat Text Editor') %]
       </label>
     </div>
-    <div class="col-md-2 form-group" ng-show="!flatOnly">
+    <div class="form-group pad-horiz" ng-show="!flatOnly">
       <label>
         <input type="checkbox" ng-model="stackSubfields.enabled" />
         [% l('Stack subfields') %]
       </label>
     </div>
-    <div class="col-md-3">
-      <div class="input-group">
+    <div class="">
+      <div class="input-group pad-horiz">
         <span class="input-group-addon"><b>[% l('Record Type') %]</b></span>
         <span class="input-group-addon">{{calculated_record_type}}</span>
       </div>
     </div>
-    <div ng-if="bre" class="col-md-2">
+    <div ng-if="bre" class="pad-horiz">
       <eg-marc-edit-bibsource/>
     </div>
-    <div class="col-md-3">
+    <div class="pad-horiz">
       <div class="btn-group">
         <span class="btn-group">
           <button class="btn btn-default" ng-show="record_type == 'bre' && !flatOnly" ng-click="validateHeadings()">[% l('Validate') %]</button>
@@ -59,92 +59,92 @@
     <div class="row pad-vert">
       <div class="marcffeditor">
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="Type" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="ELvl" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Source" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Audn" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Ctrl" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Lang" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Type" fixed-field-label="[% l('Type') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="ELvl" fixed-field-label="[% l('ELvl') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Source" fixed-field-label="[% l('Source') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Audn" fixed-field-label="[% l('Audn') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Ctrl" fixed-field-label="[% l('Ctrl') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Lang" fixed-field-label="[% l('Lang') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="BLvl" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Form" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Conf" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Biog" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="MRec" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Ctry" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="BLvl" fixed-field-label="[% l('BLvl') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Form" fixed-field-label="[% l('Form') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Conf" fixed-field-label="[% l('Conf') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Biog" fixed-field-label="[% l('Biog') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="MRec" fixed-field-label="[% l('MRec') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Ctry" fixed-field-label="[% l('Ctry') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="s_l" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Cont" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="GPub" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="LitF" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Indx" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Alph" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="s_l" fixed-field-label="[% l('s_l') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Cont" fixed-field-label="[% l('Cont') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="GPub" fixed-field-label="[% l('GPub') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="LitF" fixed-field-label="[% l('LitF') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Indx" fixed-field-label="[% l('Indx') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Alph" fixed-field-label="[% l('Alph') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="Desc" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Ills" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Fest" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="DtSt" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Date1" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Date2" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Desc" fixed-field-label="[% l('Desc') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Ills" fixed-field-label="[% l('Ills') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Fest" fixed-field-label="[% l('Fest') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="DtSt" fixed-field-label="[% l('DtSt') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Date1" fixed-field-label="[% l('Date1') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Date2" fixed-field-label="[% l('Date2') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="SrTp" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Regl" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Orig" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Freq" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="EntW" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="SrTp" fixed-field-label="[% l('SrTp') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Regl" fixed-field-label="[% l('Regl') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Orig" fixed-field-label="[% l('Orig') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Freq" fixed-field-label="[% l('Freq') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="EntW" fixed-field-label="[% l('EntW') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="TrAr" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Part" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="LTxt" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="FMus" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="AccM" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Comp" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="TrAr" fixed-field-label="[% l('TrAr') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Part" fixed-field-label="[% l('Part') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="LTxt" fixed-field-label="[% l('LTxt') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="FMus" fixed-field-label="[% l('FMus') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="AccM" fixed-field-label="[% l('AccM') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Comp" fixed-field-label="[% l('Comp') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="SpFm" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Relf" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Proj" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="CrTp" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="SpFm" fixed-field-label="[% l('SpFm') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Relf" fixed-field-label="[% l('Relf') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Proj" fixed-field-label="[% l('Proj') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="CrTp" fixed-field-label="[% l('CrTp') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="TMat" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Time" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Tech" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="File" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="TMat" fixed-field-label="[% l('TMat') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Time" fixed-field-label="[% l('Time') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Tech" fixed-field-label="[% l('Tech') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="File" fixed-field-label="[% l('File') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="Type_tbmfhd" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="ELvl_tbmfhd" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Item_tbmfhd" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="GeoDiv" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Roman" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="CatLang" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Type_tbmfhd" fixed-field-label="[% l('Type_tbmfhd') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="ELvl_tbmfhd" fixed-field-label="[% l('ELvl_tbmfhd') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Item_tbmfhd" fixed-field-label="[% l('Item_tbmfhd') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="GeoDiv" fixed-field-label="[% l('GeoDiv') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Roman" fixed-field-label="[% l('Roman') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="CatLang" fixed-field-label="[% l('CatLang') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="Kind" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Rules" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Subj" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Series" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="SerNum" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="NameUse" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Kind" fixed-field-label="[% l('Kind') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Rules" fixed-field-label="[% l('Rules') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Subj" fixed-field-label="[% l('Subj') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Series" fixed-field-label="[% l('Series') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="SerNum" fixed-field-label="[% l('SerNum') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="NameUse" fixed-field-label="[% l('NameUse') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="SubjUse" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="SerUse" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="TypeSubd" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="GovtAgn" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="RefStatus" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="UpdStatus" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="SubjUse" fixed-field-label="[% l('SubjUse') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="SerUse" fixed-field-label="[% l('SerUse') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="TypeSubd" fixed-field-label="[% l('TypeSubd') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="GovtAgn" fixed-field-label="[% l('GovtAgn') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="RefStatus" fixed-field-label="[% l('RefStatus') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="UpdStatus" fixed-field-label="[% l('UpdStatus') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
         <div class="row col-md-12">
-            <eg-marc-edit-fixed-field fixed-field="Name" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="Status" record="record"></eg-marc-edit-fixed-field>
-            <eg-marc-edit-fixed-field fixed-field="ModRec" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Name" fixed-field-label="[% l('Name') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="Status" fixed-field-label="[% l('Status') | html %]" record="record"></eg-marc-edit-fixed-field>
+            <eg-marc-edit-fixed-field fixed-field="ModRec" fixed-field-label="[% l('ModRec') | html %]" record="record"></eg-marc-edit-fixed-field>
         </div>
       </div>
     </div>

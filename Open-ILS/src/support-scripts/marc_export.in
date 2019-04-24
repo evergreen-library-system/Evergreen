@@ -532,6 +532,7 @@ sub next {
                         my $price = ($acp->price() ? $Marque::config->option_value('money').$acp->price() : '');
                         my $prefix = $acp->call_number()->prefix()->label();
                         my $suffix = $acp->call_number()->suffix()->label();
+                        my $status = $acp->status()->name();
                         eval {
                             local $SIG{__WARN__} = sub {
                                 my $message = "Warning from bibliographic record " . $r->id() . ": "
@@ -550,6 +551,7 @@ sub next {
                                 ($suffix ? (m => Encode::decode_utf8($suffix)) : ()),
                                 ($acp->circ_modifier() ? (g => Encode::decode_utf8($acp->circ_modifier())) : ()),
                                 p => Encode::decode_utf8($acp->barcode()),
+                                s => Encode::decode_utf8($status),
                                 ($price ? (y => Encode::decode_utf8($price)) : ()),
                                 ($acp->copy_number() ? (t => $acp->copy_number()) : ()),
                                 ($U->is_true($acp->ref()) ? (x => 'reference') : ()),
@@ -663,6 +665,24 @@ sub shelves {
     return @{$self->{shelves}};
 }
 
+# Returns an array of ccs objects.
+sub statuses {
+    my $self = shift;
+
+    unless ($self->{statuses} && @{$self->{statuses}}) {
+        my $fmClass = Fieldmapper::class_for_hint('ccs');
+        my @classFields = $fmClass->real_fields();
+        my $classTable = $fmClass->Table();
+        my $query = 'select ' . join(',', @classFields);
+        $query .= "\nfrom $classTable";
+        my $result = $self->{handle}->selectall_arrayref($query, {Slice=>{}});
+        my @statuses = map {$fmClass->from_bare_hash($_)} @{$result};
+        $self->{statuses} = \@statuses;
+    }
+
+    return @{$self->{statuses}};
+}
+
 # Returns an array of acnp objects.
 sub prefixes {
     my $self = shift;
@@ -736,6 +756,7 @@ sub acps_for_bre {
     my @locations = $self->shelves();
     my @prefixes = $self->prefixes();
     my @suffixes = $self->suffixes();
+    my @statuses = $self->statuses();
 
     my @acns = $self->acns_for_bre($bre);
     if (@acns) {
@@ -752,12 +773,14 @@ sub acps_for_bre {
                 my $cn = $_->call_number();
                 my $clib = $_->circ_lib();
                 my $loc = $_->location();
+                my $stat = $_->status();
                 my ($org) = grep {$_->id() == $clib} @orgs;
                 my ($acn) = grep {$_->id() == $cn} @acns;
                 my ($location) = grep {$_->id() == $loc} @locations;
                 my $olib = $acn->owning_lib();
                 my $pre = $acn->prefix();
                 my $suf = $acn->suffix();
+                my ($ccs) = grep {$_->id() == $stat} @statuses;
                 my ($acnp) = grep {$_->id() == $pre} @prefixes;
                 my ($acns) = grep {$_->id() == $suf} @suffixes;
                 my ($owner) = grep {$_->id() == $olib} @orgs;
@@ -767,6 +790,7 @@ sub acps_for_bre {
                 $_->location($location);
                 $_->call_number->prefix($acnp);
                 $_->call_number->suffix($acns);
+                $_->status($ccs);
             }
             return @acps;
         }

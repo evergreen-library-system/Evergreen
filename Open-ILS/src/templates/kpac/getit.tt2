@@ -74,7 +74,7 @@
                                     [%  def_lib = ctx.default_pickup_lib || ctx.physical_loc;
                                         PROCESS "opac/parts/org_selector.tt2";
                                         INCLUDE build_org_selector name='pickup_lib' 
-                                        value=def_lib id='pickup_lib' can_have_vols_only=1 hold_pickup_lib=0 %]
+                                        value=def_lib id='pickup_lib' can_have_vols_only=1 hold_pickup_lib=1 %]
 
                                  <!-- HIDDEN FIELDS FOR DEFAULT NOTIFICATION PREFERENCES -->
                                  [%- IF ctx.notify_method -%]

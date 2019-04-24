@@ -3,7 +3,7 @@ use strict; use warnings;
 use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Application::AppUtils;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenILS::Event;
 use OpenSRF::Utils::Logger qw(:logger);
 use OpenILS::Utils::CStoreEditor q/:funcs/;
@@ -50,11 +50,11 @@ sub void_or_zero_overdues {
         # turn it into an interval that interval_to_seconds can parse
         my $duration = $circ->fine_interval;
         $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
-        my $interval = OpenSRF::Utils->interval_to_seconds($duration);
+        my $interval = OpenILS::Utils::DateTime->interval_to_seconds($duration);
 
-        my $date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($backdate));
-        my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date))->epoch;
-        my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenSRF::Utils->interval_to_seconds($circ->grace_period), $e);
+        my $date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($backdate));
+        my $due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date))->epoch;
+        my $grace_period = extend_grace_period( $class, $circ->circ_lib, $circ->due_date, OpenILS::Utils::DateTime->interval_to_seconds($circ->grace_period), $e);
         if($date->epoch <= $due_date + $grace_period) {
             $logger->info("backdate $backdate is within grace period, voiding all");
         } else {
@@ -223,7 +223,7 @@ sub extend_grace_period {
     my($class, $circ_lib, $due_date, $grace_period, $e, $h) = @_;
     if ($grace_period >= 86400) { # Only extend grace periods greater than or equal to a full day
         my $parser = DateTime::Format::ISO8601->new;
-        my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
+        my $due_dt = $parser->parse_datetime( clean_ISO8601( $due_date ) );
         my $due = $due_dt->epoch;
 
         my $grace_extend = $U->ou_ancestor_setting_value($circ_lib, 'circ.grace.extend');
@@ -293,7 +293,7 @@ sub extend_grace_period {
                         if ($cl and @$cl) {
                             $closed = 1;
                             foreach (@$cl) {
-                                my $cl_dt = $parser->parse_datetime( cleanse_ISO8601( $_->close_end ) );
+                                my $cl_dt = $parser->parse_datetime( clean_ISO8601( $_->close_end ) );
                                 while ($due_dt <= $cl_dt) {
                                     $due_dt->add( seconds => 86400 );
                                     $new_grace_period += 86400;
@@ -493,7 +493,7 @@ sub generate_fines {
             # each (ils) transaction is processed in its own (db) transaction
             $e->xact_begin if $commit;
 
-            my $due_dt = $parser->parse_datetime( cleanse_ISO8601( $c->$due_date_method ) );
+            my $due_dt = $parser->parse_datetime( clean_ISO8601( $c->$due_date_method ) );
     
             my $due = $due_dt->epoch;
             my $now = time;
@@ -541,8 +541,8 @@ sub generate_fines {
     
             my $last_fine;
             if ($fine) {
-                $conn->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".cleanse_ISO8601( $fine->billing_ts ).")") if $conn;
-                $last_fine = $parser->parse_datetime( cleanse_ISO8601( $fine->billing_ts ) )->epoch;
+                $conn->respond( "Last billing time: ".$fine->billing_ts." (clensed format: ".clean_ISO8601( $fine->billing_ts ).")") if $conn;
+                $last_fine = $parser->parse_datetime( clean_ISO8601( $fine->billing_ts ) )->epoch;
             } else {
                 $logger->info( "Potential first billing for circ ".$c->id );
                 $last_fine = $due;
@@ -1051,7 +1051,7 @@ sub _has_refundable_payments {
 
     if ($last_payment->[0]) {
         my $interval_secs = interval_to_seconds($interval);
-        my $payment_ts = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($last_payment->[0]->payment_ts))->epoch;
+        my $payment_ts = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($last_payment->[0]->payment_ts))->epoch;
         my $now = time;
         return 1 if ($payment_ts + $interval_secs >= $now);
     }

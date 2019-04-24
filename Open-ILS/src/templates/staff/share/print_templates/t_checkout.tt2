@@ -3,10 +3,16 @@ Template for printing checkout receipts; fields available include:
 
 * patron - has several fields from the patron object, including a financial summary
 
+  * prefix
   * first_given_name
   * second_given_name
   * family_name
   * suffix
+  * pref_prefix
+  * pref_first_given_name
+  * pref_second_given_name
+  * pref_family_name
+  * pref_suffix
   * card.barcode
   * money_summary.balance_owed - current balance
   * money_summary.total_paid - payments made on outstanding fines/fees

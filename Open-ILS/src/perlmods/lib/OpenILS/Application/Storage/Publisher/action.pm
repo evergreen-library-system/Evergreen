@@ -3,7 +3,7 @@ use parent qw/OpenILS::Application::Storage::Publisher/;
 use strict;
 use warnings;
 use OpenSRF::Utils::Logger qw/:level :logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
@@ -1002,16 +1002,9 @@ sub generate_fines {
     my $circs;
     my $editor = new_editor;
     if ($circ_id) {
-#        my $circ;
-#        if ($circ = action::circulation->search_where( { id => $circ_id, stop_fines => undef } )) {
-#            $circ = action::circulation->retrieve($circ_id)->to_fieldmapper;
-#        } elsif ($circ = booking::reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } )) {
-#            $circ = booking::reservation->retrieve($circ_id)->to_fieldmapper;
-#        }
-#        $circs = [$circ] if ($circ);
         $circs = $editor->search_action_circulation( { id => $circ_id, stop_fines => undef } );
         unless (@$circs) {
-            $circs = $editor->search_booking_reservation->search_where( { id => $circ_id, return_time => undef, cancel_time => undef } );
+            $circs = $editor->search_booking_reservation( { id => $circ_id, return_time => undef, cancel_time => undef } );
         }
     } else {
         $circs = [overdue_circs(undef, 1, 1, 1)];
@@ -1218,7 +1211,7 @@ sub new_hold_copy_targeter {
             $_->delete for (@oldmaps);
 
             if ($hold->expire_time) {
-                my $ex_time = $parser->parse_datetime( cleanse_ISO8601( $hold->expire_time ) );
+                my $ex_time = $parser->parse_datetime( clean_ISO8601( $hold->expire_time ) );
                 if ( DateTime->compare($ex_time, DateTime->now) < 0 ) {
 
                     # cancel cause = un-targeted expiration
@@ -1661,7 +1654,7 @@ sub process_recall {
 
     $log->info("Found " . scalar(@$all_copies) . " eligible checked-out copies for recall");
 
-    my $return_date = DateTime->now(time_zone => 'local')->add(seconds => interval_to_seconds($return_interval))->iso8601();
+    my $return_date = DateTime->now(time_zone => 'local')->add(seconds => interval_to_seconds($return_interval));
 
     # Iterate over the checked-out copies to find a copy with a
     # loan period longer than the recall threshold:
@@ -1675,15 +1668,24 @@ sub process_recall {
         my $circ = $circs->[0];
         $log->info("Recalling circ ID : " . $circ->id);
 
+        my $old_due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date));
+
         # Give the user a new due date of either a full recall threshold,
         # or the return interval, whichever is further in the future
-        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold))->iso8601();
-        if (DateTime->compare(DateTime::Format::ISO8601->parse_datetime($threshold_date), DateTime::Format::ISO8601->parse_datetime($return_date)) == 1) {
+        my $threshold_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start))->add(seconds => interval_to_seconds($recall_threshold));
+        if (DateTime->compare($threshold_date, $return_date) == 1) {
+            # extend $return_date to threshold
             $return_date = $threshold_date;
+        }
+        # But don't go past the original due date
+        # (the threshold should not be past the due date, but manual edits can cause it to be)
+        if (DateTime->compare($return_date, $old_due_date) == 1) {
+            # truncate $return_date to due date
+            $return_date = $old_due_date;
         }
 
         my $update_fields = {
-            due_date => $return_date,
+            due_date => $return_date->iso8601(),
             renewal_remaining => 0,
         };
 
@@ -1756,7 +1758,7 @@ sub reservation_targeter {
 
             die "OK\n" if (!$bresv or $bresv->capture_time or $bresv->cancel_time);
 
-            my $end_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->end_time ) );
+            my $end_time = $parser->parse_datetime( clean_ISO8601( $bresv->end_time ) );
             if (DateTime->compare($end_time, DateTime->now) < 0) {
 
                 # cancel cause = un-targeted expiration
@@ -1831,8 +1833,8 @@ sub reservation_targeter {
 
                     if (@$circs) {
                         my $due_date = $circs->[0]->due_date;
-                        $due_date = $parser->parse_datetime( cleanse_ISO8601( $due_date ) );
-                        my $start_time = $parser->parse_datetime( cleanse_ISO8601( $bresv->start_time ) );
+                        $due_date = $parser->parse_datetime( clean_ISO8601( $due_date ) );
+                        my $start_time = $parser->parse_datetime( clean_ISO8601( $bresv->start_time ) );
                         if (DateTime->compare($start_time, $due_date) < 0) {
                             $conflicts{$res->id} = $circs->[0]->to_fieldmapper;
                             next;
@@ -2115,4 +2117,331 @@ sub title_hold_capture {
 }
 
 
+sub wide_hold_data {
+    my $self = shift;
+    my $client = shift;
+    my $restrictions = shift; # hashref of field restrictions {f1=>undef,f2=>[1,2,3],f3=>'foo',f4=>{not=>undef}}
+    my $order_by = shift; # arrayref of hashrefs of ORDER BY clause, [{field =>{dir=>'desc',nulls=>'last'}}]
+    my $limit = shift;
+    my $offset = shift;
+
+    $order_by = [$order_by] if (ref($order_by) !~ /ARRAY/);
+    
+    $log->info('Received '. keys(%$restrictions) .' restrictions');
+    return 0 unless (ref $restrictions and keys %$restrictions);
+
+    # force this to either 'true' or 'false'
+    my $is_staff_request = delete($$restrictions{is_staff_request}) || 'false';
+    $is_staff_request = 'false' if (!grep {$is_staff_request eq $_} qw/true false/);
+
+    # option to filter for the latest captured hold for a given copy
+    my $last_captured_hold = delete($$restrictions{last_captured_hold}) || 'false';
+    $last_captured_hold = $last_captured_hold eq 'true' ? 1 : 0;
+
+    my $initial_condition = 'TRUE';
+    if ($last_captured_hold) {
+        $initial_condition = <<"        SQL";
+            (h.capture_time IS NULL OR (h.id = (
+                SELECT  id
+                  FROM  action.hold_request recheck
+                  WHERE recheck.current_copy = cp.id
+                  ORDER BY capture_time DESC
+                  LIMIT 1
+            )))
+        SQL
+    }
+
+    my $select = <<"    SQL";
+WITH
+    t_field AS (SELECT field FROM config.display_field_map WHERE name = 'title'),
+    a_field AS (SELECT field FROM config.display_field_map WHERE name = 'author')
+SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time,
+        h.return_time, h.prev_check_time, h.expire_time, h.cancel_time, h.cancel_cause,
+        h.cancel_note, h.target, h.current_copy, h.fulfillment_staff, h.fulfillment_lib,
+        h.request_lib, h.requestor, h.usr, h.selection_ou, h.selection_depth, h.pickup_lib,
+        h.hold_type, h.holdable_formats, h.phone_notify, h.email_notify, h.sms_notify,
+        h.sms_carrier, h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
+        h.shelf_expire_time, h.current_shelf_lib, h.behind_desk,
+
+        CASE WHEN h.cancel_time IS NOT NULL THEN 6
+             WHEN h.frozen AND h.capture_time IS NULL THEN 7
+             WHEN h.current_shelf_lib IS NOT NULL AND h.current_shelf_lib <> h.pickup_lib THEN 8
+             WHEN h.fulfillment_time IS NOT NULL THEN 9
+             WHEN h.current_copy IS NULL THEN 1
+             WHEN h.capture_time IS NULL THEN 2
+             WHEN cp.status = 6 THEN 3
+             WHEN EXTRACT(EPOCH FROM COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL) = 0 THEN 4
+             WHEN h.shelf_time + COALESCE(NULLIF(BTRIM(hold_wait_time.value,'"'),''),'0 seconds')::INTERVAL > NOW() THEN 5
+             ELSE 4
+        END AS hold_status,
+
+        (h.shelf_expire_time < NOW() OR h.cancel_time IS NOT NULL OR (h.current_shelf_lib IS NOT NULL AND h.current_shelf_lib <> h.pickup_lib)) AS clear_me,
+
+        (h.usr <> h.requestor) AS is_staff_hold,
+
+        cc.id AS cc_id, cc.label AS cc_label,
+
+        pl.id AS pl_id, pl.parent_ou AS pl_parent_ou, pl.ou_type AS pl_ou_type,
+        pl.ill_address AS pl_ill_address, pl.holds_address AS pl_holds_address,
+        pl.mailing_address AS pl_mailing_address, pl.billing_address AS pl_billing_address,
+        pl.shortname AS pl_shortname, pl.name AS pl_name, pl.email AS pl_email,
+        pl.phone AS pl_phone, pl.opac_visible AS pl_opac_visible, pl.fiscal_calendar AS pl_fiscal_calendar,
+
+        tr.id AS tr_id, tr.source_send_time AS tr_source_send_time, tr.dest_recv_time AS tr_dest_recv_time,
+        tr.target_copy AS tr_target_copy, tr.source AS tr_source, tr.dest AS tr_dest, tr.prev_hop AS tr_prev_hop,
+        tr.copy_status AS tr_copy_status, tr.persistant_transfer AS tr_persistant_transfer,
+        tr.prev_dest AS tr_prev_dest, tr.hold AS tr_hold, tr.cancel_time AS tr_cancel_time,
+
+        notes.count AS note_count,
+
+        u.id AS usr_id, u.card AS usr_card, u.profile AS usr_profile, u.usrname AS usr_usrname,
+        u.email AS usr_email, u.standing AS usr_standing, u.ident_type AS usr_ident_type,
+        u.ident_value AS usr_ident_value, u.ident_type2 AS usr_ident_type2,
+        u.ident_value2 AS usr_ident_value2, u.net_access_level AS usr_net_access_level,
+        u.photo_url AS usr_photo_url, u.prefix AS usr_prefix, u.first_given_name AS usr_first_given_name,
+        u.second_given_name AS usr_second_given_name, u.family_name AS usr_family_name,
+        u.suffix AS usr_suffix, u.alias AS usr_alias, u.day_phone AS usr_day_phone,
+        u.evening_phone AS usr_evening_phone, u.other_phone AS usr_other_phone,
+        u.mailing_address AS usr_mailing_address, u.billing_address AS usr_billing_address,
+        u.home_ou AS usr_home_ou, u.dob AS usr_dob, u.active AS usr_active,
+        u.master_account AS usr_master_account, u.super_user AS usr_super_user,
+        u.barred AS usr_barred, u.deleted AS usr_deleted, u.juvenile AS usr_juvenile,
+        u.usrgroup AS usr_usrgroup, u.claims_returned_count AS usr_claims_returned_count,
+        u.credit_forward_balance AS usr_credit_forward_balance, u.last_xact_id AS usr_last_xact_id,
+        u.alert_message AS usr_alert_message, u.create_date AS usr_create_date,
+        u.expire_date AS usr_expire_date, u.claims_never_checked_out_count AS usr_claims_never_checked_out_count,
+        u.last_update_time AS usr_last_update_time,
+
+        CASE WHEN u.alias IS NOT NULL THEN
+            u.alias
+        ELSE
+            u.first_given_name
+        END AS usr_alias_or_first_given_name,
+
+        CASE WHEN u.alias IS NOT NULL THEN
+            u.alias
+        ELSE
+            REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
+                COALESCE(u.family_name, ''),
+                COALESCE(u.suffix, ''),
+                ', ',
+                COALESCE(u.prefix, ''),
+                COALESCE(u.first_given_name, ''),
+                COALESCE(u.second_given_name, '')
+            ], ' '), E'\\s+,', ',')
+        END AS usr_alias_or_display_name,
+
+        REGEXP_REPLACE(ARRAY_TO_STRING(ARRAY[
+            COALESCE(u.family_name, ''),
+            COALESCE(u.suffix, ''),
+            ', ',
+            COALESCE(u.prefix, ''),
+            COALESCE(u.first_given_name, ''),
+            COALESCE(u.second_given_name, '')
+        ], ' '), E'\\s+,', ',') AS usr_display_name,
+
+        uc.id AS ucard_id, uc.barcode AS ucard_barcode, uc.usr AS ucard_usr, uc.active AS ucard_active,
+
+        ru.id AS rusr_id, ru.card AS rusr_card, ru.profile AS rusr_profile, ru.usrname AS rusr_usrname,
+        ru.email AS rusr_email, ru.standing AS rusr_standing, ru.ident_type AS rusr_ident_type,
+        ru.ident_value AS rusr_ident_value, ru.ident_type2 AS rusr_ident_type2,
+        ru.ident_value2 AS rusr_ident_value2, ru.net_access_level AS rusr_net_access_level,
+        ru.photo_url AS rusr_photo_url, ru.prefix AS rusr_prefix, ru.first_given_name AS rusr_first_given_name,
+        ru.second_given_name AS rusr_second_given_name, ru.family_name AS rusr_family_name,
+        ru.suffix AS rusr_suffix, ru.alias AS rusr_alias, ru.day_phone AS rusr_day_phone,
+        ru.evening_phone AS rusr_evening_phone, ru.other_phone AS rusr_other_phone,
+        ru.mailing_address AS rusr_mailing_address, ru.billing_address AS rusr_billing_address,
+        ru.home_ou AS rusr_home_ou, ru.dob AS rusr_dob, ru.active AS rusr_active,
+        ru.master_account AS rusr_master_account, ru.super_user AS rusr_super_user,
+        ru.barred AS rusr_barred, ru.deleted AS rusr_deleted, ru.juvenile AS rusr_juvenile,
+        ru.usrgroup AS rusr_usrgroup, ru.claims_returned_count AS rusr_claims_returned_count,
+        ru.credit_forward_balance AS rusr_credit_forward_balance, ru.last_xact_id AS rusr_last_xact_id,
+        ru.alert_message AS rusr_alert_message, ru.create_date AS rusr_create_date,
+        ru.expire_date AS rusr_expire_date, ru.claims_never_checked_out_count AS rusr_claims_never_checked_out_count,
+        ru.last_update_time AS rusr_last_update_time,
+
+        ruc.id AS rucard_id, ruc.barcode AS rucard_barcode, ruc.usr AS rucard_usr, ruc.active AS rucard_active,
+
+        cp.id AS cp_id, cp.circ_lib AS cp_circ_lib, cp.creator AS cp_creator, cp.call_number AS cp_call_number,
+        cp.editor AS cp_editor, cp.create_date AS cp_create_date, cp.edit_date AS cp_edit_date,
+        cp.copy_number AS cp_copy_number, cp.status AS cp_status, cp.location AS cp_location,
+        cp.loan_duration AS cp_loan_duration, cp.fine_level AS cp_fine_level, cp.age_protect AS cp_age_protect,
+        cp.circulate AS cp_circulate, cp.deposit AS cp_deposit, cp.ref AS cp_ref, cp.holdable AS cp_holdable,
+        cp.deposit_amount AS cp_deposit_amount, cp.price AS cp_price, cp.barcode AS cp_barcode,
+        cp.circ_modifier AS cp_circ_modifier, cp.circ_as_type AS cp_circ_as_type, cp.dummy_title AS cp_dummy_title,
+        cp.dummy_author AS cp_dummy_author, cp.alert_message AS cp_alert_message, cp.opac_visible AS cp_opac_visible,
+        cp.deleted AS cp_deleted, cp.floating AS cp_floating, cp.dummy_isbn AS cp_dummy_isbn,
+        cp.status_changed_time AS cp_status_change_time, cp.active_date AS cp_active_date,
+        cp.mint_condition AS cp_mint_condition, cp.cost AS cp_cost,
+
+        cs.id AS cs_id, cs.name AS cs_name, cs.holdable AS cs_holdable, cs.opac_visible AS cs_opac_visible,
+        cs.copy_active AS cs_copy_active, cs.restrict_copy_delete AS cs_restrict_copy_delete,
+        cs.is_available AS cs_is_available,
+
+        siss.label AS issuance_label,
+
+        cn.id AS cn_id, cn.creator AS cn_creator, cn.create_date AS cn_create_date, cn.editor AS cn_editor,
+        cn.edit_date AS cn_edit_date, cn.record AS cn_record, cn.owning_lib AS cn_owning_lib, cn.label AS cn_label,
+        cn.deleted AS cn_deleted, cn.prefix AS cn_prefix, cn.suffix AS cn_suffix, cn.label_class AS cn_label_class,
+        cn.label_sortkey AS cn_label_sortkey,
+
+        p.id AS p_id, p.record AS p_record, p.label AS p_label, p.label_sortkey AS p_label_sortkey, p.deleted AS p_deleted,
+
+        acnp.label AS ancp_label, acns.label AS ancs_label,
+        TRIM(acnp.label || ' ' || cn.label || ' ' || acns.label) AS cn_full_label,
+
+        r.bib_record AS record_id,
+
+        t.value AS title,
+        a.value AS author,
+
+        acpl.id AS acpl_id, acpl.name AS acpl_name, acpl.owning_lib AS acpl_owning_lib, acpl.holdable AS acpl_holdable,
+        acpl.hold_verify AS acpl_hold_verify, acpl.opac_visible AS acpl_opac_visible, acpl.circulate AS acpl_circulate,
+        acpl.label_prefix AS acpl_label_prefix, acpl.label_suffix AS acpl_label_suffix,
+        acpl.checkin_alert AS acpl_checkin_alert, acpl.deleted AS acpl_deleted, acpl.url AS acpl_url,
+
+        COALESCE(acplo.position, acpl_ordered.fallback_position) AS copy_location_order_position,
+
+        ROW_NUMBER() OVER (
+            PARTITION BY r.bib_record
+            ORDER BY h.cut_in_line DESC NULLS LAST, h.request_time ASC
+        ) AS relative_queue_position,
+
+        EXTRACT(EPOCH FROM COALESCE(
+            NULLIF(BTRIM(default_estimated_wait_interval.value,'"'),''),
+            '0 seconds'
+        )::INTERVAL) AS default_estimated_wait,
+
+        EXTRACT(EPOCH FROM COALESCE(
+            NULLIF(BTRIM(min_estimated_wait_interval.value,'"'),''),
+            '0 seconds'
+        )::INTERVAL) AS min_estimated_wait,
+
+        COALESCE(hold_wait.potenials,0) AS potentials,
+        COALESCE(hold_wait.other_holds,0) AS other_holds,
+        COALESCE(hold_wait.total_wait_time,0) AS total_wait_time,
+
+        n.count AS notification_count,
+        n.max AS last_notification_time
+
+  FROM  action.hold_request h
+        JOIN reporter.hold_request_record r ON (r.id = h.id)
+        JOIN actor.usr u ON (u.id = h.usr)
+        JOIN actor.card uc ON (uc.id = u.card)
+        JOIN actor.usr ru ON (ru.id = h.requestor)
+        JOIN actor.card ruc ON (ruc.id = ru.card)
+        JOIN actor.org_unit pl ON (h.pickup_lib = pl.id)
+        JOIN t_field ON TRUE
+        JOIN a_field ON TRUE
+        LEFT JOIN action.hold_request_cancel_cause cc ON (h.cancel_cause = cc.id)
+        LEFT JOIN biblio.monograph_part p ON (h.hold_type = 'P' AND p.id = h.target)
+        LEFT JOIN serial.issuance siss ON (h.hold_type = 'I' AND siss.id = h.target)
+        LEFT JOIN asset.copy cp ON (h.current_copy = cp.id OR (h.hold_type IN ('C','F','R') AND cp.id = h.target))
+        LEFT JOIN config.copy_status cs ON (cp.status = cs.id)
+        LEFT JOIN asset.copy_location acpl ON (cp.location = acpl.id)
+        LEFT JOIN asset.copy_location_order acplo ON (cp.location = acplo.location AND cp.circ_lib = acplo.org)
+        LEFT JOIN (
+            SELECT *, (ROW_NUMBER() OVER (ORDER BY name) + 1000000) AS fallback_position
+            FROM asset.copy_location
+        ) acpl_ordered ON (acpl_ordered.id = cp.location)
+        LEFT JOIN asset.call_number cn ON (cn.id = cp.call_number OR (h.hold_type = 'V' AND cn.id = h.target))
+        LEFT JOIN asset.call_number_prefix acnp ON (cn.prefix = acnp.id)
+        LEFT JOIN asset.call_number_suffix acns ON (cn.suffix = acns.id)
+        LEFT JOIN LATERAL (SELECT * FROM action.hold_transit_copy WHERE h.id = hold ORDER BY id DESC LIMIT 1) tr ON TRUE
+        LEFT JOIN LATERAL (SELECT COUNT(*) FROM action.hold_request_note WHERE h.id = hold AND (pub = TRUE OR staff = $is_staff_request)) notes ON TRUE
+        LEFT JOIN LATERAL (SELECT COUNT(*), MAX(notify_time) FROM action.hold_notification WHERE h.id = hold) n ON TRUE
+        LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = t_field.field) t ON TRUE
+        LEFT JOIN LATERAL (SELECT FIRST(value) AS value FROM metabib.display_entry WHERE source = r.bib_record AND field = a_field.field) a ON TRUE
+        LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.holds.default_estimated_wait_interval',u.home_ou) AS default_estimated_wait_interval ON TRUE
+        LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.holds.min_estimated_wait_interval',u.home_ou) AS min_estimated_wait_interval ON TRUE
+        LEFT JOIN LATERAL actor.org_unit_ancestor_setting('circ.hold_shelf_status_delay',h.pickup_lib) AS hold_wait_time ON TRUE,
+        LATERAL (
+            SELECT  COUNT(*) AS potenials,
+                    COUNT(DISTINCT hold) AS other_holds,
+                    SUM(
+                        EXTRACT(EPOCH FROM
+                            COALESCE(
+                                cm.avg_wait_time,
+                                COALESCE(NULLIF(BTRIM(default_estimated_wait_interval.value,'"'),''),'0 seconds')::INTERVAL
+                            )
+                        )
+                    ) AS total_wait_time
+              FROM  action.hold_copy_map m
+                    JOIN asset.copy cp ON (cp.id = m.target_copy)
+                    LEFT JOIN config.circ_modifier cm ON (cp.circ_modifier = cm.code)
+              WHERE m.hold = h.id
+        ) AS hold_wait
+  WHERE $initial_condition
+    SQL
+
+    my %field_map = (
+        record_id => 'r.bib_record',
+        usr_id => 'u.id',
+        cs_id => 'cs.id',
+        cp_id => 'cp.id',
+        cp_deleted => 'cp.deleted',
+        cancel_time => 'h.cancel_time',
+        tr_cancel_time => 'tr.cancel_time',
+    );
+
+    my $restricted = 0;
+    for my $r (keys %$restrictions) {
+        my $real = $field_map{$r} || $r;
+        next if ($r =~ /[^a-z_.]/); # skip obvious bad inputs
+
+        my $not = '';
+        if (ref($$restrictions{$r}) and ref($$restrictions{$r}) =~ /HASH/) {
+            $not = 'NOT';
+            $$restrictions{$r} = $$restrictions{$r}{not};
+        }
+
+        if (!defined($$restrictions{$r})) { 
+            $select .= " AND $real IS $not NULL ";
+        } elsif (ref($$restrictions{$r})) { 
+            $select .= " AND $real $not IN (\$_$$\$" . join("\$_$$\$,\$_$$\$", @{$$restrictions{$r}}) . "\$_$$\$)";
+        } else {
+            $not = '!' if $not;
+            $select .= " AND $real $not= \$_$$\$$$restrictions{$r}\$_$$\$";
+        }
+
+        $restricted++;
+    }
+
+    return 0 unless $restricted;
+
+    my @ob;
+    for my $o (@$order_by) {
+        next unless $o;
+        my ($r) = keys %$o;
+        next if ($r =~ /[^a-z_.]/); # skip obvious bad inputs
+        my $real = $field_map{$r} || $r;
+        push(@ob, $real);
+        $ob[-1] .= ' DESC' if ($$o{$r}->{dir} and $$o{$r}->{dir} =~ /^d/i);
+        $ob[-1] .= ' NULLS LAST' if ($$o{$r}->{nulls} and $$o{$r}->{nulls} =~ /^l/i);
+        $ob[-1] .= ' NULLS FIRST' if ($$o{$r}->{nulls} and $$o{$r}->{nulls} =~ /^f/i);
+    }
+
+    $select .= ' ORDER BY ' . join(', ', @ob) if (@ob);
+    $select .= ' LIMIT ' . $limit if ($limit and $limit =~ /^\d+$/);
+    $select .= ' OFFSET ' . $offset if ($offset and $offset =~ /^\d+$/);
+
+    my $sth = action::hold_request->db_Main->prepare($select);
+    $sth->execute();
+
+    my @list = $sth->fetchall_hash;
+    $client->respond(scalar(@list)); # send the row count first, for progress tracking
+    $client->respond( $_ ) for (@list);
+
+    $client->respond_complete;
+}
+__PACKAGE__->register_method(
+    api_name        => 'open-ils.storage.action.live_holds.wide_hash',
+    api_level       => 1,
+    stream          => 1,
+    max_bundle_count=> 1,
+    method          => 'wide_hold_data',
+);
+
+
 1;
+

@@ -229,7 +229,7 @@ sub description {};
 
 package OpenILS::WWW::SuperCat::Feed::atom;
 use base 'OpenILS::WWW::SuperCat::Feed';
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 
 sub new {
     my $class = shift;

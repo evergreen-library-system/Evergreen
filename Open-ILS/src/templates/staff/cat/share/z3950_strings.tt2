@@ -10,5 +10,9 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     s.GO_BACK                           = "[% l('Go back') %]";
     s.IMPORT_BUTTON_LABEL               = "[% l('Import') %]";
     s.SAVE_BUTTON_LABEL                 = "[% l('Save') %]";
+    s.OVERLAY_CHANGED_TITLE             = "[% l('Overlay target changed') %]";
+    s.OVERLAY_CHANGED                   = "[% l('The overlay target has changed from [_1] to [_2].  Continue with overlay of record [_2]?', '{{id}}', '{{live_id}}') %]";
+    s.OVERLAY_REMOVED_TITLE             = "[% l('Overlay target removed') %]";
+    s.OVERLAY_REMOVED                   = "[% l('The overlay target has been removed.  The previous target was record [_1].  Continue with overlay of record [_1]?', '{{id}}') %]";
 }]);
 </script>

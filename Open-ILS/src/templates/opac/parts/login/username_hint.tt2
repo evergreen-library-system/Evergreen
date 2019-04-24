@@ -1,0 +1,6 @@
+<div class="lbl2">
+[% l('Please include leading zeros.') %]
+</div>
+<div class="lbl2">
+[% l('Example: 0026626051') %]
+</div>

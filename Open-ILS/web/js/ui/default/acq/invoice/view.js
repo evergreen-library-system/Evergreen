@@ -138,7 +138,7 @@ function renderInvoice() {
 
     updateTotalCost();
 
-    if(invoice && openils.Util.isTrue(invoice.complete())) {
+    if(invoice && invoice.close_date()) {
 
         dojo.forEach( // hide widgets that should not be visible for a completed invoice
             dojo.query('.hide-complete'), 
@@ -632,7 +632,7 @@ function addInvoiceItem(item) {
                     fmClass : 'acqii',
                     fmObject : item,
                     fmField : field,
-                    readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                    readOnly : invoice && invoice.close_date(),
                     dijitArgs : args,
                     parentNode : nodeByName(field, row)
                 }),
@@ -660,7 +660,7 @@ function addInvoiceItem(item) {
         labelFormat : fundLabelFormat,
         searchFormat : fundSearchFormat,
         searchFilter : fundSearchFilter,
-        readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+        readOnly : invoice && invoice.close_date(),
         dijitArgs : {required : true},
         parentNode : nodeByName('fund', row)
     }
@@ -736,7 +736,7 @@ function addInvoiceItem(item) {
                 fmObject : item,
                 fmField : 'inv_item_type',
                 parentNode : nodeByName('inv_item_type', row),
-                readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                readOnly : invoice && invoice.close_date(),
                 dijitArgs : {required : true}
             }),
             function(w, ww) {
@@ -932,7 +932,7 @@ function addInvoiceEntry(entry) {
                             fmClass : 'acqie',
                             fmField : field,
                             dijitArgs : dijitArgs,
-                            readOnly : invoice && openils.Util.isTrue(invoice.complete()),
+                            readOnly : invoice && invoice.close_date(),
                             parentNode : nodeByName(field, row)
                         }),
                         function(w) {    
@@ -1056,7 +1056,7 @@ function saveChangesPartTwo(args) {
     args = args || {};
 
     if(args.reopen) {
-        invoice.complete('f');
+        invoice.close_date(null);
 
     } else {
 
@@ -1075,7 +1075,7 @@ function saveChangesPartTwo(args) {
         }
 
         if(args.close)
-            invoice.complete('t');
+            invoice.close_date('now');
 
 
         // Prepare any charge items
@@ -1245,6 +1245,11 @@ function drawInvoicePane(parentNode, inv, args) {
             },
             recv_method : {widgetValue : 'PPR'}
         };
+    } else {
+        if (inv.closed_by()) {
+            dojo.mixin(override, 
+                {closed_by: {widgetValue : inv.closed_by().usrname()}});
+        }
     }
 
     dojo.mixin(override, {
@@ -1286,6 +1291,10 @@ function drawInvoicePane(parentNode, inv, args) {
     );
 
 
+    // Display the close date/by data for closed invoices.
+    var readOnly = inv && inv.close_date();
+    var suppress = readOnly ? ['id'] : ['id', 'close_date', 'closed_by'];
+
     pane = new openils.widget.EditPane({
         fmObject : inv,
         paneStackCount : 2,
@@ -1293,7 +1302,7 @@ function drawInvoicePane(parentNode, inv, args) {
         mode : (inv) ? 'edit' : 'create',
         hideActionButtons : true,
         overrideWidgetArgs : override,
-        readOnly : (inv) && openils.Util.isTrue(inv.complete()),
+        readOnly : readOnly,
         requiredFields : [
             'inv_ident', 
             'recv_date', 
@@ -1308,7 +1317,7 @@ function drawInvoicePane(parentNode, inv, args) {
             'provider', 
             'shipper'
         ],
-        suppressFields : ['id', 'complete']
+        suppressFields : suppress
     });
 
     pane.startup();

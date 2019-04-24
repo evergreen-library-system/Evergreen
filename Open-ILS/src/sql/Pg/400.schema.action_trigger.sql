@@ -54,6 +54,9 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('format.po.p
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('damaged','acp','Item marked damaged');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout.damaged','circ','A circulating item is marked damaged and the patron is fined');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('renewal','circ','Item renewed to user');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout.due.emergency_closing','aecc','Circulation due date was adjusted by the Emergency Closing handler');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.shelf_expire.emergency_closing','aech','Hold shelf expire time was adjusted by the Emergency Closing handler');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('booking.due.emergency_closing','aecr','Booking reservation return date was adjusted by the Emergency Closing handler');
 
 -- and much more, I'm sure
 

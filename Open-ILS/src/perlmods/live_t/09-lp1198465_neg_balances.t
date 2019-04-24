@@ -11,7 +11,7 @@ use strict; use warnings;
 
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/cleanse_ISO8601/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 use OpenILS::Utils::TestUtils;
 my $script = OpenILS::Utils::TestUtils->new();
 use Data::Dumper;
@@ -80,8 +80,7 @@ sub void_bills {
 }
 
 #----------------------------------------------------------------
-# The tests...  assumes stock sample data, full-auto install by
-# eg_wheezy_installer.sh, etc.
+# The tests...  assumes stock sample data
 #----------------------------------------------------------------
 
 # Connect to Evergreen

@@ -59,7 +59,7 @@ To develop and test queries, views, and tables, you will need
 * Access to the Evergreen PostgreSQL database at the command line. This is 
 normally the psql application. You 
 can access the Postgres documentation at the 
-http://http://www.postgresql.org/docs/[Official Postgres documentation] for 
+https://www.postgresql.org/docs/[Official Postgres documentation] for 
 more information about PostgreSQL.
 * Knowledge of the Evergreen database structure for the data that you want to 
 access. You can find this information by looking at the Evergreen schema
@@ -79,7 +79,7 @@ Here's an example of a view created to incorporate some locally defined user
 statistical categories:
 
 .example view for reports
-----------
+------------------------------------------------------------
 create view extend_reporter.patronstats as
 select u.id, 
 grp.name as "ptype",
@@ -108,7 +108,7 @@ left join actor.stat_cat_entry_usr_map gr
 left join actor.stat_cat_entry_usr_map ag 
     on (u.id = ag.target_usr and ag.stat_cat = 1) 
 where u.active = 't' and u.deleted <> 't';
------------
+------------------------------------------------------------
 
 Add a new class to fm_IDL.xml for your data source
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -161,7 +161,7 @@ The following example is a class definition for the example view that was create
 in the previous section.
 
 .example class definition for reports
-----------
+------------------------------------------------------------
 <class id="erpstats" controller="open-ils.reporter-store" 
 oils_obj:fieldmapper="extend_reporter::patronstats" 
 oils_persist:tablename="extend_reporter.patronstats" oils_persist:readonly="true" 
@@ -191,7 +191,7 @@ reporter:label="Patron Statistics" reporter:core="true">
   <link field="home_lib_id" reltype="has_a" key="id" map="" class="aou"/>
 </links>
 </class>
----------
+------------------------------------------------------------
 
 NOTE: _fm_IDL.xml_ is used by other core Evergreen DAO services, including cstore 
 and permacrud. So changes to this file can affect the entire Evergreen 

@@ -63,6 +63,10 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
      * authtoken is found, otherwise rejected */
     service.testAuthToken = function() {
         var deferred = $q.defer();
+
+        // Move legacy cookies from /eg/staff to / before fetching the token.
+        egHatch.migrateAuthCookies();
+
         var token = service.token();
 
         if (token) {
@@ -169,7 +173,6 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         }
 
         service.login_api(args).then(function(evt) {
-
             if (evt.textcode == 'SUCCESS') {
                 service.handle_login_ok(args, evt);
                 ops.deferred.resolve({
@@ -240,7 +243,13 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
         return service.testAuthToken();
     }
 
-    service.login_api = function(args) {
+    service.login_via_auth_proxy = function(args) {
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.login', args);
+    }
+
+    service.login_via_auth = function(args) {
         return egNet.request(
             'open-ils.auth',
             'open-ils.auth.authenticate.init', args.username)
@@ -253,6 +262,27 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
                 return egNet.request(
                     'open-ils.auth',
                     'open-ils.auth.authenticate.complete', login_args)
+            }
+        );
+    }
+
+    service.login_api = function(args) {
+
+        return egNet.request(
+            'open-ils.auth_proxy',
+            'open-ils.auth_proxy.enabled')
+        .then(
+            function(enabled) {
+                console.log('proxy check returned ' + enabled);
+                if (Number(enabled) === 1) {
+                    return service.login_via_auth_proxy(args);
+                } else {
+                    return service.login_via_auth(args);
+                }
+            },
+            function() {
+                // request failed, likely a result of auth_proxy not running.
+               return service.login_via_auth(args);
             }
         );
     }
@@ -286,6 +316,19 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
             }
         }
 
+        // add a 5 second delay to give the token plenty of time
+        // to expire on the server.
+        var pollTime = service.authtime() * 1000 + 5000;
+
+        if (pollTime < 60000) {
+            // Never poll more often than once per minute.
+            pollTime = 60000;
+        } else if (pollTime > 2147483647) {
+            // Avoid integer overflow resulting in $timeout() effectively
+            // running with timeout=0 in a loop.
+            pollTime = 2147483647;
+        }
+
         $timeout(
             function() {
                 egNet.request(                                                     
@@ -304,9 +347,7 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
                     }
                 })
             },
-            // add a 5 second delay to give the token plenty of time
-            // to expire on the server.
-            service.authtime() * 1000 + 5000
+            pollTime
         );
     }
 

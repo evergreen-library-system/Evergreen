@@ -1,6 +1,16 @@
 
 <div ng-cloak class="patron-summary-grid-wrapper">
   <div ng-show="patron()" id="patron-summary-grid">
+    <div class="row patron-summary-pref-name"
+      ng-if="patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name()">
+      <div class="col-md-12">
+        [% l('[_1], [_2] [_3] (Preferred)', 
+          '{{patron().pref_family_name() || patron().family_name()}}',
+          '{{patron().pref_first_given_name() || patron().first_given_name()}}',
+          '{{patron().pref_second_given_name()}}') 
+        %]
+      </div>
+    </div>
     <div class="row" 
       ng-class="{'patron-summary-divider' : !$index}"
       ng-repeat="penalty in alert_penalties()">
@@ -55,6 +65,10 @@
       <a class="col-md-5" ng-if="obscure_dob()" ng-click="show_dob(true)">[% l('Date of Birth') %]</a>
       <div class="col-md-5" ng-if="!obscure_dob()">[% l('Date of Birth') %]</div>
       <div class="col-md-7" ng-show="now_show_dob()">{{patron().dob() | date:$root.egDateFormat}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">[% l('Parent/Guardian') %]</div>
+      <div class="col-md-7">{{patron().guardian()}}</div>
     </div>
     <div class="row">
       <div class="col-md-5">[% l('Last Activity') %]</div>
@@ -159,6 +173,24 @@
       <div class="col-md-5">{{map.stat_cat().name()}}</div>
       <div class="col-md-7">{{map.stat_cat_entry()}}</div>
     </div>
+    <div class="row" ng-if="patron().name_keywords()">
+      <div class="col-md-5">[% l('Name Keywords') %]</div>
+      <div class="col-md-7">{{patron().name_keywords()}}</div>
+    </div>
+    <div class="row patron-summary-divider" ng-if="patron().waiver_entries().length > 0">
+      [% l('Allow others to use my account') %]
+    </div>
+    <div class="row" ng-repeat="waiver in patron().waiver_entries()">
+      <div class="col-md-5">{{waiver.name()}}</div>
+      <div class="col-md-7">
+        <ul>
+          <li ng-show="waiver.place_holds() == 't'">[% l('Place holds') %]</li>
+          <li ng-show="waiver.pickup_holds() == 't'">[% l('Pick up holds') %]</li>
+          <li ng-show="waiver.view_history() == 't'">[% l('View borrowing history') %]</li>
+          <li ng-show="waiver.checkout_items() == 't'">[% l('Check out items') %]</li>
+        </ul>
+      </div>
+    </div>
   </div>
 
   <div class="row" ng-repeat="addr in patron().addresses()">
@@ -167,12 +199,26 @@
         <fieldset>
           <legend ng-class="{'patron-summary-alert': addr.valid() == 'f'}">
             {{addr.address_type()}} 
-            <a href class="pad-horiz patron-summary-act-link" 
-              ng-click="print_address(addr)">[% l('(print)') %]</a>
+            (<a href class="patron-summary-act-link" 
+                ng-click="copy_address(addr)">[%- l('copy') -%]</a><a 
+                href class="patron-summary-act-link" 
+                ng-click="print_address(addr)">[%- l('/print') -%]</a>)
           </legend>
           <div>{{addr.street1()}} {{addr.street2()}}</div>
           <div>{{addr.city()}}, {{addr.state()}} {{addr.post_code()}}</div>
         </fieldset>
+        <textarea id="patron-address-copy-{{addr.id()}}" rows="2" 
+          style="visibility:hidden">[%- l(
+            '[_1] [_2] [_3]&#13;&#10;[_4] [_5]&#13;&#10;[_6], [_7] [_8]', 
+            '{{patron().first_given_name()}}',
+            '{{patron().second_given_name()}}',
+            '{{patron().family_name()}}',
+            '{{addr.street1()}}',
+            '{{addr.street2()}}',
+            '{{addr.city()}}',
+            '{{addr.state()}}',
+            '{{addr.post_code()}}') 
+          -%]</textarea>
       </div>
     </div>
   </div>

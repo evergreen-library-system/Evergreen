@@ -1,0 +1,308 @@
+Evergreen 3.3 Release Notes
+===========================
+:toc:
+:numbered:
+
+Upgrade notes
+-------------
+
+Migrating Parent/guardian information
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sites who traditionally store parent/guardian information in the
+patron 'Secondary Identification' field can migrate values from this
+field to the new guardian field with the following SQL:
+
+[source,sql]
+-------------------------------------------------------------------------
+BEGIN;
+
+-- 1. Find the local ID of the parent/guardian identification type
+
+SELECT * FROM config.identification_type;
+
+-- 2. On my test system, the id is "101".  It will vary!.
+-- Migrate the value from the ident2 field to the guardian field.
+
+UPDATE actor.usr 
+    SET guardian = ident_value2 
+WHERE 
+    ident_type2 = 101 -- !! CHANGE TO SUIT
+    AND ident_value2 IS NOT NULL 
+    AND ident_value2 <> '';
+
+-- 3. delete the original secondary identification data
+
+UPDATE actor.usr 
+    SET ident_value2 = NULL, ident_type2 = NULL
+WHERE
+    ident_type2 = 101; -- !! CHANGE TO SUIT
+
+COMMIT;
+-------------------------------------------------------------------------
+
+
+Upgrading PostgreSQL
+~~~~~~~~~~~~~~~~~~~~
+Evergreen now supports PostgreSQL 9.6 and 10.
+If you upgrade your database from a PostgreSQL version of 9.5, or
+lower, to PostgreSQL versions 9.6 or 10, you will need to recreate 3
+indexes in additon to the normal database upgrade steps.  The index
+recreation is necessary because of changes to the PostgreSQL
+`unaccent` extension module.
+
+The following snippet of SQL code will do the necessary steps:
+
+[source,sql]
+------------------------------------------------------------------------
+DROP INDEX actor_usr_first_given_name_unaccent_idx;
+DROP INDEX actor_usr_second_given_name_unaccent_idx;
+DROP INDEX actor_usr_family_name_unaccent_idx;
+CREATE INDEX actor_usr_first_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(first_given_name));
+CREATE INDEX actor_usr_second_given_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(second_given_name));
+CREATE INDEX actor_usr_family_name_unaccent_idx ON actor.usr
+      (evergreen.unaccent_and_squash(family_name));
+------------------------------------------------------------------------ 
+
+
+New Features
+------------
+
+Administration
+~~~~~~~~~~~~~~
+
+Include Item Status in marc_export Items Export
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The marc_export script now includes the item status in the 852 subfield s when exporting items.
+
+Ability to Reingest Certain Record Attributes In pingest.pl
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+An option, `--attr`, has been added to the `pingest.pl` support script
+that allows the user to specify which record attributes to reingest.
+It can be used one or more times to specify one or more attributes to
+ingest.  It can be omitted to reingest all record attributes.  This
+option is ignored if the `--skip-attrs` option is used.
+
+The `--attr` option is most useful after doing something specific that
+requires only a partial ingest of records.  For instance, if you add a
+new language to the `config.coded_value_map` table, you will want to
+reingest the `item_lang` attribute on all of your records.  The
+following command line will do that, and only that, ingest:
+
+----
+$ /openils/bin/pingest.pl --skip-browse --skip-search --skip-facets \
+    --skip-display --attr=item_lang
+----
+
+
+
+Architecture
+~~~~~~~~~~~~
+
+Database Support for PostgreSQL 10
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Evergreen database can now be built with PostgreSQL version 10.
+
+This update has implications for developers who write PgTap tests.  In
+versions of PostgreSQL prior to 10, one could write `\set ECHO` to
+disable the echoing of commands as they were run.  In PostgreSQL
+version 10, using `\set` without a value is an error.  One should now
+write `\set ECHO none` in order to disable the echoing of commands.
+This latter form works in all versions of PostgreSQL currently
+supported by Evergreen.
+
+
+
+Ubuntu 18.04 Bionic Beaver
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+Evergreen can now be installed on Ubuntu 18.04 Bionic Beaver.  To
+install the prerequisites, use ubuntu-bionic as the Makefile.install
+target.
+
+This update also fixes a Perl warning in the HoldNotify module that is
+an error in the version of Perl (5.26) that is installed on Ubuntu
+18.04.
+
+
+
+
+Cataloging
+~~~~~~~~~~
+
+MARC Import/Export Interface Update (Angular Port)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This MARC Import/Export (AKA Vandelay) interface is now built on
+Angular(7) instead of Dojo.  The functionality is consistent with the
+previous version of the interface, with minor UI adjustments to match
+the Angular style, plus one new interface called 'Recent Imports'.
+
+Import Templates
+++++++++++++++++
+Users may now save sets of import attributes from the MARC import form as 
+named templates.  Users may select a default template, applied on page load 
+by default, and users may delete existing templates.
+
+Recent Imports Tab
+++++++++++++++++++
+This is a new interface which allows users to see active and recent
+Vandelay sesssions originating from the same workstation or logged in
+user account.  Active sessions include real-time progress information so
+the user may track the progress without refreshing the page.
+
+This interface makes it possible to exit the main import tab or the
+Vandelay interface altogether and return at a later time to check on
+import progress.  It also allows users to start multiple imports at
+the same time and follow the status of each in one interace.
+
+
+Spine Label Sheet Printing
+++++++++++++++++++++++++++
+
+Catalogers can now print spine labels onto 8 1/2 x 11 inch label sheets.
+
+
+Circulation
+~~~~~~~~~~~
+
+Patron Parent/Guardian Field
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons now have a new dedicated parent/guardian field.  This field is 
+editable in the patron edit interface, displays in the patron
+summary side bar on the browser client, and is search-able from the
+patron search interface in the browser client.
+
+Patron Editor
++++++++++++++
+In addition to the standard "show" and "suggest" visibility settings, 
+the new guardian field comes with a library setting 
+'ui.patron.edit.guardian_required_for_juv' ("GUI: Juvenile account 
+requires parent/guardian").  When this setting is applied, a value 
+will be required in the patron editor when the juvenile flag is active.
+
+Allow Others to Use My Account (Privacy Waiver)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Patrons who wish to authorize other people to use their account may
+now do so via My Account.  In the Search and History Preferences tab
+under Account Preferences, a new section labeled "Allow others to use
+my account" allows patrons to enter a name and indicate that the
+specified person is allowed to place holds, pickup holds, view
+borrowing history, or check out items on their account.  This
+information is displayed to circulation staff in the patron account
+summary in the web client.  (Staff may also add, edit, and remove
+entries via the patron editor.)
+
+A new library setting, "Allow others to use patron account (privacy
+waiver)," is used to enable or disable this feature.
+
+
+
+Client
+~~~~~~
+
+Server and Booking Administration Moved To Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Administration => Server Administration and 
+Administration => Booking Administration pages have been ported to
+Angular using the new Angular grids.  Entry points from both AngularJS
+and Angular web clients point to the new interfaces.
+
+Option to Enable Experimental Angular Staff Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new org unit setting labeled 'GUI: Enable Experimental Angular 
+Staff Catalog' (ui.staff.angular_catalog.enabled) has been added, allowing
+sites to enable a menu option in the browser client for accessing
+the experimental Angular staff catalog.
+
+When set to true, a new entry in the navigation bar appears in the
+Cataloging menu labled "Staff Catalog (Experimental)".
+
+New Features (Since 3.2)
+++++++++++++++++++++++++
+ * Pub date filter
+ * Copy location filter
+ * Group formats and editions
+ * Identifier search
+ * MARC search
+ * Browse search
+ * Place holds
+ * Record baskets and actions
+ * Record detail tabs/actions point to AngularJS versions where needed.
+ * Record detail View In Catalog button
+
+
+
+OPAC
+~~~~
+
+View upcoming booking reservations in the OPAC
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A new tab in the My Account section of the OPAC shows
+patrons information about reservations on their account.
+Here, patrons can check on upcoming reservations, as 
+well as reservations they currently have checked out.
+
+Note: this interface pulls its timezone from the Library
+Settings Editor.  Make sure that you have a timezone
+listed for your library in the Library Settings Editor
+before using this feature.
+
+Display UPC as Option for Public Catalog Advanced Search
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Numeric Search tab of the public catalog Advanced Search
+now includes an option to search by UPC (Universal Product Code).
+
+
+
+Acknowledgments
+---------------
+The Evergreen project would like to acknowledge the following
+organizations that commissioned developments in this release of
+Evergreen:
+
+* King County Library System (KCLS)
+* MassLNC Evergreen Development Initiative
+* Pennsylvania Integrated Library System (PaILS)
+
+We would also like to thank the following individuals who contributed
+code, translations, documentations patches and tests to this release of
+Evergreen:
+
+* Adam Bowling
+* Steve Callender
+* Eva Cerninakova
+* Jeff Davis
+* Jason Etheridge
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Andrea Buntz Neiman
+* Jennifer Pringle
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Anahi Valdez
+* Dan Wells
+* Stephen Woidowski
+* John Yorio
+
+
+We also thank the following organizations whose employees contributed
+patches:
+
+* BC Libraries Cooperative
+* Catalyte
+* CW MARS
+* Emerald Data Networks
+* Equinox Open Library Initiative
+* Georgia PINES
+* King County Library System
+* Linn-Benton Community College
+* MassLNC
+
+We regret any omissions.  If a contributor has been inadvertently
+missed, please open a bug at http://bugs.launchpad.net/evergreen/
+with a correction.

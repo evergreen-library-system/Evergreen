@@ -98,30 +98,45 @@
             [%- END -%]
 
             <div class="rdetail_aux_utils toggle_list">
-        [% IF !ctx.is_staff %]
-            [%  IF ctx.user;
-                INCLUDE "opac/parts/bookbag_actions.tt2";
+            [% operation = ctx.mylist.grep('^' _ ctx.bre_id _ '$').size ? "delete" : "add";
+                addhref = mkurl(ctx.opac_root _ '/mylist/add',    {record => ctx.bre_id}, stop_parms);
+                delhref = mkurl(ctx.opac_root _ '/mylist/delete', {record => ctx.bre_id}, stop_parms);
+                label = (operation == "add") ? l("Add to Basket") : l("Remove from Basket");
             %]
-            [%  ELSE;
-                operation = ctx.mylist.grep(ctx.bre_id).size ? "delete" : "add";
-                label = (operation == "add") ? l("Add to my list") : l("Remove from my list");
-            %]
-                <a href="[% mkurl(ctx.opac_root _ '/mylist/' _ operation, {record => ctx.bre_id}, stop_parms) %]" class="no-dec" rel="nofollow" vocab="">
-                    <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="" />
-                    [% label %]
+                <a href="[% addhref %]" id="mylist_add_[% ctx.bre_id %]"
+                    rel="nofollow" vocab=""
+                    data-recid="[% ctx.bre_id %]" data-action="add"
+                    class="no-dec mylist_action [% IF ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
+                    title="[% l("Add [_1] to basket", attrs.title) %]" rel="nofollow" vocab="">
+                    <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                    [% l("Add to basket") %]
                 </a>
-            [% END %]
-        [% END %]
+                <a href="[% delhref %]" id="mylist_delete_[% ctx.bre_id %]"
+                     rel="nofollow" vocab=""
+                    data-recid="[% ctx.bre_id %]" data-action="delete"
+                    class="mylist_action [% IF !ctx.mylist.grep('^' _ ctx.bre_id _ '$').size %]hidden[% END %]"
+                    title="[% l("Remove [_1] from basket", attrs.title) %]" rel="nofollow" vocab="">
+                    <img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="" />
+                    [% l("Remove from basket") %]
+                </a>
             </div>
             <div class="rdetail_aux_utils toggle_list">
                      [% IF ctx.mylist.size %]
                         [%- IF ctx.user; %]
-                        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="[% l('View My Lists') %]" />[% l(' View My Lists') %]</a>
+                        <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="[% l('View Basket') %]" />[% l(' View Basket') %]</a>
                         [%- ELSE %]
-                        <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="[% l('View My Temporary List') %]" />[% l(' View My Temporary List') %]</a>
+                        <a href="[% mkurl(ctx.opac_root _ '/mylist') %]" class="no-dec" rel="nofollow" vocab=""><img src="[% ctx.media_prefix %]/images/add-to-cart.png[% ctx.cache_key %]" alt="[% l('View My Basket') %]" />[% l(' View My Basket') %]</a>
                         [%- END %]
                     [% END %]
                 </div>
+            <div class="rdetail_aux_utils toggle_list">
+        [% IF !ctx.is_staff %]
+            [%  IF ctx.user;
+                INCLUDE "opac/parts/bookbag_actions.tt2";
+                END;
+            %]
+        [% END %]
+            </div>
                 <div class="rdetail_aux_utils">
                     <img src="[% ctx.media_prefix %]/images/clipboard.png[% ctx.cache_key %]" alt="[% l('Print / Email Actions Image') %]" />
                     <a href="[% mkurl(ctx.opac_root _ '/record/print/' _ ctx.bre_id) %]" class="no-dec" rel="nofollow" vocab="">[% l('Print') %]</a> /
@@ -176,7 +191,7 @@
         FOREACH res IN openurls;
 %]
         <tr>
-            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]">[% res.public_name | html %]</a></td>
+            <td class='rdetail_openurl_entry'><a href="[% res.target_url %]" target="_blank">[% res.public_name | html %]</a></td>
             <td>[% res.target_coverage | html %]
             [%- IF res.target_embargo != '';
                     ' - ';
@@ -203,7 +218,7 @@ IF num_uris > 0;
         [%- ELSE -%]
             <li class="rdetail_uri" property="offers" vocab="http://schema.org/" typeof="Offer">
         [%- END -%]
-        <a href="[% uri.href %]" class="uri_link" property="url">
+        <a href="[% uri.href %]" class="uri_link" property="url" target="_blank">
         [%- IF uri.href != uri.link;
                 '<span property="description">' _ uri.link _ '</span>';
             ELSE;

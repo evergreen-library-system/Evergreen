@@ -1,0 +1,154 @@
+
+<eg-staff-banner bannerText="Sandbox" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-title 
+  i18n-prefix i18n-suffix
+  prefix=":) {{dynamicTitleText}}"
+  suffix="Sandbox">
+</eg-title>
+
+<div class="row flex pt-2">
+  <div i18n> Modify Page Title: </div>
+  <div class="col-lg-2">
+    <input type="text" [(ngModel)]="dynamicTitleText" class="form-control"/>
+  </div>
+</div>
+
+<!-- FM Editor Experiments ----------------------------- -->
+<div class="row mb-3">
+  <ng-template #descriptionTemplate 
+      let-field="field" let-record="record" let-hello="hello">
+  <!-- example custom template for editing the 'description' field -->
+    <textarea
+      placeholder="{{hello}}"
+      class="form-control"
+      name="{{field.name}}"
+      [readonly]="field.readOnly"
+      [required]="field.isRequired()"
+      [ngModel]="record[field.name]()"
+      (ngModelChange)="record[field.name]($event)">
+    </textarea>
+  </ng-template>
+  <!-- note: fieldOptions would be best defined in the .ts file, but
+      want to demostrate it can be set in the template as well -->
+  <eg-fm-record-editor #fmRecordEditor 
+      idlClass="cmrcfld" mode="create" 
+      [fieldOptions]="{marc_record_type:{customValues:[{id:'biblio'},{id:'serial'},{id:'authority'}]},description:{customTemplate:{template:descriptionTemplate,context:{'hello':'goodbye'}}}}"
+      recordId="1" orgDefaultAllowed="owner">
+  </eg-fm-record-editor>
+  <button class="btn btn-dark" (click)="openEditor()">
+      Fm Record Editor
+  </button>
+</div>
+<!-- / FM Editor Experiments ----------------------------- -->
+
+<!-- Progress Dialog Experiments ----------------------------- -->
+<div class="row mb-3">
+  <div class="col-lg-3">
+    <button class="btn btn-outline-danger" (click)="progress.increment()">Increment Inline</button>
+  </div>
+  <div class="col-lg-3">
+    <eg-progress-inline [max]="100" [value]="1" #progress></eg-progress-inline>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-lg-4">
+    <eg-progress-dialog #progressDialog>
+    </eg-progress-dialog>
+    <button class="btn btn-light" (click)="showProgress()">Test Progress Dialog</button>
+  </div>
+  <div class="col-lg-3">
+    <eg-combobox [allowFreeText]="true" 
+      placeholder="Combobox with static data"
+      [entries]="cbEntries"></eg-combobox>
+  </div>
+  <div class="col-lg-3">
+    <eg-combobox
+      placeholder="Combobox with dynamic data"
+      [asyncDataSource]="cbAsyncSource"></eg-combobox>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-lg-4">
+   <button class="btn btn-info" (click)="testToast()">Test Toast Message</button>
+  </div>
+  <div class="col-lg-2">
+    Org select with limit perms
+  </div>
+  <div class="col-lg-2">
+    <eg-org-select [limitPerms]="['REGISTER_WORKSTATION']">
+    </eg-org-select>
+  </div>
+</div>
+<!-- /Progress Dialog Experiments ----------------------------- -->
+
+<!-- eg strings -->
+<!--
+<div class="row mb-3">
+    <eg-string #helloString text="Hello, {{name}}" i18n-text></eg-string>
+    <button class="btn btn-success" (click)="testStrings()">Test Strings</button>
+</div>
+-->
+
+<div class="row mb-3">
+    <ng-template #helloStrTmpl let-name="name" i18n>Hello, {{name}}</ng-template>
+    <!--
+    <eg-string #helloStr key="helloKey" [template]="helloStrTmpl"></eg-string>
+    -->
+    <eg-string key="staff.sandbox.test" [template]="helloStrTmpl"></eg-string>
+    <button class="btn btn-success" (click)="testStrings()">Test Strings</button>
+</div>
+
+<div class="row">
+  <div class="form-group">
+    <eg-date-select (onChangeAsDate)="changeDate($event)"
+        initialYmd="2017-03-04">
+    </eg-date-select>
+  </div>
+  <div>HERE: {{testDate}}</div>
+</div>
+
+<!-- printing -->
+
+<button class="btn btn-secondary" (click)="doPrint()">Test Print</button>
+<ng-template #printTemplate let-context>Hello, {{context.world}}!</ng-template>
+
+<br/><br/>
+<div class="row">
+  <div class="col-lg-3">
+    <eg-translate #translate [idlObject]="oneBtype" fieldName="name"></eg-translate>
+    <button class="btn btn-info"
+      (click)="translate.open({size:'lg'})">Translate</button>
+  </div>
+</div>
+<br/><br/>
+
+<!-- grid stuff -->
+<ng-template #cellTmpl let-row="row" let-col="col" let-userContext="userContext">
+  HELLO {{userContext.hello}}
+  <button>{{row.id()}}</button>
+</ng-template>
+<eg-grid #cbtGrid idlClass="cbt" 
+  [dataSource]="btSource" 
+  [rowClassCallback]="btGridRowClassCallback"
+  [rowFlairIsEnabled]="true"
+  [rowFlairCallback]="btGridRowFlairCallback"
+  [cellClassCallback]="btGridCellClassCallback"
+  [sortable]="true">
+  <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
+    [action]="complimentEvergreen" [disableOnRows]="notOneSelectedRow">
+  </eg-grid-toolbar-action>
+  <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
+    [cellContext]="btGridTestContext" [sortable]="false">
+  </eg-grid-column>
+  <eg-grid-column [sortable]="false" path="owner.name"></eg-grid-column>
+  <eg-grid-column [sortable]="false" path="datetime_test" 
+    datatype="timestamp" [datePlusTime]="true"></eg-grid-column>
+</eg-grid>
+
+<br/><br/>
+
+<h4>PCRUD auto flesh and FormatService detection</h4>
+<div *ngIf="aMetarecord">Fingerprint: {{aMetarecord}}</div>
+

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="Windows-1252"?>
 <!--
 Template for printing item labels (spine, pocket, etc.).
 
@@ -94,6 +95,10 @@ HTML itself.
     /* This pulls from the "Item Print Label - Inline CSS" setting */
     {{settings['webstaff.cat.label.inline_css']||''}}
 
+    .print+.print {
+        page-break-before: always;
+    }
+
 </style>
 
 <!-- Here we are implementing our combined label as 2-column HTML <table>, with
@@ -121,6 +126,9 @@ HTML itself.
                 copy['call_number.label_sortkey']
                 copy['call_number.notes']
                 copy['call_number.owning_lib']
+                copy['call_number.owning_lib.id']
+                copy['call_number.owning_lib.shortname']
+                copy['call_number.owning_lib.name']
                 copy['call_number.prefix.id']
                 copy['call_number.prefix.label']
                 copy['call_number.prefix.label_sortkey']
@@ -171,6 +179,9 @@ HTML itself.
                 copy['call_number.uris']
                 copy['circ_as_type']
                 copy['circ_lib']
+                copy['circ_lib.id']
+                copy['circ_lib.shortname']
+                copy['circ_lib.name']
                 copy['circ_modifier']
                 copy['circulate']
                 copy['copy_number']

@@ -1,0 +1,31 @@
+Turning off print headers and footers in Firefox
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[printing,headers]
+indexterm:[printing,footers]
+
+If you are not using Hatch for printing, you will probably want to configure
+your browser so that Firefox does not add headers and footers to items printed
+on certain printers.  For example, if you are printing spine labels, you likely
+will not want Firefox to add a date or URL to the margins of your label.
+
+You can turn off these headers and footers using the following steps:
+
+. In the Firefox menu, click _Print..._ to open the print preview screen.
+. Click the _Page Setup..._ button.
+. Go to the _Margins & Header/Footer_ tab.
+. Make sure that all dropdown menus are set to _--blank--_.
+
+If you only want to turn off those headers and footers for a specific
+printer, use these steps:
+
+. In the Firefox address bar, type link:about:config[].
+. If a warning appears, click _I accept the risk_.
+. Type _print_header_ into this screen's search box.
+. Double-click on the relevant _print_headerleft_, _print_headerright_, and
+_print_headercenter_ entries in the grid.
+. Delete any existing data for that setting and click OK.
+. Type _print_footer_ into the screen's search box and repeat these steps
+for the footer settings.
+
+

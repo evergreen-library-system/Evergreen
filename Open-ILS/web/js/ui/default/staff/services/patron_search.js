@@ -775,11 +775,13 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore,
         angular.forEach(args, function(val, key) {
             if (!val) return;
             if (key == 'profile' && args.profile) {
-                search.profile = {value : args.profile.id(), group : 0};
+                search.profile = {value : args.profile.id(), group : 5};
             } else if (key == 'home_ou' && args.home_ou) {
                 search.home_ou = args.home_ou.id(); // passed separately
             } else if (key == 'inactive') {
                 search.inactive = val;
+            } else if (key == 'name') { // name keywords search
+                search.name = {value: val};
             } else {
                 search[key] = {value : val, group : 0};
             }

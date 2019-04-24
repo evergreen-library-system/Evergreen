@@ -1,0 +1,19 @@
+
+<ng-template #titleStringTmpl let-pfx="pfx" let-sfx="sfx">
+
+  <ng-container *ngIf="pfx">
+    <ng-container *ngIf="sfx">
+      <!-- trim prefix value when it competes with a suffix and add a seperator -->
+      <ng-container>{{pfx | slice:0:12}} - </ng-container>
+    </ng-container>
+    <ng-container *ngIf="!sfx">{{pfx}}</ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="sfx">{{sfx}}</ng-container>
+
+  <!-- if no values are defined, use a generic default -->
+  <ng-container *ngIf="!pfx && !sfx">Evergreen</ng-container>
+
+</ng-template>
+<eg-string #titleString [template]="titleStringTmpl"></eg-string>
+

@@ -5,6 +5,7 @@
     idl-class="mbt"
     id-field="id"
     grid-controls="gridControls"
+    persist-key="circ.patron.billhistory_xacts"
     dateformat="{{$root.egDateAndTimeFormat}}">
 
     <eg-grid-action 

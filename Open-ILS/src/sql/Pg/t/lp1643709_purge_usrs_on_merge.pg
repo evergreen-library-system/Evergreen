@@ -1,0 +1,25 @@
+BEGIN;
+ 
+SELECT * FROM actor.usr_merge(58,4,TRUE,TRUE,TRUE);
+ 
+SELECT plan(3);
+ 
+SELECT is(
+    (SELECT id FROM actor.usr WHERE family_name ~* 'PURGED' AND id = 58)::INTEGER,
+    58::INTEGER,
+    'actor.usr values updated by usr delete/obliterate'
+);
+ 
+SELECT is_empty(
+    'SELECT id FROM actor.usr_address WHERE usr = 58',
+    'actor.usr_address entry is correctly deleted'
+);
+ 
+SELECT is_empty(
+    'SELECT id FROM actor.card WHERE usr = 58',
+    'actor.card entry is correctly deleted'
+);
+ 
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

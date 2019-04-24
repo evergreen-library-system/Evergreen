@@ -12,9 +12,12 @@ function($q , egCore , egWorkLog , patronSvc) {
     // fetch org unit settings specific to the bills display
     service.fetchBillSettings = function() {
         if (service.settings) return $q.when(service.settings);
-        return egCore.org.settings(
-            ['ui.circ.billing.uncheck_bills_and_unfocus_payment_box','ui.circ.billing.amount_warn','ui.circ.billing.amount_limit','circ.staff_client.do_not_auto_attempt_print']
-        ).then(function(s) {return service.settings = s});
+        return egCore.org.settings([
+            'ui.circ.billing.uncheck_bills_and_unfocus_payment_box',
+            'ui.circ.billing.amount_warn', 'ui.circ.billing.amount_limit',
+            'circ.staff_client.do_not_auto_attempt_print',
+            'circ.disable_patron_credit'
+        ]).then(function(s) {return service.settings = s});
     }
 
     // user billing summary
@@ -24,7 +27,9 @@ function($q , egCore , egWorkLog , patronSvc) {
         .then(function(summary) {return service.summary = summary})
     }
 
-    service.applyPayment = function(type, payments, note, check, cc_args) {
+    service.applyPayment = function(
+        type, payments, note, check, cc_args, patron_credit) {
+
         return egCore.net.request(
             'open-ils.circ',
             'open-ils.circ.money.payment',
@@ -34,7 +39,7 @@ function($q , egCore , egWorkLog , patronSvc) {
                 payment_type : type,
                 check_number : check,
                 payments : payments,
-                patron_credit : 0,
+                patron_credit : patron_credit,
                 cc_args : cc_args
             },
             patronSvc.current.last_xact_id()
@@ -179,6 +184,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     $scope.annotate_payment = false;
     $scope.receipt_count = 1;
     $scope.receipt_on_pay = { isChecked: false };
+    $scope.convert_to_credit = {isChecked: false};
     $scope.warn_amount = 1000;
     $scope.max_amount = 100000;
     $scope.amount_verified = false;
@@ -211,6 +217,39 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
         }, 
         setSort : function() {
             return ['xact_start']; 
+        }
+    }
+    // -------------
+    // Apply coloring to rows based on fines stop reason
+    $scope.colorizeBillsList = {
+        apply: function(item) {
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
+                if (item['circulation.stop_fines'] == 'LOST') {
+                    return 'lost-row';
+                } else if (item['circulation.stop_fines'] == 'LONGOVERDUE') {
+                    return 'longoverdue-row';
+                } else {
+                    return 'overdue-row';
+                }
+            }
+        }
+    }
+
+    // Status Icon Column definition
+    $scope.statusIconColumn = {
+        isEnabled: true,
+        template: function(item) {
+            var icon = '';
+            if (item['circulation.due_date'] && !item['circulation.checkin_time']) {
+                if (item['circulation.stop_fines'] == "LOST") {
+                    icon = 'glyphicon-question-sign';
+                } else if (item['circulation.stop_fines'] == "LONGOVERDUE") {
+                    icon = 'glyphicon-exclamation-sign';
+                } else {
+                    icon = 'glyphicon-time';
+                }
+            }
+            return "<i class='glyphicon " + icon + "'></i>"
         }
     }
 
@@ -338,8 +377,10 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     function sendPayment(note, cc_args) {
         $scope.applyingPayment = true;
         var make_payments = generatePayments();
+        var patron_credit = $scope.convert_to_credit.isChecked ?
+            $scope.pending_change() : 0; 
         billSvc.applyPayment($scope.payment_type, 
-            make_payments, note, $scope.check_number, cc_args)
+            make_payments, note, $scope.check_number, cc_args, patron_credit)
         .then(
             function(payment_ids) {
 
@@ -401,6 +442,11 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             second_given_name : cusr.second_given_name(),
             family_name : cusr.family_name(),
             suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_second_given_name : cusr.pref_second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
+            pref_suffix : cusr.pref_suffix(),
             card : { barcode : cusr.card().barcode() },
             expire_date : cusr.expire_date(),
             alias : cusr.alias(),
@@ -479,6 +525,9 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                 s['circ.staff_client.do_not_auto_attempt_print'].indexOf('Bill Pay') > -1
             );
         }
+        if (s['circ.disable_patron_credit']) {
+            $scope.disablePatronCredit = true;
+        }
     });
 
     $scope.gridControls.allItemsRetrieved = function() {
@@ -516,13 +565,31 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_current', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            pref_prefix : cusr.pref_prefix(),
+                            pref_first_given_name : cusr.pref_first_given_name(),
+                            pref_second_given_name : cusr.pref_second_given_name(),
+                            pref_family_name : cusr.pref_family_name(),
+                            pref_suffix : cusr.pref_suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 
@@ -997,13 +1064,31 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
             {authoritative : true}
         ).then(
             function() {
+                var cusr = patronSvc.current;
                 egCore.print.print({
                     context : 'receipt', 
                     template : 'bills_historical', 
                     scope : {   
                         transactions : xacts,
                         current_location : egCore.idl.toHash(
-                            egCore.org.get(egCore.auth.user().ws_ou()))
+                            egCore.org.get(egCore.auth.user().ws_ou())),
+                        patron : {
+                            prefix : cusr.prefix(),
+                            pref_prefix : cusr.pref_prefix(),
+                            pref_first_given_name : cusr.pref_first_given_name(),
+                            pref_second_given_name : cusr.pref_second_given_name(),
+                            pref_family_name : cusr.pref_family_name(),
+                            pref_suffix : cusr.pref_suffix(),
+                            first_given_name : cusr.first_given_name(),
+                            second_given_name : cusr.second_given_name(),
+                            family_name : cusr.family_name(),
+                            suffix : cusr.suffix(),
+                            card : { barcode : cusr.card().barcode() },
+                            expire_date : cusr.expire_date(),
+                            alias : cusr.alias(),
+                            has_email : Boolean(cusr.email() && cusr.email().match(/.*@.*/).length),
+                            has_phone : Boolean(cusr.day_phone() || cusr.evening_phone() || cusr.other_phone())
+                        }
                     }
                 });
             }, 

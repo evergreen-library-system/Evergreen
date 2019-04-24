@@ -156,20 +156,17 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                   content;
 
         }).then(function(content) {
-            service.last_print.content = content;
-            service.last_print.content_type = type;
-            service.last_print.printScope = printScope
-
-            egHatch.setItem('eg.print.last_printed', service.last_print);
 
             // Ingest the content into the page DOM.
-            return service.ingest_print_content(
-                service.last_print.content_type,
-                service.last_print.content,
-                service.last_print.printScope
-            );
+            return service.ingest_print_content(type, content, printScope);
 
-        }).then(function() { 
+        }).then(function(html) { 
+
+            // Note browser ignores print context
+            service.last_print.content = html;
+            service.last_print.content_type = type;
+            egHatch.setItem('eg.print.last_printed', service.last_print);
+
             $window.print();
         });
     }
@@ -192,9 +189,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                 } else {
                     promise.then(function () {
                         service.ingest_print_content(
-                            service.last_print.content_type,
-                            service.last_print.content,
-                            service.last_print.printScope
+                            null, null, null, service.last_print.content
                         ).then(function() { $window.print() });
                     });
                 }
@@ -300,7 +295,19 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
                 // For local printing, this lets us print directly from the
                 // DOM with print CSS.
                 // Returns a promise reolved with the compiled HTML as a string.
-                egPrint.ingest_print_content = function(type, content, printScope) {
+                //
+                // If a pre-compiled HTML string is provided, it's inserted
+                // as-is into the DOM for browser printing without any 
+                // additional interpolation.  This is useful for reprinting,
+                // previously compiled content.
+                egPrint.ingest_print_content = 
+                    function(type, content, printScope, compiledHtml) {
+
+                    if (compiledHtml) {
+                        $scope.elm.html(compiledHtml);
+                        return $q.when(compiledHtml);
+                    }
+                        
                     $scope.elm.html(content);
 
                     var sub_scope = $scope.$new(true);

@@ -267,13 +267,19 @@ sub init_ro_object_cache {
             $date = '000' . $date;
         }
 
-        my $cleansed_date = cleanse_ISO8601($date);
+        my $cleansed_date = clean_ISO8601($date);
 
         $date = DateTime::Format::ISO8601->new->parse_datetime($cleansed_date);
         if ($context_org) {
             $context_org = $context_org->id if ref($context_org);
             my $tz = $locale_subs->{get_org_setting}->($context_org,'lib.timezone');
-            $date->set_time_zone($tz) if ($tz);
+            if ($tz) {
+                try {
+                    $date->set_time_zone($tz);
+                } catch Error with {
+                    $logger->warn("Invalid timezone: $tz");
+                };
+            }
         }
         return sprintf(
             "%0.2d:%0.2d:%0.2d %0.2d-%0.2d-%0.4d",
@@ -416,7 +422,8 @@ sub get_records_and_facets {
                 $unapi_args->{site}, 
                 $unapi_args->{depth}, 
                 $slimit,
-                undef, undef, $unapi_args->{pref_lib}
+                undef, undef, undef, undef, undef, undef, undef, undef,
+                $unapi_args->{pref_lib}
             ]}
         );
     

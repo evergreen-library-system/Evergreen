@@ -8,6 +8,7 @@ Fields include:
   * second_given_name
   * family_name
   * suffix
+  * pref_ versions of all name fields (e.g. pref_family_name);
   * card.barcode
   * money_summary.balance_owed - current balance
   * money_summary.total_paid - payments made on outstanding fines/fees

@@ -355,22 +355,22 @@ sub flesh_template {
       $sender = $bemail if $bemail;
    }
 
-   $str =~ s/\${EMAIL_SENDER}/$sender/;
-   $str =~ s/\${EMAIL_RECIPIENT}/$email/;
-   $str =~ s/\${EMAIL_REPLY_TO}/$reply_to/;
-   $str =~ s/\${EMAIL_HEADERS}//;
+   $str =~ s/\$\{EMAIL_SENDER}/$sender/;
+   $str =~ s/\$\{EMAIL_RECIPIENT}/$email/;
+   $str =~ s/\$\{EMAIL_REPLY_TO}/$reply_to/;
+   $str =~ s/\$\{EMAIL_HEADERS}//;
 
-   $str =~ s/\${DATE}/$year-$month-$day/;
-   $str =~ s/\${LIBRARY}/$o_name/;
-   $str =~ s/\${LIBRARY_ADDRESS}/$o_addr/;
-   $str =~ s/\${PATRON_NAME}/$p_name/;
-   $str =~ s/\${PATRON_ADDRESS}/$p_addr/;
+   $str =~ s/\$\{DATE}/$year-$month-$day/;
+   $str =~ s/\$\{LIBRARY}/$o_name/;
+   $str =~ s/\$\{LIBRARY_ADDRESS}/$o_addr/;
+   $str =~ s/\$\{PATRON_NAME}/$p_name/;
+   $str =~ s/\$\{PATRON_ADDRESS}/$p_addr/;
 
-   $str =~ s/\${TITLE}/$title/;
-   $str =~ s/\${AUTHOR}/$author/;
-   $str =~ s/\${CALL_NUMBER}/$cn/;
-   $str =~ s/\${COPY_BARCODE}/$barcode/;
-   $str =~ s/\${COPY_NUMBER}/$copy_number/;
+   $str =~ s/\$\{TITLE}/$title/;
+   $str =~ s/\$\{AUTHOR}/$author/;
+   $str =~ s/\$\{CALL_NUMBER}/$cn/;
+   $str =~ s/\$\{COPY_BARCODE}/$barcode/;
+   $str =~ s/\$\{COPY_NUMBER}/$copy_number/;
 
     return $str;
 }

@@ -199,8 +199,6 @@ if [ "$PREV_BRANCH" != "PACKAGE" ]; then
     fi
 
     echo "Applying to README:"
-    echo "STAMP_ID with $UNDER_VERSION"
-    sed -i -e "s/STAMP_ID=rel_[^ ]*/STAMP_ID=rel_$UNDER_VERSION/" $GIT_ABS/README
 
     if [ "$PREV_BRANCH" != "TAG" ]; then
         if [ "$(grep "$RELEASE_PREAMBLE_HEAD" $GIT_ABS/README )" ]; then
@@ -332,14 +330,24 @@ XULRUNNER_VERSION=${XULRUNNER_VERSION##XULRUNNER_VERSION=}
 echo "Prepping server download files"
 
 if [ "$BUILD_BROWSER_CLIENT" == "YES" ]; then
+    # AngularJS staff client
     cd ../../../
-    echo "Building browser staff client"
+    echo "Building AngularJS browser staff client"
     cd Open-ILS/web/js/ui/default/staff/
     npm install   # fetch build dependencies
     npm run build-prod # copy to build dir and minify JS files
     # npm cache is big and unnecessary in the final build. remove it.
     rm -r node_modules 
-    cd ../../../../../../../ # release dir
+    cd ../../../../../ # Open-ILS dir
+
+    # Angular staff client
+    echo "Building Angular browser staff client"
+    cd src/eg2
+    npm install   # fetch build dependencies
+    ng build --prod
+    # npm cache is big and unnecessary in the final build. remove it.
+    rm -rf node_modules 
+    cd ../../../../ # release dir
 else
     echo "Skipping browser client build"
     cd ../../../../

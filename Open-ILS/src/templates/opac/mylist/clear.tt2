@@ -1,0 +1,21 @@
+[%- PROCESS "opac/parts/header.tt2";
+    PROCESS "opac/parts/misc_util.tt2";
+    WRAPPER "opac/parts/base.tt2";
+    INCLUDE "opac/parts/topnav.tt2";
+    ctx.page_title = l("Confirm Clearing of Basket") %]
+    <h2 class="sr-only">[% l('Confirm Clearing of Basket') %]</h2>
+    [% INCLUDE "opac/parts/searchbar.tt2" %]
+    <div id="content-wrapper">
+        <div id="main-content">
+             <p class="big-strong">[% l('Please confirm that you want to remove all [_1] titles from the basket.', ctx.mylist.size) %]
+             <form method="post" action="[% mkurl(ctx.opac_root _ '/cache/clear', {}, 1) %]">
+             <input type="hidden" name="redirect_to" value="[% ctx.referer %]" />
+             <input id="print_cart_submit" type="submit" name="submit"
+               value="[% l('Confirm') %]" title="[% l('Confirm') %]"
+               alt="[% l('Confirm') %]" class="opac-button" />
+             <input type="reset" name="cancel" onclick="window.location='[% ctx.referer | html %]'" value="[% l('Cancel') %]" id="clear_basket_cancel" class="opac-button" />
+             </form>
+            <div class="common-full-pad"></div>	
+        </div>
+    </div>
+[%- END %]

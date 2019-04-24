@@ -1,0 +1,87 @@
+[%
+  WRAPPER 'staff/base.tt2';
+  ctx.page_type = l('Closed Dates');
+  ctx.page_app = 'egAdminClosed';
+  ctx.page_ctrl = 'ClosedDates';
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/admin/local/actor/closed_dates.js"></script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/admin.css" />
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_CLOSED_DELETE = "[% l('Confirm closed date deletion') %]";
+    s.CONFIRM_CLOSED_DELETE_BODY = '[% l('Delete closing "{{reason}}" for {{org.name()}}?') %]';
+    s.POSSIBLE_EMERGENCY_CLOSING = "[% l('Possible Emergency Closing') %]";
+    s.EMERGENCY_CLOSING = "[% l('Emergency Closing') %]";
+    s.CREATING_CLOSINGS = "[% l('Creating closings') %]";
+    s.PROCESSING_EMERGENCY = "[% l('Processing Emergency Closing') %]";
+  }]);
+</script>
+[% END %]
+
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    [% l('Closed Dates Editor') %]
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="form-group">
+      <label>[% l('Edit Closed Dates for: ') %]&nbsp; </label>
+      <eg-org-selector onchange="org_changed" 
+        selected="context_org"></eg-org-selector>
+    </div>
+  </div>
+  <div class="col-md-4">
+  </div>
+  <div class="col-md-1">
+    <label>[% l('Date Filter: ') %]&nbsp; </label>
+  </div>
+  <div class="col-md-3">
+    <eg-date-input ng-model="date_filter"></eg-date-input>
+  </div>
+</div>
+
+<eg-grid
+    id-field="id"
+    grid-controls="gridControls"
+    items-provider="gridDataProvider"
+    features="-multiselect"
+    persist-key="admin.local.actor.closed_dates"
+    dateformat="{{$root.egDateAndTimeFormat}}">
+   
+    <eg-grid-menu-item standalone="true" label="[% l('Add closing') %]" handler="create_aoucd"></eg-grid-action> 
+    <eg-grid-menu-item standalone="true" label="[% l('Refresh') %]" handler="refresh_page"></eg-grid-action> 
+
+    <eg-grid-action label="[% l('Edit closing') %]" handler="update_aoucd"></eg-grid-action> 
+    <eg-grid-action label="[% l('Delete closing') %]" handler="delete_aoucd"></eg-grid-action> 
+
+    <eg-grid-field label="[% l('Closing Start') %]" flex="1" path="close_start" visible>
+      {{item.close_start | egOrgDateInContext:item._format:item.org_unit:item._duration}}
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Closing End') %]" flex="1" path="close_end" visible>
+      {{item.close_end | egOrgDateInContext:item._format:item.org_unit:item._duration}}
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Reason for Closing') %]" flex="2" path="reason" visible></eg-grid-field>
+    <eg-grid-field label="[% l('Emergency Closing Processing Summary') %]" flex="2" path="emergency_closing.status" visible>
+      <span class="{{item._text_class}}">
+        [% l('Circulations: ') %]{{item.emergency_closing.status.circulations_complete}} / {{item.emergency_closing.status.circulations}} |
+        [% l('Holds: ') %]{{item.emergency_closing.status.holds_complete}} / {{item.emergency_closing.status.holds}} |
+        [% l('Reservations:') %]{{item.emergency_closing.status.reservations_complete}} / {{item.emergency_closing.status.reservations}}
+      </span>
+    </eg-grid-field>
+    <eg-grid-field label="[% l('Full Day') %]" path="full_day" datatype="bool" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Multiple Days') %]" path="multi_day" datatype="bool" hidden></eg-grid-field>
+    <eg-grid-field label="[% l('Emergency Closing Circulations') %]" path="emergency_closing.status.circulations" hidden>
+    <eg-grid-field label="[% l('Emergency Closing Holds') %]" path="emergency_closing.status.holds" hidden>
+    <eg-grid-field label="[% l('Emergency Closing Reservations') %]" path="emergency_closing.status.reservations" hidden>
+    <eg-grid-field label="[% l('Emergency Closing Circulations Completed') %]" path="emergency_closing.status.circulations_complete" hidden>
+    <eg-grid-field label="[% l('Emergency Closing Holds Completed') %]" path="emergency_closing.status.holds_complete" hidden>
+    <eg-grid-field label="[% l('Emergency Closing Reservations Completed') %]" path="emergency_closing.status.reservations_complete" hidden>
+</eg-grid>
+
+[% END %]

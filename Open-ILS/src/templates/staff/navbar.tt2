@@ -47,7 +47,7 @@
               eg-accesskey="[% l('f5') %]" 
               eg-accesskey-desc="[% l('Item Status') %]">
               <span class="glyphicon glyphicon-barcode"></span>
-              <span>[% l('Search for Copies by Barcode') %]</span>
+              <span>[% l('Search for Items by Barcode') %]</span>
             </a>
           </li>
           <li>
@@ -231,8 +231,8 @@
             </a>
           </li>
           <li class="divider"></li>
-          <li>
-            <a href="./offline-interface" target="_self">
+          <li ng-class="{disabled : offlineDisabled()}">
+            <a href="./offline-interface" target="_self" ng-class="{disabled : offlineDisabled()}">
               <span class="glyphicon glyphicon-alert"></span>
               <span>[% l('Offline Circulation') %]</span>
             </a>
@@ -251,6 +251,15 @@
               [% l('Search the Catalog') %]
             </a>
           </li>
+          <!--
+            Link to experimental Angular staff catalog.
+          -->
+          <li ng-if="showAngularCatalog">
+            <a href="/eg2/staff/catalog/search">
+              <span class="glyphicon glyphicon-search"></span>
+              <span>[% l('Staff Catalog (Experimental)') %]</span>
+            </a>
+          </li>
           <li>
             <a href="./cat/bucket/record/view" target="_self">
               <span class="glyphicon glyphicon-list-alt"></span>
@@ -260,7 +269,7 @@
           <li>
             <a href="./cat/bucket/copy/view" target="_self">
               <span class="glyphicon glyphicon-list-alt"></span>
-              [% l('Copy Buckets') %]
+              [% l('Item Buckets') %]
             </a>
           </li>
           <li class="divider"></li>
@@ -300,7 +309,7 @@
             </a>
           </li>
           <li>
-            <a href="./cat/catalog/vandelay" target="_self">
+            <a href="/eg2/staff/cat/vandelay/import">
               <span class="glyphicon glyphicon-transfer"></span>
               [% l('MARC Batch Import/Export') %]
             </a>
@@ -323,6 +332,12 @@
             <a href="./cat/catalog/manageAuthorities" target="_self">
               <span class="glyphicon glyphicon-lock"></span>
               [% l('Manage Authorities') %]
+            </a>
+          </li>
+          <li>
+            <a href="./cat/catalog/retrieve_by_authority_id" target="_self">
+              <span class="glyphicon glyphicon-file"></span>
+              [% l('Retrieve Authority Record by ID') %]
             </a>
           </li>
        </ul>
@@ -353,7 +368,7 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/picklist/user_request" target="_self">
+            <a href="./acq/requests/list" target="_self">
               <span class="glyphicon glyphicon-thumbs-up"></span>
               [% l('Patron Requests') %]
             </a>
@@ -466,7 +481,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/server/index" target="_self">
+            <a href="/eg2/staff/admin/server/splash">
               <span class="glyphicon glyphicon-briefcase"></span>
               [% l('Server Administration') %]
             </a>
@@ -478,7 +493,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/acq/index" target="_self">
+            <a href="/eg2/staff/admin/acq/splash">
               <span class="glyphicon glyphicon-usd"></span>
               [% l('Acquisitions Administration') %]
             </a>
@@ -490,7 +505,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/booking/index" target="_self">
+            <a href="/eg2/staff/admin/booking/splash" target="_self">
               <span class="glyphicon glyphicon-calendar"></span>
               [% l('Booking Administration') %]
             </a>

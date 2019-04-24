@@ -1,0 +1,270 @@
+
+<form #holdManageForm role="form" *ngIf="hold"
+  class="form-validated common-form striped-odd">
+
+  <div class="form-group row d-flex">
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_pickup_lib" [(ngModel)]="activeFields.pickup_lib"/>
+        </div>
+      </div>
+      <div class="flex-1"><label i18n>Pickup Library:</label></div>
+    </div>
+    <div class="col-lg-4">
+      <!-- TODO: filter orgs as needed -->
+      <eg-org-select [initialOrgId]="hold.pickup_lib()"
+        [disabled]="isBatch() && !activeFields.pickup_lib"
+        (onChange)="pickupLibChanged($event)">
+      </eg-org-select>
+    </div>
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_mint_condition" [(ngModel)]="activeFields.mint_condition"/>
+        </div>
+      </div>
+      <div class="flex-1">
+        <label i18n>Desired Item Condition:</label>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="mint-condition"
+          name="mint" value="mint"
+          [disabled]="isBatch() && !activeFields.mint_condition"
+          [ngModel]="hold.mint_condition() == 't'"
+          (ngModelChange)="hold.mint_condition($event ? 't' : 'f')">
+        <label class="form-check-label" for="mint-condition">
+          Good Condition Only
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_frozen" [(ngModel)]="activeFields.frozen"/>
+        </div>
+      </div>
+      <div class="flex-1">
+        <label for="frozen" i18n>Hold is Suspended:</label>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox"
+          id="frozen" name="frozen"
+          [disabled]="isBatch() && !activeFields.frozen"
+          [ngModel]="hold.frozen() == 't'"
+          (ngModelChange)="hold.frozen($event ? 't' : 'f')">
+      </div>
+    </div>
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_cut_in_line" [(ngModel)]="activeFields.cut_in_line"/>
+        </div>
+      </div>
+      <div class="flex-1">
+        <label for="cut_in_line" i18n>Top of Queue:</label>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox"
+          id="cut_in_line" name="cut_in_line"
+          [disabled]="isBatch() && !activeFields.cut_in_line"
+          [ngModel]="hold.cut_in_line() == 't'"
+          (ngModelChange)="hold.cut_in_line($event ? 't' : 'f')">
+      </div>
+    </div>
+  </div>
+
+  <!-- wrap the date mod fields in a border to help
+      differentiate from other fields -->
+  <div class="w-100 border border-primary rounded">
+    <div class="form-group row">
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_thaw_date" [(ngModel)]="activeFields.thaw_date"/>
+          </div>
+        </div>
+        <div class="flex-1"><label for="thaw_date" i18n>Activate Date:</label></div>
+      </div>
+      <div class="col-lg-4">
+        <eg-date-select
+          domId="thaw_date"
+          [disabled]="isBatch() && !activeFields.thaw_date"
+          (onChangeAsIso)="hold.thaw_date($event)"
+          [initialIso]="hold.thaw_date()">
+        </eg-date-select>
+      </div>
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_request_time" [(ngModel)]="activeFields.request_time"/>
+          </div>
+        </div>
+        <div class="flex-1"><label for="request_time" i18n>Request Date:</label></div>
+      </div>
+      <div class="col-lg-4">
+        <eg-date-select
+          domId="request_time"
+          [disabled]="isBatch() && !activeFields.request_time"
+          (onChangeAsIso)="hold.request_time($event)"
+          [initialIso]="hold.request_time()">
+        </eg-date-select>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_expire_time" [(ngModel)]="activeFields.expire_time"/>
+          </div>
+        </div>
+        <div class="flex-1"><label for="expire_time" i18n>Expire Date:</label></div>
+      </div>
+      <div class="col-lg-4">
+        <eg-date-select
+          domId="expire_time"
+          [disabled]="isBatch() && !activeFields.expire_time"
+          (onChangeAsIso)="hold.expire_time($event)"
+          [initialIso]="hold.expire_time()">
+        </eg-date-select>
+      </div>
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_shelf_expire_time" [(ngModel)]="activeFields.shelf_expire_time"/>
+          </div>
+        </div>
+        <div class="flex-1"><label for="shelf_expire_time" i18n>Shelf Expire Date:</label></div>
+      </div>
+      <div class="col-lg-4">
+        <eg-date-select
+          domId="shelf_expire_time"
+          [disabled]="isBatch() && !activeFields.shelf_expire_time"
+          (onChangeAsIso)="hold.shelf_expire_time($event)"
+          [initialIso]="hold.shelf_expire_time()">
+        </eg-date-select>
+      </div>
+    </div>
+  </div><!-- modify dates group border -->
+
+  <div class="form-group row">
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_email_notify" [(ngModel)]="activeFields.email_notify"/>
+        </div>
+      </div>
+      <div class="flex-1"><label for="email" i18n>Send Emails:</label></div>
+    </div>
+    <div class="col-lg-4">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="email"
+          name="email" [ngModel]="hold.email_notify() == 't'"
+          [disabled]="isBatch() && !activeFields.email_notify"
+          (ngModelChange)="hold.email_notify($event ? 't' : 'f')"/>
+      </div>
+    </div>
+    <div class="col-lg-2 d-flex">
+      <div class="" *ngIf="isBatch()">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox"
+            title="Activate Column Editing" i18n-title
+            name="active_phone_notify" [(ngModel)]="activeFields.phone_notify"/>
+        </div>
+      </div>
+      <div class="flex-1"><label for="phone" i18n>Phone Number:</label></div>
+    </div>
+    <div class="col-lg-4">
+      <input type="text" class="form-control" name="phone" id="phone"
+        placeholder="Phone Number..." i18n-placeholder
+          [disabled]="isBatch() && !activeFields.phone_notify"
+        [ngModel]="hold.phone_notify()"
+        (ngModelChange)="hold.phone_notify($event)"/>
+    </div>
+  </div>
+
+  <ng-container *ngIf="smsEnabled">
+    <div class="form-group row">
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_sms_notify" [(ngModel)]="activeFields.sms_notify"/>
+          </div>
+        </div>
+        <div class="flex-1"><label for="sms_notify" i18n>Text/SMS Number:</label></div>
+      </div>
+      <div class="col-lg-4">
+        <input type="text" class="form-control" name="sms_notify" id="sms_notify"
+          placeholder="SMS Number..." i18n-placeholder
+          [disabled]="isBatch() && !activeFields.sms_notify"
+          [ngModel]="hold.sms_notify()"
+          (ngModelChange)="hold.sms_notify($event)"/>
+      </div>
+      <div class="col-lg-2 d-flex">
+        <div class="" *ngIf="isBatch()">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox"
+              title="Activate Column Editing" i18n-title
+              name="active_sms_carrier" [(ngModel)]="activeFields.sms_carrier"/>
+          </div>
+        </div>
+        <div class="flex-1">
+          <label for="sms_carrier" i18n>Text/SMS Number:</label>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <eg-combobox
+          id="sms_carrier"
+          [disabled]="isBatch() && !activeFields.sms_carrier"
+          (onChange)="hold.sms_carrier($event.id)"
+          [startId]="hold.sms_carrier()"
+          [entries]="smsCarriers"
+          placeholder="SMS Carrier..." i18n-placeholder>
+        </eg-combobox>
+      </div>
+    </div>
+  </ng-container>
+
+
+  <div class="row d-flex justify-content-end">
+    <div>
+      <button type="button" class="btn btn-warning" (click)="exit()" i18n>
+        Cancel
+      </button>
+      <button type="button" class="btn btn-success ml-2" (click)="save()" i18n>
+        Apply
+      </button>
+    </div>
+  </div>
+</form>
+

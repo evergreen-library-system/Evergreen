@@ -1,0 +1,16 @@
+<!-- 
+Global print container.  
+There should only be one print component active in a page.
+-->
+
+<div id='eg-print-container'>
+  <!-- container for inline template compilation -->
+  <ng-container *ngIf="template">
+    <ng-container *ngTemplateOutlet="template; context:context">
+    </ng-container>
+  </ng-container>
+  <div id='eg-print-html-container'>
+  </div>
+<!-- container for pre-compiled HTML -->
+</div>
+

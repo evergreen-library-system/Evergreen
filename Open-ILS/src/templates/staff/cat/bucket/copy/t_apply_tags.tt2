@@ -2,7 +2,7 @@
     <div class="modal-header">
       <button type="button" class="close" ng-click="cancel()" 
         aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Apply Copy Tags') %]</h4>
+      <h4 class="modal-title">[% l('Apply Item Tags') %]</h4>
     </div>
     <div class="modal-body">
       <ul>

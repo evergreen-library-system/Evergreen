@@ -32,7 +32,7 @@ use OpenILS::Utils::Penalty;
 use Business::Stripe;
 $Data::Dumper::Indent = 0;
 use OpenILS::Const qw/:const/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 my $parser = DateTime::Format::ISO8601->new;
 
@@ -1016,6 +1016,11 @@ sub adjust_bills_to_zero_manual {
                 {flesh => 1, flesh_fields => {mbts => ['usr']}}
             ]) or return $e->die_event;
 
+        if ($xact->balance_owed == 0) {
+            # zero already, all done
+            next;
+        }
+
         return $e->die_event unless
             $e->allowed('ADJUST_BILLS', $xact->usr->home_ou);
 
@@ -1030,22 +1035,20 @@ sub adjust_bills_to_zero_manual {
                 ]) or return $e->die_event;
         }
 
-        my $billings = $e->search_money_billing([
-            {
-                xact => $xact_id,
-            },
-            {
-                order_by => {mb => 'amount desc'},
-                flesh => 1,
-                flesh_fields => {mb => ['adjustments']},
-            }
-        ]);
-
-        if ($xact->balance_owed == 0) {
-            # if was zero, or we rebilled it to zero
-            next;
-        } else {
+        if ($xact->balance_owed > 0) {
             # it's positive and needs to be adjusted
+            # (it either started positive, or we rebilled it positive)
+            my $billings = $e->search_money_billing([
+                {
+                    xact => $xact_id,
+                },
+                {
+                    order_by => {mb => 'amount desc'},
+                    flesh => 1,
+                    flesh_fields => {mb => ['adjustments']},
+                }
+            ]);
+
             my @billings_to_zero = grep { !$U->is_true($_->voided) or !_is_fully_adjusted($_) } @$billings;
             $CC->adjust_bills_to_zero($e, \@billings_to_zero, "System: MANUAL ADJUSTMENT");
         }
@@ -1287,7 +1290,7 @@ __PACKAGE__->register_method(
 sub _to_epoch {
     my $ts = shift @_;
 
-    return $parser->parse_datetime(cleanse_ISO8601($ts))->epoch;
+    return $parser->parse_datetime(clean_ISO8601($ts))->epoch;
 }
 
 my %_statement_sort = (

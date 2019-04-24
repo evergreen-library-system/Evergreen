@@ -48,12 +48,12 @@
 <div class="panel panel-default" ng-show="field_strip_groups.length">
   <div class="panel-heading">[% l('Remove Fields on Import') %]</div>
   <div class="panel-body">
-    <div class="row">
-      <div class="col-sm-3 checkbox-inline" ng-repeat="grp in field_strip_groups">
-        <label for="strip-grp-{{grp.id()}}">{{grp.label()}}</label>
-        <input id='strip-grp-{{grp.id()}}' ng-model="grp.selected" type="checkbox"/>
-      </div>
-    </div>
+    <ul class="row list-unstyled">
+        <li class="col-sm-3" ng-repeat="grp in field_strip_groups">
+            <label>
+            <input id='strip-grp-{{grp.id()}}' ng-model="grp.selected" type="checkbox"/>{{grp.label()}}</label>
+        </li>
+    </ul>
   </div>
 </div>
 
@@ -73,7 +73,7 @@
         [% l('Total hits: [_1]', '{{total_hits}}') %]
     </div>
     <div class="col-md-6 text-right" ng-if="local_overlay_target">
-        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]"
+        [% l('Record with TCN [_1] marked for overlay.', '{{local_overlay_target}}') %]
     </div>
     <div class="col-md-6 text-right" ng-if="!local_overlay_target">
         [% l('No record marked for overlay.') %]

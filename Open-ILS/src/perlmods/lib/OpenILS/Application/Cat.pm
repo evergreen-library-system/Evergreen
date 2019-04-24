@@ -528,6 +528,7 @@ sub biblio_record_marc_cn {
         my $tag = substr($field, 0, 3);
         $logger->debug("Tag = $tag");
         my @node = $doc->findnodes("//marc:datafield[\@tag='$tag']");
+        next unless (@node);
 
         # Now parse the subfields and build up the subfield XPath
         my @subfields = split(//, substr($field, 3));
@@ -536,16 +537,17 @@ sub biblio_record_marc_cn {
         if (!@subfields) {
             @subfields = ('a');
         }
-        my $subxpath;
-        foreach my $sf (@subfields) {
-            $subxpath .= "\@code='$sf' or ";
-        }
-        $subxpath = substr($subxpath, 0, -4);
-        $logger->debug("subxpath = $subxpath");
+        my $xpath = 'marc:subfield[' . join(' or ', map { "\@code='$_'" } @subfields) . ']';
+        $logger->debug("xpath = $xpath");
 
         # Find the contents of the specified subfields
         foreach my $x (@node) {
-            my $cn = $x->findvalue("marc:subfield[$subxpath]");
+            # We can't use find($xpath)->to_literal_delimited here because older 2.x
+            # versions of the XML::LibXML module don't have to_literal_delimited().
+            my $cn = join(
+                ' ',
+                map { $_->textContent } $x->findnodes($xpath)
+            );
             push @res, {$tag => $cn} if ($cn);
         }
     }
@@ -856,7 +858,7 @@ sub transfer_copies_to_volume {
             { id => $copy_id , deleted => 'f' },
             {
                 flesh => 1,
-                flesh_fields => { acp => ['parts'] }
+                flesh_fields => { acp => ['parts', 'stat_cat_entries'] }
             }
         ])->[0];
         return OpenILS::Event->new('ASSET_COPY_NOT_FOUND') if !$copy;
@@ -1174,9 +1176,50 @@ sub fleshed_volume_update {
 
         } elsif( $vol->ischanged ) {
             $logger->info("vol-update: update volume");
-            my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
-            return $resp->{evt} if $resp->{evt};
-            $vol = $resp->{merge_vol} if $resp->{merge_vol};
+
+            # Three cases here:
+            #   1) We're editing a volume, and not its copies.
+            #   2) We're editing a volume, and a subset of its copies.
+            #   3) We're editing a volume, and all of its copies.
+            #
+            # For 1) and 3), we definitely want to edit the volume
+            # itself (and possibly auto-merge), but for 2), we want
+            # to create a new volume (and possibly auto-merge).
+
+            if (scalar(@$copies) == 0) { # case 1
+
+                my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
+                return $resp->{evt} if $resp->{evt};
+                $vol = $resp->{merge_vol} if $resp->{merge_vol};
+
+            } else {
+
+                my $resp = $editor->json_query({
+                  select => {
+                    acp => [
+                      {transform => 'count', aggregate => 1, column => 'id', alias => 'count'}
+                    ]
+                  },
+                  from => 'acp',
+                  where => {
+                    call_number => $vol->id,
+                    deleted => 'f',
+                    id => {'not in' => [ map { $_->id } @$copies ]}
+                  }
+                });
+                if ($resp->[0]->{count} && $resp->[0]->{count} > 0) { # case 2
+
+                    ($vol,$evt) = $assetcom->create_volume( $auto_merge_vols ? { all => 1} : $oargs, $editor, $vol );
+                    return $evt if $evt;
+
+                } else { # case 3
+
+                    my $resp = update_volume($vol, $editor, ($oargs->{all} or grep { $_ eq 'VOLUME_LABEL_EXISTS' } @{$oargs->{events}} or $auto_merge_vols));
+                    return $resp->{evt} if $resp->{evt};
+                    $vol = $resp->{merge_vol} if $resp->{merge_vol};
+                }
+
+            }
         }
 
         # now update any attached copies

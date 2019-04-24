@@ -573,9 +573,13 @@ function TermManager() {
             var value;
             if (typeof(this.widgets[id].declaredClass) != "undefined") {
                 if (this.widgets[id].declaredClass.match(/Date/)) {
-                    value =
-                        dojo.date.stamp.toISOString(this.widgets[id].value).
-                            split("T")[0];
+                    if (this.widgets[id].value) {
+                        value =
+                            dojo.date.stamp.toISOString(
+                                this.widgets[id].value).split("T")[0];
+                    } else {
+                        value = null;
+                    }
                 } else {
                     value = this.widgets[id].attr("value");
                     if (this.widgets[id].declaredClass.match(/Check/))
@@ -946,7 +950,7 @@ function URIManager() {
         "inv": {
             "search_object": {
                 "acqinv": [
-                    {"complete": "f"},
+                    {"close_date": null},
                     {"receiver": openils.User.user.ws_ou()}
                 ]
             },

@@ -44,8 +44,9 @@ END;
         <span class="adv_search_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/advanced', {},  expert_search_parms.merge(browse_search_parms, facet_search_parms)) %]"
             id="home_adv_search_link">[% l('Advanced Search') %]</a></span>
         <span class="browse_the_catalog_lbl"><a href="[% mkurl(ctx.opac_root _ '/browse', {}, expert_search_parms.merge(general_search_parms, facet_search_parms, ['fi:has_browse_entry'])) %]">[% l('Browse the Catalog') %]</a></span>
+        [% INCLUDE 'opac/parts/cart.tt2' %]
     </div>
-    <div class="searchbar">
+    <div class="searchbar [% is_home_page ? 'searchbar-home' : '' %]">
         <span class='search_box_wrapper'>
             [%- # autosuggest breaks accessibility, as the aria-label
                 # attribute is removed when the Dijit is created. :(  %]
@@ -53,6 +54,7 @@ END;
             <input type="text" id="search_box" name="query" aria-label="[%
                     l('Enter search query:');
                 %]" value="[% is_advanced ? ctx.naive_query_scrub(ctx.user_query) : CGI.param('query') | html %]"
+                class="search-box"
                 [%- IF use_autosuggest.enabled == "t" %]
                 dojoType="openils.widget.AutoSuggest" type_selector="'qtype'"
                 submitter="this.textbox.form.submit();"
@@ -60,7 +62,7 @@ END;
                 store_args='{"org_unit_getter": function() { return [% ctx.search_ou %]; }}'
                 [%-     END # opac_visible -%]
                 [%- ELSE -%]
-                    [% IF basic_search != "f" %] autofocus [% END %] x-webkit-speech
+                    [% IF basic_search != "f" AND is_home_page %] autofocus [% END %] x-webkit-speech
                 [%- END # autosuggest enabled %] />
             </label>
         </span>

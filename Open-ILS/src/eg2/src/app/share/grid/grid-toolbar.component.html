@@ -1,0 +1,163 @@
+
+<div class="eg-grid-toolbar mb-2">
+
+  <div class="btn-toolbar">
+
+    <!-- buttons -->
+    <div class="btn-grp" *ngIf="gridContext.toolbarButtons.length">
+      <button *ngFor="let btn of gridContext.toolbarButtons"
+        [disabled]="btn.disabled"
+        class="btn btn-outline-dark mr-1" (click)="performButtonAction(btn)">
+        {{btn.label}}
+      </button>
+    </div>
+
+    <!-- checkboxes -->
+    <div class="form-check form-check-inline"
+      *ngIf="gridContext.toolbarCheckboxes.length">
+      <ng-container *ngFor="let cb of gridContext.toolbarCheckboxes">
+        <label class="form-check-label">
+          <input class="form-check-input" type="checkbox"
+            [(ngModel)]="cb.isChecked"
+            (click)="cb.onChange.emit($event.target.checked)"/>
+            {{cb.label}}
+        </label>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- push everything else to the right -->
+  <div class="flex-1"></div>
+
+  <div ngbDropdown class="mr-1" placement="bottom-right">
+    <button ngbDropdownToggle [disabled]="!gridContext.toolbarActions.length"
+        class="btn btn-outline-dark no-dropdown-caret">
+      <span title="Actions For Selected Rows" i18n-title
+        class="material-icons mat-icon-in-button">playlist_add_check</span>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <button class="dropdown-item" (click)="performAction(action)"
+        *ngFor="let action of gridContext.toolbarActions"
+        [disabled]="shouldDisableAction(action)">
+        <ng-container *ngIf="action.isGroup">
+          <span class="ml-2 font-weight-bold font-italic">{{action.label}}</span>
+        </ng-container>
+        <ng-container *ngIf="action.group && !action.isGroup">
+          <!-- grouped entries are indented -->
+          <span class="ml-4">{{action.label}}</span>
+        </ng-container>
+        <ng-container *ngIf="!action.group && !action.isGroup">
+          <span class="ml-2">{{action.label}}</span>
+        </ng-container>
+      </button>
+    </div>
+  </div>
+
+  <button [disabled]="gridContext.pager.isFirstPage()" type="button"
+    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.toFirst()">
+    <span title="First Page" i18n-title
+        class="material-icons mat-icon-in-button">first_page</span>
+  </button>
+  <button [disabled]="gridContext.pager.isFirstPage()" type="button"
+    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.decrement()">
+    <span title="Previous Page" i18n-title
+        class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+  </button>
+  <button [disabled]="gridContext.pager.isLastPage()" type="button"
+    class="btn btn-outline-dark mr-1" (click)="gridContext.pager.increment()">
+    <span title="Next Page" i18n-title
+        class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+  </button>
+
+  <!--
+  Hiding jump-to-last since there's no analog in the angularjs grid and
+  it has limited value since the size of the data set is often unknown.
+  <button [disabled]="!gridContext.pager.resultCount || gridContext.pager.isLastPage()"
+    type="button" class="btn btn-outline-dark mr-1" (click)="gridContext.pager.toLast()">
+    <span title="First Page" i18n-title
+        class="material-icons mat-icon-in-button">last_page</span>
+  </button>
+  -->
+
+  <div ngbDropdown class="mr-1" placement="bottom-right">
+    <button ngbDropdownToggle class="btn btn-outline-dark text-button">
+      <span title="Select Row Count" i18n-title i18n>
+        Rows {{gridContext.pager.limit}}
+      </span>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <a class="dropdown-item"
+        *ngFor="let count of [5, 10, 25, 50, 100]"
+        (click)="gridContext.pager.setLimit(count)">
+        <span class="ml-2">{{count}}</span>
+      </a>
+    </div>
+  </div>
+
+  <button type="button"
+    class="btn btn-outline-dark mr-1"
+    (click)="gridContext.overflowCells=!gridContext.overflowCells">
+    <span *ngIf="!gridContext.overflowCells"
+      title="Expand Cells Vertically" i18n-title
+      class="material-icons mat-icon-in-button">expand_more</span>
+    <span *ngIf="gridContext.overflowCells"
+      title="Collaps Cells Vertically" i18n-title
+      class="material-icons mat-icon-in-button">expand_less</span>
+  </button>
+
+  <eg-grid-column-config #columnConfDialog [columnSet]="gridContext.columnSet">
+  </eg-grid-column-config>
+  <div ngbDropdown placement="bottom-right">
+    <button ngbDropdownToggle class="btn btn-outline-dark no-dropdown-caret">
+      <span title="Show Grid Options" i18n-title
+        class="material-icons mat-icon-in-button">settings</span>
+    </button>
+    <div class="dropdown-menu" ngbDropdownMenu>
+      <a class="dropdown-item label-with-material-icon"
+        (click)="columnConfDialog.open({size:'lg'})">
+        <span class="material-icons">build</span>
+        <span class="ml-2" i18n>Manage Columns</span>
+      </a>
+      <a class="dropdown-item label-with-material-icon"
+        (click)="colWidthConfig.isVisible = !colWidthConfig.isVisible">
+        <span class="material-icons">compare_arrows</span>
+        <span class="ml-2" i18n>Manage Column Widths</span>
+      </a>
+      <a class="dropdown-item label-with-material-icon"
+        (click)="saveGridConfig()">
+        <span class="material-icons">save</span>
+        <span class="ml-2" i18n>Save Grid Settings</span>
+      </a>
+      <a class="dropdown-item label-with-material-icon"
+        (click)="gridContext.columnSet.reset()">
+        <span class="material-icons">restore</span>
+        <span class="ml-2" i18n>Reset Columns</span>
+      </a>
+      <a class="dropdown-item label-with-material-icon"
+        (click)="generateCsvExportUrl($event)"
+        [download]="csvExportFileName"
+        [href]="csvExportUrl">
+        <span class="material-icons">cloud_download</span>
+        <span class="ml-2" i18n>Download Full CSV</span>
+      </a>
+      <a class="dropdown-item label-with-material-icon" (click)="printHtml()">
+        <span class="material-icons">print</span>
+        <span class="ml-2" i18n>Print Full Grid</span>
+      </a>
+
+      <div class="dropdown-divider"></div>
+
+      <a class="dropdown-item label-with-material-icon"
+        (click)="col.visible=!col.visible" *ngFor="let col of gridContext.columnSet.columns">
+        <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
+        <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
+        <span class="ml-2">{{col.label}}</span>
+      </a>
+
+    </div>
+  </div>
+
+<div>
+
+
+

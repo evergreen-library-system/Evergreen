@@ -2179,8 +2179,8 @@
 <!ENTITY staff.server.admin.closed_dates.date_span.invalid "Ending date is earlier than starting date">
 <!ENTITY staff.server.admin.closed_dates.success "Closed date successfully updated">
 <!ENTITY staff.server.admin.copy_locations.title "Evergreen: Copy Locations Editor">
-<!ENTITY staff.server.admin.copy_locations.editor " Copy Locations Editor ">
-<!ENTITY staff.server.admin.copy_locations.editor.create "Create a new copy location">
+<!ENTITY staff.server.admin.copy_locations.editor " Shelving Locations Editor ">
+<!ENTITY staff.server.admin.copy_locations.editor.create "Create a new shelving location">
 <!ENTITY staff.server.admin.copy_locations.editor.name "Name: ">
 <!ENTITY staff.server.admin.copy_locations.editor.holdable.label "Holdable: ">
 <!ENTITY staff.server.admin.copy_locations.editor.hold_verify.label "Hold Verify: ">

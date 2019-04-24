@@ -45,7 +45,7 @@
       <b>[% l('Issuance') %]</b>
     </div>
     <div class="col-md-1">
-      <b>[% l('Copy location') %]</b>
+      <b>[% l('Shelving location') %]</b>
     </div>
     <div class="col-md-1">
       <b>[% l('Call number') %]</b>

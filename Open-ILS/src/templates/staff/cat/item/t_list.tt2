@@ -1,15 +1,19 @@
+<?xml version="1.0" encoding="Windows-1252"?>
 <eg-grid
   id-field="index"
   idl-class="acp"
-  features="-display,clientsort"
+  features="-display,clientsort,allowAll"
   main-label="[% l('Item Status') %]"
   items-provider="gridDataProvider"
   grid-controls="gridControls"
   persist-key="cat.items"
+  status-column="statusIconColumn"
   dateformat="{{$root.egDateAndTimeFormat}}">
 
   <eg-grid-action handler="add_copies_to_bucket"
     label="[% l('Add Items to Bucket') %]"></eg-grid-action>
+  <eg-grid-action handler="show_in_catalog"
+    label="[% l('Show in Catalog') %]"></eg-grid-action>
   <eg-grid-action handler="make_copies_bookable"
     label="[% l('Make Items Bookable') %]"></eg-grid-action>
   <eg-grid-action handler="book_copies_now"
@@ -27,6 +31,8 @@
     label="[% l('Renew Items') %]"></eg-grid-action>
   <eg-grid-action handler="cancel_transit"
     label="[% l('Cancel Transit') %]"></eg-grid-action>
+  <eg-grid-action handler="update_inventory"
+    label="[% l('Update Inventory') %]"></eg-grid-action>
     
   <eg-grid-action handler="selectedHoldingsItemStatusTgrEvt" group="[% l('Show') %]"
     label="[% l('Triggered Events') %]"></eg-grid-action>
@@ -36,7 +42,9 @@
     label="[% l('Record Holds') %]"></eg-grid-action>
   <eg-grid-action handler="print_labels" group="[% l('Show') %]"
     label="[% l('Print Labels') %]"></eg-grid-action>
-    
+  <eg-grid-action handler="locateAcquisition" group="[% l('Show') %]"
+    label="[% l('Originating Acquisition') %]"></eg-grid-action>
+
   <eg-grid-action handler="selectedHoldingsDamaged" group="[% l('Mark') %]"
     label="[% l('Item as Damaged') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsMissing" group="[% l('Mark') %]"
@@ -45,25 +53,25 @@
   <eg-grid-action handler="selectedHoldingsCopyAdd" group="[% l('Add') %]"
     label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyAdd" group="[% l('Add') %]"
-    label="[% l('Volumes and Items') %]"></eg-grid-action>
+    label="[% l('Call Numbers and Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyAlertsAdd" group="[% l('Add') %]"
-    label="[% l('Copy Alerts') %]"></eg-grid-action>
+    label="[% l('Item Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="selectedHoldingsVolEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes') %]"></eg-grid-action>
+    label="[% l('Call Numbers') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyEdit" group="[% l('Edit') %]"
     label="[% l('Items') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes and Items') %]"></eg-grid-action>
+    label="[% l('Call Numbers and Items') %]"></eg-grid-action>
   <eg-grid-action handler="replaceBarcodes" group="[% l('Edit') %]"
     label="[% l('Replace Barcodes') %]"></eg-grid-action>
   <eg-grid-action handler="selectedHoldingsCopyAlertsEdit" group="[% l('Edit') %]"
-    label="[% l('Manage Copy Alerts') %]"></eg-grid-action>
+    label="[% l('Manage Item Alerts') %]"></eg-grid-action>
 
   <eg-grid-action handler="changeItemOwningLib" group="[% l('Transfer') %]"
     label="[% l('Items to Previously Marked Library') %]"></eg-grid-action>
   <eg-grid-action handler="transferItems" group="[% l('Transfer') %]"
-    label="[% l('Items to Previously Marked Volume') %]"></eg-grid-action>
+    label="[% l('Items to Previously Marked Call Number') %]"></eg-grid-action>
 
   <eg-grid-field label="[% l('Alert Message') %]"  path='alert_message' visible></eg-grid-field>
   <eg-grid-field label="[% l('Barcode') %]"        path='barcode' visible></eg-grid-field>
@@ -71,7 +79,7 @@
   <eg-grid-field label="[% l('Due Date') %]"       path="_circ.due_date" datecontext="_circ_lib" dateonlyinterval="_duration" datatype="timestamp" visible></eg-grid-field>
 
   <eg-grid-field label="[% l('Location') %]"       path="location.name" visible></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]"    path="status.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]"    path="status.name" visible></eg-grid-field>
   <eg-grid-field label="[% l('Title') %]"       
     path="call_number.record.simple_record.title" visible>
     <a target="_blank" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['call_number.record.id']}}">
@@ -80,7 +88,7 @@
   </eg-grid-field>
 
   <eg-grid-field label="[% l('Acquisition Cost') %]"     path="cost" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Age-Based Hold Protection') %]"  path="age_protect.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Author') %]"               path="call_number.record.simple_record.author"  hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Date') %]"         path="_circ_summary.last_checkin_time" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Scan Date') %]"    path="_circ_summary.last_checkin_scan_time" datatype="timestamp" hidden></eg-grid-field>
@@ -94,33 +102,46 @@
   <eg-grid-field label="[% l('Classification') %]"        path="call_number.label_class.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Prefix') %]"             path="call_number.prefix.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('CN Suffix') %]"             path="call_number.suffix.label" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circulate as Type') %]"     path="circ_as_type" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulate as Type') %]"     path="circ_as_type.value" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulate?') %]"            path="circulate" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Circulation Library') %]"   path="_circ_lib.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Circulation Library') %]"   path="circ_lib.shortname" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Modifier') %]"  path="circ_modifier.name" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy ID') %]"               path="id" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Number') %]"           path="copy_number" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Created By') %]"            path="creator" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item ID') %]"               path="id" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Number') %]"           path="copy_number" hidden></eg-grid-field>
+
+  <eg-grid-field label="[% l('Created By') %]"
+    path="creator" hidden>
+    <a target="_blank" href="[% ctx.base_path %]/staff/circ/patron/{{item['creator.id']}}/checkout">
+      {{item['creator.usrname']}} <span ng-show="item['creator.id']" class="glyphicon glyphicon-new-window"/>
+    </a>
+  </eg-grid-field>
+
   <eg-grid-field label="[% l('Date Created') %]"          path="create_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Last Edited') %]"      path="edit_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Record Created') %]"   path="call_number.record.create_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Date Record Last Edited') %]"    path="call_number.record.edit_date" datatype="timestamp" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Deleted?') %]"              path="deleted" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Deposit?') %]"              path="deposit" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Deposit amount') %]"        path="deposit_amount" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Document ID') %]"           path="call_number.record.id" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Edited By') %]"             path="editor" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Edited By') %]"             path="editor.usrname" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Fine Level') %]"            path="fine_level" hidden>
+    <span>{{item['fine_level'] | string_pick:'[% l('Low') %]':'[% l('Normal') %]':'[% l('High') %]'}}</span>
+  </eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]"         path="_circ_summary.last_stop_fines" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped Time') %]"    path="_circ_summary.last_stop_fines_time" datatype="timestamp" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Floating?') %]"             path="floating" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Floating Group') %]"        path="floating.name" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holdable?') %]"             path="holdable" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Holds Count') %]"           path="holds_count" hidden></eg-grid-field>
   <eg-grid-field label="[% l('In-House Uses') %]"         path="_inHouseUseCount" hidden></eg-grid-field>
   <eg-grid-field label="[% l('ISBN') %]"                  path="call_number.record.simple_record.isbn" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Loan Duration') %]"         path="loan.duration" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Loan Duration') %]"         path="loan_duration" hidden>
+    <span>{{item['loan_duration'] | string_pick:'[% l('Short') %]':'[% l('Normal') %]':'[% l('Extended') %]'}}</span>
+  </eg-grid-field>
   <eg-grid-field label="[% l('OPAC Visible?') %]"         path="opac_visible" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owned By') %]"              path="call_number.record.owner" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owning Library') %]"        path="call_number.owning_lib.shortname" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Parts') %]"                 path="parts" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Parts') %]"                 path="parts.label" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Price') %]"                 path="price" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publication Date') %]"      path="call_number.record.simple_record.pubdate" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Publisher') %]"             path="call_number.record.simple_record.publisher" hidden></eg-grid-field>
@@ -135,6 +156,8 @@
     {{item['copy_alert_count']}}
     <button ng-disabled="item['copy_alert_count'] <= 0" class="btn btn-sm btn-default" ng-click="col.handlers.copyAlertsEdit(item['id'])">[% l('Manage') %]</button>
   </eg-grid-field>
+  <eg-grid-field label="[% l('Inventory Date') %]"        path="latest_inventory.inventory_date" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Inventory Workstation') %]" path="latest_inventory.inventory_workstation.name"></eg-grid-field>
   
 </eg-grid>
 

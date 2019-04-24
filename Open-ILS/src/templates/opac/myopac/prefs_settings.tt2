@@ -23,7 +23,7 @@
                   <input type='hidden' name='history_delete_confirmed' value='1'/>
                   <input type="submit" value="[% l('Confirm') %]" class="opac-button"/>
                 </td></tr>
-                [% ELSIF ctx.updated_user_settings %]
+                [% ELSIF ctx.updated_user_settings OR ctx.updated_waiver_entries %]
                 <tr><td colspan='2'>
                     <div class='renew-summary'>
                         [% l('Account Successfully Updated') %]
@@ -116,6 +116,48 @@
                         <input id='[% setting %]' name='[% setting %]' 
                             type="checkbox" title="[% behind_desk %]"
                             [% IF ctx.user_setting_map.$setting %] checked='checked' [% END %]/>
+                    </td>
+                </tr>
+                [% END %]
+
+                [%- IF ctx.get_org_setting(ctx.user.home_ou.id, 'circ.privacy_waiver'); %]
+                <tr>
+                    <td>[% l('Allow others to use my account') %]</td>
+                    <td>
+                        [% FOR waiver IN ctx.user.waiver_entries %]
+                        <div id="waiver_[% waiver.id %]">
+                            <input type="hidden" name="waiver_id" value="[% waiver.id %]"/>
+                            [% l('Name:') %] <input type="textbox" name="waiver_name_[% waiver.id %]" value="[% waiver.name | html %]"/><br/>
+                            <label>
+                                <input type="checkbox" name="waiver_place_holds" 
+                                    value="[% waiver.id %]" [% waiver.place_holds == 't' ? 'checked="checked"' : '' %]/>
+                                [% l('Place Holds') %]
+                            </label>
+                            <label>
+                                <input type="checkbox" name="waiver_pickup_holds"
+                                    value="[% waiver.id %]" [% waiver.pickup_holds == 't' ? 'checked="checked"' : '' %]/>
+                                [% l('Pick Up Holds') %]
+                            </label>
+                            <label>
+                                <input type="checkbox" name="waiver_checkout_items"
+                                    value="[% waiver.id %]" [% waiver.checkout_items == 't' ? 'checked="checked"' : '' %]/>
+                                [% l('Check Out Items') %]
+                            </label>
+                            <label>
+                                <input type="checkbox" name="waiver_view_history"
+                                    value="[% waiver.id %]" [% waiver.view_history == 't' ? 'checked="checked"' : '' %]/>
+                                [% l('View Borrowing History') %]
+                            </label>
+                        </div>
+                        [% END %]
+                        <br/>
+                        <div>
+                            [% l('Name:') %] <input type="textbox" name="waiver_name_new"/><br/>
+                            <label><input type="checkbox" name="waiver_place_holds" value="new"/>[% l('Place Holds') %]</label>
+                            <label><input type="checkbox" name="waiver_pickup_holds" value="new"/>[% l('Pick Up Holds') %]</label>
+                            <label><input type="checkbox" name="waiver_checkout_items" value="new"/>[% l('Check Out Items') %]</label>
+                            <label><input type="checkbox" name="waiver_view_history" value="new"/>[% l('View Borrowing History') %]</label>
+                        </div>
                     </td>
                 </tr>
                 [% END %]

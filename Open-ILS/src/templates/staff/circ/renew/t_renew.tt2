@@ -69,11 +69,11 @@
   <eg-grid-action divider="true"></eg-grid-action>
   <eg-grid-action
     handler="addCopyAlerts"
-    label="[% l('Add Copy Alerts') %]">
+    label="[% l('Add Item Alerts') %]">
   </eg-grid-action>
   <eg-grid-action
     handler="manageCopyAlerts"
-    label="[% l('Manage Copy Alerts') %]">
+    label="[% l('Manage Item Alerts') %]">
   </eg-grid-action>
 
 

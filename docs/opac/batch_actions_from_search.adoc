@@ -1,0 +1,115 @@
+﻿Batch Actions from Search
+-------------------------
+
+Introduction
+~~~~~~~~~~~~
+
+The public catalog and staff interface display checkboxes on the search results pages, both for bibliographic records and metarecord constituents.  Selecting one or more titles with these checkboxes adds the titles to a basket, which is viewable on the search bar as an icon.  Users can then take a variety of actions on titles within the basket:  place holds, print or email title details, add the items to a permanent list (from the public catalog) or add the titles to a bucket (from the staff interface).
+
+
+Using Batch Actions from Search in the Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Perform a search in the public catalog and retrieve a list of results.  
++
+Checkboxes appear to the left of the number of each result.  In the case of a metarecord search, checkboxes only appear on the list of metarecord constituents, as metarecords themselves cannot be placed in lists or in baskets.  If you want to place the entire page of results on the list, click the _Select All_ checkbox at the top of the results list. 
++
+ 
+. Select one or more titles from the results list by clicking on the checkboxes. 
++
+Selected titles are automatically added to the basket. A link above the results list tracks the number of titles selected and added to the basket.
++
+image::media/BatchActionsSearch-01.png[Selecting Search Results]
++
+
+. The number of items can also be found with the basket icon above the search bar, next to the _Basket Actions_ drop-down.
++ 
+image::media/BatchActionsSearch-02.png[Basket Actions Drop-down]
++
+
+. Click on the _Basket Actions_ drop-down next to the basket icon to take any of the following actions on titles within the basket: View Basket, Place Hold, Print Title Details, Email Title Details, Add Basket to Saved List, Clear Basket.
+
+image::media/BatchActionsSearch-03.png[Details of Basket Actions Drop-down]
+
+
+Actions Initiated with the Basket Actions Drop-down
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* *View Basket* - This opens the basket in a new screen.  Checkboxes allow for the selection of one or more titles within the basket.  A drop-down menu appears above the list of titles that can be used to place holds, print title details, email title details, or remove titles from the basket.  This menu reads _Actions for these items_.  (See the next section for more information about this menu.)
+
+* *Place Hold* - This allows for placement of holds in batch for all of the items in the basket.  If not already authenticated, users will be asked to login.  Once authenticated, the holds process begins for all titles within the basket.  Users can set _Advanced Hold Options_ for each title, as well as set the pickup location, hold notification and suspend options.  
+
+* *Print Title Details* - This allows for printing details of all titles within the basket.  A confirmation page opens prior to printing that includes a checkbox option for clearing the basket after printing.  
+
+* *Email Title Details* - This allows for emailing details of all titles within the basket.  If not already authenticated, users will be asked to login.  Once authenticated, the email process begins.  A confirmation page opens prior to printing that includes a checkbox option for clearing the basket after emailing. 
+
+* *Add Basket to Saved List* - This allows basket items to be saved to a new permanent list. If not already authenticated, users will be asked to login.  Once authenticated, the creation of a new permanent list begins.    
+
+* *Clear Basket* - This removes removes all titles from the basket
+
+View Basket -> _Actions for These Items_ Drop-down Menu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Most actions described above can be taken on titles from within the basket with the _Actions for these items_ drop-down menu.  This menu offers additional flexibility, as users can select some or all of the individual titles in the basket on which to place holds, print or email details, or remove from the basket.  Users cannot add titles to permanent lists with this menu.
+ 
+image::media/BatchActionsSearch-04.png[Actions for These Items Drop-down Menu]
+
+Using Batch Actions from Search in the Staff Interface
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Perform a search in the staff interface and retrieve a list of results.  
++
+Checkboxes appear to the left of the number of each result.  In the case of a metarecord search, checkboxes only appear on the list of metarecord constituents, as metarecords themselves cannot be placed in lists or in baskets.  If you want to place the entire page of results on the list, click the Select All checkbox at the top of the results list. 
++
+
+. Select one or more titles from the results list by clicking on the checkboxes. Selected titles are automatically added to the basket. A link above the results list tracks the number of titles selected and added to the basket. 
++
+image::media/BatchActionsSearch-01.png[Selecting Search Results]
++
+
+. The number of items can also be found with the basket icon above the search bar, next to the _Basket Actions_ drop-down.
++ 
+image::media/BatchActionsSearch-02.png[Basket Actions Drop-down]
++
+
+. Click on the _Basket Actions_ drop-down next to the basket icon to take any of the following actions on titles within the basket: View Basket, Place Hold, Print Title Details, Email Title Details, Add Basket to Saved List, Clear Basket.
+
+image::media/BatchActionsSearch-03.png[Details of Basket Actions Drop-down]
+
+
+Actions Initiated with the Basket Actions Drop-down
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* *View Basket* - This opens the basket in a new screen.  Checkboxes allow for the selection of one or more titles within the basket.  A drop-down menu appears above the list of titles that can be used to place holds, print title details, email title details, or remove titles from the basket.  This menu reads _Actions for these items_.  (See the next section for more information about this menu.)
+
+* *Place Hold* - This allows for placement of holds in batch for all of the items in the basket. When initiated, the holds process begins for all titles within the basket.  Staff can set _Advanced Hold Options_ for each title placed on hold, as well as set the pickup location, hold notification and suspend options.  
+
+* *Print Title Details* - This allows for printing details of all titles within the basket.  A confirmation page opens prior to printing that includes a checkbox option for clearing the basket after printing.  
+
+* *Email Title Details* - This allows for emailing details of all titles within the basket.  A confirmation page opens prior to printing that includes a checkbox option for clearing the basket after printing. 
+
+* *Add Basket to Bucket* - This allows for titles within the basket to be added to an existing or new Record Bucket.
+** Click the _Basket Actions_ drop-down and choose _Add Basket to Bucket_
+** To add the titles in your basket to an existing bucket, select the bucket from the _Name of existing bucket_ dropdown and click _Add to Select Bucket_.
+** To add the titles in your basket to a new bucket, enter the name of your new bucket in the text box and click _Add to New Bucket_.
++
+image::media/BatchActionsSearch-06.png[Add Basket Titles to Bucket]
++
+* *Clear Basket* - removes all items from the basket
+
+
+View Basket -> Actions for These Items Drop-down Menu
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Most of the basket actions can be taken on titles from within the basket with the _Actions for these items_ drop-down menu.  This menu offers additional flexibility, as staff can select some or all of the individual titles within the basket on which to place holds, print or email details, or remove from the basket.  Staff cannot place titles in Records Buckets from this menu.
+
+Additional Information
+~~~~~~~~~~~~~~~~~~~~~~
+
+The basket used to be called a *Temporary List* in previous versions of Evergreen.
+
+Titles also may be added from the detailed bibliographic record with the _Add to Basket_ link.
+
+Javascript must be enabled for checkboxes to appear in the public catalog; however, users can still add items to the basket and perform batch actions without Javascript.
+
+The default limit on the number of basket titles is 500; however, a template config.tt2 setting (+ctx.max_basket_size+) can be used to set a different limit.  When the configured limit is reached, checkboxes are disabled unless or until some titles in the basket are removed.
+
+The permanent list management page within a patron’s account also now includes batch print and email actions.

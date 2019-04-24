@@ -16,6 +16,7 @@ use OpenILS::Application::Search::Z3950;
 use OpenILS::Application::Search::Zips;
 use OpenILS::Application::Search::CNBrowse;
 use OpenILS::Application::Search::Serial;
+use OpenILS::Application::Search::Browse;
 
 
 use OpenILS::Application::AppUtils;
@@ -34,6 +35,7 @@ sub initialize {
 
 sub child_init {
     OpenILS::Application::Search::Z3950->child_init;
+    OpenILS::Application::Search::Browse->child_init;
 }
     
 

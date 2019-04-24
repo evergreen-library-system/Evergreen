@@ -339,6 +339,24 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
         });
     }
 
+    $scope.copy_address = function(addr) {
+        // Alas, navigator.clipboard is not yet supported in FF and others.
+        var lNode = document.querySelector('#patron-address-copy-' + addr.id());
+
+        // Un-hide the textarea just long enough to copy its data.
+        // Using node.style instead of ng-show/ng-hide in hopes it 
+        // will be quicker, so the user never sees the textarea.
+        lNode.style.visibility = 'visible';
+        lNode.focus();
+        lNode.select();
+
+        if (!document.execCommand('copy')) {
+            console.error('Copy command failed');
+        }
+
+        lNode.style.visibility = 'hidden';
+    }
+
     $scope.toggle_expand_summary = function() {
         if ($scope.collapsePatronSummary) {
             $scope.collapsePatronSummary = false;
@@ -691,13 +709,20 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
         angular.forEach(items, function(i) {
             patron_ids.push(i.id());
         });
-        egPatronMerge.do_merge(patron_ids).then(function() {
-            // ensure that we're not drawing from cached
-            // resuts, as a successful merge just deleted a
-            // record
-            delete patronSvc.lastSearch;
-            $scope.gridControls.refresh();
-        });
+        egPatronMerge.do_merge(patron_ids).then(
+            function() {
+                // ensure that we're not drawing from cached
+                // resuts, as a successful merge just deleted a
+                // record
+                delete patronSvc.lastSearch;
+                $scope.gridControls.refresh();
+            },
+            function(evt) {
+                if (evt && evt.textcode == 'MERGE_SELF_NOT_ALLOWED') {
+                    ngToast.warning(egCore.strings.MERGE_SELF_NOT_ALLOWED);
+                }
+            }
+        );
     }
    
 }])

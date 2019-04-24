@@ -95,6 +95,8 @@ This section discusses the initial setup and subsequent troubleshooting and refi
 
 include::admin_initial_setup/borrowing_items.adoc[]
 
+include::admin/autorenewals.adoc[]
+
 include::admin/circulation_limit_groups.adoc[]
 
 include::admin/hold_driven_recalls.adoc[]
@@ -105,6 +107,8 @@ include::admin/hold_driven_recalls.adoc[]
 include::admin/copy_statuses.adoc[]
 
 include::admin/circing_uncataloged_materials.adoc[]
+
+include::admin/patron_registration.adoc[]
 
 include::admin/patron_self_registration.adoc[]
 
@@ -174,6 +178,8 @@ include::admin/hours.adoc[]
 
 include::admin/closed_dates.adoc[]
 
+include::admin/emergency_closing_handler.adoc[]
+
 :leveloffset: 1
 
 include::admin_initial_setup/hard_due_dates.adoc[]
@@ -182,12 +188,11 @@ include::admin_initial_setup/hard_due_dates.adoc[]
 
 include::admin/booking-admin.adoc[]
 
-include::admin/workstation_admin_receipt_template_editor.adoc[]
+include::admin/receipt_template_editor.adoc[]
 
 :leveloffset: 1
 
 include::circulation/self_check_configuration.adoc[]
-
 
 :leveloffset: 0
 
@@ -198,6 +203,16 @@ Search Settings
 include::admin/search_settings_web_client.adoc[]
 
 include::admin/popularity_badges_web_client.adoc[]
+
+:leveloffset: -1
+
+include::admin/multilingual_search.adoc[]
+
+include::admin/infrastructure_auth_browse.adoc[]
+
+include::admin/virtual_index_defs.adoc[]
+
+:leveloffset: 0
 
 
 // Patron UX
@@ -264,10 +279,20 @@ include::admin/lsa-work_log.adoc[]
 
 include::admin/staff_client-recent_searches.adoc[]
 
+// Other
+
+Other administration
+====================
+
+Introduction
+------------
+
+This section describes other staff client administrator tasks.
+
+include::admin/actiontriggers.adoc[]
 
 :leveloffset: 0
 
 include::shared/attributions.adoc[]
 
 include::shared/end_matter.adoc[]
-

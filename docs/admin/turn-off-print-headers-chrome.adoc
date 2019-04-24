@@ -1,0 +1,17 @@
+Turning off print headers and footers in Chrome
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[printing,headers]
+indexterm:[printing,footers]
+
+If you are not using Hatch for printing, you will probably want to configure
+your browser so that Chrome does not add headers and footers to items printed
+on certain printers.  For example, if you are printing spine labels, you likely
+will not want Chrome to add a date or URL to the margins of your label.
+
+You can turn off these headers and footers using the following steps:
+
+. In the Chrome menu, click _Print..._ to open the print preview screen.
+. Click _More Settings_.
+. Uncheck _Headers and Footers_.
+

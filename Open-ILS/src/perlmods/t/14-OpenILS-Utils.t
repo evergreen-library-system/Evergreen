@@ -1,7 +1,23 @@
-#!perl -T
+#!perl
 
-use Test::More tests => 30;
+# FIXME: unlike the rest of the test cases here, we're /not/ enabling
+# taint checks. The version of DateTime::TimeZone that ships with
+# Ubuntu 14.04 LTS (Trusty) has a bug where attempting to get the
+# local time zone can fail (https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=737265).
+#
+# It's arguable whether taint checking should be enabled at all in
+# the test suite. On the one hand, it is recommended practice for
+# all code that accepts external input; on the other hand, a typical
+# Evergreen installation doesn't run anything setuid/setgid that
+# would automatically trigger taint-checking. Ideally we would
+# eat our Wheaties, but we may be looking at consuming an entire
+# truckload to verify that everything would continue to work if
+# we turn it on across the board.
+
+use Test::More tests => 47;
 use Test::Warn;
+use DateTime::TimeZone;
+use DateTime::Format::ISO8601;
 use utf8;
 
 use_ok( 'OpenILS::Utils::Configure' );
@@ -21,6 +37,7 @@ use_ok( 'OpenILS::Utils::RemoteAccount' );
 use_ok( 'OpenILS::Utils::ZClient' );
 use_ok( 'OpenILS::Utils::EDIReader' );
 use_ok( 'OpenILS::Utils::HTTPClient' );
+use_ok( 'OpenILS::Utils::DateTime' );
 
 # LP 800269 - Test MFHD holdings for records that only contain a caption field
 my $co_marc = MARC::Record->new();
@@ -98,3 +115,49 @@ is($edi_msgs->[0]->{purchase_order}, '24', 'edi reader: PO number');
 is($edi_msgs->[1]->{invoice_ident}, '5TST084027', 'edi reader: invoice ident');
 is(scalar(@{$edi_msgs->[1]->{lineitems}}), '2', 'edi reader: lineitem count');
 
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 second'), 1);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 minute'), 60);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 hour'), 3600);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 day'), 86400);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 week'), 604800);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month'), 2628000);
+
+# With context, no DST change, with timezone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-04T23:59:59-04')->set_time_zone("America/New_York")), 2419200);
+
+# With context, with DST change, with timezone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-14T23:59:59-04')->set_time_zone("America/New_York")), 2415600);
+
+# With context, no DST change, no time zone
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-04T23:59:59-04')), 2419200);
+
+# With context, with DST change, no time zone (so, not DST-aware)
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 month',
+    DateTime::Format::ISO8601->new->parse_datetime('2017-02-14T23:59:59-04')), 2419200);
+
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 year'), 31536000);
+is (OpenILS::Utils::DateTime::interval_to_seconds('1 year 1 second'), 31536001);
+
+sub get_offset {
+    # get current timezone offset for future use
+    my $offset = DateTime::TimeZone::offset_as_string(
+                    DateTime::TimeZone->new( name => 'local' )->offset_for_datetime(
+                        DateTime::Format::ISO8601->new()->parse_datetime('2018-09-17')
+                    )
+                );
+    $offset =~ s/^(.\d\d)(\d\d)+/$1:$2/;
+    return $offset;
+}
+
+is (OpenILS::Utils::DateTime::clean_ISO8601('20180917'), '2018-09-17T00:00:00', 'plain date converted to ISO8601 timestamp');
+is (OpenILS::Utils::DateTime::clean_ISO8601('I am not a date'), 'I am not a date', 'non-date simply returned as is');
+my $offset = get_offset();
+is (OpenILS::Utils::DateTime::clean_ISO8601('20180917 08:31:15'), "2018-09-17T08:31:15$offset", 'time zone added to date/time');
+
+# force timezone to specific value to avoid a spurious
+# pass if this test happens to be run in UTC
+$ENV{TZ} = 'EST';
+is (OpenILS::Utils::DateTime::clean_ISO8601('2018-09-17T17:31:15Z'), "2018-09-17T17:31:15+00:00", 'interpret Z in timestamp correctly');

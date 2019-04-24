@@ -1,0 +1,36 @@
+<div class="modal-header">
+  <button type="button" class="close"
+    ng-click="cancel()" aria-hidden="true">&times;</button>
+  <h4 class="modal-title">
+    [% l('Add Display Entry') %]
+  </h4>
+</div>
+<div class="modal-body tight-vert-form" id="patron-pay-by-credit-form">
+  <div class="panel panel-default">
+    <div class="panel-heading" ng-if="context.selected_parent && !context.is_root && !context.selected_parent.permanent">
+    [% l('Adding Entry to ') %] {{context.selected_parent.grp().name()}}
+    </div>
+    <div class="panel-heading" ng-if="context.is_root || context.selected_parent.permanent">
+    [% l('Adding Root Entry') %]
+    </div>
+    <div class="panel-body">
+      <div class="row form-group">
+        <div class="col-md-4"><label>[% l('Available Entries') %]</label></div>
+        <div class="col-md-8">
+          <select class="form-control" ng-model="context.selected_grp"
+            ng-options="grp.name() disable when grp._filter_grp for grp in context.edit_profiles track by grp.id()">
+            <option value="" ng-if="!context.edit_profiles.length">[% l('&lt;NONE&gt;') %]</option>
+          </select>
+        </div>
+        <div class="col-md-4"><label>[% l('Add as root entry?') %]</label></div>
+        <div class="col-md-8">
+          <input type="checkbox" ng-model="context.is_root" ng-disabled="!context.selected_parent">
+        </div>
+      </div>
+    </div><!--panel-body-->
+  </div><!--panel-->
+</div><!--modal-body-->
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok()" ng-disabled="!context.selected_grp.id()">[% l('Submit') %]</button>
+  <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+</div>

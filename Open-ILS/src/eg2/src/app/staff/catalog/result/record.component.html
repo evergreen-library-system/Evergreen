@@ -1,0 +1,147 @@
+<!-- 
+  TODO
+  routerLink's
+  egDateFilter's
+-->
+<eg-record-bucket-dialog #addToListDialog>
+</eg-record-bucket-dialog>
+
+<div class="col-lg-12 card tight-card mb-2 bg-light">
+  <div class="card-body">
+    <div class="row">
+      <!-- Checkbox, jacket image, and title blob live in a flex row
+           because there's no way to give them col-lg-* columns that
+           don't waste a lot of space. -->
+      <div class="col-lg-6 d-flex">
+        <label class="checkbox">
+          <span class="font-weight-bold font-italic">
+            {{index + 1 + searchContext.pager.offset}}.
+          </span>
+          <input class="pl-1" type='checkbox' [(ngModel)]="isRecordSelected"
+            (change)="toggleBasketEntry()"/>
+        </label>
+        <!-- XXX hard-coded width so columns align vertically regardless
+             of the presence of a jacket image -->
+        <div class="pl-2 record-jacket-div" >
+          <a href="javascript:void(0)" (click)="navigateToRecord(summary)">
+            <img src="/opac/extras/ac/jacket/small/r/{{summary.id}}"/>
+          </a>
+        </div>
+        <div class="flex-1 pl-2">
+          <div class="row">
+            <div class="col-lg-12 font-weight-bold">
+              <!-- nbsp allows the column to take shape when no value exists -->
+              <a href="javascript:void(0)"
+                (click)="navigateToRecord(summary)">
+                {{summary.display.title || '&nbsp;'}}
+              </a>
+            </div>
+          </div>
+          <div class="row pt-2">
+            <div class="col-lg-12">
+              <!-- nbsp allows the column to take shape when no value exists -->
+              <a href="javascript:void(0)"
+                (click)="searchAuthor(summary)">
+                {{summary.display.author || '&nbsp;'}}
+              </a>
+            </div>
+          </div>
+          <div class="row pt-2">
+            <div class="col-lg-12">
+              <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
+                <ng-container *ngFor="let icon of summary.attributes.icon_format">
+                <span class="pr-1">
+                  <img class="pr-1"
+                    src="/images/format_icons/icon_format/{{icon}}.png"/>
+                  <span>{{iconFormatLabel(icon)}}</span>
+                </span>
+                </ng-container>
+              </ng-container>
+              <span class='pl-1'>{{summary.display.edition}}</span>
+              <span class='pl-1'>{{summary.display.pubdate}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="row" [ngClass]="{'pt-2':copyIndex > 0}" 
+          *ngFor="let copyCount of summary.holdingsSummary; let copyIdx = index">
+          <div class="w-100" *ngIf="copyCount.type == 'staff'">
+            <div class="float-left text-left w-50">
+              <span class="pr-1">
+              {{copyCount.available}} / {{copyCount.count}} items
+              </span>
+            </div>
+            <div class="float-left w-50">
+              @ {{orgName(copyCount.org_unit)}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-1">
+        <div class="row">
+          <div class="w-100">
+            TCN: {{summary.record.tcn_value()}}
+          </div>
+        </div>
+        <div class="row">
+          <div class="w-100">
+            Holds: {{summary.holdCount}}
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="float-right small-text-1">
+              Created {{summary.record.create_date() | date:'shortDate'}} by
+              <!-- creator if fleshed after the initial data set is loaded -->
+              <a *ngIf="summary.record.creator().usrname" target="_self" 
+                href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
+                  {{summary.record.creator().usrname()}}
+              </a>
+              <!-- add a spacer pending data to reduce page shuffle -->
+              <span *ngIf="!summary.record.creator().usrname"> ... </span>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-lg-12">
+            <div class="float-right small-text-1" i18n>
+              Edited {{summary.record.edit_date() | date:'shortDate'}} by
+              <a *ngIf="summary.record.editor().usrname" target="_self" 
+                href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
+                  {{summary.record.editor().usrname()}}
+              </a>
+              <span *ngIf="!summary.record.editor().usrname"> ... </span>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-2">
+          <div class="col-lg-12">
+            <div class="float-right">
+              <span>
+                <button (click)="placeHold()"
+                  class="btn btn-sm btn-success label-with-material-icon small-text-1">
+                  <span class="material-icons">check</span>
+                  <span i18n>Place Hold</span>
+                </button>
+              </span>
+              <!--
+              <span class="pl-1">
+                <button 
+                  (click)="addToListDialog.recordId=summary.record.id(); addToListDialog.open({size: 'lg'})"
+                  class="btn btn-sm btn-info label-with-material-icon small-text-1">
+                  <span class="material-icons">playlist_add_check</span>
+                  <span i18n>Add to List</span>
+                </button>
+              </span>
+              -->
+            </div>
+          </div>
+        </div>
+      </div><!-- col -->
+    </div><!-- row -->
+  </div><!-- card-body -->
+</div><!-- card -->
+

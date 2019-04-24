@@ -5,6 +5,8 @@ The *My Lists* feature replaces the bookbag feature that was available in versio
 
 There is now a direct link to *My Lists* from the *My Account* area in the top right part of the screen.  This gives users the ability to quickly access their lists while logged into the catalog.
 
+As of version 3.2, <<_batch_actions_from_search,Batch Actions from Search Results>> has replaced the old Temporary Lists feature, as well as enabled multiple selections from a search results list.
+
 image::media/My_Lists.png[My Lists]
 
 Create New Lists
@@ -16,48 +18,31 @@ Create New Lists
 
 3) Choose a title to add to your list.  Click *Add to My List*.
 
-image::media/My_Lists1.jpg[My_Lists1]
+image::media/My_Lists1.jpg[Add to My List]
 
-4) Scroll up to the gray row on top of the *Search Results*. Click *View My List*
+4) Select an existing list, or create the a new list.
 
-5) Items are added to a temporary list.  Your temporary list appears at the bottom of the screen.
+image::media/My_Lists_dd.png[List Dropdown]
 
-6) The *Actions for these items* menu on the right side of the screen demonstrates the actions that you can apply to this list.  You can place holds on items in your temporary list; remove items from the list; or move selected items to a permanent list.  
+5) Scroll up to the top of the screen and click *My Lists*.  Click on the name of your list to see any titles added to it.
 
-To place a hold or remove items from the list, check the box adjacent to the title of the item, and select the desired function.
+6) The *Actions for these items* menu on the left side of the screen demonstrates the actions that you can apply to this list.  You can place holds on titles in your list, print or email title details of titles in your list, and remove titles from your list.  
 
-To move selected items into an existing list, check the box adjacent to the title, and highlight the list in which you will store the item.
+To perform actions on multiple list rows, check the box adjacent to the title of the item, and select the desired function.
 
-image::media/My_Lists3.jpg[My_Lists3]
+image::media/My_Lists3.jpg[List Actions]
 
-7) If you do not want to place the item into an existing list, you can create a new list to contain the item.  Enter the name of the new list, and, if desired, enter a description.
+7) Click *Edit* to add or edit a note.
 
-image::media/My_Lists4.jpg[My_Lists4]
+8) Enter desired notes, and click *Save Notes*.
 
-8) Click *Submit*.
+image::media/My_Lists6.jpg[List Notes]
 
-9) The new list appears beneath the temporary list.
-
-10) Select the title(s) of the items that you want to add to the list, and click *Actions for these items*.  Select the permanent list that you created from the drop down menu.
-
-image::media/My_Lists5.jpg[My_Lists5]
-
-11) Click *Go*.
-
-12) Your existing lists appear. Click on a list to view the items in the list.  You can sort the items in the permanent list.  You can also add, edit, and remove notes.
-
-13) Click *Edit* to add or edit a note.
-
-14). Enter desired notes, and click *Save Notes*.
-
-image::media/My_Lists6.jpg[My_Lists6]
-
-15) You can keep your list private, or you can share it.  To share your list, click *Share*, and click the orange RSS icon to share through an RSS reader.  You can also click *HTML View* to share your list as an HTML link.  
+9) You can keep your list private, or you can share it.  To share your list, click *Share*, and click the orange RSS icon to share through an RSS reader.  You can also click *HTML View* to share your list as an HTML link.  
 
 You can also download your list into a CSV file by clicking *Download CSV*.
 
-image::media/My_Lists7.jpg[My_Lists7]
-
+image::media/My_Lists7.jpg[Share, Delete, Download List]
 
 16) When you no longer need a list, click *Delete List*. 
 

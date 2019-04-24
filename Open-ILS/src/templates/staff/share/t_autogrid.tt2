@@ -120,8 +120,13 @@
             {{t}}
           </a>
         </li>
+        <li ng-if="allowAll" ng-repeat="t in [500,1000]">
+          <a href ng-click='offset(0);limit(t);collect()'>
+            {{t}}
+          </a>
+        </li>
         <li ng-if="allowAll" >
-          <a href ng-click='offset(0);limit(10000);collect()'>[% l('All') %]</a>
+          <a href ng-click='confirmAllowAllAndCollect();'>[% l('All') %]</a>
         </li>
       </ul>
     </div>
@@ -228,9 +233,12 @@
           type='checkbox' ng-model="selectAll"/> 
       </div>
     </div>
+    <div class="eg-grid-cell eg-grid-cell-stock-status" ng-show="statusColumn.isEnabled">
+      <div title="[% l('Status Icon Column') %]">[% l('Status') %]</div>
+    </div>
     <div class="eg-grid-cell"
         eg-grid-column-drag-dest
-        ng-class="{'eg-grid-column-last-mod' : lastModColumn==col.name}"
+        ng-class="{'eg-grid-column-last-mod' : isLastModifiedColumn(col)}"
         column="{{col.name}}"
         eg-right-click="onContextMenu($event)"
         ng-repeat="col in columns"
@@ -257,7 +265,8 @@
 
   <!-- Inline grid configuration row -->
   <div class="eg-grid-row eg-grid-conf-row" ng-show="showGridConf">
-    <div class="eg-grid-cell eg-grid-cell-conf-header">
+    <div class="eg-grid-cell"
+      ng-class="statusColumn.isEnabled ? 'eg-grid-cell-conf-header-status' : 'eg-grid-cell-conf-header'">
       <div class="eg-grid-conf-cell-entry">[% l('Expand') %]</div>
       <div class="eg-grid-conf-cell-entry">[% l('Shrink') %]</div>
     </div>
@@ -288,7 +297,7 @@
         id="eg-grid-row-{{$index + 1}}"
         ng-repeat="item in items"
         ng-show="items.length > 0"
-        ng-class="{'eg-grid-row-selected' : selected[indexValue(item)]}">
+        ng-class="[{'eg-grid-row-selected' : selected[indexValue(item)]}, rowClass.apply(item)]">
       <div class="eg-grid-cell eg-grid-cell-stock" ng-show="showIndex"
         ng-click="handleRowClick($event, item)" title="[% l('Row Index') %]">
         <a href ng-show="gridControls.activateItem" 
@@ -306,17 +315,27 @@
             ng-model="selected[indexValue(item)]"/>
         </div>
       </div>
+      <div class="eg-grid-cell eg-grid-cell-stock-status" ng-show="statusColumn.isEnabled">
+          <span ng-bind-html="statusColumn.template(item)"></span>
+      </div>
       <div class="eg-grid-cell eg-grid-cell-content"
           ng-click="handleRowClick($event, item)"
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
+          ng-class="col.cssSelector"
           style="text-align:{{col.align}}; flex:{{col.flex}}"
           ng-show="col.visible">
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
-          <span ng-if="col.template && !col.compiled" style="padding-left:5px; padding-right:10px;"
-            ng-bind-html="translateCellTemplate(col, item)">
+          <span ng-if="col.template && !col.compiled" 
+            style="padding-left:5px; padding-right:10px;">
+            <span tooltip-class="eg-grid-tooltip"
+              tooltip-class="eg-grid-tooltip"
+              tooltip-placement="top-left"
+              uib-tooltip-html="getHtmlTooltip(col, item)">
+              <span ng-bind-html="translateCellTemplate(col, item)"></span>
+            </span>
           </span>
 
           <span ng-if="col.template && col.compiled" style="padding-left:5px; padding-right:10px;"
@@ -325,7 +344,11 @@
 
           <!-- otherwise, simply display the item value, which may 
                pass through datatype-specific filtering. -->
-          <span ng-if="!col.template" style="padding-left:5px; padding-right:10px;">
+          <span ng-if="!col.template" 
+            uib-tooltip="{{itemFieldValue(item, col) | egGridValueFilter:col:item}}"
+            tooltip-placement="top-left"
+            tooltip-class="eg-grid-tooltip"
+            style="padding-left:5px; padding-right:10px;">
             {{itemFieldValue(item, col) | egGridValueFilter:col:item}}
           </span>
       </div>

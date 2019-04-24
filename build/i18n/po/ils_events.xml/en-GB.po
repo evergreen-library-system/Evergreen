@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 14:12-0400\n"
-"PO-Revision-Date: 2015-03-25 16:23+0000\n"
+"POT-Creation-Date: 2018-12-14 21:52-0400\n"
+"PO-Revision-Date: 2018-12-25 01:59+0000\n"
 "Last-Translator: Andi Chandler <Unknown>\n"
 "Language-Team: English (United Kingdom) <en_GB@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:27+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2018-12-26 04:34+0000\n"
+"X-Generator: Launchpad (build 18847)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -69,7 +69,7 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "The requested metabib_series_field_entry was not found"
 
-#: 11105.PATRON_CREDIT_DISABLED:1040
+#: 11105.PATRON_CREDIT_DISABLED:1043
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
@@ -185,8 +185,8 @@ msgstr "The requested metabib_keyword_field_entry was not found"
 msgid "The requested config_audience_map was not found"
 msgstr "The requested config_audience_map was not found"
 
-#: 8004.OFFLINE_CONFIG_ERROR:951 8005.OFFLINE_CHECKSUM_FAILED:954
-#: 8006.OFFLINE_SESSION_NOT_FOUND:957
+#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
+#: 8006.OFFLINE_SESSION_NOT_FOUND:960
 msgid "Offline server is not configured properly"
 msgstr "Offline server is not configured properly"
 
@@ -270,11 +270,11 @@ msgstr "Circulation has no more renewals remaining"
 msgid "This account is marked as inactive"
 msgstr "This account is marked as inactive"
 
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1052
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
 msgid "The distribution still has dependent objects"
-msgstr ""
+msgstr "The distribution still has dependent objects"
 
-#: 8003.OFFLINE_PARAM_ERROR:948
+#: 8003.OFFLINE_PARAM_ERROR:951
 msgid "Missing params in offline upload"
 msgstr "Missing params in offline upload"
 
@@ -282,15 +282,15 @@ msgstr "Missing params in offline upload"
 msgid "The requested reporter_report_folder was not found"
 msgstr "The requested reporter_report_folder was not found"
 
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1058
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
 msgid "The prediction pattern still has dependent objects"
-msgstr ""
+msgstr "The prediction pattern still has dependent objects"
 
 #: 1545.PERM_EX_NOT_FOUND:293
 msgid "The requested perm_ex was not found"
 msgstr "The requested perm_ex was not found"
 
-#: 10101.ACQ_ALREADY_CANCELED:1003
+#: 10101.ACQ_ALREADY_CANCELED:1006
 msgid "The object is already canceled."
 msgstr "The object is already cancelled."
 
@@ -328,7 +328,7 @@ msgstr "The requested money_collections_tracker was not found"
 msgid "An authority record already exists with the requested ARN"
 msgstr "An authority record already exists with the requested ARN"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1016
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
 msgid "The caption/pattern still has dependent issuances"
 msgstr "The caption/pattern still has dependent issuances"
 
@@ -344,7 +344,7 @@ msgstr "This requested action would result in a negative patron balance"
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "The requested actor_user_standing_penalty was not found"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:939
+#: 8000.OFFLINE_SESSION_ACTIVE:942
 msgid "An offline session for this location is currently processing"
 msgstr "An offline session for this location is currently processing"
 
@@ -372,7 +372,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "Requested billing note does not exist"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1024
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -390,7 +390,7 @@ msgstr "Booking reservation not found"
 
 #: 1211.BILL_ALREADY_VOIDED:81
 msgid "The bill is already voided"
-msgstr ""
+msgstr "The bill is already voided"
 
 #: 1700.NON_CAT_TYPE_EXISTS:710
 msgid "The non-cataloged type object already exists"
@@ -404,7 +404,7 @@ msgstr ""
 "The requested acq.purchase_order cannot be split because it does not have "
 "more than one lineitem"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:996
+#: 10004.ACQ_LINEITEM_NO_PRICE:999
 msgid "The lineitem has no price"
 msgstr "The lineitem has no price"
 
@@ -464,11 +464,11 @@ msgstr "The requested config_metabib_field was not found"
 msgid "The requested actor_org_address was not found"
 msgstr "The requested actor_org_address was not found"
 
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1055
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
 msgid "The stream still has dependent objects"
-msgstr ""
+msgstr "The stream still has dependent objects"
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1028
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr "Checkin attempted on item during minimum transit checkin interval."
 
@@ -484,7 +484,7 @@ msgstr "The requested acq.fund_spent_total was not found"
 msgid "The requested permission_grp_tree was not found"
 msgstr "The requested permission_grp_tree was not found"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:987
+#: 10001.ACQ_LINEITEM_NO_COPIES:990
 msgid "The lineitem has no attached copies"
 msgstr "The lineitem has no attached copies"
 
@@ -534,7 +534,7 @@ msgstr ""
 "The selected copy may not circulate because the recipient's home location is "
 "not within the copy's circulation range"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:999
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
 msgid "The lineitem has no provider"
 msgstr "The lineitem has no provider"
 
@@ -554,7 +554,7 @@ msgstr "The requested money_cash_payment was not found"
 msgid "The selected location cannot have volumes attached"
 msgstr "The selected location cannot have volumes attached"
 
-#: 8002.OFFLINE_FILE_ERROR:945
+#: 8002.OFFLINE_FILE_ERROR:948
 msgid "An offline file or directory could not be created or accessed"
 msgstr "An offline file or directory could not be created or accessed"
 
@@ -566,6 +566,7 @@ msgstr "A record already exists with the requested TCN value"
 msgid ""
 "The transit on this item may not be canceled due to the state the item is in"
 msgstr ""
+"The transit on this item may not be canceled due to the state the item is in"
 
 #: 1.UNKNOWN:17
 msgid "Placeholder event.  Used for development only"
@@ -607,7 +608,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "The requested acq.fund_spent_balance was not found"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1012
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
 msgid "The subscription still has dependent objects"
 msgstr "The subscription still has dependent objects"
 
@@ -623,7 +624,7 @@ msgstr "The requested config_lit_form_map was not found"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "The requested metabib_record_descriptor was not found"
 
-#: 10102.ACQ_NOT_CANCELABLE:1006
+#: 10102.ACQ_NOT_CANCELABLE:1009
 msgid "The object is not in a cancelable state."
 msgstr "The object is not in a cancellable state."
 
@@ -671,7 +672,7 @@ msgstr "Provided parameters describe unacceptable reservation."
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "The requested acq.funding_source_balance was not found"
 
-#: 10000.ACQ_LINEITEM_APPROVED:984
+#: 10000.ACQ_LINEITEM_APPROVED:987
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr "The lineitem cannot be altered because it has already been approved"
 
@@ -701,7 +702,7 @@ msgstr "The requested config_non_catalogued_type was not found"
 
 #: 1716.COPY_LOCATION_NOT_EMPTY:716
 msgid "The copy location is not empty"
-msgstr ""
+msgstr "The copy location is not empty"
 
 #: 1542.CONFIG_LANGUAGE_MAP_NOT_FOUND:284
 msgid "The requested config_language_map was not found"
@@ -815,7 +816,7 @@ msgstr "The provided password is not correct"
 msgid "The requested config_item_type_map was not found"
 msgstr "The requested config_item_type_map was not found"
 
-#: 8007.OFFLINE_SESSION_EXISTS:960
+#: 8007.OFFLINE_SESSION_EXISTS:963
 msgid "A session with the given name already exists"
 msgstr "A session with the given name already exists"
 
@@ -823,7 +824,7 @@ msgstr "A session with the given name already exists"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "The requested config_circ_matrix_ruleset_not_found was not found"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:990
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
 msgid "The lineitem detail has no associated fund"
 msgstr "The lineitem detail has no associated fund"
 
@@ -893,7 +894,7 @@ msgstr ""
 
 #: 1232.ITEM_DEPOSIT_REQUIRED:162
 msgid "Payment of an item deposit is required."
-msgstr ""
+msgstr "Payment of an item deposit is required."
 
 #: 1709.MAX_HOLDS:743
 msgid "User has reached the maximum number of holds"
@@ -927,9 +928,13 @@ msgstr "The selected bib record has volumes attached"
 msgid "The requested action_hold_request was not found"
 msgstr "The requested action_hold_request was not found"
 
-#: 8011.SKIP_ASSET_CHANGED:972
+#: 8011.SKIP_ASSET_CHANGED:975
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr "Asset status was changed since the offline transaction was recorded"
+
+#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+msgid "Circulation has no more auto-renewals remaining"
+msgstr "Circulation has no more auto-renewals remaining"
 
 #: 1212.PATRON_EXCEEDS_OVERDUE_COUNT:84
 msgid "The patron has too many overdue items"
@@ -995,7 +1000,7 @@ msgstr "The requested ex was not found"
 msgid "Hold capture was delayed for this item"
 msgstr "Hold capture was delayed for this item"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:976
+#: 9000.REPORT_TEMPLATE_EXISTS:979
 msgid "A report template with the given name and folder already exists"
 msgstr "A report template with the given name and folder already exists"
 
@@ -1035,7 +1040,7 @@ msgstr "The requested actor_stat_cat was not found"
 msgid "The user attempted to set their password to a weak value."
 msgstr "The user attempted to set their password to a weak value."
 
-#: 9001.REPORT_REPORT_EXISTS:980
+#: 9001.REPORT_REPORT_EXISTS:983
 msgid "A report with the given name and folder already exists"
 msgstr "A report with the given name and folder already exists"
 
@@ -1043,7 +1048,7 @@ msgstr "A report with the given name and folder already exists"
 msgid "A volume with the same label, title and owning library exists"
 msgstr "A volume with the same label, title and owning library exists"
 
-#: 8008.OFFLINE_INVALID_SESSION:963
+#: 8008.OFFLINE_INVALID_SESSION:966
 msgid "The session name is invalid"
 msgstr "The session name is invalid"
 
@@ -1122,7 +1127,7 @@ msgstr "The requested acq.currency_type was not found"
 msgid "The requested money_grocery was not found"
 msgstr "The requested money_grocery was not found"
 
-#: 8009.OFFLINE_NO_ORG:966 8010.OFFLINE_SESSION_COMPLETE:969
+#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
 msgid "No org id was provided"
 msgstr "No org id was provided"
 
@@ -1130,7 +1135,7 @@ msgstr "No org id was provided"
 msgid "The patron has too many lost items."
 msgstr "The patron has too many lost items."
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:942
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
 msgid "An offline file for this workstation exists within this session"
 msgstr "An offline file for this workstation exists within this session"
 
@@ -1148,7 +1153,7 @@ msgstr "The requested vandelay_queued_authority_record was not found"
 
 #: 1234.ITEM_DEPOSIT_PAID:168
 msgid "An item deposit was paid."
-msgstr ""
+msgstr "An item deposit was paid."
 
 #: 1597.BIBLIO_RECORD_NOTE_NOT_FOUND:442
 msgid "The requested biblio_record_note was not found"
@@ -1174,11 +1179,13 @@ msgstr "The requested metabib_metarecord was not found"
 msgid "User already has an open hold on the selected item"
 msgstr "User already has an open hold on the selected item"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1048
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
 msgstr ""
+"Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
+"the configured limit"
 
 #: 1712.AUTH_QUEUE_EXISTS:752
 msgid "An authority record queue with the same name already exists"
@@ -1194,7 +1201,7 @@ msgstr "The saved item has been edited by another user"
 
 #: 7028.PATRON_CIRC_MISMATCH:931
 msgid "Potentially notified patron does not own the circulation."
-msgstr ""
+msgstr "Potentially notified patron does not own the circulation."
 
 #: 1843.ACQ_LINEITEM_ATTR_NOT_FOUND:612
 msgid "The requested acq.lineitem_attr was not found"
@@ -1238,7 +1245,7 @@ msgstr "The requested config_bib_source was not found"
 
 #: 1717.COPY_LOCATION_NOT_FOUND:719
 msgid "The copy location does not exist"
-msgstr ""
+msgstr "The copy location does not exist"
 
 #: 1646.VANDELAY_QUEUED_BIB_RECORD_NOT_FOUND:589
 msgid "The requested vandelay_queued_bib_record was not found"
@@ -1258,7 +1265,7 @@ msgstr "The requested item is already marked as lost"
 
 #: 7016.ITEM_ON_HOLDS_SHELF:895
 msgid "This item is currently on the holds shelf for another patron:"
-msgstr ""
+msgstr "This item is currently on the holds shelf for another patron:"
 
 #: 1642.CONFIG_CIRC_MODIFIER_NOT_FOUND:577
 msgid "The requested config_circ_modifier was not found"
@@ -1290,17 +1297,17 @@ msgstr "The patron in question has reached the maximum fine amount"
 
 #: 1233.ITEM_RENTAL_FEE_REQUIRED:165
 msgid "Payment of an item rental fee is required."
-msgstr ""
+msgstr "Payment of an item rental fee is required."
 
 #: 1574.CONTAINER_CALL_NUMBER_BUCKET_ITEM_NOT_FOUND:374
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "The requested container_call_number_bucket_item was not found"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:993
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
 msgid "The lineitem detail has no owning_lib"
 msgstr "The lineitem detail has no owning_lib"
 
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1020
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1336,17 +1343,19 @@ msgstr "The requested authority_record_note was not found"
 msgid "The requested acq.fund was not found"
 msgstr "The requested acq.fund was not found"
 
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1044
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
 msgstr ""
+"Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
+"configured limit"
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "The requested action_non_catalogued_circulation was not found"
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1033
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
 msgid ""
 "A serial pattern code has been configured that fails to conform to MFHD "
 "standards for fields 853-855."

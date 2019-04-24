@@ -3,6 +3,717 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.11
+----------------
+
+This release contains bug fixes improving on Evergreen 3.1.10.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Circulation
+^^^^^^^^^^^
+
+* Allows the Title Hold screen to remember previously selected pickup library
+  (https://bugs.launchpad.net/evergreen/+bug/1665534[Bug #1665534])
+* Sorting improvements for printing the Holds Pull List
+  (https://bugs.launchpad.net/evergreen/+bug/1749502[Bug #1749502])
+* Better display for non-catalogued checkouts in the offline checkout preview
+  pane (https://bugs.launchpad.net/evergreen/+bug/1818576[Bug #1818576])
+
+Cataloging
+^^^^^^^^^^
+
+* Fixes a bug that changed subfield order in bib record after editing a linked
+  authority (https://bugs.launchpad.net/evergreen/+bug/712490[Bug #712490])
+* Allows opening multiple selected copies in Item Status screen from the
+  Holdings View (https://bugs.launchpad.net/evergreen/+bug/1734775[Bug
+  #1734775])
+* Adds missing "Deleted?" column choice to Record Buckets
+  (https://bugs.launchpad.net/evergreen/+bug/1746360[Bug #1746360])
+* Fixes the batch Call Number label field on the Volume editor to populate from
+  the MARC record (https://bugs.launchpad.net/evergreen/+bug/1793196[Bug
+  #1793196])
+* Fixes a bug to allow editing the call number label for some but not all
+  attached copies (https://bugs.launchpad.net/evergreen/+bug/1794588[Bug
+  #1794588])
+* Fixes the sort order of Parts on the Holdings View
+  (https://bugs.launchpad.net/evergreen/+bug/1800178[Bug #1800178])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Web client (websocket) logins are now properly tracked as user activity
+  (https://bugs.launchpad.net/evergreen/+bug/1818153[Bug #1818153])
+* Fixes some log warnings related to Holds Depth
+  (https://bugs.launchpad.net/evergreen/+bug/1667497[Bug #1667497])
+* Fixes a bug in the fine generator related to Bookings
+  (https://bugs.launchpad.net/evergreen/+bug/1819796[Bug #1819796])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.1.11 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Garry Collum
+* Bill Erickson
+* Jason Etheridge
+* Rogan Hamby
+* Kyle Huckins
+* Terran McCanna
+* Michele Morgan
+* Jane Sandberg
+* Janet Schrader
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+
+
+Evergreen 3.1.10
+----------------
+
+This release contains bug fixes improving on Evergreen 3.1.9.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Cataloging
+^^^^^^^^^^
+
+* Catalogers can now set the Bib Source in the Z39.50 Overlay and Import interfaces (https://bugs.launchpad.net/evergreen/+bug/1727345[Bug #1727345])
+* Fixes an issue where publishers display in the publication date column in copy buckets (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+* Electronic reources no longer display a call number called _##URI##_ in the Volume Editor (https://bugs.launchpad.net/evergreen/+bug/1752665[Bug #1752665])
+* Spine/pocket label templates can now include circulation library and owning library (https://bugs.launchpad.net/evergreen/+bug/1726568[Bug #1726568])
+
+Reports
+^^^^^^^
+
+* Fixes an issue where external documentation links can open in the reports module (https://bugs.launchpad.net/evergreen/+bug/1784893[Bug #1784893])
+* Fixes an issue where publishers display as a publication date in reports (https://bugs.launchpad.net/evergreen/+bug/1812698[Bug #1812698])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The _DELETE_COPY_ALERT_ permission no longer needs to be granted on the consortium level (https://bugs.launchpad.net/evergreen/+bug/1783421[Bug #1783421])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.10 point release of
+Evergreen:
+
+* John Amundson
+* Galen Charlton
+* Jeff Davis
+* James Fournie
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* Dan Wells
+
+
+Evergreen 3.1.9
+----------------
+This release contains bug fixes improving on Evergreen 3.1.8.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Acquisitions
+^^^^^^^^^^^^
+
+* The new `edi_order_pusher.pl` now only pushes purchase orders with a state of "on-order", to prevent older purchase orders from being unintentionally pushed to vendors.
+
+Cataloging
+^^^^^^^^^^
+
+* The template dropdown in the holdings editor now provides more space to accommodate longer template names.
+* The drop-down of copy tag types in the Manage Copy Tags dialog now includes the owning library of the copy tag type.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue with recalling checked-out materials.
+* Added several missing columns to the patron bills grid.
+* Corrected the display of the Bill Type column in the patron bills grid.
+* Clarified the names of the "Billing Location" and "Grocery Billing Location" columns in the patron bills grid.
+* The Bill Full Details grid now includes a billing location column for both circulation and grocery bills, as well as the owning library for circulation bills.
+* The Billing History transactions grid now remembers any changes that users make to the column settings.
+* Fixes an issue with printing multiple copies of bills.
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.9 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Andrea Buntz Neiman
+* Jeff Davis
+* Bill Erickson
+* Angela Kilsdonk
+* Katie G. Martin
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+
+
+Evergreen 3.1.8
+----------------
+This release contains bug fixes improving on Evergreen 3.1.7.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes a bug that blocked logging in from mobile browsers
+* Fixes a readability issue with mobile menus
+* Fixes performance issue related to grid tooltips.
+
+Cataloging
+^^^^^^^^^^
+
+* Improves the functionality of setting a default tab of a bib record
+* The web client now remembers the most recently selected copy template
+* Adds help tips to Print Item Labels Settings tab
+* If you add or edit copies and/or volumes from the Holdings View tab,
+the view now automatically refreshes to show your changes.
+* Provides an upgrade to MODS 3.3 for older Evergreen installations.
+* Improves usability of Z39.50 MARC View.
+
+Circulation
+^^^^^^^^^^^
+
+* Staff can now place multiple email addresses into the patron registration/
+edit form, depending on the value of the `ui.patron.edit.au.email.regex`
+library setting.
+* Fixes an issue with the offline circulation module.
+* When merging two users, the non-lead account is now completely purged from
+the database, rather than simply being marked as deleted.
+
+Public catalog
+^^^^^^^^^^^^^^
+
+* Removes incorrect copy counts from metarecord search results pages
+* Electronic resources now display in the browse interfaces
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* The example Apache 2.4 configuration now enables remoteip.
+* Improves syntax in the fm_idl file.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.8 point release of
+Evergreen:
+
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Bill Erickson
+* Rogan Hamby
+* Rosie Le Faive
+* Jeanette Lundgren
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
+Evergreen 3.1.7
+----------------
+This release contains bug fixes improving on Evergreen 3.1.6.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Adds several columns to the items out grid.
+* Adds the ability to copy patron addresses to the clipboard.
+* Fixes several issues with adding new items and call numbers.
+* Adds links to catalog records from the query and pending tabs of the Record Buckets interface.
+* Corrects the date format used in several bucket interfaces.
+* Adds a loading spinner to interfaces that are embedded in the web staff client via iframe
+(such as the catalog).
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.7 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Bill Erickson
+* Jason Etheridge
+* Kathy Lussier
+* Mike Rylander
+* Jane Sandberg
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+Evergreen 3.1.6
+----------------
+This release contains bug fixes improving on Evergreen 3.1.5.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes an issue that caused catalog searches to fail after a new library was added to the org tree.
+* When you mouse over a grid cell in the client, a tooltip will display the full contents of the cell.
+* Fixes issues with columns in the Item Status, Holdings View, Checkout, Patron Bill, Recent Circ History,
+* Fixes various misspellings and capitalization issues in the interface.
+* Circulation staff can now override a patron block that is placed from Messages/Apply Penalty.
+* Fixes an issue with checking in hourly loans.
+* Staff can now approve pending patron addresses in the patron edit interface.
+* Prevents patron records from being merged with themselves.
+* Fixes a bug where the patron card dialog would not allow the user to change the primary barcode under certain circumstances.
+* Fixes issues with duplicate transit records.
+* Adds the transit cancel time to the Most Recent Transits section of the Item Status Holds / Transit tab.
+* Adds the "Show in Catalog" action back to the Item Status grid.
+* Improvements to the Item Attribute Editor.
+* Staff can now set a default search box in the Z39.50 search interface.
+* Staff can now delete copy notes.
+* Fixes an issue in which transferring items and vol/items caused statistical categories to disappear.
+* In the MARC editor, the 007 physical characteristics wizard now has a different icon than the authority linker.
+* Protects backordered acquisitions items from having their catalog items deleted.
+* Fixes a problem where EDI ORDERS message were not visible in the EDI Messages interface.
+* Fixes problems that occur when cloning a report template created in the XUL client.
+* Fixes bugs that caused activity metric data when performing searches.
+* Fixes an issue where the "Predict New Issues" button in the Serials module did not use the correct pattern. 
+* The KPAC now respects the `opac.holds.org_unit_not_pickup_lib` setting.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.6 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Steven Callender
+* Galen Charlton
+* Garry Collum
+* Amy Constantino
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Joan Kranich
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Ben Shum
+* Jason Stephenson
+* Dan Wells
+* Beth Willis
+
+
+Evergreen 3.1.5
+----------------
+This release contains bug fixes improving on Evergreen 3.1.4.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Several strings are now displayed in the correct translation.
+* Right clicking in grids results in more intuitive behavior.
+* Usernames and barcodes containging the _%_ character no longer
+experience problems logging in.
+* Fixes cases in which the web client stops loading after the toolbar.
+* Fixes problems in which using the web client in multiple tabs leads
+to data inconsistency.
+* Fixes an issue that caused authentication session checks to spam
+the system and needlessly fill up logs.
+* Boolean fields within grid views now say "Yes"/"No" instead of 
+"true"/"false".
+* Fixes sorting issues in the patron search.
+* Staff can now choose to print out only a selection of items out,
+instead of having to print them all.
+* The patron triggered event screen now respects the
+`circ.staff.max_visible_event_age` library setting.
+* Fixes an issue which caused an exception to be thrown during
+non-cataloged item checkout.
+* Fixes permission issues related to merging users.
+* The bibliographic record summary now displays the call number that
+matches the library's classification system.
+* The copy editor now makes shelving locations visible to catalogers
+from other libraries as needed.
+* Once a record is overlayed in the Z39.50 screen, it is no longer
+marked for overlay.
+* Fixes several issues with the item status list view.
+* When adding new copies, the circulation library now defaults to the
+call number's owning library.
+* Fixes display issues with the Print Item Labels page.
+* Fixes an issue in which the staff client and the OPAC displayed
+different counts of available items.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.5 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Rogan Hamby
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Ben Shum
+* Cesar Velez
+* John Yorio
+
+
+Evergreen 3.1.4
+----------------
+This release contains bug fixes improving on Evergreen 3.1.3.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes right-click issues with the Web client grids
+* Fixes an issue with the Default SMS Carrier in the patron edit form.
+* Fixes an issue that allowed overdue notices to be sent to a patron
+whose long overdue item has been paid for.
+* Checking in precat items now displays the "Route to Cataloging" alert each
+time the item is checked in.
+* Fixes an issue where alerts that had been cleared by a check-in continued
+to display.
+* Fixes an issue in which the Adjust to Zero feature
+does not close a checked-in lost circ.
+* Deleted copies that are still checked out can now be checked in.
+* Fixes a mislabeled column in the patron checkout grid.
+* Grocery bills are no longer styled the same way as overdue bills.
+* Fixes an error with the missing pieces functionality.
+* Courier codes now display in the transit slip receipt preview.
+* Fixes several issues related to adding volumes.
+* Fixes several issues related to empty volumes.
+* Fixes several issues related to item and volume transfers.
+* Fixes several issues with checkboxes in the volume/copy editor.
+* The Item Status grid now displays OU shortnames instead of full names
+for the "Circulation Library" column.
+* The Volume/Copy editor now allows users to remove a value from the Age
+Hold Protection field.
+* Barcode completion now works in copy buckets.
+* The Z39.50 interface now notices when another record has been marked
+for overlay.
+* Fixes a display issue for the Remove MARC Field Groups checkboxes in
+the Z39.50 interface.
+* Fixes a performance issue for the Validate button in the MARC Editor.
+* Fixes an incorrect close tag in the Print Item Labels toolbar.
+* Better scoping of copy tags in search results.
+* Prevents sending invalid search.highlight_display_fields calls.
+* Electronic Resource links now open in a new tab.
+* Fixes an issue with the fiscal year close-out operation.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.4 point release of
+Evergreen:
+
+* A. Bellenir
+* Adam Bowling
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Jennifer Pringle
+* Mike Rylander
+* Jane Sandberg
+* Chris Sharp
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+Evergreen 3.1.3
+---------------
+This release contains bug fixes improving on Evergreen 3.1.2.  Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+* Fixes specific cases in which deleted records appear in search results.
+* Fixes a performance issue with deleting patrons.
+* The hold shelf dialog popup now lists the patron's notification
+preferences.
+* Fixes an issue that prevented editing items when a monograph part
+is present.
+* Patron information is now available for use in the bills_current
+and bills_historical receipt templates.
+* The browser's "This page may contain unsaved data" warning now 
+appears when users click the update
+expire date button in a patron account and attempt to navigate away
+without saving.
+* The holds tab of the patron record now includes a monograph part
+column.
+* The barcode box in the checkout screen
+no longer hovers above patron record tabs when
+staff users scroll down.
+* Fixes an issue with the date of birth in the patron edit scren.
+* The patron account bills grid are now color-coded by the item's
+status.
+* Fixes an issue with the dropdown of billing type options.
+* The Item Status screen now includes as a floating group column.
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.3 point release of
+Evergreen:
+
+* BC Libraries Cooperative
+* A. Bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Bill Erickson
+* Blake Graham-Henderson
+* Kyle Huckins
+* Jeanette Lundgren
+* Kathy Lussier
+* Terran McCanna
+* Michele Morgan
+* Dan Pearl
+* Mike Rylander
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Cesar Velez
+* Dan Wells
+
+
+Evergreen 3.1.2
+---------------
+
+This release contains bug fixes improving on Evergreen 3.1.1.   Note that
+all bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Cataloging
+^^^^^^^^^^
+
+* The MARC editor now handles 008 fields better.
+* Adds spaces between subfields when suggesting a call
+number for a new volume.
+* MarcXML exports from the MARC Batch Import/Export ->
+Export Records screen now downloads the file, rather than opening
+it in the browser.
+* The Item Status Circulation Library column now displays a 
+shortname rather than the full library name.
+* The Item Status Remaining Renewals column now displays
+correctly.
+* The Item Status now has a "Last Renewal Workstation" column
+available.
+* Fixes the circulation counts displayed in Item Status Details.
+* Removes an error that got thrown in the Holdings View when a call number
+contains no copy.
+* Fixes an issue where multiple copies with different values for required
+statistical categories could not be edited and saved in batch.
+* Add an option to remove floating in the copy editor.
+* Fixes an issue with the floating dropdown in the copy editor.
+* Fixes a problem in which the copy template didn't properly copy
+certain objects.
+* Reduces the number of API calls that the MARC Editor requires.
+* The order of the Z39.50 servers on the Z39.50 import screen
+no longer relies on capitalization.
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes an issue that prevented the offline patron registration
+screen from loading.
+* Fixes an issue with searching patrons by permission group.
+* The barcodes in the patron search are now clickable.
+* Staff members can now manually override the patron juvenile
+flag value, regardless of the patron's date of birth.
+* Checkboxes on patron registration screen are now properly aligned
+with other fields.
+* The user permission group dropdowns in the patron registration,
+edit, and search interfaces now have scrollbars.
+* The date picker on the checkout screen is now hidden unless
+circ staff activates a specific due date option.
+* The check-in screen now includes a copy status column.
+* The Merge Patrons interface now displays the date of birth.
+* The user bucket screen now displays the Bucket ID.
+* The payment button on patron bills screen is now inactive if the
+Payment Received field is blank.
+* The Bill History receipt now includes a Finish date and a Last
+Payment date.
+* When a patron summary contains an image of the patron,
+that image tag now has a null alt attribute to remove it from
+the flow of a screen reader.
+* Corrects an issue that caused the transit dialog to show the
+wrong branch.
+* Corrects an issue with printing transit lists.
+* "Find another target" on transiting hold no longer leaves the 
+copy "in-transit".
+* The images now display to distinguish hold and transit slips.
+* The Clearable Holds list printout now only shows holds that have
+expired.
+* Restores the call number prefix and suffix fields to the holds
+pull list.
+* The documentation at the top of the hold shelf slip template
+adds `patron.alias`.
+* The cursor in the in-house use screen now automatically goes
+to the barcode field.
+* The in-house use screen now shows a copy status column.
+* Add support for converting change to patron credit in the patron bills
+interface, consistent with the XUL feature.
+* Fixes a bug that caused pickup/request library fields to be
+blank sometimes.
+* Fixes a bug in the offline org unit tree.
+
+Command-line system administration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* The novelist entry in `eg_vhost.conf` includes two new
+parameters.
+* Corrects an issue with the `--max-sleep` argument on the
+`action_trigger_runner.pl` support script.
+* Corrects an issue with how the `eg_pbx_allocator.pl` script
+detects an existing lock file.
+* The 3.0.2-3.0.3 upgrade script disables triggers before
+recalculating bib visibility.
+
+Public catalog
+^^^^^^^^^^^^^^
+
+* Fixes an issue that caused records with located URIs to be
+retrieved in Copy Location and Copy Location Group searches.
+* Fixes an error message that appeared in the search box
+in the public catalog while placing hold after an advanced search.
+* Restores the display of copy information for the user's
+preferred library in the public catalog.
+* Author and contributor names are no longer highlighted in 
+search results when the user has turned off highlighting.
+* Fixes regression errors in the search results page.
+* Removes redundant call numbers from the Show More Details
+search results.
+* The cast field in the catalog is now taken from the 511 field
+when first indicator = 1, rather than the 508.
+* Fixes a display issue caused by editing holds.
+* Repairs broken author search links on the catalog record page.
+
+Serials
+^^^^^^^
+
+* Fixes an issue that prevented users from searching for
+receivable issues using Database ID or ISSN in the Serials
+Batch Receive interface.
+
+General
+^^^^^^^
+* Pins AngularJS support to version 1.6, which prevents unsupported
+AngularJS versions (such as 1.7) from breaking the build process.
+* Adds some padding to the bottom of Web Client interfaces.
+* Logins now honor all org unit timeout settings.
+* Evergreen will now identify and handle invalid timezones.
+* Fixes an issue where a column header in some interfaces were automatically
+highlighted in green when retrieving the interface.
+* The parts column in the Item Status screen now displays parts data.
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.1.2 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Lynn Floyd
+* Rogan Hamby
+* Kyle Huckins
+* Sam Link
+* Jeanette Lundgren
+* Kathy Lussier
+* Katie G. Martin
+* Terran McCanna
+* Michele Morgan
+* Dan Pearl
+* Mike Rylander
+* Laura Sachjen
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+* Bob Wicksall
+
+
+
 Evergreen 3.1.1
 ---------------
 This release contains bug fixes improving on Evergreen 3.1.0.

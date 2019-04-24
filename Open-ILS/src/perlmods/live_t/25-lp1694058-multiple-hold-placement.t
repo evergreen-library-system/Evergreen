@@ -20,28 +20,6 @@ use constant {
     COPY_ID => 2503,
 };
 
-# Because this may run multiple times, without a DB reload, we search
-# for the workstation before registering it.  Takes an authtoken, the
-# id of the workstation lib, and the name of the workstation.
-sub find_or_register_workstation {
-    my ($authtoken, $lib, $workstation) = @_;
-    my $ws;
-    my $r = $U->simplereq(
-        'open-ils.actor',
-        'open-ils.actor.workstation.list',
-        $authtoken,
-        $lib
-    );
-    if ($r && $r->{$lib}) {
-        $ws = grep {$_->name() eq $workstation} @{$r->{$lib}};
-    }
-    unless ($ws) {
-        $ws = $script->register_workstation($workstation, $lib);
-    }
-    return $ws;
-}
-
-
 # Keep track of hold ids, so we can cancel them later.
 my @holds = ();
 
@@ -57,7 +35,7 @@ ok(
 );
 
 # Register workstation.
-my $ws = find_or_register_workstation($authtoken, BR1_ID, BR1_WORKSTATION);
+my $ws = $script->find_or_register_workstation(BR1_WORKSTATION, BR1_ID);
 ok(
     ! ref $ws,
     'Found or registered workstation'

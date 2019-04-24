@@ -1,5 +1,5 @@
 
-<div class="strong-text-2">[% l('Staff-Generated Penalties / Messages') %]</div>
+<div class="strong-text-2">[% l('Penalties and Messages') %]</div>
 <div class="pad-vert"></div>
 <eg-grid
   idl-class="ausp"

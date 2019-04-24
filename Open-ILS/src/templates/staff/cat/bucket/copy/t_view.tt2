@@ -10,17 +10,17 @@
 
   [% INCLUDE 'staff/cat/bucket/copy/t_grid_menu.tt2' %]
 
-  <eg-grid-action label="[% l('Remove Selected Copies from Bucket') %]" group="[% l('Bucket') %]"
+  <eg-grid-action label="[% l('Remove Selected Items from Bucket') %]" group="[% l('Bucket') %]"
     handler="detachCopies"></eg-grid-action>
-  <eg-grid-action label="[% l('Request Selected Copies') %]" group="[% l('Items') %]"
+  <eg-grid-action label="[% l('Request Selected Items') %]" group="[% l('Items') %]"
     handler="requestItems"></eg-grid-action>
-  <eg-grid-action label="[% l('Edit Selected Copies') %]" group="[% l('Items') %]"
+  <eg-grid-action label="[% l('Edit Selected Items') %]" group="[% l('Items') %]"
     handler="spawnHoldingsEdit"></eg-grid-action>
   <eg-grid-action handler="print_labels" group="[% l('Show') %]"
     label="[% l('Print Labels') %]"></eg-grid-action>
-  <eg-grid-action label="[% l('Transfer Selected Copies to Marked Volume') %]" group="[% l('Items') %]"
+  <eg-grid-action label="[% l('Transfer Selected Items to Marked Call Number') %]" group="[% l('Items') %]"
     handler="transferCopies"></eg-grid-action>
-  <eg-grid-action label="[% l('Delete Selected Copies from Catalog') %]" group="[% l('Items') %]"
+  <eg-grid-action label="[% l('Delete Selected Items from Catalog') %]" group="[% l('Items') %]"
     handler="deleteCopiesFromCatalog"></eg-grid-action>
   <eg-grid-action label="[% l('Apply Tags') %]" 
     handler="applyTags"></eg-grid-action>
@@ -43,5 +43,7 @@
       {{item['call_number.record.simple_record.title']}}
     </a>
   </eg-grid-field>
+  <eg-grid-field path="latest_inventory.inventory_date" datatype="timestamp" label="[% l('Inventory Date') %]"></eg-grid-field>
+  <eg-grid-field path="latest_inventory.inventory_workstation.name" label="[% l('Inventory Workstation') %]"></eg-grid-field>
 
 </eg-grid>

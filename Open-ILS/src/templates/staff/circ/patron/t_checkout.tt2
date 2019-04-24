@@ -39,9 +39,9 @@
     <div class="flex-row">
       <div class="flex-cell"></div>
 
-<div class="input-group">
-<div class="input-group-btn" uib-dropdown>
-      <button type="button" class="btn btn-default" uib-dropdown-toggle>
+<div class="form-group row">
+<div class="col-md-3" uib-dropdown>
+      <button type="button" ng-class="{'btn-success' : date_options.has_sticky_date}" class="btn btn-default" uib-dropdown-toggle>
         [% l('Date Options') %]
         <span class="caret"></span>
       </button>
@@ -75,9 +75,8 @@
           [% l('Specific Due Date') %]
         </label>
       </div> -->
-      <!-- FIXME: This needs a time component as well, but type="datetime" 
-            is not yet supported by any browsers -->
-      <div><eg-date-input ng-model="checkoutArgs.due_date"></eg-date-input>
+      <div class="col-md-4">
+        <eg-date-input ng-model="checkoutArgs.due_date" ng-disabled="!date_options.has_sticky_date" show-time-picker></eg-date-input>
       </div>
 </div>
     </div>
@@ -95,11 +94,11 @@
 
   <eg-grid-action
     handler="addCopyAlerts"
-    label="[% l('Add Copy Alerts') %]">
+    label="[% l('Add Item Alerts') %]">
   </eg-grid-action>
   <eg-grid-action
     handler="manageCopyAlerts"
-    label="[% l('Manage Copy Alerts') %]">
+    label="[% l('Manage Item Alerts') %]">
   </eg-grid-action>
 
   <eg-grid-field label="[% l('Balance Owed') %]"     
@@ -115,7 +114,7 @@
     </a>
   </eg-grid-field>
 
-  <eg-grid-field label="[% l('Bill #') %]"     
+  <eg-grid-field label="[% l('Circ ID') %]"
     path='circ.id'></eg-grid-field>
 
   <eg-grid-field label="[% l('Call Number') %]" 
@@ -134,7 +133,7 @@
     path='circ.renewal_remaining'></eg-grid-field>
 
   <eg-grid-field label="[% l('Title') %]" path="title">
-    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.doc_id()}}">
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item.acn.record()}}">
       {{item.title}}
     </a>
   </eg-grid-field>

@@ -360,6 +360,9 @@ function($scope , $q , egCore , ngToast) {
         second_given_name : 'Martin',
         family_name : 'Jones',
         suffix : 'III',
+        pref_first_given_name : 'Martin',
+        pref_second_given_name : 'Joe',
+        pref_family_name : 'Smith',
         card : {
             barcode : '30393830393'
         },
@@ -476,24 +479,28 @@ function($scope , $q , egCore , ngToast) {
             {
                 id : 1,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 1.50,
                     last_payment_note : 'Test Note 1',
                     last_payment_type : 'cash_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 1.00
                 }
             }, {
                 id : 2,
                 xact_start : new Date().toISOString(),
+                xact_finish : new Date().toISOString(),
                 summary : {
                     xact_type : 'circulation',
                     last_billing_type : 'Overdue materials',
                     total_owed : 2.50,
                     last_payment_note : 'Test Note 2',
                     last_payment_type : 'credit_payment',
+                    last_payment_ts : new Date().toISOString(),
                     total_paid : 0.50,
                     balance_owed : 2.00
                 }
@@ -564,6 +571,7 @@ function($scope , $q , egCore , ngToast) {
         patron : seed_user,
         address : seed_addr,
         dest_location : egCore.idl.toHash(egCore.org.get(egCore.auth.user().ws_ou())),
+        dest_courier_code : 'ABC 123',
         dest_address : seed_addr,
         hold : one_hold,
         holds : [
@@ -741,7 +749,7 @@ function($scope , $q , egCore , egConfirmDialog) {
     // fetch the keys
 
     function refreshKeys() {
-        $scope.keys = {local : [], remote : []};
+        $scope.keys = {local : [], remote : [], server_workstation: []};
 
         if (egCore.hatch.hatchAvailable) {
             egCore.hatch.getRemoteKeys().then(
@@ -750,6 +758,9 @@ function($scope , $q , egCore , egConfirmDialog) {
     
         // local calls are non-async
         $scope.keys.local = egCore.hatch.getLocalKeys();
+
+        egCore.hatch.getServerKeys(null, {workstation_only: true}).then(
+            function(keys) {$scope.keys.server_workstation = keys});
     }
     refreshKeys();
 
@@ -759,10 +770,14 @@ function($scope , $q , egCore , egConfirmDialog) {
 
         if ($scope.context == 'local') {
             $scope.currentKeyContent = egCore.hatch.getLocalItem(key);
-        } else {
+        } else if ($scope.context == 'remote') {
             egCore.hatch.getRemoteItem(key)
             .then(function(content) {
                 $scope.currentKeyContent = content
+            });
+        } else if ($scope.context == 'server_workstation') {
+            egCore.hatch.getServerItem(key).then(function(content) {
+                $scope.currentKeyContent = content;
             });
         }
     }
@@ -779,8 +794,13 @@ function($scope , $q , egCore , egConfirmDialog) {
                     if ($scope.context == 'local') {
                         egCore.hatch.removeLocalItem(key);
                         refreshKeys();
-                    } else {
-                        egCore.hatch.removeItem(key)
+                    } else if ($scope.context == 'remote') {
+                        // Honor requests to remove items from Hatch even
+                        // when Hatch is configured for data storage.
+                        egCore.hatch.removeRemoteItem(key)
+                        .then(function() { refreshKeys() });
+                    } else if ($scope.context == 'server_workstation') {
+                        egCore.hatch.removeServerItem(key)
                         .then(function() { refreshKeys() });
                     }
                 },

@@ -116,6 +116,8 @@ include::admin/marc_templates.adoc[]
 
 :leveloffset: 0
 
+include::admin/schema_bibliographic.adoc[]
+
 // STAFF ADMIN
 include::admin/staff_from_command_line.adoc[]
 
@@ -138,6 +140,8 @@ include::admin/template_toolkit.adoc[]
 :leveloffset: 1
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
+
+include::admin_initial_setup/different_styles_for_searchbar.adoc[]
 
 include::admin/search_interface.adoc[]
 

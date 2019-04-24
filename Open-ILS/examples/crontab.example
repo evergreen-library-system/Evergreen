@@ -31,7 +31,7 @@ EG_BIN_DIR = /openils/bin
 # m h dom mon dow   command
 
 # Run the hold targeter
-*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl $SRF_CORE
+*/15 * * * *   . ~/.bashrc && $EG_BIN_DIR/hold_targeter.pl --osrf-config $SRF_CORE
 
 # Run the hold thawer
 5  0  * * *   . ~/.bashrc && $EG_BIN_DIR/thaw_expired_frozen_holds.srfsh

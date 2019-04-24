@@ -1,5 +1,5 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = l('Copy Location Group') %]
+[% ctx.page_title = l('Shelving Location Group') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_location_group.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'/>
 <style>
@@ -54,7 +54,7 @@
 </style>
 
 <div id='acplg-header'>
-    <span>[% l('Copy Location Groups') %]</span>
+    <span>[% l('Shelving Location Groups') %]</span>
     <select dojoType="openils.widget.OrgUnitFilteringSelect"
             jsId='contextOrgSelector'
             searchAttr='shortname'
@@ -95,7 +95,7 @@
         <div>
             <table width='100%'><tr>
                 <td align='left'><button onclick='editLocations("create")'>[% l('&larr; Add') %]</button></td>
-                <td align='right' style='padding-right:5px;'>[% l('Copy Locations') %]</td>
+                <td align='right' style='padding-right:5px;'>[% l('Shelving Locations') %]</td>
             </tr></table>
         </div>
         <div style='height:400px; overflow-y:scroll'>

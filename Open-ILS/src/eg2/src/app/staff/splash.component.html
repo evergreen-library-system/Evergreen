@@ -1,0 +1,140 @@
+
+
+<style>
+    /* TODO change BS color scheme so this isn't necessary */
+    .bg-evergreen {
+      background: -webkit-linear-gradient(#00593d, #007a54);
+      background-color: #007a54;
+      color: #fff;
+    }
+
+    /* Match the ang1 splash page */
+    .card-header {
+        color: #3c763d;
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+    }
+</style>
+
+<eg-title i18n-prefix prefix="Evergreen Staff Client"></eg-title>
+
+<div class="container">
+
+  <!-- header icon -->
+  <div class="row mb-3">
+    <div class="col-lg-12 text-center">
+      <img src="/images/portal/logo.png" alt="Evergreen"/>
+    </div>
+  </div>
+
+  <div class="row" id="splash-nav">
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Circulation and Patrons</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <a href="/eg/staff/circ/patron/bcsearch" i18n>
+                <img src="/images/portal/forward.png" alt="" role="presentation"/>
+                Check Out Items
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a href="/eg/staff/circ/checkin/index" i18n>
+                <img src="/images/portal/back.png" alt="" role="presentation"/>
+                Check In Items
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a href="/eg/staff/circ/patron/search" i18n>
+                <img src="/images/portal/retreivepatron.png" alt="" role="presentation"/>
+                Search For Patron By Name
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Item Search and Cataloging</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" 
+                  [(ngModel)]="catSearchQuery"
+                  id='catalog-search-input'
+                  (keyup.enter)="searchCatalog()"
+                  i18n-placeholder placeholder="Search for...">
+                <span class="input-group-btn">
+                  <button class="btn btn-outline-secondary" 
+                    (click)="searchCatalog()" type="button" i18n>
+                    Search
+                  </button>
+                </span>
+                  <!--
+                  <input focus-me="focus_search" 
+                      class="form-control" ng-model="cat_query" type="text" 
+                      ng-keypress="catalog_search($event)"
+                      placeholder="Search catalog for..."/>
+                  <button class='btn btn-light' ng-click="catalog_search()">
+                      Search
+                  </button>
+                  -->
+              </div>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a href="/eg/staff/cat/bucket/record/" i18n>
+                <img src="/images/portal/bucket.png" alt="" role="presentation"/>
+                Record Buckets
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a href="/eg/staff/cat/bucket/copy/" i18n>
+                <img src="/images/portal/bucket.png" alt="" role="presentation"/>
+                Copy Buckets
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header">
+          <div class="panel-title text-center" i18n>Administration</div>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            <div class="list-group-item border-0 p-2">
+              <a target="_top" href="http://docs.evergreen-ils.org/" i18n>
+                <img src="/images/portal/helpdesk.png" alt="" role="presentation"/>
+                Evergreen Documentation
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a target="_top" href="/eg/staff/admin/workstation/index" i18n>
+                <img src="/images/portal/helpdesk.png" alt="" role="presentation"/>
+                Workstation Administration
+              </a>
+            </div>
+            <div class="list-group-item border-0 p-2">
+              <a target="_top" href="/eg/staff/reporter/legacy/main" i18n>
+                <img src="/images/portal/reports.png" alt="" role="presentation"/>
+                Reports
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

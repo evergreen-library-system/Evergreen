@@ -55,9 +55,11 @@ Installing prerequisites
 ------------------------
 
   * **PostgreSQL**: The minimum supported version is 9.4.
-  * **Linux**: Evergreen has been tested on Debian Stretch (9), 
-    Debian Jessie (8), Debian Wheezy (7), Ubuntu Xenial Xerus (16.04), 
-    and Ubuntu Trusty Tahr (14.04).
+  * **Linux**: Evergreen has been tested on 
+    Debian Stretch (9), 
+    Debian Jessie (8), 
+    Ubuntu Bionic Beaver (18.04), 
+    and Ubuntu Xenial Xerus (16.04).
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
@@ -69,49 +71,26 @@ before you can successfully configure, compile, and install Evergreen.
 
 1. Begin by installing the most recent version of OpenSRF (3.0.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
-2. On some distributions, it is necessary to install PostgreSQL 9.4+ from external
-   repositories.
 +
-  * Debian (Wheezy) and Ubuntu (Trusty) comes with older versions of 
-    PostgreSQL, so steps are taken to automatically utilize the 
-    PostgreSQL community's apt sources. 
-    (For complete details, see: https://wiki.postgresql.org/wiki/Apt)
-  * Debian (Jessie/Stretch) and Ubuntu (Xenial) comes with PostgreSQL 9.4+,
-    so no additional steps are required.
-+
-3. Issue the following commands as the *root* Linux account to install
+2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-stretch`, `debian-jessie`, `debian-wheezy`,
-   `ubuntu-xenial`, or `ubuntu-trusty` for <osname> below:
+   substituting `debian-stretch`,`debian-jessie`,`ubuntu-bionic`, or
+   `ubuntu-xenial` for <osname> below:
 +
 [source, bash]
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install <osname>
 ------------------------------------------------------------------------------
 +
-4. Add the libdbi-libdbd libraries to the system dynamic library path by
-   issuing the following commands as the *root* Linux account:
-+
-[NOTE]
-You should skip this step if installing on Ubuntu Trusty/Xenial or Debian Jessie/Stretch. The Ubuntu
-and Debian Jessie/Stretch targets use libdbd-pgsql from packages.
-+
-.Debian Wheezy
-[source, bash]
-------------------------------------------------------------------------------
-echo "/usr/local/lib/dbd" > /etc/ld.so.conf.d/eg.conf
-ldconfig
-------------------------------------------------------------------------------
-
 [[optional_developer_additions]]
-5. OPTIONAL: Developer additions
+3. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
 additional packages may be required.  As the *root* Linux account:
 +
  * To install packages needed for retrieving and managing web dependencies,
    use the <osname>-developer Makefile.install target.  Currently, 
-   this is only needed for building and installing the (preview) browser 
+   this is only needed for building and installing the web
    staff client.
 +
 [source, bash]
@@ -155,8 +134,8 @@ https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
 environment variable `PATH`.
 
 [[install_files_for_web_staff_client]]
-Install files for web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Install AngularJS files for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Building, Testing, Minification: The remaining steps all take place within
    the staff JS web root:
@@ -183,6 +162,35 @@ npm run build-prod
 npm run test
 ------------------------------------------------------------------------------
 
+[[install_files_for_angular_web_staff_client]]
+Install Angular files for web staff client
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Building, Testing, Minification: The remaining steps all take place within
+   the Angular staff root:
++
+[source,sh]
+------------------------------------------------------------------------------
+cd $EVERGREEN_ROOT/Open-ILS/src/eg2/
+------------------------------------------------------------------------------
++
+2. Install Project-local Dependencies. npm inspects the 'package.json' file
+   for dependencies and fetches them from the Node package network.
++
+[source,sh]
+------------------------------------------------------------------------------
+npm install   # fetch JS dependencies
+------------------------------------------------------------------------------
++
+3. Run the build script.
++
+[source,sh]
+------------------------------------------------------------------------------
+# build and run tests
+ng build --prod
+npm run test
+------------------------------------------------------------------------------
+
 Configuration and compilation instructions
 ------------------------------------------
 
@@ -204,27 +212,12 @@ Installation instructions
 -------------------------
 
 1. Once you have configured and compiled Evergreen, issue the following
-   command as the *root* Linux account to install Evergreen, build the server
-   portion of the staff client, and copy example configuration files to
-   `/openils/conf`.
-   Change the value of the `STAFF_CLIENT_STAMP_ID` variable to match the version
-   of the staff client that you will use to connect to the Evergreen server.
+   command as the *root* Linux account to install Evergreen and copy
+   example configuration files to `/openils/conf`.
 +
 [source, bash]
 ------------------------------------------------------------------------------
-make STAFF_CLIENT_STAMP_ID=rel_name install
-------------------------------------------------------------------------------
-+
-2. The server portion of the staff client expects `http://hostname/xul/server`
-   to resolve. Issue the following commands as the *root* Linux account to
-   create a symbolic link pointing to the `server` subdirectory of the server
-   portion of the staff client that we just built using the staff client ID
-   'rel_name':
-+
-[source, bash]
-------------------------------------------------------------------------------
-cd /openils/var/web/xul
-ln -sf rel_name/server server
+make install
 ------------------------------------------------------------------------------
 
 Change ownership of the Evergreen files
@@ -273,29 +266,15 @@ cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 Configure the Apache Web server
 -------------------------------
 
-. Use the example configuration files in `Open-ILS/examples/apache/` (for
-Apache versions below 2.4) or `Open-ILS/examples/apache_24/` (for Apache
-versions 2.4 or greater) to configure your Web server for the Evergreen
-catalog, staff client, Web services, and administration interfaces. Issue the
-following commands as the *root* Linux account:
+. Use the example configuration files to configure your Web server for 
+the Evergreen catalog, web staff client, Web services, and administration
+interfaces. Issue the following commands as the *root* Linux account:
 +
-.Debian Wheezy
-[source,bash]
-------------------------------------------------------------------------------
-cp Open-ILS/examples/apache/eg.conf       /etc/apache2/sites-available/
-cp Open-ILS/examples/apache/eg_vhost.conf /etc/apache2/
-cp Open-ILS/examples/apache/eg_startup    /etc/apache2/
-# Now set up SSL
-mkdir /etc/apache2/ssl
-cd /etc/apache2/ssl
-------------------------------------------------------------------------------
-+
-.Ubuntu Trusty/Xenial and Debian Jessie/Stretch
 [source,bash]
 ------------------------------------------------------------------------------------
 cp Open-ILS/examples/apache_24/eg_24.conf       /etc/apache2/sites-available/eg.conf
 cp Open-ILS/examples/apache_24/eg_vhost_24.conf /etc/apache2/eg_vhost.conf
-cp Open-ILS/examples/apache/eg_startup    	/etc/apache2/
+cp Open-ILS/examples/apache_24/eg_startup    	/etc/apache2/
 # Now set up SSL
 mkdir /etc/apache2/ssl
 cd /etc/apache2/ssl
@@ -303,7 +282,7 @@ cd /etc/apache2/ssl
 +
 . The `openssl` command cuts a new SSL key for your Apache server. For a
 production server, you should purchase a signed SSL certificate, but you can
-just use a self-signed certificate and accept the warnings in the staff client
+just use a self-signed certificate and accept the warnings in the
 and browser during testing and development. Create an SSL key for the Apache
 server by issuing the following command as the *root* Linux account:
 +
@@ -317,10 +296,9 @@ place.
   a. To enable access to the offline upload / execute interface from any
      workstation on any network, make the following change (and note that
      you *must* secure this for a production instance):
-     * (Apache 2.2): Replace `Allow from 10.0.0.0/8` with `Allow from all`
-     * (Apache 2.4): Replace `Require host 10.0.0.0/8` with `Require all granted`
+     * Replace `Require host 10.0.0.0/8` with `Require all granted`
 . Change the user for the Apache server.
-  * (Debian and Ubuntu): As the *root* Linux account, edit
+  * As the *root* Linux account, edit
     `/etc/apache2/envvars`.  Change `export APACHE_RUN_USER=www-data` to 
     `export APACHE_RUN_USER=opensrf`.
 . As the *root* Linux account, configure Apache with KeepAlive settings
@@ -328,7 +306,7 @@ place.
   single client by allowing multiple requests to be sent over the same TCP
   connection, but increase the risk of using up all available Apache child
   processes and memory.
-  * (Debian and Ubuntu): Edit `/etc/apache2/apache2.conf`.
+  * Edit `/etc/apache2/apache2.conf`.
     a. Change `KeepAliveTimeout` to `1`.
     b. Change `MaxKeepAliveRequests` to `100`.
 . As the *root* Linux account, configure the prefork module to start and keep
@@ -336,19 +314,7 @@ place.
   running out of memory. The following settings are a good starting point for a
   site that exposes the default Evergreen catalogue to the web:
 +
-.Debian Wheezy (`/etc/apache2/apache2.conf`)
-[source,bash]
-------------------------------------------------------------------------------
-<IfModule mpm_prefork_module>
-   StartServers         15
-   MinSpareServers       5
-   MaxSpareServers      15
-   MaxClients           75
-   MaxRequestsPerChild 500
-</IfModule>
-------------------------------------------------------------------------------
-+
-.Ubuntu Trusty/Xenial, Debian Jessie/Stretch (`/etc/apache2/mods-available/mpm_prefork.conf`)
+.`/etc/apache2/mods-available/mpm_prefork.conf`
 [source,bash]
 ------------------------------------------------------------------------------
 <IfModule mpm_prefork_module>
@@ -360,8 +326,7 @@ place.
 </IfModule>
 ------------------------------------------------------------------------------
 +
-. (Ubuntu Trusty/Xenial, Debian Jessie/Stretch) As the *root* user,
-    enable the mpm_prefork module:
+. As the *root* user, enable the mpm_prefork module:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -369,15 +334,7 @@ a2dismod mpm_event
 a2enmod mpm_prefork
 ------------------------------------------------------------------------------
 +
-. (Debian Wheezy): As the *root* Linux account, enable the Evergreen site:
-+
-[source,bash]
-------------------------------------------------------------------------------
-a2dissite default  # OPTIONAL: disable the default site (the "It Works" page)
-a2ensite eg.conf
-------------------------------------------------------------------------------
-+
-(Ubuntu Trusty/Xenial, Debian Jessie/Stretch):
+. As the *root* Linux account, enable the Evergreen site:
 +
 [source,bash]
 ------------------------------------------------------------------------------
@@ -385,7 +342,7 @@ a2dissite 000-default  # OPTIONAL: disable the default site (the "It Works" page
 a2ensite eg.conf
 ------------------------------------------------------------------------------
 +
-. (Debian and Ubuntu): As the *root* Linux account, enable Apache to write
+. As the *root* Linux account, enable Apache to write
    to the lock directory; this is currently necessary because Apache
    is running as the `opensrf` user:
 +
@@ -457,7 +414,7 @@ by every Evergreen system. You can install the packages required by Debian or
 Ubuntu on the machine of your choice using the following commands as the
 *root* Linux account:
 
-.(Debian / Ubuntu) Installing PostgreSQL server packages
+. Installing PostgreSQL server packages
 
 Each OS build target provides the postgres server installation packages
 required for each operating system.  To install Postgres server packages, 
@@ -468,9 +425,8 @@ command below based on your operating system.
 ------------------------------------------------------------------------------
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
-make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-wheezy
-make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-trusty
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
+make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-bionic
 ------------------------------------------------------------------------------
 
 For a standalone PostgreSQL server, install the following Perl modules for your
@@ -594,7 +550,7 @@ osrf_control -l --start-all
 export PATH=$PATH:/openils/bin
 ------------------------------------------------------------------------------
 +
-3. As the *opensrf* Linux account, generate the Web files needed by the staff
+3. As the *opensrf* Linux account, generate the Web files needed by the web staff
    client and catalogue and update the organization unit proximity (you need to do
    this the first time you start Evergreen, and after that each time you change the library org unit configuration.
 ):
@@ -612,7 +568,7 @@ autogen.sh
 ------------------------------------------------------------------------------
 +
 If the Apache Web server was running when you started the OpenSRF services, you
-might not be able to successfully log in to the OPAC or staff client until the
+might not be able to successfully log in to the OPAC or web staff client until the
 Apache Web server is restarted.
 
 Testing connections to Evergreen

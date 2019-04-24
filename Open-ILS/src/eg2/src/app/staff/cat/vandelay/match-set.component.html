@@ -1,0 +1,36 @@
+<div class="row pb-2" *ngIf="matchSet">
+  <div class="col-lg-4">
+    <div class="card tight-card">
+      <h5 class="card-header" i18n>Match Set Summary</h5>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-6" i18n>Match Set Name:</div>
+          <div class="col-lg-6">{{matchSet.name()}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6" i18n>Owning Library:</div>
+          <div class="col-lg-6">{{matchSet.owner().shortname()}}</div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6" i18n>Type:</div>
+          <div class="col-lg-6">{{matchSet.mtype()}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ngb-tabset [activeId]="matchSetTab" (tabChange)="onTabChange($event)">
+	<ngb-tab title="Match Set Editor" i18n-title id="editor">
+		<ng-template ngbTabContent>
+      <eg-match-set-expression [matchSet]="matchSet">
+      </eg-match-set-expression>
+		</ng-template>
+	</ngb-tab>
+	<ngb-tab title="Match Set Quality Metrics" i18n-title id="quality">
+		<ng-template ngbTabContent>
+      <eg-match-set-quality [matchSet]="matchSet">
+      </eg-match-set-quality>
+		</ng-template>
+	</ngb-tab>
+</ngb-tabset>

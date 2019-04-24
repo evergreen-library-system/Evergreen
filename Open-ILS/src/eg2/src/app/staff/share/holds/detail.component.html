@@ -1,0 +1,99 @@
+
+<eg-staff-banner bannerText="Hold Details (#{{hold.id}})" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="row">
+  <div class="col-lg-3">
+    <button (click)="showListView()" class="btn btn-info" i18n>List View</button>
+  </div>
+</div>
+
+<div class="well-table">
+  <div class="well-row">
+    <div class="well-label" i18n>Request Date</div>
+    <div class="well-value">{{hold.request_time | formatValue:'timestamp'}}</div>
+    <div class="well-label" i18n>Capture Date</div>
+    <div class="well-value">{{hold.capture_time | formatValue:'timestamp'}}</div>
+    <div class="well-label" i18n>Available On</div>
+    <div class="well-value">{{hold.shelf_time | formatValue:'timestamp'}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>hold Type</div>
+    <div class="well-value">
+      {{hold.hold_type}}
+      <!-- TODO: add part data to wide holds 
+      <span *ngIf="hold.hold_type == 'P'">&nbsp;-&nbsp;{{hold.part_label}}</span>
+      -->
+    </div>
+    <div class="well-label" i18n>Current Item</div>
+    <div class="well-value">
+      <a href="/eg/staff/cat/item/{{hold.cp_id}}">{{hold.cp_barcode}}</a>
+    </div>
+    <div class="well-label" i18n>Call Number</div>
+    <div class="well-value">{{hold.cn_full_label}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>Pickup Lib</div>
+    <div class="well-value">{{hold.pl_shortname}}</div>
+    <div class="well-label" i18n>Status</div>
+    <div class="well-value">
+      <ng-container [ngSwitch]="hold.hold_status">
+        <div *ngSwitchCase="-1" i18n>Unknown Error</div>
+        <div *ngSwitchCase="1" i18n>Waiting for Item</div>
+        <div *ngSwitchCase="2" i18n>Waiting for Capture</div>
+        <div *ngSwitchCase="3" i18n>In Transit</div>
+        <div *ngSwitchCase="4" i18n>Ready for Pickup</div>
+        <div *ngSwitchCase="5" i18n>Hold Shelf Delay</div>
+        <div *ngSwitchCase="6" i18n>Canceled</div>
+        <div *ngSwitchCase="7" i18n>Suspended</div>
+        <div *ngSwitchCase="8" i18n>Wrong Shelf</div>
+        <div *ngSwitchCase="9" i18n>Fulfilled</div>
+      </ng-container>
+    </div>
+    <div class="well-label" i18n>Behind Desk</div>
+    <div class="well-value">{{hold.behind_desk == '1'}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>Current Shelf Lib</div>
+    <div class="well-value">{{getOrgName(hold.current_shelf_lib)}}</div>
+    <div class="well-label" i18n>Current Shelving Location</div>
+    <div class="well-value">{{hold.acpl_name}}</div>
+    <div class="well-label" i18n>Force Item Quality</div>
+    <div class="well-value">{{hold.mint_condition == '1'}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>Email Notify</div>
+    <div class="well-value">{{hold.email_notify == '1'}}</div>
+    <div class="well-label" i18n>Phone Notify</div>
+    <div class="well-value">{{hold.phone_notify}}</div>
+    <div class="well-label" i18n>SMS Notify</div>
+    <div class="well-value">{{hold.sms_notify}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>Cancel Cause</div>
+    <div class="well-value">{{hold.cancel_cause}}</div><!-- TODO: label -->
+    <div class="well-label" i18n>Cancel Time</div>
+    <div class="well-value">{{hold.cancel_time | formatValue:'timestamp'}}</div>
+    <div class="well-label" i18n>Cancel Note</div>
+    <div class="well-value">{{hold.cancel_note}}</div>
+  </div>
+  <div class="well-row">
+    <div class="well-label" i18n>Patron Name</div>
+    <div class="well-value">
+      <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+        {{hold.usr_display_name}}
+      </a>
+    </div>
+    <!-- force consistent width -->
+    <div class="well-label" i18n>Patron Barcode</div>
+    <div class="well-value">
+      <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+        {{hold.ucard_barcode}}
+      </a>
+    </div>
+    <!-- for balance -->
+    <div class="well-label" i18n></div>
+    <div class="well-label" i18n></div>
+  </div>
+</div>
+

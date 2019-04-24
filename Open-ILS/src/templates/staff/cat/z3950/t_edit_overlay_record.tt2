@@ -5,7 +5,7 @@
     <h4 class="modal-title">[% l('Edit Overlay Record') %]</h4>
   </div>
   <div class="modal-body">
-    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="args.marc_xml"
+    <eg-marc-edit-record dirty-flag="dirty_flag" record-id="record_id" marc-xml="args.marc_xml" bib-source="args.bib_source"
                          on-save="ok" in-place-mode="true" record-type="bre" save-label="[% l('Save') %]" />
   </div>
   <div class="modal-footer">

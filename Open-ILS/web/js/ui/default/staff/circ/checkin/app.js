@@ -49,6 +49,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     $scope.grid_persist_key = $scope.is_capture ? 
         'circ.checkin.capture' : 'circ.checkin.checkin';
 
+    // TODO: add this to the setting batch lookup below
     egCore.hatch.getItem('circ.checkin.strict_barcode')
         .then(function(sb){ $scope.strict_barcode = sb });
 
@@ -85,12 +86,19 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     } else {
         modifiers.push('noop'); // AKA suppress holds and transits
         modifiers.push('auto_print_holds_transits');
+        modifiers.push('do_inventory_update');
     }
 
     // set modifiers from stored preferences
-    angular.forEach(modifiers, function(mod) {
-        egCore.hatch.getItem('eg.circ.checkin.' + mod)
-        .then(function(val) { if (val) $scope.modifiers[mod] = true });
+    var snames = modifiers.map(function(m) {return 'eg.circ.checkin.' + m;});
+    egCore.hatch.getItemBatch(snames).then(function(settings) {
+        angular.forEach(settings, function(val, key) {
+            if (val === true) {
+                var parts = key.split('.')
+                var mod = parts.pop();
+                $scope.modifiers[mod] = true;
+            }
+        })
     });
 
     // set / unset a checkin modifier
@@ -130,13 +138,17 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
     function compile_checkin_args(args) {
         var params = angular.copy(args);
 
+        // a backdate of 'today' is not really a backdate
+        // (and this particularly matters when checking in hourly
+        // loans, as backdated checkins currently get the time
+        // portion of the checkin time from the due date; this will
+        // stop mattering when FIXME bug 1793817 is dealt with)
+        if (!$scope.is_backdate())
+            delete params.backdate;
+
         if (params.backdate) {
             params.backdate = 
                 params.backdate.toISOString().replace(/T.*/,'');
-
-            // a backdate of 'today' is not really a backdate
-            if (params.backdate == $scope.max_backdate)
-                delete params.backdate;
         }
 
         angular.forEach(['noop','void_overdues',
@@ -153,14 +165,17 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
                 params.retarget_mode = 'retarget';
             }
         }
+        if ($scope.modifiers.do_inventory_update) params.do_inventory_update = true;
 
         egCore.hatch.setItem('circ.checkin.strict_barcode', $scope.strict_barcode);
+        egCore.hatch.setItem('circ.checkin.do_inventory_update', $scope.modifiers.do_inventory_update);
         var options = {
             check_barcode : $scope.strict_barcode,
             no_precat_alert : $scope.modifiers.no_precat_alert,
             auto_print_holds_transits : 
                 $scope.modifiers.auto_print_holds_transits,
-            suppress_popups : suppress_popups
+            suppress_popups : suppress_popups,
+            do_inventory_update : $scope.modifiers.do_inventory_update
         };
 
         return {params : params, options: options};
@@ -189,7 +204,6 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
 
         // track the item in the grid before sending the request
         checkinSvc.checkins.unshift(row_item);
-
         egCirc.checkin(params, options).then(
         function(final_resp) {
             
@@ -199,6 +213,9 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             });
             
             row_item['copy_barcode'] = row_item.acp.barcode();
+
+            if (row_item.acp.latest_inventory() && row_item.acp.latest_inventory().inventory_date() == "now")
+                row_item.acp.latest_inventory().inventory_date(Date.now());
 
             if (row_item.mbts) {
                 var amt = Number(row_item.mbts.balance_owed());
@@ -376,7 +393,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
         angular.forEach(items, function(i){
             i.acp.call_number(i.acn);
             i.acp.call_number().record(i.record);
-            itemSvc.mark_missing_pieces(i.acp);
+            itemSvc.mark_missing_pieces(i.acp,$scope);
         });
     }
 

@@ -213,7 +213,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
                     row_item[key] = val;
                 });
                
-                row_item['copy_barcode'] = row_item.acp.barcode();
+                if (row_item.acp) { // unset for non-cat items.
+                    row_item['copy_barcode'] = row_item.acp.barcode();
+                }
 
                 munge_checkout_resp(co_resp, row_item);
             },
@@ -318,6 +320,11 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
             first_given_name : cusr.first_given_name(),
             second_given_name : cusr.second_given_name(),
             family_name : cusr.family_name(),
+            suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_secondg_given_name : cusr.second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
             suffix : cusr.suffix(),
             card : { barcode : cusr.card().barcode() },
             money_summary : patronSvc.patron_stats.fines,

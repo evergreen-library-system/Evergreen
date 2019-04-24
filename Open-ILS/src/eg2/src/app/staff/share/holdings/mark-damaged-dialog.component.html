@@ -1,0 +1,108 @@
+<eg-string #successMsg text="Successfully Marked Item Damaged" i18n-text></eg-string>
+<eg-string #errorMsg text="Failed To Mark Item Damaged" i18n-text></eg-string>
+
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title">
+      <span i18n>Mark Item Damaged</span>
+    </h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+        <div class="col-lg-1">Barcode:</div>
+        <div class="col-lg-11 font-weight-bold">{{copy.barcode()}}</div>
+    </div>
+    <div class="row">
+      <div class="col-lg-1">Title:</div>
+      <div class="col-lg-11">{{bibSummary.display.title}}</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-1">Author:</div>
+        <div class="col-lg-11">{{bibSummary.display.author}}</div>
+    </div>
+    <div class="card mt-3" *ngIf="chargeResponse">
+      <div class="card-header" i18n>
+        Item was previously checked out
+      </div>
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" i18n>
+            Item was last checked out by patron
+            <a href="/eg/staff/circ/patron/{{chargeResponse.circ.usr().id()}}/checkout">
+              {{chargeResponse.circ.usr().family_name()}},
+              {{chargeResponse.circ.usr().first_given_name()}} 
+              ({{chargeResponse.circ.usr().usrname()}})
+            </a>.
+          </li>
+          <li class="list-group-item" i18n>
+            Item was due
+            {{chargeResponse.circ.due_date() | formatValue:'timestamp'}} 
+            and returned 
+            {{chargeResponse.circ.checkin_time() | date:'MM/dd/yy H:mm a'}}.
+          </li>
+          <li class="list-group-item">
+            <span i18n>
+              Calucated fine amount is 
+              <span class="font-weight-bold text-danger">
+                {{chargeResponse.charge | currency}}
+              </span>
+            </span>
+          </li>
+          <ng-container *ngIf="amountChangeRequested">
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-3" i8n>Billing Type</div>
+                <div class="col-lg-6">
+                  <eg-combobox 
+                    placeholder="Billing Type..." i18n-placeholder
+                    (onChange)="newBtype = $event.id"
+                    [entries]="billingTypes"></eg-combobox>
+                </div>
+              </div>  
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-3" i8n>Charge Amount</div>
+                <div class="col-lg-6">
+                  <input class="form-control" type="number" step="0.01" min="0"
+                  [(ngModel)]="newCharge"/>
+                </div>
+              </div>  
+            </li>
+            <li class="list-group-item">
+              <div class="row">
+                <div class="col-lg-3" i8n>Note</div>
+                <div class="col-lg-6">
+                  <textarea class="form-control" rows="3"
+                    [(ngModel)]="newNote"></textarea>
+                </div>
+              </div>  
+            </li>
+          </ng-container><!-- amount change requested -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <ng-container *ngIf="!chargeResponse">
+      <button type="button" class="btn btn-warning" 
+        (click)="dismiss('canceled')" i18n>Cancel</button>
+      <button type="button" class="btn btn-success" 
+        (click)="markDamaged()" i18n>Mark Damaged</button>
+    </ng-container>
+    <ng-container *ngIf="chargeResponse">
+      <button type="button" class="btn btn-warning" 
+        (click)="dismiss('canceled')" i18n>Cancel</button>
+      <button class="btn btn-info mr-2" 
+        (click)="amountChangeRequested = true" i18n>Change Amount</button>
+      <button class="btn btn-secondary mr-2" 
+        (click)="markDamaged({apply_fines:'noapply'})" i18n>No Charge</button>
+      <button class="btn btn-success mr-2" 
+        (click)="markDamaged({apply_fines:'apply'})" i18n>OK</button>
+    </ng-container>
+  </div>
+</ng-template>

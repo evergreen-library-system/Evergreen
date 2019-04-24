@@ -16,7 +16,7 @@ my $script = OpenILS::Utils::TestUtils->new();
 
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/cleanse_ISO8601/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 
 our $apputils   = "OpenILS::Application::AppUtils";
 
@@ -41,10 +41,13 @@ sub create_closed_date {
 sub update_closed_date {
     my $aoucd = shift;
     $aoucd->reason($aoucd->reason . ' modified');
-    return $apputils->simplereq(
+
+    my $cd = $apputils->simplereq(
         'open-ils.actor',
         'open-ils.actor.org_unit.closed.update',
         $script->authtoken, $aoucd);
+
+    return ref $cd eq 'Fieldmapper::actor::org_unit::closed_date';
 }
 
 sub delete_closed_date {
@@ -57,8 +60,7 @@ sub delete_closed_date {
 }
 
 #----------------------------------------------------------------
-# The tests...  assumes stock sample data, full-auto install by
-# eg_wheezy_installer.sh, etc.
+# The tests...  assumes stock sample data
 #----------------------------------------------------------------
 
 my $storage_ses = $script->session('open-ils.storage');
@@ -194,8 +196,8 @@ if (my $bill_resp = $bill_req->recv) {
     }
 }
 
-my $xact_start = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->xact_start));
-my $due_date = DateTime::Format::ISO8601->parse_datetime(cleanse_ISO8601($circ->due_date));
+my $xact_start = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->xact_start));
+my $due_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($circ->due_date));
 
 # Rewrite history; technically we should rewrite status_changed_item on the copy as well, but, meh...
 $circ->xact_start( $xact_start->subtract( days => 20 )->iso8601() );

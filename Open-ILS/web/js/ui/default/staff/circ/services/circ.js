@@ -19,7 +19,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             hold_shelf_slip : false,
             hold_transit_slip : false,
             transit_slip : false
-        }
+        },
+        in_flight_checkins: {}
     };
 
     egCore.startup.go().finally(function() {
@@ -62,7 +63,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'COPY_NOT_AVAILABLE',
         'COPY_IS_REFERENCE',
         'COPY_ALERT_MESSAGE',
-        'ITEM_ON_HOLDS_SHELF'                 
+        'ITEM_ON_HOLDS_SHELF',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ]
 
     // after the first override of any of these events, 
@@ -91,7 +99,14 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'COPY_ALERT_MESSAGE',
         'COPY_NEEDED_FOR_HOLD',
         'MAX_RENEWALS_REACHED',
-        'CIRC_CLAIMS_RETURNED'
+        'CIRC_CLAIMS_RETURNED',
+        'STAFF_C',
+        'STAFF_CH',
+        'STAFF_CHR',
+        'STAFF_CR',
+        'STAFF_H',
+        'STAFF_HR',
+        'STAFF_R'
     ];
 
     // these checkin events do not produce alerts when 
@@ -252,10 +267,20 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 var method = 'open-ils.circ.checkin';
                 if (options.override) method += '.override';
 
+                // Multiple checkin API calls should never be active
+                // for a single barcode.
+                if (service.in_flight_checkins[barcode]) {
+                    console.error('Barcode ' + barcode 
+                        + ' is already in flight for checkin, skipping');
+                    return $q.reject();
+                }
+                service.in_flight_checkins[barcode] = true;
+
                 return egCore.net.request(
                     'open-ils.circ', method, egCore.auth.token(), params
 
                 ).then(function(evt) {
+                    delete service.in_flight_checkins[barcode];
 
                     if (!angular.isArray(evt)) evt = [evt];
                     return service.flesh_response_data(
@@ -266,7 +291,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     .then(function(final_resp) {
                         return service.munge_resp_data(final_resp,'checkin',method)
                     })
-                });
+                }, function() {delete service.in_flight_checkins[barcode]});
             });
         });
     }
@@ -300,6 +325,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         data.record = payload.record;
         data.acp = payload.copy;
         data.acn = payload.volume ?  payload.volume : payload.copy ? payload.copy.call_number() : null;
+        data.alci = egCore.idl.toHash(payload.latest_inventory, true);
         data.au = payload.patron;
         data.transit = payload.transit;
         data.status = payload.status;
@@ -309,8 +335,16 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         data.isbn = final_resp.evt[0].isbn;
         data.route_to = final_resp.evt[0].route_to;
 
+
         if (payload.circ) data.duration = payload.circ.duration();
         if (payload.circ) data.circ_lib = payload.circ.circ_lib();
+        if (payload.do_inventory_update) {
+            if (payload.latest_inventory.id()) {
+                egCore.pcrud.update(payload.latest_inventory);
+            } else {
+                egCore.pcrud.create(payload.latest_inventory);
+            }
+        }
 
         // for checkin, the mbts lives on the main circ
         if (payload.circ && payload.circ.billable_transaction())
@@ -938,11 +972,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     service.find_copy_transit = function(evt, params, options) {
         if (angular.isArray(evt)) evt = evt[0];
 
-        if (evt && evt.payload && evt.payload.transit)
-            return $q.when(evt.payload.transit);
+        // NOTE: evt.payload.transit may exist, but it's not necessarily
+        // the transit we want, since a transit close + open in the API
+        // returns the closed transit.
 
          return egCore.pcrud.search('atc',
-            {   dest_recv_time : null},
+            {   dest_recv_time : null, cancel_time : null},
             {   flesh : 1, 
                 flesh_fields : {atc : ['target_copy']},
                 join : {
@@ -955,7 +990,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 },
                 limit : 1,
                 order_by : {atc : 'source_send_time desc'}, 
-            }
+            }, {authoritative : true}
         ).then(function(transit) {
             transit.source(egCore.org.get(transit.source()));
             transit.dest(egCore.org.get(transit.dest()));
@@ -1462,11 +1497,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
         var final_resp = {evt : evt, params : params, options : options};
 
-        var copy, hold, transit;
+        var copy, hold, transit, latest_inventory;
         if (evt[0].payload) {
             copy = evt[0].payload.copy;
             hold = evt[0].payload.hold;
             transit = evt[0].payload.transit;
+            latest_inventory = evt[0].payload.latest_inventory;
         }
 
         // track the barcode regardless of whether it's valid
@@ -1525,7 +1561,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     case 11: /* CATALOGING */
                         egCore.audio.play('info.checkin.cataloging');
                         evt[0].route_to = egCore.strings.ROUTE_TO_CATALOGING;
-                        return $q.when(final_resp);
+                        if (options.no_precat_alert)
+                            return $q.when(final_resp);
+                        return egAlertDialog.open(
+                            egCore.strings.PRECAT_CHECKIN_MSG, params)
+                            .result.then(function() {return final_resp});
+
 
                     case 15: /* ON_RESERVATION_SHELF */
                         egCore.audio.play('info.checkin.reservation');
