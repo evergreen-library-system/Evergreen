@@ -26,14 +26,15 @@
             ng-model="searchArgs.second_given_name" placeholder="[% l('Middle Name') %]"/>
         </div>
 
+        <div class="col-md-2">
+            <input type="text" class="form-control" ng-model="searchArgs.name"
+            placeholder="[% l('Name Keywords') %]" title="[% l('Name Keywords') %]"/>
+        </div>
+
         <div class="col-md-2" ng-mouseover="setLastFormElement()">
           <input type="submit" class="btn btn-primary" value="[% l('Search') %]"/>
         </div>
 
-        <div class="col-md-2" ng-mouseover="setLastFormElement()">
-          <input type="reset" class="btn btn-primary" ng-click="clearForm()" 
-            value="[% l('Clear Form') %]"/>
-        </div>
 
         <div class="col-md-2">
           <button class="btn btn-default" ng-click="applyShowExtras($event, true)" 
@@ -66,17 +67,18 @@
           <input type="text" class="form-control" 
             ng-model="searchArgs.email" placeholder="[% l('Email') %]"/>
         </div>
-        <div class="col-md-2">
-          <input type="text" class="form-control" 
-            ng-model="searchArgs.ident" placeholder="[% l('Identification') %]"/>
+        <div class="col-md-2" ng-mouseover="setLastFormElement()">
+          <input type="reset" class="btn btn-primary" ng-click="clearForm()" 
+            value="[% l('Clear Form') %]"/>
         </div>
       </div>
 
       <div class="form-group" ng-show="showExtras">
         <div class="col-md-2">
           <input type="text" class="form-control" 
-            ng-model="searchArgs.id" placeholder="[% l('Database ID') %]"/>
+            ng-model="searchArgs.ident" placeholder="[% l('Identification') %]"/>
         </div>
+
         <div class="col-md-2">
           <input type="text" class="form-control" 
             ng-model="searchArgs.phone" placeholder="[% l('Phone') %]"/>
@@ -120,7 +122,7 @@
                 <span style="padding-right: 5px;">{{searchArgs.profile.name() || "[% l('Profile Group') %]"}}</span>
                 <span class="caret"></span>
               </button>
-              <ul uib-dropdown-menu>
+              <ul class="scrollable-menu" uib-dropdown-menu>
                 <li ng-repeat="grp in profiles">
                   <a href
                     style="padding-left: {{pgt_depth(grp) * 10 + 5}}px"
@@ -137,12 +139,8 @@
         </div>
 
         <div class="col-md-2">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
-              [% l('Include Inactive?') %]
-            </label>
-          </div>
+          <input type="text" class="form-control" 
+            ng-model="searchArgs.guardian" placeholder="[% l('Parent/Guardian') %]"/>
         </div>
       </div>
       <div class="form-group" ng-show="showExtras">
@@ -157,6 +155,18 @@
         <div class="col-md-2">
             <input type="text" class="form-control" ng-model="searchArgs.dob_day"
             placeholder="[% l('DOB Day') %]" title="[% l('DOB Day') %]"/>
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control" 
+            ng-model="searchArgs.id" placeholder="[% l('Database ID') %]"/>
+        </div>
+        <div class="col-md-2">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="searchArgs.inactive" ng-change="onSearchInactiveChanged()"/>
+              [% l('Include Inactive?') %]
+            </label>
+          </div>
         </div>
       </div>
     </form>

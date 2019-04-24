@@ -14,13 +14,14 @@ function($uibModal , $q , egCore) {
     // fetch a fleshed money.billable_xact
     service.fetchXact = function(xact_id) {
         return egCore.pcrud.retrieve('mbt', xact_id, {
-            flesh : 5,
+            flesh : 6,
             flesh_fields : {
                 mbt : ['summary','circulation','grocery','reservation'],
-                circ: ['target_copy'],
+                circ: ['target_copy', 'circ_lib'],
                 acp : ['call_number','location','status','age_protect'],
-                acn : ['record'],
-                bre : ['simple_record']
+                acn : ['record','owning_lib'],
+                bre : ['simple_record'],
+                mg : ['billing_location']
             },
             select : {bre : ['id']}}, // avoid MARC
             {authoritative : true}
@@ -68,14 +69,16 @@ function($uibModal , $q , egCore) {
             return $q.when(egCore.env.cbt.list);
         }
 
-        return egCore.pcrud.search('cbt', 
-            {   // first 100 are reserved for system-generated bills
-                id : {'>' : 100}, 
-                owner : egCore.org.ancestors(
-                    egCore.auth.user().ws_ou(), true)
-            }, 
-            {}, {atomic : true}
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.billing_type.ranged.retrieve.all',
+            egCore.auth.token(),
+            egCore.auth.user().ws_ou()
         ).then(function(list) {
+            list = list.filter(function(item) {
+                // first 100 are reserved for system-generated bills
+                return item.id() > 100;
+            });
             egCore.env.absorbList(list, 'cbt');
             return list;
         });

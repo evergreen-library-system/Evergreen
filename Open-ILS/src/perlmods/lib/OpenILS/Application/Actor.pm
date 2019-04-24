@@ -16,7 +16,7 @@ use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Fieldmapper;
 use OpenILS::Utils::ModsParser;
 use OpenSRF::Utils::Logger qw/$logger/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::SettingsClient;
 
 use OpenSRF::Utils::Cache;
@@ -31,6 +31,7 @@ use OpenILS::Application::Actor::ClosedDates;
 use OpenILS::Application::Actor::UserGroups;
 use OpenILS::Application::Actor::Friends;
 use OpenILS::Application::Actor::Stage;
+use OpenILS::Application::Actor::Settings;
 
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
 use OpenILS::Utils::Penalty;
@@ -105,6 +106,78 @@ sub update_user_setting {
             }
         } elsif($set) {
             $e->delete_actor_user_setting($set) or return $e->die_event;
+        }
+    }
+
+    $e->commit;
+    return 1;
+}
+
+
+__PACKAGE__->register_method(
+    method    => "update_privacy_waiver",
+    api_name  => "open-ils.actor.patron.privacy_waiver.update",
+    signature => {
+        desc => "Replaces any existing privacy waiver entries for the patron with the supplied values.",
+        params => [
+            {desc => 'Authentication token', type => 'string'},
+            {desc => 'User ID', type => 'number'},
+            {desc => 'Arrayref of privacy waiver entries', type => 'object'}
+        ],
+        return => {desc => '1 on success, Event on error'}
+    }
+);
+sub update_privacy_waiver {
+    my($self, $conn, $auth, $user_id, $waiver) = @_;
+    my $e = new_editor(xact => 1, authtoken => $auth);
+    return $e->die_event unless $e->checkauth;
+
+    $user_id = $e->requestor->id unless defined $user_id;
+
+    unless($e->requestor->id == $user_id) {
+        my $user = $e->retrieve_actor_user($user_id) or return $e->die_event;
+        return $e->die_event unless $e->allowed('UPDATE_USER', $user->home_ou);
+    }
+
+    foreach my $w (@$waiver) {
+        $w->{usr} = $user_id unless $w->{usr};
+        if ($w->{id} && $w->{id} ne 'new') {
+            my $existing_rows = $e->search_actor_usr_privacy_waiver({usr => $user_id, id => $w->{id}});
+            if ($existing_rows) {
+                my $existing = $existing_rows->[0];
+                # delete existing if name is empty
+                if (!$w->{name} or $w->{name} =~ /^\s*$/) {
+                    $e->delete_actor_usr_privacy_waiver($existing) or return $e->die_event;
+
+                # delete existing if none of the boxes were checked
+                } elsif (!$w->{place_holds} && !$w->{pickup_holds} && !$w->{checkout_items} && !$w->{view_history}) {
+                    $e->delete_actor_usr_privacy_waiver($existing) or return $e->die_event;
+
+                # otherwise, update existing waiver entry
+                } else {
+                    $existing->name($w->{name});
+                    $existing->place_holds($w->{place_holds});
+                    $existing->pickup_holds($w->{pickup_holds});
+                    $existing->checkout_items($w->{checkout_items});
+                    $existing->view_history($w->{view_history});
+                    $e->update_actor_usr_privacy_waiver($existing) or return $e->die_event;
+                }
+            } else {
+                $logger->warn("No privacy waiver entry found for user $user_id with ID " . $w->{id});
+            }
+
+        } else {
+            # ignore new entries with empty name or with no boxes checked
+            next if (!$w->{name} or $w->{name} =~ /^\s*$/);
+            next if (!$w->{place_holds} && !$w->{pickup_holds} && !$w->{checkout_items} && !$w->{view_history});
+            my $new = Fieldmapper::actor::usr_privacy_waiver->new;
+            $new->usr($w->{usr});
+            $new->name($w->{name});
+            $new->place_holds($w->{place_holds});
+            $new->pickup_holds($w->{pickup_holds});
+            $new->checkout_items($w->{checkout_items});
+            $new->view_history($w->{view_history});
+            $e->create_actor_usr_privacy_waiver($new) or return $e->die_event;
         }
     }
 
@@ -443,6 +516,9 @@ sub update_patron {
     ( $new_patron, $evt ) = _add_update_cards($e, $patron, $new_patron);
     return $evt if $evt;
 
+    ( $new_patron, $evt ) = _add_update_waiver_entries($e, $patron, $new_patron);
+    return $evt if $evt;
+
     ( $new_patron, $evt ) = _add_survey_responses($e, $patron, $new_patron);
     return $evt if $evt;
 
@@ -539,6 +615,7 @@ sub flesh_user {
         "billing_address",
         "mailing_address",
         "stat_cat_entries",
+        "waiver_entries",
         "settings",
         "usr_activity"
     ];
@@ -567,6 +644,7 @@ sub _clone_patron {
     $new_patron->clear_ischanged();
     $new_patron->clear_isdeleted();
     $new_patron->clear_stat_cat_entries();
+    $new_patron->clear_waiver_entries();
     $new_patron->clear_permissions();
     $new_patron->clear_standing_penalties();
 
@@ -887,6 +965,32 @@ sub _update_card {
 }
 
 
+sub _add_update_waiver_entries {
+    my $e = shift;
+    my $patron = shift;
+    my $new_patron = shift;
+    my $evt;
+
+    my $waiver_entries = $patron->waiver_entries();
+    for my $waiver (@$waiver_entries) {
+        next unless ref $waiver;
+        $waiver->usr($new_patron->id());
+        if ($waiver->isnew()) {
+            next if (!$waiver->name() or $waiver->name() =~ /^\s*$/);
+            next if (!$waiver->place_holds() && !$waiver->pickup_holds() && !$waiver->checkout_items() && !$waiver->view_history());
+            $logger->info("Adding new patron waiver entry");
+            $waiver->clear_id();
+            $e->create_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        } elsif ($waiver->ischanged()) {
+            $logger->info("Updating patron waiver entry " . $waiver->id);
+            $e->update_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        } elsif ($waiver->isdeleted()) {
+            $logger->info("Deleting patron waiver entry " . $waiver->id);
+            $e->delete_actor_usr_privacy_waiver($waiver) or return (undef, $e->die_event);
+        }
+    }
+    return ($new_patron, undef);
+}
 
 
 # returns event on error.  returns undef otherwise
@@ -1322,16 +1426,8 @@ __PACKAGE__->register_method(
     method   => "patron_adv_search",
     api_name => "open-ils.actor.patron.search.advanced.fleshed",
     stream => 1,
-    # TODO: change when opensrf 'bundling' is merged.
-    # set a relatively small bundle size so the caller can start
-    # seeing results fairly quickly
-    max_chunk_size => 4096, # bundling
-
-    # api_level => 2,
-    # pending opensrf work -- also, not sure if needed since we're not
-    # actaully creating an alternate vesrion, only offering to return a
-    # different format.
-    #
+    # Flush the response stream at most 5 patrons in for UI responsiveness.
+    max_bundle_count => 5,
     signature => {
         desc => q/Returns a stream of fleshed user objects instead of
             a pile of identifiers/
@@ -3014,6 +3110,7 @@ sub user_retrieve_fleshed_by_id {
         "billing_address",
         "mailing_address",
         "stat_cat_entries",
+        "waiver_entries",
         "usr_activity" ];
     return new_flesh_user($user_id, $fields, $e);
 }
@@ -3377,7 +3474,13 @@ sub merge_users {
     my $colls = $e->search_money_collections_tracker({usr => $user_ids}, {idlist => 1});
     return OpenILS::Event->new('MERGED_USER_IN_COLLECTIONS', payload => $user_ids) if @$colls;
 
+    return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+        if $master_id == $e->requestor->id;
+
     my $master_user = $e->retrieve_actor_user($master_id) or return $e->die_event;
+    my $evt = group_perm_failed($e, $e->requestor, $master_user);
+    return $evt if $evt;
+
     my $del_addrs = ($U->ou_ancestor_setting_value(
         $master_user->home_ou, 'circ.user_merge.delete_addresses', $e)) ? 't' : 'f';
     my $del_cards = ($U->ou_ancestor_setting_value(
@@ -3386,7 +3489,13 @@ sub merge_users {
         $master_user->home_ou, 'circ.user_merge.deactivate_cards', $e)) ? 't' : 'f';
 
     for my $src_id (@$user_ids) {
+
         my $src_user = $e->retrieve_actor_user($src_id) or return $e->die_event;
+        my $evt = group_perm_failed($e, $e->requestor, $src_user);
+        return $evt if $evt;
+
+        return OpenILS::Event->new('MERGE_SELF_NOT_ALLOWED')
+            if $src_id == $e->requestor->id;
 
         return $e->die_event unless $e->allowed('MERGE_USERS', $src_user->home_ou);
         if($src_user->home_ou ne $master_user->home_ou) {
@@ -4059,7 +4168,7 @@ sub _reset_password_request {
 
     # Guard against no active requests
     if ($active_requests->[0]->{'request_time'}) {
-        my $last_request = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($active_requests->[0]->{'request_time'}));
+        my $last_request = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($active_requests->[0]->{'request_time'}));
         my $now = DateTime::Format::ISO8601->new();
 
         # 3. if (num_active > throttle_threshold) and (now - last_request < 1 minute)
@@ -4166,7 +4275,7 @@ sub commit_password_reset {
 
     # Ensure we're still within the TTL for the request
     my $aupr_ttl = $U->ou_ancestor_setting_value($user->home_ou, 'circ.password_reset_request_time_to_live') || 24*60*60;
-    my $threshold = DateTime::Format::ISO8601->parse_datetime(clense_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
+    my $threshold = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($aupr->[0]->request_time))->add(seconds => $aupr_ttl);
     if ($threshold < DateTime->now(time_zone => 'local')) {
         $e->die_event;
         $logger->info("Password reset request needed to be submitted before $threshold");

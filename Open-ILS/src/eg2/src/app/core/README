@@ -1,0 +1,9 @@
+Core Angular services and assocated types/classes.
+
+Core services are imported and exported by the base module and 
+automatically added as dependencies to ALL applications.
+
+1. Only add services here that are universally required.
+2. Avoid URL path navigation in the core services as paths will vary 
+   by application.
+

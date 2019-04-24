@@ -146,12 +146,12 @@ newpo:
 	@echo "Generated new PO files for locale $(LOCALE)"
 
 # Generate a new set of POT files and entityized fieldmapper IDL
-newpot: dtds2pot fmidl2pot fmidl2fmidlent ils2pot props2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
+newpot: fmidl2pot fmidl2fmidlent ils2pot sql2pot dojo2pot tpac2pot webstaff2pot templates2pot
 	@echo "Generated new POT files"
 
 # Generate DTD, JavaScript message catalogs, fieldmapper IDL,
 # and SQL insert files from PO for locale LOCALE
-project: prep_output po2dtds po2props po2sql fmidlpo2entity po2ils po2dojo
+project: prep_output po2sql fmidlpo2entity po2ils po2dojo
 	@echo "Generated project files for locale $(LOCALE)"
 
 # Update PO files with new and changed strings from POT files
@@ -367,23 +367,7 @@ fmidlpo2entity-en:
 
 # Install updated project files to their corresponding location in the source tree
 install: updatepo project fmidl2fmidlent fmidlpo2entity-en
-	mkdir -p $(CHROME_PROPSDIR)/$(LOCALE)
-	cp $(PROJECT)/$(LOCALE)/auth.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/offline.properties $(CHROME_PROPSDIR)/$(LOCALE)/.
-	mkdir -p $(SERVER_PROPSDIR)/$(LOCALE)
-	cp $(PROJECT)/$(LOCALE)/admin.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/cat.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/circ.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/common.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/multiclass_search_help.html $(SERVER_PROPSDIR)/$(LOCALE)/.
-	cp $(PROJECT)/$(LOCALE)/patron.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	mkdir -p $(DTDDIR)/$(LOCALE)
-	cp $(PROJECT)/$(LOCALE)/conify.dtd $(DTDDIR)/$(LOCALE)/
-	cp $(PROJECT)/$(LOCALE)/lang.dtd $(CHROME_PROPSDIR)/$(LOCALE)/
-	cp $(PROJECT)/$(LOCALE)/lang.dtd $(DTDDIR)/$(LOCALE)/
-	cp $(PROJECT)/$(LOCALE)/opac.dtd $(DTDDIR)/$(LOCALE)/
-	cp $(PROJECT)/$(LOCALE)/reports.dtd $(DTDDIR)/$(LOCALE)/
-	cp $(PROJECT)/$(LOCALE)/serial.properties $(SERVER_PROPSDIR)/$(LOCALE)/.
 	mkdir -p $(TT_LOCALE)
 	cp po/tpac/$(LOCALE).po $(TT_LOCALE)/tpac.$(LOCALE).po
 	cp po/webstaff/$(LOCALE).po $(TT_LOCALE)/webstaff.$(LOCALE).po

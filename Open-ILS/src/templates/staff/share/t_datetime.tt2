@@ -29,14 +29,15 @@
       not line up horizontally very well with the date picker -->
   <div>
     <span>
-      <uib-timepicker
-        ng-show="showTimePicker"
+      <div uib-timepicker
+        ng-class="{hidden:!showTimePicker}"
+        ng-hide="hideTimePicker"
         ng-model="ngModel"
         ng-disabled="ngDisabled"
         ng-required="ngRequired"
         ng-blur="ngBlur"
         ng-change="ngChange">
-      </uib-timepicker>
+      </div>
     </span>
   </div>
 

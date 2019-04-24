@@ -1,0 +1,44 @@
+= Evergreen Angular App Cheatsheet
+
+== Basics
+
+[source,sh]
+---------------------------------------------------------------------
+npm update
+npm install
+ng lint             # check code formatting
+npm run test        # unit tests
+ng build --watch    # compile dev mode
+ng build --prod     # compile production mode
+---------------------------------------------------------------------
+
+== OPTIONAL: Adding a Locale 
+
+* Using cs-CZ as an example.
+* A cs-CZ configuration is supplied by default.  Additional configs
+  must be added where needed.
+* Currently translation builds are only available on --prod build mode.
+* Uncomment the locale lines in eg_vhost.conf and restart apache.
+* TODO: expand docs on package.json file changes required to add locales.
+
+=== Exporting Source Strings
+
+[source,sh]
+---------------------------------------------------------------------
+npm run export-strings
+---------------------------------------------------------------------
+
+* Then upload the messages.xmb file to the translation service
+
+=== Import and Build the Translation
+
+1. Edit the "locales" array ./src/environments/environment.prod.ts to 
+   include cs-CZ.
+2. Export translations as ".XTB" files from translation service.
+3. Put the file in src/locale/messages.cs-CZ.xtb
+4. Build the application for the selected locale by running:
+[source,sh]
+---------------------------------------------------------------------
+npm run build-cs-CZ
+---------------------------------------------------------------------
+

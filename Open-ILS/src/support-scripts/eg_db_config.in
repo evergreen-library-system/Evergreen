@@ -142,11 +142,11 @@ sub create_database {
 	$ENV{'PGPASSWORD'} = $settings->{pw};
 	$ENV{'PGPORT'} = $settings->{port};
 	$ENV{'PGHOST'} = $settings->{host};
-	my @temp = `psql -d postgres -qtc 'show server_version;' | xargs | cut -d. -f 1,2 | tr -d '.'`;
+	my @temp = split(/ /, `psql -d postgres -qtc 'show server_version;' | xargs | cut -d. -f 1,2`);
 	chomp $temp[0];
 	my $pgversion = $temp[0];
 	my $cmd;
-	unless ($pgversion >= '94') {
+	unless ($pgversion >= '9.4') {
         my @message = ();
 		push(@message,
 			"\n------------------------------------------------------------------------------\n",
@@ -166,7 +166,7 @@ sub create_database {
 			push(@output, "\nYou may need to install the postgresql plperl package on the database server.\n");
 		}
 		if(grep/No such file or directory/, @output) {
-			if($pgversion >= '91') {
+			if($pgversion >= '9.1') {
 				push(@output, "\nYou may need to install the postgresql contrib package on the database server.\n"); 
 			} else {
 				push(@output, "\nYou may need to install the postgresql contrib package on this server.\n");

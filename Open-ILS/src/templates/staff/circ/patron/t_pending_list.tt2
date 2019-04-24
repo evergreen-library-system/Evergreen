@@ -4,8 +4,11 @@
   </div>
 </div>
 
-<span>[% l('Home Library: ' ) %]</span>
-<span><eg-org-selector selected="context_org"></eg-org-selector></span>
+<div class="flex-row">
+  <div class="pad-right-min">[% l('Home Library: ' ) %]</div>
+  <eg-org-selector selected="context_org"></eg-org-selector>
+  <div class="flex-1"></div>
+</div>
 <hr/>
 
 <eg-grid
@@ -18,6 +21,9 @@
 
   <eg-grid-menu-item handler="load_patron" 
     label="[% l('Load Patron') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item handler="deletePatron"
+    label="[% l('Delete Pending Patron(s)') %]"></eg-grid-menu-item>
 
   <eg-grid-field path='user.row_date' label="[% l('Create Date') %]"></eg-grid-field>
   <eg-grid-field path='user.first_given_name' label="[% l('First Name') %]"></eg-grid-field>

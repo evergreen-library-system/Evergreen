@@ -1,8 +1,7 @@
 User and Group Permissions
 --------------------------
 
-It is essential to understand how user and group permissions can be used to
-allow 
+It is essential to understand how user and group permissions can be used to allow
 staff to fulfill their roles while ensuring that they only have access to the
 appropriate level.
 
@@ -20,14 +19,14 @@ Staff Accounts
 
 New staff accounts are created in much the same way as patron accounts, using
 _Circulation -> Register Patron_ or *Shift+F1*. Select one of the staff
-profiles 
-from the _Profile Group_ drop-down menu.
+profiles from the _Profile Group_ drop-down menu.
+
+image::media/permissions_1a.png[Permission Group dropdown in patron account]
 
 Each new staff account must be assigned a _Working Location_ which determines
-its 
-access level in staff client interfaces.
+its access level in staff client interfaces.
 
-. To assign a working location open the newly created staff account using *F1* 
+. To assign a working location, open the newly created staff account using *F1*
 (retrieve patron) or *F4* (patron search).
 . Select _Other -> User Permission Editor_
 +

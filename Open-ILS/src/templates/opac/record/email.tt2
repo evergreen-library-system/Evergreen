@@ -19,7 +19,11 @@
             </h2>
             [% END %]
             <br/>
+            [% IF ctx.redirect_to %]
+            <p>[ <a href="[% ctx.redirect_to | html %]">[% l("Return") %]</a> ] </p>
+            [% ELSE %]
             <p>[ <a href="[% mkurl(ctx.opac_root  _ '/record/' _ ctx.bre_id) %]">[% l("Back to Record") %]</a> ]</p>
+            [% END %]
             <div class="common-full-pad"></div>
         </div>
         <br class="clear-both" />

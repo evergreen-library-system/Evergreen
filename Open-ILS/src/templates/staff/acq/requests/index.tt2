@@ -1,0 +1,26 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Acquisition Patron Requests");
+  ctx.page_app = "egAcqRequestsApp";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/user.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/acq/services/requests.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/acq/requests/list.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CREATE_USER_REQUEST_SUCCESS = "[% l('Created Acquisition Patron Request') %]";
+    s.CREATE_USER_REQUEST_FAIL = "[% l('Failed to Create Acquisition Patron Request') %]";
+    s.EDIT_USER_REQUEST_SUCCESS = "[% l('Edited Acquisition Patron Request') %]";
+    s.EDIT_USER_REQUEST_FAIL = "[% l('Failed to Edit Acquisition Patron Request') %]";
+}]);
+</script>
+<link rel="stylesheet" href="[% ctx.base_path %]/staff/css/circ.css" />
+[% END %]
+
+<div ng-view></div>
+
+[% END %]

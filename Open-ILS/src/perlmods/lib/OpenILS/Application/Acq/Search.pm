@@ -58,6 +58,9 @@ sub castdate {
     $op = ">=" if $gte;
     $op = "<=" if $lte;
 
+    # avoid transforming a date if the match value is NULL.
+    return {'=' => undef} if $op eq '=' and not $value;
+
     +{$op => {"transform" => "date", "value" => $value}};
 }
 

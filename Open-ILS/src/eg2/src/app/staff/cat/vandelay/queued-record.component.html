@@ -1,0 +1,31 @@
+
+<div class="row mb-3">
+  <div class="col-lg-2">
+    <button class="btn btn-info label-with-material-icon"
+      routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}">
+      <span class="material-icons">arrow_back</span>
+      <span i18n>Return to Queue</span>
+    </button>
+  </div>
+</div>
+
+<ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
+	<ngb-tab title="Queued Record MARC" i18n-title id="marc">
+		<ng-template ngbTabContent>
+      <eg-marc-html [recordId]="recordId" [recordType]="'vandelay-'+queueType">
+      </eg-marc-html>
+		</ng-template>
+	</ngb-tab>
+	<ngb-tab title="Record Matches" i18n-title id="matches">
+		<ng-template ngbTabContent>
+      <eg-queued-record-matches [recordId]="recordId" [queueType]="queueType">
+      </eg-queued-record-matches>
+		</ng-template>
+	</ngb-tab>
+	<ngb-tab title="Import Items" i18n-title id="items">
+		<ng-template ngbTabContent>
+      <eg-queued-record-items [recordId]="recordId">
+      </eg-queued-record-items>
+		</ng-template>
+	</ngb-tab>
+</ngb-tabset>

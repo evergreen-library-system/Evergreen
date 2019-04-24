@@ -36,37 +36,37 @@ image::media/manage_parts_menu.jpg[Menu: Manage Parts]
 
 . Enter the *label* that you want to appear to the user in the catalog,
 and click *Save*.  This will create a list of monograph parts from which
-you can choose when you create a volume and copy.
+you can choose when you create holdings.
 +
 image::media/monograph_parts2.jpg[monograph_parts2]
 
-. Add a volume and copy.  To add a volume and copy to your workstation
-library, click the *Add Volumes* button in the *Record Summary* area above the tabs.
+. Add holdings.  To add holdings to your workstation
+library, click the *Add Holdings* button in the *Record Summary* area above the tabs.
 +
-To add a volume and copy to your workstation library or other libraries,
+To add holdings to your workstation library or other libraries,
 click the *Holdings View* tab, right-click the appropriate
-library, and choose *Add -> Volumes and Copies*.
+library, and choose *Add -> Call numbers and Items*.
 +
 image::media/monograph_parts3.jpg[monograph_parts3]
 
-. The *Unified Volume/Copy Creator* opens. Enter the number of volumes
-that you want to add to the catalog and the volume description.
+. The Holdings Editor opens. Enter the number of call numbers
+that you want to add to the catalog and the call number description.
 
-. Enter the number of copies and barcode(s) of each item.
+. Enter the number of items and barcode(s) of each item.
 
 . Choose the part label from the *Part* drop down menu.
 +
 image::media/monograph_parts4.jpg[monograph_parts4]
 
-. Apply a template to the copies, or edit fields in the *Working Copies* section below.
+. Apply a template to the items, or edit fields in the *Working Items* section below.
 +
 image::media/monograph_parts5.jpg[monograph_parts5]
 
-. Click *Store Selected* when those copies are ready.
+. Click *Store Selected* when those items are ready.
 
-. Review your completed copies on the "Completed Copies" tab.
+. Review your completed items on the "Completed Items" tab.
 
-. When all copies have been stored and reviewed, click "Save & Exit".
+. When all items have been stored and reviewed, click "Save & Exit".
 +
 NOTE: If you are only making one set of changes, you can simply click
 *Save & Exit* and skip the *Store Selected* stage.
@@ -74,7 +74,7 @@ NOTE: If you are only making one set of changes, you can simply click
 . The *Holdings View* tab now shows the new part information. These fields
 also appear in the OPAC View.
 +
-image::media/manage_parts_opac.png[Catalog Record showing copies with part details]
+image::media/manage_parts_opac.png[Catalog Record showing items with part details]
 
 Monograph Part Merging
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -95,5 +95,5 @@ items in a monospaced font, with blanks represented by a middle-dot character
 for more visibility.
 . Click on the item you wish to prevail.
 
-The undesired part labels will be deleted, and any copies that previously used
+The undesired part labels will be deleted, and any items that previously used
 those labels will now use the prevailing label

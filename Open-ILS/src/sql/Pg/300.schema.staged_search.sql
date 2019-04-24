@@ -1094,7 +1094,7 @@ BEGIN
 
             SELECT  INTO result_row.sources COUNT(DISTINCT b.id)
               FROM  biblio.record_entry b
-                    JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = b.id)
+                    LEFT JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = b.id)
               WHERE b.id = ANY(all_brecords[1:browse_superpage_size])
                     AND (
                         acvac.vis_attr_vector @@ c_tests::query_int
@@ -1110,7 +1110,7 @@ BEGIN
 
             SELECT  INTO result_row.asources COUNT(DISTINCT b.id)
               FROM  biblio.record_entry b
-                    JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = b.id)
+                    LEFT JOIN asset.copy_vis_attr_cache acvac ON (acvac.record = b.id)
               WHERE b.id = ANY(all_arecords[1:browse_superpage_size])
                     AND (
                         acvac.vis_attr_vector @@ c_tests::query_int

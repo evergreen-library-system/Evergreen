@@ -1,12 +1,12 @@
-[% ctx.page_title = l("Copy Alert Suppression"); %]
+[% ctx.page_title = l("Item Alert Suppression"); %]
 <!-- use <form> so we get submit-on-enter for free -->
 <form class="form-validated" novalidate name="form" ng-submit="ok(record)">
   <div>
     <div class="modal-header">
       <button type="button" class="close" 
         ng-click="cancel()" aria-hidden="true">&times;</button>
-      <h4 ng-if="creating"  class="modal-title">[% l('Create copy alert suppression rule') %]</h4>
-      <h4 ng-if="!creating" class="modal-title">[% l('Update copy alert suppression rule') %]</h4>
+      <h4 ng-if="creating"  class="modal-title">[% l('Create item alert suppression rule') %]</h4>
+      <h4 ng-if="!creating" class="modal-title">[% l('Update item alert suppression rule') %]</h4>
     </div>
     <div class="modal-body">
       <div class="form-group">

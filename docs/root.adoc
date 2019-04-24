@@ -58,7 +58,7 @@ type â€“ public, academic, special, school, and even tribal and home libraries â
 in over a dozen countries worldwide.
 
 
-include::RELEASE_NOTES_3_0.adoc[]
+include::RELEASE_NOTES_3_3.adoc[]
 
 
 Software Installation
@@ -114,6 +114,8 @@ include::admin_initial_setup/ordering_materials.adoc[]
 
 include::admin_initial_setup/designing_your_catalog.adoc[]
 
+include::admin_initial_setup/different_styles_for_searchbar.adoc[]
+
 include::admin/search_interface.adoc[]
 
 include::admin_initial_setup/borrowing_items.adoc[]
@@ -121,9 +123,9 @@ include::admin_initial_setup/borrowing_items.adoc[]
 // Return to normal title levels.
 :leveloffset: 0
 
+include::admin/autorenewals.adoc[]
+
 include::admin_initial_setup/hard_due_dates.adoc[]
-
-
 
 include::admin/template_toolkit.adoc[]
 
@@ -208,7 +210,7 @@ include::admin/workstation_admin.adoc[]
 // Push titles down one level.
 :leveloffset: 1
 
-include::admin/workstation_admin_receipt_template_editor.adoc[]
+include::admin/receipt_template_editor.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
@@ -229,6 +231,8 @@ include::admin/acquisitions_admin.adoc[]
 include::admin/age_hold_protection.adoc[]
 
 include::admin/authorities.adoc[]
+
+include::admin/infrastructure_auth_browse.adoc
 
 include::admin/Best_Hold_Selection_Sort_Order.adoc[]
 
@@ -256,7 +260,21 @@ include::admin/copy_tags_admin.adoc[]
 
 include::admin/MARC_RAD_MVF_CRA.adoc[]
 
+include::admin/multilingual_search.adoc[]
+
+include::admin/infrastructure_auth_browse.adoc[]
+
+include::admin/virtual_index_defs.adoc[]
+
 include::admin/Org_Unit_Proximity_Adjustments.adoc[]
+
+:leveloffset: -1
+
+include::admin/physical_char_wizard_db.adoc[]
+
+:leveloffset: 0
+
+include::admin/copy_locations.adoc[]
 
 include::admin/permissions.adoc[]
 
@@ -293,6 +311,8 @@ include::admin/hold_driven_recalls.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
+
+include::admin/emergency_closing_handler.adoc[]
 
 include::admin/actiontriggers.adoc[]
 
@@ -348,13 +368,12 @@ include::cataloging/MARC_Editor.adoc[]
 
 include::cataloging/record_buckets.adoc[]
 
-// Push titles down one level.
-:leveloffset: 2
-
-include::cataloging/physical_char_wizard.adoc[]
-
 // Return titles to correct level.
 :leveloffset: 0
+
+include::cataloging/merge_overlay_bibs.adoc[]
+
+include::cataloging/physical_char_wizard.adoc[]
 
 include::admin/staff_client-return_to_results_from_marc.adoc[]
 
@@ -372,13 +391,25 @@ include::cataloging/conjoined_items.adoc[]
 
 include::cataloging/cataloging_electronic_resources.adoc[]
 
+include::cataloging/item_status.adoc[]
+
+include::cataloging/volcopy_editor.adoc[]
+
+:leveloffset: 1
+
 include::cataloging/tpac_copy_edit_links.adoc[]
+
+:leveloffset: 0
 
 include::cataloging/MARC_batch_edit.adoc[]
 
 include::cataloging/authorities.adoc[]
 
 include::cataloging/link_checker.adoc[]
+
+include::admin/schema_bibliographic.adoc[]
+
+include::admin/marc_templates.adoc[]
 
 
 Serials
@@ -480,6 +511,8 @@ include::opac/using_the_public_access_catalog.adoc[]
 
 include::opac/my_lists.adoc[]
 
+include::opac/batch_actions_from_search.adoc[]
+
 include::opac/kids_opac.adoc[]
 
 include::opac/catalog_browse.adoc[]
@@ -499,7 +532,6 @@ include::opac/search_form.adoc[]
 
 // Return to normal title levels.
 :leveloffset: 0
-
 
 Developer Resources
 ===================

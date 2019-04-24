@@ -9,7 +9,7 @@
 
 [%
     interfaces = [
-     [ l('Serial Copy Templates'), "./admin/serials/templates" ]
+     [ l('Serial Item Templates'), "./admin/serials/templates" ]
      [ l('Prediction Pattern Templates'), "./admin/serials/pattern_template" ]
    ];
 

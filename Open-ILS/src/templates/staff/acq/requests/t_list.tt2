@@ -1,0 +1,83 @@
+<div class="container-fluid" style="text-align:center">
+  <div class="alert alert-info alert-less-pad strong-text-2">
+    <span>[% l('Acquisition Patron Requests') %]</span>
+  </div>
+</div>
+
+<div>
+  <div class="form-group">
+    <div class="row">
+      <span ng-hide="context_user || context_lineitem">
+        <div class="col-md-3 input-group">
+          <span class="input-group-addon">[% l('Patron Home Library: ' ) %]</span>
+          <eg-org-selector id="select-request-ou" selected="context_ou"></eg-org-selector>
+        </div>
+      </span>
+      <span ng-show="context_user">[% l('User ID: [_1]','{{context_user}}') %]</span>
+      <span ng-show="context_lineitem">[% l('PO Line Item ID: [_1]','{{context_lineitem}}') %]</span>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<eg-grid
+  id-field="id"
+  idl-class="aurs"
+  features="-sort,-multisort"
+  grid-controls="grid_controls"
+  persist-key="acq.requests.list"
+  dateformat="{{$root.egDateAndTimeFormat}}">
+
+  <eg-grid-menu-item handler="create_request"
+    label="[% l('Create Request') %]"></eg-grid-menu-item>
+
+  <eg-grid-menu-item handler="canceled_requests_checkbox_handler"
+    label="[% l('Show Canceled Requests') %]"
+    checkbox="requests_show_canceled"
+    checked="requests_show_canceled"/>
+
+  <eg-grid-menu-item handler="clear_requests" disabled="need_one_and_all_uncanceled"
+    label="[% l('Clear Completed Requests') %]"></eg-grid-menu-item>
+
+  <eg-grid-action handler="edit_request" disabled="need_one_uncanceled"
+    label="[% l('Edit Request') %]"></eg-grid-action>
+  <eg-grid-action handler="view_request" disabled="need_one_selected"
+    label="[% l('View Request') %]"></eg-grid-action>
+  <eg-grid-action handler="retrieve_user" disabled="need_one_selected"
+    label="[% l('Retrieve Patron') %]"></eg-grid-action>
+  <eg-grid-action handler="add_request_to_picklist" disabled="need_one_uncanceled_no_lineitem"
+    label="[% l('Add Request to Selection List') %]"></eg-grid-action>
+  <eg-grid-action handler="view_picklist" disabled="need_one_lineitem"
+    label="[% l('View Selection List') %]"></eg-grid-action>
+  <eg-grid-action handler="set_yes_hold_requests" disabled="need_one_and_all_new_or_pending"
+    label="[% l('Set Hold on Requests') %]"></eg-grid-action>
+  <eg-grid-action handler="set_no_hold_requests" disabled="need_one_and_all_new_or_pending"
+    label="[% l('Set No Hold on Requests') %]"></eg-grid-action>
+  <eg-grid-action handler="cancel_requests" disabled="need_one_and_all_uncanceled"
+    label="[% l('Cancel Requests') %]"></eg-grid-action>
+
+  <eg-grid-field path='id' hidden required sortable></eg-grid-field>
+  <eg-grid-field path='request_status.label' sortable label="[% l('Request Status') %]"></eg-grid-field>
+  <eg-grid-field path='request_status.id' required hidden sortable label="[% l('Request Status ID') %]"></eg-grid-field>
+  <eg-grid-field path='request_date' sortable label="[% l('Request Date/Time') %]"
+    datatype="timestamp"></eg-grid-field>
+  <eg-grid-field path='need_before' sortable label="[% l('Need Before Date/Time') %]"
+    datatype="timestamp"></eg-grid-field>
+  <eg-grid-field path='request_type.label' required sortable label="[% l('Request Type') %]"></eg-grid-field>
+  <eg-grid-field path='hold' sortable></eg-grid-field>
+  <eg-grid-field path='pickup_lib.shortname' required sortable label="[% l('Pickup Lib') %]"></eg-grid-field>
+  <eg-grid-field path='isxn' sortable></eg-grid-field>
+  <eg-grid-field path='upc' sortable></eg-grid-field>
+  <eg-grid-field path='title' sortable></eg-grid-field>
+  <eg-grid-field path='article_title' sortable></eg-grid-field>
+  <eg-grid-field path='lineitem.id' required sortable label="[% l('Lineitem ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='lineitem.picklist' sortable required label="[% l('Selection List ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='usr.id' required sortable label="[% l('User ID') %]" hidden></eg-grid-field>
+  <eg-grid-field path='usr.card.barcode' sortable required label="[% l('User Barcode') %]"></eg-grid-field>
+  <eg-grid-field path='usr.family_name' sortable required label="[% l('User Family Name') %]" hidden></eg-grid-field>
+  <eg-grid-field path='usr.home_ou.shortname' required sortable label="[% l('User Home Library') %]" hidden></eg-grid-field>
+  <eg-grid-field path='cancel_reason.label' sortable required label="[% l('Cancel Reason') %]" hidden></eg-grid-field>
+  <eg-grid-field path='*' required hidden></eg-grid-field>
+</eg-grid>
+

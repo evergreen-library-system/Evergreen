@@ -29,7 +29,7 @@
   ng-if="items_out_display == 'noncat'"
   idl-class="ancc"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out.noncat"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -46,7 +46,7 @@
   ng-if="items_out_display != 'noncat'"
   idl-class="circ"
   id-field="id"
-  features="clientsort"
+  features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out"
   dateformat="{{$root.egDateAndTimeFormat}}">
@@ -85,6 +85,9 @@
   <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
   <eg-grid-field label="[% l('Circulation Library') %]" path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Age-based Hold Protection') %]" path='target_copy.age_protect.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Floating Group') %]" path='target_copy.floating.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Location') %]" path='target_copy.location.name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
@@ -95,7 +98,7 @@
   </eg-grid-field>
   <eg-grid-field path="*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.holds_count.count" hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Copy Status') %]" path="target_copy.status.name" hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Item Status') %]" path="target_copy.status.name" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.circ_modifier" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.*" hidden></eg-grid-field>

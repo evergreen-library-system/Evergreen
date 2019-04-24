@@ -1,0 +1,423 @@
+<div id="staff-navbar" class="navbar fixed-top navbar-expand navbar-default">
+  <div class="collapse navbar-collapse">
+    <div class="navbar-nav">
+      <div class="nav-item">
+        <a i18n class="nav-link with-material-icon" 
+          href="/eg/staff/"
+          egAccessKey keyCtx="navbar"
+          keySpec="alt+h" i18n-keySpec
+          keyDesc="Navigate Home" i18n-keyDesc>
+          <span class="material-icons">home</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+         Search
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/search">
+            <span class="material-icons">person</span>
+            <span i18n>Search for Patrons</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/cat/item/search">
+            <span class="material-icons">assignment</span>
+            <span i18n>Search for Copies by Barcode</span>
+          </a>
+          <a href="/eg/staff/cat/catalog/index" class="dropdown-item">
+            <span class="material-icons">search</span>
+            <span i18n>Search the Catalog</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle">
+         <span i18n>Circulation</span>
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/bcsearch">
+            <span class="material-icons">trending_up</span>
+            <span i18n>Check Out</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/checkin/checkin">
+            <span class="material-icons">trending_down</span>
+            <span i18n>Check In</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/checkin/capture">
+            <span class="material-icons">pin_drop</span>
+            <span i18n>Capture Holds</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/holds/pull">
+            <span class="material-icons">view_list</span>
+            <span i18n>Pull List for Hold Requests</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/renew/renew">
+            <span class="material-icons">autorenew</span>
+            <span i18n>Renew Items</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/register">
+            <span class="material-icons">person_add</span>
+            <span i18n>Register Patron</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/last">
+            <span class="material-icons">redo</span>
+            <span i18n>Retrieve Last Patron</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/search?show_recent=1">
+            <span class="material-icons">redo</span>
+            <span i18n>Retrieve Recent Patrons</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/pending/list">
+            <span class="material-icons">thumb_up</span>
+            <span i18n>Pending Patrons</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/bucket/view">
+            <span class="material-icons">list</span>
+            <span i18n>User Buckets</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/eg/staff/circ/patron/credentials">
+            <span class="material-icons">check_circle</span>
+            <span i18n>Verify Credentials</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/in_house_use/index">
+            <span class="material-icons">playlist_add</span>
+            <span i18n>Record In-House Use</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/circ/holds/shelf">
+            <span class="material-icons">format_list_bulleted</span>
+            <span i18n>Holds Shelf</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/eg/staff/cat/item/replace_barcode/index">
+            <span class="material-icons">library_books</span>
+            <span i18n>Replace Barcode</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/cat/item/search"
+            egAccessKey keyCtx="navbar"
+            keySpec="f5" i18n-keySpec
+            keyDesc="Navigate To Item Status" i18n-keyDesc>
+            <span class="material-icons">question_answer</span>
+            <span i18n>Item Status</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/cat/item/missing_pieces">
+            <span class="material-icons">grid_on</span>
+            <span i18n>Scan Item as Missing Pieces</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" (click)="reprintLast()">
+            <span class="material-icons">redo</span>
+            <span i18n>Reprint Last Receipt</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/eg/staff/offline-interface">
+            <span class="material-icons">signal_wifi_off</span>
+            <span i18n>Offline Circulation</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATALOGING -->
+    
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+         Cataloging
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+
+          <a href="/eg/staff/cat/catalog/index" class="dropdown-item">
+            <span class="material-icons">search</span>
+            <span i18n>Search the Catalog</span>
+          </a>
+          <a *ngIf="showAngularCatalog"
+            class="dropdown-item"
+            routerLink="/staff/catalog/search">
+            <span class="material-icons">search</span>
+            <span i18n>Staff Catalog (Experimental)</span>
+          </a>
+          <a href="/eg/staff/cat/bucket/record/view" class="dropdown-item">
+            <span class="material-icons">list_alt</span>
+            <span i18n>Record Buckets</span>
+          </a>
+          <a href="/eg/staff/cat/bucket/copy/view" class="dropdown-item">
+            <span class="material-icons">list_alt</span>
+            <span i18n>Copy Buckets</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/eg/staff/cat/catalog/retrieve_by_id" class="dropdown-item">
+            <span class="material-icons">collections</span>
+            <span i18n>Retrieve Bib Record by ID</span>
+          </a>
+          <a href="/eg/staff/cat/catalog/retrieve_by_tcn"
+            eg-accesskey="shift+f3" 
+            eg-accesskey-desc="Retrieve Last Bib Record" class="dropdown-item">
+            <span class="material-icons">collections_bookmark</span>
+            <span i18n>Retrieve Bib Record by TCN</span>
+          </a>
+          <a href="" ng-click="retrieveLastRecord()"
+            eg-accesskey="shift+f8" 
+            eg-accesskey-desc="Retrieve Last Bib Record" class="dropdown-item">
+            <span class="material-icons">redo</span>
+            <span i18n>Retrieve Last Bib Record</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/eg/staff/cat/catalog/new_bib" class="dropdown-item">
+            <span class="material-icons">add</span>
+            <span i18n>Create New MARC Record</span>
+          </a>
+          <a href="/eg/staff/cat/z3950/index" class="dropdown-item">
+            <span class="material-icons">cloud_download</span>
+            <span i18n>Import Record from Z39.50</span>
+          </a>
+          <a routerLink="/staff/cat/vandelay/import" class="dropdown-item">
+            <span class="material-icons">import_export</span>
+            <span i18n>MARC Batch Import/Export</span>
+          </a>
+          <a href="/eg/staff/cat/catalog/batchEdit" class="dropdown-item">
+            <span class="material-icons">format_paint</span>
+            <span i18n>MARC Batch Edit</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/eg/staff/cat/catalog/verifyURLs" class="dropdown-item">
+            <span class="material-icons">link</span>
+            <span i18n>Link Checker</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="/eg/staff/cat/catalog/manageAuthorities" class="dropdown-item">
+            <span class="material-icons">lock</span>
+            <span i18n>Manage Authorities</span>
+          </a>
+          <a href="/eg/staff/cat/catalog/retrieve_by_authority_id" class="dropdown-item">
+            <span class="material-icons">collections</span>
+            <span i18n>Retrieve Authority Record by ID</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACQUISITIONS -->
+
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Acquisitions
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/search/unified">
+            <span class="material-icons">search</span>
+            <span i18n>General Search</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/search/unified?ca=pl">
+            <span class="material-icons">view_list</span>
+            <span i18n>My Selection Lists</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/picklist/brief_record">
+            <span class="material-icons">edit</span>
+            <span i18n>New Brief Record</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/picklist/user_request">
+            <span class="material-icons">thumb_up</span>
+            <span i18n>Patron Requests</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/picklist/bib_search">
+            <span class="material-icons">cloud_download</span>
+            <span i18n>MARC Federated Search</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/picklist/from_bib">
+            <span class="material-icons">trending_down</span>
+            <span i18n>Load Catalog Record IDs</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/picklist/upload">
+            <span class="material-icons">cloud_upload</span>
+            <span i18n>Load MARC Order Records</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/search/unified?ca=po">
+            <span class="material-icons">shopping_cart</span>
+            <span i18n>Purchase Orders</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/acq/legacy/po/create">
+            <span class="material-icons">add_shopping_cart</span>
+            <span i18n>Create Purchase Order</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/financial/claim_eligible">
+            <span class="material-icons">contact_phone</span>
+            <span i18n>Claim-Ready Items</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/search/unified?ca=inv">
+            <span class="material-icons">attach_money</span>
+            <span i18n>Open Invoices</span>
+          </a>
+          <a class="dropdown-item" 
+            href="/eg/staff/acq/legacy/invoice/view?create=1">
+            <span class="material-icons">monetization_on</span>
+            <span i18n>Create Invoice</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Booking
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" href="/eg/staff/booking/legacy/booking/reservation">
+            <span class="material-icons">add</span>
+            <span i18n>Create Reservations</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/booking/legacy/booking/pull_list">
+            <span class="material-icons">list</span>
+            <span i18n>Pull List</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/booking/legacy/booking/capture">
+            <span class="material-icons">pin_drop</span>
+            <span i18n>Capture Resources</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/booking/legacy/booking/pickup">
+            <span class="material-icons">trending_up</span>
+            <span i18n>Pick Up Reservations</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/booking/legacy/booking/return">
+            <span class="material-icons">trending_down</span>
+            <span i18n>Return Reservations</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="navbar-nav">
+      <div ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle i18n class="nav-link dropdown-toggle">
+          Administration
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" href="/eg/staff/admin/workstation/index">
+            <span class="material-icons">computer</span>
+            <span i18n>Workstation</span>
+          </a>
+          <!--
+          Leaving here as a reminder this UI exists.
+          <a class="dropdown-item"
+              routerLink="/staff/admin/workstation/workstations/manage">
+            <span class="material-icons">computer</span>
+            <span i18n>Registered Workstations</span>
+          </a>
+          -->
+          <a class="dropdown-item" href="/eg/staff/admin/user_perms">
+            <span class="material-icons">person</span>
+            <span i18n>User Permission Editor</span>
+          </a>
+          <a class="dropdown-item"
+              routerLink="/staff/admin/server/splash">
+            <span class="material-icons">account_balance</span>
+            <span i18n>Server Administration</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/admin/local/index">
+            <span class="material-icons">landscape</span>
+            <span i18n>Local Administration</span>
+          </a>
+          <a class="dropdown-item"
+              routerLink="/staff/admin/acq/splash">
+            <span class="material-icons">attach_money</span>
+            <span i18n>Acquisitions Administration</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/admin/serials/index">
+            <span class="material-icons">layers</span>
+            <span i18n>Serials Administration</span>
+          </a>
+          <a class="dropdown-item"
+              routerLink="/staff/admin/booking/splash">
+            <span class="material-icons">business_center</span>
+            <span i18n>Booking Administration</span>
+          </a>
+          <a class="dropdown-item" href="/eg/staff/reporter/legacy/main">
+            <span class="material-icons">insert_chart_outlined</span>
+            <span i18n>Reports</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="navbar-nav mr-auto"></div>
+    <div class="navbar-nav" *ngIf="user()">
+      <span i18n>{{user()}} @ {{workstation()}}</span>
+    </div>
+    <div class="navbar-nav" *ngIf="locales.length > 1 && currentLocale">
+      <div ngbDropdown class="nav-item dropdown" placement="bottom-right">
+        <a ngbDropdownToggle i18n i18n-title
+          title="Select Locale"
+          class="nav-link dropdown-toggle no-caret with-material-icon">
+          <i class="material-icons">flag</i>
+          <span>{{currentLocale.name()}}</span>
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <a class="dropdown-item" (click)="setLocale(locale)" 
+            [ngClass]="{disabled: currentLocale.code() == locale.code()}"
+            *ngFor="let locale of locales">
+            <span class="material-icons">add_location</span>
+            <span i18n>{{locale.name()}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="navbar-nav" *ngIf="user()">
+      <div ngbDropdown class="nav-item dropdown" placement="bottom-right">
+        <a ngbDropdownToggle i18n 
+          i18n-title
+          title="Log out and more..."
+          class="nav-link dropdown-toggle no-caret with-material-icon">
+          <i class="material-icons">list</i>
+        </a>
+        <div class="dropdown-menu" ngbDropdownMenu>
+          <eg-op-change #navOpChange
+            i18n-failMessage
+            i18n-successMessage
+            failMessage="Operator Change Failed"
+            successMessage="Operator Change Succeeded">
+          </eg-op-change>
+          <a class="dropdown-item" *ngIf="!opChangeActive()" 
+            (click)="navOpChange.open()">
+            <span class="material-icons">transform</span>
+            <span i18n>Change Operator</span>
+          </a>
+          <a *ngIf="opChangeActive()" class="dropdown-item" 
+            (click)="navOpChange.restore()">
+            <span class="material-icons">transform</span>
+            <span i18n>Restore Operator</span>
+          </a>
+          <a class="dropdown-item" (click)="logout()">
+            <span class="material-icons">lock_outline</span>
+            <span i18n>Logout</span>
+          </a>
+          <a class="dropdown-item" routerLink="/staff/about">
+            <span class="material-icons">info_outline</span>
+            <span i18n>About</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

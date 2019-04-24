@@ -33,11 +33,11 @@
   </eg-grid-action>
   <eg-grid-action 
     handler="addCopyAlerts"
-    label="[% l('Add Copy Alerts') %]">
+    label="[% l('Add Item Alerts') %]">
   </eg-grid-action>
   <eg-grid-action 
     handler="manageCopyAlerts"
-    label="[% l('Manage Copy Alerts') %]">
+    label="[% l('Manage Item Alerts') %]">
   </eg-grid-action>
 
   <!-- Show Group -->
@@ -50,7 +50,7 @@
 
   <!-- Edit Group -->
   <eg-grid-action handler="selectedHoldingsVolCopyEdit" group="[% l('Edit') %]"
-    label="[% l('Volumes and Items') %]">
+    label="[% l('Holdings') %]">
   </eg-grid-action>
 
   <eg-grid-action handler="printSpineLabels" group="[% l('Print') %]"
@@ -108,6 +108,9 @@
 
   <eg-grid-field path="acp.circ_modifier.name" label="[% l('Circulation Modifier') %]"></eg-grid-field>
   <eg-grid-field path="acp.circ_lib.shortname" label="[% l('Circulation Library') %]"></eg-grid-field>
+  <eg-grid-field label="[% l('Status') %]"      
+    path="acp.status.name" hidden></eg-grid-field>
+
   <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
   <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
   <eg-grid-field path="acn.*" parent-idl-class="acn" hidden></eg-grid-field>
@@ -118,5 +121,7 @@
   <eg-grid-field path="au.*" parent-idl-class="au" hidden></eg-grid-field>
   <eg-grid-field path="transit.*" parent-idl-class="atc" hidden></eg-grid-field>
   <eg-grid-field path="hold.*" parent-idl-class="ahr" hidden></eg-grid-field>
+  <eg-grid-field path="acp.latest_inventory.inventory_date" label="[% l('Inventory Date') %]" datatype="timestamp" hidden></eg-grid-field>
+  <eg-grid-field path="acp.latest_inventory.inventory_workstation.name" label="[% l('Inventory Workstation')%]" hidden></eg-grid-field>
 </eg-grid>
 

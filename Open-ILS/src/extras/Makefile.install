@@ -4,8 +4,8 @@
 #
 # Makefile to install prerequisites for OpenSRF and Evergreen
 #
-# Currently supports Debian (stretch, jessie, wheezy),
-# Ubuntu (14.04), Ubuntu (16.04).
+# Currently supports Debian (stretch, jessie),
+# Ubuntu (16.04), Ubuntu (18.04).
 #
 # Installs Perl prereqs, libdbi, libdbi-drivers, and libyaz
 #
@@ -14,11 +14,9 @@
 # 	- or -
 # 	make -f Makefile.install debian-jessie
 # 	- or -
-# 	make -f Makefile.install debian-wheezy
-# 	- or -
-# 	make -f Makefile.install ubuntu-trusty
-# 	- or -
 # 	make -f Makefile.install ubuntu-xenial
+# 	- or -
+# 	make -f Makefile.install ubuntu-bionic
 # 	- or -
 # 	make -f Makefile.install fedora
 #
@@ -40,7 +38,7 @@ export LIBDBI_HOST=http://open-ils.org/~denials/evergreen
 
 # some OSes require a newer version of NodeJS
 # NOTE: Using the LTS binaries for NodeJS
-export NODEJS_VERSION=v6.11.3
+export NODEJS_VERSION=v8.11.4
 export NODEJS_BINDIR=node-$(NODEJS_VERSION)-linux-x64
 export NODEJS_TARBIN=$(NODEJS_BINDIR).tar.xz
 export NODEJS_BINARY="https://nodejs.org/dist/$(NODEJS_VERSION)/$(NODEJS_TARBIN)"
@@ -68,12 +66,10 @@ debian-stretch:
 	@make -f $(DIR)/Makefile.debian-stretch
 debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie
-debian-wheezy:
-	@make -f $(DIR)/Makefile.debian-wheezy
+ubuntu-bionic:
+	@make -f $(DIR)/Makefile.ubuntu-bionic
 ubuntu-xenial:
 	@make -f $(DIR)/Makefile.ubuntu-xenial
-ubuntu-trusty:
-	@make -f $(DIR)/Makefile.ubuntu-trusty
 fedora:
 	@make -f $(DIR)/Makefile.fedora
 
@@ -81,46 +77,38 @@ postgres-server-debian-stretch:
 	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server
 postgres-server-debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
-postgres-server-debian-wheezy:
-	@make -f $(DIR)/Makefile.debian-wheezy install_postgres_server
+postgres-server-ubuntu-bionic:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server
 postgres-server-ubuntu-xenial:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
-postgres-server-ubuntu-trusty:
-	@make -f $(DIR)/Makefile.ubuntu-trusty install_postgres_server
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
+ubuntu-bionic-developer:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_developer
 ubuntu-xenial-developer:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_developer
-ubuntu-trusty-developer:
-	@make -f $(DIR)/Makefile.ubuntu-trusty install_developer
 debian-stretch-developer:
 	@make -f $(DIR)/Makefile.debian-stretch install_developer
 debian-jessie-developer:
 	@make -f $(DIR)/Makefile.debian-jessie install_developer
-debian-wheezy-developer:
-	@make -f $(DIR)/Makefile.debian-wheezy install_developer
 
+ubuntu-bionic-translator:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_translator
 ubuntu-xenial-translator:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_translator
-ubuntu-trusty-translator:
-	@make -f $(DIR)/Makefile.ubuntu-trusty install_translator
 debian-stretch-translator:
 	@make -f $(DIR)/Makefile.debian-stretch install_translator
 debian-jessie-translator:
 	@make -f $(DIR)/Makefile.debian-jessie install_translator
-debian-wheezy-translator:
-	@make -f $(DIR)/Makefile.debian-wheezy install_translator
 
+ubuntu-bionic-packager:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_packager
 ubuntu-xenial-packager:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_packager
-ubuntu-trusty-packager:
-	@make -f $(DIR)/Makefile.ubuntu-trusty install_packager
 debian-stretch-packager:
 	@make -f $(DIR)/Makefile.debian-stretch install_packager
 debian-jessie-packager:
 	@make -f $(DIR)/Makefile.debian-jessie install_packager
-debian-wheezy-packager:
-	@make -f $(DIR)/Makefile.debian-wheezy install_packager
 
 # vim:noet:sw=4:ts=4:

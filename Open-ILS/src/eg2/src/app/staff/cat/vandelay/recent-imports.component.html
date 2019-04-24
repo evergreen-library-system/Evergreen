@@ -1,0 +1,67 @@
+<div class="row mb-2">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text" i18n>Show Sessions Since: </span>
+      </div>
+      <eg-date-select 
+        [initialIso]="sinceDate"
+        (onChangeAsIso)="dateFilterChange($event)">
+      </eg-date-select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="trackers.length == 0">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="alert alert-info">
+                <span i18n>No Import Sessions To Display</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <div class="row mb-4" *ngFor="let tracker of trackers">
+    <div class="col-lg-12">
+      <div class="card tight-card">
+        <div class="card-header">
+          <div class="panel-title">
+            <span i18n>
+              {{tracker.create_time() | date:'short'}} : 
+              <span class="font-weight-bold">{{tracker.name()}}</span>
+            </span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <!-- ensure the progress shows 100% when complete -->
+              <eg-progress-inline 
+                [max]="tracker.state() == 'complete' ? tracker.actions_performed() : tracker.total_actions() || null"
+                [value]="tracker.actions_performed()">
+              </eg-progress-inline>
+            </div>
+            <div class="col-lg-6">
+              <!-- .id (not .id()) check to see if it's fleshed yet -->
+              <span i18n *ngIf="tracker.queue().id">
+                <a class="font-weight-bold"
+                  routerLink="/staff/cat/vandelay/queue/{{tracker.record_type()}}/{{tracker.queue().id()}}">
+                  Queue {{tracker.queue().name()}}
+                </a>
+              </span>
+              <span class="pl-2" *ngIf="tracker.action_type() == 'enqueue'" i18n>Enqueuing... </span>
+              <span class="pl-2" *ngIf="tracker.action_type() == 'import'" i18n>Importing... </span>
+              <span *ngIf="tracker.state() == 'active'" i18n>Active</span>
+              <span *ngIf="tracker.state() == 'complete'" i18n>Complete</span>
+              <span *ngIf="tracker.state() == 'error'" i18n>Error</span>
+              <span class='pl-3' *ngIf="tracker.state() == 'complete'">
+                <span class="material-icons text-success">thumb_up</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+

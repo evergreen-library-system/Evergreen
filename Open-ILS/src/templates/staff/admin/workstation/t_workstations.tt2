@@ -16,15 +16,15 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-2">
+      <eg-org-selector 
+        selected="contextOrg"
+        hidden-test="wsOrgHidden">
+        disable-test="cant_have_users">
+      </eg-org-selector>
+    </div>
+    <div class="col-md-4">
       <div class="input-group">
-        <div class="input-group-btn">
-          <eg-org-selector 
-            selected="contextOrg"
-            hidden-test="wsOrgHidden">
-            disable-test="cant_have_users">
-          </eg-org-selector>
-        </div>
         <input type='text' class='form-control'  
           title="[% l('Workstation Name') %]"
           placeholder="[% l('Workstation Name') %]"

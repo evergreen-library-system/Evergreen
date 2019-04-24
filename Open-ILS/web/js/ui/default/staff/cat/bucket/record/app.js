@@ -557,6 +557,25 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         egHolds.transfer_all_bib_holds_to_marked_title(bib_ids);
     }
 
+    // Refresh and update a single bib record.
+    // Returns a promise.
+    function updateOneRecord(recId, marcXml) {
+
+        return egCore.net.request(
+            'open-ils.cat',
+            'open-ils.cat.biblio.record.xml.update',
+            egCore.auth.token(), recId, marcXml
+        ).then(function(result) {
+            var evt = egCore.evt.parse(result);
+            if (evt) {
+                alert(evt);
+                return $q.reject(evt);
+            } else {
+                return result; // bib record
+            }
+        });
+    }
+
     // opens the record merge dialog
     $scope.openRecordMergeDialog = function(records) {
         $uibModal.open({
@@ -571,6 +590,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 $scope.merge_profile = null;
                 $scope.lead = { marc_xml : null };
                 $scope.editing_inplace = false;
+                $scope.showHoldings = false;
                 angular.forEach(records, function(rec) {
                     $scope.records.push({ id : rec.id });
                 });
@@ -641,19 +661,15 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                 }
                 $scope.post_edit_inplace = function() {
                     $scope.editing_inplace = false;
+                    updateOneRecord($scope.lead_id, $scope.lead.marc_xml);
                 }
+
                 $scope.edit_lead_inplace = function() {
                     $scope.editing_inplace = true;
                 }
                 $scope.edit_lead = function() {
                     var lead = { marc_xml : $scope.lead.marc_xml };
-
-                    // passing the on-save callback this way is a
-                    // hack - this invocation of the MARC editor doesn't
-                    // need it, but for some reason using this stomps
-                    // over the callback set by the other MARC editor
-                    // instance
-                    var callback = $scope.post_edit_inplace;
+                    var parentScope = $scope;
 
                     $uibModal.open({
                         templateUrl: './cat/bucket/record/t_edit_lead_record',
@@ -666,7 +682,10 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                             $scope.dirty_flag = false;
                             $scope.ok = function() { $uibModalInstance.close() }
                             $scope.cancel = function () { $uibModalInstance.dismiss() }
-                            $scope.on_save = callback;
+                            $scope.on_save = function() {
+                                parentScope.lead.marc_xml = $scope.lead.marc_xml;
+                                parentScope.post_edit_inplace();
+                            }
                         }]
                     }).result.then(function() {
                         $scope.lead.marc_xml = lead.marc_xml;
@@ -679,13 +698,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
 
             function update_bib() {
                 if (args.merge_profile) {
-                    return egCore.pcrud.retrieve('bre', args.lead_id)
-                    .then(function(rec) {
-                        rec.marc(args.lead.marc_xml);
-                        rec.edit_date('now');
-                        rec.editor(egCore.auth.user().id());
-                        return egCore.pcrud.update(rec);
-                    });
+                    return updateOneRecord(args.lead_id, args.lead.marc_xml);
                 } else {
                     return $q.when();
                 }
@@ -699,8 +712,7 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     args.lead_id,
                     args.records.map(function(val) { return val.id; })
                 ).then(function() {
-                    $window.location.href =
-                        egCore.env.basePath + 'cat/catalog/record/' + args.lead_id;
+                    $window.open(egCore.env.basePath + 'cat/catalog/record/' + args.lead_id);
                 });
             });
         });

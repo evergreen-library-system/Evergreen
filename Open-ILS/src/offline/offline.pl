@@ -10,7 +10,8 @@ use OpenSRF::EX qw/:try/;
 use Data::Dumper;
 use OpenILS::Utils::Fieldmapper;
 use Digest::MD5 qw/md5_hex/;
-use OpenSRF::Utils qw/:daemon cleanse_ISO8601/;
+use OpenSRF::Utils qw/:daemon/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 use OpenILS::Utils::OfflineStore;
 use OpenSRF::Utils::SettingsClient;
 use OpenSRF::Utils;
@@ -723,7 +724,7 @@ sub ol_handle_checkout {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_checkout: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -786,7 +787,7 @@ sub ol_handle_renew {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_renew: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -843,7 +844,7 @@ sub ol_handle_checkin {
             && ! $seen_barcode{$barcode}
         ) {
             $seen_barcode{$barcode} = 1;
-            my $cts = DateTime::Format::ISO8601->parse_datetime( cleanse_ISO8601($c->status_changed_time()) )->epoch();
+            my $cts = DateTime::Format::ISO8601->parse_datetime( clean_ISO8601($c->status_changed_time()) )->epoch();
             my $xts = $command->{timestamp}; # Transaction Time Stamp
             $logger->activity("offline: ol_handle_checkin: considering status_changed_time for barcode=$barcode, cts=$cts, xts=$xts");
 
@@ -982,7 +983,7 @@ sub ol_handle_register {
     # calculate the expire date for the patron based on the profile group
     my ($grp) = grep {$_->id == $actor->profile} @$user_groups;
     if($grp) {
-        my $seconds = OpenSRF::Utils->interval_to_seconds($grp->perm_interval);
+        my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($grp->perm_interval);
         my $expire_date = DateTime->from_epoch(epoch => DateTime->now->epoch + $seconds)->epoch;
 		$logger->debug("offline: setting expire date to $expire_date");
         $actor->expire_date($U->epoch2ISO8601($expire_date));

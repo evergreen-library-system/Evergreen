@@ -29,6 +29,8 @@ FTS_CONFIG_FILE
 080.schema.money.sql
 090.schema.action.sql
 095.schema.booking.sql
+
+096.schema.emergency_closing.sql
  
 099.matrix_weights.sql 
 100.circ_matrix.sql

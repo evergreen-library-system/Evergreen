@@ -134,9 +134,9 @@ Once you have loaded the records into your Evergreen system, you can search for
 some known records using the staff client to confirm that the import was
 successful.
 
-Migrating your call numbers, copies, and parts
+Migrating your call numbers, items, and parts
 ----------------------------------------------
-'Holdings', comprised of call numbers, copies, and parts, are the set of
+'Holdings', comprised of call numbers, items, and parts, are the set of
 objects that enable users to locate and potentially acquire materials from your
 library system.
 
@@ -148,21 +148,21 @@ the label.
 
 'Copies' connect call numbers to particular instances of that resource at a
 particular library. Each copy has a barcode and must exist in a particular copy
-location. Other optional attributes of copies include circulation modifier,
+location. Other optional attributes of items include circulation modifier,
 which may affect whether that copy can circulate or for how long it can
 circulate, and OPAC visibility, which controls whether that particular copy
 should be visible in the public catalog.
 
-'Parts' provide more granularity for copies, primarily to enable patrons to
+'Parts' provide more granularity for items, primarily to enable patrons to
 place holds on individual parts of a set of items. For example, an encyclopedia
 might be represented by a single bibliographic record, with a single call
 number representing the label for that encyclopedia at a given library, with 26
-copies representing each letter of the alphabet, with each copy mapped to a
+items representing each letter of the alphabet, with each copy mapped to a
 different part such as _A, B, C, ... Z_.
 
 To migrate this data into your Evergreen system, you will create another
 staging table in the database to hold the raw data for your materials from
-which the actual call numbers, copies, and parts will be generated.
+which the actual call numbers, items, and parts will be generated.
 
 Begin by connecting to the PostgreSQL database using the _psql_ command. For
 example:
@@ -190,12 +190,12 @@ CREATE TABLE staging_materials (
 );
 ------------------------------------------------------------------------------
 
-For the purposes of this example migration of call numbers, copies, and parts,
+For the purposes of this example migration of call numbers, items, and parts,
 we assume that you are able to create a tab-delimited file containing values
 that map to the staging table properties, with one copy per line. For example,
 the following 5 lines demonstrate how the file could look for 5 different
-copies, with non-applicable attribute values represented by _\N_, and 3 of the
-copies connected to a single call number and bibliographic record via parts:
+items, with non-applicable attribute values represented by _\N_, and 3 of the
+items connected to a single call number and bibliographic record via parts:
 
 ------------------------------------------------------------------------------
 1   QA 76.76 A3 \N  \N  LC  2012-12-05  STACKS  BOOK    BR1 30007001122620  \N
@@ -291,7 +291,7 @@ INSERT INTO asset.call_number (
 ;
 ------------------------------------------------------------------------------
 
-Generate the copies for your holdings:
+Generate the items for your holdings:
 
 [source,sql]
 ------------------------------------------------------------------------------
@@ -326,7 +326,7 @@ INSERT INTO biblio.monograph_part (record, label)
   );
 ------------------------------------------------------------------------------
 
-Now map the parts for each record to the specific copies that you added:
+Now map the parts for each record to the specific items that you added:
 
 [source,sql]
 ------------------------------------------------------------------------------
@@ -348,6 +348,6 @@ INSERT INTO asset.copy_part_map (target_copy, part)
 ------------------------------------------------------------------------------
 
 At this point, you have loaded your bibliographic records, call numbers, call
-number prefixes and suffixes, copies, and parts, and your records should be
+number prefixes and suffixes, items, and parts, and your records should be
 visible to searches in the public catalog within the appropriate organization
 unit scope.

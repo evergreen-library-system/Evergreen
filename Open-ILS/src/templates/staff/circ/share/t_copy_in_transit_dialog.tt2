@@ -2,11 +2,11 @@
   <div class="modal-header">
     <button type="button" class="close" 
       ng-click="cancel()" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">[% l('Copy In Transit') %]</h4>
+    <h4 class="modal-title">[% l('Item In Transit') %]</h4>
   </div>
   <div class="modal-body">
     <div class="strong-text">
-      [% l('There is an open transit on copy [_1]', 
+      [% l('There is an open transit on item [_1]', 
         '{{transit.target_copy().barcode()}}') %]
     </div>
     <div class="pad-vert"></div>

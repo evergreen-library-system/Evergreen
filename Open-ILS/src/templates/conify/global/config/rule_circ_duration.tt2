@@ -10,7 +10,7 @@
     </div>
     <table  jsId="ruleCircDurationGrid"
             dojoType="openils.widget.AutoGrid"
-            fieldOrder="['name', 'max_renewals', 'shrt', 'normal', 'extended']"
+            fieldOrder="['name', 'max_renewals', 'max_auto_renewals', 'shrt', 'normal', 'extended']"
             suppressFields="['id']"
             query="{id: '*'}"
             fmClass='crcd'

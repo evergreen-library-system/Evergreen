@@ -452,7 +452,9 @@ static int oilsAuthVerifyPassword( const osrfMethodContext* ctx, int user_id,
     int verified = 0;
 
     // We won't be needing the seed again, remove it
-    osrfCacheRemove("%s%s%s", OILS_AUTH_CACHE_PRFX, identifier, nonce);
+	char* key = va_list_to_string("%s%s%s", OILS_AUTH_CACHE_PRFX, identifier, nonce ); /**/
+    osrfCacheRemove(key);
+    free(key);
 
     // Ask the DB to verify the user's password.
     // Here, the password is md5(md5(password) + salt)

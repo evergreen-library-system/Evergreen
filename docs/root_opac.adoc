@@ -35,6 +35,8 @@ include::opac/my_account.adoc[]
 
 include::opac/my_lists.adoc[]
 
+include::opac/batch_actions_from_search.adoc[]
+
 include::opac/catalog_browse.adoc[]
 
 include::opac/tpac_meta_record_holds.adoc[]
@@ -52,7 +54,6 @@ include::opac/opensearch.adoc[]
 include::opac/visibility_on_the_web.adoc[]
 
 :leveloffset: 0
-
 
 include::opac/sitemap.adoc[]
 

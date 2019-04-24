@@ -108,7 +108,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             {   flesh : 4,
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
-                    acp : ['call_number', 'holds_count', 'status', 'circ_lib'],
+                    acp : ['call_number', 'holds_count', 'status', 'circ_lib', 'location', 'floating', 'age_protect'],
                     acn : ['record', 'owning_lib', 'prefix', 'suffix'],
                     bre : ['wide_display_entry']
                 },
@@ -320,13 +320,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                     // Fire off the due-date updater for each circ.
                     // When all is done, close the dialog
                     $scope.ok = function(args) {
-                        // toISOString gives us Zulu time, so
-                        // adjust for that before truncating to date
-                        var adjust_date = new Date( $scope.args.due_date );
-                        adjust_date.setMinutes(
-                            $scope.args.due_date.getMinutes() - adjust_date.getTimezoneOffset()
-                        );
-                        var due = adjust_date.toISOString().replace(/T.*/,'');
+                        var due = $scope.args.due_date.toISOString();
                         console.debug("applying due date of " + due);
 
                         var promises = [];
@@ -364,7 +358,7 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         var print_data = {circulations : []};
         var cusr = patronSvc.current;
 
-        angular.forEach(patronSvc.items_out, function(circ) {
+        angular.forEach(items, function(circ) {
             print_data.circulations.push({
                 circ : egCore.idl.toHash(circ),
                 copy : egCore.idl.toHash(circ.target_copy()),
@@ -380,6 +374,11 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             second_given_name : cusr.second_given_name(),
             family_name : cusr.family_name(),
             suffix : cusr.suffix(),
+            pref_prefix : cusr.pref_prefix(),
+            pref_first_given_name : cusr.pref_first_given_name(),
+            pref_second_given_name : cusr.pref_second_given_name(),
+            pref_family_name : cusr.pref_family_name(),
+            pref_suffix : cusr.pref_suffix(),
             card : { barcode : cusr.card().barcode() },
             money_summary : patronSvc.patron_stats.fines,
             expire_date : cusr.expire_date(),
@@ -504,16 +503,21 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
 
     $scope.checkin = function(items) {
         if (!items.length) return;
-        var barcodes = items.map(function(circ) 
-            { return circ.target_copy().barcode() });
+        var copies = items.map(function(circ) { return circ.target_copy() });
+        var barcodes = copies.map(function(copy) { return copy.barcode() });
 
         return egConfirmDialog.open(
             egCore.strings.CHECK_IN_CONFIRM, barcodes.join(' '), {
 
         }).result.then(function() {
+            var copy;
             function do_one() {
-                if (bc = barcodes.pop()) {
-                    egCirc.checkin({copy_barcode : bc})
+                if (copy = copies.pop()) {
+                    // Checkin expects a barcode, but will pass other
+                    // parameters too.  Passing the copy ID allows
+                    // for the checkin of deleted copies on the server.
+                    egCirc.checkin(
+                        {copy_barcode: copy.barcode(), copy_id: copy.id()})
                     .finally(do_one);
                 } else {
                     reset_page();

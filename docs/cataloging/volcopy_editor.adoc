@@ -1,0 +1,40 @@
+Using the Holdings Editor
+-------------------------
+indexterm:[copies,editing]
+indexterm:[items,editing]
+indexterm:[call numbers,editing]
+indexterm:[volumes,editing]
+indexterm:[holdings editor]
+[[holdings_editor]]
+
+The Holdings Editor is the tool where you can edit all holdings data.
+
+Specific fields
+~~~~~~~~~~~~~~~
+
+Acquisitions Cost
+^^^^^^^^^^^^^^^^^
+indexterm:[acquisitions cost]
+
+This field is populated with the invoiced cost of the originating acquisition.
+This field will be empty until its originating acquisition is connected to an
+invoice.
+
+Item Number
+^^^^^^^^^^^
+indexterm:[copy number]
+indexterm:[item number]
+
+If you have multiple copies of the same item, you may want to
+assign them item numbers to help distinguish them.  If you do
+not include an item number in this field, Evergreen will assign your
+item a default item number of 1.
+
+Accessing the Holdings Editor by barcode
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+. Click *Search -> Search for Items by Barcode*
+. Scan your barcode.
+. Right click on the entry in the grid.
+. Click *Edit -> Call Numbers and Items* on the actions menu that appears.
+

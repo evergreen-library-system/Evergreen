@@ -6,7 +6,7 @@ use Digest::MD5 qw(md5_hex);
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use OpenSRF::AppSession;
 use OpenSRF::EX qw/:try/;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Application::AppUtils;
@@ -36,7 +36,8 @@ use constant COOKIE_PHYSICAL_LOC => 'eg_physical_loc';
 use constant COOKIE_SSS_EXPAND => 'eg_sss_expand';
 
 use constant COOKIE_ANON_CACHE => 'anoncache';
-use constant ANON_CACHE_MYLIST => 'mylist';
+use constant COOKIE_CART_CACHE => 'cartcache';
+use constant CART_CACHE_MYLIST => 'mylist';
 use constant ANON_CACHE_STAFF_SEARCH => 'staffsearch';
 
 use constant DEBUG_TIMING => 0;
@@ -129,7 +130,13 @@ sub load {
     }
 
     (undef, $self->ctx->{mylist}) = $self->fetch_mylist unless
-        $path =~ /opac\/my(opac\/lists|list)/;
+        $path =~ /opac\/my(opac\/lists|list)/ ||
+        $path =~ m!opac/api/mylist!;
+
+    return $self->load_api_mylist_retrieve if $path =~ m|opac/api/mylist/retrieve|;
+    return $self->load_api_mylist_add if $path =~ m|opac/api/mylist/add|;
+    return $self->load_api_mylist_delete if $path =~ m|opac/api/mylist/delete|;
+    return $self->load_api_mylist_clear if $path =~ m|opac/api/mylist/clear|;
 
     return $self->load_simple("home") if $path =~ m|opac/home|;
     return $self->load_simple("css") if $path =~ m|opac/css|;
@@ -146,7 +153,8 @@ sub load {
     return $self->load_mylist_add if $path =~ m|opac/mylist/add|;
     return $self->load_mylist_delete if $path =~ m|opac/mylist/delete|;
     return $self->load_mylist_move if $path =~ m|opac/mylist/move|;
-    return $self->load_mylist if $path =~ m|opac/mylist|;
+    return $self->load_mylist_print if $path =~ m|opac/mylist/doprint|;
+    return $self->load_mylist if $path =~ m|opac/mylist| && $path !~ m|opac/mylist/email| && $path !~ m|opac/mylist/doemail|;
     return $self->load_cache_clear if $path =~ m|opac/cache/clear|;
     return $self->load_temp_warn_post if $path =~ m|opac/temp_warn/post|;
     return $self->load_temp_warn if $path =~ m|opac/temp_warn|;
@@ -190,6 +198,11 @@ sub load {
     $self->apache->headers_out->add("cache-control" => "no-store, no-cache, must-revalidate");
     $self->apache->headers_out->add("expires" => "-1");
 
+    if ($path =~ m|opac/mylist/email|) {
+        (undef, $self->ctx->{mylist}) = $self->fetch_mylist;
+    }
+    $self->load_simple("mylist/email") if $path =~ m|opac/mylist/email|;
+    return $self->load_mylist_email if $path =~ m|opac/mylist/doemail|;
     return $self->load_email_record if $path =~ m|opac/record/email|;
 
     return $self->load_place_hold if $path =~ m|opac/place_hold|;
@@ -216,6 +229,7 @@ sub load {
     return $self->load_myopac_prefs_settings if $path =~ m|opac/myopac/prefs_settings|;
     return $self->load_myopac_prefs_my_lists if $path =~ m|opac/myopac/prefs_my_lists|;
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
+    return $self->load_myopac_reservations if $path =~ m|opac/myopac/reservations|;
     return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
 
     return Apache2::Const::OK;

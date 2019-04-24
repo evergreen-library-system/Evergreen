@@ -17,6 +17,18 @@ but the ones I'm finding aren't quite cutting it..*/
 .patron-summary-act-link {font-size: .8em;}
 .patron-summary-has-notes:hover, .patron-summary-has-notes:visited{ text-decoration: none; }
 
+.patron-summary-pref-name {
+  padding-left: 6px;
+  color: #5cb85c;
+}
+
+/* Tag icon used for name keywords shouldn't look like a link */
+
+.glyphicon-tags, .glyphicon-tags:hover, .glyphicon-tags:focus {
+  color: #333;
+  text-decoration: none;
+}
+
 /* FIXME: use .barcode instead */
 #patron-checkout-barcode,
 #patron-renewal-barcode,
@@ -33,7 +45,7 @@ but the ones I'm finding aren't quite cutting it..*/
     left: 45px;
     padding-top: 20px;
     padding-top: 10px;
-    z-index: 3;
+    z-index: 4;
     background-color: rgba(255,255,255,1);
 }
 
@@ -166,6 +178,22 @@ but the ones I'm finding aren't quite cutting it..*/
 #patron-pay-by-credit-form .ng-invalid {
   background-color: yellow;
   color: red;
+}
+
+.patron-reg-names-separator {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.patron-reg-pref-names {
+  background-color: rgb(215, 215, 215);
+}
+
+.patron-reg-pending-address {
+  border:2px dashed #d9e8f9;
+  -moz-border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 5px;
 }
 
 /* -- end patron registration -- */

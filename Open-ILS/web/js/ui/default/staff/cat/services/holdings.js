@@ -13,10 +13,11 @@ function(egCore , $q) {
     };
 
     service.prototype.flesh = {   
-        flesh : 2, 
+        flesh : 3,
         flesh_fields : {
-            acp : ['status','location','circ_lib','parts','age_protect','copy_alerts'],
-            acn : ['prefix','suffix','copies']
+            acp : ['status','location','circ_lib','parts','age_protect','copy_alerts', 'latest_inventory'],
+            acn : ['prefix','suffix','copies'],
+            alci : ['inventory_workstation']
         }
     }
 
@@ -26,7 +27,8 @@ function(egCore , $q) {
             org: this.org,
             copy: this.copy,
             vol: this.vol,
-            empty: this.empty
+            empty: this.empty,
+            empty_org: this.empty_org
         })
     };
 
@@ -41,6 +43,7 @@ function(egCore , $q) {
         }
 
         var rid = opts.rid;
+        var empty_org = opts.empty_org;
         var org = opts.org;
         var copy = opts.copy;
         var vol = opts.vol;
@@ -52,6 +55,7 @@ function(egCore , $q) {
         svc.ongoing = true;
 
         svc.rid = rid;
+        svc.empty_org = opts.empty_org;
         svc.org = org;
         svc.copy = opts.copy;
         svc.vol = opts.vol;
@@ -63,13 +67,26 @@ function(egCore , $q) {
         var org_list = egCore.org.descendants(org.id(), true);
         console.log('Holdings fetch with: rid='+rid+' org='+org_list+' copy='+copy+' vol='+vol+' empty='+empty);
 
+        svc.org_use_map = {};
+        org_list.map(function(o){svc.org_use_map[''+o]=0;})
+
         var p = egCore.pcrud.search(
             'acn',
-            {record : rid, owning_lib : org_list, deleted : 'f'},
+            {record : rid, owning_lib : org_list, deleted : 'f', label : {'!=' : '##URI##'}},
             svc.flesh
         ).then(
             function() { // finished
                 if (p.cancel) return;
+
+                // create virtual field for displaying active parts
+                angular.forEach(svc.copies, function (cp) {
+                    cp.monograph_parts = '';
+                    if (cp.parts && cp.parts.length > 0) {
+                        cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join(', ');
+                        cp.monograph_parts_sortkeys = cp.parts.map(function(obj) { return obj.label_sortkey; }).join();
+                    }
+                });
+
                 svc.copies = svc.copies.sort(
                     function (a, b) {
                         function compare_array (x, y, i) {
@@ -97,6 +114,10 @@ function(egCore , $q) {
                             if (a.call_number.label < b.call_number.label) return -1;
                             if (a.call_number.label > b.call_number.label) return 1;
 
+                            // also parts sortkeys combined string
+                            if (a.monograph_parts_sortkeys < b.monograph_parts_sortkeys) return -1;
+                            if (a.monograph_parts_sortkeys > b.monograph_parts_sortkeys) return 1;
+
                             // try copy number
                             if (a.copy_number < b.copy_number) return -1;
                             if (a.copy_number > b.copy_number) return 1;
@@ -109,17 +130,12 @@ function(egCore , $q) {
                     }
                 );
 
-                // create virtual field for displaying active parts
-                angular.forEach(svc.copies, function (cp) {
-                    cp.monograph_parts = '';
-                    if (cp.parts && cp.parts.length > 0) {
-                        cp.monograph_parts = cp.parts.map(function(obj) { return obj.label; }).join();
-                    }
-                });
-
                 // create virtual field for copy alert count
                 angular.forEach(svc.copies, function (cp) {
-                    cp.copy_alert_count = cp.copy_alerts.length;
+                    if (cp.copy_alerts) {
+                        cp.copy_alert_count = cp.copy_alerts.filter(function(aca) { return aca.ack_time == null ;}).length;
+                    }
+                    else cp.copy_alert_count = 0;
                 });
 
                 // create a label using just the unique part of the owner list
@@ -209,7 +225,10 @@ function(egCore , $q) {
                                     current_blob.cn_count++;
                                     current_blob.copy_count += cp.copy_count;
                                     current_blob.id_list = current_blob.id_list.concat(cp.id_list);
-                                    if (cp.raw) current_blob.raw = current_blob.raw.concat(cp.raw);
+                                    if (cp.raw) {
+                                        if (current_blob.raw) current_blob.raw = current_blob.raw.concat(cp.raw);
+                                        else current_blob.raw = cp.raw;
+                                    }
                                 } else {
                                     current_blob.barcode = current_blob.copy_count;
                                     current_blob.call_number = { label : current_blob.cn_count };
@@ -236,6 +255,40 @@ function(egCore , $q) {
                     }
                 }
 
+                if (empty_org) {
+
+                    var empty_org_list = [];
+                    angular.forEach(svc.org_use_map,function(v,k){
+                        if (v == 0) empty_org_list.push(k);
+                    });
+
+                    angular.forEach(empty_org_list, function (oid) {
+                        var owner = egCore.org.get(oid);
+                        if (owner.ou_type().can_have_vols() != 't') return;
+
+                        var owner_list = [];
+                        while (owner.parent_ou()) { // we're going to skip the top of the tree...
+                            owner_list.unshift(owner.shortname());
+                            owner = egCore.org.get(owner.parent_ou());
+                        }
+
+                        var owner_label = owner_list.join(' ... ');
+
+                        new_list.push({
+                            index      : index++,
+                            id_list    : [],
+                            call_number: { label : '' },
+                            barcode    : '',
+                            owner_id   : oid,
+                            owner_list : owner_list,
+                            owner_label: owner_label,
+                            copy_count : 0,
+                            cn_count   : 0,
+                            copy_alert_count : 0
+                        });
+                    });
+                }
+
                 svc.copies = new_list;
                 svc.ongoing = false;
             },
@@ -255,6 +308,7 @@ function(egCore , $q) {
 
                 var owner_id = cn.owning_lib();
                 var owner = egCore.org.get(owner_id);
+                svc.org_use_map[''+owner_id] += 1;
 
                 var owner_name_list = [];
                 while (owner.parent_ou()) { // we're going to skip the top of the tree...

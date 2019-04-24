@@ -6,9 +6,9 @@ angular.module('egCoreMod')
         transclude : true,
         templateUrl : 'eg-navbar-template',
         controller:['$scope','$window','$location','$timeout','hotkeys','$rootScope',
-                    'egCore','$uibModal','ngToast','egOpChange','$element',
+                    'egCore','$uibModal','ngToast','egOpChange','$element','egLovefield',
             function($scope , $window , $location , $timeout , hotkeys , $rootScope ,
-                     egCore , $uibModal , ngToast , egOpChange , $element) {
+                     egCore , $uibModal , ngToast , egOpChange , $element , egLovefield) {
 
                 $scope.rs = $rootScope;
 
@@ -102,6 +102,10 @@ angular.module('egCoreMod')
                     return true;
                 };
 
+                $scope.offlineDisabled = function() {
+                    return egLovefield.cannotConnect;
+                }
+
                 egCore.startup.go().then(
                     function() {
                         if (egCore.auth.user()) {
@@ -109,11 +113,16 @@ angular.module('egCoreMod')
                             $scope.username = egCore.auth.user().usrname();
                             $scope.workstation = egCore.auth.workstation();
 
-                            egCore.org.settings('ui.staff.max_recent_patrons')
-                            .then(function(s) {
+                            egCore.org.settings([
+                                'ui.staff.max_recent_patrons',
+                                'ui.staff.angular_catalog.enabled'
+                            ]).then(function(s) {
                                 var val = s['ui.staff.max_recent_patrons'];
                                 $scope.showRecentPatron = val > 0;
                                 $scope.showRecentPatrons = val > 1;
+
+                                $scope.showAngularCatalog = 
+                                    s['ui.staff.angular_catalog.enabled'];
                             });
                         }
                         // need to defer initialization of hotkeys to this point

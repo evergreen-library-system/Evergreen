@@ -1030,6 +1030,56 @@ tr.result_table_row > td.result_table_pic_header {
     width: 78px;
 }
 
+/* styles for selecting records in the results set */
+.result_table_row_selected {
+    background-color: [% css_colors.item_selected %];
+}
+#selected_records_summary, #clear_basket {
+    margin-left: 5em;
+}
+
+/* styles for the basket */
+#record_basket {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 5em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 5em;
+    [% END; %]
+}
+#record_basket_icon {
+    [% IF rtl == 't' -%]
+    float: left;
+    margin-left: 2em;
+    [% ELSE; %]
+    float: right;
+    margin-right: 2em;
+    [% END; %]
+    position: relative;
+}
+#record_basket_count_floater {
+    background-color: [% css_colors.accent_lighter %];
+    position: absolute;
+    top: -3px;
+    right: -3px; /* relative to icon, so don't want to adjust for RTL */
+    z-index: 2;
+    border-radius: 50%;
+}
+#record_basket_count_floater a {
+    text-decoration: none;
+}
+#basket_actions {
+    [% IF rtl == 't' -%]
+    float: left;
+    [% ELSE; %]
+    float: right;
+    [% END; %]
+}
+#basket_actions select {
+    border-color: rgb(169, 169, 169);
+}
+
 .result_number {
     [% IF rtl == 't' -%]
     padding-right: 1em;
@@ -1331,13 +1381,13 @@ div.result_table_utils_cont {
 }
 
 .hold_note_title { font-weight: bold; }
-#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td {
+#acct_checked_main_header td, #acct_holds_main_header td, #acct_fines_main_header td, #acct_fines_confirm_header td, #acct_fees_main_header td,#acct_checked_hist_header td, #acct_holds_hist_header td, #acct_list_header td, #acct_list_header_anon td, #temp_list_holds td, #acct_messages_main_header td, #ebook_circs_main_table td, #ebook_holds_main_table td, #acct_reservations_main_header td {
     background-color: [% css_colors.background %]; 
     padding: 10px;
 	 border: 1px solid #d3d3d3; 
 } 
 
-#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th {
+#acct_checked_main_header th, #acct_holds_main_header th, #acct_fines_main_header th, #acct_fines_confirm_header th, #acct_fees_main_header th, #acct_checked_hist_header th, #acct_holds_hist_header th, #acct_list_header th, #acct_list_header_anon th, #temp_list_holds th, #acct_messages_main_header th, #ebook_holds_main_table th, #acct_reservations_main_header th {
     [% IF rtl == 't' -%]
     text-align: right;
     [% ELSE -%]
@@ -2399,19 +2449,20 @@ a.preflib_change {
     border-color: [% css_colors.border_dark %];
     border-width: 1px;
     border-style: solid;
+    z-index: 1;
 }
 .popmenu li:hover li {
     float: none;
 }
 .popmenu li:hover li a {
-    background-color: [% css_colors.primary %]; 
-    color: [% css_colors.accent_ultralight %];
+    background-color: [% css_colors.primary %] !important;
+    color: [% css_colors.accent_ultralight %] !important;
 }
 .popmenu li li a:hover {
-    background-color: [% css_colors.accent_ultralight %]; 
-    color: [% css_colors.primary %];
+    background-color: [% css_colors.accent_ultralight %] !important;
+    color: [% css_colors.primary %] !important;
 }
-/* Styles for the temporary list entry. */
+/* Styles for the basket entry. */
 .popmenu li:hover li[class~="temporary"] a {
     background-color: [% css_colors.primary %]; 
     color: [% css_colors.accent_ultralight %];
@@ -3072,7 +3123,7 @@ a.preflib_change {
         border-bottom: none;
     }
         /* Force table to not be like tables anymore */
-        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th {
+        table#acct_checked_main_header thead tr th, table#acct_holds_main_header thead tr th, table#acct_checked_hist_header thead tr th, table#acct_holds_hist_header thead tr th, table#ebook_circs_main_table thead tr th, table#ebook_holds_main_table thead tr th, table#acct_reservations_main_header tr th{
                 display: block;
         }
         table#acct_checked_main_header tbody tr td, table#acct_holds_main_header tbody tr td, table#acct_checked_hist_header tbody tr td, table#acct_holds_hist_header tbody tr td, table#ebook_circs_main_table tbody tr td, table#ebook_holds_main_table tbody tr td {
@@ -3090,11 +3141,11 @@ a.preflib_change {
                 [% END -%]
         }
 
-        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table {
+        table#acct_checked_main_header, table#acct_holds_main_header, table#acct_checked_hist_header, table#acct_holds_hist_header, table#ebook_circs_main_table, table#ebook_holds_main_table, table#acct_reservations_main_header {
                 width: 90%;
         }
 
-        table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr { border: 1px solid #ddd; }
+        table#acct_checked_main_header tr, table#acct_holds_main_header tr, table#acct_checked_hist_header tr, table#acct_reservations_main_header { border: 1px solid #ddd; }
 
         /* Holds history gets large white border to mimic header cell on other
            account screens that provide visual cue for next title. We should do
@@ -3105,7 +3156,7 @@ a.preflib_change {
         table#acct_holds_hist_header tr, table#ebook_circs_main_table tr, table#ebook_holds_main_table tr { border-top: 25px solid #fff; }
 
 
-        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td {
+        table#acct_checked_main_header td, table#acct_holds_main_header td, table#acct_checked_hist_header td, table#acct_holds_hist_header td, table#ebook_circs_main_table td, table#ebook_holds_main_table td, table#acct_reservations_main_header td {
                 /* Behave  like a "row" */
                 border: none;
                 border-bottom: 1px solid #eee;
@@ -3117,7 +3168,7 @@ a.preflib_change {
                 [% END -%]
         }
 
-         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before {
+         table#acct_checked_main_header td:before, table#acct_holds_main_header td:before, table#acct_checked_hist_header td:before, table#acct_holds_hist_header td:before, table#ebook_circs_main_table td:before, table#ebook_holds_main_table td:before, table#acct_reservations_main_header td {
                 /* Now like a table header */
                 position: absolute;
                 /* Top/left values mimic padding */

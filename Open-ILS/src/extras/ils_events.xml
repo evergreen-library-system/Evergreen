@@ -930,6 +930,9 @@
 	<event code='7028' textcode='PATRON_CIRC_MISMATCH'>
 	        <desc xml:lang="en-US">Potentially notified patron does not own the circulation.</desc>
 	</event>
+	<event code='7029' textcode='MAX_AUTO_RENEWALS_REACHED'>
+		<desc xml:lang="en-US">Circulation has no more auto-renewals remaining</desc>
+	</event>
 
 
 	<!-- ================================================================ -->

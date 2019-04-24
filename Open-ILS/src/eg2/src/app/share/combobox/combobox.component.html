@@ -1,0 +1,27 @@
+
+<!-- todo disabled -->
+<ng-template #displayTemplate let-r="result">
+{{r.label || r.id}}
+</ng-template>
+
+<div class="d-flex">
+  <input type="text" 
+    class="form-control"
+    [ngClass]="{'text-success font-italic font-weight-bold': selected && selected.freetext}"
+    [placeholder]="placeholder"
+    [name]="name"
+    [disabled]="isDisabled"
+    [required]="isRequired"
+    [(ngModel)]="selected" 
+    [ngbTypeahead]="filter"
+    [resultTemplate]="displayTemplate"
+    [inputFormatter]="formatDisplayString"
+    (click)="click$.next($event.target.value)"
+    (blur)="onBlur()"
+    (selectItem)="selectorChanged($event)"
+    #instance="ngbTypeahead"/>
+  <div class="d-flex flex-column icons" (click)="openMe($event)">
+    <span class="material-icons">keyboard_arrow_up</span>
+    <span class="material-icons">keyboard_arrow_down</span>
+  </div>
+</div>

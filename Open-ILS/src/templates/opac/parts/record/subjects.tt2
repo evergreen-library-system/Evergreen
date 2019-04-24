@@ -91,7 +91,7 @@
         '<span property="about"><!-- highlighted -->';
         %]<a href="[%-
                mkurl(ctx.opac_root _ '/results', {qtype=>'subject', query=>total_term}, stop_parms.merge(expert_search_parms, general_search_parms, browse_search_parms, facet_search_parms))
-        -%]">[% s.highlight %]</a> [%-
+        -%]">[% s.$f %]</a> [%-
         '</span>';
     END;
 %]
@@ -104,7 +104,7 @@
             content = [];
             FOREACH hl_s IN attrs.hl_display_fields.$df;
                 hl_s.facet = subj.facet;
-                next_s = PROCESS render_hl_subject(s=hl_s);
+                next_s = PROCESS render_hl_subject(s=hl_s,f=attrs.hl_field);
                 content.push(next_s);
             END;
 

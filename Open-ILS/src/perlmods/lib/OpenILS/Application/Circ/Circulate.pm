@@ -124,6 +124,11 @@ __PACKAGE__->register_method(
     signature => q/@see open-ils.circ.renew/,
 );
 
+__PACKAGE__->register_method(
+    method    => "run_method",
+    api_name  => "open-ils.circ.renew.auto",
+    signature => q/@see open-ils.circ.renew/,
+);
 
 __PACKAGE__->register_method(
     method  => "run_method",
@@ -239,6 +244,7 @@ sub run_method {
     }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
+    $circulator->is_autorenewal(1) if $api =~ /renew.auto/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->is_checkout(1) if $api =~ /checkout/;
     $circulator->override(1) if $api =~ /override/o;
@@ -282,7 +288,7 @@ sub run_method {
         $circulator->do_checkin();
 
     } elsif( $api =~ /renew/ ) {
-        $circulator->do_renew();
+        $circulator->do_renew($api);
     }
 
     if( $circulator->bail_out ) {
@@ -385,7 +391,7 @@ use OpenSRF::Utils::Cache;
 use Digest::MD5 qw(md5_hex);
 use DateTime::Format::ISO8601;
 use OpenILS::Utils::PermitHold;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::Circ::Holds;
 use OpenILS::Application::Circ::Transit;
@@ -412,6 +418,8 @@ my @AUTOLOAD_FIELDS = qw/
     remote_hold
     backdate
     reservation
+    do_inventory_update
+    latest_inventory
     copy
     copy_id
     copy_barcode
@@ -427,6 +435,7 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
+    is_autorenewal
     is_checkout
     is_res_checkout
     is_precat
@@ -464,6 +473,7 @@ my @AUTOLOAD_FIELDS = qw/
     recurring_fines_rule
     max_fine_rule
     renewal_remaining
+    auto_renewal_remaining
     hard_due_date
     due_date
     fulfilled_holds
@@ -1011,7 +1021,7 @@ sub mk_env {
             unless $U->is_true($patron->card->active);
     
         my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-            cleanse_ISO8601($patron->expire_date));
+            clean_ISO8601($patron->expire_date));
     
         $self->bail_on_events(OpenILS::Event->new('PATRON_ACCOUNT_EXPIRED'))
             if( CORE::time > $expire->epoch ) ;
@@ -1190,8 +1200,8 @@ sub do_copy_checks {
                 );
 
                 if($auto_renew_intvl) {
-                    my $intvl_seconds = OpenSRF::Utils->interval_to_seconds($auto_renew_intvl);
-                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( cleanse_ISO8601($old_circ->xact_start) );
+                    my $intvl_seconds = OpenILS::Utils::DateTime->interval_to_seconds($auto_renew_intvl);
+                    my $checkout_time = DateTime::Format::ISO8601->new->parse_datetime( clean_ISO8601($old_circ->xact_start) );
 
                     if(DateTime->now > $checkout_time->add(seconds => $intvl_seconds)) {
                         $payload->{auto_renew} = 1;
@@ -1395,6 +1405,7 @@ sub get_circ_policy {
         max_fine => $self->get_max_fine_amount($max_fine_rule),
         fine_interval => $recurring_fine_rule->recurrence_interval,
         renewal_remaining => $duration_rule->max_renewals,
+        auto_renewal_remaining => $duration_rule->max_auto_renewals,
         grace_period => $recurring_fine_rule->grace_period
     };
 
@@ -2118,6 +2129,7 @@ sub build_checkout_circ_object {
         $circ->max_fine($policy->{max_fine});
         $circ->fine_interval($recurring->recurrence_interval);
         $circ->renewal_remaining($duration->max_renewals);
+        $circ->auto_renewal_remaining($duration->max_auto_renewals);
         $circ->grace_period($policy->{grace_period});
 
     } else {
@@ -2147,11 +2159,15 @@ sub build_checkout_circ_object {
       $circ->circ_staff($self->editor->requestor->id);
    }
 
+   if ( $self->is_autorenewal ){
+      $circ->auto_renewal_remaining($self->auto_renewal_remaining);
+      $circ->auto_renewal('t');
+   }
 
     # if the user provided an overiding checkout time,
     # (e.g. the checkout really happened several hours ago), then
     # we apply that here.  Does this need a perm??
-    $circ->xact_start(cleanse_ISO8601($self->checkout_time))
+    $circ->xact_start(clean_ISO8601($self->checkout_time))
         if $self->checkout_time;
 
     # if a patron is renewing, 'requestor' will be the patron
@@ -2251,7 +2267,7 @@ sub booking_adjusted_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-       $circ->due_date(cleanse_ISO8601($self->due_date));
+       $circ->due_date(clean_ISO8601($self->due_date));
 
     } else {
 
@@ -2281,14 +2297,14 @@ sub booking_adjusted_due_date {
         return $self->bail_on_events($bookings) if ref($bookings) eq 'HASH';
         
         my $dt_parser = DateTime::Format::ISO8601->new;
-        my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($circ->due_date) );
+        my $due_date = $dt_parser->parse_datetime( clean_ISO8601($circ->due_date) );
 
         for my $bid (@$bookings) {
 
             my $booking = $self->editor->retrieve_booking_reservation( $bid );
 
-            my $booking_start = $dt_parser->parse_datetime( cleanse_ISO8601($booking->start_time) );
-            my $booking_end = $dt_parser->parse_datetime( cleanse_ISO8601($booking->end_time) );
+            my $booking_start = $dt_parser->parse_datetime( clean_ISO8601($booking->start_time) );
+            my $booking_end = $dt_parser->parse_datetime( clean_ISO8601($booking->end_time) );
 
             return $self->bail_on_events( OpenILS::Event->new('COPY_RESERVED') )
                 if ($booking_start < DateTime->now);
@@ -2309,7 +2325,7 @@ sub booking_adjusted_due_date {
             $new_circ_duration++ if $new_circ_duration % 86400 == 0;
             $circ->duration("$new_circ_duration seconds");
 
-            $circ->due_date(cleanse_ISO8601($due_date->strftime('%FT%T%z')));
+            $circ->due_date(clean_ISO8601($due_date->strftime('%FT%T%z')));
             $changed = 1;
         }
 
@@ -2331,7 +2347,7 @@ sub apply_modified_due_date {
         return $self->bail_on_events($self->editor->event)
             unless $self->editor->allowed('CIRC_OVERRIDE_DUE_DATE', $self->circ_lib);
 
-      $circ->due_date(cleanse_ISO8601($self->due_date));
+      $circ->due_date(clean_ISO8601($self->due_date));
 
    } else {
 
@@ -2371,19 +2387,30 @@ sub apply_modified_due_date {
 sub create_due_date {
     my( $self, $duration, $date_ceiling, $force_date, $start_time ) = @_;
 
-    # if there is a raw time component (e.g. from postgres), 
-    # turn it into an interval that interval_to_seconds can parse
-    $duration =~ s/(\d{2}):(\d{2}):(\d{2})/$1 h $2 m $3 s/o;
+    # Look up circulating library's TZ, or else use client TZ, falling
+    # back to server TZ
+    my $tz = $U->ou_ancestor_setting_value(
+        $self->circ_lib,
+        'lib.timezone',
+        $self->editor
+    ) || 'local';
 
-    # for now, use the server timezone.  TODO: use workstation org timezone
-    my $due_date = DateTime->now(time_zone => 'local');
-    $due_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) if $start_time;
+    my $due_date = $start_time ?
+        DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($start_time))
+            ->set_time_zone($tz) :
+        DateTime->now(time_zone => $tz);
 
     # add the circ duration
-    $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($duration));
+    $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($duration, $due_date));
 
     if($date_ceiling) {
-        my $cdate = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($date_ceiling));
+        my $cdate = DateTime::Format::ISO8601
+            ->new
+            ->parse_datetime(clean_ISO8601($date_ceiling))
+            ->set_time_zone($tz);
+
         if ($cdate > DateTime->now and ($cdate < $due_date or $U->is_true( $force_date ))) {
             $logger->info("circulator: overriding due date with date ceiling: $date_ceiling");
             $due_date = $cdate;
@@ -2464,7 +2491,7 @@ sub checkout_noncat {
 
    my $lib      = $self->noncat_circ_lib || $self->circ_lib;
    my $count    = $self->noncat_count || 1;
-   my $cotime   = cleanse_ISO8601($self->checkout_time) || "";
+   my $cotime   = clean_ISO8601($self->checkout_time) || "";
 
    $logger->info("circulator: circ creating $count noncat circs with checkout time $cotime");
 
@@ -2509,8 +2536,8 @@ sub check_transit_checkin_interval {
     # transit from X to X for whatever reason has no min interval
     return if $self->transit->source == $self->transit->dest;
 
-    my $seconds = OpenSRF::Utils->interval_to_seconds($interval);
-    my $t_start = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->transit->source_send_time));
+    my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($interval);
+    my $t_start = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($self->transit->source_send_time));
     my $horizon = $t_start->add(seconds => $seconds);
 
     # See if we are still within the transit checkin forbidden range
@@ -2658,6 +2685,20 @@ sub do_checkin {
 
         $self->dont_change_lost_zero($dont_change_lost_zero);
     }
+
+    my $latest_inventory = Fieldmapper::asset::latest_inventory->new;
+
+    if ($self->do_inventory_update) {
+        $latest_inventory->inventory_date('now');
+        $latest_inventory->inventory_workstation($self->editor->requestor->wsid);
+        $latest_inventory->copy($self->copy->id());
+    } else {
+        my $alci = $self->editor->search_asset_latest_inventory(
+            {copy => $self->copy->id}
+        );
+        $latest_inventory = $alci->[0]
+    }
+    $self->latest_inventory($latest_inventory);
 
     if( $self->checkin_check_holds_shelf() ) {
         $self->bail_on_events(OpenILS::Event->new('NO_CHANGE'));
@@ -3538,9 +3579,9 @@ sub handle_fines {
         # If we have a grace period
         if($obj->can('grace_period')) {
             # Parse out the due date
-            my $due_date = $dt_parser->parse_datetime( cleanse_ISO8601($obj->due_date) );
+            my $due_date = $dt_parser->parse_datetime( clean_ISO8601($obj->due_date) );
             # Add the grace period to the due date
-            $due_date->add(seconds => OpenSRF::Utils->interval_to_seconds($obj->grace_period));
+            $due_date->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($obj->grace_period));
             # Don't generate fines on circs still in grace period
             $skip_for_grace = $due_date > DateTime->now;
         }
@@ -3770,7 +3811,7 @@ sub checkin_handle_lost_or_longoverdue {
             int($tm[3]), int($tm[4]), int($tm[5]), int($tm[6]));
 
         my $last_chance = 
-            OpenSRF::Utils->interval_to_seconds($max_return) + int($due);
+            OpenILS::Utils::DateTime->interval_to_seconds($max_return) + int($due);
 
         $logger->info("MAX OD: $max_return LAST ACTIVITY: ".
             "$last_activity DUEDATE: ".$circ->due_date." TODAY: $today ".
@@ -3835,8 +3876,8 @@ sub checkin_handle_backdate {
     # not the input.  Do we need to do this?  This certainly interferes with
     # backdating of hourly checkouts, but that is likely a very rare case.
     # ------------------------------------------------------------------
-    my $bd = cleanse_ISO8601($self->backdate);
-    my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($self->circ->due_date));
+    my $bd = clean_ISO8601($self->backdate);
+    my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($self->circ->due_date));
     my $new_date = DateTime::Format::ISO8601->new->parse_datetime($bd);
     $new_date->set_hour($original_date->hour());
     $new_date->set_minute($original_date->minute());
@@ -3847,7 +3888,7 @@ sub checkin_handle_backdate {
         $logger->info("circulator: ignoring future backdate: $new_date");
         delete $self->{backdate};
     } else {
-        $self->backdate(cleanse_ISO8601($new_date->datetime()));
+        $self->backdate(clean_ISO8601($new_date->datetime()));
     }
 
     return undef;
@@ -3939,6 +3980,23 @@ sub checkin_flesh_events {
         );
     }
 
+    if ($self->latest_inventory) {
+        # flesh some workstation fields before returning
+        $self->latest_inventory->inventory_workstation(
+            $self->editor->retrieve_actor_workstation([$self->latest_inventory->inventory_workstation])
+        );
+    }
+
+    if($self->latest_inventory && !$self->latest_inventory->id) {
+        my $alci = $self->editor->search_asset_latest_inventory(
+            {copy => $self->latest_inventory->copy}
+        );
+        if($alci->[0]) {
+            $self->latest_inventory->id($alci->[0]->id);
+        }
+    }
+    $self->copy->latest_inventory($self->latest_inventory);
+
     for my $evt (@{$self->events}) {
 
         my $payload         = {};
@@ -3952,6 +4010,8 @@ sub checkin_flesh_events {
         $payload->{patron}  = $self->patron;
         $payload->{reservation} = $self->reservation
             unless (not $self->reservation or $self->reservation->cancel_time);
+        $payload->{latest_inventory} = $self->latest_inventory;
+        if ($self->do_inventory_update) { $payload->{do_inventory_update} = 1; }
 
         $evt->{payload}     = $payload;
     }
@@ -3970,6 +4030,7 @@ sub log_me {
 
 sub do_renew {
     my $self = shift;
+    my $api = shift;
     $self->log_me("do_renew()");
 
     # Make sure there is an open circ to renew
@@ -3992,14 +4053,17 @@ sub do_renew {
     $self->push_events(OpenILS::Event->new('MAX_RENEWALS_REACHED'))
         if $circ->renewal_remaining < 1;
 
+    $self->push_events(OpenILS::Event->new('MAX_AUTO_RENEWALS_REACHED'))
+        if $api =~ /renew.auto/ and $circ->auto_renewal_remaining < 1;
     # -----------------------------------------------------------------
 
     $self->parent_circ($circ->id);
     $self->renewal_remaining( $circ->renewal_remaining - 1 );
+    $self->auto_renewal_remaining( $circ->auto_renewal_remaining - 1 ) if (defined($circ->auto_renewal_remaining));
     $self->circ($circ);
 
     # Opac renewal - re-use circ library from original circ (unless told not to)
-    if($self->opac_renewal) {
+    if($self->opac_renewal or $api =~ /renew.auto/) {
         unless(defined($opac_renewal_use_circ_lib)) {
             my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
             if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {

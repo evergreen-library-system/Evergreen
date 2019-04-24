@@ -19,12 +19,15 @@
         <div id="dash_wrapper">
             <div id="dash_identity">
                 <span id="dash_user">
-                    [%  l('[_1] [_2]', ctx.user.first_given_name, ctx.user.family_name) | html %]
+                    [%  l('[_1] [_2]', 
+                      (ctx.user.pref_first_given_name || ctx.user.first_given_name), 
+                      (ctx.user.pref_family_name || ctx.user.family_name)
+                    ) | html %]
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash_account_buttons">
                 <div id="dash_user_message_button_container">
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/messages', {}, ['single', 'message_id']) %]" class="opac-button">
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/messages', {}, ['single', 'message_id', 'hid']) %]" class="opac-button">
                         [% l('Messages') %]
                     </a>
                     [% IF ctx.user_stats.messages.unread %]
@@ -34,9 +37,9 @@
                         </div>
                     [% END %]
                 </div>
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type']) %]"
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type', 'hid']) %]"
                     class="opac-button">[% l('My Account') %]</a>
-                <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, ['single', 'message_id']) %]"
+                <a href="[% mkurl(ctx.opac_root _ '/myopac/lists', {}, ['single', 'message_id', 'hid', 'from_basket']) %]"
                     class="opac-button">[% l('My Lists') %]</a>
                 <a href="[% mkurl(ctx.opac_root _ '/logout', {}, 1) %]"
                     class="opac-button" id="logout_link">[% l('Logout') %]</a>
@@ -45,26 +48,26 @@
             <div id="dashboard">
                 <span class="dash-align">
                     <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/circs', {}, 
-                        ['limit','offset', 'single', 'message_id', 'sort','sort_type'])
+                        ['limit','offset', 'single', 'message_id', 'sort','sort_type', 'hid'])
                         %]"><span id="dash_checked">[% ctx.user_stats.checkouts.total_out
                         %]</span> [% l("Checked Out") %]</a>
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash-align">
                     <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds', {}, 
-                        ['available', 'single', 'message_id', 'sort','sort_type'])
+                        ['available', 'single', 'message_id', 'sort','sort_type', 'hid'])
                         %]"><span id="dash_holds">[% ctx.user_stats.holds.total
                         %]</span> [% l("On Hold") %]</a>
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash-align">
                     <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/holds',
-                        {available => 1}, ['single', 'message_id', 'sort','sort_type']) %]"><span id="dash_pickup">[%
+                        {available => 1}, ['single', 'message_id', 'sort','sort_type', 'hid']) %]"><span id="dash_pickup">[%
                         ctx.user_stats.holds.ready %]</span> [% l("Ready for Pickup") %]</a>
                 </span>
                 <span class="dash_divider">|</span>
                 <span class="dash-align">
-                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type'])
+                    <a class="dash-link" href="[% mkurl(ctx.opac_root _ '/myopac/main', {}, ['single', 'message_id', 'sort','sort_type', 'hid'])
                         %]"><span id="dash_fines">[% money(ctx.user_stats.fines.balance_owed)
                         %]</span> [% l("Charges") %]</a>
                 </span>

@@ -59,6 +59,7 @@ my $help        = 0;
 my $osrf_config = '/openils/conf/opensrf_core.xml';
 my $username    = '';
 my $password    = '';
+my $workstation = '';
 my $tempdir     = '';
 my $spoolfile   = '';
 my $wait_time   = 5;
@@ -94,6 +95,7 @@ GetOptions(
     'verbose'               => \$verbose,
     'username=s'            => \$username,
     'password=s'            => \$password,
+    'workstation=s'         => \$workstation,
     'tempdir=s'             => \$tempdir,
     'spoolfile=s'           => \$spoolfile,
     'wait=i'                => \$wait_time,
@@ -141,6 +143,9 @@ sub usage {
 
     --password
         Evergreen user account password
+
+    --workstation
+        Evergreen workstation
 
     --tempdir
         MARC data received via the network is stored in a temporary
@@ -226,8 +231,8 @@ if ($deprecated_queue) {
 }
 
 
-die "--username AND --password required.  --help for more info.\n" 
-    unless $username and $password;
+die "--username, --password, AND --workstation required.  --help for more info.\n" 
+    unless $username and $password and $workstation;
 die "--bib-queue OR --auth-queue required.  --help for more info.\n" 
     unless $bib_queue or $auth_queue;
 
@@ -503,7 +508,7 @@ sub process_file {
 # the authtoken will timeout after the configured inactivity period.
 # When that happens, get a new one.
 sub new_auth_token {
-    oils_login($username, $password, 'staff') 
+    oils_login($username, $password, 'staff', $workstation)
         or die "Unable to login to Evergreen as user $username";
 }
 

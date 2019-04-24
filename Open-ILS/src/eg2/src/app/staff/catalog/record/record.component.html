@@ -1,0 +1,93 @@
+
+<div id="staff-catalog-record-container">
+  <div class="row ml-0 mr-0">
+    <div id='staff-catalog-bib-navigation'>
+      <div *ngIf="searchContext.isSearchable()">
+        <eg-catalog-record-pagination [recordId]="recordId">
+        </eg-catalog-record-pagination>
+      </div>
+    </div>
+    <!-- push the actions component to the right -->
+    <div class="flex-1"></div>
+    <div id='staff-catalog-bib-navigation'>
+      <eg-catalog-record-actions [recordId]="recordId">
+      </eg-catalog-record-actions>
+    </div>
+  </div>
+  <div id='staff-catalog-bib-summary-container' class='mt-1'>
+    <eg-bib-summary [bibSummary]="summary">
+    </eg-bib-summary>
+  </div>
+  <div id='staff-catalog-bib-tabs-container' class='mt-3'>
+    <div class="row">
+      <div class="col-lg-12 text-right">
+        <button class="btn btn-secondary btn-sm"
+            [disabled]="recordTab == defaultTab"
+            (click)="setDefaultTab()" i18n>Set Default View</button>
+      </div>
+    </div>
+    <ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
+      <ngb-tab title="Copy Table" i18n-title id="catalog">
+        <ng-template ngbTabContent>
+          <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
+        </ng-template>
+      </ngb-tab>
+      <!-- NOTE some tabs send the user over to the AngJS app -->
+      <ngb-tab title="MARC Edit" i18n-title id="marc_edit">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            MARC Edit not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/marc_edit">
+              AngularJS MARC Edit Tab.
+            </a>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="MARC View" i18n-title id="marc_html">
+        <ng-template ngbTabContent>
+          <eg-marc-html [recordId]="recordId" recordType="bib"></eg-marc-html>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="View Holds" i18n-title id="holds">
+        <ng-template ngbTabContent>
+          <eg-holds-grid [recordId]="recordId"
+            preFetchSetting="catalog.record.holds.prefetch"
+            persistKey="cat.catalog.wide_holds"
+            [defaultSort]="[{name:'request_time',dir:'asc'}]"
+            [initialPickupLib]="currentSearchOrg()"></eg-holds-grid>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Monograph Parts" i18n-title id="monoparts">
+        <ng-template ngbTabContent>
+          <eg-catalog-record-parts [recordId]="recordId">
+          </eg-catalog-record-parts>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Holdings View" i18n-title id="holdings">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            Holdings not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/holdings">
+              AngularJS Holdings Tab.
+            </a>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Conjoined Items" i18n-title id="conjoined">
+        <ng-template ngbTabContent>
+          <div class="alert alert-info mt-3" i18n>
+            Conjoined Items not yet implemented.  See the
+            <a target="_blank"
+              href="/eg/staff/cat/catalog/record/{{recordId}}/conjoined">
+              AngularJS Conjoined Items Tab.
+            </a>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>
+
+

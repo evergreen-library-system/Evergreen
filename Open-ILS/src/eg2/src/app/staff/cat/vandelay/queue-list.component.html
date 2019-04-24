@@ -1,0 +1,38 @@
+<div class="import-form">
+  <h2 i18n>Select a Queue To Inspect</h2>
+  <div class="row flex">
+    <div>
+      <label i18n>Queue Type</label>
+    </div>
+    <div class="col-lg-3">
+      <eg-combobox (onChange)="queueTypeChanged($event)"
+        [startId]="queueType"
+        placeholder="Queue Type..." i18n-placeholder>
+        <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records" 
+          i18n-entryLabel></eg-combobox-entry>
+        <eg-combobox-entry entryId="auth" entryLabel="Authority Records" 
+          i18n-entryLabel></eg-combobox-entry>
+        <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records" 
+          i18n-entryLabel></eg-combobox-entry>
+      </eg-combobox>
+    </div>
+  </div>
+</div>
+
+<eg-grid *ngIf="queueType=='bib'" #bibQueueGrid 
+  persistKey="cat.vandelay.queue.list.bib"
+  (onRowActivate)="rowActivated($event)"
+  idlClass="vbq" [dataSource]="queueSource">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-grid *ngIf="queueType=='auth'" #authQueueGrid 
+  persistKey="cat.vandelay.queue.list.auth"
+  (onRowActivate)="rowActivated($event)"
+  idlClass="vaq" [dataSource]="queueSource">
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    [action]="deleteSelected"></eg-grid-toolbar-action>
+</eg-grid>
+
+

@@ -2194,6 +2194,82 @@
 		</sect3>
 
 		<sect3>
+			<title>Choosing the Order of JOINs</title>
+			<para>As of Evergreen 3.0.2, we support user-defined join order in cstore and friends.
+				Previously, because the join structure of oils_sql beyond the specification of
+				a single table was only allowed to be represented as a JSON object, it was
+				subject to potential hash key reordering. By supporting an
+				intervening array layer, one can now specify the exact join order of the
+				tables in a join tree.
+
+				For example, given the following JSON object passing through a modern Perl 5
+				interpreter as a nested hash: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+    {select : {acp:['id'],
+                 acn:['record'],
+                 acpl:['name']
+                },
+      from : {acp:
+                    {acn:{filter:{record:12345}},
+                     acpl:null
+                    }
+                }
+    }
+				</programlisting>
+			</informalexample>
+
+			<para> the FROM clause of the query may end up as: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+				FROM acp
+					JOIN acn ON (acp.call_number = acn.id AND acn.record = 12345)
+					JOIN acpl ON (acp.location = acpl.id)
+				</programlisting>
+			</informalexample>
+
+			<para> Or as: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+				FROM acp
+					JOIN acpl ON (acp.location = acpl.id)
+					JOIN acn ON (acp.call_number = acn.id AND acn.record = 12345)
+				</programlisting>
+			</informalexample>
+
+			<para> In some situations, the join order will matter either to the semantics of the
+			query plan, or to its performance. The following example of the newly
+			supported syntax illustrates how to specify join order: </para>
+
+			<informalexample>
+				<programlisting language="JSON">
+    {select : {acp:['id'],
+                 acn:['record'],
+                 acpl:['name']
+                },
+      from : {acp:[
+                    {acn:{filter:{record:12345}}},
+                     'acpl'
+                ]}
+    }
+				</programlisting>
+			</informalexample>
+
+			<para> And the only FROM clause the can be generated is: </para>
+
+			<informalexample>
+				<programlisting language="SQL">
+				FROM acp
+					JOIN acn ON (acp.call_number = acn.id AND acn.record = 12345)
+					JOIN acpl ON (acp.location = acpl.id)
+				</programlisting>
+			</informalexample>
+		</sect3>
+
+		<sect3>
 			<title>Things You Can't Do</title>
 			<para> In a JOIN, as with other SQL constructs, there are some things that you can't do with
 				a JSON query. </para>

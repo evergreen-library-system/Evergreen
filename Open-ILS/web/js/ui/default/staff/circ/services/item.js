@@ -13,17 +13,18 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     };
 
     service.flesh = {   
-        flesh : 3, 
+        flesh : 4,
         flesh_fields : {
-            acp : ['call_number','location','status','location','floating','circ_modifier',
-                'age_protect','circ_lib','copy_alerts'],
+            acp : ['call_number','location','status','floating','circ_modifier',
+                'age_protect','circ_lib','copy_alerts', 'creator', 'editor', 'circ_as_type', 'latest_inventory'],
             acn : ['record','prefix','suffix','label_class'],
-            bre : ['simple_record','creator','editor']
+            bre : ['simple_record','creator','editor'],
+            alci : ['inventory_workstation']
         },
         select : { 
             // avoid fleshing MARC on the bre
             // note: don't add simple_record.. not sure why
-            bre : ['id','tcn_value','creator','editor'],
+            bre : ['id','tcn_value','creator','editor', 'create_date', 'edit_date'],
         } 
     }
 
@@ -62,7 +63,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     }
 
     service.getCirc = function(id) {
-        return egCore.pcrud.search('aacs', { target_copy : id },
+        return egCore.pcrud.search('combcirc', { target_copy : id },
             service.circFlesh).then(function(circ) {return circ});
     }
 
@@ -103,7 +104,6 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         return fetchCopy(barcode, id).then(function(res) {
 
             if(!res.copy) { return $q.when(); }
-
             return fetchCirc(copyData.copy).then(function(res) {
                 if (copyData.circ) {
                     return fetchSummary(copyData.circ).then(function() {
@@ -131,8 +131,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             if (copyData.circ) {
                 // flesh circ_lib locally
                 copyData.circ.circ_lib(egCore.org.get(copyData.circ.circ_lib()));
-                copyData.circ.checkin_workstation(
-                    egCore.org.get(copyData.circ.checkin_workstation()));
+
             }
             var flatCopy;
 
@@ -142,6 +141,9 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     function(c) {return c.id == copyData.copy.id()})[0];
             }
 
+            // flesh acn.owning_lib
+            copyData.copy.call_number().owning_lib(egCore.org.get(copyData.copy.call_number().owning_lib()));
+
             if (!flatCopy) {
                 flatCopy = egCore.idl.toHash(copyData.copy, true);
 
@@ -150,6 +152,11 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     flatCopy._circ_summary = egCore.idl.toHash(copyData.circ_summary, true);
                     flatCopy._circ_lib = copyData.circ.circ_lib();
                     flatCopy._duration = copyData.circ.duration();
+                    flatCopy._circ_ws = flatCopy._circ_summary.last_renewal_workstation ?
+                                        flatCopy._circ_summary.last_renewal_workstation :
+                                        flatCopy._circ_summary.checkout_workstation ?
+                                        flatCopy._circ_summary.checkout_workstation :
+                                        '';
                 }
                 flatCopy.index = service.index++;
                 flatCopy.copy_alert_count = copyData.copy.copy_alerts().filter(function(aca) {
@@ -167,6 +174,18 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                 copyData.copy._inHouseUseCount = uses.length;
             });
 
+            //Get Monograph Parts
+            egCore.pcrud.search('acpm',
+                {target_copy: flatCopy.id},
+                { flesh : 1, flesh_fields : { acpm : ['part'] } },
+                {atomic :true})
+            .then(function(acpm_array) {
+                angular.forEach(acpm_array, function(acpm) {
+                    flatCopy.parts = egCore.idl.toHash(acpm.part());
+                    copyData.copy.parts = egCore.idl.toHash(acpm.part());
+                });
+            });
+
             return lastRes = {
                 copy : copyData.copy,
                 index : flatCopy.index
@@ -174,6 +193,35 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
 
 
+    }
+
+    //all_items = selected grid rows, to be updated in place
+    service.updateInventory = function(copy_list, all_items) {
+        if (copy_list.length == 0) return;
+        return egCore.net.request(
+            'open-ils.circ',
+            'open-ils.circ.circulation.update_latest_inventory',
+            egCore.auth.token(), {copy_list: copy_list}
+        ).then(function(res) {
+            if (res) {
+                if (all_items) angular.forEach(copy_list, function(copy) {
+                    angular.forEach(all_items, function(item) {
+                        if (copy == item.id) {
+                            egCore.pcrud.search('alci', {copy: copy},
+                              {flesh: 1, flesh_fields:
+                                {alci: ['inventory_workstation']}
+                            }).then(function(alci) {
+                                //update existing grid rows
+                                item["latest_inventory.inventory_date"] = alci.inventory_date();
+                                item["latest_inventory.inventory_workstation.name"] =
+                                    alci.inventory_workstation().name();
+                            });
+                        }
+                    });
+                });
+                return all_items || res;
+            }
+        });
     }
 
     service.add_copies_to_bucket = function(copy_list) {
@@ -503,9 +551,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         egCore.pcrud.search('acp',
             {deleted : 'f', id : items.map(function(el){return el.id;}) },
             { flesh : 1, flesh_fields : { acp : ['call_number'] } }
-        ).then(function(copy) {
-            copy_objects.push(copy);
-        }).then(function() {
+        ).then(function() {
 
             var cnHash = {};
             var perCnCopies = {};
@@ -555,6 +601,10 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
                 });
             });
+        },
+        null,
+        function(copy) {
+            copy_objects.push(copy);
         });
     }
 
@@ -682,18 +732,22 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         angular.forEach(items, function(i){
 	    item_ids.push(i.id);
         });
-	
-	egCore.net.request(
-	    'open-ils.actor',
-	    'open-ils.actor.anon_cache.set_value',
-	    null,
-	    'edit-these-copies',
-	    {
-	        record_id: 0,  // disables record summary
-	        copies: item_ids,
-	        raw: {},
-	        hide_vols : hide_vols,
-	        hide_copies : hide_copies
+
+        // provide record_id iff one record is selected.
+        // 0 disables record summary
+        var record_ids = service.gatherSelectedRecordIds(items);
+        var record_id  = record_ids.length === 1 ? record_ids[0] : 0;
+        egCore.net.request(
+            'open-ils.actor',
+            'open-ils.actor.anon_cache.set_value',
+            null,
+            'edit-these-copies',
+            {
+                record_id: record_id,
+                copies: item_ids,
+                raw: {},
+                hide_vols : hide_vols,
+                hide_copies : hide_copies
             }).then(function(key) {
 		if (key) {
 		    var url = egCore.env.basePath + 'cat/volcopy/' + key;
@@ -758,7 +812,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
     // this "transfers" selected copies to a new owning library,
     // auto-creating volumes and deleting unused volumes as required.
     service.changeItemOwningLib = function(items) {
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.volume_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_lib');
         if (!xfer_target || !items.length) {
             return;
         }
@@ -783,7 +837,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
 
         var promises = [];
-        angular.forEach(vols_to_move, function(vol) {
+        angular.forEach(vols_to_move, function(vol, vol_id) {
             promises.push(egCore.net.request(
                 'open-ils.cat',
                 'open-ils.cat.call_number.find_or_create',
@@ -802,24 +856,21 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     'open-ils.cat.transfer_copies_to_volume',
                     egCore.auth.token(),
                     resp.acn_id,
-                    copies_to_move[vol.id]
+                    copies_to_move[vol_id]
                 );
             }));
         });
 
-        angular.forEach(
-            items,
-            function(cp){
-                promises.push(
-                    function(){ service.add_barcode_to_list(cp.barcode) }
-                )
+        $q.all(promises)
+        .then(
+            function() {
+                angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
             }
         );
-        $q.all(promises);
     }
 
     service.transferItems = function (items){
-        var xfer_target = egCore.hatch.getLocalItem('eg.cat.item_transfer_target');
+        var xfer_target = egCore.hatch.getLocalItem('eg.cat.transfer_target_vol');
         var copy_ids = service.gatherSelectedHoldingsIds(items);
         if (xfer_target && copy_ids.length > 0) {
             egCore.net.request(
@@ -859,7 +910,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         }
     }
 
-    service.mark_missing_pieces = function(copy) {
+    service.mark_missing_pieces = function(copy,outer_scope) {
         var b = copy.barcode();
         var t = egCore.idl.toHash(copy.call_number()).record.title;
         egConfirmDialog.open(
@@ -899,7 +950,7 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
             }
 
             if (payload.letter) {
-                $scope.letter = payload.letter.template_output().data();
+                outer_scope.letter = payload.letter.template_output().data();
             }
 
             // apply patron penalty
@@ -929,5 +980,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
+    service.show_in_catalog = function(copy_list){
+        angular.forEach(copy_list, function(copy){
+            window.open('/eg/staff/cat/catalog/record/'+copy['call_number.record.id']+'/catalog', '_blank')
+        });
+    }
+
     return service;
 }])
+.filter('string_pick', function() { return function(i){ return arguments[i] || ''; }; })

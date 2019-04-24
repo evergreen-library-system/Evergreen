@@ -87,7 +87,7 @@
             <button
                 type="submit"
                 class="btn btn-default"
-                ng-disabled="invalid_check_number() || !gridControls.selectedItems().length || applyingPayment"
+                ng-disabled="!payment_amount || invalid_check_number() || !gridControls.selectedItems().length || applyingPayment"
             >[% l('Apply Payment') %]</button>
           </div>
         </div>
@@ -103,8 +103,16 @@
 <!-- pull-right is causing the content to flow several pixels 
 off to the right.  flex-row is honoring the boundaries better. 
 not sure what's up, there. -->
-<div class="flex-row" ng-if="!disable_auto_print">
+<div class="flex-row" ng-show="!disable_auto_print">
   <div class="flex-cell"></div>
+  <div ng-hide="disablePatronCredit" class="pad-right">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" ng-model="convert_to_credit.isChecked">
+        [% l('Convert Change to Patron Credit') %]
+      </label>
+    </div>
+  </div>
   <form class="form-inline" role="form">
    <div class="checkbox">
       <label>
@@ -113,7 +121,7 @@ not sure what's up, there. -->
       </label>
     </div>
     <div class="form-group" style="margin-left:10px">
-      <label for="bill-receipt-copies">[% l('# Copies') %]</label>
+      <label for="bill-receipt-copies">[% l('# Items') %]</label>
       <input type="number" min="1" style="width:5em"
         ng-model="receipt_count"
         class="form-control" id="bill-receipt-copies"/>

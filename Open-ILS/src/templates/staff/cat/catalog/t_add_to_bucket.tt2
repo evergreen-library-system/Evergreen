@@ -1,12 +1,12 @@
 <div class="modal-header">
   <button type="button" class="close" ng-click="cancel()"
     aria-hidden="true">&times;</button>
-  <h4 class="modal-title">[% l('Add To Bucket') %]</h4>
+  <h4 class="modal-title">[% l('Add to Bucket') %]</h4>
 </div>
 <div class="modal-body">
   <div class="row">
     <div class="col-md-4">
-      <label for="select-bucket">[% l('Name of existing bucket') %]</label>
+      <label for="select-bucket">[% l('Name of Existing Bucket') %]</label>
     </div>
     <div class="col-md-4">
       <select id="select-bucket" class="form-control" ng-model="bucket_id"
@@ -15,19 +15,19 @@
     </div>
     <div class="col-md-4">
       <button class="btn btn-primary" ng-class="{disabled : !bucket_id}" 
-          ng-click="add_to_bucket()">[% l('Add To Selected Bucket') %]</button>
+          ng-click="add_to_bucket()">[% l('Add to Selected Bucket') %]</button>
     </div>
   </div>
   <div class="row pad-vert">
     <div class="col-md-4">
-      <label for="new-bucket-name">[% l('Name For New Bucket') %]</label>
+      <label for="new-bucket-name">[% l('Name for New Bucket') %]</label>
     </div>
     <div class="col-md-4">
         <input type="text" class="form-control" id="new-bucket-name" ng-model="newBucketName" />
     </div>
     <div class="col-md-4">
       <button class="btn btn-primary" ng-class="{disabled : !newBucketName}"
-          ng-click="add_to_new_bucket()">[% l('Add To New Bucket') %]</button>
+          ng-click="add_to_new_bucket()">[% l('Add to New Bucket') %]</button>
       </div>
   </div>
   </div>

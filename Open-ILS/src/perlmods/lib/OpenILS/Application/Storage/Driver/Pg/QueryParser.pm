@@ -4,7 +4,7 @@ use warnings;
 package OpenILS::Application::Storage::Driver::Pg::QueryParser;
 use OpenILS::Application::Storage::QueryParser;
 use base 'QueryParser';
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::Utils::JSON;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::CStoreEditor;
@@ -755,7 +755,7 @@ __PACKAGE__->add_search_modifier( 'metabib' );
 package OpenILS::Application::Storage::Driver::Pg::QueryParser::query_plan;
 use base 'QueryParser::query_plan';
 use OpenSRF::Utils::Logger qw($logger);
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use Data::Dumper;
 use OpenILS::Application::AppUtils;
 use OpenILS::Utils::Normalize qw/search_normalize/;
@@ -883,8 +883,8 @@ sub toSQL {
         $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND bre.deleted';
         # The above suffices for filters too when the #deleted modifier
         # is in use.
-    } elsif ($$flat_plan{uses_bre} or !$self->find_modifier('staff')) {
-        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+    } else {
+        $bre_join = 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
     }
 
     my $desc = 'ASC';
@@ -1064,7 +1064,7 @@ sub toSQL {
                 "AND (bre.vis_attr_vector IS NULL OR NOT ( int4range(0,268435455,'[]') @> ANY(bre.vis_attr_vector) ))".
             "))";
         # We need bre here, regardless
-        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id';
+        $bre_join ||= 'INNER JOIN biblio.record_entry bre ON m.source = bre.id AND NOT bre.deleted';
     }
 
     my $final_b_attr_test;
@@ -1455,13 +1455,15 @@ sub flatten {
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
 
-    my $lorgs = [@$aorgs];
-    my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
-    push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
+    if (!$self->find_filter('locations') && !$self->find_filter('location_groups')) {
+        my $lorgs = [@$aorgs];
+        my $luri_as_copy_gf = $U->get_global_flag('opac.located_uri.act_as_copy');
+        push @$lorgs, @$dorgs if ($luri_as_copy_gf and $U->is_true($luri_as_copy_gf->enabled));
 
-    $uses_bre = 1;
-    push @{$vis_filter{'b_attr'}},
-        "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+        $uses_bre = 1;
+        push @{$vis_filter{'b_attr'}},
+            "search.calculate_visibility_attribute_test('luri_org','{".join(',', @$lorgs)."}',$negate)";
+    }
 
     my @dlist = ();
     my $common = 0;
@@ -1596,6 +1598,7 @@ sub flatten {
                     $with .= "             JOIN asset.copy cp ON (acptcm.copy = cp.id)\n";
                     $with .= "             JOIN asset.call_number cn ON (cp.call_number = cn.id)\n";
                     $with .= "       WHERE 1 = 1 \n";
+                    $with .= "       AND cp.circ_lib IN (" . join(',', @$dorgs) . ")\n";
                     if ($copy_tag_type ne '*') {
                         $with .= "             AND cctt.code = " . $self->QueryParser->quote_value($copy_tag_type) . "\n";
                     }
@@ -1668,7 +1671,7 @@ sub flatten {
                             # useless use of filter
                         } else {
                             # "before $cend"
-                            $cend = cleanse_ISO8601($cend);
+                            $cend = clean_ISO8601($cend);
                             $where .= $joiner if $where ne '';
                             $where .= "bre.$datefilter <= \$_$$\$$cend\$_$$\$";
                         }
@@ -1677,14 +1680,14 @@ sub flatten {
                         if ($cstart eq '-infinity') {
                             # useless use of filter
                         } else { # "after $cstart"
-                            $cstart = cleanse_ISO8601($cstart);
+                            $cstart = clean_ISO8601($cstart);
                             $where .= $joiner if $where ne '';
                             $where .= "bre.$datefilter >= \$_$$\$$cstart\$_$$\$";
                         }
                     } else { # both supplied
                         # "between $cstart and $cend"
-                        $cstart = cleanse_ISO8601($cstart);
-                        $cend = cleanse_ISO8601($cend);
+                        $cstart = clean_ISO8601($cstart);
+                        $cend = clean_ISO8601($cend);
                         $where .= $joiner if $where ne '';
                         $where .= "bre.$datefilter BETWEEN \$_$$\$$cstart\$_$$\$ AND \$_$$\$$cend\$_$$\$";
                     }

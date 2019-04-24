@@ -1,3 +1,6 @@
+/* Create some padding at bottom of the page for breathing room */
+body { padding-bottom: 50px; }
+
 /* --------------------------------------------------------------------------
  * Simple default navbar style adjustements to apply the Evergreen color.
  * TODO: style other components to match EG color scheme
@@ -109,6 +112,9 @@ a.disabled {
   cursor: default;
   color: #888 !important;
 }
+.disabled {
+  cursor: not-allowed;
+}
 
 #splash-nav .panel-body div {
     padding-bottom: 10px;
@@ -193,7 +199,7 @@ table.list tr.selected td { /* deprecated? */
 .barcode { width: 16em !important; }
 
 /* use strike-through to mark something that has been acknowledged,
-   e.g., a copy alert */
+   e.g., a item alert */
 .acknowledged { text-decoration: line-through; }
 
 /* bootstrap alerts are heavily padded.  use this to reduce */
@@ -304,6 +310,17 @@ table.list tr.selected td { /* deprecated? */
   font-weight: bold;
 }
 
+.eg-grid-cell-stock-status {
+  width: 4.4em;
+  text-align: center;
+}
+
+/* the conf header must be 4x the stock width when status is present */
+.eg-grid-cell-conf-header-status {
+  width: 8.8em;
+  font-weight: bold;
+}
+
 .eg-grid-row-selected {
   color: #000;
   background-color: rgb(201, 221, 225);
@@ -330,6 +347,34 @@ table.list tr.selected td { /* deprecated? */
   background: rgb(201, 221, 225);
   border-bottom: 1px solid #888;
 }
+
+/* patron bill row-highlighting */
+.overdue-row {
+  color: #FFF;
+  background-color: #EB0000 !important;
+}
+.overdue-row a:link, .lost-row a:link {
+  color: #B8ECFF;
+}
+.longoverdue-row {
+  color: #000;
+  background-color: #FFE1A8 !important;
+}
+.lost-row {
+  color: #FFF;
+  background-color: #800000 !important;
+
+}
+.eg-grid-row-selected.overdue-row {
+  background-color: #CF0000 !important;
+}
+.eg-grid-row-selected.longoverdue-row {
+  background-color: #FFCF75 !important;
+}
+.eg-grid-row-selected.lost-row {
+  background-color: #5C0000 !important;
+}
+
 .eg-grid-cell-content::selection {
   color: #000;
   background: rgb(201, 221, 225);
@@ -422,6 +467,14 @@ table.list tr.selected td { /* deprecated? */
   box-shadow: none;
 }
 
+.eg-grid-tooltip {
+  font-size: 110%;
+}
+/* avoid visited "blue" links over black background */
+.eg-grid-tooltip a {
+  color: white;
+}
+
 
 /* ----------------------------------------------------------------------
  * /Grid
@@ -470,6 +523,12 @@ table.list tr.selected td { /* deprecated? */
   .eg-grid-row {
     flex-direction: column;
   }
+  #top-navbar.navbar-default .navbar-nav>li>ul>li>a {
+    color: #eee;
+  }
+  #top-navbar.navbar-default .navbar-nav>li>ul>li>a:hover {
+    color: #000;
+  }
 }
 
 /* optional class to make 'lg' Bootstrap modals even wider */
@@ -512,6 +571,10 @@ table.list tr.selected td { /* deprecated? */
 
 eg-grid-field {
   display: none;
+}
+
+.eg-grid-tooltip .tooltip-inner {
+  max-width: 400px;
 }
 
 [%# 

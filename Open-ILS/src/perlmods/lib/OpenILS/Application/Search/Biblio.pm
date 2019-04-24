@@ -1317,9 +1317,8 @@ sub fetch_display_fields {
         return;
     }
 
-    my $hl_map_string = "''::HSTORE";
+    my $hl_map_string = "";
     if (ref($highlight_map) =~ /HASH/) {
-        $hl_map_string = "";
         for my $tsq (keys %$highlight_map) {
             my $field_list = join(',', @{$$highlight_map{$tsq}});
             $hl_map_string .= ' || ' if $hl_map_string;
@@ -1330,7 +1329,7 @@ sub fetch_display_fields {
     my $e = new_editor();
 
     for my $record ( @records ) {
-        next unless $record;
+        next unless ($record && $hl_map_string);
         $conn->respond(
             $e->json_query(
                 {from => ['search.highlight_display_fields', $record, $hl_map_string]}
@@ -2662,6 +2661,86 @@ sub copies_by_cn_label {
 
     # ... and test for location and status visibility
     return [ map { ($U->is_true($_->location->opac_visible) && $U->is_true($_->status->opac_visible)) ? ($_->id) : () } @$copies ];
+}
+
+__PACKAGE__->register_method(
+    method   => 'bib_copies',
+    api_name => 'open-ils.search.bib.copies',
+    stream => 1
+);
+__PACKAGE__->register_method(
+    method   => 'bib_copies',
+    api_name => 'open-ils.search.bib.copies.staff',
+    stream => 1
+);
+
+sub bib_copies {
+    my ($self, $client, $rec_id, $org, $depth, $limit, $offset, $pref_ou) = @_;
+    my $is_staff = ($self->api_name =~ /staff/);
+
+    my $cstore = OpenSRF::AppSession->create('open-ils.cstore');
+    my $req = $cstore->request(
+        'open-ils.cstore.json_query', mk_copy_query(
+        $rec_id, $org, $depth, $limit, $offset, $pref_ou, $is_staff));
+
+    my $resp;
+    while ($resp = $req->recv) {
+        $client->respond($resp->content); 
+    }
+
+    return undef;
+}
+
+# TODO: this comes almost directly from WWW/EGCatLoader/Record.pm
+# Refactor to share
+sub mk_copy_query {
+    my $rec_id = shift;
+    my $org = shift;
+    my $depth = shift;
+    my $copy_limit = shift;
+    my $copy_offset = shift;
+    my $pref_ou = shift;
+    my $is_staff = shift;
+
+    my $query = $U->basic_opac_copy_query(
+        $rec_id, undef, undef, $copy_limit, $copy_offset, $is_staff
+    );
+
+    if ($org) { # TODO: root org test
+        # no need to add the org join filter if we're not actually filtering
+        $query->{from}->{acp}->[1] = { aou => {
+            fkey => 'circ_lib',
+            field => 'id',
+            filter => {
+                id => {
+                    in => {
+                        select => {aou => [{
+                            column => 'id', 
+                            transform => 'actor.org_unit_descendants',
+                            result_field => 'id', 
+                            params => [$depth]
+                        }]},
+                        from => 'aou',
+                        where => {id => $org}
+                    }
+                }
+            }
+        }};
+    };
+
+    # Unsure if we want these in the shared function, leaving here for now
+    unshift(@{$query->{order_by}},
+        { class => "aou", field => 'id',
+          transform => 'evergreen.rank_ou', params => [$org, $pref_ou]
+        }
+    );
+    push(@{$query->{order_by}},
+        { class => "acp", field => 'id',
+          transform => 'evergreen.rank_cp'
+        }
+    );
+
+    return $query;
 }
 
 

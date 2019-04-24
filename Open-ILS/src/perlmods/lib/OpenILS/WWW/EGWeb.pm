@@ -81,6 +81,19 @@ sub handler_guts {
         $stat = Apache2::Const::OK;
     }   
     return $stat unless $stat == Apache2::Const::OK;
+
+    # emit context as JSON if handler requests
+    if ($ctx->{json_response}) {
+        $r->content_type("application/json; charset=utf-8");
+        $r->headers_out->add("cache-control" => "no-store, no-cache, must-revalidate");
+        $r->headers_out->add("expires" => "-1");
+        if ($ctx->{json_reponse_cookie}) {
+            $r->headers_out->add('Set-Cookie' => $ctx->{json_reponse_cookie})
+        }
+        $r->print(OpenSRF::Utils::JSON->perl2JSON($ctx->{json_response}));
+        return Apache2::Const::OK;
+    }
+
     return Apache2::Const::DECLINED unless $template;
 
     my $text_handler = set_text_handler($ctx, $r);

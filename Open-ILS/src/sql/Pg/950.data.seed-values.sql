@@ -224,7 +224,7 @@ INSERT INTO config.metabib_field (id, field_class, name,
     label, xpath, display_field, search_field, browse_field)
 VALUES (
     39, 'keyword', 'physical_description',
-    oils_i18n_gettext(39, 'Physical Descrption', 'cmf', 'label'),
+    oils_i18n_gettext(39, 'Physical Description', 'cmf', 'label'),
     $$(//mods33:mods/mods33:physicalDescription/mods33:form|//mods33:mods/mods33:physicalDescription/mods33:extent|//mods33:mods/mods33:physicalDescription/mods33:reformattingQuality|//mods33:mods/mods33:physicalDescription/mods33:internetMediaType|//mods33:mods/mods33:physicalDescription/mods33:digitalOrigin)$$,
     TRUE, TRUE, FALSE
 );
@@ -618,6 +618,8 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (8, 'loc', 'pubdate', oils_i18n_gettext(8, 'Publication Date', 'cza', 'label'), 31, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (9, 'loc', 'item_type', oils_i18n_gettext(9, 'Item Type', 'cza', 'label'), 1001, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (19, 'loc', 'upc', oils_i18n_gettext(19, 'UPC', 'cza', 'label'), 1007, 1);
 
 UPDATE config.z3950_attr SET truncation = 1 WHERE source = 'loc';
 
@@ -639,6 +641,8 @@ INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (17, 'oclc', 'pubdate', oils_i18n_gettext(17, 'Publication Date', 'cza', 'label'), 31, 1);
 INSERT INTO config.z3950_attr (id, source, name, label, code, format)
 	VALUES (18, 'oclc', 'item_type', oils_i18n_gettext(18, 'Item Type', 'cza', 'label'), 1001, 1);
+INSERT INTO config.z3950_attr (id, source, name, label, code, format)
+	VALUES (20, 'oclc', 'upc', oils_i18n_gettext(20, 'UPC', 'cza', 'label'), 1007, 6);
 
 SELECT SETVAL('config.z3950_attr_id_seq'::TEXT, 100);
 
@@ -1877,8 +1881,43 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 592,'CONTAINER_BATCH_UPDATE', oils_i18n_gettext( 592,
     'Allow batch update via buckets', 'ppl', 'description' )),
  ( 593, 'ADMIN_SERIAL_PATTERN_TEMPLATE', oils_i18n_gettext( 593,
-    'Administer serial prediction pattern templates', 'ppl', 'description' ))
+    'Administer serial prediction pattern templates', 'ppl', 'description' )),
+ ( 594, 'ADMIN_COPY_ALERT_TYPE', oils_i18n_gettext( 594,
+    'Administer copy alert types', 'ppl', 'description' )),
+ ( 595, 'CREATE_COPY_ALERT_TYPE', oils_i18n_gettext( 595,
+    'Create copy alert types', 'ppl', 'description' )),
+ ( 596, 'UPDATE_COPY_ALERT_TYPE', oils_i18n_gettext( 596,
+    'Update copy alert types', 'ppl', 'description' )),
+ ( 597, 'DELETE_COPY_ALERT_TYPE', oils_i18n_gettext( 597,
+    'Delete copy alert types', 'ppl', 'description' )),
+ ( 598, 'ADMIN_COPY_ALERT_SUPPRESS', oils_i18n_gettext( 598,
+    'Administer copy alert suppression', 'ppl', 'description' )),
+ ( 599, 'CREATE_COPY_ALERT_SUPPRESS', oils_i18n_gettext( 599,
+    'Create copy alert suppression', 'ppl', 'description' )),
+ ( 600, 'UPDATE_COPY_ALERT_SUPPRESS', oils_i18n_gettext( 600,
+    'Update copy alert suppression', 'ppl', 'description' )),
+ ( 601, 'DELETE_COPY_ALERT_SUPPRESS', oils_i18n_gettext( 601,
+    'Delete copy alert suppression', 'ppl', 'description' )),
+ ( 602, 'ADMIN_COPY_ALERT', oils_i18n_gettext( 602,
+    'Administer copy alerts', 'ppl', 'description' )),
+ ( 603, 'CREATE_COPY_ALERT', oils_i18n_gettext( 603,
+    'Create copy alerts', 'ppl', 'description' )),
+ ( 604, 'VIEW_COPY_ALERT', oils_i18n_gettext( 604,
+    'View copy alerts', 'ppl', 'description' )),
+ ( 605, 'UPDATE_COPY_ALERT', oils_i18n_gettext( 605,
+    'Update copy alerts', 'ppl', 'description' )),
+ ( 606, 'DELETE_COPY_ALERT', oils_i18n_gettext( 606,
+    'Delete copy alerts', 'ppl', 'description' )),
+ ( 607, 'EMERGENCY_CLOSING', oils_i18n_gettext( 607,
+    'Create and manage Emergency Closings', 'ppl', 'description' )),
+ (608, 'APPLY_WORKSTATION_SETTING',
+   oils_i18n_gettext(608, 'APPLY_WORKSTATION_SETTING', 'ppl', 'description')),
+ ( 609, 'MANAGE_CUSTOM_PERM_GRP_TREE', oils_i18n_gettext( 609,
+    'Allows a user to manage custom permission group lists.', 'ppl', 'description' )),
+ ( 610, 'CLEAR_PURCHASE_REQUEST', oils_i18n_gettext(610,
+    'Clear Completed User Purchase Requests', 'ppl', 'description'))
 ;
+
 
 SELECT SETVAL('permission.perm_list_id_seq'::TEXT, 1000);
 
@@ -2066,7 +2105,9 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'VIEW_PERMIT_CHECKOUT',
 			'VIEW_USER',
 			'VIEW_USER_FINES_SUMMARY',
-			'VIEW_USER_TRANSACTIONS');
+			'VIEW_USER_TRANSACTIONS',
+            'APPLY_WORKSTATION_SETTING'
+        );
 
 INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 	SELECT
@@ -2552,6 +2593,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		aout.name = 'Consortium' AND
 		perm.code IN (
 			'ALLOW_ALT_TCN',
+			'CLEAR_PURCHASE_REQUEST',
 			'CREATE_BIB_IMPORT_QUEUE',
 			'CREATE_IMPORT_ITEM',
 			'CREATE_INVOICE',
@@ -2925,12 +2967,13 @@ INSERT INTO config.settings_group (name, label) VALUES
 
 
 INSERT INTO acq.user_request_type (id,label) VALUES (1, oils_i18n_gettext('1', 'Books', 'aurt', 'label'));
-INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Journal/Magazine & Newspaper Articles', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (2, oils_i18n_gettext('2', 'Articles', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (3, oils_i18n_gettext('3', 'Audiobooks', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (4, oils_i18n_gettext('4', 'Music', 'aurt', 'label'));
 INSERT INTO acq.user_request_type (id,label) VALUES (5, oils_i18n_gettext('5', 'DVDs', 'aurt', 'label'));
+INSERT INTO acq.user_request_type (id,label) VALUES (6, oils_i18n_gettext('6', 'Other', 'aurt', 'label'));
 
-SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 6);
+SELECT SETVAL('acq.user_request_type_id_seq'::TEXT, 7);
 
 
 -- org_unit setting types
@@ -2988,15 +3031,6 @@ INSERT into config.org_unit_setting_type
         'When the amount remaining in the fund, including spent money and encumbrances, goes below this percentage, attempts to spend from the fund will result in a warning to the staff.',
         'coust', 'description'),
     'integer', null)
-
-,( 'acq.holds.allow_holds_from_purchase_request', 'acq',
-    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
-        'Allows patrons to create automatic holds from purchase requests.',
-        'coust', 'label'),
-    oils_i18n_gettext('acq.holds.allow_holds_from_purchase_request',
-        'Allows patrons to create automatic holds from purchase requests.',
-        'coust', 'description'),
-    'bool', null)
 
 ,( 'acq.tmp_barcode_prefix', 'acq',
     oils_i18n_gettext('acq.tmp_barcode_prefix',
@@ -3445,19 +3479,19 @@ INSERT into config.org_unit_setting_type
 
 ,( 'circ.holds.canceled.display_age', 'holds',
     oils_i18n_gettext('circ.holds.canceled.display_age',
-        'Canceled holds display age',
+        'Canceled holds/requests display age',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.canceled.display_age',
-        'Show all canceled holds that were canceled within this amount of time',
+        'Show all canceled entries in patron holds and patron acquisition requests interfaces that were canceled within this amount of time',
         'coust', 'description'),
     'interval', null)
 
 ,( 'circ.holds.canceled.display_count', 'holds',
     oils_i18n_gettext('circ.holds.canceled.display_count',
-        'Canceled holds display count',
+        'Canceled holds/requests display count',
         'coust', 'label'),
     oils_i18n_gettext('circ.holds.canceled.display_count',
-        'How many canceled holds to show in patron holds interfaces',
+        'How many canceled entries to show in patron holds and patron acquisition requests interfaces',
         'coust', 'description'),
     'integer', null)
 
@@ -10252,6 +10286,55 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES (
     'A hold is cancelled by the patron'
 );
 
+-- AUTORENEWAL Action Trigger definitions and email notification template
+
+INSERT INTO action_trigger.validator values('CircIsAutoRenewable', 'Checks whether the circulation is able to be autorenewed.');
+INSERT INTO action_trigger.reactor values('Circ::AutoRenew', 'Auto-Renews a circulation.');
+INSERT INTO action_trigger.hook(key, core_type, description) values('autorenewal', 'circ', 'Item was auto-renewed to patron.');
+
+-- AutoRenewer A/T Def: 
+INSERT INTO action_trigger.event_definition(active, owner, name, hook, validator, reactor, delay, max_delay, delay_field, group_field)
+    values (false, 1, 'Autorenew', 'checkout.due', 'CircIsOpen', 'Circ::AutoRenew', '-23 hours'::interval,'-1 minute'::interval, 'due_date', 'usr');
+
+-- AutoRenewal outcome Email notifier A/T Def:
+INSERT INTO action_trigger.event_definition(active, owner, name, hook, validator, reactor, group_field, template)
+    values (false, 1, 'AutorenewNotify', 'autorenewal', 'NOOP_True', 'SendEmail', 'usr', 
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
+Subject: Items Out Auto-Renewal Notification 
+Auto-Submitted: auto-generated
+
+Dear [% user.family_name %], [% user.first_given_name %]
+An automatic renewal attempt was made for the following items:
+
+[% FOR circ IN target %]
+    [%- SET idx = loop.count - 1; SET udata =  user_data.$idx -%]
+    [%- SET cid = circ.target_copy || udata.copy -%]
+    [%- SET copy_details = helpers.get_copy_bib_basics(cid) -%]
+    Item# [% loop.count %]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    [%- IF udata.is_renewed %]
+    Status: Loan Renewed
+    New Due Date: [% date.format(helpers.format_date(udata.new_due_date), '%Y-%m-%d') %]
+    [%- ELSE %]
+    Status: Not Renewed
+    Reason: [% udata.reason %]
+    Due Date: [% date.format(helpers.format_date(circ.due_date), '%Y-%m-%d') %]
+    [% END %]
+[% END %]
+$$
+);
+
+INSERT INTO action_trigger.environment (event_def, path ) VALUES
+( currval('action_trigger.event_definition_id_seq'), 'usr' ),
+( currval('action_trigger.event_definition_id_seq'), 'circ_lib' );
+
+-- END of autorenwal trigger def stuff
 
 -- in-db indexing normalizers
 INSERT INTO config.index_normalizer (name, description, func, param_count) VALUES (
@@ -11739,11 +11822,12 @@ Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
 Subject: Bibliographic Records
 Auto-Submitted: auto-generated
 
-[% FOR cbreb IN target %][% title = '' %]
+[% FOR cbreb IN target %]
 [% FOR item IN cbreb.items;
     bre_id = item.target_biblio_record_entry;
 
     bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+    title = '';
     FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
         title = title _ part.textContent;
     END;
@@ -11787,11 +11871,12 @@ $$
 <div>
     <style> li { padding: 8px; margin 5px; }</style>
     <ol>
-    [% FOR cbreb IN target %][% title = '' %]
+    [% FOR cbreb IN target %]
     [% FOR item IN cbreb.items;
         bre_id = item.target_biblio_record_entry;
 
         bibxml = helpers.unapi_bre(bre_id, {flesh => '{mra}'});
+        title = '';
         FOR part IN bibxml.findnodes('//*[@tag="245"]/*[@code="a" or @code="b"]');
             title = title _ part.textContent;
         END;
@@ -11869,6 +11954,8 @@ INSERT INTO acq.cancel_reason (keep_debits, id, org_unit, label, description) VA
 	oils_i18n_gettext(1007, 'This line item is not accepted by the seller.', 'acqcr', 'description')),
 ('f',( 10+1000), 1, oils_i18n_gettext(1010, 'Canceled: Not Found', 'acqcr', 'label'),
        oils_i18n_gettext(1010, 'This line item is not found in the referenced message.', 'acqcr', 'description')),
+('f',( 15+1000), 1, oils_i18n_gettext(1015, 'Canceled: Fulfilled', 'acqcr', 'label'),
+       oils_i18n_gettext(1015, 'This acquisition request has been fulfilled.', 'acqcr', 'description')),
 ('t',( 24+1000), 1, oils_i18n_gettext(1024, 'Delayed: Accepted with amendment', 'acqcr', 'label'),
        oils_i18n_gettext(1024, 'Accepted with changes which require no confirmation.', 'acqcr', 'description'));
 
@@ -16064,7 +16151,7 @@ INSERT INTO config.org_unit_setting_type
     oils_i18n_gettext(
         'circ.longoverdue.xact_open_on_zero',
         'Leave transaction open when long-overdue balance equals zero.  ' ||
-            'This leaves the lost copy on the patron record when it is paid',
+            'This leaves the long-overdue copy on the patron record when it is paid',
         'coust',
         'description'
     )
@@ -16977,13 +17064,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Item Print Label - Left Margin for Left Label'
+        ,'Item Print Label - Left Margin for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.left_margin'
-        ,'Set the default left margin for the leftmost item print Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -16993,13 +17080,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Item Print Label - Left Margin for Right Label'
+        ,'Item Print Label - Left Margin for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.left_margin'
-        ,'Set the default left margin for the rightmost item print label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default left margin for the item print Pocket Label (or in other words, the desired space between the two labels). Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17009,13 +17096,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Item Print Label - Height for Left Label'
+        ,'Item Print Label - Height for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.height'
-        ,'Set the default height for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17025,13 +17112,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Item Print Label - Width for Left Label'
+        ,'Item Print Label - Width for Spine Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.left_label.width'
-        ,'Set the default width for the leftmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Spine Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17041,13 +17128,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Item Print Label - Height for Right Label'
+        ,'Item Print Label - Height for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.height'
-        ,'Set the default height for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default height for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17057,13 +17144,13 @@ INSERT into config.org_unit_setting_type (
     ,'cat'
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Item Print Label - Width for Right Label'
+        ,'Item Print Label - Width for Pocket Label'
         ,'coust'
         ,'label'
     )
     ,oils_i18n_gettext(
          'webstaff.cat.label.right_label.width'
-        ,'Set the default width for the rightmost item print label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
+        ,'Set the default width for the item print Pocket Label. Please include a unit of measurement that is valid CSS. For example, "1in" or "2.5cm"'
         ,'coust'
         ,'description'
     )
@@ -17510,9 +17597,9 @@ INSERT INTO config.org_unit_setting_type
          oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_long_overdue_checkin',
             'Forgive fines when checking out a long-overdue item and copy alert is suppressed?',
             'coust', 'label'),
-         oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_lost_checkin',
+         oils_i18n_gettext('circ.copy_alerts.forgive_fines_on_long_overdue_checkin',
             'Controls whether fines are automatically forgiven when checking out an '||
-            'item that has been marked as lost, and the corresponding copy alert has been '||
+            'item that has been marked as long-overdue, and the corresponding copy alert has been '||
             'suppressed.',
             'coust', 'description'),
         'bool');
@@ -18299,3 +18386,1523 @@ WHERE tag = '555'
 AND control_set = 1
 AND ahf.heading_purpose = 'related'
 AND ahf.heading_type = 'genre_form_term';
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.circ.checkin.no_precat_alert', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.no_precat_alert',
+        'Checkin: Ignore Precataloged Items',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.noop', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.noop',
+        'Checkin: Suppress Holds and Transits',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.void_overdues', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.void_overdues',
+        'Checkin: Amnesty Mode',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.auto_print_holds_transits', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.auto_print_holds_transits',
+        'Checkin: Auto-Print Holds and Transits',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.clear_expired', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.clear_expired',
+        'Checkin: Clear Holds Shelf',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.retarget_holds', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.retarget_holds',
+        'Checkin: Retarget Local Holds',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.retarget_holds_all', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.retarget_holds_all',
+        'Checkin: Retarget All Statuses',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.hold_as_transit', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.hold_as_transit',
+        'Checkin: Capture Local Holds as Transits',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.manual_float', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.checkin.manual_float',
+        'Checkin: Manual Floating Active',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.checkin.do_inventory_update', 'circ', 'bool',
+    oils_i18n_gettext (
+             'eg.circ.checkin.do_inventory_update',
+             'Checkin: Update Inventory',
+             'cwst', 'label'
+    )
+), (
+    'eg.circ.patron.summary.collapse', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.patron.summary.collapse',
+        'Collaps Patron Summary Display',
+        'cwst', 'label'
+    )
+), (
+    'circ.bills.receiptonpay', 'circ', 'bool',
+    oils_i18n_gettext(
+        'circ.bills.receiptonpay',
+        'Print Receipt On Payment',
+        'cwst', 'label'
+    )
+), (
+    'circ.renew.strict_barcode', 'circ', 'bool',
+    oils_i18n_gettext(
+        'circ.renew.strict_barcode',
+        'Renew: Strict Barcode',
+        'cwst', 'label'
+    )
+), (
+    'circ.checkin.strict_barcode', 'circ', 'bool',
+    oils_i18n_gettext(
+        'circ.checkin.strict_barcode',
+        'Checkin: Strict Barcode',
+        'cwst', 'label'
+    )
+), (
+    'circ.checkout.strict_barcode', 'circ', 'bool',
+    oils_i18n_gettext(
+        'circ.checkout.strict_barcode',
+        'Checkout: Strict Barcode',
+        'cwst', 'label'
+    )
+), (
+    'cat.holdings_show_copies', 'cat', 'bool',
+    oils_i18n_gettext(
+        'cat.holdings_show_copies',
+        'Holdings View Show Copies',
+        'cwst', 'label'
+    )
+), (
+    'cat.holdings_show_empty', 'cat', 'bool',
+    oils_i18n_gettext(
+        'cat.holdings_show_empty',
+        'Holdings View Show Empty Volumes',
+        'cwst', 'label'
+    )
+), (
+    'cat.holdings_show_empty_org', 'cat', 'bool',
+    oils_i18n_gettext(
+        'cat.holdings_show_empty_org',
+        'Holdings View Show Empty Orgs',
+        'cwst', 'label'
+    )
+), (
+    'cat.holdings_show_vols', 'cat', 'bool',
+    oils_i18n_gettext(
+        'cat.holdings_show_vols',
+        'Holdings View Show Volumes',
+        'cwst', 'label'
+    )
+), (
+    'cat.copy.defaults', 'cat', 'object',
+    oils_i18n_gettext(
+        'cat.copy.defaults',
+        'Copy Edit Default Values',
+        'cwst', 'label'
+    )
+), (
+    'cat.printlabels.default_template', 'cat', 'string',
+    oils_i18n_gettext(
+        'cat.printlabels.default_template',
+        'Print Label Default Template',
+        'cwst', 'label'
+    )
+), (
+    'cat.printlabels.templates', 'cat', 'object',
+    oils_i18n_gettext(
+        'cat.printlabels.templates',
+        'Print Label Templates',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.patron.search.include_inactive', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.patron.search.include_inactive',
+        'Patron Search Include Inactive',
+        'cwst', 'label'
+    )
+), (
+    'eg.circ.patron.search.show_extras', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.patron.search.show_extras',
+        'Patron Search Show Extra Search Options',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.checkin.checkin', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.checkin.checkin',
+        'Grid Config: circ.checkin.checkin',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.checkin.capture', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.checkin.capture',
+        'Grid Config: circ.checkin.capture',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.copy_tag_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.copy_tag_type',
+        'Grid Config: admin.server.config.copy_tag_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field_virtual_map.grid', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field_virtual_map.grid',
+        'Grid Config: admin.server.config.metabib_field_virtual_map.grid',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field.grid', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field.grid',
+        'Grid Config: admin.server.config.metabib_field.grid',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.marc_field', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.marc_field',
+        'Grid Config: admin.server.config.marc_field',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.copy_tag', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.copy_tag',
+        'Grid Config: admin.server.asset.copy_tag',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.local.circ.neg_balance_users', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.circ.neg_balance_users',
+        'Grid Config: admin.local.circ.neg_balance_users',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.local.rating.badge', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.local.rating.badge',
+        'Grid Config: admin.local.rating.badge',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.workstation.work_log', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.workstation.work_log',
+        'Grid Config: admin.workstation.work_log',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.workstation.patron_log', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.workstation.patron_log',
+        'Grid Config: admin.workstation.patron_log',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.serials.pattern_template', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.serials.pattern_template',
+        'Grid Config: admin.serials.pattern_template',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.serials.copy_templates', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.serials.copy_templates',
+        'Grid Config: serials.copy_templates',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.record_overlay.holdings', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.record_overlay.holdings',
+        'Grid Config: cat.record_overlay.holdings',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.record.search', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.record.search',
+        'Grid Config: cat.bucket.record.search',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.record.view', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.record.view',
+        'Grid Config: cat.bucket.record.view',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.record.pending', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.record.pending',
+        'Grid Config: cat.bucket.record.pending',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.copy.view', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.copy.view',
+        'Grid Config: cat.bucket.copy.view',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.bucket.copy.pending', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.bucket.copy.pending',
+        'Grid Config: cat.bucket.copy.pending',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.items', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.items',
+        'Grid Config: cat.items',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.volcopy.copies', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.volcopy.copies',
+        'Grid Config: cat.volcopy.copies',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.volcopy.copies.complete', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.volcopy.copies.complete',
+        'Grid Config: cat.volcopy.copies.complete',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.peer_bibs', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.peer_bibs',
+        'Grid Config: cat.peer_bibs',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.catalog.wide_holds', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.catalog.wide_holds',
+        'Grid Config: cat.catalog.wide_holds',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.holdings', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.holdings',
+        'Grid Config: cat.holdings',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.z3950_results', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.z3950_results',
+        'Grid Config: cat.z3950_results',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.wide_holds.shelf', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.wide_holds.shelf',
+        'Grid Config: circ.wide_holds.shelf',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.holds.pull', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.holds.pull',
+        'Grid Config: circ.holds.pull',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.in_house_use', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.in_house_use',
+        'Grid Config: circ.in_house_use',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.renew', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.renew',
+        'Grid Config: circ.renew',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.transits.list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.transits.list',
+        'Grid Config: circ.transits.list',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.holds', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.holds',
+        'Grid Config: circ.patron.holds',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.pending_patrons.list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.pending_patrons.list',
+        'Grid Config: circ.pending_patrons.list',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.items_out.noncat', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.items_out.noncat',
+        'Grid Config: circ.patron.items_out.noncat',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.items_out', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.items_out',
+        'Grid Config: circ.patron.items_out',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.billhistory_payments', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.billhistory_payments',
+        'Grid Config: circ.patron.billhistory_payments',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.user.bucket.view', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.user.bucket.view',
+        'Grid Config: user.bucket.view',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.user.bucket.pending', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.user.bucket.pending',
+        'Grid Config: user.bucket.pending',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.staff_messages', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.staff_messages',
+        'Grid Config: circ.patron.staff_messages',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.archived_messages', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.archived_messages',
+        'Grid Config: circ.patron.archived_messages',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.bills', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.bills',
+        'Grid Config: circ.patron.bills',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.checkout', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.checkout',
+        'Grid Config: circ.patron.checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.serials.mfhd_grid', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.serials.mfhd_grid',
+        'Grid Config: serials.mfhd_grid',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.serials.view_item_grid', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.serials.view_item_grid',
+        'Grid Config: serials.view_item_grid',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.serials.dist_stream_grid', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.serials.dist_stream_grid',
+        'Grid Config: serials.dist_stream_grid',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.search', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.search',
+        'Grid Config: circ.patron.search',
+        'cwst', 'label'
+    )
+), (
+    'eg.cat.record.summary.collapse', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.cat.record.summary.collapse',
+        'Collapse Bib Record Summary',
+        'cwst', 'label'
+    )
+), (
+    'cat.marcedit.flateditor', 'gui', 'bool',
+    oils_i18n_gettext(
+        'cat.marcedit.flateditor',
+        'Use Flat MARC Editor',
+        'cwst', 'label'
+    )
+), (
+    'cat.marcedit.stack_subfields', 'gui', 'bool',
+    oils_i18n_gettext(
+        'cat.marcedit.stack_subfields',
+        'MARC Editor Stack Subfields',
+        'cwst', 'label'
+    )
+), (
+    'eg.offline.print_receipt', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.offline.print_receipt',
+        'Offline Print Receipt',
+        'cwst', 'label'
+    )
+), (
+    'eg.offline.strict_barcode', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.offline.strict_barcode',
+        'Offline Use Strict Barcode',
+        'cwst', 'label'
+    )
+), (
+    'cat.default_bib_marc_template', 'gui', 'string',
+    oils_i18n_gettext(
+        'cat.default_bib_marc_template',
+        'Default MARC Template',
+        'cwst', 'label'
+    )
+), (
+    'eg.audio.disable', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.audio.disable',
+        'Disable Staff Client Notification Audio',
+        'cwst', 'label'
+    )
+), (
+    'eg.search.adv_pane', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.search.adv_pane',
+        'Catalog Advanced Search Default Pane',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.bills_current', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.bills_current',
+        'Print Template Context: bills_current',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.bills_current', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.bills_current',
+        'Print Template: bills_current',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.bills_historical', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.bills_historical',
+        'Print Template Context: bills_historical',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.bills_historical', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.bills_historical',
+        'Print Template: bills_historical',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.bill_payment', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.bill_payment',
+        'Print Template Context: bill_payment',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.bill_payment', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.bill_payment',
+        'Print Template: bill_payment',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.checkin', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.checkin',
+        'Print Template Context: checkin',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.checkin', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.checkin',
+        'Print Template: checkin',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.checkout', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.checkout',
+        'Print Template Context: checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.checkout', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.checkout',
+        'Print Template: checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.hold_transit_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.hold_transit_slip',
+        'Print Template Context: hold_transit_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.hold_transit_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.hold_transit_slip',
+        'Print Template: hold_transit_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.hold_shelf_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.hold_shelf_slip',
+        'Print Template Context: hold_shelf_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.hold_shelf_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.hold_shelf_slip',
+        'Print Template: hold_shelf_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.holds_for_bib', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.holds_for_bib',
+        'Print Template Context: holds_for_bib',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.holds_for_bib', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.holds_for_bib',
+        'Print Template: holds_for_bib',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.holds_for_patron', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.holds_for_patron',
+        'Print Template Context: holds_for_patron',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.holds_for_patron', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.holds_for_patron',
+        'Print Template: holds_for_patron',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.hold_pull_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.hold_pull_list',
+        'Print Template Context: hold_pull_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.hold_pull_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.hold_pull_list',
+        'Print Template: hold_pull_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.hold_shelf_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.hold_shelf_list',
+        'Print Template Context: hold_shelf_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.hold_shelf_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.hold_shelf_list',
+        'Print Template: hold_shelf_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.in_house_use_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.in_house_use_list',
+        'Print Template Context: in_house_use_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.in_house_use_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.in_house_use_list',
+        'Print Template: in_house_use_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.item_status', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.item_status',
+        'Print Template Context: item_status',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.item_status', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.item_status',
+        'Print Template: item_status',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.items_out', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.items_out',
+        'Print Template Context: items_out',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.items_out', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.items_out',
+        'Print Template: items_out',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.patron_address', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.patron_address',
+        'Print Template Context: patron_address',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.patron_address', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.patron_address',
+        'Print Template: patron_address',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.patron_data', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.patron_data',
+        'Print Template Context: patron_data',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.patron_data', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.patron_data',
+        'Print Template: patron_data',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.patron_note', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.patron_note',
+        'Print Template Context: patron_note',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.patron_note', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.patron_note',
+        'Print Template: patron_note',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.renew', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.renew',
+        'Print Template Context: renew',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.renew', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.renew',
+        'Print Template: renew',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.transit_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.transit_list',
+        'Print Template Context: transit_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.transit_list', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.transit_list',
+        'Print Template: transit_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.transit_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.transit_slip',
+        'Print Template Context: transit_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.transit_slip', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.transit_slip',
+        'Print Template: transit_slip',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.offline_checkout', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.offline_checkout',
+        'Print Template Context: offline_checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.offline_checkout', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.offline_checkout',
+        'Print Template: offline_checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.offline_renew', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.offline_renew',
+        'Print Template Context: offline_renew',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.offline_renew', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.offline_renew',
+        'Print Template: offline_renew',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.offline_checkin', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.offline_checkin',
+        'Print Template Context: offline_checkin',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.offline_checkin', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.offline_checkin',
+        'Print Template: offline_checkin',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template_context.offline_in_house_use', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template_context.offline_in_house_use',
+        'Print Template Context: offline_in_house_use',
+        'cwst', 'label'
+    )
+), (
+    'eg.print.template.offline_in_house_use', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.print.template.offline_in_house_use',
+        'Print Template: offline_in_house_use',
+        'cwst', 'label'
+    )
+), (
+    'eg.serials.stream_names', 'gui', 'array',
+    oils_i18n_gettext(
+        'eg.serials.stream_names',
+        'Serials Local Stream Names',
+        'cwst', 'label'
+    )
+), (
+    'eg.serials.items.do_print_routing_lists', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.serials.items.do_print_routing_lists',
+        'Serials Print Routing Lists',
+        'cwst', 'label'
+    )
+), (
+    'eg.serials.items.receive_and_barcode', 'gui', 'bool',
+    oils_i18n_gettext(
+        'eg.serials.items.receive_and_barcode',
+        'Serials Barcode On Receive',
+        'cwst', 'label'
+    )
+), (
+  'eg.grid.circ.patron.billhistory_xacts', 'gui', 'object',
+  oils_i18n_gettext(
+    'eg.grid.circ.patron.billhistory_xacts',
+    'Grid Config: circ.patron.billhistory_xacts',
+    'cwst', 'label'
+  )
+);
+
+
+-- More values with fm_class'es
+INSERT INTO config.workstation_setting_type (name, grp, datatype, fm_class, label)
+VALUES (
+    'eg.search.search_lib', 'gui', 'link', 'aou',
+    oils_i18n_gettext(
+        'eg.search.search_lib',
+        'Staff Catalog Default Search Library',
+        'cwst', 'label'
+    )
+), (
+    'eg.search.pref_lib', 'gui', 'link', 'aou',
+    oils_i18n_gettext(
+        'eg.search.pref_lib',
+        'Staff Catalog Preferred Library',
+        'cwst', 'label'
+    )
+);
+
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.acq.cancel_reason', 'gui', 'object',
+    oils_i18n_gettext (
+        'eg.grid.admin.acq.cancel_reason',
+        'Grid Config: admin.acq.cancel_reason',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.claim_event_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.claim_event_type',
+        'Grid Config: admin.acq.claim_event_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.claim_policy', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.claim_policy',
+        'Grid Config: admin.acq.claim_policy',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.claim_policy_action', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.claim_policy_action',
+        'Grid Config: admin.acq.claim_policy_action',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.claim_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.claim_type',
+        'Grid Config: admin.acq.claim_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.currency_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.currency_type',
+        'Grid Config: admin.acq.currency_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.edi_account', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.edi_account',
+        'Grid Config: admin.acq.edi_account',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.edi_message', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.edi_message',
+        'Grid Config: admin.acq.edi_message',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.exchange_rate', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.exchange_rate',
+        'Grid Config: admin.acq.exchange_rate',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.fund_tag', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.fund_tag',
+        'Grid Config: admin.acq.fund_tag',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.invoice_item_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.invoice_item_type',
+        'Grid Config: admin.acq.invoice_item_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.invoice_payment_method', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.invoice_payment_method',
+        'Grid Config: admin.acq.invoice_payment_method',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.lineitem_alert_text', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.lineitem_alert_text',
+        'Grid Config: admin.acq.lineitem_alert_text',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.acq.lineitem_marc_attr_definition', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.acq.lineitem_marc_attr_definition',
+        'Grid Config: admin.acq.lineitem_marc_attr_definition',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.cat.vandelay.queue.bib', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib',
+        'Grid Config: Vandelay Bib Queue',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.auth', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.auth',
+        'Grid Config: Vandelay Authority Queue',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.match_set.list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.match_set.list',
+        'Grid Config: Vandelay Match Sets',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.match_set.quality', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.match_set.quality',
+        'Grid Config: Vandelay Match Quality Metrics',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.items', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.items',
+        'Grid Config: Vandelay Queue Import Items',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.list.bib', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.list.bib',
+        'Grid Config: Vandelay Bib Queue List',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.bib.items', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.bib.items',
+        'Grid Config: Vandelay Bib Items',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.cat.vandelay.queue.list.auth', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.cat.vandelay.queue.list.auth',
+        'Grid Config: Vandelay Authority Queue List',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.merge_profile', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.merge_profile',
+        'Grid Config: Vandelay Merge Profiles',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.bib_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.bib_attr_definition',
+        'Grid Config: Vandelay Bib Record Attributes',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.vandelay.import_item_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.vandelay.import_item_attr_definition',
+        'Grid Config: Vandelay Import Item Attributes',
+        'cwst', 'label'
+    )
+);
+
+
+INSERT into config.org_unit_setting_type (name, label, description, datatype) 
+VALUES ( 
+    'ui.patron.edit.au.guardian.show',
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.show', 
+        'GUI: Show guardian field on patron registration', 
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.show', 
+        'The guardian field will be shown on the patron registration screen. Showing a field makes it appear with required fields even when not required. If the field is required this setting is ignored.', 
+        'coust', 'description'
+    ),
+    'bool'
+), (
+    'ui.patron.edit.au.guardian.suggest',
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.suggest', 
+        'GUI: Suggest guardian field on patron registration', 
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.au.guardian.suggest', 
+        'The guardian field will be suggested on the patron registration screen. Suggesting a field makes it appear when suggested fields are shown. If the field is shown or required this setting is ignored.', 
+        'coust', 'description'),
+    'bool'
+), (
+    'ui.patron.edit.guardian_required_for_juv',
+    oils_i18n_gettext(
+        'ui.patron.edit.guardian_required_for_juv',
+        'GUI: Juvenile account requires parent/guardian',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.patron.edit.guardian_required_for_juv',
+        'Require a value for the parent/guardian field in the patron editor for patrons marked as juvenile',
+        'coust', 'description'),
+    'bool'
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.cat.vandelay.import.templates', 'cat', 'object',
+    oils_i18n_gettext(
+        'eg.cat.vandelay.import.templates',
+        'Vandelay Import Form Templates',
+        'cwst', 'label'
+    )
+);
+
+
+INSERT into config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.booking.resource', 'gui', 'object',
+    oils_i18n_gettext (
+        'eg.grid.admin.booking.resource',
+        'Grid Config: admin.booking.resource',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr',
+        'Grid Config: admin.booking.resource_attr',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr_map', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr_map',
+        'Grid Config: admin.booking.resource_attr_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_attr_value', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_attr_value',
+        'Grid Config: admin.booking.resource_attr_value',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.booking.resource_type', 'gui', 'object',
+    oils_i18n_gettext (
+    'eg.grid.admin.booking.resource_type',
+        'Grid Config: admin.booking.resource_type',
+        'cwst', 'label'
+    )
+);
+
+
+-- server admin workstation settings
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.grid.admin.server.config.rule_age_hold_protect', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_age_hold_protect',
+        'Grid Config: admin.server.config.rule_age_hold_protect',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.stat_cat_sip_fields', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.stat_cat_sip_fields',
+        'Grid Config: admin.server.asset.stat_cat_sip_fields',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.actor.stat_cat_sip_fields', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.actor.stat_cat_sip_fields',
+        'Grid Config: admin.server.actor.stat_cat_sip_fields',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.browse_axis', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.browse_axis',
+        'Grid Config: admin.server.authority.browse_axis',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.control_set', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.control_set',
+        'Grid Config: admin.server.authority.control_set',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.heading_field', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.heading_field',
+        'Grid Config: admin.server.authority.heading_field',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.authority.thesaurus', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.authority.thesaurus',
+        'Grid Config: admin.server.authority.thesaurus',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.best_hold_order', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.best_hold_order',
+        'Grid Config: admin.server.config.best_hold_order',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.billing_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.billing_type',
+        'Grid Config: admin.server.config.billing_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.call_number_prefix', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.call_number_prefix',
+        'Grid Config: admin.server.asset.call_number_prefix',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.asset.call_number_suffix', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.asset.call_number_suffix',
+        'Grid Config: admin.server.asset.call_number_suffix',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.rule_circ_duration', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_circ_duration',
+        'Grid Config: admin.server.config.rule_circ_duration',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_limit_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_limit_group',
+        'Grid Config: admin.server.config.circ_limit_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_matrix_weights', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_matrix_weights',
+        'Grid Config: admin.server.config.circ_matrix_weights',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.rule_max_fine', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.rule_max_fine',
+        'Grid Config: admin.server.config.rule_max_fine',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.circ_modifier', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.circ_modifier',
+        'Grid Config: admin.server.config.circ_modifier',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.copy_status', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.copy_status',
+        'Grid Config: admin.server.config.copy_status',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.floating_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.floating_group',
+        'Grid Config: admin.server.config.floating_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.global_flag', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.global_flag',
+        'Grid Config: admin.server.config.global_flag',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.hard_due_date', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.hard_due_date',
+        'Grid Config: admin.server.config.hard_due_date',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.hold_matrix_weights', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.hold_matrix_weights',
+        'Grid Config: admin.server.config.hold_matrix_weights',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.vandelay.match_set', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.vandelay.match_set',
+        'Grid Config: admin.server.vandelay.match_set',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.coded_value_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.coded_value_map',
+        'Grid Config: admin.server.config.coded_value_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.vandelay.import_bib_trash_group', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.vandelay.import_bib_trash_group',
+        'Grid Config: admin.server.vandelay.import_bib_trash_group',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.record_attr_definition', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.record_attr_definition',
+        'Grid Config: admin.server.config.record_attr_definition',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_class', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_class',
+        'Grid Config: admin.server.config.metabib_class',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field_ts_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field_ts_map',
+        'Grid Config: admin.server.config.metabib_field_ts_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.metabib_field', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.metabib_field',
+        'Grid Config: admin.server.config.metabib_field',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.permission.perm_list', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.permission.perm_list',
+        'Grid Config: admin.server.permission.perm_list',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.remote_account', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.remote_account',
+        'Grid Config: admin.server.config.remote_account',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.sms_carrier', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.sms_carrier',
+        'Grid Config: admin.server.config.sms_carrier',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.usr_activity_type', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.usr_activity_type',
+        'Grid Config: admin.server.config.usr_activity_type',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.weight_assoc', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.weight_assoc',
+        'Grid Config: admin.server.config.weight_assoc',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.z3950_index_field_map', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.z3950_index_field_map',
+        'Grid Config: admin.server.config.z3950_index_field_map',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.admin.server.config.z3950_source', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.admin.server.config.z3950_source',
+        'Grid Config: admin.server.config.z3950_source',
+        'cwst', 'label'
+    )
+);
+
+-- NOTE: This setting should be removed once the Angular catalog
+-- becomes the default.
+INSERT into config.org_unit_setting_type 
+    (name, datatype, grp, label, description)
+VALUES ( 
+    'ui.staff.angular_catalog.enabled', 'bool', 'gui',
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'GUI: Enable Experimental Angular Staff Catalog',
+        'coust', 'label'
+    ),
+    oils_i18n_gettext(
+        'ui.staff.angular_catalog.enabled',
+        'Display an entry point in the browser client for the ' ||
+        'experimental Angular staff catalog.',
+        'coust', 'description'
+    )
+);
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+    VALUES (
+        'circ.privacy_waiver',
+        oils_i18n_gettext('circ.privacy_waiver',
+            'Allow others to use patron account (privacy waiver)',
+            'coust', 'label'),
+        oils_i18n_gettext('circ.privacy_waiver',
+            'Add a note to a user account indicating that specified people are allowed to ' ||
+            'place holds, pick up holds, check out items, or view borrowing history for that user account',
+            'coust', 'description'),
+        'circ',
+        'bool'
+    );
+
+INSERT INTO config.usr_activity_type 
+    (id, ewhat, ehow, egroup, enabled, transient, label)
+VALUES (
+    25, 'login', 'ws-translator-v1', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(25, 'Login via Websocket V1', 'cuat', 'label')
+), (
+    26, 'login', 'ws-translator-v2', 'authen', TRUE, TRUE,
+    oils_i18n_gettext(26, 'Login via Websocket V2', 'cuat', 'label')
+), (
+    27, 'verify', 'ws-translator-v1', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(27, 'Verification via Websocket v1', 'cuat', 'label')
+), (
+    28, 'verify', 'ws-translator-v2', 'authz', TRUE, TRUE,
+    oils_i18n_gettext(28, 'Verifiation via Websocket V2', 'cuat', 'label')
+), (
+    29, 'login', NULL, 'authen', TRUE, TRUE,
+    oils_i18n_gettext(29, 'Generic Login', 'cuat', 'label')
+), (
+    30, 'verify', NULL, 'authz', TRUE, TRUE,
+    oils_i18n_gettext(30, 'Generic Verify', 'cuat', 'label')
+);
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'catalog.record.holds.prefetch', 'cat', 'bool',
+    oils_i18n_gettext(
+        'catalog.record.holds.prefetch',
+        'Pre-Fetch Record Holds',
+        'cwst', 'label'
+    )
+);
+

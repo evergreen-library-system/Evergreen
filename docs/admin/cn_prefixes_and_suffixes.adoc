@@ -43,4 +43,4 @@ image::media/Call_Number_Prefixes_and_Suffixes_2_22.jpg[Call_Number_Prefixes_and
 Apply Call Number Prefixes and Suffixes
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can apply call number prefixes and suffixes to items from a pre-configured list in the *Unified Volume/Copy Creator*.  See the document, Unified Volume/Copy Creator, for an example.
+You can apply call number prefixes and suffixes to items from a pre-configured list in the Holdings Editor.

@@ -33,7 +33,7 @@ use OpenILS::Application::Circ::Transit;
 use OpenILS::Application::Actor::Friends;
 use DateTime;
 use DateTime::Format::ISO8601;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use Digest::MD5 qw(md5_hex);
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::JSON;
@@ -269,7 +269,7 @@ sub create_hold {
     my $expire_setting = $U->ou_ancestor_setting_value($recipient->home_ou, OILS_SETTING_BLOCK_HOLD_FOR_EXPIRED_PATRON);
     if ($expire_setting) {
         my $expire = DateTime::Format::ISO8601->new->parse_datetime(
-            cleanse_ISO8601($recipient->expire_date));
+            clean_ISO8601($recipient->expire_date));
 
         push( @events, OpenILS::Event->new(
             'PATRON_ACCOUNT_EXPIRED',
@@ -588,7 +588,7 @@ sub retrieve_holds {
         } elsif($cancel_age) { # limit by age
 
             # find all of the canceled holds that were canceled within the configured time frame
-            my $date = DateTime->now->subtract(seconds => OpenSRF::Utils::interval_to_seconds($cancel_age));
+            my $date = DateTime->now->subtract(seconds => OpenILS::Utils::DateTime->interval_to_seconds($cancel_age));
             $date = $U->epoch2ISO8601($date->epoch);
             $holds_query->{where}->{cancel_time} = {'>=' => $date};
         }
@@ -1103,10 +1103,10 @@ sub set_hold_shelf_expire_time {
     return undef unless $shelf_expire;
 
     $start_time = ($start_time) ?
-        DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time)) :
+        DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($start_time)) :
         DateTime->now(time_zone => 'local'); # without time_zone we get UTC ... yuck!
 
-    my $seconds = OpenSRF::Utils->interval_to_seconds($shelf_expire);
+    my $seconds = OpenILS::Utils::DateTime->interval_to_seconds($shelf_expire);
     my $expire_time = $start_time->add(seconds => $seconds);
 
     # if the shelf expire time overlaps with a pickup lib's
@@ -1117,7 +1117,7 @@ sub set_hold_shelf_expire_time {
 
     if($dateinfo) {
         my $dt_parser = DateTime::Format::ISO8601->new;
-        $expire_time = $dt_parser->parse_datetime(cleanse_ISO8601($dateinfo->{end}));
+        $expire_time = $dt_parser->parse_datetime(clean_ISO8601($dateinfo->{end}));
 
         # TODO: enable/disable time bump via setting?
         $expire_time->set(hour => '23', minute => '59', second => '59');
@@ -1305,8 +1305,8 @@ sub _hold_status {
                             dest_recv_time => {'!=' => undef},
                          })->[0];
         my $start_time = ($transit) ? $transit->dest_recv_time : $hold->capture_time;
-        $start_time    = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($start_time));
-        my $end_time   = $start_time->add(seconds => OpenSRF::Utils::interval_to_seconds($hs_wait_interval));
+        $start_time    = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($start_time));
+        my $end_time   = $start_time->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($hs_wait_interval));
 
         return 5 if $end_time > DateTime->now;
         return 4;
@@ -1456,7 +1456,7 @@ sub retrieve_hold_queue_status_impl {
         $user_org, OILS_SETTING_HOLD_ESIMATE_WAIT_INTERVAL, $e);
     my $min_wait = $U->ou_ancestor_setting_value(
         $user_org, 'circ.holds.min_estimated_wait_interval', $e);
-    $min_wait = OpenSRF::Utils::interval_to_seconds($min_wait || '0 seconds');
+    $min_wait = OpenILS::Utils::DateTime->interval_to_seconds($min_wait || '0 seconds');
     $default_wait ||= '0 seconds';
 
     # Estimated wait time is the average wait time across the set
@@ -1469,7 +1469,7 @@ sub retrieve_hold_queue_status_impl {
     for my $wait_data (@$hold_data) {
         my $count += $wait_data->{count};
         $combined_secs += $count *
-            OpenSRF::Utils::interval_to_seconds($wait_data->{avg_wait_time} || $default_wait);
+            OpenILS::Utils::DateTime->interval_to_seconds($wait_data->{avg_wait_time} || $default_wait);
         $num_potentials += $count;
     }
 
@@ -1978,8 +1978,6 @@ sub _reset_hold {
 
         } elsif( $copy->status == OILS_COPY_STATUS_IN_TRANSIT ) {
 
-            # We don't want the copy to remain "in transit"
-            $copy->status(OILS_COPY_STATUS_RESHELVING);
             $logger->warn("! reseting hold [$hid] that is in transit");
             my $transid = $e->search_action_hold_transit_copy({hold=>$hold->id,cancel_time=>undef},{idlist=>1})->[0];
 
@@ -2383,6 +2381,7 @@ sub check_title_hold {
 
     my %params       = %$params;
     my $depth        = $params{depth}        || 0;
+    $params{depth} = $depth;   #define $params{depth} if unset, since it gets used later
     my $selection_ou = $params{selection_ou} || $params{pickup_lib};
     my $oargs        = $params{oargs}        || {};
 
@@ -3349,6 +3348,49 @@ sub all_rec_holds {
     return $resp;
 }
 
+__PACKAGE__->register_method(
+    method           => 'stream_wide_holds',
+    authoritative    => 1,
+    stream           => 1,
+    api_name         => 'open-ils.circ.hold.wide_hash.stream'
+);
+
+sub stream_wide_holds {
+    my($self, $client, $auth, $restrictions, $order_by, $limit, $offset) = @_;
+
+    my $e = new_editor(authtoken=>$auth);
+    $e->checkauth or return $e->event;
+    $e->allowed('VIEW_HOLD') or return $e->event;
+
+    my $st = OpenSRF::AppSession->create('open-ils.storage');
+    my $req = $st->request(
+        'open-ils.storage.action.live_holds.wide_hash',
+        $restrictions, $order_by, $limit, $offset
+    );
+
+    my $count = $req->recv;
+    if(!$count) {
+        return 0;
+    }
+
+    if(UNIVERSAL::isa($count,"Error")) {
+        throw $count ($count->stringify);
+    }
+
+    $count = $count->content;
+
+    # Force immediate send of count response
+    my $mbc = $client->max_bundle_count;
+    $client->max_bundle_count(1);
+    $client->respond($count);
+    $client->max_bundle_count($mbc);
+
+    while (my $hold = $req->recv) {
+        $client->respond($hold->content) if $hold->content;
+    }
+
+    $client->respond_complete;
+}
 
 
 
@@ -3461,12 +3503,13 @@ sub find_hold_mvr {
     my $volume;
     my $issuance;
     my $part;
+    my $metarecord;
     my $no_mvr = $args->{suppress_mvr};
 
     if( $hold->hold_type eq OILS_HOLD_TYPE_METARECORD ) {
-        my $mr = $e->retrieve_metabib_metarecord($hold->target)
+        $metarecord = $e->retrieve_metabib_metarecord($hold->target)
             or return $e->event;
-        $tid = $mr->master_record;
+        $tid = $metarecord->master_record;
 
     } elsif( $hold->hold_type eq OILS_HOLD_TYPE_TITLE ) {
         $tid = $hold->target;
@@ -3512,7 +3555,8 @@ sub find_hold_mvr {
 
     # TODO return metarcord mvr for M holds
     my $title = $e->retrieve_biblio_record_entry($tid);
-    return ( ($no_mvr) ? undef : $U->record_to_mvr($title), $volume, $copy, $issuance, $part, $title );
+    return ( ($no_mvr) ? undef : $U->record_to_mvr($title), 
+        $volume, $copy, $issuance, $part, $title, $metarecord);
 }
 
 __PACKAGE__->register_method(
@@ -4283,7 +4327,7 @@ sub calculate_expire_time
     my $ou = shift;
     my $interval = $U->ou_ancestor_setting_value($ou, OILS_SETTING_HOLD_EXPIRE);
     if($interval) {
-        my $date = DateTime->now->add(seconds => OpenSRF::Utils::interval_to_seconds($interval));
+        my $date = DateTime->now->add(seconds => OpenILS::Utils::DateTime->interval_to_seconds($interval));
         return $U->epoch2ISO8601($date->epoch);
     }
     return undef;
@@ -4462,6 +4506,91 @@ sub copy_has_holds_count {
         }
     }
     return 0;
+}
+
+__PACKAGE__->register_method(
+    method        => "hold_metadata",
+    api_name      => "open-ils.circ.hold.get_metadata",
+    authoritative => 1,
+    stream => 1,
+    signature     => {
+        desc => q/
+            Returns a stream of objects containing whatever bib, 
+            volume, etc. data is available to the specific hold 
+            type and target.
+        /,
+        params => [
+            {desc => 'Hold Type', type => 'string'},
+            {desc => 'Hold Target(s)', type => 'number or array'},
+            {desc => 'Context org unit (optional)', type => 'number'}
+        ],
+        return => {
+            desc => q/
+                Stream of hold metadata objects.
+            /,
+            type => 'object'
+        }
+    }
+);
+
+sub hold_metadata {
+    my ($self, $client, $hold_type, $hold_targets, $org_id) = @_;
+
+    $hold_targets = [$hold_targets] unless ref $hold_targets;
+
+    my $e = new_editor();
+    for my $target (@$hold_targets) {
+
+        # create a dummy hold for find_hold_mvr
+        my $hold = Fieldmapper::action::hold_request->new;
+        $hold->hold_type($hold_type);
+        $hold->target($target);
+
+        my (undef, $volume, $copy, $issuance, $part, $bre, $metarecord) = 
+            find_hold_mvr($e, $hold, {suppress_mvr => 1});
+
+        $bre->clear_marc; # avoid bulk
+
+        my $meta = {
+            target => $target,
+            copy => $copy,
+            volume => $volume,
+            issuance => $issuance,
+            part => $part,
+            bibrecord => $bre,
+            metarecord => $metarecord,
+            metarecord_filters => {}
+        };
+
+        # If this is a bib hold or metarecord hold, also return the
+        # available set of MR filters (AKA "Holdable Formats") for the
+        # hold.  For bib holds these may be used to upgrade the hold
+        # from a bib to metarecord hold.
+        if ($hold_type eq 'T') {
+            my $map = $e->search_metabib_metarecord_source_map(
+                {source => $meta->{bibrecord}->id})->[0];
+
+            if ($map) {
+                $meta->{metarecord} = 
+                    $e->retrieve_metabib_metarecord($map->metarecord);
+            }
+        }
+
+        if ($meta->{metarecord}) {
+
+            my ($filters) = 
+                $self->method_lookup('open-ils.circ.mmr.holds.filters')
+                    ->run($meta->{metarecord}->id, $org_id);
+
+            if ($filters) {
+                $meta->{metarecord_filters} = $filters->{metarecord};
+            }
+        }
+
+        $client->respond($meta);
+    }
+
+    return undef;
 }
 
 1;

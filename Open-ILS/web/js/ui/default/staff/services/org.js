@@ -54,7 +54,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         while( (node = service.get(node.parent_ou())))
             nodes.push(node);
         if (as_id) 
-            return nodes.map(function(n){return n.id()});
+            return nodes.map(function(n){return Number(n.id())});
         return nodes;
     };
 
@@ -85,7 +85,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         }
         descend(node);
         if (as_id) 
-            return nodes.map(function(n){return n.id()});
+            return nodes.map(function(n){return Number(n.id())});
         return nodes;
     }
 
@@ -94,7 +94,7 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         var list = service.ancestors(node_or_id).concat(
           service.descendants(node_or_id).slice(1));
         if (as_id) 
-            return list.map(function(n){return n.id()});
+            return list.map(function(n){return Number(n.id())});
         return list;
     }
 
@@ -111,15 +111,20 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         if (!angular.isArray(names)) names = [names];
 
         if (lf.isOffline) {
-            return egLovefield.getSettingsCache(names)
-                .then(function(settings) {
+            return egLovefield.getSettingsCache(names).then(
+                function(settings) {
                     var hash = {};
                     angular.forEach(settings, function (s) {
                         hash[s.name] = s.value;
                     });
                     return $q.when(hash);
-                });
+                },
+                function() {return $q.when({})} // Not Supported
+            );
         }
+
+
+        if (!egAuth.user()) return $q.when();
 
         var deferred = $q.defer();
         ou_id = ou_id || egAuth.user().ws_ou();
@@ -153,11 +158,16 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
                 if (here) service.cachedSettings[key] = settings[key];
             });
 
-            return egLovefield.setSettingsCache(settings).then(function() {
-                // resolve with cached settings if 'here', since 'settings'
-                // will only contain settings we had to retrieve
-                deferred.resolve(here ? service.cachedSettings : settings);
-            });
+            return egLovefield.setSettingsCache(settings).then(
+                function() {
+                    // resolve with cached settings if 'here', since 'settings'
+                    // will only contain settings we had to retrieve
+                    deferred.resolve(here ? service.cachedSettings : settings);
+                },
+                function() {
+                    deferred.resolve(here ? service.cachedSettings : settings);
+                }
+            );
         });
         return deferred.promise;
     }

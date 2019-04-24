@@ -287,10 +287,6 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
             "Missing parameters for method: %s", ctx->method->name );
     }
 
-    // default to the root org unit if none is provided.
-    if (org_unit < 1) 
-        org_unit = oilsUtilsGetRootOrgId();
-
     oilsEvent* response = NULL;
 
     // fetch the user object
@@ -307,18 +303,32 @@ int oilsAuthInternalCreateSession(osrfMethodContext* ctx) {
     // If a workstation is defined, add the workstation info
     if (workstation) {
         response = oilsAuthVerifyWorkstation(ctx, userObj, workstation);
-        if (response) {
+
+        if (response) { // invalid workstation.
             jsonObjectFree(userObj);
             osrfAppRespondComplete(ctx, oilsEventToJSON(response));
             oilsEventFree(response);
             return 0;
+
+        } else { // workstation OK.  
+
+            // The worksation org unit supersedes any org unit value 
+            // provided via the API.  oilsAuthVerifyWorkstation() sets the 
+            // ws_ou value to the WS owning lib.  A value is guaranteed.
+            org_unit = atoi(oilsFMGetStringConst(userObj, "ws_ou"));
         }
 
-    } else {
-        // Otherwise, use the home org as the workstation org on the user
-        char* orgid = oilsFMGetString(userObj, "home_ou");
+    } else { // no workstation
+
+        // For backwards compatibility, when no workstation is provided, use 
+        // the users's home org as its workstation org unit, regardless of 
+        // any API-level org unit value provided.
+        const char* orgid = oilsFMGetStringConst(userObj, "home_ou");
         oilsFMSetString(userObj, "ws_ou", orgid);
-        free(orgid);
+
+        // The context org unit defaults to the user's home library when
+        // no workstation is used and no API-level value is provided.
+        if (org_unit < 1) org_unit = atoi(orgid);
     }
 
     // determine the auth/cache timeout
@@ -379,10 +389,6 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
         return osrfAppRequestRespondException( ctx->session, ctx->request,
             "Missing parameters for method: %s", ctx->method->name );
     }
-
-    // default to the root org unit if none is provided.
-    if (org_unit < 1) 
-        org_unit = oilsUtilsGetRootOrgId();
 
     oilsEvent* response = NULL;
     jsonObject *userObj = NULL, *params = NULL;
@@ -445,6 +451,10 @@ int oilsAuthInternalValidate(osrfMethodContext* ctx) {
                 OILS_LOG_MARK_SAFE, "PATRON_CARD_INACTIVE");
         }
     }
+
+    // XXX: login permission checks are always global (see 
+    // oilsAuthCheckLoginPerm()).  No need to extract the 
+    // workstation org unit here.
 
     if (!response) { // Still OK
         // Confirm user has permission to login w/ the requested type.

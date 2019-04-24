@@ -4,7 +4,7 @@ require "/openils/bin/oils_header.pl";
 
 use strict;
 use warnings;
-use OpenSRF::Utils qw/cleanse_ISO8601/;
+use OpenILS::Utils::DateTime qw/clean_ISO8601/;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenSRF::Utils::SettingsClient;
 
@@ -16,7 +16,7 @@ use Getopt::Std;
 sub unixify {
     my ($stringy_ts) = @_;
     return (new DateTime::Format::ISO8601)->parse_datetime(
-        cleanse_ISO8601($stringy_ts)
+        clean_ISO8601($stringy_ts)
     )->epoch;
 }
 

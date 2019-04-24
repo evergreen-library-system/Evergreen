@@ -1,0 +1,36 @@
+<ul class="pagination mb-0" *ngIf="index !== null">
+  <li class="page-item" [ngClass]="{disabled : index == 0}">
+    <a class="no-href page-link" 
+      i18n-aria-label aria-label="Start" (click)="firstRecord()">
+      <span i18n>Start</span>
+    </a>
+  </li>
+  <li class="page-item" [ngClass]="{disabled : index == 0}">
+    <a class="no-href page-link" 
+      i18n-aria-label aria-label="Previous" (click)="prevRecord()">
+      <span i18n>Previous</span>
+    </a>
+  </li>
+  <li class="page-item"
+    [ngClass]="{disabled : index >= searchContext.result.count - 1}">
+    <a class="no-href page-link" 
+      i18n-aria-label aria-label="Next" (click)="nextRecord()">
+      <span i18n>Next</span>
+    </a>
+  </li>
+  <li class="page-item"
+      [ngClass]="{disabled : index >= searchContext.result.count - 1}">
+    <a class="no-href page-link" 
+      i18n-aria-label aria-label="End" (click)="lastRecord()">
+      <span i18n>End</span>
+    </a>
+  </li>
+  <li class="page-item">
+    <a class="no-href page-link" 
+      i18n-aria-label aria-label="Back to Results" (click)="returnToSearch()">
+      <span i18n>
+        Back to Results ({{index + 1}} / {{searchContext.result.count}})
+      </span>
+    </a>
+  </li>
+</ul>

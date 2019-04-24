@@ -22,7 +22,7 @@ bib record. Fields include:
         <th>[% l('Patron Barcode') %]</th>
         <th>[% l('Patron Last') %]</th>
         <th>[% l('Patron Alias') %]</th>
-        <th>[% l('Current Copy') %]</th>
+        <th>[% l('Current Item') %]</th>
       </tr>
     </thead>
     <tbody>

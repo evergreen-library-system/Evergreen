@@ -1,0 +1,28 @@
+<!-- 
+Using bare BS pagination instead of ng-bootstrap, which seemed 
+unnecessary given we have to track paging externally anyway.
+-->
+<ul class="pagination">
+  <li class="page-item" 
+    [ngClass]="{disabled : searchContext.pager.isFirstPage()}">
+    <a (click)="prevPage()"
+      class="page-link" 
+      i18n-aria-label
+      aria-label="Previous">
+      <span aria-hidden="true">&laquo;</span>
+    </a>
+  </li>
+  <li class="page-item" 
+    *ngFor="let page of currentPageList()"
+    [ngClass]="{active : searchContext.pager.currentPage() == page}">
+    <a class="page-link" (click)="setPage(page)">
+      {{page}} <span class="sr-only" i18n>(current)</span></a>
+  </li>
+  <li class="page-item" 
+    [ngClass]="{disabled : searchContext.pager.isLastPage()}">
+    <a (click)="nextPage()"
+      class="page-link" aria-label="Next" i18n-aria-label>
+      <span aria-hidden="true">&raquo;</span>
+    </a>
+  </li>
+</ul>

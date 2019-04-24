@@ -58,7 +58,7 @@ for (var c in _preload_fieldmapper_IDL) {
     <xsl:if test="$f/../../idl:links/idl:link[@field=$f/@name]">type:"link",<xsl:apply-templates select="$f/../../idl:links/idl:link[@field=$f/@name]"></xsl:apply-templates>,</xsl:if>
 </xsl:template>
 
-<xsl:template match="idl:link">key:"<xsl:value-of select="@key"/>","class":"<xsl:value-of select="@class"/>",reltype:"<xsl:value-of select="@reltype"/>"</xsl:template>
+<xsl:template match="idl:link"><xsl:if test="@map != ''">map:"<xsl:value-of select="@map"/>",</xsl:if>key:"<xsl:value-of select="@key"/>","class":"<xsl:value-of select="@class"/>",reltype:"<xsl:value-of select="@reltype"/>"</xsl:template>
 
 <xsl:template name="trueFalse">
     <xsl:param name="tf"/>

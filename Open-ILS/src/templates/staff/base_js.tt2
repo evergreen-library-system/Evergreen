@@ -10,6 +10,13 @@ the UpUp resource list!
 
 %]
 
+[% 
+# $locale is encoded as aa_bb.  The IDL needs aa-BB.
+SET idl_locale = '';
+IF ctx.locale;
+  idl_locale = ctx.locale.split('_').0 _ '-' _ ctx.locale.split('_').1.upper;
+END;
+%]
 
 <script src="/upup.min.js"></script>
 <script>
@@ -18,7 +25,7 @@ UpUp.start({
   'cache-version': '[% USE date(format = '%Y-%m-%d'); date.format; %]',
   'service-worker-url': '/upup.sw.min.js',
   'assets': [
-    '/IDL2js',
+    '/IDL2js?locale=[% idl_locale %]',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/bootstrap.min.css',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/hotkeys.min.css',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/css/ngToast.min.css',
@@ -33,6 +40,8 @@ UpUp.start({
     '[% ctx.media_prefix %]/js/dojo/opensrf/md5.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/iframeResizer.min.js',
+    '[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js',
     '[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/js/vendor.bundle.js',
     '[% ctx.media_prefix %]/js/ui/default/staff/build/fonts/glyphicons-halflings-regular.woff',
@@ -47,6 +56,7 @@ UpUp.start({
     '[% ctx.base_path %]/staff/share/t_confirm_dialog',
     '[% ctx.base_path %]/staff/share/t_datetime',
     '[% ctx.base_path %]/staff/share/t_progress_dialog',
+    '[% ctx.base_path %]/staff/share/t_org_select',
     '[% ctx.base_path %]/staff/share/print_templates/t_offline_in_house_use',
     '[% ctx.base_path %]/staff/share/print_templates/t_offline_checkout',
     '[% ctx.base_path %]/staff/share/print_templates/t_offline_checkin',
@@ -56,7 +66,7 @@ UpUp.start({
 });
 </script>
 
-<script src="/IDL2js"></script>
+<script src="/IDL2js?locale=[% idl_locale %]"></script>
 <script src="[% ctx.media_prefix %]/js/dojo/opensrf/md5.js"></script>
 
 <!-- IDL / opensrf (network) -->
@@ -74,6 +84,13 @@ UpUp.start({
 -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-with-locales.min.js"></script>
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/moment-timezone-with-data.min.js"></script>
+
+<!--
+  Load the lovefield libs as a standaline file so both the main
+  application and the offline shared worker can reference (and cache)
+  the same file
+-->
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/build/js/lovefield.min.js"></script>
 
 <!--
   Load iframeResize via script tag
@@ -138,6 +155,10 @@ UpUp.start({
     s.CONFIRM_IN_HOUSE_NUM_USES_COUNT_TITLE = "[% l('Are you sure you want to record {{num_uses}} uses for this?') %]";
     s.PAGE_TITLE_DEFAULT = "[% l('Evergreen Staff Client') %]";
     s.PAGE_TITLE_DYNAMIC_AND_CONTEXT = "[% l('[_1] - [_2]', '{{dynamic}}', '{{context}}') %]";
+    s.CONFIRM_LONG_RUNNING_ACTION_MSG = "[% l('This action might take a while to complete. Continue?') %]";
+    s.CONFIRM_LONG_RUNNING_ACTION_ALL_ROWS_TITLE = "[% l('Are you sure you want to load ALL items?') %]";
+    s.YES = "[% l('Yes') %]";
+    s.NO = "[% l('No') %]";
   }]);
 </script>
 

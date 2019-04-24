@@ -21,7 +21,9 @@ angular.module('egCoreMod')
 
 .factory('egStartup', 
        ['$q','$rootScope','$location','$window','egIDL','egAuth','egEnv','egOrg',
-function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg ) {
+        '$cookies',
+function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg ,
+         $cookies) {
 
     var service = { promise : null }
 
@@ -34,6 +36,7 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
                 'webstaff.format.dates',
                 'webstaff.format.date_and_time',
                 'ui.staff.max_recent_patrons', // affects navbar
+                'ui.staff.angular_catalog.enabled', // affects navbar
                 'lib.timezone'
             ]).then(
                 function(set) {
@@ -88,6 +91,16 @@ function($q,  $rootScope,  $location,  $window,  egIDL,  egAuth,  egEnv , egOrg 
             // startup already started, return our existing promise
             return service.promise;
         } 
+
+        // Apply the locale from the cookie before any network 
+        // calls are made.
+        var locale = $cookies.get('eg_locale');
+        if (locale) {
+            // Cookie is stored aa_bb.  OpenSRF wants aa-BB
+            var parts = locale.split(/_/);
+            OpenSRF.locale = parts[0] + '-' + parts[1].toUpperCase();
+            console.debug('Applying locale ' + OpenSRF.locale);
+        }
 
         // create a new promise and fire off startup
         var deferred = $q.defer();

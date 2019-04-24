@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:42+0000\n"
-"PO-Revision-Date: 2018-03-19 21:27+0000\n"
+"POT-Creation-Date: 2018-09-19 00:21+0000\n"
+"PO-Revision-Date: 2018-09-19 17:22+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-20 05:23+0000\n"
-"X-Generator: Launchpad (build 18571)\n"
+"X-Launchpad-Export-Date: 2018-09-20 05:38+0000\n"
+"X-Generator: Launchpad (build 18780)\n"
 
 #. (i18n_vac)
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:54
@@ -285,7 +285,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/conify/global/config/circ_limit_set.tt2:75
 msgid "Check Only?"
-msgstr ""
+msgstr "Půjčit pouze?"
 
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:87 ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:90
 msgid "Choose a best-hold order"
@@ -441,22 +441,6 @@ msgstr "Kontrolovaná bib. pole"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/distribution_formula.tt2:52 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:156 ../../Open-ILS/src/templates/conify/global/acq/provider.tt2:193
 msgid "Copy Location"
-msgstr "Umístění"
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:2
-msgid "Copy Location Group"
-msgstr "Skupina umístění"
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:57
-msgid "Copy Location Groups"
-msgstr "Skupiny umístění"
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:7
-msgid "Copy Location Order"
-msgstr "Umístění exemplářů: pořadí"
-
-#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:98
-msgid "Copy Locations"
 msgstr "Umístění"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:7
@@ -625,7 +609,7 @@ msgstr "Tag  finančního fondu"
 
 #: ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:2 ../../Open-ILS/src/templates/conify/global/config/global_flag.tt2:5
 msgid "Global Flags"
-msgstr "Globální indikátoy"
+msgstr "Globální indikátory"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:67
 msgid "Go"
@@ -1372,6 +1356,22 @@ msgstr "Zvolit hodnotu: "
 msgid "Select a source to clone"
 msgstr "Zvolte zdroj, který se má klonovat"
 
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:2
+msgid "Shelving Location Group"
+msgstr "Skupina umístění"
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:57
+msgid "Shelving Location Groups"
+msgstr "Skupiny umístění"
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:2 ../../Open-ILS/src/templates/conify/global/asset/copy_location_order.tt2:7
+msgid "Shelving Location Order"
+msgstr "Pořadí umístění"
+
+#: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:98
+msgid "Shelving Locations"
+msgstr "Umístění"
+
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_template.tt2:46
 msgid "Short"
 msgstr "Krátká"
@@ -1480,7 +1480,7 @@ msgstr "Test"
 
 #: ../../Open-ILS/src/templates/conify/global/action_trigger/event_definition_data.tt2:60
 msgid "Test Circulation"
-msgstr ""
+msgstr "Testovací výpůjčka"
 
 #: ../../Open-ILS/src/templates/conify/global/acq/edi_account.tt2:55
 msgid ""
@@ -1587,7 +1587,7 @@ msgstr "Video páska"
 
 #: ../../Open-ILS/src/templates/conify/global/config/metabib_field_virtual_map.tt2:2 ../../Open-ILS/src/templates/conify/global/config/metabib_field_virtual_map.tt2:5
 msgid "Virtual Field Data Providers"
-msgstr ""
+msgstr "Poskytovatelé virtuálních datových polí"
 
 #: ../../Open-ILS/src/templates/conify/global/asset/copy_location_group.tt2:126
 msgid "Visible"
@@ -1657,3 +1657,15 @@ msgstr "mfhd"
 #: ../../Open-ILS/src/templates/conify/global/config/best_hold_order.tt2:29
 msgid "or"
 msgstr "nebo"
+
+#~ msgid "Copy Location Groups"
+#~ msgstr "Skupiny umístění"
+
+#~ msgid "Copy Location Order"
+#~ msgstr "Umístění exemplářů: pořadí"
+
+#~ msgid "Copy Locations"
+#~ msgstr "Umístění"
+
+#~ msgid "Copy Location Group"
+#~ msgstr "Skupina umístění"

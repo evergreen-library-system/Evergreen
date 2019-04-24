@@ -1,10 +1,10 @@
 [% WRAPPER base.tt2 %]
-[% ctx.page_title = l('Copy Location Order') %]
+[% ctx.page_title = l('Shelving Location Order') %]
 <script type="text/javascript" src='[% ctx.media_prefix %]/js/ui/default/conify/global/asset/copy_location_order.js'> </script>
 <link rel='stylesheet' type='text/css' href='[% ctx.media_prefix %]/js/dojo/dojo/resources/dnd.css'/>
 
 <div dojoType="dijit.layout.ContentPane" layoutAlign="client" class='oils-header-panel'>
-    <div>[% l('Copy Location Order') %]</div>
+    <div>[% l('Shelving Location Order') %]</div>
     <div></div>
 </div>
 

@@ -75,6 +75,24 @@ Evergreen's database stores normalized authority headings in a format that inclu
 Evergreen's internal identifier is in the 901c field. If you have previously exported authority record -- perhaps for an external vendor to do authority cleanup work -- and you want to import them back into your catalog, you may wish to include the 901c field in your match set.
 =================
 
+Viewing and Editing Authority Records by Database ID
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The authority record retriever allows catalogers to retrieve a specific
+authority record using its database ID.  Catalogers can
+find those IDs in subfield $0 of matching fields in
+bibliographic records.
+
+To use the authority record retriever:
+
+. Click *Cataloging -> Retrieve Authority Record by ID*.
+. Type in the ID number of the authority record you are
+interested in. Don't include any prefixes, just the ID
+number. 
+. Click *Submit*.
+. View or edit the authority record as needed.
+
+
 Manage Authorities Interface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

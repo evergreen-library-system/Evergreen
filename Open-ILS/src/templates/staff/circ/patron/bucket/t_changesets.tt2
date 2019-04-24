@@ -23,10 +23,10 @@
           {{g.name()}}
         </div>
         <div class="col-md-3">
-          {{g.complete_time() | date}}
+          {{g.complete_time() | date:egDateAndTimeFormat}}
         </div>
         <div class="col-md-3">
-          {{g.rollback_time() | date}}
+          {{g.rollback_time() | date:egDateAndTimeFormat}}
         </div>
         <div class="col-md-2">
           <button class="btn btn-primary"

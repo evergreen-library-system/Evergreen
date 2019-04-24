@@ -2,7 +2,7 @@
     <div class="modal-header">
       <button type="button" class="close" ng-click="cancel()" 
         aria-hidden="true">&times;</button>
-      <h4 class="modal-title">[% l('Manage Copy Alerts') %]</h4>
+      <h4 class="modal-title">[% l('Manage Item Alerts') %]</h4>
     </div>
     <div class="modal-body">
       <div class="row" ng-repeat="a in copy_alert_list | orderBy:'id()'" ng-init="temp = (a.temp() == 't'); note = a.note(); acked = (a.ack_time() !== null); alert_type = a.alert_type().id()">

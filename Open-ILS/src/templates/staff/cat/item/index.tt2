@@ -19,19 +19,28 @@
 <script>
   angular.module('egCoreMod').run(['egStrings', function(s) {
     s.CONFIRM_DELETE_COPIES_VOLUMES =
-      "[% l('Permanently delete selected copies and/or volumes from catalog?') %]";
+      "[% l('Permanently delete selected items and/or call numbers from catalog?') %]";
     s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
-      "[% l('Will delete {{copies}} copies and {{volumes}} volumes') %]";
+      "[% l('Will delete {{copies}} items and {{volumes}} call numbers') %]";
     s.CONFIRM_DELETE_PEERS =
-      "[% l('Unlink selected conjoined copies?') %]";
+      "[% l('Unlink selected conjoined items?') %]";
     s.CONFIRM_DELETE_PEERS_MESSAGE =
-      "[% l('Will unlink {{peers}} copies') %]";
+      "[% l('Will unlink {{peers}} items') %]";
     s.CONFIRM_TRANSFER_COPIES_TO_MARKED_VOLUME =
-      "[% l('Are you sure you want to transfer selected items to the marked volume?') %]";
+      "[% l('Are you sure you want to transfer selected items to the marked call number?') %]";
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_TITLE =
       "[% l('One or more items could not be transferred. Override?') %]";
     s.OVERRIDE_TRANSFER_COPIES_TO_MARKED_VOLUME_BODY =
       "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
+    s.SUCCESS_UPDATE_INVENTORY =
+      "[% l('Updated most recent inventory data for selected items.') %]";
+    s.FAIL_UPDATE_INVENTORY =
+      "[% l('Failed to update recent inventory data for selected items.')%]";
+    s.ITEM_SUCCESSFULLY_MODIFIED =
+      "[% l('Item successfully modified') %]";
+    s.ITEMS_SUCCESSFULLY_MODIFIED =
+      "[% l('Item(s) successfully modified') %]";
+
   }])
 </script>
 [% END %]
@@ -84,6 +93,10 @@
         <li><a href ng-click="checkin()">[% l('Check In Items') %]</a></li>
         <li><a href ng-click="renew()">[% l('Renew Items') %]</a></li>
         <li><a href ng-click="cancel_transit()">[% l('Cancel Transit') %]</a></li>
+        <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
+
+        <p><b>[% l('Show') %]</b></p>
+        <li><a href ng-click="findAcquisition()">[% l('Originating Acquisition') %]</a></li>
 
         <p><b>[% l('Mark') %]</b></p>    
         <li><a href ng-click="selectedHoldingsDamaged()">[% l('Item as Damaged') %]</a></li>
@@ -91,17 +104,17 @@
     
         <p><b>[% l('Add') %]</b></p>    
         <li><a href ng-click="selectedHoldingsCopyAdd()">[% l('Items') %]</a></li>
-        <li><a href ng-click="selectedHoldingsVolCopyAdd()">[% l('Volumes and Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolCopyAdd()">[% l('Call Numbers and Items') %]</a></li>
 
         <p><b>[% l('Edit') %]</b></p>    
-        <li><a href ng-click="selectedHoldingsVolEdit()">[% l('Volumes') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolEdit()">[% l('Call Numbers') %]</a></li>
         <li><a href ng-click="selectedHoldingsCopyEdit()">[% l('Items') %]</a></li>
-        <li><a href ng-click="selectedHoldingsVolCopyEdit()">[% l('Volumes and Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolCopyEdit()">[% l('Call Numbers and Items') %]</a></li>
         <li><a href ng-click="replaceBarcodes()">[% l('Replace Barcodes') %]</a></li>
 
         <p><b>[% l('Transfer') %]</b></p>    
         <li><a href ng-click="changeItemOwningLib()">[% l('Items to Previously Marked Library') %]</a></li>
-        <li><a href ng-click="transferItems()">[% l('Items to Previously Marked Volume') %]</a></li>
+        <li><a href ng-click="transferItems()">[% l('Items to Previously Marked Call Number') %]</a></li>
       </ul>
     </div>
     <div>

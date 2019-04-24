@@ -1,0 +1,69 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Grid Columns Configuration</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" 
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body eg-grid-column-config-dialog">
+
+    <div class="row">
+      <div class="col-lg-1 eg-grid-header-cell" i18n>Visible</div>
+      <div class="col-lg-3 eg-grid-header-cell" i18n>Column Name</div>
+      <div class="col-lg-1 eg-grid-header-cell" i18n>Move Up</div>
+      <div class="col-lg-1 eg-grid-header-cell" i18n>Move Down</div>
+      <div class="col-lg-2 eg-grid-header-cell" i18n>First Visible</div>
+      <div class="col-lg-2 eg-grid-header-cell" i18n>Last Visible</div>
+      <div class="col-lg-2 eg-grid-header-cell" 
+        *ngIf="columnSet.isMultiSortable" i18n>Sort Priority</div>
+    </div>
+    <div class="row pt-1" *ngFor="let col of columnSet.columns"
+      [ngClass]="{visible : col.visible}">
+      <div class="col-lg-1" (click)="col.visible=!col.visible">
+        <span *ngIf="col.visible" class="badge badge-success">&#x2713;</span>
+        <span *ngIf="!col.visible" class="badge badge-warning">&#x2717;</span>
+      </div>
+      <div class="col-lg-3" (click)="col.visible=!col.visible">{{col.label}}</div>
+      <div class="col-lg-1">
+        <a class="no-href" title="Move column up" i18n-title
+          (click)="columnSet.moveColumn(col, -1)">
+          <span class="material-icons">arrow_upward</span>
+        </a>
+      </div>
+      <div class="col-lg-1">
+        <a class="no-href" title="Move column down" i18n-title
+          (click)="columnSet.moveColumn(col, 1)">
+          <span class="material-icons">arrow_downward</span>
+        </a>
+      </div>
+      <div class="col-lg-2">
+        <a class="no-href" title="Make first visible" i18n-title
+          (click)="columnSet.moveColumn(col, -10000)">
+          <span class="material-icons">vertical_align_top</span>
+        </a>
+      </div>
+      <div class="col-lg-2">
+        <a class="no-href" title="Make last visible" i18n-title
+          (click)="columnSet.moveColumn(col, 10000)">
+          <span class="material-icons">vertical_align_bottom</span>
+        </a>
+      </div>
+      <div class="col-lg-2" *ngIf="columnSet.isMultiSortable">
+        <div *ngIf="col.isMultiSortable">
+          <input type='number' [(ngModel)]="col.sort"
+            title="Sort Priority / Direction" i18n-title style='width:2.8em'/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-info" (click)="columnSet.moveVisibleToFront()">
+      Move Visible Columns To Top
+    </button>
+    <button type="button" class="btn btn-success ml-2" 
+      (click)="close('confirmed')" i18n>Close</button>
+  </div>
+</ng-template>

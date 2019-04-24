@@ -108,28 +108,33 @@
 
         args.display_fields = {};
         args.hl = {};
-        IF !CGI.param('no_highlight') && !search.no_highlight;
 
-            args.display_field_list = ctx.fetch_display_fields(args.df_bib_list.list);
-
-            junk = ctx.timelog('Mapping highlighted display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
-            FOR df IN args.display_field_list;
-                df_map = ctx.search_cdfm('field', df.field).0;
-                df_name = df_map.name();
-                IF df_map.multi() == 't';
-                    IF NOT args.hl_display_fields.$df_name;
-                        args.hl_display_fields.$df_name = [];
-                        args.hl.$df_name = [];
-                    END;
-                    args.hl_display_fields.$df_name.push(df);
-                    args.hl.$df_name.push(df.highlight || df.value);
-                ELSIF !args.hl_display_fields.$df_name.defined;
-                    args.hl_display_fields.$df_name = df;
-                    args.hl.$df_name = df.highlight || df.value;
-                END;
-            END;
-            junk = ctx.timelog('Finished mapping highlighted display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+        args.hl_field = 'highlight';
+        IF CGI.param('no_highlight') || search.no_highlight;
+            args.hl_field = 'value';
         END;
+        hl_field = args.hl_field;
+
+        junk = ctx.timelog('Fetching display fields and Using data from "' _ hl_field _ '" for rendering'); 
+        args.display_field_list = ctx.fetch_display_fields(args.df_bib_list.list);
+
+        junk = ctx.timelog('Mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
+        FOR df IN args.display_field_list;
+            df_map = ctx.search_cdfm('field', df.field).0;
+            df_name = df_map.name();
+            IF df_map.multi() == 't';
+                IF NOT args.hl_display_fields.$df_name;
+                    args.hl_display_fields.$df_name = [];
+                    args.hl.$df_name = [];
+                END;
+                args.hl_display_fields.$df_name.push(df);
+                args.hl.$df_name.push(df.$hl_field || df.value);
+            ELSIF !args.hl_display_fields.$df_name.defined;
+                args.hl_display_fields.$df_name = df;
+                args.hl.$df_name = df.$hl_field || df.value;
+            END;
+        END;
+        junk = ctx.timelog('Finished mapping display fields for bib(s) ' _ args.df_bib_list.list.join(', ')); 
 
         # Map item types to schema.org types; impedance mismatch :(
         args.schema.itemtype = {};

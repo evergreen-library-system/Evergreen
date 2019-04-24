@@ -1,0 +1,20 @@
+BEGIN;
+
+SELECT plan(2);
+
+INSERT INTO asset.copy (id,circ_lib,creator,loan_duration,fine_level,call_number,editor,barcode,dummy_title,dummy_author)
+  VALUES (8765309,1,1,2,2,-1,1,'8765309','Spooky Dance','Steve Bachman');
+
+INSERT INTO action.circulation (id,usr,target_copy,circ_lib,circ_staff,renewal_remaining,
+    duration_rule,recurring_fine_rule,max_fine_rule,stop_fines,grace_period)
+  VALUES (8765309,1,8765309,1,1,0,
+    1,1,1,'LONGOVERDUE','0 hours');
+
+SELECT is(asset.copy_state(8765309),'LONGOVERDUE', 'Copy state is LONGOVERDUE when stop_fines is LONGOVERDUE and checkin_time is null.');
+
+-- Our long overdue item has returned!
+UPDATE action.circulation SET checkin_time=now() WHERE id=8765309;
+
+SELECT is(asset.copy_state(8765309),'NORMAL', 'Copy state is NORMAL when stop_fines is LONGOVERDUE and checkin_time is not null.');
+
+ROLLBACK;

@@ -166,4 +166,8 @@ CREATE INDEX active_reservation_transit_dest_idx ON "action".reservation_transit
 CREATE INDEX active_reservation_transit_source_idx ON "action".reservation_transit_copy (source);
 CREATE INDEX active_reservation_transit_cp_idx ON "action".reservation_transit_copy (target_copy);
 
+CREATE CONSTRAINT TRIGGER reservation_transit_copy_is_unique_check
+    AFTER INSERT ON action.reservation_transit_copy
+    FOR EACH ROW EXECUTE PROCEDURE action.copy_transit_is_unique();
+
 COMMIT;

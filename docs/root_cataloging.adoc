@@ -54,7 +54,15 @@ include::admin/staff_client-return_to_results_from_marc.adoc[]
 Working with holdings data
 ==========================
 
+include::cataloging/item_status.adoc[]
+
+include::cataloging/volcopy_editor.adoc[]
+
+:leveloffset: 1
+
 include::cataloging/tpac_copy_edit_links.adoc[]
+
+:leveloffset: 0
 
 include::cataloging/holdings_templates.adoc[]
 
@@ -84,6 +92,8 @@ include::cataloging/link_checker.adoc[]
 include::cataloging/record_buckets.adoc[]
 
 :leveloffset: -1
+
+include::cataloging/merge_overlay_bibs.adoc[]
 
 include::cataloging/MARC_batch_edit.adoc[]
 

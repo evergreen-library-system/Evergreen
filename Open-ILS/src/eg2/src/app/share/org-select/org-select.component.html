@@ -1,0 +1,27 @@
+
+<!-- todo disabled -->
+<ng-template #displayTemplate let-r="result">
+{{r.label}}
+</ng-template>
+
+<ng-container *ngIf="readOnly">
+  <span>{{selected.label}}</span>
+</ng-container>
+
+<ng-container *ngIf="!readOnly">
+
+  <input type="text" 
+    class="form-control"
+    [attr.id]="domId.length ? domId : null"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [(ngModel)]="selected" 
+    [ngbTypeahead]="filter"
+    [resultTemplate]="displayTemplate"
+    [inputFormatter]="formatter"
+    (click)="click$.next($event.target.value)"
+    (selectItem)="orgChanged($event)"
+    #instance="ngbTypeahead"
+  />
+
+</ng-container>

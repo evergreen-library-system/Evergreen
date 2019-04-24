@@ -46,7 +46,7 @@ function($scope, $q, $window, $location, egCore, egConfirmDialog, egAlertDialog,
     }
 
     function mark_missing_pieces(copy) {
-        itemSvc.mark_missing_pieces(copy);
+        itemSvc.mark_missing_pieces(copy,$scope);
     }
 
     $scope.print_letter = function() {
@@ -66,7 +66,7 @@ function($scope, $q, $window, $location, egCore, egConfirmDialog, egAlertDialog,
         $scope.selectMe = false;
         $scope.letter = null;
 
-        get_copy(args.barcode).then(mark_missing_pieces);
+        get_copy(args.barcode).then(function(c){ return mark_missing_pieces(c,$scope) });
     }
 
 }])

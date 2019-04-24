@@ -1,6 +1,6 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Copy Tags");
+  ctx.page_title = l("Item Tags");
   ctx.page_app = "egAdminConfig";
   ctx.page_ctrl = 'CopyTag';
 %]
@@ -15,7 +15,7 @@
 
 <div class="container-fluid" style="text-align:center">
   <div class="alert alert-info alert-less-pad strong-text-2">
-    [% l('Copy Tags') %]
+    [% l('Item Tags') %]
   </div>
 </div>
 

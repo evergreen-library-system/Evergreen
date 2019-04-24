@@ -1,0 +1,84 @@
+BEGIN;
+
+SELECT plan(5);
+
+INSERT INTO actor.workstation (name, owning_lib) values ('test', 1);
+
+INSERT INTO actor.workstation_setting (workstation, name, value) 
+VALUES (
+    (SELECT id FROM actor.workstation WHERE name = 'test'),
+    'eg.search.adv_pane', '"test-workstation"'
+);
+
+
+-- duplicate the setting type as an org setting to verify precedence
+INSERT INTO config.org_unit_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.search.adv_pane', 'gui', 'string',
+    oils_i18n_gettext(
+        'eg.search.adv_pane',
+        'Catalog Advanced Search Default Pane',
+        'cwst', 'label'
+    )
+);
+
+INSERT INTO actor.org_unit_setting (org_unit, name, value) 
+    VALUES (1, 'eg.search.adv_pane', '"test-org-unit"');
+
+SELECT is(
+    (   SELECT value::TEXT
+        FROM actor.get_cascade_setting('eg.search.adv_pane',
+            1, 1, (SELECT id FROM actor.workstation WHERE name = 'test'))),
+    '"test-workstation"',
+    'Workstation setting takes precedence over org setting'
+);
+
+DELETE FROM actor.workstation_setting WHERE name = 'eg.search.adv_pane';
+
+SELECT is(
+    (   SELECT value::TEXT
+        FROM actor.get_cascade_setting('eg.search.adv_pane',
+            1, 1, (SELECT id FROM actor.workstation WHERE name = 'test'))),
+    '"test-org-unit"',
+    'Org unit setting should now work'
+);
+
+PREPARE user_setting_insert AS
+    INSERT INTO config.usr_setting_type (name, grp, datatype, label)
+    VALUES (
+        'eg.search.adv_pane', 'gui', 'string',
+        oils_i18n_gettext(
+            'eg.search.adv_pane',
+            'Catalog Advanced Search Default Pane',
+            'cwst', 'label'
+        )
+    );
+
+SELECT throws_like(
+    'user_setting_insert',
+    '%Cannot be used as both a user setting and a workstation setting.', 
+    'User settings cannot also be workstation settings'
+);
+
+DELETE FROM config.workstation_setting_type WHERE name = 'eg.search.adv_pane';
+
+SELECT lives_ok(
+    'user_setting_insert',
+    'User settings can now be created'
+);
+
+INSERT INTO actor.usr_setting (usr, name, value) 
+    VALUES (1, 'eg.search.adv_pane', '"test-user"');
+
+SELECT is(
+    (   SELECT value::TEXT
+        FROM actor.get_cascade_setting('eg.search.adv_pane',
+            1, 1, (SELECT id FROM actor.workstation WHERE name = 'test'))),
+    '"test-user"',
+    'User setting takes precedence over org setting'
+);
+
+
+-- Finish the tests and clean up.
+SELECT * FROM finish();
+ROLLBACK;

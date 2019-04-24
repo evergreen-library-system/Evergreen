@@ -23,7 +23,7 @@ use OpenSRF::AppSession;
 use OpenILS::Utils::Fieldmapper;
 use OpenSRF::Utils::SettingsClient;
 use OpenILS::Application::AppUtils;
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use DateTime::Format::ISO8601;
 
 my $U = 'OpenILS::Application::AppUtils';
@@ -147,7 +147,7 @@ sub format_date {
     return "" unless $date;
 
     my $dt = DateTime::Format::ISO8601->new->
-        parse_datetime(OpenSRF::Utils::cleanse_ISO8601($date));
+        parse_datetime(clean_ISO8601($date));
 
     # actor.usr.dob stores dates without time/timezone, which causes
     # DateTime to assume the date is stored as UTC.  Tell DateTime

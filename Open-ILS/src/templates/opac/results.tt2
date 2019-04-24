@@ -57,9 +57,9 @@
                 [% IF ctx.mylist.size %]
                 <div class="results_header_btns">
                     [%- IF ctx.user; %]
-                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]">[% l('View My List') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/myopac/lists') %]">[% l('View My Basket') %]</a>
                     [%- ELSE %]
-                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]">[% l('View My List') %]</a>
+                    <a href="[% mkurl(ctx.opac_root _ '/mylist') %]">[% l('View My Basket') %]</a>
                     [%- END %]
                 </div>
                 [% END %]

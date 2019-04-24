@@ -3,33 +3,35 @@
 Attributions
 ============
 
-Copyright © 2009-2016 Evergreen DIG
+Copyright © 2009-2018 Evergreen DIG
 
-Copyright © 2007-2016 Equinox
+Copyright © 2007-2018 Equinox
 
-Copyright © 2007-2016 Dan Scott
+Copyright © 2007-2018 Dan Scott
 
-Copyright © 2009-2016 BC Libraries Cooperative (SITKA)
+Copyright © 2009-2018 BC Libraries Cooperative (SITKA)
 
-Copyright © 2008-2016 King County Library System
+Copyright © 2008-2018 King County Library System
 
-Copyright © 2009-2016 Pioneer Library System
+Copyright © 2009-2018 Pioneer Library System
 
-Copyright © 2009-2016 PALS
+Copyright © 2009-2018 PALS
 
-Copyright © 2009-2016 Georgia Public Library Service
+Copyright © 2009-2018 Georgia Public Library Service
 
-Copyright © 2008-2016 Project Conifer
+Copyright © 2008-2018 Project Conifer
 
-Copyright © 2009-2016 Bibliomation
+Copyright © 2009-2018 Bibliomation
 
-Copyright © 2008-2016 Evergreen Indiana
+Copyright © 2008-2018 Evergreen Indiana
 
-Copyright © 2008-2016 SC LENDS
+Copyright © 2008-2018 SC LENDS
+
+Copyright @ 2012-2018 CW MARS
 
 
 
-*Current DIG Members*
+*DIG Contributors*
 
 * Hilary Caws-Elwitt, Susquehanna County Library
 * Karen Collier, Kent County Public Library
@@ -44,7 +46,8 @@ Copyright © 2008-2016 SC LENDS
 * Roni Shwaish, eiNetwork
 * Robert Soulliere, Mohawk College
 * Remington Steed, Calvin College
-* Tim Spindler, C/W MARS
+* Jeanette Lundgren, CW MARS
+* Tim Spindler, CW MARS
 * Jane Sandberg, Linn-Benton Community College
 * Lindsay Stratton, Pioneer Library System
 * Yamil Suarez, Berklee College of Music

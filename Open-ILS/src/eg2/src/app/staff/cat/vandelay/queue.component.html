@@ -1,0 +1,155 @@
+
+<eg-progress-dialog #progressDlg
+  dialogTitle="Deleting Queue..." i18n-dialogTitle></eg-progress-dialog>
+
+<ng-container *ngIf="queueSummary && queueSummary.queue">
+
+  <eg-confirm-dialog
+    #confirmDelDlg
+    i18n-dialogTitle i18n-dialogBody
+    dialogTitle="Confirm Delete"
+    dialogBody="Delete Queue {{queueSummary.queue.name()}}?">
+  </eg-confirm-dialog>
+
+  <h2 i18n>Queue {{queueSummary.queue.name()}}</h2>
+  <div class="row pb-2">
+    <div class="col-lg-6">
+      <div class="card tight-card">
+        <h5 class="card-header" i18n>Queue Summary</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Records in Queue:</div>
+              <div class="flex-1">{{queueSummary.total}}</div>
+              <div class="flex-3" i18n>Items in Queue:</div>
+              <div class="flex-1">{{queueSummary.total_items}}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Records Imported:</div>
+              <div class="flex-1">{{queueSummary.imported}}</div>
+              <div class="flex-3" i18n>Items Imported:</div>
+              <div class="flex-1">{{queueSummary.total_items_imported}}</div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-3" i18n>Records Import Failures:</div>
+              <div class="flex-1">{{queueSummary.rec_import_errors}}</div>
+              <div class="flex-3" i18n>Item Import Failures:</div>
+              <div class="flex-1">{{queueSummary.item_import_errors}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="card tight-card">
+        <h5 class="card-header" i18n>Queue Actions</h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-1">
+                <a [routerLink]="" (click)="importSelected()"
+                  i18n>Import Selected Records</a>
+              </div>
+              <div class="flex-1">
+                <a [routerLink]="" (click)="importAll()" i18n>Import All Records</a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-1">
+                <a i18n
+                  routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}/items">
+                    View Import Items
+                </a>
+              </div>
+              <div class="flex-1">
+                <a [routerLink]="" (click)="exportNonImported()"
+                  i18n>Export Non-Imported Records</a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="d-flex">
+              <eg-record-bucket-dialog #bucketDialog [queueId]="queueId">
+              </eg-record-bucket-dialog>
+              <div class="flex-1">
+                <a [routerLink]="" (click)="bucketDialog.open({size:'lg'})" i18n>
+                  Copy Queue To Bucket
+                </a>
+              </div>
+              <div class="flex-1">
+                <a [routerLink]="" (click)="deleteQueue()" i18n>Delete Queue</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #matchesTmpl let-row="row">
+  <a i18n [ngClass]="{'font-weight-bold': hasOverlayTarget(row.id)}"
+    routerLink="/staff/cat/vandelay/queue/{{queueType}}/{{queueId}}/record/{{row.id}}/matches">
+      ({{row.matches.length}})
+      {{hasOverlayTarget(row.id) ? '*' : ''}}
+  </a>
+</ng-template>
+
+<ng-template #errorsTmpl let-row="row">
+  <div *ngIf="row.error_detail">
+    <b class="text-danger" title="{{row.error_detail}}">{{row.import_error}}</b>
+  </div>
+  <div *ngIf="row.error_items.length">
+    <b class="text-danger">Items ({{row.error_items.length}})</b>
+  </div>
+</ng-template>
+
+<ng-template #importedAsTmpl let-row="row">
+  <a *ngIf="queueType=='bib'" routerLink="/staff/catalog/record/{{row.imported_as}}">
+    {{row.imported_as}}
+  </a>
+  <a *ngIf="queueType=='auth'" href="/eg/staff/cat/catalog/authority/{{row.imported_as}}/marc_edit">
+    {{row.imported_as}}
+  </a>
+
+</ng-template>
+
+
+<!--
+Most columns are generated programmatically from queued record attribute
+definitions.  Hide a number of stock record attributes by default
+because there are a lot of them.
+-->
+
+<eg-grid #queueGrid [dataSource]="queueSource"
+  persistKey="cat.vandelay.queue.{{queueType}}"
+  (onRowActivate)="openRecord($event)"
+  [pageOffset]="queuePageOffset()"
+  hideFields="language,pagination,price,rec_identifier,eg_tcn_source,eg_identifier,item_barcode,zsource">
+
+  <eg-grid-toolbar-checkbox i18n-label label="Records With Matches"
+    (onChange)="limitToMatches($event)"></eg-grid-toolbar-checkbox>
+
+  <eg-grid-toolbar-checkbox i18n-label label="Non-Imported Records"
+    (onChange)="limitToNonImported($event)"></eg-grid-toolbar-checkbox>
+
+  <eg-grid-toolbar-checkbox i18n-label label="Records with Import Errors"
+    (onChange)="limitToImportErrors($event)"></eg-grid-toolbar-checkbox>
+
+  <eg-grid-column name="id" [index]="true" [hidden]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Matches"
+    name="+matches" [cellTemplate]="matchesTmpl"></eg-grid-column>
+  <eg-grid-column name="import_error" i18n-label
+    label="Import Errors" [cellTemplate]="errorsTmpl"></eg-grid-column>
+  <eg-grid-column name="import_time" i18n-label
+    label="Import Date" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="imported_as" i18n-label
+    label="Imported As" [cellTemplate]="importedAsTmpl"></eg-grid-column>
+</eg-grid>
+

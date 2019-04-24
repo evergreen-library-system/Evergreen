@@ -51,6 +51,12 @@ DECLARE
 	folder_row RECORD;
 BEGIN
 
+    -- Bail if src_usr equals dest_usr because the result of merging a
+    -- user with itself is not what you want.
+    IF src_usr = dest_usr THEN
+        RETURN;
+    END IF;
+
     -- do some initial cleanup 
     UPDATE actor.usr SET card = NULL WHERE id = src_usr;
     UPDATE actor.usr SET mailing_address = NULL WHERE id = src_usr;
@@ -195,6 +201,8 @@ BEGIN
 		END LOOP;
 	END LOOP;
 
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
+
     -- money.*
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'usr', src_usr, dest_usr);
     PERFORM actor.usr_merge_rows('money.collections_tracker', 'collector', src_usr, dest_usr);
@@ -222,6 +230,7 @@ BEGIN
     -- acq.*
     UPDATE acq.fund_allocation SET allocator = dest_usr WHERE allocator = src_usr;
 	UPDATE acq.fund_transfer SET transfer_user = dest_usr WHERE transfer_user = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 
 	-- transfer picklists the same way we transfer buckets (see above)
 	FOR picklist_row in
@@ -352,11 +361,44 @@ BEGIN
         -- do nothing
     END;
 
+    -- propagate preferred name values from the source user to the
+    -- destination user, but only when values are not being replaced.
+    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr)
+    UPDATE actor.usr SET 
+        pref_prefix = 
+            COALESCE(pref_prefix, (SELECT pref_prefix FROM susr)),
+        pref_first_given_name = 
+            COALESCE(pref_first_given_name, (SELECT pref_first_given_name FROM susr)),
+        pref_second_given_name = 
+            COALESCE(pref_second_given_name, (SELECT pref_second_given_name FROM susr)),
+        pref_family_name = 
+            COALESCE(pref_family_name, (SELECT pref_family_name FROM susr)),
+        pref_suffix = 
+            COALESCE(pref_suffix, (SELECT pref_suffix FROM susr))
+    WHERE id = dest_usr;
+
+    -- Copy and deduplicate name keywords
+    -- String -> array -> rows -> DISTINCT -> array -> string
+    WITH susr AS (SELECT * FROM actor.usr WHERE id = src_usr),
+         dusr AS (SELECT * FROM actor.usr WHERE id = dest_usr)
+    UPDATE actor.usr SET name_keywords = (
+        WITH keywords AS (
+            SELECT DISTINCT UNNEST(
+                REGEXP_SPLIT_TO_ARRAY(
+                    COALESCE((SELECT name_keywords FROM susr), '') || ' ' ||
+                    COALESCE((SELECT name_keywords FROM dusr), ''),  E'\\s+'
+                )
+            ) AS parts
+        ) SELECT ARRAY_TO_STRING(ARRAY_AGG(kw.parts), ' ') FROM keywords kw
+    ) WHERE id = dest_usr;
+
     -- Finally, delete the source user
-    DELETE FROM actor.usr WHERE id = src_usr;
+    PERFORM actor.usr_delete(src_usr,dest_usr);
 
 END;
 $$ LANGUAGE plpgsql;
+
+
 
 COMMENT ON FUNCTION actor.usr_merge(INT, INT, BOOLEAN, BOOLEAN, BOOLEAN) IS $$
 Merges all user date from src_usr to dest_usr.  When collisions occur, 
@@ -387,6 +429,7 @@ BEGIN
 	UPDATE acq.lineitem SET selector = dest_usr WHERE selector = src_usr;
 	UPDATE acq.lineitem_note SET creator = dest_usr WHERE creator = src_usr;
 	UPDATE acq.lineitem_note SET editor = dest_usr WHERE editor = src_usr;
+    UPDATE acq.invoice SET closed_by = dest_usr WHERE closed_by = src_usr;
 	DELETE FROM acq.lineitem_usr_attr_definition WHERE usr = src_usr;
 
 	-- Update with a rename to avoid collisions
@@ -437,6 +480,7 @@ BEGIN
 	-- actor.*
 	DELETE FROM actor.card WHERE usr = src_usr;
 	DELETE FROM actor.stat_cat_entry_usr_map WHERE target_usr = src_usr;
+	DELETE FROM actor.usr_privacy_waiver WHERE usr = src_usr;
 
 	-- The following update is intended to avoid transient violations of a foreign
 	-- key constraint, whereby actor.usr_address references itself.  It may not be
@@ -679,6 +723,8 @@ BEGIN
 		END LOOP;
 	END LOOP;
 
+    UPDATE vandelay.session_tracker SET usr = dest_usr WHERE usr = src_usr;
+
     -- NULL-ify addresses last so other cleanup (e.g. circ anonymization)
     -- can access the information before deletion.
 	UPDATE actor.usr SET
@@ -786,6 +832,7 @@ BEGIN
 			family_name = new_name,
 			suffix = NULL,
 			alias = NULL,
+            guardian = NULL,
 			day_phone = NULL,
 			evening_phone = NULL,
 			other_phone = NULL,

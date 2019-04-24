@@ -1,0 +1,36 @@
+BEGIN;
+
+SELECT plan(3);
+
+----------------------------------
+-- Setup Test environment and data
+----------------------------------
+
+-- create bib 71,000
+INSERT into biblio.record_entry (id, marc, last_xact_id)
+  VALUES (71000, 
+  $$
+  <record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd" xmlns="http://www.loc.gov/MARC21/slim"><leader>00934|jm a2200241 a 4500</leader><controlfield tag="001">03-0003745</controlfield><controlfield tag="005">19991118131708.0</controlfield><controlfield tag="008">971016n nyuuuu eng </controlfield><datafield tag="050" ind1=" " ind2=" "><subfield code="a">4539</subfield></datafield><datafield tag="100" ind1="1" ind2=" "><subfield code="a">Bart&#xF3;k, B&#xE9;la,</subfield><subfield code="d">1881-1945.</subfield></datafield><datafield tag="240" ind1=" " ind2=" "><subfield code="t">Concertos,</subfield><subfield code="m">piano,</subfield><subfield code="n">no. 1,</subfield><subfield code="n">Sz. 83</subfield><subfield code="f">(1926) </subfield><subfield code="a">Concertos,</subfield><subfield code="m">piano,</subfield><subfield code="n">no. 1,</subfield><subfield code="n">Sz. 83,</subfield><subfield code="n">(1926)</subfield></datafield><datafield tag="245" ind1=" " ind2=" "><subfield code="a">Piano concerto no. 1 (1926) ; Rhapsody, op. 1 (1904)</subfield></datafield><datafield tag="260" ind1=" " ind2=" "><subfield code="a">New York, NY :</subfield><subfield code="b">Vox</subfield></datafield></record>
+  $$,
+  'PGTAP'
+  );
+
+-----------------------------------------
+-- Test biblio.indexing_ingest_or_delete
+-----------------------------------------
+
+-- initially record attributes should exist since the record is inserted
+SELECT is((SELECT EXISTS(SELECT 1 FROM metabib.record_attr WHERE id = 71000)), TRUE, 'Entries exist.');
+
+-- check to see if record attributes are removed when the record is deleted
+UPDATE biblio.record_entry SET deleted = TRUE WHERE id = 71000;
+SELECT is((SELECT EXISTS(SELECT 1 FROM metabib.record_attr WHERE id = 71000)), FALSE, 'Entries should not exist.');
+
+-- check to see if record attributes are restored when the record is undeleted
+UPDATE biblio.record_entry SET deleted = FALSE WHERE id = 71000;
+SELECT is((SELECT EXISTS(SELECT 1 FROM metabib.record_attr WHERE id = 71000)), TRUE, 'Entries exist.');
+
+SELECT * FROM finish();
+
+ROLLBACK;
+

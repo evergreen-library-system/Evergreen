@@ -17,8 +17,10 @@ function($routeProvider , $locationProvider , $compileProvider) {
      * Route resolvers allow us to run async commands
      * before the page controller is instantiated.
      */
-    var resolver = {delay : ['egCore', 
-        function(egCore) {
+    var resolver = {delay : ['egCore', 'egLovefield',
+        function(egCore, egLovefield) {
+            // the 'offline' schema is only active in the offline UI.
+            egLovefield.activeSchemas.push('offline');
             return egCore.startup.go();
         }
     ]};
@@ -126,10 +128,11 @@ function($routeProvider , $locationProvider , $compileProvider) {
             });
         }
 
+        $scope.sessions = [];
         $scope.refreshSessions = function () {
 
             return $http.get(formURL({action:'status',status_type:'sessions'})).then(function(res) {
-                if (res.data) {
+                if (angular.isArray(res.data)) {
                     $scope.sessions = res.data;
                     return $q.when();
                 }
@@ -250,8 +253,12 @@ function($routeProvider , $locationProvider , $compileProvider) {
 ])
 
 .controller('OfflineCtrl', 
-           ['$q','$scope','$window','$location','$rootScope','egCore','egLovefield','$routeParams','$timeout','$http','ngToast','egConfirmDialog','egUnloadPrompt',
-    function($q , $scope , $window , $location , $rootScope , egCore , egLovefield , $routeParams , $timeout , $http , ngToast , egConfirmDialog , egUnloadPrompt) {
+           ['$q','$scope','$window','$location','$rootScope','egCore',
+            'egLovefield','$routeParams','$timeout','$http','ngToast',
+            'egConfirmDialog','egUnloadPrompt','egProgressDialog',
+    function($q , $scope , $window , $location , $rootScope , egCore , 
+             egLovefield , $routeParams , $timeout , $http , ngToast , 
+             egConfirmDialog , egUnloadPrompt, egProgressDialog) {
 
         // Immediately redirect if we're really offline
         if (!$window.navigator.onLine) {
@@ -323,6 +330,12 @@ function($routeProvider , $locationProvider , $compileProvider) {
             egCore.hatch.setItem('eg.offline.print_receipt', $scope.do_print)
         }
 
+        $scope.lookupNoncatTypeName = function (type) {
+            var nc =  $scope.noncats.filter(function(n){ return n.id() == type })[0];
+            if (nc) return nc.name();
+            return '';
+        }
+
         $scope.logged_in = egCore.auth.token() ? true : false;
 
 
@@ -386,29 +399,22 @@ function($routeProvider , $locationProvider , $compileProvider) {
             } 
         });
 
+        $scope.buildingBlockList = false;
         $scope.downloadBlockList = function () {
-            var url = '/standalone/list.txt?ses='
-                + egCore.auth.token()
-                + '&' + new Date().getTime();
-            return $http.get(url).then(
-                function (res) {
-                    if (res.data) {
-                        var lines = res.data.split('\n');
-                        egLovefield.destroyOfflineBlocks().then(function(){
-                            angular.forEach(lines, function (l) {
-                                var parts = l.split(' ');
-                                egLovefield.addOfflineBlock(parts[0], parts[1]);
-                            });
-                            return $q.when();
-                        }).then(function(){
-                            ngToast.create(egCore.strings.OFFLINE_BLOCKLIST_SUCCESS);
-                        });
-                    }
-                },function(){
+            $scope.buildingBlockList = true;
+            egProgressDialog.open();
+            egLovefield.populateBlockList().then(
+                function(){
+                    ngToast.create(egCore.strings.OFFLINE_BLOCKLIST_SUCCESS);
+                },
+                function(){
                     ngToast.warning(egCore.strings.OFFLINE_BLOCKLIST_FAIL);
                     egCore.audio.play('warning.offline.blocklist_fail');
                 }
-            );
+            )['finally'](function() {
+                $scope.buildingBlockList = false;
+                egProgressDialog.close();
+            });
         }
 
         $scope.createOfflineXactBlob = function () {
@@ -846,7 +852,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
                         return egLovefield.reconstituteList('asva');
                     }).then(function() {
                         angular.forEach(egCore.env.asv.list, function (s) {
-                            s.questions( egCore.env.asva.list.filter( function (a) {
+                            s.questions( egCore.env.asvq.list.filter( function (q) {
                                 return q.survey().id == s.id();
                             }));
                         });

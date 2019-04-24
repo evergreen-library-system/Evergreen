@@ -20,7 +20,7 @@ use DateTime::Format::ISO8601;
 
 use OpenILS::Application::AppUtils;
 
-use OpenSRF::Utils qw/:datetime/;
+use OpenILS::Utils::DateTime qw/:datetime/;
 use OpenSRF::AppSession;
 use OpenILS::Utils::ModsParser;
 use OpenILS::Event;
@@ -370,6 +370,37 @@ sub new_set_circ_lost {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method    => "update_latest_inventory",
+    api_name  => "open-ils.circ.circulation.update_latest_inventory");
+
+sub update_latest_inventory {
+    my( $self, $conn, $auth, $args ) = @_;
+    my $e = new_editor(authtoken=>$auth, xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $copies = $$args{copy_list};
+    foreach my $copyid (@$copies) {
+        my $copy = $e->retrieve_asset_copy($copyid);
+        my $alci = $e->search_asset_latest_inventory({copy => $copyid})->[0];
+
+        if($alci) {
+            $alci->inventory_date('now');
+            $alci->inventory_workstation($e->requestor->wsid);
+            $e->update_asset_latest_inventory($alci) or return $e->die_event;
+        } else {
+            my $alci = Fieldmapper::asset::latest_inventory->new;
+            $alci->inventory_date('now');
+            $alci->inventory_workstation($e->requestor->wsid);
+            $alci->copy($copy->id);
+            $e->create_asset_latest_inventory($alci) or return $e->die_event;
+        }
+
+        $copy->latest_inventory($alci);
+    }
+    $e->commit;
+    return 1;
+}
 
 __PACKAGE__->register_method(
     method  => "set_circ_claims_returned",
@@ -457,14 +488,14 @@ sub set_circ_claims_returned {
     $circ->stop_fines_time('now') unless $circ->stop_fines_time;
 
     if( $backdate ) {
-        $backdate = cleanse_ISO8601($backdate);
+        $backdate = clean_ISO8601($backdate);
 
-        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($backdate);
         $backdate = $new_date->ymd . 'T' . $original_date->strftime('%T%z');
 
         # clean it up once again; need a : in the timezone offset. E.g. -06:00 not -0600
-        $backdate = cleanse_ISO8601($backdate);
+        $backdate = clean_ISO8601($backdate);
 
         # make it look like the circ stopped at the cliams returned time
         $circ->stop_fines_time($backdate);
@@ -611,8 +642,8 @@ sub post_checkin_backdate_circ_impl {
         $backdate and $circ->checkin_time;
 
     # update the checkin and stop_fines times to reflect the new backdate
-    $circ->stop_fines_time(cleanse_ISO8601($backdate));
-    $circ->checkin_time(cleanse_ISO8601($backdate));
+    $circ->stop_fines_time(clean_ISO8601($backdate));
+    $circ->checkin_time(clean_ISO8601($backdate));
     $e->update_action_circulation($circ) or return $e->die_event;
 
     # now void the overdues "erased" by the back-dating
@@ -649,12 +680,17 @@ sub set_circ_due_date {
         or return $e->die_event;
 
     return $e->die_event unless $e->allowed('CIRC_OVERRIDE_DUE_DATE', $circ->circ_lib);
-    $date = cleanse_ISO8601($date);
+    $date = clean_ISO8601($date);
 
     if (!(interval_to_seconds($circ->duration) % 86400)) { # duration is divisible by days
-        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(cleanse_ISO8601($circ->due_date));
+        my $original_date = DateTime::Format::ISO8601->new->parse_datetime(clean_ISO8601($circ->due_date));
         my $new_date = DateTime::Format::ISO8601->new->parse_datetime($date);
-        $date = cleanse_ISO8601( $new_date->ymd . 'T' . $original_date->strftime('%T%z') );
+
+        # since the new date may be coming in as UTC, convert it
+        # to the same time zone as the original due date so that
+        # ->ymd is more likely to yield the expected results
+        $new_date->set_time_zone($original_date->time_zone());
+        $date = clean_ISO8601( $new_date->ymd . 'T' . $original_date->strftime('%T%z') );
     }
 
     $circ->due_date($date);
@@ -712,7 +748,7 @@ sub create_in_house_use {
     }
 
     if( $use_time ne 'now' ) {
-        $use_time = cleanse_ISO8601($use_time);
+        $use_time = clean_ISO8601($use_time);
         $logger->debug("in_house_use setting use time to $use_time");
     }
 
@@ -1559,7 +1595,7 @@ sub mark_item_missing_pieces {
 
                 $logger->info('open-ils.circ.mark_item_missing_pieces: item needed for hold, shortening due date');
                 my $due_date = DateTime->now(time_zone => 'local');
-                $co_params->{'due_date'} = cleanse_ISO8601( $due_date->strftime('%FT%T%z') );
+                $co_params->{'due_date'} = clean_ISO8601( $due_date->strftime('%FT%T%z') );
             } else {
                 $logger->info('open-ils.circ.mark_item_missing_pieces: item not needed for hold');
             }

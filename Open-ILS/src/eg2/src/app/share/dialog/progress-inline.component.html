@@ -1,0 +1,28 @@
+<div class="eg-progress-inline">
+
+  <div *ngIf="hasValue() && hasMax()">
+    <!-- determinate progress bar.  shows max/value progress -->
+    <div class="row">
+      <div class="col-lg-10">
+        <progress max="{{max}}" value="{{value}}"></progress>
+      </div>
+      <div class="col-lg-2">{{percent()}}%</div>
+    </div>
+  </div>
+
+  <div *ngIf="hasValue() && !hasMax()">
+    <div class="row">
+      <!-- semi-determinate progress bar.  shows value -->
+      <div class="col-lg-10"><progress max="1"></progress></div>
+      <div class="col-lg-2">{{value}}...</div>
+    </div>
+  </div>
+
+  <div *ngIf="!hasValue()">
+    <div class="row">
+      <!-- indeterminate -->
+      <div class="col-lg-12"><progress max="1"></progress></div>
+    </div>
+  </div>
+
+</div>

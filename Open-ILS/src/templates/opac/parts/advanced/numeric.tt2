@@ -9,6 +9,7 @@
                 <select id="numeric_qtype" name="qtype">
                     <!-- TODO: Pull labels from config.metabib_field.label -->
                     <option value="identifier|isbn">[% l('ISBN') %]</option>
+                    <option value="identifier|upc">[% l('UPC') %]</option>
                     <option value="identifier|issn">[% l('ISSN') %]</option>
                     <option value="cnbrowse">[% l('Call Number (Shelf Browse)') %]</option>
                     <option value="identifier|lccn">[% l('LCCN') %]</option>

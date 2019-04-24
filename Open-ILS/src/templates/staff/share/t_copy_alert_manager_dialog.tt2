@@ -1,9 +1,9 @@
 <!--
-  Copy alert manager dialog
+  Item alert manager dialog
 -->
 <div>
   <div class="modal-header">
-    <h4 class="modal-title alert alert-info">[% l('Copy alerts') %]</h4> 
+    <h4 class="modal-title alert alert-info">[% l('Item alerts') %]</h4> 
   </div>
   <div class="modal-body">
     <div>
@@ -23,12 +23,12 @@
     <div ng-if="mode == 'checkin' && next_statuses.length > 0">
         <div ng-if="next_statuses.length == 1" class="row">
             <div class="col-md-8">
-                <b>[% l('Next copy status: ') %]</b> {{next_statuses[0].name()}}
+                <b>[% l('Next item status: ') %]</b> {{next_statuses[0].name()}}
             </div>
         </div>
         <div ng-if="next_statuses.length > 1" class="row">
           <div class="col-md-4">
-            <label for="select-next-status"><b>[% l('Next copy status') %]<b></label>
+            <label for="select-next-status"><b>[% l('Next item status') %]<b></label>
           </div>
           <div class="col-md-4">
             <select id="select-next-status" class="form-control"

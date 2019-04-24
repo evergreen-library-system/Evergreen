@@ -1,0 +1,35 @@
+BEGIN;
+
+select plan(2);
+
+--consider all statuses to be "available" and "opac visible"
+update config.copy_status set opac_visible = 't', is_available = 't';
+
+-- consider all copies / locations to be opac visible 
+-- (since we're comparing staff copy counts with opac counts)
+update asset.copy_location set opac_visible = 't';
+update asset.copy set opac_visible = 't';
+
+-- the lp bug started because of a hardcoded status list.
+-- make sure we have at least some items with other statuses.
+select isnt_empty(
+    'select id from asset.copy where status not in (0,7,12) and not deleted',
+    'cannot test: no suitable copies for comparison'
+);
+
+select is_empty(
+    '
+    with min_ou as (select min(id) as id from actor.org_unit)
+    select distinct(record)
+    from min_ou,
+        asset.copy cpy join asset.call_number cn on cpy.call_number = cn.id
+    where not cpy.deleted and cpy.status not in (0,7,12)
+        and (select available from asset.staff_ou_record_copy_count(min_ou.id, cn.record))
+            !=
+            (select available from asset.opac_ou_record_copy_count(min_ou.id, cn.record))
+    ','inconsistent available copy counts between staff client and opac'
+);
+
+SELECT * FROM finish();
+ROLLBACK;
+
