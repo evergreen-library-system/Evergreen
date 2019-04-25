@@ -52,8 +52,8 @@ angular.module('egItemStatus',
  * Parent scope for list and detail views
  */
 .controller('SearchCtrl', 
-       ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem',
-function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc) {
+       ['$scope','$q','$window','$location','$timeout','egCore','egNet','egGridDataProvider','egItem', 'egCirc',
+function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridDataProvider , itemSvc , egCirc) {
     $scope.args = {}; // search args
 
     // sub-scopes (search / detail-view) apply their version 
@@ -85,6 +85,15 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.add_copies_to_bucket = function() {
         itemSvc.add_copies_to_bucket([$scope.args.copyId]);
     }
+
+    $scope.show_in_catalog = function() {
+        window.open('/eg/staff/cat/catalog/record/' + $scope.args.recordId + '/catalog', '_blank');
+    }
+
+    $scope.print_labels = function() {
+        itemSvc.print_spine_labels([$scope.args.copyId]);
+    }
+
 
     $scope.make_copies_bookable = function() {
         itemSvc.make_copies_bookable([{
@@ -145,6 +154,27 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
             $timeout(function() { location.href = location.href; }, 1000);
         });
     }
+
+    $scope.show_triggered_events = function() {
+        $location.path('/cat/item/' + $scope.args.copyId + '/triggered_events');
+    }
+
+    $scope.show_item_holds = function() {
+        $location.path('/cat/item/' + $scope.args.copyId + '/holds');
+    }
+
+    $scope.show_record_holds = function() {
+        window.open('/eg/staff/cat/catalog/record/' + $scope.args.recordId + '/holds', '_blank');
+    }
+
+    $scope.add_item_alerts = function() {
+        egCirc.add_copy_alerts([$scope.args.copyId]);
+    }
+
+    $scope.manage_item_alerts = function() {
+        egCirc.manage_copy_alerts([$scope.args.copyId]);
+    }
+
 
     $scope.attach_to_peer_bib = function() {
         itemSvc.attach_to_peer_bib([{

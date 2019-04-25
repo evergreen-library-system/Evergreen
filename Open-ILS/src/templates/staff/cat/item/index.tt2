@@ -86,6 +86,7 @@
       </button>
       <ul uib-dropdown-menu class="scrollable-menu dropdown-menu-right">
         <li><a href ng-click="add_copies_to_bucket()">[% l('Add Items to Bucket') %]</a></li>
+        <li><a href ng-click="show_in_catalog()">[% l('Show in Catalog') %]</a></li>
         <li><a href ng-click="make_copies_bookable()">[% l('Make Items Bookable') %]</a></li>
         <li><a href ng-click="book_copies_now()">[% l('Book Item Now') %]</a></li>
         <li><a href ng-click="requestItems()">[% l('Request Items') %]</a></li>
@@ -97,6 +98,10 @@
         <li><a href ng-click="update_inventory()">[% l('Update Inventory') %]</a></li>
 
         <p><b>[% l('Show') %]</b></p>
+        <li><a href ng-click="show_triggered_events()">[% l('Show Triggered Events') %]</a></li>
+        <li><a href ng-click="show_item_holds()">[% l('Show Item Holds') %]</a></li>
+        <li><a href ng-click="show_record_holds()">[% l('Show Record Holds') %]</a></li>
+        <li><a href ng-click="print_labels()">[% l('Print Labels') %]</a></li>
         <li><a href ng-click="findAcquisition()">[% l('Originating Acquisition') %]</a></li>
 
         <p><b>[% l('Mark') %]</b></p>    
@@ -105,14 +110,16 @@
         <li><a href ng-click="selectedHoldingsMissing()">[% l('Item as Missing') %]</a></li>
     
         <p><b>[% l('Add') %]</b></p>    
-        <li><a href ng-click="selectedHoldingsCopyAdd()">[% l('Items') %]</a></li>
-        <li><a href ng-click="selectedHoldingsVolCopyAdd()">[% l('Call Numbers and Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsCopyAdd()">[% l('Add Items') %]</a></li>
+        <li><a href ng-click="selectedHoldingsVolCopyAdd()">[% l('Add Call Numbers and Items') %]</a></li>
+        <li><a href ng-click="add_item_alerts()">[% l('Add Item Alerts') %]</a></li>
 
         <p><b>[% l('Edit') %]</b></p>    
         <li><a href ng-click="selectedHoldingsVolEdit()">[% l('Call Numbers') %]</a></li>
         <li><a href ng-click="selectedHoldingsCopyEdit()">[% l('Items') %]</a></li>
         <li><a href ng-click="selectedHoldingsVolCopyEdit()">[% l('Call Numbers and Items') %]</a></li>
         <li><a href ng-click="replaceBarcodes()">[% l('Replace Barcodes') %]</a></li>
+        <li><a href ng-click="manage_item_alerts()">[% l('Manage Item Alerts') %]</a></li>
 
         <p><b>[% l('Transfer') %]</b></p>    
         <li><a href ng-click="changeItemOwningLib()">[% l('Items to Previously Marked Library') %]</a></li>
@@ -140,5 +147,4 @@
 <div ng-view></div>
 
 [% END %]
-
 
