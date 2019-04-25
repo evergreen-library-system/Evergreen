@@ -16,9 +16,9 @@ BEGIN
               FROM  (SELECT tag,
                             subfield,
                             CASE WHEN tag = '020' THEN -- caseless -- isbn
-                                LOWER((REGEXP_MATCH(value,$$^(\S{10,17})$$))[1] || '%')
+                                LOWER((SELECT REGEXP_MATCHES(value,$$^(\S{10,17})$$))[1] || '%')
                             WHEN tag = '022' THEN -- caseless -- issn
-                                LOWER((REGEXP_MATCH(value,$$^(\S{4}[- ]?\S{4})$$))[1] || '%')
+                                LOWER((SELECT REGEXP_MATCHES(value,$$^(\S{4}[- ]?\S{4})$$))[1] || '%')
                             WHEN tag = '024' THEN -- caseless -- upc (other)
                                 LOWER(value || '%')
                             ELSE
