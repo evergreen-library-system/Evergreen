@@ -90,6 +90,8 @@ For example, the portion of the Checkout print template below repeats every item
 that is checked out in HTML list format by means of the 'ng-repeat' in the li
 tag. 
 
+<<recipt_contents_reference.adoc, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
+
 ------
 <ol>
 <li ng-repeat="checkout in circulations">
@@ -123,6 +125,10 @@ easily readable.
 |{{today}}                     | 2017-08-01T14:18:51.445Z
 |{{today \| date:'short'}}     | 8/1/17 10:18 AM
 |{{today \| date:'M/d/yyyy'}}  | 8/1/2017
+|{{today \| date:'shortDate'}} | 4/24/19
+|{{today \| date:‘shortTime'}} | 9:43 AM
+|{{today \| date:'longDate'}}  |April 24, 2019
+|{{today \| date:‘medium'}}    |April 24, 2019 8:30:01 AM
 |===================================================
 
 Currency Formatting

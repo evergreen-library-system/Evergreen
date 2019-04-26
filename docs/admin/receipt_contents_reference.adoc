@@ -1,0 +1,436 @@
+Receipt Content Reference
+-------------------------
+indexterm:[web client, receipt template editor]
+indexterm:[print templates]
+indexterm:[web client, print templates]
+indexterm:[receipt template editor]
+indexterm:[receipt template editor, macros]
+indexterm:[receipt template editor, checkout]
+
+Any Type of Print Template
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+These fields can be used in any Template.
+|=========================================================
+|Tag                           | Notes  
+
+|{{current_location.name}}     | Current library's full name 
+|{{current_location.shortname}}| Current library's short name
+|{{current_location.email}}    | Current library's email address
+|{{current_location.phone}}    |Current library's phone number
+|{{includes.alert_text}}       |Includes: Alert Text
+|{{includes.event_text}}       |Includes: Event Text
+|{{includes.footer_text}}      |Includes: Footer Text
+|{{includes.header_text}}      |Includes: Header Text
+|{{includes.notice_text}}      |Includes: Notice Text
+|{{today}}                     |Today's time and date - raw data
+|{{today \|date:'short'}}      |Readable time and date: 8/1/17 10:18 AM 
+|{{today \|date:'M/d/yyyy'}}   |Date only: 8/1/2017
+|{{staff.first_given_name}}    |Staff first name
+|=========================================================
+
+See also: https://docs.angularjs.org/api/ng/filter/date
+
+NOTE: For each print template below, the sections that say "Inside ng-repeat loop" indicate that the tag must appear inside the ng-repeat section of the print template and it will only work per item or per bill.
+
+Bills, Current
+~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)        | Notes  
+
+|{{xact.summary.balance_owed}}      | Balance remaining
+|{{xact.copy_barcode}}              | Item Barcode
+|{{xact.id}}                        | Bill ID
+|{{xact.xact_start}}                | Bill start date
+|{{xact.summary.xact_type}}         | Bill type (circulation vs. grocery)
+|{{xact.summary.last_billing_note}} | Last billing note
+|{{xact.summary.last_billing_type}} | Last billing type
+|{{xact.summary.last_payment_note}} | Last payment note
+|{{xact.summary.last_payment_type}} | Last payment type
+|{{xact.title}}                     | Title
+|{{xact.summary.total_owed}}        | Total billed
+|{{xact.summary.total_paid}}        | Total paid
+|=========================================================
+
+Bills, Historical
+~~~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)         | Notes
+
+|{{xact.id}}                         | Bill ID
+|{{xact.title}}                      | Title
+|{{xact.copy_barcode}}               | Barcode
+|{{xact.summary.balance_owed}}       | Balance remaining
+|{{xact.summary.xact_type}}          | Bill type (circulation vs. grocery)
+|{{xact.summary.last_billing_type}}  | Last billing type
+|{{xact.summary.total_owed}}         | Total billed
+|{{xact.summary.total_paid|currency}}| Total paid
+|{{xact.xact_start}}                 | Billing Start Date and Time
+|{{xact.xact_finish}}                | Billing Finish Date and Time
+|{{xact.summary.last_billing_note}}  | Last billing note
+|{{xact.summary.last_billing_type}}  | Last billing type
+|{{xact.summary.last_payment_note}}  | Last payment note
+|{{xact.summary.last_payment_type}}  | Last payment type
+|{{xact.summary.total_owed}}         | Total billed
+|{{xact.summary.total_paid}}         | Total paid
+|=========================================================
+
+Bills, Payment
+~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag                               | Notes
+
+|{{patron.first_given_name}}       | Patron First Name
+|{{patron.second_given_name}}      | Patron Middle Name
+|{{patron.family_name}}            | Patron Last Name
+|{{patron.suffix}}                 | Patron Name Suffix
+|{{patron.card.barcode}}           | Patron Barcode
+|{{patron.expire_date}}            | Account Expiration Date
+|{{patron.alias}}                  | Alias
+|{{patron.has_email}}              | Has email? (true or false)
+|{{patron.has_phone}}              | Has phone? (true or false)
+|{{payment_applied}}               | Payment amount applied to bills
+|{{payment_total}}                 | Payment total (if using this, also use change_given)
+|{{change_given}}                  | Change given (if using this, also use payment_total)
+|{{payment_note}}                  | Payment note
+|{{payment_type}}                  | Payment type
+|{{amount_voided}}                 | Amount voided
+|<div ng-switch="payment_type"><div ng-switch-when="cash_payment">Cash</div><div ng-switch-when="check_payment">Check</div><div ng-switch-when="credit_card_payment">Credit Card</div><div ng-switch-when="credit_payment">Patron Credit</div><div ng-switch-when="work_payment">Work</div><div ng-switch-when="forgive_payment">Forgive</div><div ng-switch-when="goods_payment">Goods</div></div>| Payment type better display
+|{{previous_balance}}              | Previous balance
+|{{new_balance}}                   | Remaining balance
+|=========================================================
+
+|=========================================================
+|Tag (Inside ng-repeat loop)               | Notes 
+
+|{{payment.xact.copy_barcode}}             | Barcode
+|{{payment.xact.summary.last_billing_type}}| Last billing type
+|{{payment.xact.id}}                       | Payment ID
+|{{payment.amount}}                        | Payment received
+|{{payment.xact.title}}                    | Title
+|=========================================================
+
+Checkin
+~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)                    | Notes
+
+|{{checkin.copy_barcode}}                       | Barcode
+|{{checkin.call_number.label\||"Not Cataloged"}}| Call Number (if no call number, displays "Not Cataloged")
+|{{checkin.title}}                              | Title
+|=========================================================
+
+Checkout
+~~~~~~~~
+
+|=========================================================
+|Tag                                   | Notes
+
+|{{patron.first_given_name}}           | Patron First Name
+|{{patron.second_given_name}}          | Patron Middle Name
+|{{patron.family_name}}                | Patron Last Name
+|{{patron.suffix}}                     | Patron Name Suffix
+|{{patron.card.barcode}}               | Patron Barcode
+|{{patron.expire_date}}                | Account Expiration Date
+|{{patron.money_summary.balance_owed}} | Amount Owed
+|{{patron.alias}}                      | Alias 
+|{{patron.has_email}}                  | Has email? (true or false)
+|{{patron.has_phone}}                  | Has phone? (true or false)
+|=========================================================
+
+|=========================================================
+|Tag (Inside ng-repeat loop)           | Notes
+
+|{{checkout.author}}                   | Author
+|{{checkout.copy_barcode}}             | Barcode
+|{{checkout.call_number.label}}        | Call Number
+|{{checkout.circ.due_date}}            | Due Date
+|{{checkout.copy.price}}               | Price
+|{{checkout.title}}                    | Title
+|=========================================================
+
+Hold Pull List
+~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)       | Notes
+
+|{{hold_data.author}}              | Author
+|{{hold_data.copy.barcode}}        | Barcode
+|{{hold_data.volume.label}}        | Call number
+|{{hold_data.hold.hold_type}}      | Hold type
+|{{hold_data.part.label}}          | Part
+|{{hold_data.copy.location.name}}  | Shelving location
+|{{hold.title}}                    | Title
+|=========================================================
+
+Hold Shelf Slip
+~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag                               | Notes
+
+|{{call_number.label}}             | Call Number 
+|{{today}}                         | Hold available date
+|<div ng-switch on="hold.behind_desk"><div ng-switch-when="t"><strong>Private - Hold Behind Desk</strong></div><div ng-switch-when="f"><strong>Public Holds Shelf</strong></div></div>| Hold location (Hold behind desk or public holds shelf)
+|<ol><li ng-repeat="note in hold_notes\|filter: {slip : 't'}"><strong>{{note.title}}</strong><br/>{{note.body}}</li></ol>| Hold Notes
+|{{hold.request_time \| date:'M/d/yyyy'}}     | Hold request date
+|{{hold.shelf_expire_time \| date:'M/d/yyyy'}}| Hold shelf expire date
+|{{author}}                                   | Item author
+|{{copy.barcode}}                             | Item barcode
+|{{title}}                                    | Item title
+|{{hold.email_notify}}                        | Returns true or false flag
+|{{hold.phone_notify}}                        | Notification phone number
+|{{hold.sms_notify}}                          | Notification SMS text number
+|{{patron.card.barcode}}                      | Patron barcode
+|{{patron.email}}                             | Patron email address
+|{{patron.first_given_name}}                  | Patron first name
+|{{patron.second_given_name}}                 | Patron middle name
+|{{patron.family_name}}                       | Patron last name
+|{{patron.pref_first_given_name}}             | Preferred first name
+|{{patron.pref_second_given_name}}            | Preferred middle name
+|{{patron.pref_family_name}}                  | Preferred last name
+|{{patron.alias}}                             | Patron alias
+|=========================================================
+
+Hold Transit Slip
+~~~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag                                      | Notes 
+
+|{{dest_address.city}}                    | Destination city
+|{{dest_courier_code}}                    | Destination courier code
+|{{dest_location.name}}                   | Destination full name
+|{{dest_location.shortname}}              | Destination short name
+|{{dest_address.state}}                   | Destination state
+|{{dest_address.street1}}                 | Destination street address 1
+|{{dest_address.street2}}                 | Destination street address 2
+|{{dest_address.post_code}}               | Destination zip code
+|{{hold.behind_desk}}                     | Hold behind desk
+|{{hold.request_time}}                    | Hold request date
+|{{author}}                               | Item author
+|{{copy.barcode}}                         | Item barcode
+|{{title}}                                | Item title
+|{{hold.email_notify}}                    | Notification email (t or f)
+|{{patron.email}}                         | Notification email address
+|{{hold.phone_notify}}                    | Notification phone number
+|{{hold.sms_notify}}                      | Notification SMS text number
+|{{patron.card.barcode}}                  | Patron barcode
+|{{patron.first_given_name}}              | Patron first name
+|{{patron.family_name}}                   | Patron last Name
+|{{patron.second_given_name}}             | Patron middle name
+|=========================================================
+
+Holds for Bib Record
+~~~~~~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag                         | Notes
+
+|{{holds[0].title}}          | Title
+|=========================================================
+
+|=========================================================
+|Tag (Inside ng-repeat loop) | Notes 
+
+|{{hold_data.author}}        | Author
+|{{hold.copy.barcode}}       | Hold target copy barcode
+|{{hold.hold.request_time}}  | Hold request date
+|{{hold.patron_barcode}}     | Patron barcode
+|{{hold.patron_alias}}       | Patron hold alias
+|{{hold.patron_last}}        | Patron last name
+|=========================================================
+
+Holds for Patron
+~~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)   | Notes
+
+|{{hold.author}}               | Author
+|<div ng-if="hold.hold.email_notify == 't'"> {{hold.hold.requestor.email}}</div>|Notify by email (shows email only if selected)
+|{{hold.hold.phone_notify}}    | Notify by phone (shows number)
+|{{hold.hold.sms_notify}}      | Notify by SMS text (shows number)
+|{{hold.hold.pickup_lib.name}} | Pickup library
+|{{hold.hold.request_time}}    | Request date
+|{{hold.title}}                | Title
+|=========================================================
+
+
+In-House Use List
+~~~~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)  | Notes  
+
+|{{ihu.copy.barcode}}|Barcode
+|{{ihu.num_uses}}|Number of uses
+|=========================================================
+
+Item Status
+~~~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes 
+
+|{{copy.barcode}}|Barcode
+|{{copy['call_number.record.simple_record.title']}}|Title
+|=========================================================
+
+Items Out
+~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes  
+
+|{{patron.first_given_name}}|Patron First Name
+|{{patron.second_given_name}}|Patron Middle Name
+|{{patron.family_name}}|Patron Last Name
+|{{patron.suffix}}|Patron Name Suffix
+|{{patron.card.barcode}}|Patron Barcode
+|{{patron.expire_date}}|Account Expiration Date
+|{{patron.money_summary.balance_owed}}|Amount Owed
+|{{patron.alias}}|Alias
+|{{patron.has_email}}|Has email? (true or false)
+|{{patron.has_phone}}|Has phone? (true or false)
+
+|=========================================================
+|Tag (Inside ng-repeat loop)  |Notes  
+
+|{{checkout.copy.barcode}}|Barcode
+|{{checkout.circ.due_date}}|Due date
+|{{checkout.title}}|Title
+|=========================================================
+
+Patron Address
+~~~~~~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes
+
+|{{patron.first_given_name}}|Patron first name
+|{{patron.second_given_name}}|Patron middle name
+|{{patron.family_name}}|Patron last name
+|{{address.street1}}|Street address 1
+|{{address.street2}}|Street address 2
+|{{address.city}}|City
+|{{address.state}}|State
+|{{address.post_code}}|Zip code
+|=========================================================
+
+Patron Data
+~~~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes 
+
+|{{patron.prefix}}|Patron name prefix
+|{{patron.first_given_name}}|Patron first name
+|{{patron.second_given_name}}|Patron middle name
+|{{patron.family_name}}|Patron last name
+|{{patron.suffix}}|Patron name suffix
+|{{patron.card.barcode}}|Patron barcode
+|{{patron.usrname}}|Patron user name
+|{{patron.alias}}|Patron holds alias
+|{{patron.dob /| date:'M/d/yyyy'}}|Date of birth (formatted)
+|{{patron.juvenile}}|Is patron juvenile? (t or f)
+|{{patron.ident_type.name()}}|Primary identification type
+|{{patron.ident_value}}|Primary identification value
+|{{patron.ident_value2}}|Parent/guardian
+|{{patron.email}}|Email address
+|{{patron.day_phone}}|Main/day phone number
+|{{patron.evening_phone}}|Evening phone number
+|{{patron.other_phone}}|Other phone number
+|{{patron.home_ou.name()}}|Home library
+|{{patron.profile.name()}}|Permission group (profile type)
+|{{patron.expire_date /| date:'M/d/yyyy'}}|Expiration date (formatted)
+|{{patron.master_account}}|Is group lead account? (t or f)
+|{{patron.claims_returned_count}}|Claims returned count
+|{{patron.net_access_level.name()}}|Internet access level
+|{{patron.alert_message}}|Alert message
+
+|=========================================================
+|Tags in repeatable address block  | Notes
+
+|{{address.address_type}}|Address type
+|{{address.street1}}|Street (1)
+|{{address.street2}}|Street (2)
+|{{address.city}}|City
+|{{address.state}}|State
+|{{address.post_code}}|Zip code
+|{{address.county}}|County
+|{{address.country}}|Country
+|{{address.valid}}|Is address valid? (t or f)
+|{{address.within_city_limits}}|Is address within city limits? (t or f)
+|=========================================================
+
+|=========================================================
+|Tags in repeatable stat cats block  |Notes 
+
+|{{entry.stat_cat.name}}|Stat cat name
+|{{entry.stat_cat_entry}}|Stat cat value
+|=========================================================
+
+
+Patron Note
+~~~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes 
+
+|{{note.value}}|Note contents
+|{{note.create_date}}|Note creation date
+|{{note.title}}|Note title
+|{{note.usr.card.barcode}}|Patron barcode
+|{{note.usr.first_name}}|Patron first name
+|{{note.usr.family_name}}|Patron last name
+|{{note.usr.second_given_name}}|Patron middle name
+|=========================================================
+
+Renew
+~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)  |Notes 
+
+|{{renewal.copy.barcode}}|Barcode
+|{{renewal.circ.due_date}}|Due date
+|{{renewal.title}}|Title
+|=========================================================
+
+Transit List
+~~~~~~~~~~~~
+
+|=========================================================
+|Tag (Inside ng-repeat loop)  |Notes
+
+|{{transit.target_copy.barcode}}|Barcode
+|{{transit.source_send_time}}|Date sent
+|{{transit.dest.shortname}}|Short name of destination library
+|{{transit.source.shortname}}|Short name of sending library
+|{{transit.target_copy.call_number.record.simple_record.title}}|Title
+|=========================================================
+
+Transit Slip
+~~~~~~~~~~~~
+
+|=========================================================
+|Tag  |Notes
+
+|{{dest_address.city}}|Destination city
+|{{dest_courier_code}}|Destination courier code
+|{{dest_location.name}}|Destination full name
+|{{dest_location.shortname}}|Destination short name
+|{{dest_address.state}}|Destination state
+|{{dest_address.street1}}|Destination street address 1
+|{{dest_address.street2}}|Destination street address 2
+|{{dest_address.post_code}}|Destination zip code
+|{{author}}|Item author
+|{{copy.barcode}}|Item barcode
+|{{title}}|Item title
+|=========================================================
