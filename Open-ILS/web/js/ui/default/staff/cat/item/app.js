@@ -525,19 +525,36 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         return record_id_list;
     }
 
-    $scope.refreshGridData = function() {
-        var chain = $q.when();
-        var all_items = itemSvc.copies.map(function(item) {
-            return item.id;
+    // Refresh the data shown in the item status grid,
+    // such as after the user has changed some data
+    //
+    // Takes an optional restrictToIds argument, which
+    // is a Set of item IDs that have been changed
+    $scope.refreshGridData = function(restrictToIds) {
+        var fetch_list = [];
+        var progress_bar;
+
+        angular.forEach(itemSvc.copies, function(item, index) {
+            if (!restrictToIds || restrictToIds.has(item['id'])) {
+                fetch_list.push(
+                    itemSvc.fetch(null, item['id'], null, true)
+                    .then(function(res) {
+                        itemSvc.copies[index] = res;
+                        if (progress_bar) egProgressDialog.increment();
+                        return res;
+                    })
+                );
+            }
         });
-        angular.forEach(all_items.reverse(), function(i) {
-            itemSvc.copies.shift();
-            chain = chain.then(function() {
-                return itemSvc.fetch(null, i);
-            });
-        });
-        return chain.then(function() {
+
+        progress_bar = $timeout(egProgressDialog.open, 5000, true, {value: 0, max: fetch_list.length});
+
+        $q.all(fetch_list)
+        .then( function() {
             copyGrid.refresh();
+            if (progress_bar) $timeout.cancel(progress_bar);
+            egProgressDialog.close();
+            ngToast.create(egCore.strings.ITEMS_SUCCESSFULLY_MODIFIED);
         });
     }
 
@@ -770,18 +787,33 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
                     'aria-label="' + egCore.strings.ITEM_SUCCESSFULLY_MODIFIED + '">' +
                     '</span>';
             }
-            return icon
+            return icon;
         }
     }
 
     if (typeof BroadcastChannel != 'undefined') {
         var holdings_bChannel = new BroadcastChannel("eg.holdings.update");
         holdings_bChannel.onmessage = function(e) {
-            angular.forEach(e.data.copies, function(i) {
-                modified_items.add(i);
-            });
-            ngToast.create(egCore.strings.ITEMS_SUCCESSFULLY_MODIFIED);
-            $scope.refreshGridData();
+            if (e.data.copies.length) {
+                angular.forEach(e.data.copies, function(i) {
+                    modified_items.add(i);
+                });
+                $scope.refreshGridData(modified_items);
+            } else { // if only call numbers were modified
+                egCore.pcrud.search('acp',
+                    {
+                        deleted : 0,
+                        call_number : e.data.volumes
+                    }, null, {atomic: true}
+                    
+                ).then(function(all_affected_items) {
+                    all_affected_items.map(function(item) {
+                        modified_items.add(item.id());
+                    });
+                    $scope.refreshGridData(modified_items);
+                });
+
+            }
         }
         $scope.$on('$destroy', function() {
             holdings_bChannel.close();
@@ -1334,3 +1366,4 @@ console.debug($scope.copy_alert_count);
 
     loadCopy().then(loadTabData);
 }])
+
