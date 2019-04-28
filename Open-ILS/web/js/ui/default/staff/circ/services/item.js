@@ -118,7 +118,7 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
     }
 
     // resolved with the last received copy
-    service.fetch = function(barcode, id, noListDupes) {
+    service.fetch = function(barcode, id, noListDupes, noPrepend) {
         var copy;
         var circ;
         var circ_summary;
@@ -163,7 +163,9 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                     return !aca.ack_time();
                 }).length;
 
-                service.copies.unshift(flatCopy);
+                if (!noPrepend) {
+                    service.copies.unshift(flatCopy);
+                }
             }
 
             //Get in-house use count
@@ -186,6 +188,9 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
                 });
             });
 
+            if (noPrepend) {
+                return flatCopy;
+            }
             return lastRes = {
                 copy : copyData.copy,
                 index : flatCopy.index
