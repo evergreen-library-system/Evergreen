@@ -276,6 +276,9 @@ CREATE TABLE action_trigger.event (
 );
 CREATE INDEX atev_target_def_idx ON action_trigger.event (target,event_def);
 CREATE INDEX atev_def_state ON action_trigger.event (event_def,state);
+CREATE INDEX atev_template_output ON action_trigger.event (template_output);
+CREATE INDEX atev_async_output ON action_trigger.event (async_output);
+CREATE INDEX atev_error_output ON action_trigger.event (error_output);
 
 CREATE TABLE action_trigger.event_params (
     id          BIGSERIAL   PRIMARY KEY,

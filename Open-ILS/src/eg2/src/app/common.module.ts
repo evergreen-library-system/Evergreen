@@ -14,6 +14,7 @@ They do not have to be added to the providers list.
 
 // consider moving these to core...
 import {FormatService, FormatValuePipe} from '@eg/core/format.service';
+import {HatchService} from '@eg/share/print/hatch.service';
 import {PrintService} from '@eg/share/print/print.service';
 
 // Globally available components
@@ -67,6 +68,7 @@ export class EgCommonModule {
             providers: [
                 DatePipe,
                 CurrencyPipe,
+                HatchService,
                 PrintService,
                 FormatService
             ]
