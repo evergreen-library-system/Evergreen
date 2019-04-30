@@ -90,7 +90,7 @@ For example, the portion of the Checkout print template below repeats every item
 that is checked out in HTML list format by means of the 'ng-repeat' in the li
 tag. 
 
-<<receipt_contents_reference.adoc, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
+<<recipt_contents_reference.adoc, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
 
 ------
 <ol>
