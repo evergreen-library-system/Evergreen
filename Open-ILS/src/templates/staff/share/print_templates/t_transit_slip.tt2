@@ -1,5 +1,7 @@
 <!--
-Template for printing a transit slip. Fields include:
+Template for printing a transit slip. Generally things being routed back home. 
+
+Fields include:
 
 * dest_location.name - name of destination library
 * dest_location.shortname
@@ -14,8 +16,12 @@ Template for printing a transit slip. Fields include:
 * author
 -->
 <div>
+  <div style="align:center; font-size:20px;">[% l('RETURN TO') %]</div> <!-- Sets destination location short name in large print at top of receipt.-->
+  <div style="align:center; font-size:50px;">{{dest_location.shortname}}</div>
+  <br/><br/>
   <div>[% l('This item needs to be routed to [_1]', '<b>{{dest_location.shortname}}</b>') %]</div>
   <div>{{dest_location.name}}</div>
+  <!--You can remove the address information if you do not want address information to show on your transit slip.-->
   <div ng-if="dest_address">
     <div>{{dest_address.street1}}</div>
     <div>{{dest_address.street2}}</div>
@@ -39,3 +45,4 @@ Template for printing a transit slip. Fields include:
     '{{staff.first_given_name}}', '{{current_location.shortname}}') %]</div>
 
 </div>
+<br/><br/><br/><br/>.<br/> <!--This allows space at the bottom for autocut receipt Printers-->
