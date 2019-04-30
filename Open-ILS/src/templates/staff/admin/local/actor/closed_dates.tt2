@@ -1,8 +1,8 @@
 [%
   WRAPPER 'staff/base.tt2';
-  ctx.page_type = l('Closed Dates');
   ctx.page_app = 'egAdminClosed';
   ctx.page_ctrl = 'ClosedDates';
+  ctx.page_title = l('Closed Dates');
 %]
 
 [% BLOCK APP_JS %]

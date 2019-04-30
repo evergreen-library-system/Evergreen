@@ -32,7 +32,7 @@ function($scope , $routeParams , $location , egCore) {
         ses : egCore.auth.token(),
     }
 
-    var booking_path = '/eg//eg/' + 
+    var booking_path = '/eg/' + 
         $routeParams.noun + '/' + $routeParams.verb + location.search;
 
     // embed URL must include protocol/domain or it will be loaded via
