@@ -201,11 +201,11 @@ Hold Shelf Slip
 |=========================================================
 
 
-The following will show the preferred name in place of the standard name, if now preferred name is given, than uses the standard name.
+The following will show the preferred name in place of the standard name, if no preferred name is given, than uses the standard name.
 ------
 <span ng-if="patron.pref_family_name">{{patron.pref_family_name}}</span><span ng-if="!patron.pref_family_name">{{patron.family_name}}</span>, 
-  <span ng-if="patron.pref_first_given_name">{{patron.pref_first_given_name}}</span><span ng-if="!patron.pref_first_given_name">{{patron.first_given_name}}</span> 
-  <span ng-if="patron.pref_second_given_name">{{patron.pref_second_given_name}}</span><span ng-if="!patron.pref_second_given_name">{{patron.second_given_name}}</span>
+<span ng-if="patron.pref_first_given_name">{{patron.pref_first_given_name}}</span><span ng-if="!patron.pref_first_given_name">{{patron.first_given_name}}</span> 
+<span ng-if="patron.pref_second_given_name">{{patron.pref_second_given_name}}</span><span ng-if="!patron.pref_second_given_name">{{patron.second_given_name}}</span>
 ------
 
 
@@ -265,7 +265,7 @@ Holds for Patron
 |Tag (Inside ng-repeat loop)   | Notes
 
 |{{hold.author}}               | Author
-|<div ng-if="hold.hold.email_notify == 't'"> {{hold.hold.requestor.email}}</div>|Notify by email (shows email only if selected)
+|<div ng-if="hold.hold.email_notify == 't'"> {{hold.hold.requestor.email}}</div> | Notify by email (shows email only if selected)
 |{{hold.hold.phone_notify}}    | Notify by phone (shows number)
 |{{hold.hold.sms_notify}}      | Notify by SMS text (shows number)
 |{{hold.hold.pickup_lib.name}} | Pickup library
@@ -280,112 +280,117 @@ In-House Use List
 |=========================================================
 |Tag (Inside ng-repeat loop)  | Notes  
 
-|{{ihu.copy.barcode}}|Barcode
-|{{ihu.num_uses}}|Number of uses
+|{{ihu.copy.barcode}}         | Barcode
+|{{ihu.num_uses}}             | Number of uses
 |=========================================================
 
 Item Status
 ~~~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes 
+|Tag                                               | Notes 
 
-|{{copy.barcode}}|Barcode
-|{{copy['call_number.record.simple_record.title']}}|Title
+|{{copy.barcode}}                                  | Barcode
+|{{copy['call_number.record.simple_record.title']}}| Title
 |=========================================================
 
 Items Out
 ~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes  
+|Tag                                   | Notes  
 
-|{{patron.first_given_name}}|Patron First Name
-|{{patron.second_given_name}}|Patron Middle Name
-|{{patron.family_name}}|Patron Last Name
-|{{patron.suffix}}|Patron Name Suffix
-|{{patron.card.barcode}}|Patron Barcode
-|{{patron.expire_date}}|Account Expiration Date
-|{{patron.money_summary.balance_owed}}|Amount Owed
-|{{patron.alias}}|Alias
-|{{patron.has_email}}|Has email? (true or false)
-|{{patron.has_phone}}|Has phone? (true or false)
+|{{patron.first_given_name}}           | Patron First Name
+|{{patron.second_given_name}}          | Patron Middle Name
+|{{patron.family_name}}                | Patron Last Name
+|{{patron.suffix}}                     | Patron Name Suffix
+|{{patron.card.barcode}}               | Patron Barcode
+|{{patron.expire_date}}                | Account Expiration Date
+|{{patron.money_summary.balance_owed}} | Amount Owed
+|{{patron.alias}}                      | Alias
+|{{patron.has_email}}                  | Has email? (true or false)
+|{{patron.has_phone}}                  | Has phone? (true or false)
+|=========================================================
 
 |=========================================================
-|Tag (Inside ng-repeat loop)  |Notes  
+|Tag (Inside ng-repeat loop)  | Notes  
 
-|{{checkout.copy.barcode}}|Barcode
-|{{checkout.circ.due_date}}|Due date
-|{{checkout.title}}|Title
+|{{checkout.copy.barcode}}    | Barcode
+|{{checkout.circ.due_date}}   | Due date
+|{{checkout.title}}           | Title
 |=========================================================
 
 Patron Address
 ~~~~~~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes
+|Tag                          | Notes
 
-|{{patron.first_given_name}}|Patron first name
-|{{patron.second_given_name}}|Patron middle name
-|{{patron.family_name}}|Patron last name
-|{{address.street1}}|Street address 1
-|{{address.street2}}|Street address 2
-|{{address.city}}|City
-|{{address.state}}|State
-|{{address.post_code}}|Zip code
+|{{patron.first_given_name}}  | Patron first name
+|{{patron.second_given_name}} | Patron middle name
+|{{patron.family_name}}       | Patron last name
+|{{address.street1}}          | Street address 1
+|{{address.street2}}          | Street address 2
+|{{address.city}}             | City
+|{{address.state}}            | State
+|{{address.post_code}}        | Zip code
 |=========================================================
 
 Patron Data
 ~~~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes 
+|Tag                                       | Notes 
 
-|{{patron.prefix}}|Patron name prefix
-|{{patron.first_given_name}}|Patron first name
-|{{patron.second_given_name}}|Patron middle name
-|{{patron.family_name}}|Patron last name
-|{{patron.suffix}}|Patron name suffix
-|{{patron.card.barcode}}|Patron barcode
-|{{patron.usrname}}|Patron user name
-|{{patron.alias}}|Patron holds alias
-|{{patron.dob /| date:'M/d/yyyy'}}|Date of birth (formatted)
-|{{patron.juvenile}}|Is patron juvenile? (t or f)
-|{{patron.ident_type.name()}}|Primary identification type
-|{{patron.ident_value}}|Primary identification value
-|{{patron.ident_value2}}|Parent/guardian
-|{{patron.email}}|Email address
-|{{patron.day_phone}}|Main/day phone number
-|{{patron.evening_phone}}|Evening phone number
-|{{patron.other_phone}}|Other phone number
-|{{patron.home_ou.name()}}|Home library
-|{{patron.profile.name()}}|Permission group (profile type)
-|{{patron.expire_date /| date:'M/d/yyyy'}}|Expiration date (formatted)
-|{{patron.master_account}}|Is group lead account? (t or f)
-|{{patron.claims_returned_count}}|Claims returned count
-|{{patron.net_access_level.name()}}|Internet access level
-|{{patron.alert_message}}|Alert message
-
-|=========================================================
-|Tags in repeatable address block  | Notes
-
-|{{address.address_type}}|Address type
-|{{address.street1}}|Street (1)
-|{{address.street2}}|Street (2)
-|{{address.city}}|City
-|{{address.state}}|State
-|{{address.post_code}}|Zip code
-|{{address.county}}|County
-|{{address.country}}|Country
-|{{address.valid}}|Is address valid? (t or f)
-|{{address.within_city_limits}}|Is address within city limits? (t or f)
+|{{patron.prefix}}                         | Patron name prefix
+|{{patron.first_given_name}}               | Patron first name
+|{{patron.second_given_name}}              | Patron middle name
+|{{patron.family_name}}                    | Patron last name
+|{{patron.suffix}}                         | Patron name suffix
+|{{patron.card.barcode}}                   | Patron barcode
+|{{patron.usrname}}                        | Patron user name
+|{{patron.alias}}                          | Patron holds alias
+|{{patron.dob /| date:'M/d/yyyy'}}         | Date of birth (formatted)
+|{{patron.juvenile}}                       | Is patron juvenile? (t or f)
+|{{patron.ident_type.name()}}              | Primary identification type
+|{{patron.ident_value}}                    | Primary identification value
+|{{patron.ident_value2}}                   | Parent/guardian
+|{{patron.email}}                          | Email address
+|{{patron.day_phone}}                      | Main/day phone number
+|{{patron.evening_phone}}                  | Evening phone number
+|{{patron.other_phone}}                    | Other phone number
+|{{patron.home_ou.name()}}                 | Home library
+|{{patron.profile.name()}}                 | Permission group (profile type)
+|{{patron.expire_date /| date:'M/d/yyyy'}} | Expiration date (formatted)
+|{{patron.master_account}}                 | Is group lead account? (t or f)
+|{{patron.claims_returned_count}}          | Claims returned count
+|{{patron.net_access_level.name()}}        | Internet access level
+|{{patron.alert_message}}                  | Alert message
+|{{patron.pref_family_name}}                  | Patron Preferred Last Name
+|{{patron.pref_first_given_name}}             | Patron Preferred First Name
+|{{patron.pref_second_given_name}}            | Patron Preferred Middle Name
 |=========================================================
 
 |=========================================================
-|Tags in repeatable stat cats block  |Notes 
+|Tags in repeatable address block | Notes
 
-|{{entry.stat_cat.name}}|Stat cat name
-|{{entry.stat_cat_entry}}|Stat cat value
+|{{address.address_type}}         | Address type
+|{{address.street1}}              | Street (1)
+|{{address.street2}}              | Street (2)
+|{{address.city}}                 | City
+|{{address.state}}                | State
+|{{address.post_code}}            | Zip code
+|{{address.county}}               | County
+|{{address.country}}              | Country
+|{{address.valid}}                | Is address valid? (t or f)
+|{{address.within_city_limits}}   | Is address within city limits? (t or f)
+|=========================================================
+
+|=========================================================
+|Tags in repeatable stat cats block  | Notes 
+
+|{{entry.stat_cat.name}}             | Stat cat name
+|{{entry.stat_cat_entry}}            | Stat cat value
 |=========================================================
 
 

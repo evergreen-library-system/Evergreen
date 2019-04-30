@@ -90,7 +90,7 @@ For example, the portion of the Checkout print template below repeats every item
 that is checked out in HTML list format by means of the 'ng-repeat' in the li
 tag. 
 
-<<recipt_contents_reference.adoc, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
+<<receipt_contents_reference.adoc, Receipt Contents Reference>> is a list of most of the variables that you can use in your receipts.
 
 ------
 <ol>
@@ -238,14 +238,14 @@ once you import the receipts on the new machine.
 
 Exporting templates
 ^^^^^^^^^^^^^^^^^^^
-As you can only save a template on to the computer you are working on (*Save Locally*) you will
+As you can only save a template on to the computer you are working (*Save Locally*) on you will
 need to export the template if you have more than one computer that prints out
 receipts (i.e., more than one computer on the circulation desk, or another
 computer in the workroom that you use to checkin items or capture holds with)
 
 . Export Customized Templates.
 . Saves a “print_templates.json” file in the downloads folder.
-NOTE: You can rename the file to better track your changes.
+NOTE: You can rename a the file to better track your changes.
 
 Importing Templates
 ^^^^^^^^^^^^^^^^^^^
