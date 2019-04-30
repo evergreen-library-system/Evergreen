@@ -195,7 +195,19 @@ Hold Shelf Slip
 |{{patron.pref_second_given_name}}            | Preferred middle name
 |{{patron.pref_family_name}}                  | Preferred last name
 |{{patron.alias}}                             | Patron alias
+|{{patron.pref_family_name}}                  | Patron Preferred Last Name
+|{{patron.pref_first_given_name}}             | Patron Preferred First Name
+|{{patron.pref_second_given_name}}            | Patron Preferred Middle Name
 |=========================================================
+
+
+The following will show the preferred name in place of the standard name, if now preferred name is given, than uses the standard name.
+------
+<span ng-if="patron.pref_family_name">{{patron.pref_family_name}}</span><span ng-if="!patron.pref_family_name">{{patron.family_name}}</span>, 
+  <span ng-if="patron.pref_first_given_name">{{patron.pref_first_given_name}}</span><span ng-if="!patron.pref_first_given_name">{{patron.first_given_name}}</span> 
+  <span ng-if="patron.pref_second_given_name">{{patron.pref_second_given_name}}</span><span ng-if="!patron.pref_second_given_name">{{patron.second_given_name}}</span>
+------
+
 
 Hold Transit Slip
 ~~~~~~~~~~~~~~~~~
