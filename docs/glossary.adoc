@@ -1,0 +1,32 @@
+[glossary]
+Evergreen Glossary
+------------------
+
+
+[glossary]
+Age Protection:: 
+  Allows libraries to prevent holds on new books (on a copy by copy basis) from outside the owning library's branch or system for a designated amount of time.
+copy:: 
+  see Item
+ILS:: 
+  Integrated Library System
+ILL:: 
+  Inter-Library Loan
+item:: 
+  The actual item.
+Jabber:: 
+  A backbone message passing protocol
+KPAC:: 
+  Kids' OPAC. Alternate version of the Template Toolkit OPAC.
+LCCN:: 
+  Library of Congress Control Number
+OPAC:: 
+  Online Public Access Catalog.  The public view of the catalog
+OpenSRF:: 
+  An enterprise class Service Request Framework. It's purpose is to serve as a robust message routing network upon which one may build complex, scalable applications. To that end, OpenSRF attempts to be invisible to the application developer, while providing transparent load balancing and failover with minimal overhead.
+Statistical categories:: 
+  Allow libraries to associate locally interesting data with patrons and holdings. Also known as stat cats.
+TPAC:: 
+  Evergreen's Template Toolkit based OPAC.
+YAOUS:: 
+  Yet Another Org Unit Setting
