@@ -77,7 +77,8 @@ sub handler {
         my $handler = $module->new;
         $stat = $handler->process($r);
     } catch Error with {
-        $logger->error("processing RemoteAuth handler failed: @_");
+        my $err = shift;
+        $logger->error("processing RemoteAuth handler failed: $err");
         $stat = Apache2::Const::HTTP_INTERNAL_SERVER_ERROR;
     };
 
@@ -123,14 +124,17 @@ sub do_patron_auth {
 
     return $self->backend_error unless $e->checkauth;
 
-    # XXX
     my $args = {
-        type => 'opac',
+        type => 'opac', # XXX
         org => $org_unit,
         identifier => $id,
-        password => $password,
-        agent => 'remoteauth'
+        password => $password
     };
+
+    my $cuat = $e->retrieve_config_usr_activity_type($config->usr_activity_type);
+    if ($cuat) {
+        $args->{agent} = $cuat->ewho;
+    }
 
     my $response = $U->simplereq(
         'open-ils.auth',

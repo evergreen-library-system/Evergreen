@@ -12951,10 +12951,12 @@ SELECT  usr,
 			<field name="allow_inactive" reporter:datatype="bool"/>
 			<field name="allow_expired" reporter:datatype="bool"/>
 			<field name="block_list" reporter:datatype="text"/>
+			<field name="usr_activity_type" reporter:datatype="link"/>
 		</fields>
 		<links>
 			<link field="context_org" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="perm" reltype="has_a" key="id" map="" class="ppl"/>
+			<link field="usr_activity_type" reltype="has_a" key="id" map="" class="cuat"/>
 		</links>
 		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
 			<actions>

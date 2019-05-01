@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 9; # XXX
+use Test::More tests => 10; # XXX
 
 diag("Tests RemoteAuth patron auth/retrieval");
 
@@ -37,6 +37,7 @@ my $staff_login = $U->simplereq(
 );
 is($staff_login->{textcode}, 'SUCCESS', 'Staff login OK');
 my $e = new_editor( authtoken => $staff_login->{payload}->{authtoken} );
+$e->init;
 
 my $client = LWP::UserAgent->new;
 $client->ssl_opts( verify_hostname => 0 );
@@ -135,6 +136,8 @@ is( $basic_external, '403', 'Basic request for external user correctly returned 
 # - response: "+VALID" if auth succeeds
 
 
-# TODO: verify user activity based on the above tests
-
+# verify user activity based on the above tests
+my $user = $U->fetch_user_by_barcode( $valid->{barcode} );
+my $basic_activity = $e->search_actor_usr_activity([{usr => $user->id, etype => 1001}]);
+ok(scalar(@$basic_activity) > 0, 'Basic request for valid patron is recorded in user activity');
 

@@ -9,7 +9,8 @@ CREATE TABLE config.remoteauth_profile (
     restrict_to_org BOOLEAN NOT NULL DEFAULT TRUE,
     allow_inactive BOOL NOT NULL DEFAULT FALSE,
     allow_expired BOOL NOT NULL DEFAULT FALSE,
-    block_list TEXT
+    block_list TEXT,
+    usr_activity_type INT REFERENCES config.usr_activity_type(id) ON UPDATE CASCADE ON DELETE RESTRICT DEFERRABLE INITIALLY DEFERRED
 );
 
 CREATE OR REPLACE FUNCTION actor.permit_remoteauth (profile_name TEXT, userid BIGINT) RETURNS TEXT AS $func$
