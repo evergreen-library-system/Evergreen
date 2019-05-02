@@ -406,7 +406,7 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
     service.removeField = function (type, field) {
         var new_list = [];
         while (service[type].length) {
-            var f = service[type].pop();
+            var f = service[type].shift();
             if (field.index != f.index ) new_list.push(f);
         }
         new_list.forEach(function(f) {
