@@ -328,7 +328,6 @@ angular.module('egCoreMod')
 
         return angular.extend( args, {
             idl     : service[cls],
-            jtype   : 'inner',
             uplink  : args.link,
             classname: cls,
             struct  : n,
