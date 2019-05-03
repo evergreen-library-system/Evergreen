@@ -113,6 +113,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
             var t = tree;
             var join_path = '';
 
+            var last_jtype = '';
             item.path.forEach(function (p, i, a) {
                 var alias; // unpredictable hashes are fine for intermediate tables
 
@@ -138,9 +139,15 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
                     t = t.join[uplink_alias];
 
                     var djtype = 'inner';
-                    if (p.uplink.reltype != 'has_a') djtype = 'left';
+                    // we use LEFT JOINs for might_have and has_many, AND
+                    // also if our previous JOIN was a LEFT JOIN
+                    //
+                    // The last piece prevents later joins from limiting those
+                    // closer to the core table
+                    if (p.uplink.reltype != 'has_a' || last_jtype == 'left') djtype = 'left';
 
                     t.type = p.jtype || djtype;
+                    last_jtype = t.type;
                     t.key = p.uplink.key;
                 } else {
                     join_path = p.classname + '-' + p.classname;
@@ -271,10 +278,15 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
             }
         }
 
+        // preserve the old select order for the display cols
+        var sel_order = {};
+        template.data.select.map(function(val, idx) {
+            // set key to unique value easily derived from relcache
+            sel_order[val.relation + val.column.colname] = idx;
+        });
+
         template.data['display_cols'] = [];
         template.data['filter_cols'] = [];
-
-        var dispcol_index = 0;
 
         function _convertPath(orig, rel) {
             var newPath = [];
@@ -291,13 +303,16 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
                     label : egCore.idl.classes[cls].label
                 }
                 if (prev_link != '') {
-                    args['from'] = prev_link.split(/-/)[0];
-                    var prev_col = prev_link.split(/-/)[1].split(/>/)[0];
+                    var link_parts = prev_link.split(/-/);
+                    args['from'] = link_parts[0];
+                    var join_parts = link_parts[1].split(/>/);
+                    var prev_col = join_parts[0];
                     egCore.idl.classes[prev_link.split(/-/)[0]].fields.forEach(function(f) {
                         if (prev_col == f.name) {
                             args['link'] = f;
                         }
                     });
+                    args['jtype'] = join_parts[1]; // frequently undefined
                 }
                 newPath.push(egCore.idl.classTree.buildNode(cls, args));
                 prev_link = link;
@@ -306,55 +321,52 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
 
         }
 
-        rels.map(function(rel) {
-            for (var col in rel.fields.dis_tab) {
-                var orig = rel.fields.dis_tab[col];
-                var display_col = {
-                    name        : orig.colname,
-                    path        : _convertPath(orig, rel),
-                    index       : dispcol_index++,
-                    label       : orig.alias,
-                    datatype    : orig.datatype,
-                    doc_text    : orig.field_doc,
-                    transform   : {
-                                    label     : orig.transform_label,
-                                    transform : orig.transform,
-                                    aggregate : orig.aggregate
-                                  },
-                    path_label  : rel.label
-                };
-                template.data.display_cols.push(display_col);
+        function _buildCols(rel, tab_type, col_idx) {
+            if (tab_type == 'dis_tab') {
+                col_type = 'display_cols';
+            } else {
+                col_type = 'filter_cols';
             }
-        });
 
-        rels.map(function(rel) {
-            for (var col in rel.fields.filter_tab) {
-                var orig = rel.fields.filter_tab[col];
-                var filter_col = {
+            for (var col in rel.fields[tab_type]) {
+                var orig = rel.fields[tab_type][col];
+                var col = {
                     name        : orig.colname,
                     path        : _convertPath(orig, rel),
-                    index       : dispcol_index++,
                     label       : orig.alias,
                     datatype    : orig.datatype,
                     doc_text    : orig.field_doc,
-                    operator    : {
-                                    op        : orig.op,
-                                    label     : orig.op_label
-                                  },
                     transform   : {
                                     label     : orig.transform_label,
                                     transform : orig.transform,
-                                    aggregate : orig.aggregate
+                                    aggregate : (orig.aggregate == "undefined") ? undefined : orig.aggregate  // old structure sometimes has undefined as a quoted string
                                   },
                     path_label  : rel.label
                 };
-                if ('value' in orig.op_value) {
-                    filter_col['value'] = orig.op_value.value;
+                if (col_type == 'filter_cols') {
+                    col['operator'] = {
+                        op        : orig.op,
+                        label     : orig.op_label
+                    };
+                    col['index'] = col_idx++;
+                    if ('value' in orig.op_value) {
+                        col['value'] = orig.op_value.value;
+                    }
+                } else { // display
+                    col['index'] = sel_order[rel.alias + orig.colname];
                 }
-                template.data.filter_cols.push(filter_col);
+
+                template.data[col_type].push(col);
             }
+        }
+
+        rels.map(function(rel) {
+            _buildCols(rel, 'dis_tab');
+            _buildCols(rel, 'filter_tab', template.data.filter_cols.length);
+            _buildCols(rel, 'aggfilter_tab', template.data.filter_cols.length);
         });
 
+        template.data['display_cols'].sort(function(a, b){return a.index - b.index});
     }
 
     function loadTemplate () {
@@ -675,7 +687,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
             $scope.selected_source = node;
             $scope.currentPathLabel = $scope.currentPath.map(function(n,i){
                 var l = n.label
-                if (i) l += ' (' + n.jtype + ')';
+                if (i && n.jtype) l += ' (' + n.jtype + ')';
                 return l;
             }).join( ' -> ' );
             angular.forEach( node.fields, function (f) {
