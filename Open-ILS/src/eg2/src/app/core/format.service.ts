@@ -116,7 +116,15 @@ export class FormatService {
                 if (params.datePlusTime) {
                     fmt = this.dateTimeFormat || 'short';
                 }
-                return this.datePipe.transform(date, fmt);
+                let tz;
+                if (params.idlField === 'dob') {
+                    // special case: since dob is the only date column that the
+                    // IDL thinks of as a timestamp, the date object comes over
+                    // as a UTC value; apply the correct timezone rather than the
+                    // local one
+                    tz = 'UTC';
+                }
+                return this.datePipe.transform(date, fmt, tz);
 
             case 'money':
                 return this.currencyPipe.transform(value);
