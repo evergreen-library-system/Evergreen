@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1163', :eg_version); -- JBoyer/Dyrcona/bshum/JBoyer
 
 CREATE OR REPLACE FUNCTION vandelay.flatten_marc_hstore(
     record_xml TEXT
