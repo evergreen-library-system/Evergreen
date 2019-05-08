@@ -2,12 +2,14 @@
 <div ng-cloak class="patron-summary-grid-wrapper">
   <div ng-show="patron()" id="patron-summary-grid">
     <div class="row patron-summary-pref-name"
-      ng-if="patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name()">
+      ng-if="patron().pref_prefix() || patron().pref_family_name() || patron().pref_first_given_name() || patron().pref_second_given_name() || patron().pref_suffix()">
       <div class="col-md-12">
-        [% l('[_1], [_2] [_3] (Preferred)', 
+        [% l('[_1] [_2], [_3] [_4] [_5] (Preferred)', 
+          '{{patron().pref_prefix() || patron().prefix()}}',
           '{{patron().pref_family_name() || patron().family_name()}}',
           '{{patron().pref_first_given_name() || patron().first_given_name()}}',
-          '{{patron().pref_second_given_name()}}') 
+          '{{patron().pref_second_given_name()}}',
+          '{{patron().pref_suffix() || patron().suffix()}}')
         %]
       </div>
     </div>

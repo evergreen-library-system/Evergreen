@@ -98,10 +98,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
         <div class="flex-row">
           <div class="flex-cell"
           ng-class="{'patron-summary-alert' : hasAlerts()}">
-            [% l('[_1], [_2] [_3]', 
+            [% l('[_1] [_2], [_3] [_4] [_5]', 
+                '{{patron().prefix()}}',
                 '{{patron().family_name()}}',
                 '{{patron().first_given_name()}}',
-                '{{patron().second_given_name()}}') %]
+                '{{patron().second_given_name()}}',
+                '{{patron().suffix()}}') %]
                <span ng-if="patron().name_keywords()"> <a title="[% l('Name keywords: ') %]{{patron().name_keywords()}}" class="glyphicon glyphicon-tags"></a>
           </div>
 
