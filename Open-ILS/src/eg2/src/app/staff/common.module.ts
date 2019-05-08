@@ -20,7 +20,7 @@ import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.compo
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validator.directive';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -41,11 +41,11 @@ import {ReactiveFormsModule} from '@angular/forms';
     BibSummaryComponent,
     TranslateComponent,
     AdminPageComponent,
-    EgHelpPopoverComponent
+    EgHelpPopoverComponent,
+    DatetimeValidatorDirective,
   ],
   imports: [
     EgCommonModule,
-    ReactiveFormsModule,
     CommonWidgetsModule,
     GridModule
   ],
@@ -66,7 +66,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     BibSummaryComponent,
     TranslateComponent,
     AdminPageComponent,
-    EgHelpPopoverComponent
+    EgHelpPopoverComponent,
+    DatetimeValidatorDirective,
   ]
 })
 

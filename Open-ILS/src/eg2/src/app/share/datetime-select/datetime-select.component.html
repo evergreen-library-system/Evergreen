@@ -1,0 +1,56 @@
+<span class="material-icons" *ngIf="controlDir && !controlDir.control.valid">error</span>
+<form
+  [formGroup]="dateTimeForm"
+  class="input-group"
+  ngbDropdown
+  [autoClose]="false"
+  #dt="ngbDropdown">
+  <input type="datetime"
+    [attr.id]="domId.length ? domId : null" 
+    name="{{fieldName}}"
+    class="form-control datetime-input"
+    formControlName="stringVersion"
+    (focus)="dt.open()"
+    [attr.disabled]="readOnly ? true : null"
+    [required]="required"
+    (touch)="onTouched()">
+  <div class="input-group-btn">
+    <button class="btn btn-primary" ngbDropdownToggle
+      aria-label="Select date and time" i18n-aria-label>
+      <span class="material-icons mat-icon-in-button">calendar_today</span>
+    </button>
+  </div>
+  <div ngbDropdownMenu>
+    <div i18n *ngIf="readOnly">
+      Cannot edit this date or time.
+    </div>
+    <div *ngIf="!readOnly">
+      <div *ngIf="controlDir && controlDir.control.errors"
+        role="alert"
+        class="alert alert-danger">
+        <span class="material-icons">error</span>
+	{{firstError(controlDir.control.errors)}}
+      </div>
+      <ngb-datepicker #datePicker
+        formControlName="date"
+        [footerTemplate]="time"
+        (touch)="onTouched()">
+      </ngb-datepicker>
+    </div>
+  </div>
+
+  <ng-template #time>
+    <ngb-timepicker name="time"
+      [meridian]="true"
+      formControlName="time"
+      [spinners]="true"
+      [hourStep]="1"
+      [minuteStep]="minuteStep || 30"
+      (touch)="onTouched()">
+    </ngb-timepicker>
+    <span *ngIf="showTZ && timezone" class="badge badge-info">{{ timezone }}</span>
+    <span *ngIf="showTZ && !timezone" class="badge badge-warning" i18n>Timezone not set</span>
+    <button i18n class="btn btn-success" (click)="dt.close()">Choose time</button>
+  </ng-template>
+
+</form>

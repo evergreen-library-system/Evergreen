@@ -4,7 +4,7 @@
 import {CommonModule} from '@angular/common';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {RouterModule} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {EgCoreModule} from '@eg/core/core.module';
 
@@ -41,6 +41,7 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     NgbModule,
     EgCoreModule
@@ -51,6 +52,7 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
     NgbModule,
     FormsModule,
     EgCoreModule,
+    ReactiveFormsModule,
     PrintComponent,
     DialogComponent,
     AlertDialogComponent,

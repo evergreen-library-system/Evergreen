@@ -134,10 +134,10 @@ h5 {font-size: .95rem}
  * Required valid fields are left-border styled in green-ish.
  * Invalid fields are left-border styled in red-ish.
  */
-.form-validated .ng-valid[required], .form-validated .ng-valid.required {
+.form-validated .ng-valid[required], .form-validated .ng-valid.required, input[formcontrolname].ng-valid {
   border-left: 5px solid #78FA89;
 }
-.form-validated .ng-invalid:not(form) {
+.form-validated .ng-invalid:not(form), input[formcontrolname].ng-invalid {
   border-left: 5px solid #FA787E;
 }
 
@@ -195,3 +195,19 @@ h5 {font-size: .95rem}
  * for the upstream issue that necessitates this.
  */
 body>.dropdown-menu {z-index: 2100;}
+
+/* Styles for eg-daterange-select that don't work
+ * in the component's CSS file.
+ */
+.ngb-dp-day:not(.disabled) .daterange-day.focused {
+  background-color: #e6e6e6;
+}
+.ngb-dp-day:not(.disabled) .daterange-day.range, .ngb-dp-day:not(.disabled) .daterange-day:hover {
+  background-color: #129a78;
+  color: white;
+  font-size: 1.4em;
+}
+.ngb-dp-day:not(.disabled) .daterange-day.faded {
+  background-color: #c9efe4;
+  color: black;
+}

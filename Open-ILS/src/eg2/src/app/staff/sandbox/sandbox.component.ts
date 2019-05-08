@@ -14,11 +14,13 @@ import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {NgbDate} from '@ng-bootstrap/ng-bootstrap';
 import {FormGroup, FormControl} from '@angular/forms';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FormatService} from '@eg/core/format.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
+import * as Moment from 'moment-timezone';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -97,6 +99,8 @@ export class SandboxComponent implements OnInit {
     // cross-tab communications example
     private sbChannel: any;
     sbChannelText: string;
+
+    myTimeForm: FormGroup;
 
     constructor(
         private idl: IdlService,
@@ -251,6 +255,17 @@ export class SandboxComponent implements OnInit {
         b.cancel_time('2019-03-25T11:07:59-0400');
         this.bresvEditor.mode = 'create';
         this.bresvEditor.record = b;
+
+        this.myTimeForm = new FormGroup({
+            'datetime': new FormControl(Moment([]), (c: FormControl) => {
+                // An Angular custom validator
+                if (c.value.year() < 2019) {
+                    return { tooLongAgo: 'That\'s before 2019' };
+                    } else {
+                        return null;
+                    }
+            } )
+        });
     }
 
     sbChannelHandler = msg => {
@@ -381,6 +396,18 @@ export class SandboxComponent implements OnInit {
                 }
             );
         });
+    }
+
+    allFutureDates(date: NgbDate, current: { year: number; month: number; }) {
+        const currentTime = new Date();
+        const today = new NgbDate(currentTime.getFullYear(), currentTime.getMonth() + 1, currentTime.getDate());
+        return date.after(today);
+    }
+
+    sevenDaysAgo() {
+        const d = new Date();
+        d.setDate(d.getDate() - 7);
+        return d;
     }
 }
 

@@ -219,6 +219,26 @@
 </eg-grid>
 
 <br/><br/>
+<div class="row">
+  <div class="col">
+    <eg-daterange-select
+      ngModel #myRange="ngModel"
+      [initialRangeStart]="sevenDaysAgo()"
+      [initialRangeLength]="5"
+      [markDisabled]="allFutureDates">
+    </eg-daterange-select>
+    Your range is: {{myRange.value | json}}
+  </div>
+  <div class="col">
+    <form [formGroup]="myTimeForm">
+      <eg-datetime-select
+        formControlName="datetime">
+      </eg-datetime-select>
+      Your datetime is: {{myTimeForm.get('datetime').value | json}}
+    </form>
+  </div>
+</div>
+<br/><br/>
 
 <h4>Grid with filtering</h4>
 <eg-grid #acpGrid idlClass="acp"

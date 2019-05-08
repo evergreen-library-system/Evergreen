@@ -1,0 +1,12 @@
+.daterange-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+}
+
+.today {
+  border: solid 2px #129a78;
+  border-radius: 5px;
+}
