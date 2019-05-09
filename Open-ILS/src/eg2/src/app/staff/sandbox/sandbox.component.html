@@ -155,6 +155,11 @@
   <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
     [action]="complimentEvergreen" [disableOnRows]="notOneSelectedRow">
   </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action [isSeparator]="true">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Another Action" i18n-label
+    (actionClick)="complimentEvergreen2($event)">
+  </eg-grid-toolbar-action>
   <eg-grid-column name="test" [cellTemplate]="cellTmpl" 
     [cellContext]="btGridTestContext" [sortable]="false">
   </eg-grid-column>

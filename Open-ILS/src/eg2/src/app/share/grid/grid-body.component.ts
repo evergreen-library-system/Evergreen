@@ -91,9 +91,7 @@ export class GridBodyComponent implements OnInit {
         if (this.context.disableMultiSelect) {
             this.context.selectOneRow(index);
         } else if ($event.ctrlKey || $event.metaKey /* mac command */) {
-            if (this.context.toggleSelectOneRow(index)) {
-                this.context.lastSelectedIndex = index;
-            }
+            this.context.toggleSelectOneRow(index);
 
         } else if ($event.shiftKey) {
             // TODO shift range click
@@ -110,10 +108,6 @@ export class GridBodyComponent implements OnInit {
 
     onRowDblClick(row: any) {
         this.grid.onRowActivate.emit(row);
-    }
-
-    performAction(action: GridToolbarAction) {
-        action.action(this.context.getSelectedRows());
     }
 
     // Apply row selection, track the new menu if needed,
