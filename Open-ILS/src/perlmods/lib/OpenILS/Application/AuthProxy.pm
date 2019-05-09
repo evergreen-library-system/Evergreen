@@ -336,23 +336,10 @@ sub _auth_internal {
 
 sub _do_login {
     my $args = shift;
-    my $authenticated = shift;
-
-    my $seeder = $args->{'username'} ? $args->{'username'} : $args->{'barcode'};
-    my $seed =
-      OpenSRF::AppSession->create("open-ils.auth")
-      ->request( 'open-ils.auth.authenticate.init', $seeder )->gather(1);
-
-    return OpenILS::Event->new( 'LOGIN_FAILED' )
-      unless $seed;
-
-    my $real_password = $args->{'password'};
-    $args->{'password'} = md5_hex( $seed . md5_hex($real_password) );
     my $response = OpenSRF::AppSession->create("open-ils.auth")->request(
-        'open-ils.auth.authenticate.complete',
+        'open-ils.auth.login',
         $args
     )->gather(1);
-    $args->{'password'} = $real_password;
 
     return OpenILS::Event->new( 'LOGIN_FAILED' )
       unless $response;
