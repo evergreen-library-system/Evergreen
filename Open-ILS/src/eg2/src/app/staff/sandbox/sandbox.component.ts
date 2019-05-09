@@ -136,6 +136,11 @@ export class SandboxComponent implements OnInit {
         });
     }
 
+    // Example of click handler for row action
+    complimentEvergreen2(rows: IdlObject[]) {
+        alert('I know, right?');
+    }
+
     openEditor() {
         this.fmRecordEditor.open({size: 'lg'}).then(
             ok => { console.debug(ok); },

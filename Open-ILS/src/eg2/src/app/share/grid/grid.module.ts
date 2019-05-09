@@ -9,6 +9,7 @@ import {GridToolbarComponent} from './grid-toolbar.component';
 import {GridToolbarButtonComponent} from './grid-toolbar-button.component';
 import {GridToolbarCheckboxComponent} from './grid-toolbar-checkbox.component';
 import {GridToolbarActionComponent} from './grid-toolbar-action.component';
+import {GridToolbarActionsMenuComponent} from './grid-toolbar-actions-menu.component';
 import {GridColumnConfigComponent} from './grid-column-config.component';
 import {GridColumnWidthComponent} from './grid-column-width.component';
 import {GridPrintComponent} from './grid-print.component';
@@ -26,6 +27,7 @@ import {GridPrintComponent} from './grid-print.component';
         GridToolbarButtonComponent,
         GridToolbarCheckboxComponent,
         GridToolbarActionComponent,
+        GridToolbarActionsMenuComponent,
         GridColumnConfigComponent,
         GridColumnWidthComponent,
         GridPrintComponent

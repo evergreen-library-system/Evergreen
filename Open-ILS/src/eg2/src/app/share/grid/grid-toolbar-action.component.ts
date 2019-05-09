@@ -36,7 +36,7 @@ export class GridToolbarActionComponent implements OnInit {
     @Input() disableOnRows: (rows: any[]) => boolean;
 
     // If true, render a separator bar only, no action link.
-    @Input() separator: boolean;
+    @Input() isSeparator: boolean;
 
     // get a reference to our container grid.
     constructor(@Host() private grid: GridComponent) {
@@ -60,6 +60,7 @@ export class GridToolbarActionComponent implements OnInit {
         this.toolbarAction.group = this.group;
         this.toolbarAction.action = this.action;
         this.toolbarAction.disabled = this.disabled;
+        this.toolbarAction.isSeparator = this.isSeparator;
         this.toolbarAction.disableOnRows = this.disableOnRows;
         this.grid.context.toolbarActions.push(this.toolbarAction);
     }

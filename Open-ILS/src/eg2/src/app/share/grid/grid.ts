@@ -770,6 +770,7 @@ export class GridContext {
         }
 
         this.rowSelector.select(index);
+        this.lastSelectedIndex = index;
         return true;
     }
 
@@ -1035,7 +1036,7 @@ export class GridToolbarAction {
     group: string;
     disabled: boolean;
     isGroup: boolean; // used for group placeholder entries
-    separator: boolean;
+    isSeparator: boolean;
     disableOnRows: (rows: any[]) => boolean;
 }
 

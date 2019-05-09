@@ -77,26 +77,10 @@ export class GridToolbarComponent implements OnInit {
         );
     }
 
-    performAction(action: GridToolbarAction) {
-        if (action.isGroup || action.separator) {
-            return; // These don't perform actions
-        }
-        const rows = this.gridContext.getSelectedRows();
-        action.onClick.emit(rows);
-        if (action.action) { action.action(rows); }
-    }
-
     performButtonAction(button: GridToolbarButton) {
         const rows = this.gridContext.getSelectedRows();
         button.onClick.emit();
         if (button.action) { button.action(); }
-    }
-
-    shouldDisableAction(action: GridToolbarAction) {
-        if (action.disableOnRows) {
-            return action.disableOnRows(this.gridContext.getSelectedRows());
-        }
-        return false;
     }
 
     printHtml() {
