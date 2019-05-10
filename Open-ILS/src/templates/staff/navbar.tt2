@@ -25,7 +25,7 @@
     </button>
   </div>
 
-<div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
+  <div class="navbar-collapse collapse" ng-class="!navCollapsed && 'in'">
     <ul class="nav navbar-nav">
       <li><a href='/eg2/staff/' title="[% l('Home') %]" target="_self"
         class="glyphicon glyphicon-home"></a><li>
@@ -221,7 +221,7 @@
           <li>
             <a href="./cat/item/search" target="_self">
               <span class="glyphicon glyphicon-saved" aria-hidden="true"></span>
-              <span>[% l('Item Status') %]</span>
+              <span>[% l('Item Status') %][% l('- F5') %]</span>
             </a>
           </li>
           <li>
