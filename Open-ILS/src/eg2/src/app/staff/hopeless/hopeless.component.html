@@ -1,0 +1,25 @@
+
+<eg-staff-banner bannerText="Hopeless Holds" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix prefix="Hopeless Holds">
+</eg-title>
+
+<div class="input-group"><div class="input-group-prepend">
+  <div class="input-group-text" i18n>Hopeless Date, Start Range:</div>
+  <eg-date-select [initialIso]="startDate" (onChangeAsDate)="changeStartDate($event)">
+  </eg-date-select>
+  <div class="input-group-text" i18n>Hopeless Date, End Range:</div>
+  <eg-date-select [initialIso]="endDate" (onChangeAsDate)="changeEndDate($event)">
+  </eg-date-select>
+</div></div>
+
+<eg-holds-grid
+  hopeless="true" [showHopelessAfter]="startDate" [showHopelessBefore]="endDate"
+  preFetchSetting="hopeless.holds.prefetch"
+  persistKey="hopeless.wide_holds"
+  [defaultSort]="[{name:'request_time',dir:'asc'}]"
+  [initialPickupLib]="workstation_lib"
+  showFields="id,request_time,ucard_barcode,pl_shortname,hold_type,holdable_formats,title,p_label,hold_status,hopeless_date"
+>
+</eg-holds-grid>
+

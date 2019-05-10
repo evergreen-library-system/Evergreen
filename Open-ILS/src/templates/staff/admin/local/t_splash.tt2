@@ -23,6 +23,7 @@
     ,[ l('Group Penalty Thresholds'), "./admin/local/permission/grp_penalty_threshold" ]
     ,[ l('Hold Policies'), "./admin/local/config/hold_matrix_matchpoint" ]
     ,[ l('Holdings Template Editor'), "./cat/volcopy/edit_templates" ]
+    ,[ l('Hopeless Holds'), "/eg2/staff/hopeless" ]
     ,[ l('Item Alert Suppression'), "./admin/local/actor/copy_alert_suppress" ]
     ,[ l('Item Alert Types'), "./admin/local/config/copy_alert_types" ]
     ,[ l('Item Tags'), "./admin/local/asset/copy_tag" ]

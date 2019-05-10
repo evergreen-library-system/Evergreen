@@ -2142,6 +2142,9 @@ sub wide_hold_data {
     my $last_captured_hold = delete($$restrictions{last_captured_hold}) || 'false';
     $last_captured_hold = $last_captured_hold eq 'true' ? 1 : 0;
 
+    # option to filter for hopeless holds by date range
+    my $hopeless_holds = delete($$restrictions{hopeless_holds}) || 'false';
+
     my $initial_condition = 'TRUE';
     if ($last_captured_hold) {
         $initial_condition = <<"        SQL";
@@ -2154,6 +2157,13 @@ sub wide_hold_data {
                   LIMIT 1
             )))
         SQL
+    }
+
+    if (ref($hopeless_holds) =~ /HASH/ && $$hopeless_holds{start_date} && $$hopeless_holds{end_date}) {
+        my $start_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($$hopeless_holds{start_date}));
+        my $end_date = DateTime::Format::ISO8601->parse_datetime(clean_ISO8601($$hopeless_holds{end_date}));
+        my $hopeless_condition = "(frozen IS FALSE AND h.hopeless_date >= '$start_date' AND h.hopeless_date <= '$end_date')";
+        $initial_condition .= " AND $hopeless_condition";
     }
 
     my $select = <<"    SQL";

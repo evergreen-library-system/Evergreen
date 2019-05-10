@@ -33,6 +33,7 @@
 
     <eg-grid #holdsGrid [dataSource]="gridDataSource" [sortable]="true"
       [useLocalSort]="enablePreFetch" [cellTextGenerator]="cellTextGenerator"
+      [showFields]="showFields"
       [multiSortable]="true" [persistKey]="persistKey"
       (onRowActivate)="showDetail($event)">
 
@@ -83,6 +84,20 @@
       <eg-grid-toolbar-action
         i18-group group="Hold" i18n-label label="Print Holds"
         (onClick)="printHolds()"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action *ngIf="hopeless"
+        i18-group group="Item" i18n-label label="View/Place Orders"
+        [disableOnRows]="metaRecordHoldsSelected"
+        (onClick)="showOrder($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action *ngIf="hopeless"
+        i18-group group="Item" i18n-label label="Add Holdings"
+        [disableOnRows]="metaRecordHoldsSelected"
+        (onClick)="addVolume($event)"></eg-grid-toolbar-action>
+
+      <eg-grid-toolbar-action *ngIf="hopeless"
+        i18-group group="Item" i18n-label label="Show in Catalog"
+        (onClick)="showTitle($event)"></eg-grid-toolbar-action>
 
       <eg-grid-column i18n-label label="Hold ID" path='id' [index]="true" datatype="id">
       </eg-grid-column>

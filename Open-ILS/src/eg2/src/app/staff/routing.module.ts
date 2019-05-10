@@ -52,6 +52,9 @@ const routes: Routes = [{
     loadChildren: () =>
       import('./sandbox/sandbox.module').then(m => m.SandboxModule)
   }, {
+    path: 'hopeless',
+    loadChildren : '@eg/staff/hopeless/hopeless.module#HopelessModule'
+  }, {
     path: 'admin',
     loadChildren: () =>
       import('./admin/routing.module').then(m => m.AdminRoutingModule)
