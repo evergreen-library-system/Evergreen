@@ -879,6 +879,16 @@ sub fine_items {
         my $author;
         my $line;
 
+        my $fee_type;
+
+        if ($xact->last_billing_type =~ /^Lost/) {
+            $fee_type = 'LOST';
+        } elsif ($xact->last_billing_type =~ /^Overdue/) {
+            $fee_type = 'FINE';
+        } else {
+            $fee_type = 'FEE';
+        }
+
         if ($xact->xact_type eq 'circulation') {
             my $e = OpenILS::SIP->editor();
             my $circ = $e->retrieve_action_circulation([
@@ -919,18 +929,17 @@ sub fine_items {
             $line = $xact->balance_owed . " " . $xact->last_billing_type . " ";
 
             if ($xact->xact_type eq 'circulation') {
-                $line .= "$title/$author";
+                $line .= "$title / $author";
             } else {
                 $line .= $xact->last_billing_note;
             }
 
         } elsif ($AV_format eq "3m" or $AV_format eq "swyer_a") {
 
-            $line = $xact->id . ' $' . $xact->balance_owed .
-                ' "FINE" ' . $xact->last_billing_type . ' ';
+            $line = $xact->id . ' $' . $xact->balance_owed . " \"$fee_type\" ";
 
             if ($xact->xact_type eq 'circulation') {
-                $line .= "$title/$author";
+                $line .= "$title";
             } else {
                 $line .= $xact->last_billing_note;
             }
@@ -939,7 +948,7 @@ sub fine_items {
 
             $line =   "Charge-Number: " . $xact->id;
             $line .=  ", Amount-Due: "  . $xact->balance_owed;
-            $line .=  ", Fine-Type: FINE";
+            $line .=  ", Fine-Type: $fee_type";
 
             if ($xact->xact_type eq 'circulation') {
                 $line .= ", Title: $title";
