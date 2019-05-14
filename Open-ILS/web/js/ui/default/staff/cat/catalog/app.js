@@ -181,24 +181,29 @@ function($scope , $routeParams , $location , $q , egCore ) {
 
         .then(function(resp) { // get_barcodes
 
-            if (evt = egCore.evt.parse(resp)) {
-                alert(evt); // FIXME
-                return;
+            if (resp.count) {
+                return $q.when(resp);
+            } else {
+                // Search again including deleted records
+                return egCore.net.request('open-ils.search', 
+                    'open-ils.search.biblio.tcn', args.record_tcn, true);
             }
 
-            if (!resp.count) {
+        }).then(function(resp2) {
+
+            if (!resp2.count) {
                 $scope.recordNotFound = args.record_tcn;
                 $scope.selectMe = true;
                 return;
             }
 
-            if (resp.count > 1) {
+            if (resp2.count > 1) {
                 $scope.moreRecordsFound = args.record_tcn;
                 $scope.selectMe = true;
                 return;
             }
 
-            var record_id = resp.ids[0];
+            var record_id = resp2.ids[0];
             return loadRecord(record_id);
         });
     }
