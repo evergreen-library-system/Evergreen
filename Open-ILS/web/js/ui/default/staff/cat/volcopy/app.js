@@ -682,7 +682,7 @@ function(egCore , $q) {
                 '</div>'+
                 '<div class="col-xs-2">'+
                     '<input class="form-control" type="text" ng-change="updateLabel()" ng-model="label"/>'+
-                    '<div class="label label-danger" ng-if="empty_label">{{empty_label_string}}</div>'+
+                    '<div class="label label-danger" ng-if="empty_label && require_label">{{empty_label_string}}</div>'+
                 '</div>'+
                 '<div class="col-xs-1">'+
                     '<select class="form-control" ng-model="suffix" ng-change="updateSuffix()" ng-options="s.label() for s in suffix_list"></select>'+
@@ -700,6 +700,9 @@ function(egCore , $q) {
                 if (!$scope.callNumber.label()) $scope.callNumber.empty_label = true;
 
                 $scope.empty_label = false;
+                egCore.org.settings('cat.require_call_number_labels').then(function(res) {
+                    $scope.require_label = res['cat.require_call_number_labels'];
+                });
                 $scope.empty_label_string = window.empty_label_string;
 
                 $scope.idTracker = function (x) { if (x && x.id) return x.id() };
@@ -1092,6 +1095,10 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             alerts : true
         }
     };
+
+    egCore.org.settings('cat.require_call_number_labels').then(function(res) {
+        $scope.require_label = res['cat.require_call_number_labels'];
+    });
 
     $scope.new_lib_to_add = egCore.org.get(egCore.auth.user().ws_ou());
     $scope.changeNewLib = function (org) {
@@ -1793,10 +1800,13 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 itemSvc.copies,
                 function (i) {
                     if (!$scope.only_vols) {
-                        if (i.duplicate_barcode || i.empty_barcode || i.call_number().empty_label) {
+                        if (i.duplicate_barcode || i.empty_barcode) {
                             can_save = false;
                         }
-                    } else if (i.call_number().empty_label) {
+                        if (i.call_number().empty_label && $scope.require_label) {
+                            can_save = false;
+                        }
+                    } else if (i.call_number().empty_label && $scope.require_label) {
                         can_save = false;
                     }
                 }
