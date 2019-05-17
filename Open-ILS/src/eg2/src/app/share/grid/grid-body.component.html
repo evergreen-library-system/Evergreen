@@ -14,7 +14,13 @@
 
     <ng-container *ngIf="!context.disableSelect">
       <div class="eg-grid-cell eg-grid-checkbox-cell eg-grid-cell-skinny">
-        <input type='checkbox' [(ngModel)]="context.rowSelector.indexes[context.getRowIndex(row)]">
+        <input type='checkbox' [(ngModel)]="context.rowSelector.indexes[context.getRowIndex(row)]"
+          #rowContextMenu="ngbPopover"
+          popoverTitle="Actions for Selected Rows" i18n-popoverTitle
+          (contextmenu)="onRowContextClick($event, row, rowContextMenu)"
+          [ngbPopover]="contextMenu"
+          placement="right"
+          triggers="manual">
       </div>
     </ng-container>
     <div class="eg-grid-cell eg-grid-number-cell eg-grid-cell-skinny">
