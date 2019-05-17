@@ -62,8 +62,6 @@ export class StaffComponent implements OnInit {
         this.route.data.subscribe((data: {staffResolver: any}) => {
             // Data fetched via StaffResolver is available here.
         });
-
-
     }
 
     /**
@@ -108,11 +106,26 @@ export class StaffComponent implements OnInit {
         this.keys.fire(evt);
     }
 
+    /**
+     * Make sure to fire the contextmenu Event on Shift+F10
+     */
+    fireContextMenuEvent(): void {
+        let event = new MouseEvent("contextmenu", {
+            bubbles: true,
+            cancelable: false,
+            view: window,
+            button: 2,
+            buttons: 0,
+        });
+        document.activeElement.dispatchEvent(event);
+    };
+
+
+
     /*
     @ViewChild('egAccessKeyInfo')
     private keyComponent: AccessKeyInfoComponent;
     */
 
 }
-
 

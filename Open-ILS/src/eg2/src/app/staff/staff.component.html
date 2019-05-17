@@ -13,7 +13,11 @@
     keyDesc="Display AccessKey Info Dialog" i18n-keyDesc
     (click)="egAccessKeyInfo.open()">
 </a>
+<a egAccessKey keyCtx="base"
+    keySpec="shift+f10" i18n-keySpec
+    keyDesc="Display Context Menu" i18n-keyDesc
+    (click)="fireContextMenuEvent()">
+</a>
 
 <!-- global toast alerts -->
 <eg-toast></eg-toast>
-
