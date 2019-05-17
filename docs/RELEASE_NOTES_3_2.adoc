@@ -3,6 +3,92 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.6
+---------------
+
+This release contains bug fixes improving on Evergreen 3.2.5.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Fixes a compatibility problem with the Item Status related to JavaScript arrow
+* functions (https://bugs.launchpad.net/evergreen/+bug/1821196[Bug #1821196])
+
+Booking
+^^^^^^^
+
+* Fixes a bug in the Booking URL path that failed with newer Apache
+* (https://bugs.launchpad.net/evergreen/+bug/1823387[Bug #1823387])
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes a display bug with the patron record Group Members list
+* (https://bugs.launchpad.net/evergreen/+bug/1642036[Bug #1642036])
+* Fixes title sort on the patron Items Out Screen
+* (https://bugs.launchpad.net/evergreen/+bug/1782014[Bug #1782014])
+* Fixes a refresh bug on the catalog record Holds View tab when moving between
+* records (https://bugs.launchpad.net/evergreen/+bug/1792188[Bug #1792188])
+* Fixes the ability to place holds from item buckets
+* (https://bugs.launchpad.net/evergreen/+bug/1806394[Bug #1806394])
+
+Cataloging
+^^^^^^^^^^
+
+* Fixes a bug where copy templates would not apply properly
+* (https://bugs.launchpad.net/evergreen/+bug/1788680[Bug #1788680])
+* Fixes the default cursor focus on the holdings editor
+* (https://bugs.launchpad.net/evergreen/+bug/1752968[Bug #1752968])
+* Fixes a bug that failed to honor the "Retain empty bib records"
+* (cat.bib.keep_on_empty) setting when transferring items
+* (https://bugs.launchpad.net/evergreen/+bug/1333893[Bug #1333893])
+* Fixes a bug that failed to include deleted bib records in TCN search
+* (https://bugs.launchpad.net/evergreen/+bug/1813633[Bug #1813633])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Added database indexes to speed up purging of Action Trigger event output
+* fields (https://bugs.launchpad.net/evergreen/+bug/1778940[Bug #1778940])
+* Fixes the help text in action_trigger_aggregator.pl related to the remote-acct
+* argument (https://bugs.launchpad.net/evergreen/+bug/1803729[Bug #1803729])
+* Adds a missing page title for the Closed Dates Editor
+* (https://bugs.launchpad.net/evergreen/+bug/1814943[Bug #1814943])
+* Adds a missing page title for the Statistical Popularity Badges admin page
+* (https://bugs.launchpad.net/evergreen/+bug/1826890[Bug #1826890])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.2.6 point release of
+Evergreen:
+
+* John Amundson
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Blake Graham-Henderson
+* Rogan Hamby
+* Millissa Macomber
+* Terran McCanna
+* Mike Rylander
+* Jane Sandberg
+* Janet Schrader
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Dan Wells
+* Beth Willis
+* John Yorio
+
+
 Evergreen 3.2.5
 ---------------
 
