@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-02-28 16:11-0400\n"
+"POT-Creation-Date: 2019-03-28 11:39-0400\n"
 "PO-Revision-Date: 2017-06-22 06:42+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-09 05:34+0000\n"
-"X-Generator: Launchpad (build 18894)\n"
+"X-Launchpad-Export-Date: 2019-03-29 05:36+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 
 #: 950.data.seed-values.sql:8354
 msgid "Estonia "
@@ -221,6 +221,14 @@ msgstr "El usuario tenía un número telefónico vespertino incorrecto"
 #: 950.data.seed-values.sql:7116
 msgid "Nahuatl"
 msgstr "Nahuatl"
+
+#: 950.data.seed-values.sql:994
+msgid ""
+"Allow a staff member to define where another staff member has their "
+"permissions"
+msgstr ""
+"Permitir que un miembro del personal para definir donde otro miembro del "
+"personal tiene sus permisos"
 
 #: 950.data.seed-values.sql:12247 950.data.seed-values.sql:12248
 msgid "Historical Hold Retention Start Date"
@@ -3623,10 +3631,6 @@ msgstr "Advertir cuando la cuenta patrón está a punto de caducar"
 msgid "notated music"
 msgstr "música anotada"
 
-#: 950.data.seed-values.sql:227
-msgid "Physical Description"
-msgstr ""
-
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
 msgstr "Songhai"
@@ -4088,6 +4092,10 @@ msgstr "El usuario puede crear una categoría estadística nuevo patrón"
 #: 950.data.seed-values.sql:6948
 msgid "Fanti"
 msgstr "Fanti"
+
+#: 950.data.seed-values.sql:19885
+msgid "Login via Websocket V2"
+msgstr ""
 
 #: 950.data.seed-values.sql:7243
 msgid "Tetum"
@@ -8330,6 +8338,10 @@ msgstr "3_meses_0_renovas"
 msgid "Gospel music"
 msgstr "Música gospel"
 
+#: 950.data.seed-values.sql:19882
+msgid "Login via Websocket V1"
+msgstr ""
+
 #: 950.data.seed-values.sql:7065
 msgid "Latvian"
 msgstr "Letón"
@@ -10828,6 +10840,10 @@ msgstr ""
 msgid "ADMIN_Z3950_SOURCE"
 msgstr "ADMIN_Z3950_SOURCE"
 
+#: 950.data.seed-values.sql:19888
+msgid "Verification via Websocket v1"
+msgstr ""
+
 #: 950.data.seed-values.sql:16541
 msgid "Apply this prefix to any auto-generated item barcodes"
 msgstr ""
@@ -11445,13 +11461,9 @@ msgstr ""
 msgid "No information supplied"
 msgstr "No hay información suministrada"
 
-#: 950.data.seed-values.sql:994
-msgid ""
-"Allow a staff member to define where another staff member has their "
-"permissions"
+#: 950.data.seed-values.sql:227
+msgid "Physical Description"
 msgstr ""
-"Permitir que un miembro del personal para definir donde otro miembro del "
-"personal tiene sus permisos"
 
 #: 950.data.seed-values.sql:3373
 msgid "Auto-Extend Grace Periods"
@@ -12907,6 +12919,10 @@ msgstr "Patrón Auto-Reg. Intervalo expirará"
 msgid "microfilm cartridge"
 msgstr "Cartucho de microfilm"
 
+#: 950.data.seed-values.sql:19891
+msgid "Verifiation via Websocket V2"
+msgstr ""
+
 #: 950.data.seed-values.sql:5374
 msgid ""
 "When an item has been marked lost and all fines/fees have been completely "
@@ -13163,6 +13179,10 @@ msgstr "Pago cantidad de umbral ¿Estás seguro? diálogo."
 #: 950.data.seed-values.sql:5637 950.data.seed-values.sql:5644
 msgid "Miscellaneous"
 msgstr "Varios"
+
+#: 950.data.seed-values.sql:19897
+msgid "Generic Verify"
+msgstr ""
 
 #: 950.data.seed-values.sql:3093
 msgid "Alert staff when the last copy for a record is being deleted"
@@ -14107,6 +14127,10 @@ msgstr "Cilindro de audio"
 #: 950.data.seed-values.sql:7106
 msgid "Manobo languages"
 msgstr "Idiomas Manobo"
+
+#: 950.data.seed-values.sql:19894
+msgid "Generic Login"
+msgstr ""
 
 #: 950.data.seed-values.sql:7242
 msgid "Terena"
