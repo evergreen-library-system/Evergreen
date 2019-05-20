@@ -32,7 +32,7 @@ to disallow an item from circulating.
 a data element in circulation policies.
 
 Shelving location data
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 * To get to the Shelving Locations Editor, navigate to *Administration ->
 Local Administration -> Shelving Locations Editor*. 

@@ -39,7 +39,7 @@ in the acquisitions module
 created in the acquisitions module
 
 Cancel/Delay reasons
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
 indexterm:[acquisitions,purchase order,cancellation]
 indexterm:[acquisitions,line item,cancellation]

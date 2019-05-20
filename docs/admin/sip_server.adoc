@@ -462,7 +462,7 @@ Don't be confused by the different branches that can show up in the same respons
 * AQ is the ``permanent location'', and 
 
 * CT is the _destination location_ (i.e., pickup lib for a hold or target lib for a transfer). 
-================
+===============
 
 anchor:sip_11-12_checkout[]
 

@@ -40,7 +40,7 @@ importing. Here is an example sql statement:
         int DEFAULT 2, ident_type int, home_ou int, claims_returned_count int DEFAULT 
 		0, usrname text, net_access_level int DEFAULT 2, password text
     ); 
------------------------------------
+----------------------------------
 +
 NOTE: The _default_ variables allow you to set default for your library or to populate 
 required fields in Evergreen if your data includes NULL values.
@@ -64,7 +64,7 @@ corresponding id in the actor.org_unit table.
 	city, province, country, postal_code, phone) 
     	FROM '/home/opensrf/patrons.csv' 
     		WITH CSV HEADER;  
------------------------------------
+----------------------------------
 +
 The script will vary depending on the format of your patron load file (patrons.csv). 
 +

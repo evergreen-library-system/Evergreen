@@ -96,7 +96,7 @@ files to that directory instead, and then skip any Apache config changes.
 % mkdir /openils/var/templates_kpac2
 % cp -r Open-ILS/examples/web/templates/kpac /openils/var/templates_kpac2/
 % cp -r /openils/var/web/css/skin/default/kpac/fonts /openils/var/web/css/skin/kpac2/kpac
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 Then set up 443/80 vhosts for serving the alternate skin in eg.conf, something
 along the lines of:
@@ -113,7 +113,7 @@ along the lines of:
         PerlAddVar OILSWebTemplatePath "/openils/var/templates_kpac2"
     </Location>
 </VirtualHost>
--------------------------------------------------------------------------------
+------------------------------------------------------------------------------
 
 Considerations for Community Adoption
 -------------------------------------
