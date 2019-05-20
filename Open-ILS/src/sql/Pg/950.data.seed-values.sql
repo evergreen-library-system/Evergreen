@@ -2090,6 +2090,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'TRANSIT_COPY',
 			'UPDATE_CONTAINER',
 			'VIEW_CONTAINER',
+			'VIEW_COPY_ALERT',
 			'VIEW_COPY_CHECKOUT_HISTORY',
 			'VIEW_COPY_NOTES',
 			'VIEW_HOLD',
@@ -2299,6 +2300,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 		pgt.name = 'Cataloging Administrator' AND
 		aout.name = 'System' AND
 		perm.code IN (
+			'ADMIN_COPY_ALERT',
 			'CREATE_COPY_STAT_CAT',
 			'CREATE_COPY_STAT_CAT_ENTRY',
 			'CREATE_COPY_STAT_CAT_ENTRY_MAP',
