@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 13:11-0400\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #: staff.serial.editor_base.handle_update.error
@@ -33,8 +33,12 @@ msgid "%1$s summaries"
 msgstr ""
 
 #: staff.serial.sbsum_editor.modify.label
+msgid "Modify Basic Summary"
+msgstr ""
+
 #: staff.serial.sbsum_editor.modify.accesskey
-msgid "&Modify Basic Summary"
+msgctxt "staff.serial.sbsum_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.sisum_editor.count
@@ -48,8 +52,12 @@ msgid "%1$s summaries"
 msgstr ""
 
 #: staff.serial.sisum_editor.modify.label
+msgid "Modify Index Summary"
+msgstr ""
+
 #: staff.serial.sisum_editor.modify.accesskey
-msgid "&Modify Index Summary"
+msgctxt "staff.serial.sisum_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.sssum_editor.count
@@ -63,8 +71,12 @@ msgid "%1$s summaries"
 msgstr ""
 
 #: staff.serial.sssum_editor.modify.label
+msgid "Modify Supplement Summary"
+msgstr ""
+
 #: staff.serial.sssum_editor.modify.accesskey
-msgid "&Modify Supplement Summary"
+msgctxt "staff.serial.sssum_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.scap_editor.count
@@ -76,13 +88,21 @@ msgid "%1$s caption and patterns"
 msgstr ""
 
 #: staff.serial.scap_editor.create.label
+msgid "Create Caption and Pattern(s)"
+msgstr ""
+
 #: staff.serial.scap_editor.create.accesskey
-msgid "&Create Caption and Pattern(s)"
+msgctxt "staff.serial.scap_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.scap_editor.modify.label
+msgid "Modify Caption and Pattern(s)"
+msgstr ""
+
 #: staff.serial.scap_editor.modify.accesskey
-msgid "&Modify Caption and Pattern(s)"
+msgctxt "staff.serial.scap_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.scap_editor.notes
@@ -98,13 +118,21 @@ msgid "%1$s distributions"
 msgstr ""
 
 #: staff.serial.sdist_editor.create.label
+msgid "Create Distribution(s)"
+msgstr ""
+
 #: staff.serial.sdist_editor.create.accesskey
-msgid "&Create Distribution(s)"
+msgctxt "staff.serial.sdist_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.sdist_editor.modify.label
+msgid "Modify Distribution(s)"
+msgstr ""
+
 #: staff.serial.sdist_editor.modify.accesskey
-msgid "&Modify Distribution(s)"
+msgctxt "staff.serial.sdist_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.sdist_editor.notes
@@ -140,13 +168,21 @@ msgid "%1$s issuances"
 msgstr ""
 
 #: staff.serial.siss_editor.create.label
+msgid "Create Issuance(s)"
+msgstr ""
+
 #: staff.serial.siss_editor.create.accesskey
-msgid "&Create Issuance(s)"
+msgctxt "staff.serial.siss_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.siss_editor.modify.label
+msgid "Modify Issuance(s)"
+msgstr ""
+
 #: staff.serial.siss_editor.modify.accesskey
-msgid "&Modify Issuance(s)"
+msgctxt "staff.serial.siss_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.siss_editor.notes
@@ -162,13 +198,21 @@ msgid "%1$s items"
 msgstr ""
 
 #: staff.serial.sitem_editor.create.label
+msgid "Create Item(s)"
+msgstr ""
+
 #: staff.serial.sitem_editor.create.accesskey
-msgid "&Create Item(s)"
+msgctxt "staff.serial.sitem_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.sitem_editor.modify.label
+msgid "Modify Item(s)"
+msgstr ""
+
 #: staff.serial.sitem_editor.modify.accesskey
-msgid "&Modify Item(s)"
+msgctxt "staff.serial.sitem_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.sitem_editor.notes
@@ -184,13 +228,21 @@ msgid "%1$s streams"
 msgstr ""
 
 #: staff.serial.sstr_editor.create.label
+msgid "Create Stream(s)"
+msgstr ""
+
 #: staff.serial.sstr_editor.create.accesskey
-msgid "&Create Stream(s)"
+msgctxt "staff.serial.sstr_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.sstr_editor.modify.label
+msgid "Modify Stream(s)"
+msgstr ""
+
 #: staff.serial.sstr_editor.modify.accesskey
-msgid "&Modify Stream(s)"
+msgctxt "staff.serial.sstr_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.ssub_editor.count
@@ -202,13 +254,21 @@ msgid "%1$s subscriptions"
 msgstr ""
 
 #: staff.serial.ssub_editor.create.label
+msgid "Create Subscription(s)"
+msgstr ""
+
 #: staff.serial.ssub_editor.create.accesskey
-msgid "&Create Subscription(s)"
+msgctxt "staff.serial.ssub_editor.create.accesskey"
+msgid "C"
 msgstr ""
 
 #: staff.serial.ssub_editor.modify.label
+msgid "Modify Subscription(s)"
+msgstr ""
+
 #: staff.serial.ssub_editor.modify.accesskey
-msgid "&Modify Subscription(s)"
+msgctxt "staff.serial.ssub_editor.modify.accesskey"
+msgid "M"
 msgstr ""
 
 #: staff.serial.ssub_editor.notes
@@ -358,8 +418,11 @@ msgid "Edit This Note"
 msgstr ""
 
 #: staff.serial.notes.edit_note.label
+msgid "Edit Note"
+msgstr ""
+
 #: staff.serial.notes.edit_note.accesskey
-msgid "&Edit Note"
+msgid "E"
 msgstr ""
 
 #: staff.serial.required_fields_alert
