@@ -1,3 +1,834 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 9080c8f1a61f0b5956de96424b4fa53c343cc44a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 16:31:37 2019 -0500
+
+    Customize upgrade notes for 3.3.1
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+26	64	docs/installation/server_upgrade.adoc
+
+commit 7decd0a4f9c9477cb083f060dfa583bd38e2d440
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon May 20 10:34:14 2019 -0400
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 79749d0a6cf20cb8611a85839f8374d76faef95d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon May 20 10:30:01 2019 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+37	13	build/i18n/po/db.seed/ar-JO.po
+38	14	build/i18n/po/db.seed/cs-CZ.po
+35	11	build/i18n/po/db.seed/de-DE.po
+35	11	build/i18n/po/db.seed/en-CA.po
+35	11	build/i18n/po/db.seed/en-GB.po
+37	13	build/i18n/po/db.seed/es-ES.po
+35	11	build/i18n/po/db.seed/fi-FI.po
+35	11	build/i18n/po/db.seed/fr-CA.po
+35	11	build/i18n/po/db.seed/he-IL.po
+35	11	build/i18n/po/db.seed/hu-HU.po
+37	13	build/i18n/po/db.seed/hy-AM.po
+35	11	build/i18n/po/db.seed/oc-FR.po
+35	11	build/i18n/po/db.seed/pt-BR.po
+35	11	build/i18n/po/db.seed/ru-RU.po
+35	11	build/i18n/po/db.seed/sv-SE.po
+35	11	build/i18n/po/db.seed/tr-TR.po
+2789	2813	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+11	11	build/i18n/po/tpac/ar-JO.po
+13	13	build/i18n/po/tpac/cs-CZ.po
+11	11	build/i18n/po/tpac/de-DE.po
+11	11	build/i18n/po/tpac/en-CA.po
+11	11	build/i18n/po/tpac/en-GB.po
+11	11	build/i18n/po/tpac/es-ES.po
+11	11	build/i18n/po/tpac/fi-FI.po
+11	11	build/i18n/po/tpac/fr-CA.po
+11	11	build/i18n/po/tpac/he-IL.po
+11	11	build/i18n/po/tpac/hu-HU.po
+11	11	build/i18n/po/tpac/hy-AM.po
+11	11	build/i18n/po/tpac/oc-FR.po
+11	11	build/i18n/po/tpac/pt-BR.po
+11	11	build/i18n/po/tpac/ru-RU.po
+11	11	build/i18n/po/tpac/sv-SE.po
+11	11	build/i18n/po/tpac/tr-TR.po
+242	222	build/i18n/po/webstaff/ar-JO.po
+266	243	build/i18n/po/webstaff/cs-CZ.po
+232	221	build/i18n/po/webstaff/en-CA.po
+232	221	build/i18n/po/webstaff/en-GB.po
+242	222	build/i18n/po/webstaff/es-ES.po
+232	221	build/i18n/po/webstaff/hy-AM.po
+232	221	build/i18n/po/webstaff/ru-RU.po
+
+commit 0236c16b240fda84723344ba10e250a11f489c3a
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri May 17 16:39:34 2019 -0400
+
+    Docs: Add bugfix release notes for 3.3.1
+    
+    This commit also relabels the original (now redundant) headings.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+103	6	docs/RELEASE_NOTES_3_3.adoc
+
+commit 9c5182acc8860e252024f82b03cb8a09e129ccb5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue May 14 13:03:35 2019 -0400
+
+    LP1813633 TCN search can find deleted records
+    
+    As with the XUL client, when performing a bib record TCN search
+    (Cataloging -> Retrieve Record By TCN), first look for non-deleted
+    records with the requested TCN.  When none are found, perform a
+    secondary search for deleted records with the requested TCN.
+    
+    To test in concerto:
+    
+    [1] Navigate to Cataloging -> Retrieve Record By TCN
+    [2] Search for TCN value "10", which is deleted by default in Concerto.
+    [3] Confirm the deleted record is loaded.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+
+11	6	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit e25a67e3c9c159c858abeb2e1a2855c8fd3bff27
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri Jun 8 12:09:54 2018 -0700
+
+    LP#1788680 prevent copy template apply failure on null stat cats
+    
+    Under some circumstances, the current code can result in a JS failure:
+    
+    Cannot read property 'filter' of undefined
+    
+    When this happens, the copy template may apply partially or not at all.
+    This change simply makes sure cp.stat_cat_entries() exists before
+    attempting to filter it.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	5	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 9a9ddad891cb3ce898b94566ce6cb907ba781363
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Apr 9 11:43:10 2019 -0400
+
+    LP1823982 Vandelay Match Set new tree repair
+    
+    When creating a new Match Set expression, provide a default root
+    'AND' node upon which new nodes may be added.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.html
+36	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-expression.component.ts
+
+commit 8eadece4af39f78d5fb0b9b012ad1a5b085bf303
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Wed May 8 10:43:02 2019 -0400
+
+    Stamping upgrade script for Vandelay on PG10
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+34	0	Open-ILS/src/sql/Pg/upgrade/1163.schema.lp1820339-pg10-vandelay.sql
+0	34	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1820339-pg10-vandelay.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1163.schema.lp1820339-pg10-vandelay.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1820339-pg10-vandelay.sql
+
+commit fd73d8b313ebe219050f7e66a9fb04c3705908eb
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Apr 25 18:11:59 2019 -0400
+
+    LP1820339: Vandelay Imports on Pg 10
+    
+    The previous commit used a function that only exists in Pg 10, so it
+    would require everyone to upgrade PostgreSQL.
+    
+    After some investigation, Ben Shum and I found a method that works on
+    Pg 9.4 through Pg 10 by putting the existing function into a
+    subselect as suggested by PostgreSQL documentation.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+2	2	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+2	2	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1820339-pg10-vandelay.sql
+
+commit 4ee6adc2c355ff050e7d0729543666da17c8beba
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Mar 15 15:35:26 2019 -0400
+
+    LP1820339: Vandelay Imports on Pg 10
+    
+    In vandelay.flatten_marc_hstore there are a couple
+    instances of set-returning functions used inside a
+    CASE statement, which Pg10 is unhappy about. This
+    branch changes these regexp_matches calls to use
+    regexp_match instead which avoids this error.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Ben Shum <ben@evergreener.net>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+2	2	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+34	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1820339-pg10-vandelay.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.lp1820339-pg10-vandelay.sql
+
+commit 68fa034e20e624643e8bb53db156e53ba172b2b0
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Dec 3 08:11:29 2018 -0500
+
+    LP1806394: Placing Holds in Item Buckets
+    
+    A missing return prevents a list of item ids from
+    being built so no holds can be placed from item
+    buckets. This branch returns the return to its
+    proper place.
+    
+    To test
+    -------
+    [1] Add some items to an item bucket, ensuring that they are
+        all holdable.
+    [2] From the item bucket interface, select the items and choose
+        the Request Selected Items action.
+    [3] Confirm placing the requests.
+    [4] Note that the requests are not actually created.
+    [5] Apply the patch and repeat steps #1-#4. This time, the requests
+        should be placed.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Millissa Macomber <millissam@burlingtonwa.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+
+commit 102ac90f11488305b6bcc068563cd16c2bfad9f7
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Apr 29 10:56:14 2019 -0400
+
+    LP#1826890: set page title for Statistical Popularity Badges admin page
+    
+    To test
+    -------
+    [1] In the browser client, navigate to Local Administration -> Statistical
+        Popularity Badges
+    [2] Note that the web browser's tab header doesn't display a title for the
+        page, just the URL.
+    [3] Apply the patch and reload the page. This time, a page title should
+        be dispayed in the browser's tab header.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/admin/local/rating/badge.tt2
+
+commit bb42d7e586a4c502aad280c187cf5d7dd9d672bb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Fri Sep 14 09:52:03 2018 -0400
+
+    LP#1792188: Record -> View Holds fails to refresh on Next/Prev record
+    
+    Here we clean up and add back a call to refresh the holds list when navigating
+    between records in a result set.
+    
+    To test
+    -------
+    [1] In the web staff client, perform a catalog search, bring up a record,
+        and change to the View Holds tab.
+    [2] Click the "Next" button to navigate to the next hold. Note that
+        the list of holds doesn't change.
+    [3] Apply the patch, refresh, and repeat steps #1 and #2. This time,
+        the list of holds should get updated as you navigate between
+        records in the results list.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: John Yorio <jyorio@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/web/js/ui/default/staff/cat/catalog/app.js
+
+commit 338021686f109acd3152547804b0a2b848f2ba99
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Nov 16 09:37:31 2018 -0600
+
+    LP1803729 action_trigger_aggregator.pl help indicates the wrong bash argument for remote-acct
+    
+    Fixed the help message action_trigger_aggregator.pl to agree with the code
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/support-scripts/action_trigger_aggregator.pl
+
+commit 8fc3db8924ea9157d02a4e90199d25ded399876e
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Wed Apr 10 16:32:13 2019 -0400
+
+    LP#1782014 Fix grid path for Title in patron items out
+    
+    When the Items Out grid was updated to use display fields, the
+    displayed title was updated (along with the fleshed data in the
+    javascript) but the grid "path" was not. This commit fixes the path,
+    which fixes title sorting. (Title sorting broke because the
+    simple_record.title was no longer being fleshed in via the JS code, so
+    the grid was attempting to sort on an empty value.)
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+
+commit 7f917178539842e51f71ba2bfd29403fbf78a32a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Dec 18 09:26:11 2018 -0500
+
+    Lp 1752968: Select content when focusing on the barcode field.
+    
+    To reproduce the reported behavior:
+    
+     1. Find a title in the staff client catalog.
+     2. Click on Add Holdings.
+     3. See that the Barcode field does not have cursor focus.
+     4. Repeat step 1.
+     5. Click on edit next to one of the barcoded items in the list of
+        holdings.
+     6. Click Show Holdings Details and see that the Barcode field does
+         not have focus and the content is not selected.
+    
+    To test this branch:
+    
+     1. Find a title in the staff client catalog.
+     2. Click on Add Holdings.
+     3. See that the Barcode field has cursor focus, i.e. the cursor is in
+        the field and blinking.
+     4. Repeat step 1.
+     5. Click on edit next to one of the barcoded items in the list of
+        holdings.
+     6. Click Show Holdings Details and see that the Barcode field has
+         cursor focus and the content is selected/highlighted.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+
+6	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 530010e20377caa9b82c37dc8f465896d07342f2
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Dec 17 11:08:47 2018 -0500
+
+    Lp 1752968: Focus Barcode Field in Volumes/Copy Editor
+    
+    Always focus the barcode field when adding or editing volumes or
+    copies.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 0ed480929c4f5c8ff11c4757d59eb69c3ebdcdd8
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Oct 11 08:50:30 2018 -0400
+
+    LP 1333893: Keep Empty Bib on Volume Transfer
+    
+    Volume transfer did not honor the cat.bib_keep_on_empty organizational
+    unit setting when removing empty bib records.  This commit changes it
+    so that tranfer honors the setting in the same manner that deleting
+    copies and volumes does.
+    
+    To test this fix, set cat.bib_keep_on_empty for your workstation
+    org. unit to true, and then transfer all of the volumes from one bib
+    record to another.  The empty bib record should not get deleted.
+    
+    You can also test with the setting on false to make sure that the
+    empty bib gets deleted.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Beth Willis <willis@noblenet.org>
+
+8	6	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat.pm
+
+commit bd91fd1223b1bdc73fcc385c346768bbfec87b57
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Apr 29 10:49:19 2019 -0400
+
+    LP#1814943: (follow-up) remove ersatz ctx.page_type line
+    
+    Guessing that the original bug was due to "page_type" being
+    entered when "page_title" was meant.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	1	Open-ILS/src/templates/staff/admin/local/actor/closed_dates.tt2
+
+commit bb95fb9a626b6e6577061205c45e0e53332824a3
+Author: McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Feb 6 13:52:48 2019 -0500
+
+    LP#1814943 Closed Dates Editor Tab Missing Title
+    
+    Small fix to add missing page title.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/admin/local/actor/closed_dates.tt2
+
+commit 1058fc09281ac32cc0ddf17b0cb6e70f6c8aa89c
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Fri Apr 5 11:08:55 2019 -0700
+
+    LP#1823387: avoid double slashes in booking URLs, which will not work with recent versions of Apache
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/web/js/ui/default/staff/booking/app.js
+
+commit ea750de623bbad351dece01735bb938123cb490a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 24 09:19:40 2019 -0400
+
+    LP1642036 Group member detail grid query repair
+    
+    Teach the grid to automatically use the current version of the grid
+    query in group member details lookup, since the query changes as
+    patron's change and is sometimes applied after the grid has already
+    absorbed the setQuery function.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+9	5	Open-ILS/web/js/ui/default/staff/circ/patron/app.js
+
+commit d08a6ae149e4091c6c8671125cff09ceebe349c3
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Apr 25 11:13:12 2019 -0400
+
+    Docs: Fix TIP block and list formatting
+    
+    This improves the formatting of the docs section that Katie Martin just
+    improved.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+11	12	docs/circulation/circulating_items_web_client.adoc
+
+commit 3c7b3e83b4d085228696183c6010889b7b7e974f
+Author: Katie G. Martin <bcl@blaircountylibraries.org>
+Date:   Mon Apr 30 15:35:20 2018 -0500
+
+    Docs: Updated checkin modifiers
+    
+    Updated checkin modifiers to include Manual Float Active and Update
+    Inventory and their descriptions. For 3.3 only.
+    
+    Signed-off-by: Katie G. Martin <bcl@blaircountylibraries.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+4	1	docs/circulation/circulating_items_web_client.adoc
+-	-	docs/media/checkinmodifiers-with-inventory.png
+-	-	docs/media/checkinmodifiers-with-inventory2.png
+ create mode 100644 docs/media/checkinmodifiers-with-inventory.png
+ create mode 100644 docs/media/checkinmodifiers-with-inventory2.png
+
+commit 513a77569afe3a00226f0efdee9bc1d988cdca74
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 24 15:55:33 2019 -0400
+
+    LP1793005 Stamping upgrade / print settings as workstation settings
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/1162.data.hatch-settings.sql
+0	43	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-settings.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1162.data.hatch-settings.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-settings.sql
+
+commit 9d19fab93ae10a33707991f9f3c43084ff18fb54
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Sep 17 11:26:11 2018 -0400
+
+    LP#1793005 Angular6 Hatch support / printer settings
+    
+    Adds support for Hatch print communication to the Angular(6) app.
+    Migrates the print preferences settings (eg.print.config.*) from
+    in-Hatch settings to server-stored workstation settings.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+2	0	Open-ILS/src/eg2/src/app/common.module.ts
+109	0	Open-ILS/src/eg2/src/app/share/print/hatch.service.ts
+26	7	Open-ILS/src/eg2/src/app/share/print/print.component.ts
+2	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+8	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+39	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+43	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-settings.sql
+2	2	Open-ILS/web/js/ui/default/staff/services/hatch.js
+ create mode 100644 Open-ILS/src/eg2/src/app/share/print/hatch.service.ts
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.hatch-settings.sql
+
+commit 9061f305f7c7dde4acf4f876e4ddcaeed9839c21
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 24 15:41:49 2019 -0400
+
+    LP#1778940: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+6	0	Open-ILS/src/sql/Pg/upgrade/1161.schema.ate_outputs_indexes.sql
+0	6	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.ate_outputs_indexes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1161.schema.ate_outputs_indexes.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.ate_outputs_indexes.sql
+
+commit 3209181efbd6887e505bd1903883f46785a96784
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Apr 24 15:37:06 2019 -0400
+
+    LP#1778940: (follow-up) create indexes concurrently during upgrade
+    
+    This reduces potential for locking when run in a production
+    database, particularly if done outside of a full version upgrade.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.ate_outputs_indexes.sql
+
+commit 7348a2db080d42115cfd66592a7f6762ba6d8080
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Jun 28 14:36:27 2018 -0400
+
+    LP1778940: Add Indexes to ate.*_output
+    
+    When there are many rows in action_trigger.event_output
+    simply ensuring referencial integrity can take an
+    unacceptably long time as Postgres has to make sure
+    that the output being deleted isn't referenced in
+    any of these 3 fields. Adding these indexes keeps
+    these checks always fast.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/src/sql/Pg/400.schema.action_trigger.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.ate_outputs_indexes.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.ate_outputs_indexes.sql
+
+commit be1d8530299c164befbe9b36c4220462539ef727
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Apr 19 17:20:42 2019 -0400
+
+    LP#1825578: reverse direction of sort-order arrows in eg-grid
+    
+    This patch adjusts the arrow icons used to indicate if a column
+    in the Angular eg-grid is sorted to use the following convention:
+    
+      sort order ascending == display _up_ arrow
+      sort order descending == display _descending_ arrow
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] In a grid with a sortable column (as can be found in /eg2/en-US/staff/sandbox),
+        click on the heading to sort it. Verify that ascending sort displays
+        the upwards arrow and descending sort the downwards.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.html
+
+commit 8cb0a80a074c57f5f2fd1e097fe7b60f0ac1c7b4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Apr 18 10:14:04 2019 -0400
+
+    Trivial change to file header comment
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/staff/share/holds/holds.service.ts
+
+commit b8052f3da11a1217af5ee3f1a796137b9d44af16
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Apr 18 15:19:18 2019 -0400
+
+    Stamping upgrade script for holds prefetch setting
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1160.data.catalog-holds-prefetch.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-holds-prefetch.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1160.data.catalog-holds-prefetch.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-holds-prefetch.sql
+
+commit 69be8cd7fc2158a8c503ab048c22b7249ee34b45
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 4 11:12:33 2019 -0500
+
+    LP1818288 WS Option to pre-fetch record holds
+    
+    Adds a workstation setting allowing staff to decide whether to pre-fetch
+    all holds on the record detail holds tab, to perform sorting paging in
+    the client, or to leave the sorting/paging on the server.
+    
+    Improves client-side sorting in the grid.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-checkbox.component.ts
+1	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+23	8	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+1	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+9	4	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+51	18	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+10	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-holds-prefetch.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.catalog-holds-prefetch.sql
+
+commit cadbc9d6a76c34da67ff6241b1ad69cf48461767
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 4 11:11:24 2019 -0500
+
+    LP1818288 Grid checkboxes emit events
+    
+    Modify the grid toolbar checkbox onClick handler to emit events instead
+    of requesting a reference to a function.  This is more consistent with
+    other event-handling code.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-checkbox.component.ts
+25	25	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.html
+5	5	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue-items.component.ts
+13	14	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+14	17	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+
+commit f3d3ae84ffc1bc4c8e89641110a98e9749a5720e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 1 15:42:07 2019 -0500
+
+    LP1818288 Release notes - record holds tab
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+15	0	docs/RELEASE_NOTES_NEXT/Client/ang-staff-catalog-record-holds.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/ang-staff-catalog-record-holds.adoc
+
+commit f07c0da1bcde61653244b2fd57a70bb1fd9d7a69
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Sat Feb 16 11:42:14 2019 -0800
+
+    LP1818288 Ang staff catalog record detail holds tab/actions
+    
+    Adds support for the Holds tab in the record detail view of the Angular
+    staff catalog.  Includes grid and hold-related actions.
+    
+    * Holds grid built from the new wide-holds API.
+    * batch cancel holds
+    * batch retarget holds
+    * batch edit holds
+    ** Unified form to modify notify options, dates, etc.
+    * hold detail page (menu and row double-click)
+    * batch mark items damaged
+    * batch mark items missing
+    * show last few circulations
+    * retrieve patron
+    * support for indented menu groups a la angjs grids for grouping the
+      hold actions menu.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	3	Open-ILS/src/eg2/src/app/common.module.ts
+12	1	Open-ILS/src/eg2/src/app/core/format.service.ts
+4	4	Open-ILS/src/eg2/src/app/share/date-select/date-select.component.html
+1	1	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+15	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+9	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-button.component.ts
+11	2	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+51	3	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+7	3	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+1	0	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.html
+5	2	Open-ILS/src/eg2/src/app/share/org-select/org-select.component.ts
+10	5	Open-ILS/src/eg2/src/app/share/string/string.component.ts
+6	7	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+6	6	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.ts
+5	8	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+7	0	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.ts
+7	1	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+0	142	Open-ILS/src/eg2/src/app/staff/share/hold.service.ts
+0	54	Open-ILS/src/eg2/src/app/staff/share/holdings.service.ts
+25	0	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+58	0	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.service.ts
+108	0	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.html
+154	0	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.ts
+44	0	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.html
+79	0	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.ts
+60	0	Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.html
+98	0	Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.ts
+99	0	Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.html
+67	0	Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.ts
+244	0	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+366	0	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+41	0	Open-ILS/src/eg2/src/app/staff/share/holds/holds.module.ts
+169	0	Open-ILS/src/eg2/src/app/staff/share/holds/holds.service.ts
+18	0	Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.html
+34	0	Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.ts
+270	0	Open-ILS/src/eg2/src/app/staff/share/holds/manage.component.html
+144	0	Open-ILS/src/eg2/src/app/staff/share/holds/manage.component.ts
+41	0	Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.html
+80	0	Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.ts
+43	0	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.html
+87	0	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.ts
+27	0	Open-ILS/src/eg2/src/styles.css
+ delete mode 100644 Open-ILS/src/eg2/src/app/staff/share/hold.service.ts
+ delete mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/detail.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/holds.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/holds.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/manage.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/manage.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.ts
+
+commit 192d24f83120e2495ff7e08ae2c617b7c71c490f
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Thu Apr 11 23:17:10 2019 -0400
+
+    Docs: fix uneven lengths of code delimiter blocks
+    
+    The lengths of the starting and ending sets of hyphens are supposed to be the
+    same. Asciidoc tools like asciidoctor can be less forgiving than the original
+    asciidoc processor, with less than hilarious results.
+    
+    It would probably make sense to try to standardize on something like 60 hyphens
+    to easily flag this problem for deviations from the norm, but for now here's
+    the result of running the docs through asciidoctor and manually adjusting the
+    output.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	docs/admin/booking-admin.adoc
+1	1	docs/cataloging/batch_importing_MARC.adoc
+1	1	docs/circulation/basic_holds.adoc
+2	2	docs/circulation/circulating_items_web_client.adoc
+6	6	docs/installation/server_upgrade.adoc
+4	4	docs/reports/reporter_add_data_source.adoc
+1	1	docs/reports/reporter_daemon.adoc
+
+commit 0c311b5a410d8af89a7210e582397c608d8b9e1e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Mar 21 09:11:51 2019 -0700
+
+    LP1821196: Remove arrow function from item status
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+3	1	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit b37608b69da33a3c238c4be88ae1c3f0f1c16ace
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Apr 11 15:55:08 2019 -0400
+
+    Forward port 3.3.0 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1341	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.5-3.3.0-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.5-3.3.0-upgrade-db.sql
+
+commit 673cf465aecfc5380d9314f44b1053fe0d50f792
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun May 20 09:00:48 2018 -0700
+
+    LP1744386: Alphabetize stat cats in volcopy attr editor
+    
+    To test:
+    1. Go to the volume copy editor.  Confirm that the stat
+    cats do not display in order of owning library or stat cat
+    name.
+    2. Apply this commit.
+    3. Go to the volume copy editor.  Confirm that the stat
+    cats now display in alphabetical order by owning library,
+    then stat cat name.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 87667fef65eaf0439a75b82d63c53953bf2eacaa
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Apr 11 14:40:31 2019 -0400
+
+    Docs: Point to release notes for new version 3.3
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	1	docs/root.adoc
+
+commit 12f53dda91af8cda5f19f2cec00716768c6413c6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Mar 28 17:03:38 2019 -0400
+
+    Forward-port 3.1.11 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+231	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.10-3.1.11-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.10-3.1.11-upgrade-db.sql
