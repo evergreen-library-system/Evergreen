@@ -133,7 +133,7 @@ CREATE OR REPLACE FUNCTION permission.grp_descendants( INT ) RETURNS SETOF permi
           FROM  permission.grp_tree gr
                 JOIN descendant_depth dd ON (dd.id = gr.parent)
     ) SELECT gr.* FROM permission.grp_tree gr JOIN descendant_depth USING (id);
-$$ LANGUAGE SQL ROWS 1;
+$$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION permission.grp_tree_full_path ( INT ) RETURNS SETOF permission.grp_tree AS $$
         SELECT  *
