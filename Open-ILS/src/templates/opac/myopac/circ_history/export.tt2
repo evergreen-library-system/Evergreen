@@ -28,7 +28,7 @@
 [%- date.format(ctx.parse_datetime(circ.circ.xact_start), DATE_FORMAT) | csv-%]
 [%- date.format(ctx.parse_datetime(circ.circ.due_date), DATE_FORMAT) | csv -%]
 [%- IF circ.circ.checkin_time;
-       date.format(ctx.parse_datetime(circ.checkin_time), DATE_FORMAT) | csv;
+       date.format(ctx.parse_datetime(circ.circ.checkin_time), DATE_FORMAT) | csv;
     ELSE; -%]
 ,
 [%- END -%]
