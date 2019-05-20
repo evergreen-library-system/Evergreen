@@ -751,6 +751,15 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
         return $q.all(promises).then(drawBucket);
     }
 
+    $scope.moveToPending = function(records) {
+        angular.forEach(records, function(rec) {
+            if (bucketSvc.pendingList.filter( // remove dupes
+                function(r) {return r.id == rec.id}).length) return;
+            bucketSvc.pendingList.push(rec);
+        });
+        $scope.detachRecords(records);
+    }
+
     $scope.deleteRecordsFromCatalog = function(records) {
         egConfirmDialog.open(
             egCore.strings.CONFIRM_DELETE_RECORD_BUCKET_ITEMS_FROM_CATALOG,

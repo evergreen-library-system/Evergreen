@@ -16,6 +16,9 @@
   <eg-grid-action label="[% l('Remove Selected Records from Bucket') %]" 
     handler="detachRecords"></eg-grid-action>
 
+  <eg-grid-action label="[% l('Move Selected Records to Pending Records') %]" 
+    handler="moveToPending"></eg-grid-action>
+
   <eg-grid-action label="[% l('Delete Selected Records from Catalog') %]" 
     handler="deleteRecordsFromCatalog"></eg-grid-action>
 
