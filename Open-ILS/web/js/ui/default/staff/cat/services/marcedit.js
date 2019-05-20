@@ -708,7 +708,7 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
                     function(newVal, oldVal) {
                         if (newVal && newVal != oldVal && !$scope.opac_iframe) {
                             $($window).on('beforeunload', function(){
-                                return 'There is unsaved data in this record.'
+                                return egCore.strings.DIRTY_MARC_WARNING;
                             });
                         } else {
                             if (!$scope.opac_iframe)
