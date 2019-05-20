@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-01-17 03:21+0000\n"
+"POT-Creation-Date: 2019-03-27 02:25+0000\n"
 "PO-Revision-Date: 2019-02-06 19:17+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-02-07 05:53+0000\n"
-"X-Generator: Launchpad (build 18872)\n"
+"X-Launchpad-Export-Date: 2019-03-28 06:05+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 
 #. ("{{pendingXacts | date:\"short\"}}")
 #: ../../Open-ILS/src/templates/staff/t_login.tt2:55
@@ -1229,7 +1229,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details_statement.tt2:3
 msgid "Billing Statement"
-msgstr ""
+msgstr "Billing Statement"
 
 #: ../../Open-ILS/src/templates/staff/circ/share/t_bill_patron_dialog.tt2:59
 msgid "Billing Type:"
@@ -1249,7 +1249,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:49 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:32
 msgid "Billing:State"
-msgstr ""
+msgstr "Billing:Province/Territory"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:45 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:28
 msgid "Billing:Street 1"
@@ -1261,7 +1261,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:50 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:33
 msgid "Billing:Zip"
-msgstr ""
+msgstr "Billing:Postal Code"
 
 #: ../../Open-ILS/src/templates/staff/share/print_templates/t_bill_payment.tt2:58
 msgid "Billings Voided:"
@@ -5043,7 +5043,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:42 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:25
 msgid "Mailing:State"
-msgstr ""
+msgstr "Mailing:Province/Territory"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:38 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:21
 msgid "Mailing:Street 1"
@@ -5055,7 +5055,7 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_search_results.tt2:43 ../../Open-ILS/src/templates/staff/share/t_patron_search_results.tt2:26
 msgid "Mailing:Zip"
-msgstr ""
+msgstr "Mailing:Postal Code"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/bucket/t_update_all.tt2:46
 msgid "Main Profile"
@@ -8212,15 +8212,15 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/staff/share/t_patron_search_form.tt2:101
 msgid "State"
-msgstr ""
+msgstr "Province/Territory"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_cc_payment_dialog.tt2:88
 msgid "State or province"
-msgstr ""
+msgstr "State or Province/Territory"
 
 #: ../../Open-ILS/src/templates/staff/circ/patron/t_xact_details.tt2:118
 msgid "Statement"
-msgstr ""
+msgstr "Statement"
 
 #: ../../Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2:101 ../../Open-ILS/src/templates/staff/cat/volcopy/t_defaults.tt2:262 ../../Open-ILS/src/templates/staff/circ/patron/index.tt2:187 ../../Open-ILS/src/templates/staff/circ/patron/t_edit.tt2:896
 msgid "Statistical Categories"
@@ -9478,6 +9478,8 @@ msgid ""
 "Whether the pattern can be used to compress and expand detailed holdings "
 "statements."
 msgstr ""
+"Whether the pattern can be used to compress and expand detailed holdings "
+"statements."
 
 #: ../../Open-ILS/src/templates/staff/serials/t_subscription_manager.tt2:65
 msgid ""

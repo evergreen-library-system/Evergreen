@@ -14,8 +14,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-27 05:51+0000\n"
-"X-Generator: Launchpad (build 18573)\n"
+"X-Launchpad-Export-Date: 2019-03-28 05:53+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 
 #: staff.circ.alert
 msgid "Alert"
@@ -27,11 +27,11 @@ msgstr "Item %1$s has never circulated."
 
 #: staff.circ.item_no_user
 msgid "Item %1$s circulation is an aged circulation and has no linked user."
-msgstr ""
+msgstr "Item %1$s circulation is an aged circulation and has no linked user."
 
 #: staff.circ.aged_circ
 msgid "<Aged Circulation>"
-msgstr ""
+msgstr "<Aged Circulation>"
 
 #: staff.circ.invalid_date
 msgid "Invalid Date"
@@ -314,7 +314,7 @@ msgstr "Forgiving Return then Issue"
 
 #: staff.circ.checkout.abort_transit_then_checkout
 msgid "Cancel Transit then Checkout"
-msgstr ""
+msgstr "Cancel Transit then Checkout"
 
 #: staff.circ.checkout.offer_renewal
 msgid "Renew Item"
@@ -405,7 +405,7 @@ msgstr "This item is not in transit."
 
 #: staff.circ.copy_details.transit_caption
 msgid "In Transit"
-msgstr ""
+msgstr "In Transit"
 
 #: staff.circ.copy_details.desk_renewal
 msgid "Desk"
@@ -426,7 +426,7 @@ msgstr "%1$s, %2$s : %3$s"
 
 #: staff.circ.copy_details.hold_caption
 msgid "Captured for Hold"
-msgstr ""
+msgstr "Captured for Hold"
 
 #: staff.circ.copy_details.bad_hold_status
 msgid ""
@@ -962,11 +962,11 @@ msgstr "Receipt Template Editor"
 
 #: staff.circ.utils.abort_transits.confirm
 msgid "Are you sure you would like to cancel transits for copies: %1$s?"
-msgstr ""
+msgstr "Are you sure you would like to cancel transits for copies: %1$s?"
 
 #: staff.circ.utils.abort_transits.title
 msgid "Canceling Transits"
-msgstr ""
+msgstr "Canceling Transits"
 
 #: staff.circ.utils.yes
 msgctxt "staff.circ.utils.yes"
@@ -987,10 +987,12 @@ msgid ""
 "This item was no longer in transit at the time of the cancellation.  Perhaps "
 "this happened from a stale display?"
 msgstr ""
+"This item was no longer in transit at the time of the cancellation.  Perhaps "
+"this happened from a stale display?"
 
 #: staff.circ.utils.abort_transits.unexpected_error
 msgid "Transit not likely canceled."
-msgstr ""
+msgstr "Transit not likely canceled."
 
 #: staff.circ.utils.retrieve_patron.failure
 msgid "Problem retrieving patron."
@@ -1113,7 +1115,7 @@ msgstr "Holdable?"
 
 #: staff.circ.utils.age_protect
 msgid "Age-based Hold Protection"
-msgstr ""
+msgstr "Age-based Hold Protection"
 
 #: staff.circ.utils.floating
 msgid "Floating?"
@@ -1203,7 +1205,7 @@ msgstr "Date Created"
 
 #: staff.circ.utils.active_date
 msgid "Date Active"
-msgstr ""
+msgstr "Date Active"
 
 #: staff.circ.utils.edit_date
 msgid "Date Last Edited "
@@ -1884,6 +1886,8 @@ msgid ""
 "Check In May Have Failed.  Possible double-scan of the barcode.  Use Item "
 "Status to confirm Check In and possible Hold capture."
 msgstr ""
+"Check In May Have Failed.  Possible double-scan of the barcode.  Use Item "
+"Status to confirm Check In and possible Hold capture."
 
 #: staff.circ.checkin.renew_failed.error
 msgid "Renew Failed for %1$s"
@@ -2088,8 +2092,9 @@ msgstr "No item with barcode \"%1$s\""
 
 #: staff.circ.utils.transit.copy_status_message.label
 msgid "Transit Copy Status Message"
-msgstr ""
+msgstr "Transit Copy Status Message"
 
 #: staff.circ.utils.transit.copy_status_message
 msgid "This item is in status %1$s, additional staff action may be required."
 msgstr ""
+"This item is in status %1$s, additional staff action may be required."

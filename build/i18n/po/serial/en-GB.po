@@ -1,0 +1,419 @@
+# English (United Kingdom) translation for evergreen
+# Copyright (c) 2019 Rosetta Contributors and Canonical Ltd 2019
+# This file is distributed under the same license as the evergreen package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: evergreen\n"
+"Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2018-03-26 19:37+0000\n"
+"PO-Revision-Date: 2019-03-10 00:01+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: English (United Kingdom) <en_GB@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Launchpad-Export-Date: 2019-03-11 05:54+0000\n"
+"X-Generator: Launchpad (build 18894)\n"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:21
+msgid "(853) Basic"
+msgstr "(853) Basic"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:22
+msgid "(854) Supplement"
+msgstr "(854) Supplement"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:23
+msgid "(855) Index"
+msgstr "(855) Index"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:66
+msgid "(Inactive)"
+msgstr "(Inactive)"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:55
+msgid "<u>P</u>rint"
+msgstr "<u>P</u>rint"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:9
+msgid "Active"
+msgstr "Active"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:93
+msgid "Add"
+msgstr "Add"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:47
+msgid "Add New"
+msgstr "Add New"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:178
+msgid "Add to record entry"
+msgstr "Add to record entry"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:39
+msgid "Batch Item Receive"
+msgstr "Batch Item Receive"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:104
+msgid "Bibliographic Record"
+msgstr "Bibliographic Record"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:34
+msgid "Billing address:"
+msgstr "Billing address:"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:6
+msgid "Bindery"
+msgstr "Bindery"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:7
+msgid "Bound"
+msgstr "Bound"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:207
+msgid "Captions and Patterns"
+msgstr "Captions and Patterns"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:144
+msgid "Chronology"
+msgstr "Chronology"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:8
+msgid "Claimed"
+msgstr "Claimed"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:261 ../../Open-ILS/src/templates/serial/subscription.tt2:36
+msgid "Clone Subscription"
+msgstr "Clone Subscription"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:305
+msgid "Clone!"
+msgstr "Clone!"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:118 ../../Open-ILS/src/templates/serial/list_stream.tt2:149
+msgid "Create"
+msgstr "Create"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:8
+msgid "Create Date"
+msgstr "Create Date"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:26
+msgid "Create Many Streams"
+msgstr "Create Many Streams"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:76
+msgid "Create New Items"
+msgstr "Create New Items"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:135
+msgid "Create Streams"
+msgstr "Create Streams"
+
+#. ("<span name=\"obj_create\"></span>")
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:64
+msgid "Created by %1"
+msgstr "Created by %1"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:92
+msgid "Date Expected"
+msgstr "Date Expected"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:100
+msgid "Date Received"
+msgstr "Date Received"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:40 ../../Open-ILS/src/templates/serial/list_stream.tt2:34 ../../Open-ILS/src/templates/serial/list_subscription.tt2:22 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:15 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:10
+msgid "Delete Selected"
+msgstr "Delete Selected"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:105
+msgid "Department:"
+msgstr "Department:"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:65
+msgid "Department: ${0}"
+msgstr "Department: ${0}"
+
+#. ("<span name=\"department\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:45
+msgid "Department: %1"
+msgstr "Department: %1"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:9
+msgid "Discarded"
+msgstr "Discarded"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:116 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:3
+msgid "Distributions"
+msgstr "Distributions"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:184
+msgid "Do not use record entry"
+msgstr "Do not use record entry"
+
+#. ("<span name=\"obj_edit\"></span>")
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:65
+msgid "Edited by %1"
+msgstr "Edited by %1"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:100
+msgid "End Date"
+msgstr "End Date"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:146
+msgid "Enumeration"
+msgstr "Enumeration"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:5
+msgid "Expected"
+msgstr "Expected"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:106
+msgid "Expected Date Offset"
+msgstr "Expected Date Offset"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:83
+msgid "Generate"
+msgstr "Generate"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:43
+msgid "Generate Issuance and Item Predictions"
+msgstr "Generate Issuance and Item Predictions"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:16
+msgid "Generate Predictions"
+msgstr "Generate Predictions"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:268
+msgid ""
+"Holdings-related objects, like issuances, items, units, and summaries will "
+"<em>not</em> be cloned."
+msgstr ""
+"Holdings-related objects, like issuances, items, units, and summaries will "
+"<em>not</em> be cloned."
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:79
+msgid "How many items?"
+msgstr "How many items?"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:139
+msgid "How many?"
+msgstr "How many?"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:92 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:5
+msgid "ID"
+msgstr "ID"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:77
+msgid "Import"
+msgstr "Import"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:50
+msgid "Import From Bibliographic or Legacy Serial Records"
+msgstr "Import From Bibliographic or Legacy Serial Records"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:219 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:3
+msgid "Issuances"
+msgstr "Issuances"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:3 ../../Open-ILS/src/templates/serial/list_item.tt2:32
+msgid "Items"
+msgstr "Items"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:24
+msgid "Mailing address:"
+msgstr "Mailing address:"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:70
+msgid "Manage Routing List"
+msgstr "Manage Routing List"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:180
+msgid "Merge with record entry"
+msgstr "Merge with record entry"
+
+#: ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:11
+msgid "New Distribution"
+msgstr "New Distribution"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:8
+msgid "New Issuance"
+msgstr "New Issuance"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:35
+msgid "New Items"
+msgstr "New Items"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:23
+msgid "New Stream"
+msgstr "New Stream"
+
+#: ../../Open-ILS/src/templates/serial/list_subscription.tt2:19
+msgid "New Subscription"
+msgstr "New Subscription"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:10
+msgid "Not Held"
+msgstr "Not Held"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:11
+msgid "Not Published"
+msgstr "Not Published"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:115
+msgid "Note:"
+msgstr "Note:"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:107
+msgid "Number of Distributions"
+msgstr "Number of Distributions"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:94
+msgid "Owning Library"
+msgstr "Owning Library"
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:55
+msgid "P"
+msgstr "P"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:7
+msgid "Pattern Code"
+msgstr "Pattern Code"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:69
+msgid "Predict a certain number of issuances:"
+msgstr "Predict a certain number of issuances:"
+
+#: ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:57
+msgid "Predict until end of subscription"
+msgstr "Predict until end of subscription"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:83
+msgid "Reader (barcode):"
+msgstr "Reader (barcode):"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:63
+msgid "Reader: ${0} / ${1}, ${2} ${3} (${4})"
+msgstr "Reader: ${0} / ${1}, ${2} ${3} (${4})"
+
+#. ("<span name=\"barcode\"></span>", "<span name=\"name\"></span>", "<span name=\"ou\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:18
+msgid "Reader: %1 / %2 (%3)"
+msgstr "Reader: %1 / %2 (%3)"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:12
+msgid "Received"
+msgstr "Received"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:295
+msgid "Record specified by this unique identifier:"
+msgstr "Record specified by this unique identifier:"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:37 ../../Open-ILS/src/templates/serial/list_stream.tt2:32 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:8 ../../Open-ILS/src/templates/serial/subscription/issuance.tt2:6
+msgid "Refresh Grid"
+msgstr "Refresh Grid"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:10
+msgid "Remove"
+msgstr "Remove"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:29
+msgid "Routing List For Selected Stream"
+msgstr "Routing List For Selected Stream"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:283
+msgid "Same record as the existing subscription"
+msgstr "Same record as the existing subscription"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:125 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:11 ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:40
+msgid "Save Changes"
+msgstr "Save Changes"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:72
+msgid "Select records from which to import caption and pattern fields."
+msgstr "Select records from which to import caption and pattern fields."
+
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:2
+msgid "Serial Routing List"
+msgstr "Serial Routing List"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:45
+msgid "Showing items attached to the issuance,"
+msgstr "Showing items attached to the issuance"
+
+#. ("<em><a href=\"javascript:void(0);\" id=\"sdist_label_here\"></a></em>", "<span id=\"sdist_org_unit_name_here\"></span>")
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:38
+msgid "Showing streams attached to the distribution, %1 (%2)."
+msgstr "Showing streams attached to the distribution, %1 (%2)."
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:97
+msgid "Start Date"
+msgstr "Start Date"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:107
+msgid "Status"
+msgstr "Status"
+
+#: ../../Open-ILS/src/templates/serial/list_item.tt2:86
+msgid "Stream"
+msgstr "Stream"
+
+#: ../../Open-ILS/src/templates/serial/list_stream.tt2:20 ../../Open-ILS/src/templates/serial/list_stream.tt2:3
+msgid "Streams"
+msgstr "Streams"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:33
+msgid "Subscription Details"
+msgstr "Subscription Details"
+
+#: ../../Open-ILS/src/templates/serial/list_subscription.tt2:15 ../../Open-ILS/src/templates/serial/list_subscription.tt2:2 ../../Open-ILS/src/templates/serial/subscription.tt2:52
+msgid "Subscriptions"
+msgstr "Subscriptions"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:84
+msgid "Summary"
+msgstr "Summary"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:264
+msgid ""
+"This feature will clone a subscription and all of its subscription notes, "
+"distributions, distribution notes, captions and patterns, streams, and "
+"routing list users."
+msgstr ""
+"This feature will clone a subscription and all of its subscription notes, "
+"distributions, distribution notes, captions and patterns, streams, and "
+"routing list users."
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:272
+msgid "To what bibliographic record should the new subscription be attached?"
+msgstr ""
+"To what bibliographic record should the new subscription be attached?"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:6
+msgid "Type"
+msgstr "Type"
+
+#. ("<span name=\"stream_id\"></span>")
+#: ../../Open-ILS/src/templates/serial/print_routing_list_users.tt2:12
+msgid "Unlabeled stream ID #%1"
+msgstr "Unlabeled stream ID #%1"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:182
+msgid "Use record entry only"
+msgstr "Use record entry only"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:49
+msgid "View/Edit"
+msgstr "View/Edit"
+
+#: ../../Open-ILS/src/templates/serial/subscription.tt2:55 ../../Open-ILS/src/templates/serial/subscription/distribution.tt2:6
+msgid "View/Edit Notes"
+msgstr "View/Edit Notes"
+
+#: ../../Open-ILS/src/templates/serial/subscription/caption_and_pattern.tt2:28
+msgid "Wizard ..."
+msgstr "Wizard ..."

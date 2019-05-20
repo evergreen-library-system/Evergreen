@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-10-26 05:47+0000\n"
-"X-Generator: Launchpad (build 18810)\n"
+"X-Launchpad-Export-Date: 2019-03-28 05:54+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -3364,7 +3364,7 @@ msgstr "Florida "
 
 #: 950.data.seed-values.sql:17132
 msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr "Tiskový štítek exempláře - Šířka filtru pro zalomení signatur"
+msgstr "Tiskový štítek jednotky - šířka filtru pro zalomení signatur"
 
 #: 950.data.seed-values.sql:8222 950.data.seed-values.sql:8878
 #: 950.data.seed-values.sql:8891 950.data.seed-values.sql:8904
@@ -6783,7 +6783,7 @@ msgstr "Manština (manx)"
 
 #: 950.data.seed-values.sql:17116
 msgid "Item Print Label - Call Number Wrap Filter Height"
-msgstr "Tiskové štítky jednotek - Výška filtru pro zarovnání signatur"
+msgstr "Tiskový štítek jednotky - výška filtru pro zarovnání signatur"
 
 #: 950.data.seed-values.sql:13381
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
@@ -14322,7 +14322,7 @@ msgstr "kartridž počítačového čipu"
 
 #: 950.data.seed-values.sql:17100
 msgid "Item Print Label - Inline CSS"
-msgstr "Tiskové štítky jednotek - inline CSS"
+msgstr "Tiskové štítky jednotky - inline CSS"
 
 #: 950.data.seed-values.sql:7752
 msgid "audio"
@@ -14765,7 +14765,7 @@ msgstr "Doba trvání výpůjčky která spustí znovuvyvolání"
 
 #: 950.data.seed-values.sql:8181
 msgid "Gall"
-msgstr ""
+msgstr "Gallovo zobrazení"
 
 #: 950.data.seed-values.sql:7981
 msgid "Divertimentos, serenades, cassations, divertissements, and notturni"
@@ -15143,7 +15143,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8502 950.data.seed-values.sql:8521
 msgid "Saint"
-msgstr ""
+msgstr "Svatý"
 
 #: 950.data.seed-values.sql:786
 msgid "Allow a user to delete another user's container"
