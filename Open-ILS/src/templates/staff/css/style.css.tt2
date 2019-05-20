@@ -515,8 +515,8 @@ table.list tr.selected td { /* deprecated? */
   flex: 4;
 }
 
-/* TODO: match media size to Bootstrap "md" col resizing */
-@media all and (max-width: 800px) {
+/* 768px equals Bootstrap "md" col resizing */
+@media all and (max-width: 768px) {
   .flex-row {
     flex-direction: column;
   }
@@ -538,7 +538,7 @@ table.list tr.selected td { /* deprecated? */
   }
 }
 
-@media all and (min-width: 800px) {
+@media all and (min-width: 768px) {
     /* scrollable menus for full-size screens */
     .scrollable-menu {
         height: auto;
