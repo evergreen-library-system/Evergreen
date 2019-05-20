@@ -3,15 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-26 13:11-0400\n"
+"POT-Creation-Date: 2015-02-27 11:41-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Translate Toolkit 1.10.0\n"
 "X-Accelerator-Marker: &\n"
-"X-Generator: Translate Toolkit 2.0.0\n"
 "X-Merge-On: location\n"
 
 #: common.exception
@@ -27,17 +27,27 @@ msgid "The JSAN library object is missing."
 msgstr ""
 
 #: common.ok
+msgctxt "common.ok"
 msgid "Ok"
 msgstr ""
 
 #: common.ok.label
+msgctxt "common.ok.label"
+msgid "Ok"
+msgstr ""
+
 #: common.ok.accesskey
-msgid "&Ok"
+msgid "O"
 msgstr ""
 
 #: common.cancel.label
+msgctxt "common.cancel.label"
+msgid "Cancel"
+msgstr ""
+
 #: common.cancel.accesskey
-msgid "&Cancel"
+msgctxt "common.cancel.accesskey"
+msgid "C"
 msgstr ""
 
 #: common.clear
@@ -137,6 +147,7 @@ msgid "Undelete"
 msgstr ""
 
 #: cat.opac.cancel
+msgctxt "cat.opac.cancel"
 msgid "Cancel"
 msgstr ""
 
@@ -208,8 +219,11 @@ msgid "Preference not likely updated."
 msgstr ""
 
 #: staff.admin.survey.save_response.label
+msgid "Save this response"
+msgstr ""
+
 #: staff.admin.survey.save_response.accesskey
-msgid "Save this &response"
+msgid "R"
 msgstr ""
 
 #: circ.bad_checkdigit
@@ -268,8 +282,8 @@ msgstr ""
 
 #: circ.offline_checkout.barcode.flagged.unknown
 msgid ""
-"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: "
-"%3$s."
+"Warning: As of %1$s, this barcode (%2$s) was flagged with an unknown code: %"
+"3$s."
 msgstr ""
 
 #: circ.offline_checkout.date.early
@@ -916,38 +930,62 @@ msgid "Save List CSV As..."
 msgstr ""
 
 #: list.actions.menu.label
+msgid "List Actions"
+msgstr ""
+
 #: list.actions.menu.accesskey
-msgid "&List Actions"
+msgctxt "list.actions.menu.accesskey"
+msgid "L"
 msgstr ""
 
 #: list.actions.field_to_clipboard.label
+msgid "Copy Field from Selected Row to Clipboard"
+msgstr ""
+
 #: list.actions.field_to_clipboard.accesskey
-msgid "&Copy Field from Selected Row to Clipboard"
+msgctxt "list.actions.field_to_clipboard.accesskey"
+msgid "C"
 msgstr ""
 
 #: list.actions.csv_to_clipboard.label
+msgid "Copy List CSV to Clipboard"
+msgstr ""
+
 #: list.actions.csv_to_clipboard.accesskey
-msgid "Copy &List CSV to Clipboard"
+msgctxt "list.actions.csv_to_clipboard.accesskey"
+msgid "L"
 msgstr ""
 
 #: list.actions.csv_to_printer.label
+msgid "Print List CSV"
+msgstr ""
+
 #: list.actions.csv_to_printer.accesskey
-msgid "&Print List CSV"
+msgid "P"
 msgstr ""
 
 #: list.actions.extended_to_printer.label
+msgid "Print List Expanded Format"
+msgstr ""
+
 #: list.actions.extended_to_printer.accesskey
-msgid "Print List E&xpanded Format"
+msgid "x"
 msgstr ""
 
 #: list.actions.csv_to_file.label
+msgid "Save List CSV to File"
+msgstr ""
+
 #: list.actions.csv_to_file.accesskey
-msgid "Save List CSV to &File"
+msgid "F"
 msgstr ""
 
 #: list.actions.save_column_configuration.label
+msgid "Save Column Configuration"
+msgstr ""
+
 #: list.actions.save_column_configuration.accesskey
-msgid "&Save Column Configuration"
+msgid "S"
 msgstr ""
 
 #: list.dump_extended_format.record_separator
@@ -1213,8 +1251,8 @@ msgstr ""
 
 #: printing.prompt_for_external_print_cmd
 msgid ""
-"Enter external print command and parameters (use %receipt.txt% or "
-"%receipt.html% as the file containing the print data. Those values will be "
+"Enter external print command and parameters (use %receipt.txt% or %"
+"receipt.html% as the file containing the print data. Those values will be "
 "substituted with the proper path.):"
 msgstr ""
 
