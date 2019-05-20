@@ -560,6 +560,13 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
         bucketSvc.bucketNeedsRefresh = true;
         return $q.all(promises).then(drawBucket);
     }
+    
+    $scope.moveToPending = function(copies) {
+        angular.forEach(copies, function(copy) {
+            bucketSvc.pendingList.push(copy.id);
+        });
+        $scope.detachCopies(copies);
+    }
 
     $scope.spawnHoldingsEdit = function (copies) {
         var cp_list = []

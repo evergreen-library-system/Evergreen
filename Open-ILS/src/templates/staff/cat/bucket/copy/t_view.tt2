@@ -12,6 +12,8 @@
 
   <eg-grid-action label="[% l('Remove Selected Items from Bucket') %]" group="[% l('Bucket') %]"
     handler="detachCopies"></eg-grid-action>
+  <eg-grid-action label="[% l('Move Selected Items to Pending Items') %]" group="[% l('Bucket') %]"
+    handler="moveToPending"></eg-grid-action>
   <eg-grid-action label="[% l('Request Selected Items') %]" group="[% l('Items') %]"
     handler="requestItems"></eg-grid-action>
   <eg-grid-action label="[% l('Edit Selected Items') %]" group="[% l('Items') %]"
