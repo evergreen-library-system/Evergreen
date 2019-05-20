@@ -19451,7 +19451,7 @@ INSERT INTO config.workstation_setting_type
 VALUES (
     'eg.grid.circ.patron.group_members', 'gui', 'object',
     oils_i18n_gettext(
-    'eg.grid.circ.patron.group_members'
+    'eg.grid.circ.patron.group_members',
     'Grid Config: circ.patron.group_members',
     'cwst', 'label')
 );
