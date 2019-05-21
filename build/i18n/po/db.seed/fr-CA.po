@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-01-17 05:53+0000\n"
-"X-Generator: Launchpad (build 18856)\n"
+"X-Launchpad-Export-Date: 2019-05-21 05:57+0000\n"
+"X-Generator: Launchpad (build 18962)\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: 950.data.seed-values.sql:8354
@@ -219,6 +219,12 @@ msgstr ""
 #: 950.data.seed-values.sql:7116
 msgid "Nahuatl"
 msgstr "Nahuatl"
+
+#: 950.data.seed-values.sql:994
+msgid ""
+"Allow a staff member to define where another staff member has their "
+"permissions"
+msgstr ""
 
 #: 950.data.seed-values.sql:12247 950.data.seed-values.sql:12248
 msgid "Historical Hold Retention Start Date"
@@ -3538,10 +3544,6 @@ msgstr ""
 msgid "notated music"
 msgstr ""
 
-#: 950.data.seed-values.sql:227
-msgid "Physical Description"
-msgstr ""
-
 # id::clm.value__son
 # id::son
 #: 950.data.seed-values.sql:7217
@@ -4007,6 +4009,10 @@ msgstr ""
 #: 950.data.seed-values.sql:6948
 msgid "Fanti"
 msgstr "Fanti"
+
+#: 950.data.seed-values.sql:19433
+msgid "Login via Websocket V2"
+msgstr ""
 
 # id::clm.value__tet
 # id::tet
@@ -8145,6 +8151,10 @@ msgstr "3_mois_0_renouvellement"
 msgid "Gospel music"
 msgstr ""
 
+#: 950.data.seed-values.sql:19430
+msgid "Login via Websocket V1"
+msgstr ""
+
 #: 950.data.seed-values.sql:7065
 msgid "Latvian"
 msgstr "Letton"
@@ -10590,6 +10600,10 @@ msgstr ""
 msgid "ADMIN_Z3950_SOURCE"
 msgstr ""
 
+#: 950.data.seed-values.sql:19436
+msgid "Verification via Websocket v1"
+msgstr ""
+
 #: 950.data.seed-values.sql:16541
 msgid "Apply this prefix to any auto-generated item barcodes"
 msgstr ""
@@ -11186,10 +11200,8 @@ msgstr ""
 msgid "No information supplied"
 msgstr ""
 
-#: 950.data.seed-values.sql:994
-msgid ""
-"Allow a staff member to define where another staff member has their "
-"permissions"
+#: 950.data.seed-values.sql:227
+msgid "Physical Description"
 msgstr ""
 
 #: 950.data.seed-values.sql:3373
@@ -12636,6 +12648,10 @@ msgstr ""
 msgid "microfilm cartridge"
 msgstr ""
 
+#: 950.data.seed-values.sql:19439
+msgid "Verifiation via Websocket V2"
+msgstr ""
+
 #: 950.data.seed-values.sql:1436
 msgid "Allow a user to update trigger reactors"
 msgstr ""
@@ -12876,6 +12892,10 @@ msgstr ""
 #: 950.data.seed-values.sql:5637 950.data.seed-values.sql:5644
 msgid "Miscellaneous"
 msgstr "Divers"
+
+#: 950.data.seed-values.sql:19445
+msgid "Generic Verify"
+msgstr ""
 
 #: 950.data.seed-values.sql:3093
 msgid "Alert staff when the last copy for a record is being deleted"
@@ -13835,6 +13855,10 @@ msgstr ""
 #: 950.data.seed-values.sql:7106
 msgid "Manobo languages"
 msgstr "Langues Manobo"
+
+#: 950.data.seed-values.sql:19442
+msgid "Generic Login"
+msgstr ""
 
 # id::clm.value__ter
 # id::ter

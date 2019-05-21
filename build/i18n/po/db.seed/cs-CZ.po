@@ -9,8 +9,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-01-17 05:52+0000\n"
-"X-Generator: Launchpad (build 18856)\n"
+"X-Launchpad-Export-Date: 2019-05-21 05:57+0000\n"
+"X-Generator: Launchpad (build 18962)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -184,7 +184,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18708
 msgid "Grid Config: cat.volcopy.copies.complete"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.signatury-jednotky.exempláře.úplné"
 
 #: 950.data.seed-values.sql:19308
 msgid "Staff Catalog Preferred Library"
@@ -223,6 +223,14 @@ msgstr "Čtenář má neplatné číslo večerního telefonu"
 #: 950.data.seed-values.sql:7116
 msgid "Nahuatl"
 msgstr "Nahuatl"
+
+#: 950.data.seed-values.sql:994
+msgid ""
+"Allow a staff member to define where another staff member has their "
+"permissions"
+msgstr ""
+"Povolit členu personálu definovat, kde mají jiní členové personálu svá "
+"oprávnění"
 
 #: 950.data.seed-values.sql:12247 950.data.seed-values.sql:12248
 msgid "Historical Hold Retention Start Date"
@@ -511,7 +519,7 @@ msgstr "Záhlaví -- podrozdělení podle formy"
 
 #: 950.data.seed-values.sql:19009
 msgid "Print Template Context: hold_transit_slip"
-msgstr ""
+msgstr "Kontext tiskové šablony: rezervace_průvodka_přepravy"
 
 #: 950.data.seed-values.sql:4867
 msgid ""
@@ -615,7 +623,7 @@ msgstr "Regulární výraz pro pole E-mail v registračních údajích čtenář
 
 #: 950.data.seed-values.sql:18841
 msgid "Grid Config: circ.patron.bills"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčky.čtenář.poplatky"
 
 #: 950.data.seed-values.sql:4291
 msgid "Courier Code"
@@ -729,7 +737,7 @@ msgstr "Brtiská Kolumbie "
 
 #: 950.data.seed-values.sql:19226
 msgid "Print Template: offline_checkout"
-msgstr ""
+msgstr "Tisková šablona: offline_výpůjčka"
 
 # id::clfm.description__p
 #: 950.data.seed-values.sql:7343
@@ -778,7 +786,7 @@ msgstr "zápis pohybu"
 
 #: 950.data.seed-values.sql:18820
 msgid "Grid Config: user.bucket.pending"
-msgstr ""
+msgstr "Nastavení tabulky: uživatel.skupina.nevyřízené"
 
 #: 950.data.seed-values.sql:6841
 msgid "Arapaho"
@@ -866,7 +874,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18862
 msgid "Grid Config: serials.view_item_grid"
-msgstr ""
+msgstr "Nastavení tabulky: seriály.zobrazení_jednotky_tabulka"
 
 #: 950.data.seed-values.sql:16845
 msgid "Clear hold when other patron checks out item"
@@ -1013,7 +1021,7 @@ msgstr "DELETE_BIB_IMPORT_QUEUE"
 
 #: 950.data.seed-values.sql:19254
 msgid "Print Template: offline_checkin"
-msgstr ""
+msgstr "Tisková šablona: offline_vrácení"
 
 #: 950.data.seed-values.sql:4579
 msgid "This is the default Ident Type for new users in the patron editor."
@@ -1028,7 +1036,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:19030
 msgid "Print Template: hold_shelf_slip"
-msgstr ""
+msgstr "Tisková šablon: rezervace_průvodka_police"
 
 #: 950.data.seed-values.sql:4240
 msgid ""
@@ -1076,7 +1084,7 @@ msgstr "Neplatná hodnota \"copy_number\" (číslo exempláře)"
 
 #: 950.data.seed-values.sql:19212
 msgid "Print Template: transit_slip"
-msgstr ""
+msgstr "Tisková šablona: průvodka_přepravy"
 
 #: 950.data.seed-values.sql:5065
 msgid "The county field will be required on the patron registration screen."
@@ -1112,7 +1120,7 @@ msgstr "Tiskový štítek jednotky - Levý okraj pro levý štítek"
 
 #: 950.data.seed-values.sql:18603
 msgid "Grid Config: admin.server.asset.copy_tag"
-msgstr ""
+msgstr "Nastavení tabulky: admin.server.asset.exemplář_tag"
 
 #: 950.data.seed-values.sql:5635
 msgid "Circulation History"
@@ -1162,7 +1170,7 @@ msgstr "Autor (osoba)"
 
 #: 950.data.seed-values.sql:18939
 msgid "Print Template Context: bills_current"
-msgstr ""
+msgstr "Kontext tiskové šablony: poplatky_aktuální"
 
 #: 950.data.seed-values.sql:8577
 msgid "Wales "
@@ -1383,7 +1391,7 @@ msgstr "Tádžikistán "
 
 #: 950.data.seed-values.sql:18729
 msgid "Grid Config: cat.holdings"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.jednotky"
 
 #: 950.data.seed-values.sql:8505
 msgid "Rhode Island "
@@ -1491,7 +1499,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18799
 msgid "Grid Config: circ.patron.items_out"
-msgstr ""
+msgstr "Nastavení tabulky: rezervace_označení_police"
 
 #: 950.data.seed-values.sql:8504
 msgid "Zimbabwe "
@@ -1660,7 +1668,7 @@ msgstr "Může dělat cokoliv na úrovni pobočky"
 
 #: 950.data.seed-values.sql:19023
 msgid "Print Template Context: hold_shelf_slip"
-msgstr ""
+msgstr "Kontext tiskové šablony: rezervace_označení_police"
 
 #: 950.data.seed-values.sql:7084
 msgid "Maithili"
@@ -2299,7 +2307,7 @@ msgstr "Zvuková kazeta"
 
 #: 950.data.seed-values.sql:18785
 msgid "Grid Config: circ.pending_patrons.list"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.nevyřízení_čtenáři.seznam"
 
 #: 950.data.seed-values.sql:1006
 msgid "Allow a user to delete a fund"
@@ -2650,7 +2658,7 @@ msgstr "Při platbě vytisknout potvrzení"
 
 #: 950.data.seed-values.sql:18659
 msgid "Grid Config: cat.bucket.record.search"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.skupina.záznamy.hledání"
 
 #: 950.data.seed-values.sql:1302
 msgid "UPDATE_ACQ_FUNDING_SOURCE"
@@ -2724,7 +2732,7 @@ msgstr "Mše"
 
 #: 950.data.seed-values.sql:18967
 msgid "Print Template Context: bill_payment"
-msgstr ""
+msgstr "Kontext tiskové šablony: platba_poplatku"
 
 #: 950.data.seed-values.sql:8271
 msgid "Arrangement"
@@ -2793,7 +2801,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:19163
 msgid "Print Template Context: patron_note"
-msgstr ""
+msgstr "Kontext tiskové šablony: čtenář_poznámka"
 
 #: 950.data.seed-values.sql:7079
 msgid "Lushai"
@@ -3127,7 +3135,7 @@ msgstr "Doba uchování historie rezervací"
 
 #: 950.data.seed-values.sql:18974
 msgid "Print Template: bill_payment"
-msgstr ""
+msgstr "Tisková šablona: platba_poplatku"
 
 #: 950.data.seed-values.sql:7428 950.data.seed-values.sql:7429
 #: 950.data.seed-values.sql:7497 950.data.seed-values.sql:7498
@@ -3239,7 +3247,7 @@ msgstr "Bislama"
 
 #: 950.data.seed-values.sql:19268
 msgid "Print Template: offline_in_house_use"
-msgstr ""
+msgstr "Tisková šablony: offline_prezenční_výpůjčka"
 
 #: 950.data.seed-values.sql:6821
 msgid "Acoli"
@@ -3326,7 +3334,7 @@ msgstr "Tupi jazyky"
 
 #: 950.data.seed-values.sql:18715
 msgid "Grid Config: cat.peer_bibs"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.připojené_záznamy"
 
 #: 950.data.seed-values.sql:8458
 msgid "Niger "
@@ -3509,7 +3517,7 @@ msgstr "Florida "
 
 #: 950.data.seed-values.sql:17193
 msgid "Item Print Label - Call Number Wrap Filter Width"
-msgstr "Tiskový štítek exempláře - Šířka filtru pro zalomení signatur"
+msgstr "Tiskový štítek jednotky - šířka filtru pro zalomení signatur"
 
 #: 950.data.seed-values.sql:8230 950.data.seed-values.sql:8886
 #: 950.data.seed-values.sql:8899 950.data.seed-values.sql:8912
@@ -3621,10 +3629,6 @@ msgstr "Upozornit, pokud se blíží konec čtenářské registrace"
 #: 950.data.seed-values.sql:7692
 msgid "notated music"
 msgstr "hudební zápis"
-
-#: 950.data.seed-values.sql:227
-msgid "Physical Description"
-msgstr "Fyzický popis"
 
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
@@ -4013,7 +4017,7 @@ msgstr "Doručeno ale nepřevzato. Předpokládaná ztráta"
 
 #: 950.data.seed-values.sql:18645
 msgid "Grid Config: serials.copy_templates"
-msgstr ""
+msgstr "Nastavení tabulky: seriály.šablony_exemplářů"
 
 #: 950.data.seed-values.sql:7720
 msgid "cartographic moving image"
@@ -4093,6 +4097,10 @@ msgstr "Uživatel smí vytvořit novou čtenářskou statistickou kategorii"
 #: 950.data.seed-values.sql:6948
 msgid "Fanti"
 msgstr "Fantiština"
+
+#: 950.data.seed-values.sql:19433
+msgid "Login via Websocket V2"
+msgstr "Přihlášení pomocí websocket V2"
 
 #: 950.data.seed-values.sql:7243
 msgid "Tetum"
@@ -4253,7 +4261,7 @@ msgstr "Tokáty"
 
 #: 950.data.seed-values.sql:19177
 msgid "Print Template Context: renew"
-msgstr ""
+msgstr "Kontext tiskové šablony: prodloužení"
 
 #: 950.data.seed-values.sql:8606
 msgid "Yemen "
@@ -4303,7 +4311,7 @@ msgstr "Poškozeno"
 
 #: 950.data.seed-values.sql:18652
 msgid "Grid Config: cat.record_overlay.holdings"
-msgstr ""
+msgstr "Nastavení tabulky: katalog_přepsání_záznamu_jednotky"
 
 #: 950.data.seed-values.sql:990
 msgid "Allow a user to checkout an item that is marked as non-circ"
@@ -4317,6 +4325,7 @@ msgstr "Namíbie "
 #: 950.data.seed-values.sql:18582
 msgid "Grid Config: admin.server.config.metabib_field_virtual_map.grid"
 msgstr ""
+"Nastavení tabulky: admin.server.config.metabib_field_virtual_map.grid"
 
 #: 950.data.seed-values.sql:7119
 msgid "Nauru"
@@ -4915,7 +4924,7 @@ msgstr "Výpůjčky"
 
 #: 950.data.seed-values.sql:19016
 msgid "Print Template: hold_transit_slip"
-msgstr ""
+msgstr "Tisková šablona: rezervace_průvodka_přepravy"
 
 #: 950.data.seed-values.sql:762
 msgid "Allow a user to check in a copy"
@@ -5043,7 +5052,7 @@ msgstr "Rétorománština"
 
 #: 950.data.seed-values.sql:18750
 msgid "Grid Config: circ.holds.pull"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.rezervace.zachycení"
 
 #: 950.data.seed-values.sql:8009
 msgid "Oratorios"
@@ -5055,11 +5064,11 @@ msgstr "Povolit uživatel manuálně nastavit aktivní čtenářský průkaz"
 
 #: 950.data.seed-values.sql:18743
 msgid "Grid Config: circ.wide_holds.shelf"
-msgstr ""
+msgstr "Nastavení tabulky: circ.wide_holds.shelf"
 
 #: 950.data.seed-values.sql:18869
 msgid "Grid Config: serials.dist_stream_grid"
-msgstr ""
+msgstr "Nastavení tabulky: seriály.distribuce_řady_tabulka"
 
 #: 950.data.seed-values.sql:12779
 msgid ""
@@ -5444,7 +5453,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18561
 msgid "Grid Config: circ.checkin.checkin"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.vracení.vracení"
 
 #: 950.data.seed-values.sql:7660
 msgid "tactile text"
@@ -5707,7 +5716,7 @@ msgstr "Naúčtovat pokuty za zpozdné za dny, kdy je knihovna zavřená"
 
 #: 950.data.seed-values.sql:18575
 msgid "Grid Config: admin.server.config.copy_tag_type"
-msgstr ""
+msgstr "Nastavení tabulky: admin.server.konfigurace.exemplář_typy_tagu"
 
 #: 950.data.seed-values.sql:2853 950.data.seed-values.sql:2854
 msgid "OPAC Search Depth"
@@ -5900,7 +5909,7 @@ msgstr "Avestský jazyk"
 
 #: 950.data.seed-values.sql:19065
 msgid "Print Template Context: hold_pull_list"
-msgstr ""
+msgstr "Kontext tiskové šablony: seznam_rezervací_k_vyzvednutí"
 
 #: 950.data.seed-values.sql:18540
 msgid "Print Label Templates"
@@ -6328,7 +6337,7 @@ msgstr "Identifikátor"
 
 #: 950.data.seed-values.sql:18848
 msgid "Grid Config: circ.patron.checkout"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.půjčování"
 
 #: 950.data.seed-values.sql:8024
 msgid "Rondos"
@@ -6402,7 +6411,7 @@ msgstr "trojrozměnrná hmatová kartografická forma"
 
 #: 950.data.seed-values.sql:19114
 msgid "Print Template: item_status"
-msgstr ""
+msgstr "Tisková šablona: status_jednotky"
 
 #: 950.data.seed-values.sql:1554
 msgid "ADMIN_USER_SETTING_TYPE"
@@ -6410,7 +6419,7 @@ msgstr "ADMIN_USER_SETTING_TYPE"
 
 #: 950.data.seed-values.sql:18687
 msgid "Grid Config: cat.bucket.copy.pending"
-msgstr ""
+msgstr "Nastavení tabulky: skupina.exempláře.nevyřízené"
 
 #: 950.data.seed-values.sql:4810
 msgid "Require email field on patron registration"
@@ -6430,7 +6439,7 @@ msgstr "Kuželový, jiný"
 
 #: 950.data.seed-values.sql:18757
 msgid "Grid Config: circ.in_house_use"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.prezenční_výpůjčka"
 
 #: 950.data.seed-values.sql:1372
 msgid "UPDATE_ORG_UNIT_SETTING.circ.item_checkout_history.max"
@@ -6471,7 +6480,7 @@ msgstr "Výchozí sada pro shodu záznamů"
 
 #: 950.data.seed-values.sql:18827
 msgid "Grid Config: circ.patron.staff_messages"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.zprávy_personálu"
 
 #: 950.data.seed-values.sql:9743
 msgid "A patron acquisition request has been marked Cancelled."
@@ -6563,11 +6572,11 @@ msgstr "CREATE_BIB_LEVEL"
 
 #: 950.data.seed-values.sql:18631
 msgid "Grid Config: admin.workstation.patron_log"
-msgstr ""
+msgstr "Nastavení tabulky: admin.pracovní_stanice_log"
 
 #: 950.data.seed-values.sql:19135
 msgid "Print Template Context: patron_address"
-msgstr ""
+msgstr "Kontext tiskové šablony:adresa_čtenáře"
 
 #: 950.data.seed-values.sql:12834
 msgid ""
@@ -7017,7 +7026,7 @@ msgstr "Manština (manx)"
 
 #: 950.data.seed-values.sql:17177
 msgid "Item Print Label - Call Number Wrap Filter Height"
-msgstr "Tiskové štítky jednotek - Výška filtru pro zarovnání signatur"
+msgstr "Tiskový štítek jednotky - výška filtru pro zarovnání signatur"
 
 #: 950.data.seed-values.sql:13442
 msgid "Subdivision Linking Entry -- Chronological Subdivision"
@@ -7631,7 +7640,7 @@ msgstr "Povolit administraci pohyblivých skupin"
 
 #: 950.data.seed-values.sql:19093
 msgid "Print Template Context: in_house_use_list"
-msgstr ""
+msgstr "Kontext tiskové šablony: seznam_prezenčních_výpůjček"
 
 #: 950.data.seed-values.sql:7310
 msgid "Adolescent"
@@ -7969,7 +7978,7 @@ msgstr "Tisková šablona: vracení"
 
 #: 950.data.seed-values.sql:19240
 msgid "Print Template: offline_renew"
-msgstr ""
+msgstr "Tisková šablona: offline_prodloužení"
 
 #: 950.data.seed-values.sql:7360
 msgid "Serial component part"
@@ -8229,7 +8238,7 @@ msgstr "UPDATE_ORG_UNIT_SETTING.circ.hold_expire_interval"
 
 #: 950.data.seed-values.sql:19142
 msgid "Print Template: patron_address"
-msgstr ""
+msgstr "Tisková šablona: adresa_čtenáře"
 
 #: 950.data.seed-values.sql:1272
 msgid "CREATE_AUTHORITY_RECORD_NOTE"
@@ -8274,7 +8283,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18876
 msgid "Grid Config: circ.patron.search"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčky.čtenář.hledání"
 
 #: 950.data.seed-values.sql:3781
 msgid ""
@@ -8296,6 +8305,10 @@ msgstr "3_měsíce_0_prodloužení"
 #: 950.data.seed-values.sql:7994
 msgid "Gospel music"
 msgstr "Gospel music (duchovní písně severoamerických černochů)"
+
+#: 950.data.seed-values.sql:19430
+msgid "Login via Websocket V1"
+msgstr "Přihlášení pomocí websocket V1"
 
 #: 950.data.seed-values.sql:7065
 msgid "Latvian"
@@ -8331,7 +8344,7 @@ msgstr "ADMIN_GROUP_PENALTY_THRESHOLD"
 
 #: 950.data.seed-values.sql:18953
 msgid "Print Template Context: bills_historical"
-msgstr ""
+msgstr "Kontext tiskové šablony: poplatky_historie"
 
 #: 950.data.seed-values.sql:1206
 msgid "REMOVE_GROUP_PERM"
@@ -8448,7 +8461,7 @@ msgstr "Romština"
 
 #: 950.data.seed-values.sql:19051
 msgid "Print Template Context: holds_for_patron"
-msgstr ""
+msgstr "Kontext tiskové šablony: rezervace_pro_čtenáře"
 
 #: 950.data.seed-values.sql:8426
 msgid "Libya "
@@ -8479,7 +8492,7 @@ msgstr "Ruština"
 
 #: 950.data.seed-values.sql:18806
 msgid "Grid Config: circ.patron.billhistory_payments"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.historie_plateb"
 
 #: 950.data.seed-values.sql:15068
 msgid "Login via translator-v1"
@@ -8538,7 +8551,7 @@ msgstr "UPDATE_CN_BTYPE"
 
 #: 950.data.seed-values.sql:19044
 msgid "Print Template: holds_for_bib"
-msgstr ""
+msgstr "Tisková šablona: rezervace_na_bibliografický_záznam"
 
 #: 950.data.seed-values.sql:8179
 msgid "Lambert's azimuthal equal area"
@@ -8546,7 +8559,7 @@ msgstr "Lambertovo azimutální plochojevné zobrazení"
 
 #: 950.data.seed-values.sql:19191
 msgid "Print Template Context: transit_list"
-msgstr ""
+msgstr "Kontext tiskové šablony: seznam_přeprav"
 
 #: 950.data.seed-values.sql:7464 950.data.seed-values.sql:7465
 #: 950.data.seed-values.sql:7530 950.data.seed-values.sql:7531
@@ -8792,6 +8805,7 @@ msgstr "Kambština"
 #: 950.data.seed-values.sql:18610
 msgid "Grid Config: admin.local.circ.neg_balance_users"
 msgstr ""
+"Nastavení tabulky: andmin.lokální.výpůjčka.uživatelé_s_negativní_bilancí"
 
 #: 950.data.seed-values.sql:3913
 msgid "Disable Automatic Print Attempt Type List"
@@ -8922,7 +8936,7 @@ msgstr "Během nahrávání do akvizice standardně aktivovat objednávku"
 
 #: 950.data.seed-values.sql:18596
 msgid "Grid Config: admin.server.config.marc_field"
-msgstr ""
+msgstr "Nastavení tabulky: admin.server.konfigurace.pole_marc"
 
 #: 950.data.seed-values.sql:13429
 msgid "See Also From Tracing -- Chronological Subdivision"
@@ -9139,7 +9153,7 @@ msgstr "Zvuky"
 
 #: 950.data.seed-values.sql:19170
 msgid "Print Template: patron_note"
-msgstr ""
+msgstr "Tisková šabolona: čtenář_poznámky"
 
 # id::clm.value__man
 #: 950.data.seed-values.sql:7087
@@ -9381,7 +9395,7 @@ msgstr "Blokace typu Je k dispozici lokální exemplář"
 
 #: 950.data.seed-values.sql:18792
 msgid "Grid Config: circ.patron.items_out.noncat"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.půjčené_nekatalogizované_výpůjčky"
 
 #: 950.data.seed-values.sql:7183
 msgid "Samaritan Aramaic"
@@ -9433,7 +9447,7 @@ msgstr "Použít směrování rezervací založené na výpočtu vah."
 
 #: 950.data.seed-values.sql:19072
 msgid "Print Template: hold_pull_list"
-msgstr ""
+msgstr "Tisková šablony: seznam_rezervací_k_vyzvednutí"
 
 #: 950.data.seed-values.sql:8437
 msgid "Mali "
@@ -9748,7 +9762,7 @@ msgstr "Počet URL, která mají být paralelně testována"
 
 #: 950.data.seed-values.sql:19219
 msgid "Print Template Context: offline_checkout"
-msgstr ""
+msgstr "Kontext tiskové šablony: offline_výpůjčka"
 
 #: 950.data.seed-values.sql:17276
 msgid ""
@@ -9775,7 +9789,7 @@ msgstr "Povolí uživateli editovat MFHD záznam"
 
 #: 950.data.seed-values.sql:18701
 msgid "Grid Config: cat.volcopy.copies"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.signatury-jednotky.exempláře"
 
 #: 950.data.seed-values.sql:7259 950.data.seed-values.sql:7261
 msgid "Tswana"
@@ -10128,7 +10142,7 @@ msgstr "Bulharsko "
 
 #: 950.data.seed-values.sql:19107
 msgid "Print Template Context: item_status"
-msgstr ""
+msgstr "Kontext tiskové šablony: status_exmpláře"
 
 #: 950.data.seed-values.sql:7276
 msgid "Urdu"
@@ -10594,7 +10608,7 @@ msgstr "Volapük"
 
 #: 950.data.seed-values.sql:19205
 msgid "Print Template Context: transit_slip"
-msgstr ""
+msgstr "Kontext tiskové šablony: průvodka_přepravy"
 
 #: 950.data.seed-values.sql:8393
 msgid "Ireland "
@@ -10650,7 +10664,7 @@ msgstr "Dzongkä"
 
 #: 950.data.seed-values.sql:1914
 msgid "APPLY_WORKSTATION_SETTING"
-msgstr ""
+msgstr "POUŽÍT_NASTAVENÍ_PRACOVNÍ_STANICE"
 
 #: 950.data.seed-values.sql:8614
 msgid "Detailed date"
@@ -10662,7 +10676,7 @@ msgstr "Cincinnati Bell"
 
 #: 950.data.seed-values.sql:19037
 msgid "Print Template Context: holds_for_bib"
-msgstr ""
+msgstr "Kontext tiskové šablony: rezervace_na_bib_záznam"
 
 #: 950.data.seed-values.sql:5362
 msgid "Use Lost and Paid copy status"
@@ -10834,6 +10848,10 @@ msgstr ""
 msgid "ADMIN_Z3950_SOURCE"
 msgstr "ADMIN_Z3950_SOURCE"
 
+#: 950.data.seed-values.sql:19436
+msgid "Verification via Websocket v1"
+msgstr "Ověření pomocí websocket v1"
+
 #: 950.data.seed-values.sql:16541
 msgid "Apply this prefix to any auto-generated item barcodes"
 msgstr ""
@@ -10865,7 +10883,7 @@ msgstr "Povolit uživateli změnit nastavení organizační jednotky"
 
 #: 950.data.seed-values.sql:18778
 msgid "Grid Config: circ.patron.holds"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.rezervace"
 
 #: 950.data.seed-values.sql:8956 950.data.seed-values.sql:8973
 msgid "No Illustrations"
@@ -10976,7 +10994,7 @@ msgstr "1.4 m za sekundu"
 
 #: 950.data.seed-values.sql:18680
 msgid "Grid Config: cat.bucket.copy.view"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.skupina.exempláře.zobrazení"
 
 #: 950.data.seed-values.sql:3895
 msgid "Workstation Required"
@@ -11457,13 +11475,9 @@ msgstr "Vracení: Vyčistit polici s rezervacemi"
 msgid "No information supplied"
 msgstr "Nejsou poskytnuty žádné informace"
 
-#: 950.data.seed-values.sql:994
-msgid ""
-"Allow a staff member to define where another staff member has their "
-"permissions"
-msgstr ""
-"Povolit členu personálu definovat, kde mají jiní členové personálu svá "
-"oprávnění"
+#: 950.data.seed-values.sql:227
+msgid "Physical Description"
+msgstr "Fyzický popis"
 
 #: 950.data.seed-values.sql:3373
 msgid "Auto-Extend Grace Periods"
@@ -11484,7 +11498,7 @@ msgstr "Nastavit výchozí velikost fontu pro hřbetní a knižní štítky"
 
 #: 950.data.seed-values.sql:19058
 msgid "Print Template: holds_for_patron"
-msgstr ""
+msgstr "Tisková šablona: rezervace_pro_čtenáře"
 
 #: 950.data.seed-values.sql:914
 msgid ""
@@ -11664,7 +11678,7 @@ msgstr "videodisk"
 
 #: 950.data.seed-values.sql:18673
 msgid "Grid Config: cat.bucket.record.pending"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.skupinazáznamy.nevyřízené"
 
 #: 950.data.seed-values.sql:272 950.data.seed-values.sql:618
 #: 950.data.seed-values.sql:641 950.data.seed-values.sql:5576
@@ -11837,11 +11851,11 @@ msgstr "Divadelní hry"
 
 #: 950.data.seed-values.sql:18855
 msgid "Grid Config: serials.mfhd_grid"
-msgstr ""
+msgstr "Nastavení tabulky: seriály.mfhd_tabulka"
 
 #: 950.data.seed-values.sql:19079
 msgid "Print Template Context: hold_shelf_list"
-msgstr ""
+msgstr "Kontext tiskové šablony: seznam_rezervací_na_regále"
 
 #: 950.data.seed-values.sql:168
 msgid "ISRC"
@@ -11920,7 +11934,7 @@ msgstr "Smazat rovnocenný typ biliografického záznamu"
 
 #: 950.data.seed-values.sql:18694
 msgid "Grid Config: cat.items"
-msgstr ""
+msgstr "Natavení tabulky: katalog.jednotky"
 
 #: 950.data.seed-values.sql:1626
 msgid "UPDATE_MERGE_PROFILE"
@@ -11945,7 +11959,7 @@ msgstr "Pole pro výši pokuty, interval pokuty a maximum pokuty"
 
 #: 950.data.seed-values.sql:19247
 msgid "Print Template Context: offline_checkin"
-msgstr ""
+msgstr "Kontext tiskové šablony: offline_vrácení"
 
 #: 950.data.seed-values.sql:7362
 msgid "Subunit"
@@ -12076,7 +12090,7 @@ msgstr "Kreolština a jiné pidginy na základě portugalštiny"
 
 #: 950.data.seed-values.sql:18946
 msgid "Print Template: bills_current"
-msgstr ""
+msgstr "Tisková šablona: poplatky_aktuální"
 
 # id::clm.value__ton
 #: 950.data.seed-values.sql:7255
@@ -12123,7 +12137,7 @@ msgstr "Rozhovory"
 
 #: 950.data.seed-values.sql:18624
 msgid "Grid Config: admin.workstation.work_log"
-msgstr ""
+msgstr "Nastavení tabulky: admin.pracovní_stanice.pracovní_log"
 
 #: 950.data.seed-values.sql:1408
 msgid "Allow a user to create trigger cleanup entries"
@@ -12131,7 +12145,7 @@ msgstr "Povolit užeivateli vytvořit údaje pro čištění spouštěče (trigg
 
 #: 950.data.seed-values.sql:18666
 msgid "Grid Config: cat.bucket.record.view"
-msgstr ""
+msgstr "Natavení tabulky: katalog.skupina.záznamy.zobrazení"
 
 #: 950.data.seed-values.sql:1190
 msgid "DELETE_ORG_UNIT"
@@ -12282,7 +12296,7 @@ msgstr "Materiály z konferencí"
 
 #: 950.data.seed-values.sql:19233
 msgid "Print Template Context: offline_renew"
-msgstr ""
+msgstr "Kontext tiskové šablony: offline_prodloužení"
 
 #: 950.data.seed-values.sql:13471
 msgid "Subject axis"
@@ -12572,7 +12586,7 @@ msgstr "Formáty pro vyhledávání"
 
 #: 950.data.seed-values.sql:18568
 msgid "Grid Config: circ.checkin.capture"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.vracení.zachycení"
 
 #: 950.data.seed-values.sql:1560
 msgid "CREATE_BIBLIO_FINGERPRINT"
@@ -12725,7 +12739,7 @@ msgstr "Ověření prostřednictvím EZ proxy"
 
 #: 950.data.seed-values.sql:19156
 msgid "Print Template: patron_data"
-msgstr ""
+msgstr "Tisková šablona: data_čtenáře"
 
 # id::cza.label__6 id::cza.label__15 id::cza.label__24
 # id::vqbrad.description__6
@@ -12914,6 +12928,10 @@ msgstr "Vlastní registrace čtenáře. Interval expirace"
 #: 950.data.seed-values.sql:7876
 msgid "microfilm cartridge"
 msgstr "kazeta mikrofilmu"
+
+#: 950.data.seed-values.sql:19439
+msgid "Verifiation via Websocket V2"
+msgstr "Ověření pomocí websocket v2"
 
 #: 950.data.seed-values.sql:1436
 msgid "Allow a user to update trigger reactors"
@@ -13161,6 +13179,10 @@ msgstr "Práh výše platby pro dialog  Opravdu chcete ..."
 msgid "Miscellaneous"
 msgstr "Různé"
 
+#: 950.data.seed-values.sql:19445
+msgid "Generic Verify"
+msgstr "Generické ověření"
+
 #: 950.data.seed-values.sql:3093
 msgid "Alert staff when the last copy for a record is being deleted"
 msgstr ""
@@ -13206,7 +13228,7 @@ msgstr "Barbados "
 
 #: 950.data.seed-values.sql:18589
 msgid "Grid Config: admin.server.config.metabib_field.grid"
-msgstr ""
+msgstr "Nastavení tabulky: admin.server.konfigurace.pole_metabib.tabulka"
 
 # id::clm.value__suk
 #: 950.data.seed-values.sql:7225
@@ -13215,7 +13237,7 @@ msgstr "Sukuma"
 
 #: 950.data.seed-values.sql:18960
 msgid "Print Template: bills_historical"
-msgstr ""
+msgstr "Tisková šablona: historie_poplatků"
 
 #: 950.data.seed-values.sql:17145
 msgid "Item Print Label - Width for Right Label"
@@ -13263,7 +13285,7 @@ msgstr "Vokální partitura"
 
 #: 950.data.seed-values.sql:18890
 msgid "Use Flat MARC Editor"
-msgstr ""
+msgstr "Použít textovou editaci MARC"
 
 #: 950.data.seed-values.sql:7986
 msgid "Concertos"
@@ -13612,7 +13634,7 @@ msgstr "Aliant"
 
 #: 950.data.seed-values.sql:18617
 msgid "Grid Config: admin.local.rating.badge"
-msgstr ""
+msgstr "Nastavení tabulky: admin.lokální.rating.odznaky"
 
 #: 950.data.seed-values.sql:8538
 msgid "Togo "
@@ -13709,7 +13731,7 @@ msgstr "Datum distribuce/uvolnění/vydání a produkce/nahrávání, pokud se l
 
 #: 950.data.seed-values.sql:19149
 msgid "Print Template Context: patron_data"
-msgstr ""
+msgstr "Kontext tiskové šablony: data_čtenáře"
 
 #: 950.data.seed-values.sql:916
 msgid ""
@@ -13794,7 +13816,7 @@ msgstr "ADMIN_ACQ_DISTRIB_FORMULA"
 
 #: 950.data.seed-values.sql:18638
 msgid "Grid Config: admin.serials.pattern_template"
-msgstr ""
+msgstr "Nastavení tabulky: admin.seriály.šablony_schémat"
 
 #: 950.data.seed-values.sql:153
 msgid "All Subjects"
@@ -13818,7 +13840,7 @@ msgstr "zpoždění_vybavení_minimální"
 
 #: 950.data.seed-values.sql:19100
 msgid "Print Template: in_house_use_list"
-msgstr ""
+msgstr "Tisková šablony: seznam_prezenčních_výpůjček"
 
 #: 950.data.seed-values.sql:7864
 msgid "microfilm slip"
@@ -14124,6 +14146,10 @@ msgstr "zvukový válec"
 msgid "Manobo languages"
 msgstr "Manobo jazyky"
 
+#: 950.data.seed-values.sql:19442
+msgid "Generic Login"
+msgstr "Generické přihlášení"
+
 #: 950.data.seed-values.sql:7242
 msgid "Terena"
 msgstr "Tereno"
@@ -14316,7 +14342,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18834
 msgid "Grid Config: circ.patron.archived_messages"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.čtenář.archivované_zprávy"
 
 # id::clfm.description__m
 #: 950.data.seed-values.sql:7342
@@ -14366,7 +14392,7 @@ msgstr "UPDATE_LASSO"
 
 #: 950.data.seed-values.sql:19198
 msgid "Print Template: transit_list"
-msgstr ""
+msgstr "Tisková šablona: seznam_přepravy"
 
 #: 950.data.seed-values.sql:12166
 msgid ""
@@ -14564,7 +14590,7 @@ msgstr "Filmografie"
 
 #: 950.data.seed-values.sql:18736
 msgid "Grid Config: cat.z3950_results"
-msgstr ""
+msgstr "Nastavení tabulky: katalog.výsledky_z3950"
 
 #: 950.data.seed-values.sql:3117
 msgid "Default Classification Scheme"
@@ -14637,7 +14663,7 @@ msgstr "Povolit platby  PayPal"
 
 #: 950.data.seed-values.sql:19121
 msgid "Print Template Context: items_out"
-msgstr ""
+msgstr "Kontext tiskové šablony: vypůjčené_jednotky"
 
 # id::clm.value__-sho id::clm.value__sna
 #: 950.data.seed-values.sql:7196 950.data.seed-values.sql:7211
@@ -14835,7 +14861,7 @@ msgstr "kartridž počítačového čipu"
 
 #: 950.data.seed-values.sql:17161
 msgid "Item Print Label - Inline CSS"
-msgstr "Tiskové štítky jednotek - inline CSS"
+msgstr "Tiskové štítky jednotky - inline CSS"
 
 #: 950.data.seed-values.sql:7760
 msgid "audio"
@@ -14843,7 +14869,7 @@ msgstr "zvuk"
 
 #: 950.data.seed-values.sql:18764
 msgid "Grid Config: circ.renew"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.prodloužení"
 
 #: 950.data.seed-values.sql:18400
 msgid "Checkin: Suppress Holds and Transits"
@@ -15092,7 +15118,7 @@ msgstr "Gibraltar "
 
 #: 950.data.seed-values.sql:19128
 msgid "Print Template: items_out"
-msgstr ""
+msgstr "Tisková šablona: vypůjčené_jednotky"
 
 #: 950.data.seed-values.sql:1714
 msgid "Allows a user to cancel a transit on a copy with status of MISSING"
@@ -15131,7 +15157,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18883
 msgid "Collapse Bib Record Summary"
-msgstr ""
+msgstr "Sbalit přehled bibliografického záznamu"
 
 #: 950.data.seed-values.sql:1056
 msgid "Allow a user to mark an item status as 'checked out'"
@@ -15165,7 +15191,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:18771
 msgid "Grid Config: circ.transits.list"
-msgstr ""
+msgstr "Nastavení tabulky: výpůjčka.přepravy.seznam"
 
 #: 950.data.seed-values.sql:7784
 msgid "videotape reel"
@@ -15310,7 +15336,7 @@ msgstr "Doba trvání výpůjčky která spustí znovuvyvolání"
 
 #: 950.data.seed-values.sql:8189
 msgid "Gall"
-msgstr ""
+msgstr "Gallovo zobrazení"
 
 #: 950.data.seed-values.sql:7989
 msgid "Divertimentos, serenades, cassations, divertissements, and notturni"
@@ -15559,11 +15585,11 @@ msgstr "Rusko (Ruská federace) "
 
 #: 950.data.seed-values.sql:19261
 msgid "Print Template Context: offline_in_house_use"
-msgstr ""
+msgstr "Kontext tiskové šablony: offline_prezenční_výpůjčky"
 
 #: 950.data.seed-values.sql:19086
 msgid "Print Template: hold_shelf_list"
-msgstr ""
+msgstr "Tisková šablona: seznam_rezervací_k_vyzvednutí"
 
 #: 950.data.seed-values.sql:8376
 msgid "Guadeloupe "
@@ -15700,7 +15726,7 @@ msgstr ""
 
 #: 950.data.seed-values.sql:8510 950.data.seed-values.sql:8529
 msgid "Saint"
-msgstr ""
+msgstr "Svatý"
 
 #: 950.data.seed-values.sql:790
 msgid "Allow a user to delete another user's container"
@@ -15765,3 +15791,9 @@ msgstr "Kiribati "
 #: 950.data.seed-values.sql:7991
 msgid "Flamenco"
 msgstr "Flamenco"
+
+#~ msgid "Physical Descrption"
+#~ msgstr "Fyzický popis"
+
+#~ msgid "Grid Config: circ.patron.billhistory_xacts"
+#~ msgstr "Nastavení tabulky: výpůjčky.čtenář.historie_poplatků"
