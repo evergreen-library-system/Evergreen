@@ -4767,8 +4767,8 @@ SELECT  usr,
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
-			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mallp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mallb"/>
 			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
@@ -4850,8 +4850,8 @@ SELECT  usr,
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
-			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="mallp"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mallb"/>
 			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
@@ -4936,8 +4936,8 @@ SELECT  usr,
 			<link field="target_copy" reltype="has_a" key="id" map="" class="acp"/>
 			<link field="checkin_staff" reltype="has_a" key="id" map="" class="au"/>
 			<link field="circ_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="payments" reltype="has_many" key="xact" map="" class="mp"/>
-			<link field="billings" reltype="has_many" key="xact" map="" class="mb"/>
+			<link field="payments" reltype="has_many" key="xact" map="" class="map"/>
+			<link field="billings" reltype="has_many" key="xact" map="" class="mab"/>
 			<link field="duration_rule" reltype="has_a" key="name" map="" class="crcd"/>
 			<link field="max_fine_rule" reltype="has_a" key="name" map="" class="crmf"/>
 			<link field="recurring_fine_rule" reltype="has_a" key="name" map="" class="crrf"/>
