@@ -379,6 +379,30 @@ function($uibModal , $q , egCore , egConfirmDialog , egAlertDialog) {
         });
     }
 
+    service.updateFilterValue = function(item, value) {
+        switch (item.operator.op) {
+            case 'between':
+            case 'not between':
+            case 'not in':
+            case 'in':
+                //if value isn't an array yet, split into an array for
+                //  operators that need it
+                if (typeof value === 'string') {
+                    value = value.split(/\s*,\s*/);
+                }
+                break;
+
+            default:
+                //if value was split but shouldn't be, then convert back to
+                //  comma-separated string
+                if (Array.isArray(value)) {
+                    value = value.toString();
+                }
+        }
+
+        service.filter_fields[item.index].value = value;
+    }
+
     service.removeField = function (type, field) {
         var new_list = [];
         while (service[type].length) {
