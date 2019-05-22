@@ -10,14 +10,14 @@
       <div class="col-md-4">
         <div class="btn-group" uib-dropdown>
           <button type="button" class="btn btn-default" uib-dropdown-toggle>
-           <span style="padding-right: 5px;" ng-if="selected_option">{{selected_option.label()}}</span>
+           <span style="padding-right: 5px;" ng-if="selected_option">[% l('[_1]: [_2]', '{{selected_option.ptype_key()}}', '{{selected_option.label()}}') %]</span>
            <span style="padding-right: 5px;" ng-if="!selected_option">[% l('<unset>') | html %]</span>
            <span class="caret"></span>
          </button>
          <ul uib-dropdown-menu>
            <li ng-repeat="option in values_for_step">
              <a href ng-click="change_ptype(option)">
-              {{option.ptype_key()}}: {{option.label()}}
+              [% l('[_1]: [_2]', '{{option.ptype_key()}}', '{{option.label()}}') %]
              </a>
            </li>
          </ul>
@@ -29,14 +29,14 @@
       <div class="col-md-6">
         <div class="btn-group" uib-dropdown>
           <button type="button" class="btn btn-default" uib-dropdown-toggle>
-           <span style="padding-right: 5px;" ng-if="selected_option">{{selected_option.label()}}</span>
+           <span style="padding-right: 5px;" ng-if="selected_option">[% l('[_1]: [_2]', '{{selected_option.value()}}', '{{selected_option.label()}}') %]</span>
            <span style="padding-right: 5px;" ng-if="!selected_option">[% l('<unset>') | html %]</span>
            <span class="caret"></span>
          </button>
          <ul uib-dropdown-menu>
            <li ng-repeat="option in values_for_step">
              <a href ng-click="change_option(option)">
-              {{option.label()}}
+              [% l('[_1]: [_2]', '{{option.value()}}', '{{option.label()}}') %]
              </a>
            </li>
          </ul>

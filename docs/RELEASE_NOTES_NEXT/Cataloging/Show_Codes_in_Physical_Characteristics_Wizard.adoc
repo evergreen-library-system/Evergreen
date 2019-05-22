@@ -1,0 +1,4 @@
+Display Codes in Physical Characteristics Wizard Drop-downs (LP#1776003)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Drop-downs in the Physical Characteristics Wizard in the MARC editor
+now display both code and label.
