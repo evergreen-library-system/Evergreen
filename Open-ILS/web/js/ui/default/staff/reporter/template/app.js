@@ -513,36 +513,12 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
             } else {
                 egPromptDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, item.value || '',
                     {ok : function(value) {
-                        if (value) _update_filter_value(item, value);
+                        if (value) egReportTemplateSvc.updateFilterValue(item, value);
                     }}
                 );
             }
         });
         fgrid.refresh();
-    }
-
-    _update_filter_value = function(item, value) {
-        switch (item.operator.op) {
-            case 'between':
-            case 'not between':
-            case 'not in':
-            case 'in':
-                //if value isn't an array yet, split into an array for
-                //  operators that need it
-                if (typeof value === 'string') {
-                    value = value.split(/\s*,\s*/);
-                }
-                break;
-
-            default:
-                //if value was split but shouldn't be, then convert back to
-                //  comma-separated string
-                if (Array.isArray(value)) {
-                    value = value.toString();
-                }
-        }
-
-        egReportTemplateSvc.filter_fields[item.index].value = value;
     }
 
     $scope.changeTransform = function (items) {
@@ -599,7 +575,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
 
                         //Update the filter value based on the new operator, because
                         //  different operators treat the value differently
-                        _update_filter_value(item, egReportTemplateSvc.filter_fields[item.index].value);
+                        egReportTemplateSvc.updateFilterValue(item, egReportTemplateSvc.filter_fields[item.index].value);
                     }
                 }}
             );
