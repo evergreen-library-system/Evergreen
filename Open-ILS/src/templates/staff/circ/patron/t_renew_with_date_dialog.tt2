@@ -13,11 +13,12 @@
   </div>
   <div class="pad-vert row">
     <div class="col-md-5">
-      <eg-date-input required ng-model="args.date"></eg-date-input>
+      <eg-date-input required min-date="minDate" out-of-range="outOfRange"
+          ng-model="args.date"></eg-date-input>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-primary" ng-click="ok()">[% l('Submit') %]</button>
+  <button class="btn btn-primary" ng-click="ok()" ng-disabled="outOfRange">[% l('Submit') %]</button>
   <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
 </div>
