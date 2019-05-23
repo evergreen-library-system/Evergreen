@@ -38,7 +38,7 @@ export class OrgUnitTypeComponent implements OnInit {
 
     loadAoutTree() {
         this.pcrud.search('aout', {depth: 0},
-            {flesh: -1, flesh_fields: {aout: ['children']}},
+            {flesh: -1, flesh_fields: {aout: ['children','org_units']}},
             {anonymous: true}
         ).subscribe(aoutTree => this.ingestAoutTree(aoutTree));
     }
@@ -49,10 +49,16 @@ export class OrgUnitTypeComponent implements OnInit {
         const handleNode = (aoutNode: IdlObject): TreeNode => {
             if (!aoutNode) { return; }
 
+            // grab number of associated org units, then
+            // clear it so that FmRecordEditor doesn't try
+            // to render the list
+            const orgCount = aoutNode.org_units().length;
+            aoutNode.org_units(null);
+
             const treeNode = new TreeNode({
                 id: aoutNode.id(),
                 label: aoutNode.name(),
-                callerData: aoutNode
+                callerData: { aout: aoutNode, orgCount: orgCount },
             });
 
             aoutNode.children().forEach(childNode =>
@@ -83,11 +89,14 @@ export class OrgUnitTypeComponent implements OnInit {
 
     edit() {
         this.editDialog.mode = 'update';
-        this.editDialog.setRecord(this.selected.callerData);
+        this.editDialog.setRecord(this.selected.callerData.aout);
 
         this.editDialog.open().then(
             success => {
                 this.postUpdate(this.editString);
+                this.loadAoutTree(); // since the tree is never going to
+                                     // be large, just reload the whole
+                                     // thing
             },
             rejected => {
                 if (rejected && rejected.dismissed) {
@@ -102,7 +111,7 @@ export class OrgUnitTypeComponent implements OnInit {
     remove() {
         this.delConfirm.open().then(
             ok => {
-                this.pcrud.remove(this.selected.callerData)
+                this.pcrud.remove(this.selected.callerData.aout)
                 .subscribe(
                     ok2 => {},
                     err => {
@@ -112,7 +121,9 @@ export class OrgUnitTypeComponent implements OnInit {
                     ()  => {
                         // Avoid updating until we know the entire
                         // pcrud action/transaction completed.
-                        this.tree.removeNode(this.selected);
+                        this.loadAoutTree(); // since the tree is never going to
+                                             // be large, just reload the whole
+                                             // thing
                         this.selected = null;
                         this.postUpdate(this.editString);
                     }
@@ -124,7 +135,7 @@ export class OrgUnitTypeComponent implements OnInit {
 
     addChild() {
         const parentTreeNode = this.selected;
-        const parentType = parentTreeNode.callerData;
+        const parentType = parentTreeNode.callerData.aout;
 
         const newType = this.idl.create('aout');
         newType.parent(parentType.id());
@@ -140,9 +151,11 @@ export class OrgUnitTypeComponent implements OnInit {
                 const newNode = new TreeNode({
                     id: result.id(),
                     label: result.name(),
-                    callerData: result
+                    callerData: { aout: result, orgCount: 0 }
                 });
-                parentTreeNode.children.push(newNode);
+                this.loadAoutTree(); // since the tree is never going to
+                                     // be large, just reload the whole
+                                     // thing
                 this.postUpdate(this.createString);
             },
 
