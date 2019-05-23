@@ -18,7 +18,8 @@
           ng-model="renewalArgs.copy_barcode" 
           id="patron-renewal-barcode" type="text"/> 
 
-        <input class="btn btn-default" type="submit" value="[% l('Submit') %]"/>
+        <input class="btn btn-default" type="submit"
+            ng-disabled="outOfRange" value="[% l('Submit') %]"/>
       </div>
     </form>
   </div>
@@ -33,7 +34,8 @@
       </div>
       <!-- FIXME: This needs a time component as well, but type="datetime" 
             is not yet supported by any browsers -->
-      <div><eg-date-input ng-model="renewalArgs.due_date"></eg-date-input>
+      <div><eg-date-input min-date="minDate" out-of-range="outOfRange"
+          ng-model="renewalArgs.due_date"></eg-date-input>
       </div>
     </div>
   </div>
