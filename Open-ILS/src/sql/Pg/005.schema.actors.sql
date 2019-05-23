@@ -1108,7 +1108,8 @@ CREATE TABLE actor.workstation_setting (
                        ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     name        TEXT   NOT NULL REFERENCES config.workstation_setting_type (name) 
                        ON DELETE CASCADE ON UPDATE CASCADE DEFERRABLE INITIALLY DEFERRED,
-    value       JSON   NOT NULL
+    value       JSON   NOT NULL,
+    CONSTRAINT  ws_once_per_key UNIQUE (workstation, name)
 );
 
 CREATE INDEX actor_workstation_setting_workstation_idx 
