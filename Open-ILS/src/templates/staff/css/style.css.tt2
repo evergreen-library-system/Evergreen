@@ -353,7 +353,7 @@ table.list tr.selected td { /* deprecated? */
   color: #FFF;
   background-color: #EB0000 !important;
 }
-.overdue-row a:link, .lost-row a:link {
+.overdue-row a:link, .overdue-row a:visited, .lost-row a:link, .lost-row a:visited {
   color: #B8ECFF;
 }
 
