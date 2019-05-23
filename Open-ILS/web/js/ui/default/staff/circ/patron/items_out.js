@@ -89,6 +89,15 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         // noncat_list always involves instantiating a new grid.
     }
 
+    $scope.colorizeItemsOutList = {
+        apply: function(item) {
+            var duedate = item.due_date();
+            if (duedate && duedate < new Date().toISOString()) {
+                return 'overdue-row';
+            }
+        }
+    }
+
     // Reload the user to pick up changes in items out, fines, etc.
     // Reload circs since the contents of the main vs. alt list may
     // have changed.
