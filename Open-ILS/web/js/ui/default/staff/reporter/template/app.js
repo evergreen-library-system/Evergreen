@@ -497,14 +497,17 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
     $scope.changeFilterValue = function (items) {
         items.forEach(function(item) {
             var l = null;
-            console.log(item);
             if (item.datatype == "bool") {
-                egConfirmDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, (typeof item.value === "undefined" ? egCore.strings.TEMPLATE_CONF_UNSET : item.value.toString()),
+                var displayVal = typeof item.value === "undefined" ? egCore.strings.TEMPLATE_CONF_UNSET :
+                                 item.value === 't'                ? egCore.strings.TEMPLATE_CONF_TRUE :
+                                 item.value === 'f'                ? egCore.strings.TEMPLATE_CONF_FALSE :
+                                 item.value.toString();
+                egConfirmDialog.open(egCore.strings.TEMPLATE_CONF_DEFAULT, displayVal,
                     {ok : function() {
-                        egReportTemplateSvc.filter_fields[item.index].value = true;
+                        egReportTemplateSvc.filter_fields[item.index].value = 't';
                     },
                     cancel : function() {
-                        egReportTemplateSvc.filter_fields[item.index].value = false;
+                        egReportTemplateSvc.filter_fields[item.index].value = 'f';
                     }}, egCore.strings.TEMPLATE_CONF_TRUE, egCore.strings.TEMPLATE_CONF_FALSE
                 );
             } else {
