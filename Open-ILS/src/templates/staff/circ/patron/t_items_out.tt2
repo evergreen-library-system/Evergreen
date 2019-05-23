@@ -49,7 +49,8 @@
   features="clientsort,allowAll"
   items-provider="gridDataProvider"
   persist-key="circ.patron.items_out"
-  dateformat="{{$root.egDateAndTimeFormat}}">
+  dateformat="{{$root.egDateAndTimeFormat}}"
+  row-class="colorizeItemsOutList">
 
   <eg-grid-action handler="print_receipt"
     label="[% l('Print Item Receipt') %]"></eg-grid-action>
@@ -80,7 +81,7 @@
       {{item.target_copy().barcode()}}
     </a>
   </eg-grid-field>
-  <eg-grid-field label="[% l('Due Date') %]" path='due_date' datefilter="egDueDate" dateonlyinterval="duration" datecontext="circ_lib" datatype="timestamp"></eg-grid-field>
+  <eg-grid-field label="[% l('Due Date') %]" path='due_date' datefilter="egDueDate" dateonlyinterval="duration" datecontext="circ_lib" datatype="timestamp" required></eg-grid-field>
   <eg-grid-field label="[% l('Workstation') %]" path='workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkin Workstation') %]" path='checkin_workstation.name'></eg-grid-field>
   <eg-grid-field label="[% l('Checkout / Renewal Library') %]" path='circ_lib.shortname'></eg-grid-field>
