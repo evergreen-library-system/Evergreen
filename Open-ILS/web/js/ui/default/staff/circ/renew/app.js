@@ -36,6 +36,8 @@ function($scope , $window , $location , egCore , egGridDataProvider , egCirc) {
     egCore.hatch.getItem('circ.renew.strict_barcode')
         .then(function(sb){ $scope.strict_barcode = sb });
     $scope.focusBarcode = true;
+    $scope.outOfRange = false;
+    $scope.minDate = new Date();
     $scope.renewals = [];
 
     var today = new Date();
