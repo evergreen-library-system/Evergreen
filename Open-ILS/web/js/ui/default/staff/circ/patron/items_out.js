@@ -477,6 +477,8 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             controller : [
                         '$scope','$uibModalInstance',
                 function($scope , $uibModalInstance) {
+                    $scope.outOfRange = false;
+                    $scope.minDate = new Date();
                     $scope.args = {
                         barcodes : barcodes,
                         date : new Date()
