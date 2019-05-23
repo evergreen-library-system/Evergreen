@@ -12,6 +12,8 @@ VALUES (
     )
 );
 
+ALTER TABLE actor.workstation_setting
+    ADD CONSTRAINT ws_once_per_key UNIQUE (workstation, name);
 
 COMMIT;
 
