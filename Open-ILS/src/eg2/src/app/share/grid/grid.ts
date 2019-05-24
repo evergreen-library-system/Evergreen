@@ -1,7 +1,7 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef} from '@angular/core';
+import {TemplateRef, EventEmitter} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
