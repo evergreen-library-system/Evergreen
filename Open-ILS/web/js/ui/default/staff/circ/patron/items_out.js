@@ -108,7 +108,8 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
             {   flesh : 4,
                 flesh_fields : {
                     circ : ['target_copy', 'workstation', 'checkin_workstation'],
-                    acp : ['call_number', 'holds_count', 'status', 'circ_lib', 'location', 'floating', 'age_protect'],
+                    acp : ['call_number', 'holds_count', 'status', 'circ_lib', 'location', 'floating', 'age_protect', 'parts'],
+                    acpm : ['part'],
                     acn : ['record', 'owning_lib', 'prefix', 'suffix'],
                     bre : ['wide_display_entry']
                 },
@@ -140,6 +141,9 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
                     isbn : function() {return circ.target_copy().dummy_isbn()}
                 })
             }
+            circ._parts = circ.target_copy().parts().map(function(part) {
+                return part.label()
+            }).join(',');
 
 	    // call open-ils to get overdue notice count and  Last notice date
 	    
