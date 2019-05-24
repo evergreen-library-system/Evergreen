@@ -63,6 +63,7 @@ FEDORA_RPMS = \
 	perl-Text-CSV \
 	perl-Text-CSV_XS \
 	perl-XML-Writer \
+	perl-HTML-Defang \
 	postgresql-devel \
 	readline-devel \
 	tcp_wrappers-devel \

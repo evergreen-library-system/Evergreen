@@ -72,6 +72,7 @@ export DEBS = \
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
+	libhtml-defang-perl\
 	yaz
 
 export DEB_APACHE_MODS = \
