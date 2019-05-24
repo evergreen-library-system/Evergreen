@@ -352,6 +352,12 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 data.route_to = data.acp.location().name();
             }
         }
+        // allow us to get at the monograph parts associated with a copy
+        if (payload.copy && payload.copy.parts()) {
+            data._monograph_part = payload.copy.parts().map(function(part) {
+                return part.label();
+            }).join(',');
+        }
 
         egWorkLog.record(
             (worklog_action == 'checkout' || worklog_action == 'noncat_checkout')
