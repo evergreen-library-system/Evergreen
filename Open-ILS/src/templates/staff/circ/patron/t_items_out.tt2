@@ -106,6 +106,7 @@
   <eg-grid-field path="target_copy.call_number.suffix.label" label="[% l('CN Suffix') %]" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.record.*" hidden></eg-grid-field>
   <eg-grid-field path="target_copy.call_number.record.wide_display_entry.*" hidden></eg-grid-field>
+  <eg-grid-field path="_parts" label="[% l('Monograph Part') %]" hidden></eg-grid-field>
   <eg-grid-field label="[% l('Total Notices') %]" path='action_trigger_event_count'></eg-grid-field>
   <eg-grid-field label="[% l('Last Notice') %]" path='action_trigger_latest_event_date' dateformat="short" datatype="timestamp"></eg-grid-field>
 </eg-grid>
