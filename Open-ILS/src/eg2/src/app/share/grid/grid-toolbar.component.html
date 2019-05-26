@@ -109,6 +109,7 @@
         <span class="ml-2" i18n>Manage Column Widths</span>
       </a>
       <a class="dropdown-item label-with-material-icon"
+        *ngIf="!disableSaveSettings"
         (click)="saveGridConfig()">
         <span class="material-icons">save</span>
         <span class="ml-2" i18n>Save Grid Settings</span>

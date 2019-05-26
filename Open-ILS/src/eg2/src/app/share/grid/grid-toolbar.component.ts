@@ -16,6 +16,7 @@ export class GridToolbarComponent implements OnInit {
     @Input() gridContext: GridContext;
     @Input() colWidthConfig: GridColumnWidthComponent;
     @Input() gridPrinter: GridPrintComponent;
+    @Input() disableSaveSettings = false;
 
     renderedGroups: {[group: string]: boolean};
 

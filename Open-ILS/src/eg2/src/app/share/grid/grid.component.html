@@ -4,7 +4,8 @@
   <eg-grid-toolbar
     [gridContext]="context"
     [gridPrinter]="gridPrinter"
-    [colWidthConfig]="colWidthConfig">
+    [colWidthConfig]="colWidthConfig"
+    [disableSaveSettings]="!persistKey || ('disabled' === persistKey)">
   </eg-grid-toolbar>
 
   <eg-grid-header [context]="context"></eg-grid-header>

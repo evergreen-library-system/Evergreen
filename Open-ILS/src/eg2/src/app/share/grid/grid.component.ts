@@ -42,6 +42,9 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Storage persist key / per-grid-type unique identifier
     // The value is prefixed with 'eg.grid.'
+    //
+    // If persistKey is set to "disabled", or does not exist,
+    // the grid will not display a Save button to the user
     @Input() persistKey: string;
 
     @Input() disableSelect: boolean;
