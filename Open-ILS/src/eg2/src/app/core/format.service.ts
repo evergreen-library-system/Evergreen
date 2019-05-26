@@ -108,6 +108,10 @@ export class FormatService {
 
             case 'timestamp':
                 const date = new Date(value);
+                if (Number.isNaN(date.getTime())) {
+                    console.error('Invalid date in format service', value);
+                    return '';
+                }
                 let fmt = this.dateFormat || 'shortDate';
                 if (params.datePlusTime) {
                     fmt = this.dateTimeFormat || 'short';
