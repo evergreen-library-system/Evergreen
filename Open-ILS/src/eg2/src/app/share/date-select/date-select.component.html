@@ -1,25 +1,29 @@
-
-<div class="input-group eg-date-select form-validated">
-  <input 
-    class="form-control"
-    ngbDatepicker
-    #datePicker="ngbDatepicker"
-    [attr.id]="domId.length ? domId : null"
-    placeholder="yyyy-mm-dd"
-    class="form-control"
-    container="body"
-    name="{{fieldName}}"
-    [disabled]="_disabled"
-    [required]="required"
-    [(ngModel)]="current"
-    (keyup.enter)="onDateEnter()"
-    (dateSelect)="onDateSelect($event)"/>
-  <div class="input-group-append">
-    <button class="btn btn-outline-secondary" [disabled]="_disabled"
-      (click)="datePicker.toggle()" type="button">
-      <span title="Select Date" i18n-title
-        class="material-icons mat-icon-in-button">calendar_today</span>
-    </button>
+<ng-container *ngIf="readOnly">
+  {{initialDate | formatValue:'timestamp'}}
+</ng-container>
+<ng-container *ngIf="!readOnly">
+  <div class="input-group eg-date-select form-validated">
+    <input 
+      class="form-control"
+      type="text"
+      ngbDatepicker
+      #datePicker="ngbDatepicker"
+      [attr.id]="domId.length ? domId : null"
+      placeholder="yyyy-mm-dd"
+      class="form-control"
+      container="body"
+      name="{{fieldName}}"
+      [disabled]="disabled"
+      [required]="required"
+      [(ngModel)]="current"
+      (keyup.enter)="onDateEnter()"
+      (dateSelect)="onDateSelect($event)"/>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary" [disabled]="disabled"
+        (click)="datePicker.toggle()" type="button">
+        <span title="Select Date" i18n-title
+          class="material-icons mat-icon-in-button">calendar_today</span>
+      </button>
+    </div>
   </div>
-</div>
-
+</ng-container>

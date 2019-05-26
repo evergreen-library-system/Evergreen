@@ -40,6 +40,10 @@ export class SandboxComponent implements OnInit {
 
     public numThings = 0;
 
+    @ViewChild('bresvEditor')
+    private bresvEditor: FmRecordEditorComponent;
+
+
     // @ViewChild('helloStr') private helloStr: StringComponent;
 
     gridDataSource: GridDataSource = new GridDataSource();
@@ -166,6 +170,11 @@ export class SandboxComponent implements OnInit {
                 idlField: 'metarecord'
             });
         });
+
+        const b = this.idl.create('bresv');
+        b.cancel_time('2019-03-25T11:07:59-0400');
+        this.bresvEditor.mode = 'create';
+        this.bresvEditor.record = b;
     }
 
     sbChannelHandler = msg => {

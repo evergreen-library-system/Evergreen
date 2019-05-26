@@ -48,6 +48,7 @@
             <ng-container *ngSwitchCase="'timestamp'">
               <eg-date-select
                 domId="{{idPrefix}}-{{field.name}}"
+                [readOnly]="field.readOnly"
                 (onChangeAsIso)="record[field.name]($event)"
                 initialIso="{{record[field.name]()}}">
               </eg-date-select>
