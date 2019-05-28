@@ -59,6 +59,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         // Avoid changing the tab in the lifecycle hook thread.
         setTimeout(() => {
 
+            if (this.context.identSearch.queryType === '') {
+                this.context.identSearch.queryType = 'identifier|isbn';
+            }
+
             // Apply a tab if none was already specified
             if (!this.searchTab) {
                 // Assumes that only one type of search will be searchable
