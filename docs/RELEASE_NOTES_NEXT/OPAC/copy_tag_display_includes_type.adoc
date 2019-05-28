@@ -1,0 +1,12 @@
+Item Tags Now Display Tag Type Labels
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+When item tags display in the catalog, they will now include the label from the
+item tag type.  For example, for a tag of type "Digital Bookplate", here is a
+comparison of the old and new display:
+
+ * Old output: "(Tag Value Here)"
+ * New output: "Digital Bookplate: (Tag Value Here)"
+
+The type label is wrapped in a new CSS class `copy_tag_type_label` that allows
+it to be styled separately from the tag value or hidden entirely.
+
