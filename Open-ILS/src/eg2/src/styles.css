@@ -3,16 +3,8 @@
 /* bootstrap CSS only -- JS bits come from ng-bootstrap */
 @import '~bootstrap-css-only/css/bootstrap.min.css';
 
-/* Locally served material icon fonts.
- * Note when I first tested these after installing the fonts
- * via:  npm install --save material-design-icons
- * some of the icons exhibited odd behavior, adding a lot of
- * excess space to the left or right.  It only affected certain
- * icons.  More research needed.
- * /
-/*
-@import '~material-design-icons/iconfont/material-icons.css';
-*/
+/* Locally served material icon fonts  */
+@import '~material-design-icons/iconfont/material-icons.css'; 
 
 /** BS default fonts are huge */
 body, .form-control, .btn, .input-group-text {
