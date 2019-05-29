@@ -5,6 +5,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {LocaleService} from '@eg/core/locale.service';
 import {PrintService} from '@eg/share/print/print.service';
+import {StoreService} from '@eg/core/store.service';
 
 @Component({
     selector: 'eg-staff-nav-bar',
@@ -20,6 +21,7 @@ export class StaffNavComponent implements OnInit {
 
     constructor(
         private router: Router,
+        private store: StoreService,
         private auth: AuthService,
         private pcrud: PcrudService,
         private locale: LocaleService,
@@ -66,6 +68,14 @@ export class StaffNavComponent implements OnInit {
 
     reprintLast() {
         this.printer.reprintLast();
+    }
+
+    // TODO: Point to Angular catalog when the time comes
+    retrieveLastRecord() {
+        const recId = this.store.getLocalItem('eg.cat.last_record_retrieved');
+        if (recId) {
+            window.location.href = '/eg/staff/cat/catalog/record/' + recId;
+        }
     }
 }
 
