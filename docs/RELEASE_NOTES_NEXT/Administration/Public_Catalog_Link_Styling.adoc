@@ -1,0 +1,11 @@
+Links in Public Catalog Now Have Separate Color
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Hyperlinks in the public catalog now have a separate color definition
+in the `colors.tt2` template to make it easier to style the public
+catalog header/footer to use the same background color as the center
+panel.
+
+Upgrade Notes
++++++++++++++
+Sites that have customized `colors.tt2` should add a line for
+the new `link` color.
