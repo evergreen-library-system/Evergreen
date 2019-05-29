@@ -28,12 +28,24 @@
         border_standard = "#e9ebf3", # light grey-blue
         border_dark = "black", # black
         border_alert = "red", # red
+        button = "#00593d", #dark green
         button_text = "#fbf9f9", # off-white 
         button_text_shadow = "#555555", # medium grey
         table_heading = "#d8d8d8", # grey-blue
         mobile_header_text = "#fff", # white
         item_selected = "#ddd", # grey (lighter)
         link = "#00593d", # dark green
+        footer = "#00593d", #dark green
+        footer_text = "#FFFFFF" #white
+        header = "#FFFFFF", #white
+        header_text = "#FFFFFF", #white
+        header_links_bar = "#000000", #black
+        header_links_text = "#FFFFFF", #white
+        header_links_text_hover = "#FFFFFF", #white
+        opac_button = "#00593d", # dark green
+        opac_button_text = "#FFFFFF", #white
+        opac_button_hover = "#00593d", # dark green
+        opac_button_hover_text = "#FFFFFF" #white
     };
     
 %]
