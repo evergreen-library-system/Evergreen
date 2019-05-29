@@ -6,36 +6,24 @@ the CSS we have defined for different row types
 See https://v2.angular.io/docs/ts/latest/guide/component-styles.html
 */
 
-/* grid row colors are bootstrap class="bg-info" with opacity */
-
 /*
 :host /deep/ .holdings-copy-row {
 }
 */
 
+/* colors are based on "Evergreen Green", tinted and desaturated */
+
 :host /deep/ .holdings-volume-row {
-    color: #004085;
-    background-color: rgb(23,162,184,0.2);
+    background-color: #c9efe4;
 }
 
-:host /deep/ .holdings-org-row-0 {
-    color: #004085;
-    background-color: rgb(23,162,184);
-}
-
-:host /deep/ .holdings-org-row-1 {
-    color: #004085;
-    background-color: rgb(23,162,184,0.8);
-}
-
-:host /deep/ .holdings-org-row-2 {
-    color: #004085;
-    background-color: rgb(23,162,184,0.6);
-}
-
-:host /deep/ .holdings-org-row-3 {
-    color: #004085;
-    background-color: rgb(23,162,184,0.4);
+:host /deep/ .holdings-org-row {
+    color: rgba(0, 0, 0, .8);
+    background-color: #e1efeb;
 }
 
 /* Add additional classes for more deeply nested org unit hierarchies */
+/* e.g.
+:host /deep/ .holdings-org-row-0 {}
+:host /deep/ .holdings-org-row-1 {}
+*/
