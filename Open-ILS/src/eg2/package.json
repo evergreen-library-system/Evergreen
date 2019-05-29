@@ -32,6 +32,7 @@
     "rxjs": "^6.4.0",
     "zone.js": "^0.8.29"
   },
+  "//": "NOTE: version of angular/cli should be kept in sync with Open-ILS/src/extras/install/Makefile.common",
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.10.7",
     "@angular/cli": "^7.0.7",
