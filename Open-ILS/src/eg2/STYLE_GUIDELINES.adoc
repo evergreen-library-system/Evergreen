@@ -1,0 +1,42 @@
+= Evergreen Angular App Style Guidelines
+
+== Introduction
+
+This guide serves as a place to capture thoughts and reasoning about
+stylistic choices made in the Evergreen staff client interfaces.  It
+will initially have little content and no authority, but will accrue
+both over time as thoughts are expressed and recorded, and conflicts
+are worked out.
+
+
+== General
+
+* All root styles are initially from Bootstrap 4.  Custom styles will
+  generally proceed as derivations from there.  Eventually it may
+  amount to a unique design language, but that will take time.
+
+
+== Colors
+
+* Colors which are present primarily for decorative or aesthetic
+  purposes will be derived from the standard "Evergreen Green" with
+  a hue value of around 161.
+  * At this time there is some discreprancy as to what color the
+    official "Evergreen Green" actually is.  (Since different screen
+    colorings need different shades, tints, and intensities, when we
+    say color in this context, we more precisely mean hue.)  The current
+    green used in the staff client header and the standard OPAC are
+    roughly a hue value of 161 (on a 360 degree scale), while the
+    official Evergreen logo graphic uses a somewhat more blue color,
+    with a hue value of 166.  This is not a large difference, but it
+    would be nice to settle this difference at some point.
+* Colors used to represent "action" elements (links, major buttons,
+  and user selection highlights) will generally be blue.  At this time
+  we are normally using the standard Bootstrap blue for such elements
+  (or a close derivative).
+* Colors used to delineate minor or background elements (areas of the
+  screen, table headers, secondary buttons) will use neutral grays
+  (expressed as equal values for RGB, i.e. 0 saturation).
+* Some buttons are using the Bootstrap green and red button variants.
+  This usage is not currently well defined, but generally means "major
+  positive" (green) and "major negative" (red) actions.
