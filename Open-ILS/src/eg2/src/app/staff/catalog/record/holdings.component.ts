@@ -1,4 +1,5 @@
-import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, ViewChild, ViewEncapsulation
+    } from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, Observer, of} from 'rxjs';
 import {map} from 'rxjs/operators';
@@ -73,7 +74,8 @@ class HoldingsEntry {
 @Component({
   selector: 'eg-holdings-maintenance',
   templateUrl: 'holdings.component.html',
-  styleUrls: ['holdings.component.css']
+  styleUrls: ['holdings.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class HoldingsMaintenanceComponent implements OnInit {
 

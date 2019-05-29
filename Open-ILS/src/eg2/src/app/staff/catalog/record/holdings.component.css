@@ -1,29 +1,21 @@
 /*
-:host /deep/ allows us to share style with child components.
-In this case, the holdings components wants its grid to see
-the CSS we have defined for different row types
-
-See https://v2.angular.io/docs/ts/latest/guide/component-styles.html
-*/
-
-/*
-:host /deep/ .holdings-copy-row {
+.holdings-copy-row {
 }
 */
 
 /* colors are based on "Evergreen Green", tinted and desaturated */
 
-:host /deep/ .holdings-volume-row {
+.holdings-volume-row {
     background-color: #c9efe4;
 }
 
-:host /deep/ .holdings-org-row {
+.holdings-org-row {
     color: rgba(0, 0, 0, .8);
     background-color: #e1efeb;
 }
 
 /* Add additional classes for more deeply nested org unit hierarchies */
 /* e.g.
-:host /deep/ .holdings-org-row-0 {}
-:host /deep/ .holdings-org-row-1 {}
+.holdings-org-row-0 {}
+.holdings-org-row-1 {}
 */
