@@ -38,7 +38,7 @@ export class OrgUnitTypeComponent implements OnInit {
 
     loadAoutTree() {
         this.pcrud.search('aout', {depth: 0},
-            {flesh: -1, flesh_fields: {aout: ['children','org_units']}},
+            {flesh: -1, flesh_fields: {aout: ['children', 'org_units']}},
             {anonymous: true}
         ).subscribe(aoutTree => this.ingestAoutTree(aoutTree));
     }

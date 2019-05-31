@@ -27,7 +27,7 @@ export class HatchService {
 
     isAvailable: boolean;
     msgId: number;
-    messages: {[msgid:number]: HatchMessage};
+    messages: {[msgid: number]: HatchMessage};
 
     constructor() {
         this.isAvailable = null;
@@ -62,7 +62,7 @@ export class HatchService {
 
                 this.handleResponse(event.data);
             }
-        }); 
+        });
 
         return this.isAvailable = true;
     }
@@ -87,7 +87,7 @@ export class HatchService {
     // Handle the data sent back to the browser from Hatch.
     handleResponse(data: any) {
 
-        const msg = this.messages[data.msgid]; 
+        const msg = this.messages[data.msgid];
         if (!msg) {
             console.warn(`No Hatch request found with ID ${data.msgid}`);
             return;
