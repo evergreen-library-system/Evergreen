@@ -398,38 +398,38 @@ Patron Note
 ~~~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes 
+|Tag                                |Notes 
 
-|{{note.value}}|Note contents
-|{{note.create_date}}|Note creation date
-|{{note.title}}|Note title
-|{{note.usr.card.barcode}}|Patron barcode
-|{{note.usr.first_name}}|Patron first name
-|{{note.usr.family_name}}|Patron last name
-|{{note.usr.second_given_name}}|Patron middle name
+|{{note.value}}                     |Note contents
+|{{note.create_date}}               |Note creation date
+|{{note.title}}                     |Note title
+|{{note.usr.card.barcode}}          |Patron barcode
+|{{note.usr.first_name}}            |Patron first name
+|{{note.usr.family_name}}           |Patron last name
+|{{note.usr.second_given_name}}     |Patron middle name
 |=========================================================
 
 Renew
 ~~~~~
 
 |=========================================================
-|Tag (Inside ng-repeat loop)  |Notes 
+|Tag (Inside ng-repeat loop)    |Notes 
 
-|{{renewal.copy.barcode}}|Barcode
-|{{renewal.circ.due_date}}|Due date
-|{{renewal.title}}|Title
+|{{renewal.copy.barcode}}       |Barcode
+|{{renewal.circ.due_date}}      |Due date
+|{{renewal.title}}              |Title
 |=========================================================
 
 Transit List
 ~~~~~~~~~~~~
 
 |=========================================================
-|Tag (Inside ng-repeat loop)  |Notes
+|Tag (Inside ng-repeat loop)        |Notes
 
-|{{transit.target_copy.barcode}}|Barcode
-|{{transit.source_send_time}}|Date sent
-|{{transit.dest.shortname}}|Short name of destination library
-|{{transit.source.shortname}}|Short name of sending library
+|{{transit.target_copy.barcode}}    |Barcode
+|{{transit.source_send_time}}       |Date sent
+|{{transit.dest.shortname}}         |Short name of destination library
+|{{transit.source.shortname}}       |Short name of sending library
 |{{transit.target_copy.call_number.record.simple_record.title}}|Title
 |=========================================================
 
@@ -437,17 +437,17 @@ Transit Slip
 ~~~~~~~~~~~~
 
 |=========================================================
-|Tag  |Notes
+|Tag                            |Notes
 
-|{{dest_address.city}}|Destination city
-|{{dest_courier_code}}|Destination courier code
-|{{dest_location.name}}|Destination full name
-|{{dest_location.shortname}}|Destination short name
-|{{dest_address.state}}|Destination state
-|{{dest_address.street1}}|Destination street address 1
-|{{dest_address.street2}}|Destination street address 2
-|{{dest_address.post_code}}|Destination zip code
-|{{author}}|Item author
-|{{copy.barcode}}|Item barcode
-|{{title}}|Item title
+|{{dest_address.city}}          |Destination city
+|{{dest_courier_code}}          |Destination courier code
+|{{dest_location.name}}         |Destination full name
+|{{dest_location.shortname}}    |Destination short name
+|{{dest_address.state}}         |Destination state
+|{{dest_address.street1}}       |Destination street address 1
+|{{dest_address.street2}}       |Destination street address 2
+|{{dest_address.post_code}}     |Destination zip code
+|{{author}}                     |Item author
+|{{copy.barcode}}               |Item barcode
+|{{title}}                      g|Item title
 |=========================================================
