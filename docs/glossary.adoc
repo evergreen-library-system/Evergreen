@@ -4,29 +4,159 @@ Evergreen Glossary
 
 
 [glossary]
+Acquisitions::
+  Processes related to ordering materials and managing expenditures
 Age Protection:: 
   Allows libraries to prevent holds on new books (on a copy by copy basis) from outside the owning library's branch or system for a designated amount of time.
+Apache::
+  Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at http://apache.org.
+Balance stop percent ::
+  A setting in acquisitions that prevents you from making purchases when only a specified amount of the fund remains. 
+barcode::
+  the code attached to the item.  This is not the Circulation ID.
+buckets::
+  this is a container of items. See also Record Buckets and Copy Buckets.
+Call number::
+  An item's call number is a string of letters and or numbers that work like map coordinates to describe where in a library a particular item "lives."
+Cataloging::
+  the process of adding materials to be circulated to the system.
+Circulation::
+  the process of loaning an item to an individual.
+Circulating library::
+  The library which has checked out the item.
+Circulation library::
+  The library which is the home of the item.
+Circulation limit sets::
+  Refines circulation policies by limiting the number of items that users can check out. 
+Circulation modifiers::
+  Circulation modifiers pull together Loan Duration, Renewal Limit, Fine Level, Max Fine, and Profile Permission Group to create circulation rules for different types of materials. Circulation Modifiers are also used to determine Hold Policies.
 copy:: 
   see Item
+Copy Buckets::
+  this is a container of individual items.
+Distribution formulas:: 
+  Used to specify the number of copies that should be distributed to specific branches and copy locations.
+Due date::
+  The due date is the day on or before which an item must be returned to the library in order to avoid being charged an overdue fine. 
+Electronic data interchange (EDI)::
+  Transmission of data between organizations using electronic means. This is used for Acquisitions. 
+FIFO (First In First Out):: 
+  In a FIFO environment, holds are filled in the order that they are placed.
+Fund tags::
+  Tags used in acquisitions to allow you to group Funds.
+Funding sources::
+  Sources of the monies to fund acquisitions of materials.
+Funds::
+  Allocations of money used for purchases. 
+Hold boundaries::
+  Define which organizational units are available to fill specific holds.
+Holdings import profile::
+  Identifies the Import Item Attributes definition.
+Holding subfield::
+  Used in the acquisitions module to map subfields to the appropriate copy data. 
 ILS:: 
   Integrated Library System
 ILL:: 
   Inter-Library Loan
+Import item attributes::
+  Used to map the data in your holdings tag to fields in the copy record during a MARC import.
+Insufficient quality fall-through profile::
+  A back-up merge profile to be used for importing if an incoming record does not meet the standards of the minimum quality ratio.
 item:: 
   The actual item.
+Item barcode::
+  Item barcodes uniquely identify each specific item entered into the Catalog.
 Jabber:: 
-  A backbone message passing protocol
+  The communications protocol used for client-server message passing within Evergreen. Now known as XMPP (eXtensible Messaging and Presence Protocol), it was originally named "Jabber."
+Juvenile flag::
+  User setting used to specify if a user is a juvenile user for circulation purposes.
 KPAC:: 
   Kids' OPAC. Alternate version of the Template Toolkit OPAC.
 LCCN:: 
   Library of Congress Control Number
+Loan duration::
+  Loan duration (also sometimes referred to as "loan period") is the length of time a given type of material can circulate.
+MARC::
+  Acronym for Machine Readable Cataloging.The MARC formats are standards for the representation and communication of bibliographic and related information in machine-readable form. 
+MARC batch export::
+  Mass exporting of MARC records out of a library system.
+MARC batch import::
+  Mass importing of MARC records into a library system.
+MARCXML::
+  Framework for working with MARC data in a XML environment.
+Match score::
+  Indicates the relative importance of that match point as Evergreen evaluates an incoming record against an existing record.
+Minimum quality ratio::
+  Used to set the acceptable level of quality for a record to be imported.   
 OPAC:: 
-  Online Public Access Catalog.  The public view of the catalog
+  Acronym for Online Public Access Catalog. An OPAC is an online interface to the database of a library's holdings, used to find resources in their collections. It is possibly searchable by keyword, title, author, subject or call number.  The public view of the catalog.
 OpenSRF:: 
-  An enterprise class Service Request Framework. It's purpose is to serve as a robust message routing network upon which one may build complex, scalable applications. To that end, OpenSRF attempts to be invisible to the application developer, while providing transparent load balancing and failover with minimal overhead.
+  Acronym for Open Scalable Request Framework (pronounced 'open surf'). An enterprise class Service Request Framework. It's purpose is to serve as a robust message routing network upon which one may build complex, scalable applications. To that end, OpenSRF attempts to be invisible to the application developer, while providing transparent load balancing and failover with minimal overhead.
+Organizational units::
+  Organizational Units are the specific instances of the organization unit types that make up your library's hierarchy.
+Organization unit type::
+  The organization types in the hierarchy of a library system.
+Overlay/merge profiles::
+  During a MARC import this is used identify which fields should be replaced, which should be preserved, and which should be added to the record.
+Owning library::
+  The library which has purchased a particular item and created the volume and copy records. 
+Parent organizational unit::
+  An organizational unit one level above whose policies may be inherited by its child units. 
+Parts::
+  Provide more granularity for copies, primarily to enable patrons to place holds on individual parts of a set of items.
+Patron::
+  A user of the ILS. Patrons in Evergreen can both be staff and public users.
+Patron barcode / library card number::
+  Patrons are uniquely identified by their library card barcode number.
+Permission Groups::
+  A grouping of permissions granted to a group of individuals, i.e. patrons, cataloging, circulation, administration. Permission Groups also set the depth and grantability of permissions.
+Pickup library::
+  Library designated as the location where requested material is to be picked up. 
+PostgreSQL::
+  A popular open-source object-relational database management system that underpins Evergreen software.
+Propagate funds::
+  Create a new fund for the following fiscal year with the same parameters as your current fund.
+Providers::
+  Vendors from whom you order your materials. Set in the Acquisition module.
+Purchase Order (PO)::
+  A document issued by a buyer to a vendor, indicating types, quantities, and prices of materials. 
+Quality metrics::
+  Provide a mechanism for Evergreen to measure the quality of records and to make importing decisions based on quality.  
+Record Bucket::
+  This is a container of Title Records.
+Record match sets::
+  When importing records, this identifies how Evergreen should match incoming records to existing records in the system.
+Recurring fine::
+  Recurring Fine is the official term for daily or other regularly accruing overdue fines. 
+Rollover::
+  Used to roll over remaining encumbrances and funds into the same fund the following year. 
+Shelving location:: 
+  Shelving location is the area within the library where a given item is shelved.
+SIP::
+  Acronym for Standard Interchange Protocol. SIP is a communications protocol used within Evergreen for transferring data to and from other third party devices, such as RFID and barcode scanners that handle patron and library material information. Version 2.0 (also known as "SIP2") is the current standard. It was originally developed by the 3M Corporation.
+SRU::
+  Acronym for Search & Retrieve URL Service. SRU is a search protocol used in web search and retrieval. It expresses queries in Contextual Query Language (CQL) and transmits them as a URL, returning XML data as if it were a web page.
+Staff client::
+  The graphical user interface used by library workers to interact with the Evergreen system. Staff use the Staff Client to access administration, acquisitions, circulation, and cataloging functions.
+Standing penalties::
+  Serve as alerts and blocks when patron records have met certain criteria, commonly excessive overdue materials or fines; standing penalty blocks will prevent circulation and hold transactions.  
 Statistical categories:: 
   Allow libraries to associate locally interesting data with patrons and holdings. Also known as stat cats.
+Template Toolkit (TT)::
+  A template processing system written in Perl.
 TPAC:: 
-  Evergreen's Template Toolkit based OPAC.
+  Evergreen's Template Toolkit based OPAC. The web based public interface in Evergreen written using functionality from the Template Toolkit.
+Workstation::
+  the unique name associated with a specific computer.
+XML::
+  Acronym for eXtensible Markup Language, a subset of SGML. XML is a set of rules for encoding information in a way that is both human-readable and machine-readable. It is primarily used to define documents but can also be used to define arbitrary data structures. It was originally defined by the World Wide Web Consortium (W3C).
+XMPP::
+  The open-standard communications protocol (based on XML) used for client-server message passing within Evergreen. It supports the concept of a consistent domain of message types that flow between software applications, possibly on different operating systems and architectures. More information is available at http://xmpp.org.
+  See Also: Jabber. 
+xpath::
+  The XML Path Language, a query language based on a tree representation of an XML document. It is used to programmatically select nodes from an XML document and to do minor computation involving strings, numbers and Boolean values. It allows you to identify parts of the XML document tree, to navigate around the tree, and to uniquely select nodes. The currently version is "XPath 2.0". It was originally defined by the World Wide Web Consortium (W3C). 
 YAOUS:: 
-  Yet Another Org Unit Setting
+  Yet Another Organization Unit Setting
+Z39.50 ::
+  An international standard client–server protocol for communication between computer systems, primarily library and information related systems.
+  See Also: SRU
