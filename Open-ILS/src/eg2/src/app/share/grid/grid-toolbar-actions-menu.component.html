@@ -1,7 +1,7 @@
 <button class="dropdown-item scrollable-menu" 
   [disabled]="shouldDisable(action)"
-  (click)="performAction(action)"
-  *ngFor="let action of gridContext.toolbarActions">
+  (click)="performAction(action)" tabindex="0"
+  *ngFor="let action of gridContext.toolbarActions; let idx = index">
   <ng-container *ngIf="action.isGroup">
     <span class="font-weight-bold font-italic">{{action.label}}</span>
   </ng-container>
