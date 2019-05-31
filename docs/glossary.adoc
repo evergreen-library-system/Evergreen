@@ -1,6 +1,6 @@
 [glossary]
 Evergreen Glossary
-------------------
+==================
 
 
 [glossary]
