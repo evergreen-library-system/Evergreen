@@ -110,7 +110,7 @@ export class StaffComponent implements OnInit {
      * Make sure to fire the contextmenu Event on Shift+F10
      */
     fireContextMenuEvent(): void {
-        let event = new MouseEvent("contextmenu", {
+        const event = new MouseEvent('contextmenu', {
             bubbles: true,
             cancelable: false,
             view: window,
@@ -118,9 +118,7 @@ export class StaffComponent implements OnInit {
             buttons: 0,
         });
         document.activeElement.dispatchEvent(event);
-    };
-
-
+    }
 
     /*
     @ViewChild('egAccessKeyInfo')

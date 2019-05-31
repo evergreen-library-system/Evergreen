@@ -76,15 +76,11 @@ export class AdminPageComponent implements OnInit {
 
     idlClassDef: any;
     pkeyField: string;
-    createNew: () => void;
-    deleteSelected: (rows: IdlObject[]) => void;
-    editSelected: (rows: IdlObject[]) => void;
 
     // True if any columns on the object support translations
     translateRowIdx: number;
     translateFieldIdx: number;
     translatableFields: string[];
-    translate: () => void;
 
     contextOrg: IdlObject;
     orgFieldLabel: string;
@@ -175,93 +171,6 @@ export class AdminPageComponent implements OnInit {
         this.grid.onRowActivate.subscribe(
             (idlThing: IdlObject) => this.showEditDialog(idlThing)
         );
-
-        this.editSelected = (idlThings: IdlObject[]) => {
-
-            // Edit each IDL thing one at a time
-            const editOneThing = (thing: IdlObject) => {
-                if (!thing) { return; }
-
-                this.showEditDialog(thing).then(
-                    () => editOneThing(idlThings.shift()));
-            };
-
-            editOneThing(idlThings.shift());
-        };
-
-        this.createNew = () => {
-            this.editDialog.mode = 'create';
-            // We reuse the same editor for all actions.  Be sure
-            // create action does not try to modify an existing record.
-            this.editDialog.recId = null;
-            this.editDialog.record = null;
-            this.editDialog.open({size: this.dialogSize}).then(
-                ok => {
-                    this.createString.current()
-                        .then(str => this.toast.success(str));
-                    this.grid.reload();
-                },
-                rejection => {
-                    if (!rejection.dismissed) {
-                        this.createErrString.current()
-                            .then(str => this.toast.danger(str));
-                    }
-                }
-            );
-        };
-
-        this.deleteSelected = (idlThings: IdlObject[]) => {
-            idlThings.forEach(idlThing => idlThing.isdeleted(true));
-            this.pcrud.autoApply(idlThings).subscribe(
-                val => console.debug('deleted: ' + val),
-                err => {},
-                ()  => this.grid.reload()
-            );
-        };
-
-        // Open the field translation dialog.
-        // Link the next/previous actions to cycle through each translatable
-        // field on each row.
-        this.translate = () => {
-            this.translateRowIdx = 0;
-            this.translateFieldIdx = 0;
-            this.translator.fieldName = this.translatableFields[this.translateFieldIdx];
-            this.translator.idlObject = this.dataSource.data[this.translateRowIdx];
-
-            this.translator.nextString = () => {
-
-                if (this.translateFieldIdx < this.translatableFields.length - 1) {
-                    this.translateFieldIdx++;
-
-                } else if (this.translateRowIdx < this.dataSource.data.length - 1) {
-                    this.translateRowIdx++;
-                    this.translateFieldIdx = 0;
-                }
-
-                this.translator.idlObject =
-                    this.dataSource.data[this.translateRowIdx];
-                this.translator.fieldName =
-                    this.translatableFields[this.translateFieldIdx];
-            };
-
-            this.translator.prevString = () => {
-
-                if (this.translateFieldIdx > 0) {
-                    this.translateFieldIdx--;
-
-                } else if (this.translateRowIdx > 0) {
-                    this.translateRowIdx--;
-                    this.translateFieldIdx = 0;
-                }
-
-                this.translator.idlObject =
-                    this.dataSource.data[this.translateRowIdx];
-                this.translator.fieldName =
-                    this.translatableFields[this.translateFieldIdx];
-            };
-
-            this.translator.open({size: 'lg'});
-        };
     }
 
     checkCreatePerms() {
@@ -371,6 +280,91 @@ export class AdminPageComponent implements OnInit {
         );
     }
 
+    editSelected(idlThings: IdlObject[]) {
+
+        // Edit each IDL thing one at a time
+        const editOneThing = (thing: IdlObject) => {
+            if (!thing) { return; }
+
+            this.showEditDialog(thing).then(
+                () => editOneThing(idlThings.shift()));
+        };
+
+        editOneThing(idlThings.shift());
+    }
+
+    deleteSelected(idlThings: IdlObject[]) {
+        idlThings.forEach(idlThing => idlThing.isdeleted(true));
+        this.pcrud.autoApply(idlThings).subscribe(
+            val => console.debug('deleted: ' + val),
+            err => {},
+            ()  => this.grid.reload()
+        );
+    }
+
+    createNew() {
+        this.editDialog.mode = 'create';
+        // We reuse the same editor for all actions.  Be sure
+        // create action does not try to modify an existing record.
+        this.editDialog.recId = null;
+        this.editDialog.record = null;
+        this.editDialog.open({size: this.dialogSize}).then(
+            ok => {
+                this.createString.current()
+                    .then(str => this.toast.success(str));
+                this.grid.reload();
+            },
+            rejection => {
+                if (!rejection.dismissed) {
+                    this.createErrString.current()
+                        .then(str => this.toast.danger(str));
+                }
+            }
+        );
+    }
+    // Open the field translation dialog.
+    // Link the next/previous actions to cycle through each translatable
+    // field on each row.
+    translate() {
+        this.translateRowIdx = 0;
+        this.translateFieldIdx = 0;
+        this.translator.fieldName = this.translatableFields[this.translateFieldIdx];
+        this.translator.idlObject = this.dataSource.data[this.translateRowIdx];
+
+        this.translator.nextString = () => {
+
+            if (this.translateFieldIdx < this.translatableFields.length - 1) {
+                this.translateFieldIdx++;
+
+            } else if (this.translateRowIdx < this.dataSource.data.length - 1) {
+                this.translateRowIdx++;
+                this.translateFieldIdx = 0;
+            }
+
+            this.translator.idlObject =
+                this.dataSource.data[this.translateRowIdx];
+            this.translator.fieldName =
+                this.translatableFields[this.translateFieldIdx];
+        };
+
+        this.translator.prevString = () => {
+
+            if (this.translateFieldIdx > 0) {
+                this.translateFieldIdx--;
+
+            } else if (this.translateRowIdx > 0) {
+                this.translateRowIdx--;
+                this.translateFieldIdx = 0;
+            }
+
+            this.translator.idlObject =
+                this.dataSource.data[this.translateRowIdx];
+            this.translator.fieldName =
+                this.translatableFields[this.translateFieldIdx];
+        };
+
+        this.translator.open({size: 'lg'});
+    }
 }
 
 
