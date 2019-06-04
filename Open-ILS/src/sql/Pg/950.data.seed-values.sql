@@ -19091,6 +19091,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'eg.grid.hopeless.wide_holds', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.hopeless.wide_holds',
+        'Grid Config: hopeless.wide_holds',
+        'cwst', 'label'
+    )
+), (
     'eg.grid.cat.holdings', 'gui', 'object',
     oils_i18n_gettext(
         'eg.grid.cat.holdings',
