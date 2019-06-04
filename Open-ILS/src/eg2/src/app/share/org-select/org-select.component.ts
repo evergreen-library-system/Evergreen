@@ -100,6 +100,16 @@ export class OrgSelectComponent implements OnInit {
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
 
+    // convenience method to get an IdlObject representing the current
+    // selected org unit. One way of invoking this is via a template
+    // reference variable.
+    selectedOrg(): IdlObject {
+        if (this.selected == null) {
+            return null;
+        }
+        return this.org.get(this.selected.id);
+    }
+
     constructor(
       private auth: AuthService,
       private store: StoreService,
@@ -173,6 +183,11 @@ export class OrgSelectComponent implements OnInit {
 
     // Remove the tree-padding spaces when matching.
     formatter = (result: OrgDisplay) => result.label.trim();
+
+    // reset the state of the component
+    reset() {
+        this.selected = null;
+    }
 
     filter = (text$: Observable<string>): Observable<OrgDisplay[]> => {
         return text$.pipe(
