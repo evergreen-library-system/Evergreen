@@ -1,0 +1,10 @@
+Angular Grid Improvements
+^^^^^^^^^^^^^^^^^^^^^^^^^
+Grids in new Angular staff interfaces now have options to
+
+* allow users to filter results per-column
+* make the grid header in tall/long grids sticky (i.e., the
+  grid header continues to be displayed while the user
+  scrolls through the grid
+* allow users to edit a record in a grid and save the results
+  without losing one's place in grid paging.
