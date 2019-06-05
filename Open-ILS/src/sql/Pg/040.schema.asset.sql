@@ -128,21 +128,6 @@ CREATE TABLE asset.latest_inventory (
 );
 CREATE INDEX latest_inventory_copy_idx ON asset.latest_inventory (copy);
 
-CREATE TABLE asset.opac_visible_copies (
-  id        BIGSERIAL primary key,
-  copy_id   BIGINT, -- copy id
-  record    BIGINT,
-  circ_lib  INTEGER
-);
-COMMENT ON TABLE asset.opac_visible_copies IS $$
-Materialized view of copies that are visible in the OPAC, used by
-search.query_parser_fts() to speed up OPAC visibility checks on large
-databases.  Contents are maintained by a set of triggers.
-$$;
-CREATE INDEX opac_visible_copies_idx1 on asset.opac_visible_copies (record, circ_lib);
-CREATE INDEX opac_visible_copies_copy_id_idx on asset.opac_visible_copies (copy_id);
-CREATE UNIQUE INDEX opac_visible_copies_once_per_record_idx on asset.opac_visible_copies (copy_id, record);
-
 CREATE OR REPLACE FUNCTION asset.acp_status_changed()
 RETURNS TRIGGER AS $$
 BEGIN
