@@ -182,6 +182,7 @@
   [rowFlairIsEnabled]="true"
   [rowFlairCallback]="btGridRowFlairCallback"
   [cellClassCallback]="btGridCellClassCallback"
+  [stickyHeader]="true"
   [sortable]="true">
   <eg-grid-toolbar-action label="Action that needs a single row" i18n-label
     (onClick)="complimentEvergreen($event)" [disableOnRows]="notOneSelectedRow">
@@ -200,6 +201,29 @@
 </eg-grid>
 
 <br/><br/>
+
+<h4>Grid with filtering</h4>
+<eg-grid #acpGrid idlClass="acp"
+  [dataSource]="acpSource"
+  [filterable]="true"
+  [sortable]="true"
+  [showLinkSelectors]="true"
+  [stickyHeader]="true"
+  showFields="barcode,location,circ_lib,price,dummy_title,create_date"
+>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-column [sortable]="true" [filterable]="false"  path="barcode"></eg-grid-column>
+  <eg-grid-column [sortable]="true" path="circ_lib"></eg-grid-column>
+  <eg-grid-column [sortable]="true" path="price"></eg-grid-column>
+  <eg-grid-column [sortable]="true" path="dummy_title"></eg-grid-column>
+  <eg-grid-column [sortable]="true" path="create_date"></eg-grid-column>
+</eg-grid>
+
+<eg-fm-record-editor #acpEditDialog idlClass="acp" hiddenFields="call_number,creator,create_date,editor,edit_time,loan_duration,fine_level,dummy_author,dummy_isbn,ref,floating,holdable,circ_as_type,active_date,mint_condition,cost,deleted,deposit,deposit_amount,circulate,status_changed_time,copy_number">
+</eg-fm-record-editor>
+<eg-string #successString text="Updated succeeded!" i18n-text></eg-string>
+<eg-string #updatedFailedString text="Updated failed!" i18n-text></eg-string>
 
 <h4>PCRUD auto flesh and FormatService detection</h4>
 <div *ngIf="aMetarecord">Fingerprint: {{aMetarecord}}</div>

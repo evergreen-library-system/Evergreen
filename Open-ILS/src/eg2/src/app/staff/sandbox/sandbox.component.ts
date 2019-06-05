@@ -13,10 +13,12 @@ import {Pager} from '@eg/share/util/pager';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {FormatService} from '@eg/core/format.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {FormGroup, FormControl} from '@angular/forms';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {FormatService} from '@eg/core/format.service';
+import {StringComponent} from '@eg/share/string/string.component';
+import {GridComponent} from '@eg/share/grid/grid.component';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -53,6 +55,12 @@ export class SandboxComponent implements OnInit {
     cbAsyncSource: (term: string) => Observable<ComboboxEntry>;
 
     btSource: GridDataSource = new GridDataSource();
+    acpSource: GridDataSource = new GridDataSource();
+    editSelected: (rows: IdlObject[]) => void;
+    @ViewChild('acpGrid') acpGrid: GridComponent;
+    @ViewChild('acpEditDialog') editDialog: FmRecordEditorComponent;
+    @ViewChild('successString') successString: StringComponent;
+    @ViewChild('updateFailedString') updateFailedString: StringComponent;
     world = 'world'; // for local template version
     btGridTestContext: any = {hello : this.world};
 
@@ -156,6 +164,50 @@ export class SandboxComponent implements OnInit {
                 return cbt;
             }));
         };
+
+        this.acpSource.getRows = (pager: Pager, sort: any[]) => {
+            const orderBy: any = {acp: 'id'};
+            if (sort.length) {
+                orderBy.acp = sort[0].name + ' ' + sort[0].dir;
+            }
+
+            // base query to grab everything
+            const base: Object = {};
+            base[this.idl.classes['acp'].pkey] = {'!=' : null};
+            const query: any = new Array();
+            query.push(base);
+
+            // and add any filters
+            Object.keys(this.acpSource.filters).forEach(key => {
+                Object.keys(this.acpSource.filters[key]).forEach(key2 => {
+                    query.push(this.acpSource.filters[key][key2]);
+                });
+            });
+            return this.pcrud.search('acp',
+                query, {
+                flesh: 1,
+                flesh_fields: {acp: ['location']},
+                offset: pager.offset,
+                limit: pager.limit,
+                order_by: orderBy
+            });
+        };
+
+        this.editSelected = (idlThings: IdlObject[]) => {
+
+            // Edit each IDL thing one at a time
+            const editOneThing = (thing: IdlObject) => {
+                if (!thing) { return; }
+
+                this.showEditDialog(thing).then(
+                    () => editOneThing(idlThings.shift()));
+            };
+
+            editOneThing(idlThings.shift());
+        };
+        this.acpGrid.onRowActivate.subscribe(
+            (acpRec: IdlObject) => { this.showEditDialog(acpRec); }
+        );
 
         this.complimentEvergreen = (rows: IdlObject[]) => alert('Evergreen is great!');
         this.notOneSelectedRow = (rows: IdlObject[]) => (rows.length !== 1);
@@ -287,6 +339,23 @@ export class SandboxComponent implements OnInit {
       this.numConfirmDialog.open();
     }
 
+    showEditDialog(idlThing: IdlObject) {
+        this.editDialog.mode = 'update';
+        this.editDialog.recId = idlThing['id']();
+        return this.editDialog.open({size: 'lg'}).then(
+            ok => {
+                this.successString.current()
+                    .then(str => this.toast.success(str));
+                this.acpGrid.reloadSansPagerReset();
+            },
+            rejection => {
+                if (!rejection.dismissed) {
+                    this.updateFailedString.current()
+                        .then(str => this.toast.danger(str));
+                }
+            }
+        );
+    }
 }
 
 
