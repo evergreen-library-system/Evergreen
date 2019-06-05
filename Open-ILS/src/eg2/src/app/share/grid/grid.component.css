@@ -140,3 +140,32 @@
   box-shadow: none;
 }
 
+.eg-grid-filter-control-cell {
+    overflow: visible !important;
+}
+.eg-grid-col-is-filtered {
+    background: lightblue;
+}
+.eg-grid-filter-menu {
+  min-width: 17rem;
+}
+
+.eg-grid-sticky-header {
+  position: sticky;
+  top: 50px;
+  background: white;
+  z-index: 1;
+}
+
+.eg-grid-filter-operator {
+  font-style: italic;
+}
+
+/* override the dropdown menu effects for the filter menus */
+.eg-grid-filter-menu .dropdown-item:active {
+  color: #212529;
+  background-color: transparent;
+}
+.eg-grid-filter-menu .dropdown-item:hover {
+  background-color: transparent;
+}

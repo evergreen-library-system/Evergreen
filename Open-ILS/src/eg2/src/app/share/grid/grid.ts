@@ -1,13 +1,14 @@
 /**
  * Collection of grid related classses and interfaces.
  */
-import {TemplateRef, EventEmitter} from '@angular/core';
+import {TemplateRef, EventEmitter, QueryList} from '@angular/core';
 import {Observable, Subscription} from 'rxjs';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
 import {Pager} from '@eg/share/util/pager';
+import {GridFilterControlComponent} from './grid-filter-control.component';
 
 const MAX_ALL_ROW_COUNT = 10000;
 
@@ -32,12 +33,21 @@ export class GridColumn {
     isIndex: boolean;
     isDragTarget: boolean;
     isSortable: boolean;
+    isFilterable: boolean;
+    isFiltered: boolean;
     isMultiSortable: boolean;
     disableTooltip: boolean;
     comparator: (valueA: any, valueB: any) => number;
 
     // True if the column was automatically generated.
     isAuto: boolean;
+
+    // for filters
+    filterValue: string;
+    filterOperator: string;
+    filterInputDisabled: boolean;
+    filterIncludeOrgAncestors: boolean;
+    filterIncludeOrgDescendants: boolean;
 
     flesher: (obj: any, col: GridColumn, item: any) => any;
 
@@ -48,6 +58,19 @@ export class GridColumn {
           userContext: this.cellContext
         };
     }
+
+    constructor() {
+        this.removeFilter();
+    }
+
+    removeFilter() {
+        this.isFiltered = false;
+        this.filterValue = undefined;
+        this.filterOperator = '=';
+        this.filterInputDisabled = false;
+        this.filterIncludeOrgAncestors = false;
+        this.filterIncludeOrgDescendants = false;
+    }
 }
 
 export class GridColumnSet {
@@ -55,6 +78,7 @@ export class GridColumnSet {
     idlClass: string;
     indexColumn: GridColumn;
     isSortable: boolean;
+    isFilterable: boolean;
     isMultiSortable: boolean;
     stockVisible: string[];
     idl: IdlService;
@@ -85,6 +109,7 @@ export class GridColumnSet {
         }
 
         this.applyColumnSortability(col);
+        this.applyColumnFilterability(col);
     }
 
     // Returns true if the new column was inserted, false otherwise.
@@ -222,6 +247,12 @@ export class GridColumnSet {
 
         if (col.isMultiSortable) {
             col.isSortable = true;
+        }
+    }
+    applyColumnFilterability(col: GridColumn) {
+        // column filterability defaults to the afilterability of the column set.
+        if (col.isFilterable === undefined && this.isFilterable) {
+            col.isFilterable = true;
         }
     }
 
@@ -425,6 +456,8 @@ export class GridContext {
     pager: Pager;
     idlClass: string;
     isSortable: boolean;
+    isFilterable: boolean;
+    stickyGridHeader: boolean;
     isMultiSortable: boolean;
     useLocalSort: boolean;
     persistKey: string;
@@ -453,6 +486,8 @@ export class GridContext {
     // action has occurred.
     selectRowsInPageEmitter: EventEmitter<void>;
 
+    filterControls: QueryList<GridFilterControlComponent>;
+
     // Services injected by our grid component
     idl: IdlService;
     org: OrgService;
@@ -480,6 +515,7 @@ export class GridContext {
         this.selectRowsInPageEmitter = new EventEmitter<void>();
         this.columnSet = new GridColumnSet(this.idl, this.idlClass);
         this.columnSet.isSortable = this.isSortable === true;
+        this.columnSet.isFilterable = this.isFilterable === true;
         this.columnSet.isMultiSortable = this.isMultiSortable === true;
         this.columnSet.defaultHiddenFields = this.defaultHiddenFields;
         this.columnSet.defaultVisibleFields = this.defaultVisibleFields;
@@ -523,6 +559,13 @@ export class GridContext {
         // getting modified by an angular digest cycle.
         setTimeout(() => {
             this.pager.reset();
+            this.dataSource.reset();
+            this.dataSource.requestPage(this.pager);
+        });
+    }
+
+    reloadSansPagerReset() {
+        setTimeout(() => {
             this.dataSource.reset();
             this.dataSource.requestPage(this.pager);
         });
@@ -942,6 +985,16 @@ export class GridContext {
         });
     }
 
+    removeFilters(): void {
+        this.dataSource.filters = {};
+        this.columnSet.displayColumns().forEach(col => { col.removeFilter(); });
+        this.filterControls.forEach(ctl => ctl.reset());
+        this.reload();
+    }
+    filtersSet(): boolean {
+        return Object.keys(this.dataSource.filters).length > 0;
+    }
+
     gridToCsv(): Promise<string> {
 
         let csvStr = '';
@@ -1069,12 +1122,14 @@ export class GridDataSource {
 
     data: any[];
     sort: any[];
+    filters: Object;
     allRowsRetrieved: boolean;
     requestingData: boolean;
     getRows: (pager: Pager, sort: any[]) => Observable<any>;
 
     constructor() {
         this.sort = [];
+        this.filters = {};
         this.reset();
     }
 

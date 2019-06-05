@@ -1,11 +1,12 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, HostListener, ViewEncapsulation} from '@angular/core';
+    OnDestroy, HostListener, ViewEncapsulation, QueryList, ViewChildren} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridContext, GridColumn, GridDataSource, GridRowFlairEntry} from './grid';
+import {GridFilterControlComponent} from './grid-filter-control.component';
 
 /**
  * Main grid entry point.
@@ -105,6 +106,20 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() disablePaging: boolean;
 
+    // result filtering
+    //
+    // filterable: true if the result filtering controls
+    // should be displayed
+    @Input() filterable: boolean;
+
+    // sticky grid header
+    //
+    // stickyHeader: true of the grid header should be
+    // "sticky", i.e., remain visible if if the table is long
+    // and the user has scrolled far enough that the header
+    // would go out of view
+    @Input() stickyHeader: boolean;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -134,6 +149,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.dataSource = this.dataSource;
         this.context.persistKey = this.persistKey;
         this.context.isSortable = this.sortable === true;
+        this.context.isFilterable = this.filterable === true;
+        this.context.stickyGridHeader = this.stickyHeader === true;
         this.context.isMultiSortable = this.multiSortable === true;
         this.context.useLocalSort = this.useLocalSort === true;
         this.context.disableSelect = this.disableSelect === true;
@@ -178,6 +195,11 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     reload() {
         this.context.reload();
     }
+    reloadSansPagerReset() {
+        this.context.reloadSansPagerReset();
+    }
+
+
 }
 
 

@@ -27,6 +27,9 @@ export class GridColumnComponent implements OnInit {
     // If true, boolean fields support 3 values: true, false, null (unset)
     @Input() ternaryBool: boolean;
 
+    // result filtering
+    @Input() filterable: boolean;
+
     // Display date and time when datatype = timestamp
     @Input() datePlusTime: boolean;
 
@@ -57,6 +60,7 @@ export class GridColumnComponent implements OnInit {
         col.cellContext = this.cellContext;
         col.disableTooltip = this.disableTooltip;
         col.isSortable = this.sortable;
+        col.isFilterable = this.filterable;
         col.isMultiSortable = this.multiSortable;
         col.datatype = this.datatype;
         col.datePlusTime = this.datePlusTime;

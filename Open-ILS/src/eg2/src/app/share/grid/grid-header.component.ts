@@ -1,13 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, AfterViewInit, QueryList, ViewChildren} from '@angular/core';
 import {GridContext, GridColumn, GridRowSelector,
     GridColumnSet, GridDataSource} from './grid';
+import {GridFilterControlComponent} from './grid-filter-control.component';
 
 @Component({
   selector: 'eg-grid-header',
   templateUrl: './grid-header.component.html'
 })
 
-export class GridHeaderComponent implements OnInit {
+export class GridHeaderComponent implements OnInit, AfterViewInit {
 
     @Input() context: GridContext;
 
@@ -15,12 +16,18 @@ export class GridHeaderComponent implements OnInit {
 
     batchRowCheckbox: boolean;
 
+    @ViewChildren(GridFilterControlComponent) filterControls: QueryList<GridFilterControlComponent>;
+
     constructor() {}
 
     ngOnInit() {
         this.context.selectRowsInPageEmitter.subscribe(
             () => this.batchRowCheckbox = true
         );
+    }
+
+    ngAfterViewInit() {
+        this.context.filterControls = this.filterControls;
     }
 
     onColumnDragEnter($event: any, col: any) {

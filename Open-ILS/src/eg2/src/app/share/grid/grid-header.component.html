@@ -36,4 +36,17 @@
     <span *ngIf="!col.isSortable">{{col.label}}</span>
   </div>
 </div>
+<div *ngIf="context.isFilterable"
+  class="eg-grid-row eg-grid-filter-controls-row">
+  <ng-container *ngIf="!context.disableSelect">
+    <div class="eg-grid-cell eg-grid-header-cell eg-grid-cell-skinny"></div>
+  </ng-container>
+  <div class="eg-grid-cell eg-grid-header-cell eg-grid-cell-skinny"></div>
+  <div *ngIf="context.rowFlairIsEnabled" 
+    class="eg-grid-cell eg-grid-header-cell"></div>
 
+  <div *ngFor="let col of context.columnSet.displayColumns()" 
+    class="eg-grid-cell eg-grid-filter-control-cell" [ngStyle]="{flex:col.flex}">
+    <eg-grid-filter-control [context]="context" [col]="col"></eg-grid-filter-control>
+  </div>
+</div>

@@ -8,7 +8,9 @@
     [disableSaveSettings]="!persistKey || ('disabled' === persistKey)">
   </eg-grid-toolbar>
 
-  <eg-grid-header [context]="context"></eg-grid-header>
+  <div #egGridStickyHeader [ngClass]="{'eg-grid-sticky-header' : context.stickyGridHeader}">
+    <eg-grid-header [context]="context"></eg-grid-header>
+  </div>
 
   <eg-grid-column-width #colWidthConfig [gridContext]="context">
   </eg-grid-column-width>
