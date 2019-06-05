@@ -8,6 +8,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
+import {PcrudService} from '@eg/core/pcrud.service';
 
 export interface ComboboxEntry {
   id: any;
@@ -61,7 +62,15 @@ export class ComboboxComponent implements OnInit {
     @Input() startId: any;
     @Input() startIdFiresOnChange: boolean;
 
+    @Input() idlClass: string;
+    @Input() idlField: string;
     @Input() asyncDataSource: (term: string) => Observable<ComboboxEntry>;
+
+    // If true, an async data search is allowed to fetch all
+    // values when given an empty term. This should be used only
+    // if the maximum number of entries returned by the data source
+    // is known to be no more than a couple hundred.
+    @Input() asyncSupportsEmptyTermClick: boolean;
 
     // Useful for efficiently preventing duplicate async entries
     asyncIds: {[idx: string]: boolean};
@@ -94,6 +103,7 @@ export class ComboboxComponent implements OnInit {
     constructor(
       private elm: ElementRef,
       private store: StoreService,
+      private pcrud: PcrudService,
     ) {
         this.entrylist = [];
         this.asyncIds = {};
@@ -108,6 +118,18 @@ export class ComboboxComponent implements OnInit {
     }
 
     ngOnInit() {
+        if (this.idlClass) {
+            this.asyncDataSource = term => {
+                const field = this.idlField || 'name';
+                const args = {};
+                const extra_args = { order_by : {} };
+                args[field] = { 'ilike': `%${term}%`}; // could -or search on label
+                extra_args['order_by'][this.idlClass] = this.idlField || 'name';
+                return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
+                    return {id: data.id(), label: data[field]()};
+                }));
+            };
+        }
     }
 
     openMe($event) {
@@ -197,12 +219,19 @@ export class ComboboxComponent implements OnInit {
             return of(term);
         }
 
+        let searchTerm: string;
+        searchTerm = term;
+        if (searchTerm === '_CLICK_' && this.asyncSupportsEmptyTermClick) {
+            searchTerm = '';
+        } else {
+        }
+
         return new Observable(observer => {
-            this.asyncDataSource(term).subscribe(
+            this.asyncDataSource(searchTerm).subscribe(
                 (entry: ComboboxEntry) => this.addAsyncEntry(entry),
                 err => {},
                 ()  => {
-                    observer.next(term);
+                    observer.next(searchTerm);
                     observer.complete();
                 }
             );
@@ -220,7 +249,7 @@ export class ComboboxComponent implements OnInit {
                 // action is a user click instead of a text entry.
                 // This tells the filter to show all values in sync mode.
                 this.click$.pipe(filter(() =>
-                    !this.instance.isPopupOpen() && !this.asyncDataSource
+                    !this.instance.isPopupOpen()
                 )).pipe(mapTo('_CLICK_'))
             ),
 
@@ -229,12 +258,7 @@ export class ComboboxComponent implements OnInit {
             map((term: string) => {
 
                 if (term === '' || term === '_CLICK_') {
-                    // Avoid displaying the existing entries on-click
-                    // for async sources, becuase that implies we have
-                    // the full data set. (setting?)
-                    if (this.asyncDataSource) {
-                        return [];
-                    } else {
+                    if (!this.asyncDataSource) {
                         // In sync mode, a post-focus empty search or
                         // click event displays the whole list.
                         return this.entrylist;

@@ -69,7 +69,7 @@
   <div class="col-lg-3">
     <eg-help-popover helpText="You have to type to see any options in this dropdown."></eg-help-popover>
     <eg-combobox
-      placeholder="Combobox with dynamic data"
+      placeholder="Combobox with dynamic data that does not enable click if no search term is supplied"
       [asyncDataSource]="cbAsyncSource"></eg-combobox>
   </div>
 </div>
@@ -84,6 +84,28 @@
   <div class="col-lg-2">
     <eg-org-select [limitPerms]="['REGISTER_WORKSTATION']">
     </eg-org-select>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-lg-4">
+  </div>
+  <div class="col-lg-3">
+    <eg-combobox placeholder="Combobox with @idlClass = 'aou' @idlField='shortname'" [idlClass]="'aou'" [idlField]="'shortname'" [asyncSupportsEmptyTermClick]="true">
+    </eg-combobox>
+  </div>
+  <div class="col-lg-3">
+    <eg-combobox placeholder="Combobox with @idlClass = 'csp'" [idlClass]="'csp'" [asyncSupportsEmptyTermClick]="true">
+    </eg-combobox>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-lg-4">
+  </div>
+  <div class="col-lg-3">
+    <eg-combobox placeholder="Combobox with @idlClass = 'aou'" [idlClass]="'aou'" [asyncSupportsEmptyTermClick]="true">
+    </eg-combobox>
+  </div>
+  <div class="col-lg-3">
   </div>
 </div>
 <!-- /Progress Dialog Experiments ----------------------------- -->
