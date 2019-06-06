@@ -359,6 +359,60 @@ sub can_close_circ {
     return $can_close;
 }
 
+sub maybe_close_xact {
+    my ($class, $e, $xact_id) = @_;
+
+    my $circ = $e->retrieve_action_circulation(
+        [
+            $xact_id,
+            {
+                flesh => 1,
+                flesh_fields => {circ => ['target_copy','billings']}
+            }
+        ]
+    ); # Flesh the copy, so we can monkey with the status if
+       # necessary.
+
+    # Whether or not we close the transaction. We definitely close if no
+    # circulation transaction is present, otherwise we check if the circulation
+    # is in a state that allows itself to be closed.
+    if (!$circ || can_close_circ($class, $e, $circ)) {
+        my $billable_xact = $e->retrieve_money_billable_transaction($xact_id);
+        $billable_xact->xact_finish("now");
+        if (!$e->update_money_billable_transaction($billable_xact)) {
+            return {
+                message => "update_money_billable_transaction() failed",
+                evt => $e->die_event
+            };
+        }
+
+        # If we have a circ, we need to check if the copy status is lost or
+        # long overdue.  If it is then we check org_unit_settings for the copy
+        # owning library and adjust and possibly adjust copy status to lost and
+        # paid.
+        if ($circ && ($circ->stop_fines eq 'LOST' || $circ->stop_fines eq 'LONGOVERDUE')) {
+            # We need the copy to check settings and to possibly
+            # change its status.
+            my $copy = $circ->target_copy();
+            # Library where we'll check settings.
+            my $check_lib = $copy->circ_lib();
+
+            # check the copy status
+            if (($copy->status() == OILS_COPY_STATUS_LOST || $copy->status() == OILS_COPY_STATUS_LONG_OVERDUE)
+                    && $U->is_true($U->ou_ancestor_setting_value($check_lib, 'circ.use_lost_paid_copy_status', $e))) {
+                $copy->status(OILS_COPY_STATUS_LOST_AND_PAID);
+                if (!$e->update_asset_copy($copy)) {
+                    return {
+                        message => "update_asset_copy_failed()",
+                        evt => $e->die_event
+                    };
+                }
+            }
+        }
+    }
+}
+
+
 sub seconds_to_interval_hash {
         my $interval = shift;
         my $limit = shift || 's';
