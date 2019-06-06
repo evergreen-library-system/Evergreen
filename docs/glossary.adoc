@@ -2,26 +2,39 @@
 Evergreen Glossary
 ==================
 
+xref:A[A]xref:B[B]xref:C[C]
 
-[glossary]
+[glossary][[A]]
 Acquisitions::
   Processes related to ordering materials and managing expenditures
 Age Protection:: 
-  Allows libraries to prevent holds on new books (on a copy by copy basis) from outside the owning library's branch or system for a designated amount of time.
+  Allows libraries to prevent holds on new books (on a item by item basis) from outside the owning library's branch or system for a designated amount of time.
 Apache::
   Open-source web server software used to serve both static content and dynamic web pages in a secure and reliable way. More information is available at http://apache.org.
-Balance stop percent ::
+authority record::
+  Records used to control the contents of MARC fields.
+[[B]]Balance stop percent ::
   A setting in acquisitions that prevents you from making purchases when only a specified amount of the fund remains. 
 barcode::
-  the code attached to the item.  This is not the Circulation ID.
+  The code attached to the item.  This is not the Circulation ID.
+bibliographic record::
+  The record that contains data about a work, such as title, author and copyright date.
+Booking::
+  Processes relating to reserving cataloged and non- bibliographic items.
 buckets::
-  this is a container of items. See also Record Buckets and Copy Buckets.
-Call number::
+  This is a container of items. See also Record Buckets and Item Buckets.
+[[C]]Call number::
   An item's call number is a string of letters and or numbers that work like map coordinates to describe where in a library a particular item "lives."
+Catalog::
+  The database of titles and objects 
 Cataloging::
-  the process of adding materials to be circulated to the system.
+  The process of adding materials to be circulated to the system.
+Check-in::
+  The process of returning an item.
+Check-out::
+  The process of loaning and item to a patron.
 Circulation::
-  the process of loaning an item to an individual.
+  The process of loaning an item to an individual.
 Circulating library::
   The library which has checked out the item.
 Circulation library::
@@ -32,10 +45,8 @@ Circulation modifiers::
   Circulation modifiers pull together Loan Duration, Renewal Limit, Fine Level, Max Fine, and Profile Permission Group to create circulation rules for different types of materials. Circulation Modifiers are also used to determine Hold Policies.
 copy:: 
   see Item
-Copy Buckets::
-  this is a container of individual items.
 Distribution formulas:: 
-  Used to specify the number of copies that should be distributed to specific branches and copy locations.
+  Used to specify the number of copies that should be distributed to specific branches and item locations.
 Due date::
   The due date is the day on or before which an item must be returned to the library in order to avoid being charged an overdue fine. 
 Electronic data interchange (EDI)::
@@ -47,25 +58,31 @@ Fund tags::
 Funding sources::
   Sources of the monies to fund acquisitions of materials.
 Funds::
-  Allocations of money used for purchases. 
+  Allocations of money used for purchases.
+FRBR (Functional Requirements for Bibliographic Records)::
+  See https://www.loc.gov/cds/downloads/FRBR.PDF[Library of Congress FRBR documentation]
+Hold::
+  The exclusive right for a patron to checkout a specific item. 
 Hold boundaries::
   Define which organizational units are available to fill specific holds.
 Holdings import profile::
   Identifies the Import Item Attributes definition.
 Holding subfield::
-  Used in the acquisitions module to map subfields to the appropriate copy data. 
+  Used in the acquisitions module to map subfields to the appropriate item data. 
 ILS:: 
   Integrated Library System
 ILL:: 
   Inter-Library Loan
 Import item attributes::
-  Used to map the data in your holdings tag to fields in the copy record during a MARC import.
+  Used to map the data in your holdings tag to fields in the item record during a MARC import.
 Insufficient quality fall-through profile::
   A back-up merge profile to be used for importing if an incoming record does not meet the standards of the minimum quality ratio.
 item:: 
   The actual item.
 Item barcode::
   Item barcodes uniquely identify each specific item entered into the Catalog.
+Item Buckets::
+  This is a container of individual items.
 Jabber:: 
   The communications protocol used for client-server message passing within Evergreen. Now known as XMPP (eXtensible Messaging and Presence Protocol), it was originally named "Jabber."
 Juvenile flag::
@@ -99,7 +116,7 @@ Organization unit type::
 Overlay/merge profiles::
   During a MARC import this is used identify which fields should be replaced, which should be preserved, and which should be added to the record.
 Owning library::
-  The library which has purchased a particular item and created the volume and copy records. 
+  The library which has purchased a particular item and created the volume and item records. 
 Parent organizational unit::
   An organizational unit one level above whose policies may be inherited by its child units. 
 Parts::
