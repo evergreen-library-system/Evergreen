@@ -46,6 +46,8 @@ export class HoldTransferDialogComponent
     ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
+        this.numSucceeded = 0;
+        this.numFailed = 0;
         this.holdIds = [].concat(this.holdIds); // array-ify ints
 
         this.transferTarget =

@@ -2175,7 +2175,8 @@ SELECT  h.id, h.request_time, h.capture_time, h.fulfillment_time, h.checkin_time
         h.cancel_note, h.target, h.current_copy, h.fulfillment_staff, h.fulfillment_lib,
         h.request_lib, h.requestor, h.usr, h.selection_ou, h.selection_depth, h.pickup_lib,
         h.hold_type, h.holdable_formats, h.phone_notify, h.email_notify, h.sms_notify,
-        h.sms_carrier, h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
+        (SELECT name FROM config.sms_carrier WHERE id = h.sms_carrier) AS "sms_carrier",
+        h.frozen, h.thaw_date, h.shelf_time, h.cut_in_line, h.mint_condition,
         h.shelf_expire_time, h.current_shelf_lib, h.behind_desk, h.hopeless_date,
 
         CASE WHEN h.cancel_time IS NOT NULL THEN 6

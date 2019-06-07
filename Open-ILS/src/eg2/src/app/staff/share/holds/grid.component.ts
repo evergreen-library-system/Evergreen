@@ -330,6 +330,16 @@ export class HoldsGridComponent implements OnInit {
         return found;
     }
 
+    nonTitleHoldsSelected(rows: IdlObject[]) {
+        var found = false;
+        rows.forEach( row => {
+           if (row.hold_type != 'T') {
+             found = true;
+           }
+        });
+        return found;
+    }
+
     showDetails(rows: any[]) {
         this.showDetail(rows[0]);
     }
@@ -360,19 +370,21 @@ export class HoldsGridComponent implements OnInit {
 
 
     showRecentCircs(rows: any[]) {
-        if (rows.length) {
+        const copyIds = Array.from(new Set( rows.map(r => r.cp_id).filter( cp_id => Boolean(cp_id)) ));
+        copyIds.forEach( copyId => {
             const url =
-                '/eg/staff/cat/item/' + rows[0].cp_id + '/circ_list';
+                '/eg/staff/cat/item/' + copyId + '/circ_list';
             window.open(url, '_blank');
-        }
+        });
     }
 
     showPatron(rows: any[]) {
-        if (rows.length) {
+        const usrIds = Array.from(new Set( rows.map(r => r.usr_id).filter( usr_id => Boolean(usr_id)) ));
+        usrIds.forEach( usrId => {
             const url =
-                '/eg/staff/circ/patron/' + rows[0].usr_id + '/checkout';
+                '/eg/staff/circ/patron/' + usrId + '/checkout';
             window.open(url, '_blank');
-        }
+        });
     }
 
     showOrder(rows: any[]) {
@@ -419,7 +431,7 @@ export class HoldsGridComponent implements OnInit {
     }
 
     showTransferDialog(rows: any[]) {
-        const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
+        const holdIds = rows.filter(r => r.hold_type=='T').map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.transferDialog.holdIds = holdIds;
             this.transferDialog.open({}).subscribe(

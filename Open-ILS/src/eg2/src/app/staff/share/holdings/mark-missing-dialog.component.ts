@@ -1,10 +1,11 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AuthService} from '@eg/core/auth.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {StringComponent} from '@eg/share/string/string.component';
 
 
@@ -41,6 +42,12 @@ export class MarkMissingDialogComponent
     }
 
     ngOnInit() {}
+
+    open(args: NgbModalOptions): Observable<boolean> {
+        this.numSucceeded = 0;
+        this.numFailed = 0;
+        return super.open(args);
+    }
 
     async markOneItemMissing(ids: number[]): Promise<any> {
         if (ids.length === 0) {
