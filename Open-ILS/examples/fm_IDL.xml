@@ -12851,6 +12851,94 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="cct" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::carousel_type" 
+		oils_persist:tablename="config.carousel_type" 
+		reporter:label="Carousel Types">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.carousel_type_id_seq">
+			<field reporter:label="Carousel Type ID" reporter:selector="name" name="id" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_obj:i18n="true"/>
+			<field reporter:label="Automatically Managed?" name="automatic" reporter:datatype="bool"/>
+			<field reporter:label="Filter By Age?" name="filter_by_age" reporter:datatype="bool"/>
+			<field reporter:label="Filter By Item Owning Library?" name="filter_by_copy_owning_lib" reporter:datatype="bool"/>
+			<field reporter:label="Filter By Item Location?" name="filter_by_copy_location" reporter:datatype="bool"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_CAROUSEL_TYPE" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_CAROUSEL_TYPE" global_required="true"/>
+				<delete permission="ADMIN_CAROUSEL_TYPE" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="cc" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="container::carousel" 
+		oils_persist:tablename="container.carousel" 
+		reporter:label="Carousels">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.carousel_id_seq">
+			<field reporter:label="Carousel ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Carousel Type" name="type" reporter:datatype="link"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_obj:i18n="true"/>
+			<field reporter:label="Bucket" name="bucket" reporter:datatype="link"/>
+			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
+			<field reporter:label="Editing User" name="editor" reporter:datatype="link"/>
+			<field reporter:label="Create Time" name="create_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Edit Time" name="edit_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Age Limit" name="age_filter"  reporter:datatype="interval"/>
+			<field reporter:label="Item Libraries" name="owning_lib_filter" reporter:datatype="text" />      <!-- Actually an int[], but this is the best we can do in fm_IDL.xml -->
+			<field reporter:label="Shelving Locations" name="copy_location_filter" reporter:datatype="text" /> <!-- ditto -->
+			<field reporter:label="Last Refresh Time" name="last_refresh_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="Maximum Items" name="max_items" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="type" reltype="has_a" key="id" map="" class="cct"/>
+			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cbreb"/>
+			<link field="creator" reltype="has_a" key="id" map="" class="au"/>
+			<link field="editor" reltype="has_a" key="id" map="" class="au"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_CAROUSEL" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_CAROUSEL" global_required="true"/>
+				<delete permission="ADMIN_CAROUSEL" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="ccou" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="container::carousel_org_unit" 
+		oils_persist:tablename="container.carousel_org_unit" 
+		reporter:label="Carousels Visible at Library">
+		<fields oils_persist:primary="id" oils_persist:sequence="container.carousel_org_unit_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" />
+			<field reporter:label="Carousel" name="carousel" reporter:datatype="link"/>
+			<field reporter:label="Override Name" name="override_name" reporter:datatype="text"/>
+			<field reporter:label="Library" name="org_unit" reporter:datatype="link"/>
+			<field reporter:label="Sequence Number" name="seq" reporter:datatype="int"/>
+		</fields>
+		<links>
+			<link field="carousel" reltype="has_a" key="id" map="" class="cc"/>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_CAROUSEL" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_CAROUSEL" global_required="true"/>
+				<delete permission="ADMIN_CAROUSEL" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 

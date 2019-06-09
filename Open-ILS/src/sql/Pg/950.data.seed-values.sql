@@ -1917,7 +1917,13 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 610, 'CLEAR_PURCHASE_REQUEST', oils_i18n_gettext(610,
     'Clear Completed User Purchase Requests', 'ppl', 'description')),
  ( 611, 'ADMIN_PRINT_TEMPLATE', oils_i18n_gettext(611,
-    'Modify print templates', 'ppl', 'description'))
+    'Modify print templates', 'ppl', 'description')),
+ ( 612, 'ADMIN_CAROUSEL_TYPE', oils_i18n_gettext(612,
+    'Allow a user to manage carousel types', 'ppl', 'description')),
+ ( 613, 'ADMIN_CAROUSEL', oils_i18n_gettext(613,
+    'Allow a user to manage carousels', 'ppl', 'description')),
+ ( 614, 'REFRESH_CAROUSEL', oils_i18n_gettext(614,
+    'Allow a user to refresh carousels', 'ppl', 'description'))
 ;
 
 
@@ -5652,6 +5658,7 @@ INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('book
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('reading_list', oils_i18n_gettext('reading_list', 'Reading List', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('template_merge',oils_i18n_gettext('template_merge','Template Merge Container', 'cbrebt', 'label'));
 INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('url_verify', oils_i18n_gettext('url_verify', 'URL Verification Queue', 'cbrebt', 'label'));
+INSERT INTO container.biblio_record_entry_bucket_type (code,label) VALUES ('carousel', oils_i18n_gettext('url_verify', 'Carousel', 'cbrebt', 'label'));
 
 INSERT INTO container.user_bucket_type (code,label) VALUES ('misc', oils_i18n_gettext('misc', 'Miscellaneous', 'cubt', 'label'));
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks', oils_i18n_gettext('folks', 'Friends', 'cubt', 'label'));

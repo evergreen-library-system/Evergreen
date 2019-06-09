@@ -250,5 +250,30 @@ CREATE TABLE container.user_bucket_item_note (
     note    TEXT        NOT NULL
 );
 
+CREATE TABLE container.carousel (
+    id                      SERIAL PRIMARY KEY,
+    type                    INTEGER NOT NULL REFERENCES config.carousel_type (id),
+    owner                   INTEGER NOT NULL REFERENCES actor.org_unit (id),
+    name                    TEXT NOT NULL,
+    bucket                  INTEGER REFERENCES container.biblio_record_entry_bucket (id),
+    creator                 INTEGER NOT NULL REFERENCES actor.usr (id),
+    editor                  INTEGER NOT NULL REFERENCES actor.usr (id),
+    create_time             TIMESTAMPTZ NOT NULL DEFAULT now(),
+    edit_time               TIMESTAMPTZ NOT NULL DEFAULT now(),
+    age_filter              INTERVAL,
+    owning_lib_filter       INT[],
+    copy_location_filter    INT[],
+    last_refresh_time       TIMESTAMPTZ,
+    active                  BOOLEAN NOT NULL DEFAULT TRUE,
+    max_items               INTEGER NOT NULL
+);
+
+CREATE TABLE container.carousel_org_unit (
+    id              SERIAL PRIMARY KEY,
+    carousel        INTEGER NOT NULL REFERENCES container.carousel (id) ON DELETE CASCADE,
+    override_name   TEXT,
+    org_unit        INTEGER NOT NULL REFERENCES actor.org_unit (id),
+    seq             INTEGER NOT NULL
+);
 
 COMMIT;

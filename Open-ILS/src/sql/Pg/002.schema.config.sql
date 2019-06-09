@@ -1349,4 +1349,25 @@ CREATE TABLE config.print_template (
     CONSTRAINT   label_once_per_lib UNIQUE (owner, label)
 );
 
+CREATE TABLE config.carousel_type (
+    id                          SERIAL PRIMARY KEY,
+    name                        TEXT NOT NULL,
+    automatic                   BOOLEAN NOT NULL DEFAULT TRUE,
+    filter_by_age               BOOLEAN NOT NULL DEFAULT FALSE,
+    filter_by_copy_owning_lib   BOOLEAN NOT NULL DEFAULT FALSE,
+    filter_by_copy_location     BOOLEAN NOT NULL DEFAULT FALSE
+);
+
+INSERT INTO config.carousel_type
+    (id, name,                               automatic, filter_by_age, filter_by_copy_owning_lib, filter_by_copy_location)
+VALUES
+    (1, 'Manual',                            FALSE,     FALSE,         FALSE,                     FALSE),
+    (2, 'Newly Catalogued Items',            TRUE,      TRUE,          TRUE,                      TRUE),
+    (3, 'Recently Returned Items',           TRUE,      TRUE,          TRUE,                      TRUE),
+    (4, 'Top Circulated Items',              TRUE,      TRUE,          TRUE,                      FALSE),
+    (5, 'Newest Items By Shelving Location', TRUE,      TRUE,          TRUE,                      FALSE)
+;
+
+SELECT SETVAL('config.carousel_type_id_seq'::TEXT, 100);
+
 COMMIT;
