@@ -5,11 +5,13 @@ import {AdminLocalRoutingModule} from './routing.module';
 import {AdminCommonModule} from '@eg/staff/admin/common.module';
 import {AdminLocalSplashComponent} from './admin-local-splash.component';
 import {AddressAlertComponent} from './address-alert.component';
+import {AdminCarouselComponent} from './admin-carousel.component';
 
 @NgModule({
   declarations: [
       AdminLocalSplashComponent,
-      AddressAlertComponent
+      AddressAlertComponent,
+      AdminCarouselComponent
   ],
   imports: [
     AdminCommonModule,

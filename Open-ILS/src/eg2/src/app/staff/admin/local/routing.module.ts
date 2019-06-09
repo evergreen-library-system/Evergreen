@@ -3,6 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminLocalSplashComponent} from './admin-local-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {AddressAlertComponent} from './address-alert.component';
+import {AdminCarouselComponent} from './admin-carousel.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -14,6 +15,9 @@ const routes: Routes = [{
 }, {
     path: 'actor/address_alert',
     component: AddressAlertComponent
+}, {
+    path: 'container/carousel',
+    component: AdminCarouselComponent
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent

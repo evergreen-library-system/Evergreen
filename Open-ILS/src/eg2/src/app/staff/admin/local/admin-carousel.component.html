@@ -1,0 +1,98 @@
+<eg-title i18n-prefix prefix="{{classLabel}} Administration">
+</eg-title>
+<eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-template #successStrTmpl i18n>{{idlClassDef.label}} Update Succeeded</ng-template>
+<eg-string #successString [template]="successStrTmpl"></eg-string>
+
+<ng-template #updateFailedStrTmpl i18n>Update of {{idlClassDef.label}} failed</ng-template>
+<eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
+
+<ng-template #deleteFailedStrTmpl i18n>Delete of carousel faiiled or was not allowed</ng-template>
+<eg-string #deleteFailedString [template]="deleteFailedStrTmpl"></eg-string>
+
+<ng-template #deleteSuccessStrTmpl i18n>Carousel Successfully Deleted</ng-template>
+<eg-string #deleteSuccessString [template]="deleteSuccessStrTmpl"></eg-string>
+
+<ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
+<eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-template #createErrStrTmpl i18n>Failed to create new {{idlClassDef.label}}</ng-template>
+<eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
+
+<ng-template #refreshStrTmpl i18n let-name="name">{{name}} is being refreshed. It may take a couple minutes.</ng-template>
+<eg-string #refreshString [template]="refreshStrTmpl"></eg-string>
+
+<ng-template #refreshErrStrTmpl i18n let-name="name">{{name}} is manual and cannot be refreshed automatically.</ng-template>
+<eg-string #refreshErrString [template]="refreshErrStrTmpl"></eg-string>
+
+<ng-container *ngIf="orgField">
+  <eg-org-family-select
+    [limitPerms]="viewPerms"
+    [selectedOrgId]="contextOrg.id()"
+    [(ngModel)]="searchOrgs"
+    (ngModelChange)="grid.reload()">
+  </eg-org-family-select>
+  <hr/>
+</ng-container>
+
+<!-- idlObject and fieldName applied programmatically -->
+<eg-translate #translator></eg-translate>
+
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
+    [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
+  <eg-grid-toolbar-button [disabled]="!canCreate" 
+    label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
+    label="Apply Translations" i18n-label [action]="translate">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Refesh Selected" i18n-label [action]="refreshSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-column path="bucket" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="creator" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="editor" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="create_time" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="edit_time" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="age_filter" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="owning_lib_filter" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="copy_location_filter" [hidden]="true"></eg-grid-column>
+</eg-grid>
+
+<ng-template #bucketTemplate
+    let-field="field" let-record="record">
+  <span *ngIf="record[field.name]()" i18n>
+    <a href="/eg/staff/cat/bucket/record/view/{{record[field.name]()}}" target="_blank" i18n>Link to bucket</a>
+    <span *ngIf="record['type']() !== 1" i18n style="font-style: italic"> (Note: changes to bucket contents may be overwritten by the next carousel update.)</span>
+  </span>
+</ng-template>
+
+<ng-template #locationTemplate
+    let-field="field" let-record="record">
+  <eg-multi-select idlClass="acpl" linkedLibraryLabel="owning_lib"
+                   [startValue]="record['copy_location_filter']()"
+                   (onChange)="record['copy_location_filter']($event)">
+  </eg-multi-select>
+</ng-template>
+<ng-template #orgTemplate
+    let-field="field" let-record="record">
+  <eg-multi-select idlClass="aou"
+                   [startValue]="record['owning_lib_filter']()"
+                   (onChange)="record['owning_lib_filter']($event)">
+  </eg-multi-select>
+</ng-template>
+
+<eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
+    [preloadLinkedValues]="true" readonlyFields="last_refresh_time"
+    hiddenFieldsList="creator,editor,create_time,edit_time"
+    [preSave]="mungeCarousel" (onSave$)="postSave($event)"
+    readonlyFields="last_refresh_time"
+    [fieldOptions]="{bucket:{customTemplate:{template:bucketTemplate}},copy_location_filter:{customTemplate:{template:locationTemplate}},owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
+></eg-fm-record-editor>
+
+
