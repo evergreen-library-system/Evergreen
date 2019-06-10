@@ -51,10 +51,10 @@
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
     [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
-    label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew($event)">
+    label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
-    label="Apply Translations" i18n-label (onClick)="translate($event)">
+    label="Apply Translations" i18n-label (onClick)="translate()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
   </eg-grid-toolbar-action>
