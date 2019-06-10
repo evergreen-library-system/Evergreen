@@ -18,6 +18,7 @@
     [inputFormatter]="formatDisplayString"
     (click)="click$.next($event.target.value)"
     (blur)="onBlur()"
+    container="body"
     (selectItem)="selectorChanged($event)"
     #instance="ngbTypeahead"/>
   <div class="d-flex flex-column icons" (click)="openMe($event)">

@@ -21,6 +21,7 @@
     [inputFormatter]="formatter"
     (click)="click$.next($event.target.value)"
     (selectItem)="orgChanged($event)"
+    container="body"
     #instance="ngbTypeahead"
   />
 
