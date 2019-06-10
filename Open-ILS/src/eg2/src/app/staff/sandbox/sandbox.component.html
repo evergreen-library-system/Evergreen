@@ -157,6 +157,7 @@
 </div>
 <br/><br/>
 
+
 <div>
   <h4>Cross-tab communications example</h4>
   <p>To test, open this sandbox in a second browser tab. Enter something in the input box below, then switch to the other tab and click anywhere on the page. 
@@ -170,6 +171,23 @@
     message received: {{sbChannelText}}
   </div>
 </div>
+<br/><br/>
+
+<ngb-accordion>
+  <ngb-panel title="Open me for comboboxes">
+    <ng-template ngbPanelContent>
+      <eg-org-select></eg-org-select>
+      <eg-combobox>
+        <eg-combobox-entry entryId="bib" entryLabel="Bibliographic Records"
+          i18n-entryLabel></eg-combobox-entry>
+        <eg-combobox-entry entryId="auth" entryLabel="Authority Records"
+          i18n-entryLabel></eg-combobox-entry>
+        <eg-combobox-entry entryId="bib-acq" entryLabel="Acquisitions Records"
+          i18n-entryLabel></eg-combobox-entry>
+      </eg-combobox>
+    </ng-template>
+  </ngb-panel>
+</ngb-accordion>
 
 <!-- grid stuff -->
 <ng-template #cellTmpl let-row="row" let-col="col" let-userContext="userContext">

@@ -195,3 +195,11 @@ h5 {font-size: .95rem}
   #eg-print-container pre {border: none}
 }
 
+/**
+ * Make sure that comboboxes (including org select
+ * are visible, even in nested modals.
+ *
+ * See https://github.com/ng-bootstrap/ng-bootstrap/issues/2505
+ * for the upstream issue that necessitates this.
+ */
+body>.dropdown-menu {z-index: 2100;}
