@@ -56,7 +56,11 @@ const directCopyFiles = [
 
   // jquery is copied to the common build location, up one directory.
   {from: './node_modules/jquery/dist/jquery.min.js', 
-     to: __dirname + '/../common/build/js'}
+     to: __dirname + '/../common/build/js'},
+
+  // and likewise for glide
+  {from: './node_modules/@glidejs/glide/dist',
+     to: __dirname + '/../common/build/js/glide'}
 ];
 
 CSS_FILES.forEach(file => directCopyFiles.push({from: file, to: './css'}));
