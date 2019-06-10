@@ -153,3 +153,7 @@ var aou_hash = {
 [%- IF ctx.max_cart_size; %]
 <script type="text/javascript">var max_cart_size = [% ctx.max_cart_size %];</script>
 [%- END; %]
+
+
+<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.core.min.css[% ctx.cache_key %]">
+<link rel="stylesheet" href="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/css/glide.theme.min.css[% ctx.cache_key %]">

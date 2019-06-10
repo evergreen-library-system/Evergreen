@@ -2,3 +2,4 @@
     <img src="[% ctx.media_prefix %]/opac/images/main_logo.png[% ctx.cache_key %]"
         [% img_alt(l('Evergreen Logo')) %]/>
 </div>
+[% PROCESS carousels %]

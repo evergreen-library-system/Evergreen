@@ -3394,3 +3394,42 @@ label[for*=expert_]
     font-weight: bolder;
     background-color: #42b0f4;
 }
+
+/*
+  Carousels
+*/
+
+.carousel {
+    width: 40%;
+    margin: 0 auto;
+}
+.carousel-title {
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+}
+.carousel-entry {
+    max-width: 150px;
+}
+.carousel-entry-image {
+    width: 100%;
+    height: auto;
+}
+.carousel .glide__arrow {
+    color: [% css_colors.button_text %];
+    font-weight: bold !important;
+    text-decoration: none !important;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid [% css_colors.primary %];
+    background-color:  [% css_colors.primary_fade %];
+    margin: 0.5em;
+    padding: 0.3em;
+    display: inline-block;
+}
+.carousel .glide__arrow--right {
+    right: -5em;
+}
+.carousel .glide__arrow--left {
+    left: -5em;
+}

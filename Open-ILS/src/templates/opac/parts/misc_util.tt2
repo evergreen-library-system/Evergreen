@@ -802,3 +802,67 @@
     END;
 
 -%]
+
+[%- BLOCK carousels;
+    config = {
+        animated => 0,
+        animation_interval => 5,
+        width => 4,
+    };
+    config.import(args);
+    carousels = [];
+    IF config.carousel_id;
+        carousels.push(ctx.get_carousel(config.carousel_id));
+    ELSE;
+        visible_carousels = ctx.get_visible_carousels();
+        FOREACH car IN visible_carousels;
+            carousel = ctx.get_carousel(car.carousel);
+            IF car.override_name.defined;
+                carousel.name = car.override_name;
+            END;
+            carousels.push(carousel);
+        END; 
+    END;
+    IF carousels.size > 0;
+%]
+<script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/common/build/js/glide/glide.min.js[% ctx.cache_key %]"></script>
+<div class="carousels">
+[% FOREACH carousel IN carousels;
+   IF carousel.bibs.size > 0;
+%]
+<div class="carousel">
+<div class="carousel-title">[% carousel.name %]</div>
+<div class="carousel-body glide" id="carousel-[% carousel.id %]">
+  <div class="glide__track" data-glide-el="track">
+    <ul class="glide__slides">
+[% FOREACH bib IN carousel.bibs; %]
+      <li class="glide__slide"><div class="carousel-entry">
+        <a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">
+          <img alt="[% l('Book cover') %]" class="carousel-entry-image" src="[% ctx.media_prefix %]/opac/extras/ac/jacket/medium/r/[% bib.id | uri %]"></img>
+        </a><br>
+        <span class="carousel-entry-title"><a href="[% mkurl(ctx.opac_root  _ '/record/' _ bib.id) %]">[% bib.title | html %]</a></span>
+      </div></li>
+[% END; %]
+    </ul>
+  </div>
+  <div class="glide__arrows" data-glide-el="controls">
+    <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
+    <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
+  </div>
+</div>
+</div>
+<script>
+    var glide = new Glide('#carousel-[% carousel.id %]', {
+        type: 'carousel',
+        rewind: false,
+        perView: [% config.width %],
+        startAt: 0,
+        [% IF config.animated %] autoplay: [% config.animation_interval * 1000 %],[% END %]
+    });
+    glide.mount();
+</script>
+[% END; %]
+[% END; %]
+</div>
+[% END -%]
+[% END -%]
