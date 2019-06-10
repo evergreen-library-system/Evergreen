@@ -201,7 +201,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
 
                 // Avoid updating checkout counts when a checkout turns
                 // into a renewal via auto_renew.
-                if (!co_resp.auto_renew && !params.noncat) {
+                if (!co_resp.auto_renew && !params.noncat && !options.sameCopyCheckout) {
                     patronSvc.patron_stats.checkouts.out++;
                     patronSvc.patron_stats.checkouts.total_out++;
                 }
