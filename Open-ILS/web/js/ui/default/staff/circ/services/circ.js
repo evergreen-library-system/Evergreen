@@ -1106,6 +1106,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             function(args) {
                 if (sameUser) {
                     params.void_overdues = args.forgive_fines;
+                    options.sameCopyCheckout = true;
                     return service.renew(params, options);
                 }
 
