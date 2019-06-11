@@ -3960,7 +3960,7 @@ INSERT into config.org_unit_setting_type
         'Content of alert_text include',
         'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.receipt.alert_text',
-        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(alert_text)%',
+        'Text to be inserted into Print Templates in place of {{includes.alert_text}}',
         'coust', 'description'),
     'string', null)
 
@@ -3969,7 +3969,7 @@ INSERT into config.org_unit_setting_type
         'Content of event_text include',
         'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.receipt.event_text',
-        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(event_text)%',
+        'Text to be inserted into Print Templates in place of {{includes.event_text}}',
         'coust', 'description'),
     'string', null)
 
@@ -3978,7 +3978,7 @@ INSERT into config.org_unit_setting_type
         'Content of footer_text include',
         'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.receipt.footer_text',
-        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(footer_text)%',
+        'Text to be inserted into Print Templates in place of {{includes.footer_text}}',
         'coust', 'description'),
     'string', null)
 
@@ -3987,7 +3987,7 @@ INSERT into config.org_unit_setting_type
         'Content of header_text include',
         'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.receipt.header_text',
-        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(header_text)%',
+        'Text to be inserted into Print Templates in place of {{includes.header_text}}',
         'coust', 'description'),
     'string', null)
 
@@ -3996,7 +3996,7 @@ INSERT into config.org_unit_setting_type
         'Content of notice_text include',
         'coust', 'label'),
     oils_i18n_gettext('circ.staff_client.receipt.notice_text',
-        'Text/HTML/Macros to be inserted into receipt templates in place of %INCLUDE(notice_text)%',
+        'Text to be inserted into Print Templates in place of {{includes.notice_text}}',
         'coust', 'description'),
     'string', null)
 
