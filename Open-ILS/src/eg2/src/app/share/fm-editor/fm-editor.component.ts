@@ -8,7 +8,7 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 
@@ -160,6 +160,10 @@ export class FmRecordEditorComponent
         if (id) { this.recId = id; }
     }
 
+    // custom function for munging the record before it gets saved;
+    // will get passed mode and the record itself
+    @Input() preSave: Function;
+
     constructor(
       private modal: NgbModal, // required for passing to parent
       private idl: IdlService,
@@ -184,6 +188,19 @@ export class FmRecordEditorComponent
         } else {
             this.initRecord();
         }
+    }
+
+    open(args?: NgbModalOptions): Observable<any> {
+        if (!args) {
+            args = {};
+        }
+        // ensure we don't hang on to our copy of the record
+        // if the user dismisses the dialog
+        args.beforeDismiss = () => {
+            this.record = undefined;
+            return true;
+        };
+        return super.open(args);
     }
 
     isDialog(): boolean {
@@ -471,12 +488,15 @@ export class FmRecordEditorComponent
 
     save() {
         const recToSave = this.idl.clone(this.record);
+        if (this.preSave) {
+            this.preSave(this.mode, recToSave);
+        }
         this.convertDatatypesToIdl(recToSave);
         this.pcrud[this.mode]([recToSave]).toPromise().then(
             result => {
                 this.onSave$.emit(result);
                 this.successStr.current().then(msg => this.toast.success(msg));
-                if (this.isDialog()) { this.close(result); }
+                if (this.isDialog()) { this.record = undefined; this.close(result); }
             },
             error => {
                 this.onError$.emit(error);
@@ -488,6 +508,12 @@ export class FmRecordEditorComponent
 
     cancel() {
         this.onCancel$.emit(this.record);
+        this.record = undefined;
+        this.close();
+    }
+
+    closeEditor() {
+        this.record = undefined;
         this.close();
     }
 

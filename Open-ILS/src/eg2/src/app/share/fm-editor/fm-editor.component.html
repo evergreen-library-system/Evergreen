@@ -9,7 +9,7 @@
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <ng-container *ngIf="isDialog()">
       <button type="button" class="close" 
-        i18n-aria-label aria-label="Close" (click)="close()">
+        i18n-aria-label aria-label="Close" (click)="closeEditor()">
         <span aria-hidden="true">&times;</span>
       </button>
     </ng-container>
@@ -162,7 +162,7 @@
   <div class="modal-footer">
     <ng-container *ngIf="isDialog()">
       <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
-        (click)="close()" i18n>Close</button>
+        (click)="closeEditor()" i18n>Close</button>
       <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
         (click)="cancel()" i18n>Cancel</button>
     </ng-container>
