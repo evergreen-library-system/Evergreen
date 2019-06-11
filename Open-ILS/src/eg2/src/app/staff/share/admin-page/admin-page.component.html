@@ -4,6 +4,11 @@
 <ng-template #updateFailedStrTmpl i18n>Update of {{idlClassDef.label}} failed</ng-template>
 <eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
 
+<ng-template #deleteFailedStrTmpl i18n>Delete of {{idlClassDef.label}} failed or was not allowed</ng-template>
+<eg-string #deleteFailedString [template]="deleteFailedStrTmpl"></eg-string>
+
+<ng-template #deleteSuccessStrTmpl i18n>{{idlClassDef.label}} Successfully Deleted</ng-template>
+<eg-string #deleteSuccessString [template]="deleteSuccessStrTmpl"></eg-string>
 
 <ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
 <eg-string #createString [template]="createStrTmpl"></eg-string>

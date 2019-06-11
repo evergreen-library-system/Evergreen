@@ -81,6 +81,8 @@ export class AdminPageComponent implements OnInit {
     @ViewChild('createString') createString: StringComponent;
     @ViewChild('createErrString') createErrString: StringComponent;
     @ViewChild('updateFailedString') updateFailedString: StringComponent;
+    @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
+    @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
     @ViewChild('translator') translator: TranslateComponent;
 
     idlClassDef: any;
@@ -103,12 +105,12 @@ export class AdminPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private idl: IdlService,
+        public idl: IdlService,
         private org: OrgService,
-        private auth: AuthService,
-        private pcrud: PcrudService,
+        public auth: AuthService,
+        public pcrud: PcrudService,
         private perm: PermService,
-        private toast: ToastService
+        public toast: ToastService
     ) {
         this.translatableFields = [];
     }
@@ -278,8 +280,15 @@ export class AdminPageComponent implements OnInit {
     deleteSelected(idlThings: IdlObject[]) {
         idlThings.forEach(idlThing => idlThing.isdeleted(true));
         this.pcrud.autoApply(idlThings).subscribe(
-            val => console.debug('deleted: ' + val),
-            err => {},
+            val => {
+                console.debug('deleted: ' + val);
+                this.deleteSuccessString.current()
+                    .then(str => this.toast.success(str));
+            },
+            err => {
+                this.deleteFailedString.current()
+                    .then(str => this.toast.danger(str));
+            },
             ()  => this.grid.reload()
         );
     }
