@@ -52,7 +52,7 @@
       [multiSortable]="true" [persistKey]="persistKey"
       (onRowActivate)="showDetail($event)">
 
-      <eg-grid-toolbar-checkbox (onChange)="preFetchHolds($event)"
+      <eg-grid-toolbar-checkbox (onChange)="preFetchHolds($event)" *ngIf="!hopeless"
         [initialValue]="enablePreFetch" i18n-label label="Pre-Fetch All Holds">
       </eg-grid-toolbar-checkbox>
 
