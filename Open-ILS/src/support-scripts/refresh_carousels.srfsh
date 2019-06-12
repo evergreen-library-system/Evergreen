@@ -1,0 +1,2 @@
+#!BINDIR/srfsh
+request open-ils.storage open-ils.storage.carousel.refresh_all

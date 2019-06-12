@@ -61,6 +61,9 @@ EG_BIN_DIR = /openils/bin
 # Run the hard due date updater
 2  3  * * *   . ~/.bashrc && $EG_BIN_DIR/update_hard_due_dates.srfsh
 
+# Run the carousel updater
+5  3  * * *   . ~/.bashrc && $EG_BIN_DIR/refresh_carousels.srfsh
+
 # Run the credit card number clearing script
 #5  4  * * *   . ~/.bashrc && $EG_BIN_DIR/clear_cc_number.srfsh
 

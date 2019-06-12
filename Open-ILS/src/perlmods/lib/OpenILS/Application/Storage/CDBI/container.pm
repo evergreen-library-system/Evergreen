@@ -50,7 +50,7 @@ use base qw/container/;
 
 container::biblio_record_entry_bucket_item->table( 'container_biblio_record_entry_bucket_item' );
 container::biblio_record_entry_bucket_item->columns( Primary => qw/id/ );
-container::biblio_record_entry_bucket_item->columns( Essential => qw/bucket target_biblio_record_entry/ );
+container::biblio_record_entry_bucket_item->columns( Essential => qw/bucket target_biblio_record_entry pos/ );
 
 #-------------------------------------------------------------------------------
 package container::call_number_bucket;

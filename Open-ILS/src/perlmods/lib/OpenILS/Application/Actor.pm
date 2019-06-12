@@ -26,6 +26,7 @@ use DateTime;
 use DateTime::Format::ISO8601;
 use OpenILS::Const qw/:const/;
 
+use OpenILS::Application::Actor::Carousel;
 use OpenILS::Application::Actor::Container;
 use OpenILS::Application::Actor::ClosedDates;
 use OpenILS::Application::Actor::UserGroups;
