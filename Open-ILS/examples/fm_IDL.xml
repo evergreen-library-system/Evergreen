@@ -12942,16 +12942,16 @@ SELECT  usr,
 
 	<class id="cra" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::remoteauth_profile" oils_persist:tablename="config.remoteauth_profile" reporter:label="Remote Patron Authentication Configuration Profile">
 		<fields oils_persist:primary="name">
-			<field name="name" reporter:datatype="text"/>
-			<field name="description" reporter:datatype="text"/>
-			<field name="context_org" reporter:datatype="org_unit"/>
-			<field name="enabled" reporter:datatype="bool"/>
-			<field name="perm" reporter:datatype="link"/>
-			<field name="restrict_to_org" reporter:datatype="bool"/>
-			<field name="allow_inactive" reporter:datatype="bool"/>
-			<field name="allow_expired" reporter:datatype="bool"/>
-			<field name="block_list" reporter:datatype="text"/>
-			<field name="usr_activity_type" reporter:datatype="link"/>
+			<field name="name"              reporter:datatype="text"     reporter:label="Name" oils_obj:required="true"/>
+			<field name="description"       reporter:datatype="text"     reporter:label="Description"/>
+			<field name="context_org"       reporter:datatype="org_unit" reporter:label="Context Org" oils_obj:required="true"/>
+			<field name="enabled"           reporter:datatype="bool"     reporter:label="Enabled"/>
+			<field name="perm"              reporter:datatype="link"     reporter:label="Permission Required by User" oils_obj:required="true"/>
+			<field name="restrict_to_org"   reporter:datatype="bool"     reporter:label="Restrict by Home Library"/>
+			<field name="allow_inactive"    reporter:datatype="bool"     reporter:label="Allow Inactive Users"/>
+			<field name="allow_expired"     reporter:datatype="bool"     reporter:label="Allow Expired Users"/>
+			<field name="block_list"        reporter:datatype="text"     reporter:label="Block List"/>
+			<field name="usr_activity_type" reporter:datatype="link"     reporter:label="User Activity Type"/>
 		</fields>
 		<links>
 			<link field="context_org" reltype="has_a" key="id" map="" class="aou"/>
