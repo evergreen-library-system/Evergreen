@@ -19967,3 +19967,5 @@ VALUES (
     'cwst', 'label')
 );
 
+INSERT INTO config.workstation_setting_type (name,label,grp,datatype)
+VALUES ('eg.circ.bills.annotatepayment','Bills: Annotate Payment', 'circ', 'bool');
