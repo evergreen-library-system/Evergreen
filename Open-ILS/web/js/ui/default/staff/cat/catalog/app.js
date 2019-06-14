@@ -423,6 +423,58 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         });
     }
 
+    $scope.carousels_available = false;
+    egCore.net.request(
+        'open-ils.actor',
+        'open-ils.actor.carousel.retrieve_manual_by_staff',
+        egCore.auth.token()
+    ).then(function(carousels) { $scope.carousels_available = true; });
+
+    $scope.add_to_carousel = function(recs) {
+        if (!angular.isArray(recs)) {
+            recs = [ $scope.record_id ];
+        }
+        return $uibModal.open({
+            templateUrl: './cat/catalog/t_add_to_carousel',
+            backdrop: 'static',
+            animation: true,
+            size: 'md',
+            controller:
+                   ['$scope','$uibModalInstance',
+            function($scope , $uibModalInstance) {
+                $scope.bucket_id = 0;
+                $scope.allCarousels = [];
+                egCore.net.request(
+                    'open-ils.actor',
+                    'open-ils.actor.carousel.retrieve_manual_by_staff',
+                    egCore.auth.token()
+                ).then(function(carousels) { $scope.allCarousels = carousels; });
+
+                $scope.add_to_carousel = function() {
+                    // or more precisely, the carousel's bucket
+                    var promises = [];
+                    angular.forEach(recs, function(recId) {
+                        var item = new egCore.idl.cbrebi();
+                        item.bucket($scope.bucket_id);
+                        item.target_biblio_record_entry(recId);
+                        promises.push(egCore.net.request(
+                            'open-ils.actor',
+                            'open-ils.actor.container.item.create',
+                            egCore.auth.token(), 'biblio', item
+                        ));
+                    });
+                    $q.all(promises).then(function(resp) {
+                        $uibModalInstance.close();
+                    });
+                }
+
+                $scope.cancel = function() {
+                    $uibModalInstance.dismiss();
+                }
+            }]
+        });
+    }
+
     $scope.current_overlay_target     = egCore.hatch.getLocalItem('eg.cat.marked_overlay_record');
     $scope.current_transfer_target    = egCore.hatch.getLocalItem('eg.cat.transfer_target_record');
     $scope.current_conjoined_target   = egCore.hatch.getLocalItem('eg.cat.marked_conjoined_record');

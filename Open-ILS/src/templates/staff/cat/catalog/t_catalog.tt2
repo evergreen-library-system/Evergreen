@@ -86,6 +86,11 @@
                         [% l('Add To Bucket') %]
                     </a>
             </li>
+             <li role="menuitem" ng-class="{disabled : !carousels_available}">
+                    <a ng-click="add_to_carousel()" href="">
+                        [% l('Add To Carousel') %]
+                    </a>
+            </li>
             <li role="menuitem">
                    <a ng-click="view_place_orders()" href="">
                         [% l('View/Place Orders') %]

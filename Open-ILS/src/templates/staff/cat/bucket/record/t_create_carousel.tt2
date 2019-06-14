@@ -1,0 +1,24 @@
+<!-- create carousel dialog -->
+
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('Create Carousel From Bucket') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="create-carousel-name">[% l('Name') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="create-carousel-name" ng-model="args.name" placeholder="[% l('Carousel Name..') %]"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Create Carousel') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>
