@@ -17,6 +17,8 @@ import {TranslateComponent} from '@eg/staff/share/translate/translate.component'
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
 import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validator.directive';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.component';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -37,6 +39,7 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
     AdminPageComponent,
     EgHelpPopoverComponent,
     DatetimeValidatorDirective,
+    MultiSelectComponent
   ],
   imports: [
     EgCommonModule,
@@ -60,6 +63,7 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
     AdminPageComponent,
     EgHelpPopoverComponent,
     DatetimeValidatorDirective,
+    MultiSelectComponent
   ]
 })
 

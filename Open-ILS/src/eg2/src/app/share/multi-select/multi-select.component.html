@@ -1,0 +1,13 @@
+<div>
+  <div class="row">
+    <eg-combobox [idlClass]="idlClass" 
+      [idlIncludeLibraryInLabel]="linkedLibraryLabel" [asyncSupportsEmptyTermClick]="true"
+      (onChange)="valueSelected($event)">
+    </eg-combobox>
+    <button class="btn btn-outline-dark" (click)="addSelectedValue()" [disabled]="!this.selected" i18n>Add</button>
+  </div>
+  <div class="row" *ngFor="let entry of entrylist">
+    <div class="col-lg-4">{{entry.label}}</div>
+    <button class="btn btn-sm btn-warning" (click)="removeValue(entry)" i18n>Remove</button>
+  </div>
+</div>
