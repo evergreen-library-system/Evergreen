@@ -3737,7 +3737,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 	</class>
 	<class id="cuat" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::usr_activity_type" oils_persist:tablename="config.usr_activity_type" reporter:label="User Activity Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.usr_activity_type_id_seq">
-			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="id" reporter:label="ID" reporter:datatype="id" reporter:selector="label"/>
 			<field name="ewho" reporter:label="Event Caller" reporter:datatype="text"/>
 			<field name="ewhat" reporter:label="Event Type" reporter:datatype="text"/>
 			<field name="ehow" reporter:label="Event Mechanism" reporter:datatype="text"/>
