@@ -16,10 +16,20 @@ import {Component, Input} from '@angular/core';
 export class BoolDisplayComponent {
 
     _value: boolean;
-    @Input() set value(v: boolean) {
-        this._value = v;
+    @Input() set value(v: any) {
+        if (typeof v === 'string') {
+            if (v === 't') {
+                this._value = true;
+            } else if (v === 'f') {
+                this._value = false;
+            } else {
+                this._value = null;
+            }
+        } else {
+            this._value = v;
+        }
     }
-    get value(): boolean {
+    get value(): any {
         return this._value;
     }
 
