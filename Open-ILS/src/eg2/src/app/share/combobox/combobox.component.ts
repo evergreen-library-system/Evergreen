@@ -72,6 +72,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     @Input() idlClass: string;
     @Input() idlField: string;
+    @Input() idlIncludeLibraryInLabel: string;
     @Input() asyncDataSource: (term: string) => Observable<ComboboxEntry>;
 
     // If true, an async data search is allowed to fetch all
@@ -152,9 +153,22 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
                 const extra_args = { order_by : {} };
                 args[field] = {'ilike': `%${term}%`}; // could -or search on label
                 extra_args['order_by'][this.idlClass] = field;
-                return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
-                    return {id: data[pkeyField](), label: data[field]()};
-                }));
+                if (this.idlIncludeLibraryInLabel) {
+                    extra_args['flesh'] = 1;
+                    const flesh_fields: Object = {};
+                    flesh_fields[this.idlClass] = [ this.idlIncludeLibraryInLabel ];
+                    extra_args['flesh_fields'] = flesh_fields;
+                    return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
+                        return {
+                            id: data[pkeyField](),
+                            label: data[field]() + ' (' + data[this.idlIncludeLibraryInLabel]().shortname() + ')'
+                        };
+                    }));
+                } else {
+                    return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
+                        return {id: data[pkeyField](), label: data[field]()};
+                    }));
+                }
             };
         }
     }
