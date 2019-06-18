@@ -1985,7 +1985,7 @@ sub sru_search {
 
         # Ensure the search string overrides the default site
         if ($shortname and $search_string !~ m#site:#) {
-            $search_string .= " site:$shortname";
+            $search_string = "($search_string) site:$shortname";
         }
 
         my $offset = $req->startRecord;
