@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import {Observable, throwError, from} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -94,15 +95,15 @@ export class CopyAlertsDialogComponent
             }
         }
 
-        this.getAlertTypes()
-        .then(() => this.getCopies())
-        .then(() => {
-            if (this.mode === 'manage') {
-                this.getCopyAlerts()
-                .then(() => super.open(args) );
-            }
-            return super.open(args);
-        });
+        // Observerify data loading
+        const obs = from(
+            this.getAlertTypes()
+            .then(_ => this.getCopies())
+            .then(_ => this.mode === 'manage' ? this.getCopyAlerts() : null)
+        );
+
+        // Return open() observable to caller
+        return obs.pipe(switchMap(_ => super.open(args)));
     }
 
     getAlertTypes(): Promise<any> {

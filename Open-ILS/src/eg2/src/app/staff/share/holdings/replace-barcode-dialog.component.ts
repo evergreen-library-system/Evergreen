@@ -1,6 +1,6 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
-import {flatMap, map, tap} from 'rxjs/operators';
+import {switchMap, map, tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -59,10 +59,10 @@ export class ReplaceBarcodeDialogComponent
         this.numFailed = 0;
 
         return this.getNextCopy()
-        .pipe(flatMap(() => {
-            return super.open(args)
-            .pipe(tap(() => {this.renderer.selectRootElement('#new-barcode-input').focus(); }));
-        }));
+        .pipe(switchMap(() => super.open(args)))
+        .pipe(tap(() =>
+            this.renderer.selectRootElement('#new-barcode-input').focus())
+        );
     }
 
     getNextCopy(): Observable<any> {

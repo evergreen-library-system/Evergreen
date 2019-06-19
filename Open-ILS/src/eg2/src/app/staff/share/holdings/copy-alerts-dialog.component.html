@@ -13,7 +13,7 @@
       <span i18n></span>
     </h4>
     <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+      i18n-aria-label aria-label="Close" (click)="close()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -100,7 +100,7 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" 
-      (click)="dismiss('canceled')" i18n>Close</button>
+      (click)="close()" i18n>Close</button>
     <ng-container *ngIf="mode == 'manage'">
       <button class="btn btn-success mr-2" 
         (click)="applyChanges()" i18n>Apply Changes</button>
