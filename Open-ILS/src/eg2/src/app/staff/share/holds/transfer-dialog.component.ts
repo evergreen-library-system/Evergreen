@@ -53,8 +53,9 @@ export class HoldTransferDialogComponent
 
         if (!this.transferTarget) {
             this.targetNeeded.current()
-            .then((msg) => this.toast.warning(msg))
-            .then(() => throwError('Transfer Target Required'));
+            .then((msg) => this.toast.warning(msg));
+
+            return throwError('Transfer Target Required');
         }
 
         return super.open(args);

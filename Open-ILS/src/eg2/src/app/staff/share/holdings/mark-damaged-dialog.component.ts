@@ -1,5 +1,6 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import {Observable, throwError, from} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -70,9 +71,13 @@ export class MarkDamagedDialogComponent
             return throwError('copy ID required');
         }
 
-        this.getBillingTypes()
-        .then(() => { this.getData(); })
-        .then(() => super.open(args));
+        // Map data-loading promises to an observable
+        const obs = from(
+            this.getBillingTypes().then(_ => this.getData()));
+
+        // Fire data loading observable and replace results with
+        // dialog opener observable.
+        return obs.pipe(switchMap(_ => super.open(args)));
     }
 
     // Fetch-cache billing types

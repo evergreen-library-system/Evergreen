@@ -11,7 +11,7 @@
         <span i18n>Make Items Bookable</span>
       </h4>
       <button type="button" class="close" 
-        i18n-aria-label aria-label="Close" (click)="dismiss('cross_click')">
+        i18n-aria-label aria-label="Close" (click)="close()">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -36,7 +36,7 @@
     <div class="modal-footer">
       <ng-container>
         <button type="button" class="btn btn-warning" 
-          (click)="dismiss('canceled')" i18n>Cancel</button>
+          (click)="close()" i18n>Cancel</button>
         <ng-container *ngIf="!updateComplete">
           <button type="button" class="btn btn-success" 
             (click)="makeBookable()" i18n>Make Bookable</button>
