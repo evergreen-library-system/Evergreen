@@ -609,7 +609,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
 
             this.markDamagedDialog.copyId = ids.pop();
-            return this.markDamagedDialog.open({size: 'lg'}).then(
+            return this.markDamagedDialog.open({size: 'lg'}).subscribe(
                 ok => {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
@@ -629,7 +629,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         const copyIds = this.selectedCopyIds(rows, 4 /* ignore missing */);
         if (copyIds.length > 0) {
             this.markMissingDialog.copyIds = copyIds;
-            this.markMissingDialog.open({}).then(
+            this.markMissingDialog.open({}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.refreshHoldings = true;
@@ -762,13 +762,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.copyAlertsDialog.copyIds = copyIds;
         this.copyAlertsDialog.mode = mode;
-        this.copyAlertsDialog.open({size: 'lg'}).then(
+        this.copyAlertsDialog.open({size: 'lg'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();
                 }
-            },
-            dismissed => {}
+            }
         );
     }
 
@@ -776,13 +775,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
         const ids = this.selectedCopyIds(rows);
         if (ids.length === 0) { return; }
         this.replaceBarcode.copyIds = ids;
-        this.replaceBarcode.open({}).then(
+        this.replaceBarcode.open({}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();
                 }
-            },
-            dismissed => {}
+            }
         );
     }
 
@@ -835,13 +833,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
         // "both" mode.
         this.deleteVolcopy.forceDeleteCopies = mode === 'both';
         this.deleteVolcopy.volumes = Object.values(volHash);
-        this.deleteVolcopy.open({size: 'sm'}).then(
+        this.deleteVolcopy.open({size: 'sm'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();
                 }
-            },
-            dismissed => {}
+            }
         );
     }
 
@@ -857,11 +854,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (copyIds.length > 0) {
             this.bucketDialog.bucketClass = 'copy';
             this.bucketDialog.itemIds = copyIds;
-            this.bucketDialog.open({size: 'lg'}).then(
-                // No need to reload the grid after adding items to buckets.
-                ok => {},
-                dismissed => {}
-            );
+            this.bucketDialog.open({size: 'lg'});
         }
     }
 
@@ -869,10 +862,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length > 0) {
             this.conjoinedDialog.copyIds = copyIds;
-            this.conjoinedDialog.open({size: 'sm'}).then(
-                ok => {}, // No grid reload required
-                dismissed => {}
-            );
+            this.conjoinedDialog.open({size: 'sm'});
         }
     }
 
@@ -887,10 +877,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length > 0) {
             this.makeBookableDialog.copyIds = copyIds;
-            this.makeBookableDialog.open({}).then(
-                modified => {}, // No refresh needed
-                dismissed => {}
-            );
+            this.makeBookableDialog.open({});
         }
     }
 }

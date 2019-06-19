@@ -1,4 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
+import {Observable} from 'rxjs';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,7 +22,7 @@ export class HoldManageDialogComponent
         super(modal); // required for subclassing
     }
 
-    open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         return super.open(args);
     }
 

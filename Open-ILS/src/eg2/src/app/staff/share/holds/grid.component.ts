@@ -297,13 +297,12 @@ export class HoldsGridComponent implements OnInit {
         const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.manageDialog.holdIds = holdIds;
-            this.manageDialog.open({size: 'lg'}).then(
+            this.manageDialog.open({size: 'lg'}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.holdsGrid.reload();
                     }
-                },
-                dismissed => {}
+                }
             );
         }
     }
@@ -312,13 +311,12 @@ export class HoldsGridComponent implements OnInit {
         const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.transferDialog.holdIds = holdIds;
-            this.transferDialog.open({}).then(
+            this.transferDialog.open({}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.holdsGrid.reload();
                     }
-                },
-                dismissed => {}
+                }
             );
         }
     }
@@ -335,7 +333,7 @@ export class HoldsGridComponent implements OnInit {
             }
 
             this.markDamagedDialog.copyId = ids.pop();
-            return this.markDamagedDialog.open({size: 'lg'}).then(
+            return this.markDamagedDialog.open({size: 'lg'}).subscribe(
                 ok => {
                     if (ok) { rowsModified = true; }
                     return markNext(ids);
@@ -354,13 +352,12 @@ export class HoldsGridComponent implements OnInit {
         const copyIds = rows.map(r => r.cp_id).filter(id => Boolean(id));
         if (copyIds.length > 0) {
             this.markMissingDialog.copyIds = copyIds;
-            this.markMissingDialog.open({}).then(
+            this.markMissingDialog.open({}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.holdsGrid.reload();
                     }
-                },
-                dismissed => {} // avoid console errors
+                }
             );
         }
     }
@@ -369,13 +366,12 @@ export class HoldsGridComponent implements OnInit {
         const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.retargetDialog.holdIds = holdIds;
-            this.retargetDialog.open({}).then(
+            this.retargetDialog.open({}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.holdsGrid.reload();
                     }
-                },
-                dismissed => {}
+                }
             );
         }
     }
@@ -384,13 +380,12 @@ export class HoldsGridComponent implements OnInit {
         const holdIds = rows.map(r => r.id).filter(id => Boolean(id));
         if (holdIds.length > 0) {
             this.cancelDialog.holdIds = holdIds;
-            this.cancelDialog.open({}).then(
+            this.cancelDialog.open({}).subscribe(
                 rowsModified => {
                     if (rowsModified) {
                         this.holdsGrid.reload();
                     }
-                },
-                dismissed => {}
+                }
             );
         }
     }

@@ -91,7 +91,7 @@ export class OrgUnitTypeComponent implements OnInit {
         this.editDialog.mode = 'update';
         this.editDialog.setRecord(this.selected.callerData.aout);
 
-        this.editDialog.open().then(
+        this.editDialog.open().subscribe(
             success => {
                 this.postUpdate(this.editString);
                 this.loadAoutTree(); // since the tree is never going to
@@ -109,7 +109,7 @@ export class OrgUnitTypeComponent implements OnInit {
     }
 
     remove() {
-        this.delConfirm.open().then(
+        this.delConfirm.open().subscribe(
             ok => {
                 this.pcrud.remove(this.selected.callerData.aout)
                 .subscribe(
@@ -128,8 +128,7 @@ export class OrgUnitTypeComponent implements OnInit {
                         this.postUpdate(this.editString);
                     }
                 );
-            },
-            notConfirmed => {}
+            }
         );
     }
 
@@ -144,7 +143,7 @@ export class OrgUnitTypeComponent implements OnInit {
         this.editDialog.setRecord(newType);
         this.editDialog.mode = 'create';
 
-        this.editDialog.open().then(
+        this.editDialog.open().subscribe(
             result => { // aout object
 
                 // Add our new node to the tree

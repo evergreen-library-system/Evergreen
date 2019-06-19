@@ -520,14 +520,12 @@ export class FmRecordEditorComponent
         this.translator.fieldName = field;
         this.translator.idlObject = this.record;
 
-        // TODO: will need to change once LP1823041 is merged
-        this.translator.open().then(
+        this.translator.open().subscribe(
             newValue => {
                 if (newValue) {
                     this.record[field](newValue);
                 }
-            },
-            () => {} // avoid console error
+            }
         );
     }
 }

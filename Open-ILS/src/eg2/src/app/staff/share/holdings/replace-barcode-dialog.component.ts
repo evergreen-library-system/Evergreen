@@ -1,4 +1,6 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
+import {flatMap, map, tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -51,24 +53,23 @@ export class ReplaceBarcodeDialogComponent
 
     ngOnInit() {}
 
-    async open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.ids = [].concat(this.copyIds);
         this.numSucceeded = 0;
         this.numFailed = 0;
 
-        await this.getNextCopy();
-        setTimeout(() =>
-            // Give the dialog a chance to render
-            this.renderer.selectRootElement('#new-barcode-input').focus()
-        );
-        return super.open(args);
+        return this.getNextCopy()
+        .pipe(flatMap(() => {
+            return super.open(args)
+            .pipe(tap(() => {this.renderer.selectRootElement('#new-barcode-input').focus(); }));
+        }));
     }
 
-    async getNextCopy(): Promise<any> {
+    getNextCopy(): Observable<any> {
 
         if (this.ids.length === 0) {
             this.close(this.numSucceeded > 0);
-            return Promise.resolve();
+            return throwError(false);
         }
 
         this.newBarcode = '';
@@ -76,7 +77,7 @@ export class ReplaceBarcodeDialogComponent
         const id = this.ids.pop();
 
         return this.pcrud.retrieve('acp', id)
-        .toPromise().then(c => this.copy = c);
+        .pipe(map(c => this.copy = c));
     }
 
     async replaceOneBarcode(): Promise<any> {

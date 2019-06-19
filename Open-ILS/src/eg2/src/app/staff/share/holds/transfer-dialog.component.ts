@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {StoreService} from '@eg/core/store.service';
 import {EventService} from '@eg/core/event.service';
@@ -44,15 +45,16 @@ export class HoldTransferDialogComponent
 
     ngOnInit() {}
 
-    async open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.holdIds = [].concat(this.holdIds); // array-ify ints
 
         this.transferTarget =
             this.store.getLocalItem('eg.circ.hold.title_transfer_target');
 
         if (!this.transferTarget) {
-            this.toast.warning(await this.targetNeeded.current());
-            return Promise.reject('Transfer Target Required');
+            this.targetNeeded.current()
+            .then((msg) => this.toast.warning(msg))
+            .then(() => throwError('Transfer Target Required'));
         }
 
         return super.open(args);

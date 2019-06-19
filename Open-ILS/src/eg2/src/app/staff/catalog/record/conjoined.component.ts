@@ -97,13 +97,12 @@ export class ConjoinedComponent implements OnInit {
     }
 
     openConjoinedDialog() {
-        this.conjoinedDialog.open({size: 'sm'}).then(
+        this.conjoinedDialog.open({size: 'sm'}).subscribe(
             modified => {
                 if (modified) {
                     this.grid.reload();
                 }
-            },
-            notOk => {}
+            }
         );
     }
 }

@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -73,14 +74,14 @@ export class CopyAlertsDialogComponent
      * Dialog promise resolves with true/false indicating whether
      * the mark-damanged action occured or was dismissed.
      */
-    async open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.copy = null;
         this.copies = [];
         this.newAlert = this.idl.create('aca');
         this.newAlert.create_staff(this.auth.user().id());
 
         if (this.copyIds.length === 0) {
-            return Promise.reject('copy ID required');
+            return throwError('copy ID required');
         }
 
         // In manage mode, we can only manage a single copy.
@@ -93,15 +94,18 @@ export class CopyAlertsDialogComponent
             }
         }
 
-        await this.getAlertTypes();
-        await this.getCopies();
-        if (this.mode === 'manage') {
-            await this.getCopyAlerts();
-        }
-        return super.open(args);
+        this.getAlertTypes()
+        .then(() => this.getCopies())
+        .then(() => {
+            if (this.mode === 'manage') {
+                this.getCopyAlerts()
+                .then(() => super.open(args) );
+            }
+            return super.open(args);
+        });
     }
 
-    async getAlertTypes(): Promise<any> {
+    getAlertTypes(): Promise<any> {
         if (this.alertTypes) {
             return Promise.resolve();
         }
@@ -114,7 +118,7 @@ export class CopyAlertsDialogComponent
         });
     }
 
-    async getCopies(): Promise<any> {
+    getCopies(): Promise<any> {
         return this.pcrud.search('acp', {id: this.copyIds}, {}, {atomic: true})
         .toPromise().then(copies => {
             this.copies = copies;
@@ -128,7 +132,7 @@ export class CopyAlertsDialogComponent
     // Copy alerts for the selected copies which have not been
     // acknowledged by staff and are within org unit range of
     // the alert type.
-    async getCopyAlerts(): Promise<any> {
+    getCopyAlerts(): Promise<any> {
         const copyIds = this.copies.map(c => c.id());
         const typeIds = this.alertTypes.map(a => a.id);
 

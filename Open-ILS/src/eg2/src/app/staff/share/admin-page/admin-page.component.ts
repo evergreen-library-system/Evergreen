@@ -395,7 +395,7 @@ export class AdminPageComponent implements OnInit {
         // create action does not try to modify an existing record.
         this.editDialog.recId = null;
         this.editDialog.record = null;
-        this.editDialog.open({size: this.dialogSize}).then(
+        this.editDialog.open({size: this.dialogSize}).subscribe(
             ok => {
                 this.createString.current()
                     .then(str => this.toast.success(str));

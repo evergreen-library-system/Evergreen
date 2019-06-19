@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -39,7 +40,7 @@ export class HoldRetargetDialogComponent
 
     ngOnInit() {}
 
-    open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.holdIds = [].concat(this.holdIds); // array-ify ints
         return super.open(args);
     }
