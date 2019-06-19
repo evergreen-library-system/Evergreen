@@ -97,10 +97,7 @@ export class BasketActionsComponent implements OnInit {
                 this.basket.getRecordIds().then(ids => {
                     this.addToBucketDialog.bucketClass = 'biblio';
                     this.addToBucketDialog.itemIds = ids;
-                    this.addToBucketDialog.open({size: 'lg'}).then(
-                        ok => {},
-                        dismissed => {}
-                    );
+                    this.addToBucketDialog.open({size: 'lg'});
                 });
                 break;
 

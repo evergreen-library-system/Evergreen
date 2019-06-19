@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {IdlObject} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
@@ -57,7 +58,7 @@ export class DeleteVolcopyDialogComponent
 
     ngOnInit() {}
 
-    async open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.numVols = 0;
         this.numCopies = 0;
         this.numSucceeded = 0;
@@ -82,7 +83,7 @@ export class DeleteVolcopyDialogComponent
 
         if (this.numVols === 0 && this.numCopies === 0) {
             console.debug('Volcopy delete called with no usable data');
-            return Promise.resolve(false);
+            return throwError(false);
         }
 
         return super.open(args);

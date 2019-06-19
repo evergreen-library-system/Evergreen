@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {EventService} from '@eg/core/event.service';
 import {ToastService} from '@eg/share/toast/toast.service';
@@ -48,7 +49,7 @@ export class HoldCancelDialogComponent
         // them to load regardless of whether the dialog is ever used.
     }
 
-    open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
 
         if (this.cancelReasons.length === 0) {
             this.pcrud.retrieveAll('ahrcc', {}, {atomic: true}).toPromise()

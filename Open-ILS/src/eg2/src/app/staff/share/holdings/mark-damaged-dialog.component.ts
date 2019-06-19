@@ -1,4 +1,5 @@
 import {Component, OnInit, Input, ViewChild} from '@angular/core';
+import {Observable, throwError} from 'rxjs';
 import {NetService} from '@eg/core/net.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
@@ -62,20 +63,20 @@ export class MarkDamagedDialogComponent
      * Dialog promise resolves with true/false indicating whether
      * the mark-damanged action occured or was dismissed.
      */
-    async open(args: NgbModalOptions): Promise<boolean> {
+    open(args: NgbModalOptions): Observable<boolean> {
         this.reset();
 
         if (!this.copyId) {
-            return Promise.reject('copy ID required');
+            return throwError('copy ID required');
         }
 
-        await this.getBillingTypes();
-        await this.getData();
-        return super.open(args);
+        this.getBillingTypes()
+        .then(() => { this.getData(); })
+        .then(() => super.open(args));
     }
 
     // Fetch-cache billing types
-    async getBillingTypes(): Promise<any> {
+    getBillingTypes(): Promise<any> {
         if (this.billingTypes.length > 1) {
             return Promise.resolve();
         }
@@ -89,7 +90,7 @@ export class MarkDamagedDialogComponent
         });
     }
 
-    async getData(): Promise<any> {
+    getData(): Promise<any> {
         return this.pcrud.retrieve('acp', this.copyId,
             {flesh: 1, flesh_fields: {acp: ['call_number']}}).toPromise()
         .then(copy => {
