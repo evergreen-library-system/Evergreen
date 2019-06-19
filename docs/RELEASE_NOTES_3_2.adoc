@@ -3,6 +3,161 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.7
+----------------
+
+This release contains bug fixes improving on Evergreen 3.2.6.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+Circulation
+^^^^^^^^^^^
+* Corrects a rounding error that caused fines to exceed the max fines
+amount
+(https://bugs.launchpad.net/evergreen/+bug/1704819[Bug #1704819])
+* Corrects an issue with printing Items Out receipts
+(https://bugs.launchpad.net/evergreen/+bug/1790896[Bug #1790896])
+* SIP Visa payments are now recorded as credit card, rather than cash
+payments
+(https://bugs.launchpad.net/evergreen/+bug/1796942[Bug #1796942])
+* Converting change to patron credit no longer requires staff members
+to refresh the screen to see the new credit
+(https://bugs.launchpad.net/evergreen/+bug/1775639[Bug #1775639])
+* The patron summary now includes tooltips that were available in
+the XUL client
+(https://bugs.launchpad.net/evergreen/+bug/1772206[Bug #1772206])
+* The patron holds grid now includes a SMS Carrier column
+(https://bugs.launchpad.net/evergreen/+bug/1748265[Bug #1748265])
+* When registering a new patron from Pending Patrons, the address
+type dropdown now supports a default value
+(https://bugs.launchpad.net/evergreen/+bug/1816180[Bug #1816180])
+* The Items Out grid now includes a Monograph Parts column
+(https://bugs.launchpad.net/evergreen/+bug/1789257[Bug #1789257])
+* The annotate checkbox on the bill payment screen is now sticky
+(https://bugs.launchpad.net/evergreen/+bug/1759343[Bug #1759343])
+* Group member details grid settings can now be saved
+(https://bugs.launchpad.net/evergreen/+bug/1774707[Bug #1774707])
+* The patron registration date of birth field can now display a
+format example
+(https://bugs.launchpad.net/evergreen/+bug/1819181[Bug #1819181])
+
+Cataloging
+^^^^^^^^^^
+
+* The MARC editor displays a warning when a cataloger attempts to
+close the tab without saving
+(https://bugs.launchpad.net/evergreen/+bug/1538678[Bug #1538678])
+* The MARC editor displays a warning when permissions issues
+prevent a record from saving
+(https://bugs.launchpad.net/evergreen/+bug/1693580[Bug #1693580])
+* The holdings editor saves default values more consistently
+(https://bugs.launchpad.net/evergreen/+bug/1812900[Bug #1812900])
+* The flat-text editor now uses a monospace font
+(https://bugs.launchpad.net/evergreen/+bug/1817601[Bug #1817601])
+* Statistical categories and their entries are now alphabetized in the
+holdings editor (Bugs
+https://bugs.launchpad.net/evergreen/+bug/1744386[Bug #1744386] and
+https://bugs.launchpad.net/evergreen/+bug/1777184[Bug #1777184])
+* The holdings editor now lists monograph parts in reverse alphabetical
+order
+(https://bugs.launchpad.net/evergreen/+bug/1760893[Bug #1760893])
+* Buckets created from the MARC Batch Import process are now available
+in the MARC Batch Edit interface
+(https://bugs.launchpad.net/evergreen/+bug/1440890[Bug #1440890])
+* The record bucket interface only displays the Merge action when
+multiple records are selected
+(https://bugs.launchpad.net/evergreen/+bug/1760599[Bug #1760599])
+* Fixes an issue with the displayed number of items out
+(https://bugs.launchpad.net/evergreen/+bug/1770217[Bug #1770217])
+
+Client
+^^^^^^
+
+* Fixes conflicting dependency information caused be the release of
+Angular 8
+(https://bugs.launchpad.net/evergreen/+bug/1830972[Bug #1830972])
+* Angular grids include several new accessibility features and
+keyboard shortcuts
+(https://bugs.launchpad.net/evergreen/+bug/1816480[Bug #1816480])
+* The menu in the top right corner is now named "Logout and more..."
+(https://bugs.launchpad.net/evergreen/+bug/1796914[Bug #1796914])
+* Several dropdown menus now require less scrolling
+(https://bugs.launchpad.net/evergreen/+bug/1669120[Bug #1669120])
+
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Avoids Internal Server Errors on search result page
+(https://bugs.launchpad.net/evergreen/+bug/1155706[Bug #1155706])
+* Double clicking the Place Hold button can no longer result in
+multiple holds
+(https://bugs.launchpad.net/evergreen/+bug/1029601[Bug #1029601])
+
+Reports
+^^^^^^^
+
+* Adds a more user-friendly interface for boolean filters
+(https://bugs.launchpad.net/evergreen/+bug/1642337[Bug #1642337])
+
+System administration
+^^^^^^^^^^^^^^^^^^^^^
+
+* Improves consistency in terminology in the Local Administration
+screen
+(https://bugs.launchpad.net/evergreen/+bug/1776913[Bug #1776913])
+* The Library Settings Editor now displays some example timezones
+for the lib.timezone setting
+(https://bugs.launchpad.net/evergreen/+bug/1817332[Bug #1817332])
+
+Automated tests
+^^^^^^^^^^^^^^^
+* Fixes an automated test related to translations and internationalization
+(https://bugs.launchpad.net/evergreen/+bug/1768987[Bug #1768987])
+
+Database
+^^^^^^^^
+
+* Adds some foreign key functions that may be missing from your database
+(https://bugs.launchpad.net/evergreen/+bug/1772028[Bug #1772028])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.2.7 point release of
+Evergreen:
+
+* John Amundson
+* a. bellenir
+* Jason Boyer
+* Galen Charlton
+* Garry Collum
+* Dawn Dale
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Lynn Floyd
+* Jeff Godin
+* Rogan Hamby
+* Kyle Huckins
+* Sam Link
+* Terran McCanna
+* Michele Morgan
+* Bill Ott
+* Suzanne Paterno
+* Dan Pearl
+* Mike Risher
+* Geoff Sams
+* Janet Schrader
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Cesar Velez
+* Dan Wells
+
 Evergreen 3.2.6
 ---------------
 
