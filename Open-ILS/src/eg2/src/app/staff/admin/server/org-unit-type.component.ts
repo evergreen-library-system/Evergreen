@@ -109,27 +109,27 @@ export class OrgUnitTypeComponent implements OnInit {
     }
 
     remove() {
-        this.delConfirm.open().subscribe(
-            ok => {
-                this.pcrud.remove(this.selected.callerData.aout)
-                .subscribe(
-                    ok2 => {},
-                    err => {
-                        this.errorString.current()
-                          .then(str => this.toast.danger(str));
-                    },
-                    ()  => {
-                        // Avoid updating until we know the entire
-                        // pcrud action/transaction completed.
-                        this.loadAoutTree(); // since the tree is never going to
-                                             // be large, just reload the whole
-                                             // thing
-                        this.selected = null;
-                        this.postUpdate(this.editString);
-                    }
-                );
-            }
-        );
+        this.delConfirm.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+
+            this.pcrud.remove(this.selected.callerData.aout)
+            .subscribe(
+                ok2 => {},
+                err => {
+                    this.errorString.current()
+                      .then(str => this.toast.danger(str));
+                },
+                ()  => {
+                    // Avoid updating until we know the entire
+                    // pcrud action/transaction completed.
+                    this.loadAoutTree(); // since the tree is never going to
+                                         // be large, just reload the whole
+                                         // thing
+                    this.selected = null;
+                    this.postUpdate(this.editString);
+                }
+            );
+        });
     }
 
     addChild() {

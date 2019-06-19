@@ -12,7 +12,6 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 /**
  * Dialog for managing copy alerts.
@@ -52,8 +51,6 @@ export class CopyAlertsDialogComponent
 
     @ViewChild('successMsg') private successMsg: StringComponent;
     @ViewChild('errorMsg') private errorMsg: StringComponent;
-    @ViewChild('confirmDeleteDialog')
-        private confirmDeleteDialog: ConfirmDialogComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent

@@ -72,28 +72,28 @@ export class ConjoinedComponent implements OnInit {
         this.idsToUnlink = rows.map(r => r.target_copy().id());
         if (this.idsToUnlink.length === 0) { return; }
 
-        try { // rejects on dismiss, which results in an Error
-            // TODO this will change with LP #1823041
-            await this.confirmUnlink.open({size: 'sm'});
-        } catch (dismissed) { return; }
+        this.confirmUnlink.open({size: 'sm'}).subscribe(confirmed => {
 
-        const maps = [];
-        this.pcrud.search('bpbcm',
-            {target_copy: this.idsToUnlink, peer_record: this.recordId})
-        .subscribe(
-            map => maps.push(map),
-            err => {},
-            () => {
-                this.pcrud.remove(maps).subscribe(
-                    ok => console.debug('deleted map ', ok),
-                    err => console.error(err),
-                    ()  => {
-                        this.idsToUnlink = [];
-                        this.grid.reload();
-                    }
-                );
-            }
-        );
+            if (!confirmed) { return; }
+
+            const maps = [];
+            this.pcrud.search('bpbcm',
+                {target_copy: this.idsToUnlink, peer_record: this.recordId})
+            .subscribe(
+                map => maps.push(map),
+                err => {},
+                () => {
+                    this.pcrud.remove(maps).subscribe(
+                        ok => console.debug('deleted map ', ok),
+                        err => console.error(err),
+                        ()  => {
+                            this.idsToUnlink = [];
+                            this.grid.reload();
+                        }
+                    );
+                }
+            );
+        });
     }
 
     openConjoinedDialog() {
