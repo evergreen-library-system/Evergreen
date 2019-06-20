@@ -18348,25 +18348,3 @@ VALUES (
     oils_i18n_gettext(30, 'Generic Verify', 'cuat', 'label')
 );
 
-INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
-VALUES (
-    'catalog.record.holds.prefetch', 'cat', 'bool',
-    oils_i18n_gettext(
-        'catalog.record.holds.prefetch',
-        'Pre-Fetch Record Holds',
-        'cwst', 'label'
-    )
-);
-
-INSERT INTO config.workstation_setting_type
-    (name, grp, datatype, label)
-VALUES (
-    'eg.grid.circ.patron.group_members', 'gui', 'object',
-    oils_i18n_gettext(
-    'eg.grid.circ.patron.group_members',
-    'Grid Config: circ.patron.group_members',
-    'cwst', 'label')
-);
-
-INSERT INTO config.workstation_setting_type (name,label,grp,datatype)
-VALUES ('eg.circ.bills.annotatepayment','Bills: Annotate Payment', 'circ', 'bool');
