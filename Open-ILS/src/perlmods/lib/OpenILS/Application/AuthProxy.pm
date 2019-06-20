@@ -261,11 +261,26 @@ sub login {
                     return OpenILS::Event->new( 'LOGIN_FAILED' );
                 } else {
                     my $restrict_by_ou = $authenticator->{restrict_by_home_ou};
-                    if ($args->{org} and defined($restrict_by_ou) and $restrict_by_ou =~ /^t/i) {
-                        my $descendants = $U->get_org_descendants($args->{org});
-                        unless (grep $user->[0]->home_ou, @$descendants) {
-                            $logger->debug("Matching user does not belong to this org, aborting");
-                            return OpenILS::Event->new( 'LOGIN_FAILED' );
+                    if (defined($restrict_by_ou) and $restrict_by_ou =~ /^t/i) {
+                        my $home_ou = $user->[0]->home_ou;
+                        my $allowed = 0;
+                        # disallow auth if user's home library is not one of the org_units for this authenticator
+                        if ($authenticator->org_units) {
+                            if (grep(/^all$/, @{$authenticator->org_units})) {
+                                $allowed = 1;
+                            } else {
+                                foreach my $org (@{$authenticator->org_units}) {
+                                    my $allowed_orgs = $U->get_org_descendants($org);
+                                    if (grep(/^$home_ou$/, @$allowed_orgs)) {
+                                        $allowed = 1;
+                                        last;
+                                    }
+                                }
+                            }
+                            if (!$allowed) {
+                                $logger->debug("Auth disallowed for matching user's home library, aborting");
+                                return OpenILS::Event->new( 'LOGIN_FAILED' );
+                            }
                         }
                     }
                     $args->{user_id} = $user->[0]->id;
