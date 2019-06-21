@@ -200,7 +200,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
                     if (rcptOnPay) $scope.receipt_on_pay.isChecked = rcptOnPay;
                 });
 
-    egCore.hatch.getItem('circ.bills.annotatepayment')
+    egCore.hatch.getItem('eg.circ.bills.annotatepayment')
                 .then(function(annoPay){
                     if (annoPay) $scope.annotate_payment = annoPay;
                 });
@@ -412,7 +412,7 @@ function($scope , $q , $routeParams , egCore , egConfirmDialog , $location,
     }
 
     $scope.onAnnotatePaymentChanged = function(){
-        egCore.hatch.setItem('circ.bills.annotatepayment', $scope.annotate_payment);
+        egCore.hatch.setItem('eg.circ.bills.annotatepayment', $scope.annotate_payment);
     }
 
     function printReceipt(type, payment_ids, payments_made, note) {
