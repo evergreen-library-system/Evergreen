@@ -1,3 +1,714 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit a910baec13106ad1b81b7fe293929c0220967e98
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jun 21 15:47:28 2019 -0400
+
+    Updating upgrade docs for 3.1.13.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+15	15	docs/installation/server_upgrade.adoc
+
+commit 2a86d1c07c52483b98c8974d3accbd9c403f9c64
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Fri Jun 21 15:47:08 2019 -0400
+
+    Bumping Perl version string for 3.1.13
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 2526b07975e90d3d416b6b5a0f1a289dc76e8ed1
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 21 11:16:59 2019 -0400
+
+    LP#1759343 Fix annotate payment setting name
+    
+    This setting was added to the database with the 'eg.' prefix, but in
+    the code it was not used.  The end effect was that the setting likely
+    worked, but was not saved in the way expected.
+    
+    This makes the setting name in the code match the DB.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 6a89835cdb2fcb2e5dee43ea9058b0a0cf8e5643
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jun 20 11:37:02 2019 -0400
+
+    Lp 1759343: Remove database upgrade script from 3.1 backport
+    
+    Evergreen 3.1 cannot store workstation settings in the database, so
+    the database updates needed for Evergreen 3.2 and beyond are not
+    needed in 3.1 and cause errors when building or upgrading the
+    database.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit d7b067f435f35ba97b459cb15adaa981eb4d2f24
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jun 20 11:35:59 2019 -0400
+
+    Revert "LP1759343 (follow-up): Add bill annotation setting to seed data"
+    
+    This reverts commit 7f7c1291edb75c8e596eacf1c35eb5c46c684f21.
+    
+    This commit was backported to rel_3_1 where it does not work.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+0	22	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 93a4bed2fa510655ddb835061f76917c26643661
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Jun 20 11:35:04 2019 -0400
+
+    Revert "LP1759343: Stamping upgrade: annotate payment setting"
+    
+    This reverts commit d36620734f4f1ab10b70f48d4beef34fad18d36b.
+    
+    This commit was backported to rel_3_1 where it does not work.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit 999c1b5fabc7d11de4f251b27512aa0babef9be6
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 19 06:31:26 2019 -0700
+
+    Docs: 3.1.13 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+126	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit d36620734f4f1ab10b70f48d4beef34fad18d36b
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 13 13:57:14 2019 -0700
+
+    LP1759343: Stamping upgrade: annotate payment setting
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit 7f7c1291edb75c8e596eacf1c35eb5c46c684f21
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 13 11:33:20 2019 -0700
+
+    LP1759343 (follow-up): Add bill annotation setting to seed data
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+22	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 10eea7f19e457cc9e35ea2b0bc1db58944209d5a
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Jan 18 12:38:22 2019 -0500
+
+    LP1759343: Bills Annotation Persistance
+    
+    Make the Annotate option on the patron Bills page
+    persistant and a workstation setting.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+10	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit cf5c12e442e043cc2d25c8d6345917e00e348e91
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Apr 19 16:29:21 2019 -0400
+
+    LP#1812900: fix retention of saved defaults in holdings editor
+    
+    Because the $watch on the statistical category default OU filter
+    in the holdings editor can fire before the form is fully initialized,
+    saved defaults (i.e., the cat.copy.defaults workstation setting)
+    could get overwritten with the hard-coded default value for that, er,
+    set of defaults.
+    
+    This patch ensures that that $watch saves the defaults only when the
+    value of the default stat cat OU filter has changed.
+    
+    To test
+    -------
+    [1] Use the holdings editor on an item. Change to the defaults
+        tab and check or uncheck checkboxes such as "Use checkdigit"
+        and "Print Item Labels on Save and Exit"
+    [2] Refresh the page or open the holdings editor on a different item.
+        Note that the settings from step #1 are not retained.
+    [3] Apply the patch.
+    [4] Repeat steps #1 and #2. This time, the settings should be retained.
+    [5] Set the Default Filter Library in the same tab and refresh. Verify
+        that the OU you chose is retained.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: John Amundson <jsamundson@cwmars.org>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit aa8449b24641ebb2c065e2bbe74d2396157e2c85
+Author: Sam Link <slink@LIBPC002>
+Date:   Thu Dec 13 15:27:58 2018 -0500
+
+    LP#1796914: Right Navbar Menu Title
+    
+    Add a title attribute to the top-right menu in the AngularJS form of the
+    navbar.
+    
+    Signed-off-by: Sam Link <slink@LIBPC002>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+
+commit 2431aacd734227b61487224986a0d52cbfd800d0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Aug 7 10:02:10 2018 -0400
+
+    LP 115706: Avoid Internal Server Errors with Hold Count Retrieval
+    
+    It can happen that the query to get a record's hold count can run too
+    long and timeout or fail for some other reason.  When this happens,
+    the user sees an Internal Server Error.  The underlying cause is the
+    following Perl error:
+    
+    Can't use an undefined value as an ARRAY reference at
+    /usr/local/share/perl/5.22.1/OpenILS/Application/Circ/Holds.pm line
+    4264.
+    
+    This commit rearranges the code around that line to avoid this
+    particular undefined value reference error.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+10	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit bee1f478878b7d06732da716932e52d2601a7ab3
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri May 24 19:55:44 2019 +0000
+
+    LP#1789256 Monograph Part Column in Check Out
+    
+    Retrieve and display the label of all monograph parts for
+    copy listed in the Check Out table
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+6	0	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 7a607fc74533318b1da061adf61c17806f43ac66
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri May 24 17:16:00 2019 +0000
+
+    lp1789257 Items Out Monograph Part Column
+    
+    Retrieve and display the label of all monograph parts for
+    copy listed in the Items Out table
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Check out an item that has one or more monograph parts
+        linked to it.
+    [3] Verify that the Monograph Part column is available in the
+        Items Out grid and displays the part label(s). An example
+        of an item in the Concerto set that has a part is
+        CONC70001420.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+5	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 1cce56abb3b439f49bf590129da8bc6db47f8f5f
+Author: McCanna <tmccanna@georgialibraries.org>
+Date:   Fri Feb 15 14:55:59 2019 -0500
+
+    LP#1816180 Pending Patron - No Address Type
+    
+    When registering a patron from Pending Patrons, inserts
+    default address type to match behavior of registering a
+    new patron from scratch.
+    
+    Signed-off-by: McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 39b5e2cfeeda1d5b788d7753530551776d0be0f9
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Mon Mar 4 10:52:56 2019 -0600
+
+    Docs: LP1776913: Fixes references to Circulation Limit Sets in docs.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Lynn Floyd <lfloyd@andersonlibrary.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/admin/circulation_limit_groups.adoc
+3	3	docs/admin_initial_setup/borrowing_items.adoc
+
+commit 412e9af63318c582ad5dcf2baa376815920b4693
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Mon Mar 4 10:41:13 2019 -0600
+
+    LP1776913: Corrects Local Administration menu to use correct form Circulation Limit Sets and Age Overdue Circulations to Lost.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Lynn Floyd <lfloyd@andersonlibrary.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+
+commit e46332db715b919ec339d3bfae423d73996fca89
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 8 10:38:43 2019 -0500
+
+    LP1748265 Hold fetch API sms_carrier option
+    
+    Support a new "include_sms_carrier" option to the holds retrieve API so
+    the data may be fetched along with the hold instead after the fact in
+    the patron holds list, etc.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit ff62a98d0459aef0e3fe0b03c8e997d784255804
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sun Jun 3 15:54:25 2018 -0400
+
+    LP#1748265 SMS Carrier not an option in the patron's list of holds.
+    
+    Adds SMS Carrier name as an option in the patron's list of holds.
+    
+    To test:
+    1. Set 'Enable features that send SMS text messages' in the Library Settings to true.
+    2. Place a few holds for a patron, selecting text message notification.
+    3. Go to the patron's record and view their holds.
+    4. Display the 'Notifications SMS Carrier' column to view the carrier name.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+7	0	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit c03bea253077c87ff6c6812cad23d034d9a81679
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sat May 19 17:00:40 2018 -0400
+
+    LP1772206 Tooltips missing from Patron Summary
+    
+    Adds tooltips for home branch and Last Activity to emulate the XUL
+     client.  The home branch tool tip displays the long OU name.  The
+    last activity tooltip displays the last type of activity.
+    
+    To test:
+    
+    Home branch
+    1. Perform a patron search.
+    2. Click on one of the patrons in the results.
+    3. Hover over the home branch location in the patron summary.
+    
+    Last Activity
+    4. Log into the opac with a patron account to some patron activity.
+    5. Bring up the patron in the staff client.
+    6. Hover over the last activity date.
+    
+    7. Apply the patch and repeat 1-3 and 5-6.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit 46111cc283637939e5f1f2bcbceaa94eaddbddb4
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Tue Apr 10 14:45:47 2018 -0400
+
+    LP1760893 Add Holdings Part dropdown should list items in order
+    
+    Without a defined sort, the Part dropdown when editing a holding simply
+    displays in database order.  Let's be more deterministic about it.
+    
+    In this case, while slightly surprising, consensus opinion was that
+    reverse order on label_sortkey provides the best overall usability.
+    This is obviously true on records with many parts, but can help in all
+    cases.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 4f01a25a2018d04e1108a061afd4878b4396cb07
+Author: Bill Ott <bott@grpl.org>
+Date:   Fri May 18 09:52:46 2018 -0400
+
+    LP#1772028 Add some FK violation functions just in case they are missing
+    
+    Depending on your data, upgrade 1063 may not have created the functions
+    being re-applied in this upgrade script.  Let's make sure they are
+    there.
+    
+    Signed-off-by: Bill Ott <bott@grpl.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+48	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.1-3.0.2-upgrade-db.sql
+
+commit bc70a2473bcd53edb8f15d402e9b96b8595ffb4b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu May 23 10:32:44 2019 -0400
+
+    LP#1642337: more tweaks to the patch series
+    
+    This patch makes the following changes:
+    
+    - ensures that the Boolean values get saved as 't' or 'f', as
+      the reporter builder doesn't recognize JSON true or false in
+      this context.
+    - pretty-prints the current filter value in the dialog
+    - removes a logging line
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Create or clone one or more report templates and add Boolean
+        column filters. Change the filter value and verify that
+        it displays the current value and lets you change it.
+    [3] Run reports from the template(s) created in step 2 and
+        verify that the reports produce the expected results.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	4	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit af421cc30f4e4bf530baea21a03f3ebb80b1159e
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Tue Jan 29 12:15:25 2019 -0500
+
+    LP1642337: Reporter Boolean Filters
+    
+    The dialog controller doesn't appreciate getting
+    a bare boolean as a message, so if the current item
+    is a boolean call toString() on it before calling
+    the egConfirmDialog.
+    
+    An <Unset> string is also added to the reporter
+    strings for further use, but if there are no
+    strong feelings re: using it, it can be dumped and
+    a '' used in its place.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/reporter/share/report_strings.tt2
+1	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit b7d9be1b3cc4cec548a94a2b9ad2b4e3f67acd52
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Nov 16 20:56:51 2017 +0000
+
+    lp1642337 Boolean Filters in Reporter
+    
+    - Add condition check to see if filter is boolean, and if so,
+    substitute a confirm dialog for the default prompt, repalcing
+    the text input with buttons for True/False values.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+17	5	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit eeaf64f15460084c8231a4af637385a8b870e52a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri May 24 14:26:44 2019 -0400
+
+    Forward-port 3.1.12 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.11-3.1.12-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.11-3.1.12-upgrade-db.sql
+
+commit 3d9eb86466d35067444e1e12395ceecea4362684
+Author: a. bellenir <abelleni@grpl.org>
+Date:   Mon Mar 11 13:39:00 2019 -0400
+
+    LP1775639: Refresh required to see Patron Credit
+    
+    reload patron data when applying a payment
+    if the payment will change the patron's credit forward balance.
+    
+    To test
+    -------
+    [1] Bill a patron, then make sure that the "Convert Change to Patron
+        Credit" checkbox is checked. Pay bill with more than the total
+        balance. Note that the Credit Available amount in the billing
+        summary does not change. Refresh the page.
+    [2] Bill a patron, then use the patron credit added in step 1 to
+        pay off the bill. Note that again, the Credit Available amount
+        does not change.
+    [3] Apply the patch and repeats steps 1 and 2. This time, the Credit
+        Available field should get updated.
+    
+    Signed-off-by: a. bellenir <abelleni@grpl.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 4ca2225267a699a9adddb463c41a38c2145e0e84
+Author: Suzanne Paterno <paterno@noblenet.org>
+Date:   Tue Apr 9 10:42:15 2019 -0400
+
+    LP 1744386 & LP 1777184 - stat cats & stat cat entries not alphabetical
+    
+    Statistical categories will be alphabetized first by library and then by category.
+    
+    The entires within each category will also be alphabetized.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@EquinoxInitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 9248aa3bb003f23d017703e29fff55e3f0fe2776
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Apr 17 16:46:46 2019 -0400
+
+    LP1744386: Alphabetize stat cats in volcopy attr editor
+    
+    To test:
+    1. Go to the volume copy editor.  Confirm that the stat
+    cats do not display in order of owning library or stat cat
+    name.
+    2. Apply this commit.
+    3. Go to the volume copy editor.  Confirm that the stat
+    cats now display in alphabetical order by owning library,
+    then stat cat name.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_attr_edit.tt2
+
+commit 42f336f016f9282b27d497e6223ae84aca17d764
+Author: Rogan Hamby <rhamby@esilibrary.com>
+Date:   Fri Apr 19 11:25:19 2019 -0400
+
+    LP#1440890: add vandelay_queue to the types of containers retrieved by batch edit
+    
+    To test
+    -------
+    [1] Perform a batch bibliographic record import, then add the import
+        queue to a new bucket.
+    [2] In the web staff client, go to Cataloging | Batch Edit.
+    [3] Note that the bucket created in step 1 does _not_ appear in the
+        bucket selector on the batch edit page.
+    [4] In the web staff client, go to the record bucket and hit the
+        Batch edit button.
+    [5] Note that the bucket created in step 1 does _not_ appear in the
+        bucket selector on the batch edit page.
+    [6] Apply the patch and repeat steps 2-3. This time, the bucket
+        should appear in the selector.
+    [7] Repeat steps 4-5. This time, the bucket should appear in the selector
+        (and be the active choice).
+    
+    Signed-off-by: Rogan Hamby <rhamby@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
+
+commit 9dfd0466c9cc721790ebc914b2041f762ab23cea
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 6 15:49:40 2018 -0800
+
+    LP1760599: Only show merge records action when multiple bucket records selected
+    
+    To test:
+    1) Create a bucket.
+    2) Select one record from your bucket. Right-click on your record or click on the Actions drop-down.
+    3) Note that "Merge Selected Records" is clickable.
+    4) Apply this commit.
+    5) Repeat steps 2-3.  Note that "Merge Selected Records" is no longer
+    clickable, unless you select two or more records.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2
+6	0	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+
+commit 649f4a3d5e7c4d91f62dd0b055224dff2cb6ad12
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Feb 7 13:48:13 2019 -0500
+
+    LP1790896: Receipt Errors with invalid emails
+    
+    The attempt at belt-and-suspenders checking for a valid
+    email for use in the has_email template field sadly
+    causes the JS to trip over said suspenders if there is
+    a value in the field but it doesn't contain a '@'.
+    
+    The raw return from "".match() (either an array or null)
+    is enough to do the right thing when converted into a
+    Boolean and doesn't cause the same problems.
+    
+    To test
+    -------
+    [1] Set up a patron record with an invalid email address,
+        e.g., one that lacks the '@' character.
+    [2] Check out an item the patron, then from the Items Out
+        tab, print an item receipt.
+    [3] Note that nothing happens and an error is logged in the
+        browser console.
+    [4] Apply the patch and repeat step 2. This time, a receipt
+        should be generated.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 6c065675237f07e5139ce1a47ddf1359d041bfcd
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu May 3 17:31:07 2018 -0400
+
+    Lp 1768987: Use FindBin in 24-sql-gettext-unique.t.
+    
+    Use FindBin in the 24-sql-gettext-unique.t test file so that it can be
+    run from directories other than Open-ILS/src/perlmods.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] From the root of the Evergreen checkout, run
+        prove Open-ILS/src/perlmods/t/24-sql-gettext-unique.t
+    [3] Verify that the tests pass.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/perlmods/t/24-sql-gettext-unique.t
+
+commit f706a6081268681bfcc6195c3b5a015c8f0f4bc8
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 23 13:44:22 2019 -0400
+
+    Docs: Fix list formatting in 3.1 release notes
+    
+    Single list items that wrap across multiple lines accidentally start
+    each line with a bullet. This commit removes the extra bullets.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+12	12	docs/RELEASE_NOTES_3_1.adoc
+
+commit 63a41ffce4d92023b9607964ba1c9268ffcec894
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Oct 2 08:32:54 2018 -0400
+
+    LP#1796942 Treat VISA SIP payments as credit card
+    
+    Treat sip_payment_type 01 (VISA) as a credit_card_payment.
+    
+    Previously, we only handled payment type 02 (credit card) and 01
+    fell through to be treated as a cash_payment.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/FeePayment.pm
+
+commit a072c700e72815373c6f11b14c170532c83f5f35
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 3 15:01:34 2017 -0400
+
+    LP#1704819 Fine generator avoids int() rounding
+    
+    Avoid using the Perl int() function for rounding in the fine generator,
+    since it can have unexpected outcomes.
+    
+    For example:
+    
+    $ perl -e 'print "230 = " . int(100 * 2.30) . "\n"'
+    230 = 229
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit 7001d89f8528783fadfa948801c0d1db3be0a65a
+Author: Daniel Pearl <dpearl@cwmars.org>
+Date:   Wed Dec 12 12:51:07 2018 -0500
+
+    LP#1029601: Prevent duplicate holds from double clicks
+    
+    Double clicking on hold submit buttons causes multiple holds to be
+    generated.  This commits adds code to disable the Submit button(s)
+    after the first click, so subsequent clicks don't "work" in unintended
+    ways.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	3	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+6	1	Open-ILS/web/js/ui/default/opac/holds-validation.js
