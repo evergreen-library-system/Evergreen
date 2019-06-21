@@ -18485,6 +18485,13 @@ VALUES (
         'cwst', 'label'
     )
 ), (
+    'eg.circ.bills.annotatepayment', 'circ', 'bool',
+    oils_i18n_gettext(
+        'eg.circ.bills.annotatepayment',
+        'Bills: Annotate Payment',
+        'cwst', 'label'
+    )
+), (
     'circ.renew.strict_barcode', 'circ', 'bool',
     oils_i18n_gettext(
         'circ.renew.strict_barcode',
@@ -18860,6 +18867,13 @@ VALUES (
     oils_i18n_gettext(
         'eg.grid.circ.patron.checkout',
         'Grid Config: circ.patron.checkout',
+        'cwst', 'label'
+    )
+), (
+    'eg.grid.circ.patron.group_members', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.grid.circ.patron.group_members',
+        'Grid Config: circ.patron.group_members',
         'cwst', 'label'
     )
 ), (
@@ -19956,16 +19970,3 @@ VALUES (
         'cwst', 'label'
     )
 );
-
-INSERT INTO config.workstation_setting_type
-    (name, grp, datatype, label)
-VALUES (
-    'eg.grid.circ.patron.group_members', 'gui', 'object',
-    oils_i18n_gettext(
-    'eg.grid.circ.patron.group_members',
-    'Grid Config: circ.patron.group_members',
-    'cwst', 'label')
-);
-
-INSERT INTO config.workstation_setting_type (name,label,grp,datatype)
-VALUES ('eg.circ.bills.annotatepayment','Bills: Annotate Payment', 'circ', 'bool');
