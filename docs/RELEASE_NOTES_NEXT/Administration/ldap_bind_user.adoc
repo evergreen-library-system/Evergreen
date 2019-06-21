@@ -1,0 +1,34 @@
+AuthProxy Support for Arbitrary LDAP Usernames
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+AuthProxy now supports LDAP-based login with a username that is
+different from your Evergreen username.
+
+This feature may be useful for libraries that use an LDAP server for
+single sign-on (SSO).  Let's say you are a post-secondary library using
+student or employee numbers as Evergreen usernames, but you want people
+to be able to login to Evergreen with their SSO credentials, which may
+be different from their student/employee number.  To support this,
+AuthProxy can now be configured to accept your SSO username on login,
+use it to look up your student/employee number on the LDAP server, and
+log you in as the appropriate Evergreen user.
+
+For this to work, in the AuthProxy configuration for your LDAP server in
+opensrf.xml, set "bind_attr" to the LDAP field containing your LDAP
+username, and "id_attr" to the LDAP field containing your student or
+employee number (or whatever other value is used as your Evergreen
+username).  If "bind_attr" is not set, Evergreen will assume that your
+LDAP username and Evergreen username are the same.
+
+Now, let's say your LDAP server is only an authoritative auth provider
+for Library A.  Nothing prevents the server from reporting that your
+student number is 000000, even if that Evergreen username is already in
+use by another patron at Library B.  We want to ensure that AuthProxy
+does not use Library A's LDAP server to log you in as the Library B
+patron.  For this reason, a new "restrict_by_home_ou" setting has been
+added to AuthProxy config.  When enabled, this setting restricts LDAP
+authentication to users belonging to a library served by that LDAP
+server (i.e. the user's home library must match the LDAP server's
+"org_units" setting in opensrf.xml).  Use of this setting is strongly
+recommended.
+
