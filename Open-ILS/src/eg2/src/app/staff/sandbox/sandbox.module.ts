@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {SandboxRoutingModule} from './routing.module';
 import {SandboxComponent} from './sandbox.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,8 @@ import {SandboxComponent} from './sandbox.component';
   imports: [
     StaffCommonModule,
     SandboxRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [
   ]

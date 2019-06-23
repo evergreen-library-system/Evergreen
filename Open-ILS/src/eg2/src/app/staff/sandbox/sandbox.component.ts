@@ -15,6 +15,7 @@ import {PrintService} from '@eg/share/print/print.service';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {FormatService} from '@eg/core/format.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
+import {FormGroup, FormControl} from '@angular/forms';
 
 @Component({
   templateUrl: 'sandbox.component.html'
@@ -60,6 +61,8 @@ export class SandboxComponent implements OnInit {
 
     dynamicTitleText: string;
 
+    badOrgForm: FormGroup;
+
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
@@ -86,6 +89,21 @@ export class SandboxComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.badOrgForm = new FormGroup({
+            'badOrgSelector': new FormControl(
+                {'id': 4, 'includeAncestors': false, 'includeDescendants': true}, (c: FormControl) => {
+                    // An Angular custom validator
+                    if (c.value.orgIds && c.value.orgIds.length > 5) {
+                        return { tooMany: 'That\'s too many bad libraries!' };
+                    } else {
+                        return null;
+                    }
+            } )
+        });
+
+        this.badOrgForm.get('badOrgSelector').valueChanges.subscribe(bad => {
+            this.toast.danger('The worst libraries are: ' + JSON.stringify(bad.orgIds));
+        });
 
         this.gridDataSource.data = [
             {name: 'Jane', state: 'AZ'},

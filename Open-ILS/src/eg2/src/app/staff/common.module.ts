@@ -6,6 +6,7 @@ import {StaffBannerComponent} from './share/staff-banner.component';
 import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
+import {OrgFamilySelectComponent} from '@eg/share/org-family-select/org-family-select.component';
 import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
@@ -22,6 +23,7 @@ import {BibSummaryComponent} from '@eg/staff/share/bib-summary/bib-summary.compo
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 import {AdminPageComponent} from '@eg/staff/share/admin-page/admin-page.component';
 import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -33,6 +35,7 @@ import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.
     ComboboxComponent,
     ComboboxEntryComponent,
     OrgSelectComponent,
+    OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
     ToastComponent,
@@ -49,7 +52,8 @@ import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.
   ],
   imports: [
     EgCommonModule,
-    GridModule
+    GridModule,
+    ReactiveFormsModule
   ],
   exports: [
     EgCommonModule,
@@ -58,6 +62,7 @@ import {EgHelpPopoverComponent} from '@eg/share/eg-help-popover/eg-help-popover.
     ComboboxComponent,
     ComboboxEntryComponent,
     OrgSelectComponent,
+    OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
     ToastComponent,

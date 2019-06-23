@@ -178,3 +178,35 @@
 <h4>PCRUD auto flesh and FormatService detection</h4>
 <div *ngIf="aMetarecord">Fingerprint: {{aMetarecord}}</div>
 
+<div class="row">
+  <div class="card col-md-6">
+    <div class="card-body">
+      <h3 class="card-title">Do you like template-driven forms?</h3>
+      <div class="card-text">
+        <eg-org-family-select
+          [ancestorSelectorChecked]="true"
+          [hideDescendantSelector]="true"
+          selectedOrgId="7"
+          labelText="Choose the best libraries"
+          ngModel #bestOnes="ngModel">
+        </eg-org-family-select>
+        The best libraries are: {{bestOnes.value | json}}
+      </div>
+    </div>
+  </div>
+  <form class="card col-md-6" [formGroup]="badOrgForm">
+    <div class="card-body">
+      <h3 class="card-title">Or perhaps reactive forms interest you?</h3>
+      <div class="card-text">
+        <eg-org-family-select
+          formControlName="badOrgSelector"
+          labelText="Choose the worst libraries">
+        </eg-org-family-select>
+	<div *ngIf="!badOrgForm.valid" class="alert alert-danger">
+          <span class="material-icons">error</span>
+          <span i18n>Too many bad libraries!</span>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

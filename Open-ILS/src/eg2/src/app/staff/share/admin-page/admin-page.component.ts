@@ -12,6 +12,7 @@ import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
+import {OrgFamily} from '@eg/share/org-family-select/org-family-select.component';
 
 /**
  * General purpose CRUD interface for IDL objects
@@ -83,6 +84,7 @@ export class AdminPageComponent implements OnInit {
     translatableFields: string[];
 
     contextOrg: IdlObject;
+    searchOrgs: OrgFamily;
     orgFieldLabel: string;
     viewPerms: string;
     canCreate: boolean;
@@ -124,6 +126,7 @@ export class AdminPageComponent implements OnInit {
         if (this.orgField) {
             this.orgFieldLabel = this.idlClassDef.field_map[this.orgField].label;
             this.contextOrg = this.org.get(orgId) || this.org.root();
+            this.searchOrgs = {primaryOrgId: this.contextOrg.id()};
         }
     }
 
@@ -188,11 +191,6 @@ export class AdminPageComponent implements OnInit {
         });
     }
 
-    orgOnChange(org: IdlObject) {
-        this.contextOrg = org;
-        this.grid.reload();
-    }
-
     initDataSource() {
         this.dataSource = new GridDataSource();
 
@@ -222,24 +220,7 @@ export class AdminPageComponent implements OnInit {
 
             const search: any = {};
 
-            if (this.contextOrg) {
-                // Filter rows by those linking to the context org and
-                // optionally ancestor and descendant org units.
-
-                let orgs = [this.contextOrg.id()];
-
-                if (this.includeOrgAncestors) {
-                    orgs = this.org.ancestors(this.contextOrg, true);
-                }
-
-                if (this.includeOrgDescendants) {
-                    // can result in duplicate workstation org IDs... meh
-                    orgs = orgs.concat(
-                        this.org.descendants(this.contextOrg, true));
-                }
-
-                search[this.orgField] = orgs;
-            }
+            search[this.orgField] = this.searchOrgs.orgIds || [this.contextOrg.id()];
 
             if (this.gridFilters) {
                 // Lay the URL grid filters over our search object.
@@ -251,15 +232,6 @@ export class AdminPageComponent implements OnInit {
             return this.pcrud.search(
                 this.idlClass, search, searchOps, {fleshSelectors: true});
         };
-    }
-
-    disableAncestorSelector(): boolean {
-        return this.contextOrg &&
-            this.contextOrg.id() === this.org.root().id();
-    }
-
-    disableDescendantSelector(): boolean {
-        return this.contextOrg && this.contextOrg.children().length === 0;
     }
 
     showEditDialog(idlThing: IdlObject): Promise<any> {
