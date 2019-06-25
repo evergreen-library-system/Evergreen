@@ -30,7 +30,7 @@
   <div class="flex-1"></div>
 
   <div class="font-sm font-italic d-flex flex-column-reverse mr-2">
-    {{gridContext.rowSelector.selected().length}} selected
+    {{gridContext.getSelectedRows().length}} selected
   </div>
   <div ngbDropdown class="mr-1" placement="bottom-right">
     <button ngbDropdownToggle [disabled]="!gridContext.toolbarActions.length"
