@@ -383,8 +383,11 @@ export class GridRowSelector {
     }
 
     // Returns the list of selected index values.
-    // in some contexts (template checkboxes) the value for an index is
+    // In some contexts (template checkboxes) the value for an index is
     // set to false to deselect instead of having it removed (via deselect()).
+    // NOTE GridRowSelector has no knowledge of when a row is no longer
+    // present in the grid.  Use GridContext.getSelectedRows() to get 
+    // list of selected rows that are still present in the grid.
     selected() {
         return Object.keys(this.indexes).filter(
             ind => Boolean(this.indexes[ind]));
@@ -640,14 +643,22 @@ export class GridContext {
 
     // Returns all selected rows, regardless of whether they are
     // currently visible in the grid display.
+    // De-selects previously selected rows which are no longer
+    // present in the grid.
     getSelectedRows(): any[] {
         const selected = [];
+        const deleted = [];
+
         this.rowSelector.selected().forEach(index => {
             const row = this.getRowByIndex(index);
             if (row) {
                 selected.push(row);
+            } else {
+                deleted.push(index);
             }
         });
+
+        this.rowSelector.deselect(deleted);
         return selected;
     }
 
