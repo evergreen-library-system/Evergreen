@@ -16,7 +16,7 @@
     [ngbTypeahead]="filter"
     [resultTemplate]="displayTemplate"
     [inputFormatter]="formatDisplayString"
-    (click)="click$.next($event.target.value)"
+    (click)="onClick($event)"
     (blur)="onBlur()"
     (selectItem)="selectorChanged($event)"
     #instance="ngbTypeahead"/>

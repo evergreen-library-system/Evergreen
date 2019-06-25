@@ -3,7 +3,8 @@
  *  <!-- see also <eg-combobox-entry> -->
  * </eg-combobox>
  */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef, forwardRef} from '@angular/core';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -24,9 +25,14 @@ export interface ComboboxEntry {
   styles: [`
     .icons {margin-left:-18px}
     .material-icons {font-size: 16px;font-weight:bold}
-  `]
+  `],
+  providers: [{
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: forwardRef(() => ComboboxComponent),
+    multi: true
+  }]
 })
-export class ComboboxComponent implements OnInit {
+export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     selected: ComboboxEntry;
     click$: Subject<string>;
@@ -145,9 +151,15 @@ export class ComboboxComponent implements OnInit {
         }
     }
 
+    onClick($event) {
+        this.registerOnTouched();
+        this.click$.next($event.target.value)
+    }
+
     openMe($event) {
         // Give the input a chance to focus then fire the click
         // handler to force open the typeahead
+        this.registerOnTouched();
         this.elm.nativeElement.getElementsByTagName('input')[0].focus();
         setTimeout(() => this.click$.next(''));
     }
@@ -222,6 +234,7 @@ export class ComboboxComponent implements OnInit {
     // Fired by the typeahead to inform us of a change.
     selectorChanged(selEvent: NgbTypeaheadSelectItemEvent) {
         this.onChange.emit(selEvent.item);
+        this.propagateChange(selEvent.item);
     }
 
     // Adds matching async entries to the entry list
@@ -286,6 +299,22 @@ export class ComboboxComponent implements OnInit {
             })
         );
     }
+
+    writeValue(value: any) {
+        if (value !== undefined) {
+            this.startId = value;
+            this.startIdFiresOnChange = true;
+        }
+    }
+
+    propagateChange = (_: any) => {};
+
+    registerOnChange(fn) {
+        this.propagateChange = fn;
+    }
+
+    registerOnTouched() { }
+
 }
 
 

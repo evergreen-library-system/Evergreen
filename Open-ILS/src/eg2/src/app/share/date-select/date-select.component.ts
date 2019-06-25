@@ -1,5 +1,6 @@
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef} from '@angular/core';
 import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 /**
  * RE: displaying locale dates in the input field:
@@ -10,9 +11,14 @@ import {NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'eg-date-select',
   templateUrl: './date-select.component.html',
-  styleUrls: ['date-select.component.css']
+  styleUrls: ['date-select.component.css'],
+  providers: [ {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DateSelectComponent),
+      multi: true
+  } ]
 })
-export class DateSelectComponent implements OnInit {
+export class DateSelectComponent implements OnInit, ControlValueAccessor {
 
     @Input() initialIso: string; // ISO string
     @Input() initialYmd: string; // YYYY-MM-DD (uses local time zone)
@@ -96,6 +102,7 @@ export class DateSelectComponent implements OnInit {
         const iso = date.toISOString();
         this.onChangeAsDate.emit(date);
         this.onChangeAsYmd.emit(ymd);
+        this.propagateChange(ymd);
         this.onChangeAsIso.emit(iso);
     }
 
@@ -115,6 +122,19 @@ export class DateSelectComponent implements OnInit {
         };
     }
 
+    writeValue(value: string) {
+        if (value !== undefined) {
+            this.initialYmd = value;
+        }
+    }
+
+    propagateChange = (_: any) => {};
+
+    registerOnChange(fn) {
+        this.propagateChange = fn;
+    }
+
+    registerOnTouched() { }
 }
 
 

@@ -81,6 +81,10 @@ export class SandboxComponent implements OnInit {
 
     badOrgForm: FormGroup;
 
+    ranganathan: FormGroup;
+
+    dateString = '2019-09-09';
+
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
 
@@ -119,8 +123,23 @@ export class SandboxComponent implements OnInit {
             } )
         });
 
+        this.ranganathan = new FormGroup({
+            'law': new FormControl('second', (c: FormControl) => {
+                // An Angular custom validator
+                if ("wrong" === c.value.id) {
+                    return { notALaw: 'That\'s not a real law of library science!' };
+                    } else {
+                        return null;
+                    }
+            } )
+        });
+
         this.badOrgForm.get('badOrgSelector').valueChanges.subscribe(bad => {
             this.toast.danger('The fanciest libraries are: ' + JSON.stringify(bad.orgIds));
+        });
+
+        this.ranganathan.get('law').valueChanges.subscribe(l => {
+            this.toast.success('You chose: ' + l.label);
         });
 
         this.gridDataSource.data = [

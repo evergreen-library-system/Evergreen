@@ -241,12 +241,47 @@
           ngModel #bestOnes="ngModel">
         </eg-org-family-select>
         The best libraries are: {{bestOnes.value | json}}
+        <hr>
+        <eg-combobox ngModel #templateEntry="ngModel">
+          <eg-combobox-entry entryId="Bacteria"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Archaea"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Protozoa"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Chromista"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Plantae"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Fungi"></eg-combobox-entry>
+          <eg-combobox-entry entryId="Animalia"></eg-combobox-entry>
+        </eg-combobox>
+      Result: {{templateEntry.value | json}}
+        <hr>
+        <eg-date-select [(ngModel)]="dateString">
+        </eg-date-select>
+      ngModel: {{dateString}}
       </div>
     </div>
   </div>
-  <form class="card col-md-6" [formGroup]="badOrgForm">
+  <form class="card col-md-4" [formGroup]="ranganathan">
     <div class="card-body">
       <h3 class="card-title">Or perhaps reactive forms interest you?</h3>
+      <div class="card-text">
+        Choose your favorite law of library science: 
+        <eg-combobox formControlName="law" value="second">
+          <eg-combobox-entry entryId="first" entryLabel="Books are for use" i18n-entryLabel></eg-combobox-entry>
+          <eg-combobox-entry entryId="second" entryLabel="Every person his or her book" i18n-entryLabel></eg-combobox-entry>
+          <eg-combobox-entry entryId="third" entryLabel="Every book its reader" i18n-entryLabel></eg-combobox-entry>
+          <eg-combobox-entry entryId="fourth" entryLabel="Save the time of the reader" i18n-entryLabel></eg-combobox-entry>
+          <eg-combobox-entry entryId="fifth" entryLabel="Library is a growing organism" i18n-entryLabel></eg-combobox-entry>
+          <eg-combobox-entry entryId="wrong" entryLabel="42" i18n-entryLabel></eg-combobox-entry>
+        </eg-combobox>
+        <div *ngIf="!ranganathan.valid" class="alert alert-danger">
+          <span class="material-icons">error</span>
+          <span i18n>That isn't a real law of library science!</span>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form class="card col-md-4" [formGroup]="badOrgForm">
+    <div class="card-body">
+      <h3 class="card-title">Another reactive form!</h3>
       <div class="card-text">
         <eg-org-family-select
           formControlName="badOrgSelector"
