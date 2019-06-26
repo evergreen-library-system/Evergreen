@@ -30,6 +30,12 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
 
     // list of alt circs (lost, etc.) and/or check-in with fines circs
     $scope.alt_list = []; 
+    
+    egCore.org.settings([
+        'ui.circ.suppress_checkin_popups' // add other settings as needed
+    ]).then(function(set) {
+        $scope.suppress_popups = set['ui.circ.suppress_checkin_popups'];
+    });
 
     // these are fetched during startup (i.e. .configure())
     // By default, show lost/lo/cr items in the alt list
@@ -511,26 +517,31 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         if (!items.length) return;
         var copies = items.map(function(circ) { return circ.target_copy() });
         var barcodes = copies.map(function(copy) { return copy.barcode() });
-
-        return egConfirmDialog.open(
-            egCore.strings.CHECK_IN_CONFIRM, barcodes.join(' '), {
-
-        }).result.then(function() {
-            var copy;
-            function do_one() {
-                if (copy = copies.pop()) {
-                    // Checkin expects a barcode, but will pass other
-                    // parameters too.  Passing the copy ID allows
-                    // for the checkin of deleted copies on the server.
-                    egCirc.checkin(
-                        {copy_barcode: copy.barcode(), copy_id: copy.id()})
-                    .finally(do_one);
-                } else {
-                    reset_page();
-                }
+        
+        var copy;
+        function do_one() {
+            if (copy = copies.pop()) {
+                // Checkin expects a barcode, but will pass other
+                // parameters too.  Passing the copy ID allows
+                // for the checkin of deleted copies on the server.
+                egCirc.checkin(
+                    {copy_barcode: copy.barcode(), copy_id: copy.id()},
+                    {suppress_popups: $scope.suppress_popups})
+                .finally(do_one);
+            } else {
+                reset_page();
             }
-            do_one(); // kick it off
-        });
+        }
+        if ($scope.suppress_popups) {
+            do_one();
+        } else {
+            return egConfirmDialog.open(
+                egCore.strings.CHECK_IN_CONFIRM, barcodes.join(' '), {
+
+            }).result.then(function() {
+                do_one(); // kick it off
+            });
+        }
     }
 
     $scope.add_billing = function(items) {
