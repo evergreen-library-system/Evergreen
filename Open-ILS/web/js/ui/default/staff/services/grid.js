@@ -1216,6 +1216,13 @@ angular.module('egGridMod',
                             }
                             $dialogScope.ok = $dialogScope.cancel = function() {
                                 delete $scope.lastModColumn;
+                                if (grid.columnsProvider.hasSortableColumn()) {
+                                    // only refresh the grid if the user has the
+                                    // ability to modify the sort priorities.
+                                    grid.compileSort();
+                                    grid.offset = 0;
+                                    grid.collect();
+                                }
                                 $uibModalInstance.close()
                             }
                         }
