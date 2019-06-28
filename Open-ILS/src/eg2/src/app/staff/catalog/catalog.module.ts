@@ -27,6 +27,7 @@ import {ConjoinedComponent} from './record/conjoined.component';
 import {CnBrowseComponent} from './cnbrowse.component';
 import {CnBrowseResultsComponent} from './cnbrowse/results.component';
 import {SearchTemplatesComponent} from './search-templates.component';
+import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {SearchTemplatesComponent} from './search-templates.component';
     CatalogRoutingModule,
     HoldsModule,
     HoldingsModule,
-    BookingModule
+    BookingModule,
+    MarcEditModule
   ],
   providers: [
     StaffCatalogService
