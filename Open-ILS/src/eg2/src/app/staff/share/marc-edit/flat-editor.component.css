@@ -1,0 +1,11 @@
+
+
+.flat-editor-content {
+    font-family: 'Lucida Console', Monaco, monospace; 
+    display: inline-block; 
+    /*
+    min-width: 1ch; 
+    margin: 0 -1px; 
+    */
+    padding: 0;
+}

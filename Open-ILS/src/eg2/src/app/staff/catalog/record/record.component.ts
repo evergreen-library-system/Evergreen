@@ -110,6 +110,11 @@ export class RecordComponent implements OnInit {
         }
         return null;
     }
+
+    handleMarcRecordSaved() {
+        this.staffCat.currentDetailRecordSummary = null;
+        this.loadRecord();
+    }
 }
 
 

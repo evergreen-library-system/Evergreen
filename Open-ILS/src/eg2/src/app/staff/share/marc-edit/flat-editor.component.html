@@ -1,0 +1,7 @@
+
+<div *ngIf="record">
+  <textarea class="form-control flat-editor-content" 
+    (blur)="record.absorbBreakerChanges()"
+    [(ngModel)]="record.breakerText" rows="{{rowCount()}}" spellcheck="false">
+  </textarea>
+</div>
