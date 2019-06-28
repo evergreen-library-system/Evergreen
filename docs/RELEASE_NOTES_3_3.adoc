@@ -85,6 +85,10 @@ keyboard shortcuts
 (https://bugs.launchpad.net/evergreen/+bug/1796914[Bug #1796914])
 * Several dropdown menus now require less scrolling
 (https://bugs.launchpad.net/evergreen/+bug/1669120[Bug #1669120])
+* Improve Angular dialog boxes
+(https://bugs.launchpad.net/evergreen/+bug/1823041[Bug #1823041])
+* Fix display of boolean values in Angular interfaces
+(https://bugs.launchpad.net/evergreen/+bug/1833080[Bug #1833080])
 
 
 Public Catalog
@@ -151,6 +155,7 @@ Evergreen:
 * Dan Pearl
 * Mike Risher
 * Geoff Sams
+* Jane Sandberg
 * Janet Schrader
 * Remington Steed
 * Jason Stephenson
