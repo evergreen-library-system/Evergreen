@@ -107,6 +107,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // and display.  Default version trims leading/trailing spaces.
     formatDisplayString: (e: ComboboxEntry) => string;
 
+    // Stub function required by ControlValueAccessor
+    propagateChange = (_: any) => {};
+
     constructor(
       private elm: ElementRef,
       private store: StoreService,
@@ -153,7 +156,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     onClick($event) {
         this.registerOnTouched();
-        this.click$.next($event.target.value)
+        this.click$.next($event.target.value);
     }
 
     openMe($event) {
@@ -303,11 +306,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     writeValue(value: any) {
         if (value !== undefined) {
             this.startId = value;
-            this.startIdFiresOnChange = true;
         }
     }
-
-    propagateChange = (_: any) => {};
 
     registerOnChange(fn) {
         this.propagateChange = fn;

@@ -242,7 +242,7 @@
         </eg-org-family-select>
         The best libraries are: {{bestOnes.value | json}}
         <hr>
-        <eg-combobox ngModel #templateEntry="ngModel">
+        <eg-combobox ngModel #templateEntry="ngModel" [allowFreeText]="true">
           <eg-combobox-entry entryId="Bacteria"></eg-combobox-entry>
           <eg-combobox-entry entryId="Archaea"></eg-combobox-entry>
           <eg-combobox-entry entryId="Protozoa"></eg-combobox-entry>
@@ -253,9 +253,9 @@
         </eg-combobox>
       Result: {{templateEntry.value | json}}
         <hr>
-        <eg-date-select [(ngModel)]="dateString">
+        <eg-date-select [(ngModel)]="dateObject">
         </eg-date-select>
-      ngModel: {{dateString}}
+      ngModel: {{dateObject.toLocaleDateString()}}
       </div>
     </div>
   </div>
@@ -264,7 +264,8 @@
       <h3 class="card-title">Or perhaps reactive forms interest you?</h3>
       <div class="card-text">
         Choose your favorite law of library science: 
-        <eg-combobox formControlName="law" value="second">
+        <eg-combobox formControlName="law" value="second" 
+          [allowFreeText]="true" [startIdFiresOnChange]="true">
           <eg-combobox-entry entryId="first" entryLabel="Books are for use" i18n-entryLabel></eg-combobox-entry>
           <eg-combobox-entry entryId="second" entryLabel="Every person his or her book" i18n-entryLabel></eg-combobox-entry>
           <eg-combobox-entry entryId="third" entryLabel="Every book its reader" i18n-entryLabel></eg-combobox-entry>
@@ -318,3 +319,19 @@
     Test Readonly Date
   </button>
 </div>
+
+<div class="row m-3 p-3 border-top border-dark">
+  <div class="col-lg-3">Simple Combobox using [(ngModel)]</div>
+  <div class="col-lg-3">
+    <eg-combobox [(ngModel)]="simpleCombo" [allowFreeText]="true">
+      <eg-combobox-entry 
+        entryId="abc" entryLabel="ABC" i18n-entryLabel></eg-combobox-entry>
+      <eg-combobox-entry 
+        entryId="def" entryLabel="DEF" i18n-entryLabel></eg-combobox-entry>
+    </eg-combobox>
+  </div>
+  <div class="col-lg-3">
+    <span i18n>Combobox Value: {{simpleCombo ? simpleCombo.label : ''}}</span>
+  </div>
+</div>
+

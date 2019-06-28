@@ -58,6 +58,9 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         return date;
     }
 
+    // Stub function required by ControlValueAccessor
+    propagateChange = (_: any) => {};
+
     constructor() {
         this.onChangeAsDate = new EventEmitter<Date>();
         this.onChangeAsIso = new EventEmitter<string>();
@@ -102,8 +105,8 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         const iso = date.toISOString();
         this.onChangeAsDate.emit(date);
         this.onChangeAsYmd.emit(ymd);
-        this.propagateChange(ymd);
         this.onChangeAsIso.emit(iso);
+        this.propagateChange(date);
     }
 
     // Create a date in the local time zone with selected YMD values.
@@ -122,13 +125,11 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         };
     }
 
-    writeValue(value: string) {
+    writeValue(value: Date) {
         if (value !== undefined) {
-            this.initialYmd = value;
+            this.initialDate = value;
         }
     }
-
-    propagateChange = (_: any) => {};
 
     registerOnChange(fn) {
         this.propagateChange = fn;

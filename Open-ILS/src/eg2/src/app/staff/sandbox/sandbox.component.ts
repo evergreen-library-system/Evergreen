@@ -83,7 +83,9 @@ export class SandboxComponent implements OnInit {
 
     ranganathan: FormGroup;
 
-    dateString = '2019-09-09';
+    dateObject: Date = new Date();
+
+    simpleCombo: ComboboxEntry;
 
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
@@ -126,7 +128,7 @@ export class SandboxComponent implements OnInit {
         this.ranganathan = new FormGroup({
             'law': new FormControl('second', (c: FormControl) => {
                 // An Angular custom validator
-                if ("wrong" === c.value.id) {
+                if ('wrong' === c.value.id || c.value.freetext) {
                     return { notALaw: 'That\'s not a real law of library science!' };
                     } else {
                         return null;
