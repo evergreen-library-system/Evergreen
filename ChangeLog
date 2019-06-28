@@ -1,3 +1,1886 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8ef66950944a543852c81fa84e712d33b2fa5fda
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Feb 28 16:31:37 2019 -0500
+
+    Customize upgrade notes for 3.3.2
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+26	64	docs/installation/server_upgrade.adoc
+
+commit e7b117e03eef4d2a79291ab397e13122a82d404a
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Jun 20 09:52:58 2019 -0400
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 7b0ac589d20e362250d77ae49ff65dc54ac68269
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 28 15:59:17 2019 -0400
+
+    Docs: Revise 3.3.2 bugfix release notes
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	docs/RELEASE_NOTES_3_3.adoc
+
+commit 0d5d5465ecefe7e71d5250aa603e56936d399ee6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 21 11:36:44 2019 -0400
+
+    LP#1759343 Clean up data seed values
+    
+    1) Add missing translation wrapper for new annotatepayment setting.
+    
+    2) While we are at it, try to stem the proliferation of workstation
+    setting INSERT chunks.  (More could be done here...)
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+14	13	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 46833c6646cc678a7e4b3990ed225a11c2412415
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Jun 21 11:16:59 2019 -0400
+
+    LP#1759343 Fix annotate payment setting name
+    
+    This setting was added to the database with the 'eg.' prefix, but in
+    the code it was not used.  The end effect was that the setting likely
+    worked, but was not saved in the way expected.
+    
+    This makes the setting name in the code match the DB.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+2	2	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 45fb062fbd59ec2ef6c124dd5841040c3291dc2f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Jun 17 10:46:14 2019 -0400
+
+    LP#1833080: have eg-bool recognize IDL bool string values
+    
+    This patch updates eg-bool so that it can format both
+    true Boolean and IDL bool string values (i.e., 't' or 'f'). Prior
+    to this patch, IDL bool values would always be rendered as 'Yes'.
+    
+    This patch relaxes the type restriction on the value setter
+    and getter; unfortunately, there's no way to overload the
+    setter or making it accept (say) boolean|string.A
+    
+    This patch also supplies some unit sets.
+    
+    To test
+    -------
+    [1] View an Angular grid that has Boolean fields. The Copy
+        Status server admin page is a good one.
+    [2] Note that the boolean values are all rendered as "Yes".
+    [3] Apply the patch and repeat step 1. This time, false
+        values should be displayed as "No".
+    [4] Verify that 'npm run test' for the Angular app passes.
+    
+    Sponsored-by: PaILS
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+59	0	Open-ILS/src/eg2/src/app/share/util/bool.component.spec.ts
+13	3	Open-ILS/src/eg2/src/app/share/util/bool.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/bool.component.spec.ts
+
+commit bcb5523aac31c85f54eb3a812dbe1d9a45b7ebb5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 19 16:41:26 2019 -0400
+
+    LP1823041 Confirm dialog returns true/false repairs
+    
+    The new Observable-driven confirm dialogs return true or false depending
+    on the user response (or nothing if dismissed), so the calling code needs
+    to verify the user confirmed the request before continuing.
+    
+    Removed an unused confirm dialog import for clarity.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+22	22	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+0	3	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+
+commit 76837dedfb17e475b0cb36ecf16c64b14c8feac5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 19 16:25:51 2019 -0400
+
+    LP1823041 Observable dialogs repairs and cleanup
+    
+    Fixes a few instances where dialog.open() calls did not return
+    Observables.
+    
+    Replace a number of calls to the now deprecated dialog.dismiss() with
+    calls to dialog.close().
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.html
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.html
+11	10	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.html
+9	4	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-missing-dialog.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.html
+5	5	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.html
+2	2	Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.html
+3	2	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.ts
+
+commit 05c5e02b3f30cb321b09effb5b4c7292b8022164
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jun 19 16:14:39 2019 -0400
+
+    LP1823041 Remove unintentially merged code blocks
+    
+    A chunk of Angular code which was removed before merging this LP was
+    added back during the rebase/merge process.  This removes the errant
+    code.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+0	85	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 2cb805963fdb3742037362a1f688e51b278562f4
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 19 10:17:40 2019 -0700
+
+    LP1823041: Converting new dialogs to observables
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	4	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+2	3	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+11	24	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+15	11	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+8	7	Open-ILS/src/eg2/src/app/staff/share/holdings/mark-damaged-dialog.component.ts
+11	10	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/holds/cancel-dialog.component.ts
+11	16	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/holds/manage-dialog.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/share/holds/retarget-dialog.component.ts
+5	3	Open-ILS/src/eg2/src/app/staff/share/holds/transfer-dialog.component.ts
+
+commit 26381ad8cb43cd5dad52b577c19995ac24358410
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 3 12:14:52 2019 -0400
+
+    LP1823041 Angular dialogs return observables
+    
+    Dialog.open() now returns an observable to the caller.  This allows
+    dialogs to pass 0 or more success events, error events, and close events
+    each as descrete actions to the caller.
+    
+    Existing dialogs are updated to expect an Observable response to
+    .open().
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	2	Open-ILS/src/eg2/src/app/share/accesskey/accesskey-info.component.html
+3	4	Open-ILS/src/eg2/src/app/share/dialog/confirm.component.html
+72	43	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+1	1	Open-ILS/src/eg2/src/app/share/dialog/progress.component.html
+2	3	Open-ILS/src/eg2/src/app/share/dialog/prompt.component.html
+8	2	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.html
+4	10	Open-ILS/src/eg2/src/app/share/fm-editor/fm-editor.component.ts
+1	2	Open-ILS/src/eg2/src/app/share/grid/grid-column-config.component.html
+4	6	Open-ILS/src/eg2/src/app/staff/admin/workstation/workstations/workstations.component.ts
+4	8	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.ts
+18	27	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.ts
+2	3	Open-ILS/src/eg2/src/app/staff/catalog/record/part-merge-dialog.component.html
+4	12	Open-ILS/src/eg2/src/app/staff/catalog/record/parts.component.ts
+4	9	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+98	11	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+1	2	Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.html
+2	3	Open-ILS/src/eg2/src/app/staff/share/op-change/op-change.component.html
+2	3	Open-ILS/src/eg2/src/app/staff/share/translate/translate.component.html
+2	1	Open-ILS/src/eg2/tsconfig.json
+
+commit b9b3e75ec2798dcc37c8b6dc9b71f4e567e22ebf
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 19 06:49:35 2019 -0700
+
+    Docs: 3.3.2 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+156	0	docs/RELEASE_NOTES_3_3.adoc
+
+commit 96d9a658f5a5e0c34a21532281ac64e5faea48fd
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 19 06:44:58 2019 -0700
+
+    Docs: Release notes for 3.2.7
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+155	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 0379e2bf74edc877341e52ec080191a3de87f2e2
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 23 13:42:27 2019 -0400
+
+    Docs: Fix list formatting in 3.2 release notes
+    
+    Single list items that wrap across multiple lines accidentally start
+    each line with a bullet. This commit removes the extra bullets.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+17	16	docs/RELEASE_NOTES_3_2.adoc
+
+commit a6be5fe5eac5723756794c8b67e2fcbe2f79a1ca
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon May 20 09:27:58 2019 -0400
+
+    Docs: Fix list formatting in 3.2 release notes
+    
+    An AsciiDoc list needs a blank line before it. Otherwise, it is just
+    part of the paragraph.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+1	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 5722494fd71d34989516824e986a851ae999f905
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri May 17 15:41:52 2019 -0400
+
+    Docs: Add bugfix release notes for 3.2.6
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+86	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit f15f6169cd7b249febaf81f67c2ae0faae612787
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Tue Mar 26 16:15:11 2019 -0400
+
+    Docs: Revise 3.2.5 bugfix release notes
+    
+    This commit adds release notes for recently pushed fixes to the new
+    Angular pieces of the web client.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+14	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 8dcd628345dbb14fbae770e991ca42b50778b85a
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Jun 19 06:31:26 2019 -0700
+
+    Docs: 3.1.13 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+126	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 426f7fd2e4f79d1f2bf81a195ed850f6ad7a6bb5
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 23 13:44:22 2019 -0400
+
+    Docs: Fix list formatting in 3.1 release notes
+    
+    Single list items that wrap across multiple lines accidentally start
+    each line with a bullet. This commit removes the extra bullets.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+12	12	docs/RELEASE_NOTES_3_1.adoc
+
+commit 179ea7287de5c93696e1afd2bcdf72f4834f9702
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri May 17 15:38:44 2019 -0400
+
+    Docs: Add bugfix release notes for 3.1.12
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+79	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 5dcdb4a2540bfc3c97ef7dcc535ac7069f76d6f8
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Mon Jun 10 11:11:38 2019 -0700
+
+    lp1770217 Items Out count shouldn't increment on renew
+    
+    Determine if this item is currently out to the patron and is being
+    checked out again.  If so, be sure not to increment "Items Out" count.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+    Changes to be committed:
+    	modified:   web/js/ui/default/staff/circ/patron/checkout.js
+    	modified:   web/js/ui/default/staff/circ/services/circ.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+1	0	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 70ab7d828bc23138a595e68d770b722141d38b7c
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sun Jun 9 17:46:15 2019 -0700
+
+    LP1803787 (follow-up) removing unnecessary arguments
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	2	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+
+commit a296fb34520fa13e71e27daa78b732fd8ec6e51d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 31 11:47:03 2019 -0400
+
+    LP1803787 Migrate grid action/button click handlers; lint
+    
+    Migrate the basic admin page and sandbox grids to use the click handlers
+    for grid toolbar buttons and actions, so the actions may be performed
+    against class methods instead of anonymous functions.
+    
+    Minor lint repairs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	Open-ILS/src/eg2/src/app/share/print/hatch.service.ts
+2	2	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+4	4	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.html
+85	91	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+2	4	Open-ILS/src/eg2/src/app/staff/staff.component.ts
+
+commit 0acee59d8e4994193d99e530cc840ac795fb43b5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 31 11:45:52 2019 -0400
+
+    LP1803787 Grid actions menu tabindex
+    
+    Allow the browser to focus the actions menu entries on tab so 'Enter'
+    action will not inadvertantly fire the row activate handler as well.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-actions-menu.component.html
+
+commit b3cb3f7f7b5e239e04754ae3dc2d1f35557cb70e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri May 17 12:31:56 2019 -0700
+
+    LP1803787: Add keyboard support (Shift+F10)
+    
+    This allows a user to set focus to a row using a checkbox, then
+    press the standard keyboard shortcut to open the row context menu.
+    
+    This commit sets the Shift+F10 keyboard combination to fire the
+    contextmenu javascript event throughout the Angular staff client, so
+    other interfaces that need to override the browser's context menu should
+    be able to respond to Shift+F10.
+    
+    To test:
+    
+    1) Open an eg2 grid interface (Server Administration -> Authority
+    Thesaurus is a good one).
+    2) Use the tab key to set focus onto the checkbox for one of the rows.
+    3) Note that pressing Shift + F10 opens the browser's context menu.
+    4) Apply this commit
+    5) Repeat steps 1+2
+    6) Press Shift + F10.
+    7) Note that the context menu opens, and that you can use Tab and
+    Shift+Tab to move through the various actions.
+    8) Note that you can press the Esc key to exit the context menu
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+7	1	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+5	1	Open-ILS/src/eg2/src/app/staff/staff.component.html
+16	3	Open-ILS/src/eg2/src/app/staff/staff.component.ts
+
+commit fc641deb9ebf56314acb0b49d993011e32334e4c
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu May 9 11:50:19 2019 -0400
+
+    LP1803787 Grid toolbar actions menu component; cleanup
+    
+    Moves the guts of the grid toolbar actions menu (the buttons) to a
+    dedicated component that can be shared by both the actions drop-down
+    menu and the actions popover.  This adds support for honoring
+    disableOnRow for the popover actions. And avoids duplication.
+    
+    Adds a sandbox example of using the toolbar action click event and
+    divider.
+    
+    Some minor code cleanup/consistency changes.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	10	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+1	7	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+2	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+15	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-actions-menu.component.html
+31	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-actions-menu.component.ts
+3	15	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+0	16	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+2	0	Open-ILS/src/eg2/src/app/share/grid/grid.module.ts
+2	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+5	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.html
+5	0	Open-ILS/src/eg2/src/app/staff/sandbox/sandbox.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-actions-menu.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-actions-menu.component.ts
+
+commit 7ef2ae530a54482e3ebf38e2b96ddb601449e130
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 6 14:28:44 2019 -0500
+
+    LP1803787 Grid context retains selection; lint
+    
+    During right-click (context-menu click) if the currently focused row is
+    already selected, avoid modifying the selection.  If it's not, then
+    select the focused row only.
+    
+    Minor lint, etc. repairs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+8	4	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+0	4	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+3	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.ts
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit 6136a31d4d145182bea6947315d62c6fb41c3bca
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 26 18:21:36 2018 +0000
+
+    LP1803787 Grid actions context menu
+    
+    Display a context menu including the grid actions for selected rows
+    links when right-clicking on a grid item.
+    
+    Note the popover displays oriented to the bottom of the item instead of
+    the mouse click, which is not supported at time of dev.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+23	0	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+40	3	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+
+commit 110c8571bb4d70ec02e90c1486088443dee4ecbe
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Nov 26 18:20:47 2018 +0000
+
+    LP1803787 Grid toolbar action separators
+    
+    Add support for "separator" toolbar actions so the action menu may be
+    divided into groups.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+5	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+1	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit cfb2135032aa78aad76c394e50fdcb6ed76df709
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 13 13:57:14 2019 -0700
+
+    LP1759343: Stamping upgrade: annotate payment setting
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+8	0	Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+0	8	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1167.data.annotate_payment_setting.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit ffcbbd69eaf14abfc4b3b53dd760fdb09d0e1010
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Jun 13 11:33:20 2019 -0700
+
+    LP1759343 (follow-up): Add bill annotation setting to seed data
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit a2079c8904a907e3325e6af7b4681ec24cdbe8cb
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Jan 18 12:38:22 2019 -0500
+
+    LP1759343: Bills Annotation Persistance
+    
+    Make the Annotate option on the patron Bills page
+    persistant and a workstation setting.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+8	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+1	1	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+10	1	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.annotate_payment_setting.sql
+
+commit 7472b1e470a2218c198f9ff7bfb0e87d4bbf5d63
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Apr 19 16:29:21 2019 -0400
+
+    LP#1812900: fix retention of saved defaults in holdings editor
+    
+    Because the $watch on the statistical category default OU filter
+    in the holdings editor can fire before the form is fully initialized,
+    saved defaults (i.e., the cat.copy.defaults workstation setting)
+    could get overwritten with the hard-coded default value for that, er,
+    set of defaults.
+    
+    This patch ensures that that $watch saves the defaults only when the
+    value of the default stat cat OU filter has changed.
+    
+    To test
+    -------
+    [1] Use the holdings editor on an item. Change to the defaults
+        tab and check or uncheck checkboxes such as "Use checkdigit"
+        and "Print Item Labels on Save and Exit"
+    [2] Refresh the page or open the holdings editor on a different item.
+        Note that the settings from step #1 are not retained.
+    [3] Apply the patch.
+    [4] Repeat steps #1 and #2. This time, the settings should be retained.
+    [5] Set the Default Filter Library in the same tab and refresh. Verify
+        that the OU you chose is retained.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: John Amundson <jsamundson@cwmars.org>
+    Signed-off-by: Janet Schrader <jschrader@cwmars.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+3	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit c170490199c1a52ef14f916e6b5524e41998f114
+Author: Sam Link <slink@LIBPC002>
+Date:   Thu Dec 13 15:27:58 2018 -0500
+
+    LP#1796914: Right Navbar Menu Title
+    
+    Add a title attribute to the top-right menu in the AngularJS form of the
+    navbar.
+    
+    Signed-off-by: Sam Link <slink@LIBPC002>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/templates/staff/navbar.tt2
+
+commit a41293876013d141adbf0fc7455ef812ca441dda
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Aug 7 10:02:10 2018 -0400
+
+    LP 115706: Avoid Internal Server Errors with Hold Count Retrieval
+    
+    It can happen that the query to get a record's hold count can run too
+    long and timeout or fail for some other reason.  When this happens,
+    the user sees an Internal Server Error.  The underlying cause is the
+    following Perl error:
+    
+    Can't use an undefined value as an ARRAY reference at
+    /usr/local/share/perl/5.22.1/OpenILS/Application/Circ/Holds.pm line
+    4264.
+    
+    This commit rearranges the code around that line to avoid this
+    particular undefined value reference error.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Cesar Velez <cesar.velez@equinoxinitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+10	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit fca14f30f33943bbbff79c10f945eca4a82b4a21
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri May 24 19:55:44 2019 +0000
+
+    LP#1789256 Monograph Part Column in Check Out
+    
+    Retrieve and display the label of all monograph parts for
+    copy listed in the Check Out table
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_checkout.tt2
+6	0	Open-ILS/web/js/ui/default/staff/circ/services/circ.js
+
+commit 81a332d36453d4d34ebf018552596d04ed90354c
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Fri May 24 17:16:00 2019 +0000
+
+    lp1789257 Items Out Monograph Part Column
+    
+    Retrieve and display the label of all monograph parts for
+    copy listed in the Items Out table
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Check out an item that has one or more monograph parts
+        linked to it.
+    [3] Verify that the Monograph Part column is available in the
+        Items Out grid and displays the part label(s). An example
+        of an item in the Concerto set that has a part is
+        CONC70001420.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+5	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 196de82952fe651b4121bda2243ef9f0d3cabc34
+Author: McCanna <tmccanna@georgialibraries.org>
+Date:   Fri Feb 15 14:55:59 2019 -0500
+
+    LP#1816180 Pending Patron - No Address Type
+    
+    When registering a patron from Pending Patrons, inserts
+    default address type to match behavior of registering a
+    new patron from scratch.
+    
+    Signed-off-by: McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 530a7cbfad5d1a888ab9e8c74dc384bf465a77b9
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 29 17:39:19 2019 -0400
+
+    LP#1830972: update pin and add comments about keeping things in sync
+    
+    This patch updates the angular/cli version to ^7.0.7 to match package.json
+    and adds comments about keeping the pin in sync between package.json
+    and Makefile.common.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/eg2/package.json
+3	1	Open-ILS/src/extras/install/Makefile.common
+
+commit 386cd477e2023c189809eda5dd9523832cd46f46
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Apr 5 12:00:00 2019 -0400
+
+    LP1823367 Angular lint repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+3	2	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+
+commit 4e9e9eafb0e8a88832ad033205fabd8da77e1420
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Apr 4 14:00:01 2019 -0400
+
+    LP1821382 Initials Serials menu; button styling
+    
+    Record detail Serials drop-down added with subscription and MFHD manage
+    actions.
+    
+    Quick receive action pending.
+    
+    Record action buttons use outline styling to reduce the amount of page
+    color.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+18	5	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+
+commit 6bcbe7b403f52ce596c597692e12ce15917cb70e
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 15 12:13:44 2019 -0400
+
+    LP1820304 Ang catalog copy/volume hold links
+    
+    Add support to the Angular staff catalog record detail page copy table
+    for placing holds on copies and call numbers for holdable copies.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	1	Open-ILS/src/eg2/src/app/staff/catalog/record/copies.component.html
+
+commit cd5fd7b9abbcfd899fe395adec8b05904716f8a6
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 12 12:56:47 2019 -0400
+
+    LP1819745 Ang staff result page link repairs
+    
+    Title, Title-by-Jacket-image, Author, and Facet links in the Angular
+    staff catalog now behave like regular browser links, which means they
+    can used to open new tabs via control-click, etc.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+1	1	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+0	1	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+29	0	Open-ILS/src/eg2/src/app/share/util/hash-params.ts
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.html
+7	4	Open-ILS/src/eg2/src/app/staff/catalog/result/facets.component.ts
+26	9	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+27	21	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/hash-params.ts
+
+commit 7d2b62bd06f681ce26ae10b4c295c53a175d2734
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 11 14:01:50 2019 -0400
+
+    LP1819498 Release Notes - Staff Cat CN Browse
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+7	0	docs/RELEASE_NOTES_NEXT/Client/ang-staff-cat-cnbrowse.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Client/ang-staff-cat-cnbrowse.adoc
+
+commit b0057ae38696f07f8a367bc358aaabd276929b7f
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 11 11:37:30 2019 -0400
+
+    LP1819498 Angular staff catalog call number browse
+    
+    Implements call number browse as a vertical paged set, similiar to the
+    browse UI and search results.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	1	Open-ILS/src/eg2/src/app/share/accesskey/accesskey.service.ts
+10	0	Open-ILS/src/eg2/src/app/share/catalog/catalog-url.service.ts
+11	0	Open-ILS/src/eg2/src/app/share/catalog/catalog.service.ts
+18	0	Open-ILS/src/eg2/src/app/share/catalog/search-context.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.html
+1	7	Open-ILS/src/eg2/src/app/staff/catalog/browse.component.ts
+11	12	Open-ILS/src/eg2/src/app/staff/catalog/browse/results.component.ts
+0	3	Open-ILS/src/eg2/src/app/staff/catalog/catalog.component.ts
+5	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+10	2	Open-ILS/src/eg2/src/app/staff/catalog/catalog.service.ts
+5	0	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.html
+22	0	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.ts
+52	0	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.html
+122	0	Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.ts
+6	4	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+9	0	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+7	0	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.ts
+11	5	Open-ILS/src/eg2/src/app/staff/catalog/routing.module.ts
+16	0	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.html
+17	5	Open-ILS/src/eg2/src/app/staff/catalog/search-form.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/cnbrowse/results.component.ts
+
+commit 02fbf55bf54298a9ae65aa336b47cf9bfddcaaa5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 7 14:26:01 2019 -0500
+
+    LP1819053 Release notes - basket export
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+10	0	docs/RELEASE_NOTES_NEXT/Cataloging/catalog-basket-export.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Cataloging/catalog-basket-export.adoc
+
+commit c64db1533f0dfd2f091411bb4a79275157fdaeed
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 7 13:55:04 2019 -0500
+
+    LP1819053 Angular staff catalog basket export
+    
+    Adds a new "Export Records" option to the staff catalog basket menu.
+    When selected, the user is directed to the Vandelay record export
+    interface, which will be set to "basket export" mode.  Staff can then
+    apply export preferences (usmarc, marxml, etc.) and export the basket
+    records.  In "basket export" mode, Vandley provides a link to return to
+    the catalog (preserving search params).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+65	50	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.html
+51	17	Open-ILS/src/eg2/src/app/staff/cat/vandelay/export.component.ts
+3	0	Open-ILS/src/eg2/src/app/staff/cat/vandelay/routing.module.ts
+1	0	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.html
+7	1	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+
+commit a0e96d688852045bfa94c413af524c1ff9268f20
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 29 16:47:27 2019 +0000
+
+    LP1821382 Grid showDeclaredFieldsOnly option; sort repair.
+    
+    Adds a @Input() showDeclaredFieldsOnly option which tells the grid to
+    avoid showing auto-generated columns by default and only show those
+    declared in the markup.
+    
+    Also repairs a grid column sorting/insert bug where declared columns
+    would be displayed in the wrong order when mixed with auto columns.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+6	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit deeb730a570714e79239929a545e14c1be5d9b6d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 27 10:50:36 2019 -0400
+
+    LP1821382 Make items bookable (part 2)
+    
+    Including support for passing filters and default context org values
+    to admin page grids.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+37	9	Open-ILS/src/eg2/src/app/staff/share/admin-page/admin-page.component.ts
+13	2	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.html
+52	4	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.ts
+
+commit 17a7ade0e8e052fa9e57855a543ff65794871daa
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 18:08:44 2019 -0400
+
+    LP1821382 Make items bookable (part 1)
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+9	4	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+9	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+20	0	Open-ILS/src/eg2/src/app/staff/share/booking/booking.module.ts
+40	0	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.html
+64	0	Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/booking/booking.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/booking/make-bookable-dialog.component.ts
+
+commit 8cb17097f68a16b7ca158b6e828a9baea96b1995
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 16:51:54 2019 -0400
+
+    LP1821382 Conjoined items grid
+    
+    Record detail conjoined items grid, with actions for batch-changing the
+    peer type and anctions for unlinking selected rows.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/examples/fm_IDL.xml
+23	9	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-action.component.ts
+1	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+27	0	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.html
+109	0	Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+2	7	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+4	4	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.html
+64	44	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/conjoined.component.ts
+
+commit 7076bb4431bfe8926675825f2796a842d3242564
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 14:15:12 2019 -0400
+
+    LP1821382 Booking menu entry placeholders
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+13	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+14	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+
+commit ea6c0db0a4e88e832a807bd1d45888d46663e156
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 13:58:46 2019 -0400
+
+    LP1821382 Conjoined linking repairs
+    
+    Modify existing copy->record conjoined links where necessary instead of
+    create duplicates.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+19	2	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.ts
+
+commit 153508c1aa5da1937822c985ebc28c21760f7c43
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 13:30:54 2019 -0400
+
+    LP1821382 Link as conjoined items menu action
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+16	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+42	0	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.html
+120	0	Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.ts
+5	2	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/conjoined-items-dialog.component.ts
+
+commit 286be403072ee09c5c8a6fae8833f4f9b13930a7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 11:23:22 2019 -0400
+
+    LP1821382 Grid scroll menu repairs
+    
+    Make scrollable menus require addition of a class so the CSS does not
+    apply to all drop-down menus.  Specifically, it makes less sense to use
+    scrollable menus for the main menu bar.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+2	2	Open-ILS/src/eg2/src/styles.css
+
+commit d6b07f29db705d29f5fdb9734795368b0a3e5ec7
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 26 11:17:35 2019 -0400
+
+    LP1821382 Add Items to Bucket menu action
+    
+    Includes changes to the existing record bucket dialog to support all
+    bucket types.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	2	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queue.component.html
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.html
+9	5	Open-ILS/src/eg2/src/app/staff/catalog/basket-actions.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/catalog/record/actions.component.html
+6	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+17	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+0	12	Open-ILS/src/eg2/src/app/staff/catalog/result/record.component.html
+3	3	Open-ILS/src/eg2/src/app/staff/common.module.ts
+60	0	Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.html
+196	0	Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.ts
+0	64	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+0	160	Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/bucket-dialog.component.ts
+ delete mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.html
+ delete mode 100644 Open-ILS/src/eg2/src/app/staff/share/buckets/record-bucket-dialog.component.ts
+
+commit 82727751484fef71d23a7884fcbb764156eda0c1
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 25 20:57:57 2019 +0000
+
+    LP1821382 Angular lint repairs
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	1	Open-ILS/src/eg2/src/app/share/util/bool.component.ts
+13	13	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+3	3	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+4	4	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+2	2	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+
+commit 433b9daca439dc313c126c1d13dd533cf2588125
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 25 20:18:55 2019 +0000
+
+    LP1821382 Request items menu action
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	4	Open-ILS/src/eg2/src/app/staff/catalog/hold/hold.component.ts
+4	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+9	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+
+commit eab496e0fb03276990685735c4f46976d0e486c9
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 25 16:51:54 2019 +0000
+
+    LP1821382 Delete volcopy menu actions
+    
+    Holdings grid menu actions for delete copies and call numbers.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1800	1820	Open-ILS/src/eg2/package-lock.json
+18	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+66	1	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+33	0	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.html
+123	0	Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+5	2	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+16	8	Open-ILS/src/eg2/src/styles.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/delete-volcopy-dialog.component.ts
+
+commit 2e0c7012d75ef8766302b296944d653559e09b36
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 18 17:46:42 2019 -0400
+
+    LP1821382 Angular holdings maintenance continued.
+    
+    Support for various context menu actions.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+2	1	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+41	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.css
+162	16	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+381	53	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+23	23	Open-ILS/src/eg2/src/app/staff/catalog/record/pagination.component.ts
+1	1	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+0	1	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+4	4	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.html
+22	11	Open-ILS/src/eg2/src/app/staff/share/bib-summary/bib-summary.component.ts
+109	0	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.html
+185	0	Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+8	2	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.module.ts
+5	4	Open-ILS/src/eg2/src/app/staff/share/holdings/holdings.service.ts
+50	0	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.html
+111	0	Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+3	1	Open-ILS/src/eg2/src/app/staff/share/holds/grid.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.css
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/copy-alerts-dialog.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/share/holdings/replace-barcode-dialog.component.ts
+
+commit 3043503a18897a070d47078311fea13e3c90bef0
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Mar 20 12:06:20 2019 -0400
+
+    LP1821382 Angular boolean yes/no display component
+    
+    Simple component that accepts a boolean value and displays a yes/no
+    badge.  Added as the default handler for boolean columsn in the grid.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+3	0	Open-ILS/src/eg2/src/app/common.module.ts
+2	1	Open-ILS/src/eg2/src/app/core/format.service.ts
+8	1	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.html
+4	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+7	0	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+39	0	Open-ILS/src/eg2/src/app/share/util/bool.component.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/share/util/bool.component.ts
+
+commit 1aaeb0acd4a920c0d397cb3a56f19ee8c734e89d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 19 11:47:52 2019 -0400
+
+    LP1821382 Angular grid inline load progress indicator.
+    
+    Display an indeterminate progress indicator while the grid is waiting
+    for data to arrive.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+4	4	Open-ILS/src/eg2/src/app/share/grid/grid.component.html
+
+commit 1adc096dd4fb014fcf3b5b60d21efc26f7fe0ee3
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon Mar 18 17:46:34 2019 -0400
+
+    LP1821382 Angular grid optoin to disable paging
+    
+    Hides the paging controls in the toolbar and puts the grid into "fetch
+    all" mode.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	11	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+3	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+4	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit aa542534587d0836985a4e954d7c95a66a0c3043
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 15 17:01:13 2019 -0400
+
+    LP1821382 Angular staff catalog Holdings Maintenance
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	0	Open-ILS/src/eg2/src/app/core/server-store.service.ts
+2	2	Open-ILS/src/eg2/src/app/share/grid/grid-body-cell.component.html
+3	0	Open-ILS/src/eg2/src/app/share/grid/grid-column.component.ts
+28	9	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar-checkbox.component.ts
+13	5	Open-ILS/src/eg2/src/app/share/grid/grid.component.html
+6	0	Open-ILS/src/eg2/src/app/share/grid/grid.component.ts
+10	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	0	Open-ILS/src/eg2/src/app/staff/catalog/catalog.module.ts
+94	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+440	0	Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+2	7	Open-ILS/src/eg2/src/app/staff/catalog/record/record.component.html
+8	1	Open-ILS/src/eg2/src/app/staff/catalog/resolver.service.ts
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.html
+ create mode 100644 Open-ILS/src/eg2/src/app/staff/catalog/record/holdings.component.ts
+
+commit 4e86a31f19888c1f5b6fa97303db75384fd1ab65
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Mon Mar 4 10:52:56 2019 -0600
+
+    Docs: LP1776913: Fixes references to Circulation Limit Sets in docs.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Lynn Floyd <lfloyd@andersonlibrary.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/admin/circulation_limit_groups.adoc
+2	2	docs/admin_initial_setup/borrowing_items.adoc
+
+commit 0127dedca6889ee59756c4b8e654592c4922a730
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Mon Mar 4 10:41:13 2019 -0600
+
+    LP1776913: Corrects Local Administration menu to use correct form Circulation Limit Sets and Age Overdue Circulations to Lost.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Lynn Floyd <lfloyd@andersonlibrary.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+
+commit 60e81156bdd4834b6e0dd47db240a6d9d39931f5
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 8 10:38:43 2019 -0500
+
+    LP1748265 Hold fetch API sms_carrier option
+    
+    Support a new "include_sms_carrier" option to the holds retrieve API so
+    the data may be fetched along with the hold instead after the fact in
+    the patron holds list, etc.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Holds.pm
+
+commit 6d46c9d0ce16acce62099fb16d4f9e96f876f4f3
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sun Jun 3 15:54:25 2018 -0400
+
+    LP#1748265 SMS Carrier not an option in the patron's list of holds.
+    
+    Adds SMS Carrier name as an option in the patron's list of holds.
+    
+    To test:
+    1. Set 'Enable features that send SMS text messages' in the Library Settings to true.
+    2. Place a few holds for a patron, selecting text message notification.
+    3. Go to the patron's record and view their holds.
+    4. Display the 'Notifications SMS Carrier' column to view the carrier name.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_holds_list.tt2
+7	0	Open-ILS/web/js/ui/default/staff/circ/services/holds.js
+
+commit 16fb63dea4af4f2b321f1405595bffe3e516c0aa
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Sat May 19 17:00:40 2018 -0400
+
+    LP1772206 Tooltips missing from Patron Summary
+    
+    Adds tooltips for home branch and Last Activity to emulate the XUL
+     client.  The home branch tool tip displays the long OU name.  The
+    last activity tooltip displays the last type of activity.
+    
+    To test:
+    
+    Home branch
+    1. Perform a patron search.
+    2. Click on one of the patrons in the results.
+    3. Hover over the home branch location in the patron summary.
+    
+    Last Activity
+    4. Log into the opac with a patron account to some patron activity.
+    5. Bring up the patron in the staff client.
+    6. Hover over the last activity date.
+    
+    7. Apply the patch and repeat 1-3 and 5-6.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit 37ac10c9e58cea9cb18ff293804587091753593d
+Author: Dan Pearl <dpearl@cwmars.org>
+Date:   Tue Apr 10 14:45:47 2018 -0400
+
+    LP1760893 Add Holdings Part dropdown should list items in order
+    
+    Without a defined sort, the Part dropdown when editing a holding simply
+    displays in database order.  Let's be more deterministic about it.
+    
+    In this case, while slightly surprising, consensus opinion was that
+    reverse order on label_sortkey provides the best overall usability.
+    This is obviously true on records with many parts, but can help in all
+    cases.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 4a624478b88f743883cde55e2d4e259aa2daf04d
+Author: Bill Ott <bott@grpl.org>
+Date:   Fri May 18 09:52:46 2018 -0400
+
+    LP#1772028 Add some FK violation functions just in case they are missing
+    
+    Depending on your data, upgrade 1063 may not have created the functions
+    being re-applied in this upgrade script.  Let's make sure they are
+    there.
+    
+    Signed-off-by: Bill Ott <bott@grpl.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+48	0	Open-ILS/src/sql/Pg/version-upgrade/3.0.1-3.0.2-upgrade-db.sql
+
+commit 13296e612ca1b849c6b5b5ea43a444c3dc7d8e68
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 24 15:06:24 2019 -0400
+
+    LP1817332 Stamping ugprade: timezone examples
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+16	0	Open-ILS/src/sql/Pg/upgrade/1166.data.update_timezone_OUS_description.sql
+0	16	Open-ILS/src/sql/Pg/upgrade/XXXX.data.update_timezone_OUS_description.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1166.data.update_timezone_OUS_description.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.update_timezone_OUS_description.sql
+
+commit d9750afce08146efc7faa9d75b346c0e7a4d8943
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu May 23 11:17:44 2019 -0400
+
+    LP#1817332: (follow-up) tweak description
+    
+    Per a suggestion from Jane Sandberg, the description now includes
+    an example of a time zone name with an underscore. Also, the database
+    update will no longer overwrite any custom description that the
+    Evergreen admin may have put in.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+3	2	Open-ILS/src/sql/Pg/upgrade/XXXX.data.update_timezone_OUS_description.sql
+
+commit 5c33d5e6811ff7dce56468dd8fc6e603e555d3d6
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu Feb 21 14:54:19 2019 -0500
+
+    LP#1817332 Add example to lib.timezone setting description
+    
+    This commit adds a few examples of acceptable lib.timezone values to the
+    setting description, with the goal of using examples of existing
+    Evergreen installations. It also includes a clickable link to the
+    extensive list on Wikipedia. Since the settings editor is displayed
+    within an iframe, the link needs a "target" to successfully trigger.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.update_timezone_OUS_description.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.update_timezone_OUS_description.sql
+
+commit d0a66dedeb4cdae7a6804bc4fbd940a2a5adaabb
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri May 24 14:52:58 2019 -0400
+
+    LP1819181 Stamping upgrade: DoB example setting
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/1165.data.lp1819181-example-dob.sql
+0	12	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1819181-example-dob.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1165.data.lp1819181-example-dob.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1819181-example-dob.sql
+
+commit 99cd5e2f770bb328f1ddc6acef22928bd8a82fbd
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Fri Mar 8 11:03:38 2019 -0500
+
+    LP1819181: Example DOB for Patron Reg/Edit
+    
+    Add the necessary coust entry for a patron dob example
+    and teach the registration controller to use it.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+9	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+12	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1819181-example-dob.sql
+1	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1819181-example-dob.sql
+
+commit 03087dea0c4b2eb975d9f377dbfa555a6a647219
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Thu May 23 10:32:44 2019 -0400
+
+    LP#1642337: more tweaks to the patch series
+    
+    This patch makes the following changes:
+    
+    - ensures that the Boolean values get saved as 't' or 'f', as
+      the reporter builder doesn't recognize JSON true or false in
+      this context.
+    - pretty-prints the current filter value in the dialog
+    - removes a logging line
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] Create or clone one or more report templates and add Boolean
+        column filters. Change the filter value and verify that
+        it displays the current value and lets you change it.
+    [3] Run reports from the template(s) created in step 2 and
+        verify that the reports produce the expected results.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	4	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 67dd23b79f214eea7eb1dbf1c9dbc2e161286ee0
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Tue Jan 29 12:15:25 2019 -0500
+
+    LP1642337: Reporter Boolean Filters
+    
+    The dialog controller doesn't appreciate getting
+    a bare boolean as a message, so if the current item
+    is a boolean call toString() on it before calling
+    the egConfirmDialog.
+    
+    An <Unset> string is also added to the reporter
+    strings for further use, but if there are no
+    strong feelings re: using it, it can be dumped and
+    a '' used in its place.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/reporter/share/report_strings.tt2
+1	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit f202877a3f7c5ea8fbab5be2b05995378afafe77
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Nov 16 20:56:51 2017 +0000
+
+    lp1642337 Boolean Filters in Reporter
+    
+    - Add condition check to see if filter is boolean, and if so,
+    substitute a confirm dialog for the default prompt, repalcing
+    the text input with buttons for True/False values.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+17	5	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 758bcb952baac90aeead5f631c03b0eaffa577f7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri May 24 14:28:21 2019 -0400
+
+    Forward-port 3.3.1 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+97	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.0-3.3.1-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.0-3.3.1-upgrade-db.sql
+
+commit 95eed52ed5605f9cce2516652352196abd1d5947
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Mar 5 17:07:21 2019 -0500
+
+    LP1816480 Angular grid ARIA improvements
+    
+    Various navigation and "role" improvements to the Angular grid:
+    
+    * Apply "grid", "row", "columnheader", and "gridcell" role attributes.
+    * Page-Down goes to next page
+    * Page-Up goes to previous page
+    * Shift-UpArrow extends selection one row up (spanning pages).
+    * Shift-DownArrow extends selection one row down (spanning pages).
+    * Shift-Arrow controls support reverse navigation for back-tracking to
+      de-select certain rows.
+    ** E.g. shift-up 3 rows then shift-down 1 will leave 2 rows selected.
+    * Control-A now selects all rows in the page.
+    ** For consistency with the select-all checkbox, only rows in the
+       current page are selected.
+    ** Note we could add an option to extend the selection to all rows,
+       but it would require pre-fetching all of the data, simimar to
+       how grid printing pre-fetches.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	2	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.html
+24	2	Open-ILS/src/eg2/src/app/share/grid/grid-body.component.ts
+13	8	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.html
+8	4	Open-ILS/src/eg2/src/app/share/grid/grid-header.component.ts
+4	1	Open-ILS/src/eg2/src/app/share/grid/grid-toolbar.component.html
+3	3	Open-ILS/src/eg2/src/app/share/grid/grid.component.html
+85	2	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+
+commit 82ebba292f3e78fa6d4cb7a82d8df096839dc5f2
+Author: a. bellenir <abelleni@grpl.org>
+Date:   Mon Mar 11 13:39:00 2019 -0400
+
+    LP1775639: Refresh required to see Patron Credit
+    
+    reload patron data when applying a payment
+    if the payment will change the patron's credit forward balance.
+    
+    To test
+    -------
+    [1] Bill a patron, then make sure that the "Convert Change to Patron
+        Credit" checkbox is checked. Pay bill with more than the total
+        balance. Note that the Credit Available amount in the billing
+        summary does not change. Refresh the page.
+    [2] Bill a patron, then use the patron credit added in step 1 to
+        pay off the bill. Note that again, the Credit Available amount
+        does not change.
+    [3] Apply the patch and repeats steps 1 and 2. This time, the Credit
+        Available field should get updated.
+    
+    Signed-off-by: a. bellenir <abelleni@grpl.org>
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 9ad353d42b7d1d8f73a2eb131ce02f3db7f7a2f6
+Author: Suzanne Paterno <paterno@noblenet.org>
+Date:   Tue Apr 9 10:42:15 2019 -0400
+
+    LP 1744386 & LP 1777184 - stat cats & stat cat entries not alphabetical
+    
+    Statistical categories will be alphabetized first by library and then by category.
+    
+    The entires within each category will also be alphabetized.
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Cesar Velez <cesar.velez@EquinoxInitiative.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit e534309463e72cf5eebca54df0a1518b1ed9b314
+Author: Rogan Hamby <rhamby@esilibrary.com>
+Date:   Fri Apr 19 11:25:19 2019 -0400
+
+    LP#1440890: add vandelay_queue to the types of containers retrieved by batch edit
+    
+    To test
+    -------
+    [1] Perform a batch bibliographic record import, then add the import
+        queue to a new bucket.
+    [2] In the web staff client, go to Cataloging | Batch Edit.
+    [3] Note that the bucket created in step 1 does _not_ appear in the
+        bucket selector on the batch edit page.
+    [4] In the web staff client, go to the record bucket and hit the
+        Batch edit button.
+    [5] Note that the bucket created in step 1 does _not_ appear in the
+        bucket selector on the batch edit page.
+    [6] Apply the patch and repeat steps 2-3. This time, the bucket
+        should appear in the selector.
+    [7] Repeat steps 4-5. This time, the bucket should appear in the selector
+        (and be the active choice).
+    
+    Signed-off-by: Rogan Hamby <rhamby@esilibrary.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/WWW/TemplateBatchBibUpdate.pm
+
+commit d6d6f2451d9eff58d512739196ba82752e06c81e
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Dec 6 15:49:40 2018 -0800
+
+    LP1760599: Only show merge records action when multiple bucket records selected
+    
+    To test:
+    1) Create a bucket.
+    2) Select one record from your bucket. Right-click on your record or click on the Actions drop-down.
+    3) Note that "Merge Selected Records" is clickable.
+    4) Apply this commit.
+    5) Repeat steps 2-3.  Note that "Merge Selected Records" is no longer
+    clickable, unless you select two or more records.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2
+6	0	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+
+commit 2f99851892d460b83e1cb4e08ff1988f3d6bb15d
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Feb 7 13:48:13 2019 -0500
+
+    LP1790896: Receipt Errors with invalid emails
+    
+    The attempt at belt-and-suspenders checking for a valid
+    email for use in the has_email template field sadly
+    causes the JS to trip over said suspenders if there is
+    a value in the field but it doesn't contain a '@'.
+    
+    The raw return from "".match() (either an array or null)
+    is enough to do the right thing when converted into a
+    Boolean and doesn't cause the same problems.
+    
+    To test
+    -------
+    [1] Set up a patron record with an invalid email address,
+        e.g., one that lacks the '@' character.
+    [2] Check out an item the patron, then from the Items Out
+        tab, print an item receipt.
+    [3] Note that nothing happens and an error is logged in the
+        browser console.
+    [4] Apply the patch and repeat step 2. This time, a receipt
+        should be generated.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+
+commit 4030d39f54386229cfc949921af1846e065f11a1
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu May 3 17:31:07 2018 -0400
+
+    Lp 1768987: Use FindBin in 24-sql-gettext-unique.t.
+    
+    Use FindBin in the 24-sql-gettext-unique.t test file so that it can be
+    run from directories other than Open-ILS/src/perlmods.
+    
+    To test
+    -------
+    [1] Apply the patch.
+    [2] From the root of the Evergreen checkout, run
+        prove Open-ILS/src/perlmods/t/24-sql-gettext-unique.t
+    [3] Verify that the tests pass.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/perlmods/t/24-sql-gettext-unique.t
+
+commit ff381f6f3718b5a59dbbf4a4d5551a1df34cf37c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 23 13:40:36 2019 -0400
+
+    Docs: Fix list formatting in 3.3 release notes
+    
+    Single list items that wrap across multiple lines accidentally start
+    each line with a bullet. This commit removes the extra bullets.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+21	20	docs/RELEASE_NOTES_3_3.adoc
+
+commit ec692ba5bc4f368e8eea3390d384249f50743e0b
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Oct 2 08:32:54 2018 -0400
+
+    LP#1796942 Treat VISA SIP payments as credit card
+    
+    Treat sip_payment_type 01 (VISA) as a credit_card_payment.
+    
+    Previously, we only handled payment type 02 (credit card) and 01
+    fell through to be treated as a cash_payment.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/SIP/Transaction/FeePayment.pm
+
+commit 4a4e45f2b531f641064f480671d7a65846ab0b03
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Aug 3 15:01:34 2017 -0400
+
+    LP#1704819 Fine generator avoids int() rounding
+    
+    Avoid using the Perl int() function for rounding in the fine generator,
+    since it can have unexpected outcomes.
+    
+    For example:
+    
+    $ perl -e 'print "230 = " . int(100 * 2.30) . "\n"'
+    230 = 229
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+5	5	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/CircCommon.pm
+
+commit 4561e40aaadd5d1480a10329f6d3d5514c866f41
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Apr 9 11:51:28 2019 -0400
+
+    LP1816679 Match Set Type selector options
+    
+    Provide a canned set of options for Vandelay => Create/Modify Match
+    Set => Match Set Type of 'biblio', 'autority', and 'serial'.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/match-set-list.component.html
+
+commit c99247e324780bcb0ed898e6dc259b9a4880711d
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 15 11:29:07 2019 -0400
+
+    LP1693580 Authority create/update API repairs
+    
+    Fixes issues with the authority record create and update open-ils.cat
+    API calls, where internal function calls were not passed the correct
+    values.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+
+4	3	Open-ILS/src/perlmods/lib/OpenILS/Application/Cat/Authority.pm
+
+commit f7b103b5ca5468d09299528e3e5bd9844de00e68
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Mar 15 11:29:59 2019 -0400
+
+    LP1693580 Marc editor notify and API changes
+    
+    1. Indicate in the interface when a bib/auth MARC record edit failed or
+    succeeded.
+    
+    2. Handle permission failures on MARC edit by displaying the permission
+    override dialog.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+
+4	0	Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2
+98	68	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 7bbc3f533a62e1b5a18203e4bbeff9a3c4d4af58
+Author: Daniel Pearl <dpearl@cwmars.org>
+Date:   Wed Dec 12 12:51:07 2018 -0500
+
+    LP#1029601: Prevent duplicate holds from double clicks
+    
+    Double clicking on hold submit buttons causes multiple holds to be
+    generated.  This commits adds code to disable the Submit button(s)
+    after the first click, so subsequent clicks don't "work" in unintended
+    ways.
+    
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+11	3	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+6	1	Open-ILS/web/js/ui/default/opac/holds-validation.js
+
+commit 124307b126919ed6f8e434d33373af1ba478b6aa
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon May 20 17:15:09 2019 -0400
+
+    LP#1774707 Quick fix-up: add missing comma
+    
+    We probably should move this on up with the others, but as a quick
+    fix...
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+
+commit 4c9da230282849b1f15ed568e6964033d6024641
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Mon May 20 18:07:07 2019 +0000
+
+    lp1538678 MARC edit warning prompt translateable strings
+    
+    - Define "There is unsaved data in this record." as a translateable string.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/cat/share/marcedit_strings.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit 85c03d900b93a626e5a131f4cb4c4c5874a9e424
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Wed Apr 17 22:55:49 2019 +0000
+
+    lp1538678 Apply Warning Prompt when leaving dirty MARC editor
+    
+    - Check for unsaved user input when leaving the Create New
+    MARC Record UI, and warn if it exists.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   services/marcedit.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+14	0	Open-ILS/web/js/ui/default/staff/cat/services/marcedit.js
+
+commit c08ebea8457166ca1fbf1cdc3355ad00143ea11a
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Thu Mar 14 17:02:31 2019 -0400
+
+    LP1817601 MARC Flat Text Editor Monospace Font
+    
+    Use a fixed width font in the MARC flat text editor, consistent with the
+    fonts used for the non-flat-text editor.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+
+commit 4b6ae90a4bbde7fd197120b2f3b9780031ac0641
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Mon May 20 14:53:07 2019 -0400
+
+    LP1774707 Stamping DB update: group members grid
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/1164.data.group-member-details-persist-key.sql
+0	15	Open-ILS/src/sql/Pg/upgrade/XXXX.data.group-member-details-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1164.data.group-member-details-persist-key.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.group-member-details-persist-key.sql
+
+commit 4d8a01d3ec6b92e3b60a636bfae980dd00c48b38
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Apr 12 16:10:00 2019 -0400
+
+    LP#1774707: Add Seed Data for worstation setting for group member details
+    
+    Adds the config.workstation_setting_type for patron group member details
+    to seed data and includes an upgrade script.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.group-member-details-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.group-member-details-persist-key.sql
+
+commit 396fe9af2a79ffcc309666fc3b677b8af7fbbc5c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 5 13:55:25 2018 -0500
+
+    LP#1774707: Allow saving Group Member Details grid settings
+    
+    For a web staff eg-grid to save and retrieve its settings, it needs a unique
+    persist-key. This commit adds one for the Group Member Details grid (which is
+    within the patron record view).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/circ/patron/t_group.tt2
+
+commit a90ced763430a7328a7749fa9d065cb1bf1ec8fb
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Apr 12 09:18:35 2019 -0400
+
+    LP#1669120: Make scrollable dropdown height match column picker
+    
+    To make scrollable dropdowns more usable, let's make them the same
+    height as the grid column picker dropdown. This is a quick, simple
+    improvement, and it follows precident with a frequently used feature
+    (column picker, which has no known complaints).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/css/style.css.tt2

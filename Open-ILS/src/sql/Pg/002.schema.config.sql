@@ -93,6 +93,7 @@ CREATE TRIGGER no_overlapping_deps
     FOR EACH ROW EXECUTE PROCEDURE evergreen.array_overlap_check ('deprecates');
 
 INSERT INTO config.upgrade_log (version, applied_to) VALUES ('1167', :eg_version); -- JBoyer/terran/sandbergja
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.3.2', :eg_version);
 
 CREATE TABLE config.bib_source (
 	id		SERIAL	PRIMARY KEY,
