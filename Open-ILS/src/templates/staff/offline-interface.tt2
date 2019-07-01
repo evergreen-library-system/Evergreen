@@ -616,12 +616,12 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
     "[% l('Please enter valid values for all required fields.') %]"
   s.REG_ADDR_REQUIRED =
     "[% l('An address is required during registration.') %]"
-
+  
   s.PATRON_BLOCKED_WHY = {};
   s.PATRON_BLOCKED_WHY.D = "[% l('Patron has penalties') %]";
   s.PATRON_BLOCKED_WHY.L = "[% l('Barcode is reported Lost') %]";
   s.PATRON_BLOCKED_WHY.E = "[% l('Patron account is Expired') %]";
-  s.PATRON_BLOCKED_WHY.B = "[% l('Patron account is Barred') %]";
+  s.PATRON_BLOCKED_WHY.B = "[% l('Warning: as of [_1], this barcode ([_2]) was flagged Expired.', '{{formatted_date}}', '{{pbarcode}}') %]";
 
 }]);
 </script>
