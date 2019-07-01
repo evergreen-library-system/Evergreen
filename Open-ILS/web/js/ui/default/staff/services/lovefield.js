@@ -230,6 +230,27 @@ angular.module('egCoreMod')
         });
     }
 
+    service.setOfflineBlockDate = function () {
+        return service.request({
+            schema: 'cache',
+            table: 'CacheDate',
+            action: 'insertOrReplace',
+            rows: [{type: '_blocklistDownload', cachedate : new Date()}]
+        });
+    }
+
+    service.getOfflineBlockDate = function () {
+        return service.request({
+            schema: 'cache',
+            table: 'CacheDate',
+            action: 'selectWhereEqual',
+            field: 'type',
+            value: '_blocklistDownload'
+        }).then(function(results) {
+            return results[0] ? results[0].cachedate : null;
+        });
+    }
+
     // Returns a promise with true for blocked, false for not blocked
     service.testOfflineBlock = function (barcode) {
         return service.request({
