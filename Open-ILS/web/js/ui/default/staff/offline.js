@@ -255,10 +255,10 @@ function($routeProvider , $locationProvider , $compileProvider) {
 .controller('OfflineCtrl', 
            ['$q','$scope','$window','$location','$rootScope','egCore',
             'egLovefield','$routeParams','$timeout','$http','ngToast',
-            'egConfirmDialog','egUnloadPrompt','egProgressDialog',
+            'egConfirmDialog','egUnloadPrompt','egProgressDialog', '$filter',
     function($q , $scope , $window , $location , $rootScope , egCore , 
              egLovefield , $routeParams , $timeout , $http , ngToast , 
-             egConfirmDialog , egUnloadPrompt, egProgressDialog) {
+             egConfirmDialog , egUnloadPrompt, egProgressDialog, $filter) {
 
         // Immediately redirect if we're really offline
         if (!$window.navigator.onLine) {
@@ -289,7 +289,6 @@ function($routeProvider , $locationProvider , $compileProvider) {
         $scope.do_print = Boolean($scope.active_tab == 'checkout');
         $scope.do_print_changed = false;
         $scope.printed = false;
-
         $scope.imported_pending_xacts = { data : '' };
 
         $scope.xact_page = { checkin:[], checkout:[], renew:[], in_house_use:[] };
@@ -300,6 +299,17 @@ function($routeProvider , $locationProvider , $compileProvider) {
         $scope.renew = { noncat_type : '' };
         $scope.in_house_use = {count : 1};
         $scope.checkin = { backdate : new Date() };
+
+        egLovefield.getOfflineBlockDate().then(
+            function(blockListDateResp) {
+                $scope.blockListDate = Math.round(blockListDateResp.getTime()/1000);
+                console.log("get blocklistdate=");
+                console.log($scope.blockListDate)
+            },
+            function() {
+                console.log("Error when retrieving block list download date");                    
+            }
+        );
 
         $scope.current_workstation_owning_lib = function () {
             return $scope.workstations.filter(function(w) {
@@ -405,6 +415,7 @@ function($routeProvider , $locationProvider , $compileProvider) {
             egProgressDialog.open();
             egLovefield.populateBlockList().then(
                 function(){
+                    egLovefield.setOfflineBlockDate();
                     ngToast.create(egCore.strings.OFFLINE_BLOCKLIST_SUCCESS);
                 },
                 function(){
@@ -592,21 +603,29 @@ function($routeProvider , $locationProvider , $compileProvider) {
                 egLovefield.testOfflineBlock(pbarcode).then(function (blocked) {
                     if (blocked) {
                         egCore.audio.play('warning.offline.blocked_patron');
-                        egConfirmDialog.open(
-                            egCore.strings.PATRON_BLOCKED,
-                            egCore.strings.PATRON_BLOCKED_WHY[blocked],
-                            {}, egCore.strings.ALLOW, egCore.strings.REJECT
-                        ).result.then(
-                            function(){ // forced
-                                $scope.blocked_patron = null;
-                                _add_impl(xtype,true)
-                                if (next_focus) $('#'+next_focus).focus();
-                            },function(){ // stopped
-                                $scope.blocked_patron = xtype;
-                                if (next_focus) $('#'+next_focus).focus();
-                                return;
-                            }
-                        );
+                        var default_format = 'mediumDate';
+                        egCore.org.settings(['format.date']).then(function(set) {
+                            if (set && set['format.date']) default_format = set['format.date'];
+                            $scope.date_format = default_format;
+                            var fBlockListDate = $filter('date')(($scope.blockListDate * 1000), $scope.date_format)
+                            egConfirmDialog.open(
+                                egCore.strings.PATRON_BLOCKED,
+                                egCore.strings.PATRON_BLOCKED_WHY[blocked],
+                                {formatted_date: fBlockListDate, pbarcode: pbarcode},
+                                egCore.strings.ALLOW, 
+                                egCore.strings.REJECT
+                            ).result.then(
+                                function(){ // forced
+                                    $scope.blocked_patron = null;
+                                    _add_impl(xtype,true)
+                                    if (next_focus) $('#'+next_focus).focus();
+                                },function(){ // stopped
+                                    $scope.blocked_patron = xtype;
+                                    if (next_focus) $('#'+next_focus).focus();
+                                    return;
+                                }
+                            );
+                        });
                     } else {
                         $scope.blocked_patron = null;
                         _add_impl(xtype,true)
