@@ -413,11 +413,11 @@ RewriteRule .? - [E=locale:%{HTTP:Accept-Language}]
 # OPTIONAL: Running the translator behind a proxy requires accessing
 # the client IP address via mod_remoteip (sudo a2enmod remoteip).
 # Below is a sample configuration for a proxy running on the same
-# server and passing the client IP address via the X-Real-IP header.
+# server and passing the client IP address via the X-Forwarded-For header.
 #
 #RemoteIPInternalProxy 127.0.0.1/24
 #RemoteIPInternalProxy ::1
-#RemoteIPHeader X-Real-IP
+#RemoteIPHeader X-Forwarded-For
 
 <Location /osrf-http-translator>
     SetHandler osrf_http_translator_module
