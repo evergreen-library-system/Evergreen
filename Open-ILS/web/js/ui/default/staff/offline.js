@@ -302,12 +302,13 @@ function($routeProvider , $locationProvider , $compileProvider) {
 
         egLovefield.getOfflineBlockDate().then(
             function(blockListDateResp) {
-                $scope.blockListDate = Math.round(blockListDateResp.getTime()/1000);
-                console.log("get blocklistdate=");
-                console.log($scope.blockListDate)
+                if (blockListDateResp) {
+                    $scope.blockListDate =
+                        Math.round(blockListDateResp.getTime() / 1000);
+                }
             },
             function() {
-                console.log("Error when retrieving block list download date");                    
+                console.error("Error when retrieving block list download date");
             }
         );
 
@@ -607,7 +608,9 @@ function($routeProvider , $locationProvider , $compileProvider) {
                         egCore.org.settings(['format.date']).then(function(set) {
                             if (set && set['format.date']) default_format = set['format.date'];
                             $scope.date_format = default_format;
-                            var fBlockListDate = $filter('date')(($scope.blockListDate * 1000), $scope.date_format)
+                            var fBlockListDate = $scope.blockListDate ?
+                                $filter('date')(($scope.blockListDate * 1000), $scope.date_format) :
+                                null;
                             egConfirmDialog.open(
                                 egCore.strings.PATRON_BLOCKED,
                                 egCore.strings.PATRON_BLOCKED_WHY[blocked],
