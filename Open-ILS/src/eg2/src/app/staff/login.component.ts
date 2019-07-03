@@ -11,6 +11,7 @@ import {StoreService} from '@eg/core/store.service';
 export class StaffLoginComponent implements OnInit {
 
     workstations: any[];
+    loginFailed: boolean;
 
     args = {
       username : '',
@@ -65,6 +66,7 @@ export class StaffLoginComponent implements OnInit {
 
         const workstation: string = this.args.workstation;
 
+        this.loginFailed = false;
         this.auth.login(this.args).then(
             ok => {
                 this.auth.redirectUrl = null;
@@ -86,7 +88,7 @@ export class StaffLoginComponent implements OnInit {
                 }
             },
             notOk => {
-                // indicate failure in the UI.
+                this.loginFailed = true;
             }
         );
     }

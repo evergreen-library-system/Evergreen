@@ -48,8 +48,11 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-8 offset-lg-4 pl-0">
+          <div class="col-lg-2 offset-lg-4 pl-0">
             <button type="submit" class="btn btn-outline-dark" i18n>Sign in</button>
+          </div>
+          <div class="col-lg-4" *ngIf="loginFailed">
+            <div class="badge badge-warning p-2" i18n>Login Failed</div>
           </div>
         </div>
       </form>
