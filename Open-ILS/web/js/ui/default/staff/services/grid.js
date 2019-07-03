@@ -327,6 +327,10 @@ angular.module('egGridMod',
                     grid.collect();
                 }
 
+                controls.prepend = function(limit) {
+                    grid.prepend(limit);
+                }
+
                 controls.setLimit = function(limit,forget) {
                     if (!forget && grid.persistKey)
                         egCore.hatch.setLocalItem('eg.grid.' + grid.persistKey + '.limit', limit);
@@ -347,6 +351,7 @@ angular.module('egGridMod',
                 }
 
                 grid.dataProvider.refresh = controls.refresh;
+                grid.dataProvider.prepend = controls.prepend;
                 grid.controls = controls;
             }
 
@@ -1272,6 +1277,72 @@ angular.module('egGridMod',
                 });
             }
 
+            grid.prepend = function(limit) {
+                var ran_into_duplicate = false;
+                var sort = grid.dataProvider.sort;
+                if (sort && sort.length) {
+                    // If sorting is in effect, we have no way
+                    // of knowing that the new item should be
+                    // visible _if the sort order is retained_.
+                    // However, since the grids that do prepending in
+                    // the first place are ones where we always
+                    // want the new row to show up on top, we'll
+                    // remove the current sort options.
+                    grid.dataProvider.sort = [];
+                }
+                if (grid.offset > 0) {
+                    // if we're prepending, we're forcing the
+                    // offset back to zero to display the top
+                    // of the list
+                    grid.offset = 0;
+                    grid.collect();
+                    return;
+                }
+                if (grid.collecting) return; // avoid parallel collect() or prepend()
+                grid.collecting = true;
+                console.debug('egGrid.prepend() starting');
+                // Note that we can count on the most-recently added
+                // item being at offset 0 in the data provider only
+                // for arrayNotifier data sources that do not have
+                // sort options currently set.
+                grid.dataProvider.get(0, 1).then(
+                null,
+                null,
+                function(item) {
+                    if (item) {
+                        var newIdx = grid.indexValue(item);
+                        angular.forEach($scope.items, function(existing) {
+                            if (grid.indexValue(existing) == newIdx) {
+                                console.debug('egGrid.prepend(): refusing to add duplicate item ' + newIdx);
+                                ran_into_duplicate = true;
+                                return;
+                            }
+                        });
+                        $scope.items.unshift(item);
+                        if (limit && $scope.items.length > limit) {
+                            // this accommodates the checkin grid that
+                            // allows the user to set a definite limit
+                            // without requiring that entire collect()
+                            $scope.items.length = limit;
+                        }
+                        if ($scope.items.length > grid.limit) {
+                            $scope.items.length = grid.limit;
+                        }
+                        if (grid.controls.itemRetrieved)
+                            grid.controls.itemRetrieved(item);
+                        if ($scope.selectAll)
+                            $scope.selected[grid.indexValue(item)] = true
+                    }
+                }).finally(function() {
+                    console.debug('egGrid.prepend() complete');
+                    grid.collecting = false;
+                    $scope.selected = angular.copy($scope.selected);
+                    if (ran_into_duplicate) {
+                        grid.collect();
+                    }
+                });
+            }
+
             grid.init();
         }]
     };
@@ -1847,6 +1918,7 @@ angular.module('egGridMod',
             // Calls the grid refresh function.  Once instantiated, the
             // grid will replace this function with it's own refresh()
             gridData.refresh = function(noReset) { }
+            gridData.prepend = function(limit) { }
 
             if (!gridData.get) {
                 // returns a promise whose notify() delivers items
