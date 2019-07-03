@@ -541,6 +541,19 @@ will need to edit _config.tt2_ in your template. To enable the service set
 the value of google_analytics.enabled to true and change the value of 
 _google_analytics.code_ to be the code in your Google Analytics account.
 
+=== Matomo Analytics ===
+
+Matomo Analytics (https://matomo.org/) is free software that you can host
+yourself, so that you can collect web site statistics without sharing your
+users' data with third parties.  Statistic tracking is disabled by default
+through the Evergreen client software when library staff use your site within
+the client, but active when anyone uses the site without the client.  This was
+a preventive measure to reduce the potential risks for leaking patron
+information. To use Matomo Analytics you need to:
+
+. Set up a hosted instance of Matomo
+. Add your Evergreen catalogue as a site
+
 === NoveList ===
 
 Novelist is a subscription-based service providing reviews and recommendation

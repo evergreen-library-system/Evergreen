@@ -47,7 +47,7 @@ NOTE: All paths are relative to `/openils/var/templates/opac`
   ** hiding the *Place Hold* button for available items
   ** enabling RefWorks support for citation management
   ** adding OpenURL resolution for electronic resources
-  ** enabling Google Analytics tracking for your TPAC
+  ** enabling Google Analytics or Matomo Analytics tracking for your TPAC
   ** displaying the "Forgot your password?" prompt
   ** controlling the size of cover art on the record details page
   ** defining which facets to display, and in which order
