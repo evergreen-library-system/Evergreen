@@ -26,9 +26,8 @@ describe('Component: OrgFamilySelect', () => {
 
     beforeEach(() => {
         // stub of OrgService for testing
-        // with a very simple org structure:
-        // 1 is the root note
-        // 2 is its child
+        // with a super simple org structure:
+        // 1 is the root note, with no children
         orgServiceStub = {
             root: () => {
                 return {
@@ -42,7 +41,7 @@ describe('Component: OrgFamilySelect', () => {
                     a: [],
                     classname: 'aou',
                     _isfieldmapper: true,
-                    children: () => Array(2 - ouId) };
+                    children: () => Array() };
             }
         };
         cookieServiceStub = {};
@@ -59,6 +58,7 @@ describe('Component: OrgFamilySelect', () => {
         fixture = TestBed.createComponent(OrgFamilySelectComponent);
         component = fixture.componentInstance;
         component.domId = 'family-test';
+        component.selectedOrgId = 1;
         fixture.detectChanges();
     });
 
@@ -97,10 +97,17 @@ describe('Component: OrgFamilySelect', () => {
 
     it('disables includeAncestors checkbox when root OU is chosen', () => {
         fixture.whenStable().then(() => {
-            component.selectedOrgId = 1;
             fixture.detectChanges();
             includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
             expect(includeAncestors.nativeElement.disabled).toBe(true);
+        });
+    });
+
+    it('disables includeAncestors checkbox when OU has no children', () => {
+        fixture.whenStable().then(() => {
+            fixture.detectChanges();
+            includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
+            expect(includeDescendants.nativeElement.disabled).toBe(true);
         });
     });
 
