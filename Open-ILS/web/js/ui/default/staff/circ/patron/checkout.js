@@ -189,7 +189,7 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         };
 
         $scope.checkouts.unshift(row_item);
-        $scope.gridDataProvider.refresh();
+        $scope.gridDataProvider.prepend();
 
         egCore.hatch.setItem('circ.checkout.strict_barcode', $scope.strict_barcode);
         var options = {check_barcode : $scope.strict_barcode};

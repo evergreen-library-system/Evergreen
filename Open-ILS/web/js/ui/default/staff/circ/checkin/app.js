@@ -233,9 +233,13 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
                     {already_checked_in : final_resp.evt.copy_barcode};
             }
 
-            if ($scope.trim_list && checkinSvc.checkins.length > 20)
+            if ($scope.trim_list && checkinSvc.checkins.length > 20) {
                 //cut array short at 20 items
                 checkinSvc.checkins.length = 20;
+                checkinGrid.prepend(20);
+            } else {
+                checkinGrid.prepend();
+            }
         },
         function() {
             // Checkin was rejected somewhere along the way.
@@ -249,9 +253,7 @@ function($scope , $q , $window , $location , $timeout , egCore , checkinSvc , eg
             checkinSvc.checkins.splice(pos, 1);
 
         })['finally'](function() {
-
-            // when all is said and done, refresh the grid and refocus
-            checkinGrid.refresh();
+            // when all is said and done, refocus
             $scope.focusMe = true;
         });
     }
