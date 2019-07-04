@@ -56,6 +56,7 @@ Installing prerequisites
 
   * **PostgreSQL**: The minimum supported version is 9.4.
   * **Linux**: Evergreen has been tested on 
+    Debian Buster (10), 
     Debian Stretch (9), 
     Debian Jessie (8), 
     Ubuntu Bionic Beaver (18.04), 
@@ -74,7 +75,7 @@ before you can successfully configure, compile, and install Evergreen.
 +
 2. Issue the following commands as the *root* Linux account to install
    prerequisites using the `Makefile.install` prerequisite installer,
-   substituting `debian-stretch`,`debian-jessie`,`ubuntu-bionic`, or
+   substituting `debian-buster`,`debian-stretch`,`debian-jessie`,`ubuntu-bionic`, or
    `ubuntu-xenial` for <osname> below:
 +
 [source, bash]
@@ -235,7 +236,7 @@ chown -R opensrf:opensrf /openils
 Run ldconfig
 ------------
 
-On Debian Stretch, run the following command as the root user:
+On Debian Stretch / Buster, run the following command as the root user:
 
 [source, bash]
 ------------------------------------------------------------------------------
@@ -423,6 +424,7 @@ command below based on your operating system.
 
 [source, bash]
 ------------------------------------------------------------------------------
+make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-buster
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-stretch
 make -f Open-ILS/src/extras/Makefile.install postgres-server-debian-jessie
 make -f Open-ILS/src/extras/Makefile.install postgres-server-ubuntu-xenial
