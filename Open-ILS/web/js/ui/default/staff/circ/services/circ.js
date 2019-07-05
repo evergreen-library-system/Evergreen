@@ -1662,7 +1662,6 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
     }
 
     service.route_dialog = function(tmpl, evt, params, options) {
-        if (options.suppress_popups) return;
         if (angular.isArray(evt)) evt = evt[0];
 
         return service.collect_route_data(tmpl, evt, params, options)
@@ -1729,7 +1728,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
             // when auto-print is on, skip the dialog and go straight
             // to printing.
-            if (options.auto_print_holds_transits) 
+            if (options.auto_print_holds_transits || options.suppress_popups) 
                 return print_transit(template);
 
             return $uibModal.open({
