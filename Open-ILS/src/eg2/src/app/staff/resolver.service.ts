@@ -133,9 +133,17 @@ export class StaffResolver implements Resolve<Observable<any>> {
             'ui.staff.max_recent_patrons',
             'ui.staff.angular_catalog.enabled' // navbar
         ]).then(settings => {
-            this.format.wsOrgTimezone = settings['lib.timezone'];
-            this.format.dateFormat = settings['webstaff.format.dates'];
-            this.format.dateTimeFormat = settings['webstaff.format.date_and_time'];
+            // Avoid clobbering defaults
+            if (settings['lib.timezone']) {
+                this.format.wsOrgTimezone = settings['lib.timezone'];
+            }
+            if (settings['webstaff.format.dates']) {
+                this.format.dateFormat = settings['webstaff.format.dates'];
+            }
+            if (settings['webstaff.format.date_and_time']) {
+                this.format.dateTimeFormat =
+                    settings['webstaff.format.date_and_time'];
+            }
         });
     }
 }
