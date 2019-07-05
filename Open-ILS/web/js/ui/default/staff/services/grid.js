@@ -498,6 +498,9 @@ angular.module('egGridMod',
                 .then(function(conf) {
                     if (!conf) return;
 
+                    // load all column options before validating saved columns
+                    $scope.handleAutoFields();
+
                     var columns = grid.columnsProvider.columns;
                     var new_cols = [];
 
