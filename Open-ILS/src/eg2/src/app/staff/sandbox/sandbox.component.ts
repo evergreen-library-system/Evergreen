@@ -94,7 +94,7 @@ export class SandboxComponent implements OnInit {
                 {'id': 4, 'includeAncestors': false, 'includeDescendants': true}, (c: FormControl) => {
                     // An Angular custom validator
                     if (c.value.orgIds && c.value.orgIds.length > 5) {
-                        return { tooMany: 'That\'s too many bad libraries!' };
+                        return { tooMany: 'That\'s too many fancy libraries!' };
                     } else {
                         return null;
                     }
@@ -102,7 +102,7 @@ export class SandboxComponent implements OnInit {
         });
 
         this.badOrgForm.get('badOrgSelector').valueChanges.subscribe(bad => {
-            this.toast.danger('The worst libraries are: ' + JSON.stringify(bad.orgIds));
+            this.toast.danger('The fanciest libraries are: ' + JSON.stringify(bad.orgIds));
         });
 
         this.gridDataSource.data = [

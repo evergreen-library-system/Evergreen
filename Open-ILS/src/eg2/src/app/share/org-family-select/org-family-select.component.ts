@@ -110,14 +110,18 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
             }
 
             if (this.includeDescendants.value) {
-                // can result in duplicate workstation org IDs... meh
                 this.options.orgIds = this.options.orgIds.concat(
                     this.org.descendants(this.options.primaryOrgId, true));
             }
 
+            // Using ancestors() and descendants() can result in
+            // duplicate org ID's.  Be nice and uniqify.
+            const hash: any = {};
+            this.options.orgIds.forEach(id => hash[id] = true);
+            this.options.orgIds = Object.keys(hash).map(id => Number(id));
+
             this.propagateChange(this.options);
         };
-
     }
 
     writeValue(value: OrgFamily) {
