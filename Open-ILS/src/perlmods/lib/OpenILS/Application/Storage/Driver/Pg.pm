@@ -10,10 +10,15 @@
   # OpenILS::Application::Storage.
   #-------------------------------------------------------------------------------
     package OpenILS::Application::Storage::Driver::Pg;
-    use OpenILS::Application::Storage::Driver::Pg::cdbi;
-    use OpenILS::Application::Storage::Driver::Pg::fts;
-    use OpenILS::Application::Storage::Driver::Pg::storage;
-    use OpenILS::Application::Storage::Driver::Pg::dbi;
+    # The following modules add, or use, subroutines in modules that
+    # are not available when this module is compiled.  We therefore
+    # "require" these modules rather than "use" them.  Everything is
+    # available at run time.
+    require OpenILS::Application::Storage::Driver::Pg::cdbi;
+    require OpenILS::Application::Storage::Driver::Pg::fts;
+    require OpenILS::Application::Storage::Driver::Pg::storage;
+    require OpenILS::Application::Storage::Driver::Pg::dbi;
+
     use UNIVERSAL::require; 
     BEGIN {                 
         'Class::DBI::Frozen::301'->use or 'Class::DBI'->use or die $@;
