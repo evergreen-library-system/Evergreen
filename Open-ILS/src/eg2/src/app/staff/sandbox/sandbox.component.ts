@@ -23,7 +23,10 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import * as Moment from 'moment-timezone';
 
 @Component({
-  templateUrl: 'sandbox.component.html'
+  templateUrl: 'sandbox.component.html',
+  styles: ['.date-time-input.ng-invalid {border: 5px purple solid;}',
+    '.date-time-input.ng-valid {border: 5px green solid; animation: slide 5s linear 1s infinite alternate;}',
+    '@keyframes slide {0% {margin-left:0px;} 50% {margin-left:200px;}']
 })
 export class SandboxComponent implements OnInit {
 

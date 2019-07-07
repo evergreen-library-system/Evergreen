@@ -1,7 +1,8 @@
 import {Injectable, Pipe, PipeTransform} from '@angular/core';
-import {DatePipe, CurrencyPipe} from '@angular/common';
+import {DatePipe, CurrencyPipe, getLocaleDateFormat, getLocaleTimeFormat, getLocaleDateTimeFormat, FormatWidth} from '@angular/common';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
+import {LocaleService} from '@eg/core/locale.service';
 import * as Moment from 'moment-timezone';
 
 /**
@@ -31,7 +32,8 @@ export class FormatService {
         private datePipe: DatePipe,
         private currencyPipe: CurrencyPipe,
         private idl: IdlService,
-        private org: OrgService
+        private org: OrgService,
+        private locale: LocaleService
     ) {
 
         // Create an inilne polyfill for Number.isNaN, which is
@@ -195,44 +197,81 @@ export class FormatService {
      *
      * Returns a blank string if it can't do this transformation.
      */
-    private makeFormatParseable(original: string): string {
+    private makeFormatParseable(original: string, locale?: string): string {
         if (!original) { return ''; }
+        if (!locale) { locale = locale; }
         switch (original) {
             case 'short': {
-                return 'M/D/YY, h:mm a';
+                const template = getLocaleDateTimeFormat(locale, FormatWidth.Short);
+                const date = getLocaleDateFormat(locale, FormatWidth.Short);
+                const time = getLocaleTimeFormat(locale, FormatWidth.Short);
+                original = template
+                    .replace('{1}', date)
+                    .replace('{0}', time)
+                    .replace(/\'(\w+)\'/, '[$1]');
+                break;
             }
             case 'medium': {
-                return 'MMM D, Y, h:mm:ss a';
+                const template = getLocaleDateTimeFormat(locale, FormatWidth.Medium);
+                const date = getLocaleDateFormat(locale, FormatWidth.Medium);
+                const time = getLocaleTimeFormat(locale, FormatWidth.Medium);
+                original = template
+                    .replace('{1}', date)
+                    .replace('{0}', time)
+                    .replace(/\'(\w+)\'/, '[$1]');
+                break;
             }
             case 'long': {
-                return 'MMMM D, Y, h:mm:ss a [GMT]Z';
+                const template = getLocaleDateTimeFormat(locale, FormatWidth.Long);
+                const date = getLocaleDateFormat(locale, FormatWidth.Long);
+                const time = getLocaleTimeFormat(locale, FormatWidth.Long);
+                original = template
+                    .replace('{1}', date)
+                    .replace('{0}', time)
+                    .replace(/\'(\w+)\'/, '[$1]');
+                break;
             }
             case 'full': {
-                return 'dddd, MMMM D, Y, h:mm:ss a [GMT]Z';
+                const template = getLocaleDateTimeFormat(locale, FormatWidth.Full);
+                const date = getLocaleDateFormat(locale, FormatWidth.Full);
+                const time = getLocaleTimeFormat(locale, FormatWidth.Full);
+                original = template
+                    .replace('{1}', date)
+                    .replace('{0}', time)
+                    .replace(/\'(\w+)\'/, '[$1]');
+                break;
             }
             case 'shortDate': {
-                return 'M/D/YY';
+                original = getLocaleDateFormat(locale, FormatWidth.Short);
+                break;
             }
             case 'mediumDate': {
-                return 'MMM D, Y';
+                original = getLocaleDateFormat(locale, FormatWidth.Medium);
+                break;
             }
             case 'longDate': {
-                return 'MMMM D, Y';
+                original = getLocaleDateFormat(locale, FormatWidth.Long);
+                break;
             }
             case 'fullDate': {
-                return 'dddd, MMMM D, Y';
+                original = getLocaleDateFormat(locale, FormatWidth.Full);
+                break;
             }
             case 'shortTime': {
-                return 'h:mm a';
+                original = getLocaleTimeFormat(locale, FormatWidth.Short);
+                break;
             }
             case 'mediumTime': {
-                return 'h:mm:ss a';
+                original = getLocaleTimeFormat(locale, FormatWidth.Medium);
+                break;
             }
             case 'longTime': {
-                return 'h:mm:ss a [GMT]Z';
+                original = getLocaleTimeFormat(locale, FormatWidth.Long);
+                break;
             }
             case 'fullTime': {
-                return 'h:mm:ss a [GMT]Z';
+                original = getLocaleTimeFormat(locale, FormatWidth.Full);
+                break;
             }
         }
         return original
@@ -260,4 +299,3 @@ export class FormatValuePipe implements PipeTransform {
         return this.formatter.transform({value: value, datatype: datatype});
     }
 }
-

@@ -34,7 +34,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
         @Self()
         public controlDir: NgControl, // so that the template can access validation state
     ) {
-        controlDir.valueAccessor = this;
+        if (controlDir) { controlDir.valueAccessor = this; }
         this.onChangeAsIso = new EventEmitter<string>();
         const startValue = Moment.tz([], this.timezone);
         this.dateTimeForm = new FormGroup({

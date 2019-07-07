@@ -25,7 +25,7 @@ export class DatetimeValidator implements Validator {
     selector: '[egValidDatetime]',
     providers: [{
         provide: NG_VALIDATORS,
-        useExisting: forwardRef(() => DatetimeValidator),
+        useExisting: DatetimeValidatorDirective,
         multi: true
     }]
 })

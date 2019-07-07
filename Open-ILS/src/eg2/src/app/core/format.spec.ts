@@ -1,4 +1,4 @@
-import {DatePipe, CurrencyPipe} from '@angular/common';
+import {DatePipe, CurrencyPipe, registerLocaleData} from '@angular/common';
 import {IdlService} from './idl.service';
 import {EventService} from './event.service';
 import {NetService} from './net.service';
@@ -6,8 +6,13 @@ import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
 import {StoreService} from './store.service';
 import {OrgService} from './org.service';
+import {LocaleService} from './locale.service';
+import {Location} from '@angular/common';
 import {FormatService} from './format.service';
-
+import {SpyLocation} from '@angular/common/testing';
+import localeArJO from '@angular/common/locales/ar-JO';
+import localeCs from '@angular/common/locales/cs';
+import localeFrCA from '@angular/common/locales/fr-CA';
 
 describe('FormatService', () => {
 
@@ -20,6 +25,9 @@ describe('FormatService', () => {
     let orgService: OrgService;
     let evtService: EventService;
     let storeService: StoreService;
+    let localeService: LocaleService;
+    // tslint:disable-next-line:prefer-const
+    let location: SpyLocation;
     let service: FormatService;
 
     beforeEach(() => {
@@ -32,11 +40,13 @@ describe('FormatService', () => {
         authService = new AuthService(evtService, netService, storeService);
         pcrudService = new PcrudService(idlService, netService, authService);
         orgService = new OrgService(netService, authService, pcrudService);
+        localeService = new LocaleService(location, null, pcrudService);
         service = new FormatService(
             datePipe,
             currencyPipe,
             idlService,
-            orgService
+            orgService,
+            localeService
         );
     });
 
@@ -98,9 +108,24 @@ describe('FormatService', () => {
         const momentVersion = service['makeFormatParseable']('MMMM d, y, h:mm:ss a z');
         expect(momentVersion).toBe('MMMM D, Y, h:mm:ss a [GMT]Z');
     });
-    it('should transform full Angular format strings to a valid MomentJS one', () => {
-        const momentVersion = service['makeFormatParseable']('full');
-        expect(momentVersion).toBe('dddd, MMMM D, Y, h:mm:ss a [GMT]Z');
+    it('should transform full Angular format strings to a valid MomentJS one using Angular locale en-US', () => {
+        const momentVersion = service['makeFormatParseable']('full', 'en-US');
+        expect(momentVersion).toBe('dddd, MMMM D, Y [at] h:mm:ss a [GMT]Z');
+    });
+    it('should transform shortDate Angular format strings to a valid MomentJS one using Angular locale cs-CZ', () => {
+        registerLocaleData(localeCs);
+        const momentVersion = service['makeFormatParseable']('shortDate', 'cs-CZ');
+        expect(momentVersion).toBe('DD.MM.YY');
+    });
+    it('should transform mediumDate Angular format strings to a valid MomentJS one using Angular locale fr-CA', () => {
+        registerLocaleData(localeFrCA);
+        const momentVersion = service['makeFormatParseable']('mediumDate', 'fr-CA');
+        expect(momentVersion).toBe('D MMM Y');
+    });
+    it('should transform long Angular format strings to a valid MomentJS one using Angular locale ar-JO', () => {
+        registerLocaleData(localeArJO);
+        const momentVersion = service['makeFormatParseable']('long', 'ar-JO');
+        expect(momentVersion).toBe('D MMMM Y h:mm:ss a [GMT]Z');
     });
     it('can create a valid Momentjs object given a valid datetime string and correct format', () => {
         const moment = service['momentize']('7/3/12, 6:06 PM', 'M/D/YY, h:mm a', 'Africa/Addis_Ababa', false);
