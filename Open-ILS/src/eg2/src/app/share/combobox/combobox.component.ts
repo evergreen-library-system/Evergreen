@@ -107,8 +107,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     // and display.  Default version trims leading/trailing spaces.
     formatDisplayString: (e: ComboboxEntry) => string;
 
-    // Stub function required by ControlValueAccessor
+    // Stub functions required by ControlValueAccessor
     propagateChange = (_: any) => {};
+    propagateTouch = () => {};
 
     constructor(
       private elm: ElementRef,
@@ -155,14 +156,12 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     }
 
     onClick($event) {
-        this.registerOnTouched();
         this.click$.next($event.target.value);
     }
 
     openMe($event) {
         // Give the input a chance to focus then fire the click
         // handler to force open the typeahead
-        this.registerOnTouched();
         this.elm.nativeElement.getElementsByTagName('input')[0].focus();
         setTimeout(() => this.click$.next(''));
     }
@@ -232,6 +231,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             this.selectorChanged(
                 {item: this.selected, preventDefault: () => true});
         }
+        this.propagateTouch();
     }
 
     // Fired by the typeahead to inform us of a change.
@@ -313,7 +313,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
         this.propagateChange = fn;
     }
 
-    registerOnTouched() { }
+    registerOnTouched(fn) {
+        this.propagateTouch = fn;
+    }
 
 }
 

@@ -58,8 +58,9 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         return date;
     }
 
-    // Stub function required by ControlValueAccessor
+    // Stub functions required by ControlValueAccessor
     propagateChange = (_: any) => {};
+    propagateTouch = () => {};
 
     constructor() {
         this.onChangeAsDate = new EventEmitter<Date>();
@@ -78,11 +79,7 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         }
 
         if (this.initialDate) {
-            this.current = {
-                year: this.initialDate.getFullYear(),
-                month: this.initialDate.getMonth() + 1,
-                day: this.initialDate.getDate()
-            };
+            this.writeValue(this.initialDate);
         }
     }
 
@@ -126,8 +123,12 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
     }
 
     writeValue(value: Date) {
-        if (value !== undefined) {
-            this.initialDate = value;
+        if (value) {
+            this.current = {
+                year: value.getFullYear(),
+                month: value.getMonth() + 1,
+                day: value.getDate()
+            };
         }
     }
 
@@ -135,7 +136,9 @@ export class DateSelectComponent implements OnInit, ControlValueAccessor {
         this.propagateChange = fn;
     }
 
-    registerOnTouched() { }
+    registerOnTouched(fn) {
+        this.propagateTouch = fn;
+    }
 }
 
 
