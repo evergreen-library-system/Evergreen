@@ -61,6 +61,7 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
     familySelectors: FormGroup;
 
     propagateChange = (_: OrgFamily) => {};
+    propagateTouch = () => {};
 
     constructor(
         private auth: AuthService,
@@ -138,7 +139,9 @@ export class OrgFamilySelectComponent implements ControlValueAccessor, OnInit {
         this.propagateChange = fn;
     }
 
-    registerOnTouched() {}
+    registerOnTouched(fn) {
+        this.propagateTouch = fn;
+    }
 
     disableAncestorSelector(): boolean {
         return this.options.primaryOrgId === this.org.root().id();

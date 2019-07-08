@@ -12,14 +12,14 @@
   <div class="form-check" *ngIf="!hideAncestorSelector">
     <input type="checkbox"
       formControlName="includeAncestors"
-      (blur)="registerOnTouched()"
+      (blur)="propagateTouch()"
       class="form-check-input" id="{{domId}}-include-ancestors">
     <label class="form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
   </div>
   <div class="form-check" *ngIf="!hideDescendantSelector">
     <input type="checkbox"
       formControlName="includeDescendants"
-      (blur)="registerOnTouched()"
+      (blur)="propagateTouch()"
       class="form-check-input" id="{{domId}}-include-descendants">
     <label class="form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
   </div>
