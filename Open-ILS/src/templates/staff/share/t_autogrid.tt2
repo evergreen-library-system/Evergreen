@@ -318,7 +318,7 @@
           ng-dblclick="gridControls.activateItem(item)"
           ng-repeat="col in columns"
           style="text-align:{{col.align}}; flex:{{col.flex}}"
-          ng-show="col.visible">
+          ng-if="col.visible">
 
           <!-- if the cell comes with its own template,
                translate that content into HTML and insert it here -->
