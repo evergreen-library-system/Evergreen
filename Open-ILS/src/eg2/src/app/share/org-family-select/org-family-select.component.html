@@ -1,26 +1,31 @@
-<div class="input-group">
-  <div class="input-group-prepend">
-    <span class="input-group-text">{{labelText}}</span>
+<form class="form-inline" [formGroup]="familySelectors">
+  <div class="input-group">
+    <div class="input-group-prepend">
+      <span class="input-group-text">{{labelText}}</span>
+    </div>
+    <eg-org-select [domId]="domId"
+      (onChange)="orgOnChange($event)"
+      [limitPerms]="limitPerms"
+      [initialOrgId]="selectedOrgId">
+    </eg-org-select>
   </div>
-  <eg-org-select [domId]="domId"
-    (onChange)="orgOnChange($event)"
-    [limitPerms]="limitPerms"
-    [initialOrgId]="selectedOrgId">
-  </eg-org-select>
-</div>
-<form class="pl-2" [formGroup]="familySelectors">
-  <div class="form-check" *ngIf="!hideAncestorSelector">
-    <input type="checkbox"
-      formControlName="includeAncestors"
-      (blur)="propagateTouch()"
-      class="form-check-input" id="{{domId}}-include-ancestors">
-    <label class="form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
-  </div>
-  <div class="form-check" *ngIf="!hideDescendantSelector">
-    <input type="checkbox"
-      formControlName="includeDescendants"
-      (blur)="propagateTouch()"
-      class="form-check-input" id="{{domId}}-include-descendants">
-    <label class="form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
+
+  <!-- stack the checkboxes -->
+  <div class="ml-2 d-flex flex-column align-items-start">
+    <div class="form-check" *ngIf="!hideAncestorSelector">
+      <input type="checkbox"
+        formControlName="includeAncestors"
+        (blur)="propagateTouch()"
+        class="form-check-input" id="{{domId}}-include-ancestors">
+      <label class="form-check-label" for="{{domId}}-include-ancestors" i18n>+ Ancestors</label>
+    </div>
+    <div class="form-check" *ngIf="!hideDescendantSelector">
+      <input type="checkbox"
+        formControlName="includeDescendants"
+        (blur)="propagateTouch()"
+        class="form-check-input" id="{{domId}}-include-descendants">
+      <label class="form-check-label" for="{{domId}}-include-descendants" i18n>+ Descendants</label>
+    </div>
   </div>
 </form>
+
