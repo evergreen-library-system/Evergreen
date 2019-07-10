@@ -5,6 +5,8 @@ import {NetService} from '@eg/core/net.service';
 import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
 import {MarcRecord} from './marcrecord';
 import {ComboboxEntry, ComboboxComponent
   } from '@eg/share/combobox/combobox.component';
@@ -50,6 +52,8 @@ export class MarcEditorComponent implements OnInit {
     @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
     @ViewChild('confirmUndelete') confirmUndelete: ConfirmDialogComponent;
     @ViewChild('cannotDelete') cannotDelete: ConfirmDialogComponent;
+    @ViewChild('successMsg') successMsg: StringComponent;
+    @ViewChild('failMsg') failMsg: StringComponent;
 
     constructor(
         private evt: EventService,
@@ -57,7 +61,8 @@ export class MarcEditorComponent implements OnInit {
         private net: NetService,
         private auth: AuthService,
         private org: OrgService,
-        private pcrud: PcrudService
+        private pcrud: PcrudService,
+        private toast: ToastService
     ) {
         this.sources = [];
         this.recordSaved = new EventEmitter<string>();
@@ -101,10 +106,11 @@ export class MarcEditorComponent implements OnInit {
                 const evt = this.evt.parse(response);
                 if (evt) {
                     console.error(evt);
-                    // TODO: toast
+                    this.failMsg.current().then(msg => this.toast.warning(msg));
+                    return;
                 }
 
-                // TODO: toast
+                this.successMsg.current().then(msg => this.toast.success(msg));
                 this.recordSaved.emit(xml);
                 return response;
             });
