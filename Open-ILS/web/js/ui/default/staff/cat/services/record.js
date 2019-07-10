@@ -139,9 +139,15 @@ angular.module('egCoreMod')
         scope : {
             recordId : '=',
             record : '=',
-            noMarcLink : '@'
+            noMarcLink : '@',
+            mode: '<'
         },
-        templateUrl : './cat/share/t_record_summary',
+        templateUrl : function(element, attrs) {
+            if (attrs.mode == "slim") {
+                return  './cat/share/t_record_summary_slim';
+            }
+            return './cat/share/t_record_summary';
+        },
         controller : 
                    ['$scope','egCore','$sce','egBibDisplay',
             function($scope , egCore , $sce , egBibDisplay) {

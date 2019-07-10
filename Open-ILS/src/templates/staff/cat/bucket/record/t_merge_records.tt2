@@ -6,6 +6,16 @@
   </div>
   <div class="modal-body">
       <div class="row pad-all-min">
+        <div class="col-xs-12 flex-row">
+          <div ng-if="lead_id" class="flex-2">
+            <eg-record-summary record-id="lead_id" record="summaryRecord" mode="slim"></eg-record-summary>
+          </div>
+          <div ng-repeat="rec in records" class="flex-2">
+            <eg-record-summary record-id="rec.id" record="summaryRecord" mode="slim"></eg-record-summary>
+          </div>
+        </div>
+      </div>
+      <div class="row pad-all-min">
         <div class="col-xs-3">
           <label for="merge_profile_selector">[% l('Choose merge profile') %]</label>
           <eg-fm-value-selector id="merge_profile_selector" ng-model="merge_profile" idl-class="vmp" ou-setting="cat.default_merge_profile" filter="{'preserve_spec':{'=':null}}" sticky-setting="eg.cat.record_bucket.default_merge_profile"></eg-fm-value-selector>

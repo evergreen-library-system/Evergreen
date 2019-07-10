@@ -1,0 +1,124 @@
+<div class="strong-text-2">
+  <div class="flex-row">
+    <div class="flex-cell">
+        [% l('Record Summary') %]
+        <span ng-if="record.deleted() == 't'" class="record-summary-alert">
+            [% l('(Deleted)') %]
+        </span>
+    </div>
+    <div ng-if="!noMarcLink" class="flex-cell flex-2">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}/marc_html">
+        (MARC)
+      </a>
+    </div>
+    <div class="flex-cell">
+      <a class="pull-right" href ng-click="toggle_expand_summary()"
+        title="[% l('Collapse Record Summary Display') %]"
+        ng-hide="collapse_summary()">
+        <span class="glyphicon glyphicon-resize-small"></span>
+      </a>
+      <a class="pull-right" href ng-click="toggle_expand_summary()"
+        title="[% l('Expand Record Summary Display') %]"
+        ng-show="collapse_summary()">
+        <span class="glyphicon glyphicon-resize-full"></span>
+      </a>
+    </div>
+  </div>
+</div>
+<div ng-if="record.merged_to()" class="row alert alert-warning">
+  <a href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.merged_to()}}">
+    [% l('Record merged to #[_1] on [_2]', 
+         '{{record.merged_to()}}',
+         '{{record.merge_date() | date:$root.egDateAndTimeFormat}}') 
+    %]
+  </a>
+</div>
+<div class="flex-container-striped flex-container-bordered" ng-show="collapse_summary()" style="line-height: 16px">
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Title:') %]</div>
+    <div class="flex-cell flex-3">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+        {{rec_display.title}}
+      </a>
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Author:') %]</div>
+    <div class="flex-cell flex-3">{{rec_display.author}}</div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
+    <div class="flex-cell flex-3">
+      {{rec_display.pubdate}}
+    </div>
+  </div>
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
+    <div class="flex-cell flex-3">{{record.id()}}</div>
+  </div>
+</div>
+
+<div class="flex-container-striped flex-container-bordered" ng-hide="collapse_summary()" style="line-height: 16px">
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Title:') %]</div>
+    <div class="flex-cell flex-3">
+      <a target="_self" 
+        href="[% ctx.base_path %]/staff/cat/catalog/record/{{record.id()}}">
+        {{rec_display.title}}
+      </a>
+    </div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Edition:') %]</div>
+    <div class="flex-cell flex-3">{{rec_display.edition}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('TCN:') %]</div>
+    <div class="flex-cell flex-3">{{record.tcn_value()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Created By:') %]</div>
+    <div class="flex-cell flex-3">{{record.creator().usrname()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Author:') %]</div>
+    <div class="flex-cell flex-3">{{rec_display.author}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Pub Date:') %]</div>
+    <div class="flex-cell flex-3">{{rec_display.pubdate}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Database ID:') %]</div>
+    <div class="flex-cell flex-3">{{record.id()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Last Edited By:') %]</div>
+    <div class="flex-cell flex-3">{{record.editor().usrname()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Bib Call #:') %]</div>
+    <div class="flex-cell flex-3"><span tooltip-html-unsafe="{{bib_cn_tooltip}}">{{bib_cn}}<span></div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Record Owner:') %]</div>
+    <div class="flex-cell flex-3">{{record.owner().shortname()}}</div>
+  </div><!-- flex-row -->
+
+  <div class="flex-row">
+    <div class="flex-cell strong-text">[% l('Last Edited On:') %]</div>
+    <div class="flex-cell flex-3">{{record.edit_date() | date:$root.egDateAndTimeFormat}}</div>
+  </div><!-- flex-row -->
+</div>
+
