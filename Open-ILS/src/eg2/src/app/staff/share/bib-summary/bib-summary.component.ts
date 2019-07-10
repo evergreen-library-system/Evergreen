@@ -3,11 +3,12 @@ import {OrgService} from '@eg/core/org.service';
 import {BibRecordService, BibRecordSummary
     } from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
+import {CatalogService} from '@eg/share/catalog/catalog.service';
 
 @Component({
   selector: 'eg-bib-summary',
   templateUrl: 'bib-summary.component.html',
-  styles: ['.eg-bib-summary .card-header {padding: .25rem .5rem}']
+  styleUrls: ['bib-summary.component.css']
 })
 export class BibSummaryComponent implements OnInit {
 
@@ -38,7 +39,8 @@ export class BibSummaryComponent implements OnInit {
     constructor(
         private bib: BibRecordService,
         private org: OrgService,
-        private store: ServerStoreService
+        private store: ServerStoreService,
+        private cat: CatalogService
     ) {}
 
     ngOnInit() {
@@ -66,7 +68,6 @@ export class BibSummaryComponent implements OnInit {
             summary.getBibCallNumber();
             this.bib.fleshBibUsers([summary.record]);
             this.summary = summary;
-            console.log(this.summary.display);
         });
     }
 
@@ -76,6 +77,9 @@ export class BibSummaryComponent implements OnInit {
         }
     }
 
+    iconFormatLabel(code: string): string {
+        return this.cat.iconFormatLabel(code);
+    }
 }
 
 
