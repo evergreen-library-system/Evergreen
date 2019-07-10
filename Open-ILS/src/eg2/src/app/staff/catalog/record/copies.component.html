@@ -16,7 +16,7 @@
 </ng-template>
 
 <ng-template #holdableTemplate let-copy="row" let-context="userContext">
-  <span *ngIf="context.holdable(copy)" i18n>
+  <span *ngIf="context.holdable(copy)">
     <div class="border-bottom">
       <a routerLink="/staff/catalog/hold/C"
         [queryParams]="{target: copy.id}"
