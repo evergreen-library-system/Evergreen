@@ -4,6 +4,9 @@
 
 declare var MARC21;
 
+// MARC breaker delimiter
+const DELIMITER = '$';
+
 export class MarcRecord {
 
     id: number; // Database ID when known.
@@ -12,7 +15,7 @@ export class MarcRecord {
     breakerText: string;
 
     constructor(xml: string) {
-        this.record = new MARC21.Record({marcxml: xml});
+        this.record = new MARC21.Record({marcxml: xml, delimiter: DELIMITER});
         this.breakerText = this.record.toBreaker();
     }
 
@@ -25,7 +28,8 @@ export class MarcRecord {
     }
 
     absorbBreakerChanges() {
-        this.record = new MARC21.Record({marcbreaker: this.breakerText});
+        this.record = new MARC21.Record(
+            {marcbreaker: this.breakerText, delimiter: DELIMITER});
     }
 }
 
