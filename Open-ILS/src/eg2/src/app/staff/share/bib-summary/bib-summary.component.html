@@ -3,6 +3,15 @@
   <div class="card-header d-flex">
     <div class="font-weight-bold">
       Record Summary
+      <ng-container *ngIf="summary.attributes.icon_format && summary.attributes.icon_format[0]">
+        <ng-container *ngFor="let icon of summary.attributes.icon_format">
+          <span class="pr-1 pl-2">
+            <img class="pr-1"
+              src="/images/format_icons/icon_format/{{icon}}.png"/>
+            <span class="font-weight-normal">{{iconFormatLabel(icon)}}</span>
+          </span>
+        </ng-container>
+      </ng-container>
     </div>
     <div class="flex-1"></div>
     <div>
@@ -18,53 +27,70 @@
       </a>
     </div>
   </div>
-  <div class="card-body">
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item">
-        <div class="d-flex">
-          <div class="flex-1 font-weight-bold" i18n>Title:</div>
-          <div class="flex-3">{{summary.display.title}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Edition:</div>
-          <div class="flex-1">{{summary.display.edition}}</div>
-          <div class="flex-1 font-weight-bold" i18n>TCN:</div>
-          <div class="flex-1">{{summary.record.tcn_value()}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Created By:</div>
-          <div class="flex-1" *ngIf="summary.record.creator().usrname">
-            <a href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
-              {{summary.record.creator().usrname()}}
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="list-group-item" *ngIf="expand">
-        <div class="d-flex">
-          <div class="flex-1 font-weight-bold" i18n>Author:</div>
-          <div class="flex-3">{{summary.display.author}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Pubdate:</div>
-          <div class="flex-1">{{summary.display.pubdate}}</div>
-          <div class="flex-1 font-weight-bold" i18n>Database ID:</div>
-          <div class="flex-1">{{summary.id}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Last Edited By:</div>
-          <div class="flex-1" *ngIf="summary.record.editor().usrname">
-            <a href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
-              {{summary.record.editor().usrname()}}
-            </a>
-          </div>
-        </div>
-      </li>
-      <li class="list-group-item" *ngIf="expand">
-        <div class="d-flex">
-          <div class="flex-1 font-weight-bold" i18n>Bib Call #:</div>
-          <div class="flex-3">{{summary.bibCallNumber}}</div>
-          <div class="flex-1 font-weight-bold" i18n>Record Owner:</div>
-          <div class="flex-1">{{orgName(summary.record.owner())}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Created On:</div>
-          <div class="flex-1">{{summary.record.create_date() | date:'short'}}</div>
-          <div class="flex-1 font-weight-bold pl-1" i18n>Last Edited On:</div>
-          <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
-        </div>
-      </li>
-    </ul>
-  </div>
+  <div class="row">
+
+    <!-- in expanded display, show the jacket image along the left -->
+    <ng-container *ngIf="expand">
+      <div class="col-lg-1 pr-0">
+        <a href="/opac/extras/ac/jacket/large/r/{{summary.id}}">
+          <img class="jacket jacket-medium"
+            alt="Jacket Image" i18n-alt
+            src="/opac/extras/ac/jacket/medium/r/{{summary.id}}"/>
+        </a>
+      </div>
+    </ng-container>
+    
+    <!-- make room for the jacket image when expanded -->
+    <div [ngClass]="{'col-lg-11 pl-0': expand, 'col-lg-12': !expand}">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <div class="d-flex">
+              <div class="flex-1 font-weight-bold" i18n>Title:</div>
+              <div class="flex-3">{{summary.display.title}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Edition:</div>
+              <div class="flex-1">{{summary.display.edition}}</div>
+              <div class="flex-1 font-weight-bold" i18n>TCN:</div>
+              <div class="flex-1">{{summary.record.tcn_value()}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Created By:</div>
+              <div class="flex-1" *ngIf="summary.record.creator().usrname">
+                <a href="/eg/staff/circ/patron/{{summary.record.creator().id()}}/checkout">
+                  {{summary.record.creator().usrname()}}
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngIf="expand">
+            <div class="d-flex">
+              <div class="flex-1 font-weight-bold" i18n>Author:</div>
+              <div class="flex-3">{{summary.display.author}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Pubdate:</div>
+              <div class="flex-1">{{summary.display.pubdate}}</div>
+              <div class="flex-1 font-weight-bold" i18n>Database ID:</div>
+              <div class="flex-1">{{summary.id}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Last Edited By:</div>
+              <div class="flex-1" *ngIf="summary.record.editor().usrname">
+                <a href="/eg/staff/circ/patron/{{summary.record.editor().id()}}/checkout">
+                  {{summary.record.editor().usrname()}}
+                </a>
+              </div>
+            </div>
+          </li>
+          <li class="list-group-item" *ngIf="expand">
+            <div class="d-flex">
+              <div class="flex-1 font-weight-bold" i18n>Bib Call #:</div>
+              <div class="flex-3">{{summary.bibCallNumber}}</div>
+              <div class="flex-1 font-weight-bold" i18n>Record Owner:</div>
+              <div class="flex-1">{{orgName(summary.record.owner())}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Created On:</div>
+              <div class="flex-1">{{summary.record.create_date() | date:'short'}}</div>
+              <div class="flex-1 font-weight-bold pl-1" i18n>Last Edited On:</div>
+              <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div><!-- col -->
+  </div><!-- row -->
 </div>
 
