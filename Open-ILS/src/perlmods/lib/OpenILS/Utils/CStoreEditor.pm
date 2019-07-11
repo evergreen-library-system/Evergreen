@@ -52,9 +52,25 @@ our $personality = 'open-ils.cstore';
 
 sub personality { 
     my( $self, $app ) = @_;
-    $personality = $app if $app;
-    init() if $app; # rewrite if we changed personalities
-    return $personality;
+
+    if (ref($self)) {
+        # Instance-specific personality
+
+        if ($app) {
+            $self->{personality} = $app;
+            init();
+        }
+        return $self->{personality} || $personality;
+
+    } else {
+        # Process default personality
+
+        if ($app) {
+            $personality = $app;
+            init();
+        }
+        return $personality;
+    }
 }
 
 sub import {
