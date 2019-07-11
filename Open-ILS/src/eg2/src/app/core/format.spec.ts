@@ -97,15 +97,15 @@ describe('FormatService', () => {
     });
 
     it('should transform M/d/yy, h:mm a Angular format string to a valid MomentJS one', () => {
-        const momentVersion = service['makeFormatParseable']('M/d/yy, h:mm a');
+        const momentVersion = service['makeFormatParseable']('M/d/yy, h:mm a', 'en-US');
         expect(momentVersion).toBe('M/D/YY, h:mm a');
     });
     it('should transform MMM d, y, h:mm:ss a Angular format string to a valid MomentJS one', () => {
-        const momentVersion = service['makeFormatParseable']('MMM d, y, h:mm:ss a');
+        const momentVersion = service['makeFormatParseable']('MMM d, y, h:mm:ss a', 'ar-JO');
         expect(momentVersion).toBe('MMM D, Y, h:mm:ss a');
     });
     it('should transform MMMM d, y, h:mm:ss a z Angular format strings to a valid MomentJS one', () => {
-        const momentVersion = service['makeFormatParseable']('MMMM d, y, h:mm:ss a z');
+        const momentVersion = service['makeFormatParseable']('MMMM d, y, h:mm:ss a z', 'fr-CA');
         expect(momentVersion).toBe('MMMM D, Y, h:mm:ss a [GMT]Z');
     });
     it('should transform full Angular format strings to a valid MomentJS one using Angular locale en-US', () => {
@@ -133,7 +133,7 @@ describe('FormatService', () => {
     });
     it('can create a valid Momentjs object given a valid datetime string and a dateTimeFormat from org settings', () => {
         service['dateTimeFormat'] = 'M/D/YY, h:mm a';
-        const moment = service.momentizeDateTimeString('7/3/12, 6:06 PM', 'Africa/Addis_Ababa', false);
+        const moment = service.momentizeDateTimeString('7/3/12, 6:06 PM', 'Africa/Addis_Ababa', false, 'fr-CA');
         expect(moment.isValid()).toBe(true);
     });
 

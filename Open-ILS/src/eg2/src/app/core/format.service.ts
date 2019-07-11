@@ -159,17 +159,24 @@ export class FormatService {
     idlFormatDatetime(datetime: string, timezone: string): string { return this.momentizeDateTimeString(datetime, timezone).toISOString(); }
 
     /**
+     * Create a Moment from an ISO string
+     */
+    momentizeIsoString(isoString: string, timezone: string): Moment {
+        return (isoString.length) ? Moment(isoString, timezone) : Moment();
+    }
+
+    /**
      * Turn a date string into a Moment using the date format org setting.
      */
-    momentizeDateString(date: string, timezone: string, strict = false): Moment {
-        return this.momentize(date, this.makeFormatParseable(this.dateFormat), timezone, strict);
+    momentizeDateString(date: string, timezone: string, strict?, locale?): Moment {
+        return this.momentize(date, this.makeFormatParseable(this.dateFormat, locale), timezone, strict);
     }
 
     /**
      * Turn a datetime string into a Moment using the datetime format org setting.
      */
-    momentizeDateTimeString(date: string, timezone: string, strict = false): Moment {
-        return this.momentize(date, this.makeFormatParseable(this.dateTimeFormat), timezone, strict);
+    momentizeDateTimeString(date: string, timezone: string, strict?, locale?): Moment {
+        return this.momentize(date, this.makeFormatParseable(this.dateTimeFormat, locale), timezone, strict);
     }
 
     /**
@@ -184,9 +191,7 @@ export class FormatService {
                 }
                 return Moment.tz(date, format, false, timezone);
             }
-        // TODO: The following fallback returns the date at midnight UTC,
-        // rather than midnight in the local TZ
-        return Moment.tz(date, timezone);
+        return Moment(new Date(date), timezone);
         }
     }
 
@@ -199,7 +204,7 @@ export class FormatService {
      */
     private makeFormatParseable(original: string, locale?: string): string {
         if (!original) { return ''; }
-        if (!locale) { locale = locale; }
+        if (!locale) { locale = this.locale.currentLocaleCode(); }
         switch (original) {
             case 'short': {
                 const template = getLocaleDateTimeFormat(locale, FormatWidth.Short);
@@ -299,3 +304,4 @@ export class FormatValuePipe implements PipeTransform {
         return this.formatter.transform({value: value, datatype: datatype});
     }
 }
+
