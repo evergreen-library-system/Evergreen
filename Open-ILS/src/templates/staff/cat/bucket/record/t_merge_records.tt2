@@ -37,9 +37,9 @@
           ng-class="{'record-merge-container': !editing_inplace, 'record-edit-container': editing_inplace}">
           <tabset>
             <tab heading="[% l('Bib [_1]', '{{lead_id}}') %]">
-              <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 
+              <button class="btn btn-default btn-sm" ng-disabled="editing_inplace"
                 ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
-              <button class="btn btn-default btn-sm" ng-class="{disabled : editing_inplace}" 
+              <button class="btn btn-default btn-sm" ng-disabled="editing_inplace"
                 ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
               <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
                  in-place-mode="true" record-type="bre" embedded="true" 
