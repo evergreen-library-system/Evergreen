@@ -1,6 +1,6 @@
 
 <!-- todo disabled -->
-<ng-template #displayTemplate let-r="result">
+<ng-template #defaultDisplayTemplate let-r="result">
 {{r.label || r.id}}
 </ng-template>
 
@@ -14,7 +14,7 @@
     [required]="isRequired"
     [(ngModel)]="selected" 
     [ngbTypeahead]="filter"
-    [resultTemplate]="displayTemplate"
+    [resultTemplate]=" displayTemplate || defaultDisplayTemplate"
     [inputFormatter]="formatDisplayString"
     (click)="onClick($event)"
     (blur)="onBlur()"

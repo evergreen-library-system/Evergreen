@@ -3,7 +3,8 @@
  *  <!-- see also <eg-combobox-entry> -->
  * </eg-combobox>
  */
-import {Component, OnInit, Input, Output, ViewChild, EventEmitter, ElementRef, forwardRef} from '@angular/core';
+import {Component, OnInit, Input, Output, ViewChild, 
+    TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
@@ -98,6 +99,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             el.forEach(entry => this.asyncIds['' + entry.id] = true);
         }
     }
+
+    // When provided use this as the display template for each entry.
+    @Input() displayTemplate: TemplateRef<any>;
 
     // Emitted when the value is changed via UI.
     // When the UI value is cleared, null is emitted.
