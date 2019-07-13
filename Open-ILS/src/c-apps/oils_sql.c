@@ -1456,9 +1456,12 @@ static const jsonObject* verifyUserPCRUDfull( osrfMethodContext* ctx, int anon_o
 	const char* auth = jsonObjectGetString( jsonObjectGetIndex( ctx->params, 0 ) );
 
 	jsonObject* user = NULL;
+	int notify_failed_verify = 1; // assume failure
 
-	// If we are /not/ in anonymous mode
-	if( strcmp( "ANONYMOUS", auth ) ) {
+	if (!auth) {
+		// auth token is null, fail by default
+	} else if( strcmp( "ANONYMOUS", auth ) ) {
+		// If we are /not/ in anonymous mode
 		// See if we have the same authkey, and a user object,
 		// locally cached from a previous call
 		const char* cached_authkey = getAuthkey( ctx );
@@ -1476,33 +1479,37 @@ static const jsonObject* verifyUserPCRUDfull( osrfMethodContext* ctx, int anon_o
 		jsonObjectFree( auth_object );
 	
 		if( !user->classname || strcmp(user->classname, "au" )) {
-	
-			growing_buffer* msg = buffer_init( 128 );
-			buffer_fadd(
-				msg,
-				"%s: permacrud received a bad auth token: %s",
-				modulename,
-				auth
-			);
-	
-			char* m = buffer_release( msg );
-			osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
-					ctx->request, m );
-	
-			free( m );
 			jsonObjectFree( user );
 			user = NULL;
 		} else if( writeAuditInfo( ctx, oilsFMGetStringConst( user, "id" ), oilsFMGetStringConst( user, "wsid" ) ) ) {
 			// Failed to set audit information - But note that write_audit_info already set error information.
+			notify_failed_verify = 0;
 			jsonObjectFree( user );
 			user = NULL;
+		} else { // succeeded
+			notify_failed_verify = 0;
 		}
-
 
 	} else if ( anon_ok ) { // we /are/ (attempting to be) anonymous
 		user = jsonNewObjectType(JSON_ARRAY);
 		jsonObjectSetClass( user, "aou" );
 		oilsFMSetString(user, "id", "-1");
+		notify_failed_verify = 0;
+	}
+
+	if (notify_failed_verify) {
+		growing_buffer* msg = buffer_init( 128 );
+		buffer_fadd(
+			msg,
+			"%s: permacrud received a bad auth token: %s",
+			modulename,
+			auth
+		);
+
+		char* m = buffer_release( msg );
+		osrfAppSessionStatus( ctx->session, OSRF_STATUS_UNAUTHORIZED, "osrfMethodException",
+				ctx->request, m );
+		free( m );
 	}
 
 	setUserLogin( ctx, user );
