@@ -39,6 +39,7 @@ export class GridColumnComponent implements OnInit {
     // Used in conjunction with cellTemplate
     @Input() cellContext: any;
     @Input() cellTemplate: TemplateRef<any>;
+    @Input() cellPrintValue: (row: any, cell: GridColumn) => string;
 
     @Input() disableTooltip: boolean;
 
@@ -60,6 +61,7 @@ export class GridColumnComponent implements OnInit {
         col.hidden = this.hidden === true;
         col.isIndex = this.index === true;
         col.cellTemplate = this.cellTemplate;
+        col.cellPrintValue = this.cellPrintValue;
         col.cellContext = this.cellContext;
         col.disableTooltip = this.disableTooltip;
         col.isSortable = this.sortable;
