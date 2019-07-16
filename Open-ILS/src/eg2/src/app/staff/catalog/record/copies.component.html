@@ -44,11 +44,11 @@
     </eg-grid-column>
     <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Call Number / Item Notes" 
-      name="callnumber" [cellTemplate]="cnTemplate">
+    <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber" 
+      [cellTemplate]="cnTemplate" [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Barcode" name="barcode"
-      [cellTemplate]="barcodeTemplate">
+      [cellTemplate]="barcodeTemplate" [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Shelving Location" path="copy_location">
     </eg-grid-column>
@@ -60,7 +60,8 @@
       path="active_date" datatype="timestamp">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Holdable?" name="holdable" 
-      [cellTemplate]="holdableTemplate" [cellContext]="copyContext">
+      [cellTemplate]="holdableTemplate" [cellContext]="copyContext" 
+      [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Status" path="copy_status">
     </eg-grid-column>

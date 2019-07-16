@@ -30,6 +30,11 @@ export class GridColumn {
     ternaryBool: boolean;
     timezoneContextOrg: number;
     cellTemplate: TemplateRef<any>;
+
+    // Provide a way for cells that are generated via cellTemplate's
+    // to provide an alternate text value suitable for printing.
+    cellPrintValue: (row: any, cell: GridColumn) => string;
+
     cellContext: any;
     isIndex: boolean;
     isDragTarget: boolean;
@@ -805,11 +810,14 @@ export class GridContext {
 
 
     getColumnTextContent(row: any, col: GridColumn): string {
-        if (col.cellTemplate) {
-            // TODO
-            // Extract the text content from the rendered template.
+        if (col.cellPrintValue) {
+            return col.cellPrintValue(row, col);
         } else {
-            return this.getRowColumnValue(row, col);
+            if (col.cellTemplate) {
+                return ''; // avoid 'undefined' values
+            } else {
+                return this.getRowColumnValue(row, col);
+            }
         }
     }
 
