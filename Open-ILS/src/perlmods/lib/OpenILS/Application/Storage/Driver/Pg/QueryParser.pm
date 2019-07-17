@@ -1179,11 +1179,26 @@ sub is_org_visible {
     my $non_inherited_vis_gf = shift || $U->get_global_flag('opac.org_unit.non_inherited_visibility');
     return 1 if ($U->is_true($non_inherited_vis_gf->enabled));
 
-    my $ot = $U->get_org_tree;
-    while ($org = $U->find_org($ot,$org->parent_ou)) {
+    while ($org = $org->parent_ou) {
         return 0 if (!$U->is_true($org->opac_visible));
     }
     return 1;
+}
+
+sub flesh_parents {
+    my $t = shift;
+    my $kids = $t->children;
+    if ($kids && @$kids) {
+        map {$_->parent_ou($t); flesh_parents($_)} @$kids;
+    }
+}
+
+sub unflesh_parents {
+    my $t = shift;
+    my $kids = $t->children;
+    if ($kids && @$kids) {
+        map {$_->parent_ou($t->id); unflesh_parents($_)} @$kids;
+    }
 }
 
 sub flatten {
@@ -1446,11 +1461,13 @@ sub flatten {
     my $dorgs = $U->get_org_descendants($site_org->id, $depth_filter);
     my $aorgs = $U->get_org_ancestors($site_org->id);
 
+    flesh_parents($ot);
     if (!$self->find_modifier('staff')) {
         my $non_inherited_vis_gf = $U->get_global_flag('opac.org_unit.non_inherited_visibility');
         $dorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$dorgs ];
         $aorgs = [ grep { is_org_visible($U->find_org($ot,$_), $non_inherited_vis_gf) } @$aorgs ];
     }
+    unflesh_parents($ot);
 
     push @{$vis_filter{'c_attr'}},
         "search.calculate_visibility_attribute_test('circ_lib','{".join(',', @$dorgs)."}',$negate)";
