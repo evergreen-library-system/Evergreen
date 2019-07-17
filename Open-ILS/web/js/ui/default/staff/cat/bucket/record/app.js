@@ -664,8 +664,15 @@ function($scope,  $q , $routeParams,  bucketSvc,  egCore,  $window,
                     updateOneRecord($scope.lead_id, $scope.lead.marc_xml);
                 }
 
+                $scope.cancel_edit_lead_inplace = function() {
+                    $scope.editing_inplace = false;
+                    $scope.lead.marc_xml = $scope.lead.orig_marc_xml;
+                }
+
                 $scope.edit_lead_inplace = function() {
                     $scope.editing_inplace = true;
+                    let lead = { orig_marc_xml : $scope.lead.marc_xml };
+                    $scope.lead = lead;
                 }
                 $scope.edit_lead = function() {
                     var lead = { marc_xml : $scope.lead.marc_xml };

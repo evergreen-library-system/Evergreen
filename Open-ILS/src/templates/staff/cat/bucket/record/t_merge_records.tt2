@@ -51,6 +51,8 @@
                 ng-click="edit_lead_inplace()">[% l('Edit') %]</button>
               <button class="btn btn-default btn-sm" ng-disabled="editing_inplace"
                 ng-click="edit_lead()">[% l('Edit using full editor') %]</button>
+              <button class="btn btn-default btn-sm" ng-show="editing_inplace"
+                ng-click="cancel_edit_lead_inplace()">[% l('Cancel Edit') %]</button>
               <eg-marc-edit-record dirty-flag="dirty_flag" marc-xml="lead.marc_xml"
                  in-place-mode="true" record-type="bre" embedded="true" 
                  ng-show="editing_inplace" on-save="post_edit_inplace">
