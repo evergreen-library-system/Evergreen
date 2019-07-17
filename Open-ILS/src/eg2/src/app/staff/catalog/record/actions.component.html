@@ -6,7 +6,7 @@
 <eg-string key="catalog.record.toast.holdTransfer" 
   i18n-text text="Hold Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.volumeTransfer" 
-  i18n-text text="Volume Transfer Target Set"></eg-string>
+  i18n-text text="Call Number Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.cleared" 
   text="Record Marks Cleared"></eg-string>
 
@@ -64,7 +64,7 @@
       </button>
       <button class="dropdown-item" (click)="mark('volumeTransfer')">
         <span i18n>
-          Volume Transfer<ng-container *ngIf="targets.volumeTransfer.current"> 
+          Call Number Transfer<ng-container *ngIf="targets.volumeTransfer.current">
             (Currently {{targets.volumeTransfer.current}})</ng-container>
         </span>
       </button>

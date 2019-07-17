@@ -62,13 +62,13 @@
 
     <!-- checkboxes / filters -->
 
-    <eg-grid-toolbar-checkbox i18n-label label="Show Volumes" 
+    <eg-grid-toolbar-checkbox i18n-label label="Show Call Numbers"
       #volsCheckbox (onChange)="toggleShowVolumes($event)">
     </eg-grid-toolbar-checkbox> 
     <eg-grid-toolbar-checkbox i18n-label label="Show Copies" 
       #copiesCheckbox (onChange)="toggleShowCopies($event)">
     </eg-grid-toolbar-checkbox> 
-    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Volumes"            
+    <eg-grid-toolbar-checkbox i18n-label label="Show Empty Call Numbers"
       #emptyVolsCheckbox (onChange)="toggleShowEmptyVolumes($event)">
     </eg-grid-toolbar-checkbox> 
     <eg-grid-toolbar-checkbox i18n-label label="Show Empty Libs"            
@@ -219,13 +219,13 @@
     </eg-grid-column>
     <eg-grid-column name="id" path="copy.id" [hidden]="true" label="Copy ID" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volume.id" [hidden]="true" label="Volume ID" i18n-label>
+    <eg-grid-column path="volume.id" [hidden]="true" label="Call Number ID" i18n-label>
     </eg-grid-column>
     <eg-grid-column name="owner_label" [flex]="4"
       [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
       label="Location/Barcode" [disableTooltip]="true" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volumeCount" datatype="number" label="Volumes" i18n-label>
+    <eg-grid-column path="volumeCount" datatype="number" label="Call Numbers" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="copyCount" datatype="number" label="Copies" i18n-label>
     </eg-grid-column>
