@@ -10,6 +10,9 @@ const routes: Routes = [{
     path: 'server',
     loadChildren: '@eg/staff/admin/server/admin-server.module#AdminServerModule'
   }, {
+    path: 'local',
+    loadChildren: '@eg/staff/admin/local/admin-local.module#AdminLocalModule'
+  }, {
     path: 'acq',
     loadChildren: '@eg/staff/admin/acq/admin-acq.module#AdminAcqModule'
   }, {

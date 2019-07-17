@@ -494,7 +494,7 @@
             </a>
           </li>
           <li>
-            <a href="./admin/local/index" target="_self">
+            <a href="/eg2/staff/admin/local/splash">
               <span class="glyphicon glyphicon-picture"></span>
               [% l('Local Administration') %]
             </a>
