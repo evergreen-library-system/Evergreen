@@ -10,7 +10,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 
 /**
- * Dialog for marking items missing.
+ * Dialog for changing an item's barcode
  */
 
 @Component({

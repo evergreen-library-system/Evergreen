@@ -12,7 +12,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 
 
 /**
- * Dialog for marking items missing.
+ * Dialog that confirms, then deletes items and call numbers
  */
 
 @Component({
