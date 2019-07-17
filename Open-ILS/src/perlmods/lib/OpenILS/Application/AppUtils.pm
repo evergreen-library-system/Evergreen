@@ -1454,6 +1454,7 @@ sub get_org_tree {
     my $locale = shift || '';
     my $cache = OpenSRF::Utils::Cache->new("global", 0);
     my $tree = $ORG_TREE{$locale} || $cache->get_cache("orgtree.$locale");
+    $ORG_TREE{$locale} = $tree; # make sure to populate the process-local cache
     return $tree if $tree;
 
     my $ses = OpenILS::Utils::CStoreEditor->new;
