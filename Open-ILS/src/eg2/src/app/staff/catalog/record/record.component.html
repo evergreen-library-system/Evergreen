@@ -27,7 +27,7 @@
       </div>
     </div>
     <ngb-tabset #recordTabs [activeId]="recordTab" (tabChange)="onTabChange($event)">
-      <ngb-tab title="Copy Table" i18n-title id="catalog">
+      <ngb-tab title="Item Table" i18n-title id="catalog">
         <ng-template ngbTabContent>
           <eg-catalog-copies [recordId]="recordId"></eg-catalog-copies>
         </ng-template>

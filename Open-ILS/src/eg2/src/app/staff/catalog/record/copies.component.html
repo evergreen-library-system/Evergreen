@@ -21,7 +21,7 @@
       <a routerLink="/staff/catalog/hold/C"
         [queryParams]="{target: copy.id}"
         queryParamsHandling="merge" i18n>
-        Copy Hold
+        Item Hold
       </a>
     </div>
     <div>
@@ -39,12 +39,12 @@
   <eg-grid #copyGrid [dataSource]="gridDataSource" 
     [disableSelect]="true"
     [sortable]="false" persistKey="catalog.record.copies">
-    <eg-grid-column i18n-label label="Copy ID" path="id" 
+    <eg-grid-column i18n-label label="Item ID" path="id" 
       [hidden]="true" [index]="true">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
     </eg-grid-column>
-    <eg-grid-column i18n-label label="Call Number / Copy Notes" 
+    <eg-grid-column i18n-label label="Call Number / Item Notes" 
       name="callnumber" [cellTemplate]="cnTemplate">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Barcode" name="barcode"
