@@ -16,25 +16,25 @@ import {StringComponent} from '@eg/share/string/string.component';
  */
 
 @Component({
-  selector: 'eg-delete-volcopy-dialog',
+  selector: 'eg-delete-holding-dialog',
   templateUrl: 'delete-volcopy-dialog.component.html'
 })
 
-export class DeleteVolcopyDialogComponent
+export class DeleteHoldingDialogComponent
     extends DialogComponent implements OnInit {
 
     // List of "acn" objects which may contain copies.
     // Objects of either type marked "isdeleted" will be deleted.
-    @Input() volumes: IdlObject[];
+    @Input() callNums: IdlObject[];
 
     // If true, just ask the server to delete all attached copies
     // for any deleted call numbers.
-    // Note if this is true and a volume is provided that does not contain
-    // of its fleshed copies, the number of copies to delete will not be
+    // Note if this is true and a call number is provided that does not
+    // contain its fleshed copies, the number of copies to delete will not be
     // reported correctly.
     @Input() forceDeleteCopies: boolean;
 
-    numVols: number;
+    numCallNums: number;
     numCopies: number;
     numSucceeded: number;
     numFailed: number;
@@ -59,17 +59,17 @@ export class DeleteVolcopyDialogComponent
     ngOnInit() {}
 
     open(args: NgbModalOptions): Observable<boolean> {
-        this.numVols = 0;
+        this.numCallNums = 0;
         this.numCopies = 0;
         this.numSucceeded = 0;
         this.numFailed = 0;
 
-        this.volumes.forEach(vol => {
-            if (vol.isdeleted()) {
-                this.numVols++;
+        this.callNums.forEach(callNum => {
+            if (callNum.isdeleted()) {
+                this.numCallNums++;
             }
-            if (Array.isArray(vol.copies())) {
-                vol.copies().forEach(c => {
+            if (Array.isArray(callNum.copies())) {
+                callNum.copies().forEach(c => {
                     if (c.isdeleted() || this.forceDeleteCopies) {
                         // Marking copies deleted in forceDeleteCopies mode
                         // is not required, but we do it here so we can
@@ -81,8 +81,8 @@ export class DeleteVolcopyDialogComponent
             }
         });
 
-        if (this.numVols === 0 && this.numCopies === 0) {
-            console.debug('Volcopy delete called with no usable data');
+        if (this.numCallNums === 0 && this.numCopies === 0) {
+            console.debug('Holdings delete called with no usable data');
             return throwError(false);
         }
 
@@ -98,7 +98,7 @@ export class DeleteVolcopyDialogComponent
         this.net.request(
             'open-ils.cat',
             'open-ils.cat.asset.volume.fleshed.batch.update.override',
-            this.auth.token(), this.volumes, 1, flags
+            this.auth.token(), this.callNums, 1, flags
         ).toPromise().then(
             result => {
                 const evt = this.evt.parse(result);

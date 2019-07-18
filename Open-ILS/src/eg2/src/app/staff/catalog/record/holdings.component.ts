@@ -25,7 +25,7 @@ import {CopyAlertsDialogComponent
     } from '@eg/staff/share/holdings/copy-alerts-dialog.component';
 import {ReplaceBarcodeDialogComponent
     } from '@eg/staff/share/holdings/replace-barcode-dialog.component';
-import {DeleteVolcopyDialogComponent
+import {DeleteHoldingDialogComponent
     } from '@eg/staff/share/holdings/delete-volcopy-dialog.component';
 import {BucketDialogComponent
     } from '@eg/staff/share/buckets/bucket-dialog.component';
@@ -38,12 +38,12 @@ import {MakeBookableDialogComponent
 // flattened on-demand into a list of HoldingEntry objects.
 class HoldingsTreeNode {
     children: HoldingsTreeNode[];
-    nodeType: 'org' | 'volume' | 'copy';
+    nodeType: 'org' | 'callNum' | 'copy';
     target: any;
     parentNode: HoldingsTreeNode;
     expanded: boolean;
     copyCount: number;
-    volumeCount: number;
+    callNumCount: number;
     constructor() {
         this.children = [];
     }
@@ -62,11 +62,11 @@ class HoldingsEntry {
     locationLabel: string;
     // location label indentation depth
     locationDepth: number | null;
-    volumeCount: number | null;
+    callNumCount: number | null;
     copyCount: number | null;
     callNumberLabel: string;
     copy: IdlObject;
-    volume: IdlObject;
+    callNum: IdlObject;
     circ: IdlObject;
     treeNode: HoldingsTreeNode;
 }
@@ -85,12 +85,12 @@ export class HoldingsMaintenanceComponent implements OnInit {
     @ViewChild('holdingsGrid') holdingsGrid: GridComponent;
 
     // Manage visibility of various sub-sections
-    @ViewChild('volsCheckbox')
-        private volsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('callNumsCheckbox')
+        private callNumsCheckbox: GridToolbarCheckboxComponent;
     @ViewChild('copiesCheckbox')
         private copiesCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('emptyVolsCheckbox')
-        private emptyVolsCheckbox: GridToolbarCheckboxComponent;
+    @ViewChild('emptyCallNumsCheckbox')
+        private emptyCallNumsCheckbox: GridToolbarCheckboxComponent;
     @ViewChild('emptyLibsCheckbox')
         private emptyLibsCheckbox: GridToolbarCheckboxComponent;
     @ViewChild('markDamagedDialog')
@@ -101,8 +101,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private copyAlertsDialog: CopyAlertsDialogComponent;
     @ViewChild('replaceBarcode')
         private replaceBarcode: ReplaceBarcodeDialogComponent;
-    @ViewChild('deleteVolcopy')
-        private deleteVolcopy: DeleteVolcopyDialogComponent;
+    @ViewChild('deleteHolding')
+        private deleteHolding: DeleteHoldingDialogComponent;
     @ViewChild('bucketDialog')
         private bucketDialog: BucketDialogComponent;
     @ViewChild('conjoinedDialog')
@@ -168,11 +168,11 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.contextOrg = this.staffCat.searchContext.searchOrg;
 
         this.rowClassCallback = (row: any): string => {
-            if (row.volume) {
+            if (row.callNum) {
                 if (row.copy) {
                     return 'holdings-copy-row';
                 } else {
-                    return 'holdings-volume-row';
+                    return 'holdings-callNum-row';
                 }
             } else {
                 // Add a generic org unit class and a depth-specific
@@ -218,13 +218,13 @@ export class HoldingsMaintenanceComponent implements OnInit {
             'cat.holdings_show_vols'
         ]);
 
-        // Show volumes by default when no preference is set.
-        let showVols = settings['cat.holdings_show_vols'];
-        if (showVols === null) { showVols = true; }
+        // Show call numbers by default when no preference is set.
+        let showCallNums = settings['cat.holdings_show_vols'];
+        if (showCallNums === null) { showCallNums = true; }
 
-        this.volsCheckbox.checked(showVols);
+        this.callNumsCheckbox.checked(showCallNums);
         this.copiesCheckbox.checked(settings['cat.holdings_show_copies']);
-        this.emptyVolsCheckbox.checked(settings['cat.holdings_show_empty']);
+        this.emptyCallNumsCheckbox.checked(settings['cat.holdings_show_empty']);
         this.emptyLibsCheckbox.checked(settings['cat.holdings_show_empty_org']);
 
         this.initHoldingsTree();
@@ -248,28 +248,28 @@ export class HoldingsMaintenanceComponent implements OnInit {
     toggleShowCopies(value: boolean) {
         this.store.setItem('cat.holdings_show_copies', value);
         if (value) {
-            // Showing copies implies showing volumes
-            this.volsCheckbox.checked(true);
+            // Showing copies implies showing call numbers
+            this.callNumsCheckbox.checked(true);
         }
         this.renderFromPrefs = true;
         this.holdingsGrid.reload();
     }
 
-    toggleShowVolumes(value: boolean) {
+    toggleShowCallNums(value: boolean) {
         this.store.setItem('cat.holdings_show_vols', value);
         if (!value) {
-            // Hiding volumes implies hiding empty vols and copies.
+            // Hiding call numbers implies hiding empty call numbers and copies.
             this.copiesCheckbox.checked(false);
-            this.emptyVolsCheckbox.checked(false);
+            this.emptyCallNumsCheckbox.checked(false);
         }
         this.renderFromPrefs = true;
         this.holdingsGrid.reload();
     }
 
-    toggleShowEmptyVolumes(value: boolean) {
+    toggleShowEmptyCallNums(value: boolean) {
         this.store.setItem('cat.holdings_show_empty', value);
         if (value) {
-            this.volsCheckbox.checked(true);
+            this.callNumsCheckbox.checked(true);
         }
         this.renderFromPrefs = true;
         this.holdingsGrid.reload();
@@ -311,7 +311,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         this.treeNodeCache = {
             org: {},
-            volume: {},
+            callNum: {},
             copy: {}
         };
 
@@ -337,7 +337,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 return 1;
             } else {
                 // TODO: should this use label sortkey instead of
-                // the compiled volume label?
+                // the compiled call number label?
                 return a.target._label < b.target._label ? -1 : 1;
             }
         });
@@ -349,8 +349,8 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         if (node.nodeType === 'org') {
             node.copyCount = 0;
-            node.volumeCount = 0;
-        } else if (node.nodeType === 'volume') {
+            node.callNumCount = 0;
+        } else if (node.nodeType === 'callNum') {
             node.copyCount = 0;
         }
 
@@ -360,14 +360,14 @@ export class HoldingsMaintenanceComponent implements OnInit {
             this.setTreeCounts(child);
             if (node.nodeType === 'org') {
                 node.copyCount += child.copyCount;
-                if (child.nodeType === 'volume') {
-                    node.volumeCount++;
+                if (child.nodeType === 'callNum') {
+                    node.callNumCount++;
                 } else {
-                    hasChildOrgWithData = child.volumeCount > 0;
-                    hasChildOrgSansData = child.volumeCount === 0;
-                    node.volumeCount += child.volumeCount;
+                    hasChildOrgWithData = child.callNumCount > 0;
+                    hasChildOrgSansData = child.callNumCount === 0;
+                    node.callNumCount += child.callNumCount;
                 }
-            } else if (node.nodeType === 'volume') {
+            } else if (node.nodeType === 'callNum') {
                 node.copyCount = node.children.length;
                 if (this.renderFromPrefs) {
                     node.expanded = this.copiesCheckbox.checked();
@@ -376,9 +376,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
         });
 
         if (this.renderFromPrefs && node.nodeType === 'org') {
-            if (node.copyCount > 0 && this.volsCheckbox.checked()) {
+            if (node.copyCount > 0 && this.callNumsCheckbox.checked()) {
                 node.expanded = true;
-            } else if (node.volumeCount > 0 && this.emptyVolsCheckbox.checked()) {
+            } else if (node.callNumCount > 0 && this.emptyCallNumsCheckbox.checked()) {
                 node.expanded = true;
             } else if (hasChildOrgWithData) {
                 node.expanded = true;
@@ -399,31 +399,31 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
         switch (node.nodeType) {
             case 'org':
-                if (node.volumeCount === 0
+                if (node.callNumCount === 0
                     && !this.emptyLibsCheckbox.checked()) {
                     return;
                 }
                 entry.locationLabel = node.target.shortname();
                 entry.locationDepth = node.target.ou_type().depth();
                 entry.copyCount = node.copyCount;
-                entry.volumeCount = node.volumeCount;
+                entry.callNumCount = node.callNumCount;
                 this.sortOrgNodeChildren(node);
                 break;
 
-            case 'volume':
+            case 'callNum':
                 if (this.renderFromPrefs) {
-                    if (!this.volsCheckbox.checked()) {
+                    if (!this.callNumsCheckbox.checked()) {
                         return;
                     }
                     if (node.copyCount === 0
-                        && !this.emptyVolsCheckbox.checked()) {
+                        && !this.emptyCallNumsCheckbox.checked()) {
                         return;
                     }
                 }
                 entry.locationLabel = node.target._label;
                 entry.locationDepth = node.parentNode.target.ou_type().depth() + 1;
                 entry.callNumberLabel = entry.locationLabel;
-                entry.volume = node.target;
+                entry.callNum = node.target;
                 entry.copyCount = node.copyCount;
                 break;
 
@@ -431,7 +431,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 entry.locationLabel = node.target.barcode();
                 entry.locationDepth = node.parentNode.parentNode.target.ou_type().depth() + 2;
                 entry.callNumberLabel = node.parentNode.target.label(); // TODO
-                entry.volume = node.parentNode.target;
+                entry.callNum = node.parentNode.target;
                 entry.copy = node.target;
                 entry.circ = node.target._circ;
                 break;
@@ -456,7 +456,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         this.renderFromPrefs = false;
     }
 
-    // Grab volumes, copies, and related data.
+    // Grab call numbers, copies, and related data.
     fetchHoldings(pager: Pager): Observable<any> {
         if (!this.recordId) { return of([]); }
 
@@ -485,7 +485,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 },
                 {authoritative: true}
             ).subscribe(
-                vol => this.appendVolume(vol),
+                callNum => this.appendCallNum(callNum),
                 err => {},
                 ()  => {
                     this.refreshHoldings = false;
@@ -512,64 +512,64 @@ export class HoldingsMaintenanceComponent implements OnInit {
         })).toPromise();
     }
 
-    // Compile prefix + label + suffix into field volume._label;
-    setVolumeLabel(volume: IdlObject) {
-        const pfx = volume.prefix() ? volume.prefix().label() : '';
-        const sfx = volume.suffix() ? volume.suffix().label() : '';
-        volume._label = pfx ? pfx + ' ' : '';
-        volume._label += volume.label();
-        volume._label += sfx ? ' ' + sfx : '';
+    // Compile prefix + label + suffix into field callNum._label;
+    setCallNumLabel(callNum: IdlObject) {
+        const pfx = callNum.prefix() ? callNum.prefix().label() : '';
+        const sfx = callNum.suffix() ? callNum.suffix().label() : '';
+        callNum._label = pfx ? pfx + ' ' : '';
+        callNum._label += callNum.label();
+        callNum._label += sfx ? ' ' + sfx : '';
     }
 
-    // Create the tree node for the volume if it doesn't already exist.
+    // Create the tree node for the call number if it doesn't already exist.
     // Do the same for its linked copies.
-    appendVolume(volume: IdlObject) {
-        let volNode = this.treeNodeCache.volume[volume.id()];
-        this.setVolumeLabel(volume);
+    appendCallNum(callNum: IdlObject) {
+        let callNumNode = this.treeNodeCache.callNum[callNum.id()];
+        this.setCallNumLabel(callNum);
 
-        if (volNode) {
-            const pNode = this.treeNodeCache.org[volume.owning_lib()];
-            if (volNode.parentNode.target.id() !== pNode.target.id()) {
-                // Volume owning library changed.  Un-link it from the previous
-                // org unit collection before adding to the new one.
+        if (callNumNode) {
+            const pNode = this.treeNodeCache.org[callNum.owning_lib()];
+            if (callNumNode.parentNode.target.id() !== pNode.target.id()) {
+                // Call number owning library changed.  Un-link it from the
+                // previous org unit collection before adding to the new one.
                 // XXX TODO: ^--
-                volNode.parentNode = pNode;
-                volNode.parentNode.children.push(volNode);
+                callNumNode.parentNode = pNode;
+                callNumNode.parentNode.children.push(callNumNode);
             }
         } else {
-            volNode = new HoldingsTreeNode();
-            volNode.nodeType = 'volume';
-            volNode.parentNode = this.treeNodeCache.org[volume.owning_lib()];
-            volNode.parentNode.children.push(volNode);
-            this.treeNodeCache.volume[volume.id()] = volNode;
+            callNumNode = new HoldingsTreeNode();
+            callNumNode.nodeType = 'callNum';
+            callNumNode.parentNode = this.treeNodeCache.org[callNum.owning_lib()];
+            callNumNode.parentNode.children.push(callNumNode);
+            this.treeNodeCache.callNum[callNum.id()] = callNumNode;
         }
 
-        volNode.target = volume;
+        callNumNode.target = callNum;
 
-        volume.copies()
+        callNum.copies()
             .filter((copy: IdlObject) => (copy.deleted() !== 't'))
             .sort((a: IdlObject, b: IdlObject) => a.barcode() < b.barcode() ? -1 : 1)
-            .forEach((copy: IdlObject) => this.appendCopy(volNode, copy));
+            .forEach((copy: IdlObject) => this.appendCopy(callNumNode, copy));
     }
 
     // Find or create a copy node.
-    appendCopy(volNode: HoldingsTreeNode, copy: IdlObject) {
+    appendCopy(callNumNode: HoldingsTreeNode, copy: IdlObject) {
         let copyNode = this.treeNodeCache.copy[copy.id()];
 
         if (copyNode) {
             const oldParent = copyNode.parentNode;
-            if (oldParent.target.id() !== volNode.target.id()) {
-                // TODO: copy changed owning volume.  Remove it from
-                // the previous volume before adding to the new volume.
-                copyNode.parentNode = volNode;
-                volNode.children.push(copyNode);
+            if (oldParent.target.id() !== callNumNode.target.id()) {
+                // TODO: copy changed owning call number.  Remove it from
+                // the previous call number before adding to the new call number.
+                copyNode.parentNode = callNumNode;
+                callNumNode.children.push(copyNode);
             }
         } else {
             // New node required
             copyNode = new HoldingsTreeNode();
             copyNode.nodeType = 'copy';
-            volNode.children.push(copyNode);
-            copyNode.parentNode = volNode;
+            callNumNode.children.push(copyNode);
+            copyNode.parentNode = callNumNode;
             this.treeNodeCache.copy[copy.id()] = copyNode;
         }
 
@@ -592,10 +592,10 @@ export class HoldingsMaintenanceComponent implements OnInit {
         return copyRows.map(c => Number(c.id()));
     }
 
-    selectedVolumeIds(rows: HoldingsEntry[]): number[] {
+    selectedCallNumIds(rows: HoldingsEntry[]): number[] {
         return rows
-            .filter(r => r.treeNode.nodeType === 'volume')
-            .map(r => Number(r.volume.id()));
+            .filter(r => r.treeNode.nodeType === 'callNum')
+            .map(r => Number(r.callNum.id()));
     }
 
     async showMarkDamagedDialog(rows: HoldingsEntry[]) {
@@ -650,7 +650,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             return;
         }
 
-        // Action may only apply to a single org or volume row.
+        // Action may only apply to a single org or call number row.
         const node = rows[0].treeNode;
         if (node.nodeType === 'copy') {
             return;
@@ -661,17 +661,17 @@ export class HoldingsMaintenanceComponent implements OnInit {
         if (node.nodeType === 'org') {
             orgId = node.target.id();
 
-            // Clear volume target when performed on an org unit row
-            this.localStore.removeLocalItem('eg.cat.transfer_target_vol');
+            // Clear call number target when performed on an org unit row
+            this.localStore.removeLocalItem('eg.cat.transfer_target_callnum');
 
-        } else if (node.nodeType === 'volume') {
+        } else if (node.nodeType === 'callNum') {
 
-            // All volume nodes are children of org nodes.
+            // All call number nodes are children of org nodes.
             orgId = node.parentNode.target.id();
 
-            // Add volume target when performed on a volume row.
+            // Add call number target when performed on a call number row.
             this.localStore.setLocalItem(
-                'eg.cat.transfer_target_vol', node.target.id());
+                'eg.cat.transfer_target_callnum', node.target.id());
         }
 
         this.localStore.setLocalItem('eg.cat.transfer_target_record', this.recordId);
@@ -717,39 +717,39 @@ export class HoldingsMaintenanceComponent implements OnInit {
         .then(key => this.openAngJsWindow(`cat/printlabels/${key}`));
     }
 
-    openVolCopyEdit(rows: HoldingsEntry[], addVols: boolean, addCopies: boolean) {
+    openHoldingEdit(rows: HoldingsEntry[], addCallNums: boolean, addCopies: boolean) {
 
-        // The user may select a set of volumes by selecting volume and/or
+        // The user may select a set of call numbers by selecting call number and/or
         // copy rows.
-        const volumes = [];
+        const callNums = [];
         rows.forEach(r => {
-            if (r.treeNode.nodeType === 'volume') {
-                volumes.push(r.volume);
+            if (r.treeNode.nodeType === 'callNum') {
+                callNums.push(r.callNum);
             } else if (r.treeNode.nodeType === 'copy') {
-                volumes.push(r.treeNode.parentNode.target);
+                callNums.push(r.treeNode.parentNode.target);
             }
         });
 
-        if (addCopies && !addVols) {
-            // Adding copies to an existing set of volumes.
-            if (volumes.length > 0) {
-                const volIds = volumes.map(v => Number(v.id()));
-                this.holdings.spawnAddHoldingsUi(this.recordId, volIds);
+        if (addCopies && !addCallNums) {
+            // Adding copies to an existing set of call numbers.
+            if (callNums.length > 0) {
+                const callNumIds = callNums.map(v => Number(v.id()));
+                this.holdings.spawnAddHoldingsUi(this.recordId, callNumIds);
             }
 
-        } else if (addVols) {
+        } else if (addCallNums) {
             const entries = [];
 
-            if (volumes.length > 0) {
+            if (callNums.length > 0) {
 
-                // When adding volumes, if any are selected in the grid,
-                // create volumes that have the same label and owner.
-                volumes.forEach(v =>
+                // When adding call numbers, if any are selected in the grid,
+                // create call numbers that have the same label and owner.
+                callNums.forEach(v =>
                     entries.push({label: v.label(), owner: v.owning_lib()}));
 
                 } else {
 
-                // Otherwise create new volumes from scratch.
+                // Otherwise create new call numbers from scratch.
                 entries.push({owner: this.auth.user().ws_ou()});
             }
 
@@ -786,56 +786,56 @@ export class HoldingsMaintenanceComponent implements OnInit {
         );
     }
 
-    // mode 'vols' -- only delete empty volumes
+    // mode 'callNums' -- only delete empty call numbers
     // mode 'copies' -- only delete selected copies
-    // mode 'both' -- delete selected copies and selected volumes, plus all
-    // copies linked to selected volumes, regardless of whether they are selected.
-    deleteHoldings(rows: HoldingsEntry[], mode: 'vols' | 'copies' | 'both') {
-        const volHash: any = {};
+    // mode 'both' -- delete selected copies and selected call numbers, plus all
+    // copies linked to selected call numbers, regardless of whether they are selected.
+    deleteHoldings(rows: HoldingsEntry[], mode: 'callNums' | 'copies' | 'both') {
+        const callNumHash: any = {};
 
-        if (mode === 'vols' || mode === 'both') {
-            // Collect the volumes to be deleted.
-            rows.filter(r => r.treeNode.nodeType === 'volume').forEach(r => {
-                const vol = this.idl.clone(r.volume);
-                if (mode === 'vols') {
-                    if (vol.copies().length > 0) {
-                        // cannot delete non-empty volume in this mode.
+        if (mode === 'callNums' || mode === 'both') {
+            // Collect the call numbers to be deleted.
+            rows.filter(r => r.treeNode.nodeType === 'callNum').forEach(r => {
+                const callNum = this.idl.clone(r.callNum);
+                if (mode === 'callNums') {
+                    if (callNum.copies().length > 0) {
+                        // cannot delete non-empty call number in this mode.
                         return;
                     }
                 } else {
-                    vol.copies().forEach(c => c.isdeleted(true));
+                    callNum.copies().forEach(c => c.isdeleted(true));
                 }
-                vol.isdeleted(true);
-                volHash[vol.id()] = vol;
+                callNum.isdeleted(true);
+                callNumHash[callNum.id()] = callNum;
             });
         }
 
         if (mode === 'copies' || mode === 'both') {
-            // Collect the copies to be deleted, including their volumes
-            // since the API expects fleshed volume objects.
+            // Collect the copies to be deleted, including their call numbers
+            // since the API expects fleshed call number objects.
             rows.filter(r => r.treeNode.nodeType === 'copy').forEach(r => {
-                const vol = r.treeNode.parentNode.target;
-                if (!volHash[vol.id()]) {
-                    volHash[vol.id()] = this.idl.clone(vol);
-                    volHash[vol.id()].copies([]);
+                const callNum = r.treeNode.parentNode.target;
+                if (!callNumHash[callNum.id()]) {
+                    callNumHash[callNum.id()] = this.idl.clone(callNum);
+                    callNumHash[callNum.id()].copies([]);
                 }
                 const copy = this.idl.clone(r.copy);
                 copy.isdeleted(true);
-                volHash[vol.id()].copies().push(copy);
+                callNumHash[callNum.id()].copies().push(copy);
             });
         }
 
-        if (Object.keys(volHash).length === 0) {
+        if (Object.keys(callNumHash).length === 0) {
             // No data to process.
             return;
         }
 
         // Note forceDeleteCopies should not be necessary here, since we
-        // manually marked all copies as deleted on deleted volumes in
+        // manually marked all copies as deleted on deleted call numbers in
         // "both" mode.
-        this.deleteVolcopy.forceDeleteCopies = mode === 'both';
-        this.deleteVolcopy.volumes = Object.values(volHash);
-        this.deleteVolcopy.open({size: 'sm'}).subscribe(
+        this.deleteHolding.forceDeleteCopies = mode === 'both';
+        this.deleteHolding.callNums = Object.values(callNumHash);
+        this.deleteHolding.open({size: 'sm'}).subscribe(
             modified => {
                 if (modified) {
                     this.hardRefresh();

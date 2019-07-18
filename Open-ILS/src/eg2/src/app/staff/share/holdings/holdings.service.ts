@@ -7,7 +7,7 @@ import {AnonCacheService} from '@eg/share/util/anon-cache.service';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 
-interface NewVolumeData {
+interface NewCallNumData {
     owner: number;
     label?: string;
 }
@@ -25,16 +25,16 @@ export class HoldingsService {
     // Open the holdings editor UI in a new browser window/tab.
     spawnAddHoldingsUi(
         recordId: number,               // Bib record ID
-        addToVols?: number[],           // Add copies to / modify existing vols
-        volumeData?: NewVolumeData[],   // Creating new volumes
+        addToCallNums?: number[],           // Add copies to / modify existing CNs
+        callNumData?: NewCallNumData[],   // Creating new call numbers
         hideCopies?: boolean) {         // Hide the copy edit pane
 
         const raw: any[] = [];
 
-        if (addToVols) {
-            addToVols.forEach(volId => raw.push({callnumber: volId}));
-        } else if (volumeData) {
-            volumeData.forEach(data => raw.push(data));
+        if (addToCallNums) {
+            addToCallNums.forEach(callNumId => raw.push({callnumber: callNumId}));
+        } else if (callNumData) {
+            callNumData.forEach(data => raw.push(data));
         }
 
         if (raw.length === 0) { raw.push({}); }

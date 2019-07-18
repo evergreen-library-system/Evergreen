@@ -48,7 +48,7 @@
 <eg-mark-missing-dialog #markMissingDialog></eg-mark-missing-dialog>
 <eg-copy-alerts-dialog #copyAlertsDialog></eg-copy-alerts-dialog>
 <eg-replace-barcode-dialog #replaceBarcode></eg-replace-barcode-dialog>
-<eg-delete-volcopy-dialog #deleteVolcopy></eg-delete-volcopy-dialog>
+<eg-delete-holding-dialog #deleteHolding></eg-delete-holding-dialog>
 <eg-bucket-dialog #bucketDialog></eg-bucket-dialog>
 <eg-conjoined-items-dialog #conjoinedDialog></eg-conjoined-items-dialog>
 <eg-make-bookable-dialog #makeBookableDialog></eg-make-bookable-dialog>
@@ -63,13 +63,13 @@
     <!-- checkboxes / filters -->
 
     <eg-grid-toolbar-checkbox i18n-label label="Show Call Numbers"
-      #volsCheckbox (onChange)="toggleShowVolumes($event)">
+      #callNumsCheckbox (onChange)="toggleShowCallNums($event)">
     </eg-grid-toolbar-checkbox> 
     <eg-grid-toolbar-checkbox i18n-label label="Show Copies" 
       #copiesCheckbox (onChange)="toggleShowCopies($event)">
     </eg-grid-toolbar-checkbox> 
     <eg-grid-toolbar-checkbox i18n-label label="Show Empty Call Numbers"
-      #emptyVolsCheckbox (onChange)="toggleShowEmptyVolumes($event)">
+      #emptyCallNumsCheckbox (onChange)="toggleShowEmptyCallNums($event)">
     </eg-grid-toolbar-checkbox> 
     <eg-grid-toolbar-checkbox i18n-label label="Show Empty Libs"            
       #emptyLibsCheckbox (onChange)="toggleShowEmptyLibs($event)">
@@ -96,17 +96,17 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Call Numbers"
-      (onClick)="openVolCopyEdit($event, true, false)">
+      (onClick)="openHoldingEdit($event, true, false)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Items"
-      (onClick)="openVolCopyEdit($event, false, true)">
+      (onClick)="openHoldingEdit($event, false, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Add" i18n-label label="Add Call Numbers and Items"
-      (onClick)="openVolCopyEdit($event, true, true)">
+      (onClick)="openHoldingEdit($event, true, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -135,17 +135,17 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Call Numbers"
-      (onClick)="openVolCopyEdit($event, true, false)">
+      (onClick)="openHoldingEdit($event, true, false)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Call Numbers And Items"
-      (onClick)="openVolCopyEdit($event, true, true)">
+      (onClick)="openHoldingEdit($event, true, true)">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
       i18n-group group="Edit" i18n-label label="Edit Items"
-      (onClick)="openVolCopyEdit($event, false, true)">
+      (onClick)="openHoldingEdit($event, false, true)">
     </eg-grid-toolbar-action>
     
     <eg-grid-toolbar-action
@@ -162,7 +162,7 @@
 
     <eg-grid-toolbar-action
       i18n-group group="Delete" i18n-label label="Delete Empty Call Numbers"
-      (onClick)="deleteHoldings($event, 'vols')">
+      (onClick)="deleteHoldings($event, 'callNums')">
     </eg-grid-toolbar-action>
 
     <eg-grid-toolbar-action
@@ -219,24 +219,24 @@
     </eg-grid-column>
     <eg-grid-column name="id" path="copy.id" [hidden]="true" label="Item ID" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volume.id" [hidden]="true" label="Call Number ID" i18n-label>
+    <eg-grid-column path="callNum.id" [hidden]="true" label="Call Number ID" i18n-label>
     </eg-grid-column>
     <eg-grid-column name="owner_label" [flex]="4"
       [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
       label="Location/Barcode" [disableTooltip]="true" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volumeCount" datatype="number" label="Call Numbers" i18n-label>
+    <eg-grid-column path="callNumCount" datatype="number" label="Call Numbers" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="copyCount" datatype="number" label="Copies" i18n-label>
     </eg-grid-column>
-    <eg-grid-column path="volume._label" name="call_number.label" 
+    <eg-grid-column path="callNum._label" name="call_number.label" 
       label="Call Number" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="copy.barcode" name="barcode" label="Barcode" i18n-label>
     </eg-grid-column>
     <eg-grid-column i18n-label label="Circ Library" path="copy.circ_lib" 
       name="circ_lib.name" datatype="org_unit"></eg-grid-column>
-    <eg-grid-column i18n-label label="Owning Library" path="volume.owning_lib" 
+    <eg-grid-column i18n-label label="Owning Library" path="callNum.owning_lib" 
       datatype="org_unit"></eg-grid-column>
     <eg-grid-column i18n-label label="Due Date" path="circ.due_date" 
       datatype="timestamp"></eg-grid-column>
@@ -254,10 +254,10 @@
       path="copy.status.name" name="status_name">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Call Number Prefix" 
-      path="volume.prefix.label" name="call_number.prefix.label" [hidden]="true">
+      path="callNum.prefix.label" name="call_number.prefix.label" [hidden]="true">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Call Number Suffix" 
-      path="volume.suffix.label" name="call_number.suffix.label" [hidden]="true">
+      path="callNum.suffix.label" name="call_number.suffix.label" [hidden]="true">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Active/Create Date" 
       path="copy.active_date" datatype="timestamp">

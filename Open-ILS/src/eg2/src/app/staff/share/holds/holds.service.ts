@@ -39,8 +39,8 @@ export interface HoldRequest {
 
 // A fleshed hold request target object containing whatever data is
 // available for each hold type / target.  E.g. a TITLE hold will
-// not have a value for 'volume', but a COPY hold will, since all
-// copies have volumes.  Every HoldRequestTarget will have a bibId and
+// not have a value for 'callNum', but a COPY hold will, since all
+// copies have call numbers.  Every HoldRequestTarget will have a bibId and
 // bibSummary.  Some values come directly from the API call, others
 // applied locally.
 export interface HoldRequestTarget {
@@ -50,7 +50,7 @@ export interface HoldRequestTarget {
     bibId?: number;
     bibSummary?: BibRecordSummary;
     part?: IdlObject;
-    volume?: IdlObject;
+    callNum?: IdlObject;
     copy?: IdlObject;
     issuance?: IdlObject;
     metarecord_filters?: any;

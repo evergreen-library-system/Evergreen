@@ -222,8 +222,8 @@
         </div>
         <div class="col-lg-2">{{ctx.holdMeta.bibSummary.display.author}}</div>
         <div class="col-lg-2">
-          <ng-container *ngIf="ctx.holdMeta.volume; else anyValue">
-            {{ctx.holdMeta.volume.label()}}
+          <ng-container *ngIf="ctx.holdMeta.callNum; else anyValue">
+            {{ctx.holdMeta.callNum.label()}}
           </ng-container>
         </div>
         <div class="col-lg-1">

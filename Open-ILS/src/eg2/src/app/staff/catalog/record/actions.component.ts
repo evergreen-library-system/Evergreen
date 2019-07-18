@@ -32,8 +32,8 @@ export class RecordActionsComponent implements OnInit {
             key: 'eg.circ.hold.title_transfer_target',
             current: null
         },
-        volumeTransfer: {
-            key: 'eg.cat.marked_volume_transfer_record',
+        holdingTransfer: {
+            key: 'eg.cat.marked_holding_transfer_record',
             current: null
         }
     };
@@ -83,11 +83,11 @@ export class RecordActionsComponent implements OnInit {
             .then(txt => this.toast.success(txt));
     }
 
-    // TODO: Support adding copies to existing volumes by getting
-    // selected volumes from the holdings grid.
-    // TODO: Support adding like volumes by getting selected
-    // volumes from the holdings grid.
-    addVolumes() {
+    // TODO: Support adding copies to existing call numbers by getting
+    // selected call numbers from the holdings grid.
+    // TODO: Support adding like call numbers by getting selected
+    // call numbers from the holdings grid.
+    addHoldings() {
         this.holdings.spawnAddHoldingsUi(this.recId);
     }
 

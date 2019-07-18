@@ -5,8 +5,8 @@
   i18n-text text="Record Overlay Target Set"></eg-string>
 <eg-string key="catalog.record.toast.holdTransfer" 
   i18n-text text="Hold Transfer Target Set"></eg-string>
-<eg-string key="catalog.record.toast.volumeTransfer" 
-  i18n-text text="Call Number Transfer Target Set"></eg-string>
+<eg-string key="catalog.record.toast.holdingTransfer" 
+  i18n-text text="Holding Transfer Target Set"></eg-string>
 <eg-string key="catalog.record.toast.cleared" 
   text="Record Marks Cleared"></eg-string>
 
@@ -23,7 +23,7 @@
     <button class="btn btn-outline-primary ml-1" i18n>Place Hold</button>
   </a>
 
-  <button class="btn btn-outline-primary ml-1" (click)="addVolumes()" i18n>
+  <button class="btn btn-outline-primary ml-1" (click)="addHoldings()" i18n>
     Add Holdings
   </button>
 
@@ -62,10 +62,10 @@
             (Currently {{targets.holdTransfer.current}})</ng-container>
         </span>
       </button>
-      <button class="dropdown-item" (click)="mark('volumeTransfer')">
+      <button class="dropdown-item" (click)="mark('holdingTransfer')">
         <span i18n>
-          Call Number Transfer<ng-container *ngIf="targets.volumeTransfer.current">
-            (Currently {{targets.volumeTransfer.current}})</ng-container>
+          Holding Transfer<ng-container *ngIf="targets.holdingTransfer.current">
+            (Currently {{targets.holdingTransfer.current}})</ng-container>
         </span>
       </button>
       <button class="dropdown-item" (click)="clearMarks()">
