@@ -1,12 +1,9 @@
 import {Component, OnInit, Input, ViewChild, Renderer2} from '@angular/core';
-import {Observable, throwError} from 'rxjs';
+import {Observable} from 'rxjs';
 import {switchMap, map, tap} from 'rxjs/operators';
 import {IdlObject} from '@eg/core/idl.service';
-import {NetService} from '@eg/core/net.service';
-import {EventService} from '@eg/core/event.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {AuthService} from '@eg/core/auth.service';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
 import {StringComponent} from '@eg/share/string/string.component';
@@ -43,11 +40,8 @@ export class ReplaceBarcodeDialogComponent
     constructor(
         private modal: NgbModal, // required for passing to parent
         private toast: ToastService,
-        private net: NetService,
         private pcrud: PcrudService,
-        private evt: EventService,
-        private renderer: Renderer2,
-        private auth: AuthService) {
+        private renderer: Renderer2) {
         super(modal); // required for subclassing
     }
 
@@ -59,9 +53,9 @@ export class ReplaceBarcodeDialogComponent
         this.numFailed = 0;
 
         return this.getNextCopy()
-        .pipe(switchMap(() => super.open(args)))
-        .pipe(tap(() =>
-            this.renderer.selectRootElement('#new-barcode-input').focus())
+        .pipe(switchMap(() => super.open(args)),
+            tap(() =>
+                this.renderer.selectRootElement('#new-barcode-input').focus())
         );
     }
 
@@ -69,7 +63,6 @@ export class ReplaceBarcodeDialogComponent
 
         if (this.ids.length === 0) {
             this.close(this.numSucceeded > 0);
-            return throwError(false);
         }
 
         this.newBarcode = '';
@@ -96,7 +89,7 @@ export class ReplaceBarcodeDialogComponent
                 async (ok) => {
                     this.numSucceeded++;
                     this.toast.success(await this.successMsg.current());
-                    this.getNextCopy();
+                    return this.getNextCopy().toPromise();
                 },
                 async (err) => {
                     this.numFailed++;
