@@ -131,6 +131,7 @@ export class HoldsService {
         ).pipe(mergeMap(meta => {
             const target: HoldRequestTarget = meta;
             target.bibId = target.bibrecord.id();
+            target.callNum = meta.volume; // map to client terminology
 
             return this.bib.getBibSummary(target.bibId)
             .pipe(map(sum => {
