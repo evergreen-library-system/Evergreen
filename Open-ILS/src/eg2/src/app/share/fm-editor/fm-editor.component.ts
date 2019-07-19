@@ -6,6 +6,8 @@ import {map} from 'rxjs/operators';
 import {AuthService} from '@eg/core/auth.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
@@ -80,10 +82,6 @@ export class FmRecordEditorComponent
     // IDL class hint (e.g. "aou")
     @Input() idlClass: string;
 
-    // mode: 'create' for creating a new record,
-    //       'update' for editing an existing record
-    //       'view' for viewing an existing record without editing
-    mode: 'create' | 'update' | 'view' = 'create';
     recId: any;
 
     // IDL record we are editing
@@ -122,6 +120,9 @@ export class FmRecordEditorComponent
     // for all combobox fields.  See also FmFieldOptions.
     @Input() preloadLinkedValues: boolean;
 
+    // Display within a modal dialog window or inline in the page.
+    @Input() displayMode: 'dialog' | 'inline' = 'dialog';
+
     // Emit the modified object when the save action completes.
     @Output() onSave$ = new EventEmitter<IdlObject>();
 
@@ -132,6 +133,8 @@ export class FmRecordEditorComponent
     @Output() onError$ = new EventEmitter<string>();
 
     @ViewChild('translator') private translator: TranslateComponent;
+    @ViewChild('successStr') successStr: StringComponent;
+    @ViewChild('failStr') failStr: StringComponent;
 
     // IDL info for the the selected IDL class
     idlDef: any;
@@ -146,9 +149,10 @@ export class FmRecordEditorComponent
     // DOM id prefix to prevent id collisions.
     idPrefix: string;
 
-    @Input() editMode(mode: 'create' | 'update' | 'view') {
-        this.mode = mode;
-    }
+    // mode: 'create' for creating a new record,
+    //       'update' for editing an existing record
+    //       'view' for viewing an existing record without editing
+    @Input() mode: 'create' | 'update' | 'view' = 'create';
 
     // Record ID to view/update.  Value is dynamic.  Records are not
     // fetched until .open() is called.
@@ -160,6 +164,7 @@ export class FmRecordEditorComponent
       private modal: NgbModal, // required for passing to parent
       private idl: IdlService,
       private auth: AuthService,
+      private toast: ToastService,
       private pcrud: PcrudService) {
       super(modal);
     }
@@ -174,7 +179,15 @@ export class FmRecordEditorComponent
         // Add some randomness to the generated DOM IDs to ensure against clobbering
         this.idPrefix = 'fm-editor-' + Math.floor(Math.random() * 100000);
 
-        this.onOpen$.subscribe(() => this.initRecord());
+        if (this.isDialog()) {
+            this.onOpen$.subscribe(() => this.initRecord());
+        } else {
+            this.initRecord();
+        }
+    }
+
+    isDialog(): boolean {
+        return this.displayMode === 'dialog';
     }
 
     // Set the record value and clear the recId value to
@@ -460,12 +473,21 @@ export class FmRecordEditorComponent
         const recToSave = this.idl.clone(this.record);
         this.convertDatatypesToIdl(recToSave);
         this.pcrud[this.mode]([recToSave]).toPromise().then(
-            result => this.close(result),
-            error  => this.error(error)
+            result => {
+                this.onSave$.emit(result);
+                this.successStr.current().then(msg => this.toast.success(msg));
+                if (this.isDialog()) { this.close(result); }
+            },
+            error => {
+                this.onError$.emit(error);
+                this.failStr.current().then(msg => this.toast.warning(msg));
+                if (this.isDialog()) { this.error(error); }
+            }
         );
     }
 
     cancel() {
+        this.onCancel$.emit(this.record);
         this.close();
     }
 

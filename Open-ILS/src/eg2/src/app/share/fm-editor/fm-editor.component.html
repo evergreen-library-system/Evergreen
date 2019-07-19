@@ -1,13 +1,18 @@
 <!-- idlObject and fieldName applied programmatically -->
 <eg-translate #translator></eg-translate>
 
+<eg-string #successStr text="Update Succeeded" i18n-text></eg-string>
+<eg-string #failStr text="Update Failed" i18n-text></eg-string>
+
 <ng-template #dialogContent>
   <div class="modal-header bg-info">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
-    <button type="button" class="close" 
-      i18n-aria-label aria-label="Close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
+    <ng-container *ngIf="isDialog()">
+      <button type="button" class="close" 
+        i18n-aria-label aria-label="Close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </ng-container>
   </div>
   <div class="modal-body">
     <form #fmEditForm="ngForm" role="form" class="form-validated common-form striped-odd">
@@ -155,12 +160,21 @@
     </form>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
-      (click)="close()" i18n>Close</button>
+    <ng-container *ngIf="isDialog()">
+      <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
+        (click)="close()" i18n>Close</button>
+      <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
+        (click)="cancel()" i18n>Cancel</button>
+    </ng-container>
     <button type="button" class="btn btn-info" 
       [disabled]="fmEditForm.invalid" *ngIf="mode != 'view'"
       (click)="save()" i18n>Save</button>
-    <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
-      (click)="cancel()" i18n>Cancel</button>
   </div>
 </ng-template>
+
+<ng-container *ngIf="!isDialog()">
+  <!-- in "inline" mode, render the editor pane right here -->
+  <ng-container *ngTemplateOutlet="dialogContent">
+  </ng-container>
+</ng-container>
+
