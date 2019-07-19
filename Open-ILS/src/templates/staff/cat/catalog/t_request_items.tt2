@@ -15,6 +15,15 @@
       </div>
       <div class="col-md-6"> {{user_name}} </div>
     </div>
+    <div class="row">
+      <div class="col-md-6">
+          <label>
+            <input type="checkbox" ng-model="hold_data.honor_user_settings"/>
+            [% l('Honor user preferences?') %]
+          </label>
+      </div>
+      <div></div>
+    </div>
     <div class="row pad-vert">
       <div class="col-md-6">
         <div class="input-group">
@@ -23,6 +32,7 @@
             <option value="C">[% l('Copy Hold') %]</option>
             <option value="R" selected>[% l('Recall Hold') %]</option>
             <option value="F">[% l('Force Hold') %]</option>
+            <option ng-show="hold_data.record_list" value="T">[% l('Title Hold') %]</option>
           </select>
         </div>
       </div>
@@ -36,8 +46,11 @@
   </div>
   <div class="modal-footer">
     <div class="row">
-      <div class="col-md-6">
+      <div ng-show="hold_data.copy_list && hold_data.hold_type != 'T'" class="col-md-6">
         [% l('Number of items: ') %] {{hold_data.copy_list.length}}
+      </div>
+      <div ng-show="hold_data.record_list && hold_data.hold_type == 'T'" class="col-md-6">
+        [% l('Number of titles: ') %] {{hold_data.record_list.length}}
       </div>
       <div class="col-md-6 pull-right">
         <input type="submit" class="btn btn-primary" value="[% l('OK') %]" ng-disabled="!hold_data.user"/>

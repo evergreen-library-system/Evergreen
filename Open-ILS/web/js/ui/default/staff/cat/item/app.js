@@ -146,7 +146,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.requestItems = function() {
-        itemSvc.requestItems([$scope.args.copyId]);
+        itemSvc.requestItems([$scope.args.copyId],[$scope.args.recordId]);
     }
 
     $scope.update_inventory = function() {
@@ -538,7 +538,8 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
 
     $scope.requestItems = function() {
         var copy_list = gatherSelectedHoldingsIds();
-        itemSvc.requestItems(copy_list);
+        var record_list = gatherSelectedRecordIds();
+        itemSvc.requestItems(copy_list,record_list);
     }
 
     $scope.replaceBarcodes = function() {

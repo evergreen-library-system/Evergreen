@@ -108,6 +108,36 @@ sub test_and_create_hold_batch {
 
             $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
 
+            if ($$oargs{honor_user_settings}) {
+                my $recipient = $e->retrieve_actor_user($$params{patronid})
+                    or return $e->die_event;
+                my $opac_hold_notify = $e->search_actor_user_setting(
+                    {usr => $$params{patronid}, name => 'opac.hold_notify'})->[0];
+                if ($opac_hold_notify) {
+                    if ($opac_hold_notify->value =~ 'email') {
+                        $$params{email_notify} = 1;
+                    }
+                    if ($opac_hold_notify->value =~ 'phone') {
+                        my $opac_default_phone = $e->search_actor_user_setting(
+                            {usr => $$params{patronid}, name => 'opac.default_phone'})->[0];
+                        # FIXME - what's up with the ->value putting quotes around the string?
+                        if ($opac_default_phone && $opac_default_phone->value =~ /^"(.*)"$/) {
+                            $$params{phone_notify} = $1;
+                        }
+                    }
+                    if ($opac_hold_notify->value =~ 'sms') {
+                        my $opac_default_sms_carrier = $e->search_actor_user_setting(
+                            {usr => $$params{patronid}, name => 'opac.default_sms_carrier'})->[0];
+                        $$params{sms_carrier} = $opac_default_sms_carrier->value if $opac_default_sms_carrier;
+                        my $opac_default_sms_notify = $e->search_actor_user_setting(
+                            {usr => $$params{patronid}, name => 'opac.default_sms_notify'})->[0];
+                        if ($opac_default_sms_notify && $opac_default_sms_notify->value =~ /^"(.*)"$/) {
+                            $$params{sms_notify} = $1;
+                        }
+                    }
+                }
+            }
+
             # Remove oargs from params so holds can be created.
             if ($$params{oargs}) {
                 delete $$params{oargs};
