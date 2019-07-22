@@ -8408,10 +8408,10 @@ SELECT  usr,
 	</class>
 	<class id="cbt" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::billing_type" oils_persist:tablename="config.billing_type" oils_persist:restrict_primary="100" reporter:label="Billing Type">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.billing_type_id_seq">
-			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name"/>
-			<field name="name" reporter:datatype="text" reporter:label="Name" oils_persist:i18n="true"/>
-			<field name="owner" reporter:datatype="org_unit" reporter:label="Org Unit" />
-            <field name="default_price" reporter:datatype="money" reporter:label="Default Price"/>
+			<field name="id" reporter:datatype="id" reporter:label="ID" reporter:selector="name" oils_obj:required="true"/>
+			<field name="name" reporter:datatype="text" reporter:label="Name" oils_persist:i18n="true" oils_obj:required="true"/>
+			<field name="owner" reporter:datatype="org_unit" reporter:label="Org Unit" oils_obj:required="true"/>
+			<field name="default_price" reporter:datatype="money" reporter:label="Default Price"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
