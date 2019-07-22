@@ -26,6 +26,7 @@ import {HoldingsMaintenanceComponent} from './record/holdings.component';
 import {ConjoinedComponent} from './record/conjoined.component';
 import {CnBrowseComponent} from './cnbrowse.component';
 import {CnBrowseResultsComponent} from './cnbrowse/results.component';
+import {SearchTemplatesComponent} from './search-templates.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import {CnBrowseResultsComponent} from './cnbrowse/results.component';
     BrowseResultsComponent,
     ConjoinedComponent,
     HoldingsMaintenanceComponent,
+    SearchTemplatesComponent,
     CnBrowseComponent,
     CnBrowseResultsComponent
   ],

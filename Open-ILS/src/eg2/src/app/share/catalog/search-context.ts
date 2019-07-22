@@ -1,6 +1,7 @@
 import {OrgService} from '@eg/core/org.service';
 import {IdlObject} from '@eg/core/idl.service';
 import {Pager} from '@eg/share/util/pager';
+import {ArrayUtil} from '@eg/share/util/array';
 
 // CCVM's we care about in a catalog context
 // Don't fetch them all because there are a lot.
@@ -41,6 +42,11 @@ export class FacetFilter {
             this.facetValue === filter.facetValue
         );
     }
+
+    clone(): FacetFilter {
+        return new FacetFilter(
+            this.facetClass, this.facetName, this.facetValue);
+    }
 }
 
 export class CatalogSearchResults {
@@ -71,6 +77,18 @@ export class CatalogBrowseContext {
             this.fieldClass !== ''
         );
     }
+
+    clone(): CatalogBrowseContext {
+        const ctx = new CatalogBrowseContext();
+        ctx.value = this.value;
+        ctx.pivot = this.pivot;
+        ctx.fieldClass = this.fieldClass;
+        return ctx;
+    }
+
+    equals(ctx: CatalogBrowseContext): boolean {
+        return ctx.value === this.value && ctx.fieldClass === this.fieldClass;
+    }
 }
 
 export class CatalogMarcContext {
@@ -91,6 +109,19 @@ export class CatalogMarcContext {
         );
     }
 
+    clone(): CatalogMarcContext {
+        const ctx = new CatalogMarcContext();
+        ctx.tags = [].concat(this.tags);
+        ctx.values = [].concat(this.values);
+        ctx.subfields = [].concat(this.subfields);
+        return ctx;
+    }
+
+    equals(ctx: CatalogMarcContext): boolean {
+        return ArrayUtil.equals(ctx.tags, this.tags)
+            && ArrayUtil.equals(ctx.values, this.values)
+            && ArrayUtil.equals(ctx.subfields, this.subfields);
+    }
 }
 
 export class CatalogIdentContext {
@@ -109,6 +140,16 @@ export class CatalogIdentContext {
         );
     }
 
+    clone(): CatalogIdentContext {
+        const ctx = new CatalogIdentContext();
+        ctx.value = this.value;
+        ctx.queryType = this.queryType;
+        return ctx;
+    }
+
+    equals(ctx: CatalogIdentContext): boolean {
+        return ctx.value === this.value && ctx.queryType === this.queryType;
+    }
 }
 
 export class CatalogCnBrowseContext {
@@ -123,7 +164,18 @@ export class CatalogCnBrowseContext {
     }
 
     isSearchable() {
-        return this.value !== '';
+        return this.value !== '' && this.value !== undefined;
+    }
+
+    clone(): CatalogCnBrowseContext {
+        const ctx = new CatalogCnBrowseContext();
+        ctx.value = this.value;
+        ctx.offset = this.offset;
+        return ctx;
+    }
+
+    equals(ctx: CatalogCnBrowseContext): boolean {
+        return ctx.value === this.value;
     }
 }
 
@@ -168,6 +220,63 @@ export class CatalogTermContext {
         this.ccvmFilters = {};
         CATALOG_CCVM_FILTERS.forEach(code => this.ccvmFilters[code] = ['']);
     }
+
+    clone(): CatalogTermContext {
+        const ctx = new CatalogTermContext();
+
+        ctx.query = [].concat(this.query);
+        ctx.fieldClass = [].concat(this.fieldClass);
+        ctx.matchOp = [].concat(this.matchOp);
+        ctx.joinOp = [].concat(this.joinOp);
+        ctx.copyLocations = [].concat(this.copyLocations);
+        ctx.format = this.format;
+        ctx.hasBrowseEntry = this.hasBrowseEntry;
+        ctx.date1 = this.date1;
+        ctx.date2 = this.date2;
+        ctx.dateOp = this.dateOp;
+        ctx.fromMetarecord = this.fromMetarecord;
+
+        ctx.facetFilters = this.facetFilters.map(f => f.clone());
+
+        ctx.ccvmFilters = {};
+        Object.keys(this.ccvmFilters).forEach(
+            key => ctx.ccvmFilters[key] = this.ccvmFilters[key]);
+
+        return ctx;
+    }
+
+    equals(ctx: CatalogTermContext): boolean {
+        if (   ArrayUtil.equals(ctx.query, this.query)
+            && ArrayUtil.equals(ctx.fieldClass, this.fieldClass)
+            && ArrayUtil.equals(ctx.matchOp, this.matchOp)
+            && ArrayUtil.equals(ctx.joinOp, this.joinOp)
+            && ArrayUtil.equals(ctx.copyLocations, this.copyLocations)
+            && ctx.format === this.format
+            && ctx.hasBrowseEntry === this.hasBrowseEntry
+            && ctx.date1 === this.date1
+            && ctx.date2 === this.date2
+            && ctx.dateOp === this.dateOp
+            && ctx.fromMetarecord === this.fromMetarecord
+            && ArrayUtil.equals(
+                ctx.facetFilters, this.facetFilters, (a, b) => a.equals(b))
+            && Object.keys(this.ccvmFilters).length ===
+                Object.keys(ctx.ccvmFilters).length
+        ) {
+
+            // So far so good, compare ccvm hash contents
+            let mismatch = false;
+            Object.keys(this.ccvmFilters).forEach(key => {
+                if (!ArrayUtil.equals(this.ccvmFilters[key], ctx.ccvmFilters[key])) {
+                    mismatch = true;
+                }
+            });
+
+            return !mismatch;
+        }
+
+        return false;
+    }
+
 
     // True when grouping by metarecord but not when displaying the
     // contents of a metarecord.
@@ -252,6 +361,38 @@ export class CatalogSearchContext {
         this.reset();
     }
 
+    // Performs a deep clone of the search context as-is.
+    clone(): CatalogSearchContext {
+        const ctx = new CatalogSearchContext();
+
+        ctx.sort = this.sort;
+        ctx.isStaff = this.isStaff;
+        ctx.global = this.global;
+
+        // OK to share since the org object won't be changing.
+        ctx.searchOrg = this.searchOrg;
+
+        ctx.termSearch = this.termSearch.clone();
+        ctx.marcSearch = this.marcSearch.clone();
+        ctx.identSearch = this.identSearch.clone();
+        ctx.browseSearch = this.browseSearch.clone();
+        ctx.cnBrowseSearch = this.cnBrowseSearch.clone();
+
+        return ctx;
+    }
+
+    equals(ctx: CatalogSearchContext): boolean {
+        return (
+            this.termSearch.equals(ctx.termSearch)
+            && this.marcSearch.equals(ctx.marcSearch)
+            && this.identSearch.equals(ctx.identSearch)
+            && this.browseSearch.equals(ctx.browseSearch)
+            && this.cnBrowseSearch.equals(ctx.cnBrowseSearch)
+            && this.sort === ctx.sort
+            && this.global === ctx.global
+        );
+    }
+
     /**
      * Return search context to its default state, resetting search
      * parameters and clearing any cached result data.
@@ -267,6 +408,7 @@ export class CatalogSearchContext {
         this.marcSearch.reset();
         this.identSearch.reset();
         this.browseSearch.reset();
+        this.cnBrowseSearch.reset();
     }
 
     isSearchable(): boolean {
@@ -482,6 +624,58 @@ export class CatalogSearchContext {
         });
 
         return str;
+    }
+
+    // A search context can collect enough data for multiple search
+    // types to be searchable (e.g. users navigate through parts of a
+    // search form).  Calling this method and providing a search type
+    // ensures the context is cleared of any data unrelated to the
+    // desired type.
+    scrub(searchType: string): void {
+
+        switch (searchType) {
+
+            case 'term': // AKA keyword search
+                this.marcSearch.reset();
+                this.browseSearch.reset();
+                this.identSearch.reset();
+                this.cnBrowseSearch.reset();
+                this.termSearch.hasBrowseEntry = '';
+                this.termSearch.browseEntry = null;
+                this.termSearch.fromMetarecord = null;
+                this.termSearch.facetFilters = [];
+                break;
+
+            case 'ident':
+                this.marcSearch.reset();
+                this.browseSearch.reset();
+                this.termSearch.reset();
+                this.cnBrowseSearch.reset();
+                break;
+
+            case 'marc':
+                this.browseSearch.reset();
+                this.termSearch.reset();
+                this.identSearch.reset();
+                this.cnBrowseSearch.reset();
+                break;
+
+            case 'browse':
+                this.marcSearch.reset();
+                this.termSearch.reset();
+                this.identSearch.reset();
+                this.cnBrowseSearch.reset();
+                this.browseSearch.pivot = null;
+                break;
+
+            case 'cnbrowse':
+                this.marcSearch.reset();
+                this.termSearch.reset();
+                this.identSearch.reset();
+                this.browseSearch.reset();
+                this.cnBrowseSearch.offset = 0;
+                break;
+        }
     }
 }
 

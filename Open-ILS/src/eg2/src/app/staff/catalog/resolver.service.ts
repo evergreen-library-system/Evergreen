@@ -48,7 +48,8 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
             'cat.marcedit.stack_subfields',
             'cat.marcedit.flateditor',
             'cat.holdings_show_copies',
-            'cat.holdings_show_vols'
+            'cat.holdings_show_vols',
+            'opac.staff_saved_search.size'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);

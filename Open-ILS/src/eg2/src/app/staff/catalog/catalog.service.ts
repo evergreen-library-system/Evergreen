@@ -17,6 +17,8 @@ export class StaffCatalogService {
     routeIndex = 0;
     defaultSearchOrg: IdlObject;
     defaultSearchLimit: number;
+    // Track the current template through route changes.
+    selectedTemplate: string;
 
     // TODO: does unapi support pref-lib for result-page copy counts?
     prefOrg: IdlObject;

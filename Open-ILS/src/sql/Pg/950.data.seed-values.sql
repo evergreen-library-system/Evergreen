@@ -19970,3 +19970,14 @@ VALUES (
         'cwst', 'label'
     )
 );
+
+INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
+VALUES (
+    'eg.catalog.search_templates', 'gui', 'object',
+    oils_i18n_gettext(
+        'eg.catalog.search_templates',
+        'Staff Catalog Search Templates',
+        'cwst', 'label'
+    )
+);
+

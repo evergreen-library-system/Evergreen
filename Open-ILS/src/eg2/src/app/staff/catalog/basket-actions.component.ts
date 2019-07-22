@@ -37,7 +37,8 @@ export class BasketActionsComponent implements OnInit {
 
     // TODO: confirmation dialogs?
 
-    applyAction() {
+    applyAction(action: string) {
+        this.basketAction = action;
         console.debug('Performing basket action', this.basketAction);
 
         switch (this.basketAction) {

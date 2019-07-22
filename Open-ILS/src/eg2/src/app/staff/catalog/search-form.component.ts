@@ -1,5 +1,5 @@
 import {Component, OnInit, AfterViewInit, Renderer2} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {IdlObject} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {CatalogService} from '@eg/share/catalog/catalog.service';
@@ -23,12 +23,22 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
 
     constructor(
         private renderer: Renderer2,
-        private router: Router,
+        private route: ActivatedRoute,
         private org: OrgService,
         private cat: CatalogService,
         private staffCat: StaffCatalogService
     ) {
         this.copyLocations = [];
+
+        // Some search scenarios, like rendering a search template,
+        // will not be searchable and thus not resovle to a specific
+        // search tab.  Check to see if a specific tab is requested
+        // via the URL.
+        this.route.queryParams.subscribe(params => {
+            if (params.searchTab) {
+                this.searchTab = params.searchTab;
+            }
+        });
     }
 
     ngOnInit() {
@@ -114,7 +124,10 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
      * or if any advanced options are selected.
      */
     showFilters(): boolean {
-        return this.showSearchFilters;
+        // Note that filters may become active due to external
+        // actions on the search context.  Always show the filters
+        // if filter values are applied.
+        return this.showSearchFilters || this.filtersActive();
     }
 
     toggleFilters() {
@@ -194,51 +207,21 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
         // Form search overrides basket display
         this.context.showBasket = false;
 
+        this.context.scrub(this.searchTab);
+
         switch (this.searchTab) {
 
-            case 'term': // AKA keyword search
-                this.context.marcSearch.reset();
-                this.context.browseSearch.reset();
-                this.context.identSearch.reset();
-                this.context.cnBrowseSearch.reset();
-                this.context.termSearch.hasBrowseEntry = '';
-                this.context.termSearch.browseEntry = null;
-                this.context.termSearch.fromMetarecord = null;
-                this.context.termSearch.facetFilters = [];
-                this.staffCat.search();
-                break;
-
+            case 'term':
             case 'ident':
-                this.context.marcSearch.reset();
-                this.context.browseSearch.reset();
-                this.context.termSearch.reset();
-                this.context.cnBrowseSearch.reset();
-                this.staffCat.search();
-                break;
-
             case 'marc':
-                this.context.browseSearch.reset();
-                this.context.termSearch.reset();
-                this.context.identSearch.reset();
-                this.context.cnBrowseSearch.reset();
                 this.staffCat.search();
                 break;
 
             case 'browse':
-                this.context.marcSearch.reset();
-                this.context.termSearch.reset();
-                this.context.identSearch.reset();
-                this.context.cnBrowseSearch.reset();
-                this.context.browseSearch.pivot = null;
                 this.staffCat.browse();
                 break;
 
             case 'cnbrowse':
-                this.context.marcSearch.reset();
-                this.context.termSearch.reset();
-                this.context.identSearch.reset();
-                this.context.browseSearch.reset();
-                this.context.cnBrowseSearch.offset = 0;
                 this.staffCat.cnBrowse();
                 break;
         }

@@ -1,6 +1,6 @@
 import {Injectable, EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import {map, tap, finalize} from 'rxjs/operators';
 import {OrgService} from '@eg/core/org.service';
 import {UnapiService} from '@eg/share/catalog/unapi.service';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
@@ -358,9 +358,10 @@ export class CatalogService {
                 pivot: bs.pivot,
                 org_unit: ctx.searchOrg.id()
             }
-        ).pipe(tap(result => {
-            ctx.searchState = CatalogSearchState.COMPLETE;
-        }));
+        ).pipe(
+            tap(result => ctx.searchState = CatalogSearchState.COMPLETE),
+            finalize(() => this.onSearchComplete.emit(ctx))
+        );
     }
 
     cnBrowse(ctx: CatalogSearchContext): Observable<any> {

@@ -1,8 +1,8 @@
 <eg-bucket-dialog #addBasketToBucketDialog>
 </eg-bucket-dialog>
 
-<div class="row">
-  <div class="col-lg-4 pr-1">
+<div class="d-flex justify-content-end">
+  <div class="pr-1">
     <div class="float-right">
       <!-- note basket view link does not propagate search params -->
       <a routerLink="/staff/catalog/search" [queryParams]="{showBasket: true}" 
@@ -12,18 +12,26 @@
       </a>
     </div>
   </div>
-  <div class="col-lg-8 pl-1">
-    <select class="form-control" 
+  <div class="">
+    <div ngbDropdown placement="bottom-right">
+      <button class="btn btn-light" id="basketActions"
         [disabled]="!basketCount()"
-        [(ngModel)]="basketAction" (change)="applyAction()">
-      <option value='' [disabled]="true" i18n>Basket Actions...</option>
-      <option value="view"   i18n>View Basket</option>
-      <option value="hold"   i18n>Place Hold</option>
-      <option value="print"  i18n>Print Title Details</option>
-      <option value="email"  i18n>Email Title Details</option>
-      <option value="bucket" i18n>Add Basket to Bucket</option>
-      <option value="export_marc" i18n>Export Records</option>
-      <option value="clear"  i18n>Clear Basket</option>
-    </select>
+        ngbDropdownToggle i18n>Basket Actions</button>
+      <div ngbDropdownMenu aria-labelledby="basketActions">
+      <button class="dropdown-item" 
+        (click)="applyAction('view')" i18n>View Basket</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('hold')" i18n>Place Hold</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('print')" i18n>Print Title Details</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('email')" i18n>Email Title Details</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('export_marc')" i18n>Export Records</button>
+      <button class="dropdown-item" 
+        (click)="applyAction('clear')" i18n>Clear Basket</button>
+    </div>
   </div>
 </div>

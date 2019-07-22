@@ -176,18 +176,18 @@ export class CatalogUrlService {
             context.showBasket = val;
         }
 
-        if (params.get('marcValue')) {
+        if (params.has('marcValue')) {
             context.marcSearch.tags = params.getAll('marcTag');
             context.marcSearch.subfields = params.getAll('marcSubfield');
             context.marcSearch.values = params.getAll('marcValue');
         }
 
-        if (params.get('identQuery')) {
+        if (params.has('identQuery')) {
             context.identSearch.value = params.get('identQuery');
             context.identSearch.queryType = params.get('identQueryType');
         }
 
-        if (params.get('browseTerm')) {
+        if (params.has('browseTerm')) {
             context.browseSearch.value = params.get('browseTerm');
             context.browseSearch.fieldClass = params.get('browseClass');
             if (params.has('browsePivot')) {
@@ -195,7 +195,7 @@ export class CatalogUrlService {
             }
         }
 
-        if (params.get('cnBrowseTerm')) {
+        if (params.has('cnBrowseTerm')) {
             context.cnBrowseSearch.value = params.get('cnBrowseTerm');
             context.cnBrowseSearch.offset = Number(params.get('cnBrowsePage'));
         }
