@@ -54,7 +54,7 @@ autoreconf -i
 Installing prerequisites
 ------------------------
 
-  * **PostgreSQL**: The minimum supported version is 9.4.
+  * **PostgreSQL**: The minimum supported version is 9.6.
   * **Linux**: Evergreen has been tested on 
     Debian Buster (10), 
     Debian Stretch (9), 
@@ -513,10 +513,10 @@ Creating the database on a remote server
 In a production instance of Evergreen, your PostgreSQL server should be
 installed on a dedicated server.
 
-PostgreSQL 9.4 and later
+PostgreSQL 9.6 and later
 ^^^^^^^^^^^^^^^^^^^^^^^^
 To create the database instance on a remote database server running PostgreSQL
-9.4 or later, simply use the `--create-database` flag on `eg_db_config`.
+9.6 or later, simply use the `--create-database` flag on `eg_db_config`.
 
 Starting Evergreen
 ------------------

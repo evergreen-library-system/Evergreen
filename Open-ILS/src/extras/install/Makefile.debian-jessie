@@ -69,7 +69,7 @@ export DEBS = \
 	libuniversal-require-perl\
 	libunix-syslog-perl\
 	libyaz-dev\
-	postgresql-client-9.4\
+	postgresql-client-9.6\
 	libsoap-lite-perl\
 	libbz2-dev\
 	libparse-recdescent-perl\
@@ -100,12 +100,12 @@ export CPAN_MODULES_FORCE = \
 	Business::Stripe \
 	Class::DBI::Frozen::301
 
-PGSQL_SERVER_DEBS_94 = \
+PGSQL_SERVER_DEBS_96 = \
 	$(DEB_PGSQL_COMMON_MODS) \
-	postgresql-9.4 \
-	postgresql-contrib-9.4 \
-	postgresql-plperl-9.4 \
-	postgresql-server-dev-9.4
+	postgresql-9.6 \
+	postgresql-contrib-9.6 \
+	postgresql-plperl-9.6 \
+	postgresql-server-dev-9.6
 
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
@@ -136,13 +136,17 @@ TRANSLATOR_DEBS = \
 	bzr
 
 all:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian install_debs
 	make -f $(DIR)/Makefile.common install_cpan
 	make -f $(DIR)/Makefile.common install_cpan_force
 	make -f $(DIR)/Makefile.debian debian_sys_config
 
 install_postgres_server:
-	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_94)"
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
 
 # note: if/when grunt-cli is available as a
 # package, use the packaged version instead.
