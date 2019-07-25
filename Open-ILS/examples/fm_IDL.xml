@@ -5167,7 +5167,7 @@ SELECT  usr,
 			<link field="target_resource" reltype="has_a" key="id" map="" class="brsrc"/>
 			<link field="current_resource" reltype="has_a" key="id" map="" class="brsrc"/>
 			<link field="request_lib" reltype="has_a" key="id" map="" class="aou"/>
-			<link field="pickup_lib" reltype="might_have" key="id" map="" class="aou"/>
+			<link field="pickup_lib" reltype="has_a" key="id" map="" class="aou"/>
 			<link field="capture_staff" reltype="might_have" key="id" map="" class="au"/>
 			<link field="attr_val_maps" reltype="has_many" key="reservation" map="" class="bravm"/>
 		</links>
