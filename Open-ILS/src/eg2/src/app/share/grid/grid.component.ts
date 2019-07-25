@@ -1,10 +1,11 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, ViewEncapsulation} from '@angular/core';
+    OnDestroy, ViewChild, ViewEncapsulation} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridContext, GridColumn, GridDataSource, GridRowFlairEntry} from './grid';
+import {GridToolbarComponent} from './grid-toolbar.component';
 
 /**
  * Main grid entry point.
@@ -125,6 +126,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() onRowActivate: EventEmitter<any>;
     @Output() onRowClick: EventEmitter<any>;
 
+    @ViewChild('toolbar') toolbar: GridToolbarComponent;
+
     constructor(
         private idl: IdlService,
         private org: OrgService,
@@ -188,6 +191,10 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ngOnDestroy() {
         this.context.destroy();
+    }
+
+    print = () => {
+        this.toolbar.printHtml();
     }
 
     reload() {

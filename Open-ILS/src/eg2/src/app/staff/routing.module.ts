@@ -19,6 +19,9 @@ const routes: Routes = [{
     redirectTo: 'splash',
     pathMatch: 'full',
   }, {
+    path: 'booking',
+    loadChildren : '@eg/staff/booking/booking.module#BookingModule'
+  }, {
     path: 'about',
     component: AboutComponent
   }, {

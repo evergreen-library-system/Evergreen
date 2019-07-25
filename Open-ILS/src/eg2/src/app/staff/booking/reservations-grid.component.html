@@ -1,0 +1,69 @@
+<eg-grid #grid [dataSource]="gridSource"
+  (onRowActivate)="handleRowActivate($event)"
+  [sortable]="true"
+  [useLocalSort]="true"
+  persistKey="booking.{{persistSuffix}}" >
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)" [disableOnRows]="editNotAppropriate"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Cancel Selected" i18n-label (onClick)="cancelSelected($event)" [disableOnRows]="cancelNotAppropriate"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Pick Up Selected" i18n-label (onClick)="pickupSelected($event)" [disableOnRows]="pickupNotAppropriate"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Return Selected" i18n-label (onClick)="returnSelected($event)" [disableOnRows]="returnNotAppropriate"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Patron Record" i18n-label (onClick)="viewPatronRecord($event)" [disableOnRows]="notOnePatronSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Reservations for This Patron" i18n-label (onClick)="viewByPatron($event)" [disableOnRows]="notOnePatronSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Item Status" i18n-label (onClick)="viewItemStatus($event)" [disableOnRows]="notOneCatalogedItemSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Reservations for This Resource" i18n-label (onClick)="viewByResource($event)" [disableOnRows]="notOneResourceSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-button *ngIf="!status" label="Create New Reservation" i18n-label (onClick)="redirectToCreate($event)"></eg-grid-toolbar-button>
+
+  <eg-grid-column name="id" [hidden]="true" [index]="true" i18n-label label="ID" path="id"></eg-grid-column>
+  <eg-grid-column label="Patron username" [hidden]="true" i18n-label path="usr.usrname"></eg-grid-column>
+  <eg-grid-column label="Patron barcode" i18n-label path="usr.card.barcode"></eg-grid-column>
+  <eg-grid-column label="Patron first name" i18n-label  path="usr.first_given_name"></eg-grid-column>
+  <eg-grid-column label="Patron middle name" i18n-label [hidden]="true" path="usr.second_given_name"></eg-grid-column>
+  <eg-grid-column label="Patron family name" i18n-label path="usr.family_name"></eg-grid-column>
+  <eg-grid-column name="start_time" label="Start Time" [datePlusTime]="true" i18n-label path="start_time" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="end_time" label="End Time" [datePlusTime]="true" i18n-label path="end_time" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="request_time" label="Request Time" [datePlusTime]="true" i18n-label path="request_time" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="capture_time" label="Capture Time" [datePlusTime]="true" i18n-label path="capture_time" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column name="pickup_time" label="Pickup Time" [datePlusTime]="true" i18n-label path="pickup_time" datatype="timestamp"></eg-grid-column>
+  <eg-grid-column label="Email notify" i18n-label [hidden]="true" path="email_notify" datatype="bool"></eg-grid-column>
+  <eg-grid-column i18n-label [hidden]="true" path="unrecovered" datatype="bool"></eg-grid-column>
+  <eg-grid-column label="Billing total" i18n-label path="billing_total" datatype="money"></eg-grid-column>
+  <eg-grid-column label="Payment total" i18n-label path="payment_total" datatype="money"></eg-grid-column>
+  <eg-grid-column label="Booking interval" i18n-label [hidden]="true" path="booking_interval" [hidden]="true"></eg-grid-column>
+  <eg-grid-column label="Fine interval" i18n-label [hidden]="true" path="fine_interval" [hidden]="true"></eg-grid-column>
+  <eg-grid-column label="Fine amount" i18n-label [hidden]="true" path="fine_amount" datatype="money"></eg-grid-column>
+  <eg-grid-column label="Maximum fine" i18n-label [hidden]="true" path="max_fine" datatype="money"></eg-grid-column>
+  <eg-grid-column i18n-label label="Resource Barcode" path="current_resource.barcode"></eg-grid-column>
+  <eg-grid-column i18n-label label="Note" path="note"></eg-grid-column>
+  <eg-grid-column i18n-label label="Resource Type" path="target_resource_type.name"></eg-grid-column>
+  <eg-grid-column label="Reservation length" i18n-label  path="length"></eg-grid-column>
+  <eg-grid-column label="Request library" i18n-label  path="request_lib.name"></eg-grid-column>
+  <eg-grid-column label="Pickup library" i18n-label path="pickup_lib.name"></eg-grid-column>
+  <eg-grid-column label="Pickup library timezone" i18n-label path="timezone"></eg-grid-column>
+
+</eg-grid>
+
+<eg-fm-record-editor #editDialog
+  idlClass="bresv"
+  datetimeFields="start_time,end_time"
+  [fieldOptions]="{end_time:{customTemplate:{template:endTimeTemplate}}}"
+  hiddenFields="xact_start,xact_finish,cancel_time,booking_interval"
+  [readonlyFields]="listReadOnlyFields()">
+</eg-fm-record-editor>
+<eg-cancel-reservation-dialog #confirmCancelReservationDialog
+  (onSuccessfulCancel)="grid.reload()">
+</eg-cancel-reservation-dialog>
+<eg-no-timezone-set-dialog #noTimezoneSetDialog>
+</eg-no-timezone-set-dialog>
+
+<ng-template #endTimeTemplate let-field="field" let-record="record">
+  <eg-datetime-select
+    domId="endTime"
+    ngModel
+    [showTZ]="editDialog.timezone"
+    [timezone]="editDialog.timezone"
+    [egNotBeforeMoment]="momentizeIsoString(record['start_time'](), editDialog.timezone)"
+    [readOnly]="field.readOnly"
+    (onChangeAsIso)="record[field.name]($event)"
+    initialIso="{{record[field.name]()}}">
+  </eg-datetime-select>
+</ng-template>

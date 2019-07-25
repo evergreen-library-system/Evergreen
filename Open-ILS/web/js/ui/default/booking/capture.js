@@ -76,6 +76,13 @@ CaptureDisplay.prototype._generate_route_line = function(payload) {
     div.appendChild(strong);
     return div;
 };
+CaptureDisplay.prototype._generate_notes_line = function(payload) {
+    var p = document.createElement("p");
+    if (payload.reservation.note()) {
+        p.innerHTML = "<strong>" + payload.reservation.note() + "</strong>";
+    }
+    return p;
+};
 CaptureDisplay.prototype._generate_patron_info = function(payload) {
     var p = document.createElement("p");
     p.innerHTML = "<strong>" + localeStrings.RESERVED + "</strong> " +
@@ -130,6 +137,8 @@ CaptureDisplay.prototype.display_with_transit_info = function(result) {
     p.appendChild(this._generate_title_line(result.payload));
     p.appendChild(this._generate_author_line(result.payload));
     div.appendChild(p);
+
+    div.appendChild(this._generate_notes_line(result.payload));
 
     div.appendChild(this._generate_patron_info(result.payload));
     div.appendChild(this._generate_resv_info(result.payload));

@@ -1,0 +1,72 @@
+<eg-staff-banner bannerText="Manage Reservations" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Manage Reservations"></eg-title>
+
+<form [formGroup]="filters" class="row">
+  <div class="col-sm-3">
+    <eg-org-family-select [hideAncestorSelector]="true" labelText="Pickup library" i18n-labelText formControlName="pickupLibraries">
+    </eg-org-family-select>
+  </div>
+  <div class="col-sm-6 offset-sm-3">
+    <div class="card">
+      <h2 class="card-header" i18n>Filter reservations</h2>
+      <ngb-tabset #filterTabs [activeId]="startingTab" class="mt-1">
+        <ngb-tab id="patron">
+          <ng-template ngbTabTitle>
+            <span class="material-icons" *ngIf="patronId">filter_list</span> <span i18n>Filter by patron</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="m-2">
+              <div class="input-group m-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="patron-barcode-value" i18n>Patron barcode</label>
+                </div>
+                <input type="text" id="patron-barcode-value" class="form-control" formControlName="patronBarcode">
+                <div class="input-group-button">
+                  <button *ngIf="patronBarcode.value" class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="resource">
+          <ng-template ngbTabTitle>
+            <span class="material-icons" *ngIf="resourceBarcode.value">filter_list</span> <span i18n>Filter by resource</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="m-2">
+              <div class="input-group m-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="resource-barcode-value" i18n>Resource barcode</label>
+                </div>
+                <input type="text" id="resource-barcode-value" class="form-control" formControlName="resourceBarcode">
+                <div class="input-group-button">
+                  <button *ngIf="resourceBarcode.value" class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab id="type">
+          <ng-template ngbTabTitle>
+            <span class="material-icons" *ngIf="resourceType.value">filter_list</span> <span i18n>Filter by resource type</span>
+          </ng-template>
+          <ng-template ngbTabContent>
+            <div class="m-2">
+              <div class="input-group m-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="resource-type-value" i18n>Resource type</label>
+                </div>
+                <eg-combobox domId="resource-type-value" formControlName="resourceType" idlClass="brt" [asyncSupportsEmptyTermClick]="true"></eg-combobox>
+                <div class="input-group-button">
+                  <button class="btn btn-warning" (click)="removeFilters()" i18n><span class="material-icons">delete</span> Remove filter</button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ngb-tab>
+      </ngb-tabset>
+    </div>
+  </div>
+</form>
+<eg-reservations-grid #reservationsGrid [patron]="patronId" [resourceBarcode]="resourceBarcode.value" [resourceType]="resourceTypeForGrid" [pickupLibIds]="pickupLibrariesForGrid" persistSuffix="manage"></eg-reservations-grid>

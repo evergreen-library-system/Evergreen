@@ -33,6 +33,9 @@ export class GridColumnComponent implements OnInit {
     // Display date and time when datatype = timestamp
     @Input() datePlusTime: boolean;
 
+    // Display using a specific OU's timestamp when datatype = timestamp
+    @Input() timezoneContextOrg: number;
+
     // Used in conjunction with cellTemplate
     @Input() cellContext: any;
     @Input() cellTemplate: TemplateRef<any>;
@@ -65,6 +68,7 @@ export class GridColumnComponent implements OnInit {
         col.datatype = this.datatype;
         col.datePlusTime = this.datePlusTime;
         col.ternaryBool = this.ternaryBool;
+        col.timezoneContextOrg = this.timezoneContextOrg;
         col.isAuto = false;
         this.grid.context.columnSet.add(col);
     }

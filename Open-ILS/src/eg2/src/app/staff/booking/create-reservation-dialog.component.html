@@ -1,0 +1,86 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Confirm Reservation Details</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close"
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <form class="modal-body form-common" [formGroup]="create">
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-patron-barcode">Patron barcode</label>
+      <input type="text" id="create-patron-barcode"
+        class="form-control col-lg-7" formControlName="patronBarcode">
+      <span class="col-lg-7 offset-lg-4" i18n>
+        {{ (patron$ | async)?.first_given_name}}
+        {{ (patron$ | async)?.second_given_name}}
+        {{ (patron$ | async)?.family_name}}
+      </span>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-end-time">Start time</label>
+      <eg-datetime-select
+        formControlName="startTime"
+        [timezone]="timezone">
+      </eg-datetime-select>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-end-time">End time</label>
+      <eg-datetime-select
+        formControlName="endTime"
+        [timezone]="timezone">
+      </eg-datetime-select>
+      <div role="alert" class="alert alert-danger" *ngIf="create.errors && create.errors.startTimeNotBeforeEndTime">
+        <span class="material-icons" aria-hidden="true">error</span>
+        <span i18n>Start time must be before end time</span>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-pickup-library">Pickup library</label>
+      <eg-org-select domId="create-pickup-library" [applyDefault]="true"
+        [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()"
+        (onChange)="handlePickupLibChange($event)">
+      </eg-org-select>
+    </div>
+    <div *ngIf="pickupLibraryUsesDifferentTz"
+      role="alert"
+      class="alert alert-info">
+      <span class="material-icons" aria-hidden="true">access_time</span>
+      <span i18n>Pickup Library is in the {{timezone}} timezone</span>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-resource">Resource</label>
+      <input *ngIf="targetResource && targetResourceBarcode" id="create-resource" value="{{targetResourceBarcode}}" disabled>
+      <eg-combobox
+        formControlName="resourceList"
+        *ngIf="!(targetResource && targetResourceBarcode)"
+        startId="any">
+        <eg-combobox-entry entryId="any" entryLabel="Any resource"
+          i18n-entryLabel></eg-combobox-entry>
+        <eg-combobox-entry *ngFor="let r of resources" entryId="{{r.id()}}" entryLabel="{{r.barcode()}}">
+        </eg-combobox-entry>
+      </eg-combobox>
+    </div>
+    <div class="form-group row">
+      <label class="col-lg-4 text-right font-weight-bold"
+        i18n for="create-email-notify">Notify by email?</label>
+      <input type="checkbox" formControlName="emailNotify">
+    </div>
+  </form>
+  <div class="modal-footer">
+    <button (click)="addBresv$().subscribe()" [disabled]="!create.valid" class="btn btn-info" i18n>Confirm reservation</button>
+    <button (click)="addBresvAndOpenPatronReservations()" [disabled]="!create.valid" class="btn btn-info" i18n>
+      Confirm and show patron reservations
+    </button>
+    <button (click)="close()" class="btn btn-warning ml-2" i18n>Cancel</button>
+  </div>
+</ng-template>
+<eg-alert-dialog #fail i18n-dialogBody
+  dialogBody="Could not create this reservation">
+</eg-alert-dialog>

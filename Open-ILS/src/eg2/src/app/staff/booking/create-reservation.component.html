@@ -1,0 +1,219 @@
+<eg-staff-banner bannerText="Create Reservation" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Create Reservation"></eg-title>
+{{attributes | json}}
+{{selectedAttributes.value | json}}
+<form [formGroup]="criteria" class="row">
+  <div class="col-sm-6">
+    <div class="row">
+      <div class="col">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="ideal-reservation-type" i18n>Reservation type</label>
+          </div>
+          <select class="form-control" id="ideal-reservation-type" formControlName="reservationType">
+            <option *ngFor="let type of reservationTypes" [ngValue]="type" i18n>{{type.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="ideal-reservation-date" i18n>Reservation date</label>
+          </div>
+          <eg-date-select *ngIf="!multiday" #dateLimiter domId="ideal-reservation-date" formControlName="idealDate"></eg-date-select>
+          <eg-daterange-select *ngIf="multiday" formControlName="idealDateRange"></eg-daterange-select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card col-sm-6">
+    <h2 class="card-header" i18n>Reservation details</h2>
+    <ngb-tabset #details="ngbTabset">
+      <ngb-tab id="select-resource-type">
+        <ng-template ngbTabTitle>
+          <span class="material-icons">category</span>
+          <ng-container i18n>Choose resource by type</ng-container>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div ngbPanelContent class="row">
+            <div class="col">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="ideal-resource-type" i18n>Search by resource type</label>
+                </div>
+                <eg-combobox
+                  formControlName="resourceType"
+                  domId="ideal-resource-type"
+                  idlClass="brt"
+                  [asyncSupportsEmptyTermClick]="true">
+                </eg-combobox>
+              </div>
+              <div class="col">
+                <eg-org-family-select [hideAncestorSelector]="true" labelText="Owning library" i18n-labelText formControlName="owningLibrary">
+                </eg-org-family-select>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab id="select-resource">
+        <ng-template ngbTabTitle>
+          <span class="material-icons">assignment</span>
+          <ng-container i18n>Choose resource by barcode</ng-container>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div ngbPanelContent class="row">
+            <div class="col">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="ideal-resource-barcode" i18n>Search by resource barcode</label>
+                </div>
+                <input type="text" id="ideal-resource-barcode" class="form-control" formControlName="resourceBarcode">
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab id="attributes" [disabled]="0 === attributes.length">
+        <ng-template ngbTabTitle>
+          <span class="material-icons">filter_list</span>
+          <ng-container i18n>Limit by attributes</ng-container>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <ul class="list-group list-group-flush" formArrayName="selectedAttributes">
+            <li *ngFor="let attribute of attributes; let i = index" class="list-group-item">
+              <span class="input-group">
+                <span class="input-group-prepend">
+                  <label class="input-group-text" for="attribute-{{attribute.id()}}" i18n>{{attribute.name()}}</label>
+                </span>
+                <eg-combobox [formControlName]="i">
+                  <eg-combobox-entry *ngFor="let value of attribute.valid_values()"
+                    [entryId]="value.id()" [entryLabel]="value.valid_value()">
+                  </eg-combobox-entry>
+                </eg-combobox>
+              </span>
+            </li>
+          </ul>
+        </ng-template>
+      </ngb-tab>
+
+      <ngb-tab id="display-settings">
+        <ng-template ngbTabTitle>
+          <span class="material-icons">settings</span>
+          <ng-container i18n>Schedule settings</ng-container>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <span class="input-group">
+                <span class="input-group-prepend">
+                  <label class="input-group-text" for="start-time" i18n>Start time</label>
+                </span>
+                <ngb-timepicker formControlName="startOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
+              </span>
+            </li>
+            <li class="list-group-item">
+              <span class="input-group">
+                <span class="input-group-prepend">
+                  <label class="input-group-text" for="end-time" i18n>End time</label>
+                </span>
+                <ngb-timepicker formControlName="endOfDay" [minuteStep]="minuteStep()" [meridian]="true"></ngb-timepicker>
+              </span>
+            </li>
+            <li *ngIf="criteria.errors && criteria.errors.startOfDayNotBeforeEndOfDay" class="list-group-item">
+              <div role="alert" class="alert alert-danger">
+                <span class="material-icons" aria-hidden="true">error</span>
+                <span i18n>Start time must be before end time</span>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="input-group">
+                <span class="input-group-prepend">
+                  <label class="input-group-text" for="granularity" i18n>Granularity</label>
+                </span>
+                <eg-combobox (onChange)="changeGranularity($event)" [startId]="granularity ? granularity : 30">
+                  <eg-combobox-entry [entryId]="15" entryLabel="15 minutes"
+                    i18n-entryLabel></eg-combobox-entry>
+                  <eg-combobox-entry [entryId]="30" entryLabel="30 minutes"
+                    i18n-entryLabel></eg-combobox-entry>
+                  <eg-combobox-entry [entryId]="60" entryLabel="60 minutes"
+                    i18n-entryLabel></eg-combobox-entry>
+                </eg-combobox>
+              </span>
+            </li>
+          </ul>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</form>
+
+<ng-container *ngIf="resources.length">
+  <hr>
+  <div class="row" *ngIf="idealDate && !multiday">
+    <button class="btn btn-info col-sm-2 offset-sm-3" (click)="addDays(-1)">
+        <span class="material-icons mat-icon-in-button">keyboard_arrow_left</span>
+        <span i18n>Previous day</span>
+    </button>
+    <h2 class="col-sm-2 text-center" i18n>{{idealDate | formatValue:'timestamp'}}</h2>
+    <button class="btn btn-info col-sm-2" (click)="addDays(1)">
+      <span i18n>Next day</span>
+      <span class="material-icons mat-icon-in-button">keyboard_arrow_right</span>
+    </button>
+  </div>
+  <eg-grid #scheduleGrid
+    [sortable]="false"
+    (onRowActivate)="openTheDialog([$event])"
+    [dataSource]="scheduleSource"
+    [rowFlairIsEnabled]="true"
+    [rowFlairCallback]="resourceAvailabilityIcon"
+    [disablePaging]="true"
+    persistKey="disabled">
+    <eg-grid-toolbar-action label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-action>
+    <eg-grid-column path="time" [index]="true" name="Time" i18n-name [cellTemplate]="timeTemplate" ></eg-grid-column>
+    <eg-grid-column *ngFor="let resource of resources" path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [disableTooltip]="true"></eg-grid-column>
+  </eg-grid>
+</ng-container>
+<div class="text-sm-center" *ngIf="this.resourceType.value && !resources.length" i18n>
+  There are no bookable resource that match your criteria.
+  Would you like to create <a [routerLink]="['/staff', 'admin', 'booking', 'splash']">some new resources</a>?
+</div>
+
+<eg-create-reservation-dialog #createDialog
+  (onComplete)="fetchData()"
+  [targetResourceBarcode]="resourceBarcode"
+  [targetResource]="resourceId"
+  [targetResourceType]="resourceType.value"
+  [attributes]="flattenedSelectedAttributes"
+  [resources]="resources">
+</eg-create-reservation-dialog>
+
+<ng-template #reservationsTemplate let-row="row" let-col="col">
+  <ng-container *ngIf="row[col.name]">
+    <ul class="list-unstyled">
+      <li *ngFor="let reservation of row[col.name]">
+        <button class="btn btn-info" (click)="openReservationViewer(reservation['reservationId'])">
+          {{reservation['patronLabel']}}
+        </button>
+      </li>
+    </ul>
+  </ng-container>
+</ng-template>
+<ng-template #timeTemplate let-row="row" let-col="col">
+  <ng-container *ngIf="!multiday">
+    {{row['time'].format('LT')}}
+  </ng-container>
+  <ng-container *ngIf="multiday">
+    {{row['time'] | formatValue:'timestamp'}}
+  </ng-container>
+</ng-template>
+<eg-fm-record-editor #viewReservation
+  idlClass="bresv"
+  datetimeFields="start_time,end_time"
+  hiddenFields="xact_start,xact_finish,cancel_time,booking_interval">
+</eg-fm-record-editor>
+<eg-no-timezone-set-dialog #noTimezoneSetDialog>
+</eg-no-timezone-set-dialog>

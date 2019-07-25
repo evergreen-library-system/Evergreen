@@ -439,13 +439,13 @@
         </a>
         <ul uib-dropdown-menu>
           <li>
-            <a href="./booking/legacy/booking/reservation" target="_self">
+            <a href="/eg2/staff/booking/create_reservation" target="_self">
               <span class="glyphicon glyphicon-plus"></span>
               [% l('Create Reservations') %]
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/pull_list" target="_self">
+            <a href="/eg2/staff/booking/pull_list" target="_self">
               <span class="glyphicon glyphicon-th-list"></span>
               [% l('Pull List') %]
             </a>
@@ -457,15 +457,21 @@
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/pickup" target="_self">
+            <a href="/eg2/staff/booking/pickup" target="_self">
               <span class="glyphicon glyphicon-export"></span>
               [% l('Pick Up Reservations') %]
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/return" target="_self">
+            <a href="/eg2/staff/booking/return" target="_self">
               <span class="glyphicon glyphicon-import"></span>
               [% l('Return Reservations') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/manage_reservations" target="_self">
+              <span class="glyphicon glyphicon-wrench"></span>
+              [% l('Manage Reservations') %]
             </a>
           </li>
         </ul>

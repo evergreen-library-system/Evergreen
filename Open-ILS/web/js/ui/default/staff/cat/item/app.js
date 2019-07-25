@@ -103,10 +103,7 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.book_copies_now = function() {
-        itemSvc.book_copies_now([{
-            id : $scope.args.copyId,
-            'call_number.record.id' : $scope.args.recordId
-        }]);
+        itemSvc.book_copies_now([$scope.args.copyBarcode]);
     }
 
     $scope.findAcquisition = function() {
@@ -142,6 +139,10 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
         $q.all(promises).then(function () {
             !hasResults ? alert('There is no corresponding purchase order for this item.') : false;
         });
+    }
+
+    $scope.manage_reservations = function() {
+        itemSvc.manage_reservations([$scope.args.copyBarcode]);
     }
 
     $scope.requestItems = function() {
@@ -524,7 +525,15 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     }
 
     $scope.book_copies_now = function() {
-        itemSvc.book_copies_now(copyGrid.selectedItems());
+        var item = copyGrid.selectedItems()[0];
+        if (item)
+            itemSvc.book_copies_now(item.barcode);
+    }
+
+    $scope.manage_reservations = function() {
+        var item = copyGrid.selectedItems()[0];
+        if (item)
+            itemSvc.manage_reservations(item.barcode);
     }
 
     $scope.requestItems = function() {

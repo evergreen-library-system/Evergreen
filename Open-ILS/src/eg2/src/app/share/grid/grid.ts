@@ -28,6 +28,7 @@ export class GridColumn {
     datatype: string;
     datePlusTime: boolean;
     ternaryBool: boolean;
+    timezoneContextOrg: number;
     cellTemplate: TemplateRef<any>;
     cellContext: any;
     isIndex: boolean;
@@ -732,7 +733,8 @@ export class GridContext {
             idlClass: col.idlClass,
             idlField: col.idlFieldDef ? col.idlFieldDef.name : col.name,
             datatype: col.datatype,
-            datePlusTime: Boolean(col.datePlusTime)
+            datePlusTime: Boolean(col.datePlusTime),
+            timezoneContextOrg: Number(col.timezoneContextOrg)
         });
     }
 

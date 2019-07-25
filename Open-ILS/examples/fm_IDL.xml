@@ -3651,7 +3651,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<field reporter:label="Last Name" name="family_name"  reporter:datatype="text"/>
 			<field reporter:label="First Name" name="first_given_name"  reporter:datatype="text"/>
 			<field reporter:label="Home Library" name="home_ou" reporter:datatype="org_unit"/>
-			<field reporter:label="User ID" name="id" reporter:datatype="id" />
+			<field reporter:label="User ID" name="id" reporter:datatype="id" reporter:selector="usrname" />
 			<field reporter:label="Primary Identification Type" name="ident_type" reporter:datatype="link"/>
 			<field reporter:label="Secondary Identification Type" name="ident_type2" reporter:datatype="link"/>
 			<field reporter:label="Primary Identification" name="ident_value"  reporter:datatype="text"/>
@@ -5137,8 +5137,8 @@ SELECT  usr,
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="money"/>
 			<field reporter:label="Payment Summary" name="summary" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Request Time" name="request_time" reporter:datatype="timestamp"/>
-			<field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp"/>
-			<field reporter:label="End Time" name="end_time" reporter:datatype="timestamp"/>
+			<field reporter:label="Start Time" name="start_time" reporter:datatype="timestamp" oils_obj:required="true"/>
+			<field reporter:label="End Time" name="end_time" reporter:datatype="timestamp" oils_obj:required="true"/>
 			<field reporter:label="Capture Time" name="capture_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Cancel Time" name="cancel_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Pickup Time" name="pickup_time" reporter:datatype="timestamp"/>
@@ -5154,6 +5154,7 @@ SELECT  usr,
 			<field reporter:label="Pickup Library" name="pickup_lib" reporter:datatype="link"/>
 			<field reporter:label="Capture Staff" name="capture_staff" reporter:datatype="link"/>
 			<field reporter:label="Notify by Email?" name="email_notify" reporter:datatype="bool"/>
+			<field reporter:label="Note" name="note" reporter:datatype="text"/>
 			<field reporter:label="Attribute Value Maps" name="attr_val_maps" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>

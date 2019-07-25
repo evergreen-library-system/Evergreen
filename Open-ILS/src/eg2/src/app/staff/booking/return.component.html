@@ -1,0 +1,46 @@
+<eg-staff-banner bannerText="Booking Return" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Return"></eg-title>
+
+<form [formGroup]="findPatron">
+  <ngb-tabset (tabChange)="handleTabChange($event)" activeId="patron" #tabs>
+    <ngb-tab title="By patron" i18n-title id="patron">
+      <ng-template ngbTabContent>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="input-group flex-nowrap">
+              <div class="input-group-prepend">
+                <label class="input-group-text" for="patron-barcode" i18n>Patron barcode</label>
+                <input type="text" id="patron-barcode" class="form-control" i18n-placeholder placeholder="Patron barcode" formControlName="patronBarcode">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="patronId">
+          <h2 class="text-center" i18n>Ready for return</h2>
+          <eg-reservations-grid #readyGrid [patron]="patronId" status="returnReady" (onReturn)="refreshGrids()" persistSuffix="return.patron.picked_up"></eg-reservations-grid>
+
+          <h2 class="text-center" i18n>Returned today</h2>
+          <eg-reservations-grid #returnedGrid [patron]="patronId" status="returnedToday" persistSuffix="return.patron.returned"></eg-reservations-grid>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="By resource" i18n-title id="resource">
+      <ng-template ngbTabContent>
+        <div class="input-group flex-nowrap">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="resource-barcode" i18n>Resource barcode</label>
+            <input type="text" id="resource-barcode" class="form-control" i18n-placeholder placeholder="Resource barcode" formControlName="resourceBarcode">
+          </div>
+        </div>
+        <div *ngIf="patronId">
+          <h2 class="text-center" i18n>Ready for return</h2>
+          <eg-reservations-grid #readyGrid [patron]="patronId" status="returnReady" (onReturn)="this.returnedGrid.reloadGrid()" persistSuffix="return.resource.picked_up"></eg-reservations-grid>
+
+          <h2 class="text-center" i18n>Returned today</h2>
+          <eg-reservations-grid #returnedGrid [patron]="patronId" status="returnedToday" persistSuffix="return.resource.returned"></eg-reservations-grid>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</form>

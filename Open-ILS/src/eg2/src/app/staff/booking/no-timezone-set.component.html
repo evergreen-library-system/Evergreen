@@ -1,0 +1,17 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Timezone not set for your library</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close"
+      (click)="dismiss('cross_click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" i18n><p>Please make sure that <i>lib.timezone</i> has a valid value in the Library Settings Editor.</p></div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="openLSE()" i18n>Go to Library Settings Editor</button>
+    <button type="button" class="btn btn-warning"
+      (click)="dismiss('canceled')" i18n>Continue anyway</button>
+  </div>
+</ng-template>

@@ -89,6 +89,7 @@
         <li><a href ng-click="show_in_catalog()">[% l('Show in Catalog') %]</a></li>
         <li><a href ng-click="make_copies_bookable()">[% l('Make Items Bookable') %]</a></li>
         <li><a href ng-click="book_copies_now()">[% l('Book Item Now') %]</a></li>
+        <li><a href ng-click="manage_reservations()">[% l('Manage Reservations') %]</a></li>
         <li><a href ng-click="requestItems()">[% l('Request Items') %]</a></li>
         <li><a href ng-click="attach_to_peer_bib()">[% l('Link as Conjoined to Previously Marked Bib Record') %]</a></li>
         <li><a href ng-click="selectedHoldingsCopyDelete()">[% l('Delete Items') %]</a></li>

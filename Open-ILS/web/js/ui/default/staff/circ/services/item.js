@@ -350,72 +350,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
         });
     }
 
-    service.book_copies_now = function(items) {
-        var copies_by_record = {};
-        var record_list = [];
-        angular.forEach(
-            items,
-            function (item) {
-                var record_id = item['call_number.record.id'];
-                if (typeof copies_by_record[ record_id ] == 'undefined') {
-                    copies_by_record[ record_id ] = [];
-                    record_list.push( record_id );
-                }
-                copies_by_record[ record_id ].push(item.id);
-            }
-        );
+    service.book_copies_now = function(barcode) {
+        location.href = "/eg2/staff/booking/create_reservation/for_resource/" + barcode;
+    }
 
-        var promises = [];
-        var combined_brt = [];
-        var combined_brsrc = [];
-        angular.forEach(record_list, function(record_id) {
-            promises.push(
-                egCore.net.request(
-                    'open-ils.booking',
-                    'open-ils.booking.resources.create_from_copies',
-                    egCore.auth.token(),
-                    copies_by_record[record_id]
-                ).then(function(results) {
-                    if (results && results['brt']) {
-                        combined_brt = combined_brt.concat(results['brt']);
-                    }
-                    if (results && results['brsrc']) {
-                        combined_brsrc = combined_brsrc.concat(results['brsrc']);
-                    }
-                })
-            );
-        });
-
-        $q.all(promises).then(function() {
-            if (combined_brt.length > 0 || combined_brsrc.length > 0) {
-                $uibModal.open({
-                    template: '<eg-embed-frame url="booking_admin_url" handlers="funcs"></eg-embed-frame>',
-                    backdrop: 'static',
-                    animation: true,
-                    size: 'md',
-                    controller:
-                           ['$scope','$location','egCore','$uibModalInstance',
-                    function($scope , $location , egCore , $uibModalInstance) {
-
-                        $scope.funcs = {
-                            ses : egCore.auth.token(),
-                            bresv_interface_opts : {
-                                booking_results : {
-                                     brt : combined_brt
-                                    ,brsrc : combined_brsrc
-                                }
-                            }
-                        }
-
-                        var booking_path = '/eg/booking/reservation';
-
-                        $scope.booking_admin_url =
-                            $location.absUrl().replace(/\/eg\/staff.*/, booking_path);
-
-                    }]
-                });
-            }
-        });
+    service.manage_reservations = function(barcode) {
+        location.href = "/eg2/staff/booking/manage_reservations/by_resource/" + barcode;
     }
 
     service.requestItems = function(copy_list) {

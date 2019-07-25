@@ -215,17 +215,22 @@ angular.module('egCoreMod').run(['egStrings', function(s) {
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/reservation?patron_barcode={{patron().card().barcode()}}" target="_top">
-              [% l('Booking: Create or Cancel Reservations') %]
+            <a href="/eg2/staff/booking/manage_reservations/by_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Manage Reservations') %]
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/pickup?patron_barcode={{patron().card().barcode()}}" target="_top">
+            <a href="/eg2/staff/booking/create_reservation/for_patron/{{patron().id()}}" target="_top">
+              [% l('Booking: Create Reservation') %]
+            </a>
+          </li>
+          <li>
+            <a href="/eg2/staff/booking/pickup/by_patron/{{patron().id()}}" target="_top">
               [% l('Booking: Pick Up Reservations') %]
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/return?patron_barcode={{patron().card().barcode()}}" target="_top">
+            <a href="/eg2/staff/booking/return/by_patron/{{patron().id()}}" target="_top">
               [% l('Booking: Return Reservations') %]
             </a>
           </li>

@@ -13,7 +13,15 @@ body, .form-control, .btn, .input-group-text {
    */
   font-size: .88rem;
 }
-h2 {font-size: 1.25rem}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 550;
+  color: #129a78; /* official color of the Evergreen logo */
+  text-decoration: underline #129a78;
+}
+h2.card-header {
+  text-decoration: none;
+}
 h3 {font-size: 1.15rem}
 h4 {font-size: 1.05rem}
 h5 {font-size: .95rem}

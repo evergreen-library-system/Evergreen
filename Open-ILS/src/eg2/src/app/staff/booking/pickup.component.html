@@ -1,0 +1,27 @@
+<eg-staff-banner bannerText="Booking Pickup" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Pickup"></eg-title>
+
+<form [formGroup]="findPatron" class="row">
+  <div class="col-md-4">
+    <div class="input-group flex-nowrap">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="patron-barcode" i18n>Patron barcode</label>
+        <input type="text" id="patron-barcode" class="form-control" formControlName="patronBarcode">
+      </div>
+    </div>
+  </div>
+</form>
+<div *ngIf="patronId">
+  <h2 class="text-center" i18n>Ready for pickup</h2>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" [checked]="onlyShowCaptured" id="only-show-captured" (change)="handleShowCapturedChange()">
+    <label class="form-check-label" for="only-show-captured" i18n>Show only captured resources</label>
+  </div>
+  <eg-reservations-grid #readyGrid [patron]="patronId" status="pickupReady" [onlyCaptured]="onlyShowCaptured" persistSuffix="pickup.ready" (onPickup)="this.pickedUpGrid.reloadGrid()"></eg-reservations-grid>
+
+  <h2 class="text-center mt-2" i18n>Already picked up</h2>
+  <eg-reservations-grid #pickedUpGrid [patron]="patronId" status="pickedUp" persistSuffix="pickup.picked_up"></eg-reservations-grid>
+
+</div>
+

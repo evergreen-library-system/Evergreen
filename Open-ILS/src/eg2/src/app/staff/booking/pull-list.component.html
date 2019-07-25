@@ -1,0 +1,47 @@
+<eg-staff-banner bannerText="Booking Pull List" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Pull List"></eg-title>
+
+<form [formGroup]="pullListCriteria" class="row">
+  <div class="col-md-4">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label for="ou" class="input-group-text" i18n>Library:</label>
+      </div>
+      <eg-org-select domId="ou" [applyDefault]="true"
+        (onChange)="fillGrid($event.id())"
+        [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()">
+      </eg-org-select>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <label for="days-hence" class="input-group-text" i18n>Number of days to fetch:</label>
+      </div>
+      <input type="number" min="1" class="form-control" formControlName="daysHence">
+    </div>
+  </div>
+</form>
+<eg-grid [dataSource]="dataSource" [useLocalSort]="true" #pullList
+  [sortable]="true" persistKey="booking.pull_list">
+  <eg-grid-toolbar-action label="Cancel Selected" i18n-label (onClick)="cancelSelected($event)" [disableOnRows]="noSelectedRows"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Item Status" i18n-label (onClick)="viewItemStatus($event)" [disableOnRows]="notOneCatalogedItemSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="View Reservations for This Resource" i18n-label (onClick)="viewByResource($event)" [disableOnRows]="notOneResourceSelected"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Print Pull List" i18n-label (onClick)="pullList.print()"></eg-grid-toolbar-action>
+
+  <eg-grid-column name="id" [hidden]="true" [index]="true" i18n-label label="ID" path="current_resource.id"></eg-grid-column>
+  <eg-grid-column label="Shelving location" path="shelving_location" i18n-label></eg-grid-column>
+  <eg-grid-column label="Call number" path="call_number" i18n-label></eg-grid-column>
+  <eg-grid-column label="Call number sortkey" path="call_number_sortkey" i18n-label></eg-grid-column>
+  <eg-grid-column name="barcode" label="Barcode" i18n-label path="current_resource.barcode"></eg-grid-column>
+  <eg-grid-column name="title" label="Title or name" i18n-label path="target_resource_type.name"></eg-grid-column>
+  <eg-grid-column label="Reservation start time" [datePlusTime]="true" path="reservations.0.start_time" i18n-label></eg-grid-column>
+  <eg-grid-column label="Reservation end time" [datePlusTime]="true" path="reservations.0.end_time" i18n-label></eg-grid-column>
+  <eg-grid-column label="Patron first name" path="reservations.0.usr.first_given_name" i18n-label></eg-grid-column>
+  <eg-grid-column label="Patron last name" path="reservations.0.usr.family_name" i18n-label></eg-grid-column>
+</eg-grid>
+
+<eg-cancel-reservation-dialog #confirmCancelReservationDialog
+  (onSuccessfulCancel)="fillGrid()">
+</eg-cancel-reservation-dialog>

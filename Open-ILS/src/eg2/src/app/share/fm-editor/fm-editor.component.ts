@@ -11,7 +11,7 @@ import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
-
+import {FormatService} from '@eg/core/format.service';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -84,6 +84,9 @@ export class FmRecordEditorComponent
 
     recId: any;
 
+    // Show datetime fields in this particular timezone
+    timezone: string = this.format.wsOrgTimezone;
+
     // IDL record we are editing
     record: IdlObject;
 
@@ -107,6 +110,10 @@ export class FmRecordEditorComponent
     // required
     @Input() requiredFieldsList: string[] = [];
     @Input() requiredFields: string; // comma-separated string version
+
+    // list of timestamp fields that should display with a timepicker
+    @Input() datetimeFieldsList: string[] = [];
+    @Input() datetimeFields: string; // comma-separated string version
 
     // list of org_unit fields where a default value may be applied by
     // the org-select if no value is present.
@@ -169,6 +176,7 @@ export class FmRecordEditorComponent
       private idl: IdlService,
       private auth: AuthService,
       private toast: ToastService,
+      private format: FormatService,
       private pcrud: PcrudService) {
       super(modal);
     }
@@ -229,6 +237,9 @@ export class FmRecordEditorComponent
         }
         if (this.requiredFields) {
             this.requiredFieldsList = this.requiredFields.split(/,/);
+        }
+        if (this.datetimeFields) {
+            this.datetimeFieldsList = this.datetimeFields.split(/,/);
         }
         if (this.orgDefaultAllowed) {
             this.orgDefaultAllowedList = this.orgDefaultAllowed.split(/,/);
@@ -403,6 +414,8 @@ export class FmRecordEditorComponent
 
             promise = this.wireUpCombobox(field);
 
+        } else if (field.datatype === 'timestamp') {
+            field.datetime = this.datetimeFieldsList.includes(field.name);
         } else if (field.datatype === 'org_unit') {
             field.orgDefaultAllowed =
                 this.orgDefaultAllowedList.includes(field.name);
@@ -531,6 +544,10 @@ export class FmRecordEditorComponent
             return 'template';
         }
 
+        if ( field.datatype === 'timestamp' && field.datetime ) {
+            return 'timestamp-timepicker';
+        }
+
         // Some widgets handle readOnly for us.
         if (   field.datatype === 'timestamp'
             || field.datatype === 'org_unit'
@@ -541,6 +558,10 @@ export class FmRecordEditorComponent
         if (field.readOnly) {
             if (field.datatype === 'money') {
                 return 'readonly-money';
+            }
+
+            if (field.datatype === 'link' && field.class === 'au') {
+                return 'readonly-au';
             }
 
             if (field.datatype === 'link' || field.linkedValues) {
@@ -581,5 +602,4 @@ export class FmRecordEditorComponent
         );
     }
 }
-
 

@@ -59,6 +59,18 @@
               </eg-date-select>
             </ng-container>
 
+            <ng-container *ngSwitchCase="'timestamp-timepicker'">
+              <eg-datetime-select
+                [showTZ]="timezone"
+                [timezone]="timezone"
+                domId="{{idPrefix}}-{{field.name}}"
+                (onChangeAsIso)="record[field.name]($event)"
+                i18n-validatorError
+                [readOnly]="field.readOnly"
+                initialIso="{{record[field.name]()}}">
+              </eg-datetime-select>
+            </ng-container>
+
             <ng-container *ngSwitchCase="'org_unit'">
               <eg-org-select
                 placeholder="{{field.label}}..."
@@ -134,6 +146,13 @@
                 (ngModelChange)="record[field.name]($event)"/>
             </ng-container>
   
+	    <ng-container *ngSwitchCase="'readonly-au'">
+              <ng-container *ngIf="field.linkedValues">
+                <a href="/eg/staff/circ/patron/{{field.linkedValues[0].id}}/checkout" target="_blank">{{field.linkedValues[0].label}}
+                <span class="material-icons" i18n-title title="Open user record in new tab">open_in_new</span></a>
+              </ng-container>
+            </ng-container>
+
             <ng-container *ngSwitchCase="'list'">
               <eg-combobox
                 id="{{idPrefix}}-{{field.name}}" name="{{field.name}}"
