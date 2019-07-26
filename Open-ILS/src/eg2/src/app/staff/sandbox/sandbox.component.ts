@@ -86,6 +86,7 @@ export class SandboxComponent implements OnInit {
     dateObject: Date = new Date();
 
     simpleCombo: ComboboxEntry;
+    kingdom: ComboboxEntry;
 
     complimentEvergreen: (rows: IdlObject[]) => void;
     notOneSelectedRow: (rows: IdlObject[]) => boolean;
@@ -143,6 +144,8 @@ export class SandboxComponent implements OnInit {
         this.ranganathan.get('law').valueChanges.subscribe(l => {
             this.toast.success('You chose: ' + l.label);
         });
+
+        this.kingdom = {id: 'Bacteria', label: 'Bacteria'};
 
         this.gridDataSource.data = [
             {name: 'Jane', state: 'AZ'},

@@ -242,7 +242,7 @@
         </eg-org-family-select>
         The best libraries are: {{bestOnes.value | json}}
         <hr>
-        <eg-combobox ngModel #templateEntry="ngModel" [allowFreeText]="true">
+        <eg-combobox [(ngModel)]="kingdom" [allowFreeText]="true">
           <eg-combobox-entry entryId="Bacteria"></eg-combobox-entry>
           <eg-combobox-entry entryId="Archaea"></eg-combobox-entry>
           <eg-combobox-entry entryId="Protozoa"></eg-combobox-entry>
@@ -251,7 +251,7 @@
           <eg-combobox-entry entryId="Fungi"></eg-combobox-entry>
           <eg-combobox-entry entryId="Animalia"></eg-combobox-entry>
         </eg-combobox>
-      Result: {{templateEntry.value | json}}
+      Result: {{kingdom | json}}
         <hr>
         <eg-date-select [(ngModel)]="dateObject">
         </eg-date-select>

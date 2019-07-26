@@ -303,9 +303,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
         );
     }
 
-    writeValue(value: any) {
-        if (value !== undefined) {
-            this.startId = value;
+    writeValue(value: ComboboxEntry) {
+        if (value !== undefined && value !== null) {
+            this.startId = value.id;
+            this.applySelection();
         }
     }
 
