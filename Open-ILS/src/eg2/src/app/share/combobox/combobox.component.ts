@@ -223,7 +223,6 @@ export class ComboboxComponent implements OnInit {
         searchTerm = term;
         if (searchTerm === '_CLICK_' && this.asyncSupportsEmptyTermClick) {
             searchTerm = '';
-        } else {
         }
 
         return new Observable(observer => {
