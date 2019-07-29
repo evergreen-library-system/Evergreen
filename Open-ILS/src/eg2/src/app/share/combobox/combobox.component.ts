@@ -8,6 +8,7 @@ import {Observable, of, Subject} from 'rxjs';
 import {map, tap, reduce, mergeMap, mapTo, debounceTime, distinctUntilChanged, merge, filter} from 'rxjs/operators';
 import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from '@ng-bootstrap/ng-bootstrap';
 import {StoreService} from '@eg/core/store.service';
+import {IdlService} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
 export interface ComboboxEntry {
@@ -103,6 +104,7 @@ export class ComboboxComponent implements OnInit {
     constructor(
       private elm: ElementRef,
       private store: StoreService,
+      private idl: IdlService,
       private pcrud: PcrudService,
     ) {
         this.entrylist = [];
@@ -119,14 +121,25 @@ export class ComboboxComponent implements OnInit {
 
     ngOnInit() {
         if (this.idlClass) {
+            const classDef = this.idl.classes[this.idlClass];
+            const pkeyField = classDef.pkey;
+
+            if (!pkeyField) {
+                throw new Error(`IDL class ${this.idlClass} has no pkey field`);
+            }
+
+            if (!this.idlField) {
+                this.idlField = classDef.field_map[classDef.pkey].selector || 'name';
+            }
+
             this.asyncDataSource = term => {
-                const field = this.idlField || 'name';
+                const field = this.idlField;
                 const args = {};
                 const extra_args = { order_by : {} };
-                args[field] = { 'ilike': `%${term}%`}; // could -or search on label
-                extra_args['order_by'][this.idlClass] = this.idlField || 'name';
+                args[field] = {'ilike': `%${term}%`}; // could -or search on label
+                extra_args['order_by'][this.idlClass] = field;
                 return this.pcrud.search(this.idlClass, args, extra_args).pipe(map(data => {
-                    return {id: data.id(), label: data[field]()};
+                    return {id: data[pkeyField](), label: data[field]()};
                 }));
             };
         }
