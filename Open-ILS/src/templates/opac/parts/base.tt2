@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang='[% ctx.locale.replace('_', '-') %]'>
+<html lang='[% ctx.eg_locale %]'>
     <head prefix="og: http://ogp.me/ns#">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
