@@ -118,6 +118,11 @@ export class OrgSelectComponent implements OnInit {
         this.applyPermLimitOrgs(perms);
     }
 
+    // Function which should return a string value representing
+    // a CSS class name to use for styling each org unit label
+    // in the selector.
+    @Input() orgClassCallback: (orgId: number) => string;
+
     // Emitted when the org unit value is changed via the selector.
     // Does not fire on initialOrg
     @Output() onChange = new EventEmitter<IdlObject>();
@@ -145,7 +150,9 @@ export class OrgSelectComponent implements OnInit {
       private serverStore: ServerStoreService,
       private org: OrgService,
       private perm: PermService
-    ) { }
+    ) {
+        this.orgClassCallback = (orgId: number): string => '';
+    }
 
     ngOnInit() {
 

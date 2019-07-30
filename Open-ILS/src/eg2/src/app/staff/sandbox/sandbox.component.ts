@@ -111,11 +111,11 @@ export class SandboxComponent implements OnInit {
     // cross-tab communications example
     private sbChannel: any;
     sbChannelText: string;
-
     myTimeForm: FormGroup;
 
     locId = 1; // Stacks
     aLocation: IdlObject; // acpl
+    orgClassCallback: (orgId: number) => string;
 
     constructor(
         private idl: IdlService,
@@ -132,6 +132,11 @@ export class SandboxComponent implements OnInit {
         this.sbChannel = (typeof BroadcastChannel === 'undefined') ?
             {} : new BroadcastChannel('eg.sbChannel');
         this.sbChannel.onmessage = (e) => this.sbChannelHandler(e);
+
+        this.orgClassCallback = (orgId: number): string => {
+            if (orgId === 1) { return 'font-weight-bold'; }
+            return orgId <= 3 ? 'text-info' : 'text-danger';
+        };
     }
 
     ngOnInit() {
