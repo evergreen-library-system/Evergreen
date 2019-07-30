@@ -7,8 +7,10 @@
       <div class="input-group-prepend">
         <div class="input-group-text" i18n>Holdings Maintenance</div>
       </div>
-      <eg-org-select [initialOrg]="contextOrg" 
-        persistKey="catalog.holdings" (onChange)="contextOrgChanged($event)">
+      <eg-org-select [initialOrg]="contextOrg"
+        persistKey="catalog.holdings"
+        (onChange)="contextOrgChanged($event)"
+        [orgClassCallback]="orgClassCallback">
       </eg-org-select>
     </div>
   </div>
