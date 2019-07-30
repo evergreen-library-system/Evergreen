@@ -26,7 +26,7 @@ function LiTablePager() {
     };
 
     this.show = function() {
-        this.liTable.reset(/* keep_selectors */ true);
+        this.liTable.reset();
         this.liTable.show("list");
     };
 
