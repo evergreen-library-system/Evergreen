@@ -228,6 +228,7 @@
     </eg-grid-column>
     <eg-grid-column name="owner_label" [flex]="4"
       [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
+      [cellPrintValue]="cellPrintValues"
       label="Location/Barcode" [disableTooltip]="true" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="callNumCount" datatype="number" label="Call Numbers" i18n-label>
@@ -279,7 +280,8 @@
     <eg-grid-column i18n-label label="Deposit Amount" path="copy.deposit_amount" 
       name="deposit_amount" datatype="money" [hidden]="true"></eg-grid-column>
     <eg-grid-column i18n-label label="Holdable?" name="holdable" 
-      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext">
+      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext"
+      [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Reference?" path="copy.ref" 
       name="ref" datatype="bool" [hidden]="true"></eg-grid-column>

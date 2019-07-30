@@ -9,7 +9,7 @@ import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {GridDataSource} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {GridToolbarCheckboxComponent
     } from '@eg/share/grid/grid-toolbar-checkbox.component';
@@ -131,6 +131,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
     renderFromPrefs: boolean;
 
     rowClassCallback: (row: any) => string;
+    cellPrintValues: (row: any, cell: GridColumn) => string;
 
     private _recId: number;
     @Input() set recordId(id: number) {
@@ -179,6 +180,18 @@ export class HoldingsMaintenanceComponent implements OnInit {
                 // class for styling different levels of the org tree.
                 return 'holdings-org-row holdings-org-row-' +
                     row.treeNode.target.ou_type().depth();
+            }
+        };
+
+        // Text-ify function for cells that use display templates.
+        this.cellPrintValues = (row: any, cell: GridColumn): string => {
+            switch (cell.name) {
+                case 'owner_label':
+                    return row.locationLabel;
+                case 'holdable':
+                    return row.copy ?
+                        this.gridTemplateContext.copyIsHoldable(row.copy) :
+                        '';
             }
         };
 
