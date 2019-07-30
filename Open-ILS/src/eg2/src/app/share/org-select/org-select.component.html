@@ -1,7 +1,7 @@
 
 <!-- todo disabled -->
 <ng-template #displayTemplate let-r="result">
-  <span id="{{domId}}-{{r.id}}">{{r.label}}</span>
+  <span id="{{domId}}-{{r.id}}" class="{{orgClassCallback(r.id)}}">{{r.label}}</span>
 </ng-template>
 
 <ng-container *ngIf="readOnly && selected">
