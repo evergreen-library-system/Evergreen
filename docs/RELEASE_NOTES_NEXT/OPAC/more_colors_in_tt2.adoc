@@ -1,0 +1,30 @@
+Easier Customization via colors.tt2
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Twelve new colors have been added to the colors.tt2 file as well as 
+having coresponding changes to the style.css.tt2 file. These use 
+descriptive rather than abstract names. These changes help avoid 
+situations were unreadable values are placed on top of each other 
+and where different values are wanted for elements that only refernece 
+a single color previously. Guidelines are below for setting values that 
+correspond to the previous values used in the colors.tt2 file.  
+For more diverse customizations the OPAC should be reviewed before 
+a production load.
+
+* 'footer' is used for the background color of the footer. It replaces the 
+'primary'.
+* 'footer_text' sets the text color in the footer and replaces 'text_invert' 
+* 'header' sets the background of the header and replaces 'primary_fade'
+* 'header_text' sets the color of text in the header and replaces 'text_invert'
+* 'header_links_bar' sets the background of the links bar that separates the 
+header on the front page of the opac and replaces 'background_invert'
+* 'header_links_text' sets the text on the links bar and replaces 'text_invert'
+* 'header_links_text_hover' set the hover text color on the links bar and 
+replaces 'primary'
+* 'opac_button' sets the background color of the My Opac button and replaces 
+'control'
+* 'opac_button_text' explicitly sets the text color on the My Opac button  
+* 'opac_button_hover' sets the background color of the My Opac button when the 
+mouse is hovering over it and replaces 'primary'
+* 'opac_button_hover_text' sets the text color of the My Opac button when the 
+mouse is hovering over it and replaces 'text invert'
+

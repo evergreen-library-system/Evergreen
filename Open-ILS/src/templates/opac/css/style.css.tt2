@@ -231,7 +231,7 @@ for now until a better color is picked - if needed.
 }
 
 #header-links a:hover {
-    color: [% css_colors.header_links_text %];
+    color: [% css_colors.header_links_text_hover %];
     text-shadow: 0 0 0.2em [% css_colors.primary %], 0 0 0.2em [% css_colors.primary %];
     text-decoration: none;
 }
@@ -276,7 +276,7 @@ for now until a better color is picked - if needed.
 
 #gold-links-holder {
     height: 24px;
-    background-color: [% css_colors.background_invert %];
+    background-color: [% css_colors.header_links_bar %];
 }
 
 #util-bar {
