@@ -339,22 +339,26 @@ export class SandboxComponent implements OnInit {
       this.numConfirmDialog.open();
     }
 
-    showEditDialog(idlThing: IdlObject) {
+    showEditDialog(idlThing: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
         this.editDialog.recId = idlThing['id']();
-        return this.editDialog.open({size: 'lg'}).then(
-            ok => {
-                this.successString.current()
-                    .then(str => this.toast.success(str));
-                this.acpGrid.reloadSansPagerReset();
-            },
-            rejection => {
-                if (!rejection.dismissed) {
-                    this.updateFailedString.current()
-                        .then(str => this.toast.danger(str));
+        return new Promise((resolve, reject) => {
+            this.editDialog.open({size: 'lg'}).subscribe(
+                ok => {
+                    this.successString.current()
+                        .then(str => this.toast.success(str));
+                    this.acpGrid.reloadSansPagerReset();
+                    resolve(ok);
+                },
+                rejection => {
+                    if (!rejection.dismissed) {
+                        this.updateFailedString.current()
+                            .then(str => this.toast.danger(str));
+                        reject(rejection);
+                    }
                 }
-            }
-        );
+            )
+        });
     }
 }
 
