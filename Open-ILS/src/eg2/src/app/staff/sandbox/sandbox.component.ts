@@ -347,7 +347,7 @@ export class SandboxComponent implements OnInit {
                 ok => {
                     this.successString.current()
                         .then(str => this.toast.success(str));
-                    this.acpGrid.reloadSansPagerReset();
+                    this.acpGrid.reloadWithoutPagerReset();
                     resolve(ok);
                 },
                 rejection => {

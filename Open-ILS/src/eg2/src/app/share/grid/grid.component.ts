@@ -195,8 +195,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     reload() {
         this.context.reload();
     }
-    reloadSansPagerReset() {
-        this.context.reloadSansPagerReset();
+    reloadWithoutPagerReset() {
+        this.context.reloadWithoutPagerReset();
     }
 
 

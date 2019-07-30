@@ -564,7 +564,7 @@ export class GridContext {
         });
     }
 
-    reloadSansPagerReset() {
+    reloadWithoutPagerReset() {
         setTimeout(() => {
             this.dataSource.reset();
             this.dataSource.requestPage(this.pager);
