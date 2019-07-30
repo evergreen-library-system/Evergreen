@@ -7,6 +7,7 @@ import {Pager} from '@eg/share/util/pager';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StaffCatalogService} from '../catalog.service';
 import {OrgService} from '@eg/core/org.service';
+import {NetService} from '@eg/core/net.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
 import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
@@ -144,7 +145,10 @@ export class HoldingsMaintenanceComponent implements OnInit {
     renderFromPrefs: boolean;
 
     rowClassCallback: (row: any) => string;
+
     cellTextGenerator: GridCellTextGenerator;
+    orgClassCallback: (orgId: number) => string;
+    marked_orgs: number[] = [];
 
     private _recId: number;
     @Input() set recordId(id: number) {
@@ -171,6 +175,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
         private org: OrgService,
         private idl: IdlService,
         private pcrud: PcrudService,
+        private net: NetService,
         private auth: AuthService,
         private staffCat: StaffCatalogService,
         private store: ServerStoreService,
@@ -202,11 +207,17 @@ export class HoldingsMaintenanceComponent implements OnInit {
             }
         };
 
+
         // Text-ify function for cells that use display templates.
         this.cellTextGenerator = {
             owner_label: row => row.locationLabel,
             holdable: row => row.copy ?
                 this.gridTemplateContext.copyIsHoldable(row.copy) : ''
+        };
+
+        this.orgClassCallback = (orgId: number): string => {
+            if (this.marked_orgs.includes(orgId)) { return 'font-weight-bold'; }
+            return '';
         };
 
         this.gridTemplateContext = {
@@ -265,6 +276,16 @@ export class HoldingsMaintenanceComponent implements OnInit {
             if (!this.contextOrgLoaded) { return empty(); }
             return this.fetchHoldings(pager);
         };
+
+        this.net.request(
+            'open-ils.search',
+            'open-ils.search.biblio.copy_counts.retrieve.staff',
+            this.recordId
+        ).toPromise().then(result => {
+            result.forEach(copy_count => {
+                this.marked_orgs.push(copy_count[0]);
+            });
+        });
     }
 
     // No data is loaded until the first occurrence of the org change handler
