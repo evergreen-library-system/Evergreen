@@ -14,7 +14,8 @@
             </div>
           </div>
         </div>
-        <eg-combobox [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" placeholder="Enter value to filter by"></eg-combobox>
+        <eg-combobox [idlClass]="col.idlFieldDef.class" (onChange)="applyLinkFilter($event, col)" 
+          i18n-placeholder placeholder="Enter value to filter by"></eg-combobox>
       </div>
     </div>
     <div *ngSwitchCase="'bool'">
@@ -67,7 +68,8 @@
             </div>
           </div>
         </div>
-        <input type="text" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" [disabled]="col.filterInputDisabled" placeholder="Enter value to filter by">
+        <input type="text" class="form-control" [(ngModel)]="col.filterValue" (keyup.enter)="applyFilter(col)" 
+          [disabled]="col.filterInputDisabled" i18n-placeholder placeholder="Enter value to filter by">
       </div>
     </div>
     <div *ngSwitchCase="'int'">
@@ -250,7 +252,8 @@
             </div>
           </div>
         </div>
-        <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)" placeholder="Enter library to filter by" #ousel></eg-org-select>
+        <eg-org-select [applyOrgId]="col.filterValue" (onChange)="applyOrgFilter($event, col)" 
+          i18n-placeholder placeholder="Enter library to filter by" #ousel></eg-org-select>
       </div>
     </div>
     <div *ngSwitchDefault>I don't know how to filter {{col.name}} - {{col.datatype}}</div>

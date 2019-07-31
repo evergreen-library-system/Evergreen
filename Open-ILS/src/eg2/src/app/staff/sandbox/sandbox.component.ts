@@ -351,13 +351,11 @@ export class SandboxComponent implements OnInit {
                     resolve(ok);
                 },
                 rejection => {
-                    if (!rejection.dismissed) {
-                        this.updateFailedString.current()
-                            .then(str => this.toast.danger(str));
-                        reject(rejection);
-                    }
+                    this.updateFailedString.current()
+                        .then(str => this.toast.danger(str));
+                    reject(rejection);
                 }
-            )
+            );
         });
     }
 }
