@@ -217,7 +217,8 @@ export class GridFilterControlComponent implements OnInit {
         if (col.filterOperator === undefined) { col.filterOperator = '='; }
 
         if ( (col.filterOperator !== 'null') && (col.filterOperator !== 'not null') &&
-             (!col.filterValue || col.filterValue === '') ) {
+             (!col.filterValue || col.filterValue === '') &&
+             (col.filterValue != '0') ) {
             // if value is empty and we're _not_ checking for null/not null, clear
             // the filter
             delete this.context.dataSource.filters[col.name];
