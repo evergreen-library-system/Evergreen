@@ -1,0 +1,6 @@
+New Cancel Edit Button In Record Merge Interface
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The web staff client's Record Merge dialog now has a "Cancel Edit"
+button that is displayed when editing the lead record in place. Using
+this button will abandon any pending record edits without requiring
+that the entire dialog be dismissed.
