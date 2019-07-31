@@ -1,11 +1,12 @@
 /**
  * Modules, services, and components used by all apps.
  */
-import {CommonModule, DatePipe, CurrencyPipe} from '@angular/common';
+import {CommonModule} from '@angular/common';
 import {NgModule, ModuleWithProviders} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {EgCoreModule} from '@eg/core/core.module';
 
 /*
 Note core services are injected into 'root'.
@@ -13,7 +14,6 @@ They do not have to be added to the providers list.
 */
 
 // consider moving these to core...
-import {FormatService, FormatValuePipe} from '@eg/core/format.service';
 import {HatchService} from '@eg/share/print/hatch.service';
 import {PrintService} from '@eg/share/print/print.service';
 
@@ -36,20 +36,21 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
     PromptDialogComponent,
     ProgressInlineComponent,
     ProgressDialogComponent,
-    BoolDisplayComponent,
-    FormatValuePipe
+    BoolDisplayComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
-    NgbModule
+    NgbModule,
+    EgCoreModule
   ],
   exports: [
     CommonModule,
     RouterModule,
     NgbModule,
     FormsModule,
+    EgCoreModule,
     PrintComponent,
     DialogComponent,
     AlertDialogComponent,
@@ -58,7 +59,6 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
     ProgressInlineComponent,
     ProgressDialogComponent,
     BoolDisplayComponent,
-    FormatValuePipe
   ]
 })
 
@@ -69,11 +69,8 @@ export class EgCommonModule {
         return {
             ngModule: EgCommonModule,
             providers: [
-                DatePipe,
-                CurrencyPipe,
                 HatchService,
-                PrintService,
-                FormatService
+                PrintService
             ]
         };
     }

@@ -7,6 +7,7 @@ import {NgModule, ModuleWithProviders} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {EgCoreModule} from '@eg/core/core.module';
 import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {ComboboxEntryComponent} from '@eg/share/combobox/combobox-entry.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
@@ -22,12 +23,14 @@ import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
   imports: [
     CommonModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    EgCoreModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     NgbModule,
+    EgCoreModule,
     ComboboxComponent,
     ComboboxEntryComponent,
     DateSelectComponent,
