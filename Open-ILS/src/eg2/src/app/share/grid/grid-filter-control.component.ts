@@ -1,9 +1,7 @@
 import {Component, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
-import {GridContext, GridColumn, GridRowSelector,
-    GridColumnSet, GridDataSource} from './grid';
+import {GridContext, GridColumn} from './grid';
 import {IdlObject} from '@eg/core/idl.service';
-import {ComboboxComponent,
-    ComboboxEntry} from '@eg/share/combobox/combobox.component';
+import {ComboboxComponent} from '@eg/share/combobox/combobox.component';
 import {DateSelectComponent} from '@eg/share/date-select/date-select.component';
 import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {OrgService} from '@eg/core/org.service';
@@ -218,7 +216,7 @@ export class GridFilterControlComponent implements OnInit {
 
         if ( (col.filterOperator !== 'null') && (col.filterOperator !== 'not null') &&
              (!col.filterValue || col.filterValue === '') &&
-             (col.filterValue != '0') ) {
+             (col.filterValue !== '0') ) {
             // if value is empty and we're _not_ checking for null/not null, clear
             // the filter
             delete this.context.dataSource.filters[col.name];
@@ -226,7 +224,6 @@ export class GridFilterControlComponent implements OnInit {
         } else {
             let op: string = col.filterOperator;
             let val: string = col.filterValue;
-            const name: string = col.name;
             if (col.filterOperator === 'null') {
                 op  = '=';
                 val = null;

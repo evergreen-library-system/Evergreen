@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Host, TemplateRef} from '@angular/core';
-import {GridColumn, GridColumnSet} from './grid';
+import {GridColumn} from './grid';
 import {GridComponent} from './grid.component';
 
 @Component({

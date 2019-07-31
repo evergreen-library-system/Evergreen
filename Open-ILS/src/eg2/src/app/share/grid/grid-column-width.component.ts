@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, Host} from '@angular/core';
-import {GridContext, GridColumn, GridColumnSet,
-    GridDataSource} from './grid';
+import {Component, Input, OnInit} from '@angular/core';
+import {GridContext, GridColumn, GridColumnSet} from './grid';
 
 @Component({
   selector: 'eg-grid-column-width',

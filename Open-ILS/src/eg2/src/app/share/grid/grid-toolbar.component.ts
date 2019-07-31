@@ -1,8 +1,6 @@
-import {Component, Input, OnInit, Host} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
-import {Pager} from '@eg/share/util/pager';
-import {GridColumn, GridColumnSet, GridToolbarButton,
-    GridToolbarAction, GridContext, GridDataSource} from '@eg/share/grid/grid';
+import {GridToolbarButton, GridToolbarAction, GridContext} from '@eg/share/grid/grid';
 import {GridColumnWidthComponent} from './grid-column-width.component';
 import {GridPrintComponent} from './grid-print.component';
 

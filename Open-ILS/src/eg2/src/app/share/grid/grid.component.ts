@@ -1,12 +1,10 @@
 import {Component, Input, Output, OnInit, AfterViewInit, EventEmitter,
-    OnDestroy, HostListener, ViewEncapsulation, QueryList, ViewChildren} from '@angular/core';
-import {Subscription} from 'rxjs';
+    OnDestroy, ViewEncapsulation} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
 import {GridContext, GridColumn, GridDataSource, GridRowFlairEntry} from './grid';
-import {GridFilterControlComponent} from './grid-filter-control.component';
 
 /**
  * Main grid entry point.
