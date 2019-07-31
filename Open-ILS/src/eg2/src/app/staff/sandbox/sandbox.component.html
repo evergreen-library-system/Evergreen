@@ -250,10 +250,12 @@
   <span i18n>Are you sure you want to confirm {numThings, plural, =1 {this thing} other {these {{numThings}} things}}?</span>
 </ng-template>
 
-<eg-fm-record-editor #bresvEditor
-  idlClass="bresv"
-  readonlyFields="cancel_time">
-</eg-fm-record-editor>
-<button class="btn btn-info" (click)="bresvEditor.open({})">
-  Test Readonly Date
-</button>
+<div class="row">
+  <eg-fm-record-editor #bresvEditor
+    idlClass="bresv"
+    hiddenFields="capture_staff,usr" readonlyFields="cancel_time">
+  </eg-fm-record-editor>
+  <button class="btn btn-info" (click)="bresvEditor.open({})">
+    Test Readonly Date
+  </button>
+</div>
