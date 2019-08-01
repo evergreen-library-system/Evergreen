@@ -81,7 +81,7 @@
               (Inactive)
             </span>
           </h4>
-         <textarea rows="30" class="form-control"
+         <textarea rows="{{templateRowCount()}}" class="form-control"
            spellcheck="false"
            [ngModel]="template.template()"
            (ngModelChange)="template.template($event); template.ischanged(true)">

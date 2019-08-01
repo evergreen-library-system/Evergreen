@@ -175,10 +175,17 @@ export class PrintTemplateComponent implements OnInit {
     }
 
     getOwnerName(id: number): string {
-        return this.org.get(this.templateCache[id].owner()).shortname();
+        if (this.templateCache[id]) {
+            return this.org.get(this.templateCache[id].owner()).shortname();
+        }
+        return '';
     }
 
-    selectTemplate(id: number) {
+    // If the selected template changes through means other than the
+    // template selecdtor, setting updateSelector=true will force the
+    // template to appear in the selector and get selected, regardless
+    // of whether it would have been fetched with current filters.
+    selectTemplate(id: number, updateSelector?: boolean) {
 
         if (id === null) {
             this.template = null;
@@ -187,13 +194,32 @@ export class PrintTemplateComponent implements OnInit {
         }
 
         this.pcrud.retrieve('cpt', id).subscribe(t => {
-            this.template = t;
+            this.template = this.templateCache[id] = t;
+
+            if (updateSelector) {
+                if (!this.templateSelector.hasEntry(id)) {
+                    this.templateSelector.addEntry({id: id, label: t.label()});
+                }
+                this.templateSelector.applyEntryId(id);
+            }
+
             const data = this.sampleData[t.name()];
             if (data) {
                 this.sampleJson = JSON.stringify(data, null, 2);
                 this.refreshPreview();
             }
         });
+    }
+
+    // Allow the template editor textarea to expand vertically as
+    // content is added, with a sane minimum row count
+    templateRowCount(): number {
+        const def = 25;
+        if (this.template && this.template.template()) {
+            return Math.max(def,
+                this.template.template().split(/\n/).length + 2);
+        }
+        return def;
     }
 
     refreshPreview() {
@@ -216,11 +242,13 @@ export class PrintTemplateComponent implements OnInit {
         }).then(response => {
 
             this.compiledContent = response.content;
-            if (response.contentType === 'text/html') {
-                this.container().innerHTML = response.content;
-            } else {
-                // Assumes text/plain or similar
-                this.container().innerHTML = '<pre>' + response.content + '</pre>';
+            if (this.container()) { // null if on alternate tab
+                if (response.contentType === 'text/html') {
+                    this.container().innerHTML = response.content;
+                } else {
+                    // Assumes text/plain or similar
+                    this.container().innerHTML = '<pre>' + response.content + '</pre>';
+                }
             }
         });
     }
@@ -247,12 +275,14 @@ export class PrintTemplateComponent implements OnInit {
     cloneTemplate() {
         const tmpl = this.idl.clone(this.template);
         tmpl.id(null);
+        tmpl.active(false); // Cloning requires manual activation
+        tmpl.owner(null);
         this.editDialog.setRecord(tmpl);
         this.editDialog.mode = 'create';
         this.editDialog.open({size: 'lg'}).toPromise().then(newTmpl => {
             if (newTmpl !== undefined) {
                 this.setTemplateInfo().toPromise()
-                    .then(_ => this.selectTemplate(newTmpl.id()));
+                    .then(_ => this.selectTemplate(newTmpl.id(), true));
             }
         });
     }

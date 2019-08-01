@@ -3,7 +3,7 @@
  *  <!-- see also <eg-combobox-entry> -->
  * </eg-combobox>
  */
-import {Component, OnInit, Input, Output, ViewChild, 
+import {Component, OnInit, Input, Output, ViewChild,
     TemplateRef, EventEmitter, ElementRef, forwardRef} from '@angular/core';
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 import {Observable, of, Subject} from 'rxjs';
@@ -208,6 +208,10 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
             this.asyncIds['' + entry.id] = true;
             this.addEntry(entry);
         }
+    }
+
+    hasEntry(entryId: any): boolean {
+        return this.entrylist.filter(e => e.id === entryId)[0] !== undefined;
     }
 
     onBlur() {
