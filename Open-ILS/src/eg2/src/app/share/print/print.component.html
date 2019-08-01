@@ -3,6 +3,16 @@ Global print container.
 There should only be one print component active in a page.
 -->
 
+<ng-template #notFound let-name="name" i18n>
+No activate template found named "{{name}}"
+</ng-template>
+<eg-string key='eg.print.template.not_found' [template]="notFound"></eg-string>
+
+<ng-template #notWorking let-name="name" let-id="id" i18n>
+Error generating print content for template name="{{name}}" / id="{{id}}"
+</ng-template>
+<eg-string key='eg.print.template.error' [template]="notWorking"></eg-string>
+
 <div id='eg-print-container'>
   <!-- container for inline template compilation -->
   <ng-container *ngIf="template">

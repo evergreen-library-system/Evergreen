@@ -9,10 +9,6 @@ import {AccessKeyDirective} from '@eg/share/accesskey/accesskey.directive';
 import {AccessKeyService} from '@eg/share/accesskey/accesskey.service';
 import {AccessKeyInfoComponent} from '@eg/share/accesskey/accesskey-info.component';
 import {OpChangeComponent} from '@eg/staff/share/op-change/op-change.component';
-import {ToastService} from '@eg/share/toast/toast.service';
-import {ToastComponent} from '@eg/share/toast/toast.component';
-import {StringComponent} from '@eg/share/string/string.component';
-import {StringService} from '@eg/share/string/string.service';
 import {TitleComponent} from '@eg/share/title/title.component';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {BucketDialogComponent} from '@eg/staff/share/buckets/bucket-dialog.component';
@@ -32,8 +28,6 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
     OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
-    ToastComponent,
-    StringComponent,
     TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
@@ -57,8 +51,6 @@ import {DatetimeValidatorDirective} from '@eg/share/validators/datetime_validato
     OrgFamilySelectComponent,
     AccessKeyDirective,
     AccessKeyInfoComponent,
-    ToastComponent,
-    StringComponent,
     TitleComponent,
     OpChangeComponent,
     FmRecordEditorComponent,
@@ -77,9 +69,7 @@ export class StaffCommonModule {
             ngModule: StaffCommonModule,
             providers: [ // Export staff-wide services
                 AccessKeyService,
-                AudioService,
-                StringService,
-                ToastService
+                AudioService
             ]
         };
     }

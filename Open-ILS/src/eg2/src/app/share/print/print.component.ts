@@ -3,6 +3,8 @@ import {PrintService, PrintRequest} from './print.service';
 import {StoreService} from '@eg/core/store.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {HatchService, HatchMessage} from './hatch.service';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {StringService} from '@eg/share/string/string.service';
 
 @Component({
     selector: 'eg-print',
@@ -30,6 +32,8 @@ export class PrintComponent implements OnInit {
         private store: StoreService,
         private serverStore: ServerStoreService,
         private hatch: HatchService,
+        private toast: ToastService,
+        private strings: StringService,
         private printer: PrintService) {
         this.isPrinting = false;
         this.printQueue = [];
@@ -86,7 +90,24 @@ export class PrintComponent implements OnInit {
                     printReq.contentType = response.contentType;
                 },
                 err => {
-                    console.error('Error compiling template', printReq);
+
+                    if (err && err.notFound) {
+
+                        this.strings.interpolate(
+                            'eg.print.template.not_found',
+                            {name: printReq.templateName}
+                        ).then(msg => this.toast.danger(msg));
+
+                    } else {
+
+                        console.error('Print generation failed', printReq);
+
+                        this.strings.interpolate(
+                            'eg.print.template.error',
+                            {name: printReq.templateName, id: printReq.templateId}
+                        ).then(msg => this.toast.danger(msg));
+                    }
+
                     return Promise.reject(new Error(
                         'Error compiling server-hosted print template'));
                 }

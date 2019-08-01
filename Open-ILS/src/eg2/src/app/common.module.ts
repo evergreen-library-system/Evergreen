@@ -26,6 +26,11 @@ import {PromptDialogComponent} from '@eg/share/dialog/prompt.component';
 import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {BoolDisplayComponent} from '@eg/share/util/bool.component';
+import {ToastService} from '@eg/share/toast/toast.service';
+import {ToastComponent} from '@eg/share/toast/toast.component';
+import {StringComponent} from '@eg/share/string/string.component';
+import {StringService} from '@eg/share/string/string.service';
+
 
 @NgModule({
   declarations: [
@@ -36,6 +41,8 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
     PromptDialogComponent,
     ProgressInlineComponent,
     ProgressDialogComponent,
+    ToastComponent,
+    StringComponent,
     BoolDisplayComponent
   ],
   imports: [
@@ -61,6 +68,8 @@ import {BoolDisplayComponent} from '@eg/share/util/bool.component';
     ProgressInlineComponent,
     ProgressDialogComponent,
     BoolDisplayComponent,
+    ToastComponent,
+    StringComponent
   ]
 })
 
@@ -72,7 +81,9 @@ export class EgCommonModule {
             ngModule: EgCommonModule,
             providers: [
                 HatchService,
-                PrintService
+                PrintService,
+                StringService,
+                ToastService
             ]
         };
     }

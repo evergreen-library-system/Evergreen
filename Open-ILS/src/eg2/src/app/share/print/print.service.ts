@@ -90,9 +90,11 @@ export class PrintService {
                             content: xhttp.responseText,
                             contentType: this.getResponseHeader('content-type')
                         });
-                    } else {
-                        reject('Error compiling print template');
+                    } else if (this.status === 404) {
+                        console.error('No active template found: ', printReq);
+                        reject({notFound: true});
                     }
+                    reject({});
                 }
             };
             xhttp.open('POST', PRINT_TEMPLATE_PATH, true);
