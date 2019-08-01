@@ -1,6 +1,8 @@
 Item Status
 -----------
 
+indexterm:[copy status]
+
 To navigate to the item status editor from the staff client menu, select
 *Administration* -> *Server Administration* -> *Item Statuses*.
 
