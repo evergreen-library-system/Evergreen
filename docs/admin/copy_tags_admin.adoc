@@ -1,6 +1,8 @@
 Item Tags (Digital Bookplates)
 ------------------------------
 
+indexterm:[copy tags]
+
 Item Tags allow staff to apply custom, pre-defined labels or tags to items.  Item tags are visible in the public catalog and are searchable in both the staff client and public catalog based on configuration.  This feature was designed to be used for Digital Bookplates to attach donation or memorial information to items, but may be used for broader purposes to tag items.
 
 
