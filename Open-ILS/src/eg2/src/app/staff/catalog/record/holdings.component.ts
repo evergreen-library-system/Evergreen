@@ -662,7 +662,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
             orgId = node.target.id();
 
             // Clear call number target when performed on an org unit row
-            this.localStore.removeLocalItem('eg.cat.transfer_target_callnum');
+            this.localStore.removeLocalItem('eg.cat.transfer_target_vol');
 
         } else if (node.nodeType === 'callNum') {
 
@@ -671,7 +671,7 @@ export class HoldingsMaintenanceComponent implements OnInit {
 
             // Add call number target when performed on a call number row.
             this.localStore.setLocalItem(
-                'eg.cat.transfer_target_callnum', node.target.id());
+                'eg.cat.transfer_target_vol', node.target.id());
         }
 
         this.localStore.setLocalItem('eg.cat.transfer_target_record', this.recordId);
