@@ -1,0 +1,15 @@
+Port Local Administration Page to Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The Administration => Local Administration page has been migrated
+to Angular along with the following specific Local Administration
+interfaces:
+
+ * Address Alerts
+ * Barcode Completion
+ * Group Penalty Thresholds
+ * Hold Policies
+ * Item Alert Suppression
+ * Item Tags
+ * Non-Cataloged Types Editor
+ * Shelving Location Editor
+ * Statistical Popularity Badges
