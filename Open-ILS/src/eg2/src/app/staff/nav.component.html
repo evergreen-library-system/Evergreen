@@ -4,9 +4,8 @@
       <div class="nav-item">
         <a i18n class="nav-link with-material-icon" 
           href="/eg/staff/"
-          egAccessKey keyCtx="navbar"
-          keySpec="alt+h" i18n-keySpec
-          keyDesc="Navigate Home" i18n-keyDesc>
+          egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+          keySpec="alt+h" keyDesc="Navigate Home">
           <span class="material-icons">home</span>
         </a>
       </div>
@@ -18,7 +17,9 @@
          Search
         </a>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/search">
+          <a class="dropdown-item" href="/eg/staff/circ/patron/search"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="alt+s f4" keyDesc="Patron Search">
             <span class="material-icons">person</span>
             <span i18n>Search for Patrons</span>
           </a>
@@ -26,7 +27,9 @@
             <span class="material-icons">assignment</span>
             <span i18n>Search for Copies by Barcode</span>
           </a>
-          <a href="/eg/staff/cat/catalog/index" class="dropdown-item">
+          <a href="/eg/staff/cat/catalog/index" class="dropdown-item"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f3" keyDesc="Catalog">
             <span class="material-icons">search</span>
             <span i18n>Search the Catalog</span>
           </a>
@@ -40,15 +43,21 @@
          <span i18n>Circulation</span>
         </a>
         <div class="dropdown-menu" ngbDropdownMenu>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/bcsearch">
+          <a class="dropdown-item" href="/eg/staff/circ/patron/bcsearch"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f1" keyDesc="Checkout">
             <span class="material-icons">trending_up</span>
             <span i18n>Check Out</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/checkin/checkin">
+          <a class="dropdown-item" href="/eg/staff/circ/checkin/checkin"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f2" keyDesc="Checkin">
             <span class="material-icons">trending_down</span>
             <span i18n>Check In</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/checkin/capture">
+          <a class="dropdown-item" href="/eg/staff/circ/checkin/capture"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="shift+f2" keyDesc="Capture Holds">
             <span class="material-icons">pin_drop</span>
             <span i18n>Capture Holds</span>
           </a>
@@ -56,15 +65,21 @@
             <span class="material-icons">view_list</span>
             <span i18n>Pull List for Hold Requests</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/renew/renew">
+          <a class="dropdown-item" href="/eg/staff/circ/renew/renew"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="ctrl+f2" keyDesc="Renew Items">
             <span class="material-icons">autorenew</span>
             <span i18n>Renew Items</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/register">
+          <a class="dropdown-item" href="/eg/staff/circ/patron/register"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="shift+f1" keyDesc="Register Patron">
             <span class="material-icons">person_add</span>
             <span i18n>Register Patron</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/patron/last">
+          <a class="dropdown-item" href="/eg/staff/circ/patron/last"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f8" keyDesc="Retrieve Last Patron">
             <span class="material-icons">redo</span>
             <span i18n>Retrieve Last Patron</span>
           </a>
@@ -85,7 +100,9 @@
             <span class="material-icons">check_circle</span>
             <span i18n>Verify Credentials</span>
           </a>
-          <a class="dropdown-item" href="/eg/staff/circ/in_house_use/index">
+          <a class="dropdown-item" href="/eg/staff/circ/in_house_use/index"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f6" keyDesc="Record In-House Use">
             <span class="material-icons">playlist_add</span>
             <span i18n>Record In-House Use</span>
           </a>
@@ -99,9 +116,8 @@
             <span i18n>Replace Barcode</span>
           </a>
           <a class="dropdown-item" href="/eg/staff/cat/item/search"
-            egAccessKey keyCtx="navbar"
-            keySpec="f5" i18n-keySpec
-            keyDesc="Navigate To Item Status" i18n-keyDesc>
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f5" keyDesc="Navigate To Item Status">
             <span class="material-icons">question_answer</span>
             <span i18n>Item Status</span>
           </a>
@@ -110,7 +126,9 @@
             <span i18n>Scan Item as Missing Pieces</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" (click)="reprintLast()">
+          <a class="dropdown-item" (click)="reprintLast()"
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="f9" keyDesc="Reprint Last Receipt">
             <span class="material-icons">redo</span>
             <span i18n>Reprint Last Receipt</span>
           </a>
@@ -132,7 +150,9 @@
         </a>
         <div class="dropdown-menu" ngbDropdownMenu>
 
-          <a href="/eg/staff/cat/catalog/index" class="dropdown-item">
+          <a href="/eg/staff/cat/catalog/index" class="dropdown-item"
+            egAccessKey keyCtx="navbar"i18n-keySpec i18n-keyDesc
+            keySpec="f3" keyDesc="Catalog">
             <span class="material-icons">search</span>
             <span i18n>Search the Catalog</span>
           </a>
@@ -156,14 +176,14 @@
             <span i18n>Retrieve Bib Record by ID</span>
           </a>
           <a href="/eg/staff/cat/catalog/retrieve_by_tcn"
-            eg-accesskey="shift+f3" 
-            eg-accesskey-desc="Retrieve Last Bib Record" class="dropdown-item">
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="shift+f3" keyDesc="Retrieve Bib Record by TCN">
             <span class="material-icons">collections_bookmark</span>
             <span i18n>Retrieve Bib Record by TCN</span>
           </a>
           <a (click)="retrieveLastRecord()"
-            eg-accesskey="shift+f8" 
-            eg-accesskey-desc="Retrieve Last Bib Record" class="dropdown-item">
+            egAccessKey keyCtx="navbar" i18n-keySpec i18n-keyDesc
+            keySpec="shift+f8" keyDesc="Retrieve Last Bib Record">
             <span class="material-icons">redo</span>
             <span i18n>Retrieve Last Bib Record</span>
           </a>
