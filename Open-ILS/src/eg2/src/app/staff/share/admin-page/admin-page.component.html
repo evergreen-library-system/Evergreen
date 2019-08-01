@@ -24,6 +24,10 @@
 <!-- idlObject and fieldName applied programmatically -->
 <eg-translate #translator></eg-translate>
 
+<ng-container *ngIf="helpTemplate">
+  <ng-container *ngTemplateOutlet="helpTemplate"></ng-container>
+</ng-container>
+
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
     [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 

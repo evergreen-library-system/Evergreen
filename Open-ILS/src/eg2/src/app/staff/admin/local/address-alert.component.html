@@ -1,0 +1,17 @@
+
+<ng-template #helpTemplate>
+  <ul>
+    <li>Address Alert fields support regular expressions and are case-insensitive by default.</li>
+    <li>Example wildcard match:  742 Evergr.*n Terrace</li>
+    <li>Example case-sensitive match: (?c)742 Evergr.*n Terrace</li>
+    <li>If the billing or mailing address fields are selected, the 
+      tested address must be a billing or mailing address to match.</li>
+  </ul>
+</ng-template>
+
+<eg-title i18n-prefix prefix="Address Alert Administration"></eg-title>
+<eg-staff-banner bannerText="Address Alert Configuration" i18n-bannerText>
+</eg-staff-banner>
+<eg-admin-page persistKeyPfx="local" idlClass="aal"
+  [helpTemplate]="helpTemplate"></eg-admin-page>
+

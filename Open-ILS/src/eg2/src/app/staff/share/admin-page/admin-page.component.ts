@@ -67,6 +67,10 @@ export class AdminPageComponent implements OnInit {
     // Optional comma-separated list of read-only fields
     @Input() readonlyFields: string;
 
+    // Optional template containing help/about text which will
+    // be added to the page, above the grid.
+    @Input() helpTemplate: TemplateRef<any>;
+
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('successString') successString: StringComponent;
