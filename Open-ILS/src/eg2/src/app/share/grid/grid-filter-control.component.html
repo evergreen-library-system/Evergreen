@@ -258,7 +258,7 @@
     </div>
     <div *ngSwitchDefault>I don't know how to filter {{col.name}} - {{col.datatype}}</div>
   </div>
-  <span *ngIf="col.datatype !== 'org_unit'" i18n class="eg-grid-filter-operator">Operator:
+  <span *ngIf="col.datatype !== 'org_unit'" class="eg-grid-filter-operator"><ng-container i18n>Operator:</ng-container>
     <span [ngSwitch]="col.filterOperator">
       <span *ngSwitchCase="'='" i18n>Is exactly</span>
       <span *ngSwitchCase="'!='" i18n>Is not</span>
@@ -275,7 +275,7 @@
       <span *ngSwitchCase="'between'" i18n>Between</span>
     </span>
   </span>
-  <span *ngIf="col.datatype == 'org_unit'" i18n class="eg-grid-filter-operator">Operator:
+  <span *ngIf="col.datatype == 'org_unit'" class="eg-grid-filter-operator"><ng-container i18n>Operator:</ng-container>
     <span [ngSwitch]="col.filterOperator">
       <span *ngSwitchCase="'='" i18n>Is (or includes)</span>
       <span *ngSwitchCase="'!='" i18n>Is not (or excludes)</span>
