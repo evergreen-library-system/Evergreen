@@ -53,6 +53,8 @@ Due date::
   Transmission of data between organizations using electronic means. This is used for Acquisitions. 
 [[F]]FIFO (First In First Out):: 
   In a FIFO environment, holds are filled in the order that they are placed.
+Fixed Fields::
+  Fixed fields are part of the MARC Record that contain a fixed number of coded character positions. MARC fields 008 and 007 are the most common. Some of the codes are system generated and cannot be changed at the terminal, while others are manually input.  Still others do not display at all. 
 Fund tags::
   Tags used in acquisitions to allow you to group Funds.
 Funding sources::
