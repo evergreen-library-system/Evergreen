@@ -55,6 +55,8 @@ right-click the link and select *Open Link in New Tab*. Using this method, you
 can also open options from the web client's dropdown menus in a new tab
 - Navigate to the next tab using CTRL-Tab. Go to the previous tab with CTRL-Shift-Tab.
 
+To see a list of keyboard shortcuts for web client functions, type ? into a web client window. A screen overlay will appear with the list of shortcuts. This will not work if your cursor is focused in an entry box, so make sure to click your mouse outside of an entry box.
+
 Setting New Tab Behavior
 ^^^^^^^^^^^^^^^^^^^^^^^^
 Some users may want to automatically open the web client's portal page in a new
