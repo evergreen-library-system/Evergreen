@@ -17,7 +17,6 @@ var _collection_code_kludge_active = false;
 var fundSearchFilter = {active : 't'};
 var fundLabelFormat = ['${0} (${1})', 'code', 'year'];
 
-
 function gridDataLoader() {
     fListGrid.resetStore();
     fListGrid.showLoadProgressIndicator();
@@ -167,7 +166,8 @@ function addEntry(entry) {
                 fmField : field, 
                 fmObject : entry,
                 fmClass : 'acqdfe',
-		labelFormat: (field == 'fund') ? fundLabelFormat : null,
+                labelFormat: (field == 'fund') ? fundLabelFormat : null,
+                searchFormat: (field == 'fund') ? fundLabelFormat : null,
                 searchFilter : (field == 'fund') ? fundSearchFilter : null,
                 parentNode : byName(row, field),
                 orgDefaultsToWs : true,
