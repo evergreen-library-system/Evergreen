@@ -1,3 +1,7 @@
+BEGIN;
+
+SELECT evergreen.upgrade_deps_block_check('1171', :eg_version);
+
 CREATE OR REPLACE FUNCTION biblio.extract_located_uris( bib_id BIGINT, marcxml TEXT, editor_id INT ) RETURNS VOID AS $func$
 DECLARE
     uris            TEXT[];
@@ -109,3 +113,4 @@ BEGIN
 END;
 $func$ LANGUAGE PLPGSQL;
 
+COMMIT;
