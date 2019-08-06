@@ -6,10 +6,10 @@ import {Component, Input} from '@angular/core';
     selector: 'eg-bool',
     template: `
       <ng-container>
-        <span *ngIf="value" class="badge badge-success" i18n>Yes</span>
-        <span *ngIf="value == false" class="badge badge-secondary" i18n>No</span>
+        <span *ngIf="value" class="badge badge-success p-1" i18n>Yes</span>
+        <span *ngIf="value == false" class="badge badge-secondary p-1" i18n>No</span>
         <ng-container *ngIf="value === null">
-          <span *ngIf="ternary" class="badge badge-light" i18n>Unset</span>
+          <span *ngIf="ternary" class="badge badge-light p-1" i18n>Unset</span>
           <span *ngIf="!ternary"> </span>
       </ng-container>`
 })
