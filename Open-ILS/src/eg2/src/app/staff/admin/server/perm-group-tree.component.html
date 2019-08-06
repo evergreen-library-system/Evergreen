@@ -11,7 +11,7 @@
 <eg-string #createMapString i18n-text text="Permission Group Mapping Added">
 </eg-string>
 <eg-string #successMapString i18n-text text="Permission Group Mapping Update Succeeded">
-  </eg-string>
+</eg-string>
 <eg-string #errorMapString i18n-text text="Permission Group Mapping Update Failed">
 </eg-string>
 
@@ -46,7 +46,7 @@
       <ng-container *ngIf="loading">
           <div class="row">
             <div class="col-lg-6">
-              <eg-progress-inline></eg-progress-inline>
+              <eg-progress-inline #loadProgress></eg-progress-inline>
             </div>
           </div>
         </ng-container>
@@ -146,24 +146,24 @@
             </div>
 
             <div class="row" *ngFor="let map of groupPermMaps()"
-                [ngClass]="{'bg-danger': map.isdeleted()}">
+                [ngClass]="{'bg-warning': map.isdeleted()}">
               <div class="col-lg-5">
                 <span title="{{map.perm().description()}}">{{map.perm().code()}}</span>
               </div>
               <ng-container *ngIf="permIsInherited(map); else nativeMap">
                 <div class="col-lg-4">
-                  <a href="javascript:;" (click)="selectGroup(map.grp().id())">
+                  <button class="btn btn-link m-0 p-0"
+                    (click)="selectGroup(map.grp().id())">
                     {{map.grp().name()}}
-                  </a>
+                  </button>
                 </div>
                 <div class="col-lg-1 text-center">{{map.depth()}}</div>
-                <!-- TODO migrate to <eg-bool/> once merged-->
                 <div class="col-lg-1 d-flex flex-column justify-content-center">
-                  <div class="d-flex justify-content-center p-3 rounded border border-secondary">
+                  <div class="d-flex justify-content-center p-1 rounded">
                     <eg-bool [value]="map.grantable() == 't'"></eg-bool>
                   </div>
                 </div>
-                <div class="col-lg-1"> </div>
+                <div class="col-lg-1 font-italic" i18n>Inherited</div>
               </ng-container>
               <ng-template #nativeMap>
                 <div class="col-lg-4">{{map.grp().name()}}</div>
@@ -174,7 +174,7 @@
                   </select>
                 </div>
                 <div class="col-lg-1 d-flex flex-column justify-content-center">
-                  <div class="d-flex justify-content-center p-3 rounded border border-info">                
+                  <div class="d-flex justify-content-center p-1 rounded border border-info">                
                     <input type="checkbox" class="align-middle"
                       i18n-title title="Grantable?"
                       [ngModel]="map.grantable() == 't'"
@@ -182,7 +182,7 @@
                   </div>
                 </div>
                 <div class="col-lg-1 d-flex flex-column justify-content-center">
-                  <div class="d-flex justify-content-center p-3 rounded border border-danger">
+                  <div class="d-flex justify-content-center p-1 rounded border border-danger">
                     <input type="checkbox" class="align-middle"
                       i18n-title title="Delete Mapping"
                       [ngModel]="map.isdeleted()"

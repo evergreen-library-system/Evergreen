@@ -11,6 +11,7 @@ import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {FmRecordEditorComponent, FmFieldOptions} from '@eg/share/fm-editor/fm-editor.component';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
 import {PermGroupMapDialogComponent} from './perm-group-map-dialog.component';
+import {ProgressInlineComponent} from '@eg/share/dialog/progress-inline.component';
 
 /** Manage permission groups and group permissions */
 
@@ -41,6 +42,7 @@ export class PermGroupTreeComponent implements OnInit {
     @ViewChild('createMapString') createMapString: StringComponent;
     @ViewChild('errorMapString') errorMapString: StringComponent;
     @ViewChild('addMappingDialog') addMappingDialog: PermGroupMapDialogComponent;
+    @ViewChild('loadProgress') loadProgress: ProgressInlineComponent;
 
     constructor(
         private idl: IdlService,
@@ -59,9 +61,13 @@ export class PermGroupTreeComponent implements OnInit {
     async ngOnInit() {
         this.loading = true;
         await this.loadPgtTree();
+        this.loadProgress.increment();
         await this.loadPermissions();
+        this.loadProgress.increment();
         await this.loadPermMaps();
+        this.loadProgress.increment();
         this.setOrgDepths();
+        this.loadProgress.increment();
         this.loading = false;
         return Promise.resolve();
     }
@@ -126,8 +132,9 @@ export class PermGroupTreeComponent implements OnInit {
         // the database ID, because the application_perm field on
         // "pgt" is text instead of a link.  So the value it expects
         // is the code, not the ID.
-        return this.pcrud.retrieveAll('ppl', {order_by: {ppl: ['name']}})
+        return this.pcrud.retrieveAll('ppl', {order_by: {ppl: 'code'}})
         .pipe(map(perm => {
+            this.loadProgress.increment();
             this.permissions.push(perm);
             this.permEntries.push({id: perm.code(), label: perm.code()});
             this.permissions.forEach(p => this.permIdMap[+p.id()] = p);
@@ -138,7 +145,10 @@ export class PermGroupTreeComponent implements OnInit {
         this.permMaps = [];
         return this.pcrud.retrieveAll('pgpm', {},
             {fleshSelectors: true, authoritative: true})
-        .pipe(map((m => this.permMaps.push(m)))).toPromise();
+        .pipe(map(m => {
+            this.loadProgress.increment();
+            this.permMaps.push(m);
+        })).toPromise();
     }
 
     fmEditorOptions(): {[fieldName: string]: FmFieldOptions} {
