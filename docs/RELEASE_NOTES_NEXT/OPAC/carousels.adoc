@@ -1,0 +1,71 @@
+Carousels
+^^^^^^^^^
+This feature fully integrates the creation and management of book carousels
+into Evergreen, allowing for the display of book cover images on a library’s
+public catalog home page.  Carousels may be animated or static.  They can be
+manually maintained by staff or automatically maintained by Evergreen.  Titles
+can appear in carousels based on newly cataloged items, recent returns,
+popularity, etc.  Titles must have copies that are visible to the public
+catalog, be circulating, and holdable to appear in a carousel.  Serial titles
+cannot be displayed in carousels.  
+
+Administration
+++++++++++++++
+This feature introduces the concepts of Carousel Types, Carousels, and Carousel
+Library Mappings. The first can be administered in Server Administration
+while the latter two can be administerd in Local Administration.
+
+Carousel Types define the attributes of a carousel, such as whether it is
+automatically managed and how it is filtered.  A carousel must be associated
+with a carousel type to function properly.    
+
+There are five stock Carousel Types:
+
+  * Newly Cataloged Items - titles appear automatically based on the active date of the title’s copies
+  * Recently Returned Items - titles appear automatically based on the mostly recently circulated copy’s check-in scan date and time  
+  * Top Circulated Titles - titles appear automatically based on the most circulated copies in the Item Libraries identified in the carousel definition; titles are chosen based on the number of action.circulation rows created during an interval specified in the carousel definition and includes both circulations and renewals
+  * Newest Items by Shelving Location - titles appear automatically based on the active date and shelving location of the title’s copies 
+  * Manual - titles are added and managed manually by library staff
+
+While additional Carousel Types can be added using the administration
+interface, new automatic types currently require additional Perl code
+to be recognized.
+
+Carousel definitions allow the operator to specify the type, owner,
+name and, for automatically-maintained types, the item libraries and
+shelving locations to look for titles to populate the carousels as
+well as how far back to look for titles.
+
+Carousel Library Mappings specify the libraries that the carousel
+should be displayed out. The visibility of a carousel at a given organizational
+unit is not automatically inherited by the descendants of that unit.  The
+carousel’s owning organizational unit is automatically added to the list of
+display organizational units.
+
+A server-side job, refresh_carousels.srfsh, is available to periodically
+refresh the contents of automatic carousels.
+
+Staff Interface
++++++++++++++++
+Each carousel has a record bucket associated with it. Library staff can
+add titles to a carousel's bucket, and for the manual Carousel Type, that
+is the only way to populate the carousel. Records added to an automatic
+carousel's bucket will be removed whenever the carousel is next
+refreshed.
+
+Public Catalog
+++++++++++++++
+A new Template Toolkit macro called “carousels” allows the Evergreen
+administrator to inject the contents of one or more carousels into any point in
+the OPAC.  The macro will accept the following parameters:
+
+  * carousel_id
+  * dynamic (Boolean, default value false)
+  * image_size (small, medium, or large)
+  * width (number of titles to display on a “pane” of the carousel)
+  * animated (Boolean to specify whether the carousel should automatically cycle through its panes)
+  * animation_interval (the interval (in seconds) to wait before advancing to the next pane)
+
+If the carousel_id parameter is supplied, the carousel with that ID will be
+displayed.  If carousel_id is not supplied, all carousels visible to the public
+catalog’s physical_loc organizational unit is displayed.
