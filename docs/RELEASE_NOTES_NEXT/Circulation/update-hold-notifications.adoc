@@ -1,0 +1,7 @@
+Update Hold Notification Information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The public catalog and staff client now have the ability to update existing
+holds if a patron or a staff member changes certain notification preferences or
+contact information.  Evergreen will detect these changes and prompt the staff
+user or patron user and ask if they want to update existing holds with the new
+contact information and/or notification preferences.
