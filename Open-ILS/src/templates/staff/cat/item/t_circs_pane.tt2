@@ -137,14 +137,14 @@
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkout Date') %]</div>
     <div class="flex-cell well">
-      {{circ.xact_start() | date:egDateAndTimeFormat}}
+      {{circ_summary.start_time() | date:egDateAndTimeFormat}}
     </div>
   </div>
 
   <div class="flex-row">
     <div class="flex-cell">[% l('Checkout Workstation') %]</div>
     <div class="flex-cell well">
-      {{circ.workstation().name()}}
+      {{circ_summary.checkout_workstation()}}
     </div>
   </div>
 
