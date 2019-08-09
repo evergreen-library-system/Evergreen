@@ -5,11 +5,11 @@
  * render the correct aspect ratio.
  */
 .record-jacket-div {
-    width: 68px;
+    width: 120px;
 }
 
 .record-jacket-div img {
-    height: 100%; 
-    max-height:80px; 
-    max-width: 54px;
+    height: 100%;
+    max-height: 158px;
+    max-width: 100px;
 }
