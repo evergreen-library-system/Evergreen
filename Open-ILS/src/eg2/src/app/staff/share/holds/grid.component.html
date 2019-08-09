@@ -83,7 +83,7 @@
       </eg-grid-column>
 
       <ng-template #barcodeTmpl let-hold="row">
-        <a href="/eg/staff/cat/item/{{cp_id}}/summary">
+        <a href="/eg/staff/cat/item/{{hold.cp_id}}/summary">
           {{hold.cp_barcode}}
         </a>
       </ng-template>
@@ -91,8 +91,14 @@
         [cellTemplate]="barcodeTmpl">
       </eg-grid-column>
 
-      <eg-grid-column i18n-label label="Patron Barcode"
-          path='ucard_barcode' [hidden]="true"></eg-grid-column>
+      <ng-template #userBarcodeTmpl let-hold="row">
+        <a href="/eg/staff/circ/patron/{{hold.usr_id}}/checkout">
+          {{hold.ucard_barcode}}
+        </a>
+      </ng-template>
+      <eg-grid-column i18n-label label="Patron Barcode" 
+        [cellTemplate]="userBarcodeTmpl" [hidden]="true"></eg-grid-column>
+
       <eg-grid-column i18n-label label="Patron alias" path="usr_alias"></eg-grid-column>
       <eg-grid-column i18n-label label="Request Date"
           path='request_time' datatype="timestamp"></eg-grid-column>
