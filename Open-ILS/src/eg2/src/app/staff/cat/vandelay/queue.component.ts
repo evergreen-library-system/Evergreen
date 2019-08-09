@@ -10,7 +10,7 @@ import {AuthService} from '@eg/core/auth.service';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {VandelayService, VandelayImportSelection,
     VANDELAY_EXPORT_PATH} from './vandelay.service';
 
@@ -38,7 +38,7 @@ export class QueueComponent implements OnInit, AfterViewInit {
     @ViewChild('confirmDelDlg') confirmDelDlg: ConfirmDialogComponent;
     @ViewChild('progressDlg') progressDlg: ProgressDialogComponent;
 
-    cellPrintValues: (row: any, cell: GridColumn) => string;
+    cellTextGenerator: GridCellTextGenerator;
 
     constructor(
         private router: Router,
@@ -59,13 +59,10 @@ export class QueueComponent implements OnInit, AfterViewInit {
             return this.loadQueueRecords(pager);
         };
 
-        // Text-ify function for cells that use display templates.
-        this.cellPrintValues = (row: any, cell: GridColumn): string => {
-            return ({
-                '+matches': row.matches.length + '',
-                'import_error': row.import_error,
-                'imported_as': row.imported_as + ''
-            })[cell.name] || '';
+        this.cellTextGenerator = {
+            '+matches': row => row.matches.length + '',
+            'import_error': row => row.import_error,
+            'imported_as': row => row.imported_as + ''
         };
     }
 

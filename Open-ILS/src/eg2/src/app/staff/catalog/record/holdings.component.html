@@ -57,7 +57,7 @@
 <div class='eg-copies w-100 mt-3'>
   <eg-grid #holdingsGrid [dataSource]="gridDataSource"
     (onRowActivate)="onRowActivate($event)" [disablePaging]="true"
-    [rowClassCallback]="rowClassCallback"
+    [rowClassCallback]="rowClassCallback" [cellTextGenerator]="cellTextGenerator"
     [sortable]="false" persistKey="cat.holdings">
 
     <!-- checkboxes / filters -->
@@ -228,7 +228,6 @@
     </eg-grid-column>
     <eg-grid-column name="owner_label" [flex]="4"
       [cellTemplate]="locationTemplate" [cellContext]="gridTemplateContext" 
-      [cellPrintValue]="cellPrintValues"
       label="Location/Barcode" [disableTooltip]="true" i18n-label>
     </eg-grid-column>
     <eg-grid-column path="callNumCount" datatype="number" label="Call Numbers" i18n-label>
@@ -280,8 +279,7 @@
     <eg-grid-column i18n-label label="Deposit Amount" path="copy.deposit_amount" 
       name="deposit_amount" datatype="money" [hidden]="true"></eg-grid-column>
     <eg-grid-column i18n-label label="Holdable?" name="holdable" 
-      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext"
-      [cellPrintValue]="cellPrintValues">
+      [cellTemplate]="holdableTemplate" [cellContext]="gridTemplateContext">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Reference?" path="copy.ref" 
       name="ref" datatype="bool" [hidden]="true"></eg-grid-column>

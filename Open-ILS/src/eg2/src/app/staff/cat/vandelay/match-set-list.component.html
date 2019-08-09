@@ -19,14 +19,14 @@
   </a> 
 </ng-template>
 
-<eg-grid #grid [dataSource]="gridSource"
+<eg-grid #grid [dataSource]="gridSource" [cellTextGenerator]="cellTextGenerator"
   persistKey="cat.vandelay.match_set.list"
   idlClass="vms" [dataSource]="queueSource">
   <eg-grid-toolbar-button label="New Match Set" i18n-label [action]="createNew">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Delete Selected" i18n-label 
     [action]="deleteSelected"></eg-grid-toolbar-action>
-  <eg-grid-column name="name" [cellTemplate]="nameTmpl" [cellPrintValue]="cellPrintValues">
+  <eg-grid-column name="name" [cellTemplate]="nameTmpl">
   </eg-grid-column>
 </eg-grid>
 

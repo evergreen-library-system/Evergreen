@@ -399,6 +399,13 @@ export class GridColumnSet {
     }
 }
 
+// Maps colunm names to functions which return plain text values for
+// each mapped column on a given row.  This is primarily useful for
+// generating print-friendly content for grid cells rendered via
+// cellTemplate.
+export interface GridCellTextGenerator {
+    [columnName: string]: (row: any) => string;
+}
 
 export class GridRowSelector {
     indexes: {[string: string]: boolean};
@@ -495,6 +502,7 @@ export class GridContext {
     overflowCells: boolean;
     disablePaging: boolean;
     showDeclaredFieldsOnly: boolean;
+    cellTextGenerator: GridCellTextGenerator;
 
     // Allow calling code to know when the select-all-rows-in-page
     // action has occurred.
@@ -810,8 +818,8 @@ export class GridContext {
 
 
     getColumnTextContent(row: any, col: GridColumn): string {
-        if (col.cellPrintValue) {
-            return col.cellPrintValue(row, col);
+        if (this.columnHasTextGenerator(col)) {
+            return this.cellTextGenerator[col.name](row);
         } else {
             if (col.cellTemplate) {
                 return ''; // avoid 'undefined' values
@@ -1098,6 +1106,10 @@ export class GridContext {
     getGridConfig(persistKey: string): Promise<GridPersistConf> {
         if (!persistKey) { return Promise.resolve(null); }
         return this.store.getItem('eg.grid.' + persistKey);
+    }
+
+    columnHasTextGenerator(col: GridColumn): boolean {
+        return this.cellTextGenerator && col.name in this.cellTextGenerator;
     }
 }
 

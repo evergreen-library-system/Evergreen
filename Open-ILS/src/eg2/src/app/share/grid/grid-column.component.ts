@@ -73,6 +73,12 @@ export class GridColumnComponent implements OnInit {
         col.timezoneContextOrg = this.timezoneContextOrg;
         col.isAuto = false;
         this.grid.context.columnSet.add(col);
+
+        if (this.cellTemplate &&
+            !this.grid.context.columnHasTextGenerator(col)) {
+            console.warn(
+                'No cellTextGenerator provided for "' + col.name + '"');
+        }
     }
 }
 

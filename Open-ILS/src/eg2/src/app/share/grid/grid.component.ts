@@ -4,7 +4,8 @@ import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
 import {FormatService} from '@eg/core/format.service';
-import {GridContext, GridColumn, GridDataSource, GridRowFlairEntry} from './grid';
+import {GridContext, GridColumn, GridDataSource,
+    GridCellTextGenerator, GridRowFlairEntry} from './grid';
 import {GridToolbarComponent} from './grid-toolbar.component';
 
 /**
@@ -107,6 +108,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     // would go out of view
     @Input() stickyHeader: boolean;
 
+    @Input() cellTextGenerator: GridCellTextGenerator;
+
     context: GridContext;
 
     // These events are emitted from our grid-body component.
@@ -148,6 +151,8 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
         this.context.showDeclaredFieldsOnly = this.showDeclaredFieldsOnly;
         this.context.rowFlairCallback = this.rowFlairCallback;
         this.context.disablePaging = this.disablePaging === true;
+        this.context.cellTextGenerator = this.cellTextGenerator;
+
         if (this.showFields) {
             this.context.defaultVisibleFields = this.showFields.split(',');
         }
