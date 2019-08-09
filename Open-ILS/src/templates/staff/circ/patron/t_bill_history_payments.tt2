@@ -11,7 +11,7 @@
       label="[% l('Full Details') %]" handler="showFullDetails"></eg-grid-action>
 
     <eg-grid-field path="amount" label="[% l('Amount') %]"></eg-grid-field>
-    <eg-grid-field path="id" label="[% l('Payment ID') %]"></eg-grid-field>
+    <eg-grid-field path="id" label="[% l('Payment ID') %]" required></eg-grid-field>
     <eg-grid-field path="payment_ts" label="[% l('Payment Time') %]" datatype="timestamp"></eg-grid-field>
     <eg-grid-field path="note" label="[% l('Note') %]"></eg-grid-field>
     <eg-grid-field path="voided" label="[% l('Voided') %]"></eg-grid-field>
