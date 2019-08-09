@@ -92,7 +92,7 @@
         </a>
       </ng-template>
       <eg-grid-column i18n-label label="Current Item" name='cp_barcode'
-        [cellTemplate]="barcodeTmpl">
+        [cellTemplate]="barcodeTmpl" [cellPrintValue]="cellPrintValues">
       </eg-grid-column>
 
       <ng-template #userBarcodeTmpl let-hold="row">
@@ -118,8 +118,8 @@
           {{hold.title}}
         </a>
       </ng-template>
-      <eg-grid-column i18n-label label="Title" [hidden]="true"
-          name='title' [cellTemplate]="titleTmpl"></eg-grid-column>
+      <eg-grid-column i18n-label label="Title" [hidden]="true" name='title' 
+        [cellTemplate]="titleTmpl" [cellPrintValue]="cellPrintValues"></eg-grid-column>
       <eg-grid-column i18n-label label="Author" path='author'
           [hidden]="true"></eg-grid-column>
       <eg-grid-column i18n-label label="Potential Items" path='potentials' datatype="int">

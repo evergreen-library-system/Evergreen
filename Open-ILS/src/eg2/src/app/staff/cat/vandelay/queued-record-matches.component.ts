@@ -31,6 +31,8 @@ export class QueuedRecordMatchesComponent implements OnInit {
     matchRowClick: (row: any) => void;
     matchMap: {[id: number]: IdlObject};
 
+    cellPrintValues: (row: any, cell: GridColumn) => string;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -47,6 +49,15 @@ export class QueuedRecordMatchesComponent implements OnInit {
         this.bibDataSource.getRows = (pager: Pager) => {
             return this.getBibMatchRows(pager);
         };
+
+        // Text-ify function for cells that use display templates.
+        this.cellPrintValues = (row: any, cell: GridColumn): string => {
+            return ({
+                'selected': this.isOverlayTarget(row.id) + '',
+                'eg_record': row.eg_record + ''
+            })[cell.name] || '';
+        };
+
 
         /* TODO
         this.authDataSource.getRows = (pager: Pager) => {
