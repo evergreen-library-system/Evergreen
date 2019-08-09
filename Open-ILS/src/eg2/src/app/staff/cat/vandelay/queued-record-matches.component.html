@@ -15,6 +15,7 @@
 <ng-container *ngIf="queueType == 'bib'">
   <eg-grid #bibGrid [dataSource]="bibDataSource" 
     (onRowClick)="matchRowClick($event)"
+    [cellTextGenerator]="cellTextGenerator"
     [disableSelect]="true" [disableMultiSelect]="true">
     <!--
     <eg-grid-toolbar-action i18n-label label="Mark As Overlay Target"
@@ -25,10 +26,10 @@
       i18n-label label="Match ID">
     </eg-grid-column>
     <eg-grid-column name="selected" i18n-label label="Merge Target"
-      [cellTemplate]="targetTemplate" [cellPrintValue]="cellPrintValues">
+      [cellTemplate]="targetTemplate">
     </eg-grid-column>
     <eg-grid-column name="eg_record" i18n-label label="Record ID"
-      [cellTemplate]="bibIdTemplate" [cellPrintValue]="cellPrintValues">
+      [cellTemplate]="bibIdTemplate">
     </eg-grid-column>
     <eg-grid-column name="match_score" i18n-label label="Match Score">
     </eg-grid-column>

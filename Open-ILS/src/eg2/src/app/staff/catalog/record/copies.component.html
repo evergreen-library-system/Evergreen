@@ -37,7 +37,7 @@
 
 <div class='eg-copies w-100 mt-3'>
   <eg-grid #copyGrid [dataSource]="gridDataSource" 
-    [disableSelect]="true"
+    [disableSelect]="true" [cellTextGenerator]="cellTextGenerator"
     [sortable]="false" persistKey="catalog.record.copies">
     <eg-grid-column i18n-label label="Item ID" path="id" 
       [hidden]="true" [index]="true">
@@ -45,10 +45,10 @@
     <eg-grid-column i18n-label label="Location" path="circ_lib" datatype="org_unit">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Call Number / Item Notes" name="callnumber" 
-      [cellTemplate]="cnTemplate" [cellPrintValue]="cellPrintValues">
+      [cellTemplate]="cnTemplate">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Barcode" name="barcode"
-      [cellTemplate]="barcodeTemplate" [cellPrintValue]="cellPrintValues">
+      [cellTemplate]="barcodeTemplate">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Shelving Location" path="copy_location">
     </eg-grid-column>

@@ -4,7 +4,7 @@ import {Observable, of} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {Pager} from '@eg/share/util/pager';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn, GridCellTextGenerator} from '@eg/share/grid/grid';
 import {IdlObject} from '@eg/core/idl.service';
 import {EventService} from '@eg/core/event.service';
 import {NetService} from '@eg/core/net.service';
@@ -31,7 +31,7 @@ export class QueuedRecordMatchesComponent implements OnInit {
     matchRowClick: (row: any) => void;
     matchMap: {[id: number]: IdlObject};
 
-    cellPrintValues: (row: any, cell: GridColumn) => string;
+    cellTextGenerator: GridCellTextGenerator;
 
     constructor(
         private router: Router,
@@ -50,12 +50,9 @@ export class QueuedRecordMatchesComponent implements OnInit {
             return this.getBibMatchRows(pager);
         };
 
-        // Text-ify function for cells that use display templates.
-        this.cellPrintValues = (row: any, cell: GridColumn): string => {
-            return ({
-                'selected': this.isOverlayTarget(row.id) + '',
-                'eg_record': row.eg_record + ''
-            })[cell.name] || '';
+        this.cellTextGenerator = {
+            selected: row => this.isOverlayTarget(row.id) + '',
+            eg_record: row => row.eg_record + ''
         };
 
 

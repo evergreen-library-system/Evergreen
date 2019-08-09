@@ -130,7 +130,7 @@ because there are a lot of them.
 <eg-grid #queueGrid [dataSource]="queueSource"
   persistKey="cat.vandelay.queue.{{queueType}}"
   (onRowActivate)="openRecord($event)"
-  [pageOffset]="queuePageOffset()"
+  [pageOffset]="queuePageOffset()" [cellTextGenerator]="cellTextGenerator"
   hideFields="language,pagination,price,rec_identifier,eg_tcn_source,eg_identifier,item_barcode,zsource">
 
   <eg-grid-toolbar-checkbox i18n-label label="Records With Matches"
