@@ -16,7 +16,7 @@
       label="[% l('Print Bills') %]" handler="printBills"></eg-grid-action>
 
     <eg-grid-field path="summary.balance_owed"></eg-grid-field>
-    <eg-grid-field path="id" label="[% l('Bill #') %]"></eg-grid-field>
+    <eg-grid-field path="id" label="[% l('Bill #') %]" required></eg-grid-field>
     <eg-grid-field path="xact_finish" label="[% l('Finish') %]" datatype="timestamp"></eg-grid-field>
     <eg-grid-field path="xact_start" label="[% l('Start') %]" datatype="timestamp"></eg-grid-field>
     <eg-grid-field path="summary.total_owed" label="[% l('Total Billed') %]"></eg-grid-field>
