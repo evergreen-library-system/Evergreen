@@ -21,6 +21,8 @@ export class MatchSetListComponent implements AfterViewInit {
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
 
+    cellPrintValues: (row: any, cell: GridColumn) => string;
+
     constructor(
         private router: Router,
         private pcrud: PcrudService,
@@ -37,6 +39,14 @@ export class MatchSetListComponent implements AfterViewInit {
                 limit: pager.limit,
                 offset: pager.offset
             });
+        };
+
+        // Text-ify function for cells that use display templates.
+        this.cellPrintValues = (row: any, cell: GridColumn): string => {
+            switch (cell.name) {
+                case 'name':
+                    return row.name();
+            }
         };
 
         this.createNew = () => {

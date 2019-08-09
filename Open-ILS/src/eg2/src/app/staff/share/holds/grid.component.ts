@@ -6,7 +6,7 @@ import {OrgService} from '@eg/core/org.service';
 import {AuthService} from '@eg/core/auth.service';
 import {Pager} from '@eg/share/util/pager';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {GridDataSource} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {MarkDamagedDialogComponent
@@ -111,6 +111,8 @@ export class HoldsGridComponent implements OnInit {
         }
     }
 
+    cellPrintValues: (row: any, cell: GridColumn) => string;
+
     constructor(
         private net: NetService,
         private org: OrgService,
@@ -141,6 +143,14 @@ export class HoldsGridComponent implements OnInit {
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
             sort = sort.length > 0 ? sort : this.defaultSort;
             return this.fetchHolds(pager, sort);
+        };
+
+        // Text-ify function for cells that use display templates.
+        this.cellPrintValues = (row: any, cell: GridColumn): string => {
+            return ({
+                'title': row.title,
+                'cp_barcode': row.cp_barcode
+            })[cell.name] || '';
         };
     }
 

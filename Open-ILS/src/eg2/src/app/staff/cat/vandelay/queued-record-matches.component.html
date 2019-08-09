@@ -25,10 +25,10 @@
       i18n-label label="Match ID">
     </eg-grid-column>
     <eg-grid-column name="selected" i18n-label label="Merge Target"
-      [cellTemplate]="targetTemplate">
+      [cellTemplate]="targetTemplate" [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column name="eg_record" i18n-label label="Record ID"
-      [cellTemplate]="bibIdTemplate">
+      [cellTemplate]="bibIdTemplate" [cellPrintValue]="cellPrintValues">
     </eg-grid-column>
     <eg-grid-column name="match_score" i18n-label label="Match Score">
     </eg-grid-column>

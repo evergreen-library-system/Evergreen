@@ -143,13 +143,14 @@ because there are a lot of them.
     (onChange)="limitToImportErrors($event)"></eg-grid-toolbar-checkbox>
 
   <eg-grid-column name="id" [index]="true" [hidden]="true"></eg-grid-column>
-  <eg-grid-column i18n-label label="Matches"
-    name="+matches" [cellTemplate]="matchesTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Matches" name="+matches" 
+    [cellTemplate]="matchesTmpl" [cellPrintValue]="cellPrintValues"></eg-grid-column>
   <eg-grid-column name="import_error" i18n-label
-    label="Import Errors" [cellTemplate]="errorsTmpl"></eg-grid-column>
+    label="Import Errors" [cellTemplate]="errorsTmpl" 
+      [cellPrintValue]="cellPrintValues"></eg-grid-column>
   <eg-grid-column name="import_time" i18n-label
     label="Import Date" datatype="timestamp"></eg-grid-column>
-  <eg-grid-column name="imported_as" i18n-label
-    label="Imported As" [cellTemplate]="importedAsTmpl"></eg-grid-column>
+  <eg-grid-column name="imported_as" i18n-label label="Imported As" 
+    [cellTemplate]="importedAsTmpl" [cellPrintValue]="cellPrintValues"></eg-grid-column>
 </eg-grid>
 

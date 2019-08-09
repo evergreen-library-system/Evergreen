@@ -38,6 +38,8 @@ export class QueueComponent implements OnInit, AfterViewInit {
     @ViewChild('confirmDelDlg', { static: false }) confirmDelDlg: ConfirmDialogComponent;
     @ViewChild('progressDlg', { static: true }) progressDlg: ProgressDialogComponent;
 
+    cellPrintValues: (row: any, cell: GridColumn) => string;
+
     constructor(
         private router: Router,
         private route: ActivatedRoute,
@@ -57,6 +59,14 @@ export class QueueComponent implements OnInit, AfterViewInit {
             return this.loadQueueRecords(pager);
         };
 
+        // Text-ify function for cells that use display templates.
+        this.cellPrintValues = (row: any, cell: GridColumn): string => {
+            return ({
+                '+matches': row.matches.length + '',
+                'import_error': row.import_error,
+                'imported_as': row.imported_as + ''
+            })[cell.name] || '';
+        };
     }
 
     ngOnInit() {

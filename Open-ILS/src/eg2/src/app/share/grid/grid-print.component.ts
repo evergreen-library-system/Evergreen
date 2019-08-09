@@ -24,6 +24,13 @@ export class GridPrintComponent {
         const columns = this.gridContext.columnSet.displayColumns();
         const textItems = {columns: columns, rows: []};
 
+        // Warn on missing print value generators for cells using templates.
+        columns.forEach(col => {
+            if (col.cellTemplate && !col.cellPrintValue) {
+                console.warn("No print value generator set for: " + col.name);
+            }
+        });
+
         this.gridContext.getAllRowsAsText().subscribe(
             row => {
               this.progressDialog.increment();
