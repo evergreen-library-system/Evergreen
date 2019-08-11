@@ -508,6 +508,7 @@ function(egCore , $q) {
                 $scope.empty_barcode = false;
                 $scope.duplicate_barcode_string = window.duplicate_barcode_string;
                 $scope.empty_barcode_string = window.empty_barcode_string;
+                var duplicate_check_count = 0;
 
                 if (!$scope.copy.barcode()) $scope.copy.empty_barcode = true;
 
@@ -524,8 +525,13 @@ function(egCore , $q) {
                     if ($scope.barcode != '') {
                         $scope.copy.empty_barcode = $scope.empty_barcode = false;
                         $scope.barcode_has_error = !Boolean(itemSvc.checkBarcode($scope.barcode));
+
+                        var duplicate_check_id = ++duplicate_check_count;
                         itemSvc.checkDuplicateBarcode($scope.barcode, $scope.copy.id())
-                            .then(function (state) { $scope.copy.duplicate_barcode = $scope.duplicate_barcode = state });
+                            .then(function (state) {
+                                if (duplicate_check_id == duplicate_check_count)
+                                    $scope.copy.duplicate_barcode = $scope.duplicate_barcode = state;
+                            });
                     } else {
                         $scope.copy.empty_barcode = $scope.empty_barcode = true;
                     }
