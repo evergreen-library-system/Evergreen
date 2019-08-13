@@ -186,6 +186,33 @@ sub update_privacy_waiver {
     return 1;
 }
 
+__PACKAGE__->register_method(
+    method    => "get_ou_setting_history",
+    api_name  => "open-ils.actor.org_unit.settings.history.retrieve",
+    signature => {
+        desc => "Retrieves the history of an Org Unit Setting.  The permission to retrieve "          .
+                "an org unit setting's history is dependant on a specific permission specified "       .
+                "in the view_perm column of the config.org_unit_setting_type " .
+                "table's row corresponding to the setting being changed." ,
+        params => [
+            {desc => 'Authentication token',        type => 'string'},
+            {desc => 'Org Unit ID',                 type => 'number'},
+            {desc => 'Setting Type Name',           type => 'string'}
+        ],
+        return => {desc => 'History IDL Object'}
+    }
+);
+
+sub get_ou_setting_history {
+    my( $self, $client, $auth, $setting, $orgid ) = @_;
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+
+    return $U->ou_ancestor_setting_log(
+        $orgid, $setting, $e, $auth
+    );
+
+}
 
 __PACKAGE__->register_method(
     method    => "set_ou_settings",

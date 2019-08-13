@@ -69,7 +69,10 @@ const routes: Routes = [{
     }]
 }, {
     path: 'config/standing_penalty',
-    component: StandingPenaltyComponent
+    component: StandingPenaltyComponent,
+}, {
+    path: 'asset/org_unit_settings',
+    loadChildren: '@eg/staff/admin/local/org-unit-settings/org-unit-settings.module#OrgUnitSettingsModule'
 }, {
     path: 'config/ui_staff_portal_page_entry',
     component: AdminStaffPortalPageComponent

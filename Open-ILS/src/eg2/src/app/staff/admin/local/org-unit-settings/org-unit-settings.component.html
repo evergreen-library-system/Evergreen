@@ -1,0 +1,84 @@
+<eg-title i18n-prefix prefix="Org Unit Settings Editor"></eg-title>
+<eg-staff-banner bannerText="Org Unit Settings Config" i18n-bannerText></eg-staff-banner>
+<!-- org unit selector -->
+
+<eg-admin-edit-org-unit-setting-dialog #editOuSettingDialog>
+</eg-admin-edit-org-unit-setting-dialog>
+
+<eg-admin-ou-setting-history-dialog #orgUnitSettingHistoryDialog>
+</eg-admin-ou-setting-history-dialog>
+
+<eg-admin-ou-setting-json-dialog #ouSettingJsonDialog>
+</eg-admin-ou-setting-json-dialog>
+
+<div class="row mt-3">
+  <div class="col-md-3">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <div class="input-group-text" i18n>Context Location</div>
+        <eg-org-select [initialOrg]="contextOrg"
+          (onChange)="contextOrgChanged($event)">
+        </eg-org-select>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="input-group">
+        <input type="text"
+            class="form-control"
+            [(ngModel)]="filterString"
+            (blur)="applyFilter()"
+        />
+        <button class="btn btn-outline-dark mr-1" i18n>Filter</button>
+        <button class="btn btn-outline-dark mr-1" i18n
+          (click)="applyFilter(true)">Clear Filter</button>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="input-group">
+      <button class="btn btn-outline-dark mr-1"
+        (click)="showJsonDialog(true)" i18n>Export</button>
+      <button class="btn btn-outline-dark mr-1"
+        (click)="showJsonDialog(false)" i18n>Import</button>
+    </div>
+  </div>
+  
+</div>
+<!-- Org Unit Settings Grid -->
+<div class='w-11 mt-3'>
+  <eg-grid #orgUnitSettingsGrid [dataSource]="gridDataSource"
+    [disableSelect]="true"
+    [sortable]="false" [showDeclaredFieldsOnly]="true"
+    persistKey="admin.actor.org_unit_settings">
+
+    <eg-grid-column i18n-label label="Edit" name="edit"
+      [cellTemplate]="editCellTemplate"></eg-grid-column>
+    <eg-grid-column i18n-label label="History" name="history"
+      [cellTemplate]="historyCellTemplate"></eg-grid-column>
+    <eg-grid-column path="grp" label="Group" i18n-label></eg-grid-column>
+    <eg-grid-column path="label" label="Setting" [index]="true" i18n-label></eg-grid-column>
+    <eg-grid-column path="context.shortname()" label="Context" i18n-label></eg-grid-column>
+    <eg-grid-column path="value_str" label="Value" i18n-label></eg-grid-column>
+    
+  </eg-grid>
+</div>
+
+<ng-template #editCellTemplate let-entry="row">
+  <span>
+    <a
+      (click)="showEditSettingValueDialog(entry)" class="pl-1"
+      [routerLink]="" i18n>
+      Edit
+    </a>
+  </span>
+</ng-template>
+
+<ng-template #historyCellTemplate let-entry="row">
+  <span>
+    <a
+      (click)="showHistoryDialog(entry)" class="pl-1"
+      [routerLink]="" i18n>
+      History
+    </a>
+  </span>
+</ng-template>

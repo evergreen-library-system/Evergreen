@@ -1,0 +1,152 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>Edit Setting</h4>
+    <button type="button" class="close" 
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row justify-content-center">
+      <div class="col">
+        <h5 i18n>{{entry.label}}</h5>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <span i18n>{{entry.description}}</span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Context</div>
+                    <eg-org-select [initialOrg]="entryContext"
+                      (onChange)="entryContext = $event"></eg-org-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6">
+            <ng-container [ngSwitch]="inputType()">
+
+              <ng-container *ngSwitchCase="'integer'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <input
+                      class="form-control" type="number"
+                      name="entryValue"
+                      placeholder="Input a numerical value"
+                      i18n-placeholder
+                      [(ngModel)]="entryValue"/>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'currency'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <div class="input-group-text" i18n>$</div>
+                    <input
+                      class="form-control" type="number"
+                      step="0.01"
+                      name="entryValue"
+                      placeholder="Input a monetary value"
+                      i18n-placeholder
+                      [(ngModel)]="entryValue"/>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'string'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <input
+                      class="form-control" type="text"
+                      name="entryValue"
+                      placeholder="Input a value"
+                      i18n-placeholder
+                      [(ngModel)]="entryValue"/>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'interval'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <input
+                      class="form-control" type="text"
+                      name="entryValue"
+                      placeholder="e.g. 1 day, 4 months"
+                      i18n-placeholder
+                      [(ngModel)]="entryValue"/>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'bool'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <select
+                      class="custom-select" name="entryValue"
+                      placeholder="True or False" i18n-placeholder
+                      [(ngModel)]="entryValue">
+                      <option value='true' i18n>True</option>
+                      <option value='false' i18n>False</option>
+                    </select>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'array'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                    <input
+                      class="form-control" type="text"
+                      name="entryValue"
+                      placeholder="Input a comma-separated list..."
+                      i18n-placeholder
+                      [(ngModel)]="entryValue"/>
+                  </div>
+                </div>
+              </ng-container>
+              <ng-container *ngSwitchCase="'link'">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text" i18n>Value</div>
+                      <ng-container [ngSwitch]="entry.fmClass">
+                        <ng-container *ngSwitchCase="'acpl'">
+                          <eg-combobox placeholder="Select a value" [idlClass]="entry.fmClass" idlField="name" idlIncludeLibraryInLabel="owning_lib"
+                            [asyncSupportsEmptyTermClick]="true" [displayTemplate]="fmClassLabel"
+                            (onChange)="setInputValue($event ? $event.id : null)">
+                          </eg-combobox>
+                        </ng-container>
+                        <ng-container *ngSwitchDefault>
+                          <eg-combobox placeholder="Select a value" [idlClass]="entry.fmClass" idlField="name"
+                            [asyncSupportsEmptyTermClick]="true" [displayTemplate]="fmClassLabel"
+                            (onChange)="setInputValue($event ? $event.id : null)">
+                          </eg-combobox>
+                        </ng-container>
+                      </ng-container><!-- fmClass ngSwitch -->
+                  </div>
+                </div>
+              </ng-container>
+
+            </ng-container> <!-- input type ngSwitch -->
+        </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" 
+      (click)="delete()" i18n>Delete Setting</button>
+    <button type="button" class="btn btn-warning" 
+      (click)="update()" i18n>Update Setting</button>
+  </div>
+</ng-template>
+
+<ng-template #fmClassLabel let-r="result" i18n>
+  {{r.label}}
+</ng-template>

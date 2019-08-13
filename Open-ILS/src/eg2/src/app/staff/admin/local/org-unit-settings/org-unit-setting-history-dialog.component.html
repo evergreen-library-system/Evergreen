@@ -1,0 +1,39 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h4 class="modal-title" i18n>History</h4>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <span i18n>{{entry.label}}</span>
+      </div>
+    </div>
+    <div class="mt-3">
+        <eg-grid #historyGrid [dataSource]="gridDataSource"
+            [disableSelect]="true" [disableMultiSelect]="true"
+            [sortable]="false">
+
+            <eg-grid-column path="id" [index]=true label="ID" i18n-label hidden></eg-grid-column>
+            <eg-grid-column path="date_applied" label="Date Changed" datatype="timestamp" i18n-label></eg-grid-column>
+            <eg-grid-column path="org.shortname" label="Location" i18n-label></eg-grid-column>
+            <eg-grid-column path="original_value_str" label="Original Value" i18n-label></eg-grid-column>
+            <eg-grid-column path="new_value_str" label="New Value" i18n-label></eg-grid-column>
+            <eg-grid-column i18n-label label="Revert?" name="revert" 
+                [cellTemplate]="revertTemplate"></eg-grid-column>
+        </eg-grid>
+      </div>
+  </div>
+  <ng-template #revertTemplate let-log="row">
+      <span>
+        <a
+          (click)="revert(log)" class="pl-1"
+          [routerLink]="" i18n>
+          Revert
+        </a>
+      </span>
+    </ng-template>
+</ng-template>
