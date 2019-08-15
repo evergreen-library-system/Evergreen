@@ -341,7 +341,7 @@ function($scope , $q , $routeParams , $location , $timeout , $window,  egCore , 
                                     transform : orig.transform,
                                     aggregate : (orig.aggregate == "undefined") ? undefined : orig.aggregate  // old structure sometimes has undefined as a quoted string
                                   },
-                    path_label  : rel.label
+                    path_label  : rel.label.replace('::', '->')
                 };
                 if (col_type == 'filter_cols') {
                     col['operator'] = {
