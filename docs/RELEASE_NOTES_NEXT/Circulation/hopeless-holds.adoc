@@ -1,0 +1,13 @@
+Hopeless Holds Interface
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+A new interface under Local Administration has been added called
+Hopeless Holds.  Using a new Hopeless Date field on hold requests,
+this interface gives staff a way to resolve issues with hold
+requests that may have become unfulfillable or "hopeless".
+
+The Hopeless Date is set for a given request by the hold targeter
+whenever the potential items list for the hold is empty, or when
+all potential items have a copy status that has been designated
+as Hopeless Prone (a new boolean field on copy statuses).
+
