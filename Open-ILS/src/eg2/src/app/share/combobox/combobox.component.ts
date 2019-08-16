@@ -70,6 +70,26 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     @Input() startId: any = null;
     @Input() startIdFiresOnChange: boolean;
 
+    // Allow the selected entry ID to be passed via the template
+    // This does NOT not emit onChange events.
+    @Input() set selectedId(id: any) {
+        if (id) {
+            if (this.entrylist.length) {
+                this.selected = this.entrylist.filter(e => e.id === id)[0];
+            }
+
+            if (!this.selected) {
+                // It's possible the selected ID lives in a set of entries
+                // that are yet to be provided.
+                this.startId = id;
+            }
+        }
+    }
+
+    get selectedId(): any {
+        return this.selected ? this.selected.id : null;
+    }
+
     @Input() idlClass: string;
     @Input() idlField: string;
     @Input() idlIncludeLibraryInLabel: string;
@@ -90,6 +110,9 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     @Input() set entries(el: ComboboxEntry[]) {
         if (el) {
             this.entrylist = el;
+
+            // new set of entries essentially means a new instance. reset.
+            this.defaultSelectionApplied = false;
             this.applySelection();
 
             // It's possible to provide an entrylist at load time, but
@@ -212,6 +235,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     // Manually set the selected value by ID.
     // This does NOT fire the onChange handler.
+    // DEPRECATED: use this.selectedId = abc or [selectedId]="abc" instead.
     applyEntryId(entryId: any) {
         this.selected = this.entrylist.filter(e => e.id === entryId)[0];
     }
