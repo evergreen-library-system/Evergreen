@@ -80,7 +80,7 @@ export class PartsComponent implements OnInit {
         this.partsGrid.onRowActivate.subscribe(
             (part: IdlObject) => {
                 this.editDialog.mode = 'update';
-                this.editDialog.recId = part.id();
+                this.editDialog.recordId = part.id();
                 this.editDialog.open()
                     .subscribe(ok => this.partsGrid.reload());
             }
@@ -89,7 +89,7 @@ export class PartsComponent implements OnInit {
         this.createNew = () => {
 
             const part = this.idl.create('bmp');
-            part.record(this.recId);
+            part.record(this.recordId);
             this.editDialog.record = part;
 
             this.editDialog.mode = 'create';

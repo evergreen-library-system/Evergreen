@@ -10,8 +10,10 @@ import {ToastService} from '@eg/share/toast/toast.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {NgbModal, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap';
 import {ComboboxEntry} from '@eg/share/combobox/combobox.component';
-import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
 import {FormatService} from '@eg/core/format.service';
+import {TranslateComponent} from '@eg/share/translate/translate.component';
+import {FmRecordEditorActionComponent} from './fm-editor-action.component';
+import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
 interface CustomFieldTemplate {
     template: TemplateRef<any>;
@@ -82,13 +84,8 @@ export class FmRecordEditorComponent
     // IDL class hint (e.g. "aou")
     @Input() idlClass: string;
 
-    recId: any;
-
     // Show datetime fields in this particular timezone
     timezone: string = this.format.wsOrgTimezone;
-
-    // IDL record we are editing
-    record: IdlObject;
 
     // Permissions extracted from the permacrud defs in the IDL
     // for the current IDL class
@@ -130,18 +127,26 @@ export class FmRecordEditorComponent
     // Display within a modal dialog window or inline in the page.
     @Input() displayMode: 'dialog' | 'inline' = 'dialog';
 
+    // Hide the top 'Record Editor: ...' banner.  Primarily useful
+    // for displayMode === 'inline'
+    @Input() hideBanner: boolean;
+
     // Emit the modified object when the save action completes.
-    @Output() onSave$ = new EventEmitter<IdlObject>();
+    @Output() recordSaved = new EventEmitter<IdlObject>();
+
+    // Emit the modified object when the save action completes.
+    @Output() recordDeleted = new EventEmitter<IdlObject>();
 
     // Emit the original object when the save action is canceled.
-    @Output() onCancel$ = new EventEmitter<IdlObject>();
+    @Output() recordCanceled = new EventEmitter<IdlObject>();
 
     // Emit an error message when the save action fails.
-    @Output() onError$ = new EventEmitter<string>();
+    @Output() recordError = new EventEmitter<string>();
 
     @ViewChild('translator') private translator: TranslateComponent;
     @ViewChild('successStr') successStr: StringComponent;
     @ViewChild('failStr') failStr: StringComponent;
+    @ViewChild('confirmDel') confirmDel: ConfirmDialogComponent;
 
     // IDL info for the the selected IDL class
     idlDef: any;
@@ -161,15 +166,63 @@ export class FmRecordEditorComponent
     //       'view' for viewing an existing record without editing
     @Input() mode: 'create' | 'update' | 'view' = 'create';
 
-    // Record ID to view/update.  Value is dynamic.  Records are not
-    // fetched until .open() is called.
-    @Input() set recordId(id: any) {
-        if (id) { this.recId = id; }
-    }
-
     // custom function for munging the record before it gets saved;
     // will get passed mode and the record itself
     @Input() preSave: Function;
+
+    // recordId and record getters and setters.
+    // Note that setting the this.recordId to NULL does not clear the
+    // current value of this.record and vice versa.  Only viable data
+    // is actionable.  This allows the caller to use both @Input()'s
+    // without each clobbering the other.
+
+    // Record ID to view/update.
+    _recordId: any = null;
+    @Input() set recordId(id: any) {
+        if (id) {
+            if (id !== this._recordId) {
+                this._recordId = id;
+                this._record = null; // force re-fetch
+                this.handleRecordChange();
+            }
+        } else {
+            this._recordId = null;
+        }
+    }
+
+    get recordId(): any {
+        return this._recordId;
+    }
+
+    // IDL record we are editing
+    _record: IdlObject = null;
+    @Input() set record(r: IdlObject) {
+        if (r) {
+            if (!this.idl.pkeyMatches(this.record, r)) {
+                this._record = r;
+                this._recordId = null; // avoid mismatch
+                this.handleRecordChange();
+            }
+        } else {
+            this._record = null;
+        }
+    }
+
+    get record(): IdlObject {
+        return this._record;
+    }
+
+    actions: FmRecordEditorActionComponent[] = [];
+
+    initDone: boolean;
+
+    // Comma-separated list of field names defining the order in which
+    // fields should be rendered in the form.  Any fields not represented
+    // will be rendered alphabetically by label after the named fields.
+    @Input() fieldOrder: string;
+
+    // When true, show a delete button and support delete operations.
+    @Input() showDelete: boolean;
 
     constructor(
       private modal: NgbModal, // required for passing to parent
@@ -200,6 +253,16 @@ export class FmRecordEditorComponent
         } else {
             this.initRecord();
         }
+        this.initDone = true;
+    }
+
+    // If the record ID changes after ngOnInit has been called
+    // and we're using displayMode=inline, force the data to
+    // resync in real time
+    handleRecordChange() {
+        if (this.initDone && !this.isDialog()) {
+            this.initRecord();
+        }
     }
 
     open(args?: NgbModalOptions): Observable<any> {
@@ -219,11 +282,11 @@ export class FmRecordEditorComponent
         return this.displayMode === 'dialog';
     }
 
-    // Set the record value and clear the recId value to
-    // indicate the record is our current source of data.
+    // DEPRECATED: This is a duplicate of this.record = abc;
     setRecord(record: IdlObject) {
-        this.record = record;
-        this.recId = null;
+        console.warn('fm-editor:setRecord() is deprecated. ' +
+            'Use editor.record = abc or [record]="abc" instead');
+        this.record = record; // this calls the setter
     }
 
     // Translate comma-separated string versions of various inputs
@@ -260,21 +323,25 @@ export class FmRecordEditorComponent
         if (this.mode === 'update' || this.mode === 'view') {
 
             let promise;
-            if (this.record && this.recId === null) {
+            if (this.record && this.recordId === null) {
                 promise = Promise.resolve(this.record);
-            } else {
+            } else if (this.recordId) {
                 promise =
-                    this.pcrud.retrieve(this.idlClass, this.recId).toPromise();
+                    this.pcrud.retrieve(this.idlClass, this.recordId).toPromise();
+            } else {
+                // Not enough data yet to fetch anything
+                return Promise.resolve();
             }
 
             return promise.then(rec => {
 
                 if (!rec) {
                     return Promise.reject(`No '${this.idlClass}'
-                        record found with id ${this.recId}`);
+                        record found with id ${this.recordId}`);
                 }
 
-                this.record = rec;
+                // Set this._record (not this.record) to avoid loop in initRecord()
+                this._record = rec;
                 this.convertDatatypesToJs();
                 return this.getFieldList();
             });
@@ -284,7 +351,9 @@ export class FmRecordEditorComponent
         //
         // Create a new record from the stub record provided by the
         // caller or a new from-scratch record
-        this.setRecord(this.record || this.idl.create(this.idlClass));
+        // Set this._record (not this.record) to avoid loop in initRecord()
+        this._record = this.record || this.idl.create(this.idlClass);
+        this._recordId = null; // avoid future confusion
 
         return this.getFieldList();
     }
@@ -306,7 +375,8 @@ export class FmRecordEditorComponent
     // Modifies the provided FM record in place, replacing JS values
     // with IDL-compatible values.
     convertDatatypesToIdl(rec: IdlObject) {
-        const fields = this.idlDef.fields;
+        const fields = this.idlDef.fields.filter(f => !f.virtual);
+
         fields.forEach(field => {
             if (field.datatype === 'bool') {
                 if (rec[field.name]() === true) {
@@ -350,13 +420,35 @@ export class FmRecordEditorComponent
 
     private getFieldList(): Promise<any> {
 
-        this.fields = this.idlDef.fields.filter(f =>
-            !f.virtual && !this.hiddenFieldsList.includes(f.name)
-        );
+        const fields = this.idlDef.fields.filter(f =>
+            !f.virtual && !this.hiddenFieldsList.includes(f.name));
 
         // Wait for all network calls to complete
         return Promise.all(
-            this.fields.map(field => this.constructOneField(field)));
+            fields.map(field => this.constructOneField(field))
+
+        ).then(() => {
+
+            if (!this.fieldOrder) {
+                this.fields = fields.sort((a, b) => a.label < b.label ? -1 : 1);
+                return;
+            }
+
+            let newList = [];
+            const ordered = this.fieldOrder.split(/,/);
+
+            ordered.forEach(name => {
+                const f1 = fields.filter(f2 => f2.name === name)[0];
+                if (f1) { newList.push(f1); }
+            });
+
+            // Sort remaining fields by label
+            const remainder = fields.filter(f => !ordered.includes(f.name));
+            remainder.sort((a, b) => a.label < b.label ? -1 : 1);
+            newList = newList.concat(remainder);
+
+            this.fields = newList;
+        });
     }
 
     private constructOneField(field: any): Promise<any> {
@@ -511,20 +603,39 @@ export class FmRecordEditorComponent
         this.convertDatatypesToIdl(recToSave);
         this.pcrud[this.mode]([recToSave]).toPromise().then(
             result => {
-                this.onSave$.emit(result);
+                this.recordSaved.emit(result);
                 this.successStr.current().then(msg => this.toast.success(msg));
                 if (this.isDialog()) { this.record = undefined; this.close(result); }
             },
             error => {
-                this.onError$.emit(error);
+                this.recordError.emit(error);
                 this.failStr.current().then(msg => this.toast.warning(msg));
                 if (this.isDialog()) { this.error(error); }
             }
         );
     }
 
+    remove() {
+        this.confirmDel.open().subscribe(confirmed => {
+            if (!confirmed) { return; }
+            const recToRemove = this.idl.clone(this.record);
+            this.pcrud.remove(recToRemove).toPromise().then(
+                result => {
+                    this.recordDeleted.emit(result);
+                    this.successStr.current().then(msg => this.toast.success(msg));
+                    if (this.isDialog()) { this.close(result); }
+                },
+                error => {
+                    this.recordError.emit(error);
+                    this.failStr.current().then(msg => this.toast.warning(msg));
+                    if (this.isDialog()) { this.error(error); }
+                }
+            );
+        });
+    }
+
     cancel() {
-        this.onCancel$.emit(this.record);
+        this.recordCanceled.emit(this.record);
         this.record = undefined;
         this.close();
     }

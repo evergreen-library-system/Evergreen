@@ -281,7 +281,7 @@ export class ReservationsGridComponent implements OnInit {
     }
 
     showEditDialog(idlThing: IdlObject) {
-        this.editDialog.recId = idlThing.id();
+        this.editDialog.recordId = idlThing.id();
         this.editDialog.timezone = idlThing['timezone'];
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(

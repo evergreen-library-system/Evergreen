@@ -28,8 +28,7 @@ import {ProgressDialogComponent} from '@eg/share/dialog/progress.component';
 import {BoolDisplayComponent} from '@eg/share/util/bool.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {ToastComponent} from '@eg/share/toast/toast.component';
-import {StringComponent} from '@eg/share/string/string.component';
-import {StringService} from '@eg/share/string/string.service';
+import {StringModule} from '@eg/share/string/string.module';
 
 
 @NgModule({
@@ -42,7 +41,6 @@ import {StringService} from '@eg/share/string/string.service';
     ProgressInlineComponent,
     ProgressDialogComponent,
     ToastComponent,
-    StringComponent,
     BoolDisplayComponent
   ],
   imports: [
@@ -51,7 +49,8 @@ import {StringService} from '@eg/share/string/string.service';
     ReactiveFormsModule,
     RouterModule,
     NgbModule,
-    EgCoreModule
+    EgCoreModule,
+    StringModule
   ],
   exports: [
     CommonModule,
@@ -59,6 +58,7 @@ import {StringService} from '@eg/share/string/string.service';
     NgbModule,
     FormsModule,
     EgCoreModule,
+    StringModule,
     ReactiveFormsModule,
     PrintComponent,
     DialogComponent,
@@ -68,8 +68,7 @@ import {StringService} from '@eg/share/string/string.service';
     ProgressInlineComponent,
     ProgressDialogComponent,
     BoolDisplayComponent,
-    ToastComponent,
-    StringComponent
+    ToastComponent
   ]
 })
 
@@ -82,7 +81,6 @@ export class EgCommonModule {
             providers: [
                 HatchService,
                 PrintService,
-                StringService,
                 ToastService
             ]
         };

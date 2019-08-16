@@ -13,6 +13,8 @@ import {ReturnComponent} from './return.component';
 import {NoTimezoneSetComponent} from './no-timezone-set.component';
 import {PatronService} from '@eg/staff/share/patron.service';
 import {BookingResourceBarcodeValidatorDirective} from './booking_resource_validator.directive';
+import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
+import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-select.module';
 
 
 @NgModule({
@@ -20,6 +22,8 @@ import {BookingResourceBarcodeValidatorDirective} from './booking_resource_valid
         StaffCommonModule,
         BookingRoutingModule,
         ReactiveFormsModule,
+        FmRecordEditorModule,
+        OrgFamilySelectModule
     ],
     providers: [PatronService],
     declarations: [

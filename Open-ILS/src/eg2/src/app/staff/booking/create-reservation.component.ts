@@ -375,7 +375,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
 
     openReservationViewer = (id: number): void => {
         this.viewReservation.mode = 'view';
-        this.viewReservation.recId = id;
+        this.viewReservation.recordId = id;
         this.viewReservation.open({ size: 'lg' });
     }
 

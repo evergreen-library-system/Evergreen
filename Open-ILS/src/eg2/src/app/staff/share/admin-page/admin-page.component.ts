@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
-import {TranslateComponent} from '@eg/staff/share/translate/translate.component';
+import {TranslateComponent} from '@eg/share/translate/translate.component';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {Pager} from '@eg/share/util/pager';
 import {PcrudService} from '@eg/core/pcrud.service';
@@ -246,7 +246,7 @@ export class AdminPageComponent implements OnInit {
 
     showEditDialog(idlThing: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
-        this.editDialog.recId = idlThing[this.pkeyField]();
+        this.editDialog.recordId = idlThing[this.pkeyField]();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
                 result => {
@@ -297,7 +297,7 @@ export class AdminPageComponent implements OnInit {
         this.editDialog.mode = 'create';
         // We reuse the same editor for all actions.  Be sure
         // create action does not try to modify an existing record.
-        this.editDialog.recId = null;
+        this.editDialog.recordId = null;
         this.editDialog.record = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
             ok => {

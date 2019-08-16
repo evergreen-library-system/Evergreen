@@ -4,8 +4,13 @@
 <eg-string #successStr text="Update Succeeded" i18n-text></eg-string>
 <eg-string #failStr text="Update Failed" i18n-text></eg-string>
 
+<eg-confirm-dialog #confirmDel
+  dialogTitle="Delete?" i18n-dialogTitle
+  dialogBody="Delete {{recordLabel}}?" i18n-dialogBody>
+</eg-confirm-dialog>
+
 <ng-template #dialogContent>
-  <div class="modal-header bg-info">
+  <div class="modal-header bg-info" *ngIf="!hideBanner">
     <h4 class="modal-title" i18n>Record Editor: {{recordLabel}}</h4>
     <ng-container *ngIf="isDialog()">
       <button type="button" class="close" 
@@ -79,7 +84,7 @@
                 [limitPerms]="modePerms[mode]"
                 [readOnly]="field.readOnly"
                 [applyDefault]="field.orgDefaultAllowed"
-                [initialOrgId]="record[field.name]()"
+                [applyOrgId]="record[field.name]()"
                 (onChange)="record[field.name]($event)">
               </eg-org-select>
             </ng-container>
@@ -160,7 +165,7 @@
                 [required]="field.isRequired()"
                 [entries]="field.linkedValues"
                 [asyncDataSource]="field.linkedValuesSource"
-                [startId]="record[field.name]()"
+                [selectedId]="record[field.name]()"
                 (onChange)="record[field.name]($event ? $event.id : null)">
               </eg-combobox>
             </ng-container>
@@ -179,12 +184,23 @@
     </form>
   </div>
   <div class="modal-footer">
+    <button type="button" class="btn {{action.buttonCss}}"
+      *ngFor="let action of actions" [disabled]="action.disabled"
+      (click)="action.actionClick.emit({action: action.key, record: record})">
+      {{action.label}}
+    </button>
     <ng-container *ngIf="isDialog()">
       <button type="button" class="btn btn-success" *ngIf="mode == 'view'"
         (click)="closeEditor()" i18n>Close</button>
       <button type="button" class="btn btn-warning ml-2" *ngIf="mode != 'view'"
         (click)="cancel()" i18n>Cancel</button>
     </ng-container>
+
+    <ng-container *ngIf="showDelete && mode != 'view'">
+      <button type="button" class="btn btn-warning" (click)="remove()"
+        [disabled]="record && record.isnew()" i18n>Delete</button>
+    </ng-container>
+
     <button type="button" class="btn btn-info" 
       [disabled]="fmEditForm.invalid" *ngIf="mode != 'view'"
       (click)="save()" i18n>Save</button>

@@ -59,7 +59,7 @@ export class MatchSetListComponent implements AfterViewInit {
         this.grid.onRowActivate.subscribe(
             (matchSet: IdlObject) => {
                 this.editDialog.mode = 'update';
-                this.editDialog.recId = matchSet.id();
+                this.editDialog.recordId = matchSet.id();
                 this.editDialog.open({size: 'lg'})
                     .subscribe(() => this.grid.reload());
             }

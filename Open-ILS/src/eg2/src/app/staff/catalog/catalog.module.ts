@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {FmRecordEditorModule} from '@eg/share/fm-editor/fm-editor.module';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {CatalogCommonModule} from '@eg/share/catalog/catalog-common.module';
 import {CatalogRoutingModule} from './routing.module';
@@ -55,6 +56,7 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
   ],
   imports: [
     StaffCommonModule,
+    FmRecordEditorModule,
     CatalogCommonModule,
     CatalogRoutingModule,
     HoldsModule,

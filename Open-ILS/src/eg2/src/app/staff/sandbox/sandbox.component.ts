@@ -385,7 +385,7 @@ export class SandboxComponent implements OnInit {
 
     showEditDialog(idlThing: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
-        this.editDialog.recId = idlThing['id']();
+        this.editDialog.recordId = idlThing['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: 'lg'}).subscribe(
                 ok => {
