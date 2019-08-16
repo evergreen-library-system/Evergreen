@@ -37,7 +37,18 @@ nodeClicked(node: TreeNode) {
 })
 export class TreeComponent implements OnInit {
 
-    @Input() tree: Tree;
+    _tree: Tree;
+    @Input() set tree(t: Tree) {
+        if (t) {
+            this._tree = t;
+            this._tree.nodeList(); // reindex nodes
+        }
+    }
+
+    get tree(): Tree {
+        return this._tree;
+    }
+
     @Output() nodeClicked: EventEmitter<TreeNode>;
 
     constructor() {
