@@ -6206,18 +6206,18 @@ SELECT  usr,
 	</class>
 	<class id="aoa" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::org_address" oils_persist:tablename="actor.org_address" reporter:label="Org Address">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.org_address_id_seq">
-			<field name="address_type"  reporter:datatype="text"/>
-			<field name="city"  reporter:datatype="text"/>
-			<field name="country"  reporter:datatype="text"/>
-			<field name="county"  reporter:datatype="text"/>
-			<field name="id" reporter:datatype="id" />
-			<field name="org_unit" reporter:datatype="org_unit"/>
-			<field name="post_code"  reporter:datatype="text"/>
-			<field name="state"  reporter:datatype="text"/>
-			<field name="street1"  reporter:datatype="text"/>
-			<field name="street2"  reporter:datatype="text"/>
-			<field name="valid" reporter:datatype="bool"/>
-			<field name="san" reporter:datatype="text" reporter:label="SAN"/>
+			<field name="address_type" reporter:label="Address Type" reporter:datatype="text" oils_obj:required="true" />
+			<field name="city" reporter:label="City" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="country" reporter:label="Country" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="county" reporter:label="County" reporter:datatype="text"/>
+			<field name="id" reporter:label="ID" reporter:datatype="id" />
+			<field name="org_unit" reporter:label="Org Unit" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field name="post_code" reporter:label="Post Code" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="state" reporter:label="State" reporter:datatype="text"/>
+			<field name="street1" reporter:label="Street1" reporter:datatype="text" oils_obj:required="true"/>
+			<field name="street2" reporter:label="Street2" reporter:datatype="text"/>
+			<field name="valid" reporter:label="Is Valid?" reporter:datatype="bool" oils_obj:required="true"/>
+			<field name="san" reporter:label="SAN" reporter:datatype="text"/>
 		</fields>
 		<links>
 			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
@@ -6743,14 +6743,14 @@ SELECT  usr,
 			<field reporter:label="Organizational Unit ID" name="id" reporter:datatype="org_unit" reporter:selector="shortname"/>
 			<field reporter:label="ILL Receiving Address" name="ill_address" reporter:datatype="link"/>
 			<field reporter:label="Mailing Address" name="mailing_address" reporter:datatype="link"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true"/>
-			<field reporter:label="Organizational Unit Type" name="ou_type" reporter:datatype="link"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_persist:i18n="true" oils_obj:required="true"/>
+			<field reporter:label="Organizational Unit Type" name="ou_type" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Parent Organizational Unit" name="parent_ou" reporter:datatype="link"/>
 			<field reporter:label="Short (Policy) Name" name="shortname" reporter:datatype="text" oils_obj:required="true" oils_obj:validate="^.+$"/>
 			<field reporter:label="Email Address" name="email" reporter:datatype="text"/>
 			<field reporter:label="Phone Number" name="phone" reporter:datatype="text"/>
 			<field reporter:label="OPAC Visible" name="opac_visible" reporter:datatype="bool"/>
-			<field reporter:label="Fiscal Calendar" name="fiscal_calendar" reporter:datatype="link"/>
+			<field reporter:label="Fiscal Calendar" name="fiscal_calendar" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Users" name="users" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Closed Dates" name="closed_dates" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Circulations" name="circulations" oils_persist:virtual="true" reporter:datatype="link"/>
