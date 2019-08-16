@@ -196,5 +196,14 @@ export class IdlService {
 
         return hash;
     }
+
+    // Returns true if both objects have the same IDL class and pkey value.
+    pkeyMatches(obj1: IdlObject, obj2: IdlObject) {
+        if (!obj1 || !obj2) { return false; }
+        const idlClass = obj1.classname;
+        if (idlClass !== obj2.classname) { return false; }
+        const pkeyField = this.classes[idlClass].pkey || 'id';
+        return obj1[pkeyField]() === obj2[pkeyField]();
+    }
 }
 
