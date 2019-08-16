@@ -182,7 +182,7 @@ export class OrgSelectComponent implements OnInit {
     }
 
     // Remove the tree-padding spaces when matching.
-    formatter = (result: OrgDisplay) => result.label.trim();
+    formatter = (result: OrgDisplay) => result ? result.label.trim() : '';
 
     // reset the state of the component
     reset() {

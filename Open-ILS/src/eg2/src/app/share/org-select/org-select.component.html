@@ -4,7 +4,7 @@
 {{r.label}}
 </ng-template>
 
-<ng-container *ngIf="readOnly">
+<ng-container *ngIf="readOnly && selected">
   <span>{{selected.label}}</span>
 </ng-container>
 
