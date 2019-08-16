@@ -1,0 +1,125 @@
+<eg-staff-banner bannerText="Org Unit Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-template #editStrTmpl i18n>Update Succeeded</ng-template>
+<eg-string #editString [template]="editStrTmpl"></eg-string>
+
+<ng-template #errorStrTmpl i18n>Update Failed</ng-template>
+<eg-string #errorString [template]="errorStrTmpl"></eg-string>
+
+<eg-confirm-dialog #delConfirm 
+  i18n-dialogTitle i18n-dialogBody
+  dialogTitle="Confirm Delete"
+  dialogBody="Delete Org Unit {{selected ? selected.label : ''}}?">
+</eg-confirm-dialog>
+
+<ng-template #treeNodeLabelTmpl let-org="org">
+  <span *ngIf="org" i18n>{{org.name()}} -- {{org.shortname()}}</span>
+</ng-template>
+<eg-string #treeNodeLabel key='admin.server.org_unit.treenode' 
+  [template]="treeNodeLabelTmpl"></eg-string>
+
+<div class="row">
+  <div class="col-lg-4">
+    <h3 i18n>Org Units</h3>
+    <eg-tree [tree]="tree" (nodeClicked)="nodeClicked($event)"></eg-tree>
+  </div>
+  <div class="col-lg-8">
+    <div class="alert alert-info">
+      <div *ngIf="currentOrg()">
+        <span *ngIf="currentOrg().name()" i18n>
+          {{currentOrg().name()}} ({{currentOrg().shortname()}})
+        </span>
+        <span *ngIf="!currentOrg().name()" class="font-italic" i18n>
+          Add Name
+        </span>
+      </div>
+    </div>
+    <ngb-tabset #rootTabs (tabChange)="tabChanged($event)" *ngIf="currentOrg()">
+      <ngb-tab title="Main Settings" i18n-title id="main">
+        <ng-template ngbTabContent>
+          <div class="mt-2">
+            <eg-fm-record-editor *ngIf="currentOrg()" #editDialog idlClass="aou" 
+              [mode]="currentOrg().isnew() ? 'create': 'update'" [hideBanner]="true" 
+              (recordSaved)="orgSaved($event)" displayMode="inline" 
+              (recordDeleted)="orgDeleted()"
+              readonlyFields="parent,parent_ou" [preloadLinkedValues]="true"
+              [fieldOptions]="{ou_type: {customValues: orgTypeOptions()}}"
+              [record]="currentOrg().isnew() ? currentOrg() : null"
+              [recordId]="currentOrg().isnew() ? null : currentOrg().id()"
+              [showDelete]="!orgHasChildren()"
+              fieldOrder="parent_ou,ou_type,name,shortname,phone,email,opac_visible,fiscal_calendar"
+              hiddenFields="id,billing_address,mailing_address,holds_address,ill_address">
+              <eg-fm-record-editor-action label="Add Child" i18n-label 
+                [disabled]="orgChildTypes().length === 0 || currentOrg().isnew()"
+                buttonCss="btn-outline-info"
+                (actionClick)="addChild()"></eg-fm-record-editor-action>
+            </eg-fm-record-editor>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Hours of Operation" i18n-title id="hours" 
+        [disabled]="currentOrg().isnew()">
+        <ng-template ngbTabContent>
+          <div class="mt-2 common-form striped-even">
+            <div class="row font-weight-bold mb-2">
+              <div class="col-lg-3 offset-lg-2" i18n>Open Time</div>
+              <div class="col-lg-3" i18n>Close Time</div>
+            </div>
+            <div class="row mb-2" *ngFor="let dow of [0,1,2,3,4,5,6]">
+              <div class="col-lg-2" [ngSwitch]="dow">
+                <span *ngSwitchCase="0" i18n>Monday</span>
+                <span *ngSwitchCase="1" i18n>Tuesday</span>
+                <span *ngSwitchCase="2" i18n>Wednesday</span>
+                <span *ngSwitchCase="3" i18n>Thursday</span>
+                <span *ngSwitchCase="4" i18n>Friday</span>
+                <span *ngSwitchCase="5" i18n>Saturday</span>
+                <span *ngSwitchCase="6" i18n>Sunday</span>
+              </div>
+              <div class="col-lg-3">
+                <input class="form-control" type='time' step="60" 
+                  [ngModel]="hours(dow, 'open')" min="00:00:00" max="23:59:59"
+                  (ngModelChange)="hours(dow, 'open', $event)"/>
+              </div>
+              <div class="col-lg-3">
+                <input  class="form-control" type='time' step="60"
+                  [ngModel]="hours(dow, 'close')" min="00:00:00" max="23:59:59"
+                  (ngModelChange)="hours(dow, 'close', $event)"/>
+              </div>
+              <div class="col-lg-2">
+                <button class="btn btn-outline-dark" (click)="closedOn(dow)" 
+                  [disabled]="isClosed(dow)" i18n>Closed</button>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-end">
+              <div class="alert alert-warning mr-2 p-1" 
+                *ngIf="currentOrg().hours_of_operation().isnew()">
+                Hours of Operation Have Not Yet Been Saved.
+              </div>
+              <div class="mr-2">
+                <button class="btn btn-warning" (click)="deleteHours()" i18n>
+                  Clear Hours of Operation
+                </button>
+              </div>
+              <div>
+                <button class="btn btn-info" (click)="saveHours()" i18n>
+                  Apply Changes
+                </button>
+              </div>
+              <div class="col-lg-2"><!-- alignment --></div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab title="Addresses" i18n-title id="addresses" 
+        [disabled]="currentOrg().isnew()">
+        <ng-template ngbTabContent>
+          <div class="mt-2">
+            <eg-admin-org-address [orgId]="currentOrg().id()" (addrChange)="addressChanged($event)">
+            </eg-admin-org-address>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+</div>

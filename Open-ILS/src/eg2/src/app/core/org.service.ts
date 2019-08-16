@@ -27,6 +27,9 @@ export class OrgService {
     private orgMap: {[id: number]: IdlObject} = {};
     private settingsCache: OrgSettingsBatch = {};
 
+    private orgTypeMap: {[id: number]: IdlObject} = {};
+    private orgTypeList: IdlObject[] = [];
+
     constructor(
         private net: NetService,
         private auth: AuthService,
@@ -44,15 +47,12 @@ export class OrgService {
         return this.orgList;
     }
 
-    // Returns a list of org unit type objects
     typeList(): IdlObject[] {
-        const types = [];
-        this.list().forEach(org => {
-            if ((types.filter(t => t.id() === org.ou_type().id())).length === 0) {
-                types.push(org.ou_type());
-            }
-        });
-        return types;
+        return this.orgTypeList;
+    }
+
+    typeMap(): {[id: number]: IdlObject} {
+        return this.orgTypeMap;
     }
 
     /**
@@ -173,9 +173,16 @@ export class OrgService {
             node = this.orgTree;
             this.orgMap = {};
             this.orgList = [];
+            this.orgTypeMap = {};
         }
         this.orgMap[node.id()] = node;
         this.orgList.push(node);
+
+        this.orgTypeMap[node.ou_type().id()] = node.ou_type();
+        if (!this.orgTypeList.filter(t => t.id() === node.ou_type().id())[0]) {
+            this.orgTypeList.push(node.ou_type());
+        }
+
         node.children().forEach(c => this.absorbTree(c));
     }
 

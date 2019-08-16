@@ -19,6 +19,9 @@ const routes: Routes = [{
     path: 'permission/grp_tree',
     component: PermGroupTreeComponent
 }, {
+    path: 'actor/org_unit',
+    loadChildren: '@eg/staff/admin/server/org-unit.module#OrgUnitModule'
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];
