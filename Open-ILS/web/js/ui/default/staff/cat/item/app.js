@@ -363,6 +363,9 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     };
 
     $scope.$watch('barcodesFromFile', function(newVal, oldVal) {
+        $scope.context.itemsNotFound = [];
+        $scope.context.fileDoneLoading = false;
+        $scope.context.numBarcodesInFile = 0;
         if (newVal && newVal != oldVal) {
             $scope.args.barcode = '';
             var barcodes = [];
@@ -389,13 +392,20 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
                     if(itemSvc.copies[0]){  // Were any copies actually retrieved
                         copyGrid.selectItems([itemSvc.copies[0].index]);
                     }
+                    $scope.context.fileDoneLoading = true;
                     return;
                 }
 
-                itemSvc.fetch(barcode).then(fetch_next_copy);
+                itemSvc.fetch(barcode).then(function(item) {
+                    if (!item) {
+                        $scope.context.itemsNotFound.push(barcode);
+                    }
+                    fetch_next_copy();
+                })
             }
 
             if (barcodes.length) {
+                $scope.context.numBarcodesInFile = barcodes.length;
                 egProgressDialog.open({value: 0, max: barcodes.length});
                 fetch_next_copy();
             }
