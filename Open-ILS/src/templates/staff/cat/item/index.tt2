@@ -151,6 +151,27 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-md-9">
+    <div ng-show="context.itemsNotFound.length" class="alert alert-danger" role="alert">
+      <h3>[% l('The following barcodes are incorrect or deleted') %]</h3>
+      <ul>
+        <li ng-repeat="badBarcode in context.itemsNotFound">{{badBarcode}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-3" ng-show="context.fileDoneLoading">
+    <div ng-show="context.itemsNotFound.length" class="alert alert-info" role="alert">
+      <h3>[% l('Summary of file load') %]</h3>
+      <ul>
+        <li>[% l('[_1] valid barcodes', '{{context.numBarcodesInFile - context.itemsNotFound.length}}') %]</li>
+        <li>[% l('[_1] invalid barcodes', '{{context.itemsNotFound.length}}') %]</li>
+        <li>[% l('[_1] total barcodes', '{{context.numBarcodesInFile}}') %]</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <div ng-view></div>
 
 [% END %]
