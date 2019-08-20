@@ -4,6 +4,7 @@ import {AdminLocalSplashComponent} from './admin-local-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {AddressAlertComponent} from './address-alert.component';
 import {AdminCarouselComponent} from './admin-carousel.component';
+import {StandingPenaltyComponent} from './standing-penalty.component';
 
 const routes: Routes = [{
     path: 'splash',
@@ -18,6 +19,9 @@ const routes: Routes = [{
 }, {
     path: 'container/carousel',
     component: AdminCarouselComponent
+}, {
+    path: 'config/standing_penalty',
+    component: StandingPenaltyComponent
 }, {
     path: ':schema/:table',
     component: BasicAdminPageComponent

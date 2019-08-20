@@ -67,6 +67,11 @@ export interface FmFieldOptions {
     // This only has an affect if the value is true.
     isReadonly?: boolean;
 
+    // If this function is defined, the function will be called
+    // at render time to see if the field should be marked readonly.
+    // This supersedes all other isReadonly specifiers.
+    isReadonlyOverride?: (field: string, record: IdlObject) => boolean;
+
     // Render the field using this custom template instead of chosing
     // from the default set of form inputs.
     customTemplate?: CustomFieldTemplate;
@@ -455,10 +460,16 @@ export class FmRecordEditorComponent
 
         let promise = null;
         const fieldOptions = this.fieldOptions[field.name] || {};
-
-        field.readOnly = this.mode === 'view'
-            || fieldOptions.isReadonly === true
-            || this.readonlyFieldsList.includes(field.name);
+                
+        if (this.mode === 'view') {
+            field.readOnly = true;
+        } else if (fieldOptions.isReadonlyOverride) {
+            field.readOnly =
+                !fieldOptions.isReadonlyOverride(field.name, this.record);
+        } else {
+            field.readOnly = fieldOptions.isReadonly === true
+                || this.readonlyFieldsList.includes(field.name);
+        }
 
         if (fieldOptions.isRequiredOverride) {
             field.isRequired = () => {

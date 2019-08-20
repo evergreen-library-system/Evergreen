@@ -1,0 +1,28 @@
+<eg-title i18n-prefix prefix="Standing Penalty Administration"></eg-title>
+<eg-staff-banner bannerText="Standing Penalty Types" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-string #cspFlairTooltip i18n-text text="Limited Editing"></eg-string>
+<div class="w-100 mt-2 mb-2">
+  <eg-grid idlClass="csp"
+    [dataSource]="cspSource"
+    [rowFlairIsEnabled]="true"
+    [rowFlairCallback]="cspRowFlairCallback"
+    [cellClassCallback]="cspGridCellClassCallback"
+    [sortable]="true">
+    <eg-grid-toolbar-button 
+      label="New Standing Penalty Type" i18n-label (onClick)="createNew()">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
+    </eg-grid-toolbar-action>
+  </eg-grid>
+</div>
+
+<eg-fm-record-editor #editDialog
+  idlClass="csp" 
+  [fieldOptions]="{name: {isReadonlyOverride: cspReadonlyOverride}}" 
+  [preloadLinkedValues]="true" 
+  readonlyFields="name">
+</eg-fm-record-editor>
