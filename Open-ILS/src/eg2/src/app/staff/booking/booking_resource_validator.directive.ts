@@ -3,9 +3,8 @@ import {NG_ASYNC_VALIDATORS, AsyncValidator, FormControl} from '@angular/forms';
 import {of} from 'rxjs';
 import {switchMap, catchError} from 'rxjs/operators';
 import {PcrudService} from '@eg/core/pcrud.service';
-import {BookingModule} from './booking.module';
 
-@Injectable({providedIn: BookingModule})
+@Injectable({providedIn: 'root'})
 export class BookingResourceBarcodeValidator implements AsyncValidator {
     constructor(
         private pcrud: PcrudService) {
@@ -30,6 +29,7 @@ export class BookingResourceBarcodeValidator implements AsyncValidator {
         multi: true
     }]
 })
+
 export class BookingResourceBarcodeValidatorDirective {
     constructor(
         private validator: BookingResourceBarcodeValidator
