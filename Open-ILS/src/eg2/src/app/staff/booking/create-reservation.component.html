@@ -182,6 +182,7 @@
 
 <eg-create-reservation-dialog #createDialog
   (onComplete)="fetchData()"
+  [patronId]="patronId"
   [targetResourceBarcode]="resourceBarcode"
   [targetResource]="resourceId"
   [targetResourceType]="resourceType.value"

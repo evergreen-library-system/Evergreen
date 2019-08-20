@@ -44,7 +44,6 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
     multiday = false;
     resourceAvailabilityIcon: (row: ScheduleRow) => GridRowFlairEntry;
 
-    patronBarcode: string;
     patronId: number;
     resourceBarcode: string;
     resourceId: number;

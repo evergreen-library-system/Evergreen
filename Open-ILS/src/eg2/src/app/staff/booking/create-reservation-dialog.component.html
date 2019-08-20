@@ -12,7 +12,7 @@
       <label class="col-lg-4 text-right font-weight-bold"
         i18n for="create-patron-barcode">Patron barcode</label>
       <input type="text" id="create-patron-barcode"
-        class="form-control col-lg-7" formControlName="patronBarcode">
+        class="form-control col-lg-7" formControlName="patronBarcode" [disabled]="patronId">
       <span class="col-lg-7 offset-lg-4" i18n>
         {{ (patron$ | async)?.first_given_name}}
         {{ (patron$ | async)?.second_given_name}}

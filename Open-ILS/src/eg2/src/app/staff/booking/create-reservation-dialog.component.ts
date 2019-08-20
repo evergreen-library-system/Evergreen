@@ -37,6 +37,7 @@ export class CreateReservationDialogComponent
     @Input() targetResource: number;
     @Input() targetResourceBarcode: string;
     @Input() targetResourceType: ComboboxEntry;
+    @Input() patronId: number;
     @Input() attributes: number[] = [];
     @Input() resources: IdlObject[] = [];
     @Output() onComplete: EventEmitter<boolean>;
@@ -83,6 +84,14 @@ export class CreateReservationDialogComponent
             'resourceList': new FormControl(),
         }, [startTimeIsBeforeEndTimeValidator]
         );
+        if (this.patronId) {
+            this.pcrud.search('au', {id: this.patronId}, {
+                flesh: 1,
+                flesh_fields: {'au': ['card']}
+            }).subscribe((usr) =>
+                this.create.patchValue({patronBarcode: usr.card().barcode()})
+            );
+        }
 
         this.addBresv$ = () => {
             let selectedResourceId = this.targetResource ? [this.targetResource] : null;
