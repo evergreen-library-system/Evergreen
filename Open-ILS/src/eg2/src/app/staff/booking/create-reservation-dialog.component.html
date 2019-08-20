@@ -41,17 +41,18 @@
     </div>
     <div class="form-group row">
       <label class="col-lg-4 text-right font-weight-bold"
-        i18n for="create-pickup-library">Pickup library</label>
+        i18n for="create-pickup-library">Reservation location</label>
       <eg-org-select domId="create-pickup-library" [applyDefault]="true"
         [disableOrgs]="disableOrgs()" [hideOrgs]="disableOrgs()"
         (onChange)="handlePickupLibChange($event)">
       </eg-org-select>
+      <eg-help-popover helpText="The library where the resource is picked up or used" i18n-helpText></eg-help-popover>
     </div>
     <div *ngIf="pickupLibraryUsesDifferentTz"
       role="alert"
       class="alert alert-info">
       <span class="material-icons" aria-hidden="true">access_time</span>
-      <span i18n>Pickup Library is in the {{timezone}} timezone</span>
+      <span i18n>Reservation location is in the {{timezone}} timezone</span>
     </div>
     <div class="form-group row">
       <label class="col-lg-4 text-right font-weight-bold"
