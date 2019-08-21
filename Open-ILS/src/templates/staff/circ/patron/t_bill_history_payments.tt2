@@ -37,7 +37,10 @@
     <!-- needed for item link -->
     <eg-grid-field name="copy_id" 
       path="xact.circulation.target_copy.id" required hidden></eg-grid-field>
-
+    <eg-grid-field path="xact.circulation.target_copy.circ_lib.shortname" name="owning_lib" label="[% l('Item Owning Library') %]"></eg-grid-field>
+    <eg-grid-field path="xact.circulation.circ_lib.shortname" name="circ_lib" label="[% l('Checkout or Renewal Library') %]" hidden></eg-grid-field>
+    <eg-grid-field path="xact.circulation.due_date" label="[% l('Due Date') %]" datefilter="egDueDate" hidden></eg-grid-field>
+    <eg-grid-field path="xact.circulation.stop_fines" label="[% l('Fine Stop Reason') %]" hidden></eg-grid-field>
     <!-- ... -->
 
     <eg-grid-field path="xact.id" required hidden></eg-grid-field>
