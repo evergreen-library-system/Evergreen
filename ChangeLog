@@ -1,3 +1,982 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 1d96b62d09f3b8c1f2fc9a82a0ac2fd159b0f3c1
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Aug 21 16:30:30 2019 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+71	71	docs/installation/server_upgrade.adoc
+
+commit 37d52b0d92bf0765e80bbb54eb065b073e77b1f1
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Aug 21 16:11:03 2019 -0500
+
+    bumping Perl version string for 3.2.8
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 04c8eb5ffb9ab5ad03c0938096fbe5c757eb01f6
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Aug 21 14:00:47 2019 -0700
+
+    Docs: Adding missing entry to 3.2.8 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 257c084d6e3c8d64896491116bc47c269a3c3a0d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 21 13:30:01 2019 -0700
+
+    Docs: Adding 3.1.14 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+97	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 96f14e96ece55898c61e5170fae4bc19ee87993c
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Aug 21 13:25:49 2019 -0700
+
+    Docs: Adding 3.1.14 release notes
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+77	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 6fe5ace3be838b4d73f867e922865bd6f58dbeb7
+Author: Mike Risher <mrisher@catalyte.io>
+Date:   Wed Jul 10 19:52:58 2019 +0000
+
+    lp1739292 merge UI displays record summary
+    
+    Add the record summary to the record merge UI.  Note that when one clicks
+    on "use as lead record" or "remove from consieration" the order of the
+    records changes.  The record summary also will change order to match.
+    
+    Signed-off-by: Mike Risher <mrisher@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+    	new file:   Open-ILS/src/templates/staff/cat/share/t_record_summary_slim.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/services/record.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+10	0	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+124	0	Open-ILS/src/templates/staff/cat/share/t_record_summary_slim.tt2
+8	2	Open-ILS/web/js/ui/default/staff/cat/services/record.js
+ create mode 100644 Open-ILS/src/templates/staff/cat/share/t_record_summary_slim.tt2
+
+commit c58e274090c0da4311d2540d76458c0f5f247e63
+Author: James Fournie <jamesrf@users.noreply.github.com>
+Date:   Thu May 2 09:53:35 2019 -0700
+
+    LP1751800 - fix fields fields reversing
+    
+    The pop() here will remove the last item in the array, only to add it
+    later with a push() a few lines later.  Instead use a shift() to
+    preserve the order.
+    
+    Signed-off-by: James Fournie <james.fournie@gmail.com>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/web/js/ui/default/staff/reporter/services/template.js
+
+commit 67a7e6ca1ea868c09cc84923afc6c56e772ce51d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed May 22 11:12:37 2019 -0400
+
+    LP#1785061: move the filter value munging to the template service
+    
+    This allows the reporter app to stay a bit more focused on
+    display concerns.
+    
+    Here's a test plan for the patch series
+    ---------------------------------------
+    [1] Create a reporter template that has a filter field
+        and a filter operator of "In list", "Not in list", "Between",
+        or "Not between" and hard-code a value for that filter
+        in the template, separating values with a comma.
+    [2] Try to create a report from that template; note that it
+        fails with an error.
+    [3] Apply the patch and repeat steps 1 and 2. This time, the
+        report should succeed.
+    
+    Note that this fix applies only to hardcoding filter values in the
+    template; it doesn't change any behavior when attempting to set
+    a filter value for any of the four operators above at the point of
+    creating a report.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+24	0	Open-ILS/web/js/ui/default/staff/reporter/services/template.js
+2	26	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit e9d696e3fc4313988b255bcb681bbe9abdc43558
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Thu May 2 09:15:30 2019 -0400
+
+    LP#1785061: Split filter value on comma for "in list" and the like
+    
+    This commit borrows directly from the XUL reporter code (see
+    function __default_value_event_handler () in
+    Open-ILS/web/reports/xul/template-config.js). Basically, when the filter
+    value is saved, certain cases need special treatment, such as splitting
+    an "in list" value on commas. This commit includes a helper function
+    which does the special treatment and saves the filter value. This helper
+    is called both when the value itself is changed, and when the operator
+    is changed.
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    
+    Conflicts:
+    	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+29	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 3cc7e288643b3188ff5f6899b8cf3e559d74cec7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Nov 10 12:32:04 2018 -0800
+
+    LP1735768: adding labels to inputs in the public catalog
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/templates/opac/browse.tt2
+2	2	Open-ILS/src/templates/opac/myopac/update_email.tt2
+3	3	Open-ILS/src/templates/opac/myopac/update_password.tt2
+1	1	Open-ILS/src/templates/opac/parts/advanced/global_row.tt2
+1	1	Open-ILS/src/templates/opac/parts/advanced/numeric.tt2
+2	2	Open-ILS/src/templates/opac/parts/advanced/search.tt2
+5	4	Open-ILS/src/templates/opac/parts/anon_list.tt2
+1	1	Open-ILS/src/templates/opac/parts/cart.tt2
+1	1	Open-ILS/src/templates/opac/parts/login/form.tt2
+5	2	Open-ILS/src/templates/opac/parts/place_hold.tt2
+1	0	Open-ILS/src/templates/opac/parts/result/table.tt2
+2	2	Open-ILS/src/templates/opac/parts/sms_carrier_selector.tt2
+3	2	Open-ILS/src/templates/opac/parts/sms_number_textbox.tt2
+
+commit 334e8b9d3a03c4293a4d3d138c8af9fbd5cc3a14
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Aug 5 20:45:28 2019 -0400
+
+    LP#1722827: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+116	0	Open-ILS/src/sql/Pg/upgrade/1171.schema.trim_spaces_during_856_9_parsing.sql
+0	111	Open-ILS/src/sql/Pg/upgrade/xxxx.metabib.trim_spaces_from_located_uris.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1171.schema.trim_spaces_during_856_9_parsing.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.metabib.trim_spaces_from_located_uris.sql
+
+commit 261e0a6e6ec61884392349ea45211005156961f5
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Sep 14 10:48:02 2018 -0400
+
+    LP#1722827: trim spaces from 856$9 when parsing locating URIs
+    
+    This patch ensures that any leading and trailing spaces
+    and non-breaking-spaces in the 856$9 are ignored when
+    extracting the org unit shortname. As a consequence,
+    extraneous leading/trailing whitespace in the $9 will not
+    prevent the located URI from being displayed in the appropriate
+    places.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Meg Stroup <mstroup@statelibrary.sc.gov>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/030.schema.metabib.sql
+35	0	Open-ILS/src/sql/Pg/t/lp1722827_trim_spaces_from_located_uris.pg
+111	0	Open-ILS/src/sql/Pg/upgrade/xxxx.metabib.trim_spaces_from_located_uris.sql
+ create mode 100644 Open-ILS/src/sql/Pg/t/lp1722827_trim_spaces_from_located_uris.pg
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/xxxx.metabib.trim_spaces_from_located_uris.sql
+
+commit 28f4db918c702a0570c1491d7120b7fb61fae9ee
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Wed May 23 13:54:28 2018 -0400
+
+    LP#1511765 Fix error when checking in with zero-balance lost OU setting enabled
+    
+    Fixes an error generated when checking in Lost/Long Overdue/Lost and Paid
+    items with no associated circ when the org unit setting
+    circ.checkin.lost_zero_balance.do_not_change is set to TRUE
+    
+    Items can attain this state from migration, or when the associated circ
+    has been aged.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+
+commit 119ac1f6263d83be533e2a80ade8475537607cc8
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Mon Jul 29 11:56:31 2019 -0700
+
+    LP1802593: Correct formatting of language code in Angularjs, KPAC
+    
+    EgWeb offers two different formats of the current locale: ctx.locale and
+    ctx.eg_locale.  This commit configures the lang attribute in AngularJS
+    staff client, OPAC, and KPAC to use eg_locale, since it has the
+    appropriate format (e.g. en-US, fr-CA).
+    
+    Also adds some tests for EgWeb's handling of language codes.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/src/perlmods/t/15-OpenILS-WWW.t
+1	1	Open-ILS/src/templates/base.tt2
+1	1	Open-ILS/src/templates/kpac/parts/base.tt2
+1	1	Open-ILS/src/templates/opac/parts/base.tt2
+1	1	Open-ILS/src/templates/staff/base.tt2
+
+commit 0c1b298f69e8bf056d81ca3a380420a0668db25a
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu May 23 20:53:11 2019 +0000
+
+    lp1034058 Disable Renewal Due Dates in the Past
+    
+    Apply minimum date and an out of range flag to prevent
+    selecting or inputting a past date when renewing items from
+    Circulation->Renew Items or Patron->Items Out->Actions->
+    Renew With Specific Due Date.
+    
+    To test
+    -------
+    [1] Create a loan.
+    [2] From the patron's Item Out page, use the Renew With
+        Specific Due Date action. Note that the date widget
+        will allow you to specify a due date in the past.
+    [3] From the Circulation -> Renew interface, note that
+        the date widget will also let you specify a due
+        date in the past.
+    [4] Apply the patch and repeat steps #2 and #3. This time,
+        a due date in the past cannot be entered, both via
+        the calendar button and by direct entry in the text
+        box.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+3	2	Open-ILS/src/templates/staff/circ/patron/t_renew_with_date_dialog.tt2
+4	2	Open-ILS/src/templates/staff/circ/renew/t_renew.tt2
+2	0	Open-ILS/web/js/ui/default/staff/circ/patron/items_out.js
+2	0	Open-ILS/web/js/ui/default/staff/circ/renew/app.js
+
+commit a988dc85ba58198b56c129f54a5523153e0b3ab9
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Fri Aug 17 10:32:31 2018 -0700
+
+    LP#1787676: sort Z39.50 sources in JS, retaining Local Catalog at top of list
+    
+    This reverts the original fix for LP#1119370.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/cat/z3950/t_target.tt2
+2	2	Open-ILS/web/js/ui/default/staff/cat/services/z3950.js
+
+commit 3229fc357ca95052c88115d397a950cfd81552cb
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri May 18 19:41:12 2018 -0700
+
+    LP1742523: Allow two strings in the mark damaged popup to be translated
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/src/templates/staff/circ/share/t_mark_damaged.tt2
+
+commit 125fdd3b43b93e8baf3c34711b5025116441b98d
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Thu Nov 15 13:45:44 2018 -0500
+
+    LP1803584: Fix Clear button in template editor
+    
+    There are multiple controllers in staff/cat/volcopy/ and
+    2 of them have a clearWorking() function. The template
+    editor controller is referencing $scope.MultiMap[] which
+    will never exist in the template editor, while the actual
+    item editor controller clearWorking() does not reference
+    $scope.MultiMap[], meaning that clearing multiple items
+    at once would not work as expected. This branch clears
+    up this confusion.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Beth Willis <willis@noblenet.org>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 787f94732a62d5704674b263aab9536edf23cb96
+Author: Jason Boyer <jboyer@library.in.gov>
+Date:   Mon Oct 29 10:53:41 2018 -0400
+
+    LP1800484: Substitute 0 for missing Totals values
+    
+    If nothing is returned for the Totals on the patron Bills tab,
+    use a 0 rather than leaving the value missing.
+    
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	3	Open-ILS/src/templates/staff/circ/patron/t_bills.tt2
+
+commit cb9d542f117dbd463d25b9d45e38b8204ba4910d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Sat Jul 27 06:27:50 2019 -0700
+
+    LP1838136: .editorconfig matches current practices
+    
+    This commit allows .editorconfig-enabled IDEs to easily adhere to
+    these best practices:
+    https://wiki.evergreen-ils.org/doku.php?id=dev:angular_dev_best_practices
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	2	Open-ILS/src/eg2/.editorconfig
+
+commit 63535f586d915545e2cb5d80b06880dcc9cec08d
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Aug 2 12:44:16 2019 -0400
+
+    LP#1329920: (follow-up) set searchFormat as well
+    
+    AutoFieldWidget's searchFormat (among other things) controls
+    the formatting of the selected value for a drop-down, so
+    this patch sets it for funds as well. This patch also tidys
+    up whitespace.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/web/js/ui/default/conify/global/acq/distribution_formula.js
+
+commit 2bc07a7210f47e04609f2d35bb4477214a17b45a
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Fri Jan 18 15:54:27 2019 -0500
+
+    LP#1329920 Add fund year to distribution formula fund dropdown menu
+    
+    In distribution formulas, adds the fund year in parentheses to the
+    funds listed in the Fund drop-down menu.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/web/js/ui/default/conify/global/acq/distribution_formula.js
+
+commit 62fff9f6313d9252d208a10e32d991079e091596
+Author: Rogan Hamby <rogan.hamby@gmail.com>
+Date:   Fri Mar 9 08:38:06 2018 -0500
+
+    LP#1650409: improve authority_control_fields.pl's --all and --days_back processing
+    
+    When --all is used, the list of bibliographic records to process is now
+    retrieved via a direct database query instead of using open-ils.storage,
+    avoiding a potential timeout.
+    
+    The query used to fetch records when --days_back is used now fetches
+    all records that were edited up to the specified number of days
+    ago. Prior to this patch, --days_back ended up fetching records
+    created on the current day and records edited on the --days_back
+    day, skipping any that were updated in between.
+    
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+33	24	Open-ILS/src/support-scripts/authority_control_fields.pl.in
+
+commit c55f64728607f29bcd84544ebc112dd6e997c314
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Fri Aug 2 08:40:40 2019 -0700
+
+    docs: LP1778712 (follow-up) new screenshots to reflect the copy => item name change
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/media/item_status_altview_web_client.png
+-	-	docs/media/item_status_menu_web_client.png
+
+commit a380b50b6cc7b0a0b7871c2e0cbad4f115095c6a
+Author: Jeanette Lundgren <jlundgren@cwmars.org>
+Date:   Wed Sep 12 15:23:47 2018 -0400
+
+    docs: LP1778712 replace 6 screenshots circ items documentation
+    
+    Signed-off-by: Jeanette Lundgren <jlundgren@cwmars.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+-	-	docs/media/check_in_menu_web_client.png
+-	-	docs/media/checkout_menu_web_client.png
+-	-	docs/media/in_house_use_non_cat.png
+-	-	docs/media/item_status_altview_web_client.png
+-	-	docs/media/item_status_menu_web_client.png
+-	-	docs/media/record_in_house_action_web_client.png
+
+commit 94230684c5d293b8cd567a85ce23b9ce0b17c4db
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Mon May 20 14:41:32 2019 -0400
+
+    LP1813078 Menus are sometimes grayed out based on browser size
+    
+    This patch changes a media definition in css from 800px to 768px, the md column
+    size for bootstrap.css.  Items in the menus font color changed when the browser
+    was sized between 768px and 800px.
+    
+    To test.
+    1. Expand the Circulation menu, and change the browser to a width between
+    768px and 800px.  Notice that the menu items change to a gray color.
+    2. Apply the patch, and then change the width of the browser.  Notice that
+    the menu items do not change color before the menu is collapsed.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	3	Open-ILS/src/templates/staff/css/style.css.tt2
+
+commit ac1d17f1b3dba42bcc952c035021e15e8b6cd778
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Aug 1 14:38:39 2019 -0400
+
+    docs: adding index terms 'copy tags' and 'copy status'
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	0	docs/admin/copy_statuses.adoc
+2	0	docs/admin/copy_tags_admin.adoc
+2	0	docs/cataloging/item_tags_cataloging.adoc
+
+commit 0b2f6e5b2441bd1332c22039e0a0e6002ea8457a
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Apr 24 14:00:42 2019 -0400
+
+    docs: updating copy tags to item tags
+    
+    Changed all appropriate references from copy to item.  Included references to a
+    couple updated screenshots.  Changed the name of the file from
+    copy_tags_cataloging.adoc to item_tags_cataloging.adoc.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+0	94	docs/cataloging/copy_tags_cataloging.adoc
+94	0	docs/cataloging/item_tags_cataloging.adoc
+-	-	docs/media/item_tag_button.png
+-	-	docs/media/manage_item_tags.png
+-	-	docs/media/remove_item_tag.png
+1	1	docs/root.adoc
+1	1	docs/root_cataloging.adoc
+ delete mode 100644 docs/cataloging/copy_tags_cataloging.adoc
+ create mode 100644 docs/cataloging/item_tags_cataloging.adoc
+ create mode 100644 docs/media/item_tag_button.png
+ create mode 100644 docs/media/manage_item_tags.png
+ create mode 100644 docs/media/remove_item_tag.png
+
+commit b073aeafbb4d96f8192d769a8225ae5e9f6da9b3
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Apr 24 11:03:46 2019 -0400
+
+    Docs: Adding and updating alt tags, fixing typos
+    
+    Changes a item -> an item
+    Also changes image alt tags to reflect the copy -> item language change
+    Also adds missing alt tags
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/admin/Best_Hold_Selection_Sort_Order.adoc
+3	3	docs/admin/copy_statuses.adoc
+4	4	docs/admin/copy_tags_admin.adoc
+6	6	docs/admin/librarysettings.adoc
+2	2	docs/admin_initial_setup/importing_via_staff_client.adoc
+
+commit dc43de7bc781bb40b2779b3102948085c106baf6
+Author: Cheyenne Jones <44786394+Cheyenne-jones@users.noreply.github.com>
+Date:   Mon Nov 5 12:29:18 2018 -0800
+
+    Docs: Updating Terminology
+    
+    This updates outdated terms like copy, volume, and copy location with
+    the up-to-date item, call number, and shelving location.
+    
+    Signed-off-by: Cheyenne Jones <44786394+Cheyenne-jones@users.noreply.github.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	4	docs/admin/Best_Hold_Selection_Sort_Order.adoc
+2	2	docs/admin/SMS_messaging.adoc
+3	3	docs/admin/age_hold_protection.adoc
+2	2	docs/admin/aged_circs.adoc
+21	21	docs/admin/copy_statuses.adoc
+28	28	docs/admin/copy_tags_admin.adoc
+8	8	docs/admin/floating_groups.adoc
+2	2	docs/admin/hold_driven_recalls.adoc
+18	18	docs/admin/librarysettings.adoc
+5	5	docs/admin/phonelist.adoc
+1	1	docs/admin/sitemap_admin.adoc
+1	1	docs/admin_initial_setup/describing_your_people.adoc
+8	8	docs/admin_initial_setup/importing_via_staff_client.adoc
+8	8	docs/admin_initial_setup/migrating_your_data.adoc
+8	8	docs/admin_initial_setup/ordering_materials.adoc
+8	8	docs/cataloging/batch_importing_MARC.adoc
+3	3	docs/cataloging/cataloging_electronic_resources.adoc
+9	9	docs/cataloging/copy_tags_cataloging.adoc
+
+commit 4ecd26b030aa446163492bc5c53b513f51ef73df
+Author: Kristy Bauman <45376827+kraeb@users.noreply.github.com>
+Date:   Wed Apr 24 16:12:32 2019 -0400
+
+    Docs: LP1826263: Update batch_importing_MARC.adoc
+    
+    Signed-off-by: Kristy Bauman <45376827+kraeb@users.noreply.github.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+2	2	docs/cataloging/batch_importing_MARC.adoc
+
+commit d4f480e285b107a7bc17b905134d459c4a5423c1
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Fri Jul 5 19:34:13 2019 -0400
+
+    LP#1805895 Bucket grid configuration updates do not save
+    
+    Some saved columns stick, but others are ignored. Issue affects eg-grid[s]
+    that use the auto-fields attr to load all columns on idl-class attr. This
+    is because saved columns are whitelisted against the initial column config
+    before the auto fields are loaded.
+    
+    Patch adds $scope.handleAutoFields() to egCore.hatch.getItem. This happens
+    after the eg-grid-fields transclude (no collisions) but before the saved
+    columns are whitelisted. The original call remains to handle cases where
+    there is no persist-key or saved config.
+    
+    Test:
+    1. Go to Circulation->User Buckets
+    2. Add the Is Deleted column to the grid
+    3. Save columns and refresh (note Is Deleted is not visible)
+    4. Apply patch and repeat steps 1-3 (note Is Deleted is now visible)
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+3	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 465bd15736250b6988ce5a530f4c650365024179
+Author: a. bellenir <abelleni@grpl.org>
+Date:   Tue Mar 12 11:09:02 2019 -0400
+
+    LP1759864: Mark Item Damaged from Holdings View Fails
+    
+    "Mark Item Damaged" fails on the holdings view and from the patron profile holds tab.
+    
+    the javascript console indicates a dependency issue:
+    Error: [$injector:unpr] Unknown provider: egItemProvider <- egItem
+    
+    egItem is defined in web/js/ui/default/staff/circ/services/item.js
+    
+    resolved by including the item.js source in the index.tt2 template files for both screens.
+    
+    Signed-off-by: a. bellenir <abelleni@grpl.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	0	Open-ILS/src/templates/staff/cat/catalog/index.tt2
+1	0	Open-ILS/src/templates/staff/circ/patron/index.tt2
+
+commit f1716c3d90d59dec14ff248d02a94d6a397a2c60
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Apr 25 15:49:19 2019 -0400
+
+    LP1775920: Improve consistency in item status menus
+    
+    To test:
+    
+    1) Go into item status and scan in a few barcodes.
+    2) Select one of the items from the grid.
+    3) Click on the Actions menu.  Note the list of actions.
+    4) Click the Detail View button.
+    5) Click the Actions menu.  Note that several actions from
+    step 3 are missing.
+    6) Apply this commit.
+    7) Repeat step 5.  Make sure that all the actions are now
+    available on the Detail View actions menu (although some have
+    slightly different names, to match the clarifying wording
+    introduced in lp1717551)
+    8) Make sure that all the actions work correctly.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Dawn Dale <ddale@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+9	3	Open-ILS/src/templates/staff/cat/item/index.tt2
+32	2	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit b69a8f5aaad71c536c08f4bd043d764ae8439b44
+Author: Geoff Sams <gsams@roanoketexas.com>
+Date:   Wed Mar 6 20:54:15 2019 -0600
+
+    LP1681930 fm_IDL.xml billing/paid total column type correction.
+    
+    Both xact_billing_totals and xact_paid_totals had incorrect unvoided
+    sum column types of int, this corrects them both to money instead.
+    
+    Signed-off-by: Geoff Sams <gsams@roanoketexas.com>
+    Signed-off-by: Rogan Hamby <rogan.hamby@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/examples/fm_IDL.xml
+
+commit 3d444cd2e46070a04382eb2f05ce65d27956115b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Jul 3 11:05:47 2019 -0400
+
+    LP1834969 Indicate failures in Angular login
+    
+    Display a Login Failed message in the Angular staff login form when a
+    login attempt fails.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	1	Open-ILS/src/eg2/src/app/staff/login.component.html
+3	1	Open-ILS/src/eg2/src/app/staff/login.component.ts
+
+commit b30b825b8adf677c5f11bbde951285de6349ef5f
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Fri May 18 19:57:42 2018 -0400
+
+    LP1766982 - CSV downloads contain the string 'null' for null values.
+    
+    Adds a check for null and undefined in the getItemTextContent function
+    in grid.js which is called by both the code to download grid data as
+    CSV and for printing grids.
+    
+    To test
+    1. Place holds on a couple of titles, one of which has no author. In the
+       test data TCN 226, The Crow, has no author data.
+    2. Pull up the Holds Pull List.
+    3. Download Full CSV - to download the CSV file and view it in a
+       spreadsheet or text editor looking specifically at the Author column.
+    4. Print Full Grid - to view the data in a printout, since this function
+       also affects printing.
+    5. Go back to the Holds Pull List and click on one of the barcodes under
+       the Current Copy column.
+    6. Click on the List View.
+    7. Download Full CSV - open the resulting file to inspect the
+       Alert Message data.
+    8. Apply patch and repeat steps 2-7.
+    
+    Signed-off-by: gcollum <gcollum@gmail.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 70d2bf25ce47a230d378940b14986f7d76e71a71
+Author: Josh Stompro <stompro@stompro.org>
+Date:   Wed Feb 27 15:07:43 2019 -0600
+
+    LP#1798187 - Support CRLF and LF format for item status import files
+    
+    Testing Plan:
+    
+    Before patch, try to import a file in CRLF end of line format that includes
+    leading and trailing spaces, empty lines, lines of just spaces or
+    barcodes with spaces.  The import will fail to load those items and will
+    stop processing when it hits certain situations.
+    
+    After patch, try to import a file in CRLF EOL format that includes barcodes
+    with trailing spaces, leading spaces, barcodes with spaces, and/or
+    empty lines.  The import will load all barcodes.
+    
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	0	Open-ILS/src/templates/staff/cat/item/index.tt2
+11	5	Open-ILS/web/js/ui/default/staff/cat/item/app.js
+
+commit fb7f84b910cc751fea35cb5c8248bd5176ca2c83
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed Apr 17 10:51:45 2019 -0400
+
+    LP1683385 AngJS grid avoid dupe auto-fields
+    
+    When generating grid fields from an IDL class in the AngJS grid, avoid
+    adding any fields that match fields already defined in the markup.
+    
+    An example of such a grid is the Pending Item Buckets page.
+    
+    To test
+    -------
+    [1] Go to Item Buckets and add an item to the Pending Items page.
+    [2] Note that in the column picker there are two barcode fields,
+        one that hyperlinks the item and one that does not.
+    [3] Apply the patch and repeat steps 1-2.
+    [4] This time, there is only one barcode column (the one that
+        hyperlinks the results).
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 4ab9ddb371f2e188638a6d0e35f3fe160d359e36
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 29 14:03:38 2019 -0400
+
+    LP1830424 Implement Angular "retrieve last bib record"
+    
+    Repair the Angular navbar menu entry for "Retrieve Last Bib Record" by
+    replacing the copy/paste'd ng-click handler with an Angular (click)
+    handler and local implementation.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/eg2/src/app/staff/nav.component.html
+10	0	Open-ILS/src/eg2/src/app/staff/nav.component.ts
+
+commit ec78ec44f1f07598dc05293479961e6cae56ef58
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri May 24 14:04:33 2019 -0400
+
+    LP#1796903: (follow-up) disabled the calendar button when the text input is disabled
+    
+    Disabling the calendar button when the datepicker is disabled allows
+    ChromeVox (at least) to skip past a button that cannot be invoked
+    until (like is possible in the checkout page) the picker is enabled.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/share/t_datetime.tt2
+
+commit 2de958841c3d0dfaf9a271b407cd77176d7f6461
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 9 07:37:56 2018 -0700
+
+    LP1796903: Make date picker calendar button more accessible
+    
+    To test:
+    
+    1) After applying this commit, navigate to a place in the Web client
+    that includes a date picker (such as the checkin screen).
+    2) Hover over the calendar button with your mouse and confirm that a
+    tooltip appears.
+    3) Verify that the button element has an aria-label attribute.
+    4) Verify that the button element has an aria-pressed attribute that
+    is false when the date picker is closed; true when it is open.
+    5) Use a screen reader (like NVDA or ChromeVox).  Verify that when you
+    tab over to the date picker, the user is informed of the aria-label
+    and aria-pressed values
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	2	Open-ILS/src/templates/staff/share/t_datetime.tt2
+
+commit acb556c37e44c34ffd60eb31bb6e68087bf14419
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Thu Jul 11 16:36:36 2019 +0000
+
+    lp1836229 Disable Edit buttons in Merge Records when Editing
+    
+    - Apply disabled attribute to Edit buttons rather than just the class,
+    preventing users from clicking buttons that appear disabled in the Merge UI.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+     Changes to be committed:
+    	modified:   Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/templates/staff/cat/bucket/record/t_merge_records.tt2
+
+commit c208e63a33a61e318d3e5bc0a73e2eae97ad7b5f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Jul 3 17:53:01 2019 -0400
+
+    LP#1777207: teach egGrid how to prepend rows more efficiently
+    
+    The checkin and checkout grids in the AngularJS client have
+    been doing full grid refreshes when adding a checkin or
+    checkout to their respective grids. While this does not
+    result in re-fetching data for the loans that were already
+    processed, as more entries get added to the grid the time
+    it takes to do a full digest of the grid contents during a
+    egGrid.collect() (which empties the list of displayed rows,
+    then refills it), gets progressively longer. Grids that have
+    only ~40 entries have been observed to take several seconds
+    purely on the AngularJS rendering phase.
+    
+    This patch teaches egGrid a new prepend() method that
+    takes the first element from the underlying data source and
+    unshifts it onto the list of displayed grid rows, saving much
+    rendering time. The prepend() method will also force the
+    grid offset back to 0 if it isn't already. Note that if
+    an item that would be added via prepend() might duplicate an
+    existing row entry, prepend() will do a full collect() instead.
+    
+    If the data source has sort options set, the prepend() will
+    remove them. For arrayNotifier-based data sources, as are used
+    in the checkin and checkout grids, this means that if the user
+    sorts the contents of the grid, then does a circ transaction,
+    the new transaction will still appear at the top of the list.
+    Due to the way arrayNotifier currently works, the remaining
+    entries will retain their previous ordering.
+    
+    As an implementation note, prepend() is likely going to work
+    /only/ for arrayNotifier grid data sources.
+    
+    To test
+    -------
+    [1] In the checkin grid, check in a large number of items.
+        Note that the time it takes to each each item gets
+        progressively longer.
+    [2] Apply the patch and repeat step 1. This time, the time
+        for each checkin should not significantly vary.
+    [3] Verify that column sorting works as expected.
+    [4] Upon sorting the grid, do more checkins and note that
+        the new transactions show up at the top.
+    [5] Verify that the checkout grid continues to behave as expected.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+6	4	Open-ILS/web/js/ui/default/staff/circ/checkin/app.js
+1	1	Open-ILS/web/js/ui/default/staff/circ/patron/checkout.js
+72	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 144865c702e33534df1608ca34ad7e57b0cdfb33
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Jul 9 14:43:18 2019 -0400
+
+    LP#1777207: have eg-grid generate DOM nodes only for visible columns
+    
+    This patch changes an ng-show to an ng-if to generate DOM nodes
+    for grid cells only for visible columns. Prior to this patch, all
+    grid cells were generated, but the ones that corresponded to hidden
+    columns would simply be set as hidden.
+    
+    By not generating the cells unless they're meant to be visible, grid
+    refreshes for wide grids (like the checkin table) render much more
+    quickly for a couple reasons:
+    
+    - simply that there are fewer DOM nodes to process
+    - probably more importantly, fewer AngularJS watches get
+      created
+    
+    To test
+    -------
+    [1] In the checkin grid, check in a large number of items, then
+        observe/profile timing as you change the number of visible rows.
+    [2] Apply the patch and repeat step 1. This time, the grid
+        refreshe should be measurably (and visibly) faster.
+    [3] Test other AngularJS grids and verify that grid display and
+        grid actions are normal.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/templates/staff/share/t_autogrid.tt2
+
+commit fc6447abab352f131c6c863c3f51d19cf5cd74c2
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Jul 3 11:47:51 2019 -0400
+
+    Forward-port 3.2.7 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+48	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.6-3.2.7-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.6-3.2.7-upgrade-db.sql
+
+commit c17db014849d3950a32b8dc54528409754ab2043
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri May 24 11:06:04 2019 -0400
+
+    LP#1830394: remove console noise from the holdings editor
+    
+    This patch removes browser console noise that occurs (among other
+    places) when moving a working item to the completed list in
+    the holdings editor
+    
+    TypeError: "$scope.working.MultiMap[keys[i]] is undefined"
+        hasMulti https://evergreen.example.org/js/ui/default/staff/cat/volcopy/app.js:1203
+        ...
+    
+    To test
+    -------
+    [1] Open the holdings editor to add or edit an item, then open the
+        browser debug console.
+    [2] Make a change and move the item from working to complete. Note
+        that the error message above shows up repeated in the
+        console log.
+    [3] Apply the patch and repeat steps 1 and 2. This time, the errors
+        should not appear.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+4	2	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 8200320cf263ff38bef7207fd056cfc7d7e219ad
+Author: Kyle Huckins <khuckins@catalyte.io>
+Date:   Mon May 20 17:54:00 2019 +0000
+
+    lp1735835 Transfer Bucket Contents to Pending
+    
+    - Add new option in Copy/Record buckets to transfer select
+    items to Pending Copy/Records.
+    
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    
+    	modified:   Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+    	modified:   Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+    	modified:   Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+2	0	Open-ILS/src/templates/staff/cat/bucket/copy/t_view.tt2
+3	0	Open-ILS/src/templates/staff/cat/bucket/record/t_view.tt2
+7	0	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+9	0	Open-ILS/web/js/ui/default/staff/cat/bucket/record/app.js
