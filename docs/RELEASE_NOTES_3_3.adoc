@@ -3,6 +3,119 @@ Evergreen 3.3 Release Notes
 :toc:
 :numbered:
 
+
+Evergreen 3.3.3
+---------------
+
+This release contains bug fixes improving on Evergreen 3.3.2.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Various improvements to the Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1823367[Bug #1823367])
+* Accessibility improvements to the date picker calendar button (https://bugs.launchpad.net/evergreen/+bug/1796903[Bug #1796903])
+* Blank values in CSV grid downloads now show as blank instead of 'null' (https://bugs.launchpad.net/evergreen/+bug/1766982[Bug #1766982])
+* Accessibility improvements to grid rows (https://bugs.launchpad.net/evergreen/+bug/1796936[Bug #1796936])
+* Adds keyboard shortcuts to Angular client (https://bugs.launchpad.net/evergreen/+bug/1829567 [Bug#1829567])
+* Fixes invalid language codes in the staff client and KPAC (https://bugs.launchpad.net/evergreen/+bug/1802593[Bug #1802593])
+* Removes duplicate columns from several grids (https://bugs.launchpad.net/evergreen/+bug/1683385[Bug 1683385])
+* Fixes some misleading comments in the Angular code (https://bugs.launchpad.net/evergreen/+bug/1836962[Bug #1836962])
+* Fixes display issue with menus at certain screen resolutions (https://bugs.launchpad.net/evergreen/+bug/1813078[Bug 1813078])
+* Fixes error display on failed Angular login (https://bugs.launchpad.net/evergreen/+bug/1834969[Bug # 1834969])
+* Fixes rows-selected message in Angular grid (https://bugs.launchpad.net/evergreen/+bug/1832148[Bug #1832148])
+* Fixes display error with comboboxes in accordions (https://bugs.launchpad.net/evergreen/+bug/1832146[Bug #1832146])
+* Updates to the Angular client's .editorconfig file. (https://bugs.launchpad.net/evergreen/+bug/1838136[Bug #1838136])
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Adds fund year to Distribution Formula fund dropdown menu (https://bugs.launchpad.net/evergreen/+bug/1329920[Bug 1329920])
+
+Administration
+^^^^^^^^^^^^^^
+
+* Fixes errors from ng x118n (https://bugs.launchpad.net/evergreen/+bug/1835990[Bug 1835990]
+
+Cataloging
+^^^^^^^^^^
+
+* Extra whitespace in 856$9 subfields no longer prevents located URIs from being displayed in electronic resource records. (https://bugs.launchpad.net/evergreen/+bug/1722827[Bug #1722827])
+* Fixes issue in Item Status import where spaces or empty lines in barcode files caused an import failure (https://bugs.launchpad.net/evergreen/+bug/1798187[Bug #1798187])
+* The Item Status list and detail views now have the same actions available. (https://bugs.launchpad.net/evergreen/+bug/1775920[Bug #1775920])
+* Adds record summary display to merge records (https://bugs.launchpad.net/evergreen/+bug/1739292[Bug #1739292])
+* Fixes issue in Bucket grids where grid configurations were not saving correctly (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug# 1805895])
+* Fixes an issue with the Edit buttons in the Merge Records interface. (https://bugs.launchpad.net/evergreen/+bug/1836229[Bug #1836229])
+* "Local catalog" is now at the top of the list of Z39.50 sources. (https://bugs.launchpad.net/evergreen/+bug/1787676[Bug #1787676])
+* Fixes issue with authority_control_field.pl script (https://bugs.launchpad.net/evergreen/+bug/1650409[Bug #1650409])
+* Fixes an issue with the _Clear_ button in the holdings template editor. (https://bugs.launchpad.net/evergreen/+bug/1803584[Bug #1803584])
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes the Mark Item Damaged action (https://bugs.launchpad.net/evergreen/+bug/1759864[Bug #1759864])
+* Fixes slowness issues with checkin and checkout grids (https://bugs.launchpad.net/evergreen/+bug/1777207[Bug #1777207])
+* Fixes an issue that allowed staff to renew items to dates in the past. (https://bugs.launchpad.net/evergreen/+bug/1034058[Bug #1034058])
+* Fixes an error that occured when checking in lost items when a certain setting was enabled. (https://bugs.launchpad.net/evergreen/+bug/1511765[Bug #1511765])
+* Fixes an issue that caused the money summary to be missing from the patron record Bills tab. (https://bugs.launchpad.net/evergreen/+bug/1800484[Bug #1800484])
+* Improves translations in Mark Damaged Popup. (https://bugs.launchpad.net/evergreen/+bug/1742523[Bug #1742523])
+
+
+Reports
+^^^^^^^
+
+* Users can now hard code a list of filter values in a report template (https://bugs.launchpad.net/evergreen/+bug/1785061[Bug #1785061])
+* Fixes an issue that caused column labels to re-sort when deleting fields in a template. (https://bugs.launchpad.net/evergreen/+bug/1751800[Bug #1751800])
+* Fixes column type for Billing Totals and Billing Paid columns (https://bugs.launchpad.net/evergreen/+bug/1681930[Bug #1681930])
+
+Public Catalog
+^^^^^^^^^^^^^^
+
+* Accessibility improvements to form fields. (https://bugs.launchpad.net/evergreen/+bug/1735768[Bug #1735768])
+
+Angular Staff Catalog
+^^^^^^^^^^^^^^^^^^^^^
+
+* Fixes replace barcode function in Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1837067[Bug #1837067])
+* Fixes retrieve last bib record in Angular staff catalog (https://bugs.launchpad.net/evergreen/+bug/1830424[Bug #1830424])
+* Makes patron barcode clickable in Angular holds grid (https://bugs.launchpad.net/evergreen/+bug/1839548[Bug #1839548])
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.3.3 point release of
+Evergreen:
+
+* Kristy Bauman
+* A. Bellenir
+* Jason Boyer
+* Dan Briem
+* Andrea Buntz Neiman
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* James Fournie
+* Rogan Hamby
+* Kyle Huckins
+* Cheyenne Jones
+* Tiffany Little
+* Jeanette Lundgren
+* Michele Morgan
+* Mike Risher
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Meg Stroup
+* Dan Wells
+* Beth Willis
+
+
 Evergreen 3.3.2
 ----------------
 
