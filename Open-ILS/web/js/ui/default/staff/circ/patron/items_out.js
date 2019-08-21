@@ -404,11 +404,31 @@ function($scope , $q , $routeParams , $timeout , egCore , egUser , patronSvc ,
         });
     }
 
+    function batch_action_with_flat_copies(items, action) {
+        if (!items.length) return;
+        var copies = items.map(function(circ) 
+            { return egCore.idl.toHash(circ.target_copy()) });
+        action(copies).then(reset_page);
+    }
     function batch_action_with_barcodes(items, action) {
         if (!items.length) return;
         var barcodes = items.map(function(circ) 
             { return circ.target_copy().barcode() });
         action(barcodes).then(reset_page);
+    }
+    $scope.mark_damaged = function(items) {
+        if (items.length == 0) return;
+
+        angular.forEach(items, function(circ) {
+            egCirc.mark_damaged({
+                id: circ.target_copy().id(),
+                barcode: circ.target_copy().barcode(),
+                circ_lib: circ.target_copy().circ_lib().id()
+            }).then($timeout(reset_page,1000)) // reset after each, because rejecting one stops the $q.all() chain
+        });
+    }
+    $scope.mark_missing = function(items) {
+        batch_action_with_flat_copies(items, egCirc.mark_missing);
     }
     $scope.mark_lost = function(items) {
         batch_action_with_barcodes(items, egCirc.mark_lost);

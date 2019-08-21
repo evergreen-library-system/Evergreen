@@ -55,6 +55,10 @@
     label="[% l('Print Item Receipt') %]"></eg-grid-action>
   <eg-grid-action handler="edit_due_date"
     label="[% l('Edit Due Date') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_damaged"
+    label="[% l('Mark Damaged') %]"></eg-grid-action>
+  <eg-grid-action handler="mark_missing"
+    label="[% l('Mark Missing') %]"></eg-grid-action>
   <eg-grid-action handler="mark_lost"
     label="[% l('Mark Lost (By Patron)') %]"></eg-grid-action>
   <eg-grid-action handler="mark_claims_returned"
