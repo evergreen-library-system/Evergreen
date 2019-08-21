@@ -33,6 +33,7 @@ Cataloging
 * Extra whitespace in 856$9 subfields no longer prevents located URIs from being displayed in electronic resource records. (https://bugs.launchpad.net/evergreen/+bug/1722827[Bug #1722827])
 * Fixes issue in Item Status import where spaces or empty lines in barcode files caused an import failure (https://bugs.launchpad.net/evergreen/+bug/1798187[Bug #1798187])
 * The Item Status list and detail views now have the same actions available. (https://bugs.launchpad.net/evergreen/+bug/1775920[Bug #1775920])
+* Adds record summary display to merge records (https://bugs.launchpad.net/evergreen/+bug/1739292[Bug #1739292])
 * Fixes issue in Bucket grids where grid configurations were not saving correctly (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug# 1805895])
 * "Local catalog" is now at the top of the list of Z39.50 sources. (https://bugs.launchpad.net/evergreen/+bug/1787676[Bug #1787676])
 * Fixes issue with authority_control_field.pl script (https://bugs.launchpad.net/evergreen/+bug/1650409[Bug #1650409])
