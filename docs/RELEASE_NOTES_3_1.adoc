@@ -3,6 +3,83 @@ Evergreen 3.1 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.1.14
+----------------
+
+This release contains bug fixes improving on Evergreen 3.1.13.
+All bug fixes refer to the web staff client unless otherwise specified.
+
+Bug fixes
+~~~~~~~~~
+
+General
+^^^^^^^
+
+* Accessibility improvements to the date picker calendar button (https://bugs.launchpad.net/evergreen/+bug/1796903[Bug #1796903])
+* Blank values in CSV grid downloads now show as blank instead of 'null' (https://bugs.launchpad.net/evergreen/+bug/1766982[Bug #1766982])
+* Fixes invalid language codes in the staff client and KPAC (https://bugs.launchpad.net/evergreen/+bug/1802593[Bug #1802593])
+* Fixes display issue with menus at certain screen resolutions (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug 1805895])
+
+Acquisitions
+^^^^^^^^^^^^
+
+* Adds fund year to Distribution Formula fund dropdown menu (https://bugs.launchpad.net/evergreen/+bug/1329920[Bug 1329920])
+
+Cataloging
+^^^^^^^^^^
+
+* Extra whitespace in 856$9 subfields no longer prevents located URIs from being displayed
+in electronic resource records. (https://bugs.launchpad.net/evergreen/+bug/1722827[Bug #1722827])
+* Fixes issue in Item Status import where spaces or empty lines in barcode files caused an import failure (https://bugs.launchpad.net/evergreen/+bug/1798187[Bug #1798187])
+* Fixes issue in Bucket grids where grid configurations were not saving correctly (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug# 1805895])
+* "Local catalog" is now at the top of the list of Z39.50 sources. (https://bugs.launchpad.net/evergreen/+bug/1787676[Bug #1787676])
+* Fixes issue with authority_control_field.pl script (https://bugs.launchpad.net/evergreen/+bug/1650409[Bug #1650409])
+
+Circulation
+^^^^^^^^^^^
+
+* Fixes slowness issues with checkin and checkout grids (https://bugs.launchpad.net/evergreen/+bug/1777207[Bug #1777207])
+* Fixes an issue that allowed staff to renew items to dates in the past. (https://bugs.launchpad.net/evergreen/+bug/1034058[Bug #1034058])
+* Fixes an error that occured when checking in lost items when a certain setting was enabled. (https://bugs.launchpad.net/evergreen/+bug/1511765[Bug #1511765])
+* Fixes an issue that caused the money summary to be missing from the patron record Bills tab. (https://bugs.launchpad.net/evergreen/+bug/1800484[Bug #1800484])
+* Improves translations in Mark Damaged Popup. (https://bugs.launchpad.net/evergreen/+bug/1742523[Bug #1742523])
+
+
+Reports
+^^^^^^^
+
+* Users can now hard code a list of filter values in a report template (https://bugs.launchpad.net/evergreen/+bug/1785061[Bug #1785061])
+* Fixes an issue that caused column labels to re-sort when deleting fields in a template. (https://bugs.launchpad.net/evergreen/+bug/1751800[Bug #1751800])
+* Fixes column type for Billing Totals and Billing Paid columns (https://bugs.launchpad.net/evergreen/+bug/1681930[Bug #1681930])
+
+
+Acknowledgments
+~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.1.14 point release of
+Evergreen:
+
+* Kristy Bauman
+* Jason Boyer
+* Dan Briem
+* Andrea Buntz Neiman
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* James Fournie
+* Rogan Hamby
+* Kyle Huckins
+* Tiffany Little
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Meg Stroup
+* Dan Wells
+
+
 Evergreen 3.1.13
 ----------------
 
