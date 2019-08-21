@@ -87,7 +87,7 @@
   <eg-grid-field label="[% l('Circulation Library') %]" path='target_copy.circ_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Age-based Hold Protection') %]" path='target_copy.age_protect.name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Floating Group') %]" path='target_copy.floating.name' hidden></eg-grid-field>
-  <eg-grid-field label="[% l('Location') %]" path='target_copy.location.name' hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Shelving Location') %]" path='target_copy.location.name' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Owning Library') %]" path='target_copy.call_number.owning_lib.shortname' hidden></eg-grid-field>
   <eg-grid-field label="[% l('Renewals Remaining') %]" path='renewal_remaining'></eg-grid-field>
   <eg-grid-field label="[% l('Fines Stopped') %]" path='stop_fines'></eg-grid-field>
