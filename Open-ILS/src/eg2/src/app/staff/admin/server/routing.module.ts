@@ -25,6 +25,11 @@ const routes: Routes = [{
     path: 'actor/org_unit',
     loadChildren: '@eg/staff/admin/server/org-unit.module#OrgUnitModule'
 }, {
+    path: 'actor/org_unit_proximity_adjustment',
+    component: BasicAdminPageComponent,
+    data: [{schema: 'actor',
+        table: 'org_unit_proximity_adjustment', disableOrgFilter: true}]
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];
