@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-03-01 02:44+0000\n"
+"POT-Creation-Date: 2019-03-28 21:14+0000\n"
 "PO-Revision-Date: 2018-09-16 04:38+0000\n"
 "Last-Translator: fares othman <Unknown>\n"
 "Language-Team: Arabic <ar@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-02 05:37+0000\n"
-"X-Generator: Launchpad (build 18888)\n"
+"X-Launchpad-Export-Date: 2019-03-29 05:36+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 "Language: AR\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -454,7 +454,7 @@ msgstr "العناوين"
 msgid "Adjacency"
 msgstr "التجاور"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
 msgid "Advanced"
 msgstr "متقدم"
 
@@ -735,7 +735,7 @@ msgstr "الباركود"
 msgid "Barcode:"
 msgstr "الباركود:"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
 msgid "Basic"
 msgstr "أساسي"
 
@@ -881,7 +881,7 @@ msgstr "مذيع"
 msgid "Broader term"
 msgstr "مصطلح أوسع"
 
-#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
+#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:30
 msgid "Browse"
 msgstr "تصفح"
 
@@ -2073,7 +2073,7 @@ msgstr "الرجوع إلى الخلف"
 msgid "Go to record %1"
 msgstr "الذهاب إلى التسجيلة %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:55
 msgid "Go to..."
 msgstr "الذهاب إلى"
 
@@ -2857,12 +2857,12 @@ msgstr "مخرج موسيقي"
 msgid "Musician"
 msgstr "موسيقي"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:14 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:16 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
 msgid "My Account"
 msgstr "حسابي"
 
 #. (page.name)
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:34
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:36
 msgid "My Account - %1"
 msgstr "حسابي - %1"
 
@@ -4122,7 +4122,7 @@ msgstr "مصطلح البحث"
 msgid "Search the Catalog"
 msgstr "البحث في الفهرس"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:22
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
 msgid "Search:"
 msgstr "بحث:"
 
@@ -4199,7 +4199,7 @@ msgstr "تحديد جزء:"
 msgid "Select a preference page"
 msgstr "اختيار صفحة التفضيلات"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:51
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
 msgid "Select an account page"
 msgstr "اختيار صفحة الحساب"
 

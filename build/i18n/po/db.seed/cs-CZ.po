@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Evergreen 1.4\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2019-02-28 16:11-0400\n"
-"PO-Revision-Date: 2019-03-19 15:31+0000\n"
+"POT-Creation-Date: 2019-03-28 11:39-0400\n"
+"PO-Revision-Date: 2019-07-10 14:24+0000\n"
 "Last-Translator: Eva Cerninakova <Unknown>\n"
 "Language-Team: UISK <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-20 05:32+0000\n"
-"X-Generator: Launchpad (build 18910)\n"
+"X-Launchpad-Export-Date: 2019-07-11 05:45+0000\n"
+"X-Generator: Launchpad (build 19007)\n"
 "X-Poedit-Country: CZECH REPUBLIC\n"
 "X-Poedit-Language: Czech\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Grid Config: cat.volcopy.copies.complete"
 msgstr "Nastavení tabulky: katalog.signatury-jednotky.exempláře.úplné"
 
-#: 950.data.seed-values.sql:19315
+#: 950.data.seed-values.sql:19308
 msgid "Staff Catalog Preferred Library"
 msgstr "Preferovaná knihovna pro služební katalog"
 
@@ -227,6 +227,14 @@ msgstr "Čtenář má neplatné číslo večerního telefonu"
 #: 950.data.seed-values.sql:7116
 msgid "Nahuatl"
 msgstr "Nahuatl"
+
+#: 950.data.seed-values.sql:994
+msgid ""
+"Allow a staff member to define where another staff member has their "
+"permissions"
+msgstr ""
+"Povolit členu personálu definovat, kde mají jiní členové personálu svá "
+"oprávnění"
 
 #: 950.data.seed-values.sql:12247 950.data.seed-values.sql:12248
 msgid "Historical Hold Retention Start Date"
@@ -3692,10 +3700,6 @@ msgstr "Upozornit, pokud se blíží konec čtenářské registrace"
 msgid "notated music"
 msgstr "hudební zápis"
 
-#: 950.data.seed-values.sql:227
-msgid "Physical Description"
-msgstr "Fyzický popis"
-
 #: 950.data.seed-values.sql:7217
 msgid "Songhai"
 msgstr "Songhajština"
@@ -4167,6 +4171,10 @@ msgstr "Uživatel smí vytvořit novou čtenářskou statistickou kategorii"
 #: 950.data.seed-values.sql:6948
 msgid "Fanti"
 msgstr "Fantiština"
+
+#: 950.data.seed-values.sql:19433
+msgid "Login via Websocket V2"
+msgstr "Přihlášení pomocí websocket V2"
 
 #: 950.data.seed-values.sql:7243
 msgid "Tetum"
@@ -8471,6 +8479,10 @@ msgstr "3_měsíce_0_prodloužení"
 msgid "Gospel music"
 msgstr "Gospel music (duchovní písně severoamerických černochů)"
 
+#: 950.data.seed-values.sql:19430
+msgid "Login via Websocket V1"
+msgstr "Přihlášení pomocí websocket V1"
+
 #: 950.data.seed-values.sql:7065
 msgid "Latvian"
 msgstr "Lotyština"
@@ -10635,7 +10647,7 @@ msgstr "PayPal podpis"
 msgid "Brunei "
 msgstr "Brunej "
 
-#: 950.data.seed-values.sql:19308
+#: 950.data.seed-values.sql:19301
 msgid "Staff Catalog Default Search Library"
 msgstr "Výchozí knihovna pro vyhledávání ve služebním katalogu"
 
@@ -11029,6 +11041,10 @@ msgstr ""
 #: 950.data.seed-values.sql:1556
 msgid "ADMIN_Z3950_SOURCE"
 msgstr "ADMIN_Z3950_SOURCE"
+
+#: 950.data.seed-values.sql:19436
+msgid "Verification via Websocket v1"
+msgstr "Ověření pomocí websocket v1"
 
 #: 950.data.seed-values.sql:16541
 msgid "Apply this prefix to any auto-generated item barcodes"
@@ -11653,13 +11669,9 @@ msgstr "Vracení: Vyčistit polici s rezervacemi"
 msgid "No information supplied"
 msgstr "Nejsou poskytnuty žádné informace"
 
-#: 950.data.seed-values.sql:994
-msgid ""
-"Allow a staff member to define where another staff member has their "
-"permissions"
-msgstr ""
-"Povolit členu personálu definovat, kde mají jiní členové personálu svá "
-"oprávnění"
+#: 950.data.seed-values.sql:227
+msgid "Physical Description"
+msgstr "Fyzický popis"
 
 #: 950.data.seed-values.sql:3373
 msgid "Auto-Extend Grace Periods"
@@ -13148,6 +13160,10 @@ msgstr "Vlastní registrace čtenáře. Interval expirace"
 msgid "microfilm cartridge"
 msgstr "kazeta mikrofilmu"
 
+#: 950.data.seed-values.sql:19439
+msgid "Verifiation via Websocket V2"
+msgstr "Ověření pomocí websocket v2"
+
 #: 950.data.seed-values.sql:5374
 msgid ""
 "When an item has been marked lost and all fines/fees have been completely "
@@ -13414,6 +13430,10 @@ msgstr "Práh výše platby pro dialog  Opravdu chcete ..."
 #: 950.data.seed-values.sql:5637 950.data.seed-values.sql:5644
 msgid "Miscellaneous"
 msgstr "Různé"
+
+#: 950.data.seed-values.sql:19445
+msgid "Generic Verify"
+msgstr "Generické ověření"
 
 #: 950.data.seed-values.sql:3093
 msgid "Alert staff when the last copy for a record is being deleted"
@@ -14374,6 +14394,10 @@ msgstr "zvukový válec"
 #: 950.data.seed-values.sql:7106
 msgid "Manobo languages"
 msgstr "Manobo jazyky"
+
+#: 950.data.seed-values.sql:19442
+msgid "Generic Login"
+msgstr "Generické přihlášení"
 
 #: 950.data.seed-values.sql:7242
 msgid "Terena"
@@ -15779,7 +15803,7 @@ msgstr "ADMIN_STANDING_PENALTY"
 
 #: 950.data.seed-values.sql:143
 msgid "Name Subject"
-msgstr "Jmenné téma"
+msgstr "Osoba jako téma"
 
 #: 950.data.seed-values.sql:1300
 msgid "DELETE_TRANSLATION"

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2019-03-01 02:44+0000\n"
+"POT-Creation-Date: 2019-03-28 21:14+0000\n"
 "PO-Revision-Date: 2018-09-14 15:03+0000\n"
 "Last-Translator: Francisco J Guel-Mendoza <Unknown>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-03-02 05:38+0000\n"
-"X-Generator: Launchpad (build 18888)\n"
+"X-Launchpad-Export-Date: 2019-03-29 05:37+0000\n"
+"X-Generator: Launchpad (build 18910)\n"
 
 #: ../../Open-ILS/src/templates/opac/register.tt2:66
 msgid ""
@@ -454,7 +454,7 @@ msgstr "Direcciones"
 msgid "Adjacency"
 msgstr "Proximidad"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
 msgid "Advanced"
 msgstr "Avanzado"
 
@@ -740,7 +740,7 @@ msgstr "Código de barras"
 msgid "Barcode:"
 msgstr "Código de barras:"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:26
 msgid "Basic"
 msgstr "Básico"
 
@@ -886,7 +886,7 @@ msgstr "Emisora"
 msgid "Broader term"
 msgstr "Término más amplio"
 
-#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:28
+#: ../../Open-ILS/src/templates/opac/browse.tt2:61 ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:30
 msgid "Browse"
 msgstr "Buscar"
 
@@ -2082,7 +2082,7 @@ msgstr "Ir atrás"
 msgid "Go to record %1"
 msgstr "Ir al registro %1"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:55
 msgid "Go to..."
 msgstr "Ir a..."
 
@@ -2873,12 +2873,12 @@ msgstr "Director musical"
 msgid "Musician"
 msgstr "Músico"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:14 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:16 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:15 ../../Open-ILS/src/templates/opac/parts/topnav.tt2:41
 msgid "My Account"
 msgstr "Mi Cuenta"
 
 #. (page.name)
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:34
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:36
 msgid "My Account - %1"
 msgstr "Mi Cuenta - %1"
 
@@ -4146,7 +4146,7 @@ msgstr "Término de búsqueda"
 msgid "Search the Catalog"
 msgstr "Búsqueda en el catálogo"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:22
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:24
 msgid "Search:"
 msgstr "Buscar:"
 
@@ -4223,7 +4223,7 @@ msgstr "Seleccionar una parte:"
 msgid "Select a preference page"
 msgstr "Seleccionar una preferencia de página"
 
-#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:51
+#: ../../Open-ILS/src/templates/opac/parts/myopac/base.tt2:53
 msgid "Select an account page"
 msgstr "Seleccione una página de la cuenta"
 
