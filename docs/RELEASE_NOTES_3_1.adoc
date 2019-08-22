@@ -18,7 +18,7 @@ General
 * Accessibility improvements to the date picker calendar button (https://bugs.launchpad.net/evergreen/+bug/1796903[Bug #1796903])
 * Blank values in CSV grid downloads now show as blank instead of 'null' (https://bugs.launchpad.net/evergreen/+bug/1766982[Bug #1766982])
 * Fixes invalid language codes in the staff client and KPAC (https://bugs.launchpad.net/evergreen/+bug/1802593[Bug #1802593])
-* Fixes display issue with menus at certain screen resolutions (https://bugs.launchpad.net/evergreen/+bug/1805895[Bug 1805895])
+* Fixes display issue with menus at certain screen resolutions (https://bugs.launchpad.net/evergreen/+bug/1813078[Bug 1813078])
 
 Acquisitions
 ^^^^^^^^^^^^
