@@ -6142,7 +6142,7 @@ SELECT  usr,
 			<field name="hold_request_lib" reporter:label="Hold Request Lib" reporter:datatype="org_unit"/>
 			<field name="copy_location" reporter:label="Copy Location" reporter:datatype="link"/>
 			<field name="circ_mod" reporter:label="Circ Modifier" reporter:datatype="link"/>
-			<field name="pos" reporter:label="Position" reporter:datatype="int" />
+			<field name="pos" reporter:label="Position" reporter:datatype="int" oils_obj:required="true" />
 			<field name="absolute_adjustment" reporter:label="Absolute adjustment?" reporter:datatype="bool" />
 			<field name="prox_adjustment" reporter:label="Proximity Adjustment" reporter:datatype="number" />
 		</fields>
