@@ -25,10 +25,6 @@
         <label>[% l('Selected Paid:') %]</label>
         <span>{{totals.selected_paid() | currency}}</span>
       </div>
-      <div class="col-md-1">
-        <span><button class="btn btn-default" 
-            ng-click="actions.apply_date_range()">[% l('Apply') %]</button></span>
-      </div>
       <div class="col-md-4 flex-row padded">
         <label>[% l('Start Date:') %]</label>
         <div><eg-date-input ng-model="dates.xact_start"></eg-date-input></div>
