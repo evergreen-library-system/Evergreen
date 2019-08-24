@@ -1010,6 +1010,25 @@ function($scope,  $q , egCore , patronSvc , billSvc , egPromptDialog , $location
         setQuery : current_grid_query
     }
 
+    $scope.$watch('dates.xact_start', function(new_date, old_date) {
+        if (new_date !== old_date && new_date) {
+            if (new_date.getTime() > $scope.dates.xact_finish.getTime()) {
+                $scope.dates.xact_finish = new_date;
+            } else {
+                $scope.actions.apply_date_range();
+            }
+        }
+    });
+    $scope.$watch('dates.xact_finish', function(new_date, old_date) {
+        if (new_date !== old_date && new_date) {
+            if (new_date.getTime() < $scope.dates.xact_start.getTime()) {
+                $scope.dates.xact_start = new_date;
+            } else {
+                $scope.actions.apply_date_range();
+            }
+        }
+    });
+
     $scope.actions.apply_date_range = function() {
         // tells the grid to re-draw itself with the new query
         $scope.gridControls.setQuery(current_grid_query());
@@ -1151,6 +1170,25 @@ function($scope,  $q , egCore , patronSvc , billSvc , $location) {
         },
         setQuery : current_grid_query
     }
+
+    $scope.$watch('dates.xact_start', function(new_date, old_date) {
+        if (new_date !== old_date && new_date) {
+            if (new_date.getTime() > $scope.dates.xact_finish.getTime()) {
+                $scope.dates.xact_finish = new_date;
+            } else {
+                $scope.actions.apply_date_range();
+            }
+        }
+    });
+    $scope.$watch('dates.xact_finish', function(new_date, old_date) {
+        if (new_date !== old_date && new_date) {
+            if (new_date.getTime() < $scope.dates.xact_start.getTime()) {
+                $scope.dates.xact_start = new_date;
+            } else {
+                $scope.actions.apply_date_range();
+            }
+        }
+    });
 
     $scope.actions.apply_date_range = function() {
         // tells the grid to re-draw itself with the new query
