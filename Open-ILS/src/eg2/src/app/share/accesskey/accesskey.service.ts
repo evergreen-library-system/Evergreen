@@ -24,9 +24,9 @@ export class AccessKeyService {
         // Most recent assignment always wins.
         this.assignments.forEach(a => {
             if (a.key === assn.key) {
-                if (a.ctx === assn.ctx) { 
+                if (a.ctx === assn.ctx) {
                     // If key and context match, keep only the most recent.
-                    return; 
+                    return;
                 } else {
                     // An assignment within a different context shadows
                     // an existing assignment.  Keep the assignment
