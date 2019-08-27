@@ -130,10 +130,13 @@
 
                           <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
                           <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Creator') %]"     path="creator.usrname" visible></eg-grid-field>
                           <eg-grid-field label="[% l('Activated') %]"   path="active_date" visible></eg-grid-field>
-                          <eg-grid-field label="[% l('CN Prefix') %]" path="call_number.prefix.label" visible></eg-grid-field>
-                          <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
-                          <eg-grid-field label="[% l('CN Suffix') %]" path="call_number.suffix.label" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Edited') %]"      path="edit_date" datatype="timestamp" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('Editor') %]"      path="editor.usrname" visible></eg-grid-field>
+                          <eg-grid-field label="[% l('CN Prefix') %]"   path="call_number.prefix.label" hidden></eg-grid-field>
+                          <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" hidden></eg-grid-field>
+                          <eg-grid-field label="[% l('CN Suffix') %]"   path="call_number.suffix.label" hidden></eg-grid-field>
                           <eg-grid-field label="[% l('Item ID') %]"     path="id" hidden></eg-grid-field>
 
                         </eg-grid>
@@ -163,7 +166,10 @@
 
                  <eg-grid-field label="[% l('Barcode') %]"     path='barcode' visible></eg-grid-field>
                  <eg-grid-field label="[% l('Created') %]"     path="create_date" datatype="timestamp" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Creator') %]"     path="creator.usrname" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Activated') %]"   path="active_date" datatype="timestamp" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Edited') %]"      path="edit_date" datatype="timestamp" visible></eg-grid-field>
+                 <eg-grid-field label="[% l('Editor') %]"      path="editor.usrname" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Call Number') %]" path="call_number.label" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Circ Library') %]" flesher="orgById" path="circ_lib.name" visible></eg-grid-field>
                  <eg-grid-field label="[% l('Shelving Location') %]" flesher="locationById" path="location.name" visible></eg-grid-field>
