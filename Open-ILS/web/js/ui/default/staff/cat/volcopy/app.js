@@ -395,7 +395,7 @@ function(egCore , $q) {
     service.flesh = {   
         flesh : 3, 
         flesh_fields : {
-            acp : ['call_number','parts','stat_cat_entries', 'notes', 'tags'],
+            acp : ['call_number','parts','stat_cat_entries', 'notes', 'tags', 'creator', 'editor'],
             acn : ['label_class','prefix','suffix'],
             acptcm : ['tag']
         }
