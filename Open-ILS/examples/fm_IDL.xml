@@ -4842,6 +4842,8 @@ SELECT  usr,
 			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Active Circulation" name="active_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Aged Circulation" name="aged_circ" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -4928,6 +4930,8 @@ SELECT  usr,
 			<field reporter:label="Bib Record" name="copy_bib_record" reporter:datatype="link"/>
 			<field reporter:label="Archived Patron Stat-Cat Entries" name="aaactsc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
