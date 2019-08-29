@@ -1632,8 +1632,14 @@ angular.module('egMarcMod', ['egCoreMod', 'ui.bootstrap'])
             function ($scope , $uibModal,  egCore,  egAuth) {
 
                 $scope.searchStr = '';
-                var cni = egCore.env.aous['cat.marc_control_number_identifier'] ||
-                  'Set cat.marc_control_number_identifier in Library Settings';
+                var cni = 'Set cat.marc_control_number_identifier in Library Settings';
+                egCore.org.settings([
+                    'cat.marc_control_number_identifier'
+                ]).then(function(settings) {
+                    if (settings['cat.marc_control_number_identifier']) {
+                        cni = settings['cat.marc_control_number_identifier'];
+                    }
+                });
 
                 var axis_list = $scope.controlSet.bibFieldBrowseAxes($scope.bibField.tag);
                 $scope.axis = axis_list[0];

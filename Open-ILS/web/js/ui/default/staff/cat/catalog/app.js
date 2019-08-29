@@ -20,20 +20,8 @@ angular.module('egCatalogApp', ['ui.bootstrap','ngRoute','ngLocationUpdate','egC
 .config(function($routeProvider, $locationProvider, $compileProvider) {
     $locationProvider.html5Mode(true);
     $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|mailto|blob):/); // grid export
-	
-    var resolver = {delay : ['egCore','egStartup','egUser', function(egCore, egStartup, egUser) {
-        egCore.env.classLoaders.aous = function() {
-            return egCore.org.settings([
-                'cat.marc_control_number_identifier'
-            ]).then(function(settings) {
-                // local settings are cached within egOrg.  Caching them
-                // again in egEnv just simplifies the syntax for access.
-                egCore.env.aous = settings;
-            });
-        }
-        egCore.env.loadClasses.push('aous');
-        return egStartup.go()
-    }]};
+
+    var resolver = {delay : function(egStartup) {return egStartup.go()}};
 
     $routeProvider.when('/cat/catalog/index', {
         templateUrl: './cat/catalog/t_catalog',
