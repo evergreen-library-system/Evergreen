@@ -148,7 +148,7 @@ CREATE TABLE action.circulation (
 								   DEFERRABLE INITIALLY DEFERRED,
 	copy_location	INT				NOT NULL DEFAULT 1 REFERENCES asset.copy_location (id) DEFERRABLE INITIALLY DEFERRED,
 	checkin_scan_time   TIMESTAMP WITH TIME ZONE,
-    auto_renewal            BOOLEAN,
+    auto_renewal            BOOLEAN	NOT NULL DEFAULT FALSE,
     auto_renewal_remaining  INTEGER
 ) INHERITS (money.billable_xact);
 ALTER TABLE action.circulation ADD PRIMARY KEY (id);
