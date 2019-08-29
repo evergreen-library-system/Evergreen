@@ -176,6 +176,10 @@ export class FmRecordEditorComponent
     // Avoid fetching data on init since that may lead to unnecessary
     // data retrieval.
     ngOnInit() {
+
+        // In case the caller sets the value to null / undef.
+        if (!this.fieldOptions) { this.fieldOptions = {}; }
+
         this.listifyInputs();
         this.idlDef = this.idl.classes[this.idlClass];
         this.recordLabel = this.idlDef.label;
