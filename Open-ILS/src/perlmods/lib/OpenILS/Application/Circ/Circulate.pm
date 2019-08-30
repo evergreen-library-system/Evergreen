@@ -128,6 +128,10 @@ __PACKAGE__->register_method(
     method    => "run_method",
     api_name  => "open-ils.circ.renew.auto",
     signature => q/@see open-ils.circ.renew/,
+    notes     => q/
+    The open-ils.circ.renew.auto API is deprecated.  Please use the
+    auto_renew => 1 option to open-ils.circ.renew, instead.
+    /
 );
 
 __PACKAGE__->register_method(
@@ -244,7 +248,7 @@ sub run_method {
     }
 
     $circulator->is_renewal(1) if $api =~ /renew/;
-    $circulator->is_autorenewal(1) if $api =~ /renew.auto/;
+    $circulator->auto_renewal(1) if $api =~ /renew.auto/;
     $circulator->is_checkin(1) if $api =~ /checkin/;
     $circulator->is_checkout(1) if $api =~ /checkout/;
     $circulator->override(1) if $api =~ /override/o;
@@ -435,7 +439,6 @@ my @AUTOLOAD_FIELDS = qw/
     volume
     title
     is_renewal
-    is_autorenewal
     is_checkout
     is_res_checkout
     is_precat
@@ -487,6 +490,7 @@ my @AUTOLOAD_FIELDS = qw/
     phone_renewal
     desk_renewal
     sip_renewal
+    auto_renewal
     retarget
     matrix_test_result
     circ_matrix_matchpoint
@@ -565,8 +569,9 @@ sub new {
         ($self->circ_lib) ? $self->circ_lib : $self->editor->requestor->ws_ou);
 
     # if this is a renewal, default to desk_renewal
-    $self->desk_renewal(1) unless 
-        $self->opac_renewal or $self->phone_renewal or $self->sip_renewal;
+    $self->desk_renewal(1) unless
+        $self->opac_renewal or $self->phone_renewal or $self->sip_renewal
+        or $self->auto_renewal;
 
     $self->capture('') unless $self->capture;
 
@@ -2155,13 +2160,10 @@ sub build_checkout_circ_object {
       $circ->opac_renewal('t') if $self->opac_renewal;
       $circ->phone_renewal('t') if $self->phone_renewal;
       $circ->desk_renewal('t') if $self->desk_renewal;
+      $circ->auto_renewal('t') if $self->auto_renewal;
       $circ->renewal_remaining($self->renewal_remaining);
-      $circ->circ_staff($self->editor->requestor->id);
-   }
-
-   if ( $self->is_autorenewal ){
       $circ->auto_renewal_remaining($self->auto_renewal_remaining);
-      $circ->auto_renewal('t');
+      $circ->circ_staff($self->editor->requestor->id);
    }
 
     # if the user provided an overiding checkout time,
@@ -4057,7 +4059,7 @@ sub do_renew {
         if $circ->renewal_remaining < 1;
 
     $self->push_events(OpenILS::Event->new('MAX_AUTO_RENEWALS_REACHED'))
-        if $api =~ /renew.auto/ and $circ->auto_renewal_remaining < 1;
+        if $self->auto_renewal and $circ->auto_renewal_remaining < 1;
     # -----------------------------------------------------------------
 
     $self->parent_circ($circ->id);
@@ -4066,7 +4068,7 @@ sub do_renew {
     $self->circ($circ);
 
     # Opac renewal - re-use circ library from original circ (unless told not to)
-    if($self->opac_renewal or $api =~ /renew.auto/) {
+    if($self->opac_renewal or $self->auto_renewal) {
         unless(defined($opac_renewal_use_circ_lib)) {
             my $use_circ_lib = $self->editor->retrieve_config_global_flag('circ.opac_renewal.use_original_circ_lib');
             if($use_circ_lib and $U->is_true($use_circ_lib->enabled)) {
