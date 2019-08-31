@@ -12881,8 +12881,8 @@ SELECT  usr,
 		reporter:label="Carousels">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.carousel_id_seq">
 			<field reporter:label="Carousel ID" name="id" reporter:datatype="id" reporter:selector="name"/>
-			<field reporter:label="Carousel Type" name="type" reporter:datatype="link"/>
-			<field reporter:label="Owner" name="owner" reporter:datatype="link"/>
+			<field reporter:label="Carousel Type" name="type" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Owner" name="owner" reporter:datatype="link" oils_obj:required="true"/>
 			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true" oils_obj:i18n="true"/>
 			<field reporter:label="Bucket" name="bucket" reporter:datatype="link"/>
 			<field reporter:label="Creating User" name="creator" reporter:datatype="link"/>
@@ -12894,7 +12894,7 @@ SELECT  usr,
 			<field reporter:label="Shelving Locations" name="copy_location_filter" reporter:datatype="text" /> <!-- ditto -->
 			<field reporter:label="Last Refresh Time" name="last_refresh_time" reporter:datatype="timestamp"/>
 			<field reporter:label="Is Active" name="active" reporter:datatype="bool"/>
-			<field reporter:label="Maximum Items" name="max_items" reporter:datatype="int"/>
+			<field reporter:label="Maximum Items" name="max_items" reporter:datatype="int" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="type" reltype="has_a" key="id" map="" class="cct"/>
