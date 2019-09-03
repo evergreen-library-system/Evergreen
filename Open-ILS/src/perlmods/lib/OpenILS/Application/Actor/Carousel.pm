@@ -176,12 +176,16 @@ sub add_carousel_from_bucket {
 
     $e->xact_begin;
 
+    # gather old entries to get a count and set max_items appropriately
+    my $entries = $e->search_container_biblio_record_entry_bucket_item({ bucket => $bucket_id });
+
     my $carousel = Fieldmapper::container::carousel->new;
     $carousel->name($carousel_name);
     $carousel->type(1); # manual
     $carousel->owner($e->requestor->ws_ou);
     $carousel->creator($e->requestor->id);
     $carousel->editor($e->requestor->id);
+    $carousel->max_items(scalar(@$entries));
     $e->create_container_carousel($carousel) or return $e->event;
 
     # and the bucket
@@ -199,7 +203,6 @@ sub add_carousel_from_bucket {
     $e->update_container_carousel($carousel) or return $e->event;
 
     # and fill it
-    my $entries = $e->search_container_biblio_record_entry_bucket_item({ bucket => $bucket_id });
     foreach my $entry (@$entries) {
         $entry->clear_id;
         $entry->bucket($bucket->id);
