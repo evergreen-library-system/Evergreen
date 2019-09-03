@@ -22,6 +22,7 @@ my $new_items_query = q(
     AND acpl.holdable
     AND acpl.circulate
     AND acp.active_date > NOW() - ?::INTERVAL
+    -- LOC AND acp.location IN (LOC_LIST)
     AND (EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = acn.record AND vis_attr_vector @@ c_attr.vis_test))
     AND (NOT EXISTS (SELECT 1 FROM metabib.record_attr_vector_list WHERE source = acn.record AND vlist @@ metabib.compile_composite_attr(' {"1":[{"_val":"s","_attr":"bib_level"}]}')::query_int))
     GROUP BY acn.record
@@ -46,6 +47,7 @@ WITH c_attr AS (SELECT c_attrs::query_int AS vis_test FROM asset.patron_default_
     AND acpl.circulate
     AND circ.checkin_time > NOW() - ?::INTERVAL
     AND circ.checkin_time IS NOT NULL
+    -- LOC AND acp.location IN (LOC_LIST)
     AND (EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = acn.record AND vis_attr_vector @@ c_attr.vis_test))
     AND (NOT EXISTS (SELECT 1 FROM metabib.record_attr_vector_list WHERE source = acn.record AND vlist @@ metabib.compile_composite_attr(' {"1":[{"_val":"s","_attr":"bib_level"}]}')::query_int))
     GROUP BY acn.record
@@ -69,6 +71,7 @@ my $top_circs_query = q(
     AND acpl.holdable
     AND acpl.circulate
     AND circ.xact_start > NOW() - ?::INTERVAL
+    -- LOC AND acp.location IN (LOC_LIST)
     AND (EXISTS (SELECT 1 FROM asset.copy_vis_attr_cache WHERE record = acn.record AND vis_attr_vector @@ c_attr.vis_test))
     AND (NOT EXISTS (SELECT 1 FROM metabib.record_attr_vector_list WHERE source = acn.record AND vlist @@ metabib.compile_composite_attr(' {"1":[{"_val":"s","_attr":"bib_level"}]}')::query_int))
     GROUP BY acn.record
@@ -86,7 +89,7 @@ my $new_by_loc_query = q(
     WHERE acn.owning_lib IN (ORG_LIST)
     AND acp.circ_lib IN (ORG_LIST)
     AND acp.active_date > NOW() - ?::INTERVAL
-    AND acp.location IN (LOC_LIST)
+    -- LOC AND acp.location IN (LOC_LIST)
     AND acp.holdable
     AND acp.circulate
     AND ccs.holdable
@@ -144,6 +147,7 @@ sub refresh_container_from_carousel_definition {
             return 0;
         }
         my $loc_placeholders = join(',', map { '?' } @$locs);
+        $query =~ s/-- LOC //g;
         $query =~ s/LOC_LIST/$loc_placeholders/g;
     } else {
         $locs = []; # we'll ignore any superflous supplied values
