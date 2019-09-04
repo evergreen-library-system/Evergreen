@@ -146,12 +146,12 @@ sub create_database {
 	chomp $temp[0];
 	my $pgversion = $temp[0];
 	my $cmd;
-	unless ($pgversion >= '9.4') {
+	unless ($pgversion >= '9.6') {
         my @message = ();
 		push(@message,
 			"\n------------------------------------------------------------------------------\n",
 			"Cannot create database; version of PostgreSQL appears to be less than the\n",
-			"minimum required of 9.4\n",
+			"minimum required of 9.6\n",
 			"------------------------------------------------------------------------------\n",
 		);
 		die(@message);
