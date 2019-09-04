@@ -425,7 +425,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
             }]
         }).result.then(function(carouselId) {
             // bouncing outside of AngularJS
-            $window.location.href = '/eg2/en-US/staff/admin/server/container/carousel';
+            $window.location.href = '/eg2/en-US/staff/admin/local/container/carousel';
         });
     }
 
