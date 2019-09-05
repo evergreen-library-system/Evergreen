@@ -1564,6 +1564,8 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     // grp is the pgt object
     $scope.set_profile = function(grp) {
+        // If we can't save because of group perms or create/update perms
+        if ($scope.edit_passthru.hide_save_actions()) return;
         $scope.patron.profile = grp;
         $scope.set_expire_date();
         $scope.field_modified();
@@ -2065,6 +2067,18 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
 
     // Returns true if the Save and Save & Clone buttons should be disabled.
     $scope.edit_passthru.hide_save_actions = function() {
+        if ($scope.patron.id
+            && $scope.patron.id == egCore.auth.user().id()
+        ) return true;
+
+        if ( $scope.patron.profile
+             && patronRegSvc
+                .edit_profiles
+                .filter(function(p) {
+                    return $scope.patron.profile.id() == p.id();
+                }).length == 0
+        ) return true;
+
         return $scope.patron.isnew ?
             !$scope.perms.CREATE_USER : 
             !$scope.perms.UPDATE_USER;
