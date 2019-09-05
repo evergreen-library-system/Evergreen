@@ -1931,7 +1931,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 617, 'IMPORT_ON_ORDER_CAT_COPY', oils_i18n_gettext( 617,
     'Allows users to import copies based on the on-order items attached to a record', 'ppl', 'description' )),
  ( 618, 'CREATE_PRECAT', oils_i18n_gettext(618,
-    'Allows a user to create a pre-catalogued copy', 'ppl', 'description'))
+    'Allows a user to create a pre-catalogued copy', 'ppl', 'description')),
+ ( 619, 'EDIT_SELF_IN_CLIENT', oils_i18n_gettext(619,
+    'Allow a user to edit their own account in the staff client', 'ppl', 'description'))
 ;
 
 
