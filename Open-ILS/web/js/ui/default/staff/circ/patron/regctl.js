@@ -246,6 +246,7 @@ angular.module('egCoreMod')
     service.has_perms_for_org = function(org_id) {
 
         var perms_needed = [
+            'EDIT_SELF_IN_CLIENT',
             'UPDATE_USER',
             'CREATE_USER',
             'CREATE_USER_GROUP_LINK', 
@@ -2011,6 +2012,7 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
     $scope.edit_passthru.hide_save_actions = function() {
         if ($scope.patron.id
             && $scope.patron.id == egCore.auth.user().id()
+            && !$scope.perms.EDIT_SELF_IN_CLIENT
         ) return true;
 
         if ( $scope.patron.profile
