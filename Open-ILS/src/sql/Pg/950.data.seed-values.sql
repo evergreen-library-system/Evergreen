@@ -1915,7 +1915,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 609, 'MANAGE_CUSTOM_PERM_GRP_TREE', oils_i18n_gettext( 609,
     'Allows a user to manage custom permission group lists.', 'ppl', 'description' )),
  ( 610, 'CLEAR_PURCHASE_REQUEST', oils_i18n_gettext(610,
-    'Clear Completed User Purchase Requests', 'ppl', 'description'))
+    'Clear Completed User Purchase Requests', 'ppl', 'description')),
+ ( 619, 'EDIT_SELF_IN_CLIENT', oils_i18n_gettext(619,
+    'Allow a user to edit their own account in the staff client', 'ppl', 'description'))
 ;
 
 
