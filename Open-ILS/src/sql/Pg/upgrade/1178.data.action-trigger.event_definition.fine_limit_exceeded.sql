@@ -1,6 +1,6 @@
 BEGIN;
 
-SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1178', :eg_version);
 
 INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, group_field, max_delay, template) 
     VALUES (false, 1, 'Fine Limit Exceeded', 'penalty.PATRON_EXCEEDS_FINES', 'NOOP_True', 'SendEmail', '00:05:00', 'usr', '1 day', 
