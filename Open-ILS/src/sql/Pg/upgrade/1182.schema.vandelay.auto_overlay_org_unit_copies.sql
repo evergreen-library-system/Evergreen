@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1182', :eg_version);
+
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 616, 'IMPORT_USE_ORG_UNIT_COPIES', oils_i18n_gettext( 616,
     'Allows users to import records based on the number of org unit copies attached to a record', 'ppl', 'description' )),
