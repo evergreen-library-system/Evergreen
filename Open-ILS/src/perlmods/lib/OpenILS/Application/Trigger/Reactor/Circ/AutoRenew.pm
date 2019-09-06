@@ -66,6 +66,11 @@ sub handler {
         my $is_renewed = $evt->{textcode} eq 'SUCCESS' ? 1 : 0;
 
         my $new_circ_due = $is_renewed ? $evt->{payload}->{circ}->due_date : '';
+        my $total_remaining = $is_renewed ? $evt->{payload}->{circ}->renewal_remaining : $_->renewal_remaining;
+        my $auto_remaining = $is_renewed ? $evt->{payload}->{circ}->auto_renewal_remaining : $_->auto_renewal_remaining;
+        # Check for negative renewal remaining. It can happen with an override renewal:
+        $total_remaining = ($total_remaining < 0) ? 0 : $total_remaining;
+        $auto_remaining = ($auto_remaining < 0) ? 0 : $auto_remaining; # Just making sure....
 
         my %user_data = (
             copy => $_->target_copy(),
@@ -74,6 +79,8 @@ sub handler {
             new_due_date => $is_renewed ? $evt->{payload}->{circ}->due_date : '',
             old_due_date => !$is_renewed ? $_->due_date() : '',
             textcode => $evt->{textcode},
+            total_renewal_remaining => $total_remaining,
+            auto_renewal_remaining => ($auto_remaining < $total_remaining) ? $auto_remaining : $total_remaining,
         );
 
         # Create the event from the source circ instead of the

@@ -1,0 +1,16 @@
+New Fields for AutorenewNotify Event Template
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Two new fields, `auto_renewal_remaining`, and `total_renewal_remaining` have
+been added to the AutorenewNotify action/trigger event code.  They will
+report the number of autorenewals and regular renewals, respectively,
+remaining on the new circulation if renewed, or on the old circulation
+if not renewed.  This is provided as a convenience to avoid possibly
+inaccurate math in the template.  You may access them in the template via
+the `udata`:
+
+.................................................
+Automatic Renewals Remaining: [% udata.auto_renewal_remaining %]
+Total Renewals Remaining: [% udata.total_renewal_remaining %]
+.................................................
+
