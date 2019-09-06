@@ -274,7 +274,7 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
         resources$.pipe(
             tap((resource) =>  {
                 this.resources.push(resource);
-                this.resources.sort((a,b) =>
+                this.resources.sort((a, b) =>
                     (a.barcode() > b.barcode()) ? 1 : ((b.barcode() > a.barcode()) ? -1 : 0));
             }),
             takeLast(1),

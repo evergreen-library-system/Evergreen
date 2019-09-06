@@ -288,7 +288,7 @@ export class ReservationsGridComponent implements OnInit {
                 ok => {
                     this.toast.success('Reservation successfully updated'); // TODO: needs i18n, pluralization
                     this.grid.reload();
-                    resolve(ok)
+                    resolve(ok);
                 },
                 rejection => {}
             );

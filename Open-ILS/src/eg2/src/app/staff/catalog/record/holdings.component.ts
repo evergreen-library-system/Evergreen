@@ -871,7 +871,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
     bookItems(rows: HoldingsEntry[]) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length > 0) {
-            this.router.navigate(['staff', 'booking', 'create_reservation', 'for_resource', rows.filter(r => Boolean(r.copy))[0].copy.barcode()]);
+            this.router.navigate(
+                ['staff', 'booking', 'create_reservation', 'for_resource', rows.filter(r => Boolean(r.copy))[0].copy.barcode()]
+            );
         }
     }
 
@@ -886,7 +888,9 @@ export class HoldingsMaintenanceComponent implements OnInit {
     manageReservations(rows: HoldingsEntry[]) {
         const copyIds = this.selectedCopyIds(rows);
         if (copyIds.length > 0) {
-            this.router.navigate(['staff', 'booking', 'manage_reservations', 'by_resource', rows.filter(r => Boolean(r.copy))[0].copy.barcode()]);
+            this.router.navigate(
+                ['staff', 'booking', 'manage_reservations', 'by_resource', rows.filter(r => Boolean(r.copy))[0].copy.barcode()]
+            );
         }
     }
 }
