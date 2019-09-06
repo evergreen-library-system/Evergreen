@@ -8,27 +8,34 @@
         <h4 class="modal-title">
           [% l('Barcode "{{precatArgs.copy_barcode}}" was mis-scanned or is a non-cataloged item.') %]
         </h4>
+        <div ng-show="!can_create_precats" class="alert alert-warning">
+            [% l('You do not have permission to create a pre-cataloged item with this barcode.') %]
+        </div>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label for="precat-title">[% l('Title') %]</label>
           <input type="text" class="form-control" focus-me='focusMe' required
+            ng-disabled="!can_create_precats"
             id="precat-title" ng-model="precatArgs.dummy_title" placeholder="[% l('Title...') %]"/>
         </div>
         <div class="form-group">
           <label for="precat-author">[% l('Author') %]</label>
           <input type="text" class="form-control" id="precat-author"
+            ng-disabled="!can_create_precats"
             ng-model="precatArgs.dummy_author" placeholder="[% l('Author...') %]"/>
         </div>
         <div class="form-group">
           <label for="precat-isbn">[% l('ISBN') %]</label>
           <input type="text" class="form-control" id="precat-isbn"
+            ng-disabled="!can_create_precats"
             ng-keydown="preventSubmit($event)"
             ng-model="precatArgs.dummy_isbn" placeholder="[% l('ISBN...') %]"/>
         </div>
         <div class="form-group">
           <label for="precat-circmod">[% l('Circulation Modifier') %]</label>
           <select class="form-control" id="precat-circmod" 
+            ng-disabled="!can_create_precats"
             ng-model="precatArgs.circ_modifier">
             <option value=""></option>
             <option ng-repeat="mod in circModifiers | orderBy:'name()'"
@@ -37,10 +44,9 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div ng-show="!can_create_precats" class="alert alert-warning">
-            [% l('You do not have permission to complete this action.') %]
-        </div>
-        <input type="submit" class="btn btn-primary" value="[% l('Precat Checkout') %]"/>
+        <input type="submit" class="btn btn-primary" value="[% l('Precat Checkout') %]"
+            ng-disabled="!can_create_precats"
+        />
         <button class="btn btn-warning" ng-click="cancel()"
             ng-class="{disabled : actionPending}">[% l('Cancel') %]</button>
       </div>

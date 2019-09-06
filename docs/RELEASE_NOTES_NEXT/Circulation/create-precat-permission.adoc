@@ -1,0 +1,13 @@
+New Permission: CREATE_PRECAT
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This permission is required to create (or re-create) a pre-cataloged item
+through the "Barcode ??? was mis-scanned or is a non-cataloged item."
+dialog.  All form elements in the pre-cat dialog other than the Cancel
+button will be disabled if the current user lacks the CREATE_PRECAT
+permission when an uncataloged (or already pre-cataloged item) is scanned.
+This permission is not needed to renew pre-cataloged items.
+
+The upgrade script for this feature will insert the permission into every
+permission group that has the STAFF_LOGIN permission, so out-of-the-box no
+behavior will change.

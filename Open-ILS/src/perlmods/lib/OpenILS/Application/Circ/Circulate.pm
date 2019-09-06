@@ -2427,7 +2427,7 @@ sub make_precat_copy {
     my $self = shift;
     my $copy = $self->copy;
     return $self->bail_on_events(OpenILS::Event->new('PERM_FAILURE'))
-       unless $self->editor->allowed('CREATE_PRECAT');
+       unless $self->editor->allowed('CREATE_PRECAT') || $self->is_renewal;
 
    if($copy) {
         $logger->debug("circulator: Pre-cat copy already exists in checkout: ID=" . $copy->id);
