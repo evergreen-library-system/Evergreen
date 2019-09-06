@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-md-6">
+    <form ng-submit="search()">
+      <div class="input-group">
+        <span class="input-group-addon">[% l('Scan Barcode') %]</span>
+        <input type="text" class="form-control" select-me="context.selectPendingBC"
+        ng-model="bucketSvc.barcodeString" placeholder="[% l('Barcode...') %]">
+      </div>
+    </form>
+  </div>
+  <div class="col-md-3"></div>
+  <div class="col-md-3">
+    <button class="btn btn-primary" ng-click="patron_search_dialog()">[% l('Search for patron') %]</button>
+  </div>
+</div>
+
+<div class="row pad-vert" ng-if="context.itemNotFound">
+  <div class="col-md-6">
+    <div class="alert alert-danger">
+      [% l('User Not Found') %]
+    </div>
+  </div>
+</div>
+
+<br/>
+
+<eg-grid
+  ng-hide="forbidden"
+  features="-sort,-multisort,-display"
+  id-field="id"
+  idl-class="au"
+  auto-fields="true"
+  grid-controls="gridControls"
+  items-provider="gridDataProvider"
+  persist-key="cat.bucket.batch_hold.pending">
+
+  <eg-grid-menu-item label="[% l('Add All To Hold Group') %]" standalone="true"
+    handler="addAllPending"></eg-grid-menu-item>
+
+  <!-- actions drop-down -->
+  <eg-grid-action label="[% l('Add To Hold Group') %]" 
+    handler="addToBucket"></eg-grid-action>
+
+  <eg-grid-action label="[% l('Clear List') %]" 
+    handler="resetPendingList"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Home Library') %]" path="home_ou.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Profile') %]"      path="profile.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('First Name') %]" path="first_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"      path='card.barcode' visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item['id']}}/holds">
+      {{item['card.barcode']}}
+    </a>
+  </eg-grid-field>
+
+</eg-grid>

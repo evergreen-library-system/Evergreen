@@ -1762,5 +1762,21 @@ CREATE TABLE action.curbside (
     notes       TEXT
 );
 
+CREATE TABLE action.batch_hold_event (
+    id          SERIAL  PRIMARY KEY,
+    staff       INT     NOT NULL REFERENCES actor.usr (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    bucket      INT     NOT NULL REFERENCES container.user_bucket (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    target      INT     NOT NULL,
+    hold_type   TEXT    NOT NULL DEFAULT 'T', -- maybe different hold types in the future...
+    run_date    TIMESTAMP WITH TIME ZONE    NOT NULL DEFAULT NOW(),
+    cancelled   TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE action.batch_hold_event_map (
+    id                  SERIAL  PRIMARY KEY,
+    batch_hold_event    INT     NOT NULL REFERENCES action.batch_hold_event (id) ON UPDATE CASCADE ON DELETE CASCADE,
+    hold                INT     NOT NULL REFERENCES action.hold_request (id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 COMMIT;
 

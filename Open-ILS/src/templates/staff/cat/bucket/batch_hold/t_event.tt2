@@ -1,0 +1,42 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="abhe"
+  auto-fields="true"
+  grid-controls="gridControls"
+  persist-key="cat.bucket.batch_hold.events">
+
+
+  <eg-grid-menu-item label="[% l('New Hold Group Event') %]" standalone="true"
+    handler="openCreateEventDialog"></eg-grid-menu-item>
+
+  <eg-grid-action label="[% l('Cancel hold group event') %]"
+    handler="rollbackEvent"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Title') %]" path="target" required visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target']}}">
+      {{item['title']}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Author') %]">{{item['author']}}</eg-grid-field>
+  <eg-grid-field label="[% l('Create Date/Time') %]" path='run_date' visible></eg-grid-field>
+  <eg-grid-field label="[% l('# of holds placed') %]" path="mappings" required visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/cat/catalog/record/{{item['target']}}/holds">
+      {{item['mappings'].length}}
+    </a>
+  </eg-grid-field>
+  <eg-grid-field label="[% l('Staff') %]"     required path='staff.usrname'></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Type') %]" required path='hold_type'></eg-grid-field>
+  <eg-grid-field label="[% l('Hold Cancel Date/Time') %]" required path='cancelled' visible></eg-grid-field>
+
+</eg-grid>
+
+<div ng-show="failedPatronList.length" class="alert alert-warning">
+  <a ng-click="downloadFailed($event)"
+    download="{{csvExportFileName}}.csv" ng-href="{{csvExportURL}}">
+    <span class="glyphicon glyphicon-download"></span>
+      [% l('Download patron list for failed holds') %]
+  </a>
+</div>

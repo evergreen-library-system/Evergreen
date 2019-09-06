@@ -1,0 +1,21 @@
+<div class="strong-text-2">[% l('Hold Groups') %]</div>
+
+<eg-grid
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="cub"
+  auto-fields="true"
+  grid-controls="gridControls"
+  items-provider="gridDataProvider"
+  persist-key="circ.patron.batch_hold.list">
+
+<eg-grid-action label="[% l('Remove Hold Groups') %]"
+  handler="removeSubscriptions"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Name') %]" path="name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Description') %]" path="description" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Public') %]" path="pub" visible></eg-grid-field>
+
+</eg-grid>
+

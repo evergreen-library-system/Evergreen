@@ -1,0 +1,22 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="cub"
+  auto-fields="true"
+  grid-controls="gridControls"
+  persist-key="cat.bucket.batch_hold.list">
+
+  <eg-grid-menu-item label="[% l('New Hold Group') %]" standalone="true"
+    handler="openCreateBucketDialog"></eg-grid-menu-item>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Name') %]" path="name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Description') %]" path="description" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Owning Library') %]" path="owning_lib.shortname" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Patron Visible') %]" path="pub" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Owner') %]" path="owner.usrname"></eg-grid-field>
+  <eg-grid-field label="[% l('Container Type') %]" path="btype"></eg-grid-field>
+  <eg-grid-field label="[% l('Create Time') %]" path="create_time"></eg-grid-field>
+
+</eg-grid>

@@ -1,0 +1,30 @@
+<!-- create event dialog -->
+
+<!-- use <form> so we get submit-on-enter for free -->
+<form class="form-validated" novalidate name="form" ng-submit="ok(args)">
+  <div>
+    <div class="modal-header">
+      <button type="button" class="close" 
+        ng-click="cancel()" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">[% l('New Hold Group Event') %]</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="edit-event-target">[% l('Target Record') %]</label>
+        <input type="text" class="form-control" focus-me='focusMe' required
+          id="edit-event-target" ng-model="args.target" placeholder="[% l('Record ID...') %]"/>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input ng-model="args.override" type="checkbox"/>
+          [% l('Override all hold-blocking conditions possible?') %]
+        </label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <input type="submit" ng-disabled="form.$invalid" 
+          class="btn btn-primary" value="[% l('Create Event') %]"/>
+      <button class="btn btn-warning" ng-click="cancel()">[% l('Cancel') %]</button>
+    </div>
+  </div> <!-- modal-content -->
+</form>

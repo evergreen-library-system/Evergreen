@@ -1,0 +1,82 @@
+[%
+  WRAPPER "staff/base.tt2";
+  ctx.page_title = l("Hold Group Buckets"); 
+  ctx.page_app = "egCatBatchHoldBuckets";
+  ctx.page_ctrl = "BatchHoldBucketCtrl";
+%]
+
+[% BLOCK APP_JS %]
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/grid.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/ui.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/cat/bucket/batch_hold/app.js"></script>
+<script src="[% ctx.media_prefix %]/js/ui/default/staff/services/patron_search.js"></script>
+<script>
+  angular.module('egCoreMod').run(['egStrings', function(s) {
+    s.CONFIRM_DELETE_USER_BUCKET_ITEMS_FROM_CATALOG =
+      "[% l('Are you sure you want to delete selected users in bucket from catalog?') %]";
+    s.EVENT_ROLLBACK_TITLE =
+      "[% l('Cancel all holds created by selected events') %]";
+    s.EVENT_NO_TARGET =
+      "[% l('No target provided for hold group') %]";
+    s.EVENT_INVALID_TARGET =
+      "[% l('Invalid target provided for hold group') %]";
+    s.EVENT_CREATE_SUMMARY =
+      "[% l('Created holds for [_1] of [_2] patrons', '{{success}}', '{{total}}') %]";
+  }])
+</script>
+[% END %]
+
+<!-- using native Bootstrap taps because of limitations
+with angular-ui tabsets. it always defaults to making the
+first tab active, so it can't be driven from the route
+https://github.com/angular-ui/bootstrap/issues/910 
+No JS is needed to drive the native tabs, since we're
+changing routes with each tab selection anyway.
+-->
+
+<ul class="nav nav-tabs">
+  <li ng-class="{active : tab == 'list'}">
+    <a href="./cat/bucket/batch_hold/list">
+        [% l('Hold Groups') %]
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'view'}">
+    <a href="./cat/bucket/batch_hold/view/{{bucketSvc.currentBucket.id()}}">
+        [% l('Current Users') %]
+        <span ng-cloak>({{bucketSvc.currentBucket.items().length}})</span>
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'pending'}">
+    <a href="./cat/bucket/batch_hold/pending/{{bucketSvc.currentBucket.id()}}">
+        [% l('Add Users') %]
+        <span ng-cloak>({{bucketSvc.pendingList.length}})</span>
+    </a>
+  </li>
+  <li ng-class="{active : tab == 'event'}">
+    <a href="./cat/bucket/batch_hold/event/{{bucketSvc.currentBucket.id()}}">
+        [% l('Hold Events') %]
+    </a>
+  </li>
+</ul>
+<div class="tab-content">
+  <div class="tab-pane active">
+
+    <!-- bucket info header -->
+    <div class="row" ng-show="tab != 'list'">
+      <div class="col-md-6">
+        [% INCLUDE 'staff/cat/bucket/batch_hold/t_bucket_info.tt2' %]
+      </div>
+    </div>
+
+    <!-- bucket not accessible warning -->
+    <div class="col-md-10 col-md-offset-1" ng-show="forbidden">
+      <div class="alert alert-warning">
+        [% l('The selected bucket "{{bucketId}}" is not visible to this login.') %]
+      </div>
+    </div>
+
+    <div ng-view></div>
+  </div>
+</div>
+
+[% END %]

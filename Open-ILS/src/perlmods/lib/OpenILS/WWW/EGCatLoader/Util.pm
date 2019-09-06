@@ -3,6 +3,7 @@ use strict; use warnings;
 use Apache2::Const -compile => qw(OK DECLINED FORBIDDEN HTTP_INTERNAL_SERVER_ERROR REDIRECT HTTP_BAD_REQUEST);
 use File::Spec;
 use Time::HiRes qw/time sleep/;
+use List::MoreUtils qw(uniq);
 use OpenSRF::Utils::Cache;
 use OpenSRF::Utils::Logger qw/$logger/;
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
@@ -699,6 +700,40 @@ sub load_copy_location_groups {
     my %buckets;
     push(@{$buckets{$_->owner}}, $_) for @$grps;
     $ctx->{copy_location_groups} = \%buckets;
+}
+
+sub load_hold_subscriptions {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    return unless $ctx->{authtoken};
+
+    my $e = new_editor(authtoken => $ctx->{authtoken});
+    $e->personality('open-ils.pcrud'); # use pcrud mode to filter appropriately
+
+    $ctx->{hold_subscriptions} =
+        $e->search_container_user_bucket([
+            { btype => 'hold_subscription' },
+            { order_by => {cub => 'name'} }
+        ]);
+
+}
+
+sub load_my_hold_subscriptions {
+    my $self = shift;
+    my $ctx = $self->ctx;
+
+    return unless $ctx->{authtoken};
+
+    my $sub_entries = $self->editor->search_container_user_bucket_item(
+        { target_user => $ctx->{user}->id }
+    );
+
+    my $sub_ids = [ uniq map { $_->bucket } @$sub_entries ];
+    $ctx->{my_hold_subscriptions} = scalar(@$sub_ids) ?
+        $self->editor->search_container_user_bucket(
+            {btype => 'hold_subscription', id => $sub_ids, pub => 't'}
+        ) : [];
 }
 
 sub set_file_download_headers {

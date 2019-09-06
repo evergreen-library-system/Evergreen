@@ -1,0 +1,29 @@
+<eg-grid
+  ng-hide="forbidden"
+  features="allowAll,-display"
+  id-field="id"
+  idl-class="au"
+  auto-fields="true"
+  grid-controls="gridControls"
+  menu-label="[% l('Hold Groups') %]"
+  persist-key="cat.bucket.batch_hold.view">
+
+  [% INCLUDE 'staff/cat/bucket/batch_hold/t_grid_menu.tt2' %]
+
+  <eg-grid-action label="[% l('Remove Selected Users from Bucket') %]" group="[% l('Bucket') %]"
+    handler="detachUsers"></eg-grid-action>
+  <eg-grid-action label="[% l('Move Selected Users to Pending Users') %]" group="[% l('Bucket') %]"
+    handler="moveToPending"></eg-grid-action>
+
+  <eg-grid-field path="id" required hidden></eg-grid-field>
+  <eg-grid-field label="[% l('Home Library') %]" path="home_ou.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Profile') %]"      path="profile.name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('First Name') %]" path="first_given_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Last Name') %]" path="family_name" visible></eg-grid-field>
+  <eg-grid-field label="[% l('Barcode') %]"      path='card.barcode' visible>
+    <a target="_self" href="[% ctx.base_path %]/staff/circ/patron/{{item['id']}}/holds">
+      {{item['card.barcode']}}
+    </a>
+  </eg-grid-field>
+
+</eg-grid>

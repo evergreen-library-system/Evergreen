@@ -32,6 +32,9 @@
      IF (ctx.show_reservations_tab == 'true');
         myopac_pages.push({children => 0, parent => "parent", url => "reservations", text => l("<i class='fas fa-splotch' aria-hidden='true'></i>  Reservations"), name => l("Reservations")});
     END;
+    IF ctx.my_hold_subscriptions.size > 0;
+        myopac_pages.push({children => 0, parent => "holds", url => "hold_subscriptions", text => l("<i class='fas fa-redo' aria-hidden='true'></i> Hold Groups"), name => l("Hold Groups")});
+    END;
     skin_root = "../"
 %]
 

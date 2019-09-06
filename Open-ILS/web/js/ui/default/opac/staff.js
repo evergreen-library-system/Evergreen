@@ -26,6 +26,7 @@ function staff_hold_usr_input_disabler(input) {
         Boolean(Number(input.value));
     staff_hold_usr_barcode_changed();
 }
+
 var debounce_barcode_change = function() {
     var timeout;
 
@@ -44,6 +45,42 @@ var debounce_barcode_change = function() {
         return true;
     };
 }();
+
+function no_hold_submit(event) {
+    if (event.which == 13) {
+        staff_hold_usr_barcode_changed();
+        return false;
+    }
+    return true;
+}
+
+function toggleMROptions(on) {
+    var anchor = document.getElementById("advanced_hold_link");
+    // Check for not equal to block so it works on first click.
+    if (on) {
+        anchor.style.display = "inline";
+    } else {
+        anchor.style.display = "none";
+    }
+}
+
+function maybeDisable (thing, value) {
+    var el = document.getElementById(thing);
+    if (el) el.disabled = value;
+}
+
+function toggleOnSubscription(isSub) {
+    toggleMROptions(!isSub);
+    maybeDisable("override_blocks_subscription",!isSub);
+    maybeDisable("pickup_lib",isSub);
+    maybeDisable("email_notify",isSub);
+    maybeDisable("phone_notify_checkbox",isSub);
+    maybeDisable("phone_notify",isSub);
+    maybeDisable("sms_notify_checkbox",isSub);
+    maybeDisable("sms_carrier",isSub);
+    maybeDisable("sms_notify",isSub);
+}
+
 function staff_hold_usr_barcode_changed(isload) {
 
     if (!document.getElementById('place_hold_submit')) {
@@ -56,8 +93,13 @@ function staff_hold_usr_barcode_changed(isload) {
  
     var adv_link = document.getElementById('advanced_hold_link');
     if (adv_link) {
-        adv_link.setAttribute('href', adv_link.getAttribute('href').replace(/&?is_requestor=[01]/,''));
-        var is_requestor = document.getElementById('hold_usr_is_requestor').checked ? 1 : 0;
+        adv_link.setAttribute('href', adv_link.getAttribute('href').replace(/&?is_requestor=[012]/,''));
+        var is_requestor = 0;
+        if (document.getElementById('hold_usr_is_requestor').checked) {
+            is_requestor = 1;
+        } else if (document.getElementById('hold_usr_is_subscription').checked) {
+            is_requestor = 2;
+        }
         adv_link.setAttribute('href', adv_link.getAttribute('href') + '&is_requestor=' + is_requestor.toString());
     }
 
@@ -65,7 +107,15 @@ function staff_hold_usr_barcode_changed(isload) {
     var barcode = isload;
     if(!barcode || barcode === true) barcode = document.getElementById('staff_barcode').value;
     var only_settings = true;
-    if(!document.getElementById('hold_usr_is_requestor').checked) {
+    var sub_el = document.getElementById('hold_usr_is_subscription');
+
+    toggleOnSubscription(false);
+    if(sub_el && sub_el.checked) {
+        toggleOnSubscription(true);
+        if(!isload) {
+            only_settings = false;
+        }
+    } else if(!document.getElementById('hold_usr_is_requestor').checked) {
         if(!isload) {
             barcode = document.getElementById('hold_usr_input').value;
             only_settings = false;
@@ -73,7 +123,8 @@ function staff_hold_usr_barcode_changed(isload) {
         if(barcode && barcode != '' && !document.getElementById('hold_usr_is_requestor_not').checked)
             document.getElementById('hold_usr_is_requestor_not').checked = 'checked';
     }
-    if(barcode == undefined || barcode == '') {
+
+    if((barcode == undefined || barcode == '') && (!sub_el || !sub_el.checked)) {
         document.getElementById('patron_name').innerHTML = '';
         // No submitting on empty barcode, but empty barcode doesn't really count as "not found" either
         document.getElementById('place_hold_submit').disabled = true;
@@ -113,6 +164,8 @@ function staff_hold_usr_barcode_changed(isload) {
 function staff_hold_usr_barcode_changed2(
     isload, only_settings, barcode, cur_hold_barcode, load_info) {
 
+    var sub_el = document.getElementById('hold_usr_is_subscription');
+
     if(load_info == false || load_info == undefined) {
         document.getElementById('patron_name').innerHTML = '';
         document.getElementById("patron_usr_barcode_not_found").style.display = '';
@@ -120,7 +173,7 @@ function staff_hold_usr_barcode_changed2(
         return;
     }
     cur_hold_barcode = load_info.barcode;
-    if (!only_settings || (isload && isload !== true)) {
+    if ((!only_settings || (isload && isload !== true)) && (sub_el && !sub_el.checked)) {
         // Safe at this point as we already set cur_hold_barcode
         document.getElementById('hold_usr_input').value = load_info.barcode;
 
@@ -138,35 +191,37 @@ function staff_hold_usr_barcode_changed2(
         load_info.settings['opac.default_sms_carrier'] = '';
     }
 
-    if (load_info.settings['opac.hold_notify'] || load_info.settings['opac.hold_notify'] === '') {
-        var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
-        var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;
-        var sms = load_info.settings['opac.hold_notify'].indexOf('sms') > -1;
-        var update_elements = document.getElementsByName('email_notify');
-        for(var i in update_elements) update_elements[i].checked = (email ? 'checked' : '');
-        update_elements = document.getElementsByName('phone_notify_checkbox');
-        for(var i in update_elements) update_elements[i].checked = (phone ? 'checked' : '');
-        update_elements = document.getElementsByName('sms_notify_checkbox');
-        for(var i in update_elements) update_elements[i].checked = (sms ? 'checked' : '');
-    }
-
-    update_elements = document.getElementsByName('phone_notify');
-    for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_phone']
-        ? load_info.settings['opac.default_phone'] : '';
-    update_elements = document.getElementsByName('sms_notify');
-    for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_notify'];
-    update_elements = document.getElementsByName('sms_carrier');
-    for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_carrier'];
-    update_elements = document.getElementsByName('email_notify');
-    for(var i in update_elements) {
-        update_elements[i].disabled = (load_info.user_email ? false : true);
-        if(update_elements[i].disabled) update_elements[i].checked = false;
-    }
-    update_elements = document.getElementsByName('email_address');
-    for(var i in update_elements) update_elements[i].textContent = load_info.user_email;
-    if(!document.getElementById('hold_usr_is_requestor').checked && document.getElementById('hold_usr_input').value) {
-        document.getElementById('patron_name').innerHTML = load_info.patron_name;
-        document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
+    if (!sub_el || !sub_el.checked) {
+        if (load_info.settings['opac.hold_notify'] || load_info.settings['opac.hold_notify'] === '') {
+            var email = load_info.settings['opac.hold_notify'].indexOf('email') > -1;
+            var phone = load_info.settings['opac.hold_notify'].indexOf('phone') > -1;
+            var sms = load_info.settings['opac.hold_notify'].indexOf('sms') > -1;
+            var update_elements = document.getElementsByName('email_notify');
+            for(var i in update_elements) update_elements[i].checked = (email ? 'checked' : '');
+            update_elements = document.getElementsByName('phone_notify_checkbox');
+            for(var i in update_elements) update_elements[i].checked = (phone ? 'checked' : '');
+            update_elements = document.getElementsByName('sms_notify_checkbox');
+            for(var i in update_elements) update_elements[i].checked = (sms ? 'checked' : '');
+        }
+    
+        update_elements = document.getElementsByName('phone_notify');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_phone']
+            ? load_info.settings['opac.default_phone'] : '';
+        update_elements = document.getElementsByName('sms_notify');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_notify'];
+        update_elements = document.getElementsByName('sms_carrier');
+        for(var i in update_elements) update_elements[i].value = load_info.settings['opac.default_sms_carrier'];
+        update_elements = document.getElementsByName('email_notify');
+        for(var i in update_elements) {
+            update_elements[i].disabled = (load_info.user_email ? false : true);
+            if(update_elements[i].disabled) update_elements[i].checked = false;
+        }
+        update_elements = document.getElementsByName('email_address');
+        for(var i in update_elements) update_elements[i].textContent = load_info.user_email;
+        if(!document.getElementById('hold_usr_is_requestor').checked && document.getElementById('hold_usr_input').value) {
+            document.getElementById('patron_name').innerHTML = load_info.patron_name;
+            document.getElementById("patron_usr_barcode_not_found").style.display = 'none';
+        }
     }
     // Ok, now we can allow submitting again, unless this is a "true" load, in which case we likely have a blank barcode box active
 
@@ -189,12 +244,15 @@ window.onload = function() {
 
     setTimeout(function() {
 
-        if (location.href.match(/is_requestor=[01]/)) {
+        if (location.href.match(/is_requestor=[012]/)) {
             var loc = location.href;
-            var is_req_match = new RegExp("is_requestor=[01]");
+            var is_req_match = new RegExp("is_requestor=[012]");
             var is_req = is_req_match.exec(loc).toString();
             is_req = is_req.replace(/is_requestor=/, '');
-            if (is_req == "1") {
+            if (is_req == "2") {
+                document.getElementById('hold_usr_is_subscription').checked = 'checked';
+                document.getElementById('hold_usr_input').disabled = true;
+            } else if (is_req == "1") {
                 document.getElementById('hold_usr_is_requestor').checked = 'checked';
                 document.getElementById('hold_usr_input').disabled = true;
             } else {

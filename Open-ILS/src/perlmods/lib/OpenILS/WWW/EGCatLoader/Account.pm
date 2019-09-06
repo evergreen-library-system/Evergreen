@@ -1430,6 +1430,30 @@ sub load_myopac_holds {
     return defined($hold_handle_result) ? $hold_handle_result : Apache2::Const::OK;
 }
 
+sub load_myopac_hold_subscriptions {
+    my $self = shift;
+    my $e = $self->editor;
+    my $ctx = $self->ctx;
+
+    my $sub_remove = $self->cgi->param('remove');
+
+    if ($sub_remove and $ctx->{user}->id) {
+        my $sub_entries = $self->editor->search_container_user_bucket_item(
+            { bucket => $sub_remove, target_user => $ctx->{user}->id }
+        );
+
+        $self->editor->xact_begin;
+        $self->editor->delete_container_user_bucket_item($_) for @$sub_entries;
+        $self->editor->xact_commit;
+
+        return $self->generic_redirect(
+            $self->ctx->{proto} . '://' . $self->ctx->{hostname} . $self->ctx->{opac_root} . '/myopac/hold_subscriptions'
+        );
+    }
+
+    return Apache2::Const::OK;
+}
+
 my $data_filler;
 
 sub load_place_hold {
@@ -1443,6 +1467,7 @@ sub load_place_hold {
     my @targets = uniq $cgi->param('hold_target');
     my @parts = $cgi->param('part');
 
+    $ctx->{hold_subscription} = $cgi->param('hold_subscription');
     $ctx->{hold_type} = $cgi->param('hold_type');
     $ctx->{default_pickup_lib} = $e->requestor->home_ou; # unless changed below
     $ctx->{email_notify} = $cgi->param('email_notify');
@@ -1671,8 +1696,8 @@ sub load_place_hold {
     $_->{marc_xml} = XML::LibXML->new->parse_string($_->{record}->marc) for @hold_data;
 
     my $pickup_lib = $cgi->param('pickup_lib');
-    # no pickup lib means no holds placement
-    return Apache2::Const::OK unless $pickup_lib;
+    # no pickup lib means no holds placement, except for subscriptions
+    return Apache2::Const::OK unless $pickup_lib || $ctx->{hold_subscription};
 
     $ctx->{hold_attempt_made} = 1;
 
@@ -1685,17 +1710,26 @@ sub load_place_hold {
 
     my $usr = $e->requestor->id;
 
-    if ($ctx->{is_staff} and !$cgi->param("hold_usr_is_requestor")) {
-        # find the real hold target
+    if ($ctx->{is_staff}) {
+        $logger->info("Staff initiated hold");
+        if (!$cgi->param("hold_usr_is_requestor")) {
+            # find the real hold target
 
-        $usr = $U->simplereq(
-            'open-ils.actor',
-            "open-ils.actor.user.retrieve_id_by_barcode_or_username",
-            $e->authtoken, $cgi->param("hold_usr"));
+            $usr = $U->simplereq(
+                'open-ils.actor',
+                "open-ils.actor.user.retrieve_id_by_barcode_or_username",
+                $e->authtoken, $cgi->param("hold_usr"));
 
-        if (defined $U->event_code($usr)) {
-            $ctx->{hold_failed} = 1;
-            $ctx->{hold_failed_event} = $usr;
+            if (defined $U->event_code($usr)) {
+                $ctx->{hold_failed} = 1;
+                $ctx->{hold_failed_event} = $usr;
+            }
+        }
+
+        if ($ctx->{hold_subscription}) {
+            # this is a batch event, hold "user" is a bucket id
+            $logger->info("Hold Group Event requested for user bucket: " . $ctx->{hold_subscription});
+            $usr = $e->retrieve_container_user_bucket($ctx->{hold_subscription});
         }
     }
 
@@ -1761,22 +1795,32 @@ sub attempt_hold_placement {
     my $ctx = $self->ctx;
     my $e = $self->editor;
 
-    # First see if we should warn/block for any holds that
-    # might have locally available items.
-    for my $hdata (@hold_data) {
-        my ($local_block, $local_alert) = $self->local_avail_concern(
-            $hdata->{target_id}, $hold_type, $pickup_lib);
+    my $user_container = undef;
+    if (ref($usr)) { # $usr is actually a container for a subscription...
+        $user_container = $usr->id;
+        return unless ($hold_type eq 'T'); # Only T-hold subscriptions for now.
+    }
 
-        if ($local_block) {
-            $hdata->{hold_failed} = 1;
-            $hdata->{hold_local_block} = 1;
-        } elsif ($local_alert) {
-            $hdata->{hold_failed} = 1;
-            $hdata->{hold_local_alert} = 1;
+    # First see if we should warn/block for any holds that
+    # might have locally available items for non-subscriptions.
+    if (!$user_container) {
+        for my $hdata (@hold_data) {
+            my ($local_block, $local_alert) = $self->local_avail_concern(
+                $hdata->{target_id}, $hold_type, $pickup_lib);
+
+            if ($local_block) {
+                $hdata->{hold_failed} = 1;
+                $hdata->{hold_local_block} = 1;
+            } elsif ($local_alert) {
+                $hdata->{hold_failed} = 1;
+                $hdata->{hold_local_alert} = 1;
+            }
         }
     }
 
-    my $method = 'open-ils.circ.holds.test_and_create.batch';
+    my $method = $user_container
+        ? 'open-ils.circ.holds.test_and_create.subscription_batch'
+        : 'open-ils.circ.holds.test_and_create.batch';
 
     if ($cgi->param('override')) {
         $method .= '.override';
@@ -1801,17 +1845,31 @@ sub attempt_hold_placement {
         }
 
         my $bses = OpenSRF::AppSession->create('open-ils.circ');
-        my $breq = $bses->request(
-            $method,
-            $e->authtoken,
-            $data_filler->({
-                patronid => $usr,
-                pickup_lib => $pickup_lib,
-                hold_type => $hold_type,
-                holdable_formats_map => $holdable_formats,
-            }),
-            \@create_targets
-        );
+
+        my @create_params = ();
+
+        if ($user_container) {
+            @create_params = (
+                $data_filler->({
+                    hold_type => $hold_type,
+                    holdable_formats_map => $holdable_formats, # currently always unset, only T holds
+                }),
+                $user_container,
+                $create_targets[0],
+            );
+        } else {
+            @create_params = (
+                $data_filler->({
+                    patronid => $usr,
+                    pickup_lib => $pickup_lib,
+                    hold_type => $hold_type,
+                    holdable_formats_map => $holdable_formats,
+                }),
+                \@create_targets
+            );
+        }
+
+        my $breq = $bses->request($method, $e->authtoken, @create_params);
 
         while (my $resp = $breq->recv) {
 
@@ -1822,6 +1880,13 @@ sub attempt_hold_placement {
                 $ctx->{general_hold_error} = $resp;
                 last;
             }
+
+            # subscription batch create sends an initial response to assist with client-side counting
+            next if (
+                $user_container and
+                defined($$resp{count}) and $$resp{count} == 0
+                and defined($$resp{total}) and $$resp{total} > 0
+            );
 
             # Skip those that had the hold_success or hold_failed fields set for duplicate holds placement.
             my ($hdata) = grep {$_->{target_id} eq $resp->{target} && !($_->{hold_failed} || $_->{hold_success})} @hold_data;
@@ -1836,7 +1901,6 @@ sub attempt_hold_placement {
 
                 if(not ref $result and $result > 0) {
                     # successul hold returns the hold ID
-
                     $hdata->{hold_success} = $result;
 
                 } else {

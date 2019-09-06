@@ -17,12 +17,19 @@
         <input type="text" class="form-control" id="edit-bucket-desc"
           ng-model="args.desc" placeholder="[% l('Description...') %]"/>
       </div>
+      <div ng-show="change_owner" class="form-group">
+        <label for="edit-bucket-owner">[% l('Owning Library') %]</label>
+        <eg-org-selector id="edit-bucket-owner" selected="args.owning_lib"></eg-org-selector>
+      </div>
        <div class="checkbox">
         <label>
           <input ng-model="args.pub" type="checkbox">
-          [% l('Shareable') %]
+          <span ng-show="args.hold_sub">[% l('Visible to Patrons?') %]</span>
+          <span ng-show="!args.hold_sub">[% l('Shareable') %]</span>
         </label>
-        <eg-help-popover help-text="[%l('Visible and searchable by any staff member')%]">
+        <div ng-if="!args.hold_sub">
+          <eg-help-popover help-text="[%l('Visible and searchable by any staff member')%]">
+        </div>
       </div>
     </div>
     <div class="modal-footer">

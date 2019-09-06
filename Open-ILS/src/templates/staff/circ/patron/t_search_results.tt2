@@ -23,6 +23,10 @@
     label="{{bkt.name()}}" handler-data="bkt"
     handler="addToBucket" disabled="need_one_selected"></eg-grid-menu-item>
 
+  <eg-grid-menu-item ng-repeat="bkt in bucketSvc.allSubscriptions"
+    label="[% 'Hold Groups: ' %] {{bkt.name()}}" handler-data="bkt"
+    handler="addToBucket" disabled="need_one_selected"></eg-grid-menu-item>
+
   <eg-grid-field label="[% l('ID') %]" path='id' visible></eg-grid-field>
   <eg-grid-field label="[% l('Card') %]" path='card.barcode' visible>
     <a href="./circ/patron/{{item.id()}}/checkout">{{item.card().barcode()}}</a>

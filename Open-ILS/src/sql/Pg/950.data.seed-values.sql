@@ -1950,7 +1950,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 626, 'VIEW_BOOKING_RESERVATION_ATTR_MAP', oils_i18n_gettext(626,
     'View booking reservation attribute maps', 'ppl', 'description')),
  ( 627, 'SSO_ADMIN', oils_i18n_gettext(627,
-    'Modify patron SSO settings', 'ppl', 'description'))
+    'Modify patron SSO settings', 'ppl', 'description')),
+ ( 628, 'MANAGE_HOLD_GROUPS', oils_i18n_gettext(628,
+    'Manage batch (subscription) hold events', 'ppl', 'description'))
 ;
 
 
@@ -2900,6 +2902,7 @@ INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (4, oils_i18n_get
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (5, oils_i18n_gettext(5, 'Staff forced', 'ahrcc', 'label'));
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (6, oils_i18n_gettext(6, 'Patron via OPAC', 'ahrcc', 'label'));
 INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (7, oils_i18n_gettext(7, 'Patron via SIP', 'ahrcc', 'label'));
+INSERT INTO action.hold_request_cancel_cause (id,label) VALUES (8, oils_i18n_gettext(8, 'Hold Group Event rollback', 'ahrcc', 'label'));
 SELECT SETVAL('action.hold_request_cancel_cause_id_seq', 100);
 
 
@@ -5838,6 +5841,7 @@ INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.view', o
 INSERT INTO container.user_bucket_type (code,label) VALUES ('folks:hold.cancel', oils_i18n_gettext('folks:hold.cancel', 'Cancel Holds', 'cubt', 'label'));
 
 INSERT INTO container.user_bucket_type (code,label) SELECT code,label FROM container.copy_bucket_type where code = 'staff_client';
+INSERT INTO container.user_bucket_type (code,label) VALUES ('hold_subscription', oils_i18n_gettext('hold_subscription', 'Hold Group Container', 'cubt', 'label'));
 
 ----------------------------------
 -- MARC21 record structure data --
@@ -17372,6 +17376,78 @@ VALUES (currval('action_trigger.event_definition_id_seq'), 'home_ou'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.mailing_address'),
        (currval('action_trigger.event_definition_id_seq'), 'home_ou.billing_address');
 
+INSERT INTO action_trigger.event_definition (active, owner, name, hook, validator, reactor, delay, delay_field, group_field, cleanup_success, template)
+    VALUES ('f', 1, 'Hold Group Hold Placed for Patron Email Notification', 'hold_request.success', 'NOOP_True', 'SendEmail', '30 minutes', 'request_time', 'usr', 'CreateHoldNotification',
+$$
+[%- USE date -%]
+[%- user = target.0.usr -%]
+To: [%- params.recipient_email || user.email %]
+From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, '%a, %d %b %Y %T -0000', gmt => 1) %]
+Subject: Subcription Hold placed for you
+Auto-Submitted: auto-generated
+
+Dear [% user.family_name %], [% user.first_given_name %]
+The following items have been placed on hold for you:
+
+[% FOR hold IN target %]
+    [%- copy_details = helpers.get_copy_bib_basics(hold.current_copy.id) -%]
+    Title: [% copy_details.title %]
+    Author: [% copy_details.author %]
+    Call Number: [% hold.current_copy.call_number.label %]
+    Barcode: [% hold.current_copy.barcode %]
+    Library: [% hold.pickup_lib.name %]
+[% END %]
+
+$$);
+
+INSERT INTO action_trigger.environment (event_def, path ) VALUES
+( currval('action_trigger.event_definition_id_seq'), 'usr' ),
+( currval('action_trigger.event_definition_id_seq'), 'pickup_lib' ),
+( currval('action_trigger.event_definition_id_seq'), 'current_copy.call_number' );
+
+INSERT INTO action_trigger.event_definition (
+    active, owner, name, hook, validator, reactor, cleanup_success,
+    delay, delay_field, group_field, template
+) VALUES (
+    false, 1, 'Hold Group Hold Placed for Patron SMS Notification', 'hold_request.success', 'NOOP_True',
+    'SendSMS', 'CreateHoldNotification', '00:30:00', 'shelf_time', 'sms_notify',
+    '[%- USE date -%]
+[%- user = target.0.usr -%]
+From: [%- params.sender_email || default_sender %]
+Date: [%- date.format(date.now, ''%a, %d %b %Y %T -0000'', gmt => 1) %]
+To: [%- params.recipient_email || helpers.get_sms_gateway_email(target.0.sms_carrier,target.0.sms_notify) %]
+Subject: [% target.size %] subscription hold(s) placed for you
+Auto-Submitted: auto-generated
+
+[% FOR hold IN target %][%-
+  bibxml = helpers.xml_doc( hold.current_copy.call_number.record.marc );
+  title = "";
+  FOR part IN bibxml.findnodes(''//*[@tag="245"]/*[@code="a"]'');
+    title = title _ part.textContent;
+  END;
+  author = bibxml.findnodes(''//*[@tag="100"]/*[@code="a"]'').textContent;
+%][% hold.usr.first_given_name %]:[% title %] @ [% hold.pickup_lib.name %]
+[% END %]
+'
+);
+
+INSERT INTO action_trigger.environment (
+    event_def,
+    path
+) VALUES (
+    currval('action_trigger.event_definition_id_seq'),
+    'current_copy.call_number.record.simple_record'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'usr'
+), (
+    currval('action_trigger.event_definition_id_seq'),
+    'pickup_lib.billing_address'
+);
+
+INSERT INTO action_trigger.event_params (event_def, param, value)
+    VALUES (currval('action_trigger.event_definition_id_seq'), 'check_sms_notify', 1);
 
 INSERT INTO config.org_unit_setting_type
 (name, grp, label, description, datatype)
@@ -20347,6 +20423,26 @@ VALUES
   'Shibboleth-side field to match a patron against for Shibboleth SSO. Default is uid; use eppn for Active Directory', 'coust', 'description'),
  'string', 627)
 ;
+
+INSERT INTO config.org_unit_setting_type
+    (name, label, description, grp, datatype)
+VALUES (
+    'holds.subscription.randomize',
+    oils_i18n_gettext(
+        'holds.subscription.randomize',
+        'Randomize group hold order',
+        'coust',
+        'label'
+    ),
+    oils_i18n_gettext(
+        'holds.subscription.randomize',
+        'When placing a batch group hold, randomize the order of the patrons receiving the holds so they are not always in the same order.',
+        'coust',
+        'description'
+    ),
+    'holds',
+    'bool'
+);
 
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (

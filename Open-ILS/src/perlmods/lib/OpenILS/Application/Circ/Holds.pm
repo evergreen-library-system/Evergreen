@@ -17,6 +17,7 @@
 package OpenILS::Application::Circ::Holds;
 use base qw/OpenILS::Application/;
 use strict; use warnings;
+use List::Util qw(shuffle);
 use OpenILS::Application::AppUtils;
 use DateTime;
 use Data::Dumper;
@@ -162,6 +163,249 @@ sub test_and_create_hold_batch {
             $conn->respond($res);
         }
     }
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    method    => "test_and_create_batch_hold_event",
+    api_name  => "open-ils.circ.holds.test_and_create.subscription_batch",
+    stream => 1,
+    signature => {
+        desc => q/This is for batch creating a set of holds where every field is identical except for the target users./,
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Hash of named parameters.  Same as for open-ils.circ.title_hold.is_possible, though the pertinent target field is automatically populated based on the hold_type and the specified list of target users.', type => 'object'},
+            { desc => 'Container ID of the user bucket holding target users', type => 'number' },
+            { desc => 'target object ID (clarified by hold_type in param hash)', type => 'number' },
+            { desc => 'Randomize flag, set to 0 for "not randomized"', type => 'bool' }
+        ],
+        return => {
+            desc => 'Stream of objects structured as {total=>X, count=>Y, target=>Z, patronid=>A, result=>$hold_id} on success, -1 on missing arg, event (or stream of events on "result" key of object) on error(s)',
+        },
+    }
+);
+
+__PACKAGE__->register_method(
+    method    => "test_and_create_batch_hold_event",
+    api_name  => "open-ils.circ.holds.test_and_create.subscription_batch.override",
+    stream => 1,
+    signature => {
+        desc  => '@see open-ils.circ.holds.test_and_create.subscription_batch',
+    }
+);
+
+
+sub test_and_create_batch_hold_event {
+    my( $self, $conn, $auth, $params, $target_bucket, $target_id, $randomize, $oargs ) = @_;
+
+
+    $randomize //= 1; # default to random hold creation order
+    $$params{hold_type} //= 'T'; # default to title holds
+
+    my $override = 0;
+    if ($self->api_name =~ /override/) {
+        $override = 1;
+        $oargs = { all => 1 } unless defined $oargs;
+        $$params{oargs} = $oargs; # for is_possible checking.
+    }
+
+    my $e = new_editor(authtoken=>$auth);
+    return $e->die_event unless $e->checkauth;
+    $$params{'requestor'} = $e->requestor->id;
+
+
+    my $org = $e->requestor->ws_ou || $e->requestor->home_ou;
+    # the perm locaiton shouldn't really matter here since holds
+    # will exist all over and MANAGE_HOLD_GROUPS should be universal
+    my $evt = $U->check_perms($e->requestor->id, $org, 'MANAGE_HOLD_GROUPS');
+    return $evt if $evt;
+
+    my $rand_setting = $U->ou_ancestor_setting_value($org, 'holds.subscription.randomize');
+    $randomize = $rand_setting if (defined $rand_setting);
+
+    my $target_field;
+    if ($$params{'hold_type'} eq 'T') { $target_field = 'titleid'; }
+    elsif ($$params{'hold_type'} eq 'C') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'R') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'F') { $target_field = 'copy_id'; }
+    elsif ($$params{'hold_type'} eq 'I') { $target_field = 'issuanceid'; }
+    elsif ($$params{'hold_type'} eq 'V') { $target_field = 'volume_id'; }
+    elsif ($$params{'hold_type'} eq 'M') { $target_field = 'mrid'; }
+    elsif ($$params{'hold_type'} eq 'P') { $target_field = 'partid'; }
+    else { return undef; }
+
+    # Check for a valid record.
+    # XXX For now, because only title holds are allowed, we'll add only that check.
+    my $target_check = $e->json_query({
+        select => {bre => ['id']},
+        from   => 'bre',
+        where  => {deleted => 'f', id => $target_id}
+    });
+    return {error=>'invalid_target'} if (!@$target_check);
+
+    my $formats_map = delete($$params{holdable_formats_map}) || {};
+
+    my $target_list = $e->search_container_user_bucket_item({bucket => $target_bucket});
+    @$target_list = shuffle(@$target_list) if $randomize;
+
+    # Record the request...
+    $e->xact_begin;
+    my $bhe = Fieldmapper::action::batch_hold_event->new;
+    $bhe->isnew(1);
+    $bhe->staff($e->requestor->id);
+    $bhe->bucket($target_bucket);
+    $bhe->target($target_id);
+    $bhe->hold_type($$params{hold_type});
+    $bhe = $e->create_action_batch_hold_event($bhe) or return $e->die_event;
+    $e->xact_commit;
+
+    my $total = scalar(@$target_list);
+    my $count = 0;
+    $conn->respond({total => $total, count => $count});
+
+    my $triggers = OpenSRF::AppSession->connect('open-ils.trigger');
+    foreach (@$target_list) {
+        $count++;
+        $$params{$target_field} = $target_id;
+        $$params{patronid} = $_->target_user;
+
+        my $usr = $e->retrieve_actor_user([
+            $$params{patronid},
+            {   
+                flesh => 1,
+                flesh_fields => {
+                    au => ['settings']
+                }
+            }
+        ]);
+        my $user_setting_map = {
+            map { $_->name => OpenSRF::Utils::JSON->JSON2perl($_->value) }
+                @{ $usr->settings }
+        };
+
+        $$params{pickup_lib} = $$user_setting_map{'opac.default_pickup_location'} || $usr->home_ou;
+
+        if ($user_setting_map->{'opac.hold_notify'} =~ /email/) {
+            $$params{email_notify} = 1;
+        } else {
+            delete $$params{email_notify};
+        }
+
+        if ($user_setting_map->{'opac.default_phone'} && $user_setting_map->{'opac.hold_notify'} =~ /phone/) {
+            $$params{phone_notify} = $user_setting_map->{'opac.default_phone'};
+        } else {
+            delete $$params{phone_notify};
+        }
+
+        if ($user_setting_map->{'opac.default_sms_carrier'}
+            && $user_setting_map->{'opac.default_sms_notify'}
+            && $user_setting_map->{'opac.hold_notify'} =~ /sms/) {
+            $$params{sms_carrier} = $user_setting_map->{'opac.default_sms_carrier'};
+            $$params{sms_notify} = $user_setting_map->{'opac.default_sms_notify'};
+        } else {
+            delete $$params{sms_carrier};
+            delete $$params{sms_notify};
+        }
+
+        # copy the requested formats from the target->formats map
+        # into the top-level formats attr for each hold ... empty for now, T holds only
+        $$params{holdable_formats} = $formats_map->{$_};
+
+        my $res;
+        ($res) = $self->method_lookup(
+            'open-ils.circ.title_hold.is_possible')->run($auth, $params, $override ? $oargs : {});
+        if ($res->{'success'} == 1) {
+
+            $params->{'depth'} = $res->{'depth'} if $res->{'depth'};
+
+            # Remove oargs from params so holds can be created.
+            if ($$params{oargs}) {
+                delete $$params{oargs};
+            }
+
+            my $ahr = construct_hold_request_object($params);
+            my ($res2) = $self->method_lookup(
+                $override
+                ? 'open-ils.circ.holds.create.override'
+                : 'open-ils.circ.holds.create'
+            )->run($auth, $ahr, $oargs);
+            $res2 = {
+                total => $total, count => $count,
+                'patronid' => $$params{patronid},
+                'target' => $$params{$target_field},
+                'result' => $res2
+            };
+            $conn->respond($res2);
+
+            unless (ref($res2->{result})) { # success returns a hold id only
+                $e->xact_begin;
+                my $bhem = Fieldmapper::action::batch_hold_event_map->new;
+                $bhem->isnew(1);
+                $bhem->batch_hold_event($bhe->id);
+                $bhem->hold($res2->{result});
+                $e->create_action_batch_hold_event_map($bhem) or return $e->die_event;
+                $e->xact_commit;
+
+                my $hold = $e->retrieve_action_hold_request($bhem->hold);
+                $triggers->request('open-ils.trigger.event.autocreate', 'hold_request.success', $hold, $hold->pickup_lib);
+            }
+
+        } else {
+            $res = {
+                total => $total, count => $count,
+                'target' => $$params{$target_field},
+                'failedpatronid' => $$params{patronid},
+                'result' => $res
+            };
+            $conn->respond($res);
+        }
+    }
+    $triggers->kill_me;
+    return undef;
+}
+
+__PACKAGE__->register_method(
+    method    => "rollback_batch_hold_event",
+    api_name  => "open-ils.circ.holds.rollback.subscription_batch",
+    stream => 1,
+    signature => {
+        desc => q/This is for batch creating a set of holds where every field is identical except for the target users./,
+        params => [
+            { desc => 'Authentication token', type => 'string' },
+            { desc => 'Hold Group Event ID to roll back', type => 'number' },
+        ],
+        return => {
+            desc => 'Stream of objects structured as {total=>X, count=>Y} on success, event on error',
+        },
+    }
+);
+
+sub rollback_batch_hold_event {
+    my( $self, $conn, $auth, $event_id ) = @_;
+
+    my $e = new_editor(authtoken=>$auth,xact=>1);
+    return $e->die_event unless $e->checkauth;
+
+    my $org = $e->requestor->ws_ou || $e->requestor->home_ou;
+    my $evt = $U->check_perms($e->requestor->id, $org, 'MANAGE_HOLD_GROUPS');
+    return $evt if $evt;
+
+    my $batch_event = $e->retrieve_action_batch_hold_event($event_id);
+    my $target_list = $e->search_action_batch_hold_event_map({batch_hold_event => $event_id});
+
+    my $total = scalar(@$target_list);
+    my $count = 0;
+    $conn->respond({total => $total, count => $count});
+
+    for my $target (@$target_list) {
+        $count++;
+        $self->method_lookup('open-ils.circ.hold.cancel')->run($auth, $target->hold, 8);
+        $conn->respond({ total => $total, count => $count });
+    }
+
+    $batch_event->cancelled('now');
+    $e->update_action_batch_hold_event($batch_event);
+    $e->commit;
     return undef;
 }
 

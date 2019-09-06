@@ -97,6 +97,7 @@ function maybeToggleNumCopies(obj) {
         %]
 
         [% IF ctx.is_staff %]
+        <!-- request for a patron -->
         <p class="staff-hold">
             <input type="radio" id="hold_usr_is_requestor_not"
                 onchange="staff_hold_usr_input_disabler(this);"
@@ -128,8 +129,31 @@ function maybeToggleNumCopies(obj) {
                     [% l("Place this hold for me ([_1] [_2])", ctx.user.first_given_name, ctx.user.family_name) | html %]
                 </label>
             </span>
+            [% IF CGI.param('hold_type') == 'T' AND ctx.hold_subscriptions.size > 0 AND NOT CGI.param('from_basket') %]
+              <br />
+              <!-- request for a reading group / subscription -->
+              <input type="radio" id="hold_usr_is_subscription"
+                  onchange="staff_hold_usr_input_disabler(this);"
+                  name="hold_usr_is_requestor" value="2"
+                  />
+              <label for="hold_usr_is_subscription">
+                  [% l("Place hold for patron Hold Group:") %]
+              </label>
+              <select id='select_hold_subscription' name='hold_subscription'>
+                  <option selected='selected' value=''>[% l('- Hold Groups -') %]</option>
+                  [% FOR sub IN ctx.hold_subscriptions %]
+                  <option value='[% sub.id %]'>[% sub.name | html %]</option>
+                  [% END %]
+              </select>
+            [% END %]
+            <br/>
+            <label>
+              <input id="override_blocks_subscription" name="override" type="checkbox" checked="checked"/>
+              [% l("Override all hold-blocking conditions possible?") %]
+            </label>
         </p>
         [% END %]
+
       [% END %]
 
         <table id='hold-items-list'>
@@ -244,7 +268,7 @@ function maybeToggleNumCopies(obj) {
                     [% IF ctx.default_phone_notify %]checked="checked"[% END %]/>
                     <label for="phone_notify_checkbox">[% l('Yes, by Phone') %]</label><br/>
                 <blockquote>
-                    <label>[% l('Phone Number:') %]<input type="text" name="phone_notify" [% setting = 'opac.default_phone';
+                    <label>[% l('Phone Number:') %]<input type="text" id="phone_notify" name="phone_notify" [% setting = 'opac.default_phone';
                     IF ctx.user_setting_map.$setting; %] value='[% ctx.user_setting_map.$setting | html %]'
                     [%- ELSIF ctx.user.day_phone; %] value='[% ctx.user.day_phone | html %]' [% END %]/></label>
                 </blockquote>

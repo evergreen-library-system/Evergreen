@@ -1,0 +1,26 @@
+Hold Groups
+^^^^^^^^^^^
+
+This feature allows staff to add multiple users to a named hold group
+bucket and place title-level holds for a record for that entire set of users.
+Users can be added to such a hold group bucket from either the patron
+search result interface, via the Add to Bucket dropdown, or through a dedicated
+Hold Group interface available from the Circulation menu.  Adding new
+patrons to a hold group bucket will require staff have the PLACE_HOLD
+permission.
+
+Holds can be placed for the users in a hold group bucket either directly from
+the normal staff-place hold interface in the embedded OPAC, or by supplying the
+record ID within the hold group bucket interface.  In the latter case, the
+list of users for which a hold was attempted but failed to be placed can be
+downloaded by staff in order to address any placement issues.  Placing a
+hold group bucket hold will requires staff have the MANAGE_HOLD_GROUPS
+permission, which is new with this development.
+
+In the event of a mistaken hold group hold, staff with the MANAGE_HOLD_GROUPS
+permission will have the ability to cancel all unfulfilled holds created as
+part of a hold group event.
+
+A link to the title's hold interface is available from the list of hold group
+events in the dedicated hold group interface.
+

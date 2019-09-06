@@ -93,7 +93,7 @@ function($scope,  $location,  $q,  $timeout,  $uibModal,
                 egCore.net.request(
                     'open-ils.actor',
                     'open-ils.actor.container.item.create', 
-                    egCore.auth.token(), 'user', item
+                    egCore.auth.token(), 'user', item, 1
                 ).then(function(resp) {
 
                     // HACK: add the IDs of the added items so that the size

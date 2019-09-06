@@ -6,8 +6,13 @@
 angular.module('egUserBucketMod', ['egCoreMod'])
 .factory('bucketSvc', ['$q','egCore', function($q,  egCore) {
 
+    function _sort_buckets(a,b) {
+        return a.name() < b.name() ? -1 : 1;
+    }
+
     var service = {
         allBuckets : [], // un-fleshed user buckets
+        allSubscriptions : [], // un-fleshed user buckets for hold groups
         barcodeString : '', // last scanned barcode
         barcodeRecords : [], // last scanned barcode results
         currentBucket : null, // currently viewed bucket
@@ -27,6 +32,15 @@ angular.module('egUserBucketMod', ['egCoreMod'])
                 egCore.auth.token(), egCore.auth.user().id(), 
                 'user', 'staff_client'
             ).then(function(buckets) { self.allBuckets = buckets });
+        },
+
+        fetchUserSubscriptions : function(force) {
+            if (this.allSubscriptions.length && !force) return;
+            var self = this;
+            return egCore.pcrud.search(
+                'cub', { btype : 'hold_subscription' },
+                {}, { atomic : true }
+            ).then(function(buckets) { self.allSubscriptions = buckets.sort(_sort_buckets) });
         },
 
         createBucket : function(name, desc) {

@@ -7557,6 +7557,47 @@ SELECT  usr,
             </actions>
         </permacrud>
 	</class>
+	<class id="abhe" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::batch_hold_event" oils_persist:tablename="action.batch_hold_event" reporter:label="Hold Group Event">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.batch_hold_event_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="staff" reporter:datatype="link"/>
+			<field name="bucket" reporter:datatype="link"/>
+			<field name="target" reporter:datatype="int" />
+			<field name="hold_type" reporter:datatype="text" />
+			<field name="run_date" reporter:datatype="timestamp" />
+			<field name="cancelled" reporter:datatype="timestamp" />
+			<field name="mappings" oils_persist:virtual="true" reporter:datatype="link" />
+		</fields>
+		<links>
+			<link field="staff" reltype="has_a" key="id" map="" class="au"/>
+			<link field="bucket" reltype="has_a" key="id" map="" class="cub"/>
+			<link field="mappings" reltype="has_many" key="batch_hold_event" map="" class="abhem"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+                <create permission="MANAGE_HOLD_GROUPS" global_required="true"/>
+                <retrieve/>
+                <update permission="MANAGE_HOLD_GROUPS" global_required="true"/>
+                <delete permission="MANAGE_HOLD_GROUPS" global_required="true"/>
+            </actions>
+        </permacrud>
+	</class>
+	<class id="abhem" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::batch_hold_event_map" oils_persist:tablename="action.batch_hold_event_map" reporter:label="Hold Group Event Map">
+		<fields oils_persist:primary="id" oils_persist:sequence="action.batch_hold_event_map_id_seq">
+			<field name="id" reporter:datatype="id" />
+			<field name="batch_hold_event" reporter:datatype="link"/>
+			<field name="hold" reporter:datatype="link"/>
+		</fields>
+		<links>
+			<link field="batch_hold_event" reltype="has_a" key="id" map="" class="abhe"/>
+			<link field="hold" reltype="has_a" key="id" map="" class="ahr"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+                <retrieve/>
+            </actions>
+        </permacrud>
+	</class>
 	<class id="cubin" controller="open-ils.cstore" oils_obj:fieldmapper="container::user_bucket_item_note" oils_persist:tablename="container.user_bucket_item_note" reporter:label="User Bucket Item Note">
 		<fields oils_persist:primary="id" oils_persist:sequence="container.user_bucket_item_note_id_seq">
 			<field name="id" reporter:datatype="id" />

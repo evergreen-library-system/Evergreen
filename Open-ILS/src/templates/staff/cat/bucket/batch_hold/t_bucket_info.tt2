@@ -1,0 +1,21 @@
+
+<div ng-show="bucket()">
+  <strong>[% l('Hold Group #{{bucket().id()}}: {{bucket().name()}}') %]</strong>
+  <span ng-show="bucket().description()"> / {{bucket().description()}}</span>
+  <br/>
+  <span>
+    <ng-pluralize count="bucketSvc.currentBucket.items().length"
+      when="{'one': '[% l("1 user") %]', 'other': '[% l("{} users") %]'}">
+    </ng-pluralize>
+  </span>
+  <span> / [% l('Created {{bucket().create_time() | date:egDateAndTimeFormat}}') %]</span>
+  <span ng-show="bucket()._owner_name"> / 
+    {{bucket()._owner_name}} 
+    @ {{bucket()._owner_ou}}
+  </span>
+</div>
+
+<div ng-show="!bucket()">
+  <strong>[% l('No Hold Group Selected') %]</strong>
+</div>
+

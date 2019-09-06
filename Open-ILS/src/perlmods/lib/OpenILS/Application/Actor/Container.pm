@@ -142,7 +142,10 @@ sub _bucket_flesh {
         unless($bkt->owner eq $e->requestor->id) {
             my $owner = $e->retrieve_actor_user($bkt->owner)
                 or return $e->die_event;
-            return $e->event unless $e->allowed('VIEW_CONTAINER', $owner->home_ou);
+            return $e->event unless (
+                $e->allowed('VIEW_CONTAINER', $owner->home_ou) or
+                $e->allowed('VIEW_CONTAINER', $bkt->owning_lib)
+            );
         }
     }
 
@@ -335,6 +338,7 @@ __PACKAGE__->register_method(
             {desc => 'Authentication token', type => 'string'},
             {desc => 'Container class.  Can be "copy", "callnumber", "biblio", or "user"', type => 'string'},
             {desc => 'Item or items.  Can either be a single container item object, or an array of them', type => 'object'},
+            {desc => 'Duplicate check.  Avoid adding an item that is already in a container', type => 'bool'},
         ],
         return => {
             desc => 'The ID of the newly created item(s).  In batch context, an array of IDs is returned'
@@ -344,7 +348,7 @@ __PACKAGE__->register_method(
 
 
 sub item_create {
-    my( $self, $client, $authtoken, $class, $item ) = @_;
+    my( $self, $client, $authtoken, $class, $item, $dupe_check ) = @_;
 
     my $e = new_editor(xact=>1, authtoken=>$authtoken);
     return $e->die_event unless $e->checkauth;
@@ -369,21 +373,45 @@ sub item_create {
 
         my $stat;
         if( $class eq 'copy' ) {
+            next if (
+                $dupe_check &&
+                $e->search_container_copy_bucket_item(
+                    {bucket => $one_item->bucket, target_copy => $one_item->target_copy}
+                )->[0]
+            );
             return $e->die_event unless
                 $stat = $e->create_container_copy_bucket_item($one_item);
         }
 
         if( $class eq 'callnumber' ) {
+            next if (
+                $dupe_check &&
+                $e->search_container_call_number_bucket_item(
+                    {bucket => $one_item->bucket, target_call_number => $one_item->target_call_number}
+                )->[0]
+            );
             return $e->die_event unless
                 $stat = $e->create_container_call_number_bucket_item($one_item);
         }
 
         if( $class eq 'biblio' ) {
+            next if (
+                $dupe_check &&
+                $e->search_container_biblio_record_entry_bucket_item(
+                    {bucket => $one_item->bucket, target_biblio_record_entry => $one_item->target_biblio_record_entry}
+                )->[0]
+            );
             return $e->die_event unless
                 $stat = $e->create_container_biblio_record_entry_bucket_item($one_item);
         }
 
         if( $class eq 'user') {
+            next if (
+                $dupe_check &&
+                $e->search_container_user_bucket_item(
+                    {bucket => $one_item->bucket, target_user => $one_item->target_user}
+                )->[0]
+            );
             return $e->die_event unless
                 $stat = $e->create_container_user_bucket_item($one_item);
         }

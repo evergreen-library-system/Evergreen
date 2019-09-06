@@ -210,6 +210,12 @@ angular.module('egPatronApp', ['ngRoute', 'ui.bootstrap', 'egUserBucketMod',
         resolve : resolver
     });
 
+    $routeProvider.when('/circ/patron/:id/hold_subscriptions', {
+        templateUrl: './circ/patron/t_hold_subscriptions',
+        controller: 'HoldSubscriptionsCtrl',
+        resolve : resolver
+    });
+
     $routeProvider.otherwise({redirectTo : '/circ/patron/search'});
 })
 
@@ -629,6 +635,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
 
     $scope.bucketSvc = bucketSvc;
     $scope.bucketSvc.fetchUserBuckets();
+    $scope.bucketSvc.fetchUserSubscriptions();
     $scope.addToBucket = function(item, data, recs) {
         if (recs.length == 0) return;
         var added_count = 0;
@@ -643,7 +650,7 @@ function($scope,  $q,  $routeParams,  $timeout,  $window,  $location,  egCore , 
                     return egCore.net.request(
                         'open-ils.actor',
                         'open-ils.actor.container.item.create',
-                        egCore.auth.token(), 'user', item
+                        egCore.auth.token(), 'user', item, 1
                     );
                 }).then(
                     function(){ added_count++ },
@@ -960,6 +967,82 @@ function($scope,  $routeParams , $location , egCore , patronSvc) {
         $scope.retrievedWithInactive = patronSvc.fetchedWithInactiveCard();
         $scope.invalidAddresses = patronSvc.invalidAddresses;
     });
+
+}])
+
+.controller('HoldSubscriptionsCtrl',
+       ['$scope','$q','$routeParams','$location','egCore','patronSvc','bucketSvc','egGridDataProvider','egConfirmDialog','$timeout','$window',
+function($scope,  $q , $routeParams , $location , egCore , patronSvc,  bucketSvc,  egGridDataProvider,  egConfirmDialog,  $timeout,  $window) {
+
+    $scope.initTab('other', $routeParams.id);
+
+    $scope.bucket_ids = [];
+    $scope.bucket_items = [];
+    $scope.buckets = [];
+
+    $scope.gridControls = {
+        activateItem : function (item) {
+            var url = $location.absUrl().replace(
+                /\/circ\/patron\/.*/, 
+                '/cat/bucket/batch_hold/view/' + item.id());
+            $window.open(url, '_blank').focus();
+        }
+    };
+
+    $scope.gridDataProvider = egGridDataProvider.instance({
+        get : function(offset, count) {
+            return this.arrayNotifier($scope.buckets, offset, count);
+        }
+    });
+
+    function fetchSubscriptions() {
+        $scope.bucket_ids = [];
+        $scope.bucket_items = [];
+        $scope.buckets = [];
+        egCore.pcrud.search('cubi',
+            { target_user : $routeParams.id }
+        ).then(
+            function() {
+                if ($scope.bucket_ids.length > 0) {
+                    egCore.pcrud.search('cub',
+                        { id : $scope.bucket_ids, btype : 'hold_subscription' }
+                    ).then(
+                        function() { $scope.gridControls.refresh() },
+                        null,
+                        function(b) {
+                            $scope.buckets.push(b);
+                            b.items( $scope.bucket_items.filter(i => i.bucket() == b.id()) );
+                        }
+                    );
+                } else {
+                    $scope.gridControls.refresh();
+                }
+            },
+            null,
+            function(i) {
+                $scope.bucket_ids.push(i.bucket());
+                $scope.bucket_items.push(i);
+            }
+        )
+    }
+
+    $scope.removeSubscriptions = function (buckets) {
+        return egConfirmDialog.open(
+            egCore.strings.REMOVE_HOLD_SUBSCRIPTIONS,'',{}
+        ).result.then(function() {
+            var promises = [];
+
+            angular.forEach(buckets, function(b) {
+                angular.forEach(b.items(), function (i) {
+                    promises.push(bucketSvc.detachUser(i.id()));
+                })
+            });
+
+            $q.all(promises).then(fetchSubscriptions);
+        });
+    }
+
+    $timeout(fetchSubscriptions);
 
 }])
 
