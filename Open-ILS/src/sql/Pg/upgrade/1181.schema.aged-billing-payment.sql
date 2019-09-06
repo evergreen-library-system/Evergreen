@@ -1,7 +1,7 @@
 
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1181', :eg_version);
 
 \qecho Migrating aged billing and payment data.  This might take a while.
 
