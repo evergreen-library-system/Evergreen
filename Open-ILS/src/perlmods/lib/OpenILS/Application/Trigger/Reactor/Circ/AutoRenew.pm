@@ -73,6 +73,8 @@ sub handler {
             reason => !$is_renewed ? $evt->{desc} : '',
             new_due_date => $is_renewed ? $evt->{payload}->{circ}->due_date : '',
             old_due_date => !$is_renewed ? $_->due_date() : '',
+            textcode => $evt->{textcode},
+            description => $evt->{desc},
         );
 
         # Create the event from the source circ instead of the
