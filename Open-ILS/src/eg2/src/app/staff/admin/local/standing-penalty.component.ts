@@ -17,40 +17,33 @@ export class StandingPenaltyComponent implements OnInit {
     gridDataSource: GridDataSource;
     initDone = false;
     cspSource: GridDataSource = new GridDataSource();
-    @ViewChild('partsGrid') partsGrid: GridComponent;
+
     @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
     @ViewChild('grid') grid: GridComponent;
     @ViewChild('successString') successString: StringComponent;
     @ViewChild('createString') createString: StringComponent;
     @ViewChild('createErrString') createErrString: StringComponent;
     @ViewChild('updateFailedString') updateFailedString: StringComponent;
+    @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
+    @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
     @ViewChild('cspFlairTooltip') private cspFlairTooltip: StringComponent;
-    
+
     cspRowFlairCallback: (row: any) => GridRowFlairEntry;
 
     canCreate: boolean;
     canDelete: boolean;
     deleteSelected: (rows: IdlObject[]) => void;
-    
+
     permissions: {[name: string]: boolean};
 
     // Default sort field, used when no grid sorting is applied.
     @Input() sortField: string;
 
-    @Input() idlClass: string = "csp";
+    @Input() idlClass = 'csp';
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
     // Optional comma-separated list of read-only fields
     // @Input() readonlyFields: string;
-
-    @Input() set recordId(id: number) {
-        this.recId = id;
-        // Only force new data collection when recordId()
-        // is invoked after ngInit() has already run.
-        if (this.initDone) {
-            this.partsGrid.reload();
-        }
-    }
 
     constructor(
         private pcrud: PcrudService,
@@ -70,42 +63,59 @@ export class StandingPenaltyComponent implements OnInit {
                 // Default sort field
                 orderBy[this.idlClass] = this.sortField;
             }
-        
+
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
                 order_by: orderBy
             };
             return this.pcrud.retrieveAll('csp', searchOps, {fleshSelectors: true});
-        }
-        
-        this.cspRowFlairCallback = (row: any): GridRowFlairEntry => {        
+        };
+
+        this.cspRowFlairCallback = (row: any): GridRowFlairEntry => {
             const flair = {icon: null, title: null};
             if (row.id() < 100) {
                 flair.icon = 'not_interested';
                 flair.title = this.cspFlairTooltip.text;
             }
             return flair;
-        }
+        };
+
+        this.deleteSelected = (idlThings: IdlObject[]) => {
+            idlThings.forEach(idlThing => idlThing.isdeleted(true));
+            this.pcrud.autoApply(idlThings).subscribe(
+                val => {
+                    console.debug('deleted: ' + val);
+                    this.deleteSuccessString.current()
+                        .then(str => this.toast.success(str));
+                },
+                err => {
+                    this.deleteFailedString.current()
+                        .then(str => this.toast.danger(str));
+                },
+                ()  => this.grid.reload()
+            );
+        };
+
     }
 
-    cspReadonlyOverride = (field: string, copy: IdlObject): boolean => {
-        if (copy.id() >= 100) {
+    cspReadonlyOverride = (field: string, csp: IdlObject): boolean => {
+        if (csp.id() >= 100 || csp.id() === undefined) {
             return true;
         }
         return false;
     }
 
     cspGridCellClassCallback = (row: any, col: GridColumn): string => {
-        if (col.name === "id" && row.a[0] < 100) {
-            return "text-danger";
+        if (col.name === 'id' && row.a[0] < 100) {
+            return 'text-danger';
         }
-        return "";
-    };
+        return '';
+    }
 
     showEditDialog(standingPenalty: IdlObject): Promise<any> {
         this.editDialog.mode = 'update';
-        this.editDialog.recId = standingPenalty["id"]();
+        this.editDialog.recordId = standingPenalty['id']();
         return new Promise((resolve, reject) => {
             this.editDialog.open({size: this.dialogSize}).subscribe(
                 result => {
@@ -139,7 +149,7 @@ export class StandingPenaltyComponent implements OnInit {
         this.editDialog.mode = 'create';
         // We reuse the same editor for all actions.  Be sure
         // create action does not try to modify an existing record.
-        this.editDialog.recId = null;
+        this.editDialog.recordId = null;
         this.editDialog.record = null;
         this.editDialog.open({size: this.dialogSize}).subscribe(
             ok => {
@@ -155,6 +165,6 @@ export class StandingPenaltyComponent implements OnInit {
             }
         );
     }
-           
+
 }
 

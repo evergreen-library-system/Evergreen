@@ -2,9 +2,13 @@
 <eg-staff-banner bannerText="Standing Penalty Types" i18n-bannerText>
 </eg-staff-banner>
 
+<eg-string #successString i18n-text text="Standing Penalty Update Succeeded"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Standing Penalty failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Standing Penalty succeeded"></eg-string>
 <eg-string #cspFlairTooltip i18n-text text="Limited Editing"></eg-string>
+
 <div class="w-100 mt-2 mb-2">
-  <eg-grid idlClass="csp"
+  <eg-grid #grid idlClass="csp"
     [dataSource]="cspSource"
     [rowFlairIsEnabled]="true"
     [rowFlairCallback]="cspRowFlairCallback"

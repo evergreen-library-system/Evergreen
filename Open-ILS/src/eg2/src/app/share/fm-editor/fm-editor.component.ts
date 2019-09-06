@@ -460,7 +460,7 @@ export class FmRecordEditorComponent
 
         let promise = null;
         const fieldOptions = this.fieldOptions[field.name] || {};
-                
+
         if (this.mode === 'view') {
             field.readOnly = true;
         } else if (fieldOptions.isReadonlyOverride) {
