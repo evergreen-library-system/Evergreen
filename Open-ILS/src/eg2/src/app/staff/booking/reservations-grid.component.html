@@ -58,7 +58,6 @@
 <ng-template #endTimeTemplate let-field="field" let-record="record">
   <eg-datetime-select
     domId="endTime"
-    ngModel
     [showTZ]="editDialog.timezone"
     [timezone]="editDialog.timezone"
     [egNotBeforeMoment]="momentizeIsoString(record['start_time'](), editDialog.timezone)"
