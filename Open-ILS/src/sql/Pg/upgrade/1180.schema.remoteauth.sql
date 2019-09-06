@@ -1,5 +1,7 @@
 BEGIN;
 
+SELECT evergreen.upgrade_deps_block_check('1180', :eg_version);
+
 INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 615, 'ADMIN_REMOTEAUTH', oils_i18n_gettext( 615,
     'Administer remote patron authentication', 'ppl', 'description' ));
