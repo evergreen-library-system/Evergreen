@@ -1,0 +1,18 @@
+Configurable APIs for Patron Authentication and Retrieval
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Many external services need to authenticate patrons and retrieve information
+about their accounts from Evergreen.  Most of these services support some form
+of HTTP-based authentication, but every service has its own requirements and
+none of them support native Evergreen authentication.  Meanwhile, libraries
+often need to restrict access to these external services based on patron type,
+current status, standing penalties, and so on.
+
+To meet these needs, Evergreen now has support for separate, configurable HTTP
+API endpoints for remote patron authentication and retrieval.  Each RemoteAuth
+endpoint handles a different external service or authentication method.  You
+set up the endpoints you want in your Apache config; each one uses a generic
+mod_perl handler to manage incoming requests, and specifies a Perl module that
+can actually talk to the external service, as well as an authentication profile
+that determines which patrons can be authenticated at this endpoint.  Support
+for https://tools.ietf.org/html/rfc7617["Basic" HTTP Authentication] is
+provided as a reference implementation.
