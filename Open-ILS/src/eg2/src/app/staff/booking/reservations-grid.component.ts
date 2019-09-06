@@ -141,7 +141,7 @@ export class ReservationsGridComponent implements OnInit {
         this.editSelected = (idlThings: IdlObject[]) => {
             const editOneThing = (thing: IdlObject) => {
                 if (!thing) { return; }
-                this.showEditDialog(thing).subscribe(
+                this.showEditDialog(thing).then(
                     () => editOneThing(idlThings.shift()));
             };
            editOneThing(idlThings.shift()); };
@@ -283,12 +283,16 @@ export class ReservationsGridComponent implements OnInit {
     showEditDialog(idlThing: IdlObject) {
         this.editDialog.recId = idlThing.id();
         this.editDialog.timezone = idlThing['timezone'];
-        return this.editDialog.open({size: 'lg'}).pipe(tap(
-            () => {
-                this.toast.success('Reservation successfully updated'); // TODO: needs i18n, pluralization
-                this.grid.reload();
-            }
-        ));
+        return new Promise((resolve, reject) => {
+            this.editDialog.open({size: 'lg'}).subscribe(
+                ok => {
+                    this.toast.success('Reservation successfully updated'); // TODO: needs i18n, pluralization
+                    this.grid.reload();
+                    resolve(ok)
+                },
+                rejection => {}
+            );
+        });
     }
 
     filterByResourceBarcode(barcode: string) {
