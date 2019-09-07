@@ -20197,19 +20197,6 @@ $TEMPLATE$
 -- Allow for 1k stock templates
 SELECT SETVAL('config.print_template_id_seq'::TEXT, 1000);
 
-INSERT INTO config.workstation_setting_type
-    (name, grp, datatype, label)
-VALUES (
-    'eg.grid.circ.patron.group_members', 'gui', 'object',
-    oils_i18n_gettext(
-    'eg.grid.circ.patron.group_members',
-    'Grid Config: circ.patron.group_members',
-    'cwst', 'label')
-);
-
-INSERT INTO config.workstation_setting_type (name,label,grp,datatype)
-VALUES ('eg.circ.bills.annotatepayment','Bills: Annotate Payment', 'circ', 'bool');
-
 INSERT INTO config.workstation_setting_type (name, grp, datatype, label)
 VALUES (
     'eg.grid.booking.manage', 'gui', 'object',
