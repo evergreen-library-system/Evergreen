@@ -40,7 +40,10 @@ my $e = new_editor( authtoken => $staff_login->{payload}->{authtoken} );
 $e->init;
 
 my $client = LWP::UserAgent->new;
-$client->ssl_opts( verify_hostname => 0 );
+$client->ssl_opts(
+    SSL_verify_mode => 0,
+    verify_hostname => 0
+);
 
 # my $res = $client->request( $method, $uri, $headers, $content, $request_timeout );
 
