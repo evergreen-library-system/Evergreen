@@ -1,5 +1,5 @@
 New Action Trigger - Fine Limit Exceeded
-^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 New optional email notification that is sent when a block is applied
 to a patron's account due to excess fines.
 

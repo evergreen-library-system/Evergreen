@@ -1,5 +1,5 @@
 Copy Edit Interface Display Modifications
-^^^^^^^^^^^^^^^^^^^^^^^^^^6^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Hide Disabled Fields
 ++++++++++++++++++++
