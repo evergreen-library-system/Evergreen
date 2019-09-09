@@ -67,7 +67,7 @@ sub _prepare_biblio_search_basics {
             $query = "bib_level(s) $query";
         }
 
-        $query = "$qtype:$query" unless $qtype eq 'keyword' and $i == 0;
+        $query = "$qtype:$query" unless ($query =~ /^$qtype:/ or ($qtype eq 'keyword' and $i == 0));
 
         $bool = ($bool and $bool eq 'or') ? '||' : '&&';
         $full_query = $full_query ? "($full_query $bool $query)" : $query;
