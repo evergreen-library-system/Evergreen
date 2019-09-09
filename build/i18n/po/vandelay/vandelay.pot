@@ -27,7 +27,7 @@ msgstr ""
 msgid "Acquisitions Records"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:285
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:296
 msgid "Apply"
 msgstr ""
 
@@ -63,6 +63,14 @@ msgstr ""
 msgid "Auto-overlay In-process Acquisitions Copies"
 msgstr ""
 
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:114
+msgid "Auto-overlay On-order Cataloguing  Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:265
+msgid "Auto-overlay On-order Cataloguing Copies"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:4 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:43
 msgid "Back To Import Queue"
 msgstr ""
@@ -83,7 +91,7 @@ msgstr ""
 msgid "CSV"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:267 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:286
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:278 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:297
 msgid "Cancel"
 msgstr ""
 
@@ -99,7 +107,7 @@ msgstr ""
 msgid "Copy Import Actions"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:280
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:291
 msgid "Copy Records to Bucket"
 msgstr ""
 
@@ -183,7 +191,7 @@ msgstr ""
 msgid "Export Records"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:128
 msgid "File to Upload:"
 msgstr ""
 
@@ -215,7 +223,7 @@ msgstr ""
 msgid "ISSN"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:281
 msgid "Import"
 msgstr ""
 
@@ -399,7 +407,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:282
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:293
 msgid "Please enter the name of the bucket to append/create."
 msgstr ""
 
@@ -575,7 +583,7 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:120
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:130
 msgid "Upload"
 msgstr ""
 
@@ -589,6 +597,10 @@ msgstr ""
 
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:5
 msgid "Use Field Number"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+msgid "Use Org Unit Matching in Copy to Determine Best Match"
 msgstr ""
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:17
