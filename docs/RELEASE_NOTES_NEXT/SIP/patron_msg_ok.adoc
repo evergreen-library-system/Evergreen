@@ -1,0 +1,9 @@
+Return an OK Screen Message for Users in Good Standing
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If your PC management system or selfcheck looks for a screen
+message value of OK to evaulate user standing this can be
+enabled by adding the want_patron_ok value to a sip login
+and setting the value to true. Using a login setting like
+this allows you to only send this screeen message to those
+clients that expect it.
+
