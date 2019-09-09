@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-12-14 21:52-0400\n"
+"POT-Creation-Date: 2019-08-22 12:04-0400\n"
 "PO-Revision-Date: 2016-11-11 21:44+0000\n"
 "Last-Translator: Anahi Valdez <avaldez@emeralddata.net>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:35+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
+"X-Launchpad-Export-Date: 2019-08-23 05:57+0000\n"
+"X-Generator: Launchpad (build 19022)\n"
 
 #: 1621.CONTAINER_COPY_BUCKET_NOT_FOUND:514
 msgid "The requested container_copy_bucket was not found"
@@ -58,7 +58,7 @@ msgstr "El patrón es prohibido."
 msgid "The requested config_circ_matrix_test was not found"
 msgstr "el config_circ_matrix_test requerido no se ha encontrado"
 
-#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:765
+#: 1900.URL_VERIFY_NOT_SESSION_CREATOR:767
 msgid ""
 "You did not create this URL Verify session, so you cannot change it.  You "
 "may be able to clone it."
@@ -70,19 +70,19 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr "el metabib_series_field_entry requerido no ha sido encontrado"
 
-#: 11105.PATRON_CREDIT_DISABLED:1043
+#: 11105.PATRON_CREDIT_DISABLED:1045
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
 msgstr ""
 "Los pagos mediante crédito del usuario no están permitidos para la "
 "transacción seleccionada."
 
-#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:799
+#: 4003.CREDIT_PROCESSOR_NOT_ALLOWED:801
 msgid "The credit card processor you have named is not allowed"
 msgstr ""
 "El procesador de tarjetas de crédito que usted ha nombrado no está permitido"
 
-#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:805
+#: 4010.CREDIT_PROCESSOR_NO_DEFAULT_SELECTED:807
 msgid "No default credit processor is selected"
 msgstr "No se ha seleccionado por defecto ningún procesador de crédito"
 
@@ -114,11 +114,19 @@ msgstr "No se encontró la action_open_circ_count_by_circ_mod solicitado"
 msgid "The requested actor_card was not found"
 msgstr "La actor_card solicitada no fue encontrada"
 
+#: 1882.RECORD_REFERENCED_BY_LINEITEM:708
+msgid "The selected bib record has an open lineitem order referencing it."
+msgstr ""
+
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:998
+msgid "The lineitem detail has no owning_lib"
+msgstr "El detalle línea de pedido no tiene owning_lib"
+
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
 msgid "The requested metabib_subject_field_entry was not found"
 msgstr "el metabib_subject_field_entry requerido no ha sido encontrado"
 
-#: 1711.BIB_QUEUE_EXISTS:749
+#: 1711.BIB_QUEUE_EXISTS:751
 msgid "A bib record queue with the same name already exists"
 msgstr "Una cola de registro bib con el mismo nombre ya existe"
 
@@ -152,7 +160,7 @@ msgstr "La  action_survey_response solicitada no fue encontrada"
 msgid "The requested money_open_billable_transaction_summary was not found"
 msgstr "La money_open_billable_transaction_summary no fue encontrada"
 
-#: 7000.ROUTE_ITEM:842
+#: 7000.ROUTE_ITEM:844
 msgid ""
 "A copy needs to be routed to a different location The destination location "
 "will be specified by an 'org' key within the event object"
@@ -176,7 +184,7 @@ msgstr "No se encontró la metabib_full_rec solicitado"
 msgid "No TCN could be found that does not collide with existing records"
 msgstr "No se pudo encontrar TCN que no choquen con los registros existentes"
 
-#: 2001.DATABASE_UPDATE_FAILED:776
+#: 2001.DATABASE_UPDATE_FAILED:778
 msgid "The attempt to write to the DB failed"
 msgstr "El intento de escribir en la base de datos no"
 
@@ -188,8 +196,8 @@ msgstr "No se encontró la metabib_keyword_field_entry solicitado"
 msgid "The requested config_audience_map was not found"
 msgstr "No se encontró la config_audience_map solicitado"
 
-#: 8004.OFFLINE_CONFIG_ERROR:954 8005.OFFLINE_CHECKSUM_FAILED:957
-#: 8006.OFFLINE_SESSION_NOT_FOUND:960
+#: 8004.OFFLINE_CONFIG_ERROR:956 8005.OFFLINE_CHECKSUM_FAILED:959
+#: 8006.OFFLINE_SESSION_NOT_FOUND:962
 msgid "Offline server is not configured properly"
 msgstr "El servidor fuera de linea no está configurado correctamente"
 
@@ -198,7 +206,7 @@ msgid "User login session has either timed out or does not exist"
 msgstr ""
 "Sesión de inicio de sesión del usuario ha caducado ya sea o no existe"
 
-#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:808
+#: 4019.CREDIT_PROCESSOR_INVALID_CC_NUMBER:810
 msgid "An invalid credit card number has been supplied."
 msgstr "Se ha proporcionado un número de tarjeta de crédito no válido"
 
@@ -209,6 +217,11 @@ msgstr "No se encontró la config_billing_type solicitado"
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
 msgstr "No se encontró la acq.fund_encumbrance_total solicitado"
+
+#: 8002.OFFLINE_FILE_ERROR:950
+msgid "An offline file or directory could not be created or accessed"
+msgstr ""
+"Un archivo o directorio en línea no pudieron ser creados o se puede acceder"
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
 msgid "The requested actor_workstation was not found"
@@ -245,11 +258,11 @@ msgid ""
 msgstr ""
 "Alguien intentó recuperar un usuario del sistema y no se encontró el usuario"
 
-#: 7011.COPY_STATUS_LOST:880
+#: 7011.COPY_STATUS_LOST:882
 msgid "Copy is marked as lost"
 msgstr "Copia señalada como perdida"
 
-#: 7004.COPY_NOT_AVAILABLE:859
+#: 7004.COPY_NOT_AVAILABLE:861
 msgid "Copy is not available"
 msgstr "La copia no está disponible"
 
@@ -265,7 +278,7 @@ msgstr "No se encontró la acq.fund_debit_total solicitado"
 msgid "The requested reporter_output_folder was not found"
 msgstr "No se encontró la reporter_output_folder solicitado"
 
-#: 7008.MAX_RENEWALS_REACHED:871
+#: 7008.MAX_RENEWALS_REACHED:873
 msgid "Circulation has no more renewals remaining"
 msgstr "El préstamo ya no tiene renovaciones disponibles"
 
@@ -273,11 +286,11 @@ msgstr "El préstamo ya no tiene renovaciones disponibles"
 msgid "This account is marked as inactive"
 msgstr "Esta cuenta está marcada como inactiva"
 
-#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1055
+#: 11008.SERIAL_DISTRIBUTION_NOT_EMPTY:1057
 msgid "The distribution still has dependent objects"
 msgstr ""
 
-#: 8003.OFFLINE_PARAM_ERROR:951
+#: 8003.OFFLINE_PARAM_ERROR:953
 msgid "Missing params in offline upload"
 msgstr "Params que faltan en línea de carga"
 
@@ -285,7 +298,7 @@ msgstr "Params que faltan en línea de carga"
 msgid "The requested reporter_report_folder was not found"
 msgstr "No se encontró la reporter_report_folder solicitado"
 
-#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1061
+#: 11010.SERIAL_CAPTION_AND_PATTERN_NOT_EMPTY:1063
 msgid "The prediction pattern still has dependent objects"
 msgstr ""
 
@@ -293,7 +306,7 @@ msgstr ""
 msgid "The requested perm_ex was not found"
 msgstr "No se encontró la perm_ex solicitado"
 
-#: 10101.ACQ_ALREADY_CANCELED:1006
+#: 10101.ACQ_ALREADY_CANCELED:1008
 msgid "The object is already canceled."
 msgstr "El objeto ya está cancelado."
 
@@ -331,15 +344,11 @@ msgstr "No se encontró la money_collections_tracker solicitado"
 msgid "An authority record already exists with the requested ARN"
 msgstr "Un registro de autoridad ya existe con el ARN solicitado"
 
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1019
-msgid "The caption/pattern still has dependent issuances"
-msgstr "La foto/patrón aún tiene emisiones dependientes"
-
-#: 5000.PERM_FAILURE:822
+#: 5000.PERM_FAILURE:824
 msgid "Permission Denied"
 msgstr "Permiso Denegado"
 
-#: 7015.NEGATIVE_PATRON_BALANCE:892
+#: 7015.NEGATIVE_PATRON_BALANCE:894
 msgid "This requested action would result in a negative patron balance"
 msgstr ""
 "Esta acción solicitada tendría como resultado un balance negativo patrón"
@@ -348,7 +357,7 @@ msgstr ""
 msgid "The requested actor_user_standing_penalty was not found"
 msgstr "No se encontró el actor_user_standing_penalty solicitado"
 
-#: 8000.OFFLINE_SESSION_ACTIVE:942
+#: 8000.OFFLINE_SESSION_ACTIVE:944
 msgid "An offline session for this location is currently processing"
 msgstr ""
 "Una sesión sin conexión para esta ubicación está procesando actualmente"
@@ -361,11 +370,11 @@ msgstr "El nombre de usuario ya existe en la base de datos"
 msgid "The requested actor_stat_cat_entry was not found"
 msgstr "No se encontró el actor_stat_cat_entry solicitado"
 
-#: 1710.CONTAINER_EXISTS:746
+#: 1710.CONTAINER_EXISTS:748
 msgid "User has already created a bucket with the requested name"
 msgstr "El usuario ya ha creado un cubo con el nombre solicitado"
 
-#: 7001.PATRON_BAD_STANDING:849
+#: 7001.PATRON_BAD_STANDING:851
 msgid ""
 "The patron in question is not able to check out materials because their "
 "account is in bad standing"
@@ -377,7 +386,7 @@ msgstr ""
 msgid "Requested billing note does not exist"
 msgstr "Solicitada nota de facturación no existe"
 
-#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1027
+#: 11102.SERIAL_DISTRIBUTION_HAS_NO_CALL_NUMBER:1029
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a call number."
@@ -389,7 +398,7 @@ msgstr ""
 msgid "The requested container_biblio_record_entry_bucket was not found"
 msgstr "No se encontró la container_biblio_record_entry_bucket solicitado"
 
-#: 7021.RESERVATION_NOT_FOUND:913
+#: 7021.RESERVATION_NOT_FOUND:915
 msgid "Booking reservation not found"
 msgstr "Reserva de reserva no encontrado"
 
@@ -397,7 +406,7 @@ msgstr "Reserva de reserva no encontrado"
 msgid "The bill is already voided"
 msgstr "El proyecto de ley ya se anula"
 
-#: 1700.NON_CAT_TYPE_EXISTS:710
+#: 1700.NON_CAT_TYPE_EXISTS:712
 msgid "The non-cataloged type object already exists"
 msgstr "El tipo de objeto no catalogado ya existe"
 
@@ -409,7 +418,7 @@ msgstr ""
 "El acq.purchase_order solicitada no se puede dividir, ya que no tiene más de "
 "una línea de pedido"
 
-#: 10004.ACQ_LINEITEM_NO_PRICE:999
+#: 10004.ACQ_LINEITEM_NO_PRICE:1001
 msgid "The lineitem has no price"
 msgstr "La línea de pedido no tiene precio"
 
@@ -457,7 +466,7 @@ msgstr "La consulta Z no tiene el formato correcto"
 msgid "The given user barcode already exists"
 msgstr "El código de barras de usuario proporcionado ya existe"
 
-#: 1713.SURVEY_RESPONSES_EXIST:755
+#: 1713.SURVEY_RESPONSES_EXIST:757
 msgid "Responses to this survey exist"
 msgstr "Existen respuestas a esta encuesta"
 
@@ -469,11 +478,11 @@ msgstr "No se encontró la config_metabib_field solicitado"
 msgid "The requested actor_org_address was not found"
 msgstr "No se encontró la actor_org_address solicitado"
 
-#: 11009.SERIAL_STREAM_NOT_EMPTY:1058
+#: 11009.SERIAL_STREAM_NOT_EMPTY:1060
 msgid "The stream still has dependent objects"
 msgstr ""
 
-#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1031
+#: 11103.TRANSIT_CHECKIN_INTERVAL_BLOCK:1033
 msgid "Checkin attempted on item during minimum transit checkin interval."
 msgstr ""
 "El registro trató sobre el tema durante el intervalo mínimo registro de "
@@ -491,7 +500,7 @@ msgstr "No se encontró el acq.fund_spent_total solicitado"
 msgid "The requested permission_grp_tree was not found"
 msgstr "No se encontró el permission_grp_tree solicitado"
 
-#: 10001.ACQ_LINEITEM_NO_COPIES:990
+#: 10001.ACQ_LINEITEM_NO_COPIES:992
 msgid "The lineitem has no attached copies"
 msgstr "La línea de pedido se adjunta copias sin"
 
@@ -503,7 +512,7 @@ msgstr "No se encontró la action_in_house_use solicitado"
 msgid "The requested acq.lineitem_provider_attr_definition was not found"
 msgstr "No se encontró el acq.lineitem_provider_attr_definition solicitado"
 
-#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:740
+#: 1708.MONEY_COLLECTIONS_TRACKER_EXISTS:742
 msgid ""
 "A duplicate money.collections_tracker object already exists in the database"
 msgstr ""
@@ -513,7 +522,7 @@ msgstr ""
 msgid "The requested metabib_metarecord_source_map was not found"
 msgstr "No se encontró el metabib_metarecord_source_map solicitado"
 
-#: 7009.CIRC_CLAIMS_RETURNED:874
+#: 7009.CIRC_CLAIMS_RETURNED:876
 msgid "Requested circulation is marked claims returned"
 msgstr "La circulación solicitada se devuelve reivindicaciones marcados"
 
@@ -541,7 +550,7 @@ msgstr ""
 "La copia seleccionado puede no circula debido a la ubicación de inicio del "
 "destinatario no está dentro del alcance de la circulación de la copia"
 
-#: 10005.ACQ_LINEITEM_NO_PROVIDER:1002
+#: 10005.ACQ_LINEITEM_NO_PROVIDER:1004
 msgid "The lineitem has no provider"
 msgstr "La línea de pedido tiene ningún proveedor"
 
@@ -549,7 +558,7 @@ msgstr "La línea de pedido tiene ningún proveedor"
 msgid "The requested money_work_payment was not found"
 msgstr "No se encontró el money_work_payment solicitado"
 
-#: 2000.BAD_PARAMS:773
+#: 2000.BAD_PARAMS:775
 msgid "Invalid parameters were encountered in a method"
 msgstr "Los parámetros no válidos se encontraron en un método"
 
@@ -561,12 +570,7 @@ msgstr "No se encontró el money_cash_payment solicitado"
 msgid "The selected location cannot have volumes attached"
 msgstr "La ubicación seleccionada no puede haber volúmenes adjunta"
 
-#: 8002.OFFLINE_FILE_ERROR:948
-msgid "An offline file or directory could not be created or accessed"
-msgstr ""
-"Un archivo o directorio en línea no pudieron ser creados o se puede acceder"
-
-#: 1704.TCN_EXISTS:728
+#: 1704.TCN_EXISTS:730
 msgid "A record already exists with the requested TCN value"
 msgstr "Ya existe un registro con el valor TCN solicitado"
 
@@ -583,7 +587,7 @@ msgstr "Evento de marcador de posición. Se utiliza para el desarrollo sólo"
 msgid "The requested biblio_record_node was not found"
 msgstr "No se encontró el biblio_record_node solicitado"
 
-#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:769
+#: 1901.URL_VERIFY_SESSION_ALREADY_SEARCHED:771
 msgid "This session has already been searched."
 msgstr "Esta sesión ya ha sido registrada."
 
@@ -591,7 +595,7 @@ msgstr "Esta sesión ya ha sido registrada."
 msgid "The requested actor_user_setting was not found"
 msgstr "No se encontró la solicitud actor_user_setting"
 
-#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:828
+#: 7026.PATRON_NOT_AN_ACTIVE_PASSWORD_RESET_REQUEST:830
 msgid ""
 "The user attempted to update their password using a stale or inactive "
 "password reset request session."
@@ -604,7 +608,7 @@ msgid "The user does not have a valid email address assigned"
 msgstr ""
 "El usuario no tiene asignada una dirección de correo electrónico valida"
 
-#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:788
+#: 2005.OBJECT_UNIQUE_IDENTIFIER_USED:790
 msgid ""
 "You are trying to create an object with a unique identifier (such as a "
 "'name' field) that is already in use."
@@ -616,7 +620,7 @@ msgstr ""
 msgid "The requested acq.fund_spent_balance was not found"
 msgstr "No se encontró la acq.fund_spent_balance solicitado"
 
-#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1015
+#: 11000.SERIAL_SUBSCRIPTION_NOT_EMPTY:1017
 msgid "The subscription still has dependent objects"
 msgstr "La suscripción todavía tiene objetos dependientes"
 
@@ -632,11 +636,11 @@ msgstr "No se encontró la config_lit_form_map solicitado"
 msgid "The requested metabib_record_descriptor was not found"
 msgstr "No se encontró la metabib_record_descriptor solicitado"
 
-#: 10102.ACQ_NOT_CANCELABLE:1009
+#: 10102.ACQ_NOT_CANCELABLE:1011
 msgid "The object is not in a cancelable state."
 msgstr "El objeto no está en un estado cancelable."
 
-#: 7012.COPY_STATUS_MISSING:883
+#: 7012.COPY_STATUS_MISSING:885
 msgid "Copy is marked as missing"
 msgstr "Copia señalada como faltante"
 
@@ -648,7 +652,7 @@ msgstr ""
 "Alguien intentó recuperar un objeto circulación del sistema y no se encontró "
 "el objeto."
 
-#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:793
+#: 4001.CREDIT_PROCESSOR_NOT_ENABLED:795
 msgid "Credit card processor not enabled"
 msgstr "Procesador de tarjetas de crédito no está activado"
 
@@ -656,7 +660,7 @@ msgstr "Procesador de tarjetas de crédito no está activado"
 msgid "The requested actor_user_note was not found"
 msgstr "No se encontró el actor_user_note solicitado"
 
-#: 7005.LOCATION_CIRC_NOT_ALLOWED:862
+#: 7005.LOCATION_CIRC_NOT_ALLOWED:864
 msgid "Location does not allow materials to circulate"
 msgstr "La ubicación no permite que los materiales circulen"
 
@@ -672,7 +676,7 @@ msgstr "Fallo el inicio de sesión."
 msgid "The requested money_credit_card_payment was not found"
 msgstr "No se encontró el money_credit_card_payment solicitado"
 
-#: 7023.RESERVATION_BAD_PARAMS:919
+#: 7023.RESERVATION_BAD_PARAMS:921
 msgid "Provided parameters describe unacceptable reservation."
 msgstr "Parámetros proporcionados describen reserva inaceptable."
 
@@ -680,12 +684,12 @@ msgstr "Parámetros proporcionados describen reserva inaceptable."
 msgid "The requested acq.funding_source_balance was not found"
 msgstr "No se encontró la acq.funding_source_balance solicitado"
 
-#: 10000.ACQ_LINEITEM_APPROVED:987
+#: 10000.ACQ_LINEITEM_APPROVED:989
 msgid "The lineitem cannot be altered because it has already been approved"
 msgstr ""
 "La línea de pedido no puede ser alterado debido a que ya ha sido aprobado"
 
-#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:758
+#: 1714.HIGH_LEVEL_HOLD_HAS_NO_COPIES:760
 msgid ""
 "A hold request at a higher level than copy has been attempted, but there are "
 "no copies that belonging to the higher-level unit."
@@ -709,7 +713,7 @@ msgstr "No se encontró el asset_stat_cat_entry solicitado"
 msgid "The requested config_non_cataloged_type was not found"
 msgstr "No se encontró el config_non_cataloged_type solicitado"
 
-#: 1716.COPY_LOCATION_NOT_EMPTY:716
+#: 1716.COPY_LOCATION_NOT_EMPTY:718
 msgid "The copy location is not empty"
 msgstr "La ruta de la copia no está vacía"
 
@@ -741,7 +745,7 @@ msgstr "No se encontró el money_billable_transaction solicitado"
 msgid "The requested permission.usr_object_perm_map was not found"
 msgstr "No se encontró el permission.usr_object_perm_map solicitado"
 
-#: 7020.COPY_RESERVED:910
+#: 7020.COPY_RESERVED:912
 msgid "Item reserved for booking request"
 msgstr "Elemento reservado para solicitud de reserva"
 
@@ -753,7 +757,7 @@ msgstr "No se encontró el money_open_user_summary solicitado"
 msgid "No change occurred"
 msgstr "Ningún cambio se produjo"
 
-#: 7026.COPY_STATUS_LOST_AND_PAID:928
+#: 7026.COPY_STATUS_LOST_AND_PAID:930
 msgid "Copy is marked as lost and paid"
 msgstr "Copia es marcado como perdido y pagado"
 
@@ -766,7 +770,7 @@ msgstr ""
 msgid "The requested money_credit_payment was not found"
 msgstr "No se encontró el money_credit_payment solicitado"
 
-#: 7017.ROUTE_TO_COPY_LOCATION:901
+#: 7017.ROUTE_TO_COPY_LOCATION:903
 msgid ""
 "A copy needs to be routed to a copy location.  The location should be "
 "specified within the event with a 'location' key"
@@ -778,7 +782,7 @@ msgstr ""
 msgid "The requested metabib_title_field_entry was not found"
 msgstr "No se encontró la metabib_title_field_entry solicitado"
 
-#: 7022.RESERVATION_CAPTURE_FAILED:916
+#: 7022.RESERVATION_CAPTURE_FAILED:918
 msgid "Booking reservation capture failed"
 msgstr "Captura de la reserva de reserva falló"
 
@@ -802,7 +806,7 @@ msgstr ""
 "Alguien intentó recuperar un objeto de elemento contenedor del sistema y no "
 "se encontró el objeto."
 
-#: 2002.DATABASE_QUERY_FAILED:779
+#: 2002.DATABASE_QUERY_FAILED:781
 msgid "The attempt to query to the DB failed"
 msgstr "El intento de consulta a la base de datos ha fallado"
 
@@ -826,7 +830,11 @@ msgstr "La contraseña facilitada no es la correcta"
 msgid "The requested config_item_type_map was not found"
 msgstr "No se encontró el config_item_type_map solicitado"
 
-#: 8007.OFFLINE_SESSION_EXISTS:963
+#: 12000.ITEM_TO_MARK_CHECKED_OUT:1069
+msgid "The item to be marked is checked out to a patron."
+msgstr ""
+
+#: 8007.OFFLINE_SESSION_EXISTS:965
 msgid "A session with the given name already exists"
 msgstr "Una sesión con el nombre dado ya existe"
 
@@ -834,11 +842,11 @@ msgstr "Una sesión con el nombre dado ya existe"
 msgid "The requested config_circ_matrix_ruleset_not_found was not found"
 msgstr "No se encontró la config_circ_matrix_ruleset_not_found solicitado"
 
-#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:993
+#: 10002.ACQ_LINEITEM_DETAIL_NO_FUND:995
 msgid "The lineitem detail has no associated fund"
 msgstr "El detalle línea de pedido no dispone de fondos asociados"
 
-#: 7003.COPY_CIRC_NOT_ALLOWED:856
+#: 7003.COPY_CIRC_NOT_ALLOWED:858
 msgid "Target copy is not allowed to circulate"
 msgstr "Copia de destino no está permitido circular"
 
@@ -849,6 +857,10 @@ msgstr "No se encontró el config_identification_type solicitado"
 #: 1579.ASSET_COPY_LOCATION_NOT_FOUND:389
 msgid "The requested asset_copy_location was not found"
 msgstr "No se encontró la asset_copy_location solicitado"
+
+#: 12001.ITEM_TO_MARK_IN_TRANSIT:1072
+msgid "The item to be marked is in transit."
+msgstr ""
 
 #: 1506.CONTAINER_NOT_FOUND:209
 msgid ""
@@ -862,7 +874,7 @@ msgstr ""
 msgid "The requested asset_call_number_note was not found"
 msgstr "No se encontró la asset_call_number_note solicitado"
 
-#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:802
+#: 4004.CREDIT_PROCESSOR_NOT_SPECIFIED:804
 msgid ""
 "No credit card processor specified either in org unit settings or in call to "
 "credit service API method."
@@ -874,7 +886,7 @@ msgstr ""
 msgid "Requested address was not found"
 msgstr "No se encontró la dirección solicitada"
 
-#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:853
+#: 7002.PATRON_EXCEEDS_CHECKOUT_COUNT:855
 msgid ""
 "The patron in question has the maximum number of items already checked out"
 msgstr ""
@@ -896,7 +908,7 @@ msgstr "No se encontró la actor_usr_note solicitado"
 msgid "The requested permission_grp_perm_map was not found"
 msgstr "No se encontró la permission_grp_perm_map solicitado"
 
-#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:825
+#: 7025.PATRON_TOO_MANY_ACTIVE_PASSWORD_RESET_REQUESTS:827
 msgid ""
 "There are too many active password reset request sessions for this patron."
 msgstr ""
@@ -907,15 +919,15 @@ msgstr ""
 msgid "Payment of an item deposit is required."
 msgstr "Se requiere el pago de un depósito de artículo."
 
-#: 1709.MAX_HOLDS:743
+#: 1709.MAX_HOLDS:745
 msgid "User has reached the maximum number of holds"
 msgstr "Se ha alcanzado el número máximo de las bodegas"
 
-#: 1706.ITEM_BARCODE_EXISTS:734
+#: 1706.ITEM_BARCODE_EXISTS:736
 msgid "An item with the same barcode exists"
 msgstr "Existe un elemento con el mismo código de barras"
 
-#: 7014.COPY_IN_TRANSIT:889
+#: 7014.COPY_IN_TRANSIT:891
 msgid "Copy is in transit"
 msgstr "Copia está en tránsito"
 
@@ -924,13 +936,17 @@ msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr ""
 "Se encontró un ejemplar con una biblioteca circulante a distancia (circ_lib)"
 
-#: 1702.OPEN_CIRCULATION_EXISTS:722
+#: 1702.OPEN_CIRCULATION_EXISTS:724
 msgid "There is an open circulation on the requested item"
 msgstr "Hay una circulación abierta en el elemento solicitado"
 
 #: 0.SUCCESS:14
 msgid "Success"
 msgstr "Éxito"
+
+#: 12002.ITEM_TO_MARK_LAST_HOLD_COPY:1075
+msgid "The item to be marked is the last possible target for a hold."
+msgstr ""
 
 #: 1231.RECORD_NOT_EMPTY:159
 msgid "The selected bib record has volumes attached"
@@ -940,13 +956,13 @@ msgstr "El registro seleccionado se babero volúmenes adjunta"
 msgid "The requested action_hold_request was not found"
 msgstr "No se encontró la action_hold_request solicitado"
 
-#: 8011.SKIP_ASSET_CHANGED:975
+#: 8011.SKIP_ASSET_CHANGED:977
 msgid "Asset status was changed since the offline transaction was recorded"
 msgstr ""
 "Estado de los activos fue cambiado desde que se registró la transacción "
 "fuera de línea"
 
-#: 7029.MAX_AUTO_RENEWALS_REACHED:934
+#: 7029.MAX_AUTO_RENEWALS_REACHED:936
 msgid "Circulation has no more auto-renewals remaining"
 msgstr ""
 
@@ -982,11 +998,11 @@ msgstr "No se encontró la asset_stat_cat_entry_copy_map solicitado"
 msgid "The requested actor_org_unit was not found"
 msgstr "No se encontró el actor_org_unit solicitado"
 
-#: 7010.COPY_ALERT_MESSAGE:877
+#: 7010.COPY_ALERT_MESSAGE:879
 msgid "The requested copy has an alert message attached"
 msgstr "La copia solicitada tiene un mensaje de alerta adjunto"
 
-#: 7006.COPY_IS_REFERENCE:865
+#: 7006.COPY_IS_REFERENCE:867
 msgid "Copy is reference material"
 msgstr "Copia es material de referencia"
 
@@ -1010,11 +1026,11 @@ msgstr "No se encontró el actor_org_unit_hours_of_operation solicitado"
 msgid "The requested ex was not found"
 msgstr "No se encontró el ex solicitado"
 
-#: 7019.HOLD_CAPTURE_DELAYED:907
+#: 7019.HOLD_CAPTURE_DELAYED:909
 msgid "Hold capture was delayed for this item"
 msgstr "Retención de captura se retrasó por este concepto"
 
-#: 9000.REPORT_TEMPLATE_EXISTS:979
+#: 9000.REPORT_TEMPLATE_EXISTS:981
 msgid "A report template with the given name and folder already exists"
 msgstr "Una plantilla de informe con el nombre y la carpeta dado ya existe"
 
@@ -1026,7 +1042,7 @@ msgstr ""
 "Alguien ha intentado recuperar un objeto de copia del sistema y no se "
 "encontró el objeto."
 
-#: 1703.WORKSTATION_NAME_EXISTS:725
+#: 1703.WORKSTATION_NAME_EXISTS:727
 msgid "A workstation with that name already exists"
 msgstr "Una estación de trabajo con ese nombre ya existe"
 
@@ -1050,28 +1066,36 @@ msgstr "No se encontró la container_copy_bucket_item solicitado"
 msgid "The requested actor_stat_cat was not found"
 msgstr "No se encontró la actor_stat_cat solicitado"
 
-#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:831
+#: 7027.PATRON_PASSWORD_WAS_NOT_STRONG:833
 msgid "The user attempted to set their password to a weak value."
 msgstr "El usuario intentó establecer su contraseña a un valor débil."
 
-#: 9001.REPORT_REPORT_EXISTS:983
+#: 9001.REPORT_REPORT_EXISTS:985
 msgid "A report with the given name and folder already exists"
 msgstr "Un informe con el nombre y la carpeta dado ya existe"
 
-#: 1705.VOLUME_LABEL_EXISTS:731
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1038
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
+msgstr ""
+"Un código de modelo de serie ha sido configurado que no se ajuste a MFHD "
+"normas sobre los campos 853-855."
+
+#: 1705.VOLUME_LABEL_EXISTS:733
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
 "Existe un volumen con la misma etiqueta, título y biblioteca propietaria"
 
-#: 8008.OFFLINE_INVALID_SESSION:966
+#: 8008.OFFLINE_INVALID_SESSION:968
 msgid "The session name is invalid"
 msgstr "El nombre de sesión no es válido"
 
-#: 7025.COPY_STATUS_LONG_OVERDUE:925
+#: 7025.COPY_STATUS_LONG_OVERDUE:927
 msgid "Copy is marked as long-overdue"
 msgstr "Copia se marca como largamente esperada"
 
-#: 7007.COPY_NEEDED_FOR_HOLD:868
+#: 7007.COPY_NEEDED_FOR_HOLD:870
 msgid "Copy is needed to fulfill a hold"
 msgstr "Se necesita una copia para cumplir con el apartado"
 
@@ -1087,13 +1111,13 @@ msgstr "No se encontró la permission_usr_work_ou_map solicitado"
 msgid "The requested reporter_template_folder was not found"
 msgstr "No se encontró la reporter_template_folder solicitado"
 
-#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:796
+#: 4002.CREDIT_PROCESSOR_BAD_PARAMS:798
 msgid "Not enough parameters to use credit card processor"
 msgstr ""
 "No hay suficientes parámetros para el uso del procesador de tarjetas de "
 "crédito"
 
-#: 7024.HOLD_RESERVATION_CONFLICT:922
+#: 7024.HOLD_RESERVATION_CONFLICT:924
 msgid ""
 "Both a hold and a reservation exist for this item; staff intervention is "
 "required to resolve the conflict."
@@ -1105,7 +1129,7 @@ msgstr ""
 msgid "The requested vandelay_authority_queue was not found"
 msgstr "No se encontró la vandelay_authority_queue solicitado"
 
-#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:817
+#: 4040.CREDIT_PROCESSOR_SUCCESS_WO_RECORD:819
 msgid ""
 "A *TERRIBLE* problem has occurred: a credit card transaction was processed "
 "successfully, but the patron's payment could not be recorded within "
@@ -1136,6 +1160,10 @@ msgstr ""
 msgid "User login failed"
 msgstr "Iniciar sesión de usuario falló"
 
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1021
+msgid "The caption/pattern still has dependent issuances"
+msgstr "La foto/patrón aún tiene emisiones dependientes"
+
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
 msgid "The requested acq.currency_type was not found"
 msgstr "No se encontró la acq.currency_type solicitado"
@@ -1144,7 +1172,7 @@ msgstr "No se encontró la acq.currency_type solicitado"
 msgid "The requested money_grocery was not found"
 msgstr "No se encontró el money_grocery solicitado"
 
-#: 8009.OFFLINE_NO_ORG:969 8010.OFFLINE_SESSION_COMPLETE:972
+#: 8009.OFFLINE_NO_ORG:971 8010.OFFLINE_SESSION_COMPLETE:974
 msgid "No org id was provided"
 msgstr "No se proporcionó Identificación del org"
 
@@ -1152,17 +1180,17 @@ msgstr "No se proporcionó Identificación del org"
 msgid "The patron has too many lost items."
 msgstr "El patrón tiene demasiados objetos perdidos."
 
-#: 8001.OFFLINE_SESSION_FILE_EXISTS:945
+#: 8001.OFFLINE_SESSION_FILE_EXISTS:947
 msgid "An offline file for this workstation exists within this session"
 msgstr ""
 "Un archivo sin conexión para esta estación de trabajo existe dentro de este "
 "período de sesiones"
 
-#: 2003.INTERNAL_SERVER_ERROR:782
+#: 2003.INTERNAL_SERVER_ERROR:784
 msgid "There was an internal server error"
 msgstr "Se ha producido un error interno del servidor"
 
-#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:811
+#: 4020.CREDIT_PROCESSOR_DECLINED_TRANSACTION:813
 msgid "The credit card processor has declined the transaction."
 msgstr "El procesador de tarjetas de crédito ha disminuido la transacción."
 
@@ -1194,17 +1222,17 @@ msgstr "La cuenta del patrón ha expirado"
 msgid "The requested metabib_metarecord was not found"
 msgstr "No se encontró la metabib_metarecord solicitado"
 
-#: 1707.HOLD_EXISTS:737
+#: 1707.HOLD_EXISTS:739
 msgid "User already has an open hold on the selected item"
 msgstr "El usuario ya tiene una bodega abierta en el elemento seleccionado"
 
-#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1051
+#: 11107.AVAIL_HOLD_COPY_RATIO_EXCEEDED:1053
 msgid ""
 "Renewal attempt failed because the \"hold / available copies\" ratio exceeds "
 "the configured limit"
 msgstr "No se encontró la acq.lineitem_attr solicitado"
 
-#: 1712.AUTH_QUEUE_EXISTS:752
+#: 1712.AUTH_QUEUE_EXISTS:754
 msgid "An authority record queue with the same name already exists"
 msgstr "Una cola de registro de autoridad con el mismo nombre ya existe"
 
@@ -1216,7 +1244,7 @@ msgstr "No se encontró la money_forgive_payment solicitado"
 msgid "The saved item has been edited by another user"
 msgstr "El elemento guardado ha sido editado por otro usuario"
 
-#: 7028.PATRON_CIRC_MISMATCH:931
+#: 7028.PATRON_CIRC_MISMATCH:933
 msgid "Potentially notified patron does not own the circulation."
 msgstr "El cliente potencialmente notificado no posee la circulación."
 
@@ -1224,7 +1252,7 @@ msgstr "El cliente potencialmente notificado no posee la circulación."
 msgid "The requested acq.lineitem_attr was not found"
 msgstr "No se encontró la acq.lineitem_attr solicitado"
 
-#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:761
+#: 1715.HOLD_SUSPEND_AFTER_CAPTURE:763
 msgid "Attempt to suspend a hold after it has been captured."
 msgstr "Intento de suspender una retención después de que ha sido capturado."
 
@@ -1240,7 +1268,7 @@ msgstr ""
 msgid "The requested action_survey_answer was not found"
 msgstr "No se encontró la action_survey_answer solicitado"
 
-#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:785
+#: 2004.ACTOR_USER_DELETE_OPEN_XACTS:787
 msgid ""
 "The user you have attempted to delete cannot be deleted because it has open "
 "circulations and/or unpaid bills."
@@ -1260,7 +1288,7 @@ msgstr "No se encontró el acq.provider solicitado"
 msgid "The requested config_bib_source was not found"
 msgstr "No se encontró el config_bib_source solicitado"
 
-#: 1717.COPY_LOCATION_NOT_FOUND:719
+#: 1717.COPY_LOCATION_NOT_FOUND:721
 msgid "The copy location does not exist"
 msgstr "La ruta de la copia no existe"
 
@@ -1276,11 +1304,11 @@ msgstr "El registro de dorsal deseado se marca como eliminado"
 msgid "The requested acq.picklist was not found"
 msgstr "No se encontró la acq.picklist solicitado"
 
-#: 7018.COPY_MARKED_LOST:904
+#: 7018.COPY_MARKED_LOST:906
 msgid "The requested item is already marked as lost"
 msgstr "El artículo solicitado ya está marcado como perdido"
 
-#: 7016.ITEM_ON_HOLDS_SHELF:895
+#: 7016.ITEM_ON_HOLDS_SHELF:897
 msgid "This item is currently on the holds shelf for another patron:"
 msgstr ""
 
@@ -1288,7 +1316,7 @@ msgstr ""
 msgid "The requested config_circ_modifier was not found"
 msgstr "No se encontró la config_circ_modifier solicitado"
 
-#: 1701.COPY_LOCATION_EXISTS:713
+#: 1701.COPY_LOCATION_EXISTS:715
 msgid "The copy location object already exists"
 msgstr "El objeto de copia de ubicación ya existe"
 
@@ -1308,7 +1336,7 @@ msgstr "Tarjeta del patrón no está activo"
 msgid "The requested permission_grp_penalty_threshold was not found"
 msgstr "No se encontró el permission_grp_penalty_threshold solicitado"
 
-#: 7013.PATRON_EXCEEDS_FINES:886
+#: 7013.PATRON_EXCEEDS_FINES:888
 msgid "The patron in question has reached the maximum fine amount"
 msgstr "El patrón en cuestión ha alcanzado la cantidad máxima fina"
 
@@ -1320,11 +1348,7 @@ msgstr "Se requiere el pago de una cuota de alquiler de artículos."
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr "No se encontró el container_call_number_bucket_item solicitado"
 
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:996
-msgid "The lineitem detail has no owning_lib"
-msgstr "El detalle línea de pedido no tiene owning_lib"
-
-#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1023
+#: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1025
 msgid ""
 "Units cannot be created for the given item because its associated "
 "distribution does not have a copy template."
@@ -1360,7 +1384,7 @@ msgstr "No se encontró el authority_record_note solicitado"
 msgid "The requested acq.fund was not found"
 msgstr "No se encontró el acq.fund solicitado"
 
-#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1047
+#: 11106.TOTAL_HOLD_COPY_RATIO_EXCEEDED:1049
 msgid ""
 "Renewal attempt failed because the \"hold / total copies\" ratio exceeds the "
 "configured limit"
@@ -1371,14 +1395,6 @@ msgstr ""
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
 msgstr "No se encontró la action_non_cataloged_circulation solicitado"
-
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1036
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-"Un código de modelo de serie ha sido configurado que no se ajuste a MFHD "
-"normas sobre los campos 853-855."
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
 msgid "The requested money_user_summary was not found"
