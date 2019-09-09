@@ -19,30 +19,30 @@ SELECT plan(6);
 
 SELECT ok(
     (SELECT TRUE AS verify_old_pw FROM actor.usr 
-        WHERE id = 189 AND passwd = MD5('montyc1234')),
+        WHERE id = (SELECT id FROM actor.usr WHERE usrname = 'br1mclark') AND passwd = MD5('montyc1234')),
     'Legacy password should match'
 );
 
 SELECT isnt_empty(
-    'SELECT actor.get_salt(189, ''main'')',
+    'SELECT actor.get_salt((SELECT id FROM actor.usr WHERE usrname = ''br1mclark''), ''main'')',
     'get_salt() returns a new salt'
 );
 
 SELECT isnt_empty(
-    'SELECT * FROM actor.passwd WHERE usr = 189 AND passwd_type = ''main''',
+    'SELECT * FROM actor.passwd WHERE usr = (SELECT id FROM actor.usr WHERE usrname = ''br1mclark'') AND passwd_type = ''main''',
     'get_salt() should migrate the password'
 );
 
 SELECT ok(
-    (SELECT actor.verify_passwd(189, 'main', 
-        MD5(actor.get_salt(189, 'main') || MD5('montyc1234')))),
+    (SELECT actor.verify_passwd((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main',
+        MD5(actor.get_salt((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main') || MD5('montyc1234')))),
     'verify_passwd should verify migrated password'
 );
 
 SELECT ok(
     (SELECT NOT (
-        SELECT actor.verify_passwd(189, 'main', 
-            MD5(actor.get_salt(189, 'main') || MD5('BADPASSWORD'))))
+        SELECT actor.verify_passwd((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main',
+            MD5(actor.get_salt((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main') || MD5('BADPASSWORD'))))
     ),
     'verify_passwd should fail with wrong password'
 );
@@ -55,12 +55,12 @@ BEGIN
     -- calls will create a new one.
     SELECT INTO new_salt actor.create_salt('main');
     PERFORM actor.set_passwd(
-        189, 'main', MD5(new_salt || MD5('bobblehead')), new_salt);
+        (SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main', MD5(new_salt || MD5('bobblehead')), new_salt);
 END $$;
 
 SELECT ok(
-    (SELECT actor.verify_passwd(189, 'main', 
-        MD5(actor.get_salt(189, 'main') || MD5('bobblehead')))),
+    (SELECT actor.verify_passwd((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main',
+        MD5(actor.get_salt((SELECT id FROM actor.usr WHERE usrname = 'br1mclark'), 'main') || MD5('bobblehead')))),
     'verify_passwd should verify new password'
 );
 
