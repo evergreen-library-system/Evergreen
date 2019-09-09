@@ -271,6 +271,8 @@ sub find_patron {
     my $self = shift;
     my $key  =  (@_ > 1) ? shift : 'barcode';  # if we have multiple args, the first is the key index (default barcode)
     my $patron_id = shift;
+    # want_patron_ok is per-login depending on the needs of your selfcheck or PC management systems.
+    my $want_patron_ok = ( $self->{login}->{want_patron_ok} && $self->{login}->{want_patron_ok} =~ /true|yes|enabled/i );
 
     my $use_username = 
         $self->get_option_value('support_patron_username_login') || '';
@@ -284,7 +286,7 @@ sub find_patron {
     }
 
     $self->verify_session;
-    return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, @_);
+    return OpenILS::SIP::Patron->new($key => $patron_id, authtoken => $self->{authtoken}, want_ok => $want_patron_ok, @_);
 }
 
 
