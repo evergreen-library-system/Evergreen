@@ -729,6 +729,10 @@ sub __hold_to_title {
         $e->retrieve_asset_call_number($hold->target))
         if $hold->hold_type eq 'V';
 
+    return __issuance_to_title(
+        $e, $hold->target) # starts with the issuance id because there's more involved for I holds.
+        if $hold->hold_type eq 'I';
+
     return __record_to_title(
         $e, $hold->target) if $hold->hold_type eq 'T';
 
@@ -759,6 +763,25 @@ sub __volume_to_title {
     my( $e, $volume ) = @_;
     #syslog('LOG_DEBUG', "OILS: volume_to_title(%s)", $volume->id);
     return __record_to_title($e, $volume->record);
+}
+
+sub __issuance_to_title {
+    my( $e, $issuance_id ) = @_;
+    my $bre_id = $e->json_query(
+    {
+        select => { ssub => ['record_entry'] },
+        from => {
+            ssub => {
+                siss => {
+                    field => 'subscription',
+                    fkey => 'id',
+                    filter => { id => $issuance_id }
+                }
+            }
+        }
+    })->[0]->{record_entry};
+
+    return __record_to_title($e, $bre_id);
 }
 
 
