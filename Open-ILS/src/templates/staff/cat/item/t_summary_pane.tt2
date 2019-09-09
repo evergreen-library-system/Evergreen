@@ -74,6 +74,7 @@
       <div ng-if="circ.opac_renewal() == 't'">[% l('OPAC') %]</div>
       <div ng-if="circ.desk_renewal() == 't'">[% l('Desk') %]</div>
       <div ng-if="circ.phone_renewal() == 't'">[% l('Phone') %]</div>
+      <div ng-if="circ.auto_renewal() == 't'">[% l('Automatic') %]</div>
     </div>
 
     <div class="flex-cell">[% l('Checkout Workstation') %]</div>
