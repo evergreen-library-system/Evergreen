@@ -1,6 +1,0 @@
-Cross-Tab Communication Demo
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Angular Sandbox now includes an example
-for developers interested in sharing data
-between staff client browser tabs.
-

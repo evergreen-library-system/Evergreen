@@ -1,7 +1,0 @@
-Library Links in Billing Details screen
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Billing Full Details view now includes links to information about the billing and owning
-libraries. This can be useful in situations where circulation staff are troubleshooting a
-bill and would like to quickly find contact information for the billing or owning library.
-

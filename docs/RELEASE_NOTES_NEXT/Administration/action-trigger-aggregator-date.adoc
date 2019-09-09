@@ -1,8 +1,0 @@
-Ability to specify specific date in action_trigger_aggregator.pl
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-An option, `--date`, has been added to the `action_trigger_aggregator.pl`
-support script that allows the user to specify a specific date to aggregate
-event output for.  This new argument cannot be used with either `--start-date`
-or `--end-date`.  This option was added to simplify pulling event output for a 
-single day.

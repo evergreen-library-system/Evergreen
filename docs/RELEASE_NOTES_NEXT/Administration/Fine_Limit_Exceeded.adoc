@@ -1,8 +1,0 @@
-New Action Trigger - Fine Limit Exceeded
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-New optional email notification that is sent when a block is applied
-to a patron's account due to excess fines.
-
-(The patron block functionality itself already exists and is based on
-the settings in Local Admin > Standing Penalties (PATRON_EXCEEDS_FINES)
-and Local Administration > Group Penalty Thresholds.)

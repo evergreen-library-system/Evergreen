@@ -1,4 +1,0 @@
-Port Org Unit Type Admin to Angular
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Migrate the Admin => Server Admin => Organization Types admin page to 
-Angular.

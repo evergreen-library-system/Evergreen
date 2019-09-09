@@ -1,6 +1,0 @@
-Angular Standing Penalty Admin Page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Migrate the Administration => Local Administration => Standing Penalties
-page to Angular.
-
