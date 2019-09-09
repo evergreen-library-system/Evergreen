@@ -57,7 +57,8 @@
     <div class="flex-cell well">{{
       circ.phone_renewal() == 't' ||
       circ.desk_renewal() == 't' ||
-      circ.opac_renewal() == 't'
+      circ.opac_renewal() == 't' ||
+      circ.auto_renewal() == 't'
     }}</div>
     <div class="flex-cell">[% l('Stop Fines Reason') %]</div>
     <div class="flex-cell well">{{circ.stop_fines()}}</div>
