@@ -19,6 +19,8 @@ import {CancelReservationDialogComponent} from './cancel-reservation-dialog.comp
 
 import * as Moment from 'moment-timezone';
 
+// A filterable grid of reservations used in various booking interfaces
+
 @Component({
     selector: 'eg-reservations-grid',
     templateUrl: './reservations-grid.component.html',
@@ -34,6 +36,7 @@ export class ReservationsGridComponent implements OnInit {
     @Input() onlyCaptured = false;
 
     @Output() onPickup = new EventEmitter<IdlObject>();
+    @Output() onReturn = new EventEmitter<IdlObject>();
 
     gridSource: GridDataSource;
     patronBarcode: string;
@@ -237,7 +240,10 @@ export class ReservationsGridComponent implements OnInit {
                this.auth.token(),
                {'patron_barcode': this.patronBarcode, 'reservation': reservation})
                .pipe(tap(
-                   () => { this.grid.reload(); },
+                   () => {
+                       this.onReturn.emit(reservation);
+                       this.grid.reload();
+                   },
                ));
         };
 
