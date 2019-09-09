@@ -78,7 +78,7 @@ export class GridToolbarComponent implements OnInit {
 
     performButtonAction(button: GridToolbarButton) {
         const rows = this.gridContext.getSelectedRows();
-        button.onClick.emit();
+        button.onClick.emit(rows);
         if (button.action) { button.action(); }
     }
 
