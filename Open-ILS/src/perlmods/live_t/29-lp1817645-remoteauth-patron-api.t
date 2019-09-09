@@ -1,6 +1,16 @@
 #!perl
 
-use Test::More tests => 10; # XXX
+use Test::More;
+
+# need at least 6.07 of LWP::Protocol::https to avoid
+# an issue where it cannot successfully bypass a
+# certificate check of localhost
+eval 'use LWP::Protocol::https 6.07';
+if ($@) {
+    plan skip_all => 'LWP::Protocol::https 6.0.7 or later required for live tests of remoteauth' if $@;
+} else {
+    plan tests => 10;
+}
 
 diag("Tests RemoteAuth patron auth/retrieval");
 
