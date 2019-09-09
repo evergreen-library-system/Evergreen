@@ -12,6 +12,13 @@
   <eg-grid-toolbar-action label="View Item Status" i18n-label (onClick)="viewItemStatus($event)" [disableOnRows]="notOneCatalogedItemSelected"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="View Reservations for This Resource" i18n-label (onClick)="viewByResource($event)" [disableOnRows]="notOneResourceSelected"></eg-grid-toolbar-action>
   <eg-grid-toolbar-button *ngIf="!status" label="Create New Reservation" i18n-label (onClick)="redirectToCreate($event)"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-button *ngIf="'pickupReady' === status" label="Pick Up Selected" i18n-label
+    (onClick)="pickupSelected($event)" [disabled]="!grid.context.getSelectedRows().length">
+    </eg-grid-toolbar-button>
+  <eg-grid-toolbar-button *ngIf="'returnReady' === status" label="Return Selected" i18n-label
+    (onClick)="returnSelected($event)" [disabled]="!grid.context.getSelectedRows().length">
+    </eg-grid-toolbar-button>
+
 
   <eg-grid-column name="id" [hidden]="true" [index]="true" i18n-label label="ID" path="id"></eg-grid-column>
   <eg-grid-column label="Patron username" [hidden]="true" i18n-label path="usr.usrname"></eg-grid-column>
