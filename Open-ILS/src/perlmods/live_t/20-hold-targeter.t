@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 18;
 diag("General hold targeter tests");
 
 use OpenILS::Const qw/:const/;
@@ -133,6 +133,10 @@ $maps = $e->search_action_hold_copy_map({hold => $hold_id});
 is(scalar(@$maps), 0, 
     'No potential copies exist that match the holdable_format criteria');
 
+# Should be a "Hopeless" (TM) hold now
+my $hopeless_hold = $e->retrieve_action_hold_request($hold_id);
+ok($hopeless_hold->hopeless_date, "Hold $hold_id now has a Hopeless Date");
+
 # Now remove the holdable format restriction and copies belonging to
 # record 101 should now be acceptable potential copies.
 $e->xact_begin;
@@ -150,6 +154,25 @@ $current_copy = $e->retrieve_asset_copy([
 
 is($current_copy->call_number->record.'', '101', 
     'Metarecord hold targeted after removing holdable_format restriction');
+
+# Should no longer be a Hopeless Hold
+$hopeless_hold = $e->retrieve_action_hold_request($hold_id);
+ok(!$hopeless_hold->hopeless_date, "Hold $hold_id no longer has a Hopeless Date");
+
+# Unless all Available is now Hopeless Prone :D
+my $available_status = $e->retrieve_config_copy_status(0);
+$available_status->hopeless_prone(1);
+$e->xact_begin;
+$e->update_config_copy_status($available_status);
+$e->xact_commit;
+$result = target({hold => $hold_id});
+$hopeless_hold = $e->retrieve_action_hold_request($hold_id);
+ok($hopeless_hold->hopeless_date, "Hold $hold_id has a Hopeless Date again");
+
+$available_status->hopeless_prone(0);
+$e->xact_begin;
+$e->update_config_copy_status($available_status);
+$e->xact_commit;
 
 # Return the hold and bib records to their original metarecord state 
 # for re-test-ability.
