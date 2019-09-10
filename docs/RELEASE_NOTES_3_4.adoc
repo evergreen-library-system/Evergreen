@@ -515,8 +515,8 @@ Additionally, a new filter option is available in the linked permissions
 interface for filtering the displayed linked permissions by code or 
 description.
 
-(Experimental) Angular Staff Catalog Record Holds Tab
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Experimental) Staff Catalog: Record Holds Tab
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Adds support for the Holds tab in the record detail view of the Angular
 staff catalog.  Includes grid and hold-related actions.
 
@@ -531,15 +531,15 @@ staff catalog.  Includes grid and hold-related actions.
  * Show last few circulations
  * Retrieve patron
 
-Experiment Staff Catalog Call Number Browse
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Experimental) Staff Catalog: Call Number Browse
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Adds support for call number browsing in the staff catalog.  The browse
 results display vertically for consistency with the regular search and
 browse result interfaces.
 
-Angular Staff Catalog Recent Searches & Templates
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(Experimental) Staff Catalog: Recent Searches & Templates
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Recent Searches
 +++++++++++++++
