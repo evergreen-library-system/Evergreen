@@ -500,21 +500,6 @@ The Angular Sandbox now includes an example
 for developers interested in sharing data
 between staff client browser tabs.
 
-Port Permission Group Admin to Angular
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Migrate the Admin => Server Admin => Permission Groups admin page to 
-Angular.
-
-As an added feature, the interface now displays inherited permissions
-alongside linked permissions for each group.  Inherited permissions
-are read-only and act to indicate to the user when a group already has
-a certain permission and therefore may not need a new one added.
-
-Additionally, a new filter option is available in the linked permissions
-interface for filtering the displayed linked permissions by code or 
-description.
-
 (Experimental) Staff Catalog: Record Holds Tab
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Adds support for the Holds tab in the record detail view of the Angular
@@ -561,6 +546,21 @@ marc, and browse -- except shelf browse, which uses no filters.
 
 Templates are stored by default as workstation settings, using the setting
 key 'eg.catalog.search_templates'.
+
+Port Permission Group Admin to Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Migrate the Admin => Server Admin => Permission Groups admin page to 
+Angular.
+
+As an added feature, the interface now displays inherited permissions
+alongside linked permissions for each group.  Inherited permissions
+are read-only and act to indicate to the user when a group already has
+a certain permission and therefore may not need a new one added.
+
+Additionally, a new filter option is available in the linked permissions
+interface for filtering the displayed linked permissions by code or 
+description.
 
 Port Org Unit Type Admin to Angular
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
