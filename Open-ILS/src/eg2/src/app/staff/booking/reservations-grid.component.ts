@@ -249,7 +249,7 @@ export class ReservationsGridComponent implements OnInit {
 
         this.listReadOnlyFields = () => {
             let list = 'usr,xact_start,request_time,capture_time,pickup_time,return_time,capture_staff,target_resource_type,' +
-                'current_resource,target_resource,unrecovered,request_library,pickup_library,fine_interval,fine_amount,max_fine';
+                'email_notify,current_resource,target_resource,unrecovered,request_lib,pickup_lib,fine_interval,fine_amount,max_fine';
             if (this.status && ('pickupReady' !== this.status)) { list = list + ',start_time'; }
             if (this.status && ('returnedToday' === this.status)) { list = list + ',end_time'; }
             return list;
