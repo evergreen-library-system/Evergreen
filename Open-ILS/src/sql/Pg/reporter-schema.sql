@@ -245,7 +245,7 @@ SELECT	u.id,
 
 CREATE OR REPLACE VIEW reporter.circ_type AS
 SELECT	id,
-	CASE WHEN opac_renewal OR phone_renewal OR desk_renewal
+	CASE WHEN opac_renewal OR phone_renewal OR desk_renewal OR auto_renewal
 		THEN 'RENEWAL'
 		ELSE 'CHECKOUT'
 	END AS "type"

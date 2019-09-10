@@ -4709,6 +4709,8 @@ SELECT  usr,
 			<field reporter:label="Archived Copy Stat-Cat Entries" name="aaasc_entries" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Active Circulation" name="active_circ" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Linked Aged Circulation" name="aged_circ" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
@@ -7338,6 +7340,8 @@ SELECT  usr,
 			<field name="xact_finish" reporter:datatype="timestamp" />
 			<field name="xact_start" reporter:datatype="timestamp" />
 			<field name="circulation" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="auto_renewal" reporter:datatype="bool"/>
+			<field name="auto_renewal_remaining" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="circulation" reltype="might_have" key="id" map="" class="circ"/>
@@ -12187,7 +12191,7 @@ SELECT  usr,
 			cp.id as copy,
 			COUNT(circ.id),
 			EXTRACT(YEAR FROM circ.xact_start) AS year,
-			(phone_renewal OR desk_renewal OR opac_renewal) as is_renewal
+			(phone_renewal OR desk_renewal OR opac_renewal OR auto_renewal) as is_renewal
 		FROM
 			asset.copy cp
 				JOIN action.circulation circ ON (cp.id = circ.target_copy)
@@ -12197,7 +12201,7 @@ SELECT  usr,
 			cp.id as copy,
 			COUNT(circ.id),
 			EXTRACT(YEAR FROM circ.xact_start) AS year,
-			(phone_renewal OR desk_renewal OR opac_renewal) as is_renewal
+			(phone_renewal OR desk_renewal OR opac_renewal OR auto_renewal) as is_renewal
 		FROM
 			asset.copy cp
 				JOIN action.aged_circulation circ ON (cp.id = circ.target_copy)
@@ -12261,6 +12265,8 @@ SELECT  usr,
 			<field reporter:label="Circulation Type" name="circ_type" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Billing Totals" name="billing_total" oils_persist:virtual="true" reporter:datatype="link"/>
 			<field reporter:label="Payment Totals" name="payment_total" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field reporter:label="Auto Renewal" name="auto_renewal" reporter:datatype="bool"/>
+			<field reporter:label="Remaining Auto Renewals" name="auto_renewal_remaining" reporter:datatype="int" />
 		</fields>
 		<links>
 			<link field="billable_transaction" reltype="might_have" key="id" map="" class="mbt"/>
