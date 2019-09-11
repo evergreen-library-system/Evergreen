@@ -1,0 +1,6 @@
+Void Deposit Billing at Checkin
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There is a new setting called "Void item deposit fee on checkin"
+that, when enabled, will cause items that have deposit billings
+to be automatically voided.
+
