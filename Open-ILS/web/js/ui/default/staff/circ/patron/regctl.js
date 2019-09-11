@@ -2066,13 +2066,17 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         return !egCore.org.CanHaveVolumes(org_id);
     }
 
-    // Returns true if the Save and Save & Clone buttons should be disabled.
-    $scope.edit_passthru.hide_save_actions = function() {
+    // Returns true if attempting to edit self, but perms don't allow
+    $scope.edit_passthru.self_edit_disallowed = function() {
         if ($scope.patron.id
             && $scope.patron.id == egCore.auth.user().id()
             && !$scope.perms.EDIT_SELF_IN_CLIENT
         ) return true;
+        return false;
+    }
 
+    // Returns true if attempting to edit a user without appropriate group application perms
+    $scope.edit_passthru.group_edit_disallowed = function() {
         if ( $scope.patron.profile
              && patronRegSvc
                 .edit_profiles
@@ -2080,6 +2084,13 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
                     return $scope.patron.profile.id() == p.id();
                 }).length == 0
         ) return true;
+        return false;
+    }
+
+    // Returns true if the Save and Save & Clone buttons should be disabled.
+    $scope.edit_passthru.hide_save_actions = function() {
+        if ($scope.edit_passthru.self_edit_disallowed()) return true;
+        if ($scope.edit_passthru.group_edit_disallowed()) return true;
 
         return $scope.patron.isnew ?
             !$scope.perms.CREATE_USER : 
