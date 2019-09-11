@@ -2090,6 +2090,14 @@ function($scope , $routeParams , $q , $uibModal , $window , egCore ,
         );
     }
 
+    $scope.edit_passthru.self_edit_disallowed = function() {
+        return false;
+    }
+
+    $scope.edit_passthru.group_edit_disallowed = function() {
+        return false;
+    }
+
     // Returns true if the Save and Save & Clone buttons should be disabled.
     $scope.edit_passthru.hide_save_actions = function() {
         return false;
