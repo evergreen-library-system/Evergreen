@@ -70,7 +70,7 @@ sub handler {
         my %user_data = (
             copy => $_->target_copy(),
             is_renewed => $is_renewed,
-            reason => !$is_renewed ? sprintf("%s : %s", $evt->{textcode}, substr($evt->{desc}, 0, 140)) : '',
+            reason => !$is_renewed ? $evt->{desc} : '',
             new_due_date => $is_renewed ? $evt->{payload}->{circ}->due_date : '',
             old_due_date => !$is_renewed ? $_->due_date() : '',
         );
