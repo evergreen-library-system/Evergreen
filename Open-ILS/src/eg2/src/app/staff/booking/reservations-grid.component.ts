@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, from, of} from 'rxjs';
 import {tap, switchMap, mergeMap} from 'rxjs/operators';
@@ -25,7 +25,7 @@ import * as Moment from 'moment-timezone';
     selector: 'eg-reservations-grid',
     templateUrl: './reservations-grid.component.html',
 })
-export class ReservationsGridComponent implements OnInit {
+export class ReservationsGridComponent implements OnChanges, OnInit {
 
     @Input() patron: number;
     @Input() resourceBarcode: string;
@@ -275,6 +275,8 @@ export class ReservationsGridComponent implements OnInit {
             this.router.navigate(['/staff', 'booking', 'create_reservation']);
         };
     }
+
+    ngOnChanges() { this.reloadGrid(); }
 
     enrichRow$ = (row: IdlObject): Observable<IdlObject> => {
         return from(this.org.settings('lib.timezone', row.pickup_lib().id())).pipe(
