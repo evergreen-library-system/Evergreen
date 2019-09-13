@@ -97,6 +97,10 @@ export class StandingPenaltyComponent implements OnInit {
             );
         };
 
+        this.grid.onRowActivate.subscribe(
+            (idlThing: IdlObject) => this.showEditDialog(idlThing)
+        );
+
     }
 
     cspReadonlyOverride = (field: string, csp: IdlObject): boolean => {
