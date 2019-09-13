@@ -71,6 +71,7 @@
         aria-label="[% l('Scan Item') %]">
       <input class="btn btn-default" 
         type="submit" value="[% l('Submit') %]"/>
+      <eg-help-popover help-text="[% l('Single barcode or list of barcodes separated with commas.') %]">
     </div>
     <!-- give the upload container div some padding to prevent force the
         upload widget into the vertical middle of the row -->

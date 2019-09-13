@@ -415,17 +415,40 @@ function($scope , $q , $window , $location , $timeout , egCore , egNet , egGridD
     $scope.context.search = function(args) {
         if (!args.barcode) return;
         $scope.context.itemNotFound = false;
-        itemSvc.fetch(args.barcode).then(function(res) {
-            if (res) {
-                copyGrid.refresh();
-                copyGrid.selectItems([res.index]);
-                $scope.args.barcode = '';
-            } else {
-                $scope.context.itemNotFound = true;
-                egCore.audio.play('warning.item_status.itemNotFound');
-            }
-            $scope.context.selectBarcode = true;
-        })
+
+        //check to see if there are multiple barcodes in CSV format
+        var barcodes = [];
+        //split on commas and clean up barcodes
+        angular.forEach(args.barcode.split(/,/), function(line) {
+            //remove all whitespace and commas
+            line = line.replace(/[\s,]+/g,'');
+
+            //Or remove leading/trailing whitespace
+            //line = line.replace(/(^[\s,]+|[\s,]+$/g,'');
+
+            if (!line) return;
+            barcodes.push(line);
+        });
+
+        if(barcodes.length > 1){
+            //convert to newline seperated list and send to barcodesFromFile processor
+            $scope.barcodesFromFile = barcodes.join('\n');
+            //console.log('Barcodes: ',barcodes);
+        }
+        else {
+            //Single Barcode
+            itemSvc.fetch(args.barcode).then(function(res) {
+                if (res) {
+                    copyGrid.refresh();
+                    copyGrid.selectItems([res.index]);
+                    $scope.args.barcode = '';
+                } else {
+                    $scope.context.itemNotFound = true;
+                    egCore.audio.play('warning.item_status.itemNotFound');
+                }
+                $scope.context.selectBarcode = true;
+            })
+        }
     }
 
     var add_barcode_to_list = function (b) {
