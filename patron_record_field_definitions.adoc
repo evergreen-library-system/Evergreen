@@ -1,0 +1,78 @@
+Patron Record Field Definitions
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+_Barcode:_ Library Card barcode number
+
+_OPAC/Staff Client User Name:_ What patrons use to log into their accounts, or staff will use to log into the staff client. Default for patrons is their barcode. This can be changed by staff, but patrons cannot change it from their patron account.
+
+_Password:_ Password for patrons to access their accounts, or staff to log into the staff client. 4-digit PIN is automatically generated, but can be changed. Patrons can change the password from their patron accounts. 
+
+[TIP]
+============================================================================
+Password can also be set to the last 4 digits of the patron's phone number.  This setting is found in the _Library Settings Editor_
+(_Administration -> Local Administration -> Library Settings Editor_ -> _Patron: password from phone #_). The password field will change from the random PIN to the last 4 digits when a phone number is entered.
+============================================================================
+
+_Primary Name and Preferred Name:_ 
+
+* _Prefix/Title, First Name, Middle Name, Last Name, Suffix:_ Patron’s name(s)
+* _Name Keywords:_ Stores miscellaneous name search terms. These values are only for searching and do not appear in any interfaces other than the patron account.
+
+_OPAC/Staff Client Holds Alias:_ For libraries with a public hold shelf. Information in this field will print on the patron's hold slip instead of their name.
+
+_Date of Birth:_ Patron’s date of birth
+
+_Juvenile:_ Check if you want to indicate that the patron is a juvenile. The age threshold for juveniles may be set in the _Library Settings Editor_.
+
+_Parent/Guardian:_ If the patron is a juvenile and you want to designate the parent or guardian, use this field.
+
+_Primary Identification Type:_ Type of identification patron showed when applying for their library card. Options are Driver’s License or Other.
+
+_Primary Identification:_ Number from the ID selected in the Primary Identification Type. This box is free-text and optional.
+
+_Secondary Identification Type and Secondary Identification:_ Additional fields to record identification, if applicable.
+
+_Email Address:_ Patron's email address
+
+_Email checkout receipts by default?:_ The user can choose to have checkout receipts emailed rather than printed. 
+
+_Daytime Phone, Evening Phone, Other Phone:_ Patron's telephone number(s)
+
+_Home Library:_ Patron’s home library—choose correct branch from the dropdown menu
+
+_Main (Profile) Permission Group:_ Designates the patron type, which affects the borrowing privileges profile. Choose from the dropdown menu. 
+
+_Privilege Expiration Date:_ Automatically populates when a Permission Group is chosen. When a patron’s card has expired, it is this field that must be updated to renew the card, either manually or by using the Update Expire Date button next to the field.
+
+_Internet Access Level:_ Only applicable if the library uses a computer management software and directs it to use the database to verify permissions. Evergreen requires something be chosen in this field, even if it is not being used.
+
+_Active:_ Default is checked. If a patron account expires or the patron moves away, staff members can un-check this option to prevent the patron information from being included in statistics on active patrons or in Patron Search results.
+
+_Barred:_ Staff members can check this box to prevent a patron from checking out, renewing, or placing holds. An alert message will also be displayed any time the patron record is opened, to notify staff members that the patron is barred. Marking patrons barred is an Administrator-level permission.
+
+_Is Group Lead Account:_ Staff members can check this box when registering a household or connected group, to designate the lead party. The lead account and subordinate accounts will be linked.
+
+_Claims-Returned Count:_ Staff members can mark an item Claims Returned and it will be reflected in this field in the patron account.
+
+_Claims Never Checked Out Count:_ Staff members can mark an item checked out to a patron as Missing and it will be reflected in this field in the patron account.
+
+_Alert Message:_ Any text entered here will display, highlighted in yellow, as soon as the patron account is opened. Unlike the alert messages set up using the Message button, these alerts will appear under the patron’s name in the information on the left of the patron record.
+
+_User Settings:_ The patron may enter these settings from their My Account page, or staff can enter them at the time of registration.
+
+_Default Phone Number, Default Hold Pickup Location, Default SMS/Text Number, Default SMS/Text Carrier:_ These settings are used for hold notifications.
+
+_Holds Notices:_ Indicates how the patron would like to receive holds notifications. By default, Evergreen chooses Phone and Email, though SMS text message is also an option. Any options or combination of options can be checked or unchecked.
+
+_Address(s):_ Patron's Address(s). Be sure to enter Zip/Postal Code first, which the system then uses to populate the City, County, State, and Country fields.
+
+_Within City Limits?:_ If a library keeps track of and has verified the address is in the city limits, that box can be checked.
+
+_Valid Address?:_ If a library receives return mail from a patron, the Valid Address box can be unchecked.
+
+_Statistical Categories:_ These extra categories can be set up for individual libraries to gather information that does not otherwise appear on the patron record. These “Stat Cats” can be tracked in reports.
+
+_Surveys:_ If a library sets up patron surveys (_Administration -> Local Administration -> Surveys_), they appear at registration. Surveys questions can be optional or required.
+
+Finishing Registration
+^^^^^^^^^^^^^^^^^^^^^^
