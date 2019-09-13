@@ -113,6 +113,8 @@ the options on this page.
 
 image::media/circulation_patron_records-6.JPG[circulation_patron_records 6]
 
+include::circulation/patron_record_field_definitions.adoc[]
+
 When finished entering the necessary information, select _Save_ to save the new
 patron record or _Save & Clone_ to register a patron with the same address.
 When _Save & Clone_ is selected, the address information is copied into the
