@@ -562,6 +562,7 @@ SelfCheckManager.prototype.updateScanBox = function(args) {
  */
 SelfCheckManager.prototype.drawCircPage = function() {
 
+    openils.Util.hide('oils-selfck-print-list-link');
     openils.Util.show('oils-selfck-bottom-div');
     openils.Util.show('oils-selfck-circ-tbody', 'table-row-group');
     this.goToTab('checkout');
@@ -622,7 +623,7 @@ SelfCheckManager.prototype.updateFinesSummary = function() {
 
 SelfCheckManager.prototype.drawItemsOutPage = function() {
     openils.Util.hide('oils-selfck-circ-tbody');
-
+    openils.Util.show('oils-selfck-print-list-link');
     this.goToTab('items_out');
 
     while(this.itemsOutTbody.childNodes[0])
@@ -789,7 +790,7 @@ SelfCheckManager.prototype.drawHoldsPage = function() {
 
     // TODO add option to hid scanBox
     // this.updateScanBox(...)
-
+    openils.Util.show('oils-selfck-print-list-link');
     this.goToTab('holds');
 
     this.holdTbody = dojo.byId('oils-selfck-hold-tbody');
@@ -879,6 +880,7 @@ SelfCheckManager.prototype.drawFinesPage = function() {
 
     // TODO add option to hid scanBox
     // this.updateScanBox(...)
+    openils.Util.show('oils-selfck-print-list-link');
 
     this.goToTab('fines');
     progressDialog.show(true);
