@@ -42,6 +42,11 @@ export class AdminPageComponent implements OnInit {
     // Size of create/edito dialog.  Uses large by default.
     @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
+    // comma-separated list of fields to hide.
+    // This does not imply all other fields should be visible, only that
+    // the selected fields will be hidden.
+    @Input() hideFields: string;
+
     // If an org unit field is specified, an org unit filter
     // is added to the top of the page.
     @Input() orgField: string;
@@ -74,6 +79,10 @@ export class AdminPageComponent implements OnInit {
 
     // Override field options for create/edit dialog
     @Input() fieldOptions: {[field: string]: FmFieldOptions};
+
+    // Override default values for fm-editor
+    @Input() defaultNewRecord: IdlObject;
+
 
     @ViewChild('grid', { static: true }) grid: GridComponent;
     @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;

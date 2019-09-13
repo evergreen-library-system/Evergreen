@@ -1,0 +1,24 @@
+<eg-title i18n-prefix prefix="Edit Floating Group"></eg-title>
+<eg-staff-banner bannerText="Edit Floating Group" i18n-bannerText>
+</eg-staff-banner>
+
+<div class="col-lg-6 offset-lg-3">
+    <eg-fm-record-editor displayMode="inline"
+        idlClass="cfg" mode="update" recordId="{{this.currentId}}">
+    </eg-fm-record-editor>
+</div>
+
+<eg-string #createString i18n-text text="New Floating Group Member Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Floating Group Member"></eg-string>
+<eg-string #successString i18n-text text="Floating Group Member Update Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Floating Group Member Update Failed"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Floating Group Member failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Floating Group Member succeeded"></eg-string>
+
+<eg-staff-banner bannerText="Edit Floating Group Members" i18n-bannerText>
+</eg-staff-banner>
+<eg-admin-page idlClass="cfgm" disableOrgFilter="true" 
+    hideFields="id,floating_group"
+    [dataSource]="dataSource" 
+    [defaultNewRecord]="defaultNewRecord">
+</eg-admin-page>

@@ -13,6 +13,9 @@ const routes: Routes = [{
     path: 'actor/org_unit_type',
     component: OrgUnitTypeComponent
 }, {
+    path: 'config/floating_group',
+    loadChildren: '@eg/staff/admin/server/floating-group/floating-group.module#FloatingGroupModule'
+}, {
     path: 'config/print_template',
     component: PrintTemplateComponent
 }, {

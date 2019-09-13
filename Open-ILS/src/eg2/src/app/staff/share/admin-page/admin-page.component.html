@@ -33,7 +33,7 @@
   <ng-container *ngTemplateOutlet="helpTemplate"></ng-container>
 </ng-container>
 
-<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" hideFields={{hideFields}}
     [sortable]="true" persistKey="{{persistKey}}">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew()">
@@ -48,7 +48,7 @@
 </eg-grid>
 
 <eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
-    [fieldOptions]="fieldOptions"
+    [fieldOptions]="fieldOptions" [defaultNewRecord]="defaultNewRecord"
     [preloadLinkedValues]="true" readonlyFields="{{readonlyFields}}">
 </eg-fm-record-editor>
 
