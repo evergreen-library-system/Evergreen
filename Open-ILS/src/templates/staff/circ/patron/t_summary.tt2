@@ -8,7 +8,7 @@
           '{{patron().pref_prefix() || patron().prefix()}}',
           '{{patron().pref_family_name() || patron().family_name()}}',
           '{{patron().pref_first_given_name() || patron().first_given_name()}}',
-          '{{patron().pref_second_given_name()}}',
+          '{{patron().pref_second_given_name() || patron().second_given_name()}}',
           '{{patron().pref_suffix() || patron().suffix()}}')
         %]
       </div>
