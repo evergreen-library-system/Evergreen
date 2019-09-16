@@ -297,7 +297,7 @@ var MARC21 = {
                             new MARC21.Field({
                                 record : me,
                                 tag    : line_tag(current_line),
-                                data   : cf_line_data(current_line).replace('\\',' ','g'),
+                                data   : cf_line_data(current_line).replace(/\\/g, ' ')
                             })
                         );
                     }
@@ -367,7 +367,7 @@ var MARC21 = {
 
             mtxt += this.fields.map( function (f) {
                 if (f.isControlfield()) {
-                    if (f.data) return '=' + f.tag + ' ' + f.data.replace(' ','\\','g');
+                    if (f.data) return '=' + f.tag + ' ' + f.data.replace(/ /g, '\\');
                     return '=' + f.tag;
                 } else {
                     return '=' + f.tag + ' ' +
