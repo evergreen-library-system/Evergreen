@@ -36,7 +36,7 @@
 	<xsl:template match="marc:record">
 		<table class='marc_table'>
 			<tr class='marc_tag_row'>
-				<th class='marc_tag_col' NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="middle">
+				<th class='marc_tag_col' NOWRAP="TRUE">
 					LDR
 				</th>
 				<td class='marc_tag_data' COLSPAN='3'>
@@ -49,7 +49,7 @@
 	
 	<xsl:template match="marc:controlfield">
 		<tr class='marc_tag_row'>
-			<th class='marc_tag_col' NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="middle">
+			<th class='marc_tag_col' NOWRAP="TRUE">
 				<xsl:value-of select="@tag"/>
 			</th>
 			<td class='marc_tag_data' COLSPAN='3'>
@@ -60,16 +60,15 @@
 	
 	<xsl:template match="marc:datafield">
 		<tr class='marc_tag_row'>
-			<th class='marc_tag_col' NOWRAP="TRUE" ALIGN="RIGHT" VALIGN="middle">
+			<th class='marc_tag_col' NOWRAP="TRUE">
 				<xsl:value-of select="@tag"/>
 			</th>
-			<td class='marc_tag_ind'>
+			<td class='marc_tag_ind1'>
 				<xsl:value-of select="@ind1"/>
 			</td>
 
-			<td class='marc_tag_ind' style='border-left: 1px solid #A0A0A0; padding-left: 3px;'>
+			<td class='marc_tag_ind2'>
 				<xsl:value-of select="@ind2"/>
-				<span style='color:#FFF'>.</span> 
 			</td>
 
 			<td class='marc_subfields'>

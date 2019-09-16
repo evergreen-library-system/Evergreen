@@ -191,6 +191,28 @@ grid[name="-none-"] * label { color: black; }
     word-break: break-word;
 }
 
+.marc_tag_col {
+    text-align: right;
+    vertical-align: top;
+}
+
+.marc_tag_ind1 {
+    vertical-align: top;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.marc_tag_ind2 {
+    vertical-align: top;
+    border-left: 1px solid #A0A0A0;
+    padding-left: 3px;
+}
+
+.marc_subfields {
+    vertical-align: top;
+    padding-left: 3px;
+}
+
 /*
  * Holdings Editor Styles
  * /
