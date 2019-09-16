@@ -15,7 +15,7 @@
  */
 
 /*
- * Copy of file from Open-ILS/web/js/ui/default/staff/marcedit.js
+ * Copy of file from Open-ILS/web/js/ui/default/staff/marcrecord.js
  *
  * This copy of the the MARC21 library heavily modified by
  * Bill Erickson <berickxx@gmail.com> 2019 circa Evergreen 3.3.
@@ -311,7 +311,7 @@ var MARC21 = {
                             new MARC21.Field({
                                 record : me,
                                 tag    : line_tag(current_line),
-                                data   : cf_line_data(current_line).replace('\\',' ','g'),
+                                data   : cf_line_data(current_line).replace(/\\/g, ' ')
                             })
                         );
                     }
@@ -381,7 +381,7 @@ var MARC21 = {
 
             mtxt += this.fields.map( function (f) {
                 if (f.isControlfield()) {
-                    if (f.data) return '=' + f.tag + ' ' + f.data.replace(' ','\\','g');
+                    if (f.data) return '=' + f.tag + ' ' + f.data.replace(/ /g, '\\');
                     return '=' + f.tag;
                 } else {
                     return '=' + f.tag + ' ' +
