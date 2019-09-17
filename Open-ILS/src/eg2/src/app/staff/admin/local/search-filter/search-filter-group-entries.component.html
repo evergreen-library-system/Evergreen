@@ -1,0 +1,37 @@
+<eg-staff-banner bannerText="Search Filter Group" i18n-bannerText></eg-staff-banner>
+
+<div class="col-lg-6 offset-lg-3">
+    <eg-fm-record-editor displayMode="inline" hiddenFieldsList="id,create_date"
+        idlClass="asfg" mode="update" recordId="{{this.currentId}}">
+    </eg-fm-record-editor>
+</div>
+
+<eg-staff-banner bannerText="Search Filter Group Entries" i18n-bannerText></eg-staff-banner>
+
+<eg-grid #grid idlClass="asfge" [dataSource]="dataSource" [sortable]="false"
+    hideFields="grp,query">
+    <eg-grid-column path="query.label" label="Query Label"></eg-grid-column>
+    <eg-grid-column path="query.query_text" label="Query Text"></eg-grid-column>
+    <eg-grid-toolbar-button label="New" i18n-label 
+        (onClick)="createQuery()"></eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+        (onClick)="editQuery($event)"></eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-query-dialog #queryDialog ></eg-query-dialog>
+
+<eg-string #createQueryString i18n-text text="New Query Added"></eg-string>
+<eg-string #queryRequiredString i18n-text text="Error! Are all fields filled out?"></eg-string>
+<eg-string #createString i18n-text text="New Search Filter Group Entry Added"></eg-string>
+<eg-string #createErrString i18n-text 
+    text="Creation failed or was not allowed"></eg-string>
+<eg-string #deleteFailedString i18n-text 
+    text="Delete failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text 
+    text="Delete succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text 
+    text="Update failed or was not allowed"></eg-string>
+<eg-string #updateSuccessString i18n-text 
+    text="Update succeeded"></eg-string>

@@ -1,0 +1,45 @@
+<ng-template #dialogContent>
+    <div class="modal-header bg-info">
+        <h4 class="modal-title" i18n>New Query</h4>
+        <button type="button" class="close"
+            i18n-aria-label aria-label="Close"
+            (click)="closeAndReset()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body"> 
+        <div class="row">
+            <div class="col-lg-3 font-weight-bold" i18n>Query Label</div>
+            <div class="col-lg-9">
+                <input type="text" class="form-control" 
+                placeholder="Query Label"
+                i18n-placeholder required
+                [(ngModel)]="newQueryLabel"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-3 font-weight-bold" i18n>Query Text</div>
+            <div class="col-lg-9">
+                <input type="text" class="form-control" 
+                placeholder="Query Text"
+                i18n-placeholder required
+                [(ngModel)]="newQueryText"/>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-lg-3 font-weight-bold" i18n>Position</div>
+            <div class="col-lg-9">
+                <input type="number" class="form-control" 
+                placeholder="Position"
+                i18n-placeholder required
+                [(ngModel)]="newQueryPosition"/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-warning"
+            (click)="closeAndReset()" i18n>Cancel</button>
+        <button type="button" class="btn btn-success"
+            (click)="save()" i18n >Save</button>
+    </div>
+</ng-template>

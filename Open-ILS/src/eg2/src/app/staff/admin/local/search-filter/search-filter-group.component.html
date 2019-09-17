@@ -1,0 +1,23 @@
+<eg-staff-banner bannerText="Search Filter Group Configuration" i18n-bannerText>
+    </eg-staff-banner>
+
+<eg-grid #grid idlClass="asfg" [dataSource]="gridDataSource" [sortable]="true">
+<eg-grid-column label="ID" path="id" name="id" datatype="id" [hidden]="true"></eg-grid-column>
+    <eg-grid-toolbar-button label="New Search Filter Group" i18n-label 
+        (onClick)="createNew()"></eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+        (onClick)="editSelected($event)"></eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+        (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog idlClass="asfg">
+</eg-fm-record-editor>
+
+<eg-string #createString i18n-text text="New Search Filter Group Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Search Filter Group">
+</eg-string>
+<eg-string #deleteFailedString i18n-text 
+    text="Deletion of Search Filter Group failed or was not allowed"></eg-string>
+<eg-string #DeletionSuccessString i18n-text text="Delete of Search Filter Group succeeded">
+</eg-string>

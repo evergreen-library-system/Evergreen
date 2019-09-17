@@ -38,6 +38,10 @@ const routes: Routes = [{
 }, {
     path: 'asset/course_module_term_course_map',
     component: CourseTermMapComponent
+}, {    
+    path: 'actor/search_filter_group',
+    loadChildren: () =>
+      import('./search-filter/search-filter-group.module').then(m => m.SearchFilterGroupModule)
 }, {
     path: 'config/circ_limit_set',
     loadChildren: () =>

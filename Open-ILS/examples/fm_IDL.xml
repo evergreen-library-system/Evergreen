@@ -6535,12 +6535,12 @@ SELECT  usr,
 
 	<class id="asfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_filter_group" oils_persist:tablename="actor.search_filter_group" reporter:label="Search Filter Group" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_filter_group_id_seq">
-			<field name="id" reporter:datatype="id" reporter:selector="label"/>
-			<field name="owner" reporter:datatype="org_unit"/>
-			<field name="code" reporter:datatype="text"/>
-			<field name="label" reporter:datatype="text" oils_persist:i18n="true"/>
-			<field name="create_date" reporter:datatype="timestamp"/>
-			<field name="entries" oils_persist:virtual="true" reporter:datatype="link"/>
+			<field name="id" reporter:datatype="id" reporter:selector="label" reporter:label="ID" oils_obj:required="true"/>
+			<field name="owner" reporter:datatype="org_unit" reporter:label="Owning Org Unit" oils_obj:required="true"/>
+			<field name="code" reporter:datatype="text" reporter:label="Code" oils_obj:required="true"/>
+			<field name="label" reporter:datatype="text" oils_persist:i18n="true" reporter:label="Label" oils_obj:required="true"/>
+			<field name="create_date" reporter:datatype="timestamp" reporter:label="Create Date"/>
+			<field name="entries" oils_persist:virtual="true" reporter:datatype="link" reporter:label="Group Entries"/>
 		</fields>
 		<links>
 			<link field="owner" reltype="has_a" key="id" map="" class="aou"/>
@@ -6557,10 +6557,10 @@ SELECT  usr,
 	</class>
 	<class id="asfge" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="actor::search_filter_group_entry" oils_persist:tablename="actor.search_filter_group_entry" reporter:label="Search Filter Group Entry" oils_persist:field_safe="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="actor.search_filter_group_entry_id_seq">
-			<field name="id" reporter:datatype="id"/>
-			<field name="grp" reporter:datatype="link"/>
-			<field name="pos" reporter:datatype="int"/>
-			<field name="query" reporter:datatype="link"/>
+			<field name="id" reporter:datatype="id" reporter:label="ID" oils_obj:required="true"/>
+			<field name="grp" reporter:datatype="link" reporter:label="Search Filter Group" oils_obj:required="true"/>
+			<field name="pos" reporter:datatype="int" reporter:label="Position" oils_obj:required="true"/>
+			<field name="query" reporter:datatype="link" reporter:label="Query" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="grp" reltype="has_a" key="id" map="" class="asfg"/>
