@@ -83,6 +83,7 @@ export class DialogComponent implements OnInit {
             this.finalize();
         }
 
+        options.backdrop="static";
         this.modalRef = this.modalService.open(this.dialogContent, options);
         DialogComponent.instances[this.identifier] = this;
 
