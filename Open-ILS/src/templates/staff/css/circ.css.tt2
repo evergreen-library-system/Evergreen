@@ -196,6 +196,12 @@ but the ones I'm finding aren't quite cutting it..*/
   margin-bottom: 5px;
 }
 
+#no-edit-alert-container {
+  position: absolute;
+  bottom: -200px;
+  z-index: 10;
+}
+
 /* -- end patron registration -- */
 
 [%# 
