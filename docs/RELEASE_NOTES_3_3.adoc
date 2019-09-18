@@ -3,6 +3,94 @@ Evergreen 3.3 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.3.4
+----------------
+This release is a security release that fixes cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog. This release
+also includes several other bugfixes improving on Evergreen 3.3.3.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+ * `Open-ILS/src/templates/opac/browse.tt2`
+ * `Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2`
+ * `Open-ILS/src/templates/opac/parts/header.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold_result.tt2`
+ * `Open-ILS/src/templates/opac/parts/result/adv_filter.tt2`
+
+They should also review the following templates.  If these templates have
+been customized or overridden, either the template should be replaced with
+the stock version or the XSS fix (which entails adding `rel="nofollow` to
+external links) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/summary.tt2`
+* `Open-ILS/src/templates/opac/parts/result/table.tt2`
+
+
+Other Bugfixes
+~~~~~~~~~~~~~~
+Evergreen 3.3.4 also includes the following changes:
+
+General
+^^^^^^^
+
+* Users can now save sort priorities for grids throughout the client
+(https://bugs.launchpad.net/evergreen/+bug/1790169[Bug 1790169])
+
+Cataloging
+^^^^^^^^^^
+
+* The experimental staff catalog now includes a flat-text MARC editor
+(https://bugs.launchpad.net/evergreen/+bug/1834665[Bug 1834665])
+
+
+Circulation
+^^^^^^^^^^^
+
+* Default hold transit slips no longer include patron's personal
+information (https://bugs.launchpad.net/evergreen/+bug/1735847[Bug 1735847])
+* Fixes an issue with the reshelving process
+(https://bugs.launchpad.net/evergreen/+bug/1018011[Bug 1018011])
+
+Reports
+^^^^^^^
+
+* Fixes issues related to cloning templates made in the XUL client
+(https://bugs.launchpad.net/evergreen/+bug/1796945[Bug 1796945])
+
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+tests and documentation patches to the 3.3.4 security release of
+Evergreen:
+
+* Thomas Berezansky
+* Jason Boyer
+* Galen Charlton
+* Jeff Davis
+* April Durrence
+* Bill Erickson
+* Jason Etheridge
+* Blake Graham-Henderson
+* Andrea Buntz Neiman
+* Debbie Luchenbill
+* Dan Pearl
+* Jane Sandberg
+* Dan Scott
+* Chris Sharp
+* Remington Steed
+* Jason Stephenson
+* Dan Wells
+* Derek C. Zoladz
+
 
 Evergreen 3.3.3
 ---------------
