@@ -1,3 +1,330 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 9267f5cc01d5515e85263984f4941def6909ea0d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Wed Sep 18 15:14:28 2019 -0400
+
+    Bumping Perl version string for 3.2.9
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit db7beba84ca919e58d071f53a3a47cb918310f08
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Sep 17 20:55:19 2019 -0700
+
+    Docs: adding release notes for 3.2.9
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    (cherry picked from commit 0f8afd070ab441f29a9f3d9de0188771d06461a2)
+
+81	0	docs/RELEASE_NOTES_3_2.adoc
+
+commit 5236b66854b17e7a8a973a3710b457695eaa03ae
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Sep 17 20:48:13 2019 -0700
+
+    Docs: adding release notes for 3.1.15
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    (cherry picked from commit c59eee9ae4d465735c5b4eebeae452d49b50b584)
+
+68	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 785e32bbd8585bfa6d8b5f2f3fcf897dafc9a55c
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Jun 10 09:53:44 2019 -0700
+
+    LP#1822630: fix sanitizing CGI params on place_hold_result
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 019118895c94f5cc810b3f1fb95b2634a1c993b6)
+
+2	2	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 2ecb4f2bf1023ffe84f0e988a15ad40ace4e20c3
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 1 15:13:09 2019 -0700
+
+    LP#1822630: further sanitizing of CGI params when embedded in HTML
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit e2d401a9da3c70c1e56e518f40d0de928919990f)
+
+3	3	Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2
+1	1	Open-ILS/src/templates/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+2	2	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/adv_filter.tt2
+
+commit f2359ae346dd6856905e2a80e299457888ce7385
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 1 10:00:59 2019 -0700
+
+    LP#1822630: sanitize user input before display on browse results
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 4402695e80dbcee5187a35de46e5e314bab1231a)
+
+1	1	Open-ILS/src/templates/opac/browse.tt2
+
+commit 92aa9c1eac12d2c685ab160157b4b616b576f5cf
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Sep 13 11:58:48 2018 -0700
+
+    LP#1559239: use rel="noopener" when opening external URLs in a new tab
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 1eccaeec88a99e9792b388e95732faa7576e7164)
+
+2	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 9c160b81b6bec5407b466e73b065fb7e89dda66a
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Dec 1 16:32:22 2017 -0600
+
+    LP1735847: Remove patron info from default Hold Transit Slip
+    
+    Removes most patron information from the Hold Transit Slip
+    in both the web and XUL client default definitions.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	8	Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2
+1	1	Open-ILS/xul/staff_client/chrome/content/OpenILS/data.js
+
+commit 2a95e3bef4be9acf5a5c2e6cff091e86279ee358
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Oct 15 11:32:58 2014 -0400
+
+    Ensure "Reshelved" copies are still reshelving
+    
+    Rather than "were reshelving when the query started"
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit bb9e2511b2e57610c347c9c0b63d969ce16d5d77
+Author: Jason Etheridge <jason@EquinoxInitiative.org>
+Date:   Thu Jun 27 18:15:50 2019 -0400
+
+    lp1790169 call compileSort after closing showColumnDialog
+    
+    or in other words, make Sort Priority work right away after configuring it
+    
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+7	0	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 35b5dd8c6bb985a02da3578bd744193d094e55f9
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Sep 7 17:32:15 2018 -0400
+
+    LP#1790169: ensure that the sort priority actually gets saved
+    
+    This is a WIP patch - there's still a problem with the saved
+    sort priorities actually getting used when a grid is initalized.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Etheridge <jason@EquinoxInitiative.org>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	1	Open-ILS/src/eg2/src/app/share/grid/grid.ts
+2	1	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 613388e0a012d6d058c7e6788ef94857756aabf3
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Thu Aug 22 14:42:56 2019 -0700
+
+    Docs: adding alt text to MARC Editor chapter images
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+4	4	docs/cataloging/MARC_Editor.adoc
+
+commit 787574f62cb51b0f067a2f30c229ab98212e8222
+Author: Derek C. Zoladz <derek@derekzoladz.com>
+Date:   Wed Apr 24 14:40:13 2019 -0400
+
+    Docs: LP #1803415: Location of MARC Editor 'Delete' Button
+    
+    Signed-off-by: Derek C. Zoladz <derek@derekzoladz.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+13	0	docs/cataloging/MARC_Editor.adoc
+-	-	docs/media/marc_delete_record_3_3.png
+ create mode 100644 docs/media/marc_delete_record_3_3.png
+
+commit 153dbf15a3b1afb9507cb3df233cd22d61dadcdb
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 22 17:25:39 2019 -0400
+
+    Forward-port 3.2.8 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+119	0	Open-ILS/src/sql/Pg/version-upgrade/3.2.7-3.2.8-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.2.7-3.2.8-upgrade-db.sql
+
+commit 56786be53a6993be21f534a7e942ce12914cff2d
+Author: dluchenbill <debbie@mobiusconsortium.org>
+Date:   Wed Apr 24 13:41:11 2019 -0500
+
+    Docs: add checkin trigger holds and cancel transit
+    
+    Signed-off-by: dluchenbill <debbie@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	1	docs/circulation/circulating_items_web_client.adoc
+-	-	docs/media/Check_In-Cancel_Transit.png
+ create mode 100644 docs/media/Check_In-Cancel_Transit.png
+
+commit a4ed30bf069e453a56d883cefaec3b88d78320e3
+Author: April Durrence <49952522+adurrence@users.noreply.github.com>
+Date:   Wed Apr 24 15:22:14 2019 -0400
+
+    Docs: add info about merge tracking
+    
+    Signed-off-by: April Durrence <49952522+adurrence@users.noreply.github.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	0	docs/cataloging/merge_overlay_bibs.adoc
+-	-	docs/media/merge_tracking.png
+ create mode 100644 docs/media/merge_tracking.png
+
+commit 7115fe350816dc2bfba806fedd17820cc23c170b
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Aug 22 15:09:31 2019 -0400
+
+    docs: error correction to 3.1.14 release notes
+    
+    corrected link for "Fixes display issue with menus at certain screen resolutions" - the link & bug number were incorrect.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/RELEASE_NOTES_3_1.adoc
+
+commit 9bcb2abd53238f61a80c46b88ea0554858244f6e
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 15 10:20:17 2019 -0400
+
+    LP#1796945 Match new path_label/alias standard
+    
+    The old reporter used '::' as a path separator in some labels, while the
+    new version uses '->' in its place.  This would normally be just a
+    curiosity, except that the hashes used as join aliases are generated
+    from these path labels.  The end result is that while a report can be
+    cloned, if you add a field anywhere other than the top level, it
+    references a join alias which does not exist, and the report breaks.
+    
+    Now, the method by which report templates are upgraded from v4 to v5
+    does not happen all in one pass, but rather a first pass is made
+    populate the interface, then the rest is done when the user saves the
+    clone.  Because of this, it actually seems adequate to only fix the
+    label, then allow the other steps to fill in the other bits upon saving
+    of the report.
+    
+    Thank you to J. Boyer for helping track down the culprit.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit 7701eb9ff306b6d844888557a8dfa9ee108e87e7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri May 3 13:17:50 2019 -0400
+
+    LP#1796945 Reporter cloning and creation fixes
+    
+    This commit addresses a variety of issues with the webstaff reporter
+    interface, particularly cases of cloning reports created in the XUL
+    client.
+    
+    1. The conversion process did not account for manually selected JOIN
+    operations (aka nullability).  These JOINs are now honored by the
+    conversion code.
+    
+    2. The conversion process did not account for aggregate filters.  These
+    filters are now converted where present.
+    
+    3. The previous reporter interface attempted to intelligently apply LEFT
+    and INNER JOINs by default.  The new interface applied INNER joins
+    exclusively by default, leading in many cases to different results.
+    This commit reinstates the previous logic.  One side effect of this
+    change is that the IDL tree itself is no longer opinionated about JOIN
+    type, and the default JOIN is undefined.
+    
+    4. The nullability selector has been expanded to allow for manual
+    selection of INNER joins, as they will longer be the default in some
+    cases.
+    
+    5. Cloned-converted reports did not retain column order.  The order is
+    now preserved.
+    
+    6. Some templates created in the older interface could, in some cases,
+    have aggregate values set as the string "undefined" rather than
+    actually being undefined.  This led to converted templates failing with
+    "column [xxx] must appear in the GROUP BY clause...", as they were
+    incorrectly converted as aggregates.  The conversion code now accounts
+    for this latent bug.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+50	38	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+0	1	Open-ILS/web/js/ui/default/staff/services/idl.js
+
+commit 2445e37d2d0ee7c80e8530523216a3e2e5e3892c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Wed Apr 18 18:12:19 2018 -0400
+
+    Update upgrade instructions
+    
+    Genericize version numbers, plus a few minor tweaks.
+    
+    Eventually we probably need to start building the docs from tags, and
+    let the main branch use real placeholders.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+22	64	docs/installation/server_upgrade.adoc
+
+commit 12509aed2270c0e529dec05902726235537c40a9
+Author: Dan Scott <dan@coffeecode.net>
+Date:   Thu Apr 11 23:17:10 2019 -0400
+
+    Docs: fix uneven lengths of code delimiter blocks
+    
+    The lengths of the starting and ending sets of hyphens are supposed to be the
+    same. Asciidoc tools like asciidoctor can be less forgiving than the original
+    asciidoc processor, with less than hilarious results.
+    
+    It would probably make sense to try to standardize on something like 60 hyphens
+    to easily flag this problem for deviations from the norm, but for now here's
+    the result of running the docs through asciidoctor and manually adjusting the
+    output.
+    
+    Signed-off-by: Dan Scott <dan@coffeecode.net>
+
+1	1	docs/admin/booking-admin.adoc
+1	1	docs/cataloging/batch_importing_MARC.adoc
+1	1	docs/circulation/basic_holds.adoc
+2	2	docs/circulation/circulating_items_web_client.adoc
+6	6	docs/installation/server_upgrade.adoc
+4	4	docs/reports/reporter_add_data_source.adoc
+1	1	docs/reports/reporter_daemon.adoc
