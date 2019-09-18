@@ -1,3 +1,222 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit f52100b240a4f5007d6b4ec0dd3d0489e4772955
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Sep 18 13:56:18 2019 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+15	15	docs/installation/server_upgrade.adoc
+
+commit b7adbb9bb5a2845870114400691c5e5cae1fd0dd
+Author: blake <blake@mobiusconsortium.org>
+Date:   Wed Sep 18 13:52:22 2019 -0500
+
+    bumping Perl version string for 3.1.15
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 9b7ca429700540d6ac980a07f7f78b53b0120a22
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Sep 17 20:48:13 2019 -0700
+
+    Docs: adding release notes for 3.1.15
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    (cherry picked from commit c59eee9ae4d465735c5b4eebeae452d49b50b584)
+
+68	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit 179c30c350e7271dc94834c8f7abf981e3ae5cf7
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Jun 10 09:53:44 2019 -0700
+
+    LP#1822630: fix sanitizing CGI params on place_hold_result
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 019118895c94f5cc810b3f1fb95b2634a1c993b6)
+
+2	2	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+
+commit 2ca16969613724a18d4106cc20516b17babf8a44
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 1 15:13:09 2019 -0700
+
+    LP#1822630: further sanitizing of CGI params when embedded in HTML
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit e2d401a9da3c70c1e56e518f40d0de928919990f)
+
+3	3	Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2
+1	1	Open-ILS/src/templates/opac/parts/header.tt2
+1	1	Open-ILS/src/templates/opac/parts/place_hold.tt2
+2	2	Open-ILS/src/templates/opac/parts/place_hold_result.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/adv_filter.tt2
+
+commit 05f1d5f226c8b66fa9b39888a38dfdcd0ec5bd44
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Apr 1 10:00:59 2019 -0700
+
+    LP#1822630: sanitize user input before display on browse results
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 4402695e80dbcee5187a35de46e5e314bab1231a)
+
+1	1	Open-ILS/src/templates/opac/browse.tt2
+
+commit 69422257c068149484ab748887e125bd950a9a9a
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Thu Sep 13 11:58:48 2018 -0700
+
+    LP#1559239: use rel="noopener" when opening external URLs in a new tab
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    (cherry picked from commit 1eccaeec88a99e9792b388e95732faa7576e7164)
+
+2	2	Open-ILS/src/templates/opac/parts/record/summary.tt2
+2	2	Open-ILS/src/templates/opac/parts/result/table.tt2
+
+commit 2b8434f1b08c0d812840ecef98fb0c18d8841b24
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Dec 1 16:32:22 2017 -0600
+
+    LP1735847: Remove patron info from default Hold Transit Slip
+    
+    Removes most patron information from the Hold Transit Slip
+    in both the web and XUL client default definitions.
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+    Signed-off-by: Dan Pearl <dpearl@cwmars.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	8	Open-ILS/src/templates/staff/share/print_templates/t_hold_transit_slip.tt2
+1	1	Open-ILS/xul/staff_client/chrome/content/OpenILS/data.js
+
+commit 69d66829c49fc9bcb71f0678f60bdc6ce3e53d5e
+Author: Thomas Berezansky <tsbere@mvlc.org>
+Date:   Wed Oct 15 11:32:58 2014 -0400
+
+    Ensure "Reshelved" copies are still reshelving
+    
+    Rather than "were reshelving when the query started"
+    
+    Signed-off-by: Thomas Berezansky <tsbere@mvlc.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 1f8440d3a098ea1849998da2ea41cf09e5c89e3d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 22 17:25:12 2019 -0400
+
+    Forward-port 3.1.14 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+119	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.13-3.1.14-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.13-3.1.14-upgrade-db.sql
+
+commit 42e758ef3cfea34502e382cefb6f01c0d4ff8d70
+Author: dluchenbill <debbie@mobiusconsortium.org>
+Date:   Wed Apr 24 13:41:11 2019 -0500
+
+    Docs: add checkin trigger holds and cancel transit
+    
+    Signed-off-by: dluchenbill <debbie@mobiusconsortium.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+9	1	docs/circulation/circulating_items_web_client.adoc
+-	-	docs/media/Check_In-Cancel_Transit.png
+ create mode 100644 docs/media/Check_In-Cancel_Transit.png
+
+commit 0dee4a7279b55481ca56868128640c4e97dfb1b9
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Thu Aug 22 15:09:31 2019 -0400
+
+    docs: error correction to 3.1.14 release notes
+    
+    corrected link for "Fixes display issue with menus at certain screen resolutions" - the link & bug number were incorrect.
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	docs/RELEASE_NOTES_3_1.adoc
+
+commit 5357f139e97d3d8f4d8f9c80bb9e315339d1e2d7
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Aug 15 10:20:17 2019 -0400
+
+    LP#1796945 Match new path_label/alias standard
+    
+    The old reporter used '::' as a path separator in some labels, while the
+    new version uses '->' in its place.  This would normally be just a
+    curiosity, except that the hashes used as join aliases are generated
+    from these path labels.  The end result is that while a report can be
+    cloned, if you add a field anywhere other than the top level, it
+    references a join alias which does not exist, and the report breaks.
+    
+    Now, the method by which report templates are upgraded from v4 to v5
+    does not happen all in one pass, but rather a first pass is made
+    populate the interface, then the rest is done when the user saves the
+    clone.  Because of this, it actually seems adequate to only fix the
+    label, then allow the other steps to fill in the other bits upon saving
+    of the report.
+    
+    Thank you to J. Boyer for helping track down the culprit.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+
+commit cc444ec0f6a201ccda27d58c56a0bb7e07bd9261
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri May 3 13:17:50 2019 -0400
+
+    LP#1796945 Reporter cloning and creation fixes
+    
+    This commit addresses a variety of issues with the webstaff reporter
+    interface, particularly cases of cloning reports created in the XUL
+    client.
+    
+    1. The conversion process did not account for manually selected JOIN
+    operations (aka nullability).  These JOINs are now honored by the
+    conversion code.
+    
+    2. The conversion process did not account for aggregate filters.  These
+    filters are now converted where present.
+    
+    3. The previous reporter interface attempted to intelligently apply LEFT
+    and INNER JOINs by default.  The new interface applied INNER joins
+    exclusively by default, leading in many cases to different results.
+    This commit reinstates the previous logic.  One side effect of this
+    change is that the IDL tree itself is no longer opinionated about JOIN
+    type, and the default JOIN is undefined.
+    
+    4. The nullability selector has been expanded to allow for manual
+    selection of INNER joins, as they will longer be the default in some
+    cases.
+    
+    5. Cloned-converted reports did not retain column order.  The order is
+    now preserved.
+    
+    6. Some templates created in the older interface could, in some cases,
+    have aggregate values set as the string "undefined" rather than
+    actually being undefined.  This led to converted templates failing with
+    "column [xxx] must appear in the GROUP BY clause...", as they were
+    incorrectly converted as aggregates.  The conversion code now accounts
+    for this latent bug.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Jason Boyer <jboyer@library.in.gov>
+
+1	1	Open-ILS/src/templates/staff/reporter/t_edit_template.tt2
+50	38	Open-ILS/web/js/ui/default/staff/reporter/template/app.js
+0	1	Open-ILS/web/js/ui/default/staff/services/idl.js
