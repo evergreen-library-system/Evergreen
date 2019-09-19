@@ -269,6 +269,16 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
     searchIsActive(): boolean {
         return this.context.searchState === CatalogSearchState.SEARCHING;
     }
+
+    // It's possible to chose invalid combos depending on the order of selection
+    preventBogusCombos(idx: number) {
+        if (this.context.termSearch.fieldClass[idx] === 'keyword') {
+            const op = this.context.termSearch.matchOp[idx];
+            if (op === 'exact' || op === 'starts') {
+                this.context.termSearch.matchOp[idx] = 'contains';
+            }
+        }
+    }
 }
 
 
