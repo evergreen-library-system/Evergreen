@@ -17,7 +17,7 @@ use OpenILS::WWW::PhoneList ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::RemoteAuth ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::RemoteAuth::Basic');
 
 # Pass second argument of '1' to enable template caching.
-use OpenILS::WWW::PrintTemplate ('/openils/conf/opensrf_core.xml', 0);
+use OpenILS::WWW::PrintTemplate ('@sysconfdir@/opensrf_core.xml', 0);
 
 # - Uncomment the following 2 lines to make use of the IP redirection code
 # - The IP file should to contain a map with the following format:
