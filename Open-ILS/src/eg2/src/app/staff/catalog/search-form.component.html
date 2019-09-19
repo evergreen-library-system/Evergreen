@@ -27,6 +27,7 @@ TODO focus search input
             </div>
             <div class="col-lg-2 pl-0 pr-2">
               <select class="form-control" 
+                (change)="preventBogusCombos(idx)"
                 [(ngModel)]="context.termSearch.fieldClass[idx]">
                 <option i18n value='keyword'>Keyword</option>
                 <option i18n value='title'>Title</option>
@@ -42,8 +43,10 @@ TODO focus search input
                 <option i18n value='contains'>Contains</option>
                 <option i18n value='nocontains'>Does not contain</option>
                 <option i18n value='phrase'>Contains phrase</option>
-                <option i18n value='exact'>Matches exactly</option>
-                <option i18n value='starts'>Starts with</option>
+                <option [disabled]="context.termSearch.fieldClass[idx]=='keyword'"
+                  i18n value='exact'>Matches exactly</option>
+                <option [disabled]="context.termSearch.fieldClass[idx]=='keyword'"
+                  i18n value='starts'>Starts with</option>
               </select>
             </div>
             <div class="col-lg-4 pl-0 pr-2">
