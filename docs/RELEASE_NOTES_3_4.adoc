@@ -3,6 +3,37 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.4-beta2
+-------------------
+The Evergreen 3.4-beta2 release includes security fixes for cross-site scripting
+(XSS) vulnerabilities in the Evergreen public catalog. Testers of the Evergreen
+3.4 beta 1 release are encouraged to install this release, which does not
+include any database updates since the beta 1.
+
+Security Issue: XSS Vulnerability in Public Catalog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This release fixes several cross-site scripting (XSS) vulnerabilities
+in the public catalog. When upgrading, Evergreen administrators should
+review whether any of the following templates have been customized
+or overridden. If so, either the template should be replaced with the
+stock version or the XSS fix (which entails adding the `| html` filter
+in several places) applied to the customized version.
+
+ * `Open-ILS/src/templates/opac/browse.tt2`
+ * `Open-ILS/src/templates/opac/parts/ebook_api/base_js.tt2`
+ * `Open-ILS/src/templates/opac/parts/header.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold.tt2`
+ * `Open-ILS/src/templates/opac/parts/place_hold_result.tt2`
+ * `Open-ILS/src/templates/opac/parts/result/adv_filter.tt2`
+
+They should also review the following templates.  If these templates have
+been customized or overridden, either the template should be replaced with
+the stock version or the XSS fix (which entails adding `rel="nofollow` to
+external links) applied to the customized version.
+
+* `Open-ILS/src/templates/opac/parts/record/summary.tt2`
+* `Open-ILS/src/templates/opac/parts/result/table.tt2`
+
 Upgrade notes
 -------------
 
