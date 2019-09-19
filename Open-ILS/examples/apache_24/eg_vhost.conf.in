@@ -883,11 +883,11 @@ RewriteRule ^/eg2/(.*) https://%{HTTP_HOST}/eg2/en-US/$1 [R=307,L]
 
 # en-US build
 # This is the only required configuration when only using the default locale.
-<Directory "/openils/var/web/eg2/en-US">
+<Directory "@localstatedir@/web/eg2/en-US">
     FallbackResource /eg2/en-US/index.html
 </Directory>
 
 # fr-CA build
-#<Directory "/openils/var/web/eg2/fr-CA">
+#<Directory "@localstatedir@/web/eg2/fr-CA">
 #    FallbackResource /eg2/fr-CA/index.html
 #</Directory>
