@@ -109,6 +109,12 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     @Input() set entries(el: ComboboxEntry[]) {
         if (el) {
+
+            if (this.entrylistMatches(el)) {
+                // Avoid reprocessing data we already have.
+                return;
+            }
+
             this.entrylist = el;
 
             // new set of entries essentially means a new instance. reset.
@@ -205,6 +211,30 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
         // handler to force open the typeahead
         this.elm.nativeElement.getElementsByTagName('input')[0].focus();
         setTimeout(() => this.click$.next(''));
+    }
+
+    // Returns true if the 2 entries are equivalent.
+    entriesMatches(e1: ComboboxEntry, e2: ComboboxEntry): boolean {
+        return (
+            e1 && e2 &&
+            e1.id === e2.id &&
+            e1.label === e2.label &&
+            e1.freetext === e2.freetext
+        );
+    }
+
+    // Returns true if the 2 lists are equivalent.
+    entrylistMatches(el: ComboboxEntry[]): boolean {
+        if (el.length !== this.entrylist.length) {
+            return false;
+        }
+        for (let i = 0; i < el.length; i++) {
+            const mine = this.entrylist[i];
+            if (!mine || !this.entriesMatches(mine, el[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 
     // Apply a default selection where needed
