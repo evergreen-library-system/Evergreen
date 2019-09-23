@@ -1885,7 +1885,7 @@ BEGIN
     -- These are our initial scope_orgs.
     SELECT ARRAY_AGG(DISTINCT owning_lib) INTO scope_orgs
         FROM vandelay.import_item
-        WHERE queued_record = import_id;
+        WHERE record = import_id;
 
     WHILE CARDINALITY(scope_orgs) > 0 LOOP
         FOR scope_org IN SELECT * FROM UNNEST(scope_orgs) LOOP
