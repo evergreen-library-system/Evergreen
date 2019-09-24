@@ -323,6 +323,8 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
 	if( parser == NULL ) {
 		firstrun = 1;
 		parser = XML_ParserCreate("UTF-8");
+		ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, f->r,
+				"XMLENT: created XML parser");
 		XML_SetUserData(parser, f);
 		XML_SetElementHandler(parser, startElement, endElement);
 		XML_SetCharacterDataHandler(parser, charHandler);
@@ -364,8 +366,16 @@ static int xmlEntHandler( ap_filter_t *f, apr_bucket_brigade *brigade ) {
     	  	APR_BUCKET_REMOVE(currentBucket);
 			APR_BRIGADE_INSERT_TAIL(ctx->brigade, currentBucket);
 			ap_pass_brigade(f->next, ctx->brigade);
-			XML_ParserFree(parser);
-			parser = NULL;
+			if (f->r->main == NULL) {
+				// free the XML parser only if we've seen the end
+				// for the main request; we'll keep it around if
+				// the EOS was for a sub-request, as we may get
+				// more to process.
+				XML_ParserFree(parser);
+				parser = NULL;
+				ap_log_rerror( APLOG_MARK, APLOG_DEBUG, 0, f->r,
+					"XMLENT: freed XML parser");
+			}
 		  	return APR_SUCCESS;
     	}
 
