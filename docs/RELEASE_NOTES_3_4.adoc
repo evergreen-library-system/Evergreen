@@ -37,7 +37,28 @@ external links) applied to the customized version.
 Upgrade notes
 -------------
 
-TODO
+Updating OPAC colors.tt2 file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sites that have customized `colors.tt2` should add a line for
+the new `link` color.  For example:
+
+[source,perl]
+----
+link = "#3ef624", # lime green
+----
+
+The template can be found at opac/parts/css/colors.tt2.
+
+marc_stream_importer.pl configuration file
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Because `marc_stream_importer.pl` now expects its configuration file to
+be in the configuration directory, not the binary directory, existing
+users will likely need to manually move the configuration file into
+place.
+
+
 
 New Features
 ------------
@@ -88,12 +109,6 @@ is now installed in the Evergreen `bin` directory (typically
 file will be in the usual config directory (typically `/openils/conf`)
 and the example configuration file is installed their by default.
 
-Upgrade Note
-++++++++++++
-Because `marc_stream_importer.pl` now expects its configuration file to
-be in the configuration directory, not the binary directory, existing
-users will likely need to manually move the configuration file into
-place.
 
 AuthProxy Support for Arbitrary LDAP Usernames
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -159,10 +174,6 @@ in the `colors.tt2` template to make it easier to style the public
 catalog header/footer to use the same background color as the center
 panel.
 
-Upgrade Notes
-+++++++++++++
-Sites that have customized `colors.tt2` should add a line for
-the new `link` color.
 
 Server-Managed Print Templates for Angular
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -375,18 +386,6 @@ an unfamiliar location.  This field is visible on all screens within the booking
 
 The Create Reservations UI is completely re-designed, and now includes a calendar-like view
 on which staff can view existing reservations and availability.
-
-Upgrade considerations
-++++++++++++++++++++++
-
-The Booking Module Refresh requires some new dependencies for the Angular
-client.  To install these, you will have to run the following commands:
-
-[source,bash]
-----
-cd $EVERGREEN_ROOT/Open-ILS/src/eg2/
-npm install
-----
 
 New Permission: CREATE_PRECAT
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
