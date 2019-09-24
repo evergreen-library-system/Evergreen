@@ -1,0 +1,37 @@
+<eg-staff-banner bannerText="Survey Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<eg-grid #grid idlClass="asv" [dataSource]="gridDataSource" 
+[sortable]="true">
+    <eg-grid-toolbar-button label="New Survey" i18n-label [action]="createNew">
+    </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+    </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="End Survey Now" i18n-label 
+    (onClick)="endSurvey($event)"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-fm-record-editor 
+    datetimeFieldsList="start_date,end_date"
+    hiddenFieldsList="id"
+    #editDialog 
+    idlClass="asv">
+</eg-fm-record-editor>
+
+<eg-string #createString i18n-text text="New Survey Added"></eg-string>
+<eg-string #createErrString i18n-text text="Failed to Create New Survey">
+    </eg-string>
+<eg-string #endSurveyFailedString i18n-text 
+    text="Ending Survey failed or was not allowed"></eg-string>
+<eg-string #endSurveySuccessString i18n-text text="Survey ended">
+    </eg-string>
+<eg-string #deleteFailedString i18n-text 
+    text="Delete of Survey failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Survey succeeded">
+    </eg-string>
+<eg-string #successString i18n-text text="Update of Survey succeeded">
+    </eg-string>
+<eg-string #updateFailedString i18n-text text="Update of Survey succeeded">
+    </eg-string>

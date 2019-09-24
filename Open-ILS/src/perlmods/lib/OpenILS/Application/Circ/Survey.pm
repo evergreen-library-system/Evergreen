@@ -22,8 +22,154 @@ use Data::Dumper;
 use OpenILS::Event;
 use Time::HiRes qw(time);
 use OpenILS::Utils::CStoreEditor qw/:funcs/;
+use OpenSRF::Utils::Logger qw/$logger/;
 
 my $apputils = "OpenILS::Application::AppUtils";
+
+__PACKAGE__->register_method(
+    method => "update_survey",
+    api_name => "open-ils.circ.survey.update",
+    signature => {
+        desc => q/Create, update, delete surveys, survey questions, and
+            survey answers.  Relies on isnew ; isnchanged ; isdeleted
+            attributes of provided objects to determine outcome.
+        /,
+        params => [
+            {desc => 'Authtoken', type => 'string'},
+            {desc => 'Fleshed survey (asv) object', type => 'object'}
+        ],
+        return => '1 on success, event on error'
+    }
+);
+
+
+sub update_survey {
+    my ($self, $client, $auth, $survey) = @_;
+
+    my $e = new_editor(authtoken => $auth, xact => 1);
+    return $e->die_event unless $e->checkauth;
+    return $e->die_event unless $e->allowed('ADMIN_SURVEY', $survey->owner);
+
+    my $questions = $survey->questions || [];
+
+    if ($survey->isdeleted) {
+
+        $questions = $e->search_action_survey_question({survey => $survey->id});
+        $_->isdeleted(1) for @$questions;
+        $survey->questions($questions);
+
+        # Remove dependent data first.
+        return $e->die_event if update_questions($e, $survey);
+        return $e->die_event unless $e->delete_action_survey($survey);
+
+    } else {
+
+        if ($survey->isnew) {
+
+            $survey->clear_id;
+            return $e->die_event unless $e->create_action_survey($survey);
+
+            $_->isnew(1) for @$questions;
+
+        } elsif ($survey->ischanged) {
+
+            return $e->die_event unless $e->update_action_survey($survey);
+        }
+
+        return $e->die_event if update_questions($e, $survey);
+    }
+
+    $e->commit;
+
+    $e->xact_begin;
+    $survey = $e->retrieve_action_survey([
+        $survey->id, 
+        {   flesh => 2, 
+            flesh_fields => {asv => ['questions'], 'asvq' => ['answers']}
+        }
+    ]);
+    $e->rollback;
+
+    return $survey;
+}
+
+# returns undef on success, event on error
+sub update_questions {
+    my ($e, $survey) = @_;
+
+    for my $question (@{$survey->questions}) {
+
+        if ($question->isdeleted) {
+
+            # Get the full set
+            my $answers = 
+                $e->search_action_survey_answer({question => $question->id});
+            $_->isdeleted(1) for @$answers;
+            $question->answers($answers);
+
+            # Delete linked objects first.
+            return 1 if update_answers($e, $question);
+            return $e->die_event 
+                unless $e->delete_action_survey_question($question);
+
+        } else {
+
+            if ($question->ischanged) {
+
+                return $e->die_event 
+                    unless $e->update_action_survey_question($question);
+
+            } elsif ($question->isnew) {
+
+                $question->survey($survey->id);
+                $question->clear_id;
+
+                return $e->die_event unless $e->create_action_survey_question($question);
+            }
+
+            return 1 if update_answers($e, $question);
+        }
+    }
+
+    return undef;
+}
+
+sub update_answers {
+    my ($e, $question) = @_;
+
+    return undef unless $question->answers;
+
+    for my $answer (@{$question->answers}) {
+
+        if ($answer->isdeleted) {
+            my $responses = 
+                $e->search_action_survey_response({answer => $answer->id});
+
+            for my $response (@$responses) {
+                return $e->die_event unless 
+                    $e->delete_action_survey_response($response);
+            }
+
+            return $e->die_event unless $e->delete_action_survey_answer($answer);
+
+        } elsif ($answer->isnew) {
+
+            $answer->clear_id;
+            $answer->question($question->id);
+
+            return $e->die_event 
+                unless $e->create_action_survey_answer($answer);
+
+        } elsif ($answer->ischanged) {
+            return $e->die_event
+                unless $e->update_action_survey_answer($answer);
+        }
+    }
+
+    return undef;
+}
+
+
 
 # - creates a new survey
 # expects a survey complete with questions and answers
@@ -76,10 +222,6 @@ sub _add_survey {
 
     $survey->id($id);
     return $survey;
-}
-
-sub _update_survey {
-    my($session, $survey) = @_;
 }
 
 sub _add_questions {

@@ -1,0 +1,124 @@
+<eg-staff-banner bannerText="Survey ID # {{surveyId}}" i18n-bannerText
+                class="mb-3"></eg-staff-banner>
+<ngb-tabset #surveyTabs [activeId]="surveyTab" (tabChange)="onTabChange($event)" class="mb-3">
+    <ngb-tab title="Edit Survey" i18n-title id="edit">
+        <ng-template ngbTabContent>
+            <div class="col-lg-6 offset-lg-3 mt-3">
+                <div style="text-align: center;">
+                    <button class="p-2 mb-3 btn btn-danger btn-lg" 
+                    (click)="endSurvey()" i18n>
+                        End Survey Now
+                    </button>
+                </div>
+                <eg-fm-record-editor displayMode="inline" 
+                    hiddenFieldsList="id"
+                    datetimeFieldsList="start_date,end_date"
+                    idlClass="asv" 
+                    mode="update" 
+                    [record]="surveyObj">
+                </eg-fm-record-editor>
+            </div>
+        </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Questions and Answers" i18n-title id="qanda">
+        <ng-template ngbTabContent>
+            <div class="col-lg-8 offset-lg-2 mt-3">
+                <eg-staff-banner bannerText="Questions & Answers" i18n-bannerText>
+                    </eg-staff-banner>
+                <div *ngFor="let question of localArray; let questionIndex = index;">
+                    <div class="mb-3 mt-3 p-2 bg-light input-group">
+                        <label class="input-group-text">
+                            <b>Question</b>
+                        </label>
+                        <input type="text" [(ngModel)]="question.words" class="form-control"
+                            name="question-{{questionIndex}}">
+                        <span class="input-group-append">
+                            <button class="ml-2 btn btn-info" 
+                                (click)="updateQuestion(question)" i18n>
+                                Save
+                            </button>
+                            <button class="ml-1 btn btn-danger"
+                                (click)="deleteQuestion(question)" i18n>
+                                Delete Question & Answers
+                            </button>
+                        </span>
+                    </div>
+                    <div *ngFor="let answer of question.answers; let answerIndex = index;" 
+                        class="mb-2 input-group">
+                        <input class="form-control" type="text" 
+                            [(ngModel)]="answer.words"
+                            name="answer-{{questionIndex}}-{{answerIndex}}">
+                        <span class="input-group-append">
+                            <button class="ml-2 btn btn-info" 
+                                (click)="updateAnswer(answer, question, questionIndex, answerIndex)"
+                                i18n>
+                                Save
+                            </button>
+                            <button class="ml-1 btn btn-danger" (click)="deleteAnswer(answer)"
+                                i18n>
+                                Delete
+                            </button>
+                        </span>
+                    </div>
+                    <div class="mb-2 input-group">
+                        <input class="form-control" type="text" 
+                            [(ngModel)]="newAnswerArray[questionIndex].inputText"
+                                value="">
+                        <span class="input-group-append">
+                            <button class="ml-2 btn btn-info" 
+                                (click)="createAnswer(newAnswerArray[questionIndex].inputText, question)"
+                                i18n>
+                                Add Answer
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3 mt-3 p-2 bg-light input-group">
+                    <label class="input-group-text">
+                        <b>New Question</b>
+                    </label>
+                    <input #newQuestionInput 
+                        class="form-control" 
+                        type="text" 
+                        [(ngModel)]="newQuestionText"
+                        name="question-new" value="">
+                    <span class="input-group-append">
+                        <button class="ml-2 btn btn-info"
+                            (click)="createQuestion(newQuestionText)" i18n>
+                            Save Question & Add Answer
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+    </ngb-tab>
+</ngb-tabset>
+
+<eg-string #createAnswerString i18n-text text="New Answer Added"></eg-string>
+<eg-string #createAnswerErrString i18n-text text="Failed to Create New Answer">
+    </eg-string>
+<eg-string #createQuestionString i18n-text text="New Question Added"></eg-string>
+<eg-string #createQuestionErrString i18n-text text="Failed to Create New Question">
+    </eg-string>
+<eg-string #delAnswerSuccessStr i18n-text text="Survey Answer deleted">
+    </eg-string>
+<eg-string #delAnswerFailStr i18n-text text="Survey Answer deletion failed">
+    </eg-string>
+<eg-string #delQuestionSuccessStr i18n-text text="Survey Question deleted">
+    </eg-string>
+<eg-string #delQuestionFailStr i18n-text text="Survey Question deletion failed">
+    </eg-string>
+<eg-string #updateAnswerSuccessStr i18n-text text="Survey Answer updated">
+    </eg-string>
+<eg-string #updateAnswerFailStr i18n-text text="Survey Answer update failed">
+    </eg-string>
+<eg-string #updateQuestionSuccessStr i18n-text text="Survey Question updated">
+    </eg-string>
+<eg-string #updateQuestionFailStr i18n-text text="Survey Question update failed">
+    </eg-string>
+<eg-string #endSurveyFailedString i18n-text 
+    text="Ending Survey failed or was not allowed"></eg-string>
+<eg-string #endSurveySuccessString i18n-text text="Survey ended"></eg-string>
+<eg-string #questionAlreadyStartedErrString i18n-text 
+    text="The survey Start Date must be set for the future to add new questions or modify existing questions.">
+    </eg-string>

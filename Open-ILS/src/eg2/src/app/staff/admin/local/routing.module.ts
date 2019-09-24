@@ -23,6 +23,9 @@ const routes: Routes = [{
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent
 }, {
+    path: 'action/survey',
+    loadChildren: '@eg/staff/admin/local/survey/survey.module#SurveyModule'
+}, {
     path: ':schema/:table',
     component: BasicAdminPageComponent
 }];
