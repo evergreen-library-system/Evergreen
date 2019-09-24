@@ -639,6 +639,40 @@ sub find_copy_for_hold {
         {call_number => $hold->target, deleted => 'f'}, 
         {limit => 1}])->[0] if $hold->hold_type eq 'V';
 
+    return $e->json_query(
+        {
+            select => { acp => ['id'] },
+            from => {
+                acp => {
+                    acpm => {
+                        field => 'target_copy',
+                        fkey => 'id',
+                        filter => { part => $hold->target }
+                    }
+                }
+           },
+           where => { '+acp' => { deleted => 'f' } },
+           limit => 1
+       })->[0]->{id} if $hold->hold_type eq 'P';
+
+
+    return $e->json_query(
+        {
+            select => { acp => ['id'] },
+            from => {
+                acp => {
+                    sitem => {
+                        field => 'unit',
+                        fkey => 'id',
+                        filter => { issuance => $hold->target }
+                    }
+                }
+           },
+           where => { '+acp' => { deleted => 'f' } },
+           limit => 1
+       })->[0]->{id} if $hold->hold_type eq 'I';
+
+
     my $bre_ids = [$hold->target];
 
     if ($hold->hold_type eq 'M') {
@@ -700,6 +734,25 @@ sub find_hold_from_copy {
 
     return $hold if $hold = $run_hold_query->(
         target => $map->metarecord, hold_type => 'M');
+
+
+    # part holds
+    my $part = $e->search_asset_copy_part_map(
+        { target_copy => $copy->id })->[0];
+
+    if ($part) {
+        return $hold if $hold = $run_hold_query->(
+            target => $part->id, hold_type => 'P');
+    }
+
+    # issuance holds
+    my $iss = $e->search_serial_item(
+        { unit => $copy->id })->[0];
+
+    if ($iss) {
+        return $hold if $hold = $run_hold_query->(
+            target => $iss->id, hold_type => 'I');
+    }
 
     # volume holds
     return $hold if $hold = $run_hold_query->(
