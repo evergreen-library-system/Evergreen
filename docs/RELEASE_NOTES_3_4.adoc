@@ -60,9 +60,9 @@ Aged Billings and Payments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Two new database tables are added for tracking aged billings and payments:
-money.aged_billing and money.aged_payment.
+`money.aged_billing` and `money.aged_payment`.
 
-Two new database views are added, money.all_billings and money.all_payments
+Two new database views are added, `money.all_billings` and `money.all_payments`
 for aggregating data across the active and aged tables.
 
 When a circulation is aged, billings and payments linked to the circulation
