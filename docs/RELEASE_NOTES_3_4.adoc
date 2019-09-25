@@ -145,13 +145,14 @@ server (i.e. the user's home library must match the LDAP server's
 recommended.
 
 Angular Organizational Units Admin Page
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The Administration -> Server Administration -> Organizational Units 
 page has been migrated to Angular.
 
---rebuild-rmsr Option Added to pingest.pl
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pingest.pl Now Has a --rebuild-rmsr Option
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 An option, `--rebuild-rmsr`, has been added to the `pingest.pl` support
 script.  This option will rebuild the
 `reporter.materialized_simple_record` (rmsr) table after the ingests are
@@ -772,26 +773,68 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-BC Libraries Cooperative
-C/W MARS
-Georgia Public Library Service
-Indiana State Library
-King County Library System
-MassLNC
-Pennsylvania Integrated Library System
+* BC Libraries Cooperative
+* CW MARS
+* Georgia Public Library Service
+* Indiana State Library
+* King County Library System
+* MassLNC
+* Pennsylvania Integrated Library System
 
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
 Evergreen:
 
-TODO
-
+* A. Bellenir
+* Jason Boyer
+* Mark Bucholtz
+* Christine Burns
+* Eva Cerninakova
+* Galen Charlton
+* Garry Collum
+* Jeff Davis
+* Bill Erickson
+* Jason Etheridge
+* Rogan Hamby
+* Abdul Munif Hanafi
+* Kyle Huckins
+* Sam Link
+* Kathy Lussier
+* Terran McCanna
+* Andrea Buntz Neiman
+* Dan Pearl
+* Mike Risher
+* Mike Rylander
+* Geoff Sams
+* Jane Sandberg
+* Chris Sharp
+* Ben Shum
+* Remington Steed
+* Jason Stephenson
+* Josh Stompro
+* Meg Stroup
+* Cesar Velez
+* Dan Wells
+* Liam Whalen
 
 We also thank the following organizations whose employees contributed
 patches:
 
-TODO
+* BC Libraries Cooperative
+* Calvin College
+* Catalyte
+* CW MARS
+* Equinox Open Library Initiative
+* Georgia Public Library Service
+* Grand Rapids Public Library
+* Greater Clarks Hill Regional Library
+* Indiana State Library
+* Kenton County Public Library
+* King County Library System
+* Linn-Benton Community College
+* Roanoke Public Library
+* South Carolina State Library
 
 We regret any omissions.  If a contributor has been inadvertently
 missed, please open a bug at http://bugs.launchpad.net/evergreen/
