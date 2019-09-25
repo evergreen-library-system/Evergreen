@@ -7,7 +7,7 @@ Evergreen 3.4-beta2
 -------------------
 The Evergreen 3.4-beta2 release includes security fixes for cross-site scripting
 (XSS) vulnerabilities in the Evergreen public catalog. Testers of the Evergreen
-3.4 beta 1 release are encouraged to install this release, which does not
+3.4-beta1 release are encouraged to install this release, which does not
 include any database updates since the beta 1.
 
 Security Issue: XSS Vulnerability in Public Catalog
@@ -98,8 +98,8 @@ New optional email notification that is sent when a block is applied
 to a patron's account due to excess fines.
 
 (The patron block functionality itself already exists and is based on
-the settings in Local Admin > Standing Penalties (PATRON_EXCEEDS_FINES)
-and Local Administration > Group Penalty Thresholds.)
+the settings in Local Administration -> Standing Penalties (PATRON_EXCEEDS_FINES)
+and Local Administration -> Group Penalty Thresholds.)
 
 Install marc_stream_importer.pl By Default
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -107,7 +107,7 @@ The script for the MARC stream importer, `marc_stream_importer.pl`,
 is now installed in the Evergreen `bin` directory (typically
 `/openils/bin`) by default. It now also expects that its configuration
 file will be in the usual config directory (typically `/openils/conf`)
-and the example configuration file is installed their by default.
+and the example configuration file is installed there by default.
 
 
 AuthProxy Support for Arbitrary LDAP Usernames
@@ -126,10 +126,10 @@ use it to look up your student/employee number on the LDAP server, and
 log you in as the appropriate Evergreen user.
 
 For this to work, in the AuthProxy configuration for your LDAP server in
-opensrf.xml, set "bind_attr" to the LDAP field containing your LDAP
+`opensrf.xml`, set `bind_attr` to the LDAP field containing your LDAP
 username, and "id_attr" to the LDAP field containing your student or
 employee number (or whatever other value is used as your Evergreen
-username).  If "bind_attr" is not set, Evergreen will assume that your
+username).  If `bind_attr` is not set, Evergreen will assume that your
 LDAP username and Evergreen username are the same.
 
 Now, let's say your LDAP server is only an authoritative auth provider
@@ -137,24 +137,24 @@ for Library A.  Nothing prevents the server from reporting that your
 student number is 000000, even if that Evergreen username is already in
 use by another patron at Library B.  We want to ensure that AuthProxy
 does not use Library A's LDAP server to log you in as the Library B
-patron.  For this reason, a new "restrict_by_home_ou" setting has been
+patron.  For this reason, a new `restrict_by_home_ou` setting has been
 added to AuthProxy config.  When enabled, this setting restricts LDAP
 authentication to users belonging to a library served by that LDAP
 server (i.e. the user's home library must match the LDAP server's
-"org_units" setting in opensrf.xml).  Use of this setting is strongly
+`org_units` setting in `opensrf.xml`).  Use of this setting is strongly
 recommended.
 
-Angular Org Unit Admin Page
+Angular Organizational Units Admin Page
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Migrate the Administration => Server Administration => Organizational Units 
-page to Angular.
+The Administration -> Server Administration -> Organizational Units 
+page has been migrated to Angular.
 
 --rebuild-rmsr Option Added to pingest.pl
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-An option, `--rebuild-rmsr`, has been added to the pingest.pl support
+An option, `--rebuild-rmsr`, has been added to the `pingest.pl` support
 script.  This option will rebuild the
-reporter.materialized_simple_record (rmsr) table after the ingests are
+`reporter.materialized_simple_record` (rmsr) table after the ingests are
 complete.
 
 This option might prove useful if you want to rebuild the table as
@@ -184,9 +184,9 @@ is compiled and generated on the server, based on runtime data provided
 by clients.
 
 Feature includes a new Angular admin interface for testing and editing
-server-managed print templates.  The UI is accessed under Admin =>
-Server Administration => Print Templates, though the menu entry may be
-moved to Admin => Local Administration, once Local Admin is migrated
+server-managed print templates.  The UI is accessed under Administration ->
+Server Administration -> Print Templates, though the menu entry may be
+moved to Administration -> Local Administration, once Local Administration is migrated
 to Angular.
 
 Two sample templates are included to demonstrate the format and 
@@ -198,9 +198,9 @@ navigating to the record holds tab in the Angular staff catalog
 Apache Configuration
 ++++++++++++++++++++
 
-Apply Apache configuration changes to eg_vhost.conf and eg_startup.
+Apply Apache configuration changes to `eg_vhost.conf` and `eg_startup`.
 
-* Add to eg_vhost.conf
+* Add to `eg_vhost.conf`
 [source,conf]
 ---------------------------------------------------------------------------
 <Location /print_template>
@@ -212,8 +212,7 @@ Apply Apache configuration changes to eg_vhost.conf and eg_startup.
 </Location>
 ---------------------------------------------------------------------------
 
-* Add to eg_startup
-
+* Add to `eg_startup`
 [source,conf]
 ---------------------------------------------------------------------------
 # Pass second argument of '1' to enable process-level template caching.
@@ -238,8 +237,8 @@ sudo apt-get install libhtml-defang-perl
 Angular Standing Penalty Admin Page
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Migrate the Administration => Local Administration => Standing Penalties
-page to Angular.
+The Administration -> Local Administration -> Standing Penalties
+page has been migrated to Angular.
 
 Architecture
 ~~~~~~~~~~~~
@@ -251,7 +250,7 @@ Grids in new Angular staff interfaces now have options to
 * allow users to filter results per-column
 * make the grid header in tall/long grids sticky (i.e., the
   grid header continues to be displayed while the user
-  scrolls through the grid
+  scrolls through the grid)
 * allow users to edit a record in a grid and save the results
   without losing one's place in grid paging.
 
@@ -292,7 +291,7 @@ When selected, the user is directed to the Vandelay record export
 interface, which will be set to "basket export" mode.  Staff can then
 apply export preferences (usmarc, marxml, etc.) and export the basket
 records.  In "basket export" mode, Vandley provides a link to return to
-the catalog (preserving search params).
+the catalog (preserving search parameters).
 
 Copy Edit Interface Display Modifications
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -307,7 +306,7 @@ Working Items Moves Down
 ++++++++++++++++++++++++
 
 The "Working Items" grid now sits below the item attribute edit area, so the
-attribute are allowed to fill the horizontal space.
+attributes are allowed to fill the horizontal space.
 
 New Options for Importing Copies
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -320,7 +319,7 @@ Import/Export:
   created from an acquisitions workflow.  Holdings information in the incoming
   record will be used to overlay any existing On Order copies for the matching
   record which belong to the owning library defined in the Holdings Import
-  Profile.  The Holdings Import Profile is also used to match incoming to
+  Profile.  The Holdings Import Profile is also used to match incoming copies to
   existing copies, if possible; otherwise, On Order copies are overlaid in the
   order they were created.  The call number will also be overlaid if the
   incoming record provides one.
@@ -350,13 +349,13 @@ interfaces has been given an Honor User Preferences checkbox which does
 the following for the selected user when checked:
 
  * Change the Pickup Lib selection to match the user's Default Hold Pickup Location
- * Honor the user's Holds Notices settings (including Default Phone Number, etc.)
+ * Honor the user's Holds Notification settings (including Default Phone Number, etc.)
 
 Success and Failure toasts have also been added based on what happens
 after the Request Items interface has closed.
 
 Also, a Title Hold option has been added to the Hold Type menu.  This will create
-one hold request for each unique title associated with the items that were selected
+one title-level hold request for each unique title associated with the items that were selected
 when Request Items was invoked.
 
 Display Codes in Physical Characteristics Wizard Drop-downs (LP#1776003)
@@ -375,7 +374,7 @@ redesigned in Angular.
 
 This adds a new screen called "Manage Reservations", where staff can check details about
 all outstanding reservations, including those that have been recently placed, captured,
-picked up, or recently returned.
+picked up, or returned.
 
 On many screens within the new booking module, staff are able to edit reservations.  Previously,
 they would have needed to cancel and recreate those reservations with the new data.
@@ -430,7 +429,7 @@ This new option allows staff to mark a copy with the Discard/Weed
 status quickly and easily without necessarily requiring the
 intervention of cataloging staff.  In order to mark an item with the
 Discard/Weed status, staff will require either the `MARK_ITEM_DISCARD`
-or `UPDATE_COPY status` at the item's owning library.  (NOTE: This
+or `UPDATE_COPY` status at the item's owning library.  (NOTE: This
 permission choice is consistent with the permission requirements for
 the current Mark Item Damaged or Missing functionality.)
 
@@ -442,7 +441,7 @@ marked with the Discard/Weed status.  If the staff person chooses to
 cancel, then the item will not be checked in, and it will not be
 marked Discard/Weed.  The Mark Item Missing functionality has also
 been changed to exhibit this behavior with checked out items.  The
-Mark Item Damaged functionality already handles checked out item.
+Mark Item Damaged functionality already handles checked out items.
 
 Should the item have a status of In Transit at the time it is to be
 marked, then staff will be prompted to abort the transit before
@@ -540,7 +539,7 @@ staff catalog.  Includes grid and hold-related actions.
  * Batch retarget holds
  * Batch edit holds
   ** Unified form to modify notify options, dates, etc.
- * hold detail page (menu and row double-click)
+ * Hold detail page (menu and row double-click)
  * Batch mark items damaged
  * Batch mark items missing
  * Show last few circulations
@@ -561,7 +560,7 @@ Recent Searches
 
 Adds support for Recent Searches in the Angular staff catalog, consistent
 with TPAC staff recent searches.  Setting a value for the library setting
-'opac.staff_saved_search.size' is required for the recent searches to appear.
+`opac.staff_saved_search.size` is required for the recent searches to appear.
 
 Search Templates
 ++++++++++++++++
@@ -575,12 +574,12 @@ Templates may be built from any of the search tabs -- search, numeric search,
 marc, and browse -- except shelf browse, which uses no filters.
 
 Templates are stored by default as workstation settings, using the setting
-key 'eg.catalog.search_templates'.
+key `eg.catalog.search_templates`.
 
 Port Permission Group Admin to Angular
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Migrate the Admin => Server Admin => Permission Groups admin page to 
+The Administration -> Server Administration -> Permission Groups admin page has been migrated to 
 Angular.
 
 As an added feature, the interface now displays inherited permissions
@@ -594,12 +593,12 @@ description.
 
 Port Org Unit Type Admin to Angular
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Migrate the Admin => Server Admin => Organization Types admin page to 
+The Administration -> Server Admininistration -> Organization Types admin page has been migrated to 
 Angular.
 
 Port Local Administration Page to Angular
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The Administration => Local Administration page has been migrated
+The Administration -> Local Administration page has been migrated
 to Angular along with the following specific Local Administration
 interfaces:
 
@@ -660,7 +659,7 @@ unit is not automatically inherited by the descendants of that unit.  The
 carousel’s owning organizational unit is automatically added to the list of
 display organizational units.
 
-A server-side job, refresh_carousels.srfsh, is available to periodically
+A server-side job, `refresh_carousels.srfsh`, is available to periodically
 refresh the contents of automatic carousels.
 
 Staff Interface
@@ -677,16 +676,16 @@ A new Template Toolkit macro called “carousels” allows the Evergreen
 administrator to inject the contents of one or more carousels into any point in
 the OPAC.  The macro will accept the following parameters:
 
-  * carousel_id
-  * dynamic (Boolean, default value false)
-  * image_size (small, medium, or large)
-  * width (number of titles to display on a “pane” of the carousel)
-  * animated (Boolean to specify whether the carousel should automatically cycle through its panes)
-  * animation_interval (the interval (in seconds) to wait before advancing to the next pane)
+  * `carousel_id`
+  * `dynamic` (Boolean, default value false)
+  * `image_size` (small, medium, or large)
+  * `width` (number of titles to display on a “pane” of the carousel)
+  * `animated` (Boolean to specify whether the carousel should automatically cycle through its panes)
+  * `animation_interval` (the interval (in seconds) to wait before advancing to the next pane)
 
-If the carousel_id parameter is supplied, the carousel with that ID will be
-displayed.  If carousel_id is not supplied, all carousels visible to the public
-catalog’s physical_loc organizational unit is displayed.
+If the `carousel_id` parameter is supplied, the carousel with that ID will be
+displayed.  If `carousel_id` is not supplied, all carousels visible to the public
+catalog’s `physical_loc` organizational unit is displayed.
 
 Item Tags Now Display Tag Type Labels
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -713,7 +712,7 @@ negotiate additional renewals with their home library or the checkout
 library, then display of this field is superfluous.
 
 The display of this column is controlled by the organization setting
-"opac.show_owning_library_column."
+`opac.show_owning_library_column.`
 
 SIP
 ~~~
@@ -773,7 +772,14 @@ The Evergreen project would like to acknowledge the following
 organizations that commissioned developments in this release of
 Evergreen:
 
-TODO
+BC Libraries Cooperative
+C/W MARS
+Georgia Public Library Service
+Indiana State Library
+King County Library System
+MassLNC
+Pennsylvania Integrated Library System
+
 
 We would also like to thank the following individuals who contributed
 code, translations, documentations patches and tests to this release of
