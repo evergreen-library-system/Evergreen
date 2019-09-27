@@ -783,9 +783,10 @@ Evergreen:
 
 
 We would also like to thank the following individuals who contributed
-code, translations, documentations patches and tests to this release of
+code, translations, documentation, patches, and tests to this release of
 Evergreen:
 
+* Felicia Beaudry
 * A. Bellenir
 * Jason Boyer
 * Mark Bucholtz
