@@ -1,6 +1,0 @@
-open-ils.circ.renew.auto API Deprecated
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-The open-ils.circ.renew.auto API added in release 3.2 is deprecated
-and will be removed in Evergreen release 3.5.  Please switch to using
-the open-ils.circ.renew API with the auto_renew option set to 1 in any
-custom code.

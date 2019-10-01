@@ -37,6 +37,10 @@ external links) applied to the customized version.
 Upgrade notes
 -------------
 
+Minimum Required OpenSRF Version
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Evergreen 3.4 requires OpenSRF 3.2.x or later.
+
 Updating OPAC colors.tt2 file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -241,8 +245,24 @@ Angular Standing Penalty Admin Page
 The Administration -> Local Administration -> Standing Penalties
 page has been migrated to Angular.
 
-Architecture
-~~~~~~~~~~~~
+Copy Alert Permissions Added to Seed Data
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Copy alerts were improved in recent releases of Evergreen,
+but the permissions were not assigned to any of the stock
+permission profiles in the "seed data" supplied to first time
+installations.
+
+The VIEW_COPY_ALERT permission is now assigned to all profiles
+under the "Staff" parent profile, and ADMIN_COPY_ALERT is now
+assigned to Cataloging Administrator and should be available to
+all Administrator profiles.
+
+This change does NOT include an upgrade script, so site server
+administrators are responsible for updating the permissions
+profiles for their individual systems.
+
+Architecture and Internals
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Angular Grid Improvements
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -273,6 +293,13 @@ can actually talk to the external service, as well as an authentication profile
 that determines which patrons can be authenticated at this endpoint.  Support
 for https://tools.ietf.org/html/rfc7617["Basic" HTTP Authentication] is
 provided as a reference implementation.
+
+open-ils.circ.renew.auto API Deprecated
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The `open-ils.circ.renew.auto` API added in release 3.2 is deprecated
+and will be removed in Evergreen release 3.5.  Please switch to using
+the `open-ils.circ.renew` API with the `auto_renew` option set to 1 in any
+custom code.
 
 Cataloging
 ~~~~~~~~~~
