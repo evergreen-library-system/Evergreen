@@ -1,6 +1,6 @@
 BEGIN;
 
---SELECT evergreen.upgrade_deps_block_check('XXXX', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1188', :eg_version);
 
 UPDATE action.circulation SET auto_renewal = FALSE WHERE auto_renewal IS NULL;
 
