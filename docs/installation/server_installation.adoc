@@ -64,13 +64,13 @@ Installing prerequisites
     If you are running an older version of these distributions, you may want 
     to upgrade before upgrading Evergreen. For instructions on upgrading these
     distributions, visit the Debian or Ubuntu websites.
-  * **OpenSRF**: The minimum supported version of OpenSRF is 3.0.0.
+  * **OpenSRF**: The minimum supported version of OpenSRF is 3.2.0.
 
 
 Evergreen has a number of prerequisite packages that must be installed
 before you can successfully configure, compile, and install Evergreen.
 
-1. Begin by installing the most recent version of OpenSRF (3.0.0 or later).
+1. Begin by installing the most recent version of OpenSRF (3.2.0 or later).
    You can download OpenSRF releases from http://evergreen-ils.org/opensrf-downloads/
 +
 2. Issue the following commands as the *root* Linux account to install
