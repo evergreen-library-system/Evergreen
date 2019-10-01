@@ -10,6 +10,13 @@ The following are the base requirements setting Evergreen up on a test server:
  * Linux Operating System (community supports Debian, Ubuntu, or Fedora)
  * Ports 80 and 443 should be opened in your firewall for TCP connections to allow OPAC and staff client connections to the Evergreen server.
 
+== Optional Feature Requirements ==
+
+If you will be configuring Evergreen to sign users on to OpenAthens:
+
+ * Port 443 should be opened _outbound_ in your firewall to allow the
+   Evergreen server to connect to https://login.openathens.net.
+
 == Web Client Requirements ==
 
 The current stable release of Firefox or Chrome is required to run the web

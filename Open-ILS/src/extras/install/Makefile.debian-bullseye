@@ -42,10 +42,12 @@ export DEBS = \
 	libexcel-writer-xlsx-perl\
 	libgd-graph3d-perl\
 	libgeo-coder-osm-perl\
+	libhttp-async-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libmarc-charset-perl \
 	libncurses5-dev\
+	libnet-https-nb-perl\
 	libnet-ip-perl\
 	libnet-ldap-perl \
 	libnet-server-perl\

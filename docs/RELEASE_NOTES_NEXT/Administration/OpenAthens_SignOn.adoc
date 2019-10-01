@@ -1,0 +1,150 @@
+Configuring sign-on to OpenAthens
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+If your institution uses OpenAthens single sign-on, you can configure Evergreen 
+to link with OpenAthens. This will let patrons connect to OpenAthens resources 
+seamlessly once they have logged in to Evergreen. Patrons are automatically 
+assigned an OpenAthens identity dynamically based on their Evergreen login, 
+and do not need accounts created manually in OpenAthens.
+
+Registering your Evergreen installation with the OpenAthens service
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Using your OpenAthens administrator account at https://admin.openathens.net/, 
+complete the following steps:
+
+. Register a local authentication connection for Evergreen:
+  .. Go to *Management* -> *Connections*.
+  .. Under *Local authentication* click *Add*.
+  .. In the wizard that appears, select *Evergreen* as the local authentication 
+  system type (or *API* if Evergreen is not listed) and click *Configure*.
+  .. For *Display name*, enter the name of your Evergreen portal that your 
+  patrons will be familiar with. They will need to be able to recognise and 
+  select this name from a list of sign-in options on OpenAthens.
+  .. For *Callback URL* enter *https://<HOSTNAME>/eg/opac/sso/openathens* where 
+  <HOSTNAME> is the public hostname of your Evergreen installation, and click 
+  *Save*. (If you have installed Evergreen somewhere other than /eg, modify the
+  URL accordingly.)
+  .. On the details page that appears, take a copy of the *Connection ID* and 
+  *Connection URI* that have been generated. You will need these when 
+  configuring Evergreen.
+. Generate an API key:
+  .. Go to *Management* -> *API keys* and click *Add*.
+  .. For *Name*, enter 'Evergreen' or whatever name you use for your Evergreen 
+  portal internally, and click *Save*.
+  .. Take a copy of the 36-character key that has been generated. You will need 
+  this when configuring Evergreen.
+
+Full OpenAthens documentation for local authentication API connections is 
+available at http://docs.openathens.net/display/public/MD/API+connector.
+
+Configuring Evergreen
++++++++++++++++++++++
+OpenAthens sign-on is configured in the staff client under *Local 
+Administration* -> *OpenAthens Sign-on*. To make a connection, select *New 
+Sign-on to OpenAthens*, and set the values as follows:
+
+* *Owner* - the organisation within your library hierarchy that owns the 
+connection to OpenAthens. If your whole consortium has signed up to OpenAthens 
+as a single customer, then you would select the top-level. If only one 
+regional library system or branch is the OpenAthens customer, select that. 
+Whichever organisation you select, the OpenAthens connection will take effect 
+for all libraries below it in your organisational hierarchy. A single 
+OpenAthens sign-on configuration normally equates to a single *domain* in the 
+OpenAthens service. If in doubt refer to your OpenAthens account manager or 
+implementation partner.
+* *Active* - Enable this connection (enabled by default).
+* *API key* - the 36-character OpenAthens *API key* that was generated in step 
+  2 above.
+* *Connection ID* - the numerical *Connection ID* that was generated for the 
+  OpenAthens local authentication connection in step 1 above.
+* *Connection URI* - the *Connection URI* that was generated for the 
+  OpenAthens local authentication connection in step 1 above.
+* *Auto sign-on* - controls _when_ patrons are signed on to OpenAthens:
+  ** *enabled* (recommended) - As soon as a patron logs in to Evergreen, they 
+  are signed in to OpenAthens. This happens via a quick redirect that the user 
+  should not notice.
+  ** *disabled* - The patron is not signed in to OpenAthens to start with. When 
+  they first access an OpenAthens-protected resource, they will need to search 
+  for your institution at the OpenAthens log-in page and choose your Evergreen 
+  portal as the sign-in method (they will see the name you entered as the 
+  *Display name* in step 1 above). Evergreen will then prompt for log-in if 
+  they have not already logged in. After that, they are signed in to OpenAthens 
+  and OpenAthens redirects them to the resource.
+* *Auto sign-out* - controls whether the patron is signed out of OpenAthens 
+  when they log out of Evergreen. If *enabled* the patron will be sent to the 
+  OpenAthens sign-out page when they log out of Evergreen. You can optionally 
+  configure the OpenAthens service to send them back to your home page again 
+  after this; the setting can be found at https://admin.openathens.net/ under 
+  *Preferences* -> *Domain* -> *After sign out*.
+* *Unique identifier field* - controls which attribute of patron accounts is 
+  used as the unique identifier in OpenAthens. The supported values are 'id' 
+  and 'usrname', but you should leave this set to the default value of 'id' 
+  unless you have a reason to do otherwise. It is important that this attribute 
+  does not change during the lifetime of a patron account, otherwise they would 
+  lose any personalised settings they have saved on third party resources. It 
+  is also important that you do not re-use old patron accounts for new users, 
+  otherwise a new user could see personalised settings saved by an old user.
+* *Display name field* - controls which attribute of patron accounts is 
+  displayed in the OpenAthens portal at https://admin.openathens.net/. (This 
+  is where you can see which accounts have been used, and what use patrons are 
+  making of third party resources.) The supported values are 'id', 'usrname' 
+  and 'fullname'. Whichever you choose, OpenAthens will only use it within 
+  your portal view; it won't be released to third-party resources.
+* *Release X* - one setting for each of the attributes that it is possible to 
+  release to OpenAthens. Depending on your user privacy policy, you can 
+  configure any of these attributes to be released to OpenAthens as part of 
+  the sign-on process. None are enabled by default. OpenAthens in turn doesn't 
+  store or release any of these attributes to third party resources, unless 
+  you configure that separately in the OpenAthens portal. You have to 
+  configure this in two stages. Firstly, mapping Evergreen attributes to 
+  OpenAthens attributes, and secondly releasing OpenAthens attributes to third 
+  party resources. See the OpenAthens documenation pages at 
+  http://docs.openathens.net/display/public/MD/Attribute+mapping and 
+  http://docs.openathens.net/display/public/MD/Attribute+release. You will need 
+  to know the exact names of the attributes that are released. These are listed 
+  in the following table:
+
+|===
+|Setting|Attribute released|Description
+
+|Release prefix
+|prefix
+|the patron's prefix, overriden by the preferred prefix if that is set
+
+|Release first name
+|first_given_name
+|the patron's first name, overriden by the preferred first name if that is set
+
+|Release middle name
+|second_given_name
+|the patron's middle name, overriden by the preferred middle name if that is set
+
+|Release surname
+|family_name
+|the patron's last name, overriden by the preferred last name if that is set
+
+|Release suffix
+|suffix
+|the patron's suffix, overriden by the preferred suffix if that is set
+
+|Release email
+|email
+|the patron's email address
+
+|Release home library
+|home_ou
+|the _shortcode_ of the patron's home library (e.g. 'BR1' in the Concerto 
+sample data set)
+|===
+
+Network access
+++++++++++++++
+As part of the sign-on process, Evergreen makes a connection to the OpenAthens
+service to transfer details of the user that is signing on. This data does not
+go via the user's browser, to avoid revealing the private API key and to avoid
+the risk of spoofing. You need to open up port 443 outbound in your firewall,
+from your Evergreen server to login.openathens.net.
+
+Admin permissions
++++++++++++++++++
+To delegate OpenAthens configuration to other staff users, assign the 
+*ADMIN_OPENATHENS* permission.
