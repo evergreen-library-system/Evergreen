@@ -62,6 +62,8 @@ include::cataloging/volcopy_editor.adoc[]
 
 include::cataloging/tpac_copy_edit_links.adoc[]
 
+include::cataloging/holdings_editor_hide_fields.adoc[]
+
 :leveloffset: 0
 
 include::cataloging/holdings_templates.adoc[]
