@@ -1,0 +1,61 @@
+<ng-template #successStrTmpl i18n>{{idlClassDef.label}} Update Succeeded</ng-template>
+<eg-string #successString [template]="successStrTmpl"></eg-string>
+
+<ng-template #updateFailedStrTmpl i18n>Update of {{idlClassDef.label}} failed</ng-template>
+<eg-string #updateFailedString [template]="updateFailedStrTmpl"></eg-string>
+
+<ng-template #deleteFailedStrTmpl i18n>Delete of {{idlClassDef.label}} failed or was not allowed</ng-template>
+<eg-string #deleteFailedString [template]="deleteFailedStrTmpl"></eg-string>
+
+<ng-template #deleteSuccessStrTmpl i18n>{{idlClassDef.label}} Successfully Deleted</ng-template>
+<eg-string #deleteSuccessString [template]="deleteSuccessStrTmpl"></eg-string>
+
+<ng-template #createStrTmpl i18n>{{idlClassDef.label}} Succeessfully Created</ng-template>
+<eg-string #createString [template]="createStrTmpl"></eg-string>
+
+<ng-template #createErrStrTmpl i18n>Failed to create new {{idlClassDef.label}}</ng-template>
+<eg-string #createErrString [template]="createErrStrTmpl"></eg-string>
+
+<eg-title i18n-prefix prefix="{{classLabel}} Administration">
+</eg-title>
+<eg-staff-banner bannerText="{{classLabel}} Configuration" i18n-bannerText>
+</eg-staff-banner>
+
+<ng-container *ngIf="orgField">
+  <eg-org-family-select
+    [limitPerms]="viewPerms"
+    [selectedOrgId]="contextOrg.id()"
+    [(ngModel)]="searchOrgs"
+    (ngModelChange)="grid.reload()">
+  </eg-org-family-select>
+  <hr/>
+</ng-container>
+
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" 
+    [sortable]="true" persistKey="{{persistKey}}" [showLinkSelectors]="true">
+  <eg-grid-toolbar-button [disabled]="!canCreate" 
+    label="New {{idlClassDef.label}}" i18n-label [action]="createNew">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-button [disabled]="translatableFields.length == 0" 
+    label="Apply Translations" i18n-label [action]="translate">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label [action]="deleteSelected">
+  </eg-grid-toolbar-action>
+</eg-grid>
+
+<ng-template #orgTemplate
+    let-field="field" let-record="record">
+  <eg-multi-select idlClass="aou"
+    [startValue]="record['owning_lib_filter']()"
+    (onChange)="record['owning_lib_filter']($event)">
+  </eg-multi-select>
+</ng-template>
+
+<eg-fm-record-editor #editDialog
+    idlClass="{{idlClass}}" 
+    [preloadLinkedValues]="true"
+    [fieldOptions]="{owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
+    fieldOrder="id,org_unit,active,api_key,connection_id,connection_uri,auto_signon_enabled,auto_signout_enabled,unique_identifier,display_name,release_prefix,release_first_given_name,release_second_given_name,release_family_name,release_suffix,release_email,release_home_ou"
+></eg-fm-record-editor>

@@ -26,6 +26,7 @@ use OpenILS::WWW::EGCatLoader::Record;
 use OpenILS::WWW::EGCatLoader::Container;
 use OpenILS::WWW::EGCatLoader::SMS;
 use OpenILS::WWW::EGCatLoader::Register;
+use OpenILS::WWW::EGCatLoader::OpenAthens;
 
 my $U = 'OpenILS::Application::AppUtils';
 
@@ -166,6 +167,7 @@ sub load {
     return $self->load_password_reset if $path =~ m|opac/password_reset|;
     return $self->load_logout if $path =~ m|opac/logout|;
     return $self->load_patron_reg if $path =~ m|opac/register|;
+    return $self->load_openathens_logout if $path =~ m|opac/sso/openathens/logout$|;
 
     $self->load_simple("myopac") if $path =~ m:opac/myopac:; # A default page for myopac parts
 
@@ -231,6 +233,7 @@ sub load {
     return $self->load_myopac_prefs if $path =~ m|opac/myopac/prefs|;
     return $self->load_myopac_reservations if $path =~ m|opac/myopac/reservations|;
     return $self->load_sms_cn if $path =~ m|opac/sms_cn|;
+    return $self->load_openathens_sso if $path =~ m|opac/sso/openathens$|;
 
     return Apache2::Const::OK;
 }
@@ -594,10 +597,14 @@ sub load_login {
         );
     }
 
-    return $self->generic_redirect(
-        $cgi->param('redirect_to') || $acct,
-        $cookie_list
-    );
+    my $redirect_to = $cgi->param('redirect_to') || $acct;
+
+    return
+        $self->_perform_any_sso_required($response, $redirect_to, $cookie_list)
+        || $self->generic_redirect(
+            $redirect_to,
+            $cookie_list
+        );
 }
 
 # -----------------------------------------------------------------------------
@@ -605,7 +612,8 @@ sub load_login {
 # -----------------------------------------------------------------------------
 sub load_logout {
     my $self = shift;
-    my $redirect_to = shift || $self->cgi->param('redirect_to');
+    my $redirect_to = shift || $self->cgi->param('redirect_to')
+        || $self->ctx->{home_page};
 
     # If the user was adding anyting to an anonymous cache 
     # while logged in, go ahead and clear it out.
@@ -619,23 +627,54 @@ sub load_logout {
         );
     } catch Error with {};
 
-    return $self->generic_redirect(
-        $redirect_to || $self->ctx->{home_page},
-        [
-            # clear value of and expire both of these login-related cookies
-            $self->cgi->cookie(
-                -name => COOKIE_SES,
-                -path => '/',
-                -value => '',
-                -expires => '-1h'
-            ),
-            $self->cgi->cookie(
-                -name => COOKIE_LOGGEDIN,
-                -path => '/',
-                -value => '',
-                -expires => '-1h'
-            )
-        ]
+    # clear value of and expire both of these login-related cookies
+    my $cookie_list = [
+        $self->cgi->cookie(
+            -name => COOKIE_SES,
+            -path => '/',
+            -value => '',
+            -expires => '-1h'
+        ),
+        $self->cgi->cookie(
+            -name => COOKIE_LOGGEDIN,
+            -path => '/',
+            -value => '',
+            -expires => '-1h'
+        )
+    ];
+
+    return 
+        $self->_perform_any_sso_signout_required($redirect_to, $cookie_list)
+        || $self->generic_redirect(
+            $redirect_to,
+            $cookie_list
+        );
+}
+
+# -----------------------------------------------------------------------------
+# Signs the user in to any third party services that their org unit is
+# configured for.
+# -----------------------------------------------------------------------------
+sub _perform_any_sso_required {
+    my ($self, $auth_response, $redirect_to, $cookie_list) = @_;
+
+    return $self->perform_openathens_sso_if_required(
+        $auth_response,
+        $redirect_to,
+        $cookie_list
+    );
+}
+
+# -----------------------------------------------------------------------------
+# Signs the user out of any third party services that their org unit is
+# configured for.
+# -----------------------------------------------------------------------------
+sub _perform_any_sso_signout_required {
+    my ($self, $redirect_to, $cookie_list) = @_;
+
+    return $self->perform_openathens_signout_if_required(
+        $redirect_to,
+        $cookie_list
     );
 }
 

@@ -40,9 +40,11 @@ export DEBS = \
 	libemail-mime-perl\
 	libexcel-writer-xlsx-perl\
 	libgd-graph3d-perl\
+	libhttp-async-perl\
 	liblocale-maketext-lexicon-perl\
 	liblog-log4perl-perl\
 	libncurses5-dev\
+	libnet-https-nb-perl\
 	libnet-ip-perl\
 	libnet-ldap-perl \
 	libnet-server-perl\

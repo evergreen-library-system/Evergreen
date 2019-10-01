@@ -4,6 +4,7 @@ import {AdminLocalSplashComponent} from './admin-local-splash.component';
 import {BasicAdminPageComponent} from '@eg/staff/admin/basic-admin-page.component';
 import {AddressAlertComponent} from './address-alert.component';
 import {AdminCarouselComponent} from './admin-carousel.component';
+import {OpenAthensIdentityComponent} from './openathens-identity.component';
 import {StandingPenaltyComponent} from './standing-penalty.component';
 
 const routes: Routes = [{
@@ -19,6 +20,9 @@ const routes: Routes = [{
 }, {
     path: 'container/carousel',
     component: AdminCarouselComponent
+}, {
+    path: 'config/openathens_identity',
+    component: OpenAthensIdentityComponent
 }, {
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent

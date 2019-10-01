@@ -13081,6 +13081,77 @@ SELECT  usr,
 		</permacrud>
 	</class>
 
+	<class id="coauf" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::openathens_uid_field" 
+		oils_persist:tablename="config.openathens_uid_field" 
+		reporter:label="OpenAthens unique identifiers">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.openathens_uid_field_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="coanf" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::openathens_name_field" 
+		oils_persist:tablename="config.openathens_name_field" 
+		reporter:label="OpenAthens name fields">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.openathens_name_field_id_seq">
+			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id" />
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+		</fields>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<retrieve/>
+			</actions>
+		</permacrud>
+	</class>
+
+	<class id="coai" 
+		controller="open-ils.cstore open-ils.pcrud"
+		oils_obj:fieldmapper="config::openathens_identity" 
+		oils_persist:tablename="config.openathens_identity" 
+		reporter:label="Sign-on to OpenAthens">
+		<fields oils_persist:primary="id" oils_persist:sequence="config.openathens_identity_id_seq">
+			<field reporter:label="ID" name="id" reporter:datatype="id" reporter:selector="name"/>
+			<field reporter:label="Owner" name="org_unit" reporter:datatype="org_unit" oils_obj:required="true"/>
+			<field reporter:label="Active" name="active" reporter:datatype="bool"/>
+			<field reporter:label="API key" name="api_key" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Connection ID" name="connection_id" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Connection URI" name="connection_uri" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Auto sign-on" name="auto_signon_enabled" reporter:datatype="bool"/>
+			<field reporter:label="Auto sign-out" name="auto_signout_enabled" reporter:datatype="bool"/>
+			<field reporter:label="Unique identifier field" name="unique_identifier" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Display name field" name="display_name" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Release prefix" name="release_prefix" reporter:datatype="bool"/>
+			<field reporter:label="Release first name" name="release_first_given_name" reporter:datatype="bool"/>
+			<field reporter:label="Release middle name" name="release_second_given_name" reporter:datatype="bool"/>
+			<field reporter:label="Release surname" name="release_family_name" reporter:datatype="bool"/>
+			<field reporter:label="Release suffix" name="release_suffix" reporter:datatype="bool"/>
+			<field reporter:label="Release email" name="release_email" reporter:datatype="bool"/>
+			<field reporter:label="Release home library" name="release_home_ou" reporter:datatype="bool"/>
+		</fields>
+		<links>
+			<link field="org_unit" reltype="has_a" key="id" map="" class="aou"/>
+			<link field="unique_identifier" reltype="has_a" key="id" map="" class="coauf"/>
+			<link field="display_name" reltype="has_a" key="id" map="" class="coanf"/>
+		</links>
+		<permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
+			<actions>
+				<create permission="ADMIN_OPENATHENS" global_required="true"/>
+				<retrieve/>
+				<update permission="ADMIN_OPENATHENS" global_required="true"/>
+				<delete permission="ADMIN_OPENATHENS" global_required="true"/>
+			</actions>
+		</permacrud>
+	</class>
+
 	<!-- ********************************************************************************************************************* -->
 </IDL>
 
