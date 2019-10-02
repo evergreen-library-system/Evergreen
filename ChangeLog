@@ -1,3 +1,132 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 8d54f77593b27f6eadee31e78ad7f4d3d475d48f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 16:23:13 2019 -0400
+
+    update release notes for 3.4.0
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3	4	docs/RELEASE_NOTES_3_4.adoc
+
+commit 11183df75e4478df3ab1554172aac6c812c131ce
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 16:20:08 2019 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2923	2919	build/i18n/po/db.seed/ar-JO.po
+2923	2919	build/i18n/po/db.seed/cs-CZ.po
+2923	2919	build/i18n/po/db.seed/de-DE.po
+2923	2919	build/i18n/po/db.seed/en-CA.po
+2923	2919	build/i18n/po/db.seed/en-GB.po
+2923	2919	build/i18n/po/db.seed/es-ES.po
+2923	2919	build/i18n/po/db.seed/fi-FI.po
+2923	2919	build/i18n/po/db.seed/fr-CA.po
+2923	2919	build/i18n/po/db.seed/he-IL.po
+2923	2919	build/i18n/po/db.seed/hu-HU.po
+2923	2919	build/i18n/po/db.seed/hy-AM.po
+2923	2919	build/i18n/po/db.seed/oc-FR.po
+2923	2919	build/i18n/po/db.seed/pt-BR.po
+2923	2919	build/i18n/po/db.seed/ru-RU.po
+2923	2919	build/i18n/po/db.seed/sv-SE.po
+2923	2919	build/i18n/po/db.seed/tr-TR.po
+2089	2083	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2089	2083	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2089	2083	build/i18n/po/fm_IDL.dtd/de-DE.po
+2089	2083	build/i18n/po/fm_IDL.dtd/en-CA.po
+2089	2083	build/i18n/po/fm_IDL.dtd/en-GB.po
+2089	2083	build/i18n/po/fm_IDL.dtd/es-ES.po
+2089	2083	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2089	2083	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2089	2083	build/i18n/po/fm_IDL.dtd/he-IL.po
+2089	2083	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2089	2083	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2089	2083	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2089	2083	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2089	2083	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2089	2083	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2089	2083	build/i18n/po/fm_IDL.dtd/tr-TR.po
+87	60	build/i18n/po/webstaff/ar-JO.po
+87	60	build/i18n/po/webstaff/cs-CZ.po
+83	59	build/i18n/po/webstaff/en-CA.po
+83	59	build/i18n/po/webstaff/en-GB.po
+87	60	build/i18n/po/webstaff/es-ES.po
+83	59	build/i18n/po/webstaff/hy-AM.po
+83	59	build/i18n/po/webstaff/ru-RU.po
+
+commit ecb421b4cf98a20ac10dc29b836a3b60117544f5
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 16:11:54 2019 -0400
+
+    update upgrade instructions for 3.4.0
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+14	14	docs/installation/server_upgrade.adoc
+
+commit f82b115b6ee6c8a9d577e9eb989ba9c926cf0891
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 16:08:59 2019 -0400
+
+    note minimum OpenSRF version in upgrade instructions
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	docs/installation/server_upgrade.adoc
+
+commit c1dd11922dd8aca03b443c0e4a4c9e3ea959da92
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 12:55:28 2019 -0400
+
+    LP#1846369: add libhtml-defang-perl to Debian Buster installation
+    
+    This patch fixes an oversight where the HTML::Defang dependency
+    added in LP#1825851 wasn't installed on Debian Buster.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	0	Open-ILS/src/extras/install/Makefile.debian-buster
+
+commit 8bc8f4b8631a9663f71728dad56992cc32406b1c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 11:38:42 2019 -0400
+
+    LP#1846357: adjust 3.3.3-3.4.0 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+12	1	Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.4.0-upgrade-db.sql
+
+commit b19bc2e8dd45336f09f434cc1259c88e72151e42
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 11:35:41 2019 -0400
+
+    stage what will become the final 3.3.3-3.4.0 schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/src/sql/Pg/version-upgrade/{3.3.3-3.4-rc-upgrade-db.sql => 3.3.3-3.4.0-upgrade-db.sql}
+ rename Open-ILS/src/sql/Pg/version-upgrade/{3.3.3-3.4-rc-upgrade-db.sql => 3.3.3-3.4.0-upgrade-db.sql} (99%)
+
+commit fcedac0ca4404ca6a6207979b4a1854a99984385
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Wed Oct 2 11:31:06 2019 -0400
+
+    LP#1846357: fix circulation and billing aging
+    
+    An error merging an update to action.age_circ_on_delete() resulted
+    in a regression to the aging of billings. This patch fixes it.
+    
+    To test
+    -------
+    [1] Apply the patch, then age circulations. Verify that relevant
+        billings are also aged.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+57	0	Open-ILS/src/sql/Pg/upgrade/1192.schema.fix_circ_aging.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1192.schema.fix_circ_aging.sql
