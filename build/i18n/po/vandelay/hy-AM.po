@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
-"POT-Creation-Date: 2018-03-02 19:44+0000\n"
+"POT-Creation-Date: 2019-09-10 01:04+0000\n"
 "PO-Revision-Date: 2017-07-27 14:21+0000\n"
 "Last-Translator: TZ <tigran@flib.sci.am>\n"
 "Language-Team: Armenian <hy@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-03-03 05:33+0000\n"
-"X-Generator: Launchpad (build 18566)\n"
+"X-Launchpad-Export-Date: 2019-09-11 05:55+0000\n"
+"X-Generator: Launchpad (build 19044)\n"
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:104
 msgid "&#171; Previous"
@@ -29,7 +29,7 @@ msgstr "(սկսում է 0)"
 msgid "Acquisitions Records"
 msgstr "Համալրման գրառումներ"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:285
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:296
 msgid "Apply"
 msgstr "Կիրառել"
 
@@ -65,6 +65,14 @@ msgstr "Ավտո համադրում ընթացքում է Համալրման օ�
 msgid "Auto-overlay In-process Acquisitions Copies"
 msgstr "Ավտո համադրում ընթացքում է Համալրումների օրինակներ"
 
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:114
+msgid "Auto-overlay On-order Cataloguing  Copies"
+msgstr ""
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:265
+msgid "Auto-overlay On-order Cataloguing Copies"
+msgstr ""
+
 #: ../../Open-ILS/src/templates/vandelay/inc/import_errors.tt2:4 ../../Open-ILS/src/templates/vandelay/inc/matches.tt2:43
 msgid "Back To Import Queue"
 msgstr "Հետ դեպի ներմուծման հերթ"
@@ -85,7 +93,7 @@ msgstr "Մատենագիտական բաղկացուցիչներ"
 msgid "CSV"
 msgstr "CSV"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:267 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:286
+#: ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:55 ../../Open-ILS/src/templates/vandelay/inc/attrs.tt2:63 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:278 ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:297
 msgid "Cancel"
 msgstr "Չեղարկել"
 
@@ -101,7 +109,7 @@ msgstr "Բովանդակային Օրգ միավոր"
 msgid "Copy Import Actions"
 msgstr "Պատճենի ներմուծման գործողություններ"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:280
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:291
 msgid "Copy Records to Bucket"
 msgstr "Պատճենիր գրառումները Բուկետում"
 
@@ -185,7 +193,7 @@ msgstr "Արտահանիր հերթը որպես"
 msgid "Export Records"
 msgstr "Արտահանիր գրառումները"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:128
 msgid "File to Upload:"
 msgstr "Բեռնավորման ենթակա ֆայլ"
 
@@ -217,7 +225,7 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:281
 msgid "Import"
 msgstr "Ներմուծել"
 
@@ -401,7 +409,7 @@ msgstr "Ծածկիր / Ձուլիր անձնագիրը"
 msgid "Page"
 msgstr "Էջ"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:282
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:293
 msgid "Please enter the name of the bucket to append/create."
 msgstr "Մուտք արա ավելացման/ստեղծման փնջի անունը"
 
@@ -577,7 +585,7 @@ msgstr "UTF-8"
 msgid "Update"
 msgstr "Թարմացնել"
 
-#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:120
+#: ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:130
 msgid "Upload"
 msgstr "Բեռնել"
 
@@ -592,6 +600,10 @@ msgstr "Բեռնավորում..."
 #: ../../Open-ILS/src/templates/vandelay/inc/export.tt2:5
 msgid "Use Field Number"
 msgstr "Օգտագործիր դաշտի համարը"
+
+#: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:270 ../../Open-ILS/src/templates/vandelay/inc/upload.tt2:118
+msgid "Use Org Unit Matching in Copy to Determine Best Match"
+msgstr ""
 
 #: ../../Open-ILS/src/templates/vandelay/inc/queue.tt2:17
 msgid "View Import Items"

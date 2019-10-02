@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: open-ils-dev@list.georgialibraries.org\n"
-"POT-Creation-Date: 2019-08-22 12:04-0400\n"
+"POT-Creation-Date: 2019-09-09 16:57-0400\n"
 "PO-Revision-Date: 2017-06-22 10:04+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2019-08-23 05:57+0000\n"
-"X-Generator: Launchpad (build 19022)\n"
+"X-Launchpad-Export-Date: 2019-09-11 05:51+0000\n"
+"X-Generator: Launchpad (build 19044)\n"
 
 #: 1208.TITLE_LAST_COPY:71
 msgid "The last copy attached to a title is being removed or deleted"
@@ -60,6 +60,10 @@ msgstr ""
 msgid "The requested metabib_series_field_entry was not found"
 msgstr ""
 
+#: 1220.ITEM_NOT_HOLDABLE:116
+msgid "An unholdable copy was encountered"
+msgstr ""
+
 #: 11105.PATRON_CREDIT_DISABLED:1045
 msgid ""
 "Payments by patron credit are not allowed for the selected transaction"
@@ -101,10 +105,6 @@ msgstr ""
 
 #: 1882.RECORD_REFERENCED_BY_LINEITEM:708
 msgid "The selected bib record has an open lineitem order referencing it."
-msgstr ""
-
-#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:998
-msgid "The lineitem detail has no owning_lib"
 msgstr ""
 
 #: 1608.METABIB_SUBJECT_FIELD_ENTRY_NOT_FOUND:475
@@ -195,10 +195,6 @@ msgstr ""
 
 #: 1851.ACQ_FUND_ENCUMBRANCE_TOTAL_NOT_FOUND:636
 msgid "The requested acq.fund_encumbrance_total was not found"
-msgstr ""
-
-#: 8002.OFFLINE_FILE_ERROR:950
-msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1529.ACTOR_WORKSTATION_NOT_FOUND:246
@@ -317,6 +313,10 @@ msgstr ""
 
 #: 1651.AUTHORITY_RECORD_NUMBER_EXISTS:604
 msgid "An authority record already exists with the requested ARN"
+msgstr ""
+
+#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1021
+msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 5000.PERM_FAILURE:824
@@ -528,6 +528,10 @@ msgstr ""
 
 #: 1221.ORG_CANNOT_HAVE_VOLS:120
 msgid "The selected location cannot have volumes attached"
+msgstr ""
+
+#: 8002.OFFLINE_FILE_ERROR:950
+msgid "An offline file or directory could not be created or accessed"
 msgstr ""
 
 #: 1704.TCN_EXISTS:730
@@ -867,7 +871,7 @@ msgstr ""
 msgid "Copy is in transit"
 msgstr ""
 
-#: 1219.COPY_REMOTE_CIRC_LIB:112 1220.ITEM_NOT_HOLDABLE:116
+#: 1219.COPY_REMOTE_CIRC_LIB:112
 msgid "A copy with a remote circulating library (circ_lib) was encountered"
 msgstr ""
 
@@ -1001,12 +1005,6 @@ msgstr ""
 msgid "A report with the given name and folder already exists"
 msgstr ""
 
-#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1038
-msgid ""
-"A serial pattern code has been configured that fails to conform to MFHD "
-"standards for fields 853-855."
-msgstr ""
-
 #: 1705.VOLUME_LABEL_EXISTS:733
 msgid "A volume with the same label, title and owning library exists"
 msgstr ""
@@ -1074,10 +1072,6 @@ msgstr ""
 
 #: 1000.LOGIN_FAILED:28
 msgid "User login failed"
-msgstr ""
-
-#: 11001.SERIAL_CAPTION_AND_PATTERN_HAS_ISSUANCES:1021
-msgid "The caption/pattern still has dependent issuances"
 msgstr ""
 
 #: 1873.ACQ_CURRENCY_TYPE_NOT_FOUND:684
@@ -1258,6 +1252,10 @@ msgstr ""
 msgid "The requested container_call_number_bucket_item was not found"
 msgstr ""
 
+#: 10003.ACQ_LINEITEM_DETAIL_NO_ORG:998
+msgid "The lineitem detail has no owning_lib"
+msgstr ""
+
 #: 11101.SERIAL_DISTRIBUTION_HAS_NO_COPY_TEMPLATE:1025
 msgid ""
 "Units cannot be created for the given item because its associated "
@@ -1300,6 +1298,12 @@ msgstr ""
 
 #: 1615.ACTION_NON_CATALOGED_CIRCULATION_NOT_FOUND:496
 msgid "The requested action_non_cataloged_circulation was not found"
+msgstr ""
+
+#: 11104.SERIAL_CORRUPT_PATTERN_CODE:1038
+msgid ""
+"A serial pattern code has been configured that fails to conform to MFHD "
+"standards for fields 853-855."
 msgstr ""
 
 #: 1604.MONEY_USER_SUMMARY_NOT_FOUND:463
