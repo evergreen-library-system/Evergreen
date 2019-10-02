@@ -1,3 +1,713 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit 752e342e5f23ea228f2fdfe6832f513617dcb60f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Sep 9 17:08:49 2019 -0400
+
+    bump up Perl version string
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 0c43f1e48791d550007c475609c9a13dec5d0e0e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 20:02:40 2019 -0400
+
+    update release notes for 3.4-rc
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	30	docs/RELEASE_NOTES_3_4.adoc
+
+commit 1410b7f81ca041a1968bda5a804027d626cfd5b0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 20:02:33 2019 -0400
+
+    Translation updates - po files
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+3090	2973	build/i18n/po/db.seed/ar-JO.po
+3095	2978	build/i18n/po/db.seed/cs-CZ.po
+3070	2953	build/i18n/po/db.seed/de-DE.po
+3074	2957	build/i18n/po/db.seed/en-CA.po
+3074	2957	build/i18n/po/db.seed/en-GB.po
+3095	2978	build/i18n/po/db.seed/es-ES.po
+3081	2964	build/i18n/po/db.seed/fi-FI.po
+3079	2962	build/i18n/po/db.seed/fr-CA.po
+3068	2951	build/i18n/po/db.seed/he-IL.po
+3068	2951	build/i18n/po/db.seed/hu-HU.po
+3097	2980	build/i18n/po/db.seed/hy-AM.po
+3071	2954	build/i18n/po/db.seed/oc-FR.po
+3079	2962	build/i18n/po/db.seed/pt-BR.po
+3078	2961	build/i18n/po/db.seed/ru-RU.po
+3068	2951	build/i18n/po/db.seed/sv-SE.po
+3068	2951	build/i18n/po/db.seed/tr-TR.po
+2099	1938	build/i18n/po/fm_IDL.dtd/ar-JO.po
+2100	1939	build/i18n/po/fm_IDL.dtd/cs-CZ.po
+2085	1924	build/i18n/po/fm_IDL.dtd/de-DE.po
+2099	1938	build/i18n/po/fm_IDL.dtd/en-CA.po
+2099	1938	build/i18n/po/fm_IDL.dtd/en-GB.po
+2099	1938	build/i18n/po/fm_IDL.dtd/es-ES.po
+2099	1938	build/i18n/po/fm_IDL.dtd/fi-FI.po
+2087	1926	build/i18n/po/fm_IDL.dtd/fr-CA.po
+2085	1924	build/i18n/po/fm_IDL.dtd/he-IL.po
+2085	1924	build/i18n/po/fm_IDL.dtd/hu-HU.po
+2099	1938	build/i18n/po/fm_IDL.dtd/hy-AM.po
+2085	1924	build/i18n/po/fm_IDL.dtd/oc-FR.po
+2098	1937	build/i18n/po/fm_IDL.dtd/pt-BR.po
+2098	1937	build/i18n/po/fm_IDL.dtd/ru-RU.po
+2085	1924	build/i18n/po/fm_IDL.dtd/sv-SE.po
+2085	1924	build/i18n/po/fm_IDL.dtd/tr-TR.po
+28	24	build/i18n/po/ils_events.xml/ar-JO.po
+28	24	build/i18n/po/ils_events.xml/cs-CZ.po
+26	22	build/i18n/po/ils_events.xml/de-DE.po
+28	24	build/i18n/po/ils_events.xml/en-CA.po
+28	24	build/i18n/po/ils_events.xml/en-GB.po
+29	25	build/i18n/po/ils_events.xml/es-ES.po
+28	24	build/i18n/po/ils_events.xml/fi-FI.po
+26	22	build/i18n/po/ils_events.xml/fr-CA.po
+26	22	build/i18n/po/ils_events.xml/he-IL.po
+26	22	build/i18n/po/ils_events.xml/hu-HU.po
+28	24	build/i18n/po/ils_events.xml/hy-AM.po
+26	22	build/i18n/po/ils_events.xml/oc-FR.po
+26	22	build/i18n/po/ils_events.xml/pt-BR.po
+26	22	build/i18n/po/ils_events.xml/ru-RU.po
+26	22	build/i18n/po/ils_events.xml/sv-SE.po
+26	22	build/i18n/po/ils_events.xml/tr-TR.po
+19	15	build/i18n/po/tpac/ar-JO.po
+20	16	build/i18n/po/tpac/cs-CZ.po
+19	15	build/i18n/po/tpac/de-DE.po
+19	15	build/i18n/po/tpac/en-CA.po
+19	15	build/i18n/po/tpac/en-GB.po
+19	15	build/i18n/po/tpac/es-ES.po
+19	15	build/i18n/po/tpac/fi-FI.po
+19	15	build/i18n/po/tpac/fr-CA.po
+19	15	build/i18n/po/tpac/he-IL.po
+19	15	build/i18n/po/tpac/hu-HU.po
+19	15	build/i18n/po/tpac/hy-AM.po
+19	15	build/i18n/po/tpac/oc-FR.po
+19	15	build/i18n/po/tpac/pt-BR.po
+19	15	build/i18n/po/tpac/ru-RU.po
+19	15	build/i18n/po/tpac/sv-SE.po
+19	15	build/i18n/po/tpac/tr-TR.po
+22	10	build/i18n/po/vandelay/ar-JO.po
+22	10	build/i18n/po/vandelay/cs-CZ.po
+22	10	build/i18n/po/vandelay/de-DE.po
+22	10	build/i18n/po/vandelay/es-ES.po
+22	10	build/i18n/po/vandelay/hy-AM.po
+277	201	build/i18n/po/webstaff/ar-JO.po
+278	202	build/i18n/po/webstaff/cs-CZ.po
+273	200	build/i18n/po/webstaff/en-CA.po
+273	200	build/i18n/po/webstaff/en-GB.po
+277	201	build/i18n/po/webstaff/es-ES.po
+277	201	build/i18n/po/webstaff/hy-AM.po
+273	200	build/i18n/po/webstaff/ru-RU.po
+
+commit 69fc47b94f4c548bfced2f4eda88797830803096
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 19:58:33 2019 -0400
+
+    Translation updates - newpot
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2922	2917	build/i18n/po/db.seed/db.seed.pot
+2087	2081	build/i18n/po/fm_IDL.dtd/fm_IDL.dtd.pot
+80	56	build/i18n/po/webstaff/webstaff.pot
+
+commit bc8ceb4f3eb4c884691fe33d2a94e7ceb5ec26d0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 19:50:55 2019 -0400
+
+    updated 3.3.3-3.4-rc schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+869	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.4-rc-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.4-rc-upgrade-db.sql
+
+commit e2ed5405cd97efc908f2acf470678894dcf5f544
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 1 14:47:07 2019 -0700
+
+    LP1842940: stamping and slight tweak to upgrade script
+    
+    Mike Rylander suggested the INSERT ... SELECT ... WHERE NOT
+    EXISTS approach, since this fix is being backported to older
+    releases, and we don't want to cause duplicate entries or
+    upgrade failures if the perm already exists
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/1191.data.lp1842940_staff_edit_self_perm.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1191.data.lp1842940_staff_edit_self_perm.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+
+commit 759258ce4e53d8d71d3c1956b95523d8162ce9e0
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Sep 17 11:07:04 2019 -0400
+
+    LP#1842940: Improve Alert
+    
+    Attempt to float the alerts below the sticky bar and above the main
+    content of the user editor.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	5	Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2
+6	0	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit 8734da6411fe129fdcba8018ec77e0ffe213c20c
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 11 14:46:44 2019 -0400
+
+    LP#1842940: Alert when editing is disallowed
+    
+    Provide functions that checks the permissions required to edit ones
+    own account, or accounts in groups based on group application
+    permissions, and alert the user if and why they can't edit an account.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	0	Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2
+13	2	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+8	0	Open-ILS/web/js/ui/default/staff/offline.js
+
+commit 1a25eca932b6121fa24406a073052884ddb44412
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Sep 5 10:23:55 2019 -0700
+
+    LP#1842940: add perm to permit staff to edit their own accounts in the client
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+2	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+
+commit 401dce885e6b23294533b2fb840a67758ed90b38
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 5 11:34:51 2019 -0400
+
+    LP#1842940: Don't allow self-edit or perm-restricted edit
+    
+    Pre-webstaff, we disallowed editing of ones own record, an of records
+    that have a group application permission that the staff do not possess.
+    
+    This commit brings back those restrictions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+14	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit d4a3c61e63247c2794ef42c21f1d1d721d002848
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:56:47 2019 -0400
+
+    LP#1835458: bump up OpenSRF requirement
+    
+    OpenSRF 3.2.0 or later is now required for Evergreen 3.4+ as
+    a consequence of the new support for Debian 10 Buster.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	docs/installation/server_installation.adoc
+
+commit 020b0c97c5a77ef58cf35fe9fc57f84427226998
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:55:58 2019 -0400
+
+    updates to 3.4 release notes
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+29	2	docs/RELEASE_NOTES_3_4.adoc
+0	15	docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+0	6	docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+ delete mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+
+commit d4f8ba9cdd7ac42cb4881dbe50ee20e97e62e63f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:24:16 2019 -0400
+
+    LP#1835085: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.data.auto_renewal-not-desk_renewal.sql => 1190.data.auto_renewal-not-desk_renewal.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.data.auto_renewal-not-desk_renewal.sql => 1190.data.auto_renewal-not-desk_renewal.sql} (73%)
+
+commit b4cdb9520dab5dd92e8d2b16d6fab9b3514980df
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Sep 9 08:47:09 2019 -0400
+
+    Lp 1835085: Update Item Status templates for auto-renewal
+    
+    Add checks for circ.auto_renewal() == 't' in the circ list and summary
+    pane views of the web staff client Item Status interface.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2
+1	0	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+
+commit a69ac979dbf9b2dcdde579aea0b6ab72ccdc5f5d
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Aug 30 11:37:24 2019 -0400
+
+    Lp 1835035: Refactor auto_renewal back end code
+    
+    Refactor the auto_renewal feature so that it works like other renewal
+    types: opac_renewal, sip_renewal, etc.  This refactor prevents
+    desk_renewal from being set when auto_renewal is set.
+    
+    Deprecate the newly added open-ils.circ.renew.auto API and ensure that
+    it still works as intended.  Add release note indicating the
+    deprecation of this API and intent to remove it in Evergreen 3.5.
+    
+    Modify the AutoRenew action trigger reactor to use the plain
+    open-ils.circ.renew API with the auto_renewal option set to 1.
+    
+    Add database update script to cleanup (i.e. set to FALSE) the
+    desk_renewal field on action.circulation and action.aged_circulation
+    tables where auto_renewal is TRUE.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+13	11	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+6	0	docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+
+commit 2db572dcc89f201e9384b781e630b05e80405702
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:19:51 2019 -0400
+
+    LP#1835577: stamp schema updates
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.auto_renewal_view_updates.sql => 1189.schema.auto_renewal_view_updates.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.auto_renewal_view_updates.sql => 1189.schema.auto_renewal_view_updates.sql} (91%)
+
+commit 4b70112dc86f8f64d2c2469b45b6486906a72087
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Sep 10 11:27:07 2019 -0400
+
+    Lp 1835577: Add more missing auto_renewal fields
+    
+    Add missing auto_renewal and auto_renewal_remaining fields to the
+    following additional IDL classes:
+    
+    * aacs
+    * aoc
+    * circbyyr
+    * robcirc
+    
+    Add database updates to add auto_renewal fields to the following
+    views:
+    
+    * action.billable_circulations
+    * action.open_circulation
+    * reporter.circ_type
+    * reporter.overdue_circs
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	2	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+31	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+
+commit 8998ecbc6be79f71cbbbd06e91375656a14db20a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 10:15:33 2019 -0400
+
+    Lp 1835577: Add missing Auto Renewal fields to the IDL
+    
+    Add entries for auto_renewal and auto_renewal_remaining fields to the
+    acirc and combcirc classes in fm_IDL.xml.  They were missing after the
+    auto-renewal feature was added.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/examples/fm_IDL.xml
+
+commit 289922394d5567aa47fb672a7f2792c61898483e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:15:36 2019 -0400
+
+    LP#1839002: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.action_circulation-auto_renewal-default-false.sql => 1188.schema.action_circulation-auto_renewal-default-false.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.schema.action_circulation-auto_renewal-default-false.sql => 1188.schema.action_circulation-auto_renewal-default-false.sql} (92%)
+
+commit 96c47dc7b8f9392c5d770bd8efff7ab5175495a0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 11:06:56 2019 -0400
+
+    Lp 1839002: Default circulation auto_renewal field to FALSE
+    
+    Change the definition of the action.circulation table so that the
+    auto_renewal field is not null, default false.
+    
+    Add an upgrade script to update the field values and alter the field
+    definition in both the action.circulation and action.aged_circulation
+    tables.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/090.schema.action.sql
+20	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+
+commit ace45349edcd3ef853e1a5b98a24215c5f94d54c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:06:16 2019 -0400
+
+    LP#1840669: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/{XXXX.function.age_circ_on_delete-auto_renewal.sql => 1187.function.age_circ_on_delete-auto_renewal.sql}
+ rename Open-ILS/src/sql/Pg/upgrade/{XXXX.function.age_circ_on_delete-auto_renewal.sql => 1187.function.age_circ_on_delete-auto_renewal.sql} (96%)
+
+commit b29047d7c8e883a41556905f8ad60d0fbfde5c4b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 10:03:50 2019 -0400
+
+    Lp 1840669: Handle autorenewals when aging circulations
+    
+    Add auto_renewal and auto_renewal_remaining fields to the
+    action.age_circ_on_delete trigger function.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/src/sql/Pg/090.schema.action.sql
+47	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+
+commit c961f2bb3d1f4dff49f2f3d2f7ac477843997471
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 24 13:48:08 2019 -0400
+
+    LP#1845050: fix issue where reports interface was partially loaded
+    
+    This patch adjusts mod_xmlent to not free its XML parser
+    prematurely in the face of an EOS bucket received while processing
+    a sub-request.
+    
+    To test
+    -------
+    [1] Test on a platform that has Apache 2.4.25 or later, such as
+        Debian Stretch.
+    [2] Note that when loading the reports interface that the source
+        of the frame containing oils_rpt.xhtml is incomplete and that
+        actions like creating a template or folder do not work in the
+        interface.
+    [3] Apply the patch and repeat step 2. This time, oils_rpt.xhtml
+        should be fully loaded and the interface fuctional.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+12	2	Open-ILS/src/apachemods/mod_xmlent.c
+
+commit be77be6102c4bf392704ea5742e56d85e84edd3b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 16:54:39 2019 -0400
+
+    LP#1845260: add additional DB update to be sure
+    
+    ... that the function is correct if somebody is upgrading a
+    beta1 or beta2 database.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+75	0	Open-ILS/src/sql/Pg/upgrade/1186.schema.fix_auto_overlay_org_unit_copies.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1186.schema.fix_auto_overlay_org_unit_copies.sql
+
+commit f7c0d356fd68639ebb094aeaf4b2a54b54fdbecb
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Mon Sep 23 16:15:14 2019 -0700
+
+    LP#1845260: fix error in vandelay.auto_overlay_org_unit_copies db function
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/012.schema.vandelay.sql
+1	1	Open-ILS/src/sql/Pg/upgrade/1182.schema.vandelay.auto_overlay_org_unit_copies.sql
+
+commit fafd2dca8f9c8d0e0d98428747174d8a0953ad2b
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Fri Sep 20 11:31:16 2019 -0400
+
+    LP1844812 Combobox avoids processing matching entry lists
+    
+    Teach the combobox to only process newly provided entry lists if they
+    are different from the list already on record for the combobox.
+    
+    The combobox entry list Input() is responsive to changes in data
+    throughout the life of the combobox.  As a new entry list is provided,
+    the component will perform various actions on the list.  However, in
+    many cases the list provided may be identical the list the component
+    already has, which can lead to a lot of unnecessary processing and in
+    some case an infinite loop of inputs and outputs.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+30	0	Open-ILS/src/eg2/src/app/share/combobox/combobox.component.ts
+
+commit 7162dac1873020d95441f896904803e29e2f27c5
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 15:44:08 2019 -0400
+
+    LP#1811442 - Assign copy alert permissions.
+    
+    VIEW_COPY_ALERTS and ADMIN_COPY_ALERT permissions were added
+    recently, but not assigned in the default seed data.  This branch
+    assigns VIEW_COPY_ALERTS to Staff profiles at the Consortium depth
+    and adds ADMIN_COPY_ALERT to the Cataloging Administrator profile.
+    
+    Since permissions are set so specifically per-site, this branch does
+    not contain an upgrade script, but does provide an update to release
+    notes reminding site admins to manually add them to the appropriate
+    profiles.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+
+commit 2c49627bb0cf49423fa9c9be4822282674df2039
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 23 11:13:16 2018 -0400
+
+    LP#1560805 Webstaff locale picker repair
+    
+    Make the locale picker less finicky by replacing the search/replace
+    regex with a simple static URL for applying the locale.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	5	Open-ILS/web/js/ui/default/staff/services/navbar.js
+
+commit ecb1dcc58ec3e31f689abdf8dce29f54d0fb7b9a
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Mon May 27 12:03:00 2019 -0700
+
+    LP#1830642: add tests for authenticating users when password contains percent sign
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+66	1	Open-ILS/src/perlmods/live_t/24-lp1710949-login-api.t
+
+commit 21a80dc6e0bcd74109291f6135b5ef5e5047a67c
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 1 15:10:56 2019 -0400
+
+    LP#1768141: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+7	0	Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit 0299e72a900f710bf1380e7bbae6e8a52f9dadff
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Aug 2 10:41:44 2019 -0400
+
+    LP#1768141: (follow-up) change schema update
+    
+    Change the update to an "ALTER FUNCTION ... STABLE" both
+    to make the purpose of the update more clear and to remove
+    the need to check the rest of the function definition when
+    backporting.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit e3337408549eae093aff3b76c8d00125257d09a2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 16:14:00 2019 -0400
+
+    LP#1768141 - Mark permission.grp_descendants STABLE.
+    
+    Quoting Galen Charlton's comments on the bug report:
+    
+    The database function permission.grp_descendants should
+    be marked stable; it qualifies, and doing so should allow
+    PostgreSQL to improve query plans. One example of a query
+    that would benefit is searching by patron profile (a la
+    bug 1497322)
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit d33ddf6e6e954027c698574dd2b8f776982bc72d
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 21 10:26:47 2019 -0700
+
+    LP1739607: Add missing columns to patron record
+    
+    To test:
+    1) Open up a patron record with some bills.
+    2) On the Items Out tab, notice that there is a column named Location
+    3) On the Bills tab, open up Bill history.
+    4) In the history transactions grid, note that the column picker is
+    missing the following columns:
+      * Item owning library
+      * Checkout/renewal library
+      * Due date
+      * Fines Stopped Reason
+    5) In the history payments grid, note that the column picker is missing
+    the same columns.
+    6) Apply this commit.
+    7) Note that the Items Out tab's column is renamed to "Shelving
+    Location".
+    8) Notice that both Bill history grids column pickers include the
+    requested columns.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+4	1	Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2
+4	0	Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+
+commit fa282ab08f33b0d7014291822ec1b574c416ce90
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Tue Oct 1 13:57:32 2019 -0400
+
+    Docs: minor formatting changes to Hide Fields doc
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+12	18	docs/cataloging/holdings_editor_hide_fields.adoc
+
+commit e1e1f54fcfe800bee54ab0f611713e6b9cade389
+Author: Beth Willis <willis@noblenet.org>
+Date:   Tue Oct 1 13:32:06 2019 -0400
+
+    Docs: adding Hiding Fields in Holdings Editor docs and screenshots
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+40	0	docs/cataloging/holdings_editor_hide_fields.adoc
+-	-	docs/media/Holdings_Editor_Defaults_Tab.png
+-	-	docs/media/Holdings_Editor_Hide_Display_Defaults.png
+2	0	docs/root.adoc
+2	0	docs/root_cataloging.adoc
+ create mode 100644 docs/cataloging/holdings_editor_hide_fields.adoc
+ create mode 100644 docs/media/Holdings_Editor_Defaults_Tab.png
+ create mode 100644 docs/media/Holdings_Editor_Hide_Display_Defaults.png
+
+commit 7ffaa21df627624c7be6146284726278e4846eec
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Fri Sep 27 16:51:35 2019 -0400
+
+    Docs: added another contributor
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+2	1	docs/RELEASE_NOTES_3_4.adoc
+
+commit 9bf50ce76379440f19a3b0d01558149acdd4e472
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Sep 16 15:45:52 2019 -0400
+
+    LP#1843637 MARC View Display Issues
+    
+    This fixes vertical alignment issues in the MARC View table
+    by removing the deprecated valign tags and moving the inline
+    CSS to the cat.css file. The text within each table cell should
+    now align to the top for better readability.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+22	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+5	6	Open-ILS/xsl/oilsMARC21slim2HTML.xsl
+
+commit 3b1eb1367798050abb31044e8a2ae886db993e78
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Sep 25 13:58:04 2019 -0700
+
+    Docs: Adding contributors and employers; fixing formatting
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+57	14	docs/RELEASE_NOTES_3_4.adoc
+
+commit 05d9bdc7eceb3e10a16e3202143049bf99178800
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Wed Sep 25 16:22:42 2019 -0400
+
+    Docs: typo corrections and added dev funders
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+55	49	docs/RELEASE_NOTES_3_4.adoc
+
+commit fa1872c2f5e890bb5762b9c8d01ab710b1cb30cf
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Sep 24 13:17:52 2019 -0700
+
+    Docs: rearranging 3.4 release notes
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+22	23	docs/RELEASE_NOTES_3_4.adoc
+
+commit 80468f6b63b741ab49b315adcd4dcde06a37cead
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Tue Sep 24 15:48:53 2019 -0400
+
+    added code formatting to text
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+3	3	docs/RELEASE_NOTES_3_4.adoc
