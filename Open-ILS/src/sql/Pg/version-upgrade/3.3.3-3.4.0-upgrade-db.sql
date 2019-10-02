@@ -1,7 +1,7 @@
 --Upgrade Script for 3.3.3 to 3.4.0
 \set eg_version '''3.4.0'''
 BEGIN;
-INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.4-beta2', :eg_version);
+INSERT INTO config.upgrade_log (version, applied_to) VALUES ('3.4.0', :eg_version);
 
 SELECT evergreen.upgrade_deps_block_check('1168', :eg_version); -- csharp/khuckins/gmcharlt
 
