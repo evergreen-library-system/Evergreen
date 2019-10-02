@@ -3,10 +3,9 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
-Evergreen 3.4-rc
-----------------
-The Evergreen 3.4-rc release is a candidate for becoming the
-3.4.0 Evergreen release.
+Evergreen 3.4.0
+---------------
+The Evergreen 3.4.0 release is a major feature release.
 
 Upgrade notes
 -------------
