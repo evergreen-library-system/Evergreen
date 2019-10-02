@@ -265,19 +265,32 @@ export class AdminPageComponent implements OnInit {
                 order_by: orderBy
             };
 
-            if (!this.contextOrg && !this.gridFilters) {
+            console.debug(this.dataSource);
+            console.debug(this.dataSource.filters);
+            if (!this.contextOrg && !this.gridFilters && !Object.keys(this.dataSource.filters).length) {
                 // No org filter -- fetch all rows
                 return this.pcrud.retrieveAll(
                     this.idlClass, searchOps, {fleshSelectors: true});
             }
 
-            const search: any = {};
+            const search: any = new Array();
+            const orgFilter: any = {};
 
-            if (this.orgField) {
-                search[this.orgField] =
+            if (this.orgField && (this.searchOrgs || this.contextOrg)) {
+                orgFilter[this.orgField] =
                     this.searchOrgs.orgIds || [this.contextOrg.id()];
+                search.push(orgFilter)
             }
 
+            Object.keys(this.dataSource.filters).forEach(key => {
+                Object.keys(this.dataSource.filters[key]).forEach(key2 => {
+                    search.push(this.dataSource.filters[key][key2]);
+                });
+            });
+
+            // FIXME - do we want to remove this, whose only present user
+            // is the booking grid, in favor of switching it to the built-in
+            // grid filtering?
             if (this.gridFilters) {
                 // Lay the URL grid filters over our search object.
                 Object.keys(this.gridFilters).forEach(key => {
