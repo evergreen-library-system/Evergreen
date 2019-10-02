@@ -756,6 +756,7 @@ END;
 $$ LANGUAGE PLPGSQL;
 
 SELECT evergreen.upgrade_deps_block_check('1187', :eg_version);
+SELECT evergreen.upgrade_deps_block_check('1192', :eg_version);
 
 CREATE OR REPLACE FUNCTION action.age_circ_on_delete () RETURNS TRIGGER AS $$
 DECLARE
@@ -794,10 +795,20 @@ BEGIN
         auto_renewal, auto_renewal_remaining
         FROM action.all_circulation WHERE id = OLD.id;
 
+    -- Migrate billings and payments to aged tables
+
+    INSERT INTO money.aged_billing
+        SELECT * FROM money.billing WHERE xact = OLD.id;
+
+    INSERT INTO money.aged_payment 
+        SELECT * FROM money.payment_view WHERE xact = OLD.id;
+
+    DELETE FROM money.payment WHERE xact = OLD.id;
+    DELETE FROM money.billing WHERE xact = OLD.id;
+
     RETURN OLD;
 END;
 $$ LANGUAGE 'plpgsql';
-
 
 SELECT evergreen.upgrade_deps_block_check('1188', :eg_version);
 
