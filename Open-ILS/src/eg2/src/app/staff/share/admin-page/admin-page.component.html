@@ -53,7 +53,7 @@
 </ng-template>
 
 <eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" hideFields="{{hideGridFields}}"
-    [sortable]="true" persistKey="{{persistKey}}"
+    [sortable]="true" persistKey="{{persistKey}}" [filterable]="true">
     [stickyHeader]="true">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew()">
