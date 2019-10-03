@@ -70,7 +70,7 @@ Circulations get moved under three circumstances in stock Evergreen:
 
 2. A row or row(s) in action.circulation are deleted. The action.age_circ_on_delete trigger moves deleted action.circulations to action.aged_circulation.
 
-3. The action.purge_circulations function is run. This function is meant to be run periodically to enforce patron privacy. It's behavior is controlled by two internal flags: history.circ.retention_age and history.circ.retention_count.
+3. The action.purge_circulations function is run. This function is meant to be run periodically to enforce patron privacy. Its behavior is controlled by two internal flags: history.circ.retention_age and history.circ.retention_count.
 
 [TIP]
 ==========
@@ -87,7 +87,7 @@ The purge_circulations function will take a *long* time to run for the first tim
 Impacts on Billing Data
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Rows are deleted from money.materialized_billable_xact_summary when circulations are aged. This table is the basis for billing reports and views.
+When a circulation is aged, billings and payments linked to the circulation are migrated from the active billing and payment tables to the `money.aged_billing` and `money.aged_payment` tables.
 
 NOTE: currently grocery bills are ignored and not aged.  
 

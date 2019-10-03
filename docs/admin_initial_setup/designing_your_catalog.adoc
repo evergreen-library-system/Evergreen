@@ -124,7 +124,7 @@ You may adjust the colors of your public interface by editing the _colors.tt2_
 file. The location of this file is in 
 _/openils/var/templates/opac/parts/css/colors.tt2_. When you customize the
 colors of your public interface, remember to create a custom file in your custom
-template folder and edit the custom file and not the file located in you default
+template folder and edit the custom file and not the file located in your default
 template.    
 
 Adjusting fonts in your public interface

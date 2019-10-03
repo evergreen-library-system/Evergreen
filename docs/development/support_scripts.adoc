@@ -301,6 +301,21 @@ $ /openils/bin/pingest.pl --skip-browse --skip-search --skip-facets \
     --skip-display --attr=item_lang
 ----
 
+--rebuild-rmsr::
+    This option will rebuild the `reporter.materialized_simple_record`
+(rmsr) table after the ingests are complete.
++
+This option might prove useful if you want to rebuild the table as
+part of a larger reingest.  If all you wish to do is to rebuild the
+rmsr table, then it would be just as simple to connect to the database
+server and run the following SQL:
++
+[source,sql]
+----
+SELECT reporter.refresh_materialized_simple_record();
+----
+
+
 
 
 Importing Authority Records from Command Line
@@ -376,6 +391,10 @@ on the record leader.
 
 This support script has its own configuration file, _marc_stream_importer.conf_, 
 which includes settings related to logs, ports, uses, and access control.
+
+By default, _marc_stream_importer.pl_ will typically be located in the
+_/openils/bin_ directory. _marc_stream_importer.conf_ will typically be located
+in _/openils/conf_.
 
 The importer is even more flexible than the staff client import, including the
 following options:
