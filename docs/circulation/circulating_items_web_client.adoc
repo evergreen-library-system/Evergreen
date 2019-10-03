@@ -45,6 +45,11 @@ by a barcode scanner when the cursor is in the ISBN field.  This behavior
 prevents pre-cataloged items from being checked out before you are done
 entering all the desired information.
 
+[NOTE]
+This requires the _CREATE_PRECAT_ permission.  All form elements in the
+dialog other than the Cancel button will be disabled if the current user
+lacks the CREATE_PRECAT permission.
+
 Due Dates
 ^^^^^^^^^
 
