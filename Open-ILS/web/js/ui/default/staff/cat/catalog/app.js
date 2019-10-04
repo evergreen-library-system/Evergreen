@@ -685,7 +685,7 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
             $(doc).find('#hold_usr_search').on('click', function() {
                 patron_search_dialog().result.then(function(barc) {
                     $(doc).find('#hold_usr_input').val(barc);
-                    $(doc).find('#hold_usr_input').change();
+                    $(doc).find('#hold_usr_input').trigger($.Event('keydown', {which: 13}));
                 });
             });
             $(doc).find('#select_basket_action').on('change', function() {

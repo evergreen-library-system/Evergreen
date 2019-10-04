@@ -26,13 +26,24 @@ function staff_hold_usr_input_disabler(input) {
         Boolean(Number(input.value));
     staff_hold_usr_barcode_changed();
 }
-function no_hold_submit(event) {
-    if (event.which == 13) {
-        staff_hold_usr_barcode_changed();
-        return false;
-    }
-    return true;
-}
+var debounce_barcode_change = function() {
+    var timeout;
+
+    return function(event) {
+        clearTimeout(timeout);
+        document.getElementById('patron_usr_barcode_not_found').style.display = 'none';
+
+        if (event.which == '13') {
+            staff_hold_usr_barcode_changed();
+            return false;
+        }
+
+        var duration = event.type == 'paste' ? 0 : 500;
+        timeout = setTimeout(staff_hold_usr_barcode_changed, duration);
+
+        return true;
+    };
+}();
 function staff_hold_usr_barcode_changed(isload) {
 
     if (!document.getElementById('place_hold_submit')) {

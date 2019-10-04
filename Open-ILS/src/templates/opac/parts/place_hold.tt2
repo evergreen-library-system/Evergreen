@@ -108,9 +108,8 @@ function maybeToggleNumCopies(obj) {
             <input type="text" name="hold_usr" id="hold_usr_input"
               aria-label="[% l('Barcode') %]"
               value="[% usr_barcode | html %]" 
-              onchange="staff_hold_usr_barcode_changed();" 
-              onpaste="setTimeout(staff_hold_usr_barcode_changed,1);" 
-              onkeypress="return no_hold_submit(event)" autofocus /> 
+              onpaste="return debounce_barcode_change(event)"
+              onkeydown="return debounce_barcode_change(event)" autofocus /> 
             <span id="patron_name"></span>
             <span id="patron_usr_barcode_not_found" style="display: none">
               [% l('Patron barcode was not found') %]
