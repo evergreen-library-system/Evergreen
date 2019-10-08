@@ -108,11 +108,9 @@ function exclude_onchange(checkbox) {
         var reg = /-search_format\(electronic\)/g;
         search_box.value = search_box.value.replace(reg, "");
         // Remove from the search form itself
-        var search_format_inputs = document.getElementsByName("fi:-search_format");
+        var search_format_inputs = document.querySelectorAll('input[type="hidden"][name="fi:-search_format"][value="electronic"]');
         for (var j = 0; j < search_format_inputs.length; j++) {
-            if (search_format_inputs[j].value == 'electronic') {
-                search_format_inputs[j].parentNode.removeChild(search_format_inputs[j]);
-            }
+            search_format_inputs[j].parentNode.removeChild(search_format_inputs[j]);
         }
 
     }
