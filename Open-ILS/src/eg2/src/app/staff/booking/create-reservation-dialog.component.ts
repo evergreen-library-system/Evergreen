@@ -104,7 +104,7 @@ export class CreateReservationDialogComponent
                 'open-ils.booking',
                 'open-ils.booking.reservations.create',
                 this.auth.token(),
-                this.patronBarcode.value,
+                this.patronBarcode.value.trim(),
                 this.selectedTimes,
                 this.pickupLibId,
                 this.targetResourceType.id,
@@ -147,7 +147,7 @@ export class CreateReservationDialogComponent
                         'open-ils.actor.get_barcodes',
                         this.auth.token(),
                         this.auth.user().ws_ou(),
-                        'actor', this.patronBarcode.value).pipe(
+                        'actor', this.patronBarcode.value.trim()).pipe(
                             single(),
                             switchMap((result) => {
                                 return this.pcrud.retrieve('au', result[0]['id']).pipe(

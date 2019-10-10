@@ -16,7 +16,7 @@ export class PatronService {
             'open-ils.actor',
             'open-ils.actor.get_barcodes',
             this.auth.token(), this.auth.user().ws_ou(),
-           'actor', barcode);
+           'actor', barcode.trim());
     }
 
 }
