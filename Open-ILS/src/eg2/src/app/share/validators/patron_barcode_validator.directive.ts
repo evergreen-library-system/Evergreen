@@ -19,7 +19,7 @@ export class PatronBarcodeValidator implements AsyncValidator {
             'open-ils.actor.get_barcodes',
             this.auth.token(),
             this.auth.user().ws_ou(),
-            'actor', control.value));
+            'actor', control.value.trim()));
     }
 
     private parseActorCall = (actorCall: Observable<any>) => {
