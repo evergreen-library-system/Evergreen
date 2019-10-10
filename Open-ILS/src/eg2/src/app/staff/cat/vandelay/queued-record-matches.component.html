@@ -15,7 +15,7 @@
 <ng-container *ngIf="queueType == 'bib'">
   <eg-grid #bibGrid [dataSource]="bibDataSource" 
     (onRowClick)="matchRowClick($event)"
-    [disableMultiSelect]="true">
+    [disableSelect]="true" [disableMultiSelect]="true">
     <!--
     <eg-grid-toolbar-action i18n-label label="Mark As Overlay Target"
       [action]="markOverlayTarget">
