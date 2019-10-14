@@ -36,8 +36,8 @@
   <eg-grid-column label="Call number sortkey" path="call_number_sortkey" i18n-label></eg-grid-column>
   <eg-grid-column name="barcode" label="Barcode" i18n-label path="current_resource.barcode"></eg-grid-column>
   <eg-grid-column name="title" label="Title or name" i18n-label path="target_resource_type.name"></eg-grid-column>
-  <eg-grid-column label="Reservation start time" [datePlusTime]="true" path="reservations.0.start_time" i18n-label></eg-grid-column>
-  <eg-grid-column label="Reservation end time" [datePlusTime]="true" path="reservations.0.end_time" i18n-label></eg-grid-column>
+  <eg-grid-column label="Reservation start time" datatype="timestamp" [datePlusTime]="true" path="reservations.0.start_time" i18n-label></eg-grid-column>
+  <eg-grid-column label="Reservation end time" datatype="timestamp" [datePlusTime]="true" path="reservations.0.end_time" i18n-label></eg-grid-column>
   <eg-grid-column label="Patron first name" path="reservations.0.usr.first_given_name" i18n-label></eg-grid-column>
   <eg-grid-column label="Patron last name" path="reservations.0.usr.family_name" i18n-label></eg-grid-column>
 </eg-grid>
