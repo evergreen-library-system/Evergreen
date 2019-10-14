@@ -11,6 +11,7 @@ import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import {notBeforeMomentValidator} from '@eg/share/validators/not_before_moment_validator.directive';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -79,7 +80,7 @@ export class CreateReservationDialogComponent
                 [this.pbv.validate]
             ),
             'emailNotify': new FormControl(true),
-            'startTime': new FormControl(),
+            'startTime': new FormControl(null, notBeforeMomentValidator(Moment().add('15', 'minutes'))),
             'endTime': new FormControl(),
             'resourceList': new FormControl(),
         }, [startTimeIsBeforeEndTimeValidator]
