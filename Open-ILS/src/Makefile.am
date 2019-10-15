@@ -70,6 +70,7 @@ core_scripts =   $(examples)/oils_ctl.sh \
 		 $(supportscr)/thaw_expired_frozen_holds.srfsh \
 		 $(supportscr)/long-overdue-status-update.pl \
 		 $(supportscr)/oils_header.pl \
+		 $(supportscr)/badge_score_generator.pl \
 		 $(supportscr)/purge_at_events.srfsh \
 		 $(supportscr)/purge_holds.srfsh \
 		 $(supportscr)/purge_circulations.srfsh \
