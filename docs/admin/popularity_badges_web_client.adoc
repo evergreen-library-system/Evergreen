@@ -8,7 +8,7 @@ Popularity Rating and Calculation
 
 Popularity badge parameters define the criteria a bibliographic record must meet to earn the badge, as well as which bibliographic records are eligible to earn the badge.  For example, the popularity parameter "Circulations Over Time" can be configured to create a badge that is applied to bibliographic records for DVDs.  The badge can be configured to look at circulations within the last 2 years, but assign more weight or popularity to circulations from the last 6 months.
 
-Multiple popularity badges may be applied to a bibliographic record.  For each applicable popularity badge, the record will be rated on a scale of 1-5, where a 5 indicates the most popular.  Evergreen will then assign an overall popularity rating to each bibliographic record by averaging all of the popularity badge points earned by the record.  The popularity rating is stored with the record and will be used to rank the record within search results when the popularity badge is within the scope of the search.  The popularity badges are recalculated on a regular and configurable basis by a cron job.  Popularity badges can also be recalculated by an administrator directly on the server.
+Multiple popularity badges may be applied to a bibliographic record.  For each applicable popularity badge, the record will be rated on a scale of 1-5, where a 5 indicates the most popular.  Evergreen will then assign an overall popularity rating to each bibliographic record by averaging all of the popularity badge points earned by the record.  The popularity rating is stored with the record and will be used to rank the record within search results when the popularity badge is within the scope of the search.  The popularity badges are recalculated on a regular and configurable basis by the cron job `badge_score_generator.pl`.  Popularity badges can also be recalculated by an administrator directly on the server.
 
 Creating Popularity Badges
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,7 +68,7 @@ NOTE: only Name, Scope, Weight, Recalculation Interval, Importance Interval, and
 
   * *Location Group Filter:*  Apply the badge only to items that are part of the specified Shelving Location Group.  Applies only to item related badges.
 
-  * *Recalculation Interval:* Indicates how often the popularity value of the badge should be recalculated for bibliographic records that have earned the badge.  Recalculation is controlled by a cron job.  Required field with a default value of 1 month.
+  * *Recalculation Interval:* Indicates how often the popularity value of the badge should be recalculated for bibliographic records that have earned the badge.  Recalculation is controlled by the cron job `badge_score_generator.pl`.  Required field with a default value of 1 month.
 
   * *Fixed Rating:* Can be used to set a fixed popularity value for all records that earn the badge.  For example, the Fixed Rating can be set to 5 to indicate that records earning the badge should always be considered extremely popular.
 
