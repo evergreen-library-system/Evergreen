@@ -1916,7 +1916,8 @@ BEGIN
         FROM vandelay.import_item
         WHERE record = import_id;
 
-    WHILE CARDINALITY(scope_orgs) > 0 LOOP
+    WHILE CARDINALITY(scope_orgs) IS NOT NULL LOOP
+        EXIT WHEN CARDINALITY(scope_orgs) = 0;
         FOR scope_org IN SELECT * FROM UNNEST(scope_orgs) LOOP
             -- For each match, get a count of all copies at descendants of our scope org.
             FOR rec IN SELECT * FROM vandelay.bib_match AS vbm
@@ -1938,12 +1939,15 @@ BEGIN
             END LOOP;
         END LOOP;
 
+        EXIT WHEN eg_id IS NOT NULL;
+
         -- If no matching bibs had holdings, gather our next set of orgs to check, and iterate.
         IF max_copy_count = 0 THEN 
             SELECT ARRAY_AGG(DISTINCT parent_ou) INTO scope_orgs
                 FROM actor.org_unit
                 WHERE id IN (SELECT * FROM UNNEST(scope_orgs))
                 AND parent_ou IS NOT NULL;
+            EXIT WHEN CARDINALITY(scope_orgs) IS NULL;
         END IF;
     END LOOP;
 
