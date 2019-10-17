@@ -1307,12 +1307,32 @@ function($scope , $routeParams , $location , $window , $q , egCore , egHolds , e
         ).result.then(function() {
             egCore.net.request(
                 'open-ils.cat',
-                'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                'open-ils.cat.asset.volume.fleshed.batch.update',
                 egCore.auth.token(), cnList, 1, flags
-            ).then(function(update_count) {
-                holdingsSvcInst.fetchAgain().then(function() {
-                    $scope.holdingsGridDataProvider.refresh();
-                });
+            ).then(function(resp) {
+                var evt = egCore.evt.parse(resp);
+                if (evt) {
+                    egConfirmDialog.open(
+                        egCore.strings.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE,
+                        egCore.strings.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY,
+                        {'evt_desc': evt.desc}
+                    ).result.then(function() {
+                        egCore.net.request(
+                            'open-ils.cat',
+                            'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                            egCore.auth.token(), cnList, 1,
+                            { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                        ).then(function() {
+                            holdingsSvcInst.fetchAgain().then(function() {
+                                $scope.holdingsGridDataProvider.refresh();
+                            });
+                        });
+                    });
+                } else {
+                    holdingsSvcInst.fetchAgain().then(function() {
+                        $scope.holdingsGridDataProvider.refresh();
+                    });
+                }
             });
         });
     }

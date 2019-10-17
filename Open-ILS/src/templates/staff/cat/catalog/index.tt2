@@ -31,6 +31,10 @@
       "[% l('Permanently delete selected items and/or call numbers from catalog?') %]";
     s.CONFIRM_DELETE_COPIES_VOLUMES_MESSAGE =
       "[% l('Will delete {{copies}} items and {{volumes}} call numbers') %]";
+    s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE =
+      "[% l('One or more items could not be deleted. Override?') %]";
+    s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY =
+      "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
     s.CONFIRM_DELETE_PEERS =
       "[% l('Unlink selected conjoined items?') %]";
     s.CONFIRM_DELETE_PEERS_MESSAGE =
