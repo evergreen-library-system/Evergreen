@@ -580,10 +580,28 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
             ).result.then(function() {
                 egCore.net.request(
                     'open-ils.cat',
-                    'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                    'open-ils.cat.asset.volume.fleshed.batch.update',
                     egCore.auth.token(), cnList, 1, flags
-                ).then(function(){
-                    angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+                ).then(function(resp){
+                    var evt = egCore.evt.parse(resp);
+                    if (evt) {
+                        egConfirmDialog.open(
+                            egCore.strings.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE,
+                            egCore.strings.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY,
+                            {'evt_desc': evt.desc}
+                        ).result.then(function() {
+                            egCore.net.request(
+                                'open-ils.cat',
+                                'open-ils.cat.asset.volume.fleshed.batch.update.override',
+                                egCore.auth.token(), cnList, 1,
+                                { events: ['TITLE_LAST_COPY', 'COPY_DELETE_WARNING'] }
+                            ).then(function() {
+                                angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+                            });
+                        });
+                    } else {
+                        angular.forEach(items, function(cp){service.add_barcode_to_list(cp.barcode)});
+                    }
                 });
             });
         },
@@ -980,3 +998,4 @@ function(egCore , egOrg , egCirc , $uibModal , $q , $timeout , $window , ngToast
     return service;
 }])
 .filter('string_pick', function() { return function(i){ return arguments[i] || ''; }; })
+

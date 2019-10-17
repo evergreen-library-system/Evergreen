@@ -66,6 +66,10 @@ s.ON_DEMAND_COPY_ALERT = {
         'CLAIMSNEVERCHECKEDOUT' : '[% l("Item was marked claims never checked out") %]'
     }
 };
+s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_TITLE =
+  "[% l('One or more items could not be deleted. Override?') %]";
+s.OVERRIDE_DELETE_ITEMS_FROM_CATALOG_BODY =
+  "[% l('Reason(s) include: [_1]', '{{evt_desc}}') %]";
 }]);
 </script>
 
