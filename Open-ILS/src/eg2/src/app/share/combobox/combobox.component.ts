@@ -214,7 +214,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     }
 
     // Returns true if the 2 entries are equivalent.
-    entriesMatches(e1: ComboboxEntry, e2: ComboboxEntry): boolean {
+    entriesMatch(e1: ComboboxEntry, e2: ComboboxEntry): boolean {
         return (
             e1 && e2 &&
             e1.id === e2.id &&
@@ -225,12 +225,18 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     // Returns true if the 2 lists are equivalent.
     entrylistMatches(el: ComboboxEntry[]): boolean {
+        if (el.length === 0 && this.entrylist.length === 0) {
+            // Empty arrays are only equivalent if they are the same array,
+            // since the caller may provide an array that starts empty, but
+            // is later populated.
+            return el === this.entrylist;
+        }
         if (el.length !== this.entrylist.length) {
             return false;
         }
         for (let i = 0; i < el.length; i++) {
             const mine = this.entrylist[i];
-            if (!mine || !this.entriesMatches(mine, el[i])) {
+            if (!mine || !this.entriesMatch(mine, el[i])) {
                 return false;
             }
         }
