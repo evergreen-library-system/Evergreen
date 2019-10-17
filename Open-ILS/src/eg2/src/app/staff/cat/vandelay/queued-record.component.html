@@ -16,6 +16,15 @@
       </eg-marc-html>
 		</ng-template>
 	</ngb-tab>
+	<ngb-tab title="Edit Record" i18n-title id="edit">
+		<ng-template ngbTabContent>
+      <ng-container *ngIf="queuedRecord">
+        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()" 
+          [recordSource]="queuedRecord.bib_source()"
+          (recordSaved)="handleMarcRecordSaved($event)"></eg-marc-editor>   
+      </ng-container>
+		</ng-template>
+	</ngb-tab>
 	<ngb-tab title="Record Matches" i18n-title id="matches">
 		<ng-template ngbTabContent>
       <eg-queued-record-matches [recordId]="recordId" [queueType]="queueType">
