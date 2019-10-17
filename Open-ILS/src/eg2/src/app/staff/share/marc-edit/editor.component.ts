@@ -12,6 +12,10 @@ import {ComboboxEntry, ComboboxComponent
   } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
 
+interface MarcSavedEvent {
+    marcXml: string;
+    bibSource?: number;
+}
 
 /**
  * MARC Record editor main interface.
@@ -38,15 +42,19 @@ export class MarcEditorComponent implements OnInit {
         if (xml) { this.fromXml(xml); }
     }
 
+    // Tell us which record source to select by default.
+    // Useful for new records and in-place editing from bare XML.
+    @Input() recordSource: number;
+
     // If true, saving records to the database is assumed to
     // happen externally.  IOW, the record editor is just an
     // in-place MARC modification interface.
-    inPlaceMode: boolean;
+    @Input() inPlaceMode: boolean;
 
     // In inPlaceMode, this is emitted in lieu of saving the record
     // in th database.  When inPlaceMode is false, this is emitted after
     // the record is successfully saved.
-    @Output() recordSaved: EventEmitter<string>;
+    @Output() recordSaved: EventEmitter<MarcSavedEvent>;
 
     @ViewChild('sourceSelector', { static: true }) sourceSelector: ComboboxComponent;
     @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
@@ -65,7 +73,7 @@ export class MarcEditorComponent implements OnInit {
         private toast: ToastService
     ) {
         this.sources = [];
-        this.recordSaved = new EventEmitter<string>();
+        this.recordSaved = new EventEmitter<MarcSavedEvent>();
     }
 
     ngOnInit() {
@@ -79,6 +87,10 @@ export class MarcEditorComponent implements OnInit {
                 this.sources = this.sources.sort((a, b) =>
                     a.label.toLowerCase() < b.label.toLowerCase() ? -1 : 1
                 );
+
+                if (this.recordSource) {
+                    this.sourceSelector.applyEntryId(this.recordSource);
+                }
             }
         );
     }
@@ -86,21 +98,26 @@ export class MarcEditorComponent implements OnInit {
     saveRecord(): Promise<any> {
         const xml = this.record.toXml();
 
-        if (this.inPlaceMode) {
-            // Let the caller have the modified XML and move on.
-            this.recordSaved.emit(xml);
-            return Promise.resolve();
+        let sourceName: string = null;
+        let sourceId: number = null;
+
+        if (this.sourceSelector.selected) {
+            sourceName = this.sourceSelector.selected.label;
+            sourceId = this.sourceSelector.selected.id;
         }
 
-        const source = this.sourceSelector.selected ?
-            this.sourceSelector.selected.label : null; // 'label' not a typo
+        if (this.inPlaceMode) {
+            // Let the caller have the modified XML and move on.
+            this.recordSaved.emit({marcXml: xml, bibSource: sourceId});
+            return Promise.resolve();
+        }
 
         if (this.record.id) { // Editing an existing record
 
             const method = 'open-ils.cat.biblio.record.marc.replace';
 
             return this.net.request('open-ils.cat', method,
-                this.auth.token(), this.record.id, xml, source
+                this.auth.token(), this.record.id, xml, sourceName
             ).toPromise().then(response => {
 
                 const evt = this.evt.parse(response);
@@ -111,7 +128,7 @@ export class MarcEditorComponent implements OnInit {
                 }
 
                 this.successMsg.current().then(msg => this.toast.success(msg));
-                this.recordSaved.emit(xml);
+                this.recordSaved.emit({marcXml: xml, bibSource: sourceId});
                 return response;
             });
 
@@ -159,7 +176,8 @@ export class MarcEditorComponent implements OnInit {
                     }
                 }
                 return this.fromId(this.record.id)
-                .then(_ => this.recordSaved.emit(this.record.toXml()));
+                .then(_ => this.recordSaved.emit(
+                    {marcXml: this.record.toXml()}));
             });
         });
     }
@@ -180,7 +198,8 @@ export class MarcEditorComponent implements OnInit {
                 if (evt) { console.error(evt); return alert(evt); }
 
                 return this.fromId(this.record.id)
-                .then(_ => this.recordSaved.emit(this.record.toXml()));
+                .then(_ => this.recordSaved.emit(
+                    {marcXml: this.record.toXml()}));
             });
         });
     }

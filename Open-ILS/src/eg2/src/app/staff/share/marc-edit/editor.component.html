@@ -29,9 +29,9 @@
 
   <ng-container *ngIf="record && record.id">
     <button *ngIf="!record.deleted" class="btn btn-warning" 
-      (click)="deleteRecord()" i18n>Delete Record</button>
+      [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
     <button *ngIf="record.deleted" class="btn btn-info" 
-      (click)="undeleteRecord()" i18n>Undelete Record</button>
+      [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
   </ng-container>
 
   <button class="btn btn-success ml-2" (click)="saveRecord()" 
