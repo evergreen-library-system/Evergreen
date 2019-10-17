@@ -25,6 +25,7 @@ import {MatchSetExpressionComponent} from './match-set-expression.component';
 import {MatchSetQualityComponent} from './match-set-quality.component';
 import {MatchSetNewPointComponent} from './match-set-new-point.component';
 import {RecentImportsComponent} from './recent-imports.component';
+import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {RecentImportsComponent} from './recent-imports.component';
     StaffCommonModule,
     FmRecordEditorModule,
     AdminPageModule,
+    MarcEditModule,
     CatalogCommonModule,
     VandelayRoutingModule,
     HttpClientModule,
