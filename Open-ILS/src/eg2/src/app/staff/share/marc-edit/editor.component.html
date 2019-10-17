@@ -29,9 +29,9 @@
 
   <ng-container *ngIf="record && record.id">
     <button *ngIf="!record.deleted" class="btn btn-warning" 
-      (click)="deleteRecord()" i18n>Delete Record</button>
+      [disabled]="inPlaceMode" (click)="deleteRecord()" i18n>Delete Record</button>
     <button *ngIf="record.deleted" class="btn btn-info" 
-      (click)="undeleteRecord()" i18n>Undelete Record</button>
+      [disabled]="inPlaceMode" (click)="undeleteRecord()" i18n>Undelete Record</button>
   </ng-container>
 
   <button class="btn btn-success ml-2" (click)="saveRecord()" 
@@ -44,18 +44,21 @@
       <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich">
         <ng-template ngbTabContent>
           <div class="alert alert-info mt-3" i18n>
-          Enhanced MARC Editor is not yet implemented.  See the
-          <ng-container *ngIf="record && record.id">
-            <a target="_blank"
-              href="/eg/staff/cat/catalog/record/{{record.id}}/marc_edit">
-              AngularJS MARC Editor.
-            </a>
-          </ng-container>
-          <ng-container *ngIf="!record || !record.id">
-            <a target="_blank" href="/eg/staff/cat/catalog/new_bib">
-              AngularJS MARC Editor.
-            </a>
-          </ng-container>
+          Enhanced MARC Editor is not yet implemented.
+            <ng-container *ngIf="!hideFullEditorLink">
+              See the
+              <ng-container *ngIf="record && record.id">
+                <a target="_blank"
+                  href="/eg/staff/cat/catalog/record/{{record.id}}/marc_edit">
+                  AngularJS MARC Editor.
+                </a>
+              </ng-container>
+              <ng-container *ngIf="!record || !record.id">
+                <a target="_blank" href="/eg/staff/cat/catalog/new_bib">
+                  AngularJS MARC Editor.
+                </a>
+              </ng-container>
+            </ng-container>
           </div>
         </ng-template>
       </ngb-tab>
