@@ -1940,7 +1940,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 622, 'VIEW_BOOKING_RESOURCE', oils_i18n_gettext(622,
     'View booking resources', 'ppl', 'description')),
  ( 623, 'UPDATE_ORG_UNIT_SETTING.opac.matomo', oils_i18n_gettext(623,
-    'Allows a user to configure Matomo Analytics org unit settings', 'ppl', 'description'))
+    'Allows a user to configure Matomo Analytics org unit settings', 'ppl', 'description')),
+ ( 624, 'MANAGE_RESERVES', oils_i18n_gettext(623,
+    'Allows user to manage Courses, Course Materials, and associate Users with Courses.', 'ppl', 'description'))
 ;
 
 
@@ -2454,6 +2456,7 @@ INSERT INTO permission.grp_perm_map (grp, perm, depth, grantable)
 			'CREATE_CIRC_DURATION',
 			'CREATE_PRECAT',
 			'DELETE_CIRC_DURATION',
+            'MANAGE_RESERVES',
 			'MARK_ITEM_MISSING_PIECES',
 			'UPDATE_CIRC_DURATION',
 			'UPDATE_HOLD_REQUEST_TIME',
@@ -3826,6 +3829,17 @@ INSERT into config.org_unit_setting_type
         'coust', 'label'),
     oils_i18n_gettext('circ.offline.username_allowed',
         'During offline circulations, allow patrons to identify themselves with usernames in addition to barcode.  For this setting to work, a barcode format must also be defined',
+        'coust', 'description'),
+    'bool', null)
+
+,( 'circ.course_materials_opt_in', 'circ',
+    oils_i18n_gettext(
+        'circ.course_materials_opt_in',
+        'Opt Org Unit into the Course Materials Module',
+        'coust', 'label'),
+    oils_i18n_gettext(
+        'circ.course_materials_opt_in',
+        'If enabled, the Org Unit will utilize Course Material functionality.'
         'coust', 'description'),
     'bool', null)
 

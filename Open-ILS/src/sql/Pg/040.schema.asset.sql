@@ -1105,5 +1105,35 @@ CREATE VIEW asset.active_copy_alert AS
       FROM  asset.copy_alert
       WHERE ack_time IS NULL;
 
+CREATE TABLE asset.course_module_course (
+    id              SERIAL PRIMARY KEY,
+    name            TEXT NOT NULL,
+    course_number   TEXT NOT NULL,
+    section_number  TEXT,
+    owning_lib      INT REFERENCES actor.org_unit (id)
+);
+
+CREATE TABLE asset.course_module_course_users (
+    id              SERIAL PRIMARY KEY,
+    course          INT NOT NULL REFERENCES asset.course_module_course (id),
+    usr             INT NOT NULL REFERENCES actor.usr (id),
+    usr_role        TEXT
+);
+
+CREATE TABLE asset.course_module_course_materials (
+    id              SERIAL PRIMARY KEY,
+    course          INT NOT NULL REFERENCES asset.course_module_course (id),
+    item            INT NOT NULL REFERENCES asset.copy (id),
+    relationship    TEXT
+);
+
+CREATE TABLE asset.course_module_non_cat_course_materials (
+    id              SERIAL PRIMARY KEY,
+    course          INT NOT NULL REFERENCES asset.course_module_course (id),
+    item            TEXT NOT NULL,
+    url             TEXT,
+    relationship    TEXT
+);
+
 COMMIT;
 
