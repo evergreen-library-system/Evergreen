@@ -35,6 +35,10 @@ const routes: Routes = [{
     path: 'asset/course_module_term_course_map',
     component: CourseTermMapComponent
 }, {
+    path: 'config/circ_limit_set',
+    loadChildren: () =>
+      import('./circ_limit_set/circ_limit_set.module').then(m => m.CircLimitSetModule)
+}, {
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent
 }, {

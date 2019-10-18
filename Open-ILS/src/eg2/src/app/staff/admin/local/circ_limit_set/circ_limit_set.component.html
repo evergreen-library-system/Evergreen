@@ -1,0 +1,26 @@
+<eg-staff-banner bannerText="Circulation Limit Set Administration" i18n-bannerText>
+  </eg-staff-banner>
+
+<eg-string #createFailedString i18n-text text="Created Circulation Limit 
+  Set"></eg-string>
+<eg-string #createSuccessString i18n-text text="Failed to Create Circulation 
+  Limit Set"></eg-string>
+<eg-string #deleteFailedString i18n-text text="Delete of Circulation Limit Set 
+  failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text text="Delete of Circulation Limit Set
+  succeeded"></eg-string>
+<eg-string #updateSuccessString i18n-text text="Circulation Limit Set Update 
+  Succeeded"></eg-string>
+<eg-string #updateFailedString i18n-text text="Circulation Limit Set 
+  Update Failed"></eg-string>
+
+<eg-grid #grid idlClass="ccls" [dataSource]="gridDataSource" hideFields="id">
+  <eg-grid-toolbar-button label="New Circulation Limit Set" i18n-label 
+    (onClick)="createNew()"></eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Edit Selected" i18n-label 
+    (onClick)="editSelected($event)"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label 
+    (onClick)="deleteSelected($event)"></eg-grid-toolbar-action>
+</eg-grid>
+
+<eg-fm-record-editor #editDialog hiddenFields="id" idlClass="ccls"></eg-fm-record-editor>

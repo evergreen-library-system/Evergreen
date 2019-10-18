@@ -1,0 +1,136 @@
+<eg-staff-banner bannerText="Circulation Limit Set - {{recordName}}" i18n-bannerText>
+</eg-staff-banner>
+
+<ul ngbNav #editNav="ngbNav" class="nav-tabs mb-3"
+    [activeId]="circTab" (navChange)="onTabChange($event)">
+    <li [ngbNavItem]="'limitSet'">
+        <a ngbNavLink i18n>Edit Circulation Limit Set</a>
+        <ng-template ngbNavContent>
+            <div class="col-lg-6 offset-lg-3 mt-3">
+                <eg-fm-record-editor displayMode="inline" 
+                    hiddenFieldsList="id"
+                    idlClass="ccls" mode="update" recordId="{{this.recordId}}">
+                </eg-fm-record-editor>
+            </div> 
+        </ng-template>
+    </li>
+    <li [ngbNavItem]="'linked'">
+        <a ngbNavLink i18n>Edit Linked Entities</a>
+        <ng-template ngbNavContent>
+            <div class="row mt-3">
+                <div class="col-lg-4">
+                    <eg-staff-banner bannerText="Linked Circ Modifiers" i18n-bannerText>
+                    </eg-staff-banner>
+                    <div class="row mt-2 mb-2">
+                        <h5 class="col-lg-9">Name</h5>
+                        <h5 class="col-lg-3 text-center">Remove</h5>
+                    </div>
+                    <div *ngFor="let mod of circMods">
+                        <div class="row mt-2 mb-2" *ngIf="mod.deleted == false">
+                            <div class="col-lg-9">
+                                {{ mod.code }} : {{ mod.name }}
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="btn btn-danger col-lg-12" 
+                                    (click)="removeEntry(mod, circMods)" i18n>Remove</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-lg-9">
+                            <eg-combobox  idlClass="ccm" 
+                                placeholder="Circulation Modifiers" 
+                                [asyncSupportsEmptyTermClick]="true" 
+                                (onChange)="circModChanged($event)"></eg-combobox>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="btn btn-outline-dark col-lg-12" 
+                                (click)="addCircMod()" i18n>Add</div>
+                        </div>
+                    </div>  
+                </div>
+                <div class="col-lg-4">
+                    <eg-staff-banner bannerText="Linked Copy Locations" 
+                        i18n-bannerText class=""></eg-staff-banner>
+                    <div class="row mt-2 mb-2">
+                            <h5 class="col-lg-9">Name</h5>
+                            <h5 class="col-lg-3 text-center">Remove</h5>
+                        </div>
+                    <div *ngFor="let location of locations">
+                        <div class="row mt-2 mb-2" *ngIf="location.deleted == false">
+                            <div class="col-lg-9">
+                                    {{ location.shortname }} : {{ location.name }} 
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="btn btn-danger col-lg-12" 
+                                    (click)="removeLocation(location)" i18n>Remove</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-lg-9">
+                        <eg-item-location-select permFilter="ADMIN_CIRC_MATRIX_MATCHPOINT" 
+                            [(ngModel)]="locId" (valueChange)="selectedLocation = $event">
+                        </eg-item-location-select>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="btn btn-outline-dark col-lg-12" 
+                                (click)="addLocation()" i18n>Add</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <eg-staff-banner bannerText="Linked Limit Groups" 
+                        i18n-bannerText class=""></eg-staff-banner>
+                    <div class="row mt-2 mb-2">
+                        <h5 class="col-lg-7">Name</h5>
+                        <h5 class="col-lg-2">Check Only?</h5>
+                        <h5 class="col-lg-3">Remove</h5>
+                    </div>
+                    <div *ngFor="let group of limitGroups">
+                        <div class="row mt-2 mb-2" *ngIf="group.deleted == false">
+                            <div class="col-lg-7">
+                                {{ group.name }}
+                            </div>
+                            <div class="col-lg-2">  
+                                <input
+                                type="checkbox" 
+                                [(ngModel)]="group.checked"
+                                class="form-control"
+                                [checked]="group.checked" />
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="btn btn-danger col-lg-12" 
+                                    (click)="removeEntry(group, limitGroups)" i18n>Remove</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <div class="col-lg-9">
+                            <eg-combobox  idlClass="cclg"
+                                placeholder="Limit Groups" 
+                                (onChange)="limitGroupChanged($event)"
+                                [asyncSupportsEmptyTermClick]="true"></eg-combobox>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="btn btn-outline-dark col-lg-12" 
+                                (click)="addLimitGroup()" i18n>Add</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn btn-success btn-lg offset-lg-5 col-lg-2 mt-4" 
+                (click)="save()" i18n>Save</div>
+        </ng-template>
+    </li>
+</ul>
+<div [ngbNavOutlet]="editNav"></div>
+
+<eg-string #addingSuccess i18n-text text="Entry added."></eg-string>
+<eg-string #removingSuccess i18n-text text="Entry removed."></eg-string>
+<eg-string #savingEntryError i18n-text text="Error when trying to save entry."></eg-string>
+<eg-string #deletingEntryError i18n-text text="Error when trying to delete entry.">
+    </eg-string>
+<eg-string #updatingEntryError i18n-text text="Error when trying to update Limit Group.">
+    </eg-string>
+<eg-string #savedSuccess i18n-text text="Saved."></eg-string>
