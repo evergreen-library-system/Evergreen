@@ -95,6 +95,9 @@ angular.module('egCoreMod')
                    ['$scope','egCore',
             function($scope , egCore) {
 
+                // Match the MARC flat-text editor
+                MARC21.Record.delimiter = '$';
+
                 function loadRecordBreaker() {
                     var xml;
                     if ($scope.marcXml) {
