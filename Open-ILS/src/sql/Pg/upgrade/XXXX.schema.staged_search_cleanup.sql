@@ -19,4 +19,6 @@ DROP FUNCTION search.query_parser_fts (
 
 DROP TABLE asset.opac_visible_copies;
 
+DROP FUNCTION IF EXISTS asset.refresh_opac_visible_copies_mat_view();
+
 COMMIT;
