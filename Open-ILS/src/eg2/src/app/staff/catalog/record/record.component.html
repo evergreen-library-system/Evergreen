@@ -74,6 +74,12 @@
           </eg-catalog-record-conjoined>
         </ng-template>
       </ngb-tab>
+      <ngb-tab title="Patron View" i18n-title id="opac">
+        <ng-template ngbTabContent>
+          <eg-opac-record-detail [recordId]="recordId">
+          </eg-opac-record-detail>
+        </ng-template>
+      </ngb-tab>
     </ngb-tabset>
   </div>
 </div>
