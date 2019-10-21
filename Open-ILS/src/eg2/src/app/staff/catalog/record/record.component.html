@@ -1,4 +1,9 @@
 
+<ng-container *ngIf="summary">
+  <eg-title i18n-prefix prefix="Bib {{summary.record.tcn_value()}} - {{summary.display.title}}">
+  </eg-title>
+</ng-container>
+
 <div id="staff-catalog-record-container">
   <div class="row ml-0 mr-0">
     <div id='staff-catalog-bib-navigation'>

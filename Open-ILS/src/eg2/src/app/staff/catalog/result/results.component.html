@@ -1,3 +1,9 @@
+<ng-container *ngIf="searchIsDone()">
+  <eg-title i18n-prefix prefix="Catalog Search - {{searchContext.result.count}} Results"></eg-title>
+</ng-container>
+<ng-container *ngIf="!searchIsDone()">
+  <eg-title i18n-prefix prefix="Catalog Search"></eg-title>
+</ng-container>
 
 <!-- search results progress bar -->
 <div class="row" *ngIf="searchIsActive()">
