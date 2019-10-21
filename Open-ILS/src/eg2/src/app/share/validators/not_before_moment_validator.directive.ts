@@ -20,11 +20,11 @@ export function notBeforeMomentValidator(notBeforeMe: Moment): ValidatorFn {
     }]
 })
 export class NotBeforeMomentValidatorDirective {
-    @Input('egNotBeforeMoment') egNotBeforeMoment: Moment;
+    @Input('egNotBeforeMoment') notBeforeMoment: Moment;
 
     validate(control: AbstractControl): {[key: string]: any} | null {
-        return this.egNotBeforeMoment ?
-            notBeforeMomentValidator(this.egNotBeforeMoment)(control)
+        return this.notBeforeMoment ?
+            notBeforeMomentValidator(this.notBeforeMoment)(control)
             : null;
     }
 }

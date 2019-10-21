@@ -148,10 +148,10 @@ export class FmRecordEditorComponent
     // Emit an error message when the save action fails.
     @Output() recordError = new EventEmitter<string>();
 
-    @ViewChild('translator') private translator: TranslateComponent;
-    @ViewChild('successStr') successStr: StringComponent;
-    @ViewChild('failStr') failStr: StringComponent;
-    @ViewChild('confirmDel') confirmDel: ConfirmDialogComponent;
+    @ViewChild('translator', { static: true }) private translator: TranslateComponent;
+    @ViewChild('successStr', { static: true }) successStr: StringComponent;
+    @ViewChild('failStr', { static: true }) failStr: StringComponent;
+    @ViewChild('confirmDel', { static: true }) confirmDel: ConfirmDialogComponent;
 
     // IDL info for the the selected IDL class
     idlDef: any;

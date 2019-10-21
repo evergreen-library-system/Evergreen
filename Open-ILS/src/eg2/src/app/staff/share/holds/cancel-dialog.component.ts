@@ -23,8 +23,8 @@ export class HoldCancelDialogComponent
     extends DialogComponent implements OnInit {
 
     @Input() holdIds: number[];
-    @ViewChild('successMsg') private successMsg: StringComponent;
-    @ViewChild('errorMsg') private errorMsg: StringComponent;
+    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
+    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
     changesApplied: boolean;
     numSucceeded: number;

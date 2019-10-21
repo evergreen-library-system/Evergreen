@@ -22,7 +22,7 @@ export class DateTimeSelectComponent implements OnInit, ControlValueAccessor {
 
     dateTimeForm: FormGroup;
 
-    @ViewChild('datePicker') datePicker;
+    @ViewChild('datePicker', { static: false }) datePicker;
 
     onChange = (_: any) => {};
     onTouched = () => {};

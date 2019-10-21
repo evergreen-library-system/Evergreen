@@ -34,7 +34,7 @@
         formControlName="endTime"
         [timezone]="timezone">
       </eg-datetime-select>
-      <div role="alert" class="alert alert-danger" *ngIf="create.errors && create.errors.startTimeNotBeforeEndTime">
+      <div role="alert" class="alert alert-danger offset-lg-4" *ngIf="create.errors && create.errors.startTimeNotBeforeEndTime">
         <span class="material-icons" aria-hidden="true">error</span>
         <span i18n>Start time must be before end time</span>
       </div>

@@ -75,15 +75,15 @@ export class AdminPageComponent implements OnInit {
     // Override field options for create/edit dialog
     @Input() fieldOptions: {[field: string]: FmFieldOptions};
 
-    @ViewChild('grid') grid: GridComponent;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('successString') successString: StringComponent;
-    @ViewChild('createString') createString: StringComponent;
-    @ViewChild('createErrString') createErrString: StringComponent;
-    @ViewChild('updateFailedString') updateFailedString: StringComponent;
-    @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
-    @ViewChild('translator') translator: TranslateComponent;
+    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('successString', { static: true }) successString: StringComponent;
+    @ViewChild('createString', { static: true }) createString: StringComponent;
+    @ViewChild('createErrString', { static: true }) createErrString: StringComponent;
+    @ViewChild('updateFailedString', { static: true }) updateFailedString: StringComponent;
+    @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
+    @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
+    @ViewChild('translator', { static: true }) translator: TranslateComponent;
 
     idlClassDef: any;
     pkeyField: string;

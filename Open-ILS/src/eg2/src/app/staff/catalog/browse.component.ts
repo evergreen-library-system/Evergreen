@@ -7,7 +7,7 @@ import {SearchFormComponent} from './search-form.component';
 })
 export class BrowseComponent implements OnInit {
 
-    @ViewChild('searchForm') searchForm: SearchFormComponent;
+    @ViewChild('searchForm', { static: true }) searchForm: SearchFormComponent;
 
     constructor(
         private staffCat: StaffCatalogService

@@ -30,7 +30,7 @@
     <ngb-tabset #details="ngbTabset">
       <ngb-tab id="select-resource-type">
         <ng-template ngbTabTitle>
-          <span class="material-icons">category</span>
+          <span class="material-icons">dns</span>
           <ng-container i18n>Choose resource by type</ng-container>
         </ng-template>
         <ng-template ngbTabContent>
@@ -170,6 +170,7 @@
     [rowFlairCallback]="resourceAvailabilityIcon"
     [disablePaging]="true"
     persistKey="disabled">
+    <eg-grid-toolbar-button label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-button>
     <eg-grid-toolbar-action label="Create Reservation" i18n-label (onClick)="openTheDialog($event)"></eg-grid-toolbar-action>
     <eg-grid-column path="time" [index]="true" name="Time" i18n-name [cellTemplate]="timeTemplate" ></eg-grid-column>
     <eg-grid-column *ngFor="let resource of resources" path="{{resource.barcode()}}" [cellTemplate]="reservationsTemplate" [disableTooltip]="true"></eg-grid-column>

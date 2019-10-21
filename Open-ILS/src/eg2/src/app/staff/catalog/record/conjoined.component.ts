@@ -24,12 +24,12 @@ export class ConjoinedComponent implements OnInit {
     gridDataSource: GridDataSource;
     idsToUnlink: number[];
 
-    @ViewChild('conjoinedGrid') private grid: GridComponent;
+    @ViewChild('conjoinedGrid', { static: true }) private grid: GridComponent;
 
-    @ViewChild('conjoinedDialog')
+    @ViewChild('conjoinedDialog', { static: true })
         private conjoinedDialog: ConjoinedItemsDialogComponent;
 
-    @ViewChild('confirmUnlink')
+    @ViewChild('confirmUnlink', { static: true })
         private confirmUnlink: ConfirmDialogComponent;
 
     constructor(

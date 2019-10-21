@@ -4,7 +4,7 @@
 
 <form [formGroup]="filters" class="row">
   <div class="col-sm-3">
-    <eg-org-family-select [hideAncestorSelector]="true" labelText="Reservation location" i18n-labelText formControlName="pickupLibraries">
+    <eg-org-family-select labelText="Reservation location" i18n-labelText formControlName="pickupLibraries">
     </eg-org-family-select>
   </div>
   <div class="col-sm-6 offset-sm-3">
@@ -49,7 +49,7 @@
         </ngb-tab>
         <ngb-tab id="type">
           <ng-template ngbTabTitle>
-            <span class="material-icons" *ngIf="resourceType.value">filter_list</span> <span i18n>Filter by resource type</span>
+            <span class="material-icons" *ngIf="resourceTypeForGrid">filter_list</span> <span i18n>Filter by resource type</span>
           </ng-template>
           <ng-template ngbTabContent>
             <div class="m-2">

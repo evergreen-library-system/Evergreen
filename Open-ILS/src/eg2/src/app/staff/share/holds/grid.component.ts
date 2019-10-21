@@ -58,20 +58,20 @@ export class HoldsGridComponent implements OnInit {
     editHolds: number[];
     transferTarget: number;
 
-    @ViewChild('holdsGrid') private holdsGrid: GridComponent;
-    @ViewChild('progressDialog')
+    @ViewChild('holdsGrid', { static: false }) private holdsGrid: GridComponent;
+    @ViewChild('progressDialog', { static: true })
         private progressDialog: ProgressDialogComponent;
-    @ViewChild('transferDialog')
+    @ViewChild('transferDialog', { static: true })
         private transferDialog: HoldTransferDialogComponent;
-    @ViewChild('markDamagedDialog')
+    @ViewChild('markDamagedDialog', { static: true })
         private markDamagedDialog: MarkDamagedDialogComponent;
-    @ViewChild('markMissingDialog')
+    @ViewChild('markMissingDialog', { static: true })
         private markMissingDialog: MarkMissingDialogComponent;
-    @ViewChild('retargetDialog')
+    @ViewChild('retargetDialog', { static: true })
         private retargetDialog: HoldRetargetDialogComponent;
-    @ViewChild('cancelDialog')
+    @ViewChild('cancelDialog', { static: true })
         private cancelDialog: HoldCancelDialogComponent;
-    @ViewChild('manageDialog')
+    @ViewChild('manageDialog', { static: true })
         private manageDialog: HoldManageDialogComponent;
 
     // Bib record ID.

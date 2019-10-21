@@ -37,10 +37,10 @@ export class PrintTemplateComponent implements OnInit {
     initialOrg: number;
     selectedOrgs: number[];
 
-    @ViewChild('templateSelector') templateSelector: ComboboxComponent;
-    @ViewChild('tabs') tabs: NgbTabset;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
+    @ViewChild('templateSelector', { static: true }) templateSelector: ComboboxComponent;
+    @ViewChild('tabs', { static: false }) tabs: NgbTabset;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
 
     // Define some sample data that can be used for various templates
     // Data will be filled out via the sample data service.

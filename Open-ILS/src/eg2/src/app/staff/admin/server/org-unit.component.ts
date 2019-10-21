@@ -19,9 +19,9 @@ export class OrgUnitComponent implements OnInit {
 
     tree: Tree;
     selected: TreeNode;
-    @ViewChild('editString') editString: StringComponent;
-    @ViewChild('errorString') errorString: StringComponent;
-    @ViewChild('delConfirm') delConfirm: ConfirmDialogComponent;
+    @ViewChild('editString', { static: true }) editString: StringComponent;
+    @ViewChild('errorString', { static: true }) errorString: StringComponent;
+    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
 
     constructor(
         private idl: IdlService,

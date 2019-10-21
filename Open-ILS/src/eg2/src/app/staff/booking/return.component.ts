@@ -24,7 +24,7 @@ export class ReturnComponent implements OnInit, OnDestroy {
 
     noSelectedRows: (rows: IdlObject[]) => boolean;
     handleTabChange: ($event: NgbTabChangeEvent) => void;
-    @ViewChild('tabs') tabs: NgbTabset;
+    @ViewChild('tabs', { static: true }) tabs: NgbTabset;
     @ViewChildren(ReservationsGridComponent) grids: QueryList<ReservationsGridComponent>;
 
     constructor(

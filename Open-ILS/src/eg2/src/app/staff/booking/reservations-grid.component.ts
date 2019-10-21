@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, OnInit, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, OnChanges, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {Observable, from, of} from 'rxjs';
 import {tap, switchMap, mergeMap} from 'rxjs/operators';
@@ -19,11 +19,13 @@ import {CancelReservationDialogComponent} from './cancel-reservation-dialog.comp
 
 import * as Moment from 'moment-timezone';
 
+// A filterable grid of reservations used in various booking interfaces
+
 @Component({
     selector: 'eg-reservations-grid',
     templateUrl: './reservations-grid.component.html',
 })
-export class ReservationsGridComponent implements OnInit {
+export class ReservationsGridComponent implements OnChanges, OnInit {
 
     @Input() patron: number;
     @Input() resourceBarcode: string;
@@ -34,16 +36,17 @@ export class ReservationsGridComponent implements OnInit {
     @Input() onlyCaptured = false;
 
     @Output() onPickup = new EventEmitter<IdlObject>();
+    @Output() onReturn = new EventEmitter<IdlObject>();
 
     gridSource: GridDataSource;
     patronBarcode: string;
     numRowsSelected: number;
 
-    @ViewChild('grid') grid: GridComponent;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('confirmCancelReservationDialog')
+    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: CancelReservationDialogComponent;
-    @ViewChild('noTimezoneSetDialog') noTimezoneSetDialog: NoTimezoneSetComponent;
+    @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
 
     editSelected: (rows: IdlObject[]) => void;
     pickupSelected: (rows: IdlObject[]) => void;
@@ -237,13 +240,16 @@ export class ReservationsGridComponent implements OnInit {
                this.auth.token(),
                {'patron_barcode': this.patronBarcode, 'reservation': reservation})
                .pipe(tap(
-                   () => { this.grid.reload(); },
+                   () => {
+                       this.onReturn.emit(reservation);
+                       this.grid.reload();
+                   },
                ));
         };
 
         this.listReadOnlyFields = () => {
             let list = 'usr,xact_start,request_time,capture_time,pickup_time,return_time,capture_staff,target_resource_type,' +
-                'current_resource,target_resource,unrecovered,request_library,pickup_library,fine_interval,fine_amount,max_fine';
+                'email_notify,current_resource,target_resource,unrecovered,request_lib,pickup_lib,fine_interval,fine_amount,max_fine';
             if (this.status && ('pickupReady' !== this.status)) { list = list + ',start_time'; }
             if (this.status && ('returnedToday' === this.status)) { list = list + ',end_time'; }
             return list;
@@ -269,6 +275,8 @@ export class ReservationsGridComponent implements OnInit {
             this.router.navigate(['/staff', 'booking', 'create_reservation']);
         };
     }
+
+    ngOnChanges() { this.reloadGrid(); }
 
     enrichRow$ = (row: IdlObject): Observable<IdlObject> => {
         return from(this.org.settings('lib.timezone', row.pickup_lib().id())).pipe(

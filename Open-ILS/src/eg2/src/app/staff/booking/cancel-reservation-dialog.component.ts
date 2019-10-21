@@ -33,7 +33,7 @@ export class CancelReservationDialogComponent {
 
     reservations: number[];
 
-    @ViewChild('confirmCancelReservationDialog')
+    @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: ConfirmDialogComponent;
 
     @Output() onSuccessfulCancel = new EventEmitter();

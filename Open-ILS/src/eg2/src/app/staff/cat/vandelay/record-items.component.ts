@@ -17,7 +17,7 @@ export class RecordItemsComponent {
     @Input() recordId: number;
 
     gridSource: GridDataSource;
-    @ViewChild('itemsGrid') itemsGrid: GridComponent;
+    @ViewChild('itemsGrid', { static: true }) itemsGrid: GridComponent;
 
     constructor(
         private net: NetService,

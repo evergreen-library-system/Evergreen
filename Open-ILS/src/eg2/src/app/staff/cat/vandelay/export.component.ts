@@ -29,8 +29,8 @@ export class ExportComponent implements AfterViewInit, OnInit {
     exportingBasket: boolean;
     basketRecords: number[];
 
-    @ViewChild('fileSelector') private fileSelector;
-    @ViewChild('exportProgress')
+    @ViewChild('fileSelector', { static: false }) private fileSelector;
+    @ViewChild('exportProgress', { static: true })
         private exportProgress: ProgressInlineComponent;
 
     constructor(

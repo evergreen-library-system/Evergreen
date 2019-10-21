@@ -22,7 +22,7 @@ import {WelcomeComponent} from './welcome.component';
     EgCommonModule.forRoot(),
     BaseRoutingModule,
     BrowserModule,
-    NgbModule.forRoot(),
+    NgbModule,
     CookieModule.forRoot()
   ],
   exports: [],

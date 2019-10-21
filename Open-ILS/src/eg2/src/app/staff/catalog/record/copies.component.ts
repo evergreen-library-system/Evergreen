@@ -18,7 +18,7 @@ export class CopiesComponent implements OnInit {
     initDone = false;
     gridDataSource: GridDataSource;
     copyContext: any; // grid context
-    @ViewChild('copyGrid') copyGrid: GridComponent;
+    @ViewChild('copyGrid', { static: true }) copyGrid: GridComponent;
 
     @Input() set recordId(id: number) {
         this.recId = id;

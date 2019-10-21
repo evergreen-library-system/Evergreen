@@ -26,7 +26,7 @@ interface PullListRow {
 })
 
 export class PullListComponent implements OnInit {
-    @ViewChild('confirmCancelReservationDialog')
+    @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: CancelReservationDialogComponent;
 
     public dataSource: GridDataSource;

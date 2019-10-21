@@ -28,7 +28,7 @@ export class WorkstationsComponent implements OnInit {
     newName: string;
     defaultName: string;
 
-    @ViewChild('workstationExistsDialog')
+    @ViewChild('workstationExistsDialog', { static: true })
     private wsExistsDialog: ConfirmDialogComponent;
 
     // Org selector options.

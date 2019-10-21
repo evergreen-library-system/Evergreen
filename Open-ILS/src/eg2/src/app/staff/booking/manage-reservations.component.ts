@@ -27,8 +27,8 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
     startingTab: 'patron' | 'resource' | 'type' = 'patron';
     startingPickupOrgs: OrgFamily = {primaryOrgId: this.auth.user().ws_ou(), includeDescendants: true};
 
-    @ViewChild('filterTabs') filterTabs: NgbTabset;
-    @ViewChild('reservationsGrid') reservationsGrid: ReservationsGridComponent;
+    @ViewChild('filterTabs', { static: true }) filterTabs: NgbTabset;
+    @ViewChild('reservationsGrid', { static: true }) reservationsGrid: ReservationsGridComponent;
 
     removeFilters: () => void;
 
@@ -73,7 +73,7 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
                             'open-ils.actor',
                             'open-ils.actor.get_barcodes',
                             this.auth.token(), this.auth.user().ws_ou(),
-                           'actor', this.patronBarcode.value).pipe(
+                           'actor', this.patronBarcode.value.trim()).pipe(
                                single(),
                                tap((response) =>
                                    this.router.navigate(['/staff', 'booking', 'manage_reservations', 'by_patron', response[0].id])

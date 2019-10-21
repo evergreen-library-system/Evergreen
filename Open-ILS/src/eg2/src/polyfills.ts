@@ -35,9 +35,9 @@
 // import 'core-js/es6/set';
 
 // PhantomJS needs these
-import 'core-js/es6/array';
-import 'core-js/es6/string';
-import 'core-js/es6/symbol'; // needed by app/staff/booking/reservation-actions.spec.ts
+import 'core-js/es/array';
+import 'core-js/es/string';
+import 'core-js/es/symbol'; // needed by app/staff/booking/reservation-actions.spec.ts
 
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 // import 'classlist.js';  // Run `npm install --save classlist.js`.

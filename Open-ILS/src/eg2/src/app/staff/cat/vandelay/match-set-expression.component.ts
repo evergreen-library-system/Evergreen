@@ -35,7 +35,7 @@ export class MatchSetExpressionComponent implements OnInit {
     newPointType: string;
     newId: number;
 
-    @ViewChild('newPoint') newPoint: MatchSetNewPointComponent;
+    @ViewChild('newPoint', { static: true }) newPoint: MatchSetNewPointComponent;
 
     constructor(
         private idl: IdlService,

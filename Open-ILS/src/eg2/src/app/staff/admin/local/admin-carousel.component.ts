@@ -23,8 +23,8 @@ export class AdminCarouselComponent extends AdminPageComponent implements OnInit
     createNew: () => void;
     deleteSelected: (idlThings: IdlObject[]) => void;
 
-    @ViewChild('refreshString') refreshString: StringComponent;
-    @ViewChild('refreshErrString') refreshErrString: StringComponent;
+    @ViewChild('refreshString', { static: true }) refreshString: StringComponent;
+    @ViewChild('refreshErrString', { static: true }) refreshErrString: StringComponent;
 
     constructor(
         route: ActivatedRoute,

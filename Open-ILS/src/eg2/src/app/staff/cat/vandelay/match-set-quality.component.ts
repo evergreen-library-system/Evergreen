@@ -31,8 +31,8 @@ export class MatchSetQualityComponent implements OnInit {
     newPointType: string;
     matchSetType: string;
     dataSource: GridDataSource;
-    @ViewChild('newPoint') newPoint: MatchSetNewPointComponent;
-    @ViewChild('grid') grid: GridComponent;
+    @ViewChild('newPoint', { static: true }) newPoint: MatchSetNewPointComponent;
+    @ViewChild('grid', { static: true }) grid: GridComponent;
     deleteSelected: (rows: IdlObject[]) => void;
 
     constructor(

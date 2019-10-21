@@ -20,7 +20,7 @@ export class QueueItemsComponent {
     filterImportErrors: boolean;
 
     gridSource: GridDataSource;
-    @ViewChild('itemsGrid') itemsGrid: GridComponent;
+    @ViewChild('itemsGrid', { static: true }) itemsGrid: GridComponent;
 
     constructor(
         private router: Router,

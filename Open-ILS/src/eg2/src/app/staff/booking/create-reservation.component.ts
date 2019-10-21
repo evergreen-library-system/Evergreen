@@ -68,10 +68,10 @@ export class CreateReservationComponent implements OnInit, AfterViewInit, OnDest
 
     dateRange: DateRange;
 
-    @ViewChild('createDialog') createDialog: CreateReservationDialogComponent;
-    @ViewChild('details') details: NgbTabset;
-    @ViewChild('noTimezoneSetDialog') noTimezoneSetDialog: NoTimezoneSetComponent;
-    @ViewChild('viewReservation') viewReservation: FmRecordEditorComponent;
+    @ViewChild('createDialog', { static: true }) createDialog: CreateReservationDialogComponent;
+    @ViewChild('details', { static: true }) details: NgbTabset;
+    @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
+    @ViewChild('viewReservation', { static: true }) viewReservation: FmRecordEditorComponent;
     @ViewChildren('scheduleGrid') scheduleGrids: QueryList<GridComponent>;
 
     constructor(

@@ -11,6 +11,7 @@ import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {DialogComponent} from '@eg/share/dialog/dialog.component';
+import {notBeforeMomentValidator} from '@eg/share/validators/not_before_moment_validator.directive';
 import {PatronBarcodeValidator} from '@eg/share/validators/patron_barcode_validator.directive';
 import {ToastService} from '@eg/share/toast/toast.service';
 import {AlertDialogComponent} from '@eg/share/dialog/alert.component';
@@ -50,7 +51,7 @@ export class CreateReservationDialogComponent
 
     public disableOrgs: () => number[];
     addBresv$: () => Observable<any>;
-    @ViewChild('fail') private fail: AlertDialogComponent;
+    @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
     handlePickupLibChange: ($event: IdlObject) => void;
 
@@ -79,7 +80,7 @@ export class CreateReservationDialogComponent
                 [this.pbv.validate]
             ),
             'emailNotify': new FormControl(true),
-            'startTime': new FormControl(),
+            'startTime': new FormControl(null, notBeforeMomentValidator(Moment().add('15', 'minutes'))),
             'endTime': new FormControl(),
             'resourceList': new FormControl(),
         }, [startTimeIsBeforeEndTimeValidator]
@@ -104,7 +105,7 @@ export class CreateReservationDialogComponent
                 'open-ils.booking',
                 'open-ils.booking.reservations.create',
                 this.auth.token(),
-                this.patronBarcode.value,
+                this.patronBarcode.value.trim(),
                 this.selectedTimes,
                 this.pickupLibId,
                 this.targetResourceType.id,
@@ -147,7 +148,7 @@ export class CreateReservationDialogComponent
                         'open-ils.actor.get_barcodes',
                         this.auth.token(),
                         this.auth.user().ws_ou(),
-                        'actor', this.patronBarcode.value).pipe(
+                        'actor', this.patronBarcode.value.trim()).pipe(
                             single(),
                             switchMap((result) => {
                                 return this.pcrud.retrieve('au', result[0]['id']).pipe(

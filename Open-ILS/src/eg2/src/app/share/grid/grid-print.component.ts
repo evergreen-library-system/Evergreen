@@ -13,8 +13,8 @@ import {GridContext} from '@eg/share/grid/grid';
 export class GridPrintComponent {
 
     @Input() gridContext: GridContext;
-    @ViewChild('printTemplate') private printTemplate: TemplateRef<any>;
-    @ViewChild('progressDialog')
+    @ViewChild('printTemplate', { static: true }) private printTemplate: TemplateRef<any>;
+    @ViewChild('progressDialog', { static: true })
         private progressDialog: ProgressDialogComponent;
 
     constructor(private printer: PrintService) {}

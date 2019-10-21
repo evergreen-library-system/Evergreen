@@ -37,7 +37,7 @@ export class DialogComponent implements OnInit {
     @Input() public dialogTitle: string;
 
     // Pointer to the dialog content template.
-    @ViewChild('dialogContent')
+    @ViewChild('dialogContent', {static: false})
     private dialogContent: TemplateRef<any>;
 
     // Emitted after open() is called on the ngbModal.

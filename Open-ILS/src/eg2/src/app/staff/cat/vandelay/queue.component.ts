@@ -34,9 +34,9 @@ export class QueueComponent implements OnInit, AfterViewInit {
     // keep a local copy for convenience
     attrDefs: IdlObject[];
 
-    @ViewChild('queueGrid') queueGrid: GridComponent;
-    @ViewChild('confirmDelDlg') confirmDelDlg: ConfirmDialogComponent;
-    @ViewChild('progressDlg') progressDlg: ProgressDialogComponent;
+    @ViewChild('queueGrid', { static: true }) queueGrid: GridComponent;
+    @ViewChild('confirmDelDlg', { static: false }) confirmDelDlg: ConfirmDialogComponent;
+    @ViewChild('progressDlg', { static: true }) progressDlg: ProgressDialogComponent;
 
     constructor(
         private router: Router,
