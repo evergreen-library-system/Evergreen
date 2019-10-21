@@ -1,12 +1,18 @@
 [%
   WRAPPER "staff/base.tt2";
-  ctx.page_title = l("Home"); 
   ctx.page_app = "egHome";
 %]
 
 [% BLOCK APP_JS %]
 <!-- splash / login page app -->
 <script src="[% ctx.media_prefix %]/js/ui/default/staff/app.js"></script>
+<script>
+angular.module('egCoreMod').run(['egStrings', function(s) {
+  s.PAGE_TITLE_SPLASH = "[% l('Home') %]";
+  s.PAGE_TITLE_LOGIN = "[% l('Staff Login') %]";
+  s.PAGE_TITLE_ABOUT = "[% l('About') %]";
+}])
+</script>
 [% END %]
 
 <div ng-view></div> 

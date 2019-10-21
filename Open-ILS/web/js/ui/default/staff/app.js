@@ -56,7 +56,10 @@ function($routeProvider , $locationProvider) {
         $scope.focusMe = true;
         $scope.args = {};
         $scope.workstations = [];
-
+		
+		egCore.strings.setPageTitle(
+            egCore.strings['PAGE_TITLE_LOGIN']);
+			
         // if the user is already logged in, jump to splash page
         if (egCore.auth.user()) $location.path('/');
 
@@ -150,9 +153,13 @@ function($routeProvider , $locationProvider) {
 /**
  * Splash page dynamic content.
  */
-.controller('SplashCtrl', ['$scope', '$window', function($scope, $window) {
-    console.log('SplashCtrl');
+.controller('SplashCtrl', ['$scope', '$window','egCore', 
+    function($scope, $window,egCore) {
+		
     $scope.focus_search = true;
+	
+	egCore.strings.setPageTitle(
+        egCore.strings['PAGE_TITLE_SPLASH']);
 
     $scope.catalog_search = function($event) {
         $scope.focus_search = true;
@@ -178,6 +185,9 @@ function($routeProvider , $locationProvider) {
             $scope.context.version = version;
         }
     );
+
+	egCore.strings.setPageTitle(
+        egCore.strings['PAGE_TITLE_ABOUT']);
 
 }])
 
