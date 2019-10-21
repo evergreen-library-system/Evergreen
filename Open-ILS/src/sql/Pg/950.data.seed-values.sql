@@ -4660,6 +4660,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'string', null)
 
+,( 'opac.patron.custom_jquery', 'opac',
+    oils_i18n_gettext('opac.patron.custom_jquery',
+        'Custom jQuery for the OPAC',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.patron.custom_jquery',
+        'Custom jQuery for the OPAC',
+        'coust', 'description'),
+    'string', NULL)
+
 ,( 'org.patron_opt_boundary', 'sec',
     oils_i18n_gettext('org.patron_opt_boundary',
         'Patron Opt-In Boundary',

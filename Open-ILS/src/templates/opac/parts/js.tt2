@@ -23,6 +23,11 @@
 </script>
 [% END %]
 
+[% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
+[%     custom_jquery = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_jquery') %]
+[%     '<script>'; custom_jquery ; '</script>' %]                                          
+[% END %]
+
 <!-- DOB validation for Patron Registration in OPAC -->
 <script type="text/javascript">
     function dobValidate(input) {
