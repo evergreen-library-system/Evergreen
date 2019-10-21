@@ -1,0 +1,42 @@
+[[recurring_reports]]
+Running Recurring Reports
+-------------------------
+
+indexterm:[reports, recurring]
+
+Recurring reports are a useful way to save time by scheduling reports that you 
+run on a regular basis, such as monthly circulation and monthly patron 
+registration statistics. When you have set up a report to run on a monthly basis 
+you’ll get an email informing you that the report has successfully run. You can 
+click on a link in the email that will take you directly to the report output. 
+You can also access the output through the reporter interface as described in 
+<<viewing_report_output,Viewing Report Output>>.
+
+To set up a monthly recurring report follow the procedure in <<generating_reports,
+Generating Reports from Templates>>  but make the changes described below.
+
+. Select the Recurring Report check-box and set the recurrence interval to 1 month.
+. Do not select Run ASAP. Instead schedule the report to run early on the first 
+day of the next month. Enter the date in _YYYY-MM-DD_ format.
+. Ensure there is an email address to receive completion emails. You will 
+receive an email completion notice each month when the output is ready.
+. Select a folder for the report’s output.
+. Click Save Report.
+. You will get a confirmation dialogue box that the Action Succeeded. Click OK.
+
+You will get an email on the 1st of each month with a link to the report output. 
+By clicking this link it will open the output in a web browser. It is still 
+possible to login to the staff client and access the output in Output folder.
+
+*How to stop or make changes to an existing recurring report?*  Sometimes you may 
+wish to stop or make changes to a recurring report, e.g. the recurrence interval, 
+generation date, email address to receive completion email, output format/folder 
+or even filter values (such as the number of days overdue). You will need to 
+delete the current report from the report folder, then use the above procedure 
+to set up a new recurring report with the desired changes. Please note that 
+deleting a report also deletes all output associated with it.
+
+TIP: Once you have been on Evergreen for a year, you could set up your recurring 
+monthly reports to show comparative data from one year ago. To do this select 
+relative dates of 1 month ago and 13 months ago.
+

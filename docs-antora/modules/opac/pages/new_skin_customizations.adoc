@@ -1,0 +1,134 @@
+Creating a New Skin: the Bare Minimum
+=====================================
+
+Introduction
+------------
+
+When you adopt the TPAC as your catalog, you must create a new skin. This
+involves a combination of overriding template files and setting Apache
+directives to control the look and feel of your customized TPAC.
+
+Apache directives
+-----------------
+There are a few Apache directives and environment variables of note for
+customizing TPAC behavior. These directives should generally live within a
+`<vhost>` section of your Apache configuration.
+
+* `OILSWebDefaultLocale` specifies which locale to display when a user lands
+   on a page in the TPAC and has not chosen a different locale from the TPAC
+   locale picker. The following example shows the `fr_ca` locale being added
+   to the locale picker and being set as the default locale:
++
+------------------------------------------------------------------------------
+PerlAddVar OILSWebLocale "fr_ca"
+PerlAddVar OILSWebLocale "/openils/var/data/locale/opac/fr-CA.po"
+PerlAddVar OILSWebDefaultLocale "fr-CA"
+------------------------------------------------------------------------------
++
+* `physical_loc` is an Apache environment variable that sets the default
+  physical location, used for setting search scopes and determining the order
+  in which copies should be sorted. The following example demonstrates the
+  default physical location being set to library ID 104:
++
+------------------------------------------------------------------------------
+SetEnv physical_loc 104
+------------------------------------------------------------------------------
+
+Customizing templates
+---------------------
+When you install Evergreen, the TPAC templates include many placeholder images,
+text, and links. You should override most of these to provide your users with a
+custom experience that matches your library.  Following is a list of templates
+that include placeholder images, text, or links that you should override.
+
+NOTE: All paths are relative to `/openils/var/templates/opac`
+
+[[configtt2]]
+
+* `parts/config.tt2`: contains many configuration settings that affect the
+  behavior of the TPAC, including:
+  ** hiding the *Place Hold* button for available items
+  ** enabling RefWorks support for citation management
+  ** adding OpenURL resolution for electronic resources
+  ** enabling Google Analytics tracking for your TPAC
+  ** displaying the "Forgot your password?" prompt
+  ** controlling the size of cover art on the record details page
+  ** defining which facets to display, and in which order
+  ** controlling basic and advanced search options
+  ** controlling if the "Show More Details" button is visible or activated by
+default in OPAC search results
+  ** hiding phone notification options (useful for libraries that do not do
+phone notifications)
+  ** disallowing password or e-mail changes (useful for libraries that use
+centralized authentication or single sign-on systems)
+  ** displaying a maintenance message in the public catalog and KPAC (this is
+controlled by the _ctx.maintenance_message_ variable)
+  ** displaying previews of books when available from Google Books.  This is
+controlled by the _ctx.google_books_preview_ variable, which is set to 0 by
+default to protect the privacy of users who might not want to share their
+browsing behavior with Google.
+  ** disabling the "Group Formats and Editions" search. This is controlled by 
+setting the metarecords.disabled variable to 1.
+  ** setting the default search to a 'Group Formats and Editions' search. This
+is done by setting the search.metarecord_default variable to 1.
+* `parts/footer.tt2` and `parts/topnav_links.tt2`: contains customizable
+  links. Defaults like 'Link 1' will not mean much to your users!
+* `parts/homesearch.tt2`: holds the large Evergreen logo on the home page
+  of the TPAC. Substitute your library's logo, or if you are adventurous,
+  create a "most recently added items" carousel... and then share your
+  customization with the Evergreen community.
+* `parts/topnav_logo.tt2`: holds the small Evergreen logo that appears on the
+  top left of every page in the TPAC. You will also want to remove or change
+  the target of the link that wraps the logo and leads to the
+  http://evergreen-ils.org[Evergreen site].
+* `parts/login/form.tt2`: contains some assumptions about terminology and
+  examples that you might prefer to change to be more consistent with your own
+  site's existing practices. For example, you may not use 'PIN' at your library
+  because you want to encourage users to use a password that is more secure than
+  a four-digit number.
+* `parts/login/help.tt2`: contains links that point to http://example.com,
+  images with text on them (which is not an acceptable practice for
+  accessibility reasons), and promises of answers to frequently asked questions
+  that might not exist at your site.
+* \`parts/login/password_hint.tt2\`: contains a hint about your users' password
+  on first login that is misleading if your library does not set the initial
+  password for an account to the last four digits of the phone number associated
+  with the account.
+* `parts/myopac/main_refund_policy.tt2`: describes the policy for refunds for
+  your library.
+* `parts/myopac/prefs_hints.tt2`: suggests that users should have a valid email
+  on file so they can receive courtesy and overdue notices. If your library
+  does not send out email notices, you should edit this to avoid misleading your
+  users.
+* `myopac/update_password_msg.tt2`: defines the password format that needs
+  to be used when setting a user password. If your Evergreen site has set
+  _Password format_ regex in the Library Settings Editor, you
+  should update the language to describe the format that should be used.  
+* `password_reset.tt2`: in the msg_map section, you might want to change the
+  NOT_STRONG text that appears when the user tries to set a password that
+  does not match the required format. Ideally, this message will tell the user
+  how they should format the password.
+* \`parts/css/fonts.tt2\`: defines the font sizes for the TPAC in terms of one
+  base font size, and all other sizes derived from that in percentages. The
+  default is 12 pixels, but http://goo.gl/WfNkE[some design sites] strongly
+  suggest a base font size of 16 pixels. Perhaps you want to try '1em' as a
+  base to respect your users' preferences. You only need to change one number
+  in this file if you want to experiment with different options for your users.
+* `parts/css/colors.tt2`: chances are your library's official colors do not
+  match Evergreen's wall of dark green. This file defines the colors in use in
+  the standard Evergreen template. In theory you should be able to change just
+  a few colors and everything will work, but in practice you will need to
+  experiment to avoid light-gray-on-white low-contrast combinations.
+
+The following are templates that are less frequently overridden, but some
+libraries benefit from the added customization options.
+
+* `parts/advanced/numeric.tt2`: defines the search options of the Advanced
+Search > Numeric search. If you wanted to add a bib call number search option,
+which is different from the item copy call number; you would add the following
+code to `numeric.tt2`.
++
+------------------------------------------------------------------------------
+<option value="identifier|bibcn">[% l('Bib Call Number') %]</option>  
+------------------------------------------------------------------------------
+

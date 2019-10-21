@@ -1,0 +1,37 @@
+Cash Reports
+------------
+
+Cash reports are useful for quickly getting information about money that
+your library has collected from patrons.  This can be helpful in a few
+different scenarios, such as:
+
+. Reconciling a cash drawer at the end of the day.
+. Seeing how popular a specific payment type is (perhaps when evaluating
+a food-for-fines program).
+
+To use the cash reports,
+
+. Under the _Administration_ menu, choose _Local Administration_.
+. Click _Cash reports_.
+. Select the time period and library you are interested in. This
+interface defaults to showing payments accepted during the current day.
+. Click _Submit_.
+
+[TIP]
+====
+You can click on the names of columns to sort the reports.
+====
+
+[TIP]
+====
+You need the _VIEW_TRANSACTION_ permission to view these reports.
+====
+
+[NOTE]
+====
+These payments are divided into two different types: _Desk payments_ --
+in which a staff member simply accepted a credit card, check, or cash
+payment -- and _User payments_ -- in which a staff member had to make a
+specific decision about whether to accept a payment of goods or work; or
+forgave or granted credit to a particular patron.
+====

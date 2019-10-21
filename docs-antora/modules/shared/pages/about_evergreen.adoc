@@ -1,0 +1,26 @@
+About Evergreen
+---------------
+
+Evergreen is an open source library automation software designed to meet the
+needs of the very smallest to the very largest libraries and consortia. Through
+its staff interface, it facilitates the management, cataloging, and circulation
+of library materials, and through its online public access interface it helps
+patrons find those materials.
+
+The Evergreen software is freely licensed under the GNU General Public License,
+meaning that it is free to download, use, view, modify, and share. It has an
+active development and user community, as well as several companies offering
+migration, support, hosting, and development services.
+
+The community's development requirements state that Evergreen must be:
+
+* Stable, even under extreme load.
+* Robust, and capable of handling a high volume of transactions and simultaneous users.
+* Flexible, to accommodate the varied needs of libraries.
+* Secure, to protect our patrons’ privacy and data.
+* User-friendly, to facilitate patron and staff use of the system.
+
+Evergreen, which first launched in 2006 now powers over 544 libraries of every
+type – public, academic, special, school, and even tribal and home libraries –
+in over a dozen countries worldwide.
+

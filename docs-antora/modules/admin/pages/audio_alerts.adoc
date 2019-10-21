@@ -1,0 +1,38 @@
+Managing audio alerts
+---------------------
+
+Globally silencing sounds
+~~~~~~~~~~~~~~~~~~~~~~~~~
+indexterm:[audio alerts,silencing]
+indexterm:[nosound.wav]
+
+The file `nosound.wav` can be used
+to globally disable audio alerts for a specific event on an Evergreen system.
+
+For example, to silence the alert that sounds after a successful patron search:
+
+[source, bash]
+------------------------------------------------------------------------------
+mkdir -p /openils/var/web/audio/notifications/success/patron/
+cd /openils/var/web/audio/notifications/success/patron/
+ln -s ../../nosound.wav by_search.wav
+------------------------------------------------------------------------------
+
+
+Self-check interface
+~~~~~~~~~~~~~~~~~~~~
+indexterm:[audio alerts,self check interface]
+indexterm:[self check interface,audio alerts]
+indexterm:[audio_config.tt2]
+
+Sounds may play at certain events in the self check interface. These
+events are defined in the `templates/circ/selfcheck/audio_config.tt2`
+template. To use the default sounds, you could run the following command
+from your Evergreen server as the *root* user (assuming that
+`/openils/` is your install prefix):
+ 
+[source, bash]
+------------------------------------------------------------------------------
+cp -r /openils/var/web/xul/server/skin/media/audio /openils/var/web/.
+------------------------------------------------------------------------------
+

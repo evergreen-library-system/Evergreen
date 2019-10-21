@@ -1,0 +1,50 @@
+Patron privacy and the SIP protocol
+-----------------------------------
+
+SIP traffic includes a lot of patron information, and is not
+encrypted by default.  It is strongly recommended that you
+encrypt any SIP traffic.
+
+SIP server configuration
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+On the SIP server, use `iptables` or `etc/hosts` to allow SSH connections on port 22 from the SIP client machine.  You will probably want to have very restrictive rules
+on which IP addresses can connect to this server.
+
+
+SSH tunnels on SIP clients
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+SSH tunnels are a good fit for use cases like self-check machines, because it is relatively easy to automatically open the connection.  Using a VPN is another option,
+but many VPN clients require manual steps to open the VPN connection.
+
+. If the SIP client will be on a Windows machine, install cygwin on the SIP client.
+. On the SIP client, use `ssh-keygen` to generate an SSH key.
+. Add the public key to /home/my_sip_user/.ssh/authorized_keys on your SIP server to enable logins without using the UNIX password.
+. Configure an SSH tunnel to open before every connection.  You can do this in several ways:
+.. If the SIP client software allows you to run an arbitrary command before
+   each SIP connection, use something like this:
++
+[source,bash]
+----
+ssh -f -L 6001:localhost:6001 my_sip_user@my_sip_server.com sleep 10
+----
++
+.. If you feel confident that the connection won't get interrupted, you can have something like this run at startup:
++
+[source,bash]
+----
+ssh -f -N -L 6001:localhost:6001 my_sip_user@my_sip_server.com
+----
++
+.. If you want to constantly poll to make sure that the connection is still running, you can do something like this as a cron job or scheduled task on the SIP client machine:
+[source,bash]
+----
+#!/bin/bash
+instances=`/bin/ps -ef | /bin/grep ssh | /bin/grep -v grep | /bin/wc -l`
+if [ $instances -eq 0 ]; then
+  echo "Restarting ssh tunnel"
+  /usr/bin/ssh -L 6001:localhost:6001 my_sip_user@my_sip_server.com -f -N
+fi
+----
+

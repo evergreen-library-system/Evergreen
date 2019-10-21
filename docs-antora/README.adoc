@@ -1,0 +1,69 @@
+= Antora Docs build procedure
+
+:idseparator: -
+
+[source,bash]
+----
+$ git clone git://git.evergreen-ils.org/Evergreen.git
+$ cd Evergreen
+$ git checkout LP1848524_antora_ize_docs
+----
+
+First we have to install antora:
+Summarized from 
+https://docs.antora.org/antora/2.1/install/install-antora/
+
+[source,bash]
+----
+$ cd docs-antora
+# (we want to install into directory as opposed to globally)
+$ npm i @antora/cli@2.1 @antora/site-generator-default@2.1
+----
+
+
+Now, install the ui pre-reqs building
+lifted from:
+https://docs.antora.org/antora-ui-default/set-up-project/
+
+[source,bash]
+----
+$ cd ui
+$ npm install
+$ gulp --tasks-simple
+$ gulp bundle
+----
+
+At this point you should find a file in:
+
+NOTE: build/ui-bundle.zip
+
+Now you can build the website. But you may want to edit the file:
+
+NOTE: docs-antora/site.yml
+
+Because the output folder for the website is defaulted to 
+
+NOTE: /var/www/html/prod
+
+And the default web URL is:
+
+NOTE: http://localhost/prod
+
+Build:
+
+[source,bash]
+----
+$ cd ..
+antora site.yml
+----
+
+If all went well - then you will have the site built in the output folder that was configured in site.yml!
+
+Interesting reading related to Antora and AsciiDoc and AsciiDoctor
+
+NOTE: https://asciidoctor.org/docs/asciidoc-asciidoctor-diffs/
+
+NOTE: https://blog.anoff.io/2019-02-15-antora-first-steps/
+
+NOTE: https://owncloud.org/news/owncloud-docs-migrating-antora-pt-1-2/
+

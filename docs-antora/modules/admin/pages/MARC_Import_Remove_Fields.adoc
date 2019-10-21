@@ -1,0 +1,57 @@
+MARC Import Remove Fields
+-------------------------
+
+MARC Import Remove Fields allows staff to configure MARC tags to be automatically removed from bibliographic records when they are imported into Evergreen.  This feature allows specific MARC tags to be removed from records that are imported through three different interfaces:
+
+* Cataloging -> Import Record from Z39.50
+* Cataloging -> MARC Batch Import/Export
+* Acquisitions -> Load MARC Order Records
+
+
+Create a MARC Import Remove Fields profile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+To create a MARC Import Remove Fields profile, go to *Administration -> Server Administration ->  MARC Import Remove Fields*.
+
+. Click *New Field Group*.
+. Assign the Field Group a *Label*.  This label will appear in the import interfaces.
+. Assign an Org Unit *Owner*.
+. Check the box next to *Always Apply* if you want Evergreen to apply this Remove Fields profile to all MARC records that are imported through the three affected interfaces.  If you do not select *Always Apply*, staff will have the option to choose which Remove Fields profile to use when importing records.
+. Click *Save*.
+. The profile that you created will now appear in the list of MARC Import Remove Fields.
+. Click on the hyperlinked *ID* number.  This will bring you into the Remove Fields profile to configure the MARC tags to be removed.
+. Click *New Field*. 
+. In the *Field*, enter the MARC tag to be removed.
+. Click *Save*.
+. Add *New Fields* until you have configured all the tags needed for this profile.
+. Click *Return to Groups* to go back to the list of Remove Field profiles.
+
+
+image::media/marc_import_remove_fields3.png[MARC Remove Fields Profile]
+
+
+Import Options
+~~~~~~~~~~~~~~
+The Label for each of the MARC Import Remove Fields profiles will appear on the three affected import screens.  To select a profile, check the box next to the desired Label before importing the records.
+
+*Cataloging -> Import Record from Z39.50*
+
+image::media/marc_import_remove_fields1.jpg[Import Record from Z39.50]
+{nbsp}
+
+*Cataloging -> MARC Batch Import/Export*
+
+image::media/marc_import_remove_fields2.jpg[MARC Batch Import/Export]
+{nbsp}
+
+*Acquisitions -> Load MARC Order Records*
+
+image::media/marc_import_remove_fields5.jpg[Load MARC Order Records]
+
+
+Permissions to use this Feature
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following permissions are required to use this feature:
+
+* CREATE_IMPORT_TRASH_FIELD
+* UPDATE_IMPORT_TRASH_FIELD
+* DELETE_IMPORT_TRASH_FIELD

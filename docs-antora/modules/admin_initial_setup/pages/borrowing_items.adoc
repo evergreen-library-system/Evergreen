@@ -1,0 +1,252 @@
+Borrowing items: who, what, for how long
+========================================
+
+Circulation policies pull together user, library, and item data to determine how
+library materials circulate, such as: which patrons, from what libraries can
+borrow what types of materials, for how long, and with what overdue fines. 
+
+Individual elements of the circulation policies are configured using specific
+interfaces, and should be configured prior to setting up the circulation 
+policies.  
+
+Data elements that affect your circulation policies
+---------------------------------------------------
+
+There are a few data elements which must be considered when setting up your
+circulation policies. 
+
+Copy data
+~~~~~~~~~
+
+Several fields set via the holdings editor are commonly used to affect the
+circulation of an item.
+
+* *Circulation modifier* - Circulation modifiers are fields used to control
+circulation policies on specific groups of items. They can be added to items
+during the cataloging process. New circulation modifiers can be created in the
+staff client by navigating to *Administration -> Server Administration ->  Circulation
+Modifiers*.
+* *Circulate?* flag - The circulate? flag in the holdings editor can be set to False
+to disallow an item from circulating.
+* *Reference?* flag - The reference? flag in the holdings editor can also be used as
+a data element in circulation policies.
+
+Shelving location data
+~~~~~~~~~~~~~~~~~~~~~~
+
+* To get to the Shelving Locations Editor, navigate to *Administration ->
+Local Administration -> Shelving Locations Editor*. 
+* Set _OPAC Visible_ to "No" to hide all items in a shelving location from the
+public catalog. (You can also hide individual items using the Copy Editor.)
+* Set _Hold Verify_ to "Yes" if when an item checks in you want to always ask for
+staff confirmation before capturing a hold.
+* Set _Checkin Alert_ to "Yes" to allow routing alerts to display when items
+are checked in.
+* Set _Holdable_ to "No" to prevent items in an entire shelving location from
+being placed on hold.
+* Set _Circulate_ to "No" to disallow circulating items in an entire shelving
+location.
+* If you delete a shelving location, it will be removed from display in the staff
+client and the catalog, but it will remain in the database. This allows you to
+treat a shelving location as deleted without losing statistical information for
+circulations related to that shelving location.
+
+image::media/copy_locations_editor.png[screenshot of Shelving Location Editor]
+
+* Shelving locations can also be used as a data element in circulation policies. 
+
+User data
+~~~~~~~~~
+
+Finally, several characteristics of specific patrons can affect circulation
+policies.  You can modify these characteristics in a patron's record (*Search ->
+Search for Patrons*, select a patron, choose *Edit* tab) or when registering a
+new patron (*Circulation -> Register Patron*).
+
+* The user permission group is also commonly used as a data element in
+circulation policies. 
+* Other user data that can be used for circulation policies include the
+*juvenile* flag in the user record.
+
+Circulation Rules
+-----------------
+
+*Loan duration* describes the length of time for a checkout. You can also
+identify the maximum renewals that can be placed on an item.
+
+You can find Circulation Duration Rules by navigating to *Administration
+-> Server Administration -> Circulation Duration Rules*. 
+
+image::media/circ_duration_rules.jpg[]
+
+*Recurring fine* describes the amount assessed for daily and hourly fines as
+well as fines set for other regular intervals. You can also identify any grace
+periods that should be applied before the fine starts accruing.
+
+You can find Recurring Fine Rules by navigating to *Administration -> Server
+Administration -> Circulation Recurring Fine Rules*.
+
+image::media/circ_recurring_fine_rules.jpg[]
+
+*Max fine* describes the maximum amount of fines that will be assessed for a
+specific circulation. Set the *Is Percent* field to True if the maximum fine
+should be a percentage of the item's price.
+
+You can find Circ Max Fine Rules by navigating to *Administration -> Server
+Administration -> Circulation Max Fine Rules*.
+
+image::media/circ_max_fine_rules.jpg[]
+
+These rules generally cause the most variation between organizational units.
+
+Loan duration and recurring fine rate are designed with 3 levels: short, normal,
+and extended loan duration, and low, normal, and high recurring fine rate. These
+values are applied to specific items, when item records are created. 
+
+When naming these rules, give them a name that clearly identifies what the rule
+does. This will make it easier to select the correct rule when creating your
+circ policies.
+
+Circulation Limit Sets
+~~~~~~~~~~~~~~~~~~~~~~
+
+Circulation Limit Sets allow you to limit the maximum number of items for
+different types of materials that a patron can check out at one time. Evergreen
+supports creating these limits based on circulation modifiers, shelving locations,
+or circulation limit groups, which allow you to create limits based on MARC data.
+The below instructions will allow you to create limits based on circulation
+modifiers.
+
+* Configure the circulation limit sets by selecting *Administration -> Local
+Administration -> Circulation Limit Sets*.
+* *Items Out* -  The maximum number of items circulated to a patron at the same
+time.
+* *Min Depth* - Enter the minimum depth in the org tree that
+Evergreen will consider as valid circulation libraries for counting items out.
+The min depth is based on org unit type depths. For example, if you want the
+items in all of the circulating libraries in your consortium to be eligible for
+restriction by this limit set when it is applied to a circulation policy, then
+enter a zero (0) in this field. 
+* *Global* - Check the box adjacent to Global if you want all of the org
+units in your consortium to be restricted by this limit set when it is applied
+to a circulation policy. Otherwise, Evergreen will only apply the limit to the
+direct ancestors and descendants of the owning library.
+* *Linked Limit Groups* - Add any circulation modifiers, shelving locations, or circ
+limit groups that should be part of this limit set.
+
+*Example*
+Your library (BR1) allows patrons to check out up to 5 videos at one time. This
+checkout limit should apply when your library's videos are checked out at any
+library in the consortium. Items with DVD, BLURAY, and VHS circ modifiers should
+be included in this maximum checkout count. 
+
+To create this limit set, you would add 5 to the *Items Out* field, 0 to the
+*Min Depth* field and select the *Global* flag. Add the DVD, BLURAY and VHS circ
+modifiers to the limit set.
+
+Creating Circulation Policies
+-----------------------------
+
+Once you have identified your data elements that will drive circulation policies
+and have created your circulation rules, you are ready to begin creating your
+circulation policies. 
+
+If you are managing a small number of rules, you can create and manage
+circulation policies in the staff client via *Administration -> Local Administration -> 
+Circulation Policies*. However, if you are managing a large number of policies,
+it is easier to create and locate rules directly in the database by updating
+*config.circ_matrix_matchpoint*.
+
+The *config.circ_matrix_matchpoint* table is central to the configuration of
+circulation parameters. It collects the main set of data used to determine what
+rules apply to any given circulation. It is useful for us to think of their
+columns in terms of 'match' columns, those that are used to match the
+particulars of a given circulation transaction, and 'result' columns, those that
+return the various parameters that are applied to the matching transaction.
+
+* Circulation policies by checkout library or owning library?
+   - If your policies should follow the rules of the library that checks out the
+item, select the checkout library as the *Org Unit (org_unit)*.
+   - If your policies should follow the rules of the library that owns the item,
+select the consortium as the *Org Unit (org_unit)* and select the owning library
+as the *Item Circ Lib (copy_circ_lib)*.
+* Renewal policies can be created by setting *Renewals? (is_renewal)* to True.
+* You can apply the duration rules, recurring fine rules, maximum fine rules,
+and circulation sets created in the above sets when creating the circulation
+policy.
+
+Best practices for creating policies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* Start by replacing the default consortium-level circ policy with one that
+contains a majority of your libraries' duration, recurring fine, and max fine
+rules. This first rule will serve as a default for all materials and permission
+groups. 
+* If many libraries in your consortium have rules that differ from the default
+for particular materials or people, set a consortium-wide policy for that circ
+modifier or that permission group.
+* After setting these consortium defaults, if a library has a circulation rule
+that differs from the default, you can then create a rule for that library. You
+only need to change the parameters that are different from the default
+parameters. The rule will inherit the values for the other parameters from that
+default consortium rule.
+* Try to avoid unnecessary repetition.
+* Try to get as much agreement as possible among the libraries in your
+consortium.
+
+*Example 1*
+
+image::media/circ_example1.png[]
+ 
+In this example, the consortium has decided on a 21_day_2_renew loan rule for
+general materials, i.e. books, etc. Most members do not charge overdue fines.
+System 1 charges 25 cents per day to a maximum of $3.00, but otherwise uses the
+default circulation duration. 
+
+*Example 2*
+
+image::media/circ_example2.png[]
+
+This example includes a basic set of fields and creates a situation where items
+with a circ modifier of "book" or "music" can be checked out, but "dvd" items
+will not circulate. The associated rules would apply during checkouts. 
+
+*Example 3*
+
+image::media/circ_example3.png[]
+
+This example builds on the earlier example and adds some more complicated
+options.
+
+It is still true that "book" and "music" items can be checked out, while "dvd"
+is not circulated. However, now we have added new rules that state that "Adult"
+patrons of "SYS1" can circulate "dvd" items.
+
+Settings Relevant to Circulation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following circulation settings, available via *Administration
+-> Local Administration -> Library Settings Editor*, can
+also affect your circulation duration, renewals and fine policy.
+
+* *Auto-Extend Grace Periods* - When enabled, grace periods will auto-extend.
+By default this will be only when they are a full day or more and end on a
+closed date, though other options can alter this. 
+* *Auto-Extending Grace Periods extend for all closed dates* - If enabled and
+Grace Periods auto-extending is turned on, grace periods will extend past all
+closed dates they intersect, within hard-coded limits. 
+* *Auto-Extending Grace Periods include trailing closed dates* - If enabled and
+Grace Periods auto-extending is turned on, grace periods will include closed
+dates that directly follow the last day of the grace period.
+* *Checkout auto renew age* - When an item has been checked out for at least
+this amount of time, an attempt to check out the item to the patron that it is
+already checked out to will simply renew the circulation. 
+* *Cap Max Fine at Item Price* - This prevents the system from charging more
+than the item price in overdue fines.
+* *Lost Item Billing: New Min/Max Price Settings* - Patrons will be billed
+at least the Min Price and at most the Max price, even if the item's price
+is outside that range. To set a fixed price for all lost items, set min and
+max to the same amount.
+* *Charge fines on overdue circulations when closed* - Normally, fines are not
+charged when a library is closed. When set to True, fines will be charged during
+scheduled closings and normal weekly closed days. 

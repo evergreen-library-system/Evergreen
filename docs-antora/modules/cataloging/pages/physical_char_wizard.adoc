@@ -1,0 +1,48 @@
+MARC 007 Field Physical Characteristics Wizard
+----------------------------------------------
+
+The MARC 007 Field Physical Characteristics Wizard enables catalogers to interact with a database wizard that leads the user step-by-step through the MARC 007 field positions. The wizard displays the significance of the current position and provides dropdown lists of possible values for the various components of the MARC 007 field in a more user-friendly way.
+
+*To Access the MARC 007 Field Physical Characteristics Wizard for a Record that Does Not Already Contain the 007 Field (i.e. Creating the 007 Field from Scratch):*
+
+. Within the bibliographic record that needs to be edited, select *MARC Edit*.
+. Make sure that the Flat-Text Editor checkbox is not selected and that you are not using the Flat-Text Editor interface.
+. Right-click in the MARC field column.
++
+image::media/pcw1_2.12.jpg[]
++
+. Click *Add/Replace 007*. The 007 row will appear in the record.
+. Click the chain link icon to the right of the field.
++
+image::media/pcw2_2.12.jpg[]
++
+. Click *Physical Characteristics Wizard*.
+
+The *MARC 007 Field Physical Characteristics Wizard* will open.
+
+*Using the Physical Characteristics Wizard:*
+
+As the user navigates through the wizard, each position will display its corresponding label that describes the significance of that position. Each position contains a selection of dropdown choices that list the possible values for that particular position. When the user makes a selection from the dropdown options, the value for that position will also change.
+
+The first value defines the *Category of Material*. Users select the Category of Material for the given record by choosing an option from the *Category of Material?* dropdown menu. The choices within the remaining character positions will be appropriate for the Category of Material selected.
+
+Once the Category of Material is selected, click *Next*.
+
+Evergreen will display the result of each selection in the preview above. The affected character will be in red.
+
+image::media/pcw3_2.12.jpg[]
+
+By clicking either the *Previous* or *Next* buttons, the user may step forward and backward, as needed, through the various positions in the 007 field.
+
+Once the user enters all of the applicable values for the 007 field and is ready to exit the wizard, click *Save*.
+
+image::media/pcw4_2.12.jpg[]
+
+All of the values selected will be stored and displayed within the 007 field of the bibliographic record.
+
+image::media/pcw5_2.12.jpg[]
+
+Continue editing the MARC record, as needed. Once the user is finished editing the record, click *Save*.
+
+image::media/pcw6_2.12.jpg[]
+

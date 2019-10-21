@@ -1,0 +1,16 @@
+site:
+  title: Evergreen Documentation
+  start_page: docs::index
+  url: http://localhost/prod
+content:
+  sources:
+  - url: ../
+#    - url: git@git.evergreen-ils.org:working/Evergreen.git
+    branches: LP1848524_antora_ize_docs
+    start_path: docs-antora
+ui:
+  bundle:
+    url: ./ui/build/ui-bundle.zip
+
+output:
+  dir: /var/www/html/prod

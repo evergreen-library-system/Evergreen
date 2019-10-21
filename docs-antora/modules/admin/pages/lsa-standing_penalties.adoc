@@ -1,0 +1,25 @@
+Standing Penalties
+------------------
+
+In versions of Evergreen prior to 2.3, the following penalty types were
+available by default.  When applied to user accounts, these penalties prevented
+users from completing the following actions: 
+
+* *CIRC* - Users cannot check out items
+* *HOLD* - Users cannot place holds on items
+* *RENEW* - Users cannot renew items
+
+In version 2.3, two new penalty types are available in Evergreen: 
+
+* *CAPTURE* - This penalty prevents a user's holds from being captured. If the
+_HOLD_ penalty has not been applied to a user's account, then the patron can place a
+hold, but the targeted item will not appear on a pull list and will not be
+captured for a hold if it is checked in.
+* *FULFILL* - This penalty prevents a user from checking out an item that is on
+hold.  If the _HOLD_ and _CAPTURE_ penalties have not been applied to a user's
+account, then the user can place a hold on an item, and the item can be captured
+for a hold.  However, when he tries to check out the item, the circulator will
+see a pop up box with the name of the penalty type, _FULFILL_.  The circulator
+must correct the problem with the account or must override the penalty to check
+out the item.
+

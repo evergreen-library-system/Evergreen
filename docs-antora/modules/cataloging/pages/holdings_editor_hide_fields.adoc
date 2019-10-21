@@ -1,0 +1,34 @@
+Hiding Fields in the Holdings Editor
+------------------------------------
+ 
+ 
+A user may hide specific fields in the holdings editor if these fields are not used for cataloging in their organization. Hiding fields that are not used by your organization helps to reduce confusion among staff and also declutters the holdings editor screen.
+ 
+To hide one or more fields from the holdings editor:
+ 
+. Retrieve the record.
++
+[NOTE]
+===================================================================================
+You can retrieve records in many ways, including:
+ 
+* If you know its database ID, enter it into Cataloging > Retrieve Bib Record by ID.
+ 
+* If you know its control number, enter it into Cataloging > Retrieve Bib Record by TCN.
+ 
+* Searching in the catalog.
+ 
+* Clicking on a link from the Acquisitions or Serials modules.
+===================================================================================
++
+. Select the *Add Holdings* button. The *Holdings Editor* will display.
+ 
+. In the Holdings Editor, select the *Defaults* tab.
++
+image::media/Holdings_Editor_Defaults_Tab.png[Holdings editor defaults tab]
++
+. On the Defaults tab, uncheck the boxes for the field(s) that you wish to hide. It is not necessary to save this screen; changes are saved automatically.
++
+image::media/Holdings_Editor_Hide_Display_Defaults.png[Holdings editor display defaults with deselected fields]
++
+. Select the *Edit* tab; the de-selected fields no longer appear on the holdings editor.

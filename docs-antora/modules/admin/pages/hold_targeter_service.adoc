@@ -1,0 +1,5 @@
+hold-targeter service
+---------------------
+
+The `open-ils.hold-targeter` service is used to target holds.
+

@@ -1,0 +1,311 @@
+
+anchor:my_account[]
+
+
+My Account
+~~~~~~~~~~
+
+// ``First Login Password Update'' the following documentation comes from JSPAC
+// as of 2013-03-12 this feature did not exist in EG 2.4 TPAC,
+// so I am commenting it out for now because it will be added in the future
+// see bug report https://bugs.launchpad.net/evergreen/+bug/1013786
+// Yamil Suarez 2013-03-12
+
+////
+
+
+First Login Password Update 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, first login password update]
+
+Patrons are given temporary passwords when new accounts are created, or
+forgotten passwords are reset by staff. Patrons MUST change their password to 
+something more secure when they login or for the first time. Once the password 
+is updated, they will not have to repeat this process for subsequent logins. 
+
+. Open a web browser and go to your Evergreen OPAC 
+. Click My Account 
+. Enter your _Username_ and _Password_. 
+  * By default, your username is your library card number. 
+  * Your password is a 4 digit code provided when your account was created. If 
+you have forgotten your password, contact your library to have it reset or use 
+the online the section called ``<<password_reset,Password Reset>>'' tool. 
+////
+
+
+Logging In 
+^^^^^^^^^^
+
+indexterm:[my account, logging in]
+
+Logging into your account from the online catalog: 
+
+. Open a web browser and navigate to your Evergreen OPAC. 
+. Click _My Account_ .
+. Enter your _Username_ and _Password_. 
+** By default, your username is your library card number.
+** Your password is a 4 digit code provided when your account was created. If 
+you have forgotten your password, contact your local library to have it reset or
+ use the the section called <<password_reset, Password Reset>> tool. 
+. Click Login.
++
+** At the first login, you may be prompted to change your password. 
+** If you updated your password, you must enter your _Username_ and _Password_ 
+again. 
++
+. Your _Account Summary_ page displays.
+
+
+To view your account details, click one of the _My Account_ tabs.
+
+To start a search, enter a term in the search box at the top of the page and 
+click _Search_! 
+
+[CAUTION]
+=================
+If using a public computer be sure to log out! 
+=================
+
+anchor:password_reset[]
+
+Password Reset
+^^^^^^^^^^^^^^
+
+indexterm:[my account, password reset]
+
+
+To reset your password: 
+
+. click on the _Forgot your password?_ link located beside the login button. 
+
+. Fill in the _Barcode_ and _User name_ text boxes. 
+
+. A message should appear indicating that your request has been processed and 
+that you will receive an email with further instructions. 
+
+. An email will be sent to the email addressed you have registered with your 
+Evergreen library. You should click on the link included in the email to open 
+the password reset page. Processing time may vary.
++
+[NOTE]
+=================
+You will need to have a valid email account set up in Evergreen for you to reset
+your password. Otherwise, you will need to contact your library to have your 
+password reset by library staff. 
+=================
++
+
+. At the reset email page you should enter the new password in the _New 
+password_ field and re-enter it in the _Re-enter new password_ field. 
+
+. Click _Submit_. 
+
+. A message should appear on the page indicating that your password has been reset. 
+
+. Login to your account with your new password. 
+
+
+Account Summary
+^^^^^^^^^^^^^^^
+
+indexterm:[my account, account summary]
+
+In the *My Account* -> *Account Summary* page, you can see when your account
+expires and your total number of items checked out, items on hold, and items
+ready for pickup. In addition, the Account Summary page lists your current fines
+and payment history.
+
+
+Items Checked Out 
+^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, items checked out]
+
+Users can manage items currently checked out, like renew specific items. Users
+can also view overdue items and see how many renewals they have remaining for
+specific item.
+
+As of Evergreen version 2.9, sorting of selected columns is available in the
+ _Items Checked Out_ and _Check Out History_ pages. Clicking on the appropriate
+ column heads sorts the contents from "ascending" to "descending" to "no sort".
+(The "no sort" restores the original list as presented in the screen.) The sort 
+indicator (an up or down arrow) is placed to the right of the column head, as 
+appropriate.
+
+Within *Items Checked Out* -> *Current Items Checked Out*, the following column
+ headers can be sorted: _Title_, _Author_, _Renewals Left_, _Due Date_,
+_Barcode_, and _Call Number_.
+
+Within *Items Checked Out* -> *Check Out History*, the following column headers 
+can be sorted: _Title_, _Author_, _Checkout Date_, _Due Date_, _Date Returned_, 
+_Barcode_, and _Call Number_
+
+[NOTE]
+==========
+To protect patron privacy, the Check Out History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+area.
+==========
+
+
+Holds
+^^^^^ 
+
+indexterm:[my account, holds]
+
+From *My Account*, patrons can see *Items on Hold* and *Holds History* and
+manage items currently being requested. In *Holds* -> *Items on Hold*, the 
+content shown can be sorted by clicking on the following column headers:
+_Title_, _Author_, and _Format_ (based on format name represented by the icon).
+
+Actions include: 
+
+* Suspend - set a period of time during which the hold will not become active, 
+such as during a vacation 
+* Activate - manually remove the suspension 
+* Cancel - remove the hold request 
+
+Edit options include: 
+
+* Change pick up library 
+* Change the _Cancel unless filled by_ date, also known as the hold expiration 
+date 
+* Change the status of the hold to either active or suspended. 
+* Change the _If suspended, activate on_ date, which reactivates a suspended 
+hold at the specified date
+
+To edit items on hold: 
+
+. Login to _My Account_, click the _Holds_ tab.
+. Select the hold to modify. 
+. Click _Edit_ for selected holds. 
+. Select the change to make and follow the instructions.
+
+[NOTE]
+==========
+To protect patron privacy, the Holds History will be completely blank unless the patron has previously opted in under the _Account Preferences_ tab, in the _Search and History Preferences_
+area.
+==========
+
+Account Preferences 
+^^^^^^^^^^^^^^^^^^^
+
+indexterm:[my account, account preferences]
+
+From here you can manage display preferences including your *Personal 
+Information*, *Notification Preferences*, and *Search and History Preferences*. 
+Additional static information, such as your _Account Expiration Date_, can be 
+found under Personal Information.
+
+For example: 
+
+* Personal Information
+
+** change password - allows patrons to change their password
+
+** change email address	- allows patrons to change their email address.
+
+
+
+*  Notification Preferences
+
+** _Notify by Email_ by default when a hold is ready for pickup?	
+
+** _Notify by Phone_ by default when a hold is ready for pickup?
+
+** _Default Phone Number_
+
+
+* Search and History Preferences
+
+** Search hits per page
+
+** Preferred pickup location
+
+** Keep history of checked out items?
+
+** Keep history of holds?
+
+[WARNING]
+========
+Turning off the _Keep history of checked out items?_ or _Keep history of holds?_ features will permanently delete all entries in the relevant patron screens.  After this is unchecked,
+there is no way for a patron to recover those data.
+========
+
+
+After changing any of these settings, you must click _Save_ to store your 
+preferences.
+
+Authorize other people to use your account
+++++++++++++++++++++++++++++++++++++++++++
+
+indexterm:[Allow others to use my account]
+indexterm:[checking out,materials on another patron's account]
+indexterm:[holds,picking up another patron's]
+indexterm:[privacy waiver]
+
+
+If your library has enabled it, you can authorize other people to use
+your account. In the Search and History Preferences tab
+under Account Preferences, find the section labeled "Allow others to use
+my account". Enter the name and indicate that the
+specified person is allowed to place holds, pickup holds, view
+borrowing history, and check out items on their account.  This
+information will also be visible to circulation staff at your library.
+
+
+
+indexterm:[holds, preferred pickup location]
+
+Patron Messages
+^^^^^^^^^^^^^^^
+
+The Patron Message Center provides a way for libraries to communicate with 
+patrons through messages that can be accessed through the patron's OPAC account.
+ Library staff can create messages manually by adding an OPAC visible Patron 
+Note to an account.  Messages can also be automatically generated through an 
+Action Trigger event.  Patrons can access and manage messages within their OPAC 
+account.  See Circulation - Patron Record - Patron Message Center for more 
+information on adding messages to patron accounts.
+
+*Viewing Patron Messages in the OPAC*
+
+Patrons will see a new tab for *Messages* in their OPAC account, as well as a 
+notification of *Unread Messages* in the account summary.
+
+image::media/message_center11.PNG[Message Center 11]
+
+Patrons will see a list of the messages from the library by clicking on the 
+*Messages* tab.
+
+image::media/message_center10.PNG[Message Center 10]
+
+Patrons can click on a message *Subject* to view the message.  After viewing the
+message, it will automatically be marked as read.  Patrons have the options to 
+mark the message as unread and to delete the message.
+
+image::media/message_center12.PNG[Message Center 12]
+
+NOTE: Patron deleted messages will still appear in the patron's account in the 
+staff client under Other -> Message Center.
+
+Reservations
+^^^^^^^^^^^^
+
+When patrons place a reservation for a particular item at a particular time,
+they can check on its status using the *Reservations* tab.
+
+After they initially place a reservation, its status will display as _Reserved_.
+After staff capture the reservation, the status will change to _Ready for Pickup_.
+After the patron picks up the reservation, the status will change to _Checked Out_.
+Finally, after the patron returns the item, the reservation will be removed from
+the list.
+
+[NOTE]
+====================
+This interface pulls its timezone from the Library
+Settings Editor.  Make sure that you have a timezone
+listed for your library in the Library Settings Editor
+before using this feature.
+====================
+

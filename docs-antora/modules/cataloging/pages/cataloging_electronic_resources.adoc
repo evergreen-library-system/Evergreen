@@ -1,0 +1,162 @@
+Cataloging Electronic Resources -- Finding Them in Catalog Searches
+-------------------------------------------------------------------
+There are two ways to make electronic resources visible in the catalog without
+adding items to the record:
+
+. Adding a Located URI to the record
+. Attaching the record to a bib source that is transcendent
+
+The Located URI approach is useful for Evergreen sites where libraries have
+access to different electronic resources. The transcendent bib source approach
+is useful if all libraries have access to the same electronic resources.
+
+Another difference between the two approaches is that electronic resources with
+Located URI's never appear in results where the search is limited to a specific
+shelving location(s). In contrast, transcendent electronic resources will appear in
+results limited to any shelving location.
+
+Adding a Located URI to the Record
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A Located URI allows you to add the short name for the owning library to the 856
+field to indicate which organizational units should be able to find the
+resource. The owning organizational unit can be a branch, system, or consortium.
+
+A global flag called _When enabled, Located URIs will provide visibility
+behavior identical to copies_ will determine where these resources will appear
+in search results. This flag is available through *Admin* -> *Server
+Administration* -> *Global Flags*.
+
+If the _When enabled, Located URIs will provide visibility behavior identical
+to copies_ flag is set to False (default behavior):
+
+* When the user's search scope is set at the owning organizational unit or to
+a child of the owning organizational unit, the record will appear in search
+results.
+* When a logged-in user's preferred search library is set to the owning
+organizational unit or to a child of that owning organizational unit, the record
+will appear regardless of search scope.
+
+If the _When enabled, Located URIs will provide visibility behavior identical
+to copies_ flag is set to True:
+
+* When the user's search scope is set at the owning organizational unit, at a
+child of the owning organizational unit, or at a parent of the owning
+organizational unit, the record will appear in search results.
+* When a logged-in user's preferred search library is set to the owning
+organizational unit, to a child of the owning organizational unit, or to a
+parent (with the exception of the consortium) of the owning organizational unit,
+the record will appear regardless of search scope.
+
+
+To add a located URI to the record:
+
+. Open the record in _MARC Edit_
+. Add a subfield 9 to the 856 field of the record and enter the short name of 
+the organizational unit for the value. Make sure there is a 4 entered as the
+first indicator and a 0 entered as the second indicator. 
+For example:
++
+'856 40 $u http://lwn.net $y Linux Weekly News $9 BR1'
++
+would make this item visible to people searching in a library scope of BR1 or to
+logged-in users who have set BR1 as their preferred search library.
++
+[NOTE]
+If multiple organizational units own the resource, you can enter more than one
+subfield 9 to the 856 field or you can enter multiple 856 fields with a subfield
+9 to the record 
++
+. Save the record
+
+[NOTE]
+When troubleshooting located URIs, check to make sure there are no spaces either
+before or after the organizational unit short name.
+
+Located URI Example 1
+^^^^^^^^^^^^^^^^^^^^^
+
+The _When enabled, Located URIs will provide visibility behavior identical to
+copies_ flag is set to False (default behavior)
+
+The Record has two 856 fields: one with SYS1 in subfield 9 and the other with 
+BR4 in subfield 9
+
+* Any user searching SYS1 or any of its children (BR1, BR2, SL1) will find the 
+record. These users will only see the URL belonging to SYS1.
+* Any user searching BR4 will find the record. These users will only see the
+URL belonging to BR4.
+* A user searching SYS2 will NOT find the record because SYS2 is a parent of
+an owning org unit, not a child. The same thing happens if the user is searching
+the consortium. In this case, the system assumes the user is unlikely to
+have access to this resource and therefore does not retrieve it.
+* A logged-in user with a preferred search library of BR4 will find the record
+at any search scope. This user will see the URL belonging to BR4. Because this
+user previously identified a preference for using this library, the system
+assumes the user is likely to have access to this resource.
+* A logged-in user with a preferred search library of BR4 who is searching SYS1
+or any of its children will also retrieve the record. In this case, the user
+will see both URLs, the one belonging to SYS1 because the search library matches
+or is a child of the owning organizational unit and the one belonging to BR4
+because it matches or is a child of the preferred search library. The URL
+belonging to the search library (if it is an exact match, not a child) will sort
+to the top.
+
+Located URI Example 2
+^^^^^^^^^^^^^^^^^^^^^
+
+The _When enabled, Located URIs will provide visibility behavior identical to
+copies_ flag is set to True
+
+The Record has two 856 fields: one with SYS1 in subfield 9 and the other with
+BR4 in subfield 9
+
+* Any user searching SYS1 or any of its children (BR1, BR2, SL1) will find the
+record. These users will only see the URL belonging to SYS1.
+* Any user searching BR4 will find the record. These users will only see the
+URL belonging to BR4.
+* Any user searching the consortium will find the record. These users will see
+both URLs in the record. In this case, the system sees this user as a potential
+user of SYS2 or BR4 and therefore offers them the option of accessing the
+resource through either URL.
+* A user searching SYS2 will find the record because SYS2 is a parent of
+an owning org unit. The user will see the URL belonging to BR4. Once again, 
+the system sees this user as a potential user of BR4 and therefore offers
+them the option of accessing this resource. 
+* A user searching BR3 will NOT find the record because BR3 is neither a child
+nor a parent of an owning organizational unit.
+* A logged-in user with a preferred search library of BR4 who is searching BR3
+will find the record. This user will see the URL belonging to BR4. Because this
+user previously identified a preference for using this library, the system
+assumes the user is likely to have access to this resource.
+* A logged-in user with a preferred search library of BR4 who is searching SYS1
+or any of its children will also retrieve the record. In this case, the user
+will see both URLs, the one belonging to SYS1 because the search library matches
+or is a child of the owning organizational unit and the one belonging to BR4
+because it matches or is a child of the preferred search library. The URL
+belonging to the search library (if it is an exact match, not a child) will sort
+to the top.
+
+Using Transcendant Bib Sources for Electronic Resources
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Connecting a bib record to a transcendent bib source will make the record
+visible in search results regardless of the user's search scope.
+
+To start, you need to create a transcendent bib source by adding it to
+'config.bib_source' in the Evergreen database and setting the _transcendant_ 
+field to true. For example:
+
++# INSERT INTO config.bib_source(quality, source, transcendant, can_have_copies)
+VALUES (50, `ebooks', TRUE, FALSE);+
+
+[NOTE]
+If you want to allow libraries to add copies to these records, set the
+_can_have_copies_ field to _TRUE_. If you want to prevent libraries from adding
+copies to these records, set the _can_have_copies_ field to _FALSE_.
+
+When adding or uploading bib records for electronic resources, set the
+bibliographic source for the record to the newly-created transcendent
+bibliographic source. Using the staff client, the bibliographic source can be
+selected in the _MARC Batch Import_ interface when importing new, non-matching
+records or in the _MARC Edit_ interface when editing existing records.
+
+

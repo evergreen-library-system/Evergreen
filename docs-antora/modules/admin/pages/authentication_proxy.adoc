@@ -1,0 +1,98 @@
+Authentication Proxy
+--------------------
+
+indexterm:[authentication, proxy]
+
+indexterm:[authentication, LDAP]
+
+To support integration of Evergreen with organizational authentication systems, and to reduce the proliferation of user names and passwords, Evergreen offers a service called open-ils.auth_proxy. If you enable the service, open-ils.auth_proxy supports different authentication mechanisms that implement the authenticate method. You can define a chain of these authentication mechanisms to be tried in order within the *_<authenticators>_* element of the _opensrf.xml_ configuration file, with the option of falling back to the native mode that uses Evergreen’s internal method of password authentication.
+
+This service only provides authentication. There is no support for automatic provisioning of accounts. To authenticate using any authentication system, the user account must first be defined in the Evergreen database. The user will be authenticated based on the Evergreen username and must match the user's ID on the authentication system. 
+
+In order to activate Authentication Proxy, the Evergreen system administrator will need to complete the following steps:
+
+. Edit *_opensrf.xml_*.
+.. Set the *_open-ils.auth_proxy_* app settings *_enabled_* tag to *_true_*
+.. Add the *_authenticator_* to the list of authenticators or edit the existing example authenticator: 
++
+[source,xml]
+----
+     
+<authenticator>
+	<name>ldap</name>
+	<module>OpenILS::Application::AuthProxy::LDAP_Auth</module>
+	<hostname>name.domain.com</hostname>
+	<basedn>ou=people,dc=domain,dc=com</basedn>
+	<authid>cn=username,ou=specials,dc=domain,dc=com</authid>
+	<id_attr>uid</id_attr>
+	<password>my_ldap_password_for_authid_user</password>
+	<login_types>
+		<type>staff</type>
+		<type>opac</type>
+	</login_types>
+	<org_units>
+		<unit>103</unit>
+		<unit>104</unit>
+	</org_units>
+</authenticator>
+----
++
+* *_name_* : Used to identify each authenticator.  
+* *_module_* : References to the perl module used by Evergreen to process the request.  
+* *_hostname_* : Hostname of the authentication server.  
+* *_basedn_* :  Location of the data on your authentication server used to authenticate users.
+* *_authid_* : Administrator ID information used to connect to the Authentication server.
+* *_id_attr_* : Field name in the authenticator matching the username in the Evergreen database.
+* *_password_* : Administrator password used to connect to the authentication server. Password for the *_authid_*.
+* *_login_types_* : Specifies which types of logins will use this authenticator. This might be useful if staff use a different LDAP directory than general users.   
+* *_org_units_* : Specifies which org units will use the authenticator. This is useful in a consortium environment where libraries will use separate authentication systems.
++
+. Restart Evergreen and Apache to activate configuration changes. 
+   
+[TIP]
+====================================================================
+If using proxy authentication with library employees that will click 
+the _Change Operator_ feature in the client software, then add
+"Temporary" as a *_login_types_*.
+====================================================================
+
+
+Using arbitrary LDAP usernames
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Authentication Proxy supports LDAP-based login with a username that is
+different from your Evergreen username.
+
+.Use case
+****
+
+This feature may be useful for libraries that use an LDAP server for
+single sign-on (SSO).  Let's say you are a post-secondary library using
+student or employee numbers as Evergreen usernames, but you want people
+to be able to login to Evergreen with their SSO credentials, which may
+be different from their student/employee number.  To support this,
+Authentication Proxy can be configured to accept your SSO username on login,
+use it to look up your student/employee number on the LDAP server, and
+log you in as the appropriate Evergreen user.
+
+****
+
+To enable this feature, in the Authentication Proxy configuration for your LDAP server in
+`opensrf.xml`, set `bind_attr` to the LDAP field containing your LDAP
+username, and "id_attr" to the LDAP field containing your student or
+employee number (or whatever other value is used as your Evergreen
+username).  If `bind_attr` is not set, Evergreen will assume that your
+LDAP username and Evergreen username are the same.
+
+Now, let's say your LDAP server is only an authoritative auth provider
+for Library A.  Nothing prevents the server from reporting that your
+student number is 000000, even if that Evergreen username is already in
+use by another patron at Library B.  We want to ensure that Authentication Proxy
+does not use Library A's LDAP server to log you in as the Library B
+patron.  For this reason, a new `restrict_by_home_ou` setting has been
+added to Authentication Proxy config.  When enabled, this setting restricts LDAP
+authentication to users belonging to a library served by that LDAP
+server (i.e. the user's home library must match the LDAP server's
+`org_units` setting in `opensrf.xml`).  Use of this setting is strongly
+recommended.
+

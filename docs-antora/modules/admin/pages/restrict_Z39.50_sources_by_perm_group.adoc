@@ -1,0 +1,71 @@
+Z39.50 Servers
+--------------
+
+Restrict Z39.50 Sources by Permission Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In Evergreen versions preceding 2.2, all users with cataloging privileges could view all of the Z39.50 servers that were available for use in the staff client.  In Evergreen version 2.2, you can use a permission to restrict users' access to Z39.50 servers.  You can apply a permission to the Z39.50 servers to restrict access to that server, and then assign that permission to users or groups so that they can access the restricted servers.
+
+Administrative Settings
+^^^^^^^^^^^^^^^^^^^^^^^
+
+You can add a permission to limit use of Z39.50 servers, or you can use an existing permission.
+
+NOTE: You must be authorized to add permission types at the database level to add a new permission.
+
+Add a new permission:
+
+1) Create a permission at the database level.
+
+2) Click *Administration -> Server Administration ->  Permissions* to add a permission to the staff client.
+
+3) In the *New Permission* field, enter the text that describes the new permission.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group2.png[Create new permission to limit use of Z39.50 servers]
+
+4) Click *Add*.
+
+5) The new permission appears in the list of permissions.
+
+
+
+Restrict Z39.50 Sources by Permission Group
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+1) Click *Administration -> Server Administration ->  Z39.50 Servers*
+
+2) Click *New Z39.50 Server*, or double click on an existing Z39.50 server to restrict its use.
+
+3) Select the permission that you added to restrict Z39.50 use from the drop down menu.
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group1.jpg[]
+
+4) Click *Save*.
+
+5) Add the permission that you created to a user or user group so that they can access the restricted server.
+
+
+image::media/Restrict_Z39_50_Sources_by_Permission_Group3.jpg[]
+
+6) Users that log in to the staff client and have that permission will be able to see the restricted Z39.50 server.  
+
+NOTE: As an alternative to creating a new permission to restrict use, you can use a preexisting permission.  For example, your library uses a permission group called SuperCat, and only members in this group should have access to a restricted Z39.50 source.  Identify a permission that is unique to the SuperCat group (e.g. CREATE_MARC) and apply that permission to the restricted Z39.50 server.  Because these users are in the only group with the permission, they will be the only group w/ access to the restricted server.
+
+
+Storing Z39.50 Server Credentials
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Staff have the option to apply Z39.50 login credentials to each Z39.50 server at different levels of the organizational unit hierarchy.  Credentials can be set at the library branch or system level, or for an entire consortium.  When credentials are set for a Z39.50 server, searches of the Z39.50 server will use the stored credentials.  If a staff member provides alternate credentials in the Z39.50 search interface, the supplied credentials will override the stored ones.  Staff have the ability to apply new credentials or clear existing ones in this interface.  For security purposes, it is not possible for staff to retrieve or report on passwords.
+
+
+To set up stored credentials for a Z39.50 server:
+
+1) Go to *Administration -> Server Administration ->  Z39.50 Servers*.
+
+2) Select a *Z39.50 Source* by clicking on the hyperlinked source name.  This will take you the Z39.50 Attributes for the source.
+
+3) At the top of the screen, select the *org unit* for which you would like to configure the credentials.  
+
+4) Enter the *Username* and *Password*, and click *Apply Credentials*.  
+
+image::media/storing_z3950_credentials.jpg[Storing Z39.50 Credentials]

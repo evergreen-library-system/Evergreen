@@ -1,0 +1,44 @@
+Library Information Pages
+-------------------------
+
+The branch name displayed in the copy details section of the search results
+page, the record summary page, and the kids catalog record summary page will
+link to a library information page. This page is located at
+`http://hostname/eg/opac/library/<SHORTNAME>` and at
+`http://hostname/eg/opac/library/<ID>`.
+
+Evergreen automatically generates this page based on information entered in
+*Administration* -> *Server Administration* ->  *Organizational Units* (actor.org_unit).
+
+The library information page displays:
+
+* The name of the library
+* Opening hours
+* E-mail address
+* Phone number
+* Mailing address
+* The branch's parent library system
+
+An Evergreen site can also display a link to the library's web site on the
+information page.
+
+To display a link:
+
+. Go to *Administration* -> *Local Administration* ->  *Library Settings Editor*.
+. Edit the *Library Information URL* setting for the branch.
+[NOTE]
+If you set the URL at the system level, that URL will be used as the link for
+the system and for all child branches that do not have its own URL set.
+. Enter the URL in the following format: http://example.com/about.html.
+
+An Evergreen site may also opt to link directly from the copy details section
+of the catalog to the library web site, bypassing the automatically-generated
+library information page. To do so:
+
+. Add the library's URL to the *Library Information URL* setting as described
+above.
+. Go to *Administration* -> *Local Administration* ->  *Library Settings Editor*.
+. Set the *Use external "library information URL" in copy table, if available*
+setting to true.
+
+The library information pages publish schema.org structured data, as do parts of the OPAC  bibliographic record views, which can enable search engines and other systems to better understand your libraries and their resources.

@@ -1,0 +1,90 @@
+User buckets
+============
+
+Introduction
+------------
+indexterm:[patron buckets]
+indexterm:[patrons, batch operations]
+
+You can select and group a set of users into a User Bucket.
+You can add users to a User Bucket from the Patron Search
+interface or directly from the User Bucket interface by user barcode.
+It is also possible to add users to a User
+Bucket by uploading a text file that contains a list of user barcodes.
+
+From this interface it is possible to perform a set of specific batch update
+operations on the group of users you have identified.
+
+Editing users
+-------------
+indexterm:[batch edit, patrons]
+
+You can change the following fields in batch:
+
+ * Active flag
+ * Primary Permission Group (group application permissions consulted)
+ * Juvenile flag
+ * Home Library (if you have the UPDATE_USER permission for both the original and destination libraries)
+ * Privilege Expiration Date
+ * Barred flag (if you have the BAR_PATRON permission)
+ * Internet Access Level
+
+NOTE: You will need the UPDATE_USER permission.
+
+Each change set requires a name. Buckets may have multiple change sets. All
+users in the Bucket at the time of processing are updated when the change
+set is processed, and change sets are processed immediately upon successful
+creation. The interface delivers progress information regarding the
+processing stage and percent of completion.
+
+While processing the users, the original value for each field edited is
+recorded for potential future rollback. Users can examine the success and
+failure of applied change sets.
+
+The user will be able to rollback the entire change set, but not parts thereof.
+The rollback will affect only those users that were successfully updated by the
+original change set and may be different from the current set of users in the
+Bucket. Users can manually discard change sets, removing them from the
+interface but preventing future rollback.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user update, so users will
+not receive any notifications that they might otherwise receive when their accounts
+are edited.
+
+Deleting users
+--------------
+indexterm:[batch delete, patrons]
+
+You may also delete users as a batch.
+
+NOTE: You will need the UPDATE_USER and DELETE_USER permissions.
+
+Each delete set requires a name. Buckets may have multiple delete sets. All
+users in the Bucket at the time of processing are marked as deleted when
+the delete set is processed. The interface delivers progress information
+regarding the processing stage and percent of completion.
+
+While processing the users, the original value for the "deleted" field will be
+recorded for potential future rollback. Users are able to examine the
+success and failure of applied delete sets in the same interface used for the
+above described change sets.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user deletion.
+
+This mechanism does not completely purge the user from the database.  User data
+will still be available to system administrators with database access.
+
+Editing Statistical Category Entries
+------------------------------------
+
+All users in the bucket can have their Statistical Category Entries
+modified. Unlike user data field updates, modification of Statistical
+Category Entries is permanent and cannot be rolled back. No named change
+sets are required. The interface will deliver progress information regarding
+the processing stage and percent of completion.
+
+As a batch process, rather than a direct edit, this mechanism explicitly skips
+processing of Action/Trigger event definitions for user update.
+

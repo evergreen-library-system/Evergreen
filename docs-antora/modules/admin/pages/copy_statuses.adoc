@@ -1,0 +1,95 @@
+Item Status
+-----------
+
+indexterm:[copy status]
+
+To navigate to the item status editor from the staff client menu, select
+*Administration* -> *Server Administration* -> *Item Statuses*.
+
+The Item Status Editor is used to add, edit and delete statuses of items in
+your system.
+
+For each status, you can set the following properties:
+
+* Holdable - If checked, users can place holds on items in this status,
+provided there are no other flags or rules preventing holds. If unchecked,
+users cannot place holds on items in this status. 
+* OPAC Visible - If checked, items in this status will be visible in the
+public catalog. If unchecked, items in this status will not be visible in the
+public catalog, but they will be visible when using the catalog in the staff
+client.
+* Sets item active - If checked, moving an item that does not yet have an
+active date to this status will set the active date. If the item already has
+an active date, then no changes will be made to the active date. If unchecked,
+this status will never set the item's active date. 
+* Is Available - If checked, items with this status will appear in catalog 
+searches where "limit to available" is selected as a search filter.  Also, 
+items with this status will check out without status warnings.
+By default, the "Available" and "Reshelving" statuses have the "Is Available" 
+flag set. The flag may be applied to local/custom statuses via the item status 
+admin interface.
+  
+Evergreen comes pre-loaded with a number of item statuses.
+
+.Stock item statuses and default settings
+[options="header"]
+|==============================================
+|ID|Name|Holdable|OPAC Visible|Sets copy active
+|0|Available|true|true|true
+|1|Checked out|true|true|true
+|2|Bindery|false|false|false
+|3|Lost|false|false|false
+|4|Missing|false|false|false
+|5|In process|true|true|false
+|6|In transit|true|true|false
+|7|Reshelving|true|true|true
+|8|On holds shelf|true|true|true
+|9|On order|true|true|false
+|10|ILL|false|false|true
+|11|Cataloging|false|false|false
+|12|Reserves|false|true|true
+|13|Discard/Weed|false|false|false
+|14|Damaged|false|false|false
+|15|On reservation shelf|false|false|true
+|16|Long Overdue|false|false|false
+|17|Lost and Paid|false|false|false
+|==============================================
+
+Adding Item Statuses
+~~~~~~~~~~~~~~~~~~~~
+
+. In the _New Status_ field, enter the name of the new status you wish to add.
+. Click _Add_.
+. Locate your new status and check the _Holdable_ check box if you wish to allow
+users to place holds on items in this status. Check _OPAC Visible_ if you wish
+for this status to appear in the public catalog. Check _Sets copy active_ if you
+wish for this status to set the active date for new items.
+. Click _Save Changes_ at the bottom of the screen to save changes to the new
+status.
+
+image::media/copy_status_add.png[Adding item statuses]
+
+Deleting Item Statuses
+~~~~~~~~~~~~~~~~~~~~~~
+
+. Highlight the statuses you wish to delete. Ctrl-click to select more than one
+status.
+. Click _Delete Selected_.
+. Click _OK_ to verify.
+
+image::media/copy_status_delete.png[Deleting item statuses]
+
+[NOTE]
+You will not be able to delete statuses if items currently exist with that
+status.
+
+Editing Item Statuses
+~~~~~~~~~~~~~~~~~~~~~
+. Double click on a status name to change its name. Enter the new name.
+
+. To change whether a status is holdable, visible in the OPAC, or sets the
+item's active date, check or uncheck the relevant checkbox.
+
+. Once you have finished editing the statuses, remember to click Save Changes.
+
+image::media/copy_status_edit.png[Editing item statuses]

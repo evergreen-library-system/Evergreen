@@ -1,0 +1,37 @@
+Purge User Activity
+-------------------
+
+User activity types are now set to transient by default for new
+Evergreen installs.  This means only the most recent activity entry per
+user per activity type is retained in the database.
+
+.Use case
+****
+
+Setting more user activity types collects less patron data, which helps
+protect patron privacy. Additionally, the _actor.usr_activity_ table
+gets really big really fast if all event types are non-transient.
+
+****
+
+This change does not affect existing activity types, which were set to
+non-transient by default.  To make an activity type transient, modify the
+'Transient' field of the desired type in the staff client under Admin -> 
+Server Administration -> User Activity Types.
+
+Setting an activity type to transient means data for a given user will
+be cleaned up automatically if and when the user performs the activity
+in question.  However, administrators can also force an activity
+cleanup via SQL.  This is useful for ensuring that all old activity
+data is deleted and for controlling when the cleanup occurs, which 
+may be useful on very large actor.usr_activity tables.
+
+To force clean all activity types:
+
+[source,sql]
+------------------------------------------------------------
+SELECT actor.purge_usr_activity_by_type(etype.id)
+    FROM config.usr_activity_type etype;
+------------------------------------------------------------
+
+NOTE: This could take hours to run on a very large actor.usr_activity table.

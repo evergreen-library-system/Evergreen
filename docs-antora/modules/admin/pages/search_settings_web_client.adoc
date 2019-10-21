@@ -1,0 +1,63 @@
+Adjusting Relevance Ranking and Indexing
+----------------------------------------
+
+Metabib Class FTS Config Maps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+NOTE: These settings will apply to all libraries in your
+consortium.  There is no way to apply these settings to
+only one library or branch.
+
+* _Field Class_ - Reference to a field defined in
+  Administration > Server Administration > MARC
+  Search/Facet Classes.
+* _Text Search Config_ - Which Text Search config to use
+* _Active_ - Check this checkbox to use this configuration
+  for searching and indexing.
+* _Index Weight_ - The FTS index weight to use for this
+  FTS config. Should be A, B, C, or D, defaults to C.
+  You can see the exact numeric values for A, B, C, and
+  D in Administration > Server Administration > MARC
+  Search/Facet Classes.
+* _Index Language_ - An optional 3-letter code
+   representing the language the record should be set to 
+   in order for this FTS config to be used for indexing.
+  should be set to in order for this FTS config to be used for indexing
+* _Search Language_ - An optional 3-letter code representing
+  what preferred language search should be selected by the
+  end-user in order for this FTS config to be applied to
+  their search.
+* _Always Use_ - Check this checkbox to override the
+  configuration for a more specific field.  For example,
+  if you check this box when entering a setting for the
+  _author_ metabib class, it will override any settings
+  you have made for the _author|personal_ field in
+  the Administration > Server Administration > Metabib
+  Field FTS Config Maps screen.
+
+Metabib Field FTS Config Maps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+NOTE: These settings will apply to all libraries in your
+consortium.  There is no way to apply these settings to
+only one library or branch.
+
+* _Metabib Field_ - Reference to a field defined in
+  Administration > Server Administration > MARC
+  Search/Facet Fields.
+* _Text Search Config_ - Which Text Search config to use
+* _Active_ - Check this checkbox to use this configuration
+  for searching and indexing.
+* _Index Weight_ - The FTS index weight to use for this
+  FTS config. Should be A, B, C, or D, defaults to C.
+  You can see the exact numeric values for A, B, C, and
+  D in Administration > Server Administration > MARC
+  Search/Facet Classes.
+* _Index Language_ - An optional 3-letter code
+   representing the language the record should be set to 
+   in order for this FTS config to be used for indexing.
+  should be set to in order for this FTS config to be used for indexing
+* _Search Language_ - An optional 3-letter code representing
+  what preferred language search should be selected by the
+  end-user in order for this FTS config to be applied to
+  their search.

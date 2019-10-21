@@ -1,0 +1,148 @@
+Apache Rewrite Tricks
+---------------------
+It is possible to use Apache's Rewrite Module features to perform a number of
+useful tricks that can make people's lives much easier.
+
+Short URLs
+~~~~~~~~~~
+Making short URLs for common destinations can simplify making printed media as
+well as shortening or simplifying what people need to type. These are also easy
+to add and require minimal maintenance, and generally can be implemented with a
+single line addition to your eg_vhost.conf file.
+
+[source,conf]
+----
+# My Account - http://host.ext/myaccount -> My Account Page
+RewriteRule ^/myaccount https://%{HTTP_HOST}/eg/opac/myopac/main [R]
+
+# ISBN Search - http://host.ext/search/isbn/<ISBN NUMBER> -> Search Page
+RewriteRule ^/search/isbn/(.*) /eg/opac/results?_special=1&qtype=identifier|isbn&query=$1 [R]
+----
+
+Domain Based Content with RewriteMaps
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+One creative use of Rewrite features is domain-based configuration in a single
+eg_vhost.conf file. Regardless of how many VirtualHost blocks use the
+configuration you don't need to duplicate things for minor changes, and can in
+fact use wildcard VirtualHost blocks to serve multiple subdomains.
+
+For the wildcard blocks you will want to use a ServerAlias directive, and for
+SSL VirtualHost blocks ensure you have a wildcard SSL certificate.
+
+[source,conf]
+----
+ServerAlias *.example.com
+----
+
+For actually changing things based on the domain, or subdomain, you can use
+RewriteMaps. Each RewriteMap is generally a lookup table of some kind. In the
+following examples we will generally use text files, though database lookups
+and external programs are also possible.
+
+Note that in the examples below we generally store things in Environment
+Variables. From within Template Toolkit templates you can access environment
+variables with the ENV object.
+
+.Template Toolkit ENV example, link library name/url if set
+[source,html]
+----
+[% IF ENV.eglibname && ENV.egliburl %]<a href="[% ENV.egliburl %]">[% ENV.eglibname %]</a>[% END %]
+----
+
+The first lookup to do is a domain to identifier, allowing us to re-use
+identifiers for multiple domains. In addition we can also supply a default
+identifier, for when the domain isn't present in the lookup table.
+
+.Apache Config
+[source,conf]
+----
+# This internal map allows us to lowercase our hostname, removing case issues in our lookup table
+# If you prefer uppercase you can use "uppercase int:toupper" instead.
+RewriteMap lowercase int:tolower
+# This provides a hostname lookup
+RewriteMap eglibid txt:/openils/conf/libid.txt
+# This stores the identifier in a variable (eglibid) for later use
+# In this case CONS is the default value for when the lookup table has no entry
+RewriteRule . - [E=eglibid:${eglibid:${lowercase:%{HTTP_HOST}}|CONS}]
+----
+
+.Contents of libid.txt File
+[source,txt]
+----
+# Comments can be included
+# Multiple TLDs for Branch 1
+branch1.example.com BRANCH1
+branch1.example.net BRANCH1
+# Branches 2 and 3 don't have alternate TLDs
+branch2.example.com BRANCH2
+branch3.example.com BRANCH3
+----
+
+Once we have identifiers we can look up other information, when appropriate.
+For example, say we want to look up library names and URLs:
+
+.Apache Config
+[source,conf]
+----
+# Library Name Lookup - Note we provide no default in this case.
+RewriteMap eglibname txt:/openils/conf/libname.txt
+RewriteRule . - [E=eglibname:${eglibname:%{ENV:eglibid}}]
+# Library URL Lookup - Also with no default.
+RewriteMap egliburl txt:/openils/conf/liburl.txt
+RewriteRule . - [E=egliburl:${egliburl:%{ENV:eglibid}}]
+----
+
+.Contents of libname.txt File
+[source,txt]
+----
+# Note that we cannot have spaces in the "value", so instead &#32; is used. &nbsp; is also an option.
+BRANCH1 Branch&#32;One
+BRANCH2 Branch&#32;Two
+BRANCH3 Branch&#32;Three
+CONS Example&#32;Consortium&#32;Name
+----
+
+.Contents of liburl.txt File
+[source,txt]
+----
+BRANCH1 http://branch1.example.org
+BRANCH2 http://branch2.example.org
+BRANCH3 http://branch3.example.org
+CONS http://example.org
+----
+
+Or, perhaps set the "physical location" variable for default search/display library:
+
+.Apache Config
+[source,conf]
+----
+# Lookup "physical location" IDs
+RewriteMap eglibphysloc txt:/openils/conf/libphysloc.txt
+# Note: physical_loc is a variable used in the TTOPAC and should not be re-named
+RewriteRule . - [E=physical_loc:${eglibphysloc:%{ENV:eglibid}}]
+----
+
+.Contents of libphysloc.txt File
+[source,txt]
+----
+BRANCH1 4
+BRANCH2 5
+BRANCH3 6
+CONS 1
+----
+
+Going further, you could also replace files to be downloaded, such as images or
+stylesheets, on the fly:
+
+.Apache Config
+[source,conf]
+----
+# Check if a file exists based on eglibid and the requested file name
+# Say, BRANCH1/opac/images/main_logo.png
+RewriteCond %{DOCUMENT_ROOT}/%{ENV:eglibid}%{REQUEST_URI} -f
+# Serve up the eglibid version of the file instead
+RewriteRule (.*) /%{ENG:eglibid}$1
+----
+
+Note that template files themselves cannot be replaced in that manner.
+

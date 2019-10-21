@@ -1,0 +1,33 @@
+Configuring Evergreen for your workstation
+==========================================
+
+Setting search defaults
+-----------------------
+
+* Go to Administration -> Workstation.
+* Use the dropdown menu to select an appropriate
+_Default Search Library_.  The default search library
+setting determines what library is searched from the
+advanced search screen and portal page by default.
+You can override this setting when you are actually
+searching by selecting a different library.
+One recommendation is to set the search library to the
+highest point you would normally want to search.
+* Use the dropdown menu to select an appropriate
+_Preferred Library_. The preferred library is used to
+show copies and electronic resource URIs regardless
+of the library searched. One recommendation is to set
+this to your home library so that local copies show up
+first in search results.
+* Use the dropdown menu to select an appropriate
+_Advanced Search Default Pane_.  Advanced search has
+secondary panes for Numeric and MARC Expert searching.
+You can change which one is loaded by default when
+opening a new catalog window here.
+
+Turning off sounds
+------------------
+
+* Go to Administration -> Workstation.
+* Click the checkbox labeled _Disable Sounds?_
+

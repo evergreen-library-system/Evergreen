@@ -1,0 +1,134 @@
+Floating Groups
+===============
+
+Before floating groups items could float or not. If they floated then they floated everywhere, with no restrictions.
+
+After floating groups where an item will float is defined by what group it has been assigned to.
+
+Floating Groups
+---------------
+
+Each floating group comes with a name and a manual flag, plus zero or more group members. The name is used solely for selection and display purposes.
+
+The manual flag dictates whether or not the "Manual Floating Active" checkin modifier needs to be active for an item to float. This allows for greater control over when items float. It also prevents automated checkins via SIP2 from triggering floats.
+
+Floating Group Members
+~~~~~~~~~~~~~~~~~~~~~~
+
+Each member of a floating group references an org unit and has a stop depth, an optional max depth, and an exclude flag.
+
+Org Unit
+~~~~~~~~
+
+The org unit and all descendants are included, unless max depth is set, in which case the tree is cut off at the max depth.
+
+Stop Depth
+~~~~~~~~~~
+
+The stop depth is the highest point from the current item circ library to the checkin library for the item that will be traversed. If the item has to go higher than the stop depth on the tree the member rule in question is ignored.
+
+Max Depth
+~~~~~~~~~
+
+As mentioned with the org unit, the max depth is the furthest down on the tree from the org unit that gets included. This is based on the entire tree, not just off of the org unit. So in the default tree a max depth of 1 will stop at the system level no matter if org unit is set to CONS or SYS1.
+
+Exclude
+~~~~~~~
+
+Exclude, if set, causes floating to not happen for the member. Excludes always take priority, so you can remove an org unit from floating without having to worry about other rules overriding it.
+
+Examples
+--------
+
+Float Everywhere
+~~~~~~~~~~~~~~~~
+
+This is a default floating rule to emulate the previous floating behavior for new installs and upgrades.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off
+
+Float Within System
+~~~~~~~~~~~~~~~~~~~
+
+This would permit an item to float anywhere within a system, but would return to the system if it was returned elsewhere.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 1
+* Max Depth: Unset
+* Exclude: Off
+
+Float To All Branches
+~~~~~~~~~~~~~~~~~~~~~
+
+This would permit an item to float to any branch, but not to sublibraries or bookmobiles.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: 2
+* Exclude: Off
+
+Float To All Branches Within System
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This would permit an item to float to any branch in a system, but not to sublibraries or bookmobiles, and returning to the system if returned elsewhere.
+
+One member:
+
+* Org Unit: CONS
+* Stop Depth: 1
+* Max Depth: 2
+* Exclude: Off
+
+Float Between BR1 and BR3
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This would permit an item to float between BR1 and BR3 specifically, excluding sublibraries and bookmobiles.
+
+It would consist of two members, identical other than the org unit:
+
+* Org Unit: BR1 / BR3
+* Stop Depth: 0
+* Max Depth: 2
+* Exclude: Off
+
+Float Everywhere Except BM1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This would allow an item to float anywhere except for BM1. It accomplishes this with two members.
+
+The first includes all org units, just like Float Everywhere:
+
+* Org Unit: CONS
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off
+
+The second excludes BM1:
+
+* Org Unit: BM1
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: On
+
+That works because excludes are applied first.
+
+Float into, but not out of, BR2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This would allow an item to float into BR2, but once there it would never leave. Why you would want to allow items to float to but not from a single library I dunno, but here it is. This takes advantage of the fact that the rules say where we can float *to*, but outside of stop depth don't care where we are floating *from*.
+
+One member:
+
+* Org Unit: BR2
+* Stop Depth: 0
+* Max Depth: Unset
+* Exclude: Off 

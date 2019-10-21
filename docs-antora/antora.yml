@@ -1,0 +1,8 @@
+name: docs
+title: docs
+version: 'latest'
+nav:
+- modules/ROOT/nav.adoc
+- modules/using_staff_client/nav.adoc
+- modules/sys_admin/nav.adoc
+- modules/local_admin/nav.adoc

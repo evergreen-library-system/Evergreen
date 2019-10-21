@@ -1,0 +1,39 @@
+Developing with pgTAP tests
+===========================
+
+Setting up pgTAP on your development server
+-------------------------------------------
+
+Currently, Evergreen pgTAP tests expect a version of pgTAP (0.93)
+that is not yet available in the packages for most Linux distributions.
+Therefore, you will have to install pgTAP from source as follows:
+
+. Download, make, and install pgTAP on your database server. pgTAP can
+  be downloaded from http://pgxn.org/dist/pgtap/ and the instructions
+  for building and installing the extension are available from
+  http://pgtap.org/documentation.html
+
+. Create the pgTAP extension in your Evergreen database. Using `psql`,
+  connect to your Evergreen database and then issue the command:
++
+[source,sql]
+------------------------------------------------------------------------------
+CREATE EXTENSION pgtap;
+------------------------------------------------------------------------------
+
+Running pgTAP tests
+-------------------
+The pgTAP tests can be found in subdirectories of `Open-ILS/src/sql/Pg/`
+as follows:
+
+* `t`: contains pgTAP unit tests that can be run on a freshly installed
+  Evergreen database
+* `live_t`: contains pgTAP unit tests meant to be run on an Evergreen
+  database that also has had the "concerto" sample data loaded on it
+
+To run the pgTAP unit and regression tests, use the `pg_prove` command.
+For example, from the Evergreen source directory, you can issue the
+command:
+`pg_prove -U evergreen Open-ILS/src/sql/Pg/t Open-ILS/src/sql/Pg/t/regress`
+
+

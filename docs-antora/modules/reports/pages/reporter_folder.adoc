@@ -1,0 +1,76 @@
+[[reporter_folders]]
+Folders
+-------
+
+indexterm:[reports, folders]
+
+There are three main components to reports: _Templates_, _Reports_, and _Output_. 
+Each of these components must be stored in a folder. Folders can be private 
+(accessible to your login only) or shared with other staff at your library, 
+other libraries in your system or consortium. It is also possible to selectively 
+share 
+only certain folders and/or subfolders.
+
+There are two parts to the folders pane. The _My Folders_ section contains folders 
+created with your Evergreen account. Folders that other users have shared with 
+you appear in the _Shared Folders_ section under the username of the sharing 
+account.
+
+image::media/folder-1.png[folder-1]
+
+[[reporter_creating_folders]]
+Creating Folders
+~~~~~~~~~~~~~~~~
+
+
+indexterm:[reports, folders, creating]
+
+Whether you are creating a report from scratch or working from a shared template 
+you must first create at least one folder.
+
+The steps for creating folders are similar for each reporting function. It is 
+easier to create folders for templates, reports, and output all at once at the 
+beginning, though it is possible to do it before each step. This example 
+demonstrates creating a folder for a template.
+
+. Click on _Templates_ in the _My Folders_ section.
+. Name the folder. Select _Share_ or _Do not share_ from the dropdown menu.
+. If you want to share your folder, select who you want to share this folder 
+with from the dropdown menu.
+. Click _Create Sub Folder_.
+. Click _OK_.
+. Next, create a folder for the report definition to be saved to. Click on 
+_Reports_.
+. Repeat steps 2-5 to create a Reports folder also called _Circulation_.
+. Finally, you need to create a folder for the report’s output to be saved in. 
+Click on _Output_.
+. Repeat steps 2-5 to create an Output folder named _Circulation_.
+
+
+TIP: Using a parallel naming scheme for folders in Templates, Reports, 
+and Output helps keep your reports organized and easier to find
+
+The folders you just created will now be visible by clicking the arrows in _My 
+Folders_. Bracketed after the folder name is whom the folder is shared with. For 
+example, _Circulation (BNCLF)_ is shared with the North Coast Library Federation. 
+If it is not a shared folder there will be nothing after the folder name. You 
+may create as many folders and sub-folders as you like.
+
+Managing Folders
+~~~~~~~~~~~~~~~~
+
+indexterm:[reports, folders, managing]
+
+Once a folder has been created you can change the name, delete it, create a new 
+subfolder, or change the sharing settings. This example demonstrates changing a 
+folder name; the other choices follow similar steps
+
+. Click on the folder that you wish to rename.
+. Click _Manage Folder_.
+. Select _Change folder name_ from the dropdown menu and click _Go_.
+. Enter the new name and click _Submit_.
+. Click _OK_.
+. You will get a confirmation box that the _Action Succeeded_. Click _OK_.
+
+
+

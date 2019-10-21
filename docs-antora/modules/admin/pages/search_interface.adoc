@@ -1,0 +1,122 @@
+Designing the patron search experience
+======================================
+
+Editing the formats select box options in the search interface
+---------------------------------------------------------------
+
+You may wish to remove, rename or organize the options in the formats select
+box. This can be accomplished from the staff client.
+
+. From the staff client, navigate to *Administration -> Server Administration ->  Marc Coded
+Value Maps* 
+. Select _Type_ from the *Record Attribute Type* select box.
+. Double click on the format type you wish to edit.
+
+image::media/coded-value-1.png[Coded Value Map Format Editor]
+
+To change the label for the type, enter a value in the *Search Label* field.
+
+To  move the option to a top list separated by a dashed line from the others,
+check the *Is Simple Selector* check box.
+
+To hide the type so that it does not appear in the search interface, uncheck the
+*OPAC Visible* checkbox.
+
+Changes will be immediate.
+
+Adding and removing search fields in advanced search
+-----------------------------------------------------
+
+It is possible to add and remove search fields on the advanced search page by
+editing the _opac/parts/config.tt2_ file in your template directory. Look for
+this section of the file:
+
+----
+search.adv_config = [
+    {adv_label => l("Item Type"), adv_attr => ["mattype", "item_type"]},
+    {adv_label => l("Item Form"), adv_attr => "item_form"},
+    {adv_label => l("Language"),  adv_attr => "item_lang"},
+    {adv_label => l("Audience"),  adv_attr => ["audience_group", "audience"], adv_break => 1},
+    {adv_label => l("Video Format"), adv_attr => "vr_format"},
+    {adv_label => l("Bib Level"), adv_attr => "bib_level"},
+    {adv_label => l("Literary Form"), adv_attr => "lit_form", adv_break => 1},
+    {adv_label => l("Search Library"), adv_special => "lib_selector"},
+    {adv_label => l("Publication Year"), adv_special => "pub_year"},
+    {adv_label => l("Sort Results"), adv_special => "sort_selector"},
+];
+----
+
+For example, if you delete the line:
+
+----
+{adv_label => l("Language"),  adv_attr => "item_lang"},
+----
+
+the language field will no longer appear on your advanced search page. Changes
+will appear immediately after you save your changes.
+
+You can also add fields based on Search Facet Groups that you create in the
+staff client's Local Administration menu. This can be helpful if you want to
+simplify your patrons' experience by presenting them with only certain
+limiters (e.g. the most commonly used languages in your area).  To do this,
+
+. Click *Administration -> Local Administration -> Search Filter Groups*.
+. Click *New*.
+. Enter descriptive values into the code and label fields.  The owner needs to
+be set to your consortium.
+. Once the Facet Group is created, click on the blue hyperlinked code value.
+. Click the *New* button to create the necessary values for your field.
+. Go to the _opac/parts/config.tt2_ file, and add a line like the following,
+where *Our Library's Field* is the name you'd like to be displayed next to
+your field, and *facet_group_code* is the code you've added using the staff
+client.
++
+----
+ {adv_label => l("Our Library's Field"), adv_filter => "facet_group_code"},
+----
+
+Changing the display of facets and facet groups
+-----------------------------------------------
+
+Facets can be reordered on the search results page by editing the
+_opac/parts/config.tt2_ file in your template directory.  
+
+Edit the following section of _config.tt2_, changing the order of the facet
+categories according to your needs:
+
+----
+
+facet.display = [
+    {facet_class => 'author',  facet_order => ['personal', 'corporate']},
+    {facet_class => 'subject', facet_order => ['topic']},
+    {facet_class => 'series',  facet_order => ['seriestitle']},
+    {facet_class => 'subject', facet_order => ['name', 'geographic']}
+];
+
+----
+
+You may also change the default number of facets appearing under each category
+by editing the _facet.default_display_count_ value in _config.tt2_. The default 
+value is 5.
+
+Facilitating search scope changes
+---------------------------------
+
+Users often search in a limited scope, such as only searching items in their
+local library.  When they aren't able find materials that meet their needs in
+a limited scope, they may wish to repeat their search in a system-wide or
+consortium-wide scope.  Evergreen provides an optional button and checkbox
+to alter the depth of the search to a defined level.
+
+The button and checkbox are both enabled by default and can be configured
+in the Depth Button/Checkbox section of config.tt2.
+
+Noteworthy settings related to these features include:
+
+* `ctx.depth_sel_checkbox` -- set this to 1 to display the checkbox, 0 to hide it.  
+* `ctx.depth_sel_button` -- set this to 1 to display the button, 0 to hide it.
+* `ctx.depth_sel_depth` -- the depth that should be applied by the button and 
+checkbox.  A value of 0 would typically search the entire consortium, and 1 would
+typically search the library's system.
+
+

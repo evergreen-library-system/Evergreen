@@ -1,0 +1,229 @@
+Load MARC Order Records
+-----------------------
+
+Introduction
+~~~~~~~~~~~~
+
+The Acquisitions Load MARC Order Record interface enables you to add MARC
+records to selection lists and purchase orders and upload the records into the
+catalog.  You can both create and activate purchase orders in one step from this
+interface. You can also load bibs and items into the catalog.
+
+Leveraging the match sets available in the cataloging MARC batch Import
+interface, you can also utilize record matching mechanisms to prevent the
+creation of duplicate records. 
+
+For detailed instructions on record matching and importing, see
+the cataloging manual.
+
+Basic Upload Options
+~~~~~~~~~~~~~~~~~~~~
+. Click *Acquisitions* -> *Load MARC Order Records*.
+. If you want to upload the MARC records to a new purchase order, then
+check _Create Purchase Order_.
+. If you want to activate the purchase order at the time of creation, then
+check _Activate Purchase Order_.
+. Enter the name of the *Provider*. The text will auto-complete.
+. Select an org unit from the drop down menu. The context org unit is the org
+unit responsible for placing and managing the order. It defines what org unit
+settings (eg copy locations) are in scope, what fiscal year to use, who is
+allowed to view/modify the PO, where the items should be delivered and the EDI
+SAN. In the case of a multi-branch system uploading records for multiple
+branches, choosing the system is probably best. Single branch libraries or 
+branches responsible for their own orders should probably select the branch.
+. If you want to upload the records to a selection list, you can select a list
+from the drop down menu, or type in the name of the selection list that you
+want to create.
+. Select a *Fiscal Year* from the dropdown menu that matches the fiscal year
+of the funds that will be used for the order. If no fiscal year is selected, the
+system will use the organizational unit's default fiscal year stored in the
+database. If not fiscal year is set, the system will default to the current
+calendar year.
+
+image::media/load_marc_order_records.png[Acquisitions MARC upload screen]
+
+
+Record Matching Options
+~~~~~~~~~~~~~~~~~~~~~~~
+Use the options below the horizontal rule for the system to check for matching
+records before importing an order record.
+
+. Create a queue to which you can upload your records, or add you records to an existing queue
+. Select a *Record Match Set* from the drop-down menu.
+. Select a *Merge Profile.* Merge profiles enable you to specify which tags
+should be removed or preserved in incoming records.
+. Select a *Record Source* from the drop-down menu.
+. If you want to automatically import records on upload, select one or more of
+the following options.
+  .. *Import Non-Matching Records* - import any records that don't have a match
+  in the system.
+  .. *Merge on Exact Match (901c)* - use only for records that will match on
+  the 901c field.
+  .. *Merge on Single Match* - import records that only have one match in the
+  system.
+  .. *Merge on Best Match* - If more than one match is found in the catalog for
+  a given record, Evergreen will attempt to perform the best match as defined
+  by the match score.
+. To only import records that have a quality equal to or greater than the
+existing record, enter a *Best/Single Match Minimum Quality Ratio*.  Divide the
+incoming record quality score, as determined by the match set's quality
+metrics, by the record quality score of the best match that exists in the 
+catalog. If you want to ensure that the inbound record is only imported when it
+has a higher quality than the best match, then you must enter a ratio that is
+higher than 1, such as 1.1. If you want to bypass all quality restraints, enter
+a 0 (zero) in this field.
+. Select an *Insufficient Quality Fall-Through Profile* if desired. This field
+enables you to indicate that if the inbound record does not meet the
+configured quality standards, then you may still import the record using an
+alternate merge profile. This field is typically used for selecting a merge
+profile that allows the user to import holdings attached to a lower quality
+record without replacing the existing (target) record with the incoming record.
+This field is optional.
+. If your order records contain holdings information, by default, Evergreen 
+will load them as acquisitions copies. (Note: These can be overlayed with real copies
+during the MARC batch importing process.) Or you can select *Load Items for
+Imported Records* to load them as live copies that display in the catalog.
+
+image::media/load_marc_order_records.png[Acquisitions MARC upload screen]
+
+
+Default Upload Settings
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can set default upload values by modifying the following settings in
+*Administration* -> *Local Administration* -> *Library Settings Editor*:
+
+- Upload Activate PO
+- Upload Create PO
+- Upload Default Insufficient Quality Fall-Thru Profile
+- Upload Default Match Set
+- Upload Default Merge Profile
+- Upload Upload Default Min. Quality Ratio
+- Upload Default Provider
+- Upload Import Non Matching by Default
+- Upload Load Items for Imported Records by Default
+- Upload Merge on Best Match by Default
+- Upload Merge on Exact Match by Default
+- Upload Merge on Single Match by Default
+
+image::media/acq_upload_library_settings.png[Acq upload settings in Library Settings Editor]
+
+
+Sticky Settings
+~~~~~~~~~~~~~~~
+
+If the above default settings are not implemented, the selections/values used
+in the following fields will be sticky and will automatically populate the
+fields the next time the *Load MARC Order Records* screen is pulled up:
+
+- Create Purchase Order
+- Activate Purchase Order
+- Context Org Unit
+- Record Match Set
+- Merge Profile
+- Import Non-Matching Records
+- Merge on Exact Match (901c)
+- Merge on Single Match
+- Merge on Best Match
+- Best/Single Match Minimum Quality Ratio
+- Insufficient Quality Fall-Through Profile
+- Load Items for Imported Records
+
+Use Cases for MARC Order Upload form
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You can add items to a selection list or purchase order and ignore the record 
+matching options, or you can use both acquisitions and cataloging functions. In
+these examples, you will use both functions.
+
+*Example 1*
+Using the Acquisitions MARC Batch Load interface, upload MARC records to a
+selection list and import queue, and match queued records with existing catalog
+records.
+
+In this example, an acquisitions librarian has received a batch of MARC records
+from a vendor. She will add the records to a selection list and a Vandelay
+record queue.
+
+A cataloger will later view the queue, edit the records, and import them into
+the catalog.
+
+. Click *Acquisitions -> Load MARC Order Records*
+. Add MARC order records to a *Selection list* and/or a *Purchase Order.* 
+Check the box to create a purchase order if desired.
+. Select a *Provider* from the drop-down menu, or begin typing the code for the provider, and the field will auto-fill.
+. Select a *Context Org Unit* from the drop down-menu, or begin typing the code
+for the context org unit, and the field will auto-fill.
+. Select a *Selection List* from the drop down menu, or begin typing the name
+of the selection list.  You can create a new list, or the field will auto-fill.
+. Create a new record import queue, or upload the records to an existing
+queue.
+. Select a *Record Match Set*.
+. Browse your computer to find the MARC file, and click *Upload*.
++
+image::media/Vandelay_Integration_into_Acquisitions1.jpg[Vandelay_Integration_into_Acquisitions1]
++
+. The processed items appear at the bottom of the screen.
++
+image::media/Vandelay_Integration_into_Acquisitions2.jpg[Vandelay_Integration_into_Acquisitions2]
+. You can click the link(s) to access the selection list or the import queue.
+Click the link to *View Selection List*.
+. Look at the first line item.  The line item has not yet been linked to the
+catalog, but it is linked to a record import queue.  Click the link to the
+*queue* to examine the MARC record.
++
+image::media/Vandelay_Integration_into_Acquisitions3.jpg[Vandelay_Integration_into_Acquisitions3]
+. The batch import interface opens in a new tab.  The bibliographic records
+appear in the queue. Records that have matches are identified in the queue. You
+can edit these records and/or import them into the catalog, completing the
+process.
+
+image::media/Vandelay_Integration_into_Acquisitions4.jpg[Vandelay_Integration_into_Acquisitions4]
+
+*Example 2*: Using the Acquisitions MARC Batch Load interface, upload MARC
+records to a selection list, and use the Vandelay options to import the records
+directly into the catalog.  The Vandelay options will enable you to match
+incoming records with existing catalog records.
+
+In this example, a librarian will add MARC records to a selection list, create
+criteria for matching incoming and existing records, and import the matching
+and non-matching records into the catalog.
+
+. Click *Acquisitions* -> *Load MARC Order Records*
+. Add MARC order records to a *Selection list* and/or a *Purchase Order.* 
+Check the box to create a purchase order if desired.
+. Select a *Provider* from the drop down menu, or begin typing the code for the
+provider, and the field will auto-fill.
+. Select a *Context Org Unit* from the drop down menu, or begin typing the code for the context org unit, and the field will auto-fill.
+. Select a *Selection List* from the drop down menu, or begin typing the name
+of the selection list.  You can create a new list, or the field will auto-fill.
+. Create a new record import queue, or upload the records to an existing queue.
+. Select a *Record Match Set*.
+. Select *Merge Profile* -> *Match-Only Merge*.
+. Check the boxes adjacent to *Import Non-Matching Records* and *Merge on Best
+Match*.
+.  Browse your computer to find the MARC file, and click *Upload*.
++
+image::media/Vandelay_Integration_into_Acquisitions5.jpg[Vandelay_Integration_into_Acquisitions5]
++
+. Click the link to *View Selection List*  Line items that do not match
+existing catalog records on title and ISBN contain the link, *link to catalog*.
+This link indicates that you could link the line item to a catalog record, but
+currently, no match exists between the line item and catalog records.  Line
+items that do have matching records in the catalog contain the link, *catalog*.
++
+image::media/Vandelay_Integration_into_Acquisitions6.jpg[Vandelay_Integration_into_Acquisitions6]
++
+. Click the *catalog* link to view the line item in the catalog.
+
+*Permissions to use this Feature*
+
+IMPORT_MARC - Using batch importer to create new bib records requires the
+IMPORT_MARC permission (same as open-ils.cat.biblio.record.xml.import). If the
+permission fails, the queued record will fail import and be stamped with a new
+"import.record.perm_failure" import error
+
+IMPORT_ACQ_LINEITEM_BIB_RECORD_UPLOAD -  This allows interfaces leveraging 
+the batch importer, such as Acquisitions, to create a higher barrier to entry.
+This permission prevents users from creating new bib records directly from the
+ACQ vendor MARC file upload interface. 

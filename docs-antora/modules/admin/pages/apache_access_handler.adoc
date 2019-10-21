@@ -1,0 +1,141 @@
+Apache Access Handler Perl Module
+---------------------------------
+The OpenILS::WWW::AccessHandler Perl module is intended for limiting patron
+access to configured locations in Apache. These locations could be folder
+trees, static files, non-Evergreen dynamic content, or other Apache
+features/modules. It is intended as a more patron-oriented and transparent
+version of the OpenILS::WWW::Proxy and OpenILS::WWW:Proxy::Authen modules.
+
+Instead of using Basic Authentication the AccessHandler module instead redirects
+to the OPAC for login. Once logged in additional checks can be performed, based
+on configured variables:
+
+ * Permission Checks (at Home OU or specified location)
+ * Home OU Checks (Org Unit or Descendant)
+ * "Good standing" Checks (Not Inactive or Barred)
+
+Use of the module is a simple addition to a Location block in Apache:
+
+[source,conf]
+----
+<Location /path/to/be/protected>
+    PerlAccessHandler OpenILS::WWW::AccessHandler
+    # For each option you wish to set:
+    PerlSetVar OPTION "VALUE"
+</Location>
+----
+
+The available options are:
+
+OILSAccessHandlerLoginURL::
+*  Default: /eg/opac/login
+*  The page to redirect to when Login is needed
+OILSAccessHandlerLoginURLRedirectVar::
+*  Default: redirect_to
+*  The variable the login page wants the "destination" URL stored in
+OILSAccessHandlerFailURL::
+*  Default: <unset>
+*  URL to go to if Permission, Good Standing, or Home OU checks fail. If not set
+  a 403 error is generated instead. To customize the 403 you could use an
+  ErrorDocument statement.
+OILSAccessHandlerCheckOU::
+*  Default: <User Home OU>
+*  Org Unit to check Permissions at and/or to load Referrer from. Can be a
+  shortname or an ID.
+OILSAccessHandlerPermission::
+*  Default: <unset>
+*  Permission, or comma- or space-delimited set of permissions, the user must have to
+  access the protected area.
+OILSAccessHandlerGoodStanding::
+*  Default: 0
+*  If set to a true value the user must be both Active and not Barred.
+OILSAccessHandlerHomeOU::
+*  Default: <unset>
+*  An Org Unit, or comma- or space-delimited set of Org Units, that the user's Home OU must
+  be equal to or a descendant of to access this resource. Can be set to
+  shortnames or IDs.
+OILSAccessHandlerReferrerSetting::
+*  Default: <unset>
+*  Library Setting to pull a forced referrer string out of, if set.
+
+As the AccessHandler module does not actually serve the content it is
+protecting, but instead merely hands control back to Apache when it is done
+authenticating, you can protect almost anything else you can serve with Apache.
+
+Use Cases
+~~~~~~~~~
+The general use of this module is "protect access to something else" - what that
+something else is will vary. Some possibilities:
+
+ * Apache features
+ ** Automatic Directory Indexes
+ ** Proxies (see below)
+ *** Electronic Databases
+ *** Software on other servers/ports
+ * Non-Evergreen software
+ ** Timekeeping software for staff
+ ** Specialized patron request packages
+ * Static files and folders
+ ** Semi-public Patron resources
+ ** Staff-only downloads
+
+Proxying Websites
+~~~~~~~~~~~~~~~~~
+One potentially interesting use of the AccessHandler module is to protect an
+Apache Proxy configuration. For example, after installing and enabling
+mod_proxy, mod_proxy_http, and mod_proxy_html you could proxy websites like so:
+
+[source,conf]
+----
+<Location /proxy/>
+    # Base "Rewrite URLs" configuration
+    ProxyHTMLLinks  a       href
+    ProxyHTMLLinks  area        href
+    ProxyHTMLLinks  link        href
+    ProxyHTMLLinks  img     src longdesc usemap
+    ProxyHTMLLinks  object      classid codebase data usemap
+    ProxyHTMLLinks  q       cite
+    ProxyHTMLLinks  blockquote  cite
+    ProxyHTMLLinks  ins     cite
+    ProxyHTMLLinks  del     cite
+    ProxyHTMLLinks  form        action
+    ProxyHTMLLinks  input       src usemap
+    ProxyHTMLLinks  head        profile
+    ProxyHTMLLinks  base        href
+    ProxyHTMLLinks  script      src for
+
+    # To support scripting events (with ProxyHTMLExtended On)
+    ProxyHTMLEvents onclick ondblclick onmousedown onmouseup \
+            onmouseover onmousemove onmouseout onkeypress \
+            onkeydown onkeyup onfocus onblur onload \
+            onunload onsubmit onreset onselect onchange
+
+    # Limit all Proxy connections to authenticated sessions by default
+    PerlAccessHandler OpenILS::WWW::AccessHandler
+
+    # Strip out Evergreen cookies before sending to remote server
+    RequestHeader edit Cookie "^(.*?)ses=.*?(?:$|;)(.*)$" $1$2
+    RequestHeader edit Cookie "^(.*?)eg_loggedin=.*?(?:$|;)(.*)$" $1$2
+</Location>
+
+<Location /proxy/example/>
+    # Proxy example.net
+    ProxyPass http://www.example.net/
+    ProxyPassReverse http://www.example.net/
+    ProxyPassReverseCookieDomain example.net example.com
+    ProxyPassReverseCookiePath / /proxy/example/
+
+    ProxyHTMLEnable On
+    ProxyHTMLURLMap http://www.example.net/ /proxy/example/
+    ProxyHTMLURLMap / /proxy/mail/
+    ProxyHTMLCharsetOut *
+
+    # Limit to BR1 and BR3 users
+    PerlSetVar OILSAccessHandlerHomeOU "BR1,BR3"
+</Location>
+----
+
+As mentioned above, this can be used for multiple reasons. In addition to
+websites such as online databases for patron use you may wish to proxy software
+for staff or patron use to make it appear on your catalog domain, or perhaps to
+keep from needing to open extra ports in a firewall.

@@ -1,0 +1,13 @@
+* Local Administration
+** xref:admin:librarysettings.adoc[Library Settings Editor]
+** xref:admin:lsa-address_alert.adoc[Address Alert]
+** xref:admin:lsa-barcode_completion.adoc[Barcode Completion]
+** xref:admin:hold_driven_recalls.adoc[Hold-driven recalls]
+** xref:admin:emergency_closing_handler.adoc[Emergency Closing Handler]
+** xref:admin:actiontriggers.adoc[Notifications / Action Triggers]
+*** xref:admin:actiontriggers_process.adoc[Processing Action Triggers]
+** xref:admin:staff_client-recent_searches.adoc[Recent Staff Searches]
+** xref:admin:lsa-standing_penalties.adoc[Standing Penalties]
+** xref:admin:lsa-statcat.adoc[Statistical Categories Editor]
+** xref:admin:popularity_badges_web_client.adoc[Statistical Popularity Badges]
+** xref:admin:lsa-work_log.adoc[Work Log]

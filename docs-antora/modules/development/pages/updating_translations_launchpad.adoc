@@ -1,0 +1,54 @@
+Updating translations using Launchpad
+=====================================
+
+This document describes how to update the translations in an Evergreen branch
+by pulling them from Launchpad, as well as update the files to be translated
+in Launchpad by updating the POT files in the Evergreen master branch.
+
+Prerequisites
+-------------
+You must install all of the Python prerequisites required for building
+translations, per
+http://evergreen-ils.org/dokuwiki/doku.php?id=evergreen-admin:customizations:i18n
+
+* https://bitbucket.org/izi/polib/wiki/Home[polib]
+* http://translate.sourceforge.net[translate-toolkit]
+* http://pypi.python.org/pypi/python-Levenshtein/[levenshtein]
+* http://pypi.python.org/pypi/setuptools[setuptools]
+* http://pypi.python.org/pypi/simplejson/[simplejson]
+* http://lxml.de/[lxml]
+
+Updating the translations
+-------------------------
+
+. Check out the latest translations from Launchpad by branching the Bazaar
+repository:
++
+[source,bash]
+------------------------------------------------------------------------------
+bzr branch lp:~denials/evergreen/translation-export
+------------------------------------------------------------------------------
++
+This creates a directory called "translation-export".
++
+. Ensure you have an updated Evergreen release branch.
+. Run the `build/i18n/scripts/update_pofiles` script to copy the translations
+  into the right place and avoid any updates that are purely metadata (dates
+  generated, etc).
+. Commit the lot! And backport to whatever release branches need the updates.
+. Build updated POT files:
++
+[source,bash]
+------------------------------------------------------------------------------
+cd build/i18n
+make newpot
+------------------------------------------------------------------------------
++
+This will extract all of the strings from the latest version of the files in
+Evergreen.
++
+. (This part needs automation): Then, via the magic of `git diff` and `git add`,
+go through all of the changed files and determine which ones actually have
+string changes. Recommended approach is to re-run `git diff` after each
+`git add`.
+. Commit the updated POT files and backport to the pertinent release branches.

@@ -1,0 +1,41 @@
+"Blanket" Orders
+----------------
+
+"Blanket" orders allow staff to invoice an encumbered amount multiple times, paying off the charge over a period of time. The work flow supported by this development assumes staff does not need to track the individual contents of the order, only the amounts encumbered and invoiced in bulk.
+
+Example
+~~~~~~~
+
+. Staff creates PO with a Direct Charge of "Popular Fiction 2015" and a charge type of "Blanket Order".
+
+. The amount entered for the charge equals the total amount expected to be charged over the duration of the order.
+
+. When a shipment of "Popular Fiction" items arrive, staff creates an invoice from the "Popular Fiction 2015" PO page and enters the amount billed/paid for the received shipment under the "Popular Fiction 2015" charge in the invoice.
+
+. When the final shipment arrives, staff select the _Final invoice for Blanket Order_ option on the invoice screen to mark the PO as _received_ and drop any remaining encumbrances to $0.
+
+  .. Alternatively, if the PO needs to be finalized without creating a final invoice, staff can use the new _Finalize Blanket Order_ option on the PO page.
+
+More details about blanket orders
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+* Any direct charge using a _blanket_ item type will create a long-lived charge that can be invoiced multiple times.
+
+* Such a charge is considered open until its purchase order is "finalized" (received).
+
+* "Finalizing" a PO changes the PO's state to _received_ (assuming there are no pending lineitems on the PO) and fully dis-encumbers all _blanket_ charges on the PO by setting the fund_debit amount to $0 on the original fund_debit for the charge.
+
+* Invoicing a _blanket_ charge does the following under the covers:
+
+  .. Create an invoice_item to track the payment
+  
+  .. Create a new fund_debit to implement the payment whose amount matches the invoiced amount.
+
+* Subtract the invoiced amount from the fund_debit linked to the original _blanket_ po_item, thus reducing the amount encumbered on the charge as a whole by the invoiced amount.
+
+* A PO can have multiple blanket charges. E.g. you could have a blanket order for "Popular Fiction 2015" and a second charge for "Pop Fiction 2015 Taxes" to track / pay taxes over time on a blanket charge.
+
+* A PO can have a mix of lineitems, non-blanket charges, and blanket charges.
+
+* A _blanket_ Invoice Item Type cannot also be a _prorate_ type, since it's nonsensical. Blanket items are encumbered, whereas prorated items are only paid at invoice time and never encumbered.
+

@@ -1,0 +1,98 @@
+Adding an Evergreen search form to a web page
+=============================================
+
+Introduction
+------------
+
+To enable users to quickly search your Evergreen catalog, you can add a
+simple search form to any HTML page. The following code demonstrates
+how to create a quick search box suitable for the header of your web
+site:
+
+Simple search form
+------------------
+
+[source,html]
+------------------------------------------------------------------------------
+<form action="http://example.com/eg/opac/results" method="get" accept-charset="UTF-8">    <!-- <1> -->
+    <input type="search" alt="Catalog Search" maxlength="200"
+            size="20" name="query"
+            placeholder="Search catalog for..." />
+    <input type="hidden" name="qtype" value="keyword" />           <!-- <2> -->
+    <input type="hidden" name="locg" value="4" />                  <!-- <3> -->
+    <input type="submit" value="Search" />
+</form>
+------------------------------------------------------------------------------
+<1> Replace ''example.com'' with the hostname for your catalog. To link to
+    the Kid's OPAC instead of the TPAC, replace ''opac'' with ''kpac''.
+<2> Replace ''keyword'' with ''title'', ''author'', ''subject'', or ''series''
+    if you want to provide more specific searches. You can even specify
+    ''identifier|isbn'' for an ISBN search.
+<3> Replace ''4'' with the ID number of the organizational unit at which you
+    wish to anchor your search. This is the value of the ''locg'' parameter in
+    your normal search.
+
+Advanced search form
+--------------------
+
+[source,html]
+--------------------------------------------------------------------------------
+<form role="search" id="searchForm" method="get" class="searchform" action="http://your_catalog/eg/opac/results" accept-charset="UTF-8">
+     <label id="searchLabel" for="search"><b>Search the Catalog: </b></label>
+     <input type="search" value="" name="query" id="search" size="30">   
+     <label id="search_qtype_label"><b>Type:</b> 
+     <select name="qtype" id="qtype"    aria-label="Select query type:">
+        <option value='keyword' selected="selected">Keyword</option>
+        <option value='title'>Title</option>
+        <option value='jtitle'>Journal Title</option>
+        <option value='author'>Author</option>
+        <option value='subject'>Subject</option>
+        <option value='series'>Series</option>
+     </select>
+     </label>  &nbsp;&nbsp;
+   
+     <label id="search_itype_label"><b>Format: </b> 
+     <select id='item_type_selector' name='fi:item_type' aria-label="Select item type:">
+       <option value=''>All Formats</option>
+       <option value='a'>Books and Journals</option>
+       <option value='i'>Nonmusical Sound Recording</option>
+       <option value='j'>Musical Sound Recording</option>
+       <option value='g'>Video</option>
+       </select>  &nbsp;&nbsp;
+     </label> 
+    
+    <label id="search_locg_label"><b>Library: </b>
+    <select aria-label='Select search library'   name='locg'>
+            <option value='1' class="org_unit"> 
+                All Libraries 
+            </option> 
+            <option value='2' selected="selected" class="org_unit"> 
+               &nbsp;&nbsp;Central Library
+            </option> 
+             <option value='10'   class="org_unit"> 
+                &nbsp;&nbsp;&nbsp;&nbsp;Little Library
+            </option> 
+     </select>        
+     </label>
+          <input class="searchbutton" type="submit" value="SEarch" />                  
+</form>
+--------------------------------------------------------------------------------
+
+Encoding
+--------
+
+For non English characters it is vital to set the attribute `accept-charset="UTF-8"`  in the form tag (as in the examples above). If the parameter is  not set, records with non English characters will not be retrieved.
+
+Setting the document type
+-------------------------
+
+You can set the document types to be searched using the attribute `option value=` in the form. For the value use MARC 21 code defining the type of record (i.e. https://www.loc.gov/marc/bibliographic/bdleader.html[Leader, position 06]).
+
+For example, for musical recordings you could use `<option value='j'>Musical Sound Recording</option>`
+
+Setting the library
+-------------------
+
+Instead of searching the entire consortium, you can set the Library to be searched in using the attribute `option value=` in the form. For the value use Evergreen database.organization unit ID. 
+
+

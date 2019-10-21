@@ -1,0 +1,11 @@
+= Evergreen Documentation
+ifndef::env-site,env-github[]
+include::_attributes.adoc[]
+endif::[]
+// Settings
+:idprefix:
+:idseparator: -
+
+
+== It's Powered by Antora!
+
