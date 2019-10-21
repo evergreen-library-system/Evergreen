@@ -22,8 +22,8 @@ export class PickupComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
     onlyShowCaptured = true;
 
-    @ViewChild('readyGrid') readyGrid: ReservationsGridComponent;
-    @ViewChild('pickedUpGrid') pickedUpGrid: ReservationsGridComponent;
+    @ViewChild('readyGrid', { static: false }) readyGrid: ReservationsGridComponent;
+    @ViewChild('pickedUpGrid', { static: false }) pickedUpGrid: ReservationsGridComponent;
 
     noSelectedRows: (rows: IdlObject[]) => boolean;
     handleShowCapturedChange: () => void;

@@ -32,7 +32,7 @@ export class TitleComponent implements AfterViewInit {
         this.setTitle();
     }
 
-    @ViewChild('titleString') titleString: StringComponent;
+    @ViewChild('titleString', { static: true }) titleString: StringComponent;
 
     constructor(private title: Title) {}
 

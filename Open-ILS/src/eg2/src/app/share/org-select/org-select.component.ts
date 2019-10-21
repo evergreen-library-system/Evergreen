@@ -33,7 +33,7 @@ export class OrgSelectComponent implements OnInit {
     // Disable the entire input
     @Input() disabled: boolean;
 
-    @ViewChild('instance') instance: NgbTypeahead;
+    @ViewChild('instance', { static: false }) instance: NgbTypeahead;
 
     // Placeholder text for selector input
     @Input() placeholder = '';

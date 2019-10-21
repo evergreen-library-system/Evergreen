@@ -110,31 +110,31 @@ export class ImportComponent implements OnInit, AfterViewInit, OnDestroy {
     formTemplates: {[name: string]: any};
     newTemplateName: string;
 
-    @ViewChild('fileSelector') private fileSelector;
-    @ViewChild('uploadProgress')
+    @ViewChild('fileSelector', { static: false }) private fileSelector;
+    @ViewChild('uploadProgress', { static: true })
         private uploadProgress: ProgressInlineComponent;
-    @ViewChild('enqueueProgress')
+    @ViewChild('enqueueProgress', { static: true })
         private enqueueProgress: ProgressInlineComponent;
-    @ViewChild('importProgress')
+    @ViewChild('importProgress', { static: true })
         private importProgress: ProgressInlineComponent;
 
     // Need these refs so values can be applied via external stimuli
-    @ViewChild('formTemplateSelector')
+    @ViewChild('formTemplateSelector', { static: true })
         private formTemplateSelector: ComboboxComponent;
-    @ViewChild('recordTypeSelector')
+    @ViewChild('recordTypeSelector', { static: true })
         private recordTypeSelector: ComboboxComponent;
-    @ViewChild('bibSourceSelector')
+    @ViewChild('bibSourceSelector', { static: true })
         private bibSourceSelector: ComboboxComponent;
-    @ViewChild('matchSetSelector')
+    @ViewChild('matchSetSelector', { static: true })
         private matchSetSelector: ComboboxComponent;
-    @ViewChild('holdingsProfileSelector')
+    @ViewChild('holdingsProfileSelector', { static: true })
         private holdingsProfileSelector: ComboboxComponent;
-    @ViewChild('mergeProfileSelector')
+    @ViewChild('mergeProfileSelector', { static: true })
         private mergeProfileSelector: ComboboxComponent;
-    @ViewChild('fallThruMergeProfileSelector')
+    @ViewChild('fallThruMergeProfileSelector', { static: true })
         private fallThruMergeProfileSelector: ComboboxComponent;
 
-    @ViewChild('dupeQueueAlert')
+    @ViewChild('dupeQueueAlert', { static: true })
         private dupeQueueAlert: AlertDialogComponent;
 
     constructor(

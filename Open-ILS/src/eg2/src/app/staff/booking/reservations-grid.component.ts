@@ -39,11 +39,11 @@ export class ReservationsGridComponent implements OnInit {
     patronBarcode: string;
     numRowsSelected: number;
 
-    @ViewChild('grid') grid: GridComponent;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('confirmCancelReservationDialog')
+    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('confirmCancelReservationDialog', { static: true })
         private cancelReservationDialog: CancelReservationDialogComponent;
-    @ViewChild('noTimezoneSetDialog') noTimezoneSetDialog: NoTimezoneSetComponent;
+    @ViewChild('noTimezoneSetDialog', { static: true }) noTimezoneSetDialog: NoTimezoneSetComponent;
 
     editSelected: (rows: IdlObject[]) => void;
     pickupSelected: (rows: IdlObject[]) => void;

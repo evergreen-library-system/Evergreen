@@ -39,10 +39,10 @@ export class DeleteHoldingDialogComponent
     numSucceeded: number;
     numFailed: number;
 
-    @ViewChild('successMsg')
+    @ViewChild('successMsg', { static: true })
         private successMsg: StringComponent;
 
-    @ViewChild('errorMsg')
+    @ViewChild('errorMsg', { static: true })
         private errorMsg: StringComponent;
 
     constructor(

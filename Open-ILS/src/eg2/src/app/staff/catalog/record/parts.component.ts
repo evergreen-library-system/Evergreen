@@ -18,9 +18,9 @@ export class PartsComponent implements OnInit {
     recId: number;
     gridDataSource: GridDataSource;
     initDone: boolean;
-    @ViewChild('partsGrid') partsGrid: GridComponent;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('mergeDialog') mergeDialog: PartMergeDialogComponent;
+    @ViewChild('partsGrid', { static: true }) partsGrid: GridComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('mergeDialog', { static: true }) mergeDialog: PartMergeDialogComponent;
 
     canCreate: boolean;
     canDelete: boolean;

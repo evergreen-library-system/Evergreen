@@ -37,8 +37,8 @@ export class MarkDamagedDialogComponent
     newNote: string;
     newBtype: number;
 
-    @ViewChild('successMsg') private successMsg: StringComponent;
-    @ViewChild('errorMsg') private errorMsg: StringComponent;
+    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
+    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
 
     // Charge data returned from the server requesting additional charge info.

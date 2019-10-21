@@ -18,15 +18,15 @@ export class StandingPenaltyComponent implements OnInit {
     initDone = false;
     cspSource: GridDataSource = new GridDataSource();
 
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('grid') grid: GridComponent;
-    @ViewChild('successString') successString: StringComponent;
-    @ViewChild('createString') createString: StringComponent;
-    @ViewChild('createErrString') createErrString: StringComponent;
-    @ViewChild('updateFailedString') updateFailedString: StringComponent;
-    @ViewChild('deleteFailedString') deleteFailedString: StringComponent;
-    @ViewChild('deleteSuccessString') deleteSuccessString: StringComponent;
-    @ViewChild('cspFlairTooltip') private cspFlairTooltip: StringComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('successString', { static: true }) successString: StringComponent;
+    @ViewChild('createString', { static: false }) createString: StringComponent;
+    @ViewChild('createErrString', { static: false }) createErrString: StringComponent;
+    @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
+    @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
+    @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
+    @ViewChild('cspFlairTooltip', { static: true }) private cspFlairTooltip: StringComponent;
 
     cspRowFlairCallback: (row: any) => GridRowFlairEntry;
 

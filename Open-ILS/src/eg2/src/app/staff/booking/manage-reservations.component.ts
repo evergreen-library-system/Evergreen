@@ -27,8 +27,8 @@ export class ManageReservationsComponent implements OnInit, OnDestroy {
     startingTab: 'patron' | 'resource' | 'type' = 'patron';
     startingPickupOrgs: OrgFamily = {primaryOrgId: this.auth.user().ws_ou(), includeDescendants: true};
 
-    @ViewChild('filterTabs') filterTabs: NgbTabset;
-    @ViewChild('reservationsGrid') reservationsGrid: ReservationsGridComponent;
+    @ViewChild('filterTabs', { static: true }) filterTabs: NgbTabset;
+    @ViewChild('reservationsGrid', { static: true }) reservationsGrid: ReservationsGridComponent;
 
     removeFilters: () => void;
 

@@ -18,8 +18,8 @@ export class MatchSetListComponent implements AfterViewInit {
     gridSource: GridDataSource;
     deleteSelected: (rows: IdlObject[]) => void;
     createNew: () => void;
-    @ViewChild('grid') grid: GridComponent;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
+    @ViewChild('grid', { static: true }) grid: GridComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
 
     constructor(
         private router: Router,

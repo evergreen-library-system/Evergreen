@@ -49,8 +49,8 @@ export class CopyAlertsDialogComponent
     newAlert: IdlObject;
     changesMade: boolean;
 
-    @ViewChild('successMsg') private successMsg: StringComponent;
-    @ViewChild('errorMsg') private errorMsg: StringComponent;
+    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
+    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
 
     constructor(
         private modal: NgbModal, // required for passing to parent

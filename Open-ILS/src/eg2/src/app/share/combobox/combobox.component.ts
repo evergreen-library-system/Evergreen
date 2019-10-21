@@ -39,7 +39,7 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
     click$: Subject<string>;
     entrylist: ComboboxEntry[];
 
-    @ViewChild('instance') instance: NgbTypeahead;
+    @ViewChild('instance', { static: true }) instance: NgbTypeahead;
 
     // Applies a name attribute to the input.
     // Useful in forms.

@@ -24,9 +24,9 @@ export class HoldTransferDialogComponent
 
     @Input() holdIds: number | number[];
 
-    @ViewChild('successMsg') private successMsg: StringComponent;
-    @ViewChild('errorMsg') private errorMsg: StringComponent;
-    @ViewChild('targetNeeded') private targetNeeded: StringComponent;
+    @ViewChild('successMsg', { static: true }) private successMsg: StringComponent;
+    @ViewChild('errorMsg', { static: true }) private errorMsg: StringComponent;
+    @ViewChild('targetNeeded', { static: true }) private targetNeeded: StringComponent;
 
     transferTarget: number;
     changesApplied: boolean;

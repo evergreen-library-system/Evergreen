@@ -50,7 +50,7 @@ export class CreateReservationDialogComponent
 
     public disableOrgs: () => number[];
     addBresv$: () => Observable<any>;
-    @ViewChild('fail') private fail: AlertDialogComponent;
+    @ViewChild('fail', { static: true }) private fail: AlertDialogComponent;
 
     handlePickupLibChange: ($event: IdlObject) => void;
 

@@ -22,8 +22,8 @@ export class QueueListComponent {
     // points to the currently active grid.
     queueGrid: GridComponent;
 
-    @ViewChild('bibQueueGrid') bibQueueGrid: GridComponent;
-    @ViewChild('authQueueGrid') authQueueGrid: GridComponent;
+    @ViewChild('bibQueueGrid', { static: false }) bibQueueGrid: GridComponent;
+    @ViewChild('authQueueGrid', { static: false }) authQueueGrid: GridComponent;
 
     constructor(
         private router: Router,

@@ -33,16 +33,16 @@ export class PermGroupTreeComponent implements OnInit {
     // Have to fetch quite a bit of data for this UI.
     loading: boolean;
 
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('delConfirm') delConfirm: ConfirmDialogComponent;
-    @ViewChild('successString') successString: StringComponent;
-    @ViewChild('createString') createString: StringComponent;
-    @ViewChild('errorString') errorString: StringComponent;
-    @ViewChild('successMapString') successMapString: StringComponent;
-    @ViewChild('createMapString') createMapString: StringComponent;
-    @ViewChild('errorMapString') errorMapString: StringComponent;
-    @ViewChild('addMappingDialog') addMappingDialog: PermGroupMapDialogComponent;
-    @ViewChild('loadProgress') loadProgress: ProgressInlineComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
+    @ViewChild('successString', { static: true }) successString: StringComponent;
+    @ViewChild('createString', { static: true }) createString: StringComponent;
+    @ViewChild('errorString', { static: true }) errorString: StringComponent;
+    @ViewChild('successMapString', { static: true }) successMapString: StringComponent;
+    @ViewChild('createMapString', { static: true }) createMapString: StringComponent;
+    @ViewChild('errorMapString', { static: true }) errorMapString: StringComponent;
+    @ViewChild('addMappingDialog', { static: true }) addMappingDialog: PermGroupMapDialogComponent;
+    @ViewChild('loadProgress', { static: false }) loadProgress: ProgressInlineComponent;
 
     constructor(
         private idl: IdlService,

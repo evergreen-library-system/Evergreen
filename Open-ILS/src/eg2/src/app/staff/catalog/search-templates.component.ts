@@ -41,9 +41,9 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
 
     @Input() searchTab: string;
 
-    @ViewChild('confirmDelete') confirmDelete: ConfirmDialogComponent;
-    @ViewChild('confirmDeleteAll') confirmDeleteAll: ConfirmDialogComponent;
-    @ViewChild('confirmDeleteSearches') confirmDeleteSearches: ConfirmDialogComponent;
+    @ViewChild('confirmDelete', { static: true }) confirmDelete: ConfirmDialogComponent;
+    @ViewChild('confirmDeleteAll', { static: true }) confirmDeleteAll: ConfirmDialogComponent;
+    @ViewChild('confirmDeleteSearches', { static: true }) confirmDeleteSearches: ConfirmDialogComponent;
 
     constructor(
         private org: OrgService,

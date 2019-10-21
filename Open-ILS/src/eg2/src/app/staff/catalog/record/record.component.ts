@@ -20,7 +20,7 @@ export class RecordComponent implements OnInit {
     recordTab: string;
     summary: BibRecordSummary;
     searchContext: CatalogSearchContext;
-    @ViewChild('recordTabs') recordTabs: NgbTabset;
+    @ViewChild('recordTabs', { static: true }) recordTabs: NgbTabset;
     defaultTab: string; // eg.cat.default_record_tab
 
     constructor(

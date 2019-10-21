@@ -21,8 +21,8 @@ export class QueuedRecordMatchesComponent implements OnInit {
 
     @Input() queueType: string;
     @Input() recordId: number;
-    @ViewChild('bibGrid') bibGrid: GridComponent;
-    @ViewChild('authGrid') authGrid: GridComponent;
+    @ViewChild('bibGrid', { static: false }) bibGrid: GridComponent;
+    @ViewChild('authGrid', { static: false }) authGrid: GridComponent;
 
     queuedRecord: IdlObject;
     bibDataSource: GridDataSource;

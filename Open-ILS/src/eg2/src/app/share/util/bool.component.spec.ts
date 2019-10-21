@@ -9,7 +9,7 @@ describe('BoolDisplayComponent', () => {
         template: `<eg-bool></eg-bool>`
     })
     class TestHostComponent {
-        @ViewChild(BoolDisplayComponent)
+        @ViewChild(BoolDisplayComponent, {static: false})
         public boolDisplayComponent: BoolDisplayComponent;
     }
 

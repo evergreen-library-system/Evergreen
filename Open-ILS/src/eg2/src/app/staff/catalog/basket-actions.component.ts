@@ -15,7 +15,7 @@ export class BasketActionsComponent implements OnInit {
 
     basketAction: string;
 
-    @ViewChild('addBasketToBucketDialog')
+    @ViewChild('addBasketToBucketDialog', { static: true })
         addToBucketDialog: BucketDialogComponent;
 
     constructor(

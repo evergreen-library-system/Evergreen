@@ -6,7 +6,7 @@ import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core';
 
 export class AddressAlertComponent {
 
-    @ViewChild('helpTemplate') helpTemplate: TemplateRef<any>;
+    @ViewChild('helpTemplate', { static: true }) helpTemplate: TemplateRef<any>;
 
     constructor() {}
 }

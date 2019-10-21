@@ -126,7 +126,7 @@ export class GridComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() onRowActivate: EventEmitter<any>;
     @Output() onRowClick: EventEmitter<any>;
 
-    @ViewChild('toolbar') toolbar: GridToolbarComponent;
+    @ViewChild('toolbar', { static: true }) toolbar: GridToolbarComponent;
 
     constructor(
         private idl: IdlService,

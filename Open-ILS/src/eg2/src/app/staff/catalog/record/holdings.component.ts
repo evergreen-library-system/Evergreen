@@ -82,32 +82,32 @@ export class HoldingsMaintenanceComponent implements OnInit {
     initDone = false;
     gridDataSource: GridDataSource;
     gridTemplateContext: any;
-    @ViewChild('holdingsGrid') holdingsGrid: GridComponent;
+    @ViewChild('holdingsGrid', { static: true }) holdingsGrid: GridComponent;
 
     // Manage visibility of various sub-sections
-    @ViewChild('callNumsCheckbox')
+    @ViewChild('callNumsCheckbox', { static: true })
         private callNumsCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('copiesCheckbox')
+    @ViewChild('copiesCheckbox', { static: true })
         private copiesCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('emptyCallNumsCheckbox')
+    @ViewChild('emptyCallNumsCheckbox', { static: true })
         private emptyCallNumsCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('emptyLibsCheckbox')
+    @ViewChild('emptyLibsCheckbox', { static: true })
         private emptyLibsCheckbox: GridToolbarCheckboxComponent;
-    @ViewChild('markDamagedDialog')
+    @ViewChild('markDamagedDialog', { static: true })
         private markDamagedDialog: MarkDamagedDialogComponent;
-    @ViewChild('markMissingDialog')
+    @ViewChild('markMissingDialog', { static: true })
         private markMissingDialog: MarkMissingDialogComponent;
-    @ViewChild('copyAlertsDialog')
+    @ViewChild('copyAlertsDialog', { static: true })
         private copyAlertsDialog: CopyAlertsDialogComponent;
-    @ViewChild('replaceBarcode')
+    @ViewChild('replaceBarcode', { static: true })
         private replaceBarcode: ReplaceBarcodeDialogComponent;
-    @ViewChild('deleteHolding')
+    @ViewChild('deleteHolding', { static: true })
         private deleteHolding: DeleteHoldingDialogComponent;
-    @ViewChild('bucketDialog')
+    @ViewChild('bucketDialog', { static: true })
         private bucketDialog: BucketDialogComponent;
-    @ViewChild('conjoinedDialog')
+    @ViewChild('conjoinedDialog', { static: true })
         private conjoinedDialog: ConjoinedItemsDialogComponent;
-    @ViewChild('makeBookableDialog')
+    @ViewChild('makeBookableDialog', { static: true })
         private makeBookableDialog: MakeBookableDialogComponent;
 
     holdingsTree: HoldingsTree;

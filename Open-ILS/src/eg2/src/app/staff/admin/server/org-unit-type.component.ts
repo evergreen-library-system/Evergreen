@@ -17,11 +17,11 @@ export class OrgUnitTypeComponent implements OnInit {
 
     tree: Tree;
     selected: TreeNode;
-    @ViewChild('editDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('editString') editString: StringComponent;
-    @ViewChild('createString') createString: StringComponent;
-    @ViewChild('errorString') errorString: StringComponent;
-    @ViewChild('delConfirm') delConfirm: ConfirmDialogComponent;
+    @ViewChild('editDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('editString', { static: true }) editString: StringComponent;
+    @ViewChild('createString', { static: true }) createString: StringComponent;
+    @ViewChild('errorString', { static: true }) errorString: StringComponent;
+    @ViewChild('delConfirm', { static: true }) delConfirm: ConfirmDialogComponent;
 
     constructor(
         private idl: IdlService,

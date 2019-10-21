@@ -31,24 +31,24 @@ import {SampleDataService} from '@eg/share/util/sample-data.service';
 })
 export class SandboxComponent implements OnInit {
 
-    @ViewChild('progressDialog')
+    @ViewChild('progressDialog', { static: true })
     private progressDialog: ProgressDialogComponent;
 
-    @ViewChild('dateSelect')
+    @ViewChild('dateSelect', { static: false })
     private dateSelector: DateSelectComponent;
 
-    @ViewChild('printTemplate')
+    @ViewChild('printTemplate', { static: true })
     private printTemplate: TemplateRef<any>;
 
-    @ViewChild('fmRecordEditor')
+    @ViewChild('fmRecordEditor', { static: true })
     private fmRecordEditor: FmRecordEditorComponent;
 
-    @ViewChild('numConfirmDialog')
+    @ViewChild('numConfirmDialog', { static: true })
     private numConfirmDialog: ConfirmDialogComponent;
 
     public numThings = 0;
 
-    @ViewChild('bresvEditor')
+    @ViewChild('bresvEditor', { static: true })
     private bresvEditor: FmRecordEditorComponent;
 
 
@@ -63,10 +63,10 @@ export class SandboxComponent implements OnInit {
     btSource: GridDataSource = new GridDataSource();
     acpSource: GridDataSource = new GridDataSource();
     editSelected: (rows: IdlObject[]) => void;
-    @ViewChild('acpGrid') acpGrid: GridComponent;
-    @ViewChild('acpEditDialog') editDialog: FmRecordEditorComponent;
-    @ViewChild('successString') successString: StringComponent;
-    @ViewChild('updateFailedString') updateFailedString: StringComponent;
+    @ViewChild('acpGrid', { static: true }) acpGrid: GridComponent;
+    @ViewChild('acpEditDialog', { static: true }) editDialog: FmRecordEditorComponent;
+    @ViewChild('successString', { static: true }) successString: StringComponent;
+    @ViewChild('updateFailedString', { static: true }) updateFailedString: StringComponent;
     world = 'world'; // for local template version
     btGridTestContext: any = {hello : this.world};
 
