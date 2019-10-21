@@ -16,7 +16,12 @@
         [% IF ctx.get_i18n_l(ctx.eg_locale).rtl == 't' %]
         <link rel="stylesheet" type="text/css" href="[% ctx.media_prefix %]/css/skin/default/opac/semiauto-rtl.css[% ctx.cache_key %]" />
         [% END %]
-        
+
+        [% IF ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
+            [% custom_css = ctx.get_org_setting(ctx.search_ou, 'opac.patron.custom_css') %]
+        [% '<style>'; custom_css ; '</style>' %]                                          
+        [% END %]
+
         [%- libname = ctx.get_aou(ctx.search_ou).name;
             libname = libname | html;
             libsname = ctx.get_aou(ctx.search_ou).shortname; %]

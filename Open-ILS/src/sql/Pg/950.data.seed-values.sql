@@ -4408,6 +4408,15 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
+,( 'opac.patron.custom_css', 'opac',
+    oils_i18n_gettext('opac.patron.custom_css',
+        'Custom CSS for the OPAC',
+        'coust', 'label'),
+    oils_i18n_gettext('opac.patron.custom_css',
+        'Custom CSS for the OPAC',
+        'coust', 'description'),
+    'string', NULL)
+
 ,( 'opac.payment_history_age_limit', 'opac',
     oils_i18n_gettext('opac.payment_history_age_limit',
         'Payment History Age Limit',
