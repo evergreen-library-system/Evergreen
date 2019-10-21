@@ -327,6 +327,7 @@ function($scope,  $q , $location , $filter , egCore , egNet , egUser , egAlertDi
     $scope.summary_stat_cats = function() { return patronSvc.summary_stat_cats }
     $scope.hasAlerts = function() { return patronSvc.hasAlerts }
     $scope.isPatronExpired = function() { return patronSvc.patronExpired }
+    $scope.doesPatronExpireSoon = function() { return patronSvc.patronExpiresSoon }
 
     $scope.print_address = function(addr) {
         egCore.print.print({

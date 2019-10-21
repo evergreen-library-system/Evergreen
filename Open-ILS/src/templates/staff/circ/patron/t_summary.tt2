@@ -33,6 +33,9 @@
         {{patron().alert_message()}}
       </div>
     </div>
+    <div class="row" ng-class="{'patron-summary-alert' : doesPatronExpireSoon()}">
+      <div ng-if="doesPatronExpireSoon()" class="col-md-12">[% l('Patron account will expire soon.  Please renew.') %]</div>
+    </div>
     <div ng-if="patron().photo_url()" class="row">
          <div class="col-md-8 patron_photo_wrap"><img class="img-responsive img-rounded" src="{{patron().photo_url()}}" alt=""></div>
     </div>
