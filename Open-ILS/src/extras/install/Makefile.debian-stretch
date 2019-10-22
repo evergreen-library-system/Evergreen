@@ -113,7 +113,9 @@ PGSQL_SERVER_DEBS_96 = \
 DEVELOPER_DEBS = \
 	automake \
 	autoconf \
-	libtool
+	libtool \
+	chromium \
+	firefox-esr
 
 PACKAGER_DEBS = \
 	asciidoc \
