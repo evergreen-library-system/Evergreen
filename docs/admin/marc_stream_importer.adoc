@@ -1,8 +1,0 @@
-Changes to marc_stream_importer.pl command line options
------------------------
-
-To work properly with Vandelay session tracking a --workstation
-option is now required for the marc_stream_importer.pl script.
-It needs to be an existing workstation name in your system and
-if it is missing from the command line the script will fail and
-you will be notified.
