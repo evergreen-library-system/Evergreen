@@ -816,7 +816,7 @@ function($scope,  $q , $routeParams , $timeout , $window , $uibModal , bucketSvc
                         { order_by : { 'acpt' : ['label'] } }, { atomic: true }
                     ).then(function(list) {
                         return list.map(function(item) {
-                            return item.label();
+                            return { value: item.label(), display: item.label() + " (" + egCore.org.get(item.owner()).shortname() + ")" };
                         });
                     });
                 }
