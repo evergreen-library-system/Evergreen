@@ -64,51 +64,39 @@ describe('Component: OrgFamilySelect', () => {
 
 
     it('provides includeAncestors checkbox by default', () => {
-        fixture.whenStable().then(() => {
-            includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
-            expect(includeAncestors.nativeElement).toBeTruthy();
-        });
+        includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
+        expect(includeAncestors.nativeElement).toBeTruthy();
     });
 
     it('provides includeDescendants checkbox by default', () => {
-        fixture.whenStable().then(() => {
-            includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
-            expect(includeDescendants.nativeElement).toBeTruthy();
-        });
+        includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
+        expect(includeDescendants.nativeElement).toBeTruthy();
     });
 
     it('allows user to turn off includeAncestors checkbox', () => {
-        fixture.whenStable().then(() => {
-            component.hideAncestorSelector = true;
-            fixture.detectChanges();
-            includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
-            expect(includeAncestors).toBeNull();
-        });
+        component.hideAncestorSelector = true;
+        fixture.detectChanges();
+        includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
+        expect(includeAncestors).toBeNull();
     });
 
     it('allows user to turn off includeDescendants checkbox', () => {
-        fixture.whenStable().then(() => {
-            component.hideDescendantSelector = true;
-            fixture.detectChanges();
-            includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
-            expect(includeDescendants).toBeNull();
-        });
+        component.hideDescendantSelector = true;
+        fixture.detectChanges();
+        includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
+        expect(includeDescendants).toBeNull();
     });
 
     it('disables includeAncestors checkbox when root OU is chosen', () => {
-        fixture.whenStable().then(() => {
-            fixture.detectChanges();
-            includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
-            expect(includeAncestors.nativeElement.disabled).toBe(true);
-        });
+        fixture.detectChanges();
+        includeAncestors = fixture.debugElement.query(By.css('#family-test-include-ancestors'));
+        expect(includeAncestors.nativeElement.disabled).toBe(true);
     });
 
     it('disables includeAncestors checkbox when OU has no children', () => {
-        fixture.whenStable().then(() => {
-            fixture.detectChanges();
-            includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
-            expect(includeDescendants.nativeElement.disabled).toBe(true);
-        });
+        fixture.detectChanges();
+        includeDescendants = fixture.debugElement.query(By.css('#family-test-include-descendants'));
+        expect(includeDescendants.nativeElement.disabled).toBe(true);
     });
 
 });
