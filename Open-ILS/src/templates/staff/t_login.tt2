@@ -34,7 +34,8 @@
                 for="login-workstation">[% l('Workstation') %]</label>
               <div class="col-md-8">
                 <select class="form-control" ng-model="args.workstation"
-                  ng-options="ws for ws in workstations">
+                  ng-options="ws for ws in workstations"
+                  id="login-workstation" name="select">
                   <option>[% l('Select Workstation') %]</option>
                 </select>
               </div>
