@@ -121,19 +121,8 @@ Extra steps for web staff client
 
 [NOTE]
 Skip this entire section if you are using an official release tarball downloaded
-from http://evergreen-ils.org/downloads
-
-Install dependencies for web staff client
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-[NOTE]
-You may skip this section if you have installed the
-<<optional_developer_additions,optional developer additions>>.  You will still need to do the following
-steps in <<install_files_for_web_staff_client,Install files for web staff client>>.
-
-1. Install the long-term stability (LTS) release of
-https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
-environment variable `PATH`.
+from http://evergreen-ils.org/downloads. Otherwise, ensure you have installed the
+<<optional_developer_additions,optional developer additions>> before proceeding.
 
 [[install_files_for_web_staff_client]]
 Install AngularJS files for web staff client
