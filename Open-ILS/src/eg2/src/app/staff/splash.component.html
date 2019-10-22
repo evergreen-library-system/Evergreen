@@ -73,7 +73,8 @@
                   [(ngModel)]="catSearchQuery"
                   id='catalog-search-input'
                   (keyup.enter)="searchCatalog()"
-                  i18n-placeholder placeholder="Search for...">
+                  i18n-placeholder placeholder="Search for..."
+                  i18n-aria-label aria-label="Search for...">
                 <span class="input-group-btn">
                   <button class="btn btn-outline-secondary" 
                     (click)="searchCatalog()" type="button" i18n>

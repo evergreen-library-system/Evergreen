@@ -45,6 +45,7 @@
           <div class="row">
             <div class="col-md-8">
                 <input focus-me="focus_search" 
+                    aria-label="[% l('Search catalog for...') %]"
                     class="form-control" ng-model="cat_query" type="text" 
                     ng-keypress="catalog_search($event)"
                     placeholder="[% l('Search catalog for...') %]"/>
