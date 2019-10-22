@@ -21,7 +21,7 @@
           <div class="form-group">
             <label for="tagLabel">[% l('Tag') %]</label>
             <input name="tabLabel" type="text" ng-model="selectedLabel" placeholder="[% l('Enter tag label...') %]"
-                uib-typeahead="tag for tag in getTags($viewValue)" typeahead-editable="false"
+                uib-typeahead="tag.value as tag.display for tag in getTags($viewValue)" typeahead-editable="false"
                 class="form-control" autocomplete="off"></input>
           </div>
           <button type="button" class="btn btn-sm btn-default" ng-click="addTag()">[% l('Add Tag') %]</button>
