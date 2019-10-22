@@ -11,11 +11,11 @@
     "jasmine-core": "^2.99.1",
     "karma": "^1.7.1",
     "karma-jasmine": "^1.1.1",
-    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-firefox-launcher": "^1.2.0",
     "karma-script-launcher": "^1.0.0",
     "karma-spec-reporter": "0.0.32",
     "karma-story-reporter": "^0.3.1",
-    "phantomjs-prebuilt": "^2.1.16",
     "webpack": "^3.10.0",
     "webpack-merge": "^4.1.1"
   },

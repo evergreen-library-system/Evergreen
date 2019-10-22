@@ -87,6 +87,7 @@ make -f Open-ILS/src/extras/Makefile.install <osname>
 3. OPTIONAL: Developer additions
 +
 To perform certain developer tasks from a Git source code checkout, 
+including the testing of the Angular web client components,
 additional packages may be required.  As the *root* Linux account:
 +
  * To install packages needed for retrieving and managing web dependencies,
@@ -158,9 +159,15 @@ npm install   # fetch JS dependencies
 +
 [source,sh]
 ------------------------------------------------------------------------------
-# build, run tests, concat+minify
+# build, concat+minify
 npm run build-prod
-npm run test
+------------------------------------------------------------------------------
++
+4. OPTIONAL: Test web client code if the <osname>-developer packages were installed
++
+[source,sh]
+------------------------------------------------------------------------------
+CHROME_BIN=/path/to/chrome npm run test
 ------------------------------------------------------------------------------
 
 [[install_files_for_angular_web_staff_client]]
@@ -189,7 +196,13 @@ npm install   # fetch JS dependencies
 ------------------------------------------------------------------------------
 # build and run tests
 ng build --prod
-npm run test
+------------------------------------------------------------------------------
++
+4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages were installed
++
+[source,sh]
+------------------------------------------------------------------------------
+CHROME_BIN=/path/to/chrome npm run test
 ------------------------------------------------------------------------------
 
 Configuration and compilation instructions

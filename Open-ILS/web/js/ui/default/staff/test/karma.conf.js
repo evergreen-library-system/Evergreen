@@ -51,7 +51,16 @@ module.exports = function(config){
 
     frameworks: ['jasmine'],
 
-    browsers: ['PhantomJS'],
+    browsers: ['ChromeHeadless','FirefoxHeadless'],
+
+    customLaunchers: {
+        'FirefoxHeadless': {
+            base: 'Firefox',
+            flags: [
+                '-headless',
+            ],
+        }
+    },
 
     // web server port
     port: 9876,
