@@ -33,12 +33,21 @@ import {NgbModal, NgbModalRef, NgbModalOptions} from '@ng-bootstrap/ng-bootstrap
 })
 export class DialogComponent implements OnInit {
 
+    // Track instances so we can refer to them later in closeAll()
+    // NOTE this could also be done by importing router and subscribing
+    // to route events here, but that would require all subclassed
+    // components to import and pass the router via the constructor.
+    static counter = 0;
+    static instances: {[ident: number]: any} = {};
+
     // Assume all dialogs support a title attribute.
     @Input() public dialogTitle: string;
 
     // Pointer to the dialog content template.
     @ViewChild('dialogContent', {static: false})
     private dialogContent: TemplateRef<any>;
+
+    identifier: number = DialogComponent.counter++;
 
     // Emitted after open() is called on the ngbModal.
     // Note when overriding open(), this will not fire unless also
@@ -53,6 +62,16 @@ export class DialogComponent implements OnInit {
 
     constructor(private modalService: NgbModal) {}
 
+    // Close all active dialogs
+    static closeAll() {
+        Object.keys(DialogComponent.instances).forEach(id => {
+            if (DialogComponent.instances[id]) {
+                DialogComponent.instances[id].close();
+                delete DialogComponent.instances[id];
+            }
+        });
+    }
+
     ngOnInit() {
         this.onOpen$ = new EventEmitter<any>();
     }
@@ -65,6 +84,7 @@ export class DialogComponent implements OnInit {
         }
 
         this.modalRef = this.modalService.open(this.dialogContent, options);
+        DialogComponent.instances[this.identifier] = this;
 
         if (this.onOpen$) {
             // Let the digest cycle complete
@@ -127,7 +147,9 @@ export class DialogComponent implements OnInit {
             this.observer = null;
         }
         this.modalRef = null;
+        delete DialogComponent.instances[this.identifier];
     }
+
 }
 
 
