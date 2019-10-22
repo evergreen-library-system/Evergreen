@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-md-12 text-center">
       <img src="[% ctx.media_prefix %]/images/portal/logo.png" alt="Evergreen" />
+      <h1 class="sr-only" i18n>Evergreen Staff Client Home Page</h1>
     </div>
   </div>
   <br/>
@@ -10,7 +11,7 @@
     <div class="col-md-4">
       <div class="panel panel-success">
         <div class="panel-heading">
-          <div class="panel-title text-center">[% l('Circulation and Patrons') %]</div>
+          <h2 class="panel-title text-center">[% l('Circulation and Patrons') %]</h2>
         </div>
         <div class="panel-body">
           <div>
@@ -38,7 +39,7 @@
     <div class="col-md-4">
       <div class="panel panel-success">
         <div class="panel-heading">
-          <div class="panel-title text-center">[% l('Item Search and Cataloging') %]</div>
+          <h2 class="panel-title text-center">[% l('Item Search and Cataloging') %]</h2>
         </div>
         <div class="panel-body">
           <div class="row">
@@ -73,7 +74,7 @@
     <div class="col-md-4">
       <div class="panel panel-success">
         <div class="panel-heading">
-          <div class="panel-title text-center">[% l('Administration') %]</div>
+          <h2 class="panel-title text-center">[% l('Administration') %]</h2>
         </div>
         <div class="panel-body">
           <div>
