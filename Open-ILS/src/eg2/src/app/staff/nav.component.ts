@@ -80,8 +80,16 @@ export class StaffNavComponent implements OnInit, OnDestroy {
         return this.auth.user() ? this.auth.user().usrname() : '';
     }
 
+    user_id() {
+        return this.auth.user() ? this.auth.user().id() : '';
+    }
+
     workstation() {
         return this.auth.user() ? this.auth.workstation() : '';
+    }
+
+    ws_ou() {
+        return this.auth.user() ? this.auth.user().ws_ou() : '';
     }
 
     setLocale(locale: any) {

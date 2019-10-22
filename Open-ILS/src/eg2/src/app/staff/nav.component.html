@@ -237,15 +237,15 @@
         </a>
         <div class="dropdown-menu" ngbDropdownMenu>
           <a class="dropdown-item" 
-            href="/eg/staff/acq/legacy/search/unified">
+            routerLink="/staff/acq/search">
             <span class="material-icons" aria-hidden="true">search</span>
             <span i18n>General Search</span>
           </a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" 
-            href="/eg/staff/acq/legacy/search/unified?ca=pl">
+          <a class="dropdown-item"
+            routerLink="/staff/acq/search/selectionlists">
             <span class="material-icons" aria-hidden="true">view_list</span>
-            <span i18n>My Selection Lists</span>
+            <span i18n>Selection Lists</span>
           </a>
           <a class="dropdown-item" 
             href="/eg/staff/acq/legacy/picklist/brief_record">
@@ -273,8 +273,8 @@
             <span class="material-icons" aria-hidden="true">cloud_upload</span>
             <span i18n>Load MARC Order Records</span>
           </a>
-          <a class="dropdown-item" 
-            href="/eg/staff/acq/legacy/search/unified?ca=po">
+          <a class="dropdown-item"
+            routerLink="/staff/acq/search/purchaseorders">
             <span class="material-icons" aria-hidden="true">shopping_cart</span>
             <span i18n>Purchase Orders</span>
           </a>
@@ -288,10 +288,10 @@
             <span class="material-icons" aria-hidden="true">contact_phone</span>
             <span i18n>Claim-Ready Items</span>
           </a>
-          <a class="dropdown-item" 
-            href="/eg/staff/acq/legacy/search/unified?ca=inv">
+          <a class="dropdown-item"
+            routerLink="/staff/acq/search/invoices">
             <span class="material-icons" aria-hidden="true">attach_money</span>
-            <span i18n>Open Invoices</span>
+            <span i18n>Invoices</span>
           </a>
           <a class="dropdown-item" 
             href="/eg/staff/acq/legacy/invoice/view?create=1">

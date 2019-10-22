@@ -19,6 +19,10 @@ const routes: Routes = [{
     redirectTo: 'splash',
     pathMatch: 'full',
   }, {
+    path: 'acq',
+    loadChildren: () =>
+      import('@eg/staff/acq/routing.module').then(m => m.AcqRoutingModule)
+  }, {
     path: 'booking',
     loadChildren: () =>
       import('./booking/booking.module').then(m => m.BookingModule)

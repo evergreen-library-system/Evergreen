@@ -230,3 +230,21 @@ body>.dropdown-menu {z-index: 2100;}
 @media (min-width: 1600px) { .modal-xl { max-width: 1500px; } }
 @media (min-width: 1700px) { .modal-xl { max-width: 1600px; } }
 
+/**
+ * Make the acquisitions search form's navigation tabs match
+ * those of the staff interface. This is a global rule because
+ * various approaches to doing it local to the acq search component
+ * don't work:
+ *
+ * 1. A rule bound to the container of the acq search tabset
+ *    would make the entire background be grey.
+ * 2. ":host ::ng-deep" for a local rule works, but depends on a
+ *    mechanism that is deprecated.
+ * 4. ng-tabset provides no hooks for custom styles for the nav-tab
+ *    background.
+ * 5. Turning off view encapsulation for the acq search component
+ *    breaks a lot of styles.
+ */
+#acq-search-page ngb-tabset .nav.nav-tabs {
+  background-color: rgb(247, 247, 247);
+}

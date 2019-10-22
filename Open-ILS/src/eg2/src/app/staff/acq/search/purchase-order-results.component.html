@@ -1,0 +1,44 @@
+<eg-acq-search-form #acqSearchForm (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
+  i18n-searchTypeLabel searchTypeLabel="Purchase Order" runImmediatelySetting="eg.acq.search.purchaseorders.run_immediately"
+  [fallbackSearchTerms]="fallbackSearchTerms"
+  defaultSearchSetting="eg.acq.search.default.purchaseorders"></eg-acq-search-form>
+
+<ng-template #nameTmpl let-purchaseorder="row">
+  <a href="/eg/staff/acq/legacy/po/view/{{purchaseorder.id()}}"
+     target="_blank">
+    {{purchaseorder.name()}}
+  </a>
+</ng-template>
+
+<ng-template #providerTmpl let-purchaseorder="row">
+  <a href="/eg/staff/admin/acq/conify/provider/{{purchaseorder.provider().id()}}"
+     target="_blank">
+    {{purchaseorder.provider().code()}}
+  </a>
+</ng-template>
+
+<eg-grid #acqSearchPurchaseOrdersGrid
+  persistKey="acq.search.purchaseorders"
+  [stickyHeader]="true"
+  [filterable]="true"
+  [sortable]="true"
+  [cellTextGenerator]="cellTextGenerator"
+  (onRowActivate)="showRow($event)"
+  idlClass="acqpo" [dataSource]="gridSource">
+
+  <eg-grid-column path="name" [cellTemplate]="nameTmpl"></eg-grid-column>
+  <eg-grid-column path="id"></eg-grid-column>
+  <eg-grid-column path="provider" [asyncSupportsEmptyTermClick]="true" [cellTemplate]="providerTmpl"></eg-grid-column>
+  <eg-grid-column path="ordering_agency"></eg-grid-column>
+  <eg-grid-column path="create_time"></eg-grid-column>
+  <eg-grid-column path="edit_time"></eg-grid-column>
+  <eg-grid-column path="order_date"></eg-grid-column>
+
+  <eg-grid-column path="creator" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="editor" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="owner" [hidden]="true"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" i18n-label label="Status" path="state" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="cancel_reason"></eg-grid-column>
+  <eg-grid-column path="prepayment_required" [sortable]="false"></eg-grid-column>
+
+</eg-grid>

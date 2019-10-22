@@ -1,0 +1,165 @@
+<eg-string #defaultSearchSavedString i18n-text text="Default search saved"></eg-string>
+<eg-string #defaultSearchResetString i18n-text text="Default search reset"></eg-string>
+
+<div id="acq-search-form" class="pl-3 pr-3 pt-3 pb-3 mb-3">
+<form>
+  <div class="row mb-1">
+    <div class="col form-group form-inline">
+      <label i18n>Search for records matching
+      <select class="form-inline ml-1 mr-1" id="acq-search-conjunction" [ngModelOptions]="{standalone: true}" [(ngModel)]="searchConjunction">
+        <option value="all">all</option>
+        <option value="any">any</option>
+      </select>
+      of the following terms:</label>
+    </div>
+    <div class="col-auto">
+      <a class="with-material-icon no-href text-primary"
+        title="Show Form" i18n-title
+        tabindex="0"
+        *ngIf="!showForm" (click)="showForm=true"><span class="sr-only" i18n>Show Form</span>
+        <span class="material-icons" aria-hidden="true">expand_more</span>
+      </a>
+      <a class="with-material-icon no-href text-primary"
+        title="Hide Form" i18n-title
+        tabindex="0"
+        *ngIf="showForm" (click)="showForm=false"><span class="sr-only" i18n>Hide Form</span>
+        <span class="material-icons" aria-hidden="true">expand_less</span>
+      </a>
+    </div>
+  </div>
+  <div class="row mb-1" *ngFor="let t of searchTerms; let idx=index" [hidden]="!showForm">
+    <div class="col-md-5 col-lg-3">
+      <select class="form-control" id="selected-search-term" [ngModelOptions]="{standalone: true}" [ngModel]="t.field"
+        (ngModelChange)="old = t.field; t.field = $event"
+        (change)="clearSearchTerm(t, old)">
+        <option disabled="disabled" i18n>Select Search Field</option>
+        <optgroup *ngFor="let g of hints" label="{{availableSearchFields[g]['__label']}}">
+          <option *ngFor="let o of availableSearchFields[g]['__fields']" value="{{g}}:{{o}}">
+            {{availableSearchFields[g]['__label']}} - {{availableSearchFields[g][o].label}}
+          </option>
+        </optgroup>
+      </select>
+    </div>
+    <div class="col-xs-2 pl-3">
+      <select class="form-control" id="selected-search-op" [ngModelOptions]="{standalone: true}" [(ngModel)]="t.op"
+        (ngModelChange)="oldOp = t.op; t.op = $event"
+        (change)="clearSearchTermValueAfterOpChange(t, oldOp)">
+        <option i18n value="">is</option>
+        <option i18n value="__not">is NOT</option>
+        <option i18n value="__fuzzy" [hidden]="searchTermDatatypes[t.field] != 'text' && searchFieldLinkedClasses[t.field] !== 'acqpro' && searchFieldLinkedClasses[t.field] !== 'au'">contains</option>
+        <option i18n value="__not,__fuzzy" [hidden]="searchTermDatatypes[t.field] != 'text' && searchFieldLinkedClasses[t.field] !== 'acqpro' && searchFieldLinkedClasses[t.field] !== 'au'">does NOT contain</option>
+        <option i18n value="__starts" [hidden]="searchTermDatatypes[t.field] != 'text'">STARTS with</option>
+        <option i18n value="__ends" [hidden]="searchTermDatatypes[t.field] != 'text'">ENDS with</option>
+        <option i18n value="__lte" [hidden]="searchTermDatatypes[t.field] != 'timestamp' && !dateLikeSearchFields[t.field]">is on or BEFORE</option>
+        <option i18n value="__gte" [hidden]="searchTermDatatypes[t.field] != 'timestamp' && !dateLikeSearchFields[t.field]">is on or AFTER</option>
+        <option i18n value="__between" [hidden]="searchTermDatatypes[t.field] != 'timestamp'">is BETWEEN</option>
+        <option i18n value="__age" [hidden]="searchTermDatatypes[t.field] != 'timestamp'">age (relative date)</option>
+        <option i18n value="__isnotnull" [hidden]="searchTermDatatypes[t.field] == 'id' || searchTermFieldIsRequired[t.field]">exists</option>
+        <option i18n value="__isnull" [hidden]="searchTermDatatypes[t.field] == 'id' || searchTermFieldIsRequired[t.field]">does NOT exist</option>
+        <option i18n value="__in">matches a term from a file</option>
+      </select>
+    </div>
+    <div class="col-sm-3">
+      <ng-container *ngIf="t.op == '__in' || t.op == '__isnull' || t.op == '__isnotnull'">
+        <ng-container *ngIf="t.op == '__in'">
+          <eg-file-reader [(ngModel)]="t.value1" [ngModelOptions]="{standalone: true}"></eg-file-reader>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="t.op !== '__in' && t.op !== '__isnull' && t.op !== '__isnotnull'">
+       <div *ngIf="t.field.endsWith(':state') && (t.op === '' || t.op === '__not'); else notStateField">
+         <eg-combobox *ngIf="t.op != '__fuzzy'"
+	   [asyncSupportsEmptyTermClick]="true"
+           [idlClass]="searchFieldLinkedClasses[t.field]"
+           [selectedId]="t.value1"
+           (onChange)="t.value1 = $event ? $event.id : ''">
+         </eg-combobox>
+       </div>
+       <ng-template #notStateField>
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="text" *ngIf="searchTermDatatypes[t.field] == 'id'" class="form-control" />
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="text" *ngIf="searchTermDatatypes[t.field] == 'text'" class="form-control" />
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="number" *ngIf="searchTermDatatypes[t.field] == 'int'" class="form-control" />
+        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="number" *ngIf="searchTermDatatypes[t.field] == 'money'" class="form-control" />
+        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" *ngIf="searchTermDatatypes[t.field] == 'bool'" class="form-control">
+          <option i18n value="t">Yes</option>
+          <option i18n value="f">No</option>
+        </select>
+        <eg-org-select *ngIf="searchTermDatatypes[t.field] == 'org_unit'"
+          [initialOrgId]="t.value1"
+          (onChange)="setOrgUnitSearchValue($event, t)">
+        </eg-org-select>
+        <ng-container *ngIf="searchTermDatatypes[t.field] == 'link'">
+          <ng-container *ngIf="searchFieldLinkedClasses[t.field] === 'acqpro'">
+            <eg-combobox *ngIf="t.op != '__fuzzy' && t.op != '__not,__fuzzy'"
+              [idlClass]="searchFieldLinkedClasses[t.field]"
+              [selectedId]="t.value1"
+              (onChange)="t.value1 = $event ? $event.id : ''">
+            </eg-combobox>
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="text" *ngIf="t.op == '__fuzzy' || t.op == '__not,__fuzzy'" class="form-control" />
+          </ng-container>
+          <ng-container *ngIf="searchFieldLinkedClasses[t.field] === 'au'">
+            <eg-combobox *ngIf="!t.op.includes('__fuzzy')"
+              [idlClass]="searchFieldLinkedClasses[t.field]"
+              [selectedId]="t.value1"
+              (onChange)="t.value1 = $event ? $event.id : ''">
+            </eg-combobox>
+            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1" type="text" *ngIf="t.op.includes('__fuzzy')" class="form-control" />
+          </ng-container>
+          <ng-container *ngIf="searchFieldLinkedClasses[t.field] !== 'acqpro' && searchFieldLinkedClasses[t.field] !== 'au'">
+            <eg-combobox
+              [asyncSupportsEmptyTermClick]="t.field.endsWith('cancel_reason') || t.field.endsWith(':claim_policy') || t.field.endsWith('_method')"
+              [idlClass]="searchFieldLinkedClasses[t.field]"
+              [selectedId]="t.value1"
+              (onChange)="t.value1 = $event ? $event.id : ''">
+            </eg-combobox>
+          </ng-container>
+        </ng-container>
+        <eg-date-select *ngIf="searchTermDatatypes[t.field] == 'timestamp' && t.op != '__age'"
+          [initialIso]="t.value1"
+          (onChangeAsIso)="t.value1 = $event ? $event : ''; t.is_date = true">
+        </eg-date-select>
+        <ng-container *ngIf="searchTermDatatypes[t.field] == 'timestamp' && t.op == '__between'">
+          <span i18n>and</span>
+          <eg-date-select
+            [initialIso]="t.value2"
+            (onChangeAsIso)="t.value2 = $event ? $event : ''; t.is_date = true">
+          </eg-date-select>
+        </ng-container>
+        <eg-interval-input *ngIf="searchTermDatatypes[t.field] == 'timestamp' && t.op == '__age'"
+          [ngModelOptions]="{standalone: true}" [(ngModel)]="t.value1">
+        </eg-interval-input>
+       </ng-template>
+      </ng-container>
+    </div>
+    <div class="col-xs-2 pl-3 pr-1">
+      <button class="btn btn-sm material-icon-button" type="button"
+        (click)="addSearchTerm()"
+        i18n-title title="Add Search Row"><span class="sr-only">Add Search Row</span>
+        <span class="material-icons" aria-hidden="true">add_circle_outline</span>
+      </button>
+      <button class="btn btn-sm material-icon-button" type="button"
+        (click)="delSearchTerm(idx)"
+        i18n-title title="Remove Search Row"><span class="sr-only">Remove Search Row</span>
+        <span class="material-icons" aria-hidden="true">remove_circle_outline</span>
+      </button>
+    </div>
+  </div>
+  <div class="row" [hidden]="!showForm">
+    <div class="col-sm-2">
+      <button class="btn btn-success" (click)="submitSearch()" type="submit" i18n>Search</button>
+    </div>
+    <div class="col-xs-3"></div>
+    <div class="col-xs-5 pl-3">
+      <button class="btn btn-primary" (click)="saveSearchAsDefault()" type="button" i18n>Set As Default {{searchTypeLabel}} Search</button>
+      <button class="btn btn-secondary" (click)="clearDefaultSearch()" type="button" [disabled]="!hasDefaultSearch" i18n>
+        Reset Default Search
+      </button>
+    </div>
+    <div class="col-xs-3 pl-5">
+      <input class="form-check-input" type="checkbox" id="retrieve-immediately"
+             (change)="saveRunImmediately()"
+             [ngModelOptions]="{standalone: true}" [(ngModel)]="runImmediately"/>
+      <label for="retrieve-immediately" class="form-check-label" i18n>Retrieve Results Immediately</label>
+    </div>
+  </div>
+</form>
+</div>

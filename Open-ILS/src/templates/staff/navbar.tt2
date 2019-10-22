@@ -356,16 +356,16 @@
         </a>
         <ul uib-dropdown-menu>
           <li>
-            <a href="./acq/legacy/search/unified" target="_self">
+            <a href="/eg2/staff/acq/search" target="_self">
               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
               [% l('General Search') %]
             </a>
           </li>
           <li class="divider"></li>
           <li>
-            <a href="./acq/legacy/search/unified?ca=pl" target="_self">
+            <a href="/eg2/staff/acq/search/selectionlists" target="_self">
               <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-              [% l('My Selection Lists') %]
+              [% l('Selection Lists') %]
             </a>
           </li>
           <li>
@@ -400,7 +400,7 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/search/unified?ca=po" target="_self">
+            <a href="/eg2/staff/acq/search/purchaseorders" target="_self">
               <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
               [% l('Purchase Orders') %]
             </a>
@@ -419,9 +419,9 @@
             </a>
           </li>
           <li>
-            <a href="./acq/legacy/search/unified?ca=inv" target="_self">
+            <a href="/eg2/staff/acq/search/invoices" target="_self">
               <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>
-              [% l('Open Invoices') %]
+              [% l('Invoices') %]
             </a>
           </li>
           <li>

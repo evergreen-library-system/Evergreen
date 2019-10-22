@@ -1,0 +1,63 @@
+<eg-acq-search-form #acqSearchForm (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
+  i18n-searchTypeLabel searchTypeLabel="Selection List" runImmediatelySetting="eg.acq.search.selectionlists.run_immediately"
+  [fallbackSearchTerms]="fallbackSearchTerms"
+  defaultSearchSetting="eg.acq.search.default.selectionlists"></eg-acq-search-form>
+
+<eg-string #createSelectionListString i18n-text text="Selection List Created">
+</eg-string>
+<eg-string #cloneSelectionListString i18n-text text="Selection List Cloned">
+</eg-string>
+<eg-string #deleteSelectionListString i18n-text text="Selection List(s) Deleted">
+</eg-string>
+<eg-string #mergeSelectionListString i18n-text text="Selection Lists Merged">
+</eg-string>
+
+<ng-template #nameTmpl let-selectionlist="row">
+  <a href="/eg/staff/acq/legacy/picklist/view/{{selectionlist.id()}}"
+     target="_blank">
+    {{selectionlist.name()}}
+  </a>
+</ng-template>
+
+<eg-picklist-create-dialog #picklistCreateDialog>
+</eg-picklist-create-dialog>
+
+<eg-picklist-clone-dialog #picklistCloneDialog [grid]="picklistResultsGrid">
+</eg-picklist-clone-dialog>
+
+<eg-picklist-delete-dialog #picklistDeleteDialog [grid]="picklistResultsGrid">
+</eg-picklist-delete-dialog>
+
+<eg-picklist-merge-dialog #picklistMergeDialog [grid]="picklistResultsGrid">
+</eg-picklist-merge-dialog>
+
+<eg-grid #acqSearchPicklistsGrid
+  persistKey="acq.search.selectionlists"
+  [stickyHeader]="true"
+  [filterable]="true"
+  [sortable]="true"
+  [cellTextGenerator]="cellTextGenerator"
+  (onRowActivate)="showRow($event)"
+  idlClass="acqpl" [dataSource]="gridSource">
+
+  <eg-grid-toolbar-button label="New Selection List" i18n-label
+    (onClick)="openCreateDialog()" [disableOnRows]="createNotAppropriate">
+  </eg-grid-toolbar-button>
+  <eg-grid-toolbar-action label="Clone Selected" i18n-label
+    (onClick)="openCloneDialog($event)" [disableOnRows]="cloneNotAppropriate">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Merge Selected" i18n-label
+    (onClick)="openMergeDialog($event)" [disableOnRows]="mergeNotAppropriate">
+  </eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Delete Selected" i18n-label
+    (onClick)="openDeleteDialog($event)" [disableOnRows]="deleteNotAppropriate">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-column path="name" [cellTemplate]="nameTmpl"></eg-grid-column>
+  <eg-grid-column path="entry_count" [filterable]="false" [sortable]="false"></eg-grid-column>
+
+  <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="creator" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="editor" [hidden]="true"></eg-grid-column>
+
+</eg-grid>

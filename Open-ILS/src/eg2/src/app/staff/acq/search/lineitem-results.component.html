@@ -1,0 +1,91 @@
+<eg-acq-search-form #acqSearchForm (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
+  i18n-searchTypeLabel searchTypeLabel="Line Item" runImmediatelySetting="eg.acq.search.lineitems.run_immediately"
+  defaultSearchSetting="eg.acq.search.default.lineitems"></eg-acq-search-form>
+
+<ng-template #idTmpl let-lineitem="row">
+  <a *ngIf="lineitem.purchase_order()" href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}?focus_li={{lineitem.id()}}"
+     target="_blank">
+    {{lineitem.id()}}
+  </a>
+  <a *ngIf="lineitem.picklist() && !lineitem.purchase_order()" href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}?focus_li={{lineitem.id()}}"
+     target="_blank">
+    {{lineitem.id()}}
+  </a>
+</ng-template>
+
+<ng-template #poTmpl let-lineitem="row">
+  <a *ngIf="lineitem.purchase_order()" href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}?focus_li={{lineitem.id()}}"
+     target="_blank">
+    {{lineitem.purchase_order().name()}}
+  </a>
+</ng-template>
+
+<ng-template #plTmpl let-lineitem="row">
+  <a *ngIf="lineitem.picklist()" href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}?focus_li={{lineitem.id()}}"
+     target="_blank">
+    {{lineitem.picklist().name()}}
+  </a>
+</ng-template>
+
+<ng-template #liAttrTmpl let-lineitem="row" let-col="col">
+  <ng-container *ngFor="let lia of lineitem.attributes()">
+    <ng-container *ngIf="lia.attr_name() === col.path">
+      {{lia.attr_value()}}
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #providerTmpl let-lineitem="row">
+  <a *ngIf="lineitem.provider()" href="/eg/staff/admin/acq/conify/provider/{{lineitem.provider().id()}}"
+     target="_blank">
+    {{lineitem.provider().code()}}
+  </a>
+</ng-template>
+
+<ng-template #liLinksTmpl let-lineitem="row">
+  <ul>
+    <li *ngIf="lineitem.eg_bib_id()">
+      <a routerLink="/staff/catalog/record/{{lineitem.eg_bib_id()}}"
+         target="_blank" i18n>Catalog</a></li>
+    <li><a href="/eg/staff/acq/legacy/lineitem/worksheet/{{lineitem.id()}}"
+           target="_blank" i18n>Worksheet</a></li>
+    <li *ngIf="lineitem.purchase_order()">
+      <a href="/eg/staff/acq/legacy/po/view/{{lineitem.purchase_order().id()}}"
+          target="_blank" i18n>Purchase Order</a></li>
+    <li><a href="/eg/staff/acq/requests/lineitem/{{lineitem.id()}}"
+           target="_blank" i18n>Requests</a></li>
+    <li>
+      <a routerLink="/staff/acq/search/invoices" [queryParams]="{f: 'jub:id', val1: lineitem.id()}"
+        target="_blank" i18n>Invoices</a></li>
+    <li *ngIf="lineitem.queued_record()">
+      <a routerLink="/staff/cat/vandelay/queue/bib/{{lineitem.queued_record().queue()}}"
+        target="_blank" i18n>Queue</a></li>
+    <li *ngIf="lineitem.picklist()">
+      <a href="/eg/staff/acq/legacy/picklist/view/{{lineitem.picklist().id()}}"
+        target="_blank" i18n>Selection List</a></li>
+  </ul>
+</ng-template>
+
+<eg-grid #acqSearchLineitemsGrid
+  persistKey="acq.search.lineitems"
+  idlClass="jub" [dataSource]="gridSource"
+  ignoreFields="marc"
+  [stickyHeader]="true"
+  [filterable]="true"
+  [sortable]="true"
+  [cellTextGenerator]="cellTextGenerator"
+  (onRowActivate)="showRow($event)"
+  [showDeclaredFieldsOnly]="true">
+
+  <eg-grid-column path="id" [cellTemplate]="idTmpl" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column i18n-label label="Title" path="title" [cellTemplate]="liAttrTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Author" path="author" [cellTemplate]="liAttrTmpl"></eg-grid-column>
+  <eg-grid-column path="provider" [cellTemplate]="providerTmpl"></eg-grid-column>
+  <eg-grid-column i18n-label label="Links" path="_links" [cellTemplate]="liLinksTmpl" [disableTooltip]="true" [filterable]="false" [sortable]="false"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="claim_policy" [sortable]="false"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" i18n-label label="Status" path="state" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column path="estimated_unit_price" [disableTooltip]="true"></eg-grid-column>
+  <eg-grid-column path="purchase_order" [cellTemplate]="poTmpl" [disableTooltip]="true" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="picklist" [cellTemplate]="plTmpl" [disableTooltip]="true" [hidden]="true"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="cancel_reason" [hidden]="true"></eg-grid-column>
+</eg-grid>

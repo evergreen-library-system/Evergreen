@@ -1,0 +1,27 @@
+<ng-template #dialogContent>
+<form class="form-validated">
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Clone Selection List: {{leadListName}}</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h4 i18n>Selection list name:</h4>
+    <input type="text" id="create-picklist-name" required
+      [ngModelOptions]="{standalone: true}"
+      class="form-control" [(ngModel)]="selectionListName">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      [disabled]="!selectionListName"
+      (click)="cloneList()" i18n>Clone</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</form>
+</ng-template>
+<eg-alert-dialog #fail i18n-dialogBody
+  dialogBody="Could not create this selection list.">
+</eg-alert-dialog>

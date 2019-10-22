@@ -1,0 +1,24 @@
+<ng-template #dialogContent>
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Confirm Delete</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h4 i18n>Delete the following selection lists?</h4>
+    <ul>
+      <li *ngFor="let listName of listNames">{{listName}}</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      (click)="deleteLists()" i18n>Delete</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</ng-template>
+<eg-alert-dialog #fail i18n-dialogBody
+  dialogBody="Could not delete the selection list(s).">
+</eg-alert-dialog>

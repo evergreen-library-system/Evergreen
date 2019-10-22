@@ -1,0 +1,32 @@
+<ng-template #dialogContent>
+<form class="form-validated">
+  <div class="modal-header bg-info">
+    <h3 class="modal-title" i18n>Merge Selection Lists</h3>
+    <button type="button" class="close"
+      i18n-aria-label aria-label="Close" (click)="close()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <h4 i18n>Lead Selection List:</h4>
+      <select [(ngModel)]="leadList" [ngModelOptions]="{standalone: true}" required>
+        <option *ngFor="let list of selectedLists"
+          value="{{list.id()}}">{{list.name()}}</option>
+      </select>
+    <h4 i18n>Merge the following selection lists?</h4>
+    <ul>
+      <li *ngFor="let listName of listNames">{{listName}}</li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success"
+      [disabled]="!leadList"
+      (click)="mergeLists()" i18n>Merge</button>
+    <button type="button" class="btn btn-warning"
+      (click)="close()" i18n>Cancel</button>
+  </div>
+</form>
+</ng-template>
+<eg-alert-dialog #fail i18n-dialogBody
+  dialogBody="Could not merge the selection lists.">
+</eg-alert-dialog>

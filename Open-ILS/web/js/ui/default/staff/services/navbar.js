@@ -116,6 +116,8 @@ angular.module('egCoreMod')
                         if (egCore.auth.user()) {
                             $scope.op_changed = egCore.auth.OCtoken() ? true : false;
                             $scope.username = egCore.auth.user().usrname();
+                            $scope.user_id = egCore.auth.user().id();
+                            $scope.ws_ou = egCore.auth.user().ws_ou();
                             $scope.workstation = egCore.auth.workstation();
 
                             egCore.org.settings([

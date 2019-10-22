@@ -1,0 +1,51 @@
+<eg-acq-search-form #acqSearchForm (searchSubmitted)="doSearch($event)" [initialSearchTerms]="initialSearchTerms"
+  i18n-searchTypeLabel searchTypeLabel="Invoice" runImmediatelySetting="eg.acq.search.invoices.run_immediately"
+  [fallbackSearchTerms]="fallbackSearchTerms"
+  defaultSearchSetting="eg.acq.search.default.invoices"></eg-acq-search-form>
+
+<ng-template #inv_identTmpl let-invoice="row">
+  <a href="/eg/staff/acq/legacy/invoice/view/{{invoice.id()}}"
+     target="_blank">
+    {{invoice.inv_ident()}}
+  </a>
+</ng-template>
+<ng-template #providerTmpl let-invoice="row">
+  <a href="/eg/staff/admin/acq/conify/provider/{{invoice.provider().id()}}"
+     target="_blank">
+    {{invoice.provider().code()}}
+  </a>
+</ng-template>
+<ng-template #shipperTmpl let-invoice="row">
+  <a href="/eg/staff/admin/acq/conify/provider/{{invoice.shipper().id()}}"
+     target="_blank">
+    {{invoice.shipper().code()}}
+  </a>
+</ng-template>
+
+<eg-grid #acqSearchInvoicesGrid
+  persistKey="acq.search.invoices"
+  [stickyHeader]="true"
+  [filterable]="true"
+  [sortable]="true"
+  [cellTextGenerator]="cellTextGenerator"
+  (onRowActivate)="showRow($event)"
+  idlClass="acqinv" [dataSource]="gridSource">
+
+  <eg-grid-toolbar-action label="Print Selected Invoices" i18n-label
+    (onClick)="printSelectedInvoices($event)" [disableOnRows]="noSelectedRows">
+  </eg-grid-toolbar-action>
+
+  <eg-grid-column path="inv_ident" [cellTemplate]="inv_identTmpl"></eg-grid-column>
+  <eg-grid-column path="provider" [cellTemplate]="providerTmpl"></eg-grid-column>
+  <eg-grid-column path="shipper" [cellTemplate]="shipperTmpl"></eg-grid-column>
+
+  <eg-grid-column path="id" [hidden]="true"></eg-grid-column>
+  <eg-grid-column path="recv_date" [hidden]="true"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="recv_method"></eg-grid-column>
+  <eg-grid-column [asyncSupportsEmptyTermClick]="true" path="payment_method"></eg-grid-column>
+
+</eg-grid>
+
+<eg-alert-dialog #printfail i18n-dialogBody
+  dialogBody="Could not print the selected invoices.">
+</eg-alert-dialog>
