@@ -106,6 +106,13 @@ PGSQL_SERVER_DEBS_96 = \
 	postgresql-plperl-9.6 \
 	postgresql-server-dev-9.6
 
+PGSQL_SERVER_DEBS_10 = \
+	$(DEB_PGSQL_COMMON_MODS) \
+	postgresql-10 \
+	postgresql-contrib-10 \
+	postgresql-plperl-10 \
+	postgresql-server-dev-10
+
 # note: some prereqs are repeated in the developer/packager 
 # sections to support building Evergreen packages on servers
 # where Evergreen and its prereqs are not installed.
@@ -148,6 +155,11 @@ install_postgres_server:
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
 	make -f $(DIR)/Makefile.debian debian_postgresql_repo
 	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_96)"
+
+install_postgres_server_10:
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_APT_REPO_DEBS)"
+	make -f $(DIR)/Makefile.debian debian_postgresql_repo
+	make -f $(DIR)/Makefile.debian DEBS="$(PGSQL_SERVER_DEBS_10)"
 
 # note: if/when grunt-cli is available as a
 # package, use the packaged version instead.

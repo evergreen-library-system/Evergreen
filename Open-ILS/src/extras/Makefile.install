@@ -79,14 +79,24 @@ fedora:
 
 postgres-server-debian-buster:
 	@make -f $(DIR)/Makefile.debian-buster install_postgres_server
+postgres-server-debian-buster-10:
+	@make -f $(DIR)/Makefile.debian-buster install_postgres_server_10
 postgres-server-debian-stretch:
 	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server
+postgres-server-debian-stretch-10:
+	@make -f $(DIR)/Makefile.debian-stretch install_postgres_server_10
 postgres-server-debian-jessie:
 	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server
+postgres-server-debian-jessie-10:
+	@make -f $(DIR)/Makefile.debian-jessie install_postgres_server_10
 postgres-server-ubuntu-bionic:
 	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server
+postgres-server-ubuntu-bionic-10:
+	@make -f $(DIR)/Makefile.ubuntu-bionic install_postgres_server_10
 postgres-server-ubuntu-xenial:
 	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server
+postgres-server-ubuntu-xenial-10:
+	@make -f $(DIR)/Makefile.ubuntu-xenial install_postgres_server_10
 postgres-server-fedora:
 	@make -f $(DIR)/Makefile.fedora install_postgres_server
 
