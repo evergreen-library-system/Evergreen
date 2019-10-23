@@ -152,7 +152,9 @@ npm install   # fetch JS dependencies
 npm run build-prod
 ------------------------------------------------------------------------------
 +
-4. OPTIONAL: Test web client code if the <osname>-developer packages were installed
+4. OPTIONAL: Test web client code if the <osname>-developer packages were installed.
+   CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
+   `/usr/bin/chromium`:
 +
 [source,sh]
 ------------------------------------------------------------------------------
@@ -187,7 +189,9 @@ npm install   # fetch JS dependencies
 ng build --prod
 ------------------------------------------------------------------------------
 +
-4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages were installed
+4. OPTIONAL: Test eg2 web client code if the <osname>-developer packages were installed:
+   CHROME_BIN should be set to the path to chrome or chromimum, e.g.,
+   `/usr/bin/chromium`:
 +
 [source,sh]
 ------------------------------------------------------------------------------
