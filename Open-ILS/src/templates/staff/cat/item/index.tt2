@@ -67,7 +67,8 @@
   <div class="flex-row">
     <div class="input-group">
       <input type="text" id="item-status-barcode" class="form-control"
-        select-me="context.selectBarcode" ng-model="args.barcode">
+        select-me="context.selectBarcode" ng-model="args.barcode"
+        aria-label="[% l('Scan Item') %]">
       <input class="btn btn-default" 
         type="submit" value="[% l('Submit') %]"/>
     </div>
