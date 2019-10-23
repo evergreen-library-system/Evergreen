@@ -11,6 +11,7 @@ content:
 ui:
   bundle:
     url: ./ui/build/ui-bundle.zip
+  supplemental_files: ./ui/supplemental_ui
 
 output:
   dir: /var/www/html/prod

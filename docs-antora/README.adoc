@@ -6,7 +6,7 @@
 ----
 $ git clone git://git.evergreen-ils.org/Evergreen.git
 $ cd Evergreen
-$ git checkout LP1848524_antora_ize_docs
+$ git checkout collab/blake/LP1848524_antora_ize_docs
 ----
 
 First we have to install antora:
@@ -66,4 +66,44 @@ NOTE: https://asciidoctor.org/docs/asciidoc-asciidoctor-diffs/
 NOTE: https://blog.anoff.io/2019-02-15-antora-first-steps/
 
 NOTE: https://owncloud.org/news/owncloud-docs-migrating-antora-pt-1-2/
+
+
+== Search stuff
+
+First you need to have ansible installed
+
+NOTE: If you want to manually edit the file, you don't need to install ansible
+
+[source,bash]
+----
+$ sudo apt-get -y install ansible
+----
+
+Now, let's run through the antora-lunr procedure:
+
+NOTE: Lifted from the base install notes from the  https://github.com/Mogztter/antora-lunr[ git repo]
+
+
+[source,bash]
+----
+$ ansible-playbook setup_lunr.yml
+
+----
+
+This should have edited this file: node_modules/@antora/site-generator-default/lib/generate-site.js
+as outlined in the git repo notes
+
+Now, install the lunr bits (from docs-antora folder)
+
+[source,bash]
+----
+$ npm i antora-lunr
+----
+
+And now, you can re-generate the site but this time with the search box:
+
+[source,bash]
+----
+$ DOCSEARCH_ENABLED=true DOCSEARCH_ENGINE=lunr antora site.yml
+----
 
