@@ -71,6 +71,18 @@ for record in reader:
     record.leader = record.leader[:9] + 'a' + record.leader[10:]
     writer.write(pymarc.record_to_xml(record) + "\n")
 ------------------------------------------------------------------------------
+Note: pymarc does not fail gracefully when it encounters encoding issues - often 
+either because LDR09 is lying, or because non-UTF8 / non-MARC8 chars (like iso-8859-1) 
+have been added by other less strict tools and the above script will fail.
+
+Another way to convert the .mrc to xml is with yaz-marcdump using the following:
+[source]
+------------------------------------------------------------------------------
+yaz-marcdump -i marc -o marcxml -f utf8 -t utf8 -l 9=97 records_in.mrc > records_out.xml
+------------------------------------------------------------------------------
+
+The resulting file will have it's XML formatted into human readable format and need to be 
+massaged such that each record container is on a single line.
 
 Once you have a MARCXML file with one record per line, you can load the records
 into your Evergreen system via a staging table in your database.
