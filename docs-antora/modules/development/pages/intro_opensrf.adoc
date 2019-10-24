@@ -1348,7 +1348,7 @@ client:
 
 [source, python] 
 --------------------------------------------------------------------------------
-include::python_client.py[]
+include::example$python_client.py[]
 --------------------------------------------------------------------------------
 
 NOTE: Python's `dnspython` module refuses to read `/etc/resolv.conf`, so to
