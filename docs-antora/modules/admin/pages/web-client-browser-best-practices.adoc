@@ -36,9 +36,9 @@ Setting the Web Client as the Home Page in Firefox
 . In the _When Firefox starts:_ dropdown menu, select _Show my home page_.
 . In the _Home Page_ box, add _https://localhost/eg/staff/_ and click *OK*.
 
-include::turn-off-print-headers-firefox.adoc[]
+include::partial$turn-off-print-headers-firefox.adoc[]
 
-include::turn-off-print-headers-chrome.adoc[]
+include::partial$turn-off-print-headers-chrome.adoc[]
 
 Tab Buttons and Keyboard Shortcuts
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
