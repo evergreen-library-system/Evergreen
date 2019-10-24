@@ -13,3 +13,18 @@ footer.footer {
 .footer a {
   color: var(--footer-link-font-color);
 }
+
+.article-footer {
+  width: 100%;
+}
+
+.article-footer .article-footer-next {
+  float: right;
+  width: 35%;
+  text-align: right;
+}
+
+.article-footer .article-footer-previous {
+  float: left;
+  width: 35%;
+}

@@ -4,7 +4,7 @@
 
 [source,bash]
 ----
-$ git clone git://git.evergreen-ils.org/Evergreen.git
+$ git clone git://git.evergreen-ils.org/working/Evergreen.git
 $ cd Evergreen
 $ git checkout collab/blake/LP1848524_antora_ize_docs
 ----

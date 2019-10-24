@@ -228,7 +228,7 @@ body {
 
   .navbar-end {
     justify-content: flex-end;
-    margin: auto;
+    margin-left: auto;
   }
 
   .navbar-dropdown {

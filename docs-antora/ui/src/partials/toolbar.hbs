@@ -6,6 +6,9 @@
 {{> breadcrumbs}}
 {{> page-versions}}
   {{#if (and page.editUrl (not page.origin.private))}}
-  <div class="edit-this-page"><a href="{{page.editUrl}}">Edit this Page</a></div>
+  <!--
+    Removing the edit link until we have these docs on master/rel branches
+            <div class="edit-this-page"><a href="{{page.editUrl}}">Edit this Page</a></div>
+  -->
   {{/if}}
 </div>

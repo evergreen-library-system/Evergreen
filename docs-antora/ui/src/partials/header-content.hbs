@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" role="banner">
   <nav class="navbar">
     <div class="navbar-brand">
       <a class="navbar-item" href="{{or site.url (or siteRootUrl siteRootPath)}}">{{site.title}}</a>
@@ -39,5 +39,10 @@
         </div>
       </div>
     </div>
+    {{#if env.DOCSEARCH_ENABLED}}
+        <div class="navbar-item">
+          <input id="search-input" type="text" placeholder="Search docs">
+        </div>
+      {{/if}}
   </nav>
 </header>

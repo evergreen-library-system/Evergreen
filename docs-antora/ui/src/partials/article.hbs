@@ -13,5 +13,13 @@ If you typed the URL of this page manually, please double check that you entered
 <h1 class="page">{{{page.title}}}</h1>
 {{/if}}
 {{{page.contents}}}
+<div class="article-footer">
+    <div class="article-footer-previous">
+        <a href="{{site.path}}{{page.previous.url}}">Previous</a>
+    </div>
+    <div class="article-footer-next">
+        <a href="{{site.path}}{{page.next.url}}">Next</a>
+    </div>
+</div>
 {{/if}}
 </article>
