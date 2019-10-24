@@ -16,8 +16,9 @@
   --color-jet-70: #222;
   --color-jet-80: #191919;
   --color-black: #000;
+  --color-evergreen: #446129;
   /* fonts */
-  --rem-base: 18; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
+  --rem-base: 14; /* used to compute rem value from desired pixel value (e.g., calc(18 / var(--rem-base) * 1rem) = 18px) */
   --body-font-size: 1.0625em; /* 17px */
   --body-font-size--desktop: 1.125em; /* 18px */
   --body-font-size--print: 0.9375em; /* 15px */
@@ -32,15 +33,15 @@
   --panel-background: var(--color-smoke-30);
   --panel-border-color: var(--color-smoke-90);
   /* navbar */
-  --navbar-background: var(--color-jet-80);
-  --navbar-font-color: var(--color-white);
-  --navbar_hover-background: var(--color-black);
+  --navbar-background: var(--color-white);
+  --navbar-font-color: var(--color-evergreen);
+  --navbar_hover-background: var(--color-white);
   --navbar-button-background: var(--color-white);
   --navbar-button-border-color: var(--panel-border-color);
-  --navbar-button-font-color: var(--body-font-color);
+  --navbar-button-font-color: var(--color-evergreen);
   --navbar-menu-border-color: var(--panel-border-color);
   --navbar-menu-background: var(--color-white);
-  --navbar-menu-font-color: var(--body-font-color);
+  --navbar-menu-font-color: var(--color-evergreen);
   --navbar-menu_hover-background: var(--color-smoke-50);
   /* nav */
   --nav-background: var(--panel-background);
@@ -85,7 +86,7 @@
   --abstract-background: var(--color-smoke-70);
   --abstract-font-color: var(--color-jet-20);
   --abstract-border-color: var(--panel-border-color);
-  --admonition-background: var(--panel-background);
+  --admonition-background: #dafafa;
   --admonition-label-font-weight: var(--body-font-weight-bold);
   --caption-font-color: var(--color-gray-70);
   --caption-font-weight: var(--body-font-weight-bold);
