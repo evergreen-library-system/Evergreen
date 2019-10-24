@@ -23,6 +23,9 @@ const routes: Routes = [{
     path: 'permission/grp_tree',
     component: PermGroupTreeComponent
 }, {
+    path: 'asset/course_list',
+    loadChildren: '@eg/staff/admin/server/course-reserves/course-reserves.module#CourseReservesModule'
+}, {
     path: 'actor/org_unit',
     loadChildren: () =>
       import('./org-unit.module').then(m => m.OrgUnitModule)
