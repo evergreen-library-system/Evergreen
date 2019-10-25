@@ -1,3 +1,446 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit f27e972f668f9b8f6dee2bed0ab329a4b7087745
+Author: blake <blake@mobiusconsortium.org>
+Date:   Fri Oct 25 15:07:16 2019 -0500
+
+    fixed upgrade script naming convention
+    
+    Signed-off-by: blake <blake@mobiusconsortium.org>
+
+14	14	docs/installation/server_upgrade.adoc
+
+commit 3088b9e5a4c80215fe5afe91fc82ea351ae4f62d
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Oct 25 15:28:33 2019 -0400
+
+    Docs: Add 3.1.16 point release notes
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+48	0	docs/RELEASE_NOTES_3_1.adoc
+
+commit d3585056be4a06ba5c1fecc4b0807e34b5f7a241
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sun Jul 7 07:18:01 2019 -0400
+
+    Lp 1835620: Require some Storage submodules instead of use them
+    
+    Switch from "use" to "require" for submodules in OpenILS::Application
+    ::Storage::CDBI and OpenILS::Application::Storage::Driver::Pg.
+    Circular dependencies and other issues cause the following errors at
+    compile time for those modules:
+    
+    Compilation failed in require at
+    /usr/local/share/perl/5.28.1/OpenILS/Application/Storage/CDBI.pm line
+    9.
+    
+    Compilation failed in require at
+    /usr/local/share/perl/5.26.1/OpenILS/Application/Storage/Driver/Pg.pm
+    line 15.
+    
+    Require loads the submodules at run time and does not attempt to
+    import any methods.  This is the behavior we want, eliminates the
+    above errors, and everything still works.
+    
+    Add comments above the required modules explaining why require is
+    needed and not use.
+    
+    Enable and reorder all of the tests in Open-ILS/src/perlmods/t/
+    09-OpenILS-Application-Storage-Driver.t.  Repairing the above issue
+    also repairs these tests.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+16	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI.pm
+9	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg.pm
+4	6	Open-ILS/src/perlmods/t/09-OpenILS-Application-Storage-Driver.t
+
+commit 2a736f126a4a086ab5f294db928cb49a984d4c4a
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 22 09:18:29 2019 -0400
+
+    LP1825403: Do not Include Tag Owner in Tag
+    
+    Copy tags were accidentally having their owning
+    location shortname included in the tag values,
+    this patch allows the owner to be displayed but
+    not included in the value used.
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit b53d2972a5abbcb0b6814fd00a227189e7c64269
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Oct 21 14:08:39 2019 -0400
+
+    LP#1802952: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+146	0	Open-ILS/src/sql/Pg/upgrade/1195.function.located_uri_auto_suggest_visibility.sql
+0	146	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1195.function.located_uri_auto_suggest_visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+
+commit 5d57d92741c1fa52c1dcbe4ded40596f7ea41a8d
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Nov 12 11:31:33 2018 -0500
+
+    LP#1802952 Check bib visibility for located URI auto suggest
+    
+    Suggestions from records with only located URIs (no copies) do not
+    appear in the OPAC search suggestions. This appears to be a cousin of
+    bug #1773479, but in a neighboring function.
+    
+    In the case of libraries with LURIs, we need to consider bib visibility
+    separate from copy visibility in order for both to show up.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	2	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+146	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+
+commit b0a7e84b70a764ef467d4973704788c5ef009173
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Apr 2 12:49:18 2019 -0400
+
+    LP#1749970 Fix paging of pending patrons
+    
+    Fix paging of pending patrons by passing a count and offset to the
+    backend API call.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/web/js/ui/default/staff/circ/patron/pending.js
+
+commit 6e7c83f6dfdd8e5e9c817343a1dd1c40bb015f56
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sat Aug 10 21:02:00 2019 -0400
+
+    LP#1777698 Duplicate barcode alert appearing on new barcodes
+    
+    When scanning new copy barcodes, ng-change quickly fires multiple times
+    and sends promises to check for duplicates. If 1234 exists and you scan
+    12345, if the 1234 promise resolves after 12345, it will indicate it's a
+    duplicate. This patch keeps a count of the promises sent and only the
+    latest promise will set the boolean to indicate if it's a duplicate.
+    
+    Hard to test because the promises usually resolve in order:
+    1. Add a new holding with the first few characters of an unused barcode
+    2. Scan the new barcode multiple times until you see the dup error
+    3. Apply patch and scan the new barcode multiple times (no error)
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 4d6fa4830abc567e0c9f05877301ce3ed3c654b6
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sat Aug 24 14:44:01 2019 -0400
+
+    LP#1841089 Apply button in Patron Bill History screen is in confusing location
+    
+    It's possible to miss the apply button for the date range in bill history
+    because it's located before the datepickers. The interface also allows
+    invalid date ranges.
+    
+    This removes the apply button and watches the start and finish dates in the
+    bill history and payment history controllers. If it's not first init and they
+    are valid date objects in a valid date range, the grid refreshes with the new
+    date range query. If start > finish they are set equal to each other to force
+    a valid range.
+    
+    To test:
+    
+    1. Apply patch
+    2. Bring up a patron with bills and payments (or add bills and payments)
+    3. Under the Bills tab click History
+    4. Change the date range and observe that the grid refreshes
+    5. Try to set the start date past the finish date and vice versa
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	4	Open-ILS/src/templates/staff/circ/patron/t_bill_history.tt2
+38	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit 61051796e8b00c4e94766c30f82fda54c592bc3c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 5 16:11:35 2018 -0500
+
+    LP#1729435: Allow saving Bill Full Details grids
+    
+    For a web staff eg-grid to save and retrieve its settings, it needs a unique
+    persist-key. This commit adds one for the Bills grid and Payments grid on the
+    patron bills Full Details view (right-click a bill, choose Full Details, then
+    click the Details tab).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2
+
+commit c227910cdcfea08caaf508536340e36a44361eb2
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Oct 2 14:28:31 2018 -0700
+
+    LP#1609556: only include OPAC-visible copies in SRU/Z39.50 holdings
+    
+    To test:
+    
+    1. Create a bib record.
+    2. Add an item to the record at BR1. Mark it as not OPAC-visible.
+    3. Do a CONS-level SRU search for the record, including holdings. The
+       record is not included in results because there are no OPAC-visible
+       holdings.
+    4. Add a second item to the same record, this time at BR3. Mark this
+       one as OPAC-visible.
+    5. Repeat the CONS-level SRU search, including holdings. The record
+       appears in search results, but holdings information in 852 includes
+       *all* copies, including non-OPAC-visible copies.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit f9995eddc33281e0a5ec622cbb678ad468ba0296
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Mon May 20 12:48:10 2019 -0400
+
+    lp1813056 Fixes Current Date in Date Returned in Circ History CSV
+    
+    The date returned column in the csv file created in the opac for the patron's
+    Check Out History contains the current date instead of the check-in date. This
+    patch fixes that issue.
+    
+    To test:
+    1. Turn on "Keep history of checked out items" in the patron Search and
+    History Preferences in the opac, or find a patron that already has this
+    option turned on.
+    2. Check-in some items that the patron has checked-out.
+    3. Wait a day, or if it was an existing history list immediately, go to the patron's Items Checked Out in the opac and look at the Date Returned
+    column in the Check Out History list.
+    4. Download the CSV file and note that the date is the current date.
+    5. Apply the patch.
+    6. Refresh and download the CSV file again and note that the Date Returned
+    is now the checkin date.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/circ_history/export.tt2
+
+commit a8fbc35549de6454a5c849bcb5d7504a3701fce9
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 17 17:14:01 2019 -0400
+
+    LP#1836963: reduce the cost of utility functions, speeding up search
+    
+    For large org trees, some several seconds are spent testing org visibility.
+    The immediate cause is that AppUtils::get_org_tree() does not populate the
+    process-local cache with a memcache-cached org tree. That only happens when
+    memcache does not have a copy of the org tree. This is obviously a simple
+    oversight, which is addressed by making sure any memcache return value
+    is pushed into the the process local cache.
+    
+    Additionally, the visibility check is making heavy use of lots of
+    indirection and delegation to utility code, when some slightly smarter code
+    could avoid many repeated function calls.  We now supply some local
+    utility code to flesh and unflesh the parent_ou field of objects in the
+    org tree, allowing us to avoid using find_org() and instead just calling
+    parent_ou() when walking "up" the tree.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+19	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit c9c113b0004c7c3c107d8ae2f20d0fc9d041670b
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 24 13:48:08 2019 -0400
+
+    LP#1845050: fix issue where reports interface was partially loaded
+    
+    This patch adjusts mod_xmlent to not free its XML parser
+    prematurely in the face of an EOS bucket received while processing
+    a sub-request.
+    
+    To test
+    -------
+    [1] Test on a platform that has Apache 2.4.25 or later, such as
+        Debian Stretch.
+    [2] Note that when loading the reports interface that the source
+        of the frame containing oils_rpt.xhtml is incomplete and that
+        actions like creating a template or folder do not work in the
+        interface.
+    [3] Apply the patch and repeat step 2. This time, oils_rpt.xhtml
+        should be fully loaded and the interface fuctional.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+12	2	Open-ILS/src/apachemods/mod_xmlent.c
+
+commit 733156980c0f17c8fb24882f00e68b15c4528f01
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 1 16:59:54 2019 -0400
+
+    LP#1768141: Stamping Upgrade Script Part 2
+    
+    Missed the new install update previously.
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+
+commit df1476ddf81d69dbca7604fec31a69875f8a0ec2
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 15:44:08 2019 -0400
+
+    LP#1811442 - Assign copy alert permissions.
+    
+    VIEW_COPY_ALERTS and ADMIN_COPY_ALERT permissions were added
+    recently, but not assigned in the default seed data.  This branch
+    assigns VIEW_COPY_ALERTS to Staff profiles at the Consortium depth
+    and adds ADMIN_COPY_ALERT to the Cataloging Administrator profile.
+    
+    Since permissions are set so specifically per-site, this branch does
+    not contain an upgrade script, but does provide an update to release
+    notes reminding site admins to manually add them to the appropriate
+    profiles.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+
+commit fe7d04422b83a9e7a1b2f4046345ece4e58fddd8
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 23 11:13:16 2018 -0400
+
+    LP#1560805 Webstaff locale picker repair
+    
+    Make the locale picker less finicky by replacing the search/replace
+    regex with a simple static URL for applying the locale.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	5	Open-ILS/web/js/ui/default/staff/services/navbar.js
+
+commit 8af2060262a063a7577de4b966ed2fb3535620d0
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 1 15:10:56 2019 -0400
+
+    LP#1768141: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+7	0	Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit 50e30971f5b566c9c045b34bcbe20e967e3a35d8
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Aug 2 10:41:44 2019 -0400
+
+    LP#1768141: (follow-up) change schema update
+    
+    Change the update to an "ALTER FUNCTION ... STABLE" both
+    to make the purpose of the update more clear and to remove
+    the need to check the rest of the function definition when
+    backporting.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit 88e058e8dfe60e2fa65cd06295d22daf6e575a61
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 16:14:00 2019 -0400
+
+    LP#1768141 - Mark permission.grp_descendants STABLE.
+    
+    Quoting Galen Charlton's comments on the bug report:
+    
+    The database function permission.grp_descendants should
+    be marked stable; it qualifies, and doing so should allow
+    PostgreSQL to improve query plans. One example of a query
+    that would benefit is searching by patron profile (a la
+    bug 1497322)
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit 8e5565c01d6a72918d782ba900547941089debfe
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 21 10:26:47 2019 -0700
+
+    LP1739607: Add missing columns to patron record
+    
+    To test:
+    1) Open up a patron record with some bills.
+    2) On the Items Out tab, notice that there is a column named Location
+    3) On the Bills tab, open up Bill history.
+    4) In the history transactions grid, note that the column picker is
+    missing the following columns:
+      * Item owning library
+      * Checkout/renewal library
+      * Due date
+      * Fines Stopped Reason
+    5) In the history payments grid, note that the column picker is missing
+    the same columns.
+    6) Apply this commit.
+    7) Note that the Items Out tab's column is renamed to "Shelving
+    Location".
+    8) Notice that both Bill history grids column pickers include the
+    requested columns.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+4	1	Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2
+4	0	Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+
+commit 403fed85ad5cd81949966968933d2d39c1924c12
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Sep 19 08:46:12 2019 -0400
+
+    Forward port 3.1.14 to 3.1.15 db upgrade script
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.1.14-3.1.15-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.1.14-3.1.15-upgrade-db.sql
