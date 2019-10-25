@@ -3,6 +3,65 @@ Evergreen 3.4 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.4.1
+---------------
+
+This release contains bug fixes improving on Evergreen 3.4.0.
+
+Bug Fixes
+~~~~~~~~~
+
+* Reduce the cost of utility functions, speeding up search (https://bugs.launchpad.net/evergreen/+bug/1836963[Bug 1836963])
+* Fixes Current Date in Date Returned in Circ History CSV (https://bugs.launchpad.net/evergreen/+bug/1813056[Bug 1813056])
+* Fix Last Captured Hold Check for Holds Shelf (https://bugs.launchpad.net/evergreen/+bug/1827250[Bug 1827250])
+* Only include OPAC-visible copies in SRU/Z39.50 holdings (https://bugs.launchpad.net/evergreen/+bug/1609556[Bug 1609556])
+* Re-alphabetize Local & Server Administration Links (https://bugs.launchpad.net/evergreen/+bug/1803790[Bug 1803790])
+* Allow saving Bill Full Details grids (https://bugs.launchpad.net/evergreen/+bug/1729435[Bug 1729435])
+* Improve usability of Patron Bill History date selector (https://bugs.launchpad.net/evergreen/+bug/1841089[Bug 1841089])
+* MARC Batch Import/Export: Disable grid row select on queued record matches (https://bugs.launchpad.net/evergreen/+bug/1842763[Bug 1842763])
+* Fix when the "duplicate barcode" alert appears (https://bugs.launchpad.net/evergreen/+bug/1777698[Bug 1777698])
+* Fix paging of pending patrons (https://bugs.launchpad.net/evergreen/+bug/1749970[Bug 1749970])
+* Check bib visibility for located URI auto suggest (https://bugs.launchpad.net/evergreen/+bug/1802952[Bug 1802952])
+* Patron Prefix and Suffix Display in Summary (https://bugs.launchpad.net/evergreen/+bug/1821969[Bug 1821969])
+* Numerous usability improvements to the Booking module (https://bugs.launchpad.net/evergreen/+bug/1816475[Bug 1816475])
+* Do not include Tag Owner in Tag (https://bugs.launchpad.net/evergreen/+bug/1825403[Bug 1825403])
+* Browser refresh no longer closes an open purchase order (https://bugs.launchpad.net/evergreen/+bug/1765434[Bug 1765434])
+* Avoid hard-coded paths in Apache config (https://bugs.launchpad.net/evergreen/+bug/1844720[Bug 1844720])
+* Close all open dialogs on Angular route change (https://bugs.launchpad.net/evergreen/+bug/1849372[Bug 1849372])
+* Offline: Non-cataloged item receipt printing (https://bugs.launchpad.net/evergreen/+bug/1806783[Bug 1806783])
+* Require some Storage submodules instead of use them (https://bugs.launchpad.net/evergreen/+bug/1835620[Bug 1835620])
+* Test Angular(JS) with modern browsers (https://bugs.launchpad.net/evergreen/+bug/1845693[Bug 1845693])
+* Remove "Install latest LTS node from source" docs (https://bugs.launchpad.net/evergreen/+bug/1849506[Bug 1849506])
+* Remove extra grid refresh from configuration load (https://bugs.launchpad.net/evergreen/+bug/1846038[Bug 1846038])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.4.1 point release of Evergreen:
+
+* Andrea Buntz
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Dan Scott
+* Dan Wells
+* Galen Charlton
+* Garry Collum
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* Josh Stompro
+* Kyle Huckins
+* Michele Morgan
+* Mike Rylander
+* Remington Steed
+* Terran McCanna
+* Tiffany Little
+
+
 Evergreen 3.4.0
 ---------------
 The Evergreen 3.4.0 release is a major feature release.
