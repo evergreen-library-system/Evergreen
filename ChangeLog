@@ -1,3 +1,989 @@
-Evergreen doesn't keep a GNU-style ChangeLog except in release tarballs.
-Those seeking a change log are encouraged to run 'git log -v', or read
-it online at: http://git.evergreen-ils.org/?p=Evergreen.git;a=log
+commit faf577db73af6ce1c0627184b009ed847046d1a6
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Oct 25 17:00:03 2019 -0400
+
+    Update server upgrade docs
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+16	16	docs/installation/server_upgrade.adoc
+
+commit 24c237b74b959ed930033ce4be4a3bf9f05bf4d0
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Fri Oct 25 16:57:36 2019 -0400
+
+    Bump OpenILS.pm version
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS.pm
+
+commit 50b1980d090d7efe2e55cf2b8621de8b3096c3e4
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Fri Oct 25 15:49:00 2019 -0400
+
+    Docs: Add 3.3.5 point release notes
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+67	0	docs/RELEASE_NOTES_3_3.adoc
+
+commit c26c567b044fa8c7a6175f71b5116117a63f577c
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Tue Oct 22 10:55:41 2019 -0400
+
+    LP#1846038 Remove extra grid refresh from configuration load
+    
+    Bug LP#1790169 added the ability to save sorting configuration, but it
+    also added an additional grid refresh to the configuration load.  This
+    breaks grid loading.
+    
+    The expected flow is for is to first load any existing configuration,
+    then do the first collect() for the grid.  This refresh() call adds
+    potentially a second collect() which may run earlier than it should,
+    and overall does not seem necessary.
+    
+    To test:
+    
+    (Make sure you are testing on current master or rel_3_3/3_4, or you
+    will (like me) hit related bugs which have been fixed.  Also, some
+    grids (especially circ) do not honor sort for other reasons, so avoid
+    those for now.)
+    
+    1) Find a grid which has a typical get() process.  Suggestion would be
+    a basic auto grid, such as full bill details,
+    https://localhost/eg/staff/circ/patron/11/bill/43/details .
+    2) Set a sort value you can see, then *save* the configuration.
+    3) Before the patch, billing details grid doesn't load.  After patch,
+    grid loads and still honors the defined sort.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+0	1	Open-ILS/web/js/ui/default/staff/services/grid.js
+
+commit 786456fd7171fb485efa1c112b9edb0be030b6cd
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Sun Jul 7 07:18:01 2019 -0400
+
+    Lp 1835620: Require some Storage submodules instead of use them
+    
+    Switch from "use" to "require" for submodules in OpenILS::Application
+    ::Storage::CDBI and OpenILS::Application::Storage::Driver::Pg.
+    Circular dependencies and other issues cause the following errors at
+    compile time for those modules:
+    
+    Compilation failed in require at
+    /usr/local/share/perl/5.28.1/OpenILS/Application/Storage/CDBI.pm line
+    9.
+    
+    Compilation failed in require at
+    /usr/local/share/perl/5.26.1/OpenILS/Application/Storage/Driver/Pg.pm
+    line 15.
+    
+    Require loads the submodules at run time and does not attempt to
+    import any methods.  This is the behavior we want, eliminates the
+    above errors, and everything still works.
+    
+    Add comments above the required modules explaining why require is
+    needed and not use.
+    
+    Enable and reorder all of the tests in Open-ILS/src/perlmods/t/
+    09-OpenILS-Application-Storage-Driver.t.  Repairing the above issue
+    also repairs these tests.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+16	12	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/CDBI.pm
+9	4	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg.pm
+4	6	Open-ILS/src/perlmods/t/09-OpenILS-Application-Storage-Driver.t
+
+commit 3cb4c18e8d5b15a828234e77708b005757d68095
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Thu Mar 7 12:55:46 2019 -0500
+
+    LP#1806783 Offline: Non-cataloged item receipt printing
+    
+    When checkout out non-cataloged items in the offline interface,
+    the receipt will now print 'Non-cataloged item' and the number
+    of items rather than printing nothing.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+4	3	Open-ILS/src/templates/staff/share/print_templates/t_offline_checkout.tt2
+
+commit b31b35ed486ce8b6723d97c454049444d52ff738
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Tue Oct 22 15:54:13 2019 -0400
+
+    LP1849372 Close all open dialogs on Angular route change
+    
+    On all angular route changes, force close any open dialogs, since it
+    makes little sense for them to persist across interfaces.
+    
+    To test:
+    
+    [1] Navigate to Server Administration
+    [2] Navigate to Age Hold Protection Rule Configuration
+    [3] Double-click a grid row to open an edit dialog
+    [4] Click browser back button to return to the Server Admin page
+    [5] Confirm edit dialog closes once the navigation is complete.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+12	0	Open-ILS/src/eg2/src/app/app.component.ts
+22	0	Open-ILS/src/eg2/src/app/share/dialog/dialog.component.ts
+
+commit 14385443b65ace59a21470eb5ad2406b9915c7da
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Sep 19 12:51:28 2019 -0700
+
+    LP#1844720: avoid hard-coded paths in Apache config
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	2	Open-ILS/examples/apache_24/eg_vhost.conf.in
+
+commit da0d83259f1c04eaf144cfe773ace998c8fd0460
+Author: Tiffany Little <tlittle@georgialibraries.org>
+Date:   Mon Mar 18 13:51:03 2019 -0400
+
+    LP #1765434 Browser refresh closes purchase order
+    
+    Adds a Refresh button to refresh the iframe in place.
+    
+    Signed-off-by: Tiffany Little <tlittle@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+1	0	Open-ILS/src/templates/staff/share/t_eframe.tt2
+
+commit d94d60e441f89a5870b02a7a0dcfc28d39d85b1d
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 22 09:18:29 2019 -0400
+
+    LP1825403: Do not Include Tag Owner in Tag
+    
+    Copy tags were accidentally having their owning
+    location shortname included in the tag values,
+    this patch allows the owner to be displayed but
+    not included in the value used.
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+1	1	Open-ILS/src/templates/staff/cat/bucket/copy/t_apply_tags.tt2
+1	1	Open-ILS/src/templates/staff/cat/volcopy/t_copy_tags.tt2
+1	1	Open-ILS/web/js/ui/default/staff/cat/bucket/copy/app.js
+1	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit deae759b3f8a67acea84613aae52d6f71d0d19bb
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Oct 21 16:56:31 2019 -0400
+
+    Docs: Fix image syntax in Authority Browse infrastructure docs
+    
+    There are two image references in the docs section "Infrastructure
+    Changes to Authority Browse" that use incorrect AsciiDoc syntax, and
+    therefore the images don't display in the docs. This commit fixes them
+    (changing "images::" to "image::", removing the "s").
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+
+2	2	docs/admin/infrastructure_auth_browse.adoc
+
+commit bdaa9e58432a8794e38b59f52ffad70cf45567c6
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Mon Sep 16 14:50:16 2019 -0400
+
+    LP1821969 Additional fix to second_given_name
+    
+    Adds primary second_given_name to the preferred name if there is no
+    preferred second_given_name. This matches the behavior of the other name
+    fields.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit 10ef5770fd7a76a4637f2bf5bb90273720f3e862
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Tue May 7 20:57:50 2019 -0400
+
+    LP1821969 Patron Prefix and Suffix Display in Summary
+    
+    Adds support for displaying the patron prefix, suffix, preferred prefix, and preferred suffix in the patron summary sidebar.
+    
+    To test:
+      1. Add a combination of prefixes, suffixes, preferred prefixes, and preferred suffixes to several patrons.
+      2. Also add some other preferred information to some of these patrons.
+      3. In the sidebar notice the lack of prefix information in both the patron's main heading and in the preferred name information.
+      4. Apply the patch.
+      5. In the sidebar the prefixes and suffixes are now displayed.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/src/templates/staff/circ/patron/index.tt2
+5	3	Open-ILS/src/templates/staff/circ/patron/t_summary.tt2
+
+commit 8596a3d80ef83b5b5f89ca741ecea4d5e4e1232e
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Mon Oct 21 14:08:39 2019 -0400
+
+    LP#1802952: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+146	0	Open-ILS/src/sql/Pg/upgrade/1195.function.located_uri_auto_suggest_visibility.sql
+0	146	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1195.function.located_uri_auto_suggest_visibility.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+
+commit 0e6674933e3791292d4ce60093b9c301ef198153
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Mon Nov 12 11:31:33 2018 -0500
+
+    LP#1802952 Check bib visibility for located URI auto suggest
+    
+    Suggestions from records with only located URIs (no copies) do not
+    appear in the OPAC search suggestions. This appears to be a cousin of
+    bug #1773479, but in a neighboring function.
+    
+    In the case of libraries with LURIs, we need to consider bib visibility
+    separate from copy visibility in order for both to show up.
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+16	2	Open-ILS/src/sql/Pg/300.schema.staged_search.sql
+146	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.located_uri_auto_suggest_visibility.sql
+
+commit bab02762d4beb66f818dda67271821f28e629735
+Author: Jeff Godin <jgodin@tadl.org>
+Date:   Tue Apr 2 12:49:18 2019 -0400
+
+    LP#1749970 Fix paging of pending patrons
+    
+    Fix paging of pending patrons by passing a count and offset to the
+    backend API call.
+    
+    Signed-off-by: Jeff Godin <jgodin@tadl.org>
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/web/js/ui/default/staff/circ/patron/pending.js
+
+commit dca8175365b11a2e53d8adf06505d4f7598827bd
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sat Aug 10 21:02:00 2019 -0400
+
+    LP#1777698 Duplicate barcode alert appearing on new barcodes
+    
+    When scanning new copy barcodes, ng-change quickly fires multiple times
+    and sends promises to check for duplicates. If 1234 exists and you scan
+    12345, if the 1234 promise resolves after 12345, it will indicate it's a
+    duplicate. This patch keeps a count of the promises sent and only the
+    latest promise will set the boolean to indicate if it's a duplicate.
+    
+    Hard to test because the promises usually resolve in order:
+    1. Add a new holding with the first few characters of an unused barcode
+    2. Scan the new barcode multiple times until you see the dup error
+    3. Apply patch and scan the new barcode multiple times (no error)
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+
+7	1	Open-ILS/web/js/ui/default/staff/cat/volcopy/app.js
+
+commit 0cf35416ac19de66ba0ba87c3659c80a42891c82
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Oct 10 11:04:48 2019 -0700
+
+    LP#1842763: Vandelay: disable grid row select on queued record matches
+    
+    Users are on this screen to select a merge target, which they do by
+    selecting a cell in the Merge Target column.  The grid selector
+    checkboxes are confusing and useless (they don't support the purpose of
+    this screen and there are no supported actions for selected rows).
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+
+1	1	Open-ILS/src/eg2/src/app/staff/cat/vandelay/queued-record-matches.component.html
+
+commit 0372e410f07be10925016025df5ae74ef6498143
+Author: Dan Briem <dbriem@wlsmail.org>
+Date:   Sat Aug 24 14:44:01 2019 -0400
+
+    LP#1841089 Apply button in Patron Bill History screen is in confusing location
+    
+    It's possible to miss the apply button for the date range in bill history
+    because it's located before the datepickers. The interface also allows
+    invalid date ranges.
+    
+    This removes the apply button and watches the start and finish dates in the
+    bill history and payment history controllers. If it's not first init and they
+    are valid date objects in a valid date range, the grid refreshes with the new
+    date range query. If start > finish they are set equal to each other to force
+    a valid range.
+    
+    To test:
+    
+    1. Apply patch
+    2. Bring up a patron with bills and payments (or add bills and payments)
+    3. Under the Bills tab click History
+    4. Change the date range and observe that the grid refreshes
+    5. Try to set the start date past the finish date and vice versa
+    
+    Signed-off-by: Dan Briem <dbriem@wlsmail.org>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+0	4	Open-ILS/src/templates/staff/circ/patron/t_bill_history.tt2
+38	0	Open-ILS/web/js/ui/default/staff/circ/patron/bills.js
+
+commit e1e01fcd831c25265a3bd268d578422c9307016c
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Oct 4 10:33:45 2019 -0400
+
+    LP#1729435: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/1193.data.circ-payment-detail-grid-persist-key.sql
+0	21	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-payment-detail-grid-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1193.data.circ-payment-detail-grid-persist-key.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-payment-detail-grid-persist-key.sql
+
+commit 55c0fd83e5555bbe6fca21f0f4626037cffa6a98
+Author: Michele Morgan <mmorgan@noblenet.org>
+Date:   Fri Apr 5 16:55:19 2019 -0400
+
+    LP#1729435: Add Seed Data for WS type for Bill Full Details grids
+    
+    Adds the config.workstation_setting_type values to the seed data and
+    an upgrade script to allow storing in the database.
+    
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+15	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+21	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-payment-detail-grid-persist-key.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.circ-payment-detail-grid-persist-key.sql
+
+commit e3f9351e197a2af3af194c5a56420a57af156a7c
+Author: Remington Steed <rjs7@calvin.edu>
+Date:   Mon Nov 5 16:11:35 2018 -0500
+
+    LP#1729435: Allow saving Bill Full Details grids
+    
+    For a web staff eg-grid to save and retrieve its settings, it needs a unique
+    persist-key. This commit adds one for the Bills grid and Payments grid on the
+    patron bills Full Details view (right-click a bill, choose Full Details, then
+    click the Details tab).
+    
+    Signed-off-by: Remington Steed <rjs7@calvin.edu>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Jennifer Pringle <jennifer.pringle@bc.libraries.coop>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/templates/staff/circ/patron/t_xact_details_details.tt2
+
+commit cc403bf572c454461f8ef6e6697d8e0da90df20c
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Wed Mar 6 16:40:53 2019 -0500
+
+    LP#1803790 Re-alphabetize Local & Server Administration Links
+    
+    Small fix that re-orders the links that were out of order due
+    to link name changes.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	7	Open-ILS/src/templates/staff/admin/local/t_splash.tt2
+3	3	Open-ILS/src/templates/staff/admin/server/t_splash.tt2
+
+commit a4861f4558fc3b6d7b44bbe6bb791a966c10c6ec
+Author: Jeff Davis <jdavis@sitka.bclibraries.ca>
+Date:   Tue Oct 2 14:28:31 2018 -0700
+
+    LP#1609556: only include OPAC-visible copies in SRU/Z39.50 holdings
+    
+    To test:
+    
+    1. Create a bib record.
+    2. Add an item to the record at BR1. Mark it as not OPAC-visible.
+    3. Do a CONS-level SRU search for the record, including holdings. The
+       record is not included in results because there are no OPAC-visible
+       holdings.
+    4. Add a second item to the same record, this time at BR3. Mark this
+       one as OPAC-visible.
+    5. Repeat the CONS-level SRU search, including holdings. The record
+       appears in search results, but holdings information in 852 includes
+       *all* copies, including non-OPAC-visible copies.
+    
+    Signed-off-by: Jeff Davis <jdavis@sitka.bclibraries.ca>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+7	0	Open-ILS/src/perlmods/lib/OpenILS/WWW/SuperCat.pm
+
+commit d8a88c911a2672862bfa8a75312f203f1cfdd57a
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu May 2 08:36:15 2019 -0400
+
+    LP 1827250: Fix Last Captured Hold Check for Holds Shelf
+    
+    When the current copy on an on shelf hold is the same as that on some
+    uncaptured holds, the hold fails to appear on the hold shelf when it
+    should.  This comes down to some SQL in the storage function to
+    retrieve wide holds: open-ils.storage.action.live_holds.wide_hash.
+    
+    The intent of the new code is to check that the current hold matches
+    the most recently captured hold for the copy.  However, the order by
+    in the query fails to take into account holds with a NULL capture time
+    on the same copy will sort before the captured holds.  This patch
+    rectifies this situation by adding "NULLS LAST" to the order by.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Michele Morgan <mmorgan@noblenet.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Publisher/action.pm
+
+commit 2cd48a13948524e8cb2d48433256a2654a656a18
+Author: Garry Collum <gcollum@gmail.com>
+Date:   Mon May 20 12:48:10 2019 -0400
+
+    lp1813056 Fixes Current Date in Date Returned in Circ History CSV
+    
+    The date returned column in the csv file created in the opac for the patron's
+    Check Out History contains the current date instead of the check-in date. This
+    patch fixes that issue.
+    
+    To test:
+    1. Turn on "Keep history of checked out items" in the patron Search and
+    History Preferences in the opac, or find a patron that already has this
+    option turned on.
+    2. Check-in some items that the patron has checked-out.
+    3. Wait a day, or if it was an existing history list immediately, go to the patron's Items Checked Out in the opac and look at the Date Returned
+    column in the Check Out History list.
+    4. Download the CSV file and note that the date is the current date.
+    5. Apply the patch.
+    6. Refresh and download the CSV file again and note that the Date Returned
+    is now the checkin date.
+    
+    Signed-off-by: Garry Collum <gcollum@gmail.com>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+
+1	1	Open-ILS/src/templates/opac/myopac/circ_history/export.tt2
+
+commit 3fd423bf541d74d288ad96135979b91a404b46b6
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Jul 17 17:14:01 2019 -0400
+
+    LP#1836963: reduce the cost of utility functions, speeding up search
+    
+    For large org trees, some several seconds are spent testing org visibility.
+    The immediate cause is that AppUtils::get_org_tree() does not populate the
+    process-local cache with a memcache-cached org tree. That only happens when
+    memcache does not have a copy of the org tree. This is obviously a simple
+    oversight, which is addressed by making sure any memcache return value
+    is pushed into the the process local cache.
+    
+    Additionally, the visibility check is making heavy use of lots of
+    indirection and delegation to utility code, when some slightly smarter code
+    could avoid many repeated function calls.  We now supply some local
+    utility code to flesh and unflesh the parent_ou field of objects in the
+    org tree, allowing us to avoid using find_org() and instead just calling
+    parent_ou() when walking "up" the tree.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	0	Open-ILS/src/perlmods/lib/OpenILS/Application/AppUtils.pm
+19	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Storage/Driver/Pg/QueryParser.pm
+
+commit df12481472fd7d7f73b827fa24f7041df4ef9fe7
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Tue Oct 1 14:47:07 2019 -0700
+
+    LP1842940: stamping and slight tweak to upgrade script
+    
+    Mike Rylander suggested the INSERT ... SELECT ... WHERE NOT
+    EXISTS approach, since this fix is being backported to older
+    releases, and we don't want to cause duplicate entries or
+    upgrade failures if the perm already exists
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+14	0	Open-ILS/src/sql/Pg/upgrade/1191.data.lp1842940_staff_edit_self_perm.sql
+0	10	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1191.data.lp1842940_staff_edit_self_perm.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+
+commit d55719ae78a779e3f3700458c387af461ddc95fb
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Tue Sep 17 11:07:04 2019 -0400
+
+    LP#1842940: Improve Alert
+    
+    Attempt to float the alerts below the sticky bar and above the main
+    content of the user editor.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+7	5	Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2
+6	0	Open-ILS/src/templates/staff/css/circ.css.tt2
+
+commit a344b4f4c673db98c7d68bfa7434b42facf1c9a1
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Wed Sep 11 14:46:44 2019 -0400
+
+    LP#1842940: Alert when editing is disallowed
+    
+    Provide functions that checks the permissions required to edit ones
+    own account, or accounts in groups based on group application
+    permissions, and alert the user if and why they can't edit an account.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+6	0	Open-ILS/src/templates/staff/circ/patron/reg_actions.tt2
+13	2	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+8	0	Open-ILS/web/js/ui/default/staff/offline.js
+
+commit 2b3eaf7f66c22bdaa8d27a0322b9935d5110563a
+Author: Jeff Davis <jeff.davis@bc.libraries.coop>
+Date:   Thu Sep 5 10:23:55 2019 -0700
+
+    LP#1842940: add perm to permit staff to edit their own accounts in the client
+    
+    Signed-off-by: Jeff Davis <jeff.davis@bc.libraries.coop>
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+3	1	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+10	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+2	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.lp1842940_staff_edit_self_perm.sql
+
+commit fad7cdd2950fd21cb62229af5790dd5722a0fdd4
+Author: Mike Rylander <mrylander@gmail.com>
+Date:   Thu Sep 5 11:34:51 2019 -0400
+
+    LP#1842940: Don't allow self-edit or perm-restricted edit
+    
+    Pre-webstaff, we disallowed editing of ones own record, an of records
+    that have a group application permission that the staff do not possess.
+    
+    This commit brings back those restrictions.
+    
+    Signed-off-by: Mike Rylander <mrylander@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+
+14	0	Open-ILS/web/js/ui/default/staff/circ/patron/regctl.js
+
+commit 8e8cd76ed09bfd64ee87abd7cfaf46609840b3a0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:24:16 2019 -0400
+
+    LP#1835085: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+9	0	Open-ILS/src/sql/Pg/upgrade/1190.data.auto_renewal-not-desk_renewal.sql
+0	9	Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1190.data.auto_renewal-not-desk_renewal.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+
+commit f63d10d6361a5528a0e23a0dbfeccd429b357091
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Mon Sep 9 08:47:09 2019 -0400
+
+    Lp 1835085: Update Item Status templates for auto-renewal
+    
+    Add checks for circ.auto_renewal() == 't' in the circ list and summary
+    pane views of the web staff client Item Status interface.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	1	Open-ILS/src/templates/staff/cat/item/t_circ_list_pane.tt2
+1	0	Open-ILS/src/templates/staff/cat/item/t_summary_pane.tt2
+
+commit 1bd222955189359100d779ad236bc8b28ee483e3
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Fri Aug 30 11:37:24 2019 -0400
+
+    Lp 1835035: Refactor auto_renewal back end code
+    
+    Refactor the auto_renewal feature so that it works like other renewal
+    types: opac_renewal, sip_renewal, etc.  This refactor prevents
+    desk_renewal from being set when auto_renewal is set.
+    
+    Deprecate the newly added open-ils.circ.renew.auto API and ensure that
+    it still works as intended.  Add release note indicating the
+    deprecation of this API and intent to remove it in Evergreen 3.5.
+    
+    Modify the AutoRenew action trigger reactor to use the plain
+    open-ils.circ.renew API with the auto_renewal option set to 1.
+    
+    Add database update script to cleanup (i.e. set to FALSE) the
+    desk_renewal field on action.circulation and action.aged_circulation
+    tables where auto_renewal is TRUE.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+13	11	Open-ILS/src/perlmods/lib/OpenILS/Application/Circ/Circulate.pm
+2	2	Open-ILS/src/perlmods/lib/OpenILS/Application/Trigger/Reactor/Circ/AutoRenew.pm
+9	0	Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+6	0	docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.data.auto_renewal-not-desk_renewal.sql
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Circulation/auto-renew-api-deprecation.adoc
+
+commit 55ff53e23f49dd34970cfc0f4af2a522d4df541f
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:19:51 2019 -0400
+
+    LP#1835577: stamp schema updates
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+31	0	Open-ILS/src/sql/Pg/upgrade/1189.schema.auto_renewal_view_updates.sql
+0	31	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1189.schema.auto_renewal_view_updates.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+
+commit 6466c8f390b2d9717d0b5bf614253f970311fac0
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Tue Sep 10 11:27:07 2019 -0400
+
+    Lp 1835577: Add more missing auto_renewal fields
+    
+    Add missing auto_renewal and auto_renewal_remaining fields to the
+    following additional IDL classes:
+    
+    * aacs
+    * aoc
+    * circbyyr
+    * robcirc
+    
+    Add database updates to add auto_renewal fields to the following
+    views:
+    
+    * action.billable_circulations
+    * action.open_circulation
+    * reporter.circ_type
+    * reporter.overdue_circs
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+8	2	Open-ILS/examples/fm_IDL.xml
+1	1	Open-ILS/src/sql/Pg/reporter-schema.sql
+31	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.auto_renewal_view_updates.sql
+
+commit d833fd006722bb6f94532b07e25e01eb1a095ad1
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 10:15:33 2019 -0400
+
+    Lp 1835577: Add missing Auto Renewal fields to the IDL
+    
+    Add entries for auto_renewal and auto_renewal_remaining fields to the
+    acirc and combcirc classes in fm_IDL.xml.  They were missing after the
+    auto-renewal feature was added.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	0	Open-ILS/examples/fm_IDL.xml
+
+commit 8b954cea5280e924cc1bd4a45e82191e0c462c02
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:15:36 2019 -0400
+
+    LP#1839002: stamp DB update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+20	0	Open-ILS/src/sql/Pg/upgrade/1188.schema.action_circulation-auto_renewal-default-false.sql
+0	20	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1188.schema.action_circulation-auto_renewal-default-false.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+
+commit 46e16c06bde3414e2c266851c2ca66c65e97aa3b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 11:06:56 2019 -0400
+
+    Lp 1839002: Default circulation auto_renewal field to FALSE
+    
+    Change the definition of the action.circulation table so that the
+    auto_renewal field is not null, default false.
+    
+    Add an upgrade script to update the field values and alter the field
+    definition in both the action.circulation and action.aged_circulation
+    tables.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/090.schema.action.sql
+20	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.action_circulation-auto_renewal-default-false.sql
+
+commit 2c4ff2a6970d4a0b0f0356e91589a27b724c52d0
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Oct 1 17:06:16 2019 -0400
+
+    LP#1840669: stamp schema update
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/002.schema.config.sql
+47	0	Open-ILS/src/sql/Pg/upgrade/1187.function.age_circ_on_delete-auto_renewal.sql
+0	47	Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1187.function.age_circ_on_delete-auto_renewal.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+
+commit 1c870534cff8acb017b30c33a1471818e2d7417b
+Author: Jason Stephenson <jason@sigio.com>
+Date:   Thu Aug 29 10:03:50 2019 -0400
+
+    Lp 1840669: Handle autorenewals when aging circulations
+    
+    Add auto_renewal and auto_renewal_remaining fields to the
+    action.age_circ_on_delete trigger function.
+    
+    Signed-off-by: Jason Stephenson <jason@sigio.com>
+    Signed-off-by: John Amundson <jamundson@cwmars.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+4	2	Open-ILS/src/sql/Pg/090.schema.action.sql
+47	0	Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.function.age_circ_on_delete-auto_renewal.sql
+
+commit dbe2105bf097e2073ef8ca43c384d87b86b059ec
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Tue Sep 24 13:48:08 2019 -0400
+
+    LP#1845050: fix issue where reports interface was partially loaded
+    
+    This patch adjusts mod_xmlent to not free its XML parser
+    prematurely in the face of an EOS bucket received while processing
+    a sub-request.
+    
+    To test
+    -------
+    [1] Test on a platform that has Apache 2.4.25 or later, such as
+        Debian Stretch.
+    [2] Note that when loading the reports interface that the source
+        of the frame containing oils_rpt.xhtml is incomplete and that
+        actions like creating a template or folder do not work in the
+        interface.
+    [3] Apply the patch and repeat step 2. This time, oils_rpt.xhtml
+        should be fully loaded and the interface fuctional.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+12	2	Open-ILS/src/apachemods/mod_xmlent.c
+
+commit bf4fe1956ef27114c41e20ec10693467ea3a9673
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 15:44:08 2019 -0400
+
+    LP#1811442 - Assign copy alert permissions.
+    
+    VIEW_COPY_ALERTS and ADMIN_COPY_ALERT permissions were added
+    recently, but not assigned in the default seed data.  This branch
+    assigns VIEW_COPY_ALERTS to Staff profiles at the Consortium depth
+    and adds ADMIN_COPY_ALERT to the Cataloging Administrator profile.
+    
+    Since permissions are set so specifically per-site, this branch does
+    not contain an upgrade script, but does provide an update to release
+    notes reminding site admins to manually add them to the appropriate
+    profiles.
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Kyle Huckins <khuckins@catalyte.io>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	0	Open-ILS/src/sql/Pg/950.data.seed-values.sql
+15	0	docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+ create mode 100644 docs/RELEASE_NOTES_NEXT/Administration/copy-alert-perms-assigned-in-seed-data.adoc
+
+commit 97418997d49cecf8154df06f91c5a0dfbed180ab
+Author: Bill Erickson <berickxx@gmail.com>
+Date:   Wed May 23 11:13:16 2018 -0400
+
+    LP#1560805 Webstaff locale picker repair
+    
+    Make the locale picker less finicky by replacing the search/replace
+    regex with a simple static URL for applying the locale.
+    
+    Signed-off-by: Bill Erickson <berickxx@gmail.com>
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+
+2	5	Open-ILS/web/js/ui/default/staff/services/navbar.js
+
+commit 1b3867822b20dc5e7dd6ae7e90ed30d6b9c6ece2
+Author: Jason Boyer <jboyer@equinoxinitiative.org>
+Date:   Tue Oct 1 15:10:56 2019 -0400
+
+    LP#1768141: Stamping Upgrade Script
+    
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+7	0	Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+0	7	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/1185.schema.mark_perm_grp_descendants_stable.sql
+ delete mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit c4eb5f14666e3a5a782df10b994fac3572244009
+Author: Galen Charlton <gmc@equinoxinitiative.org>
+Date:   Fri Aug 2 10:41:44 2019 -0400
+
+    LP#1768141: (follow-up) change schema update
+    
+    Change the update to an "ALTER FUNCTION ... STABLE" both
+    to make the purpose of the update more clear and to remove
+    the need to check the rest of the function definition when
+    backporting.
+    
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	13	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit f240b366613e404749ef6fc8de1afc9e88930e8a
+Author: Chris Sharp <csharp@georgialibraries.org>
+Date:   Mon May 20 16:14:00 2019 -0400
+
+    LP#1768141 - Mark permission.grp_descendants STABLE.
+    
+    Quoting Galen Charlton's comments on the bug report:
+    
+    The database function permission.grp_descendants should
+    be marked stable; it qualifies, and doing so should allow
+    PostgreSQL to improve query plans. One example of a query
+    that would benefit is searching by patron profile (a la
+    bug 1497322)
+    
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+    Signed-off-by: Galen Charlton <gmc@equinoxinitiative.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+1	1	Open-ILS/src/sql/Pg/006.schema.permissions.sql
+19	0	Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+ create mode 100644 Open-ILS/src/sql/Pg/upgrade/XXXX.schema.mark_perm_grp_descendants_stable.sql
+
+commit 4af104b7aee90f7232d9011f1bc981a252a2c725
+Author: Jane Sandberg <sandbej@linnbenton.edu>
+Date:   Wed Aug 21 10:26:47 2019 -0700
+
+    LP1739607: Add missing columns to patron record
+    
+    To test:
+    1) Open up a patron record with some bills.
+    2) On the Items Out tab, notice that there is a column named Location
+    3) On the Bills tab, open up Bill history.
+    4) In the history transactions grid, note that the column picker is
+    missing the following columns:
+      * Item owning library
+      * Checkout/renewal library
+      * Due date
+      * Fines Stopped Reason
+    5) In the history payments grid, note that the column picker is missing
+    the same columns.
+    6) Apply this commit.
+    7) Note that the Items Out tab's column is renamed to "Shelving
+    Location".
+    8) Notice that both Bill history grids column pickers include the
+    requested columns.
+    
+    Signed-off-by: Jane Sandberg <sandbej@linnbenton.edu>
+    Signed-off-by: Josh Stompro <stompro@stompro.org>
+    Signed-off-by: Jason Boyer <jboyer@equinoxinitiative.org>
+
+4	1	Open-ILS/src/templates/staff/circ/patron/t_bill_history_payments.tt2
+4	0	Open-ILS/src/templates/staff/circ/patron/t_bill_history_xacts.tt2
+1	1	Open-ILS/src/templates/staff/circ/patron/t_items_out.tt2
+
+commit 984167cd30a728f26a3a1379da2bcb759766da9b
+Author: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+Date:   Tue Oct 1 13:57:32 2019 -0400
+
+    Docs: minor formatting changes to Hide Fields doc
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+12	18	docs/cataloging/holdings_editor_hide_fields.adoc
+
+commit eea3e8238bb8358d0a068a7cb8519d9d139972c5
+Author: Beth Willis <willis@noblenet.org>
+Date:   Tue Oct 1 13:32:06 2019 -0400
+
+    Docs: adding Hiding Fields in Holdings Editor docs and screenshots
+    
+    Signed-off-by: Andrea Buntz Neiman <abneiman@equinoxinitiative.org>
+
+40	0	docs/cataloging/holdings_editor_hide_fields.adoc
+-	-	docs/media/Holdings_Editor_Defaults_Tab.png
+-	-	docs/media/Holdings_Editor_Hide_Display_Defaults.png
+2	0	docs/root.adoc
+2	0	docs/root_cataloging.adoc
+ create mode 100644 docs/cataloging/holdings_editor_hide_fields.adoc
+ create mode 100644 docs/media/Holdings_Editor_Defaults_Tab.png
+ create mode 100644 docs/media/Holdings_Editor_Hide_Display_Defaults.png
+
+commit 47a688e701b9377eb2c1feeef9989c54f366abdd
+Author: Terran McCanna <tmccanna@georgialibraries.org>
+Date:   Mon Sep 16 15:45:52 2019 -0400
+
+    LP#1843637 MARC View Display Issues
+    
+    This fixes vertical alignment issues in the MARC View table
+    by removing the deprecated valign tags and moving the inline
+    CSS to the cat.css file. The text within each table cell should
+    now align to the top for better readability.
+    
+    Signed-off-by: Terran McCanna <tmccanna@georgialibraries.org>
+    Signed-off-by: Chris Sharp <csharp@georgialibraries.org>
+
+22	0	Open-ILS/src/templates/staff/css/cat.css.tt2
+5	6	Open-ILS/xsl/oilsMARC21slim2HTML.xsl
+
+commit 193c70ed5d7aa697f52e76cf8f6057672e9f08f4
+Author: Dan Wells <dbw2@calvin.edu>
+Date:   Thu Sep 19 15:34:47 2019 -0400
+
+    Forward-port 3.3.4 upgrade script
+    
+    Signed-off-by: Dan Wells <dbw2@calvin.edu>
+
+5	0	Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.3.4-upgrade-db.sql
+ create mode 100644 Open-ILS/src/sql/Pg/version-upgrade/3.3.3-3.3.4-upgrade-db.sql
