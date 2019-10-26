@@ -20,8 +20,9 @@
        <div class="checkbox">
         <label>
           <input ng-model="args.pub" type="checkbox"> 
-          [% l('Staff Sharable?') %]
+          [% l('Shareable') %]
         </label>
+        <eg-help-popover help-text="[%l('Visible and searchable by any staff member')%]">
       </div>
     </div>
     <div class="modal-footer">
