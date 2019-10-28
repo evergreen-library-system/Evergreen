@@ -57,6 +57,7 @@ INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('renewal','c
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('checkout.due.emergency_closing','aecc','Circulation due date was adjusted by the Emergency Closing handler');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('hold.shelf_expire.emergency_closing','aech','Hold shelf expire time was adjusted by the Emergency Closing handler');
 INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('booking.due.emergency_closing','aecr','Booking reservation return date was adjusted by the Emergency Closing handler');
+INSERT INTO action_trigger.hook (key,core_type,description) VALUES ('bre.edit','bre','A bib record was edited');
 
 -- and much more, I'm sure
 

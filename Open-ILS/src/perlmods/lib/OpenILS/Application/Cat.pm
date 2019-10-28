@@ -172,6 +172,7 @@ sub biblio_record_replace_marc  {
         $e, $recid, $newxml, $source, $fix_tcn, $oargs, $strip_grps);
 
     $e->commit unless $U->event_code($res);
+    $U->create_events_for_hook('bre.edit', $res, $e->requestor->ws_ou) unless $U->event_code($res);;
 
     return $res;
 }
@@ -208,6 +209,7 @@ sub template_overlay_biblio_record_entry {
         my $success = $e->json_query(
             { from => [ 'vandelay.template_overlay_bib_record', $template, $rid ] }
         )->[0]->{'vandelay.template_overlay_bib_record'};
+        $U->create_events_for_hook('bre.edit', $rec, $e->requestor->ws_ou);
 
         $conn->respond({ record => $rid, success => $success });
     }
@@ -284,6 +286,7 @@ sub template_overlay_container {
         if ($success eq 'f') {
             $num_failed++;
         } else {
+            $U->create_events_for_hook('bre.edit', $rec, $e->requestor->ws_ou);
             $num_succeeded++;
         }
 
@@ -374,6 +377,7 @@ sub update_biblio_record_entry {
     return $e->die_event unless $e->allowed('UPDATE_RECORD');
     $e->update_biblio_record_entry($record) or return $e->die_event;
     $e->commit;
+    $U->create_events_for_hook('bre.edit', $record, $e->requestor->ws_ou);
     return 1;
 }
 
@@ -413,6 +417,7 @@ sub undelete_biblio_record_entry {
 
     $e->update_biblio_record_entry($record) or return $e->die_event;
     $e->commit;
+    $U->create_events_for_hook('bre.edit', $record, $e->requestor->ws_ou);
     return 1;
 }
 

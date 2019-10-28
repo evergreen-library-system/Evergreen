@@ -78,6 +78,7 @@ export CPAN_MODULES = \
 	Net::Z3950::Simple2ZOOM \
 	Template::Plugin::POSIX \
 	SRU \
+	Config::General \
 	Rose::URI
 
 export CPAN_MODULES_FORCE = \

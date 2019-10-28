@@ -20585,3 +20585,7 @@ VALUES (
     'Grid Config: acq.search.invoices',
     'cwst', 'label')
 );
+
+INSERT INTO action_trigger.reactor (module, description) VALUES (
+    'CallHTTP', 'Push event information out to an external system via HTTP'
+);

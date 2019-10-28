@@ -4288,6 +4288,8 @@ sub apply_new_li_ident_attr {
 
     $e->update_biblio_record_entry($bre) or return (undef, $e->die_event);
 
+    $U->create_events_for_hook('bre.edit', $bre, $e->requestor->ws_ou);
+
     return ($source_attr);
 }
 
