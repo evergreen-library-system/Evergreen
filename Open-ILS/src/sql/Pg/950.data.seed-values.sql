@@ -1933,7 +1933,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 618, 'CREATE_PRECAT', oils_i18n_gettext(618,
     'Allows a user to create a pre-catalogued copy', 'ppl', 'description')),
  ( 619, 'EDIT_SELF_IN_CLIENT', oils_i18n_gettext(619,
-    'Allow a user to edit their own account in the staff client', 'ppl', 'description'))
+    'Allow a user to edit their own account in the staff client', 'ppl', 'description')),
+ ( 620, 'UPDATE_ORG_UNIT_SETTING.opac.patron.custom_css', oils_i18n_gettext(620,
+    'Update CSS setting for the OPAC', 'ppl', 'description'))
 ;
 
 
@@ -4408,15 +4410,6 @@ INSERT into config.org_unit_setting_type
         'coust', 'description'),
     'integer', null)
 
-,( 'opac.patron.custom_css', 'opac',
-    oils_i18n_gettext('opac.patron.custom_css',
-        'Custom CSS for the OPAC',
-        'coust', 'label'),
-    oils_i18n_gettext('opac.patron.custom_css',
-        'Custom CSS for the OPAC',
-        'coust', 'description'),
-    'string', NULL)
-
 ,( 'opac.payment_history_age_limit', 'opac',
     oils_i18n_gettext('opac.payment_history_age_limit',
         'Payment History Age Limit',
@@ -5554,6 +5547,9 @@ INSERT into config.org_unit_setting_type
      'coust', 'description'),
    'bool', null)
 ;
+
+INSERT INTO config.org_unit_setting_type ( name, label, grp, description, datatype, update_perm )
+VALUES ('opac.update.css','Setting CSS in the OPAC','opac','Setting CSS in the OPAC','string',620);
 
 UPDATE config.org_unit_setting_type
     SET view_perm = (SELECT id FROM permission.perm_list
