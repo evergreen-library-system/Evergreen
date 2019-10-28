@@ -28,6 +28,9 @@ export class PrintComponent implements OnInit {
 
     printQueue: PrintRequest[];
 
+    // True if Hatch printing is enabled and we're able to talk to Hatch.
+    useHatchPrinting: boolean = null;
+
     constructor(
         private renderer: Renderer2,
         private elm: ElementRef,
@@ -50,6 +53,19 @@ export class PrintComponent implements OnInit {
             this.renderer.selectRootElement('#eg-print-html-container');
     }
 
+
+    // Returns promise of true if Hatch should be used for printing.
+    // To avoid race conditions, always check this inline before
+    // relaying print requests.
+    checkHatchEnabled(): Promise<boolean> {
+        if (this.useHatchPrinting !== null) {
+            return Promise.resolve(this.useHatchPrinting);
+        }
+
+        return this.serverStore.getItem('eg.hatch.enable.printing')
+            .then(use => this.useHatchPrinting = (use && this.hatch.connect()));
+    }
+
     handlePrintRequest(printReq: PrintRequest) {
 
         if (this.isPrinting) {
@@ -63,8 +79,7 @@ export class PrintComponent implements OnInit {
         this.applyTemplate(printReq).then(() => {
             // Give templates a chance to render before printing
             setTimeout(() => {
-                this.dispatchPrint(printReq);
-                this.reset();
+                this.dispatchPrint(printReq).then(_ => this.reset());
             });
         });
     }
@@ -123,17 +138,20 @@ export class PrintComponent implements OnInit {
 
         return promise.then(() => {
 
-            // Insert HTML into the browser DOM for in-browser printing.
-            if (printReq.text && !this.useHatch()) {
+            return this.checkHatchEnabled().then(enabled => {
 
-                if (printReq.contentType === 'text/plain') {
-                // Wrap text/plain content in pre's to prevent
-                // unintended html formatting.
-                    printReq.text = `<pre>${printReq.text}</pre>`;
+                // Insert HTML into the browser DOM for in-browser printing.
+                if (printReq.text && !enabled) {
+
+                    if (printReq.contentType === 'text/plain') {
+                    // Wrap text/plain content in pre's to prevent
+                    // unintended html formatting.
+                        printReq.text = `<pre>${printReq.text}</pre>`;
+                    }
+
+                    this.htmlContainer.innerHTML = printReq.text;
                 }
-
-                this.htmlContainer.innerHTML = printReq.text;
-            }
+            });
         });
     }
 
@@ -149,12 +167,17 @@ export class PrintComponent implements OnInit {
         }
     }
 
-    dispatchPrint(printReq: PrintRequest) {
+    dispatchPrint(printReq: PrintRequest): Promise<any> {
 
         if (!printReq.text) {
+
+            // Extract the print container div from our component markup.
+            const container =
+                this.elm.nativeElement.querySelector('#eg-print-container');
+
             // Sometimes the results come from an externally-parsed HTML
             // template, other times they come from an in-page template.
-            printReq.text = this.elm.nativeElement.innerHTML;
+            printReq.text = container.innerHTML;
         }
 
         // Retain a copy of each printed document in localStorage
@@ -166,17 +189,14 @@ export class PrintComponent implements OnInit {
             show_dialog: printReq.showDialog
         });
 
-        if (this.useHatch()) {
-            this.printViaHatch(printReq);
-        } else {
-            // Here the needed HTML is already in the page.
-            window.print();
-        }
-    }
-
-    useHatch(): boolean {
-        return this.store.getLocalItem('eg.hatch.enable.printing')
-            && this.hatch.connect();
+        return this.checkHatchEnabled().then(enabled => {
+            if (enabled) {
+                this.printViaHatch(printReq);
+            } else {
+                // Here the needed HTML is already in the page.
+                window.print();
+            }
+        });
     }
 
     printViaHatch(printReq: PrintRequest) {

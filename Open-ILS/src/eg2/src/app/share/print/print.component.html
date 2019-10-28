@@ -14,13 +14,14 @@ Error generating print content for template name="{{name}}" / id="{{id}}"
 <eg-string key='eg.print.template.error' [template]="notWorking"></eg-string>
 
 <div id='eg-print-container'>
+
   <!-- container for inline template compilation -->
   <ng-container *ngIf="template">
     <ng-container *ngTemplateOutlet="template; context:context">
     </ng-container>
   </ng-container>
-  <div id='eg-print-html-container'>
-  </div>
-<!-- container for pre-compiled HTML -->
+
+  <!-- container for pre-compiled HTML -->
+  <div id='eg-print-html-container'> </div>
 </div>
 
