@@ -1,5 +1,6 @@
 
 <ng-container *ngIf="url">
-  <iframe class="w-100" height="450px" [src]="url"></iframe> 
+  <iframe id='opac-iframe' class="w-100" (load)="handleLoad()" [src]="url">
+  </iframe> 
 </ng-container>
 

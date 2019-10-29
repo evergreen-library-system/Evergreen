@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, Renderer2} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 
 const OPAC_BASE_URL = '/eg/opac/record';
@@ -18,7 +18,7 @@ export class OpacViewComponent {
         if (id && (id + '').match(/^\d+$/)) {
             this._recordId = id;
             this.url = this.sanitizer.bypassSecurityTrustResourceUrl(
-                `${OPAC_BASE_URL}/${id}`);
+                `${OPAC_BASE_URL}/${id}?readonly=1`);
         } else {
             this._recordId = null;
             this.url = null;
@@ -29,6 +29,17 @@ export class OpacViewComponent {
         return this._recordId;
     }
 
-    constructor(private sanitizer: DomSanitizer) {}
+    constructor(
+        private sanitizer: DomSanitizer,
+        private renderer: Renderer2) {}
+
+    handleLoad() {
+        const iframe = this.renderer.selectRootElement('#opac-iframe');
+
+        // 50 extra px adds enough space to avoid the scrollbar altogether
+        const height = 50 + iframe.contentWindow.document.body.offsetHeight;
+
+        iframe.style.height = `${height}px`;
+    }
 }
 

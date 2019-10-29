@@ -2,9 +2,26 @@
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/opac/simple.js[% ctx.cache_key %]"></script>
 [% INCLUDE "opac/i18n_strings.tt2" %]
 
-[% IF ctx.want_jquery %]
+[% IF ctx.want_jquery || ctx.readonly %]
 <script type="text/javascript" src="[% ctx.media_prefix %]/js/ui/default/common/build/js/jquery.min.js[% ctx.cache_key %]"></script>
 [% END; # ctx.want_jquery %]
+
+[% IF ctx.readonly %]
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('a').removeAttr('href');
+    $('a').click(function(event) { event.preventDefault(); });
+    $('button').prop('disabled', true);
+    $('button').click(function(event) { event.preventDefault(); });
+    $('input').prop('disabled', true);
+    $('input').click(function(event) { event.preventDefault(); });
+    $('select').prop('disabled', true);
+    $('select').click(function(event) { event.preventDefault(); });
+    $('textarea').prop('disabled', true);
+    $('textarea').click(function(event) { event.preventDefault(); });
+  });
+</script>
+[% END %]
 
 <!-- DOB validation for Patron Registration in OPAC -->
 <script type="text/javascript">

@@ -18,6 +18,7 @@ sub load_record {
     my %kwargs = @_;
     my $ctx = $self->ctx;
     $ctx->{page} = 'record';  
+    $ctx->{readonly} = $self->cgi->param('readonly');
 
     $self->timelog("load_record() began");
 
