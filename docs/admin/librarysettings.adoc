@@ -341,7 +341,8 @@ values.
 |Expire alert interval|Time before a hold expires at which to send an email notifying the patron|Duration|
 |Expire interval|Amount of time until an unfulfilled hold expires|Duration|
 |FIFO|Force holds to a more strict First-In, First-Out capture. Default is SAVE-GAS, which gives priority to holds with pickup location the same as checkin library.|True/False|Applies only to multi-branch libraries. Default is SAVE-GAS.
-|Hard boundary||Number|
+|Hard boundary|Limit holds to copies within this "org depth" boundary value 
+  relative to the org_unit named in the context location in the library settings editor.|Number|0 = everyone shares, higher numbers are more limiting.
 |Hard stalling interval||Duration|
 |Has local copy alert|If there is an available item at the requesting library that could fulfill a hold during hold placement time, alert the patron.|True/False|
 |Has local copy block|If there is an available item at the requesting library that could fulfill a hold during hold placement time, do not allow the hold to be placed.|True/False|
