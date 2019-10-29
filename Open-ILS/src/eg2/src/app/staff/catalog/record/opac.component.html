@@ -1,4 +1,8 @@
 
+<div *ngIf="!loaded" class="m-3 p-3 d-flex justify-content-center">
+  <div><img src="/images/progressbar_green.gif"/></div>
+</div>
+
 <ng-container *ngIf="url">
   <iframe id='opac-iframe' class="w-100" (load)="handleLoad()" [src]="url">
   </iframe> 

@@ -10,6 +10,7 @@ const OPAC_BASE_URL = '/eg/opac/record';
 export class OpacViewComponent {
 
     url; // SafeResourceUrlImpl
+    loaded: boolean;
 
     _recordId: number;
     @Input() set recordId(id: number) {
@@ -40,6 +41,7 @@ export class OpacViewComponent {
         const height = 50 + iframe.contentWindow.document.body.offsetHeight;
 
         iframe.style.height = `${height}px`;
+        this.loaded = true;
     }
 }
 
