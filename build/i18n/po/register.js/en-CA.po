@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: evergreen\n"
 "Report-Msgid-Bugs-To: FULL NAME <EMAIL@ADDRESS>\n"
 "POT-Creation-Date: 2018-12-14 21:52-0400\n"
-"PO-Revision-Date: 2012-05-01 20:04+0000\n"
-"Last-Translator: Warren Layton <Unknown>\n"
+"PO-Revision-Date: 2019-10-04 16:02+0000\n"
+"Last-Translator: Jennifer Pringle <Unknown>\n"
 "Language-Team: English (Canada) <en_CA@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Launchpad-Export-Date: 2018-12-16 05:36+0000\n"
-"X-Generator: Launchpad (build 18837)\n"
+"X-Launchpad-Export-Date: 2019-10-05 05:55+0000\n"
+"X-Generator: Launchpad (build af2eefe214bd95389a09b7c956720881bab16807)\n"
 
 #: register.js:USER_SETTINGS
 msgid "User Settings"
@@ -47,11 +47,11 @@ msgstr "Barcode"
 
 #: register.js:ADD
 msgid "Add"
-msgstr ""
+msgstr "Add"
 
 #: register.js:SECONDARY_GROUP_IS_PROFILE
 msgid "That is already the primary profile group for this patron."
-msgstr ""
+msgstr "That is already the primary profile group for this patron."
 
 #: register.js:SAVE
 msgid "Save"
@@ -111,15 +111,15 @@ msgstr "Barcode is already in use"
 
 #: register.js:UPDATE_EXPIRE_DATE
 msgid "Update Expire Date"
-msgstr ""
+msgstr "Update Expire Date"
 
 #: register.js:SECONDARY_GROUP_ERROR
 msgid "Error saving secondary groups."
-msgstr ""
+msgstr "Error saving secondary groups."
 
 #: register.js:RESET_PASSWORD
 msgid "Generate Password"
-msgstr ""
+msgstr "Generate Password"
 
 #: register.js:EXAMPLE
 msgid "Example: "
@@ -155,7 +155,7 @@ msgstr ""
 
 #: register.js:DELETE
 msgid "Delete"
-msgstr ""
+msgstr "Delete"
 
 #: register.js:HOLD_NOTIFY_SMS
 msgid "SMS: "
@@ -171,7 +171,7 @@ msgstr "Show All Fields"
 
 #: register.js:SECONDARY_GROUP_EXISTS
 msgid "This group is on the list already."
-msgstr ""
+msgstr "This group is on the list already."
 
 #: register.js:ADDRESS_APPROVE
 msgid "Approve Address"
@@ -199,7 +199,7 @@ msgstr "Email: "
 
 #: register.js:SECONDARY_GROUP_NOT_ALLOWED
 msgid "You do not have permission to add this group."
-msgstr ""
+msgstr "You do not have permission to add this group."
 
 #: register.js:SEE_ALL
 msgid "See All"

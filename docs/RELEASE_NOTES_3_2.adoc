@@ -3,6 +3,67 @@ Evergreen 3.2 Release Notes
 :toc:
 :numbered:
 
+Evergreen 3.2.10
+----------------
+
+This release contains bug fixes improving on Evergreen 3.2.9.
+
+Bug Fixes
+~~~~~~~~~
+
+* Fix MARC View Display Issues (https://bugs.launchpad.net/evergreen/+bug/1843637[Bug 1843637])
+* Add missing columns to patron record (https://bugs.launchpad.net/evergreen/+bug/1739607[Bug 1739607])
+* Mark the permission.grp_descendants database table as STABLE (https://bugs.launchpad.net/evergreen/+bug/1768141[Bug 1768141])
+* Webstaff locale picker repairs (https://bugs.launchpad.net/evergreen/+bug/1560805[Bug 1560805])
+* Assign copy alert permissions (https://bugs.launchpad.net/evergreen/+bug/1811442[Bug 1811442])
+* Fix issue where reports interface was partially loaded (https://bugs.launchpad.net/evergreen/+bug/1845050[Bug 1845050])
+* Handle autorenewals when aging circulations (https://bugs.launchpad.net/evergreen/+bug/1840669[Bug 1840669])
+* Default circulation auto_renewal field to FALSE (https://bugs.launchpad.net/evergreen/+bug/1839002[Bug 1839002])
+* Add missing Auto Renewal fields to the IDL (https://bugs.launchpad.net/evergreen/+bug/1835577[Bug 1835577])
+* Refactor auto_renewal back end code (https://bugs.launchpad.net/evergreen/+bug/1835035[Bug 1835035])
+* Update Item Status templates for auto-renewal (https://bugs.launchpad.net/evergreen/+bug/1835085[Bug 1835085])
+* Improve permissions when editing user accounts (e.g. editing your own account) (https://bugs.launchpad.net/evergreen/+bug/1842940[Bug 1842940])
+* Reduce the cost of utility functions, speeding up search (https://bugs.launchpad.net/evergreen/+bug/1836963[Bug 1836963])
+* Fixes Current Date in Date Returned in Circ History CSV (https://bugs.launchpad.net/evergreen/+bug/1813056[Bug 1813056])
+* Fix Last Captured Hold Check for Holds Shelf (https://bugs.launchpad.net/evergreen/+bug/1827250[Bug 1827250])
+* Only include OPAC-visible copies in SRU/Z39.50 holdings (https://bugs.launchpad.net/evergreen/+bug/1609556[Bug 1609556])
+* Re-alphabetize Local & Server Administration Links (https://bugs.launchpad.net/evergreen/+bug/1803790[Bug 1803790])
+* Allow saving Bill Full Details grids (https://bugs.launchpad.net/evergreen/+bug/1729435[Bug 1729435])
+* Improve usability of Patron Bill History date selector (https://bugs.launchpad.net/evergreen/+bug/1841089[Bug 1841089])
+* Fix when the "duplicate barcode" alert appears (https://bugs.launchpad.net/evergreen/+bug/1777698[Bug 1777698])
+* Fix paging of pending patrons (https://bugs.launchpad.net/evergreen/+bug/1749970[Bug 1749970])
+* Check bib visibility for located URI auto suggest (https://bugs.launchpad.net/evergreen/+bug/1802952[Bug 1802952])
+* Patron Prefix and Suffix Display in Summary (https://bugs.launchpad.net/evergreen/+bug/1821969[Bug 1821969])
+* Do not include Tag Owner in Tag (https://bugs.launchpad.net/evergreen/+bug/1825403[Bug 1825403])
+* Avoid hard-coded paths in Apache config (https://bugs.launchpad.net/evergreen/+bug/1844720[Bug 1844720])
+* Require some Storage submodules instead of use them (https://bugs.launchpad.net/evergreen/+bug/1835620[Bug 1835620])
+* Remove extra grid refresh from configuration load (https://bugs.launchpad.net/evergreen/+bug/1846038[Bug 1846038])
+
+Acknowledgements
+~~~~~~~~~~~~~~~~
+We would like to thank the following individuals who contributed code,
+testing and documentation patches to the 3.2.10 point release of Evergreen:
+
+* Bill Erickson
+* Chris Sharp
+* Dan Briem
+* Dan Wells
+* Galen Charlton
+* Garry Collum
+* Jane Sandberg
+* Jason Boyer
+* Jason Stephenson
+* Jeff Davis
+* Jeff Godin
+* Jennifer Pringle
+* John Amundson
+* Josh Stompro
+* Kyle Huckins
+* Michele Morgan
+* Mike Rylander
+* Remington Steed
+* Terran McCanna
+
 Evergreen 3.2.9
 ----------------
 This release is a security release that fixes cross-site scripting
