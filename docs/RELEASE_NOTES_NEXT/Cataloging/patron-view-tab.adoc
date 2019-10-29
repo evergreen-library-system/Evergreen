@@ -1,0 +1,9 @@
+Patron View tab in Experimental Catalog
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+The record view screen in the Experimental Catalog now has a 
+_Patron View_ tab.  This tab displays a view of the record in
+the OPAC, as a patron would see it.
+
+The _Patron View_ tab replaces the previous _View in Catalog_
+button.
+
