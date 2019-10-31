@@ -85,7 +85,9 @@ static char* searchFunctionPredicate ( const char*, osrfHash*, const jsonObject*
 static char* searchFieldTransform ( const char*, osrfHash*, const jsonObject* );
 static char* searchFieldTransformPredicate ( const ClassInfo*, osrfHash*, const jsonObject*,
 		const char* );
+static char* searchBETWEENRange( osrfHash* field, const jsonObject* node );
 static char* searchBETWEENPredicate ( const char*, osrfHash*, const jsonObject* );
+static char* searchINList( osrfHash* field, jsonObject* node, const char* op, osrfMethodContext* ctx );
 static char* searchINPredicate ( const char*, osrfHash*,
 								 jsonObject*, const char*, osrfMethodContext* );
 static char* searchPredicate ( const ClassInfo*, osrfHash*, jsonObject*, osrfMethodContext* );
@@ -2722,26 +2724,51 @@ static char* jsonNumberToDBString( osrfHash* field, const jsonObject* value ) {
 
 static char* searchINPredicate( const char* class_alias, osrfHash* field,
 		jsonObject* node, const char* op, osrfMethodContext* ctx ) {
-	growing_buffer* sql_buf = buffer_init( 32 );
 
-	buffer_fadd(
-		sql_buf,
-		"\"%s\".%s ",
-		class_alias,
-		osrfHashGet( field, "name" )
-	);
+	char* field_transform = searchFieldTransform( class_alias, field, node );
+	if( ! field_transform )
+		return NULL;
+
+
+	char* in_list = searchINList(field, node, op, ctx);
+	if( !in_list )
+		return NULL;
+
+	growing_buffer* sql_buf = buffer_init( 32 );
+	buffer_add( sql_buf, field_transform );
 
 	if( !op ) {
-		buffer_add( sql_buf, "IN (" );
+		buffer_add( sql_buf, " IN (" );
 	} else if( !strcasecmp( op,"not in" )) {
-		buffer_add( sql_buf, "NOT IN (" );
+		buffer_add( sql_buf, " NOT IN (" );
 	} else {
-		buffer_add( sql_buf, "IN (" );
+		buffer_add( sql_buf, " IN (" );
 	}
 
-	if( node->type == JSON_HASH ) {
+	buffer_add( sql_buf, in_list);
+	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
+
+	free(field_transform);
+	free(in_list);
+
+	return buffer_release( sql_buf );
+}
+
+static char* searchINList( osrfHash* field,
+		jsonObject* node, const char* op, osrfMethodContext* ctx ) {
+	growing_buffer* sql_buf = buffer_init( 32 );
+
+	const jsonObject* local_node = node;
+	if( local_node->type == JSON_HASH ) { // may be the case that the node tranforms the field
+		// if so, grab the "value" property
+		local_node = jsonObjectGetKeyConst( node, "value" );
+		if (!local_node) local_node = node;
+	}
+
+	if( local_node->type == JSON_HASH ) {
 		// subquery predicate
-		char* subpred = buildQuery( ctx, node, SUBSELECT );
+
+		char* subpred = buildQuery( ctx, (jsonObject*) local_node, SUBSELECT );
 		if( ! subpred ) {
 			buffer_free( sql_buf );
 			return NULL;
@@ -2750,12 +2777,12 @@ static char* searchINPredicate( const char* class_alias, osrfHash* field,
 		buffer_add( sql_buf, subpred );
 		free( subpred );
 
-	} else if( node->type == JSON_ARRAY ) {
+	} else if( local_node->type == JSON_ARRAY ) {
 		// literal value list
 		int in_item_index = 0;
 		int in_item_first = 1;
 		const jsonObject* in_item;
-		while( (in_item = jsonObjectGetIndex( node, in_item_index++ )) ) {
+		while( (in_item = jsonObjectGetIndex( local_node, in_item_index++ )) ) {
 
 			if( in_item_first )
 				in_item_first = 0;
@@ -2804,12 +2831,10 @@ static char* searchINPredicate( const char* class_alias, osrfHash* field,
 		}
 	} else {
 		osrfLogError( OSRF_LOG_MARK, "%s: Expected object or array for IN clause; found %s",
-			modulename, json_type( node->type ));
+			modulename, json_type( local_node->type ));
 		buffer_free( sql_buf );
 		return NULL;
 	}
-
-	OSRF_BUFFER_ADD_CHAR( sql_buf, ')' );
 
 	return buffer_release( sql_buf );
 }
@@ -2918,78 +2943,83 @@ static char* searchFieldTransform( const char* class_alias, osrfHash* field,
 		const jsonObject* node ) {
 	growing_buffer* sql_buf = buffer_init( 32 );
 
-	const char* field_transform = jsonObjectGetString(
-		jsonObjectGetKeyConst( node, "transform" ) );
-	const char* transform_subcolumn = jsonObjectGetString(
-		jsonObjectGetKeyConst( node, "result_field" ) );
+	if( node->type == JSON_HASH ) {
+		const char* field_transform = jsonObjectGetString(
+			jsonObjectGetKeyConst( node, "transform" ) );
+		const char* transform_subcolumn = jsonObjectGetString(
+			jsonObjectGetKeyConst( node, "result_field" ) );
 
-	if( transform_subcolumn ) {
-		if( ! is_identifier( transform_subcolumn ) ) {
-			osrfLogError( OSRF_LOG_MARK, "%s: Invalid subfield name: \"%s\"\n",
-					modulename, transform_subcolumn );
-			buffer_free( sql_buf );
-			return NULL;
-		}
-		OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );    // enclose transform in parentheses
-	}
-
-	if( field_transform ) {
-
-		if( ! is_identifier( field_transform ) ) {
-			osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
-					modulename, field_transform );
-			buffer_free( sql_buf );
-			return NULL;
-		}
-
-		if( obj_is_true( jsonObjectGetKeyConst( node, "distinct" ) ) ) {
-			buffer_fadd( sql_buf, "%s(DISTINCT \"%s\".%s",
-				field_transform, class_alias, osrfHashGet( field, "name" ));
-		} else {
-			buffer_fadd( sql_buf, "%s(\"%s\".%s",
-				field_transform, class_alias, osrfHashGet( field, "name" ));
-		}
-
-		const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
-
-		if( array ) {
-			if( array->type != JSON_ARRAY ) {
-				osrfLogError( OSRF_LOG_MARK,
-					"%s: Expected JSON_ARRAY for function params; found %s",
-					modulename, json_type( array->type ) );
+		if( field_transform && transform_subcolumn ) {
+			if( ! is_identifier( transform_subcolumn ) ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Invalid subfield name: \"%s\"\n",
+						modulename, transform_subcolumn );
 				buffer_free( sql_buf );
 				return NULL;
 			}
-			int func_item_index = 0;
-			jsonObject* func_item;
-			while( (func_item = jsonObjectGetIndex( array, func_item_index++ ))) {
+			OSRF_BUFFER_ADD_CHAR( sql_buf, '(' );	// enclose transform in parentheses
+		}
 
-				char* val = jsonObjectToSimpleString( func_item );
+		if( field_transform ) {
 
-				if( !val ) {
-					buffer_add( sql_buf, ",NULL" );
-				} else if( dbi_conn_quote_string( dbhandle, &val )) {
-					OSRF_BUFFER_ADD_CHAR( sql_buf, ',' );
-					OSRF_BUFFER_ADD( sql_buf, val );
-				} else {
+			if( ! is_identifier( field_transform ) ) {
+				osrfLogError( OSRF_LOG_MARK, "%s: Expected function name, found \"%s\"\n",
+						modulename, field_transform );
+				buffer_free( sql_buf );
+				return NULL;
+			}
+
+			if( obj_is_true( jsonObjectGetKeyConst( node, "distinct" ) ) ) {
+				buffer_fadd( sql_buf, "%s(DISTINCT \"%s\".%s",
+					field_transform, class_alias, osrfHashGet( field, "name" ));
+			} else {
+				buffer_fadd( sql_buf, "%s(\"%s\".%s",
+					field_transform, class_alias, osrfHashGet( field, "name" ));
+			}
+
+			const jsonObject* array = jsonObjectGetKeyConst( node, "params" );
+
+			if( array ) {
+				if( array->type != JSON_ARRAY ) {
 					osrfLogError( OSRF_LOG_MARK,
-							"%s: Error quoting key string [%s]", modulename, val );
-					free( val );
+						"%s: Expected JSON_ARRAY for function params; found %s",
+						modulename, json_type( array->type ) );
 					buffer_free( sql_buf );
 					return NULL;
 				}
-				free( val );
+				int func_item_index = 0;
+				jsonObject* func_item;
+				while( (func_item = jsonObjectGetIndex( array, func_item_index++ ))) {
+
+					char* val = jsonObjectToSimpleString( func_item );
+
+					if( !val ) {
+						buffer_add( sql_buf, ",NULL" );
+					} else if( dbi_conn_quote_string( dbhandle, &val )) {
+						OSRF_BUFFER_ADD_CHAR( sql_buf, ',' );
+						OSRF_BUFFER_ADD( sql_buf, val );
+					} else {
+						osrfLogError( OSRF_LOG_MARK,
+								"%s: Error quoting key string [%s]", modulename, val );
+						free( val );
+						buffer_free( sql_buf );
+						return NULL;
+					}
+					free( val );
+				}
 			}
+
+			buffer_add( sql_buf, ")" );
+
+			if( transform_subcolumn )
+				buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
+
+		} else {
+			buffer_fadd( sql_buf, "\"%s\".%s", class_alias, osrfHashGet( field, "name" ));
 		}
-
-		buffer_add( sql_buf, " )" );
-
 	} else {
 		buffer_fadd( sql_buf, "\"%s\".%s", class_alias, osrfHashGet( field, "name" ));
 	}
 
-	if( transform_subcolumn )
-		buffer_fadd( sql_buf, ").\"%s\"", transform_subcolumn );
 
 	return buffer_release( sql_buf );
 }
@@ -3156,17 +3186,21 @@ static char* searchSimplePredicate( const char* op, const char* class_alias,
 	return pred;
 }
 
-static char* searchBETWEENPredicate( const char* class_alias,
-		osrfHash* field, const jsonObject* node ) {
+static char* searchBETWEENRange( osrfHash* field, const jsonObject* node ) {
 
-	const jsonObject* x_node = jsonObjectGetIndex( node, 0 );
-	const jsonObject* y_node = jsonObjectGetIndex( node, 1 );
+	const jsonObject* local_node = node;
+	if( node->type == JSON_HASH ) { // will be the case if the node tranforms the field
+		local_node = jsonObjectGetKeyConst( node, "value" );
+		if (!local_node) local_node = node;
+	}
+
+	const jsonObject* x_node = jsonObjectGetIndex( local_node, 0 );
+	const jsonObject* y_node = jsonObjectGetIndex( local_node, 1 );
 
 	if( NULL == y_node ) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Not enough operands for BETWEEN operator", modulename );
 		return NULL;
-	}
-	else if( NULL != jsonObjectGetIndex( node, 2 ) ) {
+	} else if( NULL != jsonObjectGetIndex( local_node, 2 ) ) {
 		osrfLogError( OSRF_LOG_MARK, "%s: Too many operands for BETWEEN operator", modulename );
 		return NULL;
 	}
@@ -3192,10 +3226,30 @@ static char* searchBETWEENPredicate( const char* class_alias,
 	}
 
 	growing_buffer* sql_buf = buffer_init( 32 );
-	buffer_fadd( sql_buf, "\"%s\".%s BETWEEN %s AND %s",
-			class_alias, osrfHashGet( field, "name" ), x_string, y_string );
+	buffer_fadd( sql_buf, "%s AND %s", x_string, y_string );
 	free( x_string );
 	free( y_string );
+
+	return buffer_release( sql_buf );
+}
+
+static char* searchBETWEENPredicate( const char* class_alias,
+		osrfHash* field, const jsonObject* node ) {
+
+	char* field_transform = searchFieldTransform( class_alias, field, node );
+	if( ! field_transform )
+		return NULL;
+
+	char* between_range = searchBETWEENRange(field, node);
+
+	if( NULL == between_range )
+		return NULL;
+
+	growing_buffer* sql_buf = buffer_init( 32 );
+	buffer_fadd( sql_buf, "%s BETWEEN %s", field_transform, between_range);
+
+	free(field_transform);
+	free(between_range);
 
 	return buffer_release( sql_buf );
 }
@@ -3218,20 +3272,20 @@ static char* searchPredicate( const ClassInfo* class_info, osrfHash* field,
 			if( jsonIteratorHasNext( pred_itr ) ) {
 				osrfLogError( OSRF_LOG_MARK, "%s: Multiple predicates for field \"%s\"",
 						modulename, osrfHashGet(field, "name" ));
-			} else if( !(strcasecmp( pred_itr->key,"between" )) )
+			} else if( !(strcasecmp( pred_itr->key,"between" )) ) {
 				pred = searchBETWEENPredicate( class_info->alias, field, pred_node );
-			else if( !(strcasecmp( pred_itr->key,"in" ))
-					|| !(strcasecmp( pred_itr->key,"not in" )) )
-				pred = searchINPredicate(
-					class_info->alias, field, pred_node, pred_itr->key, ctx );
-			else if( pred_node->type == JSON_ARRAY )
+			} else if( !(strcasecmp( pred_itr->key,"in" ))
+					|| !(strcasecmp( pred_itr->key,"not in" )) ) {
+				pred = searchINPredicate( class_info->alias, field, pred_node, pred_itr->key, ctx );
+			} else if( pred_node->type == JSON_ARRAY ) {
 				pred = searchFunctionPredicate(
 					class_info->alias, field, pred_node, pred_itr->key );
-			else if( pred_node->type == JSON_HASH )
+			} else if( pred_node->type == JSON_HASH ) {
 				pred = searchFieldTransformPredicate(
 					class_info, field, pred_node, pred_itr->key );
-			else
+			} else {
 				pred = searchSimplePredicate( pred_itr->key, class_info->alias, field, pred_node );
+			}
 		}
 		jsonIteratorFree( pred_itr );
 
@@ -7064,7 +7118,7 @@ int is_identifier( const char* s) {
 		else if(   ispunct( (unsigned char) *s )
 				|| iscntrl( (unsigned char) *s ) )
 			return 0;
-			++s;
+		++s;
 	} while( *s && ! isspace( (unsigned char) *s ) );
 
 	// If we found any white space in the above loop,
