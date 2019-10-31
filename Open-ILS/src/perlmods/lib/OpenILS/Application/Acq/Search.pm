@@ -24,7 +24,7 @@ my %RETRIEVERS = (
         "OpenILS::Application::Acq::Financials::retrieve_purchase_order_impl"
     },
     "invoice" => \&{
-        "OpenILS::Application::Acq::Invoice::fetch_invoice_impl"
+        "OpenILS::Application::Acq::Invoice::fetch_invoice_with_perm_check"
     },
 );
 
@@ -52,11 +52,14 @@ sub could_be_range {
 }
 
 sub castdate {
-    my ($value, $gte, $lte) = @_;
+    my ($value, $gte, $lte, $between, $gt, $lt) = @_;
 
     my $op = "=";
     $op = ">=" if $gte;
     $op = "<=" if $lte;
+    $op = ">"  if $gt;
+    $op = "<"  if $lt;
+    $op = "between" if $between;
 
     # avoid transforming a date if the match value is NULL.
     return {'=' => undef} if $op eq '=' and not $value;
@@ -76,7 +79,7 @@ sub prepare_acqlia_search_and {
         };
 
         # castdate not supported for acqlia fields: they're all type text
-        my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+        my ($k, $v, $fuzzy, $between, $not, $starts, $ends, $castdate, $gte, $lte, $age, $gt, $lt, $notnull) = breakdown_term($unit);
         my $point = $subquery->{"where"}->{"-and"};
         my $term_clause;
 
@@ -84,8 +87,22 @@ sub prepare_acqlia_search_and {
 
         if ($fuzzy and not ref $v) {
             push @$point, {"attr_value" => {"ilike" => "%" . $v . "%"}};
+        } elsif ($starts and not ref $v) {
+            push @$point, {"attr_value" => {"ilike" => $v . "%"}};
+        } elsif ($ends and not ref $v) {
+            push @$point, {"attr_value" => {"ilike" => "%" . $v}};
+        } elsif ($gte and not ref $v) {
+            push @$point, {"attr_value" => {">=" => $v}};
+        } elsif ($lte and not ref $v) {
+            push @$point, {"attr_value" => {"<=" => $v}};
+        } elsif ($gt and not ref $v) {
+            push @$point, {"attr_value" => {">" => $v}};
+        } elsif ($lt and not ref $v) {
+            push @$point, {"attr_value" => {"<" => $v}};
         } elsif ($between and could_be_range($v)) {
             push @$point, {"attr_value" => {"between" => $v}};
+        } elsif ($notnull) {
+            push @$point, {"attr_value" => {"!=" => undef}};
         } elsif (check_1d_max($v)) {
             push @$point, {"attr_value" => $v};
         } else {
@@ -106,13 +123,55 @@ sub prepare_acqlia_search_or {
 
     foreach my $unit (@$acqlia) {
         # castdate not supported for acqlia fields: they're all type text
-        my ($k, $v, $fuzzy, $between, $not) = breakdown_term($unit);
+        my ($k, $v, $fuzzy, $between, $not, $starts, $ends, $castdate, $gte, $lte, $age, $gt, $lt) = breakdown_term($unit);
         my $term_clause;
         if ($fuzzy and not ref $v) {
             $term_clause = {
                 "-and" => {
                     "definition" => $k,
                     "attr_value" => {"ilike" => "%" . $v . "%"}
+                }
+            };
+        } elsif ($starts and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {"ilike" => $v . "%"}
+                }
+            };
+        } elsif ($ends and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {"ilike" => "%" . $v}
+                }
+            };
+        } elsif ($gte and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {">=" => $v}
+                }
+            };
+        } elsif ($lte and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {"<=" => $v}
+                }
+            };
+        } elsif ($gt and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {">" => $v}
+                }
+            };
+        } elsif ($lt and not ref $v) {
+            $term_clause = {
+                "-and" => {
+                    "definition" => $k,
+                    "attr_value" => {">" => $v}
                 }
             };
         } elsif ($between and could_be_range($v)) {
@@ -143,9 +202,15 @@ sub breakdown_term {
         $term->{"__fuzzy"} ? 1 : 0,
         $term->{"__between"} ? 1 : 0,
         $term->{"__not"} ? 1 : 0,
+        $term->{"__starts"} ? 1 : 0,
+        $term->{"__ends"} ? 1 : 0,
         $term->{"__castdate"} ? 1 : 0,
         $term->{"__gte"} ? 1 : 0,
-        $term->{"__lte"} ? 1 : 0
+        $term->{"__lte"} ? 1 : 0,
+        $term->{"__age"} ? 1 : 0,
+        $term->{"__gt"} ? 1 : 0,
+        $term->{"__lt"} ? 1 : 0,
+        $term->{"__isnotnull"} ? 1 : 0,
     );
 }
 
@@ -155,6 +220,22 @@ sub get_fm_links_by_hint {
         return $field->{"links"} if $field->{"hint"} eq $hint;
     }
     undef;
+}
+
+sub get_fm_selector_by_hint {
+    my ($hint) = @_;
+    foreach my $field (values %{$Fieldmapper::fieldmap}) {
+        return $field->{selector} if $field->{hint} eq $hint;
+    }
+    undef;
+}
+
+sub get_fm_id_field_by_hint {
+    my ($hint) = @_;
+    foreach my $field (values %{$Fieldmapper::fieldmap}) {
+        return $field->{identity} if $field->{hint} eq $hint;
+    }
+    return 'id';
 }
 
 sub gen_au_term {
@@ -179,6 +260,74 @@ sub gen_au_term {
 # actor.usr.id but by any of these user properties: card barcode, username,
 # given names and family name.
 sub prepare_au_terms {
+    my ($terms, $join_num, $default_to_by_id) = @_;
+
+    my @joins = ();
+    my $nots = 0;
+    $join_num ||= 0;
+
+    foreach my $conj (qw/-and -or/) {
+        next unless exists $terms->{$conj};
+
+        my @new_outer_terms = ();
+        HINT_UNIT: foreach my $hint_unit (@{$terms->{$conj}}) {
+            my $hint = (keys %$hint_unit)[0];
+            (my $plain_hint = $hint) =~ y/+//d;
+            if ($hint eq "-not") {
+                $hint_unit = $hint_unit->{$hint};
+                $nots++;
+                redo HINT_UNIT;
+            }
+
+            if (my $links = get_fm_links_by_hint($plain_hint) and
+                $plain_hint ne "acqlia") {
+                my @new_terms = ();
+                my ($attr, $value) = breakdown_term($hint_unit->{$hint});
+                my $is_fuzzy = ref($value) eq 'HASH' && exists($value->{'ilike'});
+                if ($links->{$attr} and
+                    $links->{$attr}->{"class"} eq "au" and
+                    not($default_to_by_id and not $is_fuzzy)) {
+                    push @joins, [$plain_hint, $attr, $join_num];
+                    my $au_term = gen_au_term($value, $join_num);
+                    if ($nots > 0) {
+                        $au_term = {"-not" => $au_term};
+                        $nots--;
+                    }
+                    push @new_outer_terms, $au_term;
+                    $join_num++;
+                    delete $hint_unit->{$hint};
+                }
+            }
+            if ($nots > 0) {
+                $hint_unit = {"-not" => $hint_unit};
+                $nots--;
+            }
+            push @new_outer_terms, $hint_unit if scalar keys %$hint_unit;
+        }
+        $terms->{$conj} = [ @new_outer_terms ];
+    }
+    @joins;
+}
+
+sub gen_acqpro_term {
+    my ($value, $n) = @_;
+    my $lc_value = {
+        "=" => { transform => "lowercase", value => lc($value) }
+    };
+
+    +{
+        "-or" => [
+            {"+acqpro$n" => {"name" => $value}},
+            {"+acqpro$n" => {"code" => $lc_value}},
+        ]
+    };
+}
+
+# go through the terms hash, find keys that correspond to fields links
+# to actor.usr, and rewrite the search as one that searches not by
+# actor.usr.id but by any of these user properties: card barcode, username,
+# given names and family name.
+sub prepare_acqpro_terms {
     my ($terms, $join_num) = @_;
 
     my @joins = ();
@@ -202,15 +351,17 @@ sub prepare_au_terms {
                 $plain_hint ne "acqlia") {
                 my @new_terms = ();
                 my ($attr, $value) = breakdown_term($hint_unit->{$hint});
+                my $is_fuzzy = ref($value) eq 'HASH' && exists($value->{'ilike'});
                 if ($links->{$attr} and
-                    $links->{$attr}->{"class"} eq "au") {
+                    $is_fuzzy and
+                    $links->{$attr}->{"class"} eq "acqpro") {
                     push @joins, [$plain_hint, $attr, $join_num];
-                    my $au_term = gen_au_term($value, $join_num);
+                    my $acqpro_term = gen_acqpro_term($value, $join_num);
                     if ($nots > 0) {
-                        $au_term = {"-not" => $au_term};
+                        $acqpro_term = {"-not" => $acqpro_term};
                         $nots--;
                     }
-                    push @new_outer_terms, $au_term;
+                    push @new_outer_terms, $acqpro_term;
                     $join_num++;
                     delete $hint_unit->{$hint};
                 }
@@ -238,21 +389,48 @@ sub prepare_terms {
         $outer_clause->{$conj} = [] unless $outer_clause->{$conj};
         foreach my $unit (@{$terms->{$class}}) {
             my $special_clause;
-            my ($k, $v, $fuzzy, $between, $not, $castdate, $gte, $lte) =
+            my ($k, $v, $fuzzy, $between, $not, $starts, $ends, $castdate, $gte, $lte, $age, $gt, $lt, $notnull) =
                 breakdown_term($unit);
 
             my $term_clause;
-            if ($fuzzy and not ref $v) {
+            if ($age and not ref $v) { # $v is expected to be parsed as an interval
+                $v =~ s/^\s*//;
+
+                my $op = $gte ? '>=' : '<=';
+                $term_clause = {$k => {$op => {transform => 'age', params => ['now'], value => '-' . $v}}};
+
+                # !!! NOTE: we invert $not because we have to compare to a /negative/
+                # interval, due to json_query restiction on function parameter order for
+                # transformed fields, so we flip the comparison.  Alternatively we could
+                # swap the GTE and LTE operators, but that would make the query harder
+                # to read and make diagnosing issues much more difficult.
+                $not = $not ? 0 : 1;
+
+            } elsif ($starts and not ref $v) {
+                $term_clause = {$k => {"ilike" => $v . "%"}};
+            } elsif ($ends and not ref $v) {
+                $term_clause = {$k => {"ilike" => "%" . $v}};
+            } elsif ($fuzzy and not ref $v) {
                 $term_clause = {$k => {"ilike" => "%" . $v . "%"}};
             } elsif ($between and could_be_range($v)) {
-                $term_clause = {$k => {"between" => $v}};
+                if ($castdate) {
+                    $v = castdate($v, 0, 0, $between);
+                    $term_clause = {$k => $v};
+                } else {
+                    $term_clause = {$k => {between => $v}};
+                }
+            } elsif ($notnull) {
+                $term_clause = {$k => {"!=" => undef}};
             } elsif (check_1d_max($v)) {
                 if ($castdate) {
-                    $v = castdate($v, $gte, $lte) if $castdate;
+                    $v = castdate($v, $gte, $lte, 0, $gt, $lt);
                 } elsif ($gte or $lte) {
                     my $op = $gte ? '>=' : '<=';
                     $v = {$op => $v};
-                } elsif (not ref $v and $not) {
+                } elsif ($gt or $lt) {
+                    my $op = $gt ? '>' : '<';
+                    $v = {$op => $v};
+                } elsif (not ref $v and $not and defined($v)) {
                     # the old way, NOT (blah.id = $v) needs to be
                     # (blah.id <> $x OR blah.id IS NULL)
                     $not = 0;   # avoid the regular negative transformation
@@ -322,6 +500,61 @@ sub add_au_joins {
     }
     $n;
 }
+
+sub confirm_join_for_orderby {
+    my $graft_map = shift;
+    my $foreign_class = shift;
+    my $fkey_field = shift;
+
+    for my $key (keys %$graft_map) {
+        my $clause = $$graft_map{$key};
+        return $key if ($$clause{class} eq $foreign_class and $$clause{fkey} eq $fkey_field);
+        my $there = confirm_join_for_orderby($$clause{join}, $foreign_class, $fkey_field) if (exists($$clause{join}));
+        return $there if $there;
+    }
+
+    return undef;
+}
+
+sub add_generic_id_joins {
+    my $specific = shift;
+    my $graft_map = shift;
+    my $core_hint = shift;
+
+    my $n = 0;
+    foreach my $join (@_) {
+        my ($hint, $attr, $num) = @$join;
+        my $start = $graft_map->{$hint};
+        my $clause = {
+            "class" => $specific,
+            "type" => "left",
+            "field" => get_fm_id_field_by_hint($specific),
+            "fkey" => $attr,
+        };
+
+        if ($hint eq $core_hint) {
+            $start->{"$specific$num"} = $clause;
+        } else {
+            $start->{"join"} ||= {};
+            $start->{"join"}->{"$specific$num"} = $clause;
+        }
+
+        $n++;
+    }
+    $n;
+}
+sub add_acqpo_joins { return add_generic_id_joins( acqpo => @_ ) }
+sub add_acqpoi_joins { return add_generic_id_joins( acqpoi => @_ ) }
+sub add_acqcr_joins { return add_generic_id_joins( acqcr => @_ ) }
+sub add_acqclp_joins { return add_generic_id_joins( acqclp => @_ ) }
+sub add_acqpl_joins { return add_generic_id_joins( acqpl => @_ ) }
+sub add_acqpro_joins { return add_generic_id_joins( acqpro => @_ ) }
+sub add_acqpostlbl_joins { return add_generic_id_joins( acqpostlbl => @_ ) }
+sub add_jubstlbl_joins { return add_generic_id_joins( jubstlbl => @_ ) }
+sub add_aou_joins { return add_generic_id_joins( aou => @_ ) }
+sub add_acqim_joins { return add_generic_id_joins( acqim => @_ ) }
+sub add_acqipm_joins { return add_generic_id_joins( acqipm => @_ ) }
+
 
 sub build_from_clause_and_joins {
     my ($query, $core, $and_terms, $or_terms) = @_;
@@ -443,6 +676,41 @@ sub unified_search {
         $hint => [{"column" => "id", "transform" => "distinct"}]
     };
 
+    my $query = {};
+
+    $query->{"limit"} = $options->{"limit"} if $options->{"limit"};
+
+    my $graft_map = build_from_clause_and_joins(
+        $query, $hint, $and_terms, $or_terms
+    );
+
+    $and_terms = prepare_terms($and_terms, 1);
+    $or_terms = prepare_terms($or_terms, 0);
+
+    my $offset = add_au_joins($graft_map, $hint, prepare_au_terms($and_terms, 0, $options->{au_by_id}));
+    add_au_joins($graft_map, $hint, prepare_au_terms($or_terms, $offset, $options->{au_by_id}));
+
+    $offset = add_acqpro_joins($graft_map, $hint, prepare_acqpro_terms($and_terms));
+    add_acqpro_joins($graft_map, $hint, prepare_acqpro_terms($or_terms, $offset));
+
+    # The join to acqmapinv needs to be a left join when present.
+    if ($query->{from}{$hint}{acqmapinv}) {
+        $query->{from}{$hint}{acqmapinv}{type} = "left";
+    }
+
+    if ($and_terms and $or_terms) {
+        $query->{"where"} = {
+            "-" . (lc $conj eq "or" ? "or" : "and") => [$and_terms, $or_terms]
+        };
+    } elsif ($and_terms) {
+        $query->{"where"} = $and_terms;
+    } elsif ($or_terms) {
+        $query->{"where"} = $or_terms;
+    } else {
+        $e->disconnect;
+        return new OpenILS::Event("BAD_PARAMS", "desc" => "No usable terms");
+    }
+
     my $attr_from_filter;
     if ($options->{"order_by"}) {
         # What's the point of this block?  When using ORDER BY in conjuction
@@ -468,9 +736,27 @@ q/order_by clause must be of the long form, like:
             # since the non-distinct column may arbitrarily (via hash keys)
             # sort to the front of the final SQL, which PG will complain about.  
             $select_clause = { $hint => ["id"] };
+
+            my ($links, $flink, $fselector);
+            if (
+                ($links = get_fm_links_by_hint($class)) &&
+                ($flink = $links->{$field}) &&
+                ($fselector = get_fm_selector_by_hint($flink->{class}))
+            ) { # sorting on a linked field, replace with remote selector b/c there is one
+                my $ob_join_alias = confirm_join_for_orderby($$graft_map{$hint},$flink->{class},$field); 
+                if (!$ob_join_alias) {
+                    no strict 'refs';
+                    my $func = 'add_'.$flink->{class}.'_joins';
+                    $func->($graft_map,$hint,[$class,$field,99]);
+                    $ob_join_alias = confirm_join_for_orderby($$graft_map{$hint},$flink->{class},$field); 
+                }
+                $class = $order_by->{class} = $ob_join_alias;
+                $field = $order_by->{field} = $fselector;
+            }
+
             $select_clause->{$class} ||= [];
             push @{$select_clause->{$class}}, 
-                {column => $field, transform => 'first', aggregate => 1};
+                {column => $field, transform => 'min', aggregate => 1};
 
             # when sorting by LI attr values, we have to limit 
             # to a specific type of attr value to sort on.
@@ -485,45 +771,13 @@ q/order_by clause must be of the long form, like:
                     "field" =>"lineitem"
                 };
             }
+
+            # ensure that the aggregate form of the attribute
+            # value column is included in the order_by
+            $order_by->{aggregate} = 1;
+            $order_by->{transform} = 'min';
         }
     }
-
-    my $query = {
-        select => $select_clause,
-        order_by => ($options->{order_by} || {$hint => {id => {}}}),
-        offset => ($options->{offset} || 0)
-    };
-
-    $query->{"limit"} = $options->{"limit"} if $options->{"limit"};
-
-    my $graft_map = build_from_clause_and_joins(
-        $query, $hint, $and_terms, $or_terms
-    );
-
-    $and_terms = prepare_terms($and_terms, 1);
-    $or_terms = prepare_terms($or_terms, 0);
-
-    my $offset = add_au_joins($graft_map, $hint, prepare_au_terms($and_terms));
-    add_au_joins($graft_map, $hint, prepare_au_terms($or_terms, $offset));
-
-    # The join to acqmapinv needs to be a left join when present.
-    if ($query->{from}{$hint}{acqmapinv}) {
-        $query->{from}{$hint}{acqmapinv}{type} = "left";
-    }
-
-    if ($and_terms and $or_terms) {
-        $query->{"where"} = {
-            "-" . (lc $conj eq "or" ? "or" : "and") => [$and_terms, $or_terms]
-        };
-    } elsif ($and_terms) {
-        $query->{"where"} = $and_terms;
-    } elsif ($or_terms) {
-        $query->{"where"} = $or_terms;
-    } else {
-        $e->disconnect;
-        return new OpenILS::Event("BAD_PARAMS", "desc" => "No usable terms");
-    }
-
 
     # if ordering by acqlia, insert the from clause 
     # filter to limit to one type of attr.
@@ -531,6 +785,10 @@ q/order_by clause must be of the long form, like:
         $query->{from}->{jub} = {} unless $query->{from}->{jub};
         $query->{from}->{jub}->{acqlia} = $attr_from_filter;
     }
+
+    $$query{select} = $select_clause;
+    $$query{order_by} = ($options->{order_by} || {$hint => {id => {}}});
+    $$query{offset} = ($options->{offset} || 0);
 
     my $results = $e->json_query($query) or return $e->die_event;
     my @id_list = map { $_->{"id"} } (grep { $_->{"id"} } @$results);

@@ -127,6 +127,10 @@ sub retrieve_picklist_impl {
         if($$options{flesh_owner});
     $picklist->owner($e->retrieve_actor_user($picklist->owner)->usrname) 
         if($$options{flesh_username});
+    $picklist->creator($e->retrieve_actor_user($picklist->creator))
+        if($$options{flesh_creator});
+    $picklist->editor($e->retrieve_actor_user($picklist->editor))
+        if($$options{flesh_editor});
 
     return $picklist;
 }

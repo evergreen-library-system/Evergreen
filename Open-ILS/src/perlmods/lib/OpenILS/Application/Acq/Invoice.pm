@@ -689,11 +689,8 @@ __PACKAGE__->register_method(
 );
 
 
-sub fetch_invoice_api {
-    my($self, $conn, $auth, $invoice_id, $options) = @_;
-
-    my $e = new_editor(authtoken=>$auth);
-    return $e->event unless $e->checkauth;
+sub fetch_invoice_with_perm_check {
+    my($e, $invoice_id, $options) = @_;
 
     my $invoice = fetch_invoice_impl($e, $invoice_id, $options) or
         return $e->event;
@@ -717,6 +714,13 @@ sub fetch_invoice_impl {
             }
         }
     ];
+    if ($options->{"flesh_provider"}) {
+        if ($options->{"no_flesh_misc"}) {
+            $args = [ $invoice_id, { "flesh" => 1, "flesh_fields" => { "acqinv" => [] } } ];
+        }
+        push @{ $args->[1]->{flesh_fields}->{acqinv} }, "provider";
+        push @{ $args->[1]->{flesh_fields}->{acqinv} }, "shipper";
+    }
 
     return $e->retrieve_acq_invoice($args);
 }

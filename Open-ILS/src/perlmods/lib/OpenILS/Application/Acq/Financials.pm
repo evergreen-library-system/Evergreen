@@ -1015,6 +1015,15 @@ sub retrieve_purchase_order_impl {
     if ($options->{"flesh_provider"}) {
         push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "provider";
     }
+    if ($options->{"flesh_owner"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "owner";
+    }
+    if ($options->{"flesh_creator"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "creator";
+    }
+    if ($options->{"flesh_editor"}) {
+        push @{$flesh->{"flesh_fields"}->{"acqpo"}}, "editor";
+    }
 
     push (@{$flesh->{flesh_fields}->{acqpo}}, 'po_items') if $options->{flesh_po_items};
 
@@ -1023,6 +1032,8 @@ sub retrieve_purchase_order_impl {
 
     my $po = $e->retrieve_acq_purchase_order($args)
         or return $e->event;
+
+    return $e->event unless $e->allowed(['VIEW_INVOICE', 'CREATE_INVOICE'], $po->ordering_agency);
 
     if($$options{flesh_lineitems}) {
 

@@ -129,6 +129,9 @@ flesh_attrs         : for attributes,
 flesh_notes         : for notes,
 flesh_cancel_reason : for cancel reason,
 flesh_li_details    : for order details objects,
+flesh_provider      : for provider,
+flesh_claim_policy  : for claim policy,
+flesh_queued_record : for queued bib record from Vandelay,
 clear_marc          : to clear marcxml from lineitem/, type => 'hash'},
         ],
         return => {desc => 'lineitem object on success, Event on error'}
@@ -163,6 +166,12 @@ sub retrieve_lineitem_impl {
     push(@{$fields->{acqlin}},    'alert_text') if $$options{flesh_notes};
     push(@{$fields->{jub}   }, 'order_summary') if $$options{flesh_order_summary};
     push(@{$fields->{jub}   }, 'cancel_reason') if $$options{flesh_cancel_reason};
+    push(@{$fields->{jub}   },      'provider') if $$options{flesh_provider};
+    push(@{$fields->{jub}   },  'claim_policy') if $$options{flesh_claim_policy};
+    push(@{$fields->{jub}   }, 'queued_record') if $$options{flesh_queued_record};
+    push(@{$fields->{jub}   },       'creator') if $$options{flesh_creator};
+    push(@{$fields->{jub}   },        'editor') if $$options{flesh_editor};
+    push(@{$fields->{jub}   },      'selector') if $$options{flesh_selector};
 
     if($$options{flesh_li_details}) {
         push(@{$fields->{jub}   }, 'lineitem_details');
