@@ -30,6 +30,7 @@ import {CnBrowseComponent} from './cnbrowse.component';
 import {CnBrowseResultsComponent} from './cnbrowse/results.component';
 import {SearchTemplatesComponent} from './search-templates.component';
 import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
+import {PreferencesComponent} from './prefs.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import {MarcEditModule} from '@eg/staff/share/marc-edit/marc-edit.module';
     SearchTemplatesComponent,
     CnBrowseComponent,
     OpacViewComponent,
+    PreferencesComponent,
     CnBrowseResultsComponent
   ],
   imports: [

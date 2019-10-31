@@ -1,0 +1,84 @@
+<eg-catalog-search-form #searchForm></eg-catalog-search-form>
+
+<eg-staff-banner bannerText="Catalog Preferences"></eg-staff-banner>
+
+<eg-string #successMsg i18n-text text="Setting Update Succeeded"></eg-string>
+<eg-string #failMsg i18n-text text="Setting Update Failed"></eg-string>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="default-lib-selector" class="font-weight-bold" i18n>
+      Default Search Library
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <eg-org-select domId="default-lib-selector" 
+      (onChange)="orgChanged($event, 'eg.search.search_lib')"
+      [applyOrgId]="settings['eg.search.search_lib']">
+    </eg-org-select>
+  </div>
+  <div class="col-lg-6" i18n>
+    The default search library setting determines what library is
+    searched from the advanced search screen and portal page by
+    default. Manual selection of a search library will override it. One
+    recommendation is to set the search library to the highest point you
+    would normally want to search.
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="pref-lib-selector" class="font-weight-bold" i18n>
+      Preferred Library
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <eg-org-select domId="pref-lib-selector" 
+      (onChange)="orgChanged($event, 'eg.search.pref_lib')"
+      [applyOrgId]="settings['eg.search.pref_lib']">
+    </eg-org-select>
+  </div>
+  <div class="col-lg-6" i18n>
+    The preferred library is used to show copies and URIs regardless
+    of the library searched. One recommendation is to set this to your
+    workstation library so that local copies show up first in search
+    results.
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="def-pane-selector" class="font-weight-bold" i18n>
+      Default Search Pane
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <eg-combobox [selectedId]="settings['eg.search.adv_pane']"
+      (onChange)="paneChanged($event)">
+      <eg-combobox-entry entryId="advanced" entryLabel="Keyword Search"></eg-combobox-entry>
+      <eg-combobox-entry entryId="numeric" entryLabel="Numeric Search"></eg-combobox-entry>
+      <eg-combobox-entry entryId="expert" entryLabel="MARC Search"></eg-combobox-entry>
+      <eg-combobox-entry entryId="browse" entryLabel="Browse"></eg-combobox-entry>
+      <eg-combobox-entry entryId="cnbrowse" entryLabel="Shelf Browse"></eg-combobox-entry>
+    </eg-combobox>
+  </div>
+  <div class="col-lg-6" i18n>
+    Focus this search tab by default when opening new catalog pages.
+  </div>
+</div>
+
+<div class="row border-bottom border-secondary p-2 m-2">
+  <div class="col-lg-2 offset-lg-1">
+    <label for="pref-lib-selector" class="font-weight-bold" i18n>
+      Search Results Per Page
+    </label>
+  </div>
+  <div class="col-lg-2">
+    <input type="number" min="1" max="100" class="form-control"
+      [(ngModel)]="settings['eg.catalog.results.count']"
+      (change)="countChanged()"/>
+  </div>
+  <div class="col-lg-6" i18n>
+    The number of search results to display per page.
+  </div>
+</div>

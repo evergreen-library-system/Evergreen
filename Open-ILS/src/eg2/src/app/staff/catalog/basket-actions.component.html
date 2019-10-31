@@ -12,26 +12,34 @@
       </a>
     </div>
   </div>
-  <div class="">
+  <div class="pr-1">
     <div ngbDropdown placement="bottom-right">
       <button class="btn btn-light" id="basketActions"
         [disabled]="!basketCount()"
         ngbDropdownToggle i18n>Basket Actions</button>
       <div ngbDropdownMenu aria-labelledby="basketActions">
-      <button class="dropdown-item" 
-        (click)="applyAction('view')" i18n>View Basket</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('hold')" i18n>Place Hold</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('print')" i18n>Print Title Details</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('email')" i18n>Email Title Details</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('export_marc')" i18n>Export Records</button>
-      <button class="dropdown-item" 
-        (click)="applyAction('clear')" i18n>Clear Basket</button>
+        <button class="dropdown-item"
+          (click)="applyAction('view')" i18n>View Basket</button>
+        <button class="dropdown-item"
+          (click)="applyAction('hold')" i18n>Place Hold</button>
+        <button class="dropdown-item"
+          (click)="applyAction('print')" i18n>Print Title Details</button>
+        <button class="dropdown-item"
+          (click)="applyAction('email')" i18n>Email Title Details</button>
+        <button class="dropdown-item"
+          (click)="applyAction('bucket')" i18n>Add Basket to Bucket</button>
+        <button class="dropdown-item"
+          (click)="applyAction('export_marc')" i18n>Export Records</button>
+        <button class="dropdown-item"
+          (click)="applyAction('clear')" i18n>Clear Basket</button>
+      </div>
     </div>
+  </div>
+  <div>
+    <!-- Note this Prefernces links is not specific to Basket handling,
+        but it's here since it allowed for consistent formatting -->
+    <a routerLink="/staff/catalog/prefs" queryParamsHandling="merge">
+      <button class="btn btn-light" i18n>Catalog Preferences</button>
+    </a>
   </div>
 </div>

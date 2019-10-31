@@ -62,10 +62,9 @@ export class SearchTemplatesComponent extends DialogComponent implements OnInit 
 
     ngOnInit() {
         this.context = this.staffCat.searchContext;
-        console.log('ngOnInit() with selected = ', this.staffCat.selectedTemplate);
 
-        this.org.settings('opac.staff_saved_search.size').then(sets => {
-            const size = sets['opac.staff_saved_search.size'] || 0;
+        this.serverStore.getItem('opac.staff_saved_search.size')
+        .then(size => {
             if (!size) { return; }
 
             this.recentSearchesCount = Number(size);

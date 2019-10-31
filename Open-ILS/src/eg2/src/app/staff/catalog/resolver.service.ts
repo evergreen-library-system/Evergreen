@@ -43,18 +43,27 @@ export class CatalogResolver implements Resolve<Promise<any[]>> {
         return this.store.getItemBatch([
             'eg.search.search_lib',
             'eg.search.pref_lib',
+            'eg.search.adv_pane',
+            'eg.catalog.results.count',
             'cat.holdings_show_empty_org',
             'cat.holdings_show_empty',
             'cat.marcedit.stack_subfields',
             'cat.marcedit.flateditor',
             'cat.holdings_show_copies',
             'cat.holdings_show_vols',
+            'opac.staff_saved_search.size',
+            'eg.catalog.search_templates',
             'opac.staff_saved_search.size'
         ]).then(settings => {
             this.staffCat.defaultSearchOrg =
                 this.org.get(settings['eg.search.search_lib']);
             this.staffCat.prefOrg =
                 this.org.get(settings['eg.search.pref_lib']);
+            this.staffCat.defaultTab = settings['eg.search.adv_pane'];
+            if (settings['eg.catalog.results.count']) {
+               this.staffCat.defaultSearchLimit =
+                  Number(settings['eg.catalog.results.count']);
+            }
         });
     }
 }

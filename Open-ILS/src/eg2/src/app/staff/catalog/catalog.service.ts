@@ -23,6 +23,9 @@ export class StaffCatalogService {
     // TODO: does unapi support pref-lib for result-page copy counts?
     prefOrg: IdlObject;
 
+    // Default search tab
+    defaultTab: string;
+
     // Cache the currently selected detail record (i.g. catalog/record/123)
     // summary so the record detail component can avoid duplicate fetches
     // during record tab navigation.

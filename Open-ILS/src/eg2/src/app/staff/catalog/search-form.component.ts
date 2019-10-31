@@ -7,6 +7,13 @@ import {CatalogSearchContext, CatalogSearchState} from '@eg/share/catalog/search
 import {StaffCatalogService} from './catalog.service';
 import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
+// Maps opac-style default tab names to local tab names.
+const LEGACY_TAB_NAME_MAP = {
+    expert: 'marc',
+    numeric: 'ident',
+    advanced: 'term'
+};
+
 @Component({
   selector: 'eg-catalog-search-form',
   styleUrls: ['search-form.component.css'],
@@ -87,9 +94,18 @@ export class SearchFormComponent implements OnInit, AfterViewInit {
                     this.searchTab = 'ident';
                 } else if (this.context.browseSearch.isSearchable()) {
                     this.searchTab = 'browse';
-                } else {
-                    // Default tab
+                } else if (this.context.termSearch.isSearchable()) {
                     this.searchTab = 'term';
+
+                } else {
+
+                    this.searchTab =
+                        LEGACY_TAB_NAME_MAP[this.staffCat.defaultTab]
+                        || this.staffCat.defaultTab || 'term';
+
+                }
+
+                if (this.searchTab === 'term') {
                     this.refreshCopyLocations();
                 }
             }
