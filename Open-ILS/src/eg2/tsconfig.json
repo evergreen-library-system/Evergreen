@@ -4,10 +4,11 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
+    "module": "es6",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "target": "es2015",
+    "target": "es6",
     "baseUrl": "src",
     "paths": {
         "@eg/*": ["app/*"],
@@ -17,9 +18,8 @@
       "node_modules/@types"
     ],
     "lib": [
-      "es2017",
-      "dom",
-      "es2018.promise"
+      "es2018",
+      "dom"
     ]
   }
 }

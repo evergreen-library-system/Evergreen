@@ -13,6 +13,11 @@
     "build-cs-CZ": "ng build --configuration=production-cs-CZ --output-path ../../web/eg2/cs-CZ --deploy-url /eg2/cs-CZ/ --base-href /eg2/cs-CZ; sed -i s/IDL2js\\\"/IDL2js?locale=cs-CZ\\\"/g ../../web/eg2/cs-CZ/index.html; sed -i s/lang=\\\"en\\\"/lang=\\\"cs\\\"/g ../../web/eg2/cs-CZ/index.html"
   },
   "private": true,
+  "browserslist": [
+    "last 3 chrome version",
+    "last 3 firefox version",
+    "last 1 safari version"
+  ],
   "dependencies": {
     "@angular/animations": "^8.2.11",
     "@angular/common": "^8.2.11",
