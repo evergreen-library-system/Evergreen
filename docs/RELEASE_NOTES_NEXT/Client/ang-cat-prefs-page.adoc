@@ -1,0 +1,12 @@
+Angular Staff Catalog Preferences Page
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Adds a new "Catalog Preferences" interface, accessible directly from the
+catalog.  The UI houses the search preferences (default search lib,
+preferred library, default search tab) and a new staff-specific
+hits-per-page setting.  Other preferences may be added later.
+
+Adds support for selecting a default search tab using the existing
+'eg.search.adv_pane' setting.
+
+
