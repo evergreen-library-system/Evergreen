@@ -54,6 +54,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'PATRON_EXCEEDS_OVERDUE_COUNT',
         'PATRON_EXCEEDS_CHECKOUT_COUNT',
         'PATRON_EXCEEDS_FINES',
+        'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
         'PATRON_BARRED',
         'CIRC_EXCEEDS_COPY_RANGE',
         'ITEM_DEPOSIT_REQUIRED',
@@ -80,7 +81,8 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'PATRON_BARRED',
         'PATRON_EXCEEDS_LOST_COUNT',
         'PATRON_EXCEEDS_CHECKOUT_COUNT',
-        'PATRON_EXCEEDS_FINES'
+        'PATRON_EXCEEDS_FINES',
+        'PATRON_EXCEEDS_LONGOVERDUE_COUNT'
     ]
 
 
@@ -90,11 +92,13 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
         'PATRON_EXCEEDS_LOST_COUNT',
         'PATRON_EXCEEDS_CHECKOUT_COUNT',
         'PATRON_EXCEEDS_FINES',
+        'PATRON_EXCEEDS_LONGOVERDUE_COUNT',
         'CIRC_EXCEEDS_COPY_RANGE',
         'ITEM_DEPOSIT_REQUIRED',
         'ITEM_RENTAL_FEE_REQUIRED',
         'ITEM_DEPOSIT_PAID',
         'COPY_CIRC_NOT_ALLOWED',
+        'COPY_NOT_AVAILABLE',
         'COPY_IS_REFERENCE',
         'COPY_ALERT_MESSAGE',
         'COPY_NEEDED_FOR_HOLD',
