@@ -205,11 +205,14 @@ CREATE OR REPLACE FUNCTION actor.org_unit_ancestors_distance( INT ) RETURNS TABL
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT ) RETURNS SETOF actor.org_unit AS $$
-	SELECT	*
-	  FROM	actor.org_unit_ancestors($1)
-			UNION
-	SELECT	*
-	  FROM	actor.org_unit_descendants($1);
+    SELECT  aou.*
+      FROM  actor.org_unit AS aou
+            JOIN (
+                (SELECT au.id, t.depth FROM actor.org_unit_ancestors($1) AS au JOIN actor.org_unit_type t ON (au.ou_type = t.id))
+                    UNION
+                (SELECT au.id, t.depth FROM actor.org_unit_descendants($1) AS au JOIN actor.org_unit_type t ON (au.ou_type = t.id))
+            ) AS ad ON (aou.id=ad.id)
+      ORDER BY ad.depth;
 $$ LANGUAGE SQL STABLE ROWS 1;
 
 CREATE OR REPLACE FUNCTION actor.org_unit_full_path ( INT, INT ) RETURNS SETOF actor.org_unit AS $$
