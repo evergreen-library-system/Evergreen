@@ -1,0 +1,13 @@
+
+<ng-template #displayTemplate let-r="result" i18n>
+  {{r.label}} ({{orgName(r.userdata.owning_lib())}})
+</ng-template>
+
+<eg-combobox #comboBox
+  [startId]="startId"
+  [displayTemplate]="displayTemplate"
+  (onChange)="cboxChanged($event)"
+  (blur)="propagateTouch()"
+  placeholder="Shelving Location..."
+  i18n-placeholder>
+</eg-combobox>

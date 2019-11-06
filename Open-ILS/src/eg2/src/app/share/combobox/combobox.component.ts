@@ -18,6 +18,7 @@ export interface ComboboxEntry {
   // If no label is provided, the 'id' value is used.
   label?: string;
   freetext?: boolean;
+  userdata?: any; // opaque external value; ignored by this component.
 }
 
 @Component({

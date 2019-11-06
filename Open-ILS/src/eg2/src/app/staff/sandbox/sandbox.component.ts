@@ -109,6 +109,9 @@ export class SandboxComponent implements OnInit {
 
     myTimeForm: FormGroup;
 
+    locId = 1; // Stacks
+    aLocation: IdlObject; // acpl
+
     constructor(
         private idl: IdlService,
         private org: OrgService,

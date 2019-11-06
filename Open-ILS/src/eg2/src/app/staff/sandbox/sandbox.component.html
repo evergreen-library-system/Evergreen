@@ -416,3 +416,18 @@
     <eg-grid-column name="hook"></eg-grid-column>
   </eg-grid>
 </div>
+
+<div class="mt-4 mb-4">
+  <h4>Item (Copy) Location Selector</h4>
+  <div class="row">
+    <div class="col-lg-3">
+      <eg-item-location-select permFilter="CREATE_WORKSTATION" 
+        [(ngModel)]="locId" (valueChange)="aLocation = $event">
+      </eg-item-location-select>
+    </div>
+    <div class="col-lg-2">Selected ID: {{locId}}</div>
+    <div class="col-lg-4">
+      valueChange Handler Produced: {{aLocation ? aLocation.name() : '(none)'}}
+    </div>
+  </div>
+</div>
