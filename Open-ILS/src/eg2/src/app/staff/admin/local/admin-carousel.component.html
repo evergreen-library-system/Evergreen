@@ -90,7 +90,7 @@
 <eg-fm-record-editor #editDialog idlClass="{{idlClass}}" 
     [preloadLinkedValues]="true" readonlyFields="last_refresh_time"
     hiddenFieldsList="creator,editor,create_time,edit_time"
-    [preSave]="mungeCarousel" (onSave$)="postSave($event)"
+    [preSave]="mungeCarousel" (recordSaved)="postSave($event)"
     readonlyFields="last_refresh_time"
     [fieldOptions]="{bucket:{customTemplate:{template:bucketTemplate}},copy_location_filter:{customTemplate:{template:locationTemplate}},owning_lib_filter:{customTemplate:{template:orgTemplate}}}"
 ></eg-fm-record-editor>
