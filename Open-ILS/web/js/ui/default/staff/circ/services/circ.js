@@ -1885,6 +1885,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
 
     // action == what action to take if the user confirms the alert
     service.copy_alert_dialog = function(evt, params, options, action) {
+        egCore.audio.play('warning.circ.item_alert');
         if (angular.isArray(evt)) evt = evt[0];
         if (!angular.isArray(evt.payload)) {
             return egConfirmDialog.open(
