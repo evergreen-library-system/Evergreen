@@ -1,12 +1,19 @@
 import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
+import {AuthService} from '@eg/core/auth.service';
+import {CourseService} from './course.service';
+import {NetService} from '@eg/core/net.service';
+import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';
 import {Pager} from '@eg/share/util/pager';
-import {GridDataSource, GridColumn, GridRowFlairEntry} from '@eg/share/grid/grid';
+import {GridDataSource, GridColumn} from '@eg/share/grid/grid';
 import {FmRecordEditorComponent} from '@eg/share/fm-editor/fm-editor.component';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
+
+import {CourseAssociateMaterialComponent
+    } from './course-associate-material.component';
 
 @Component({
     templateUrl: './course-list.component.html'
@@ -22,23 +29,27 @@ export class CourseListComponent implements OnInit {
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
     @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
-    @ViewChild('flairTooltip', { static: true }) private flairTooltip: StringComponent;
-    rowFlairCallback: (row: any) => GridRowFlairEntry;
+    @ViewChild('courseMaterialDialog', {static: true})
+        private courseMaterialDialog: CourseAssociateMaterialComponent;
     @Input() sort_field: string;
     @Input() idl_class = "acmc";
     @Input() dialog_size: 'sm' | 'lg' = 'lg';
     @Input() table_name = "Course";
     grid_source: GridDataSource = new GridDataSource();
+    currentMaterials: any[] = [];
     search_value = '';
 
     constructor(
-            private pcrud: PcrudService,
-            private toast: ToastService,
+        private auth: AuthService,
+        private courseSvc: CourseService,
+        private net: NetService,
+        private org: OrgService,
+        private pcrud: PcrudService,
+        private toast: ToastService,
     ){}
 
     ngOnInit() {
         this.getSource();
-        this.rowFlair();
     }
 
     /**
@@ -61,24 +72,6 @@ export class CourseListComponent implements OnInit {
             };
             return this.pcrud.retrieveAll(this.idl_class, searchOps, {fleshSelectors: true});
         };
-    }
-
-    rowFlair() {
-        this.rowFlairCallback = (row: any): GridRowFlairEntry => {
-            const flair = {icon: null, title: null};
-            if (row.id() < 100) {
-                flair.icon = 'not_interested';
-                flair.title = this.flairTooltip.text;
-            }
-            return flair;
-        };
-    }
-
-    gridCellClassCallback = (row: any, col: GridColumn): string => {
-        if (col.name === 'id' && row.a[0] < 100) {
-            return 'text-danger';
-        }
-        return '';
     }
 
     showEditDialog(standingPenalty: IdlObject): Promise<any> {
@@ -131,7 +124,11 @@ export class CourseListComponent implements OnInit {
     }
 
     deleteSelected(idl_object: IdlObject[]) {
-            idl_object.forEach(idl_object => idl_object.isdeleted(true));
+        this.courseSvc.disassociateMaterials(idl_object).then(res => {
+            console.log(res);
+            idl_object.forEach(idl_object => {
+                idl_object.isdeleted(true)
+            });
             this.pcrud.autoApply(idl_object).subscribe(
                 val => {
                     console.debug('deleted: ' + val);
@@ -142,8 +139,52 @@ export class CourseListComponent implements OnInit {
                     this.deleteFailedString.current()
                         .then(str => this.toast.danger(str));
                 },
-                ()  => this.grid.reload()
+                () => this.grid.reload()
             );
-        };
+        });
+    };
+
+    fetchCourseMaterials(course, currentMaterials): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.pcrud.search('acmcm', {course: course}).subscribe(res => {
+                if (res) this.fleshItemDetails(res.item(), res.relationship());
+            }, err => {
+                reject(err);
+            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
+        });
+    }
+
+    fleshItemDetails(itemId, relationship): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.net.request(
+                'open-ils.circ',
+                'open-ils.circ.copy_details.retrieve',
+                this.auth.token(), itemId
+            ).subscribe(res => {
+                if (res) {
+                    let item = res.copy;
+                    item.call_number(res.volume);
+                    item._title = res.mvr.title();
+                    item.circ_lib(this.org.get(item.circ_lib()));
+                    item._relationship = relationship;
+                    this.courseMaterialDialog.gridDataSource.data.push(item);
+                }
+            }, err => {
+                reject(err);
+            }, () => resolve(this.courseMaterialDialog.gridDataSource.data));
+        });
+    }
+
+    openMaterialsDialog(course) {
+        let currentMaterials = []
+        this.courseMaterialDialog.gridDataSource.data = [];
+        this.fetchCourseMaterials(course[0].id(), currentMaterials).then(res => {
+            this.courseMaterialDialog.currentCourse = course[0];
+            this.courseMaterialDialog.materials = currentMaterials;
+            this.courseMaterialDialog.open({size: 'lg'}).subscribe(res => {
+                console.log(res);
+            });
+        });
+    }
 }
 

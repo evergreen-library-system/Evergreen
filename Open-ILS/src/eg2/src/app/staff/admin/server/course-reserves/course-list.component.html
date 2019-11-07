@@ -7,16 +7,17 @@
 <eg-string #deleteSuccessString i18n-text text="Delete of {{table_name}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
+<eg-course-associate-material-dialog #courseMaterialDialog>
+</eg-course-associate-material-dialog>
 <div class="w-100 mt-2 mb-2">
   <eg-grid #grid idlClass={{idl_class}}
     [dataSource]="grid_source"
-    [rowFlairIsEnabled]="true"
-    [rowFlairCallback]="rowFlairCallback"
-    [cellClassCallback]="gridCellClassCallback"
     [sortable]="true">
     <eg-grid-toolbar-button
       label="Create {{table_name}}" (onClick)="createNew()" i18n-label>
     </eg-grid-toolbar-button>
+    <eg-grid-toolbar-action label="View Materials" i18n-label (onClick)="openMaterialsDialog($event)">
+    </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)">
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">

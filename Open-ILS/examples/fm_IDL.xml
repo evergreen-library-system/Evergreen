@@ -3169,10 +3169,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
             <field reporter:label="Course" name="course" reporter:datatype="link" />
             <field reporter:label="Item" name="item" reporter:datatype="link" />
             <field reporter:label="Item Relationship" name="relationship" reporter:datatype="text" />
+            <field reporter:label="Original Status" name="original_status" reporter:datatype="link" />
+            <field reporter:label="Original Circ Modifier" name="original_circ_modifier" reporter:datatype="link" />
+            <field reporter:label="Original Shelving Location" name="original_location" reporter:datatype="link" />
+            <field reporter:label="Original Callnumber" name="original_callnumber" reporter:datatype="link" />
         </fields>
         <links>
             <link field="course" reltype="has_a" key="id" map="" class="acmc" />
             <link field="item" reltype="has_a" key="id" map="" class="acp" />
+            <link field="original_callnumber" reltype="has_a" key="id" map="" class="acn" />
+            <link field="original_status" reltype="has_a" key="id" map="" class="ccs" />
+            <link field="original_circ_modifier" reltype="has_a" key="code" map="" class="ccm" />
+            <link field="original_location" reltype="has_a" key="id" map="" class="acpl" />
         </links>
         <permacrud xmlns="http://open-ils.org/spec/opensrf/IDL/permacrud/v1">
             <actions>
