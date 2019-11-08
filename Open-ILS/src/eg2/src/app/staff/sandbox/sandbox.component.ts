@@ -103,6 +103,9 @@ export class SandboxComponent implements OnInit {
     // selector field value on metarecord object
     aMetarecord: string;
 
+    // file-reader example
+    fileContents:  Array<string>;
+
     // cross-tab communications example
     private sbChannel: any;
     sbChannelText: string;

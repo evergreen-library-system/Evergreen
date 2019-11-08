@@ -15,6 +15,7 @@ import {OrgSelectComponent} from '@eg/share/org-select/org-select.component';
 import {DateRangeSelectComponent} from '@eg/share/daterange-select/daterange-select.component';
 import {DateTimeSelectComponent} from '@eg/share/datetime-select/datetime-select.component';
 import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
+import {FileReaderComponent} from '@eg/share/file-reader/file-reader.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
     DateSelectComponent,
     OrgSelectComponent,
     DateRangeSelectComponent,
-    DateTimeSelectComponent
+    DateTimeSelectComponent,
+    FileReaderComponent,
   ],
   imports: [
     CommonModule,
@@ -45,8 +47,9 @@ import {ContextMenuModule} from '@eg/share/context-menu/context-menu.module';
     OrgSelectComponent,
     DateRangeSelectComponent,
     DateTimeSelectComponent,
-    ContextMenuModule
-  ]
+    ContextMenuModule,
+    FileReaderComponent,
+  ],
 })
 
 export class CommonWidgetsModule { }

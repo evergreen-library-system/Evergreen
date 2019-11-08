@@ -175,6 +175,15 @@
 
 
 <div>
+  <h4>File reader component</h4>
+  <eg-file-reader [(ngModel)]="fileContents"></eg-file-reader>
+  <h5>Contents are:</h5>
+  <ol *ngIf="fileContents && fileContents.length > 0">
+    <li *ngFor="let val of fileContents">{{val}}</li>
+  </ol>
+</div>
+
+<div>
   <h4>Cross-tab communications example</h4>
   <p>To test, open this sandbox in a second browser tab. Enter something in the input box below, then switch to the other tab and click anywhere on the page. 
      You should see the message that you sent to the other browser tab.</p>
