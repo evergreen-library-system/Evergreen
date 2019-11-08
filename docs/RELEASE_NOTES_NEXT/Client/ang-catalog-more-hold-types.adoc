@@ -1,0 +1,13 @@
+Angular catalog recall/force/part holds
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The Angular staff catalog now has entry points for placing Recall,
+Force, and Part-level holds.
+
+For any item-level hold type, the user now has the option to cycle
+between Item, Recall, and Force hold types.  The selected type affects
+the full batch of holds.
+
+For title-level holds, the user now has the option to select a part
+as the hold target for each record in the list.  Part selection is
+optional.
