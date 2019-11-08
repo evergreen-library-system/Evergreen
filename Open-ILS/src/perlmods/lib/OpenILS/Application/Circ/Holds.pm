@@ -4874,6 +4874,7 @@ sub hold_metadata {
             volume => $volume,
             issuance => $issuance,
             part => $part,
+            parts => [],
             bibrecord => $bre,
             metarecord => $metarecord,
             metarecord_filters => {}
@@ -4891,6 +4892,10 @@ sub hold_metadata {
                 $meta->{metarecord} = 
                     $e->retrieve_metabib_metarecord($map->metarecord);
             }
+
+            # Also fetch the available parts for bib-level holds.
+            $meta->{parts} = $e->search_biblio_monograph_part(
+                {record => $bre->id, deleted => 'f'});
         }
 
         if ($meta->{metarecord}) {
