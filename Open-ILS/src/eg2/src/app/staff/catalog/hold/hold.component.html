@@ -167,17 +167,44 @@
 
 <div class="row"><div class="col-lg-12"><hr/></div></div>
 
-<div class="row font-weight-bold pt-3 ml-1 mr-1">
-  <div class="col-lg-12" i18n>Placing 
-    <ng-container *ngIf="holdType == 'M'">METARECORD</ng-container> 
-    <ng-container *ngIf="holdType == 'T'">TITLE</ng-container> 
-    <ng-container *ngIf="holdType == 'V'">CALL NUMBER</ng-container>
-    <ng-container *ngIf="holdType == 'F'">FORCE COPY</ng-container> 
-    <ng-container *ngIf="holdType == 'C'">COPY</ng-container> 
-    <ng-container *ngIf="holdType == 'R'">RECALL</ng-container> 
-    <ng-container *ngIf="holdType == 'I'">ISSUANCE</ng-container> 
-    <ng-container *ngIf="holdType == 'P'">PARTS</ng-container> 
-    hold on record(s)</div>
+<div class="row pt-3 ml-1 mr-1 d-flex">
+  <div class="">
+    <span class="font-weight-bold" i18n>Placing 
+      <ng-container *ngIf="holdType == 'M'">METARECORD</ng-container> 
+      <ng-container *ngIf="holdType == 'T'">TITLE</ng-container> 
+      <ng-container *ngIf="holdType == 'V'">CALL NUMBER</ng-container>
+      <ng-container *ngIf="holdType == 'F'">FORCE ITEM</ng-container> 
+      <ng-container *ngIf="holdType == 'C'">ITEM</ng-container> 
+      <ng-container *ngIf="holdType == 'R'">RECALL</ng-container> 
+      <ng-container *ngIf="holdType == 'I'">ISSUANCE</ng-container> 
+      <ng-container *ngIf="holdType == 'P'">PARTS</ng-container> 
+      hold on record(s)
+    </span>
+  </div>
+  <div class="flex-1"> </div>
+  <div>
+    <span class="pl-3" *ngIf="isItemHold()">
+      <span i18n>Item-Level Hold Options:</span>
+      <span class="pl-2">
+        <a routerLink="/staff/catalog/hold/C" queryParamsHandling="merge">
+          <button [disabled]="holdType === 'C'" class="btn btn-outline-primary" 
+            i18n>Item Hold</button>
+        </a>
+      </span>
+      <span class="pl-2">
+        <a routerLink="/staff/catalog/hold/R" queryParamsHandling="merge">
+          <button [disabled]="holdType === 'R'" class="btn btn-outline-primary" 
+            i18n>Recall Hold</button>
+        </a>
+      </span>
+      <span class="pl-2">
+        <a routerLink="/staff/catalog/hold/F" queryParamsHandling="merge">
+          <button [disabled]="holdType === 'F'" class="btn btn-outline-primary"
+            i18n>Force Item Hold</button>
+        </a>
+      </span>
+    </span>
+  </div>
 </div>
 
 <ng-template #anyValue>
@@ -198,8 +225,9 @@
 
   <div class="row mt-2 ml-1 mr-1 font-weight-bold">
     <div class="col-lg-1" i18n>Format</div>
-    <div class="col-lg-3" i18n>Title</div>
-    <div class="col-lg-2" i18n>Author</div>
+    <div class="col-lg-2" i18n>Title</div>
+    <div class="col-lg-1" i18n>Author</div>
+    <div class="col-lg-2" i18n>Part</div>
     <div class="col-lg-2" i18n>Call Number</div>
     <div class="col-lg-1" i18n>Barcode</div>
     <div class="col-lg-2" i18n>Holds Status</div>
@@ -219,12 +247,29 @@
         </div>
         <!-- TODO: link for a metarecord should 
             jump to constituent bib list search page? -->
-        <div class="col-lg-3">
+        <div class="col-lg-2">
           <a routerLink="/staff/catalog/record/{{ctx.holdMeta.bibId}}">
             {{ctx.holdMeta.bibSummary.display.title}}
           </a>
         </div>
-        <div class="col-lg-2">{{ctx.holdMeta.bibSummary.display.author}}</div>
+        <div class="col-lg-1">{{ctx.holdMeta.bibSummary.display.author}}</div>
+        <div class="col-lg-2">
+          <ng-container *ngIf="ctx.holdMeta.parts.length">
+            <select class="form-control" (change)="setPart(ctx, $event)">
+              <option value="" i18n>Any Part</option>
+              <option *ngFor="let part of ctx.holdMeta.parts" 
+                value="{{part.id()}}">{{part.label()}}</option>
+            </select>
+          </ng-container>
+          <ng-container *ngIf="ctx.holdMeta.parts.length == 0">
+            <ng-container *ngIf="ctx.holdMeta.part">
+              <span>{{ctx.holdMeta.part.label()}}</span>
+            </ng-container>
+            <ng-container *ngIf="!ctx.holdMeta.part">
+              <span i18n>N/A</span>
+            </ng-container>
+          </ng-container>
+        </div>
         <div class="col-lg-2">
           <ng-container *ngIf="ctx.holdMeta.callNum; else anyValue">
             {{ctx.holdMeta.callNum.label()}}
@@ -237,17 +282,18 @@
         </div>
         <div class="col-lg-2">
           <ng-container *ngIf="!ctx.lastRequest && !ctx.processing">
-            <div class="alert alert-info" i18n>Hold Pending</div>
+            <div class="alert alert-info p-1 ml-2" i18n>Hold Pending</div>
           </ng-container>
           <ng-container *ngIf="ctx.processing">
-            <div class="alert alert-primary" i18n>Hold Processing...</div>
+            <div class="alert alert-primary p-1 ml-2" i18n>Hold Processing...</div>
           </ng-container>
           <ng-container *ngIf="ctx.lastRequest">
             <ng-container *ngIf="ctx.lastRequest.result.success">
-              <div class="alert alert-success" i18n>Hold Succeeded</div>
+              <div class="alert alert-success p-1 ml-2" i18n>Hold Succeeded</div>
             </ng-container>
             <ng-container *ngIf="!ctx.lastRequest.result.success">
-              <div class="alert alert-danger">
+              <div class="alert alert-danger p-1 ml-2" 
+                title="{{ctx.lastRequest.result.evt.textcode}}">
                 {{ctx.lastRequest.result.evt.textcode}}
               </div>
             </ng-container>
