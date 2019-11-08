@@ -104,8 +104,10 @@ export class PermGroupTreeComponent implements OnInit {
         const parts = this.filterText.toLowerCase().split(' ');
 
         maps = maps.filter(m => {
-            const target = m.perm().code().toLowerCase()
-                + ' ' + m.perm().description().toLowerCase();
+            const desc = m.perm().description() || ''; // null-able
+
+            const target =
+                m.perm().code().toLowerCase() + ' ' + desc.toLowerCase();
 
             for (let i = 0; i < parts.length; i++) {
                 const part = parts[i];
