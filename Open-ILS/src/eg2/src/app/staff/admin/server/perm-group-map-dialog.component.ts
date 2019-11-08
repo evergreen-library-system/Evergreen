@@ -64,7 +64,7 @@ export class PermGroupMapDialogComponent
             const entries: ComboboxEntry[] =  [];
             this.trimmedPerms.forEach(p => {
                 if (p.code().toLowerCase().includes(term) ||
-                    p.description().toLowerCase().includes(term)) {
+                    (p.description() || '').toLowerCase().includes(term)) {
                     entries.push({id: p.id(), label: p.code()});
                 }
             });

@@ -148,7 +148,10 @@
             <div class="row" *ngFor="let map of groupPermMaps()"
                 [ngClass]="{'bg-warning': map.isdeleted()}">
               <div class="col-lg-5">
-                <span title="{{map.perm().description()}}">{{map.perm().code()}}</span>
+                <span i18n-title 
+                  title="{{map.perm().description() || map.perm().code()}}">
+                  {{map.perm().code()}}
+                </span>
               </div>
               <ng-container *ngIf="permIsInherited(map); else nativeMap">
                 <div class="col-lg-4">
