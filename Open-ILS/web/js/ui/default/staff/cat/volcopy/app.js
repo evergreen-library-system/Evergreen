@@ -1229,6 +1229,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                 angular.forEach(
                     $scope.workingGridControls.selectedItems(),
                     function (cp) {
+                        if (!angular.isArray(cp.copy_alerts())) cp.copy_alerts([]);
                         $scope.dirty = true;
                         angular.forEach(alerts, function(alrt) {
                             var a = egCore.idl.fromHash('aca', alrt);
@@ -1253,6 +1254,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
             angular.forEach(
                 $scope.workingGridControls.selectedItems(),
                 function (cp) {
+                    if (!angular.isArray(cp.notes())) cp.notes([]);
                     $scope.dirty = true;
                     angular.forEach(notes, function(note) {
                         var n = egCore.idl.fromHash('acpn', note);
@@ -2301,6 +2303,7 @@ function($scope , $q , $window , $routeParams , $location , $timeout , egCore , 
                     if (typeof(copy_alert.note) != 'undefined' &&
                         copy_alert.note != '') {
                         angular.forEach(copy_list, function (cp) {
+                            if (!angular.isArray(cp.copy_alerts())) cp.copy_alerts([]);
                             var a = new egCore.idl.aca();
                             a.isnew(1);
                             a.create_staff(copy_alert.create_staff);
