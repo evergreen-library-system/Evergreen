@@ -51,4 +51,9 @@ CREATE TABLE config.openathens_identity (
     release_home_ou             BOOL    NOT NULL DEFAULT false
 );
 
+
+INSERT INTO permission.perm_list ( id, code, description) VALUES 
+  ( 620, 'ADMIN_OPENATHENS', oils_i18n_gettext(620,
+     'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'));
+
 COMMIT;

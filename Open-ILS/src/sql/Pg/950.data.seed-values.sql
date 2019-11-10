@@ -1933,7 +1933,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 618, 'CREATE_PRECAT', oils_i18n_gettext(618,
     'Allows a user to create a pre-catalogued copy', 'ppl', 'description')),
  ( 619, 'EDIT_SELF_IN_CLIENT', oils_i18n_gettext(619,
-    'Allow a user to edit their own account in the staff client', 'ppl', 'description'))
+    'Allow a user to edit their own account in the staff client', 'ppl', 'description')),
+ ( 620, 'ADMIN_OPENATHENS', oils_i18n_gettext(620,
+    'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'))
 ;
 
 
