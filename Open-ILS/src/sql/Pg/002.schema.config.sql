@@ -1416,7 +1416,7 @@ SELECT SETVAL('config.openathens_name_field_id_seq'::TEXT, 100);
 CREATE TABLE config.openathens_identity (
     id                          SERIAL  PRIMARY KEY,
     active                      BOOL    NOT NULL DEFAULT true,
-    org_unit                    INT     NOT NULL REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
+    org_unit                    INT     NOT NULL, -- REFERENCES actor.org_unit (id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
     api_key                     TEXT    NOT NULL,
     connection_id               TEXT    NOT NULL,
     connection_uri              TEXT    NOT NULL,

@@ -1964,7 +1964,9 @@ INSERT INTO permission.perm_list ( id, code, description ) VALUES
  ( 634, 'UPDATE_RECORD_NOTE', oils_i18n_gettext(634,
     'Allow the user to update a record note', 'ppl', 'description')),
  ( 635, 'DELETE_RECORD_NOTE', oils_i18n_gettext(635,
-    'Allow the user to delete a record note', 'ppl', 'description'))
+    'Allow the user to delete a record note', 'ppl', 'description')),
+ ( 636, 'ADMIN_OPENATHENS', oils_i18n_gettext(636,
+    'Allow a user to administer OpenAthens authentication service', 'ppl', 'description'))
 ;
 
 
