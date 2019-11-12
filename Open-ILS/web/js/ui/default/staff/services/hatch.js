@@ -216,6 +216,9 @@ angular.module('egCoreMod')
     }
 
     service.usePrinting = function() {
+        if (!service.hatchAvailable) {
+            return Promise.resolve(false);
+        }
         return service.getItem('eg.hatch.enable.printing');
     }
 
