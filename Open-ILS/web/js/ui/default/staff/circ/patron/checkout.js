@@ -117,7 +117,9 @@ function($scope , $q , $routeParams , egCore , egUser , patronSvc ,
         );
     }
 
-    $scope.using_hatch_printer = egCore.hatch.usePrinting();
+    egCore.hatch.usePrinting().then(function(useHatch) {
+        $scope.using_hatch_printer = useHatch;
+    });
 
     egCore.hatch.getItem('circ.checkout.strict_barcode')
         .then(function(sb){ $scope.strict_barcode = sb });

@@ -91,8 +91,10 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
     // Template has been fetched (or no template needed) 
     // Process the template and send the result off to the printer.
     service.print_content = function(args) {
-        return service.fleshPrintScope(args.scope).then(function() {
-            var promise = egHatch.usePrinting() ?
+        return service.fleshPrintScope(args.scope)
+        .then(function() { return egHatch.usePrinting(); })
+        .then(function(useHatch) {
+            var promise = useHatch ?
                 service.print_via_hatch(args) :
                 service.print_via_browser(args);
 
@@ -122,7 +124,7 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             service.last_print.content_type = args.content_type;
             service.last_print.show_dialog = args.show_dialog;
 
-            egHatch.setItem('eg.print.last_printed', service.last_print);
+            egHatch.setLocalItem('eg.print.last_printed', service.last_print);
 
             return service._remotePrint();
         });
@@ -167,39 +169,29 @@ function($q , $window , $timeout , $http , egHatch , egAuth , egIDL , egOrg , eg
             // Note browser ignores print context
             service.last_print.content = html;
             service.last_print.content_type = type;
-            egHatch.setItem('eg.print.last_printed', service.last_print);
+            egHatch.setLocalItem('eg.print.last_printed', service.last_print);
 
             $window.print();
         });
     }
 
     service.reprintLast = function () {
-        var deferred = $q.defer();
-        var promise = deferred.promise;
-        promise.finally( function() { service.clear_print_content() });
+        var last = egHatch.getLocalItem('eg.print.last_printed');
+        if (!last || !last.content) { return $q.reject(); }
 
-        egHatch.getItem(
-            'eg.print.last_printed'
-        ).then(function (last) {
-            if (last && last.content) {
-                service.last_print = last;
+        service.last_print = last;
 
-                if (egHatch.usePrinting()) {
-                    promise.then(function () {
-                        egHatch._remotePrint()
-                    });
-                } else {
-                    promise.then(function () {
-                        service.ingest_print_content(
-                            null, null, null, service.last_print.content
-                        ).then(function() { $window.print() });
-                    });
-                }
-                return deferred.resolve();
+        return egHatch.usePrinting().then(function(useHatch) {
+
+            if (useHatch) {
+                return service._remotePrint();
             } else {
-                return deferred.reject();
+                return service.ingest_print_content(
+                    null, null, null, service.last_print.content)
+                .then(function() { $window.print(); });
             }
-        });
+
+        }).finally(function() { service.clear_print_content(); });
     }
 
     // loads an HTML print template by name from the server
