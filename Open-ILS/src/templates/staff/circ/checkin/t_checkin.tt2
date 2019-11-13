@@ -1,7 +1,9 @@
 <div class="container-fluid" style="text-align:center">
-  <div class="alert alert-info alert-less-pad strong-text-2">
+  <div class="alert alert-info alert-less-pad strong-text-2"
+    ng-class="{'alert-warning': is_backdate()}">
     <span ng-if="!is_capture">[% l('Checkin Items') %]</span>
     <span ng-if="is_capture">[% l('Capture Holds') %]</span>
+    <span ng-if="is_backdate()" class="btn btn-danger">[% l('Backdating Enabled') %]</span>
   </div>
 </div>
 
