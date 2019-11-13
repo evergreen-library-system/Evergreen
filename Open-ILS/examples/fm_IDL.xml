@@ -4724,7 +4724,7 @@ SELECT  usr,
 			</actions>
 		</permacrud>
 	</class>
-	<class id="aacs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_slim" oils_persist:tablename="action.all_circulation_slim" reporter:core="true" reporter:label="Combined Aged and Active circulations" oils_persist:readonly="true">
+	<class id="aacs" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="action::all_circulation_slim" oils_persist:tablename="action.all_circulation_slim" reporter:core="false" reporter:label="Combined Aged and Active Circulations (Slim Version)" oils_persist:readonly="true">
 		<fields oils_persist:primary="id" oils_persist:sequence="money.billable_xact_id_seq">
 			<field reporter:label="Check In Library" name="checkin_lib" reporter:datatype="org_unit"/>
 			<field reporter:label="Check In Staff" name="checkin_staff" reporter:datatype="link"/>

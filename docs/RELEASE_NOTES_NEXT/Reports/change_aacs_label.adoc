@@ -1,0 +1,13 @@
+Combined Aged and Active Circluations Source Naming
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+A recent improvement to aid web client data retrieval
+speed resulted in a new reports source that was named
+nearly identically to a long-existing one, and both
+were appearing in the "Core Sources" section of reports.
+The newer source has been renamed for clarity and removed
+from the core sources to prevent confusion:
+
+ * "Combined Aged and Active circulations" is now named "Combined Aged and Active Circulations (Slim Version)"
+   and is removed from the Core Sources.
+ * "Combined Aged and Active Circulations", which contains more linkages to other data sources, remains in the 
+   Core Sources list.
