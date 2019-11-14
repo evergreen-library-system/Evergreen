@@ -1,0 +1,20 @@
+
+:host >>> .popover {
+  font-family: 'Lucida Console', Monaco, monospace;
+  max-width: 550px;
+}
+
+:host >>> .popover-body {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+:host >>> .popover-body .menu-entry {
+  white-space: nowrap;
+}
+
+:host >>> .popover-body .menu-entry:hover {
+  background-color: #f8f9fa; /* bootstrap color */
+}
+

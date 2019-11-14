@@ -1,0 +1,90 @@
+import {Input, Output, EventEmitter, Directive} from '@angular/core';
+import {NgbPopover} from '@ng-bootstrap/ng-bootstrap';
+import {ContextMenuService, ContextMenu, ContextMenuEntry} from './context-menu.service';
+
+
+/* Import all of this stuff so we can pass it to our parent 
+ * class via its constructor */
+import {
+    Inject, Injector, Renderer2, ElementRef, TemplateRef, ViewContainerRef,
+    ComponentFactoryResolver, NgZone, ChangeDetectorRef, ApplicationRef
+} from '@angular/core';
+import {DOCUMENT} from '@angular/common';
+import {NgbPopoverConfig} from '@ng-bootstrap/ng-bootstrap';
+/* --- */
+
+@Directive({
+  selector: '[egContextMenu]',
+  exportAs: 'egContextMenu'
+})
+export class ContextMenuDirective extends NgbPopover {
+
+    triggers = 'contextmenu';
+    popoverClass = 'eg-context-menu';
+
+    menuEntries: ContextMenuEntry[] = [];
+    menu: ContextMenu;
+
+    @Input() set egContextMenu(menuEntries: ContextMenuEntry[]) {
+        this.menuEntries = menuEntries;
+    }
+
+    @Output() menuItemSelected: EventEmitter<ContextMenuEntry>;
+
+    // Only one active menu is allowed at a time.
+    static activeDirective: ContextMenuDirective;
+    static menuId = 0;
+
+    constructor(
+        p1: ElementRef<HTMLElement>, p2: Renderer2, p3: Injector,
+        p4: ComponentFactoryResolver, p5: ViewContainerRef, p6: NgbPopoverConfig,
+        p7: NgZone, @Inject(DOCUMENT) p8: any, p9: ChangeDetectorRef,
+        p10: ApplicationRef, private menuService: ContextMenuService) {
+
+        // relay injected services to parent
+        super(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10);
+
+        this.menuItemSelected = new EventEmitter<ContextMenuEntry>();
+
+        this.menuService.menuItemSelected.subscribe(
+            (entry: ContextMenuEntry) => {
+
+            // Only broadcast entry selection to my listeners if I'm 
+            // hosting the menu where the selection occurred.
+
+            if (this.menu && this.menu.id === this.menuService.activeMenu.id) {
+                this.menuItemSelected.emit(entry);
+            }
+        });
+    }
+
+    open() {
+
+        // In certain scenarios (e.g. right-clicking on another context
+        // menu) an open popover will stay open.  Force it closed here.
+        if (ContextMenuDirective.activeDirective) {
+            ContextMenuDirective.activeDirective.close();
+            ContextMenuDirective.activeDirective = null;
+            this.menuService.activeMenu == null;
+        }
+
+        if (!this.menuEntries ||
+             this.menuEntries.length === 0) { 
+             return;
+        }
+
+        this.menu = new ContextMenu();
+        this.menu.id = ContextMenuDirective.menuId++;
+        this.menu.entries = this.menuEntries;
+
+        this.menuService.activeMenu = this.menu;
+        this.menuService.showMenuRequest.emit(this.menu);
+        this.ngbPopover = this.menuService.menuTemplate;
+
+        ContextMenuDirective.activeDirective = this;
+
+        super.open();
+    }
+}
+
+

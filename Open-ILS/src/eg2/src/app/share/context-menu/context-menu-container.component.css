@@ -1,0 +1,27 @@
+
+.eg-context-menu {
+  /* These fonts were applied specifically for the MARC editor
+   * context menus.  Might want to make these optional. */
+  font-family: 'Lucida Console', Monaco, monospace;
+
+  /* put a hard limit on the popover width */
+  max-width: 550px;
+}
+
+.eg-context-menu .popover-body {
+  max-height: 400px;
+
+  /* Text exceeding the max-height / max-width will results in scrolls.
+   * In most cases, this should not happen. */
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.eg-context-menu .popover-body .menu-entry {
+  /* force the menu to expand horizontally to display the text */
+  white-space: nowrap;
+}
+
+.eg-context-menu .popover-body .menu-entry:hover {
+  background-color: #f8f9fa; 
+}

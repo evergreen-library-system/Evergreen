@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, Host} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IdlService} from '@eg/core/idl.service';
 import {OrgService} from '@eg/core/org.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
-import {MarcEditorComponent} from './editor.component';
 import {MarcRecord} from './marcrecord';
+import {MarcEditContext} from './editor-context';
 
 /**
  * MARC Record flat text (marc-breaker) editor.
@@ -17,19 +17,22 @@ import {MarcRecord} from './marcrecord';
 
 export class MarcFlatEditorComponent implements OnInit {
 
+    @Input() context: MarcEditContext;
     get record(): MarcRecord {
-        return this.editor.record;
+        return this.context.record;
     }
 
     constructor(
         private idl: IdlService,
         private org: OrgService,
-        private store: ServerStoreService,
-        @Host() private editor: MarcEditorComponent
-    ) {
-    }
+        private store: ServerStoreService
+    ) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        // Be sure changes made in the enriched editor are
+        // reflected here.
+        this.record.breakerText = this.record.toBreaker();
+    }
 
     // When we have breaker text, limit the vertical expansion of the
     // text area to the size of the data plus a little padding.

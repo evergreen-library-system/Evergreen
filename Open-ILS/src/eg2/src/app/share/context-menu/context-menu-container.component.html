@@ -1,0 +1,8 @@
+
+<ng-template #menuTemplate>
+  <!-- apply (click) to div so user can click anywhere in the row -->
+  <div *ngFor="let entry of menuEntries; first as isFirst" 
+   (click)="entryClicked(entry)" class="menu-entry {{entryClasses}}">
+    <a>{{entry.label}}</a>
+  </div>
+</ng-template>

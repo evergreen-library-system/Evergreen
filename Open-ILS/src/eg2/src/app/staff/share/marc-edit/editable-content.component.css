@@ -1,0 +1,22 @@
+
+div[contenteditable] {
+   /* provide plenty of input space */
+   min-width: 2em;
+   /* match BS form-control border color */
+   border: 1px solid rgb(206, 212, 218);
+   /* match BS form-control input height */
+   min-height: calc(1.5em + .75rem + 2px);
+}
+
+.sf-delimiter { 
+  /* match angjs color */
+  color: rgb(0, 0, 255)!important; 
+  /* snuggle up to my subfield code */
+  margin-right: -0.5rem; 
+}
+
+.sf-code { 
+  /* match angjs color */
+  color: rgb(0, 0, 255)!important; 
+}
+

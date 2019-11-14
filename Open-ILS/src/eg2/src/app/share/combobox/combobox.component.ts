@@ -52,6 +52,8 @@ export class ComboboxComponent implements ControlValueAccessor, OnInit {
 
     @Input() allowFreeText = false;
 
+    @Input() inputSize: number = null;
+
     // Add a 'required' attribute to the input
     isRequired: boolean;
     @Input() set required(r: boolean) {

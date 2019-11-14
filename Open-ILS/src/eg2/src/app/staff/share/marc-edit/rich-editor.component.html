@@ -1,0 +1,139 @@
+
+<ng-container *ngIf="!dataLoaded">
+  <div class="row mt-5">
+    <div class="offset-lg-3 col-lg-6">
+      <eg-progress-inline></eg-progress-inline>
+    </div>
+  </div>
+</ng-container>
+
+<ng-container *ngIf="dataLoaded">
+  <div class="mt-3 text-monospace"
+    (contextmenu)="$event.preventDefault()">
+    <div class="row pb-2 mb-2 border-bottom border-muted">
+      <div class="col-lg-9 fixed-fields-container">
+        <eg-fixed-fields-editor [context]="context"></eg-fixed-fields-editor>
+      </div>
+      <div class="col-lg-3">
+        <div><button class="btn btn-outline-dark"
+          (click)="showHelp = !showHelp" i18n>Help</button></div>
+        <div class="mt-2"><button class="btn btn-outline-dark"
+          [disabled]="true"
+          (click)="validate()" i18n>Validate</button></div>
+        <div class="mt-2">
+          <button type="button" class="btn btn-outline-info" 
+            [disabled]="undoCount() < 1" (click)="undo()">
+            Undo <span class="badge badge-info">{{undoCount()}}</span>
+          </button>
+          <button type="button" class="btn btn-outline-info ml-2" 
+            [disabled]="redoCount() < 1" (click)="redo()">
+            Redo <span class="badge badge-info">{{redoCount()}}</span>
+          </button>
+        </div>
+        <div class="mt-2">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" 
+              [disabled]="true"
+              [(ngModel)]="stackSubfields" id="stack-subfields-{{randId}}">
+            <label class="form-check-label" for="stack-subfields-{{randId}}">
+              Stack Subfields
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-1">
+      </div>
+    </div>
+    <div *ngIf="showHelp" class="row m-2">
+      <div class="col-lg-4">
+        <ul>
+          <li>Undo: CTRL-z</li>
+          <li>Redo: CTRL-y</li>
+          <li>Add Row: CTRL+Enter</li>
+          <li>Insert Row: CTRL+Shift+Enter</li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <ul>
+         <li>Copy Current Row Above: CTRL+Up</li>
+         <li>Copy Current Row Below: CTRL+Down</li>
+         <li>Add Subfield: CTRL+D or CTRL+I</li>
+         <li>Remove Row: CTRL+Del</li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <ul>
+         <li>Remove Subfield: Shift+Del</li>
+         <li>Create/Replace 006: Shift+F6</li>
+         <li>Create/Replace 007: Shift+F7</li>
+         <li>Create/Replace 008: Shift+F8</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LEADER -->
+    <div class="row pt-0 pb-0 pl-3 form-horizontal">
+      <eg-marc-editable-content [context]="context" fieldType="tag" 
+        fieldText="LDR" i18n-fieldText moreClasses="p-1">
+      </eg-marc-editable-content>
+
+      <eg-marc-editable-content [context]="context" fieldType="ldr"
+         moreClasses="p-1 pr-2">
+      </eg-marc-editable-content>
+    </div>
+
+    <!-- CONTROL FIELDS -->
+    <div class="row pt-0 pb-0 pl-3 form-horizontal" 
+      *ngFor="let field of controlFields()">
+
+      <eg-marc-editable-content [context]="context" fieldType="tag"
+        [field]="field" moreClasses="p-1">
+      </eg-marc-editable-content>
+
+      <eg-marc-editable-content [context]="context" fieldType="cfld"
+        [field]="field" moreClasses="p-1">
+      </eg-marc-editable-content>
+    </div>
+
+    <!-- data fields -->
+    <div class="row pt-0 pb-0 pl-3 form-horizontal" 
+      *ngFor="let field of dataFields()">
+
+      <!-- TAG -->
+      <eg-marc-editable-content [context]="context" fieldType="tag"
+        [field]="field" moreClasses="p-1">
+      </eg-marc-editable-content>
+
+      <!-- INDICATOR 1 -->
+      <eg-marc-editable-content [context]="context" fieldType="ind1" 
+        [field]="field" moreClasses="p-1">
+      </eg-marc-editable-content>
+
+      <!-- INDICATOR 2 -->
+      <eg-marc-editable-content [context]="context" fieldType="ind2" 
+        [field]="field" moreClasses="p-1">
+      </eg-marc-editable-content>
+
+      <!-- SUBFIELDS -->
+      <ng-container *ngFor="let subfield of field.subfields">
+
+        <!-- SUBFIELD DECORATOR/DELIMITER -->
+        <eg-marc-editable-content fieldText="‡" i18n-fieldText
+          moreClasses="sf-delimiter border-right-0 bg-transparent p-1 pr-0">
+        </eg-marc-editable-content>
+
+        <!-- SUBFIELD CHARACTER -->
+        <eg-marc-editable-content [context]="context" fieldType="sfc" 
+          [field]="field" [subfield]="subfield" 
+          moreClasses="sf-code border-left-0 p-1 pl-0">
+        </eg-marc-editable-content>
+
+        <!-- SUBFIELD VALUE -->
+        <eg-marc-editable-content [context]="context" fieldType="sfv"
+          [field]="field" [subfield]="subfield" moreClasses="p-1 pt-2">
+        </eg-marc-editable-content>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>
+

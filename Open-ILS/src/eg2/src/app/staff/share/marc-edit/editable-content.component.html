@@ -1,0 +1,35 @@
+
+<ng-container *ngIf="bigText">
+  <div contenteditable
+    id='{{randId}}' 
+    spellcheck="false"
+    class="d-inline-block text-dark text-break {{moreClasses}}"
+    [attr.tabindex]="fieldText ? -1 : ''"
+    [egContextMenu]="contextMenuEntries()"
+    (menuItemSelected)="contextMenuChange($event.value)"
+    (keydown)="inputKeyDown($event)"
+    (focus)="selectText()"
+    (blur)="inputBlurred()"
+    (input)="bigTextValueChange()">
+  </div>
+</ng-container>
+
+<ng-container *ngIf="!bigText">
+  <input 
+    id='{{randId}}' 
+    spellcheck="false"
+    class="text-dark rounded-0 form-control {{moreClasses}}"
+    [size]="inputSize()" 
+    [maxlength]="maxLength || ''"
+    [disabled]="fieldText" 
+    [attr.tabindex]="fieldText ? -1 : ''"
+    [egContextMenu]="contextMenuEntries()"
+    (menuItemSelected)="contextMenuChange($event.value)"
+    (keydown)="inputKeyDown($event)"
+    (focus)="selectText()"
+    (blur)="inputBlurred()"
+    [ngModel]="getContent()"
+    (ngModelChange)="setContent($event)"
+  />
+</ng-container>
+

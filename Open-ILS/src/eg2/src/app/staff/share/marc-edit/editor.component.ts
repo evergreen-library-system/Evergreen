@@ -6,11 +6,14 @@ import {AuthService} from '@eg/core/auth.service';
 import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {ToastService} from '@eg/share/toast/toast.service';
+import {ServerStoreService} from '@eg/core/server-store.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {MarcRecord} from './marcrecord';
 import {ComboboxEntry, ComboboxComponent
   } from '@eg/share/combobox/combobox.component';
 import {ConfirmDialogComponent} from '@eg/share/dialog/confirm.component';
+import {MarcEditContext} from './editor-context';
+import {NgbTabset, NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
 interface MarcSavedEvent {
     marcXml: string;
@@ -28,9 +31,11 @@ interface MarcSavedEvent {
 
 export class MarcEditorComponent implements OnInit {
 
-    record: MarcRecord;
     editorTab: 'rich' | 'flat';
     sources: ComboboxEntry[];
+    context: MarcEditContext;
+
+    @Input() recordType: 'biblio' | 'authority' = 'biblio';
 
     @Input() set recordId(id: number) {
         if (!id) { return; }
@@ -39,7 +44,13 @@ export class MarcEditorComponent implements OnInit {
     }
 
     @Input() set recordXml(xml: string) {
-        if (xml) { this.fromXml(xml); }
+        if (xml) {
+            this.fromXml(xml);
+        }
+    }
+
+    get record(): MarcRecord {
+        return this.context.record;
     }
 
     // Tell us which record source to select by default.
@@ -70,15 +81,20 @@ export class MarcEditorComponent implements OnInit {
         private auth: AuthService,
         private org: OrgService,
         private pcrud: PcrudService,
-        private toast: ToastService
+        private toast: ToastService,
+        private store: ServerStoreService
     ) {
         this.sources = [];
         this.recordSaved = new EventEmitter<MarcSavedEvent>();
+        this.context = new MarcEditContext();
     }
 
     ngOnInit() {
-        // Default to flat for now since it's all that's supported.
-        this.editorTab = 'flat';
+
+        this.context.recordType = this.recordType;
+
+        this.store.getItem('cat.marcedit.flateditor').then(
+            useFlat => this.editorTab = useFlat ? 'flat' : 'rich');
 
         this.pcrud.retrieveAll('cbs').subscribe(
             src => this.sources.push({id: +src.id(), label: src.source()}),
@@ -93,6 +109,20 @@ export class MarcEditorComponent implements OnInit {
                 }
             }
         );
+    }
+
+    // Remember the last used tab as the preferred tab.
+    tabChange(evt: NgbTabChangeEvent) {
+
+        // Avoid undo persistence across tabs since that could result
+        // in changes getting lost.
+        this.context.resetUndos();
+
+        if (evt.nextId === 'flat') {
+            this.store.setItem('cat.marcedit.flateditor', true);
+        } else {
+            this.store.removeItem('cat.marcedit.flateditor');
+        }
     }
 
     saveRecord(): Promise<any> {
@@ -140,7 +170,7 @@ export class MarcEditorComponent implements OnInit {
     fromId(id: number): Promise<any> {
         return this.pcrud.retrieve('bre', id)
         .toPromise().then(bib => {
-            this.record = new MarcRecord(bib.marc());
+            this.context.record = new MarcRecord(bib.marc());
             this.record.id = id;
             this.record.deleted = bib.deleted() === 't';
             if (bib.source()) {
@@ -150,7 +180,7 @@ export class MarcEditorComponent implements OnInit {
     }
 
     fromXml(xml: string) {
-        this.record = new MarcRecord(xml);
+        this.context.record = new MarcRecord(xml);
         this.record.id = null;
     }
 

@@ -19,6 +19,13 @@
 
 <div class="row d-flex p-2 m-2">
   <div class="flex-1"></div>
+
+  <h3 class="mr-2">
+    <span class="badge badge-light p-2" i18n>
+      Record Type {{record ? record.recordType() : ''}}
+    </span>
+  </h3>
+    
   <div class="mr-2">
     <eg-combobox #sourceSelector
       [entries]="sources"
@@ -40,28 +47,19 @@
 
 <div class="row">
   <div class="col-lg-12">
-    <ngb-tabset [activeId]="editorTab">
-      <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich" *ngIf="!inPlaceMode">
+    <ngb-tabset [activeId]="editorTab" (tabChange)="tabChange($event)">
+      <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich">
         <ng-template ngbTabContent>
-          <div class="alert alert-info mt-3" i18n>
-          Enhanced MARC Editor is not yet implemented.  See the
-          <ng-container *ngIf="record && record.id">
-            <a target="_blank"
-              href="/eg/staff/cat/catalog/record/{{record.id}}/marc_edit">
-              AngularJS MARC Editor.
-            </a>
+          <ng-container *ngIf="context && context.record">
+            <eg-marc-rich-editor [context]="context"></eg-marc-rich-editor>
           </ng-container>
-          <ng-container *ngIf="!record || !record.id">
-            <a target="_blank" href="/eg/staff/cat/catalog/new_bib">
-              AngularJS MARC Editor.
-            </a>
-          </ng-container>
-          </div>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Flat Text Editor" i18n-title id="flat">
         <ng-template ngbTabContent>
-          <eg-marc-flat-editor></eg-marc-flat-editor>
+          <ng-container *ngIf="context && context.record">
+            <eg-marc-flat-editor [context]="context"></eg-marc-flat-editor>
+          </ng-container>
         </ng-template>
       </ngb-tab>
     </ngb-tabset>
