@@ -1,0 +1,22 @@
+<eg-string #noResourceString i18n-text text="No resource found with this barcode"></eg-string>
+<eg-string #captureSuccessString i18n-text text="Resource successfully captured"></eg-string>
+<eg-string #captureFailureString i18n-text text="Could not capture this resource"></eg-string>
+
+<eg-staff-banner bannerText="Booking Capture" i18n-bannerText>
+</eg-staff-banner>
+<eg-title i18n-prefix i18n-suffix prefix="Booking" suffix="Capture"></eg-title>
+
+<form [formGroup]="findResource" class="row">
+  <div class="col-md-4">
+    <div class="input-group flex-nowrap">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="resource-barcode" i18n>Resource barcode</label>
+        <input type="text" id="resource-barcode" class="form-control" formControlName="resourceBarcode">
+      </div>
+    </div>
+  </div>
+</form>
+
+<h2 class="text-center mt-2" i18n>Captured today</h2>
+<eg-reservations-grid #capturedTodayGrid status="capturedToday" persistSuffix="captured"></eg-reservations-grid>
+

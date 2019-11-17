@@ -1,0 +1,13 @@
+Booking Capture is now in Angular
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The interface to capture resources for booking
+reservations has been re-implemented in Angular.
+Other booking screens, such as Pick Up and
+Manage Reservations, now include an option to 
+re-print capture slips.
+
+System administrators can now edit the template
+for booking capture slips in Administration ->
+Server administration -> Print templates.
+

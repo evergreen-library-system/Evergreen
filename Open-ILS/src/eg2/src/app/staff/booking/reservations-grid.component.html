@@ -5,6 +5,7 @@
   persistKey="booking.{{persistSuffix}}" >
   <eg-grid-toolbar-action label="Edit Selected" i18n-label (onClick)="editSelected($event)" [disableOnRows]="editNotAppropriate"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Cancel Selected" i18n-label (onClick)="cancelSelected($event)" [disableOnRows]="cancelNotAppropriate"></eg-grid-toolbar-action>
+  <eg-grid-toolbar-action label="Reprint Capture Slip" i18n-label (onClick)="reprintCaptureSlip($event)" [disableOnRows]="reprintNotAppropriate"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Pick Up Selected" i18n-label (onClick)="pickupSelected($event)" [disableOnRows]="pickupNotAppropriate"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="Return Selected" i18n-label (onClick)="returnSelected($event)" [disableOnRows]="returnNotAppropriate"></eg-grid-toolbar-action>
   <eg-grid-toolbar-action label="View Patron Record" i18n-label (onClick)="viewPatronRecord($event)" [disableOnRows]="notOnePatronSelected"></eg-grid-toolbar-action>

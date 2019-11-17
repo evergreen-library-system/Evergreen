@@ -451,7 +451,7 @@
             </a>
           </li>
           <li>
-            <a href="./booking/legacy/booking/capture" target="_self">
+            <a href="/eg2/booking/capture" target="_self">
               <span class="glyphicon glyphicon-pushpin"></span>
               [% l('Capture Resources') %]
             </a>

@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import {CaptureComponent} from './capture.component';
 import {CreateReservationComponent} from './create-reservation.component';
 import {ManageReservationsComponent} from './manage-reservations.component';
 import {PickupComponent} from './pickup.component';
@@ -20,6 +21,9 @@ const routes: Routes = [{
       {path: 'by_resource/:resource_barcode', component: ManageReservationsComponent},
       {path: 'by_resource_type/:resource_type_id', component: ManageReservationsComponent},
   ]}, {
+  path: 'capture',
+  component: CaptureComponent
+  }, {
   path: 'pickup',
     children: [
       {path: '', component: PickupComponent},

@@ -3,6 +3,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {StaffCommonModule} from '@eg/staff/common.module';
 import {BookingRoutingModule} from './routing.module';
 import {CancelReservationDialogComponent} from './cancel-reservation-dialog.component';
+import {CaptureComponent} from './capture.component';
 import {CreateReservationComponent} from './create-reservation.component';
 import {CreateReservationDialogComponent} from './create-reservation-dialog.component';
 import {ManageReservationsComponent} from './manage-reservations.component';
@@ -28,6 +29,7 @@ import {OrgFamilySelectModule} from '@eg/share/org-family-select/org-family-sele
     ],
     declarations: [
         CancelReservationDialogComponent,
+        CaptureComponent,
         CreateReservationComponent,
         CreateReservationDialogComponent,
         ManageReservationsComponent,

@@ -31,7 +31,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     @Input() resourceBarcode: string;
     @Input() resourceType: number;
     @Input() pickupLibIds: number[];
-    @Input() status: 'pickupReady' | 'pickedUp' | 'returnReady' | 'returnedToday';
+    @Input() status: 'capturedToday' | 'pickupReady' | 'pickedUp' | 'returnReady' | 'returnedToday';
     @Input() persistSuffix: string;
     @Input() onlyCaptured = false;
 
@@ -51,6 +51,7 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     editSelected: (rows: IdlObject[]) => void;
     pickupSelected: (rows: IdlObject[]) => void;
     pickupResource: (rows: IdlObject) => Observable<any>;
+    reprintCaptureSlip: (rows: IdlObject[]) => void;
     returnSelected: (rows: IdlObject[]) => void;
     returnResource: (rows: IdlObject) => Observable<any>;
     cancelSelected: (rows: IdlObject[]) => void;
@@ -63,14 +64,13 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     handleRowActivate: (row: IdlObject) => void;
     redirectToCreate: () => void;
 
-    reloadGrid: () => void;
-
     noSelectedRows: (rows: IdlObject[]) => boolean;
     notOnePatronSelected: (rows: IdlObject[]) => boolean;
     notOneResourceSelected: (rows: IdlObject[]) => boolean;
     notOneCatalogedItemSelected: (rows: IdlObject[]) => boolean;
     cancelNotAppropriate: (rows: IdlObject[]) => boolean;
     pickupNotAppropriate: (rows: IdlObject[]) => boolean;
+    reprintNotAppropriate: (rows: IdlObject[]) => boolean;
     editNotAppropriate: (rows: IdlObject[]) => boolean;
     returnNotAppropriate: (rows: IdlObject[]) => boolean;
 
@@ -122,6 +122,9 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                     where['return_time'] = null;
                 } else if ('returnedToday' === this.status) {
                     where['return_time'] = {'>': Moment().startOf('day').toISOString()};
+                } else if ('capturedToday' === this.status) {
+                    where['capture_time'] = {'between': [Moment().startOf('day').toISOString(),
+                        Moment().add(1, 'day').startOf('day').toISOString()]};
                 }
             } else {
                 where['return_time'] = null;
@@ -185,12 +188,23 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
         };
         this.cancelNotAppropriate = (rows: IdlObject[]) =>
             (this.noSelectedRows(rows) || ['pickedUp', 'returnReady', 'returnedToday'].includes(this.status));
-        this.pickupNotAppropriate = (rows: IdlObject[]) => (this.noSelectedRows(rows) || ('pickupReady' !== this.status));
+        this.pickupNotAppropriate = (rows: IdlObject[]) =>
+            (this.noSelectedRows(rows) || !('pickupReady' === this.status || 'capturedToday' === this.status));
         this.editNotAppropriate = (rows: IdlObject[]) => (this.noSelectedRows(rows) || ('returnedToday' === this.status));
+        this.reprintNotAppropriate = (rows: IdlObject[]) => {
+            if (this.noSelectedRows(rows)) {
+                return true;
+            } else if ('capturedToday' === this.status) {
+                return false;
+            } else if (rows.filter(row => !(row.capture_time())).length) { // If any of the rows have not been captured
+                return true;
+            }
+            return false;
+        };
         this.returnNotAppropriate = (rows: IdlObject[]) => {
             if (this.noSelectedRows(rows)) {
                 return true;
-            } else if (this.status && ('pickupReady' === this.status)) {
+            } else if (this.status && ('pickupReady' === this.status || 'capturedToday' === this.status)) {
                 return true;
             } else {
                 rows.forEach(row => {
@@ -199,8 +213,6 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
             }
             return false;
         };
-
-        this.reloadGrid = () => { this.grid.reload(); };
 
         this.pickupSelected = (reservations: IdlObject[]) => {
             const pickupOne = (thing: IdlObject) => {
@@ -218,6 +230,10 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
                     () => returnOne(reservations.shift()));
             };
             returnOne(reservations.shift());
+        };
+
+        this.reprintCaptureSlip = (reservations: IdlObject[]) => {
+            this.actions.reprintCaptureSlip(reservations.map((r) => r.id())).subscribe();
         };
 
         this.pickupResource = (reservation: IdlObject) => {
@@ -277,6 +293,8 @@ export class ReservationsGridComponent implements OnChanges, OnInit {
     }
 
     ngOnChanges() { this.reloadGrid(); }
+
+    reloadGrid() { this.grid.reload(); }
 
     enrichRow$ = (row: IdlObject): Observable<IdlObject> => {
         return from(this.org.settings('lib.timezone', row.pickup_lib().id())).pipe(
