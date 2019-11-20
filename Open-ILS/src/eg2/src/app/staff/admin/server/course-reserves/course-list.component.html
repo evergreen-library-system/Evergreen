@@ -4,7 +4,9 @@
 <eg-string #successString i18n-text text="{{table_name}} Update Succeeded"></eg-string>
 <eg-string #createString i18n-text text="{{table_name}} Was Created Successfully"></eg-string>
 <eg-string #deleteFailedString i18n-text text="Delete of {{table_name}} failed or was not allowed"></eg-string>
-<eg-string #deleteSuccessString i18n-text text="Delete of {{table_name}} succeeded"></eg-string>
+<eg-string #deleteSucailedString i18n-text text="Delete of {{table_name}} failed or was not allowed"></eg-string>
+<eg-string #archiveFailedString i18n-text text="Archival of {{table_name}} failed or was not allowed"></eg-string>
+<eg-string #archiveSuccessString i18n-text text="Archival of {{table_name}} succeeded"></eg-string>
 <eg-string #flairTooltip i18n-text text="Limited Editing"></eg-string>
 
 <eg-course-associate-material-dialog #courseMaterialDialog>
@@ -22,10 +24,13 @@
     </eg-grid-toolbar-action>
     <eg-grid-toolbar-action label="Delete Selected" i18n-label (onClick)="deleteSelected($event)">
     </eg-grid-toolbar-action>
+    <eg-grid-toolbar-action label="Archive Selected" i18n-label (onClick)="archiveSelected($event)">
+    </eg-grid-toolbar-action>
   </eg-grid>
 </div>
 
 <eg-fm-record-editor #editDialog
   idlClass={{idl_class}}
-  [preloadLinkedValues]="true">
+  [preloadLinkedValues]="true"
+  hiddenFields="is_archived,id">
 </eg-fm-record-editor>

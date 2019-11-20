@@ -7,7 +7,8 @@ CREATE TABLE asset.course_module_course (
     name            TEXT NOT NULL,
     course_number   TEXT NOT NULL,
     section_number  TEXT,
-    owning_lib      INT REFERENCES actor.org_unit (id)
+    owning_lib      INT REFERENCES actor.org_unit (id),
+    is_archived        BOOLEAN NOT NULL DEFAULT false;
 );
 
 CREATE TABLE asset.course_module_course_users (

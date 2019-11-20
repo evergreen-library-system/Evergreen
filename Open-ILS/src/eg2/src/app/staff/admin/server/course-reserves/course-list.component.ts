@@ -29,6 +29,8 @@ export class CourseListComponent implements OnInit {
     @ViewChild('updateFailedString', { static: false }) updateFailedString: StringComponent;
     @ViewChild('deleteFailedString', { static: true }) deleteFailedString: StringComponent;
     @ViewChild('deleteSuccessString', { static: true }) deleteSuccessString: StringComponent;
+    @ViewChild('archiveFailedString', { static: true }) archiveFailedString: StringComponent;
+    @ViewChild('archiveSuccessString', { static: true }) archiveSuccessString: StringComponent;
     @ViewChild('courseMaterialDialog', {static: true})
         private courseMaterialDialog: CourseAssociateMaterialComponent;
     @Input() sort_field: string;
@@ -123,9 +125,29 @@ export class CourseListComponent implements OnInit {
         editOneThing(fields.shift());
     }
 
+    archiveSelected(course: IdlObject[]) {
+        this.courseSvc.disassociateMaterials(course).then(res => {
+            course.forEach(course => {
+                console.log(course);
+                course.is_archived(true);
+            });
+            this.pcrud.update(course).subscribe(
+                val => {
+                    console.debug('archived: ' + val);
+                    this.archiveSuccessString.current()
+                        .then(str => this.toast.success(str));
+                }, err => {
+                    this.archiveFailedString.current()
+                        .then(str => this.toast.danger(str));
+                }, () => {
+                    this.grid.reload();
+                }
+            );
+        });
+    }
+
     deleteSelected(idl_object: IdlObject[]) {
         this.courseSvc.disassociateMaterials(idl_object).then(res => {
-            console.log(res);
             idl_object.forEach(idl_object => {
                 idl_object.isdeleted(true)
             });
