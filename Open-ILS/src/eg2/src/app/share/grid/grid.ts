@@ -31,10 +31,6 @@ export class GridColumn {
     timezoneContextOrg: number;
     cellTemplate: TemplateRef<any>;
 
-    // Provide a way for cells that are generated via cellTemplate's
-    // to provide an alternate text value suitable for printing.
-    cellPrintValue: (row: any, cell: GridColumn) => string;
-
     cellContext: any;
     isIndex: boolean;
     isDragTarget: boolean;
