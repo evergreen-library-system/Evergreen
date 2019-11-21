@@ -24,7 +24,7 @@
         [% l('Stack subfields') %]
       </label>
     </div>
-    <div class="">
+    <div class="col-md-2">
       <div class="input-group pad-horiz">
         <span class="input-group-addon"><b>[% l('Record Type') %]</b></span>
         <span class="input-group-addon">{{calculated_record_type}}</span>
@@ -56,7 +56,7 @@
     <textarea class="marcflateditor" cols="120" rows="40" ng-model="flat_text_marc" ng-blur="saveFlatTextMARC()"></textarea>
   </div>
   <div ng-show="!flatEditor.isEnabled">
-    <div class="row pad-vert">
+    <div class="row pad-vert marcffcontainer">
       <div class="marcffeditor">
         <div class="row col-md-12">
             <eg-marc-edit-fixed-field fixed-field="Type" fixed-field-label="[% l('Type') | html %]" record="record"></eg-marc-edit-fixed-field>
@@ -148,9 +148,9 @@
         </div>
       </div>
     </div>
-    <div class="marcrecord pad-vert">
+    <div>
       <div uib-collapse="!showHelp">
-        <div class="row">
+        <div class="row keyboardhelp">
           <div class="col-md-4">
             <ul>
                <li>[% l('Undo: CTRL-z') %]</li>
@@ -178,23 +178,26 @@
         </div>
       </div>
       <div>
-        <eg-marc-edit-leader record="record" on-keydown="onKeydown"/>
-      </div>
-      <div>
-        <eg-marc-edit-controlfield 
-          ng-repeat="field in controlfields" 
-          field="field" on-keydown="onKeydown"
-          id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
-          context-functions="context_functions"
-        />
-      </div>
-      <div>
-        <eg-marc-edit-datafield 
-          ng-repeat="field in datafields" 
-          field="field" on-keydown="onKeydown" 
-          id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
-          context-functions="context_functions"
-        />
+      <div class="marcrecord">
+        <div>
+          <eg-marc-edit-leader record="record" on-keydown="onKeydown"/>
+        </div>
+        <div>
+          <eg-marc-edit-controlfield 
+            ng-repeat="field in controlfields" 
+            field="field" on-keydown="onKeydown"
+            id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+            context-functions="context_functions"
+          />
+        </div>
+        <div>
+          <eg-marc-edit-datafield 
+            ng-repeat="field in datafields" 
+            field="field" on-keydown="onKeydown" 
+            id="r{{field.record.subfield('901','c')[1]}}f{{field.position}}"
+            context-functions="context_functions"
+          />
+        </div>
       </div>
     </div>
   </div>
