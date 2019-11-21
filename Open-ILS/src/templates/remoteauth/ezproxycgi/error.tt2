@@ -1,0 +1,18 @@
+[% INCLUDE "header.tt2" %]
+
+[% IF ctx.error_msg %]
+<div id='login-failed-message'>
+    [% IF ctx.error_msg == 'patron_not_found' %]
+    Patron not found.
+    [% ELSIF ctx.error_msg == 'patron_is_blocked' %]
+    Your account is blocked.
+    [% ELSIF ctx.error_msg == 'patron_is_expired' %]
+    Your account is expired.
+    [% ELSE %]
+    Unable to authenticate.
+    [% END %]
+</div>
+[% END %]
+
+[% INCLUDE "login_form.tt2" %]
+[% INCLUDE "footer.tt2" %]

@@ -1,0 +1,23 @@
+<div id='login-form-box' class='login_boxes left_brain float-left'>
+    <h1>Log in to Your Account</h1>
+    Please enter the following information:
+    <form method='post'>
+        <input type="hidden" id="url" name="url" value="[% ctx.args.url | html %]"/>
+        <div class='login-form-left'>
+            <label for='username_field' class="lbl1" >Library Card Number or Username</label>
+            <div class="input_bg">
+                <input type='text' id="id" name="id" autofocus />
+            </div>
+        </div>
+        <div class='float-left'>
+            <label for="password_field" class="lbl1" >PIN Number or Password</label>
+            <div class="input_bg">
+                <input id="password" name="password" type="password" />
+            </div>
+        </div>
+        <div style="clear: both; padding-top: 15px;">
+            <input type="submit" value="Log in" class="opac-button" />
+        </div>
+    </form>
+</div>
+

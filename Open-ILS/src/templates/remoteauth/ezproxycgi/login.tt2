@@ -1,0 +1,6 @@
+[% INCLUDE "header.tt2" %]
+
+<h1 class="sr-only">EZProxy Login</h1>
+[% INCLUDE "login_form.tt2" %]
+
+[% INCLUDE "footer.tt2" %]

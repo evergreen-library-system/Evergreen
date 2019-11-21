@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang='[% ctx.locale %]'>
+    <head>
+        <meta charset="utf-8" />
+        
+        <title>
+            [% IF ctx.page == 'error' %]
+                Login Failed
+            [% ELSE %]
+                Login
+            [% END %]
+        </title>
+    </head>
+    <body>

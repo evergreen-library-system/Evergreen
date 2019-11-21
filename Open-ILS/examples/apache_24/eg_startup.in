@@ -14,7 +14,7 @@ use OpenILS::WWW::EGWeb ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::EGCatLo
 use OpenILS::WWW::IDL2js ('@sysconfdir@/opensrf_core.xml');
 use OpenILS::WWW::FlatFielder;
 use OpenILS::WWW::PhoneList ('@sysconfdir@/opensrf_core.xml');
-use OpenILS::WWW::RemoteAuth ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::RemoteAuth::Basic');
+use OpenILS::WWW::RemoteAuth ('@sysconfdir@/opensrf_core.xml', 'OpenILS::WWW::RemoteAuth::Basic', 'OpenILS::WWW::RemoteAuth::EZProxyCGI');
 
 # Pass second argument of '1' to enable template caching.
 use OpenILS::WWW::PrintTemplate ('@sysconfdir@/opensrf_core.xml', 0);
