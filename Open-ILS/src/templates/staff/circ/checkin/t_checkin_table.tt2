@@ -110,6 +110,7 @@
   <eg-grid-field path="acp.circ_lib.shortname" label="[% l('Circulation Library') %]"></eg-grid-field>
   <eg-grid-field label="[% l('Status') %]"      
     path="acp.status.name" hidden></eg-grid-field>
+  <eg-grid-field path="_monograph_part" label="[% l('Monograph Part') %]" parent-idl-class="bmp" hidden></eg-grid-field>
 
   <eg-grid-field path="circ.*" parent-idl-class="circ" hidden></eg-grid-field>
   <eg-grid-field path="acp.*" parent-idl-class="acp" hidden></eg-grid-field>
