@@ -2,8 +2,8 @@
 <input
   ng-show="itype != 'sfv'"
   ng-disabled="{{isInputDisabled}}"
-  ng-class="['marcedit', {'marcsfcode': itype == 'sfc','marcind': itype == 'ind' || itype == 'tag', 'focusable': itype != 'sfv'}]"
-  style="font-family: 'Lucida Console', Monaco, monospace; min-width: 1ch; margin: 0 -2px;"
+  ng-class="['marcedit', {'marcsfcode': itype == 'sfc','marcind': itype == 'ind', 'marctag': itype == 'tag', 'focusable': itype != 'sfv'}]"
+  style="font-family: 'Lucida Console', Monaco, monospace; min-width: 1ch; margin: 2px 2px;"
   ng-model="content"
   size="{{content.length * 1.1}}"
   maxlength="{{max}}"
@@ -14,7 +14,7 @@
   class=""
   ng-class="['marcedit', {'marcsfvalue': itype == 'sfv', 'focusable': itype == 'sfv'}]"
   ng-show="itype == 'sfv'"
-  style="font-family: 'Lucida Console', Monaco, monospace; display: inline-block; min-width: 1ch; margin: 0 -1px; padding: 0;"
+  style="font-family: 'Lucida Console', Monaco, monospace; display: inline-block; min-width: 20ch; margin: 0 -1px; padding: 0 5px; border-left: 1px solid gray !important;"
   ng-model="content"
 >{{content}}</div>
 </span>

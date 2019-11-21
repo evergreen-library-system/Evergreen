@@ -9,7 +9,9 @@
 }
 
 .marcrecord {
-    //background-color: #f5f5f5;
+    background-color: #ddd;
+    padding: 10px; /* provide consistant space around marc field editor */
+    margin: 0 -15px; /* line up editing sections left and right */
 }
 
 .marcflateditor {
@@ -23,7 +25,7 @@
 }
 
 .marcedit {
-    background-color: #f5f5f5;
+    background-color: #fff;
     border-collapse: collapse;
     border: solid thin gray;
     padding: 0px 5px 0px 5px;
@@ -39,34 +41,42 @@ input.marcedit:focus {
     background-color: lightcyan;
 }
 
+.keyboardhelp {
+    background-color: #fff;
+    border-bottom: 1px solid gray;
+}
+
 .marcffeditor {
     max-width: 800px;
 }
 
 .fixed-field-box {
-    border: 1px solid gray;
+    border: none;
 }
-
+.marcffcontainer {
+     background-color: lightcyan;
+     border-bottom: 1px solid gray;
+}
 .marcsfvalue {
-    border-left: 0px !important;
+    border-left: 1px !important;
 }
 
 .marcsfcode {
     color: blue;
     font-weight: normal;
     text-align: center;
-    padding-left: 0px !important;
-    border-left: 0px !important;
-    border-right: 0px !important;
+    margin-left: 0px !important;
+    width: 1.5em;
 }
 
 .marcsfcodedelimiter {
+    background-color: #ddd;
     color: blue;
     font-family: 'Lucida Console', Monaco, monospace;
     font-weight: normal;
     text-align: center;
     padding-right: 0px !important;
-    border-right: 0px !important;
+    border: none !important;
 }
 
 .unvalidatedheading {
@@ -75,6 +85,13 @@ input.marcedit:focus {
 
 .marctag, .marcind {
     text-align: center;
+}
+
+.marcind {
+    width: 1.5em;
+}
+.marctag {
+    width: 2.6em;
 }
 
 .marcEditableControlfield {
@@ -312,4 +329,3 @@ table.custom-label-table td {
   overflow-y: scroll;
   white-space: nowrap;
 }
-
