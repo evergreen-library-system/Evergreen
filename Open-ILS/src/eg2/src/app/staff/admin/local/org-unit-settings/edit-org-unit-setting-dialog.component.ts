@@ -39,8 +39,6 @@ export class EditOuSettingDialogComponent extends DialogComponent {
     }
 
     setInputValue(inputValue) {
-        console.log("In Input value");
-        console.log(inputValue);
         this.entryValue = inputValue;
     }
 

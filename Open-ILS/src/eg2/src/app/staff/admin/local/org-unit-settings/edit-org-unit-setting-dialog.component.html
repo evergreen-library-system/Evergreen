@@ -119,10 +119,9 @@
                     <div class="input-group-text" i18n>Value</div>
                       <ng-container [ngSwitch]="entry.fmClass">
                         <ng-container *ngSwitchCase="'acpl'">
-                          <eg-combobox placeholder="Select a value" [idlClass]="entry.fmClass" idlField="name" idlIncludeLibraryInLabel="owning_lib"
-                            [asyncSupportsEmptyTermClick]="true" [displayTemplate]="fmClassLabel"
-                            (onChange)="setInputValue($event ? $event.id : null)">
-                          </eg-combobox>
+                          <eg-item-location-select [permFilter]="entry.view_perm"
+                            [contextOrgId]="entryContext" (valueChange)="setInputValue($event ? $event.id() : null)">
+                          </eg-item-location-select>
                         </ng-container>
                         <ng-container *ngSwitchDefault>
                           <eg-combobox placeholder="Select a value" [idlClass]="entry.fmClass" idlField="name"

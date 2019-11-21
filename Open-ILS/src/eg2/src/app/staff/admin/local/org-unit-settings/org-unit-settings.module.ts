@@ -6,6 +6,7 @@ import {EditOuSettingDialogComponent} from './edit-org-unit-setting-dialog.compo
 import {OuSettingHistoryDialogComponent} from './org-unit-setting-history-dialog.component';
 import {OrgUnitSettingsRoutingModule} from './org-unit-settings-routing.module';
 import {OuSettingJsonDialogComponent} from './org-unit-setting-json-dialog.component';
+import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import {OuSettingJsonDialogComponent} from './org-unit-setting-json-dialog.compo
     ],
     imports: [
         AdminCommonModule,
+        ItemLocationSelectModule,
         OrgUnitSettingsRoutingModule,
         TreeModule
     ],
