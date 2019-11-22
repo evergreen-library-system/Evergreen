@@ -36,6 +36,20 @@
 		Specify which treatment you want in the av_format attribute.
 		For example: <login id="sc" password="pwd" institution="main" av_format="3m">
 		-->
+		<!--
+		The login attribute patron_status_always_permit_loans specifies whether
+		the charge privileges denied, renewal privilges denied, and
+		card reported lost flags in the patron status block should be
+		coerced to permissive values regardless of the actual state
+		of the patron record. Turning this on works around an issue
+		where a 2019-12 change by the Hoopla SIP2 client takes those flag
+		fields into account, but some libraries may not wish those
+		to block a patron's access to online resources that use
+		SIP2 to authenticate. This setting can also be set as
+		an implementation_config option; note that if it is set to
+		'true' or 'false' as a login attribute, the login attribute will
+		override whatever is set in the implementation_config.
+		-->
 		<login id="scclient" password="clientpwd" institution="gapines"/>
 	</accounts>
 
@@ -142,6 +156,11 @@
 						If enabled, return the calculated value for the recall
 						flag instead of always returning not-OK
 					<option name='patron_calculate_recal_ok' value='true' />
+					-->
+
+					<!-- see description of patron_status_always_permit_loans in the login section -->
+					<!--
+					<option name='patron_status_always_permit_loans' value='false' />
 					-->
 
 				</options>
