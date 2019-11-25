@@ -243,6 +243,7 @@ export class OrgUnitSettingsComponent {
                     setting => setting.name == entry.name
                 )[0];
                 settingsObj.value = null;
+                settingsObj.value_str = null;
                 settingsObj._org_unit = null;
                 settingsObj.context = null;
             }

@@ -28,6 +28,8 @@
             class="form-control"
             [(ngModel)]="filterString"
             (blur)="applyFilter()"
+            aria-label="Filter Settings"
+            i18n-aria-label
         />
         <button class="btn btn-outline-dark mr-1" i18n>Filter</button>
         <button class="btn btn-outline-dark mr-1" i18n
@@ -55,6 +57,7 @@
       [cellTemplate]="editCellTemplate"></eg-grid-column>
     <eg-grid-column i18n-label label="History" name="history"
       [cellTemplate]="historyCellTemplate"></eg-grid-column>
+    <eg-grid-column path="name" label="Name" i18n-label [hidden]="true"></eg-grid-column>
     <eg-grid-column path="grp" label="Group" i18n-label></eg-grid-column>
     <eg-grid-column path="label" label="Setting" [index]="true" i18n-label></eg-grid-column>
     <eg-grid-column path="context.shortname()" label="Context" i18n-label></eg-grid-column>
