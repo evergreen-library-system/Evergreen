@@ -5,7 +5,8 @@ import {CourseListComponent} from './course-list.component';
 import {CourseAssociateMaterialComponent} from './course-associate-material.component';
 import {CourseReservesRoutingModule} from './routing.module';
 import {ItemLocationSelectModule} from '@eg/share/item-location-select/item-location-select.module';
-import {CourseService} from './course.service'
+import {CourseService} from '@eg/staff/share/course.service';
+
 @NgModule({
   declarations: [
     CourseListComponent,

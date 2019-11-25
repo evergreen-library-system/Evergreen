@@ -2,7 +2,7 @@ import {Component, Input, ViewChild, OnInit} from '@angular/core';
 import {IdlObject} from '@eg/core/idl.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 import {AuthService} from '@eg/core/auth.service';
-import {CourseService} from './course.service';
+import {CourseService} from '@eg/staff/share/course.service';
 import {NetService} from '@eg/core/net.service';
 import {OrgService} from '@eg/core/org.service';
 import {GridComponent} from '@eg/share/grid/grid.component';

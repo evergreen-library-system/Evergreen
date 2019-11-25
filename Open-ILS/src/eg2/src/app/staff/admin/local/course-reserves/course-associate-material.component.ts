@@ -13,7 +13,7 @@ import {GridComponent} from '@eg/share/grid/grid.component';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {StringComponent} from '@eg/share/string/string.component';
 import {ToastService} from '@eg/share/toast/toast.service';
-import {CourseService} from './course.service';
+import {CourseService} from '@eg/staff/share/course.service';
 
 @Component({
     selector: 'eg-course-associate-material-dialog',
