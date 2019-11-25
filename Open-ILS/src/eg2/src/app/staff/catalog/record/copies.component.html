@@ -35,6 +35,10 @@
   <span *ngIf="!context.holdable(copy)" i18n>No</span>
 </ng-template>
 
+<ng-template #courseTemplate let-copy="row">
+  <div *ngFor="let course of copy._courses">{{course.course_number()}}</div>
+</ng-template>
+
 <div class='eg-copies w-100 mt-3'>
   <eg-grid #copyGrid [dataSource]="gridDataSource" 
     [disableSelect]="true" [cellTextGenerator]="cellTextGenerator"
@@ -61,6 +65,9 @@
     </eg-grid-column>
     <eg-grid-column i18n-label label="Holdable?" name="holdable" 
       [cellTemplate]="holdableTemplate" [cellContext]="copyContext">
+    </eg-grid-column>
+    <eg-grid-column i18n-label label="Course" name="course"
+      [cellTemplate]="courseTemplate" *ngIf="usingCourseModule">
     </eg-grid-column>
     <eg-grid-column i18n-label label="Status" path="copy_status">
     </eg-grid-column>

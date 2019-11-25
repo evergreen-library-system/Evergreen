@@ -1,9 +1,12 @@
+import {Injectable} from '@angular/core';
 import {AuthService} from '@eg/core/auth.service';
 import {EventService} from '@eg/core/event.service';
 import {IdlObject, IdlService} from '@eg/core/idl.service';
 import {NetService} from '@eg/core/net.service';
+import {OrgService} from '@eg/core/org.service';
 import {PcrudService} from '@eg/core/pcrud.service';
 
+@Injectable()
 export class CourseService {
 
     constructor(
@@ -11,8 +14,103 @@ export class CourseService {
         private evt: EventService,
         private idl: IdlService,
         private net: NetService,
+        private org: OrgService,
         private pcrud: PcrudService
     ) {}
+
+    isOptedIn(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            this.org.settings('circ.course_materials_opt_in').then(res => {
+                resolve(res['circ.course_materials_opt_in']);
+            });
+        });
+    }
+    getCourses(course_ids?: Number[]): Promise<IdlObject[]> {
+        if (!course_ids) {
+            return this.pcrud.retrieveAll('acmc',
+                {}, {atomic: true}).toPromise();
+        } else {
+            return this.pcrud.search('acmc', {id: course_ids},
+                {}, {atomic: true}).toPromise();
+        }
+    }
+
+    getCoursesFromMaterial(copy_id): Promise<any> {
+        let id_list = [];
+        return new Promise((resolve, reject) => {
+
+            return this.pcrud.search('acmcm', {item: copy_id})
+            .subscribe(materials => {
+                if (materials) {
+                    id_list.push(materials.course());
+                }
+            }, err => {
+                console.log(err);
+                reject(err);
+            }, () => {
+                if (id_list.length) {
+                    return this.getCourses(id_list).then(courses => {
+                        resolve(courses);
+                    });
+                    
+                }
+            });
+        });
+    }
+
+    fetchCopiesInCourseFromRecord(record_id) {
+        let cp_list = [];
+        let course_list = [];
+        return new Promise((resolve, reject) => {
+            this.net.request(
+                'open-ils.cat',
+                'open-ils.cat.asset.copy_tree.global.retrieve',
+                this.auth.token(), record_id
+            ).subscribe(copy_tree => {
+                copy_tree.forEach(cn => {
+                    cn.copies().forEach(cp => {
+                        cp_list.push(cp.id());
+                    });
+                });
+            }, err => reject(err),
+            () => {
+                resolve(this.getCoursesFromMaterial(cp_list));
+            });
+        });
+    }
+
+    // Creating a new acmcm Entry
+    associateMaterials(item, args) {
+        console.log("entering associateMaterials")
+        let material = this.idl.create('acmcm');
+        material.item(item.id());
+        material.course(args.currentCourse.id());
+        if (args.relationship) material.relationship(args.relationship);
+
+        // Apply temporary fields to the item
+        if (args.isModifyingStatus && args.tempStatus) {
+            material.original_status(item.status());
+            item.status(args.tempStatus);
+        }
+        if (args.isModifyingLocation && args.tempLocation) {
+            material.original_location(item.location());
+            item.location(args.tempLocation);
+        }
+        if (args.isModifyingCircMod) {
+            material.original_circ_modifier(item.circ_modifier());
+            item.circ_modifier(args.tempCircMod);
+            if (!args.tempCircMod) item.circ_modifier(null);
+        }
+        if (args.isModifyingCallNumber) {
+            material.original_callnumber(item.call_number());
+        }
+        let response = {
+            item: item,
+            material: this.pcrud.create(material).toPromise()
+        };
+
+        return response;
+    }
 
     disassociateMaterials(courses) {
         return new Promise((resolve, reject) => {

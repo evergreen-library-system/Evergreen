@@ -18,6 +18,7 @@ import {MultiSelectComponent} from '@eg/share/multi-select/multi-select.componen
 import {NotBeforeMomentValidatorDirective} from '@eg/share/validators/not_before_moment_validator.directive';
 import {PatronBarcodeValidatorDirective} from '@eg/share/validators/patron_barcode_validator.directive';
 import {BroadcastService} from '@eg/share/util/broadcast.service';
+import {CourseService} from './share/course.service'
 
 /**
  * Imports the EG common modules and adds modules common to all staff UI's.
@@ -72,6 +73,7 @@ export class StaffCommonModule {
                 AccessKeyService,
                 AudioService,
                 BroadcastService
+                CourseService
             ]
         };
     }

@@ -1,5 +1,6 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {OrgService} from '@eg/core/org.service';
+import {CourseService} from '@eg/staff/share/course.service';
 import {BibRecordService, BibRecordSummary
     } from '@eg/share/catalog/bib-record.service';
 import {ServerStoreService} from '@eg/core/server-store.service';
@@ -13,6 +14,8 @@ import {CatalogService} from '@eg/share/catalog/catalog.service';
 export class BibSummaryComponent implements OnInit {
 
     initDone = false;
+    has_course = false;
+    courses: any;
 
     // True / false if the display is vertically expanded
     private _exp: boolean;
@@ -33,6 +36,7 @@ export class BibSummaryComponent implements OnInit {
         this.summary = s;
         if (this.initDone && this.summary) {
             this.summary.getBibCallNumber();
+            this.loadCourseInformation(this.summary.record.id());
         }
     }
 
@@ -40,13 +44,15 @@ export class BibSummaryComponent implements OnInit {
         private bib: BibRecordService,
         private org: OrgService,
         private store: ServerStoreService,
-        private cat: CatalogService
+        private cat: CatalogService,
+        private course: CourseService
     ) {}
 
     ngOnInit() {
 
         if (this.summary) {
             this.summary.getBibCallNumber();
+            this.loadCourseInformation(this.summary.record.id());
         } else {
             if (this.recordId) {
                 this.loadSummary();
@@ -63,10 +69,24 @@ export class BibSummaryComponent implements OnInit {
     }
 
     loadSummary(): void {
+        this.loadCourseInformation(this.recordId);
         this.bib.getBibSummary(this.recordId).toPromise()
         .then(summary => {
             summary.getBibCallNumber();
             this.summary = summary;
+        });
+    }
+
+    loadCourseInformation(record_id) {
+        this.org.settings('circ.course_materials_opt_in').then(setting => {
+            if (setting['circ.course_materials_opt_in']) {
+                this.course.fetchCopiesInCourseFromRecord(record_id).then(course_list => {
+                    this.courses = course_list;
+                    this.has_course = true;
+                });
+            } else {
+                this.has_course = false;
+            }
         });
     }
 

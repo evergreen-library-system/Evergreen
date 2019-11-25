@@ -125,6 +125,10 @@
                     field="issn" joiner=","></eg-bib-display-field>
                 </div>
               </ng-container>
+              <ng-container *ngIf="has_course">
+                <div i18n>Associated Courses:
+                  {{courseNames.join(', ')}}</div>
+              </ng-container>
             </div>
           </div>
         </div>

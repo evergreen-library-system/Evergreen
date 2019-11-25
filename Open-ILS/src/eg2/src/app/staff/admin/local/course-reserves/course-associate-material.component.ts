@@ -88,53 +88,38 @@ export class CourseAssociateMaterialComponent extends DialogComponent {
 
     associateItem(barcode, relationship) {
         if (barcode) {
-            this.pcrud.search('acp', {barcode: barcode},
-              {flesh: 3, flesh_fields: {acp: ['call_number']}}).subscribe(item => {
-                let material = this.idl.create('acmcm');
-                material.item(item.id());
-                material.course(this.currentCourse.id());
-                if (relationship) material.relationship(relationship);
-                if (this.isModifyingStatus && this.tempStatus) {
-                    material.original_status(item.status());
-                    item.status(this.tempStatus);
-                }
-                if (this.isModifyingLocation && this.tempLocation) {
-                    material.original_location(item.location());
-                    item.location(this.tempLocation);
-                }
-                if (this.isModifyingCircMod) {
-                    material.original_circ_modifier(item.circ_modifier());
-                    item.circ_modifier(this.tempCircMod);
-                    if (!this.tempCircMod) item.circ_modifier(null);
-                }
-                if (this.isModifyingCallNumber) {
-                    material.original_callnumber(item.call_number());
-                }
-                this.pcrud.create(material).subscribe(
-                val => {
-                   console.debug('created: ' + val);
-                   let new_cn = item.call_number().label();
-                   if (this.tempCallNumber) new_cn = this.tempCallNumber;
-                    this.courseSvc.updateItem(item, this.currentCourse.owning_lib(), new_cn, this.isModifyingCallNumber).then(res => {
-                        this.fetchItem(item.id(), relationship);                        
+            let args = {
+                barcode: barcode,
+                relationship: relationship,
+                isModifyingCallNumber: this.isModifyingCallNumber,
+                isModifyingCircMod: this.isModifyingCircMod,
+                isModifyingLocation: this.isModifyingLocation,
+                isModifyingStatus: this.isModifyingStatus,
+                tempCircMod: this.tempCircMod,
+                tempLocation: this.tempLocation,
+                tempStatus: this.tempStatus,
+                currentCourse: this.currentCourse
+            }
+            
+            this.pcrud.search('acp', {barcode: barcode}, {
+                flesh: 3, flesh_fields: {acp: ['call_number']}
+            }).subscribe(item => {
+                let associatedMaterial = this.courseSvc.associateMaterials(item, args);
+                console.log(associatedMaterial);
+                associatedMaterial.material.then(res => {
+                    item = associatedMaterial.item;
+                    let new_cn = item.call_number().label();
+                    if (this.tempCallNumber) new_cn = this.tempCallNumber;
+                    this.courseSvc.updateItem(item,
+                        this.currentCourse.owning_lib(),
+                        new_cn, args.isModifyingCallNumber).then(resp => {
+                        this.fetchItem(item.id(), args.relationship);
                         if (item.circ_lib() != this.currentCourse.owning_lib()) {
                             this.differentLibraryString.current().then(str => this.toast.warning(str));
                         } else {
                             this.successString.current().then(str => this.toast.success(str));
                         }
                     });
-
-                    // Cleaning up inputs
-                    this.barcodeInput = "";
-                    this.relationshipInput = "";
-                    this.tempStatus = null;
-                    this.tempCircMod = null;
-                    this.tempCallNumber = null;
-                    this.tempLocation = null;
-                    this.isModifyingCallNumber = false;
-                    this.isModifyingCircMod = false;
-                    this.isModifyingLocation = false;
-                    this.isModifyingStatus = false;
                 }, err => {
                     this.failedString.current().then(str => this.toast.danger(str));
                 });

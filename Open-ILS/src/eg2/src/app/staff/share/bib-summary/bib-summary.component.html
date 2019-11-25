@@ -91,6 +91,25 @@
               <div class="flex-1">{{summary.record.edit_date() | date:'short'}}</div>
             </div>
           </li>
+          <ng-container *ngIf="expand && has_course">
+            <li class="list-group-item">
+              <div class="d-flex">
+                <div class="flex-1 font-weight-bold" i18n>Associated Courses</div>
+              </div>
+            </li>
+            <li class="list-group-item" *ngFor="let course of courses">
+              <div class="d-flex">
+                <div class="flex-1 font-weight-bold" i18n>Course Name:</div>
+                <div class="flex-3">{{course.name()}}</div>
+                <div class="flex-1 font-weight-bold" i18n>Course Number:</div>
+                <div class="flex-1">{{course.course_number()}}</div>
+                <div class="flex-1 font-weight-bold" i18n>Section Number:</div>
+                <div class="flex-1">{{course.section_number()}}</div>
+                <div class="flex-1 font-weight-bold" i18n>Owning Library:</div>
+                <div class="flex-1">{{this.org.get(course.owning_lib()).shortname()}}</div>
+              </div>
+            </li>
+          </ng-container>
         </ul>
       </div>
     </div><!-- col -->

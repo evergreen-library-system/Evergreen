@@ -10,6 +10,7 @@ import {CatalogSearchContext} from '@eg/share/catalog/search-context';
 import {CatalogUrlService} from '@eg/share/catalog/catalog-url.service';
 import {StaffCatalogService} from '../catalog.service';
 import {BasketService} from '@eg/share/catalog/basket.service';
+import {CourseService} from '@eg/staff/share/course.service';
 
 @Component({
   selector: 'eg-catalog-result-record',
@@ -29,6 +30,8 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
     searchContext: CatalogSearchContext;
     isRecordSelected: boolean;
     basketSub: Subscription;
+    has_course: boolean;
+    courseNames: any[] = [];
 
     constructor(
         private router: Router,
@@ -38,11 +41,13 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
         private cat: CatalogService,
         private catUrl: CatalogUrlService,
         private staffCat: StaffCatalogService,
-        private basket: BasketService
+        private basket: BasketService,
+        private course: CourseService
     ) {}
 
     ngOnInit() {
         this.searchContext = this.staffCat.searchContext;
+        this.loadCourseInformation(this.summary.id)
         this.isRecordSelected = this.basket.hasRecordId(this.summary.id);
 
         // Watch for basket changes caused by other components
@@ -53,6 +58,23 @@ export class ResultRecordComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.basketSub.unsubscribe();
+    }
+
+    loadCourseInformation(recordId) {
+        console.log("Entering loadCourseInformation");
+        this.course.isOptedIn().then(res => {
+            if (res) {
+                this.course.fetchCopiesInCourseFromRecord(recordId).then(course_list => {
+                    Object.keys(course_list).forEach(key => {
+                        this.courseNames.push(course_list[key].name() +
+                          "(" + course_list[key].course_number() + ")");
+                    });
+                    this.has_course = true;
+                });
+            } else {
+                this.has_course = false;
+            }
+        });
     }
 
     orgName(orgId: number): string {
