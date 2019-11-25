@@ -20,6 +20,9 @@ const routes: Routes = [{
     path: 'container/carousel',
     component: AdminCarouselComponent
 }, {
+    path: 'asset/course_list',
+    loadChildren: '@eg/staff/admin/local/course-reserves/course-reserves.module#CourseReservesModule'
+}, {
     path: 'config/standing_penalty',
     component: StandingPenaltyComponent
 }, {
