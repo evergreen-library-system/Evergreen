@@ -6,8 +6,10 @@
 angular.module('egCoreMod')
 
 .factory('egAuth', 
-       ['$q','$timeout','$rootScope','$window','$location','egNet','egHatch',
-function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
+       ['$q','$timeout','$rootScope','$window','$location','egNet','egHatch','$injector',
+function($q , $timeout , $rootScope , $window , $location , egNet , egHatch , $injector) {
+
+    var egLovefield = null;
 
     var service = {
         // the currently active user (au) object
@@ -288,9 +290,13 @@ function($q , $timeout , $rootScope , $window , $location , egNet , egHatch) {
     }
 
     service.handle_login_ok = function(args, evt) {
+        if (!egLovefield) {
+            egLovefield = $injector.get('egLovefield');
+        }
         service.ws = args.workstation; 
         egHatch.setLoginSessionItem('eg.auth.token', evt.payload.authtoken);
         egHatch.setLoginSessionItem('eg.auth.time', evt.payload.authtime);
+        egLovefield.destroySettingsCache(); // force refresh of settings cache on login (LP#1848550)
         service.poll();
     }
 
