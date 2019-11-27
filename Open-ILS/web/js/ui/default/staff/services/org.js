@@ -111,6 +111,9 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
         if (!angular.isArray(names)) names = [names];
 
         if (lf.isOffline) {
+            // for offline, just use whatever we have managed to cache,
+            // even if the value is expired (since we can't refresh it
+            // from the server)
             return egLovefield.getSettingsCache(names).then(
                 function(settings) {
                     var hash = {};
@@ -126,25 +129,70 @@ function($q,  egEnv,  egAuth,  egNet , $injector) {
 
         if (!egAuth.user()) return $q.when();
 
+        ou_id = ou_id || egAuth.user().ws_ou();
+        if (ou_id != egAuth.user().ws_ou()) {
+            // we only cache settings for the current working location;
+            // if we have requested settings for some other org unit,
+            // skip the cache and pull settings directly from the server
+            return service.settingsFromServer(names, ou_id);
+        }
+
+        var deferred = $q.defer();
+        
+        var newNames = [];
+        angular.forEach(names, function(name) {
+            if (!angular.isDefined(service.cachedSettings[name]))
+                // we don't have a value for this setting yet 
+                newNames.push(name)
+        });
+
+        // only retrieve uncached values
+        names = newNames;
+        if (names.length == 0)
+            return $q.when(service.cachedSettings);
+
+        // get settings from offline cache where possible;
+        // otherwise, get settings from server
+        egLovefield.getSettingsCache(names)
+        .then(function(settings) {
+
+            // populate values from offline cache
+            angular.forEach(settings, function (s) {
+                service.cachedSettings[s.name] = s.value;
+            });
+
+            // check if any requested settings were not in offline cache
+            var uncached = [];
+            angular.forEach(names, function(name) {
+                if (!angular.isDefined(service.cachedSettings[name]))
+                    uncached.push(name);
+            });
+
+            if (uncached.length == 0) {
+                // all requested settings were in the offline cache already
+                deferred.resolve(service.cachedSettings);
+            } else {
+                // cache was missing some settings; grab those from the server
+                service.settingsFromServer(uncached, ou_id)
+                .then(function() {
+                    deferred.resolve(service.cachedSettings);
+                });
+            }
+        });
+        return deferred.promise;
+    }
+
+    service.settingsFromServer = function(names, ou_id) {
+        if (!egLovefield) {
+            egLovefield = $injector.get('egLovefield');
+        }
+
+        // allow non-array
+        if (!angular.isArray(names)) names = [names];
+
         var deferred = $q.defer();
         ou_id = ou_id || egAuth.user().ws_ou();
         var here = (ou_id == egAuth.user().ws_ou());
-
-       
-        if (here) { 
-            // only cache org settings retrieved for the current 
-            // workstation org unit.
-            var newNames = [];
-            angular.forEach(names, function(name) {
-                if (!angular.isDefined(service.cachedSettings[name]))
-                    newNames.push(name)
-            });
-
-            // only retrieve uncached values
-            names = newNames;
-            if (names.length == 0)
-                return $q.when(service.cachedSettings);
-        }
 
         egNet.request(
             'open-ils.actor',

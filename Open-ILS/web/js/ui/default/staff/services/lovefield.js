@@ -335,6 +335,15 @@ angular.module('egCoreMod')
         );
     }
 
+    service.destroySettingsCache = function () {
+        if (lf.isOffline || service.cannotConnect) return $q.when();
+        return service.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'deleteAll'
+        });
+    }
+
     service.setListInOfflineCache = function (type, list) {
         if (lf.isOffline || service.cannotConnect) return $q.when();
 
