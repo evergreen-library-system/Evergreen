@@ -359,7 +359,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
             data.mbts = payload.parent_circ.billable_transaction().summary();
 
         if (!data.route_to) {
-            if (data.transit) {
+            if (data.transit && !data.transit.dest_recv_time() && !data.transit.cancel_time()) {
                 data.route_to = data.transit.dest().shortname();
             } else if (data.acp) {
                 data.route_to = data.acp.location().name();
@@ -1712,7 +1712,11 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 return service.route_dialog(
                     './circ/share/t_transit_dialog', 
                     evt[0], params, options
-                ).then(function() { return final_resp });
+                ).then(function(data) {
+                    if (transit && data.transit && transit.dest().id() != data.transit.dest().id())
+                        final_resp.evt[0].route_to = data.transit.dest().shortname();
+                    return final_resp;
+                });
 
             case 'ASSET_COPY_NOT_FOUND':
                 egCore.audio.play('error.checkin.not_found');
@@ -1795,7 +1799,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                 // do not show the dialog or print if the
                 // disabled automatic print attempt type list includes
                 // the specified template
-                return;
+                return data;
             }
 
             // All actions flow from the print data
@@ -1844,7 +1848,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     context : 'default', 
                     template : template, 
                     scope : print_context
-                });
+                }).then(function() { return data });
             }
 
             // when auto-print is on, skip the dialog and go straight
@@ -1874,7 +1878,7 @@ function($uibModal , $q , egCore , egAlertDialog , egConfirmDialog,  egAddCopyAl
                     }
                 }]
 
-            }).result;
+            }).result.then(function() { return data });
         });
     }
 
