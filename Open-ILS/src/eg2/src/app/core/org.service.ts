@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 import {IdlObject, IdlService} from './idl.service';
 import {NetService} from './net.service';
 import {AuthService} from './auth.service';
 import {PcrudService} from './pcrud.service';
+import {DbStoreService} from './db-store.service';
 
 type OrgNodeOrId = number | IdlObject;
 
@@ -31,6 +33,7 @@ export class OrgService {
     private orgTypeList: IdlObject[] = [];
 
     constructor(
+        private db: DbStoreService,
         private net: NetService,
         private auth: AuthService,
         private pcrud: PcrudService
@@ -201,61 +204,105 @@ export class OrgService {
         });
     }
 
-    /**
-     * Populate 'target' with settings from cache where available.
-     * Return the list of settings /not/ pulled from cache.
-     */
-    private settingsFromCache(names: string[], target: any) {
-        const cacheKeys = Object.keys(this.settingsCache);
-
-        cacheKeys.forEach(key => {
-            const matchIdx = names.indexOf(key);
-            if (matchIdx > -1) {
-                target[key] = this.settingsCache[key];
-                names.splice(matchIdx, 1);
+    private appendSettingsFromCache(names: string[], batch: OrgSettingsBatch) {
+        names.forEach(name => {
+            if (name in this.settingsCache) {
+                batch[name] = this.settingsCache[name];
             }
         });
-
-        return names;
     }
 
-    /**
-     * Fetch org settings from the network.
-     * 'auth' is null for anonymous lookup.
-     */
-    private settingsFromNet(orgId: number,
-        names: string[], auth?: string): Promise<any> {
+    // Pulls setting values from IndexedDB.
+    // Update local cache with any values found.
+    private appendSettingsFromDb(names: string[],
+        batch: OrgSettingsBatch): Promise<OrgSettingsBatch> {
 
-        const settings = {};
-        return new Promise((resolve, reject) => {
-            this.net.request(
-                'open-ils.actor',
-                'open-ils.actor.ou_setting.ancestor_default.batch',
-                orgId, names, auth
-            ).subscribe(
-                blob => {
-                    Object.keys(blob).forEach(key => {
-                        const val = blob[key]; // null or hash
-                        settings[key] = val ? val.value : null;
-                    });
-                    resolve(settings);
-                },
-                err => reject(err)
-            );
+        if (names.length === 0) { return Promise.resolve(batch); }
+
+        return this.db.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'selectWhereIn',
+            field: 'name',
+            value: names
+        }).then(settings => {
+
+            // array of key => JSON-string objects
+            settings.forEach(setting => {
+                const value = JSON.parse(setting.value);
+                // propagate to local cache as well
+                batch[setting.name] = this.settingsCache[setting.name] = value;
+            });
+
+            return batch;
         });
     }
 
+    // Add values for the list of named settings from the 'batch' to
+    // IndexedDB, copying the local cache as well.
+    private addSettingsToDb(names: string[],
+        batch: OrgSettingsBatch): Promise<OrgSettingsBatch> {
+
+        const rows = [];
+        names.forEach(name => {
+            // Anything added to the db should also be cached locally.
+            this.settingsCache[name] = batch[name];
+            rows.push({name: name, value: JSON.stringify(batch[name])});
+        });
+
+        if (rows.length === 0) { return Promise.resolve(batch); }
+
+        return this.db.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'insertOrReplace',
+            rows: rows
+        }).then(_ => batch);
+    }
 
     /**
-     *
+     * Append the named settings from the network to the in-progress
+     * batch of settings.  'auth' is null for anonymous lookup.
      */
+    private appendSettingsFromNet(orgId: number, names: string[],
+        batch: OrgSettingsBatch, auth?: string): Promise<OrgSettingsBatch> {
+
+        if (names.length === 0) { return Promise.resolve(batch); }
+
+        return this.net.request(
+            'open-ils.actor',
+            'open-ils.actor.ou_setting.ancestor_default.batch',
+            orgId, names, auth
+
+        ).pipe(tap(settings => {
+            Object.keys(settings).forEach(key => {
+                const val = settings[key]; // null or hash
+                batch[key] = val ? val.value : null;
+            });
+        })).toPromise().then(_ => batch);
+    }
+
+    // Given a set of setting names and an in-progress settings batch,
+    // return the list of names which are not yet represented in the ,
+    // indicating their data needs to be fetched from the next layer up
+    // (cache, network, etc.).
+    settingNamesRemaining(names: string[], settings: OrgSettingsBatch): string[] {
+        return names.filter(name => !(name in settings));
+    }
+
+    // Returns a key/value batch of org unit settings.
+    // Cacheable settings (orgId === here) are pulled from local cache,
+    // then IndexedDB, then the network.  Non-cacheable settings are
+    // fetched from the network each time.
     settings(name: string | string[],
         orgId?: number, anonymous?: boolean): Promise<OrgSettingsBatch> {
 
         let names = [].concat(name);
-        const settings = {};
         let auth: string = null;
         let useCache = false;
+        const batch: OrgSettingsBatch = {};
+
+        if (names.length === 0) { return Promise.resolve(batch); }
 
         if (this.auth.user()) {
             if (orgId) {
@@ -276,23 +323,29 @@ export class OrgService {
             return Promise.resolve({});
         }
 
-        if (useCache) {
-            names = this.settingsFromCache(names, settings);
+        if (!useCache) {
+            return this.appendSettingsFromNet(orgId, names, batch, auth);
         }
 
-        // All requested settings found in cache (or name list is empty)
-        if (names.length === 0) {
-            return Promise.resolve(settings);
-        }
+        this.appendSettingsFromCache(names, batch);
+        names = this.settingNamesRemaining(names, batch);
 
-        return this.settingsFromNet(orgId, names, auth)
-        .then(sets => {
-            if (useCache) {
-                Object.keys(sets).forEach(key => {
-                    this.settingsCache[key] = sets[key];
-                });
-            }
-            return sets;
+        return this.appendSettingsFromDb(names, batch)
+        .then(_ => {
+
+            names = this.settingNamesRemaining(names, batch);
+
+            return this.appendSettingsFromNet(orgId, names, batch, auth)
+            .then(__ => this.addSettingsToDb(names, batch));
+        });
+    }
+
+    // remove setting values cached in the indexeddb settings table.
+    clearCachedSettings(): Promise<any> {
+        return this.db.request({
+            schema: 'cache',
+            table: 'Setting',
+            action: 'deleteAll'
         });
     }
 }

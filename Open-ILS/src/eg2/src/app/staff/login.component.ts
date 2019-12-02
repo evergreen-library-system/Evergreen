@@ -3,6 +3,7 @@ import {Location} from '@angular/common';
 import {Router, ActivatedRoute} from '@angular/router';
 import {AuthService, AuthWsState} from '@eg/core/auth.service';
 import {StoreService} from '@eg/core/store.service';
+import {OrgService} from '@eg/core/org.service';
 
 @Component({
   templateUrl : './login.component.html'
@@ -26,6 +27,7 @@ export class StaffLoginComponent implements OnInit {
       private ngLocation: Location,
       private renderer: Renderer2,
       private auth: AuthService,
+      private org: OrgService,
       private store: StoreService
     ) {}
 
@@ -83,12 +85,18 @@ export class StaffLoginComponent implements OnInit {
                     this.auth.workstationState = AuthWsState.PENDING;
                     this.router.navigate(
                         [`/staff/admin/workstation/workstations/remove/${workstation}`]);
+
                 } else {
-                    // Force reload of the app after a successful login.
-                    // This allows the route resolver to re-run with a
-                    // valid auth token and workstation.
-                    window.location.href =
-                        this.ngLocation.prepareExternalUrl(url);
+
+                    // Initial login clears cached org unit settings.
+                    this.org.clearCachedSettings().then(_ => {
+
+                        // Force reload of the app after a successful login.
+                        // This allows the route resolver to re-run with a
+                        // valid auth token and workstation.
+                        window.location.href =
+                            this.ngLocation.prepareExternalUrl(url);
+                    });
                 }
             },
             notOk => {
