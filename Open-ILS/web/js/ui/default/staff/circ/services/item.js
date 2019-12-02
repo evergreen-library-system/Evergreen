@@ -717,7 +717,12 @@ function(egCore , egCirc , $uibModal , $q , $timeout , $window , egConfirmDialog
                     service.gatherSelectedHoldingsIds(items,r),
                     function (i) {
                         angular.forEach(items, function(item) {
-                            if (i == item.id) raw.push({owner : item['call_number.owning_lib']});
+                            if (i == item.id) {
+                                // owning_lib may be fleshed.
+                                var owner = item['call_number.owning_lib.id']
+                                    || item['call_number.owning_lib'];
+                                raw.push({owner : owner});
+                            }
                         });
                     }
                 );
