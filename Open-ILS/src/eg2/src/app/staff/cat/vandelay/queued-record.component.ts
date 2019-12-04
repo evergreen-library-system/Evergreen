@@ -48,13 +48,15 @@ export class QueuedRecordComponent {
 
     loadRecord() {
         this.queuedRecord = null;
-        this.pcrud.retrieve('vqbr', this.recordId)
+        this.pcrud.retrieve((this.queueType === 'bib' ? 'vqbr' : 'vqar'), this.recordId)
         .subscribe(rec => this.queuedRecord = rec);
     }
 
     handleMarcRecordSaved(saveEvent: any) {
         this.queuedRecord.marc(saveEvent.marcXml);
-        this.queuedRecord.bib_source(saveEvent.bibSource);
+        if (this.queueType === 'bib') {
+            this.queuedRecord.bib_source(saveEvent.bibSource);
+        }
         this.pcrud.update(this.queuedRecord).subscribe(
             response => {
                 console.log('response = ', response);
