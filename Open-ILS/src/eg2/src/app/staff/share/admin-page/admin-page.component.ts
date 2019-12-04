@@ -45,7 +45,7 @@ export class AdminPageComponent implements OnInit {
     // comma-separated list of fields to hide.
     // This does not imply all other fields should be visible, only that
     // the selected fields will be hidden.
-    @Input() hideFields: string;
+    @Input() hideGridFields: string;
 
     // If an org unit field is specified, an org unit filter
     // is added to the top of the page.

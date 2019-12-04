@@ -1,6 +1,6 @@
 import {Pager} from '@eg/share/util/pager';
-import {Component, Input, ViewChild} from '@angular/core';
-import { Router, ActivatedRoute }    from '@angular/router';
+import {Component, Input, ViewChild, OnInit} from '@angular/core';
+import {Router, ActivatedRoute} from '@angular/router';
 import {IdlService, IdlObject} from '@eg/core/idl.service';
 import {GridDataSource} from '@eg/share/grid/grid';
 import {GridComponent} from '@eg/share/grid/grid.component';
@@ -9,20 +9,18 @@ import {PcrudService} from '@eg/core/pcrud.service';
 import {OrgService} from '@eg/core/org.service';
 import {PermService} from '@eg/core/perm.service';
 import {AuthService} from '@eg/core/auth.service';
-import { AdminPageComponent } from '../../../share/admin-page/admin-page.component';
+import {AdminPageComponent} from '../../../share/admin-page/admin-page.component';
 
- @Component({
-     templateUrl: './floating-group.component.html'
- })
+@Component({
+    templateUrl: './floating-group.component.html'
+})
 
- export class FloatingGroupComponent extends AdminPageComponent {
+export class FloatingGroupComponent extends AdminPageComponent implements OnInit {
 
     idlClass = 'cfg';
-    @Input() sortField: string;
-    @Input() dialogSize: 'sm' | 'lg' = 'lg';
 
     gridDataSource: GridDataSource = new GridDataSource();
-    
+
     @ViewChild('grid', {static: true}) grid: GridComponent;
 
     constructor(
@@ -33,7 +31,7 @@ import { AdminPageComponent } from '../../../share/admin-page/admin-page.compone
         pcrud: PcrudService,
         perm: PermService,
         toast: ToastService,
-        private router:Router
+        private router: Router
     ) {
         super(route, idl, org, auth, pcrud, perm, toast);
     }
@@ -41,27 +39,31 @@ import { AdminPageComponent } from '../../../share/admin-page/admin-page.compone
     ngOnInit() {
         super.ngOnInit();
         this.gridDataSource.getRows = (pager: Pager, sort: any[]) => {
+
+            const orderBy: any = {};
+            if (sort.length) {
+                orderBy.cfg = sort[0].name + ' ' + sort[0].dir;
+            }
+
             const searchOps = {
                 offset: pager.offset,
                 limit: pager.limit,
-                order_by: {}
+                order_by: orderBy
             };
-            return this.pcrud.retrieveAll("cfg", searchOps);
+
+            return this.pcrud.retrieveAll('cfg', searchOps);
         };
+
         this.grid.onRowActivate.subscribe(
             (idlThing: IdlObject) => {
-                let idToEdit = idlThing.a[0];
+                const idToEdit = idlThing.id();
                 this.navigateToEditPage(idToEdit);
             }
         );
     }
 
-    createNew = () => {
-        super.createNew();
-    };
-
     editSelected = (floatingGroups: IdlObject[]) => {
-        let idToEdit = floatingGroups[0].a[0];
+        const idToEdit = floatingGroups[0].id();
         this.navigateToEditPage(idToEdit);
     }
 
@@ -70,7 +72,7 @@ import { AdminPageComponent } from '../../../share/admin-page/admin-page.compone
     }
 
     navigateToEditPage(id: any) {
-        this.router.navigate(["/staff/admin/server/config/floating_group/" + id]);
+        this.router.navigate(['/staff/admin/server/config/floating_group/' + id]);
     }
 
     // this was left mostly blank to ensure a modal does not open for edits

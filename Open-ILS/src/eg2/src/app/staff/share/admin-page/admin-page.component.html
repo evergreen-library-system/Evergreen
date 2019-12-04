@@ -33,7 +33,7 @@
   <ng-container *ngTemplateOutlet="helpTemplate"></ng-container>
 </ng-container>
 
-<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" hideFields={{hideFields}}
+<eg-grid #grid idlClass="{{idlClass}}" [dataSource]="dataSource" hideFields="{{hideGridFields}}"
     [sortable]="true" persistKey="{{persistKey}}">
   <eg-grid-toolbar-button [disabled]="!canCreate" 
     label="New {{idlClassDef.label}}" i18n-label (onClick)="createNew()">

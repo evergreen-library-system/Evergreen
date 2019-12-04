@@ -1,19 +1,17 @@
-<eg-title i18n-prefix prefix="Floating Group Administration"></eg-title>
-<eg-staff-banner bannerText="Floating Group Configuration" i18n-bannerText>
+<eg-staff-banner bannerText="Floating Group Administration" i18n-bannerText>
 </eg-staff-banner>
 
 <eg-string #createString i18n-text text="New Floating Group Added"></eg-string>
 <eg-string #createErrString i18n-text text="Failed to Create New Floating Group">
-  </eg-string>
-<eg-string #deleteFailedString i18n-text text="Delete of Floating Group failed 
-  or was not allowed"></eg-string>
-<eg-string #deleteSuccessString i18n-text text="Delete of Floating Group 
-  succeeded"></eg-string>
+</eg-string>
+<eg-string #deleteFailedString i18n-text 
+  text="Delete of Floating Group failed or was not allowed"></eg-string>
+<eg-string #deleteSuccessString i18n-text 
+  text="Delete of Floating Group succeeded"></eg-string>
 
-<eg-grid #grid idlClass="cfg" [dataSource]="gridDataSource"
-    [sortable]="true">
+<eg-grid #grid idlClass="cfg" [dataSource]="gridDataSource" [sortable]="true">
   <eg-grid-toolbar-button
-    label="New Floating Group" i18n-label [action]="createNew">
+    label="New Floating Group" i18n-label (onClick)="createNew()">
   </eg-grid-toolbar-button>
   <eg-grid-toolbar-action label="Edit Selected" i18n-label [action]="editSelected">
   </eg-grid-toolbar-action>

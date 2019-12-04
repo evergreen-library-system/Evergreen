@@ -359,8 +359,16 @@ export class FmRecordEditorComponent
         //
         // Create a new record from the stub record provided by the
         // caller or a new from-scratch record
-        // Set this._record (not this.record) to avoid loop in initRecord()
-        this._record = this.defaultNewRecord || this.record || this.idl.create(this.idlClass);
+        if (!this.record) {
+            // NOTE: Set this._record (not this.record) to avoid
+            // loop in initRecord()
+            if (this.defaultNewRecord) {
+                // Clone to avoid polluting the stub record
+                this._record = this.idl.clone(this.defaultNewRecord);
+            } else {
+                this._record = this.idl.create(this.idlClass);
+            }
+        }
         this._recordId = null; // avoid future confusion
 
         return this.getFieldList();
