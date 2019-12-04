@@ -41,7 +41,7 @@
 <div class="row">
   <div class="col-lg-12">
     <ngb-tabset [activeId]="editorTab">
-      <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich">
+      <ngb-tab title="Enhanced MARC Editor" i18n-title id="rich" *ngIf="!inPlaceMode">
         <ng-template ngbTabContent>
           <div class="alert alert-info mt-3" i18n>
           Enhanced MARC Editor is not yet implemented.  See the
