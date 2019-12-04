@@ -12756,8 +12756,8 @@ SELECT  usr,
 	<class id="cfg" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group" oils_persist:tablename="config.floating_group" reporter:label="Floating Group">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.floating_group_id_seq">
 			<field reporter:label="ID" name="id" reporter:selector="name" reporter:datatype="id"/>
-			<field reporter:label="Name" name="name" reporter:datatype="text"/>
-			<field reporter:label="Manual" name="manual" reporter:datatype="bool"/>
+			<field reporter:label="Name" name="name" reporter:datatype="text" oils_obj:required="true"/>
+			<field reporter:label="Manual" name="manual" reporter:datatype="bool" oils_obj:required="true"/>
 			<field reporter:label="Group Members" name="members" oils_persist:virtual="true" reporter:datatype="link"/>
 		</fields>
 		<links>
@@ -12775,11 +12775,11 @@ SELECT  usr,
 	<class id="cfgm" controller="open-ils.cstore open-ils.pcrud" oils_obj:fieldmapper="config::floating_group_member" oils_persist:tablename="config.floating_group_member" reporter:label="Floating Group Members">
 		<fields oils_persist:primary="id" oils_persist:sequence="config.floating_group_member_id_seq">
 			<field reporter:label="ID" name="id" reporter:datatype="id"/>
-			<field reporter:label="Floating Group" name="floating_group" reporter:datatype="link"/>
-			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="link"/>
-			<field reporter:label="Stop Depth" name="stop_depth" reporter:datatype="int"/>
+			<field reporter:label="Floating Group" name="floating_group" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Org Unit" name="org_unit" reporter:datatype="link" oils_obj:required="true"/>
+			<field reporter:label="Stop Depth" name="stop_depth" reporter:datatype="int" oils_obj:required="true"/>
 			<field reporter:label="Max Depth" name="max_depth" reporter:datatype="int"/>
-			<field reporter:label="Exclude" name="exclude" reporter:datatype="bool"/>
+			<field reporter:label="Exclude" name="exclude" reporter:datatype="bool" oils_obj:required="true"/>
 		</fields>
 		<links>
 			<link field="floating_group" reltype="has_a" key="id" class="cfg"/>
