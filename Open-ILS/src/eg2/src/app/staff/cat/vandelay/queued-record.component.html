@@ -21,10 +21,15 @@
   <ngb-tab title="Edit Record" i18n-title id="edit">
     <ng-template ngbTabContent>
       <ng-container *ngIf="queuedRecord">
-        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()" 
+        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
           [hideFullEditorLink]="true"
           [recordSource]="queuedRecord.bib_source()"
-          (recordSaved)="handleMarcRecordSaved($event)"></eg-marc-editor>   
+          (recordSaved)="handleMarcRecordSaved($event)"
+          *ngIf="queueType === 'bib'"></eg-marc-editor>
+        <eg-marc-editor [inPlaceMode]="true" [recordXml]="queuedRecord.marc()"
+          [hideFullEditorLink]="true"
+          (recordSaved)="handleMarcRecordSaved($event)"
+          *ngIf="queueType !== 'bib'"></eg-marc-editor>
       </ng-container>
     </ng-template>
   </ngb-tab>
