@@ -1,8 +1,8 @@
-= Installing the Evergreen server =
+== Installing the Evergreen server ==
 :toc:
 :numbered:
 
-== Preamble: referenced user accounts ==
+=== Preamble: referenced user accounts ===
 
 In subsequent sections, we will refer to a number of different accounts, as
 follows:
@@ -30,7 +30,7 @@ follows:
        Evergreen that you will use to test connectivity and configure your
        Evergreen instance.
 
-== Preamble: developer instructions ==
+=== Preamble: developer instructions ===
 
 [NOTE]
 Skip this section if you are using an official release tarball downloaded
@@ -48,7 +48,7 @@ source directory to generate the configure script and Makefiles:
 autoreconf -i
 ------------------------------------------------------------------------------
 
-== Installing prerequisites ==
+=== Installing prerequisites ===
 
   * **PostgreSQL**: The minimum supported version is 9.6.
   * **Linux**: Evergreen has been tested on 
@@ -111,13 +111,13 @@ make -f Open-ILS/src/extras/Makefile.install <osname>-translator
 make -f Open-ILS/src/extras/Makefile.install <osname>-packager
 ------------------------------------------------------------------------------
 
-== Extra steps for web staff client ==
+=== Extra steps for web staff client ===
 
 [NOTE]
 Skip this entire section if you are using an official release tarball downloaded
 from http://evergreen-ils.org/downloads
 
-=== Install dependencies for web staff client ===
+==== Install dependencies for web staff client ====
 
 [NOTE]
 You may skip this section if you have installed the
@@ -129,7 +129,7 @@ https://nodejs.org[Node.js]. Add the Node.js `/bin` directory to your
 environment variable `PATH`.
 
 [[install_files_for_web_staff_client]]
-=== Install AngularJS files for web staff client ===
+==== Install AngularJS files for web staff client ====
 
 1. Building, Testing, Minification: The remaining steps all take place within
    the staff JS web root:
@@ -157,7 +157,7 @@ npm run test
 ------------------------------------------------------------------------------
 
 [[install_files_for_angular_web_staff_client]]
-=== Install Angular files for web staff client ===
+==== Install Angular files for web staff client ====
 
 1. Building, Testing, Minification: The remaining steps all take place within
    the Angular staff root:
@@ -184,7 +184,7 @@ ng build --prod
 npm run test
 ------------------------------------------------------------------------------
 
-== Configuration and compilation instructions ==
+=== Configuration and compilation instructions ===
 
 For the time being, we are still installing everything in the `/openils/`
 directory. From the Evergreen source directory, issue the following commands as
@@ -200,7 +200,7 @@ These instructions assume that you have also installed OpenSRF under `/openils/`
 If not, please adjust PATH as needed so that the Evergreen `configure` script
 can find `osrf_config`.
 
-== Installation instructions ==
+=== Installation instructions ===
 
 1. Once you have configured and compiled Evergreen, issue the following
    command as the *root* Linux account to install Evergreen and copy
@@ -211,7 +211,7 @@ can find `osrf_config`.
 make install
 ------------------------------------------------------------------------------
 
-== Change ownership of the Evergreen files ==
+=== Change ownership of the Evergreen files ===
 
 All files in the `/openils/` directory and subdirectories must be owned by the
 `opensrf` user. Issue the following command as the *root* Linux account to
@@ -222,7 +222,7 @@ change the ownership on the files:
 chown -R opensrf:opensrf /openils
 ------------------------------------------------------------------------------
 
-== Run ldconfig ==
+=== Run ldconfig ===
 
 On Debian Stretch / Buster, run the following command as the root user:
 
@@ -231,7 +231,7 @@ On Debian Stretch / Buster, run the following command as the root user:
 ldconfig
 ------------------------------------------------------------------------------
 
-== Additional Instructions for Developers ==
+=== Additional Instructions for Developers ===
 
 [NOTE]
 Skip this section if you are using an official release tarball downloaded
@@ -251,7 +251,7 @@ cp -r /openils/var/web/js/dojo-release-1.3.3/* /openils/var/web/js/dojo/.
 ------------------------------------------------------------------------------
 
 
-== Configure the Apache Web server ==
+=== Configure the Apache Web server ===
 
 . Use the example configuration files to configure your Web server for 
 the Evergreen catalog, web staff client, Web services, and administration
@@ -343,7 +343,7 @@ Learn more about additional Apache options in the following sections:
   * <<_apache_rewrite_tricks,Apache Rewrite Tricks>>
   * <<_apache_access_handler_perl_module,Apache Access Handler Perl Module>>
 
-== Configure OpenSRF for the Evergreen application ==
+=== Configure OpenSRF for the Evergreen application ===
 There are a number of example OpenSRF configuration files in `/openils/conf/`
 that you can use as a template for your Evergreen installation. Issue the
 following commands as the *opensrf* Linux account:
@@ -369,7 +369,7 @@ domains, you can retrieve the settings from the backup version of the files.
 `eg_db_config`, described in <<_creating_the_evergreen_database,Creating the Evergreen
 database>>, sets the database connection information in `opensrf.xml` for you.
 
-== Configure action triggers for the Evergreen application ==
+=== Configure action triggers for the Evergreen application ===
 _Action Triggers_ provide hooks for the system to perform actions when a given
 event occurs; for example, to generate reminder or overdue notices, the
 `checkout.due` hook is processed and events are triggered for potential actions
@@ -386,9 +386,9 @@ cp -b /openils/conf/action_trigger_filters.json.example /openils/conf/action_tri
 For more information about configuring and running action triggers, see
 <<_processing_action_triggers,Notifications / Action Triggers>>.
 
-== Creating the Evergreen database ==
+=== Creating the Evergreen database ===
 
-=== Setting up the PostgreSQL server ===
+==== Setting up the PostgreSQL server ====
 
 For production use, most libraries install the PostgreSQL database server on a
 dedicated machine. Therefore, by default, the `Makefile.install` prerequisite
@@ -451,7 +451,7 @@ make the changes take effect.  For more information on configuring connectivity
 to PostgreSQL, see
 http://www.postgresql.org/docs/devel/static/auth-pg-hba-conf.html
 
-=== Creating the Evergreen database and schema ===
+==== Creating the Evergreen database and schema ====
 
 Once you have created the *evergreen* PostgreSQL account, you also need to
 create the database and schema, and configure your configuration files to point
@@ -479,7 +479,7 @@ Evergreen administrator account to your requested values.
 You can get a complete set of options for `eg_db_config` by passing the
 `--help` parameter.
 
-=== Loading sample data ===
+==== Loading sample data ====
 If you add the `--load-all-sample` parameter to the `eg_db_config` command,
 a set of authority and bibliographic records, call numbers, copies, staff
 and regular users, and transactions will be loaded into your target
@@ -488,15 +488,15 @@ sample data, and can be useful for testing out Evergreen functionality and
 for creating problem reports that developers can easily recreate with their
 own copy of the _concerto_ sample data.
 
-=== Creating the database on a remote server ===
+==== Creating the database on a remote server ====
 In a production instance of Evergreen, your PostgreSQL server should be
 installed on a dedicated server.
 
-==== PostgreSQL 9.6 and later ====
+===== PostgreSQL 9.6 and later =====
 To create the database instance on a remote database server running PostgreSQL
 9.6 or later, simply use the `--create-database` flag on `eg_db_config`.
 
-== Starting Evergreen ==
+=== Starting Evergreen ===
 1. As the *root* Linux account, start the `memcached` and `ejabberd` services
 (if they aren't already running):
 +
@@ -550,7 +550,7 @@ If the Apache Web server was running when you started the OpenSRF services, you
 might not be able to successfully log in to the OPAC or web staff client until the
 Apache Web server is restarted.
 
-== Testing connections to Evergreen ==
+=== Testing connections to Evergreen ===
 
 Once you have installed and started Evergreen, test your connection to
 Evergreen via `srfsh`. As the *opensrf* Linux account, issue the following
@@ -604,13 +604,13 @@ If this does not work, it's time to do some troubleshooting.
 mailing list] for assistance before making any drastic changes to your system
     configuration.
 
-== Getting help ==
+=== Getting help ===
 
 Need help installing or using Evergreen? Join the mailing lists at
 http://evergreen-ils.org/communicate/mailing-lists/ or contact us on the Freenode
 IRC network on the #evergreen channel.
 
-== License ==
+=== License ===
 This work is licensed under the Creative Commons Attribution-ShareAlike 3.0
 Unported License. To view a copy of this license, visit
 http://creativecommons.org/licenses/by-sa/3.0/ or send a letter to Creative
