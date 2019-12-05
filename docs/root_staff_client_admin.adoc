@@ -228,6 +228,8 @@ include::admin/SMS_messaging.adoc[]
 
 include::opac/linked_libraries.adoc[]
 
+include::admin_initial_setup/designing_your_catalog.adoc[]
+
 
 Reports
 =======
