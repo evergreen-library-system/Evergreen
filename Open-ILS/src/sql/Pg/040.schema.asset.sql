@@ -1128,7 +1128,7 @@ CREATE TABLE asset.course_module_course_materials (
     relationship    TEXT,
     original_location      INT REFERENCES asset.copy_location,
     original_status        INT REFERENCES config.copy_status,
-    original_circ_modifier INT REFERENCES config.circ_modifier,
+    original_circ_modifier TEXT, --REFERENCES config.circ_modifier
     original_callnumber    INT REFERENCES asset.call_number
 );
 

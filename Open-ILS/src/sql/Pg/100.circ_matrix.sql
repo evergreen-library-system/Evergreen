@@ -38,8 +38,9 @@ INSERT INTO config.circ_modifier (code, name, description, sip2_media_type )
 
 */
 
--- add an fkey pointing to the new circ mod table
+-- add fkeys pointing to the new circ mod table
 ALTER TABLE asset.copy ADD CONSTRAINT circ_mod_fkey FOREIGN KEY (circ_modifier) REFERENCES config.circ_modifier (code) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
+ALTER TABLE asset.course_module_course_materials ADD CONSTRAINT original_circ_mod_fkey FOREIGN KEY (original_circ_modifier) REFERENCES config.circ_modifier (code) ON UPDATE CASCADE ON DELETE SET NULL DEFERRABLE INITIALLY DEFERRED;
 
 
 /**
